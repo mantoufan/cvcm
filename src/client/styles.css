@@ -84,7 +84,8 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .tool-map {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
   gap: 0.15rem;
   padding: 0.15rem;
   background: var(--gray);
