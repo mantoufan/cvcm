@@ -1,0 +1,25 @@
+{
+  "name": "cvcm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "cv.cm — browser-local tools. Nothing is uploaded.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/build-worker.mjs",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name cvcm --commit-dirty=true"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.34.0"
+  }
+}

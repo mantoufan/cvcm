@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "cv.cm — 浏览器本地工具，文件不上传",
+    "titleWatermark": "图片水印 — cv.cm",
+    "description": "在浏览器里运行的免费工具。给图片加水印，文件不会上传。无账号，无数据库。"
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "工具",
+    "privacy": "本地处理"
+  },
+  "lang": {
+    "label": "语言",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
+  },
+  "home": {
+    "kicker": "本地工具集",
+    "title": "文件只留在浏览器里。",
+    "lead": "cv.cm 是一组在你设备上运行的工具。图片不会离开当前标签页，不会上传、不会存档、也不会发到服务器。",
+    "cta": "打开图片水印",
+    "points": {
+      "local": {
+        "title": "本地运算",
+        "body": "处理发生在浏览器画布上。Cloudflare Worker 只负责下发静态文件。"
+      },
+      "nodb": {
+        "title": "无数据库",
+        "body": "没有账号、没有云相册、没有历史记录。关掉标签页，数据就没了。"
+      },
+      "i18n": {
+        "title": "多语言",
+        "body": "简体中文、繁體中文、English、日本語、한국어。"
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "图片水印",
+      "blurb": "给照片盖文字或 Logo。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。"
+    }
+  },
+  "watermark": {
+    "title": "图片水印",
+    "back": "全部工具",
+    "dropTitle": "把图片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "图片",
+    "filesEmpty": "还没有图片",
+    "remove": "移除",
+    "clear": "清空",
+    "count": "{n} 张图片",
+    "textTitle": "文字",
+    "textContent": "水印文字",
+    "textPlaceholder": "© 2026 你的名字",
+    "font": "字体",
+    "fontSans": "黑体",
+    "fontSerif": "宋体",
+    "fontMono": "等宽",
+    "fontCustom": "自定义字体名",
+    "size": "大小",
+    "color": "颜色",
+    "opacity": "透明度",
+    "rotate": "旋转",
+    "stroke": "描边",
+    "logoTitle": "Logo",
+    "logoChoose": "选择 PNG Logo",
+    "logoClear": "移除 Logo",
+    "logoScale": "缩放",
+    "layoutTitle": "位置",
+    "tiled": "铺满整张图",
+    "gap": "间距",
+    "posTl": "左上",
+    "posTc": "上中",
+    "posTr": "右上",
+    "posMl": "左中",
+    "posMc": "正中",
+    "posMr": "右中",
+    "posBl": "左下",
+    "posBc": "下中",
+    "posBr": "右下",
+    "presetsTitle": "预设",
+    "presetConfidential": "机密斜铺",
+    "presetCopyright": "角落署名",
+    "presetCenter": "居中淡印",
+    "exportTitle": "导出",
+    "format": "格式",
+    "quality": "质量",
+    "download": "下载",
+    "downloadAll": "打包 ZIP 下载全部",
+    "working": "正在生成…",
+    "privacyNote": "图片只留在这个标签页。导出时会去掉 EXIF。关闭页面即丢弃。",
+    "hintMark": "输入文字或添加 Logo，即可盖到图上。",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "errorHuge": "图片过大，导出时可能会缩小。",
+    "emptyDownload": "请先添加图片。"
+  },
+  "footer": {
+    "privacy": "文件在本地处理，不会发送到 cv.cm。"
+  }
+}

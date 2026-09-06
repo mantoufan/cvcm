@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "cv.cm — ブラウザ内ツール、ファイルは送信しません",
+    "titleWatermark": "画像ウォーターマーク — cv.cm",
+    "description": "ブラウザで動く無料ツール。画像に透かしを入れてもファイルはアップロードされません。アカウントもデータベースもありません。"
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "ツール",
+    "privacy": "端末内処理"
+  },
+  "lang": {
+    "label": "言語",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
+  },
+  "home": {
+    "kicker": "ローカルツールキット",
+    "title": "ファイルはブラウザの中だけ。",
+    "lead": "cv.cm は端末上で動くツール集です。画像はこのタブから出ません。アップロードも保存もサーバー送信もありません。",
+    "cta": "画像ウォーターマークを開く",
+    "points": {
+      "local": {
+        "title": "端末内",
+        "body": "処理はブラウザの canvas で行います。Cloudflare Worker は静的ファイルを配るだけです。"
+      },
+      "nodb": {
+        "title": "データベースなし",
+        "body": "アカウント、クラウドフォルダ、履歴はありません。タブを閉じると消えます。"
+      },
+      "i18n": {
+        "title": "多言語",
+        "body": "简体中文、繁體中文、English、日本語、한국어。"
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "画像ウォーターマーク",
+      "blurb": "写真に文字やロゴを重ねます。PNG / JPEG / ZIP で一括書き出し。アップロードなし。"
+    }
+  },
+  "watermark": {
+    "title": "画像ウォーターマーク",
+    "back": "すべてのツール",
+    "dropTitle": "画像をここにドロップ",
+    "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "画像",
+    "filesEmpty": "まだ画像がありません",
+    "remove": "削除",
+    "clear": "すべて消去",
+    "count": "{n} 枚",
+    "textTitle": "テキスト",
+    "textContent": "透かし文字",
+    "textPlaceholder": "© 2026 あなたの名前",
+    "font": "フォント",
+    "fontSans": "ゴシック",
+    "fontSerif": "明朝",
+    "fontMono": "等幅",
+    "fontCustom": "カスタムフォント名",
+    "size": "サイズ",
+    "color": "色",
+    "opacity": "不透明度",
+    "rotate": "回転",
+    "stroke": "縁取り",
+    "logoTitle": "ロゴ",
+    "logoChoose": "PNG ロゴを選ぶ",
+    "logoClear": "ロゴを外す",
+    "logoScale": "拡大縮小",
+    "layoutTitle": "位置",
+    "tiled": "画像全体に繰り返す",
+    "gap": "間隔",
+    "posTl": "左上",
+    "posTc": "上",
+    "posTr": "右上",
+    "posMl": "左",
+    "posMc": "中央",
+    "posMr": "右",
+    "posBl": "左下",
+    "posBc": "下",
+    "posBr": "右下",
+    "presetsTitle": "プリセット",
+    "presetConfidential": "機密（斜め）",
+    "presetCopyright": "隅のクレジット",
+    "presetCenter": "中央の淡い印",
+    "exportTitle": "書き出し",
+    "format": "形式",
+    "quality": "品質",
+    "download": "ダウンロード",
+    "downloadAll": "すべてを ZIP でダウンロード",
+    "working": "生成中…",
+    "privacyNote": "画像はこのタブ内に留まります。書き出し時に EXIF は落ちます。ページを閉じると破棄されます。",
+    "hintMark": "文字を入力するかロゴを追加すると、画像に重ねられます。",
+    "errorDecode": "この画像はブラウザで読めませんでした。",
+    "errorHuge": "画像が非常に大きいため、書き出し時に縮小される場合があります。",
+    "emptyDownload": "先に画像を追加してください。"
+  },
+  "footer": {
+    "privacy": "ファイルは端末内で処理され、cv.cm には送信されません。"
+  }
+}

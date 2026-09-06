@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "cv.cm — 브라우저 로컬 도구, 파일 업로드 없음",
+    "titleWatermark": "이미지 워터마크 — cv.cm",
+    "description": "브라우저에서 실행되는 무료 도구. 이미지에 워터마크를 넣어도 파일은 업로드되지 않습니다. 계정 없음, 데이터베이스 없음."
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "도구",
+    "privacy": "기기 내 처리"
+  },
+  "lang": {
+    "label": "언어",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
+  },
+  "home": {
+    "kicker": "로컬 도구모음",
+    "title": "파일은 브라우저 안에만 있습니다.",
+    "lead": "cv.cm은 기기에서 실행되는 도구 모음입니다. 이미지는 이 탭을 떠나지 않으며 업로드, 저장, 서버 전송이 없습니다.",
+    "cta": "이미지 워터마크 열기",
+    "points": {
+      "local": {
+        "title": "기기 내",
+        "body": "처리는 브라우저 캔버스에서 이루어집니다. Cloudflare Worker는 정적 파일만 제공합니다."
+      },
+      "nodb": {
+        "title": "데이터베이스 없음",
+        "body": "계정, 클라우드 폴더, 기록이 없습니다. 탭을 닫으면 사라집니다."
+      },
+      "i18n": {
+        "title": "다국어",
+        "body": "简体中文, 繁體中文, English, 日本語, 한국어."
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "이미지 워터마크",
+      "blurb": "사진에 글자나 로고를 찍습니다. PNG, JPEG, ZIP 일괄 내보내기. 업로드 없음."
+    }
+  },
+  "watermark": {
+    "title": "이미지 워터마크",
+    "back": "모든 도구",
+    "dropTitle": "이미지를 여기에 놓기",
+    "dropHint": "또는 클릭해서 선택 · Ctrl/⌘ V로 붙여넣기",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "이미지",
+    "filesEmpty": "아직 이미지가 없습니다",
+    "remove": "제거",
+    "clear": "모두 지우기",
+    "count": "{n}장",
+    "textTitle": "텍스트",
+    "textContent": "워터마크 문구",
+    "textPlaceholder": "© 2026 이름",
+    "font": "글꼴",
+    "fontSans": "고딕",
+    "fontSerif": "명조",
+    "fontMono": "고정폭",
+    "fontCustom": "사용자 글꼴 이름",
+    "size": "크기",
+    "color": "색",
+    "opacity": "불투명도",
+    "rotate": "회전",
+    "stroke": "외곽선",
+    "logoTitle": "로고",
+    "logoChoose": "PNG 로고 선택",
+    "logoClear": "로고 제거",
+    "logoScale": "비율",
+    "layoutTitle": "위치",
+    "tiled": "이미지 전체에 반복",
+    "gap": "간격",
+    "posTl": "왼쪽 위",
+    "posTc": "위 가운데",
+    "posTr": "오른쪽 위",
+    "posMl": "왼쪽",
+    "posMc": "가운데",
+    "posMr": "오른쪽",
+    "posBl": "왼쪽 아래",
+    "posBc": "아래 가운데",
+    "posBr": "오른쪽 아래",
+    "presetsTitle": "프리셋",
+    "presetConfidential": "기밀 사선",
+    "presetCopyright": "모서리 표기",
+    "presetCenter": "가운데 옅은 도장",
+    "exportTitle": "내보내기",
+    "format": "형식",
+    "quality": "품질",
+    "download": "다운로드",
+    "downloadAll": "모두 ZIP으로 다운로드",
+    "working": "생성 중…",
+    "privacyNote": "이미지는 이 탭에만 남습니다. 내보내면 EXIF가 제거됩니다. 페이지를 닫으면 버려집니다.",
+    "hintMark": "글자를 입력하거나 로고를 추가하면 이미지에 찍힙니다.",
+    "errorDecode": "브라우저에서 이 이미지를 읽을 수 없습니다.",
+    "errorHuge": "이미지가 매우 커서 내보낼 때 축소될 수 있습니다.",
+    "emptyDownload": "먼저 이미지를 추가하세요."
+  },
+  "footer": {
+    "privacy": "파일은 로컬에서 처리되며 cv.cm으로 전송되지 않습니다."
+  }
+}

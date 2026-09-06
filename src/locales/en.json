@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "cv.cm — browser tools, nothing uploaded",
+    "titleWatermark": "Image watermark — cv.cm",
+    "description": "Free tools that run in your browser. Add watermarks to images without uploading files. No account, no database."
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "Tools",
+    "privacy": "On-device"
+  },
+  "lang": {
+    "label": "Language",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
+  },
+  "home": {
+    "kicker": "Local toolkit",
+    "title": "Your files stay in the browser.",
+    "lead": "cv.cm is a set of tools that run on your device. Images never leave this tab — they are not uploaded, stored, or sent to a server.",
+    "cta": "Open image watermark",
+    "points": {
+      "local": {
+        "title": "On-device",
+        "body": "Processing uses your browser canvas. The Cloudflare Worker only serves static files."
+      },
+      "nodb": {
+        "title": "No database",
+        "body": "No accounts, no cloud folders, no file history. Closing the tab discards everything."
+      },
+      "i18n": {
+        "title": "Languages",
+        "body": "Simplified Chinese, Traditional Chinese, English, Japanese, and Korean."
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "Image watermark",
+      "blurb": "Stamp text or a logo onto photos. Batch export as PNG, JPEG, or ZIP. Nothing is uploaded."
+    }
+  },
+  "watermark": {
+    "title": "Image watermark",
+    "back": "All tools",
+    "dropTitle": "Drop images here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Images",
+    "filesEmpty": "No images yet",
+    "remove": "Remove",
+    "clear": "Clear all",
+    "count": "{n} images",
+    "textTitle": "Text",
+    "textContent": "Watermark text",
+    "textPlaceholder": "© 2026 Your name",
+    "font": "Font",
+    "fontSans": "Sans",
+    "fontSerif": "Serif",
+    "fontMono": "Mono",
+    "fontCustom": "Custom font name",
+    "size": "Size",
+    "color": "Color",
+    "opacity": "Opacity",
+    "rotate": "Rotation",
+    "stroke": "Outline",
+    "logoTitle": "Logo",
+    "logoChoose": "Choose PNG logo",
+    "logoClear": "Remove logo",
+    "logoScale": "Scale",
+    "layoutTitle": "Position",
+    "tiled": "Repeat across image",
+    "gap": "Spacing",
+    "posTl": "Top left",
+    "posTc": "Top center",
+    "posTr": "Top right",
+    "posMl": "Middle left",
+    "posMc": "Center",
+    "posMr": "Middle right",
+    "posBl": "Bottom left",
+    "posBc": "Bottom center",
+    "posBr": "Bottom right",
+    "presetsTitle": "Presets",
+    "presetConfidential": "Confidential",
+    "presetCopyright": "Corner mark",
+    "presetCenter": "Centered",
+    "exportTitle": "Export",
+    "format": "Format",
+    "quality": "Quality",
+    "download": "Download",
+    "downloadAll": "Download all as ZIP",
+    "working": "Rendering…",
+    "privacyNote": "Images stay in this tab. Export also drops EXIF. Closing the page discards them.",
+    "hintMark": "Type text or add a logo to stamp the image.",
+    "errorDecode": "Could not read this image in the browser.",
+    "errorHuge": "Image is very large; export may be scaled down.",
+    "emptyDownload": "Add an image first."
+  },
+  "footer": {
+    "privacy": "Files are processed locally and are never sent to cv.cm."
+  }
+}
