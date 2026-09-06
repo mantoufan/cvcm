@@ -41,6 +41,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 0.75rem;
   padding: calc(0.9rem + env(safe-area-inset-top)) 0 0.9rem;
 }
@@ -83,13 +84,11 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .tool-map {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.15rem;
   padding: 0.15rem;
   background: var(--gray);
   border-radius: 12px;
-  max-width: min(52vw, 22rem);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 .nav-tool {
   color: var(--ink-soft);
@@ -497,7 +496,6 @@ input[type="color"] {
   .top { gap: 0.4rem; }
   .lang { padding: 0.35rem 0.45rem; }
   .tile-cover { height: 120px; }
-  .tool-map { max-width: 48vw; }
   .nav-tool { padding: 0.3rem 0.5rem; font-size: 0.8rem; }
 }
 
