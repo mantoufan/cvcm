@@ -249,6 +249,17 @@ h1 {
   gap: 1rem;
   align-items: start;
 }
+
+@media (min-width: 961px) {
+  .tool > .rail:not(.controls),
+  .tool > .stage {
+    position: sticky;
+    top: max(0.75rem, env(safe-area-inset-top));
+    max-height: calc(100dvh - 1.5rem);
+    overflow: auto;
+    z-index: 1;
+  }
+}
 .rail, .stage {
   background: var(--white);
   border: 1px solid var(--line);
