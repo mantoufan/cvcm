@@ -92,7 +92,7 @@ function shell(loc: Locale): HTMLElement {
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
-        t("brand"),
+        h("span", { class: "brand-name" }, t("brand")),
       ),
       h("nav", { class: "nav" },
         toolMap(loc, tool),

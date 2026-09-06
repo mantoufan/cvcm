@@ -41,8 +41,8 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
   padding: calc(0.9rem + env(safe-area-inset-top)) 0 0.9rem;
 }
 .brand {
@@ -69,8 +69,9 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .nav {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  flex-shrink: 0;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  min-width: 0;
 }
 .nav a {
   text-decoration: none;
@@ -115,12 +116,14 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   white-space: nowrap;
 }
 .lang {
+  width: auto;
+  max-width: 10.5rem;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 0.4rem 0.65rem;
   min-height: 40px;
-  max-width: 42vw;
+  flex-shrink: 0;
 }
 
 .hero-band {
@@ -491,13 +494,18 @@ input[type="color"] {
 }
 
 @media (max-width: 640px) {
-  .page { width: calc(100% - 1.25rem); }
+  .page { width: calc(100% - 1rem); }
   .hero-band { padding: 1.8rem 1rem 2.2rem; }
   .badge { display: none; }
-  .top { gap: 0.4rem; }
-  .lang { padding: 0.35rem 0.45rem; }
+  .top { gap: 0.3rem; }
+  .nav { display: contents; }
+  .brand-name { display: none; }
+  .mark { width: 1.7rem; height: 1.7rem; font-size: 0.62rem; border-radius: 8px; }
+  .nav a, .nav-tool, .lang { min-height: 32px; }
+  .nav-tool { padding: 0.2rem 0.42rem; font-size: 0.75rem; }
+  .lang { padding: 0.2rem 0.3rem; font-size: 0.75rem; }
+  .tool-map { padding: 0.1rem; border-radius: 10px; margin-left: auto; }
   .tile-cover { height: 120px; }
-  .nav-tool { padding: 0.3rem 0.5rem; font-size: 0.8rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
