@@ -447,6 +447,7 @@ input[type="color"] {
 }
 .mini { display: grid; gap: 3px; width: 100%; height: 100%; }
 .mini i { background: var(--sky); border-radius: 2px; display: block; }
+.g-single { grid-template: 1fr / 1fr; }
 .g-2h { grid-template-columns: 1fr 1fr; }
 .g-2v { grid-template-rows: 1fr 1fr; }
 .g-2x2 { grid-template: 1fr 1fr / 1fr 1fr; }

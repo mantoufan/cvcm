@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxAtAnchor, boxAtFree, fitExportSize } from "../src/client/watermark/engine";
+import { boxAtAnchor, boxAtFree, fitExportSize, tileStep } from "../src/client/watermark/engine";
 
 describe("boxAtAnchor", () => {
   it("places a box on the nine-cell grid", () => {
@@ -13,6 +13,17 @@ describe("boxAtAnchor", () => {
 describe("boxAtFree", () => {
   it("centers the box on a relative point", () => {
     expect(boxAtFree(0.5, 0.5, 1000, 800, 100, 50)).toEqual({ x: 450, y: 375 });
+  });
+});
+
+describe("tileStep", () => {
+  it("packs denser at negative spacing than at the old minimum", () => {
+    const mark = 60;
+    const canvas = 1000;
+    const dense = tileStep(mark, mark, canvas, -0.12);
+    const oldMin = tileStep(mark, mark, canvas, 0.04);
+    expect(dense).toBeGreaterThan(0);
+    expect(dense).toBeLessThan(oldMin);
   });
 });
 

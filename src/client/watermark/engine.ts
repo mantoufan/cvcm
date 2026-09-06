@@ -118,6 +118,17 @@ function minDim(w: number, h: number): number {
   return Math.min(w, h);
 }
 
+/** Spacing between tiled marks. Ratio 0 ≈ touching; negative packs denser. */
+export function tileStep(
+  boxW: number,
+  boxH: number,
+  canvasMin: number,
+  ratio: number,
+): number {
+  const mark = Math.max(boxW, boxH, 8);
+  return Math.max(mark * 0.28, mark + canvasMin * ratio);
+}
+
 function drawText(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -189,7 +200,7 @@ function stamp(
   const rad = (rotate * Math.PI) / 180;
 
   if (spec.tiled) {
-    const gap = Math.max(boxW, boxH) + minDim(w, h) * spec.tileGapRatio;
+    const gap = tileStep(boxW, boxH, minDim(w, h), spec.tileGapRatio);
     const diag = Math.hypot(w, h);
     ctx.translate(w / 2, h / 2);
     ctx.rotate(rad);

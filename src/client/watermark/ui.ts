@@ -1,5 +1,14 @@
 import { mimeForFormat, outputFilename } from "../../shared/filename";
 import { appHref } from "../../shared/path";
+import {
+  ASPECTS,
+  type AspectId,
+  type FitMode,
+  LAYOUTS,
+  type LayoutId,
+  cellsFor,
+  renderCollage,
+} from "../collage/engine";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { zipStore } from "../../shared/zip";
@@ -39,6 +48,7 @@ type Logo = {
 };
 
 type Format = "png" | "jpeg" | "webp";
+type WmLayout = "single" | LayoutId;
 
 const ANCHORS: Anchor[] = ["tl", "tc", "tr", "ml", "mc", "mr", "bl", "bc", "br"];
 
@@ -55,6 +65,12 @@ const state = {
   stroke: true,
   tiled: false,
   gap: 0.12,
+  layout: "single" as WmLayout,
+  collageGap: 16,
+  collageRadius: 12,
+  collageBg: "#eef1f4",
+  collageFit: "cover" as FitMode,
+  collageAspect: "square" as AspectId,
   anchor: "br" as Anchor,
   logo: null as Logo | null,
   logoScale: 0.18,
@@ -160,7 +176,7 @@ function stagePane(): HTMLElement {
     hintEl,
     h("div", { class: "stage-actions" },
       h("button", { type: "button", class: "btn", onClick: () => void downloadOne() }, t("watermark.download")),
-      h("button", { type: "button", class: "btn ghost", onClick: () => void downloadAll() }, t("watermark.downloadAll")),
+      h("button", { type: "button", class: "btn ghost", id: "wm-download-all", onClick: () => void downloadAll() }, t("watermark.downloadAll")),
     ),
     statusEl,
   );
@@ -168,6 +184,11 @@ function stagePane(): HTMLElement {
 
 function controlsRail(): HTMLElement {
   return h("aside", { class: "rail controls" },
+    h("fieldset", null,
+      h("legend", null, t("watermark.collageTitle")),
+      wmLayoutPicker(),
+      collageOptions(),
+    ),
     h("fieldset", null,
       h("legend", null, t("watermark.presetsTitle")),
       h("div", { class: "row wrap" },
@@ -264,7 +285,7 @@ function controlsRail(): HTMLElement {
         }),
         t("watermark.tiled"),
       ),
-      slider("wm-gap", t("watermark.gap"), 0.04, 0.4, 0.01, state.gap, (v) => { state.gap = v; }),
+      slider("wm-gap", t("watermark.gap"), -0.12, 0.4, 0.01, state.gap, (v) => { state.gap = v; }),
       positionPad(),
     ),
     h("fieldset", null,
@@ -283,6 +304,80 @@ function controlsRail(): HTMLElement {
       slider("wm-quality", t("watermark.quality"), 0.4, 1, 0.01, state.quality, (v) => { state.quality = v; }),
     ),
   );
+}
+
+function wmLayoutPicker(): HTMLElement {
+  const wrap = h("div", { class: "layout-grid" });
+  const ids: WmLayout[] = ["single", ...LAYOUTS];
+  for (const id of ids) {
+    const count = id === "single" ? 1 : cellsFor(id).length;
+    const marks = Array.from({ length: count }, () => h("i"));
+    const btn = h("button", {
+      type: "button",
+      class: "layout-btn" + (id === state.layout ? " on" : ""),
+      "aria-label": id === "single" ? t("watermark.layoutSingle") : t(`collage.layout.${id}`),
+      "aria-pressed": String(id === state.layout),
+      onClick: () => {
+        state.layout = id;
+        wrap.querySelectorAll(".layout-btn").forEach((el) => {
+          el.classList.toggle("on", el === btn);
+          el.setAttribute("aria-pressed", String(el === btn));
+        });
+        const opts = document.getElementById("wm-collage-opts");
+        if (opts) opts.hidden = id === "single";
+        const zip = document.getElementById("wm-download-all");
+        if (zip) zip.hidden = id !== "single";
+        refreshList();
+        redraw();
+      },
+    }, h("span", { class: `mini g-${id}` }, ...marks));
+    wrap.append(btn);
+  }
+  return wrap;
+}
+
+function collageOptions(): HTMLElement {
+  const box = h("div", { id: "wm-collage-opts" });
+  box.hidden = state.layout === "single";
+  box.append(
+    labeled(t("collage.aspect"),
+      h("select", {
+        onChange: (e: Event) => {
+          state.collageAspect = (e.target as HTMLSelectElement).value as AspectId;
+          redraw();
+        },
+      },
+        h("option", { value: "square", selected: true }, t("collage.aspectSquare")),
+        h("option", { value: "story" }, t("collage.aspectStory")),
+        h("option", { value: "portrait" }, t("collage.aspectPortrait")),
+        h("option", { value: "landscape" }, t("collage.aspectLandscape")),
+      ),
+    ),
+    labeled(t("collage.fit"),
+      h("select", {
+        onChange: (e: Event) => {
+          state.collageFit = (e.target as HTMLSelectElement).value as FitMode;
+          redraw();
+        },
+      },
+        h("option", { value: "cover", selected: true }, t("collage.fitCover")),
+        h("option", { value: "contain" }, t("collage.fitContain")),
+      ),
+    ),
+    labeled(t("collage.background"),
+      h("input", {
+        type: "color",
+        value: state.collageBg,
+        onInput: (e: Event) => {
+          state.collageBg = (e.target as HTMLInputElement).value;
+          redraw();
+        },
+      }),
+    ),
+    slider("wm-cg-gap", t("collage.gap"), 0, 48, 1, state.collageGap, (v) => { state.collageGap = v; }),
+    slider("wm-cg-radius", t("collage.radius"), 0, 48, 1, state.collageRadius, (v) => { state.collageRadius = v; }),
+  );
+  return box;
 }
 
 function logoPicker(): HTMLElement {
@@ -457,6 +552,16 @@ function clearLogo(): void {
   redraw();
 }
 
+function moveItem(id: string, dir: -1 | 1): void {
+  const idx = state.items.findIndex((it) => it.id === id);
+  const next = idx + dir;
+  if (idx < 0 || next < 0 || next >= state.items.length) return;
+  const [item] = state.items.splice(idx, 1);
+  state.items.splice(next, 0, item);
+  refreshList();
+  redraw();
+}
+
 function refreshList(): void {
   if (!fileList) return;
   fileList.replaceChildren();
@@ -464,32 +569,42 @@ function refreshList(): void {
     fileList.append(h("li", { class: "muted" }, t("watermark.filesEmpty")));
     return;
   }
-  for (const item of state.items) {
-    const li = h("li", {
-      class: "file" + (item.id === state.selected ? " on" : ""),
-      onClick: () => {
-        state.selected = item.id;
-        refreshList();
-        redraw();
-      },
-    },
-      h("img", { src: item.url, alt: item.file.name }),
-      h("div", null,
-        h("strong", null, item.file.name),
-        h("span", null, item.error || `${item.width}×${item.height}`),
-      ),
-      h("button", {
-        type: "button",
-        class: "icon",
-        "aria-label": t("watermark.remove"),
-        onClick: (e: Event) => {
-          e.stopPropagation();
-          removeItem(item.id);
+  const collage = state.layout !== "single";
+  const slots = state.layout === "single" ? 0 : cellsFor(state.layout).length;
+  state.items.forEach((item, i) => {
+    const ops = collage
+      ? h("div", { class: "file-ops" },
+          h("button", { type: "button", class: "icon", "aria-label": t("collage.up"), onClick: (e: Event) => { e.stopPropagation(); moveItem(item.id, -1); } }, "↑"),
+          h("button", { type: "button", class: "icon", "aria-label": t("collage.down"), onClick: (e: Event) => { e.stopPropagation(); moveItem(item.id, 1); } }, "↓"),
+          h("button", { type: "button", class: "icon", "aria-label": t("watermark.remove"), onClick: (e: Event) => { e.stopPropagation(); removeItem(item.id); } }, "×"),
+        )
+      : h("button", {
+          type: "button",
+          class: "icon",
+          "aria-label": t("watermark.remove"),
+          onClick: (e: Event) => {
+            e.stopPropagation();
+            removeItem(item.id);
+          },
+        }, "×");
+    fileList!.append(
+      h("li", {
+        class: "file" + (collage ? (i < slots ? " on" : "") : item.id === state.selected ? " on" : ""),
+        onClick: () => {
+          state.selected = item.id;
+          refreshList();
+          redraw();
         },
-      }, "×"),
+      },
+        h("img", { src: item.url, alt: item.file.name }),
+        h("div", null,
+          h("strong", null, item.file.name),
+          h("span", null, item.error || `${item.width}×${item.height}`),
+        ),
+        ops,
+      ),
     );
-    fileList.append(li);
-  }
+  });
 }
 
 function specFor(): WatermarkSpec {
@@ -533,12 +648,42 @@ function currentItem(): Item | null {
   return state.items.find((it) => it.id === state.selected) ?? state.items[0] ?? null;
 }
 
+function collageSlots() {
+  return state.items.map((item) =>
+    item.bitmap
+      ? { image: item.bitmap, naturalWidth: item.width, naturalHeight: item.height }
+      : null,
+  );
+}
+
+function composeSource(): { image: CanvasImageSource; width: number; height: number; name: string } | null {
+  if (state.layout !== "single") {
+    const ready = state.items.some((it) => it.bitmap);
+    if (!ready) return null;
+    const aspect = ASPECTS[state.collageAspect];
+    const canvas = renderCollage(collageSlots(), state.layout, {
+      width: aspect.w,
+      height: aspect.h,
+      gap: state.collageGap,
+      radius: state.collageRadius,
+      background: state.collageBg,
+      fit: state.collageFit,
+    });
+    return { image: canvas, width: canvas.width, height: canvas.height, name: "collage.png" };
+  }
+  const item = currentItem();
+  if (!item?.bitmap) return null;
+  return { image: item.bitmap, width: item.width, height: item.height, name: item.file.name };
+}
+
 function redraw(): void {
   if (!preview) return;
-  const item = currentItem();
+  const zip = document.getElementById("wm-download-all");
+  if (zip) zip.hidden = state.layout !== "single";
   const hasMark = Boolean(state.text.trim() || state.logo);
   if (hintEl) hintEl.hidden = hasMark;
-  if (!item?.bitmap) {
+  const source = composeSource();
+  if (!source) {
     const ctx = preview.getContext("2d");
     if (!ctx) return;
     preview.width = 800;
@@ -547,17 +692,17 @@ function redraw(): void {
     return;
   }
   const max = 1400;
-  const scale = Math.min(1, max / Math.max(item.width, item.height));
-  const w = Math.max(1, Math.round(item.width * scale));
-  const h = Math.max(1, Math.round(item.height * scale));
-  const rendered = renderWatermark(item.bitmap, item.width, item.height, specFor(), w, h);
+  const scale = Math.min(1, max / Math.max(source.width, source.height));
+  const w = Math.max(1, Math.round(source.width * scale));
+  const h = Math.max(1, Math.round(source.height * scale));
+  const rendered = renderWatermark(source.image, source.width, source.height, specFor(), w, h);
   preview.width = w;
   preview.height = h;
   const ctx = preview.getContext("2d");
   if (!ctx) return;
   ctx.clearRect(0, 0, w, h);
   ctx.drawImage(rendered, 0, 0);
-  if (item.width * item.height > 25_000_000) setStatus(t("watermark.errorHuge"));
+  if (source.width * source.height > 25_000_000) setStatus(t("watermark.errorHuge"));
 }
 
 function applyPreset(kind: "confidential" | "copyright" | "center"): void {
@@ -606,35 +751,38 @@ function setStatus(msg: string): void {
   if (statusEl) statusEl.textContent = msg;
 }
 
-async function blobFor(item: Item): Promise<Blob> {
-  if (!item.bitmap) throw new Error("decode");
-  const fit = fitExportSize(item.width, item.height);
+async function blobForSource(source: { image: CanvasImageSource; width: number; height: number }): Promise<Blob> {
+  const fit = fitExportSize(source.width, source.height);
   const canvas = renderWatermark(
-    item.bitmap,
-    item.width,
-    item.height,
+    source.image,
+    source.width,
+    source.height,
     specFor(),
     fit.width,
     fit.height,
   );
   const mime = mimeForFormat(state.format);
-  const blob = await new Promise<Blob>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), mime, state.quality);
   });
-  return blob;
+}
+
+async function blobFor(item: Item): Promise<Blob> {
+  if (!item.bitmap) throw new Error("decode");
+  return blobForSource({ image: item.bitmap, width: item.width, height: item.height });
 }
 
 async function downloadOne(): Promise<void> {
-  const item = currentItem();
-  if (!item) {
+  const source = composeSource();
+  if (!source) {
     setStatus(t("watermark.emptyDownload"));
     return;
   }
   state.working = true;
   setStatus(t("watermark.working"));
   try {
-    const blob = await blobFor(item);
-    downloadBlob(blob, outputFilename(item.file.name, blob.type));
+    const blob = await blobForSource(source);
+    downloadBlob(blob, outputFilename(source.name, blob.type));
     setStatus("");
   } catch {
     setStatus(t("watermark.errorDecode"));
@@ -644,6 +792,10 @@ async function downloadOne(): Promise<void> {
 }
 
 async function downloadAll(): Promise<void> {
+  if (state.layout !== "single") {
+    await downloadOne();
+    return;
+  }
   const ready = state.items.filter((it) => it.bitmap);
   if (ready.length === 0) {
     setStatus(t("watermark.emptyDownload"));
