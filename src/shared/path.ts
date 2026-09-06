@@ -3,7 +3,7 @@ import { isLocale, type Locale } from "./locale";
 export const STATIC_FILE =
   /^\/(assets\/|favicon\.svg$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
 
-export const TOOLS = ["watermark"] as const;
+export const TOOLS = ["watermark", "collage"] as const;
 export type ToolId = (typeof TOOLS)[number];
 
 export function isToolId(value: string): value is ToolId {

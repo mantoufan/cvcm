@@ -13,8 +13,9 @@ Browser-local toolkit. Cloudflare Worker (deployed as Pages advanced mode `_work
 
 - `src/worker.ts` — edge Worker
 - `src/client/` — SPA
-- `src/client/watermark/` — first tool (image watermark)
-- `src/locales/` — `zh-CN` `zh-TW` `en` `ja` `ko`
+- `src/client/watermark/` — image watermark
+- `src/client/collage/` — photo collage
+- `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko`. UI language still follows the browser / cookie.
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 
 ## Deploy

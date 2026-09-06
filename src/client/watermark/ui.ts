@@ -1,6 +1,7 @@
-import { downloadBlob, h } from "../dom";
-import { t } from "../i18n";
 import { mimeForFormat, outputFilename } from "../../shared/filename";
+import { appHref } from "../../shared/path";
+import { downloadBlob, h } from "../dom";
+import { locale, t } from "../i18n";
 import { zipStore } from "../../shared/zip";
 import {
   type Anchor,
@@ -75,7 +76,7 @@ export function mountWatermark(host: HTMLElement): void {
   root = host;
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: "../", "data-nav": "home" }, t("watermark.back")),
+      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("watermark.back")),
       h("h1", null, t("watermark.title")),
       h("p", { class: "lede" }, t("watermark.privacyNote")),
     ),

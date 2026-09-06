@@ -2,6 +2,7 @@
   "meta": {
     "title": "cv.cm — 浏览器本地工具，文件不上传",
     "titleWatermark": "图片水印 — cv.cm",
+    "titleCollage": "图片拼图 — cv.cm",
     "description": "在浏览器里运行的免费工具。给图片加水印，文件不会上传。无账号，无数据库。"
   },
   "brand": "cv.cm",
@@ -33,7 +34,7 @@
       },
       "i18n": {
         "title": "多语言",
-        "body": "简体中文、繁體中文、English、日本語、한국어。"
+        "body": "English、简体中文、繁體中文、日本語、한국어。"
       }
     }
   },
@@ -41,6 +42,10 @@
     "watermark": {
       "name": "图片水印",
       "blurb": "给照片盖文字或 Logo。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。"
+    },
+    "collage": {
+      "name": "图片拼图",
+      "blurb": "把多张照片拼成一张。选布局、间距，本地导出。文件不上传。"
     }
   },
   "watermark": {
@@ -98,6 +103,51 @@
     "errorDecode": "浏览器无法读取这张图片。",
     "errorHuge": "图片过大，导出时可能会缩小。",
     "emptyDownload": "请先添加图片。"
+  },
+  "collage": {
+    "title": "图片拼图",
+    "back": "全部工具",
+    "dropTitle": "把照片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "照片",
+    "filesEmpty": "还没有照片",
+    "remove": "移除",
+    "clear": "清空",
+    "up": "上移",
+    "down": "下移",
+    "layoutTitle": "布局",
+    "lookTitle": "外观",
+    "aspect": "画布",
+    "aspectSquare": "正方形",
+    "aspectStory": "竖版 9:16",
+    "aspectPortrait": "肖像 4:5",
+    "aspectLandscape": "横版 16:9",
+    "fit": "填充",
+    "fitCover": "铺满格子",
+    "fitContain": "完整放入",
+    "background": "背景",
+    "gap": "间距",
+    "radius": "圆角",
+    "exportTitle": "导出",
+    "format": "格式",
+    "quality": "质量",
+    "download": "下载",
+    "working": "正在生成…",
+    "privacyNote": "照片只留在这个标签页。关闭页面即丢弃。",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "emptyDownload": "请先添加照片。",
+    "layout": {
+      "2h": "左右两张",
+      "2v": "上下两张",
+      "2x2": "四宫格",
+      "3h": "横排三张",
+      "3v": "竖排三张",
+      "3x3": "九宫格",
+      "l1r2": "左一右二",
+      "t1b2": "上一两下",
+      "t1b3": "上一下三"
+    }
   },
   "footer": {
     "privacy": "文件在本地处理，不会发送到 cv.cm。"

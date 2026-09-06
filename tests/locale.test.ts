@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { negotiateLocale } from "../src/shared/locale";
+import { LOCALES, negotiateLocale } from "../src/shared/locale";
 import { appHref, parseAppPath } from "../src/shared/path";
+
+describe("locale list", () => {
+  it("puts English first and still maps the browser language", () => {
+    expect(LOCALES[0]).toBe("en");
+    expect(negotiateLocale("zh-CN", null)).toBe("zh-CN");
+    expect(negotiateLocale("en-GB,en;q=0.8", null)).toBe("en");
+  });
+});
 
 describe("negotiateLocale", () => {
   it("prefers the locale cookie", () => {
@@ -34,6 +42,11 @@ describe("parseAppPath", () => {
       kind: "app",
       locale: "en",
       tool: "watermark",
+    });
+    expect(parseAppPath("/zh-CN/collage/")).toEqual({
+      kind: "app",
+      locale: "zh-CN",
+      tool: "collage",
     });
   });
 

@@ -5,23 +5,40 @@ import { appHref } from "../shared/path";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
-    h("section", { class: "hero" },
+    h("section", { class: "hero-band" },
       h("p", { class: "kicker" }, t("home.kicker")),
       h("h1", null, t("home.title")),
       h("p", { class: "lede" }, t("home.lead")),
-      h("a", { class: "btn", href: appHref(locale, "watermark"), "data-nav": "watermark" }, t("home.cta")),
     ),
-    h("section", { class: "grid tools-grid" },
-      h("a", { class: "card tool-card", href: appHref(locale, "watermark"), "data-nav": "watermark" },
-        h("span", { class: "chop", "aria-hidden": "true" }, "印"),
-        h("h2", null, t("tools.watermark.name")),
-        h("p", null, t("tools.watermark.blurb")),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.tools")),
+      ),
+      h("div", { class: "tiles" },
+        tile(locale, "watermark", "pink"),
+        tile(locale, "collage", "sky"),
       ),
     ),
     h("section", { class: "points" },
       point("local"),
       point("nodb"),
       point("i18n"),
+    ),
+  );
+}
+
+function tile(locale: Locale, id: "watermark" | "collage", tone: "pink" | "sky"): HTMLElement {
+  return h("a", {
+    class: "tile",
+    href: appHref(locale, id),
+    "data-nav": id,
+  },
+    h("div", { class: `tile-cover ${tone}`, "aria-hidden": "true" },
+      h("span", { class: "tile-mark" }, id === "watermark" ? "印" : "拼"),
+    ),
+    h("div", { class: "tile-body" },
+      h("h3", null, t(`tools.${id}.name`)),
+      h("p", null, t(`tools.${id}.blurb`)),
     ),
   );
 }

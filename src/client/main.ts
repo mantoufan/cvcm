@@ -1,3 +1,4 @@
+import { unmountCollage, mountCollage } from "./collage/ui";
 import { clear, h } from "./dom";
 import { mountHome } from "./home";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
@@ -47,8 +48,19 @@ function onClick(e: MouseEvent): void {
   render();
 }
 
-function render(): void {
+function unmountTools(): void {
   unmountWatermark();
+  unmountCollage();
+}
+
+function pageTitle(): string {
+  if (tool === "watermark") return t("meta.titleWatermark");
+  if (tool === "collage") return t("meta.titleCollage");
+  return t("meta.title");
+}
+
+function render(): void {
+  unmountTools();
   const parsed = parseAppPath(location.pathname);
   const loc: Locale = parsed.kind === "app" ? parsed.locale : locale();
   if (parsed.kind === "app") {
@@ -60,32 +72,32 @@ function render(): void {
     tool = null;
   }
 
-  const page = tool === "watermark" ? "watermark" : "home";
-  document.title = page === "watermark" ? t("meta.titleWatermark") : t("meta.title");
+  document.title = pageTitle();
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute("content", t("meta.description"));
   const canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) canonical.setAttribute("href", `https://cv.cm${appHref(loc, tool)}`);
 
   clear(app);
-  app.append(shell(loc, page));
+  app.append(shell(loc));
 }
 
-function shell(loc: Locale, page: "home" | "watermark"): HTMLElement {
+function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
-  if (page === "watermark") mountWatermark(main);
+  if (tool === "watermark") mountWatermark(main);
+  else if (tool === "collage") mountCollage(main);
   else mountHome(main, loc);
 
-  return h("div", { class: "wrap" },
+  return h("div", { class: "page" + (tool ? " is-tool" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
-        h("span", { class: "chop mini", "aria-hidden": "true" }, "印"),
+        h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
         t("brand"),
       ),
       h("nav", { class: "nav" },
         h("a", { href: appHref(loc, null), "data-nav": "home" }, t("nav.tools")),
         h("span", { class: "badge" }, t("nav.privacy")),
-        langSwitch(loc, page === "watermark" ? "watermark" : null),
+        langSwitch(loc, tool),
       ),
     ),
     main,

@@ -2,6 +2,7 @@
   "meta": {
     "title": "cv.cm — browser tools, nothing uploaded",
     "titleWatermark": "Image watermark — cv.cm",
+    "titleCollage": "Photo collage — cv.cm",
     "description": "Free tools that run in your browser. Add watermarks to images without uploading files. No account, no database."
   },
   "brand": "cv.cm",
@@ -33,7 +34,7 @@
       },
       "i18n": {
         "title": "Languages",
-        "body": "Simplified Chinese, Traditional Chinese, English, Japanese, and Korean."
+        "body": "English, Simplified Chinese, Traditional Chinese, Japanese, and Korean."
       }
     }
   },
@@ -41,6 +42,10 @@
     "watermark": {
       "name": "Image watermark",
       "blurb": "Stamp text or a logo onto photos. Batch export as PNG, JPEG, or ZIP. Nothing is uploaded."
+    },
+    "collage": {
+      "name": "Photo collage",
+      "blurb": "Combine photos into one picture. Pick a layout, spacing, and export. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -98,6 +103,51 @@
     "errorDecode": "Could not read this image in the browser.",
     "errorHuge": "Image is very large; export may be scaled down.",
     "emptyDownload": "Add an image first."
+  },
+  "collage": {
+    "title": "Photo collage",
+    "back": "All tools",
+    "dropTitle": "Drop photos here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Photos",
+    "filesEmpty": "No photos yet",
+    "remove": "Remove",
+    "clear": "Clear all",
+    "up": "Move up",
+    "down": "Move down",
+    "layoutTitle": "Layout",
+    "lookTitle": "Look",
+    "aspect": "Canvas",
+    "aspectSquare": "Square",
+    "aspectStory": "Story 9:16",
+    "aspectPortrait": "Portrait 4:5",
+    "aspectLandscape": "Landscape 16:9",
+    "fit": "Fit",
+    "fitCover": "Fill cell",
+    "fitContain": "Fit inside",
+    "background": "Background",
+    "gap": "Gap",
+    "radius": "Corners",
+    "exportTitle": "Export",
+    "format": "Format",
+    "quality": "Quality",
+    "download": "Download",
+    "working": "Rendering…",
+    "privacyNote": "Photos stay in this tab. Closing the page discards them.",
+    "errorDecode": "Could not read this image in the browser.",
+    "emptyDownload": "Add a photo first.",
+    "layout": {
+      "2h": "Two across",
+      "2v": "Two stacked",
+      "2x2": "Four squares",
+      "3h": "Three across",
+      "3v": "Three stacked",
+      "3x3": "Nine squares",
+      "l1r2": "One left, two right",
+      "t1b2": "One top, two bottom",
+      "t1b3": "One top, three bottom"
+    }
   },
   "footer": {
     "privacy": "Files are processed locally and are never sent to cv.cm."

@@ -2,6 +2,7 @@
   "meta": {
     "title": "cv.cm — ブラウザ内ツール、ファイルは送信しません",
     "titleWatermark": "画像ウォーターマーク — cv.cm",
+    "titleCollage": "フォトコラージュ — cv.cm",
     "description": "ブラウザで動く無料ツール。画像に透かしを入れてもファイルはアップロードされません。アカウントもデータベースもありません。"
   },
   "brand": "cv.cm",
@@ -33,7 +34,7 @@
       },
       "i18n": {
         "title": "多言語",
-        "body": "简体中文、繁體中文、English、日本語、한국어。"
+        "body": "English、简体中文、繁體中文、日本語、한국어。"
       }
     }
   },
@@ -41,6 +42,10 @@
     "watermark": {
       "name": "画像ウォーターマーク",
       "blurb": "写真に文字やロゴを重ねます。PNG / JPEG / ZIP で一括書き出し。アップロードなし。"
+    },
+    "collage": {
+      "name": "フォトコラージュ",
+      "blurb": "複数の写真を1枚にまとめます。レイアウトと余白は端末内で処理します。"
     }
   },
   "watermark": {
@@ -98,6 +103,51 @@
     "errorDecode": "この画像はブラウザで読めませんでした。",
     "errorHuge": "画像が非常に大きいため、書き出し時に縮小される場合があります。",
     "emptyDownload": "先に画像を追加してください。"
+  },
+  "collage": {
+    "title": "フォトコラージュ",
+    "back": "すべてのツール",
+    "dropTitle": "写真をここにドロップ",
+    "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "写真",
+    "filesEmpty": "まだ写真がありません",
+    "remove": "削除",
+    "clear": "すべて消去",
+    "up": "上へ",
+    "down": "下へ",
+    "layoutTitle": "レイアウト",
+    "lookTitle": "見た目",
+    "aspect": "キャンバス",
+    "aspectSquare": "正方形",
+    "aspectStory": "ストーリー 9:16",
+    "aspectPortrait": "ポートレート 4:5",
+    "aspectLandscape": "横 16:9",
+    "fit": "フィット",
+    "fitCover": "マスを埋める",
+    "fitContain": "全体を入れる",
+    "background": "背景",
+    "gap": "間隔",
+    "radius": "角丸",
+    "exportTitle": "書き出し",
+    "format": "形式",
+    "quality": "品質",
+    "download": "ダウンロード",
+    "working": "生成中…",
+    "privacyNote": "写真はこのタブ内に留まります。ページを閉じると破棄されます。",
+    "errorDecode": "この画像はブラウザで読めませんでした。",
+    "emptyDownload": "先に写真を追加してください。",
+    "layout": {
+      "2h": "左右2枚",
+      "2v": "上下2枚",
+      "2x2": "4マス",
+      "3h": "横3枚",
+      "3v": "縦3枚",
+      "3x3": "9マス",
+      "l1r2": "左1・右2",
+      "t1b2": "上1・下2",
+      "t1b3": "上1・下3"
+    }
   },
   "footer": {
     "privacy": "ファイルは端末内で処理され、cv.cm には送信されません。"

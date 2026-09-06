@@ -6,9 +6,10 @@ cv.cm 是一组在浏览器里运行的工具。图片和水印都在本地画�
 
 ## Tools
 
-- **Image watermark** / 图片水印 — text or logo, batch export, ZIP. [Open](https://cv.cm/zh-CN/watermark/)
+- **Image watermark** / 图片水印 — text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/)
+- **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 
-Languages: 简体中文, 繁體中文, English, 日本語, 한국어.
+Languages: English, 简体中文, 繁體中文, 日本語, 한국어. The list starts with English; the page still follows the browser language.
 
 ## Develop
 

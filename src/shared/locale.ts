@@ -1,4 +1,4 @@
-export const LOCALES = ["zh-CN", "zh-TW", "en", "ja", "ko"] as const;
+export const LOCALES = ["en", "zh-CN", "zh-TW", "ja", "ko"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "cvcm_locale";
