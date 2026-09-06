@@ -1,4 +1,4 @@
-export const LOCALES = ["en", "zh-CN", "zh-TW", "ja", "ko"] as const;
+export const LOCALES = ["en", "zh-CN", "zh-TW", "ja", "ko", "vi", "id", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "cvcm_locale";
@@ -21,6 +21,9 @@ export function mapLanguageTag(tag: string): Locale | null {
   if (lower.startsWith("zh")) return "zh-CN";
   if (lower.startsWith("ja")) return "ja";
   if (lower.startsWith("ko")) return "ko";
+  if (lower.startsWith("vi")) return "vi";
+  if (lower.startsWith("id") || lower === "in") return "id";
+  if (lower.startsWith("es")) return "es";
   if (lower.startsWith("en")) return "en";
   return null;
 }

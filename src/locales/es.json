@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "title": "cv.cm — herramientas en el navegador, nada se sube",
+    "titleWatermark": "Marca de agua — cv.cm",
+    "titleCollage": "Collage de fotos — cv.cm",
+    "description": "Herramientas gratis que se ejecutan en tu navegador. Añade marcas de agua sin subir archivos. Sin cuenta ni base de datos."
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "Herramientas",
+    "privacy": "En el dispositivo"
+  },
+  "lang": {
+    "label": "Idioma",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "vi": "Tiếng Việt",
+    "id": "Bahasa Indonesia",
+    "es": "Español"
+  },
+  "home": {
+    "kicker": "Kit local",
+    "title": "Colección de herramientas en el navegador",
+    "lead": "cv.cm ofrece herramientas que se ejecutan en el navegador, sin registro. Los archivos no se suben a un servidor.",
+    "cta": "Abrir marca de agua",
+    "points": {
+      "local": {
+        "title": "En el dispositivo",
+        "body": "El procesado usa el canvas del navegador. Los archivos no salen de esta pestaña."
+      },
+      "nodb": {
+        "title": "Sin base de datos",
+        "body": "Sin cuentas, carpetas en la nube ni historial. Cerrar la pestaña lo borra todo."
+      },
+      "i18n": {
+        "title": "Idiomas",
+        "body": "English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español."
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "Marca de agua",
+      "blurb": "Pon texto o un logo en fotos. Exporta PNG, JPEG o ZIP. Nada se sube."
+    },
+    "collage": {
+      "name": "Collage",
+      "blurb": "Junta fotos en una sola. Elige diseño, espacio y exporta. Nada se sube."
+    }
+  },
+  "watermark": {
+    "title": "Marca de agua",
+    "back": "Todas las herramientas",
+    "dropTitle": "Suelta imágenes aquí",
+    "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Imágenes",
+    "filesEmpty": "Aún no hay imágenes",
+    "remove": "Quitar",
+    "clear": "Borrar todo",
+    "count": "{n} imágenes",
+    "textTitle": "Texto",
+    "textContent": "Texto de la marca",
+    "textPlaceholder": "© 2026 Tu nombre",
+    "font": "Fuente",
+    "fontSans": "Sans",
+    "fontSerif": "Serif",
+    "fontMono": "Mono",
+    "fontCustom": "Nombre de fuente",
+    "size": "Tamaño",
+    "color": "Color",
+    "opacity": "Opacidad",
+    "rotate": "Rotación",
+    "stroke": "Contorno",
+    "logoTitle": "Logo",
+    "logoChoose": "Elegir logo PNG",
+    "logoClear": "Quitar logo",
+    "logoScale": "Escala",
+    "layoutTitle": "Posición",
+    "tiled": "Repetir en toda la imagen",
+    "gap": "Espacio",
+    "posTl": "Arriba izquierda",
+    "posTc": "Arriba centro",
+    "posTr": "Arriba derecha",
+    "posMl": "Medio izquierda",
+    "posMc": "Centro",
+    "posMr": "Medio derecha",
+    "posBl": "Abajo izquierda",
+    "posBc": "Abajo centro",
+    "posBr": "Abajo derecha",
+    "presetsTitle": "Preajustes",
+    "presetConfidential": "Confidencial",
+    "presetCopyright": "Marca en esquina",
+    "presetCenter": "Centrado suave",
+    "exportTitle": "Exportar",
+    "format": "Formato",
+    "quality": "Calidad",
+    "download": "Descargar",
+    "downloadAll": "Descargar todo en ZIP",
+    "working": "Generando…",
+    "privacyNote": "Las imágenes se quedan en esta pestaña. Exportar quita el EXIF. Cerrar la página las descarta.",
+    "hintMark": "Escribe texto o añade un logo para marcar la imagen.",
+    "errorDecode": "El navegador no pudo leer esta imagen.",
+    "errorHuge": "La imagen es muy grande; al exportar puede reducirse.",
+    "emptyDownload": "Añade una imagen primero."
+  },
+  "collage": {
+    "title": "Collage de fotos",
+    "back": "Todas las herramientas",
+    "dropTitle": "Suelta fotos aquí",
+    "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Fotos",
+    "filesEmpty": "Aún no hay fotos",
+    "remove": "Quitar",
+    "clear": "Borrar todo",
+    "up": "Subir",
+    "down": "Bajar",
+    "layoutTitle": "Diseño",
+    "lookTitle": "Apariencia",
+    "aspect": "Lienzo",
+    "aspectSquare": "Cuadrado",
+    "aspectStory": "Story 9:16",
+    "aspectPortrait": "Retrato 4:5",
+    "aspectLandscape": "Horizontal 16:9",
+    "fit": "Ajuste",
+    "fitCover": "Llenar celda",
+    "fitContain": "Encajar",
+    "background": "Fondo",
+    "gap": "Hueco",
+    "radius": "Esquinas",
+    "exportTitle": "Exportar",
+    "format": "Formato",
+    "quality": "Calidad",
+    "download": "Descargar",
+    "working": "Generando…",
+    "privacyNote": "Las fotos se quedan en esta pestaña. Cerrar la página las descarta.",
+    "errorDecode": "El navegador no pudo leer esta imagen.",
+    "emptyDownload": "Añade una foto primero.",
+    "layout": {
+      "2h": "Dos en fila",
+      "2v": "Dos apiladas",
+      "2x2": "Cuatro cuadrados",
+      "3h": "Tres en fila",
+      "3v": "Tres apiladas",
+      "3x3": "Nueve cuadrados",
+      "l1r2": "Una a la izquierda, dos a la derecha",
+      "t1b2": "Una arriba, dos abajo",
+      "t1b3": "Una arriba, tres abajo"
+    }
+  },
+  "footer": {
+    "privacy": "Los archivos se procesan en local y nunca se envían a cv.cm."
+  }
+}

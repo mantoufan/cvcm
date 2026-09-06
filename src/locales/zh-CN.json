@@ -16,17 +16,20 @@
     "zh-TW": "繁體中文",
     "en": "English",
     "ja": "日本語",
-    "ko": "한국어"
+    "ko": "한국어",
+    "vi": "Tiếng Việt",
+    "id": "Bahasa Indonesia",
+    "es": "Español"
   },
   "home": {
     "kicker": "本地工具集",
-    "title": "文件只留在浏览器里。",
-    "lead": "cv.cm 是一组在你设备上运行的工具。图片不会离开当前标签页，不会上传、不会存档、也不会发到服务器。",
+    "title": "浏览器运行工具集合",
+    "lead": "cv.cm 提供在浏览器上运行的工具，无需注册，文件不会上传到服务器。",
     "cta": "打开图片水印",
     "points": {
       "local": {
         "title": "本地运算",
-        "body": "处理发生在浏览器画布上。Cloudflare Worker 只负责下发静态文件。"
+        "body": "处理发生在浏览器画布上。文件不会离开当前标签页。"
       },
       "nodb": {
         "title": "无数据库",
@@ -34,7 +37,7 @@
       },
       "i18n": {
         "title": "多语言",
-        "body": "English、简体中文、繁體中文、日本語、한국어。"
+        "body": "English、简体中文、繁體中文、日本語、한국어、Tiếng Việt、Bahasa Indonesia、Español。"
       }
     }
   },

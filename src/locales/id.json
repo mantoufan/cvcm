@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "title": "cv.cm — alat di browser, file tidak diunggah",
+    "titleWatermark": "Watermark gambar — cv.cm",
+    "titleCollage": "Kolase foto — cv.cm",
+    "description": "Alat gratis yang berjalan di browser. Tambah watermark tanpa mengunggah file. Tanpa akun, tanpa basis data."
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "Alat",
+    "privacy": "Di perangkat"
+  },
+  "lang": {
+    "label": "Bahasa",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "vi": "Tiếng Việt",
+    "id": "Bahasa Indonesia",
+    "es": "Español"
+  },
+  "home": {
+    "kicker": "Perangkat lokal",
+    "title": "Kumpulan alat yang berjalan di browser",
+    "lead": "cv.cm menyediakan alat yang berjalan di browser, tanpa daftar akun. File tidak diunggah ke server.",
+    "cta": "Buka watermark gambar",
+    "points": {
+      "local": {
+        "title": "Di perangkat",
+        "body": "Pemrosesan memakai canvas browser. File tidak meninggalkan tab ini."
+      },
+      "nodb": {
+        "title": "Tanpa basis data",
+        "body": "Tanpa akun, folder awan, atau riwayat. Menutup tab menghapus semuanya."
+      },
+      "i18n": {
+        "title": "Bahasa",
+        "body": "English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español."
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "Watermark gambar",
+      "blurb": "Cap teks atau logo pada foto. Ekspor PNG, JPEG, atau ZIP. Tidak diunggah."
+    },
+    "collage": {
+      "name": "Kolase foto",
+      "blurb": "Gabungkan foto jadi satu. Pilih tata letak, jarak, lalu ekspor. Tidak diunggah."
+    }
+  },
+  "watermark": {
+    "title": "Watermark gambar",
+    "back": "Semua alat",
+    "dropTitle": "Letakkan gambar di sini",
+    "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Gambar",
+    "filesEmpty": "Belum ada gambar",
+    "remove": "Hapus",
+    "clear": "Hapus semua",
+    "count": "{n} gambar",
+    "textTitle": "Teks",
+    "textContent": "Teks watermark",
+    "textPlaceholder": "© 2026 Nama Anda",
+    "font": "Font",
+    "fontSans": "Sans",
+    "fontSerif": "Serif",
+    "fontMono": "Mono",
+    "fontCustom": "Nama font kustom",
+    "size": "Ukuran",
+    "color": "Warna",
+    "opacity": "Opasitas",
+    "rotate": "Rotasi",
+    "stroke": "Garis tepi",
+    "logoTitle": "Logo",
+    "logoChoose": "Pilih logo PNG",
+    "logoClear": "Hapus logo",
+    "logoScale": "Skala",
+    "layoutTitle": "Posisi",
+    "tiled": "Ulangi di seluruh gambar",
+    "gap": "Jarak",
+    "posTl": "Kiri atas",
+    "posTc": "Tengah atas",
+    "posTr": "Kanan atas",
+    "posMl": "Kiri tengah",
+    "posMc": "Tengah",
+    "posMr": "Kanan tengah",
+    "posBl": "Kiri bawah",
+    "posBc": "Tengah bawah",
+    "posBr": "Kanan bawah",
+    "presetsTitle": "Preset",
+    "presetConfidential": "Rahasia",
+    "presetCopyright": "Tanda sudut",
+    "presetCenter": "Tengah pudar",
+    "exportTitle": "Ekspor",
+    "format": "Format",
+    "quality": "Kualitas",
+    "download": "Unduh",
+    "downloadAll": "Unduh semua sebagai ZIP",
+    "working": "Merender…",
+    "privacyNote": "Gambar tetap di tab ini. Ekspor menghapus EXIF. Menutup halaman membuangnya.",
+    "hintMark": "Ketik teks atau tambah logo untuk cap gambar.",
+    "errorDecode": "Browser tidak bisa membaca gambar ini.",
+    "errorHuge": "Gambar sangat besar; ekspor mungkin diperkecil.",
+    "emptyDownload": "Tambah gambar dulu."
+  },
+  "collage": {
+    "title": "Kolase foto",
+    "back": "Semua alat",
+    "dropTitle": "Letakkan foto di sini",
+    "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Foto",
+    "filesEmpty": "Belum ada foto",
+    "remove": "Hapus",
+    "clear": "Hapus semua",
+    "up": "Naik",
+    "down": "Turun",
+    "layoutTitle": "Tata letak",
+    "lookTitle": "Tampilan",
+    "aspect": "Kanvas",
+    "aspectSquare": "Persegi",
+    "aspectStory": "Cerita 9:16",
+    "aspectPortrait": "Potret 4:5",
+    "aspectLandscape": "Lanskap 16:9",
+    "fit": "Isi",
+    "fitCover": "Isi sel",
+    "fitContain": "Muat di dalam",
+    "background": "Latar",
+    "gap": "Jarak",
+    "radius": "Sudut",
+    "exportTitle": "Ekspor",
+    "format": "Format",
+    "quality": "Kualitas",
+    "download": "Unduh",
+    "working": "Merender…",
+    "privacyNote": "Foto tetap di tab ini. Menutup halaman membuangnya.",
+    "errorDecode": "Browser tidak bisa membaca gambar ini.",
+    "emptyDownload": "Tambah foto dulu.",
+    "layout": {
+      "2h": "Dua mendatar",
+      "2v": "Dua bertumpuk",
+      "2x2": "Empat kotak",
+      "3h": "Tiga mendatar",
+      "3v": "Tiga bertumpuk",
+      "3x3": "Sembilan kotak",
+      "l1r2": "Satu kiri, dua kanan",
+      "t1b2": "Satu atas, dua bawah",
+      "t1b3": "Satu atas, tiga bawah"
+    }
+  },
+  "footer": {
+    "privacy": "File diproses secara lokal dan tidak pernah dikirim ke cv.cm."
+  }
+}

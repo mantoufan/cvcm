@@ -1,6 +1,9 @@
 import en from "../locales/en.json";
+import es from "../locales/es.json";
+import id from "../locales/id.json";
 import ja from "../locales/ja.json";
 import ko from "../locales/ko.json";
+import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import {
@@ -17,6 +20,9 @@ export const MESSAGES: Record<Locale, typeof en> = {
   "zh-TW": zhTW,
   ja,
   ko,
+  vi,
+  id,
+  es,
 };
 
 let current: Locale = DEFAULT_LOCALE;

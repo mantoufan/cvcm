@@ -3,7 +3,7 @@ import { clear, h } from "./dom";
 import { mountHome } from "./home";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
-import { appHref, parseAppPath, type ToolId } from "../shared/path";
+import { TOOLS, appHref, parseAppPath, type ToolId } from "../shared/path";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
 
@@ -95,13 +95,26 @@ function shell(loc: Locale): HTMLElement {
         t("brand"),
       ),
       h("nav", { class: "nav" },
-        h("a", { href: appHref(loc, null), "data-nav": "home" }, t("nav.tools")),
+        toolMap(loc, tool),
         h("span", { class: "badge" }, t("nav.privacy")),
         langSwitch(loc, tool),
       ),
     ),
     main,
     h("footer", { class: "foot" }, t("footer.privacy")),
+  );
+}
+
+function toolMap(loc: Locale, current: ToolId | null): HTMLElement {
+  return h("div", { class: "tool-map", "aria-label": t("nav.tools") },
+    ...TOOLS.map((id) =>
+      h("a", {
+        class: "nav-tool" + (current === id ? " on" : ""),
+        href: appHref(loc, id),
+        "data-nav": id,
+        "aria-current": current === id ? "page" : undefined,
+      }, t(`tools.${id}.name`)),
+    ),
   );
 }
 

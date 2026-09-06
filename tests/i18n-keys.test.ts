@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import en from "../src/locales/en.json";
+import es from "../src/locales/es.json";
+import id from "../src/locales/id.json";
 import ja from "../src/locales/ja.json";
 import ko from "../src/locales/ko.json";
+import vi from "../src/locales/vi.json";
 import zhCN from "../src/locales/zh-CN.json";
 import zhTW from "../src/locales/zh-TW.json";
 
@@ -19,6 +22,9 @@ describe("locale key parity", () => {
     { name: "zh-TW", keys: keys(zhTW).sort() },
     { name: "ja", keys: keys(ja).sort() },
     { name: "ko", keys: keys(ko).sort() },
+    { name: "vi", keys: keys(vi).sort() },
+    { name: "id", keys: keys(id).sort() },
+    { name: "es", keys: keys(es).sort() },
   ];
   const baseline = tables[0].keys;
 

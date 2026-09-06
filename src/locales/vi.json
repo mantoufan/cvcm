@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "title": "cv.cm — công cụ trên trình duyệt, không tải file lên",
+    "titleWatermark": "Đóng dấu ảnh — cv.cm",
+    "titleCollage": "Ghép ảnh — cv.cm",
+    "description": "Công cụ miễn phí chạy trong trình duyệt. Đóng dấu ảnh mà không tải file lên. Không tài khoản, không cơ sở dữ liệu."
+  },
+  "brand": "cv.cm",
+  "nav": {
+    "tools": "Công cụ",
+    "privacy": "Trên máy"
+  },
+  "lang": {
+    "label": "Ngôn ngữ",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "vi": "Tiếng Việt",
+    "id": "Bahasa Indonesia",
+    "es": "Español"
+  },
+  "home": {
+    "kicker": "Bộ công cụ local",
+    "title": "Bộ công cụ chạy trên trình duyệt",
+    "lead": "cv.cm cung cấp công cụ chạy trên trình duyệt, không cần đăng ký, file không được tải lên máy chủ.",
+    "cta": "Mở đóng dấu ảnh",
+    "points": {
+      "local": {
+        "title": "Trên máy",
+        "body": "Xử lý bằng canvas của trình duyệt. File không rời tab hiện tại."
+      },
+      "nodb": {
+        "title": "Không cơ sở dữ liệu",
+        "body": "Không tài khoản, không thư mục mây, không lịch sử. Đóng tab là hết."
+      },
+      "i18n": {
+        "title": "Ngôn ngữ",
+        "body": "English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español."
+      }
+    }
+  },
+  "tools": {
+    "watermark": {
+      "name": "Đóng dấu ảnh",
+      "blurb": "Đóng chữ hoặc logo lên ảnh. Xuất PNG, JPEG hoặc ZIP. Không tải lên."
+    },
+    "collage": {
+      "name": "Ghép ảnh",
+      "blurb": "Ghép nhiều ảnh thành một. Chọn bố cục, khoảng cách rồi xuất. Không tải lên."
+    }
+  },
+  "watermark": {
+    "title": "Đóng dấu ảnh",
+    "back": "Tất cả công cụ",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Ảnh",
+    "filesEmpty": "Chưa có ảnh",
+    "remove": "Xóa",
+    "clear": "Xóa hết",
+    "count": "{n} ảnh",
+    "textTitle": "Chữ",
+    "textContent": "Nội dung đóng dấu",
+    "textPlaceholder": "© 2026 Tên của bạn",
+    "font": "Phông",
+    "fontSans": "Sans",
+    "fontSerif": "Serif",
+    "fontMono": "Mono",
+    "fontCustom": "Tên phông tùy chọn",
+    "size": "Cỡ",
+    "color": "Màu",
+    "opacity": "Độ mờ",
+    "rotate": "Xoay",
+    "stroke": "Viền",
+    "logoTitle": "Logo",
+    "logoChoose": "Chọn logo PNG",
+    "logoClear": "Gỡ logo",
+    "logoScale": "Tỷ lệ",
+    "layoutTitle": "Vị trí",
+    "tiled": "Lặp trên cả ảnh",
+    "gap": "Khoảng cách",
+    "posTl": "Trên trái",
+    "posTc": "Trên giữa",
+    "posTr": "Trên phải",
+    "posMl": "Giữa trái",
+    "posMc": "Giữa",
+    "posMr": "Giữa phải",
+    "posBl": "Dưới trái",
+    "posBc": "Dưới giữa",
+    "posBr": "Dưới phải",
+    "presetsTitle": "Mẫu",
+    "presetConfidential": "Bí mật",
+    "presetCopyright": "Góc trang",
+    "presetCenter": "Giữa nhạt",
+    "exportTitle": "Xuất",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "download": "Tải xuống",
+    "downloadAll": "Tải tất cả dạng ZIP",
+    "working": "Đang tạo…",
+    "privacyNote": "Ảnh ở lại tab này. Xuất sẽ bỏ EXIF. Đóng trang là xóa.",
+    "hintMark": "Gõ chữ hoặc thêm logo để đóng lên ảnh.",
+    "errorDecode": "Trình duyệt không đọc được ảnh này.",
+    "errorHuge": "Ảnh rất lớn; khi xuất có thể bị thu nhỏ.",
+    "emptyDownload": "Hãy thêm ảnh trước."
+  },
+  "collage": {
+    "title": "Ghép ảnh",
+    "back": "Tất cả công cụ",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Ảnh",
+    "filesEmpty": "Chưa có ảnh",
+    "remove": "Xóa",
+    "clear": "Xóa hết",
+    "up": "Lên",
+    "down": "Xuống",
+    "layoutTitle": "Bố cục",
+    "lookTitle": "Giao diện",
+    "aspect": "Khung",
+    "aspectSquare": "Vuông",
+    "aspectStory": "Story 9:16",
+    "aspectPortrait": "Dọc 4:5",
+    "aspectLandscape": "Ngang 16:9",
+    "fit": "Vừa",
+    "fitCover": "Lấp ô",
+    "fitContain": "Vừa trong ô",
+    "background": "Nền",
+    "gap": "Khe",
+    "radius": "Bo góc",
+    "exportTitle": "Xuất",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "download": "Tải xuống",
+    "working": "Đang tạo…",
+    "privacyNote": "Ảnh ở lại tab này. Đóng trang là xóa.",
+    "errorDecode": "Trình duyệt không đọc được ảnh này.",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "layout": {
+      "2h": "Hai ngang",
+      "2v": "Hai dọc",
+      "2x2": "Bốn ô",
+      "3h": "Ba ngang",
+      "3v": "Ba dọc",
+      "3x3": "Chín ô",
+      "l1r2": "Trái 1, phải 2",
+      "t1b2": "Trên 1, dưới 2",
+      "t1b3": "Trên 1, dưới 3"
+    }
+  },
+  "footer": {
+    "privacy": "File được xử lý trên máy và không bao giờ gửi tới cv.cm."
+  }
+}

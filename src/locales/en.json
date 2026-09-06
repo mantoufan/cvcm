@@ -16,17 +16,20 @@
     "zh-TW": "繁體中文",
     "en": "English",
     "ja": "日本語",
-    "ko": "한국어"
+    "ko": "한국어",
+    "vi": "Tiếng Việt",
+    "id": "Bahasa Indonesia",
+    "es": "Español"
   },
   "home": {
     "kicker": "Local toolkit",
-    "title": "Your files stay in the browser.",
-    "lead": "cv.cm is a set of tools that run on your device. Images never leave this tab — they are not uploaded, stored, or sent to a server.",
+    "title": "A collection of in-browser tools",
+    "lead": "cv.cm offers tools that run in your browser. No sign-up. Files are not uploaded to a server.",
     "cta": "Open image watermark",
     "points": {
       "local": {
         "title": "On-device",
-        "body": "Processing uses your browser canvas. The Cloudflare Worker only serves static files."
+        "body": "Processing uses your browser canvas. Files never leave this tab."
       },
       "nodb": {
         "title": "No database",
@@ -34,7 +37,7 @@
       },
       "i18n": {
         "title": "Languages",
-        "body": "English, Simplified Chinese, Traditional Chinese, Japanese, and Korean."
+        "body": "English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español."
       }
     }
   },

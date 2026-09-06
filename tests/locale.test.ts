@@ -33,6 +33,12 @@ describe("negotiateLocale", () => {
   it("falls back to English", () => {
     expect(negotiateLocale("fr-FR,de;q=0.8", null)).toBe("en");
   });
+
+  it("maps Vietnamese, Indonesian, and Spanish", () => {
+    expect(negotiateLocale("vi-VN,vi;q=0.9", null)).toBe("vi");
+    expect(negotiateLocale("id-ID", null)).toBe("id");
+    expect(negotiateLocale("es-MX,es;q=0.8", null)).toBe("es");
+  });
 });
 
 describe("parseAppPath", () => {
