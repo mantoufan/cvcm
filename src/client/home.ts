@@ -1,21 +1,8 @@
+import { COVER } from "./covers";
 import { h } from "./dom";
 import { t } from "./i18n";
 import type { Locale } from "../shared/locale";
 import { CATEGORIES, appHref, type ToolId } from "../shared/path";
-
-const MARK: Record<ToolId, string> = {
-  watermark: "印",
-  collage: "拼",
-  convert: "转",
-  "image-pdf": "PDF",
-};
-
-const TONE: Record<ToolId, "pink" | "sky"> = {
-  watermark: "pink",
-  collage: "sky",
-  convert: "pink",
-  "image-pdf": "sky",
-};
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
@@ -48,8 +35,13 @@ function tile(locale: Locale, id: ToolId): HTMLElement {
     href: appHref(locale, id),
     "data-nav": id,
   },
-    h("div", { class: `tile-cover ${TONE[id]}`, "aria-hidden": "true" },
-      h("span", { class: "tile-mark" }, MARK[id]),
+    h("div", { class: "tile-cover" },
+      h("img", {
+        src: COVER[id],
+        alt: t(`tools.${id}.name`),
+        width: "640",
+        height: "360",
+      }),
     ),
     h("div", { class: "tile-body" },
       h("h3", null, t(`tools.${id}.name`)),

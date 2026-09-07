@@ -3,6 +3,7 @@ import { mountConvert, unmountConvert } from "./convert/ui";
 import { clear, h } from "./dom";
 import { mountHome } from "./home";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
+import { COVER } from "./covers";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
@@ -24,7 +25,6 @@ function requireApp(): HTMLElement {
 const app = requireApp();
 
 let tool: ToolId | null = null;
-let openMenu: CategoryId | null = null;
 
 boot();
 window.addEventListener("popstate", () => render());
@@ -55,16 +55,17 @@ function onClick(e: MouseEvent): void {
     const parsed = parseAppPath(a.pathname);
     if (parsed.kind !== "static") {
       e.preventDefault();
-      openMenu = null;
+      closeMenus();
       history.pushState(null, "", a.href);
       render();
       return;
     }
   }
-  if (openMenu && !target?.closest(".menu")) {
-    openMenu = null;
-    render();
-  }
+  if (!target?.closest(".menu")) closeMenus();
+}
+
+function closeMenus(): void {
+  document.querySelectorAll(".menu.open").forEach((el) => el.classList.remove("open"));
 }
 
 function unmountTools(): void {
@@ -139,35 +140,36 @@ function shell(loc: Locale): HTMLElement {
 function categoryMenu(loc: Locale, cat: CategoryId, current: ToolId | null): HTMLElement {
   const def = CATEGORIES.find((c) => c.id === cat)!;
   const active = current ? categoryOf(current) === cat : false;
-  const open = openMenu === cat;
-  return h("div", { class: "menu" + (open ? " open" : "") + (active ? " current" : "") },
+  return h("div", { class: "menu" + (active ? " current" : "") },
     h("button", {
       type: "button",
       class: "menu-btn" + (active ? " on" : ""),
-      "aria-expanded": String(open),
       "aria-haspopup": "true",
       onClick: (e: Event) => {
         e.stopPropagation();
-        openMenu = openMenu === cat ? null : cat;
-        render();
+        const menu = (e.currentTarget as HTMLElement).closest(".menu");
+        const willOpen = !menu?.classList.contains("open");
+        closeMenus();
+        if (willOpen) menu?.classList.add("open");
       },
     }, t(`nav.${cat}`)),
-    open
-      ? h("div", { class: "menu-panel", role: "menu" },
-          ...def.tools.map((id) =>
-            h("a", {
-              class: "menu-item" + (current === id ? " on" : ""),
-              href: appHref(loc, id),
-              role: "menuitem",
-              "data-nav": id,
-              "aria-current": current === id ? "page" : undefined,
-            },
-              h("strong", null, t(`tools.${id}.name`)),
-              h("span", null, t(`tools.${id}.blurb`)),
-            ),
+    h("div", { class: "menu-panel", role: "menu" },
+      ...def.tools.map((id) =>
+        h("a", {
+          class: "menu-item" + (current === id ? " on" : ""),
+          href: appHref(loc, id),
+          role: "menuitem",
+          "data-nav": id,
+          "aria-current": current === id ? "page" : undefined,
+        },
+          h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40" }),
+          h("div", { class: "menu-copy" },
+            h("strong", null, t(`tools.${id}.name`)),
+            h("span", null, t(`tools.${id}.blurb`)),
           ),
-        )
-      : null,
+        ),
+      ),
+    ),
   );
 }
 
