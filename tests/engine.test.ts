@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxAtAnchor, boxAtFree, fitExportSize, tileStep } from "../src/client/watermark/engine";
+import { boxAtAnchor, boxAtFree, fitExportSize, tilePitch } from "../src/client/watermark/engine";
 
 describe("boxAtAnchor", () => {
   it("places a box on the nine-cell grid", () => {
@@ -16,14 +16,16 @@ describe("boxAtFree", () => {
   });
 });
 
-describe("tileStep", () => {
-  it("packs denser at negative spacing than at the old minimum", () => {
-    const mark = 60;
-    const canvas = 1000;
-    const dense = tileStep(mark, mark, canvas, -0.12);
-    const oldMin = tileStep(mark, mark, canvas, 0.04);
-    expect(dense).toBeGreaterThan(0);
-    expect(dense).toBeLessThan(oldMin);
+describe("tilePitch", () => {
+  it("keeps marks from overlapping at the minimum spacing", () => {
+    const pitch = tilePitch(120, 24, 0);
+    expect(pitch.x).toBeGreaterThanOrEqual(120);
+    expect(pitch.y).toBeGreaterThanOrEqual(24);
+  });
+
+  it("is tighter than the old canvas-sized extra gap", () => {
+    const pitch = tilePitch(120, 24, 0.08);
+    expect(pitch.x).toBeLessThan(120 + 1000 * 0.08);
   });
 });
 

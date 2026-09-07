@@ -118,15 +118,17 @@ function minDim(w: number, h: number): number {
   return Math.min(w, h);
 }
 
-/** Spacing between tiled marks. Ratio 0 ≈ touching; negative packs denser. */
-export function tileStep(
+/** Grid pitch for tiled marks. Ratio 0 is tight but not overlapping; higher is looser. */
+export function tilePitch(
   boxW: number,
   boxH: number,
-  canvasMin: number,
   ratio: number,
-): number {
-  const mark = Math.max(boxW, boxH, 8);
-  return Math.max(mark * 0.28, mark + canvasMin * ratio);
+): { x: number; y: number } {
+  const t = Math.max(0, ratio);
+  return {
+    x: Math.max(8, boxW * (1.08 + t * 1.6)),
+    y: Math.max(8, boxH * (1.2 + t * 1.6)),
+  };
 }
 
 function drawText(
@@ -200,12 +202,12 @@ function stamp(
   const rad = (rotate * Math.PI) / 180;
 
   if (spec.tiled) {
-    const gap = tileStep(boxW, boxH, minDim(w, h), spec.tileGapRatio);
+    const pitch = tilePitch(boxW, boxH, spec.tileGapRatio);
     const diag = Math.hypot(w, h);
     ctx.translate(w / 2, h / 2);
     ctx.rotate(rad);
-    for (let y = -diag; y <= diag; y += gap) {
-      for (let x = -diag; x <= diag; x += gap) {
+    for (let y = -diag; y <= diag; y += pitch.y) {
+      for (let x = -diag; x <= diag; x += pitch.x) {
         ctx.save();
         ctx.translate(x, y);
         paint();
