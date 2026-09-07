@@ -11,5 +11,12 @@
     "run_worker_first": true
   },
   "workers_dev": true,
-  "preview_urls": true
+  "preview_urls": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cvcm",
+      "database_id": "1a809cf5-bb42-4f8d-b2c6-6cd7430226c5"
+    }
+  ]
 }

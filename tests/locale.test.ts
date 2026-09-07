@@ -64,6 +64,11 @@ describe("parseAppPath", () => {
       locale: "es",
       tool: "image-pdf",
     });
+    expect(parseAppPath("/zh-CN/clip/")).toEqual({
+      kind: "app",
+      locale: "zh-CN",
+      tool: "clip",
+    });
   });
 
   it("treats missing locale as bare", () => {
@@ -79,5 +84,6 @@ describe("parseAppPath", () => {
   it("builds canonical hrefs", () => {
     expect(appHref("ko", null)).toBe("/ko/");
     expect(appHref("ja", "watermark")).toBe("/ja/watermark/");
+    expect(appHref("en", "clip")).toBe("/en/clip/");
   });
 });

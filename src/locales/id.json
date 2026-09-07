@@ -1,9 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — alat di browser, file tidak diunggah",
+    "title": "cv.cm — papan klip awan dan alat browser",
+    "titleClip": "Papan klip awan — cv.cm",
+    "descClip": "Tempel teks, dapatkan tautan. Tanpa akun. Hilang setelah 10 kali dilihat atau satu hari.",
     "titleWatermark": "Watermark gambar — cv.cm",
     "titleCollage": "Kolase foto — cv.cm",
-    "description": "Alat di browser: watermark, kolase, PNG→JPG, gambar→PDF. Tanpa daftar, tanpa unggah.",
+    "description": "Papan klip awan dan alat browser. Catatan hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak diunggah.",
     "titleConvert": "Ubah PNG ke JPG, WebP — cv.cm",
     "descConvert": "Ubah PNG↔JPG↔WebP di browser. Batch dan ZIP. Tanpa unggah.",
     "titleImagePdf": "Gambar ke PDF — cv.cm",
@@ -13,6 +15,7 @@
   "nav": {
     "tools": "Alat",
     "privacy": "Di perangkat",
+    "share": "Bagikan",
     "image": "Gambar",
     "convert": "Konversi"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "Perangkat lokal",
     "title": "Kumpulan alat yang berjalan di browser",
-    "lead": "cv.cm menyediakan alat yang berjalan di browser, tanpa daftar akun. File tidak diunggah ke server.",
+    "lead": "Bagikan catatan singkat, atau jalankan alat gambar di browser. Tanpa daftar akun.",
     "cta": "Buka watermark gambar",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "Pemrosesan memakai canvas browser. File tidak meninggalkan tab ini."
       },
       "nodb": {
-        "title": "Tanpa basis data",
-        "body": "Tanpa akun, folder awan, atau riwayat. Menutup tab menghapus semuanya."
+        "title": "Tanpa akun",
+        "body": "Catatan papan klip hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak meninggalkan tab ini."
       },
       "i18n": {
         "title": "Bahasa",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "Papan klip awan",
+      "blurb": "Tempel teks, salin tautan. Dihapus setelah 10 kali dilihat atau satu hari. Tanpa akun."
+    },
     "watermark": {
       "name": "Watermark gambar",
       "blurb": "Cap teks atau logo pada foto. Ekspor PNG, JPEG, atau ZIP. Tidak diunggah."
@@ -168,8 +175,38 @@
       "t1b3": "Satu atas, tiga bawah"
     }
   },
+  "clip": {
+    "title": "Papan klip awan",
+    "back": "Semua alat",
+    "privacyNote": "Catatan disimpan di Cloudflare D1 dan dihapus setelah 10 kali dilihat atau 24 jam. Tanpa akun.",
+    "bodyLabel": "Teks",
+    "placeholder": "Tempel atau ketik teks yang ingin dibagikan…",
+    "submit": "Buat tautan",
+    "paste": "Tempel",
+    "copyLink": "Salin tautan",
+    "copyText": "Salin teks",
+    "copied": "Tersalin",
+    "working": "Menyimpan…",
+    "new": "Catatan baru",
+    "created": "Tautan siap",
+    "viewsLeft": "Sisa {n} kali dilihat",
+    "lastView": "Tampilan terakhir — catatan ini sekarang dihapus.",
+    "expiresH": "Kedaluarsa dalam {h} jam {m} mnt",
+    "expiresM": "Kedaluarsa dalam {m} mnt",
+    "expired": "Catatan ini sudah hilang. Sudah dibuka 10 kali atau lebih dari satu hari.",
+    "empty": "Masukkan teks dulu.",
+    "tooLarge": "Teks lebih dari 32 KB.",
+    "rate": "Terlalu banyak catatan dari jaringan ini. Coba lagi dalam satu jam.",
+    "unavailable": "Papan klip sedang tidak tersedia.",
+    "gone": "Catatan ini sudah hilang.",
+    "rulesTitle": "Cara kerja",
+    "ruleViews": "Dihapus setelah 10 kali dilihat",
+    "ruleDay": "Dihapus setelah 1 hari",
+    "ruleLogin": "Tidak perlu akun",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "File diproses secara lokal dan tidak pernah dikirim ke cv.cm."
+    "privacy": "Alat gambar tetap di tab ini. Catatan papan klip disimpan sebentar di cv.cm, lalu dihapus."
   },
   "convert": {
     "title": "Ubah PNG, JPG, WebP",

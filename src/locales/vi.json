@@ -1,9 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — công cụ trên trình duyệt, không tải file lên",
+    "title": "cv.cm — clipboard đám mây và công cụ trình duyệt",
+    "titleClip": "Clipboard đám mây — cv.cm",
+    "descClip": "Dán chữ, nhận liên kết. Không cần tài khoản. Xóa sau 10 lần xem hoặc một ngày.",
     "titleWatermark": "Đóng dấu ảnh — cv.cm",
     "titleCollage": "Ghép ảnh — cv.cm",
-    "description": "Công cụ trên trình duyệt: đóng dấu, ghép ảnh, PNG→JPG, ảnh→PDF. Không đăng ký, không tải lên.",
+    "description": "Clipboard đám mây và công cụ trình duyệt. Ghi chú hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không tải file lên.",
     "titleConvert": "Đổi PNG sang JPG, WebP — cv.cm",
     "descConvert": "Đổi PNG↔JPG↔WebP trong trình duyệt. Hàng loạt và ZIP. Không tải lên.",
     "titleImagePdf": "Ảnh sang PDF — cv.cm",
@@ -13,6 +15,7 @@
   "nav": {
     "tools": "Công cụ",
     "privacy": "Trên máy",
+    "share": "Chia sẻ",
     "image": "Ảnh",
     "convert": "Đổi định dạng"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "Bộ công cụ local",
     "title": "Bộ công cụ chạy trên trình duyệt",
-    "lead": "cv.cm cung cấp công cụ chạy trên trình duyệt, không cần đăng ký, file không được tải lên máy chủ.",
+    "lead": "Chia sẻ ghi chú ngắn hạn, hoặc dùng công cụ ảnh trên trình duyệt. Không cần đăng ký.",
     "cta": "Mở đóng dấu ảnh",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "Xử lý bằng canvas của trình duyệt. File không rời tab hiện tại."
       },
       "nodb": {
-        "title": "Không cơ sở dữ liệu",
-        "body": "Không tài khoản, không thư mục mây, không lịch sử. Đóng tab là hết."
+        "title": "Không tài khoản",
+        "body": "Ghi chú clipboard hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không rời tab này."
       },
       "i18n": {
         "title": "Ngôn ngữ",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "Clipboard đám mây",
+      "blurb": "Dán chữ, copy liên kết. Xóa sau 10 lần xem hoặc một ngày. Không cần tài khoản."
+    },
     "watermark": {
       "name": "Đóng dấu ảnh",
       "blurb": "Đóng chữ hoặc logo lên ảnh. Xuất PNG, JPEG hoặc ZIP. Không tải lên."
@@ -168,8 +175,38 @@
       "t1b3": "Trên 1, dưới 3"
     }
   },
+  "clip": {
+    "title": "Clipboard đám mây",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ghi chú nằm trên Cloudflare D1 và bị xóa sau 10 lần xem hoặc 24 giờ. Không cần tài khoản.",
+    "bodyLabel": "Văn bản",
+    "placeholder": "Dán hoặc nhập văn bản muốn chia sẻ…",
+    "submit": "Tạo liên kết",
+    "paste": "Dán",
+    "copyLink": "Sao chép liên kết",
+    "copyText": "Sao chép văn bản",
+    "copied": "Đã sao chép",
+    "working": "Đang lưu…",
+    "new": "Ghi chú mới",
+    "created": "Liên kết đã sẵn sàng",
+    "viewsLeft": "Còn {n} lần xem",
+    "lastView": "Lần xem cuối — ghi chú này đã bị xóa.",
+    "expiresH": "Hết hạn sau {h} giờ {m} phút",
+    "expiresM": "Hết hạn sau {m} phút",
+    "expired": "Ghi chú này đã mất. Đã mở 10 lần hoặc quá một ngày.",
+    "empty": "Hãy nhập văn bản trước.",
+    "tooLarge": "Văn bản vượt quá 32 KB.",
+    "rate": "Quá nhiều ghi chú từ mạng này. Thử lại sau một giờ.",
+    "unavailable": "Clipboard tạm thời không dùng được.",
+    "gone": "Ghi chú này đã mất.",
+    "rulesTitle": "Cách hoạt động",
+    "ruleViews": "Xóa sau 10 lần xem",
+    "ruleDay": "Xóa sau 1 ngày",
+    "ruleLogin": "Không cần tài khoản",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "File được xử lý trên máy và không bao giờ gửi tới cv.cm."
+    "privacy": "Công cụ ảnh chạy trong tab này. Ghi chú clipboard được lưu ngắn trên cv.cm rồi xóa."
   },
   "convert": {
     "title": "Đổi PNG, JPG, WebP",

@@ -1,9 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — herramientas en el navegador, nada se sube",
+    "title": "cv.cm — portapapeles en la nube y herramientas del navegador",
+    "titleClip": "Portapapeles en la nube — cv.cm",
+    "descClip": "Pega texto y obtén un enlace. Sin cuenta. Se borra a las 10 vistas o al cabo de un día.",
     "titleWatermark": "Marca de agua — cv.cm",
     "titleCollage": "Collage de fotos — cv.cm",
-    "description": "Herramientas en el navegador: marca de agua, collage, PNG a JPG e imágenes a PDF. Sin registro ni subidas.",
+    "description": "Portapapeles en la nube y herramientas en el navegador. Las notas caducan a las 10 vistas o en un día. Las herramientas de imagen no suben archivos.",
     "titleConvert": "Convertir PNG a JPG y WebP — cv.cm",
     "descConvert": "Convierte PNG↔JPG↔WebP en el navegador. Lote y ZIP. Sin subir archivos.",
     "titleImagePdf": "Imágenes a PDF — cv.cm",
@@ -13,6 +15,7 @@
   "nav": {
     "tools": "Herramientas",
     "privacy": "En el dispositivo",
+    "share": "Compartir",
     "image": "Imágenes",
     "convert": "Convertir"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "Kit local",
     "title": "Colección de herramientas en el navegador",
-    "lead": "cv.cm ofrece herramientas que se ejecutan en el navegador, sin registro. Los archivos no se suben a un servidor.",
+    "lead": "Comparte una nota breve o usa las herramientas de imagen en el navegador. Sin registro.",
     "cta": "Abrir marca de agua",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "El procesado usa el canvas del navegador. Los archivos no salen de esta pestaña."
       },
       "nodb": {
-        "title": "Sin base de datos",
-        "body": "Sin cuentas, carpetas en la nube ni historial. Cerrar la pestaña lo borra todo."
+        "title": "Sin cuenta",
+        "body": "Las notas del portapapeles caducan a las 10 vistas o en un día. Las herramientas de imagen no salen de esta pestaña."
       },
       "i18n": {
         "title": "Idiomas",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "Portapapeles en la nube",
+      "blurb": "Pega texto y copia un enlace. Se borra a las 10 vistas o en un día. Sin cuenta."
+    },
     "watermark": {
       "name": "Marca de agua",
       "blurb": "Pon texto o un logo en fotos. Exporta PNG, JPEG o ZIP. Nada se sube."
@@ -168,8 +175,38 @@
       "t1b3": "Una arriba, tres abajo"
     }
   },
+  "clip": {
+    "title": "Portapapeles en la nube",
+    "back": "Todas las herramientas",
+    "privacyNote": "Las notas están en Cloudflare D1 y se borran a las 10 vistas o a las 24 horas. Sin cuenta.",
+    "bodyLabel": "Texto",
+    "placeholder": "Pega o escribe el texto a compartir…",
+    "submit": "Crear enlace",
+    "paste": "Pegar",
+    "copyLink": "Copiar enlace",
+    "copyText": "Copiar texto",
+    "copied": "Copiado",
+    "working": "Guardando…",
+    "new": "Nueva nota",
+    "created": "Enlace listo",
+    "viewsLeft": "Quedan {n} vistas",
+    "lastView": "Última vista: esta nota ya está borrada.",
+    "expiresH": "Caduca en {h} h {m} min",
+    "expiresM": "Caduca en {m} min",
+    "expired": "Esta nota ya no existe. Se abrió 10 veces o tiene más de un día.",
+    "empty": "Escribe texto primero.",
+    "tooLarge": "El texto supera 32 KB.",
+    "rate": "Demasiadas notas desde esta red. Prueba en una hora.",
+    "unavailable": "El portapapeles no está disponible ahora.",
+    "gone": "Esta nota ya no existe.",
+    "rulesTitle": "Cómo funciona",
+    "ruleViews": "Se borra a las 10 vistas",
+    "ruleDay": "Se borra al cabo de 1 día",
+    "ruleLogin": "No hace falta cuenta",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "Los archivos se procesan en local y nunca se envían a cv.cm."
+    "privacy": "Las herramientas de imagen se quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y luego se borran."
   },
   "convert": {
     "title": "Convertir PNG, JPG y WebP",

@@ -1,33 +1,38 @@
 # cv.cm
 
-Browser-local toolkit. Cloudflare Worker (deployed as Pages advanced mode `_worker.js`). No database.
+Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. User files never leave the browser. Do not add upload APIs, analytics beacons, or third-party `connect-src` hosts.
-2. The Worker must reject `POST` / `PUT` / `PATCH` / `DELETE` with 405. It only serves static files, locale redirects, and security headers.
-3. No D1, KV, R2, or other storage for user content.
-4. New tools process data with Web APIs in the page (canvas, WebCodecs, etc.). Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
+1. Image tools (watermark, collage, convert, image-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or third-party `connect-src` hosts.
+2. The only storage for user content is the D1 database `cvcm` (binding `DB`), table `clips`, used by the cloud clipboard tool. No KV, R2, or other stores for user content.
+3. The Worker serves static files, locale redirects, security headers, and `/api/clip`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
+4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Max 32 KB. No listing endpoint.
+5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
 
 ## Layout
 
 - `src/worker.ts` — edge Worker
+- `src/clip-api.ts` / `src/clip-store.ts` — clipboard API + D1
+- `migrations/` — D1 schema
 - `src/client/` — SPA
+- `src/client/clip/` — cloud clipboard
 - `src/client/watermark/` — image watermark
 - `src/client/collage/` — photo collage
 - `src/client/convert/` — PNG / JPG / WebP
 - `src/client/image-pdf/` — images to PDF
-- `src/shared/path.ts` — `CATEGORIES` (image, convert) and `TOOLS`
+- `src/shared/path.ts` — `CATEGORIES` (share, image, convert) and `TOOLS`
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 
 ## Deploy
 
-The Cloudflare API token in use has **Pages + DNS**, not Workers Scripts. Ship with:
+The Cloudflare API token in use has **Pages + DNS + D1**. Ship with:
 
 ```
 npm run build
+npx wrangler d1 migrations apply cvcm --remote
 npx wrangler pages deploy dist --project-name cvcm
 ```
 
-`dist/_worker.js` is the Worker. Domain: `cv.cm`.
+`dist/_worker.js` is the Worker. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.

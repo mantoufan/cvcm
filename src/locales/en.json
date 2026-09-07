@@ -1,18 +1,21 @@
 {
   "meta": {
-    "title": "cv.cm — browser tools, nothing uploaded",
+    "title": "cv.cm — cloud clipboard and browser tools",
+    "titleClip": "Cloud clipboard — cv.cm",
+    "descClip": "Paste text and share a link. No account. Notes vanish after 10 views or one day.",
     "titleWatermark": "Image watermark — cv.cm",
     "titleCollage": "Photo collage — cv.cm",
     "titleConvert": "PNG to JPG, WebP converter in your browser — cv.cm",
     "descConvert": "Convert PNG, JPG, and WebP in the browser. No upload, no account. Batch export or ZIP.",
     "titleImagePdf": "Convert images to PDF in your browser — cv.cm",
     "descImagePdf": "Turn JPG, PNG, or WebP photos into a PDF on your device. Nothing is uploaded.",
-    "description": "Free in-browser tools: image watermark, collage, PNG to JPG, and images to PDF. Files never leave your device."
+    "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Tools",
     "privacy": "On-device",
+    "share": "Share",
     "image": "Images",
     "convert": "Convert"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "Local toolkit",
     "title": "A collection of in-browser tools",
-    "lead": "cv.cm offers tools that run in your browser. No sign-up. Files are not uploaded to a server.",
+    "lead": "Share a short-lived note, or run image tools in the browser. No sign-up.",
     "cta": "Open image watermark",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "Processing uses your browser canvas. Files never leave this tab."
       },
       "nodb": {
-        "title": "No database",
-        "body": "No accounts, no cloud folders, no file history. Closing the tab discards everything."
+        "title": "No account",
+        "body": "Clipboard notes expire after 10 views or one day. Image tools never leave this tab."
       },
       "i18n": {
         "title": "Languages",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "Cloud clipboard",
+      "blurb": "Paste text, copy a link. Deleted after 10 views or one day. No account."
+    },
     "watermark": {
       "name": "Image watermark",
       "blurb": "Stamp text or a logo onto photos. Batch export as PNG, JPEG, or ZIP. Nothing is uploaded."
@@ -211,7 +218,37 @@
     "errorDecode": "Could not read this image in the browser.",
     "emptyDownload": "Add an image first."
   },
+  "clip": {
+    "title": "Cloud clipboard",
+    "back": "All tools",
+    "privacyNote": "Notes sit in Cloudflare D1 and are deleted after 10 views or 24 hours. No account.",
+    "bodyLabel": "Text",
+    "placeholder": "Paste or type the text to share…",
+    "submit": "Create link",
+    "paste": "Paste",
+    "copyLink": "Copy link",
+    "copyText": "Copy text",
+    "copied": "Copied",
+    "working": "Saving…",
+    "new": "New note",
+    "created": "Link ready",
+    "viewsLeft": "{n} views left",
+    "lastView": "Last view — this note is now deleted.",
+    "expiresH": "Expires in {h} h {m} min",
+    "expiresM": "Expires in {m} min",
+    "expired": "This note is gone. It was opened 10 times or is older than a day.",
+    "empty": "Enter some text first.",
+    "tooLarge": "Text is over 32 KB.",
+    "rate": "Too many notes from this network. Try again in an hour.",
+    "unavailable": "Clipboard is temporarily unavailable.",
+    "gone": "This note is gone.",
+    "rulesTitle": "How it works",
+    "ruleViews": "Deleted after 10 views",
+    "ruleDay": "Deleted after 1 day",
+    "ruleLogin": "No account needed",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "Files are processed locally and are never sent to cv.cm."
+    "privacy": "Image tools stay in this tab. Clipboard notes are stored briefly on cv.cm, then deleted."
   }
 }

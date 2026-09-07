@@ -1,3 +1,4 @@
+import { mountClip, unmountClip } from "./clip/ui";
 import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
 import { clear, h } from "./dom";
@@ -25,6 +26,7 @@ function requireApp(): HTMLElement {
 const app = requireApp();
 
 let tool: ToolId | null = null;
+let clipId: string | null = null;
 
 boot();
 window.addEventListener("popstate", () => render());
@@ -36,14 +38,22 @@ function boot(): void {
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     tool = parsed.tool;
-    const canonical = appHref(parsed.locale, parsed.tool);
+    clipId = parsed.clipId ?? null;
+    const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId);
     if (location.pathname !== canonical) history.replaceState(null, "", canonical);
+  } else if (parsed.kind === "clip") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    tool = "clip";
+    clipId = parsed.id;
+    history.replaceState(null, "", appHref(loc, "clip", parsed.id));
   } else {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
     setLocale(loc);
     tool = nextTool;
-    history.replaceState(null, "", appHref(loc, nextTool));
+    clipId = parsed.kind === "bare" ? parsed.clipId ?? null : null;
+    history.replaceState(null, "", appHref(loc, nextTool, clipId));
   }
   render();
 }
@@ -73,9 +83,11 @@ function unmountTools(): void {
   unmountCollage();
   unmountConvert();
   unmountImagePdf();
+  unmountClip();
 }
 
 function pageTitle(): string {
+  if (tool === "clip") return t("meta.titleClip");
   if (tool === "watermark") return t("meta.titleWatermark");
   if (tool === "collage") return t("meta.titleCollage");
   if (tool === "convert") return t("meta.titleConvert");
@@ -84,6 +96,7 @@ function pageTitle(): string {
 }
 
 function pageDescription(): string {
+  if (tool === "clip") return t("meta.descClip");
   if (tool === "convert") return t("meta.descConvert");
   if (tool === "image-pdf") return t("meta.descImagePdf");
   if (tool === "watermark" || tool === "collage") return t(`tools.${tool}.blurb`);
@@ -97,17 +110,23 @@ function render(): void {
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     tool = parsed.tool;
+    clipId = parsed.clipId ?? null;
+  } else if (parsed.kind === "clip") {
+    tool = "clip";
+    clipId = parsed.id;
   } else if (parsed.kind === "bare") {
     tool = parsed.tool;
+    clipId = parsed.clipId ?? null;
   } else {
     tool = null;
+    clipId = null;
   }
 
   document.title = pageTitle();
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute("content", pageDescription());
   const canonical = document.querySelector('link[rel="canonical"]');
-  if (canonical) canonical.setAttribute("href", `https://cv.cm${appHref(loc, tool)}`);
+  if (canonical) canonical.setAttribute("href", `https://cv.cm${appHref(loc, tool, clipId)}`);
 
   clear(app);
   app.append(shell(loc));
@@ -115,7 +134,8 @@ function render(): void {
 
 function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
-  if (tool === "watermark") void mountWatermark(main);
+  if (tool === "clip") void mountClip(main, clipId);
+  else if (tool === "watermark") void mountWatermark(main);
   else if (tool === "collage") void mountCollage(main);
   else if (tool === "convert") void mountConvert(main);
   else if (tool === "image-pdf") void mountImagePdf(main);
@@ -130,7 +150,7 @@ function shell(loc: Locale): HTMLElement {
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         ...CATEGORIES.map((cat) => categoryMenu(loc, cat.id, tool)),
       ),
-      langSwitch(loc, tool),
+      langSwitch(loc, tool, clipId),
     ),
     main,
     h("footer", { class: "foot" }, t("footer.privacy")),
@@ -173,14 +193,14 @@ function categoryMenu(loc: Locale, cat: CategoryId, current: ToolId | null): HTM
   );
 }
 
-function langSwitch(current: Locale, currentTool: ToolId | null): HTMLElement {
+function langSwitch(current: Locale, currentTool: ToolId | null, currentClip: string | null): HTMLElement {
   const sel = h("select", {
     class: "lang",
     "aria-label": t("lang.label"),
     onChange: (e: Event) => {
       const next = (e.target as HTMLSelectElement).value as Locale;
       setLocale(next);
-      history.pushState(null, "", appHref(next, currentTool));
+      history.pushState(null, "", appHref(next, currentTool, currentClip));
       render();
     },
   });

@@ -1,18 +1,21 @@
 {
   "meta": {
-    "title": "cv.cm — 浏览器本地工具，文件不上传",
+    "title": "cv.cm — 云剪切板与浏览器工具",
+    "titleClip": "云剪切板 — cv.cm",
+    "descClip": "粘贴文字，生成链接。无需登录。查看 10 次或超过 1 天自动删除。",
     "titleWatermark": "图片水印 — cv.cm",
     "titleCollage": "图片拼图 — cv.cm",
     "titleConvert": "PNG 转 JPG、WebP 图片格式转换 — cv.cm",
     "descConvert": "浏览器里把 PNG 转 JPG、JPG 转 PNG、WebP 互转。支持批量与 ZIP。文件不上传。",
     "titleImagePdf": "图片转 PDF — cv.cm",
     "descImagePdf": "JPG / PNG / WebP 转 PDF，多图合成一份。本地处理，文件不上传。",
-    "description": "浏览器本地工具：图片水印、拼图、PNG 转 JPG、图片转 PDF。无需注册，文件不上传。"
+    "description": "云剪切板和浏览器工具。便签查看 10 次或 1 天后删除。图片工具文件不上传。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "工具",
     "privacy": "本地处理",
+    "share": "分享",
     "image": "图片",
     "convert": "格式转换"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "本地工具集",
     "title": "浏览器运行工具集合",
-    "lead": "cv.cm 提供在浏览器上运行的工具，无需注册，文件不会上传到服务器。",
+    "lead": "分享一条短时便签，或在浏览器里处理图片。无需注册。",
     "cta": "打开图片水印",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "处理发生在浏览器画布上。文件不会离开当前标签页。"
       },
       "nodb": {
-        "title": "无数据库",
-        "body": "没有账号、没有云相册、没有历史记录。关掉标签页，数据就没了。"
+        "title": "无需登录",
+        "body": "云剪切板查看 10 次或 1 天后删除。图片工具不会离开当前标签页。"
       },
       "i18n": {
         "title": "多语言",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "云剪切板",
+      "blurb": "粘贴文字，复制链接。查看 10 次或 1 天后删除。无需登录。"
+    },
     "watermark": {
       "name": "图片水印",
       "blurb": "给照片盖文字或 Logo。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。"
@@ -211,7 +218,37 @@
     "errorDecode": "浏览器无法读取这张图片。",
     "emptyDownload": "请先添加图片。"
   },
+  "clip": {
+    "title": "云剪切板",
+    "back": "全部工具",
+    "privacyNote": "内容存在 Cloudflare D1，查看 10 次或 24 小时后删除。无需登录。",
+    "bodyLabel": "文本",
+    "placeholder": "粘贴或输入要分享的文字…",
+    "submit": "生成链接",
+    "paste": "粘贴",
+    "copyLink": "复制链接",
+    "copyText": "复制文本",
+    "copied": "已复制",
+    "working": "正在保存…",
+    "new": "再写一条",
+    "created": "链接已生成",
+    "viewsLeft": "还剩 {n} 次查看",
+    "lastView": "这是最后一次查看，便签已删除。",
+    "expiresH": "{h} 小时 {m} 分后删除",
+    "expiresM": "{m} 分后删除",
+    "expired": "这条便签已经消失。可能已查看 10 次，或超过 1 天。",
+    "empty": "请先输入文字。",
+    "tooLarge": "超过 32 KB。",
+    "rate": "这个网络创建太频繁，请一小时后再试。",
+    "unavailable": "云剪切板暂时不可用。",
+    "gone": "这条便签已经消失。",
+    "rulesTitle": "规则",
+    "ruleViews": "查看 10 次后删除",
+    "ruleDay": "超过 1 天后删除",
+    "ruleLogin": "无需登录",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "文件在本地处理，不会发送到 cv.cm。"
+    "privacy": "图片工具在本地处理。云剪切板会短暂保存在 cv.cm，到期删除。"
   }
 }

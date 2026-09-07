@@ -1,9 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — 瀏覽器本機工具，檔案不上傳",
+    "title": "cv.cm — 雲端剪貼簿與瀏覽器工具",
+    "titleClip": "雲端剪貼簿 — cv.cm",
+    "descClip": "貼上文字，產生連結。無需登入。查看 10 次或超過 1 天自動刪除。",
     "titleWatermark": "圖片浮水印 — cv.cm",
     "titleCollage": "圖片拼圖 — cv.cm",
-    "description": "瀏覽器本機工具：圖片浮水印、拼圖、PNG 轉 JPG、圖片轉 PDF。無需註冊，檔案不上傳。",
+    "description": "雲端剪貼簿與瀏覽器工具。便條查看 10 次或 1 天後刪除。圖片工具不上傳檔案。",
     "titleConvert": "PNG 轉 JPG、WebP 圖片格式轉換 — cv.cm",
     "descConvert": "在瀏覽器把 PNG 轉 JPG、JPG 轉 PNG、WebP 互轉。支援批次與 ZIP。檔案不上傳。",
     "titleImagePdf": "圖片轉 PDF — cv.cm",
@@ -13,6 +15,7 @@
   "nav": {
     "tools": "工具",
     "privacy": "本機處理",
+    "share": "分享",
     "image": "圖片",
     "convert": "格式轉換"
   },
@@ -30,7 +33,7 @@
   "home": {
     "kicker": "本機工具集",
     "title": "瀏覽器運行工具集合",
-    "lead": "cv.cm 提供在瀏覽器上執行的工具，無需註冊，檔案不會上傳到伺服器。",
+    "lead": "分享一則短時便條，或在瀏覽器裡處理圖片。無需註冊。",
     "cta": "開啟圖片浮水印",
     "points": {
       "local": {
@@ -38,8 +41,8 @@
         "body": "處理發生在瀏覽器畫布上。檔案不會離開目前分頁。"
       },
       "nodb": {
-        "title": "無資料庫",
-        "body": "沒有帳號、沒有雲端相簿、沒有歷史紀錄。關掉分頁，資料就沒了。"
+        "title": "無需登入",
+        "body": "雲端剪貼簿查看 10 次或 1 天後刪除。圖片工具不會離開目前分頁。"
       },
       "i18n": {
         "title": "多語言",
@@ -48,6 +51,10 @@
     }
   },
   "tools": {
+    "clip": {
+      "name": "雲端剪貼簿",
+      "blurb": "貼上文字，複製連結。查看 10 次或 1 天後刪除。無需登入。"
+    },
     "watermark": {
       "name": "圖片浮水印",
       "blurb": "為照片蓋上文字或 Logo。支援批次匯出 PNG、JPEG 或 ZIP。檔案不上傳。"
@@ -168,8 +175,38 @@
       "t1b3": "上一下三"
     }
   },
+  "clip": {
+    "title": "雲端剪貼簿",
+    "back": "全部工具",
+    "privacyNote": "內容存在 Cloudflare D1，查看 10 次或 24 小時後刪除。無需登入。",
+    "bodyLabel": "文字",
+    "placeholder": "貼上或輸入要分享的文字…",
+    "submit": "產生連結",
+    "paste": "貼上",
+    "copyLink": "複製連結",
+    "copyText": "複製文字",
+    "copied": "已複製",
+    "working": "正在儲存…",
+    "new": "再寫一則",
+    "created": "連結已產生",
+    "viewsLeft": "還剩 {n} 次查看",
+    "lastView": "這是最後一次查看，便條已刪除。",
+    "expiresH": "{h} 小時 {m} 分後刪除",
+    "expiresM": "{m} 分後刪除",
+    "expired": "這則便條已經消失。可能已查看 10 次，或超過 1 天。",
+    "empty": "請先輸入文字。",
+    "tooLarge": "超過 32 KB。",
+    "rate": "這個網路建立太頻繁，請一小時後再試。",
+    "unavailable": "雲端剪貼簿暫時無法使用。",
+    "gone": "這則便條已經消失。",
+    "rulesTitle": "規則",
+    "ruleViews": "查看 10 次後刪除",
+    "ruleDay": "超過 1 天後刪除",
+    "ruleLogin": "無需登入",
+    "bytes": "{used} / 32 KB"
+  },
   "footer": {
-    "privacy": "檔案在本機處理，不會傳送到 cv.cm。"
+    "privacy": "圖片工具在本機處理。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"
   },
   "convert": {
     "title": "PNG 轉 JPG、WebP 轉換",

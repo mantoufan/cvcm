@@ -7,6 +7,7 @@ import { CATEGORIES, appHref, type ToolId } from "../shared/path";
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
     h("section", { class: "hero-band" },
+      h("span", { class: "hero-ornament", "aria-hidden": "true" }, "୨୧"),
       h("p", { class: "kicker" }, t("home.kicker")),
       h("h1", null, t("home.title")),
       h("p", { class: "lede" }, t("home.lead")),
