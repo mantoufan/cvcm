@@ -5,10 +5,14 @@
     "descClip": "Paste text and share a link. No account. Notes vanish after 10 views or one day.",
     "titleWatermark": "Image watermark — cv.cm",
     "titleCollage": "Photo collage — cv.cm",
-    "titleConvert": "PNG to JPG, WebP converter in your browser — cv.cm",
-    "descConvert": "Convert PNG, JPG, and WebP in the browser. No upload, no account. Batch export or ZIP.",
+    "titleConvert": "Convert PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
+    "descConvert": "Convert images in the browser: PNG, JPG, WebP, AVIF, GIF, BMP, ICO. No upload.",
     "titleImagePdf": "Convert images to PDF in your browser — cv.cm",
     "descImagePdf": "Turn JPG, PNG, or WebP photos into a PDF on your device. Nothing is uploaded.",
+    "titleAudio": "Convert audio to WAV in your browser — cv.cm",
+    "descAudio": "Turn MP3, M4A, OGG, and more into WAV on your device. Nothing is uploaded.",
+    "titleData": "JSON, CSV, Base64, Markdown converter — cv.cm",
+    "descData": "Pretty-print JSON, CSV to JSON, Base64, Markdown to HTML. Runs in the browser.",
     "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files."
   },
   "brand": "cv.cm",
@@ -64,12 +68,20 @@
       "blurb": "Combine photos into one picture. Pick a layout, spacing, and export. Nothing is uploaded."
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "Convert PNG to JPG, JPG to PNG, or WebP. Batch download. Nothing is uploaded."
+      "name": "Image formats",
+      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Batch download. Nothing is uploaded."
     },
     "image-pdf": {
       "name": "Images to PDF",
       "blurb": "Merge photos into one PDF. Runs in the browser. Nothing is uploaded."
+    },
+    "audio": {
+      "name": "Audio to WAV",
+      "blurb": "MP3, M4A, OGG and more to WAV. Runs in the browser."
+    },
+    "data": {
+      "name": "Text & data",
+      "blurb": "JSON, CSV, Base64, Markdown, URL encode. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -176,11 +188,11 @@
     }
   },
   "convert": {
-    "title": "Convert PNG, JPG, and WebP",
+    "title": "Convert image formats",
     "back": "All tools",
     "dropTitle": "Drop images here",
     "dropHint": "or click to choose · paste with Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Images",
     "filesEmpty": "No images yet",
     "remove": "Remove",
@@ -191,7 +203,7 @@
     "download": "Download",
     "downloadAll": "Download all as ZIP",
     "working": "Converting…",
-    "privacyNote": "PNG to JPG and WebP conversion stays in this tab. Nothing is uploaded.",
+    "privacyNote": "Image conversion stays in this tab. Nothing is uploaded.",
     "hint": "Pick an output format, then download.",
     "errorDecode": "Could not read this image in the browser.",
     "emptyDownload": "Add an image first."
@@ -217,6 +229,51 @@
     "hint": "Reorder pages, then download one PDF.",
     "errorDecode": "Could not read this image in the browser.",
     "emptyDownload": "Add an image first."
+  },
+  "audio": {
+    "title": "Convert audio to WAV",
+    "back": "All tools",
+    "privacyNote": "Audio is decoded in this tab and saved as WAV. Nothing is uploaded.",
+    "dropTitle": "Drop audio here",
+    "dropHint": "or click to choose",
+    "dropTypes": "MP3, WAV, OGG, M4A, AAC, FLAC, WebM",
+    "filesTitle": "Audio",
+    "filesEmpty": "No files yet",
+    "remove": "Remove",
+    "clear": "Clear all",
+    "exportTitle": "Output",
+    "hint": "Decode in the browser, then download WAV.",
+    "meta": "{duration}s · {rate} Hz · {channels} ch",
+    "download": "Download WAV",
+    "downloadAll": "Download all as ZIP",
+    "working": "Converting…",
+    "errorDecode": "Could not read this audio in the browser.",
+    "emptyDownload": "Add an audio file first."
+  },
+  "data": {
+    "title": "Convert text and data",
+    "back": "All tools",
+    "privacyNote": "JSON, CSV, Base64, and Markdown stay in this tab.",
+    "mode": "Conversion",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Paste JSON, CSV, Markdown, or text…",
+    "run": "Convert",
+    "download": "Download",
+    "openFile": "Open file",
+    "error": "Could not convert this input.",
+    "modes": {
+      "json-pretty": "JSON pretty",
+      "json-minify": "JSON minify",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Base64 encode",
+      "base64-decode": "Base64 decode",
+      "url-encode": "URL encode",
+      "url-decode": "URL decode",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   },
   "clip": {
     "title": "Cloud clipboard",

@@ -6,10 +6,14 @@
     "titleWatermark": "Watermark gambar — cv.cm",
     "titleCollage": "Kolase foto — cv.cm",
     "description": "Papan klip awan dan alat browser. Catatan hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak diunggah.",
-    "titleConvert": "Ubah PNG ke JPG, WebP — cv.cm",
-    "descConvert": "Ubah PNG↔JPG↔WebP di browser. Batch dan ZIP. Tanpa unggah.",
+    "titleConvert": "Ubah PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
+    "descConvert": "Ubah format gambar di browser. Tanpa unggah.",
     "titleImagePdf": "Gambar ke PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP menjadi PDF, banyak gambar satu file. Di perangkat, tanpa unggah."
+    "descImagePdf": "JPG / PNG / WebP menjadi PDF, banyak gambar satu file. Di perangkat, tanpa unggah.",
+    "titleAudio": "Ubah audio ke WAV — cv.cm",
+    "descAudio": "MP3, M4A, OGG menjadi WAV di perangkat. Tanpa unggah.",
+    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
+    "descData": "Rapihkan JSON, CSV↔JSON, Base64, Markdown. Di browser."
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "Gabungkan foto jadi satu. Pilih tata letak, jarak, lalu ekspor. Tidak diunggah."
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG ke JPG, JPG ke PNG, WebP. Unduh massal. Tidak diunggah."
+      "name": "Format gambar",
+      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Unduh massal. Tidak diunggah."
     },
     "image-pdf": {
       "name": "Gambar ke PDF",
       "blurb": "Gabung foto jadi satu PDF. Di browser. Tidak diunggah."
+    },
+    "audio": {
+      "name": "Audio ke WAV",
+      "blurb": "MP3, M4A, OGG menjadi WAV. Di browser."
+    },
+    "data": {
+      "name": "Teks & data",
+      "blurb": "JSON, CSV, Base64, Markdown, URL. Tidak diunggah."
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "Alat gambar tetap di tab ini. Catatan papan klip disimpan sebentar di cv.cm, lalu dihapus."
   },
   "convert": {
-    "title": "Ubah PNG, JPG, WebP",
+    "title": "Ubah format gambar",
     "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Gambar",
     "filesEmpty": "Belum ada gambar",
     "remove": "Hapus",
@@ -237,7 +249,7 @@
     "download": "Unduh",
     "downloadAll": "Unduh semua sebagai ZIP",
     "working": "Mengonversi…",
-    "privacyNote": "PNG ke JPG / WebP hanya di tab ini, tidak diunggah.",
+    "privacyNote": "Konversi gambar hanya di tab ini. Tidak diunggah.",
     "hint": "Pilih format lalu unduh.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
     "emptyDownload": "Tambah gambar dulu."
@@ -263,5 +275,50 @@
     "hint": "Urutkan halaman, lalu unduh satu PDF.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
     "emptyDownload": "Tambah gambar dulu."
+  },
+  "audio": {
+    "title": "Ubah audio ke WAV",
+    "back": "Semua alat",
+    "privacyNote": "Audio didekode di tab ini dan disimpan sebagai WAV. Tidak diunggah.",
+    "dropTitle": "Letakkan audio di sini",
+    "dropHint": "atau klik untuk memilih",
+    "dropTypes": "MP3, WAV, OGG, M4A, AAC, FLAC, WebM",
+    "filesTitle": "Audio",
+    "filesEmpty": "Belum ada berkas",
+    "remove": "Hapus",
+    "clear": "Hapus semua",
+    "exportTitle": "Keluaran",
+    "hint": "Dekode di browser, lalu unduh WAV.",
+    "meta": "{duration}d · {rate} Hz · {channels} ch",
+    "download": "Unduh WAV",
+    "downloadAll": "Unduh semua ZIP",
+    "working": "Mengubah…",
+    "errorDecode": "Browser tidak bisa membaca audio ini.",
+    "emptyDownload": "Tambah audio dulu."
+  },
+  "data": {
+    "title": "Ubah teks dan data",
+    "back": "Semua alat",
+    "privacyNote": "JSON, CSV, Base64, Markdown tetap di tab ini.",
+    "mode": "Konversi",
+    "input": "Masukan",
+    "output": "Keluaran",
+    "placeholder": "Tempel JSON, CSV, Markdown, atau teks…",
+    "run": "Ubah",
+    "download": "Unduh",
+    "openFile": "Buka berkas",
+    "error": "Tidak bisa mengubah masukan ini.",
+    "modes": {
+      "json-pretty": "JSON rapi",
+      "json-minify": "JSON ringkas",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Encode Base64",
+      "base64-decode": "Decode Base64",
+      "url-encode": "Encode URL",
+      "url-decode": "Decode URL",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

@@ -1,6 +1,8 @@
+import { mountAudio, unmountAudio } from "./audio/ui";
 import { mountClip, unmountClip } from "./clip/ui";
 import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
+import { mountData, unmountData } from "./data/ui";
 import { clear, h } from "./dom";
 import { mountHome } from "./home";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
@@ -84,6 +86,8 @@ function unmountTools(): void {
   unmountConvert();
   unmountImagePdf();
   unmountClip();
+  unmountAudio();
+  unmountData();
 }
 
 function pageTitle(): string {
@@ -92,6 +96,8 @@ function pageTitle(): string {
   if (tool === "collage") return t("meta.titleCollage");
   if (tool === "convert") return t("meta.titleConvert");
   if (tool === "image-pdf") return t("meta.titleImagePdf");
+  if (tool === "audio") return t("meta.titleAudio");
+  if (tool === "data") return t("meta.titleData");
   return t("meta.title");
 }
 
@@ -99,6 +105,8 @@ function pageDescription(): string {
   if (tool === "clip") return t("meta.descClip");
   if (tool === "convert") return t("meta.descConvert");
   if (tool === "image-pdf") return t("meta.descImagePdf");
+  if (tool === "audio") return t("meta.descAudio");
+  if (tool === "data") return t("meta.descData");
   if (tool === "watermark" || tool === "collage") return t(`tools.${tool}.blurb`);
   return t("meta.description");
 }
@@ -139,6 +147,8 @@ function shell(loc: Locale): HTMLElement {
   else if (tool === "collage") void mountCollage(main);
   else if (tool === "convert") void mountConvert(main);
   else if (tool === "image-pdf") void mountImagePdf(main);
+  else if (tool === "audio") void mountAudio(main);
+  else if (tool === "data") mountData(main);
   else mountHome(main, loc);
 
   return h("div", { class: "page" + (tool ? " is-tool" : "") },

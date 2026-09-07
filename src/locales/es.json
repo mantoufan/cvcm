@@ -6,10 +6,14 @@
     "titleWatermark": "Marca de agua — cv.cm",
     "titleCollage": "Collage de fotos — cv.cm",
     "description": "Portapapeles en la nube y herramientas en el navegador. Las notas caducan a las 10 vistas o en un día. Las herramientas de imagen no suben archivos.",
-    "titleConvert": "Convertir PNG a JPG y WebP — cv.cm",
-    "descConvert": "Convierte PNG↔JPG↔WebP en el navegador. Lote y ZIP. Sin subir archivos.",
+    "titleConvert": "Convertir PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
+    "descConvert": "Convierte formatos de imagen en el navegador. Nada se sube.",
     "titleImagePdf": "Imágenes a PDF — cv.cm",
-    "descImagePdf": "Pasa JPG / PNG / WebP a PDF, varias fotos en un archivo. En el dispositivo, sin subir nada."
+    "descImagePdf": "Pasa JPG / PNG / WebP a PDF, varias fotos en un archivo. En el dispositivo, sin subir nada.",
+    "titleAudio": "Convertir audio a WAV — cv.cm",
+    "descAudio": "Pasa MP3, M4A, OGG a WAV en el dispositivo. Nada se sube.",
+    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
+    "descData": "JSON bonito, CSV↔JSON, Base64, Markdown. En el navegador."
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "Junta fotos en una sola. Elige diseño, espacio y exporta. Nada se sube."
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG a JPG, JPG a PNG o WebP. Descarga por lotes. Nada se sube."
+      "name": "Formatos de imagen",
+      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Lote y ZIP. Nada se sube."
     },
     "image-pdf": {
       "name": "Imágenes a PDF",
       "blurb": "Junta fotos en un PDF. En el navegador. Nada se sube."
+    },
+    "audio": {
+      "name": "Audio a WAV",
+      "blurb": "MP3, M4A, OGG a WAV. En el navegador."
+    },
+    "data": {
+      "name": "Texto y datos",
+      "blurb": "JSON, CSV, Base64, Markdown, URL. Nada se sube."
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "Las herramientas de imagen se quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y luego se borran."
   },
   "convert": {
-    "title": "Convertir PNG, JPG y WebP",
+    "title": "Convertir formatos de imagen",
     "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Imágenes",
     "filesEmpty": "Aún no hay imágenes",
     "remove": "Quitar",
@@ -237,7 +249,7 @@
     "download": "Descargar",
     "downloadAll": "Descargar todo en ZIP",
     "working": "Convirtiendo…",
-    "privacyNote": "PNG a JPG y WebP se hace en esta pestaña. Nada se sube.",
+    "privacyNote": "La conversión de imagen se queda en esta pestaña. Nada se sube.",
     "hint": "Elige el formato y descarga.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
     "emptyDownload": "Añade una imagen primero."
@@ -263,5 +275,50 @@
     "hint": "Ordena las páginas y descarga un PDF.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
     "emptyDownload": "Añade una imagen primero."
+  },
+  "audio": {
+    "title": "Convertir audio a WAV",
+    "back": "Todas las herramientas",
+    "privacyNote": "El audio se decodifica en esta pestaña y se guarda como WAV. Nada se sube.",
+    "dropTitle": "Suelta audio aquí",
+    "dropHint": "o haz clic para elegir",
+    "dropTypes": "MP3, WAV, OGG, M4A, AAC, FLAC, WebM",
+    "filesTitle": "Audio",
+    "filesEmpty": "Aún no hay archivos",
+    "remove": "Quitar",
+    "clear": "Borrar todo",
+    "exportTitle": "Salida",
+    "hint": "Decodifica en el navegador y descarga WAV.",
+    "meta": "{duration}s · {rate} Hz · {channels} ch",
+    "download": "Descargar WAV",
+    "downloadAll": "Descargar todo en ZIP",
+    "working": "Convirtiendo…",
+    "errorDecode": "No se pudo leer este audio en el navegador.",
+    "emptyDownload": "Añade un audio primero."
+  },
+  "data": {
+    "title": "Convertir texto y datos",
+    "back": "Todas las herramientas",
+    "privacyNote": "JSON, CSV, Base64 y Markdown se quedan en esta pestaña.",
+    "mode": "Conversión",
+    "input": "Entrada",
+    "output": "Salida",
+    "placeholder": "Pega JSON, CSV, Markdown o texto…",
+    "run": "Convertir",
+    "download": "Descargar",
+    "openFile": "Abrir archivo",
+    "error": "No se pudo convertir esta entrada.",
+    "modes": {
+      "json-pretty": "JSON bonito",
+      "json-minify": "JSON compacto",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Codificar Base64",
+      "base64-decode": "Decodificar Base64",
+      "url-encode": "Codificar URL",
+      "url-decode": "Decodificar URL",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

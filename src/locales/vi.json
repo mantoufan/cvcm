@@ -6,10 +6,14 @@
     "titleWatermark": "Đóng dấu ảnh — cv.cm",
     "titleCollage": "Ghép ảnh — cv.cm",
     "description": "Clipboard đám mây và công cụ trình duyệt. Ghi chú hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không tải file lên.",
-    "titleConvert": "Đổi PNG sang JPG, WebP — cv.cm",
-    "descConvert": "Đổi PNG↔JPG↔WebP trong trình duyệt. Hàng loạt và ZIP. Không tải lên.",
+    "titleConvert": "Đổi PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
+    "descConvert": "Đổi định dạng ảnh trong trình duyệt. Không tải lên.",
     "titleImagePdf": "Ảnh sang PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP thành PDF, nhiều ảnh một file. Trên máy, không tải lên."
+    "descImagePdf": "JPG / PNG / WebP thành PDF, nhiều ảnh một file. Trên máy, không tải lên.",
+    "titleAudio": "Đổi âm thanh sang WAV — cv.cm",
+    "descAudio": "MP3, M4A, OGG thành WAV trên máy. Không tải lên.",
+    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
+    "descData": "Làm đẹp JSON, CSV↔JSON, Base64, Markdown. Trong trình duyệt."
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "Ghép nhiều ảnh thành một. Chọn bố cục, khoảng cách rồi xuất. Không tải lên."
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG sang JPG, JPG sang PNG, WebP. Tải hàng loạt. Không tải lên."
+      "name": "Định dạng ảnh",
+      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Tải hàng loạt. Không tải lên."
     },
     "image-pdf": {
       "name": "Ảnh sang PDF",
       "blurb": "Nhiều ảnh thành một PDF. Trong trình duyệt. Không tải lên."
+    },
+    "audio": {
+      "name": "Âm thanh sang WAV",
+      "blurb": "MP3, M4A, OGG thành WAV. Trong trình duyệt."
+    },
+    "data": {
+      "name": "Văn bản & dữ liệu",
+      "blurb": "JSON, CSV, Base64, Markdown, URL. Không tải lên."
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "Công cụ ảnh chạy trong tab này. Ghi chú clipboard được lưu ngắn trên cv.cm rồi xóa."
   },
   "convert": {
-    "title": "Đổi PNG, JPG, WebP",
+    "title": "Đổi định dạng ảnh",
     "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Ảnh",
     "filesEmpty": "Chưa có ảnh",
     "remove": "Xóa",
@@ -237,7 +249,7 @@
     "download": "Tải xuống",
     "downloadAll": "Tải tất cả dạng ZIP",
     "working": "Đang đổi…",
-    "privacyNote": "Đổi PNG sang JPG / WebP chỉ trong tab này, không tải lên.",
+    "privacyNote": "Đổi ảnh chỉ trong tab này. Không tải lên.",
     "hint": "Chọn định dạng rồi tải xuống.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
     "emptyDownload": "Hãy thêm ảnh trước."
@@ -263,5 +275,50 @@
     "hint": "Sắp thứ tự trang rồi tải một PDF.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
     "emptyDownload": "Hãy thêm ảnh trước."
+  },
+  "audio": {
+    "title": "Đổi âm thanh sang WAV",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Âm thanh được giải mã trong tab này và lưu WAV. Không tải lên.",
+    "dropTitle": "Thả âm thanh vào đây",
+    "dropHint": "hoặc bấm để chọn",
+    "dropTypes": "MP3, WAV, OGG, M4A, AAC, FLAC, WebM",
+    "filesTitle": "Âm thanh",
+    "filesEmpty": "Chưa có tệp",
+    "remove": "Xóa",
+    "clear": "Xóa tất cả",
+    "exportTitle": "Đầu ra",
+    "hint": "Giải mã trong trình duyệt, rồi tải WAV.",
+    "meta": "{duration}s · {rate} Hz · {channels} kênh",
+    "download": "Tải WAV",
+    "downloadAll": "Tải tất cả ZIP",
+    "working": "Đang đổi…",
+    "errorDecode": "Trình duyệt không đọc được âm thanh này.",
+    "emptyDownload": "Hãy thêm âm thanh trước."
+  },
+  "data": {
+    "title": "Đổi văn bản và dữ liệu",
+    "back": "Tất cả công cụ",
+    "privacyNote": "JSON, CSV, Base64, Markdown ở tab này.",
+    "mode": "Chuyển đổi",
+    "input": "Đầu vào",
+    "output": "Đầu ra",
+    "placeholder": "Dán JSON, CSV, Markdown hoặc văn bản…",
+    "run": "Chuyển",
+    "download": "Tải",
+    "openFile": "Mở tệp",
+    "error": "Không chuyển được nội dung này.",
+    "modes": {
+      "json-pretty": "JSON đẹp",
+      "json-minify": "JSON rút gọn",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Mã hóa Base64",
+      "base64-decode": "Giải mã Base64",
+      "url-encode": "Mã hóa URL",
+      "url-decode": "Giải mã URL",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

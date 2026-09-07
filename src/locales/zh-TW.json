@@ -6,10 +6,14 @@
     "titleWatermark": "圖片浮水印 — cv.cm",
     "titleCollage": "圖片拼圖 — cv.cm",
     "description": "雲端剪貼簿與瀏覽器工具。便條查看 10 次或 1 天後刪除。圖片工具不上傳檔案。",
-    "titleConvert": "PNG 轉 JPG、WebP 圖片格式轉換 — cv.cm",
-    "descConvert": "在瀏覽器把 PNG 轉 JPG、JPG 轉 PNG、WebP 互轉。支援批次與 ZIP。檔案不上傳。",
+    "titleConvert": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO 轉換 — cv.cm",
+    "descConvert": "在瀏覽器互轉 PNG、JPG、WebP、AVIF、GIF、BMP、ICO。檔案不上傳。",
     "titleImagePdf": "圖片轉 PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP 轉 PDF，多圖合成一份。本機處理，檔案不上傳。"
+    "descImagePdf": "JPG / PNG / WebP 轉 PDF，多圖合成一份。本機處理，檔案不上傳。",
+    "titleAudio": "音訊轉 WAV — cv.cm",
+    "descAudio": "MP3、M4A、OGG 等在瀏覽器轉成 WAV。檔案不上傳。",
+    "titleData": "JSON、CSV、Base64、Markdown 轉換 — cv.cm",
+    "descData": "JSON 格式化、CSV 轉 JSON、Base64、Markdown 轉 HTML。本機處理。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "把多張照片拼成一張。選版面、間距，本機匯出。檔案不上傳。"
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG 轉 JPG、JPG 轉 PNG、WebP 互轉。批次下載。檔案不上傳。"
+      "name": "圖片格式",
+      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。批次下載。檔案不上傳。"
     },
     "image-pdf": {
       "name": "圖片轉 PDF",
       "blurb": "多張照片合成一份 PDF。在瀏覽器完成，檔案不上傳。"
+    },
+    "audio": {
+      "name": "音訊轉 WAV",
+      "blurb": "MP3、M4A、OGG 等轉 WAV。在瀏覽器完成。"
+    },
+    "data": {
+      "name": "文字與資料",
+      "blurb": "JSON、CSV、Base64、Markdown、URL 編碼。檔案不上傳。"
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "圖片工具在本機處理。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"
   },
   "convert": {
-    "title": "PNG 轉 JPG、WebP 轉換",
+    "title": "圖片格式轉換",
     "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "圖片",
     "filesEmpty": "還沒有圖片",
     "remove": "移除",
@@ -237,7 +249,7 @@
     "download": "下載",
     "downloadAll": "打包 ZIP 下載全部",
     "working": "正在轉換…",
-    "privacyNote": "PNG 轉 JPG、WebP 轉換只在這個分頁進行，不會上傳。",
+    "privacyNote": "圖片格式轉換只在這個分頁進行，不上傳。",
     "hint": "選擇輸出格式後下載。",
     "errorDecode": "瀏覽器無法讀取這張圖片。",
     "emptyDownload": "請先加入圖片。"
@@ -263,5 +275,50 @@
     "hint": "調整頁序後下載一份 PDF。",
     "errorDecode": "瀏覽器無法讀取這張圖片。",
     "emptyDownload": "請先加入圖片。"
+  },
+  "audio": {
+    "title": "音訊轉 WAV",
+    "back": "全部工具",
+    "privacyNote": "音訊在這個分頁解碼，存成 WAV。不上傳。",
+    "dropTitle": "把音訊拖到這裡",
+    "dropHint": "或點擊選擇",
+    "dropTypes": "MP3、WAV、OGG、M4A、AAC、FLAC、WebM",
+    "filesTitle": "音訊",
+    "filesEmpty": "還沒有檔案",
+    "remove": "移除",
+    "clear": "清空",
+    "exportTitle": "輸出",
+    "hint": "在瀏覽器解碼後下載 WAV。",
+    "meta": "{duration} 秒 · {rate} Hz · {channels} 聲道",
+    "download": "下載 WAV",
+    "downloadAll": "打包 ZIP 下載全部",
+    "working": "正在轉換…",
+    "errorDecode": "瀏覽器無法讀取這個音訊。",
+    "emptyDownload": "請先加入音訊。"
+  },
+  "data": {
+    "title": "文字與資料轉換",
+    "back": "全部工具",
+    "privacyNote": "JSON、CSV、Base64、Markdown 只在這個分頁處理。",
+    "mode": "轉換",
+    "input": "輸入",
+    "output": "輸出",
+    "placeholder": "貼上 JSON、CSV、Markdown 或文字…",
+    "run": "轉換",
+    "download": "下載",
+    "openFile": "開啟檔案",
+    "error": "無法轉換這段內容。",
+    "modes": {
+      "json-pretty": "JSON 格式化",
+      "json-minify": "JSON 壓縮",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Base64 編碼",
+      "base64-decode": "Base64 解碼",
+      "url-encode": "URL 編碼",
+      "url-decode": "URL 解碼",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

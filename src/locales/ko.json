@@ -6,10 +6,14 @@
     "titleWatermark": "이미지 워터마크 — cv.cm",
     "titleCollage": "사진 콜라주 — cv.cm",
     "description": "클라우드 클립보드와 브라우저 도구. 메모는 10번 보거나 하루 뒤 삭제. 이미지 도구는 업로드하지 않습니다.",
-    "titleConvert": "PNG를 JPG·WebP로 변환 — cv.cm",
-    "descConvert": "브라우저에서 PNG↔JPG↔WebP 변환. 일괄과 ZIP. 업로드 없음.",
+    "titleConvert": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO 변환 — cv.cm",
+    "descConvert": "브라우저에서 이미지 형식 변환. 업로드 없음.",
     "titleImagePdf": "이미지를 PDF로 — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP를 PDF로. 여러 장을 하나로. 기기 내, 업로드 없음."
+    "descImagePdf": "JPG / PNG / WebP를 PDF로. 여러 장을 하나로. 기기 내, 업로드 없음.",
+    "titleAudio": "오디오를 WAV로 — cv.cm",
+    "descAudio": "MP3, M4A, OGG 등을 WAV로. 업로드 없음.",
+    "titleData": "JSON, CSV, Base64, Markdown 변환 — cv.cm",
+    "descData": "JSON 정리, CSV↔JSON, Base64, Markdown. 브라우저에서."
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "여러 사진을 한 장으로 붙입니다. 레이아웃과 간격은 기기에서 처리됩니다."
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG를 JPG로, JPG를 PNG로, WebP 변환. 일괄 다운로드. 업로드 없음."
+      "name": "이미지 형식",
+      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. 일괄 다운로드. 업로드 없음."
     },
     "image-pdf": {
       "name": "이미지를 PDF로",
       "blurb": "여러 사진을 PDF 하나로. 브라우저에서 처리. 업로드 없음."
+    },
+    "audio": {
+      "name": "오디오 → WAV",
+      "blurb": "MP3, M4A, OGG 등을 WAV로. 브라우저에서."
+    },
+    "data": {
+      "name": "텍스트와 데이터",
+      "blurb": "JSON, CSV, Base64, Markdown, URL. 업로드 없음."
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "이미지 도구는 이 탭에서 처리됩니다. 클립보드 메모는 cv.cm에 잠시 저장된 뒤 삭제됩니다."
   },
   "convert": {
-    "title": "PNG·JPG·WebP 변환",
+    "title": "이미지 형식 변환",
     "back": "모든 도구",
     "dropTitle": "이미지를 여기에 놓기",
     "dropHint": "또는 클릭해서 선택 · Ctrl/⌘ V로 붙여넣기",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "이미지",
     "filesEmpty": "아직 이미지가 없습니다",
     "remove": "제거",
@@ -237,7 +249,7 @@
     "download": "다운로드",
     "downloadAll": "모두 ZIP으로 다운로드",
     "working": "변환 중…",
-    "privacyNote": "PNG→JPG / WebP 변환은 이 탭에서만 이루어지며 업로드되지 않습니다.",
+    "privacyNote": "이미지 변환은 이 탭에서 이루어집니다. 업로드 없음.",
     "hint": "출력 형식을 고른 뒤 다운로드하세요.",
     "errorDecode": "브라우저에서 이 이미지를 읽을 수 없습니다.",
     "emptyDownload": "먼저 이미지를 추가하세요."
@@ -263,5 +275,50 @@
     "hint": "순서를 맞춘 뒤 PDF 하나를 다운로드하세요.",
     "errorDecode": "브라우저에서 이 이미지를 읽을 수 없습니다.",
     "emptyDownload": "먼저 이미지를 추가하세요."
+  },
+  "audio": {
+    "title": "오디오를 WAV로 변환",
+    "back": "모든 도구",
+    "privacyNote": "오디오는 이 탭에서 디코딩되어 WAV로 저장됩니다. 업로드 없음.",
+    "dropTitle": "오디오를 여기에 놓기",
+    "dropHint": "또는 클릭해서 선택",
+    "dropTypes": "MP3, WAV, OGG, M4A, AAC, FLAC, WebM",
+    "filesTitle": "오디오",
+    "filesEmpty": "아직 파일이 없습니다",
+    "remove": "제거",
+    "clear": "모두 지우기",
+    "exportTitle": "출력",
+    "hint": "브라우저에서 디코딩한 뒤 WAV를 다운로드.",
+    "meta": "{duration}초 · {rate} Hz · {channels} ch",
+    "download": "WAV 다운로드",
+    "downloadAll": "모두 ZIP으로 다운로드",
+    "working": "변환 중…",
+    "errorDecode": "브라우저에서 이 오디오를 읽을 수 없습니다.",
+    "emptyDownload": "먼저 오디오를 추가하세요."
+  },
+  "data": {
+    "title": "텍스트와 데이터 변환",
+    "back": "모든 도구",
+    "privacyNote": "JSON, CSV, Base64, Markdown은 이 탭에서 처리됩니다.",
+    "mode": "변환",
+    "input": "입력",
+    "output": "출력",
+    "placeholder": "JSON, CSV, Markdown 또는 텍스트를 붙여넣기…",
+    "run": "변환",
+    "download": "다운로드",
+    "openFile": "파일 열기",
+    "error": "이 입력을 변환할 수 없습니다.",
+    "modes": {
+      "json-pretty": "JSON 정리",
+      "json-minify": "JSON 압축",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Base64 인코딩",
+      "base64-decode": "Base64 디코딩",
+      "url-encode": "URL 인코딩",
+      "url-decode": "URL 디코딩",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

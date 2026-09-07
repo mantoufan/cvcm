@@ -5,10 +5,14 @@
     "descClip": "粘贴文字，生成链接。无需登录。查看 10 次或超过 1 天自动删除。",
     "titleWatermark": "图片水印 — cv.cm",
     "titleCollage": "图片拼图 — cv.cm",
-    "titleConvert": "PNG 转 JPG、WebP 图片格式转换 — cv.cm",
-    "descConvert": "浏览器里把 PNG 转 JPG、JPG 转 PNG、WebP 互转。支持批量与 ZIP。文件不上传。",
+    "titleConvert": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO 转换 — cv.cm",
+    "descConvert": "浏览器里互转 PNG、JPG、WebP、AVIF、GIF、BMP、ICO。文件不上传。",
     "titleImagePdf": "图片转 PDF — cv.cm",
     "descImagePdf": "JPG / PNG / WebP 转 PDF，多图合成一份。本地处理，文件不上传。",
+    "titleAudio": "音频转 WAV — cv.cm",
+    "descAudio": "MP3、M4A、OGG 等在浏览器里转成 WAV。文件不上传。",
+    "titleData": "JSON、CSV、Base64、Markdown 转换 — cv.cm",
+    "descData": "JSON 格式化、CSV 转 JSON、Base64、Markdown 转 HTML。本地处理。",
     "description": "云剪切板和浏览器工具。便签查看 10 次或 1 天后删除。图片工具文件不上传。"
   },
   "brand": "cv.cm",
@@ -64,12 +68,20 @@
       "blurb": "把多张照片拼成一张。选布局、间距，本地导出。文件不上传。"
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG 转 JPG、JPG 转 PNG、WebP 互转。批量下载。文件不上传。"
+      "name": "图片格式",
+      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。批量下载。文件不上传。"
     },
     "image-pdf": {
       "name": "图片转 PDF",
       "blurb": "多张照片合成一份 PDF。浏览器里完成，文件不上传。"
+    },
+    "audio": {
+      "name": "音频转 WAV",
+      "blurb": "MP3、M4A、OGG 等转 WAV。浏览器里完成。"
+    },
+    "data": {
+      "name": "文本与数据",
+      "blurb": "JSON、CSV、Base64、Markdown、URL 编码。文件不上传。"
     }
   },
   "watermark": {
@@ -176,11 +188,11 @@
     }
   },
   "convert": {
-    "title": "PNG 转 JPG、WebP 转换",
+    "title": "图片格式转换",
     "back": "全部工具",
     "dropTitle": "把图片拖到这里",
     "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "图片",
     "filesEmpty": "还没有图片",
     "remove": "移除",
@@ -191,7 +203,7 @@
     "download": "下载",
     "downloadAll": "打包 ZIP 下载全部",
     "working": "正在转换…",
-    "privacyNote": "PNG 转 JPG、WebP 转换只在这个标签页进行，不会上传。",
+    "privacyNote": "图片格式转换只在这个标签页进行，不会上传。",
     "hint": "选择输出格式后下载。",
     "errorDecode": "浏览器无法读取这张图片。",
     "emptyDownload": "请先添加图片。"
@@ -217,6 +229,51 @@
     "hint": "调整页序后下载一份 PDF。",
     "errorDecode": "浏览器无法读取这张图片。",
     "emptyDownload": "请先添加图片。"
+  },
+  "audio": {
+    "title": "音频转 WAV",
+    "back": "全部工具",
+    "privacyNote": "音频在这个标签页解码，保存为 WAV。不会上传。",
+    "dropTitle": "把音频拖到这里",
+    "dropHint": "或点击选择",
+    "dropTypes": "MP3、WAV、OGG、M4A、AAC、FLAC、WebM",
+    "filesTitle": "音频",
+    "filesEmpty": "还没有文件",
+    "remove": "移除",
+    "clear": "清空",
+    "exportTitle": "输出",
+    "hint": "在浏览器里解码，然后下载 WAV。",
+    "meta": "{duration} 秒 · {rate} Hz · {channels} 声道",
+    "download": "下载 WAV",
+    "downloadAll": "打包 ZIP 下载全部",
+    "working": "正在转换…",
+    "errorDecode": "浏览器无法读取这个音频。",
+    "emptyDownload": "请先添加音频。"
+  },
+  "data": {
+    "title": "文本与数据转换",
+    "back": "全部工具",
+    "privacyNote": "JSON、CSV、Base64、Markdown 只在这个标签页处理。",
+    "mode": "转换",
+    "input": "输入",
+    "output": "输出",
+    "placeholder": "粘贴 JSON、CSV、Markdown 或文本…",
+    "run": "转换",
+    "download": "下载",
+    "openFile": "打开文件",
+    "error": "无法转换这段内容。",
+    "modes": {
+      "json-pretty": "JSON 格式化",
+      "json-minify": "JSON 压缩",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Base64 编码",
+      "base64-decode": "Base64 解码",
+      "url-encode": "URL 编码",
+      "url-decode": "URL 解码",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   },
   "clip": {
     "title": "云剪切板",

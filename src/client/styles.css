@@ -609,6 +609,28 @@ input[type="color"] {
 }
 .clip-bytes { margin: 0; }
 .clip-result { display: grid; gap: 0.65rem; }
+.data-tool { display: grid; gap: 1rem; }
+.data-panes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.data-panes .clip-input { min-height: 18rem; }
+.audio-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--pink-soft);
+  color: var(--pink-deep);
+  font-size: 1.1rem;
+}
+.audio-stage { min-height: 5rem; width: 100%; padding: 1rem; }
+@media (max-width: 960px) {
+  .data-panes { grid-template-columns: 1fr; }
+}
 .clip-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
 .clip-biu {
   min-width: 2rem;

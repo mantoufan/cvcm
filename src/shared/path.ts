@@ -7,12 +7,12 @@ export const STATIC_FILE =
 export const CATEGORIES = [
   { id: "share", tools: ["clip"] },
   { id: "image", tools: ["watermark", "collage"] },
-  { id: "convert", tools: ["convert", "image-pdf"] },
+  { id: "convert", tools: ["convert", "image-pdf", "audio", "data"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
 
-export const TOOLS = ["clip", "watermark", "collage", "convert", "image-pdf"] as const;
+export const TOOLS = ["clip", "watermark", "collage", "convert", "image-pdf", "audio", "data"] as const;
 export type ToolId = (typeof TOOLS)[number];
 
 export function categoryOf(tool: ToolId): CategoryId {

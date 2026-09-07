@@ -1,4 +1,5 @@
-import { mimeForFormat, outputFilename } from "../../shared/filename";
+import { blobFromBytes, encodeBmp, encodeGif, encodeIco } from "../../shared/image-encode";
+import { lossyFormat, mimeForFormat, outputFilename, type ImageFormat } from "../../shared/filename";
 import { zipStore } from "../../shared/zip";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
@@ -16,7 +17,7 @@ type Item = {
   error: string | null;
 };
 
-type Format = "png" | "jpeg" | "webp";
+type Format = ImageFormat;
 
 const state = {
   items: [] as Item[],
@@ -28,6 +29,7 @@ const state = {
 let preview: HTMLCanvasElement | null = null;
 let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
+let qualityField: HTMLElement | null = null;
 let pagehideBound = false;
 let restoring = false;
 let hydrated = false;
@@ -72,12 +74,13 @@ export function unmountConvert(): void {
   preview = null;
   fileList = null;
   statusEl = null;
+  qualityField = null;
 }
 
 function filesRail(): HTMLElement {
   const input = h("input", {
     type: "file",
-    accept: "image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/heic,image/heif,image/*",
+    accept: "image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/bmp,image/x-icon,image/avif,image/heic,image/heif,image/*",
     multiple: true,
     class: "sr-only",
     id: "convert-file-input",
@@ -132,6 +135,20 @@ function stagePane(): HTMLElement {
 }
 
 function controls(): HTMLElement {
+  qualityField = labeled(t("convert.quality"),
+    h("input", {
+      type: "range",
+      min: "0.4",
+      max: "1",
+      step: "0.01",
+      value: String(state.quality),
+      onInput: (e: Event) => {
+        state.quality = Number((e.target as HTMLInputElement).value);
+        scheduleSave();
+      },
+    }),
+  );
+  qualityField.hidden = !lossyFormat(state.format);
   return h("aside", { class: "rail controls" },
     h("fieldset", null,
       h("legend", null, t("convert.exportTitle")),
@@ -139,6 +156,7 @@ function controls(): HTMLElement {
         h("select", {
           onChange: (e: Event) => {
             state.format = (e.target as HTMLSelectElement).value as Format;
+            if (qualityField) qualityField.hidden = !lossyFormat(state.format);
             scheduleSave();
             redraw();
           },
@@ -146,21 +164,13 @@ function controls(): HTMLElement {
           h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG / JPEG"),
           h("option", { value: "png", selected: state.format === "png" }, "PNG"),
           h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
+          h("option", { value: "avif", selected: state.format === "avif" }, "AVIF"),
+          h("option", { value: "gif", selected: state.format === "gif" }, "GIF"),
+          h("option", { value: "bmp", selected: state.format === "bmp" }, "BMP"),
+          h("option", { value: "ico", selected: state.format === "ico" }, "ICO"),
         ),
       ),
-      labeled(t("convert.quality"),
-        h("input", {
-          type: "range",
-          min: "0.4",
-          max: "1",
-          step: "0.01",
-          value: String(state.quality),
-          onInput: (e: Event) => {
-            state.quality = Number((e.target as HTMLInputElement).value);
-            scheduleSave();
-          },
-        }),
-      ),
+      qualityField,
     ),
   );
 }
@@ -195,7 +205,7 @@ async function ingestFile(file: File): Promise<void> {
 
 async function addFiles(list: FileList | File[]): Promise<void> {
   const files = [...list].filter(
-    (f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|svg|heic|heif)$/i.test(f.name),
+    (f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|svg|bmp|ico|avif|heic|heif)$/i.test(f.name),
   );
   for (const file of files) await ingestFile(file);
   refreshList();
@@ -289,7 +299,24 @@ function redraw(): void {
 
 async function blobFor(item: Item): Promise<Blob> {
   if (!item.bitmap) throw new Error("decode");
-  const canvas = drawToCanvas(item.bitmap, item.width, item.height);
+  let width = item.width;
+  let height = item.height;
+  if (state.format === "ico") {
+    const scale = Math.min(1, 256 / Math.max(width, height));
+    width = Math.max(1, Math.round(width * scale));
+    height = Math.max(1, Math.round(height * scale));
+  }
+  const canvas = drawToCanvas(item.bitmap, width, height);
+  if (state.format === "bmp" || state.format === "gif" || state.format === "ico") {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("canvas");
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (state.format === "bmp") return blobFromBytes(encodeBmp(pixels), "image/bmp");
+    if (state.format === "gif") return blobFromBytes(encodeGif(pixels), "image/gif");
+    const png = await canvasToBlob(canvas, "image/png", 1);
+    const ico = encodeIco(new Uint8Array(await png.arrayBuffer()), canvas.width, canvas.height);
+    return blobFromBytes(ico, "image/x-icon");
+  }
   return canvasToBlob(canvas, mimeForFormat(state.format), state.quality);
 }
 

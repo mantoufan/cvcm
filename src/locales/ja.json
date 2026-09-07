@@ -6,10 +6,14 @@
     "titleWatermark": "画像ウォーターマーク — cv.cm",
     "titleCollage": "フォトコラージュ — cv.cm",
     "description": "クラウドクリップボードとブラウザツール。メモは 10 回閲覧または 1 日で削除。画像ツールはアップロードしません。",
-    "titleConvert": "PNG を JPG / WebP に変換 — cv.cm",
-    "descConvert": "ブラウザで PNG↔JPG↔WebP を変換。一括と ZIP。アップロードなし。",
+    "titleConvert": "PNG / JPG / WebP / AVIF / GIF / BMP / ICO 変換 — cv.cm",
+    "descConvert": "ブラウザで画像形式を変換。アップロードなし。",
     "titleImagePdf": "画像を PDF に変換 — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP を PDF に。複数枚を1つに。端末内、アップロードなし。"
+    "descImagePdf": "JPG / PNG / WebP を PDF に。複数枚を1つに。端末内、アップロードなし。",
+    "titleAudio": "音声を WAV に変換 — cv.cm",
+    "descAudio": "MP3、M4A、OGG などを WAV に。端末内、アップロードなし。",
+    "titleData": "JSON、CSV、Base64、Markdown 変換 — cv.cm",
+    "descData": "JSON 整形、CSV↔JSON、Base64、Markdown。ブラウザ内。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -64,12 +68,20 @@
       "blurb": "複数の写真を1枚にまとめます。レイアウトと余白は端末内で処理します。"
     },
     "convert": {
-      "name": "PNG / JPG / WebP",
-      "blurb": "PNG を JPG に、JPG を PNG に、WebP 相互変換。一括ダウンロード。アップロードなし。"
+      "name": "画像形式",
+      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。一括ダウンロード。アップロードなし。"
     },
     "image-pdf": {
       "name": "画像を PDF に",
       "blurb": "複数の写真を1つの PDF に。ブラウザ内。アップロードなし。"
+    },
+    "audio": {
+      "name": "音声を WAV に",
+      "blurb": "MP3、M4A、OGG などを WAV に。ブラウザ内。"
+    },
+    "data": {
+      "name": "テキストとデータ",
+      "blurb": "JSON、CSV、Base64、Markdown、URL。アップロードなし。"
     }
   },
   "watermark": {
@@ -222,11 +234,11 @@
     "privacy": "画像ツールはこのタブ内。クリップボードのメモは cv.cm に短時間保存され、その後削除されます。"
   },
   "convert": {
-    "title": "PNG・JPG・WebP 変換",
+    "title": "画像形式の変換",
     "back": "すべてのツール",
     "dropTitle": "画像をここにドロップ",
     "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "画像",
     "filesEmpty": "まだ画像がありません",
     "remove": "削除",
@@ -237,7 +249,7 @@
     "download": "ダウンロード",
     "downloadAll": "すべてを ZIP でダウンロード",
     "working": "変換中…",
-    "privacyNote": "PNG→JPG / WebP 変換はこのタブ内。アップロードなし。",
+    "privacyNote": "画像変換はこのタブ内。アップロードなし。",
     "hint": "出力形式を選んでダウンロード。",
     "errorDecode": "この画像はブラウザで読めませんでした。",
     "emptyDownload": "先に画像を追加してください。"
@@ -263,5 +275,50 @@
     "hint": "ページ順を整えて PDF を1つダウンロード。",
     "errorDecode": "この画像はブラウザで読めませんでした。",
     "emptyDownload": "先に画像を追加してください。"
+  },
+  "audio": {
+    "title": "音声を WAV に変換",
+    "back": "すべてのツール",
+    "privacyNote": "音声はこのタブでデコードし、WAV で保存します。アップロードなし。",
+    "dropTitle": "音声をここにドロップ",
+    "dropHint": "またはクリックして選択",
+    "dropTypes": "MP3、WAV、OGG、M4A、AAC、FLAC、WebM",
+    "filesTitle": "音声",
+    "filesEmpty": "まだファイルがありません",
+    "remove": "削除",
+    "clear": "すべて消去",
+    "exportTitle": "出力",
+    "hint": "ブラウザでデコードして WAV をダウンロード。",
+    "meta": "{duration}秒 · {rate} Hz · {channels} ch",
+    "download": "WAV をダウンロード",
+    "downloadAll": "すべてを ZIP でダウンロード",
+    "working": "変換中…",
+    "errorDecode": "この音声はブラウザで読めませんでした。",
+    "emptyDownload": "先に音声を追加してください。"
+  },
+  "data": {
+    "title": "テキストとデータの変換",
+    "back": "すべてのツール",
+    "privacyNote": "JSON、CSV、Base64、Markdown はこのタブ内。",
+    "mode": "変換",
+    "input": "入力",
+    "output": "出力",
+    "placeholder": "JSON、CSV、Markdown、テキストを貼り付け…",
+    "run": "変換",
+    "download": "ダウンロード",
+    "openFile": "ファイルを開く",
+    "error": "この入力は変換できません。",
+    "modes": {
+      "json-pretty": "JSON 整形",
+      "json-minify": "JSON 圧縮",
+      "csv-json": "CSV → JSON",
+      "json-csv": "JSON → CSV",
+      "base64-encode": "Base64 エンコード",
+      "base64-decode": "Base64 デコード",
+      "url-encode": "URL エンコード",
+      "url-decode": "URL デコード",
+      "md-html": "Markdown → HTML",
+      "html-md": "HTML → Markdown"
+    }
   }
 }

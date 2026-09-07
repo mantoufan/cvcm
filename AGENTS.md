@@ -19,9 +19,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/clip/` — cloud clipboard
 - `src/client/watermark/` — image watermark
 - `src/client/collage/` — photo collage
-- `src/client/convert/` — PNG / JPG / WebP
+- `src/client/convert/` — image formats (PNG / JPG / WebP / AVIF / GIF / BMP / ICO)
 - `src/client/image-pdf/` — images to PDF
-- `src/shared/path.ts` — `CATEGORIES` (share/clipboard, image, convert) and `TOOLS`
+- `src/client/audio/` — audio to WAV
+- `src/client/data/` — JSON / CSV / Base64 / Markdown
+- `src/shared/path.ts` — `CATEGORIES` (share/clipboard, image, convert) and `TOOLS` (convert includes image, PDF, audio, data)
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
