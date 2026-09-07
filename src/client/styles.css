@@ -609,7 +609,15 @@ input[type="color"] {
 }
 .clip-bytes { margin: 0; }
 .clip-result { display: grid; gap: 0.65rem; }
-.clip-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.clip-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+.clip-biu {
+  min-width: 2rem;
+  padding-inline: 0.55rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+}
+.clip-biu.i { font-style: italic; font-weight: 600; }
+.clip-biu.u { text-decoration: underline; font-weight: 600; }
 .clip-compose.over { outline: 2px dashed var(--pink-deep); }
 .clip-md {
   overflow: auto;

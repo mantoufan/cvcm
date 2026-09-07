@@ -109,6 +109,7 @@ function inline(text: string): string {
       return `<a href="${escapeHtml(url)}" rel="noreferrer">${escapeHtml(label)}</a>`;
     })
     .replace(/`([^`]+)`/g, (_m, code) => `<code>${escapeHtml(code)}</code>`)
+    .replace(/\+\+([^+]+)\+\+/g, (_m, s) => `<u>${s}</u>`)
     .replace(/\*\*([^*]+)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
     .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
 }

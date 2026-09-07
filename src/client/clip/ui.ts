@@ -104,12 +104,16 @@ function toolbar(
     imageInput,
     videoInput,
     filePick,
+    formatBtn("B", "clip.bold", "**", "clip-biu"),
+    formatBtn("I", "clip.italic", "*", "clip-biu i"),
+    formatBtn("U", "clip.underline", "++", "clip-biu u"),
     h("button", { type: "button", class: "chip", onClick: () => imageInput.click() }, t("clip.imageBtn")),
     h("button", { type: "button", class: "chip", onClick: () => videoInput.click() }, t("clip.videoBtn")),
     h("button", { type: "button", class: "chip", onClick: () => filePick.click() }, t("clip.attachBtn")),
     h("button", {
       type: "button",
       class: "chip",
+      "data-preview": "1",
       onClick: () => togglePreview(),
     }, previewing ? t("clip.edit") : t("clip.preview")),
   );
@@ -129,13 +133,38 @@ function fileInput(accept: string, onFiles: (files: File[]) => void): HTMLInputE
   });
 }
 
+function formatBtn(label: string, titleKey: string, mark: string, cls: string): HTMLButtonElement {
+  return h("button", {
+    type: "button",
+    class: `chip ${cls}`,
+    title: t(titleKey),
+    "aria-label": t(titleKey),
+    onClick: () => wrapSelection(mark),
+  }, label);
+}
+
+function wrapSelection(mark: string): void {
+  if (!textarea) return;
+  if (previewing) togglePreview();
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const value = textarea.value;
+  const selected = value.slice(start, end);
+  textarea.value = `${value.slice(0, start)}${mark}${selected}${mark}${value.slice(end)}`;
+  const inner = start + mark.length;
+  textarea.selectionStart = inner;
+  textarea.selectionEnd = inner + selected.length;
+  refreshBytes();
+  textarea.focus();
+}
+
 function togglePreview(): void {
   if (!textarea || !previewEl) return;
   previewing = !previewing;
   textarea.hidden = previewing;
   previewEl.hidden = !previewing;
   if (previewing) previewEl.innerHTML = renderClip(textarea.value || " ");
-  const btn = document.querySelector(".clip-bar .chip:last-child");
+  const btn = document.querySelector(".clip-bar [data-preview]");
   if (btn) btn.textContent = previewing ? t("clip.edit") : t("clip.preview");
 }
 

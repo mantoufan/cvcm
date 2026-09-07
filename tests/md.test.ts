@@ -11,6 +11,13 @@ describe("renderClip", () => {
     expect(html).toContain("<a href=");
   });
 
+  it("renders bold italic underline", () => {
+    const html = renderClip("**b** *i* ++u++");
+    expect(html).toContain("<strong>b</strong>");
+    expect(html).toContain("<em>i</em>");
+    expect(html).toContain("<u>u</u>");
+  });
+
   it("escapes scripts in markdown", () => {
     const html = renderClip("<script>alert(1)</script>");
     expect(html.toLowerCase()).not.toContain("<script");
