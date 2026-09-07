@@ -11,6 +11,7 @@ import {
 } from "../collage/engine";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
+import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { zipStore } from "../../shared/zip";
 import {
   type Anchor,
@@ -45,6 +46,7 @@ type Logo = {
   height: number;
   url: string;
   name: string;
+  file: File;
 };
 
 type Format = "png" | "jpeg" | "webp";
@@ -69,7 +71,8 @@ const state = {
   collageGap: 16,
   collageRadius: 12,
   collageBg: "#eef1f4",
-  collageFit: "cover" as FitMode,
+  collageFit: "contain" as FitMode,
+  preset: null as "confidential" | "copyright" | "center" | null,
   collageAspect: "square" as AspectId,
   anchor: "br" as Anchor,
   logo: null as Logo | null,
@@ -87,8 +90,18 @@ let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let hintEl: HTMLElement | null = null;
 let pagehideBound = false;
+let restoring = false;
 
-export function mountWatermark(host: HTMLElement): void {
+const scheduleSave = debounce(() => {
+  void persistWatermark();
+}, 400);
+
+export async function mountWatermark(host: HTMLElement): Promise<void> {
+  restoring = true;
+  if (sessionLive()) await restoreWatermark();
+  else await clearDraft("watermark");
+  markSession();
+  restoring = false;
   root = host;
   host.append(
     h("header", { class: "tool-head" },
@@ -104,12 +117,13 @@ export function mountWatermark(host: HTMLElement): void {
   );
   refreshList();
   redraw();
+  syncLogoOpts();
+  syncPresetChips();
   bindGlobal();
   if (!pagehideBound) {
     pagehideBound = true;
     window.addEventListener("pagehide", () => {
-      clearItems();
-      clearLogo();
+      void persistWatermark();
     });
   }
 }
@@ -192,9 +206,9 @@ function controlsRail(): HTMLElement {
     h("fieldset", null,
       h("legend", null, t("watermark.presetsTitle")),
       h("div", { class: "row wrap" },
-        h("button", { type: "button", class: "chip", onClick: () => applyPreset("confidential") }, t("watermark.presetConfidential")),
-        h("button", { type: "button", class: "chip", onClick: () => applyPreset("copyright") }, t("watermark.presetCopyright")),
-        h("button", { type: "button", class: "chip", onClick: () => applyPreset("center") }, t("watermark.presetCenter")),
+        presetChip("confidential", t("watermark.presetConfidential")),
+        presetChip("copyright", t("watermark.presetCopyright")),
+        presetChip("center", t("watermark.presetCenter")),
       ),
     ),
     h("fieldset", null,
@@ -218,10 +232,10 @@ function controlsRail(): HTMLElement {
             redraw();
           },
         },
-          h("option", { value: "sans", selected: true }, t("watermark.fontSans")),
-          h("option", { value: "serif" }, t("watermark.fontSerif")),
-          h("option", { value: "mono" }, t("watermark.fontMono")),
-          h("option", { value: "custom" }, t("watermark.fontCustom")),
+          h("option", { value: "sans", selected: state.font === "sans" }, t("watermark.fontSans")),
+          h("option", { value: "serif", selected: state.font === "serif" }, t("watermark.fontSerif")),
+          h("option", { value: "mono", selected: state.font === "mono" }, t("watermark.fontMono")),
+          h("option", { value: "custom", selected: state.font === "custom" }, t("watermark.fontCustom")),
         ),
       ),
       h("input", {
@@ -265,11 +279,13 @@ function controlsRail(): HTMLElement {
       h("legend", null, t("watermark.logoTitle")),
       h("div", { class: "row wrap" },
         logoPicker(),
-        h("button", { type: "button", class: "link", onClick: () => clearLogo() }, t("watermark.logoClear")),
+        h("button", { type: "button", class: "link", id: "wm-logo-clear", hidden: !state.logo, onClick: () => clearLogo() }, t("watermark.logoClear")),
       ),
-      slider("wm-logo-scale", t("watermark.logoScale"), 0.04, 0.6, 0.01, state.logoScale, (v) => { state.logoScale = v; }),
-      slider("wm-logo-opacity", t("watermark.opacity"), 0.05, 1, 0.01, state.logoOpacity, (v) => { state.logoOpacity = v; }),
-      slider("wm-logo-rotate", t("watermark.rotate"), -180, 180, 1, state.logoRotate, (v) => { state.logoRotate = v; }),
+      h("div", { id: "wm-logo-opts", hidden: !state.logo },
+        slider("wm-logo-scale", t("watermark.logoScale"), 0.04, 0.6, 0.01, state.logoScale, (v) => { state.logoScale = v; }),
+        slider("wm-logo-opacity", t("watermark.opacity"), 0.05, 1, 0.01, state.logoOpacity, (v) => { state.logoOpacity = v; }),
+        slider("wm-logo-rotate", t("watermark.rotate"), -180, 180, 1, state.logoRotate, (v) => { state.logoRotate = v; }),
+      ),
     ),
     h("fieldset", null,
       h("legend", null, t("watermark.layoutTitle")),
@@ -294,11 +310,12 @@ function controlsRail(): HTMLElement {
         h("select", {
           onChange: (e: Event) => {
             state.format = (e.target as HTMLSelectElement).value as Format;
+            scheduleSave();
           },
         },
-          h("option", { value: "png", selected: true }, "PNG"),
-          h("option", { value: "jpeg" }, "JPEG"),
-          h("option", { value: "webp" }, "WebP"),
+          h("option", { value: "png", selected: state.format === "png" }, "PNG"),
+          h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPEG"),
+          h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
         ),
       ),
       slider("wm-quality", t("watermark.quality"), 0.4, 1, 0.01, state.quality, (v) => { state.quality = v; }),
@@ -347,10 +364,10 @@ function collageOptions(): HTMLElement {
           redraw();
         },
       },
-        h("option", { value: "square", selected: true }, t("collage.aspectSquare")),
-        h("option", { value: "story" }, t("collage.aspectStory")),
-        h("option", { value: "portrait" }, t("collage.aspectPortrait")),
-        h("option", { value: "landscape" }, t("collage.aspectLandscape")),
+        h("option", { value: "square", selected: state.collageAspect === "square" }, t("collage.aspectSquare")),
+        h("option", { value: "story", selected: state.collageAspect === "story" }, t("collage.aspectStory")),
+        h("option", { value: "portrait", selected: state.collageAspect === "portrait" }, t("collage.aspectPortrait")),
+        h("option", { value: "landscape", selected: state.collageAspect === "landscape" }, t("collage.aspectLandscape")),
       ),
     ),
     labeled(t("collage.fit"),
@@ -360,8 +377,8 @@ function collageOptions(): HTMLElement {
           redraw();
         },
       },
-        h("option", { value: "cover", selected: true }, t("collage.fitCover")),
-        h("option", { value: "contain" }, t("collage.fitContain")),
+        h("option", { value: "cover", selected: state.collageFit === "cover" }, t("collage.fitCover")),
+        h("option", { value: "contain", selected: state.collageFit === "contain" }, t("collage.fitContain")),
       ),
     ),
     labeled(t("collage.background"),
@@ -378,6 +395,15 @@ function collageOptions(): HTMLElement {
     slider("wm-cg-radius", t("collage.radius"), 0, 48, 1, state.collageRadius, (v) => { state.collageRadius = v; }),
   );
   return box;
+}
+
+function presetChip(id: "confidential" | "copyright" | "center", label: string): HTMLElement {
+  return h("button", {
+    type: "button",
+    class: "chip" + (state.preset === id ? " on" : ""),
+    "data-preset": id,
+    onClick: () => applyPreset(id),
+  }, label);
 }
 
 function logoPicker(): HTMLElement {
@@ -476,31 +502,33 @@ function onKey(e: KeyboardEvent): void {
   }
 }
 
+async function ingestFile(file: File): Promise<void> {
+  const id = crypto.randomUUID();
+  const url = URL.createObjectURL(file);
+  const item: Item = {
+    id,
+    file,
+    url,
+    width: 0,
+    height: 0,
+    bitmap: null,
+    error: null,
+  };
+  state.items.push(item);
+  if (!state.selected) state.selected = id;
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+    item.bitmap = bitmap;
+    item.width = bitmap.width;
+    item.height = bitmap.height;
+  } catch {
+    item.error = t("watermark.errorDecode");
+  }
+}
+
 async function addFiles(list: FileList | File[]): Promise<void> {
   const files = [...list].filter((f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(f.name));
-  for (const file of files) {
-    const id = crypto.randomUUID();
-    const url = URL.createObjectURL(file);
-    const item: Item = {
-      id,
-      file,
-      url,
-      width: 0,
-      height: 0,
-      bitmap: null,
-      error: null,
-    };
-    state.items.push(item);
-    if (!state.selected) state.selected = id;
-    try {
-      const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-      item.bitmap = bitmap;
-      item.width = bitmap.width;
-      item.height = bitmap.height;
-    } catch {
-      item.error = t("watermark.errorDecode");
-    }
-  }
+  for (const file of files) await ingestFile(file);
   refreshList();
   redraw();
 }
@@ -523,6 +551,7 @@ function clearItems(): void {
   }
   state.items = [];
   state.selected = null;
+  void clearDraft("watermark");
   refreshList();
   redraw();
 }
@@ -537,10 +566,12 @@ async function setLogo(file: File): Promise<void> {
       height: bitmap.height,
       url: URL.createObjectURL(file),
       name: file.name,
+      file,
     };
   } catch {
     setStatus(t("watermark.errorDecode"));
   }
+  syncLogoOpts();
   redraw();
 }
 
@@ -549,6 +580,7 @@ function clearLogo(): void {
   state.logo.bitmap.close();
   URL.revokeObjectURL(state.logo.url);
   state.logo = null;
+  syncLogoOpts();
   redraw();
 }
 
@@ -677,6 +709,7 @@ function composeSource(): { image: CanvasImageSource; width: number; height: num
 }
 
 function redraw(): void {
+  if (!restoring) scheduleSave();
   if (!preview) return;
   const zip = document.getElementById("wm-download-all");
   if (zip) zip.hidden = state.layout !== "single";
@@ -706,6 +739,7 @@ function redraw(): void {
 }
 
 function applyPreset(kind: "confidential" | "copyright" | "center"): void {
+  state.preset = kind;
   if (kind === "confidential") {
     if (!state.text.trim()) state.text = "CONFIDENTIAL";
     state.tiled = true;
@@ -736,7 +770,22 @@ function applyPreset(kind: "confidential" | "copyright" | "center"): void {
   setRange("wm-opacity", state.opacity);
   setRange("wm-rotate", state.rotate);
   syncPad();
+  syncPresetChips();
   redraw();
+}
+
+function syncPresetChips(): void {
+  root?.querySelectorAll("[data-preset]").forEach((btn) => {
+    const on = (btn as HTMLElement).dataset.preset === state.preset;
+    btn.classList.toggle("on", on);
+  });
+}
+
+function syncLogoOpts(): void {
+  const opts = document.getElementById("wm-logo-opts");
+  if (opts) opts.hidden = !state.logo;
+  const clear = document.getElementById("wm-logo-clear");
+  if (clear) clear.hidden = !state.logo;
 }
 
 function syncPad(): void {
@@ -832,5 +881,103 @@ async function downloadAll(): Promise<void> {
     setStatus(t("watermark.errorDecode"));
   } finally {
     state.working = false;
+  }
+}
+
+type WmDraft = {
+  config: {
+    selected: number;
+    text: string;
+    font: FontId;
+    customFont: string;
+    size: number;
+    color: string;
+    opacity: number;
+    rotate: number;
+    stroke: boolean;
+    tiled: boolean;
+    gap: number;
+    layout: WmLayout;
+    collageGap: number;
+    collageRadius: number;
+    collageBg: string;
+    collageFit: FitMode;
+    collageAspect: AspectId;
+    anchor: Anchor;
+    logoScale: number;
+    logoOpacity: number;
+    logoRotate: number;
+    format: Format;
+    quality: number;
+    preset: "confidential" | "copyright" | "center" | null;
+  };
+  files: { name: string; type: string; blob: Blob }[];
+  logo: { name: string; type: string; blob: Blob } | null;
+};
+
+async function persistWatermark(): Promise<void> {
+  const selected = Math.max(0, state.items.findIndex((it) => it.id === state.selected));
+  await saveDraft("watermark", {
+    config: {
+      selected,
+      text: state.text,
+      font: state.font,
+      customFont: state.customFont,
+      size: state.size,
+      color: state.color,
+      opacity: state.opacity,
+      rotate: state.rotate,
+      stroke: state.stroke,
+      tiled: state.tiled,
+      gap: state.gap,
+      layout: state.layout,
+      collageGap: state.collageGap,
+      collageRadius: state.collageRadius,
+      collageBg: state.collageBg,
+      collageFit: state.collageFit,
+      collageAspect: state.collageAspect,
+      anchor: state.anchor,
+      logoScale: state.logoScale,
+      logoOpacity: state.logoOpacity,
+      logoRotate: state.logoRotate,
+      format: state.format,
+      quality: state.quality,
+      preset: state.preset,
+    },
+    files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
+    logo: state.logo
+      ? { name: state.logo.file.name, type: state.logo.file.type || "image/png", blob: state.logo.file }
+      : null,
+  } satisfies WmDraft);
+}
+
+async function restoreWatermark(): Promise<void> {
+  const draft = await loadDraft<WmDraft>("watermark");
+  if (!draft?.config) return;
+  const { selected, ...cfg } = draft.config;
+  Object.assign(state, cfg);
+  state.items = [];
+  state.selected = null;
+  state.logo = null;
+  for (const rec of draft.files || []) {
+    const file = new File([rec.blob], rec.name, { type: rec.type || "image/png" });
+    await ingestFile(file);
+  }
+  if (state.items[selected]) state.selected = state.items[selected].id;
+  if (draft.logo) {
+    const file = new File([draft.logo.blob], draft.logo.name, { type: draft.logo.type || "image/png" });
+    try {
+      const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+      state.logo = {
+        bitmap,
+        width: bitmap.width,
+        height: bitmap.height,
+        url: URL.createObjectURL(file),
+        name: file.name,
+        file,
+      };
+    } catch {
+      state.logo = null;
+    }
   }
 }

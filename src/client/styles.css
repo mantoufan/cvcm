@@ -412,7 +412,8 @@ input[type="color"] {
   min-height: 40px;
   cursor: pointer;
 }
-.chip:hover, .layout-btn.on, .pad-btn.on { border-color: var(--pink-deep); background: var(--pink-soft); }
+.chip:hover, .chip.on, .layout-btn.on, .pad-btn.on { border-color: var(--pink-deep); background: var(--pink-soft); }
+.chip.on { color: var(--ink); }
 .file-chip { display: inline-flex; align-items: center; }
 
 .pad {

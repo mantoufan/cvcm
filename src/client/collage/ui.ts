@@ -1,6 +1,7 @@
 import { mimeForFormat, outputFilename } from "../../shared/filename";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
+import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { appHref } from "../../shared/path";
 import {
   ASPECTS,
@@ -30,7 +31,7 @@ const state = {
   gap: 16,
   radius: 12,
   background: "#eef1f4",
-  fit: "cover" as FitMode,
+  fit: "contain" as FitMode,
   aspect: "square" as AspectId,
   format: "png" as Format,
   quality: 0.92,
@@ -40,8 +41,17 @@ let preview: HTMLCanvasElement | null = null;
 let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let pagehideBound = false;
+let restoring = false;
+const scheduleSave = debounce(() => {
+  void persistCollage();
+}, 400);
 
-export function mountCollage(host: HTMLElement): void {
+export async function mountCollage(host: HTMLElement): Promise<void> {
+  restoring = true;
+  if (sessionLive()) await restoreCollage();
+  else await clearDraft("collage");
+  markSession();
+  restoring = false;
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("collage.back")),
@@ -59,7 +69,9 @@ export function mountCollage(host: HTMLElement): void {
   bindGlobal();
   if (!pagehideBound) {
     pagehideBound = true;
-    window.addEventListener("pagehide", () => clearItems());
+    window.addEventListener("pagehide", () => {
+      void persistCollage();
+    });
   }
 }
 
@@ -142,7 +154,7 @@ function controlsRail(): HTMLElement {
             redraw();
           },
         },
-          h("option", { value: "square", selected: true }, t("collage.aspectSquare")),
+          h("option", { value: "square", selected: state.aspect === "square" }, t("collage.aspectSquare")),
           h("option", { value: "story" }, t("collage.aspectStory")),
           h("option", { value: "portrait" }, t("collage.aspectPortrait")),
           h("option", { value: "landscape" }, t("collage.aspectLandscape")),
@@ -155,8 +167,8 @@ function controlsRail(): HTMLElement {
             redraw();
           },
         },
-          h("option", { value: "cover", selected: true }, t("collage.fitCover")),
-          h("option", { value: "contain" }, t("collage.fitContain")),
+          h("option", { value: "cover", selected: state.fit === "cover" }, t("collage.fitCover")),
+          h("option", { value: "contain", selected: state.fit === "contain" }, t("collage.fitContain")),
         ),
       ),
       labeled(t("collage.background"),
@@ -178,9 +190,10 @@ function controlsRail(): HTMLElement {
         h("select", {
           onChange: (e: Event) => {
             state.format = (e.target as HTMLSelectElement).value as Format;
+            scheduleSave();
           },
         },
-          h("option", { value: "png", selected: true }, "PNG"),
+          h("option", { value: "png", selected: state.format === "png" }, "PNG"),
           h("option", { value: "jpeg" }, "JPEG"),
           h("option", { value: "webp" }, "WebP"),
         ),
@@ -255,22 +268,24 @@ function onPaste(e: ClipboardEvent): void {
   }
 }
 
+async function ingestFile(file: File): Promise<void> {
+  const id = crypto.randomUUID();
+  const url = URL.createObjectURL(file);
+  const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null };
+  state.items.push(item);
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+    item.bitmap = bitmap;
+    item.width = bitmap.width;
+    item.height = bitmap.height;
+  } catch {
+    item.error = t("collage.errorDecode");
+  }
+}
+
 async function addFiles(list: FileList | File[]): Promise<void> {
   const files = [...list].filter((f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(f.name));
-  for (const file of files) {
-    const id = crypto.randomUUID();
-    const url = URL.createObjectURL(file);
-    const item: Item = { id, file, url, width: 0, height: 0, bitmap: null, error: null };
-    state.items.push(item);
-    try {
-      const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-      item.bitmap = bitmap;
-      item.width = bitmap.width;
-      item.height = bitmap.height;
-    } catch {
-      item.error = t("collage.errorDecode");
-    }
-  }
+  for (const file of files) await ingestFile(file);
   refreshList();
   redraw();
 }
@@ -301,6 +316,7 @@ function clearItems(): void {
     URL.revokeObjectURL(item.url);
   }
   state.items = [];
+  void clearDraft("collage");
   refreshList();
   redraw();
 }
@@ -359,6 +375,7 @@ function slotsForRender() {
 }
 
 function redraw(): void {
+  if (!restoring) scheduleSave();
   if (!preview) return;
   const hint = rootHint();
   if (hint) hint.hidden = state.items.length > 0;
@@ -408,5 +425,46 @@ async function download(): Promise<void> {
     if (statusEl) statusEl.textContent = "";
   } catch {
     if (statusEl) statusEl.textContent = t("collage.errorDecode");
+  }
+}
+
+type CollageDraft = {
+  config: {
+    layout: LayoutId;
+    gap: number;
+    radius: number;
+    background: string;
+    fit: FitMode;
+    aspect: AspectId;
+    format: Format;
+    quality: number;
+  };
+  files: { name: string; type: string; blob: Blob }[];
+};
+
+async function persistCollage(): Promise<void> {
+  await saveDraft("collage", {
+    config: {
+      layout: state.layout,
+      gap: state.gap,
+      radius: state.radius,
+      background: state.background,
+      fit: state.fit,
+      aspect: state.aspect,
+      format: state.format,
+      quality: state.quality,
+    },
+    files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
+  } satisfies CollageDraft);
+}
+
+async function restoreCollage(): Promise<void> {
+  const draft = await loadDraft<CollageDraft>("collage");
+  if (!draft?.config) return;
+  Object.assign(state, draft.config);
+  state.items = [];
+  for (const rec of draft.files || []) {
+    const file = new File([rec.blob], rec.name, { type: rec.type || "image/png" });
+    await ingestFile(file);
   }
 }
