@@ -15,7 +15,7 @@
   "nav": {
     "tools": "ツール",
     "privacy": "端末内処理",
-    "share": "共有",
+    "share": "クリップボード",
     "image": "画像",
     "convert": "変換"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "クラウドクリップボード",
-      "blurb": "テキストを貼り付けてリンクをコピー。10 回閲覧または 1 日で削除。登録不要。"
+      "blurb": "テキスト、画像、動画、添付。Markdown とコード。10 回閲覧または 1 日で削除。"
     },
     "watermark": {
       "name": "画像ウォーターマーク",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "クラウドクリップボード",
     "back": "すべてのツール",
-    "privacyNote": "メモは Cloudflare D1 に保存され、10 回閲覧または 24 時間で削除されます。登録不要。",
+    "privacyNote": "テキストは D1、ファイルは S3。10 回閲覧または 24 時間で削除。登録不要。",
     "bodyLabel": "テキスト",
-    "placeholder": "共有するテキストを貼り付けるか入力…",
+    "placeholder": "Markdown、HTML、コード。画像やファイルをドロップ…",
     "submit": "リンクを作成",
     "paste": "貼り付け",
     "copyLink": "リンクをコピー",
@@ -195,7 +195,7 @@
     "expiresM": "{m} 分で削除",
     "expired": "このメモはもうありません。10 回閲覧されたか、1 日を過ぎています。",
     "empty": "先にテキストを入力してください。",
-    "tooLarge": "32 KB を超えています。",
+    "tooLarge": "64 KB を超えています。",
     "rate": "このネットワークからの作成が多すぎます。1 時間後に再試行してください。",
     "unavailable": "クリップボードは一時的に利用できません。",
     "gone": "このメモはもうありません。",
@@ -203,7 +203,17 @@
     "ruleViews": "10 回閲覧で削除",
     "ruleDay": "1 日で削除",
     "ruleLogin": "登録不要",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "画像・動画・添付は S3 に保存",
+    "preview": "プレビュー",
+    "edit": "編集",
+    "imageBtn": "画像",
+    "videoBtn": "動画",
+    "attachBtn": "添付",
+    "uploading": "アップロード中…",
+    "fileTooLarge": "ファイルが 32 MB を超えています。",
+    "fileType": "このファイル形式は使えません。",
+    "copySource": "ソースをコピー",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "画像ツールはこのタブ内。クリップボードのメモは cv.cm に短時間保存され、その後削除されます。"

@@ -19,7 +19,7 @@ export type RateRow = {
 export interface ClipStore {
   insert(row: ClipRow): Promise<"ok" | "conflict">;
   consume(id: string, now: number): Promise<ClipRow | null>;
-  purge(now: number): Promise<void>;
+  drainDead(now: number): Promise<string[]>;
   getRate(ipHash: string): Promise<RateRow | null>;
   putRate(ipHash: string, windowStart: number, count: number): Promise<void>;
 }
@@ -28,6 +28,7 @@ export interface D1Prepared {
   bind(...values: unknown[]): D1Prepared;
   first<T = Record<string, unknown>>(): Promise<T | null>;
   run(): Promise<{ meta: { changes: number } }>;
+  all<T = Record<string, unknown>>(): Promise<{ results: T[] }>;
 }
 
 export interface D1Database {
@@ -87,7 +88,11 @@ export function d1Store(db: D1Database): ClipStore {
       return fromSql(row);
     },
 
-    async purge(now) {
+    async drainDead(now) {
+      const listed = await db
+        .prepare("SELECT body FROM clips WHERE expires_at <= ? OR views >= ?")
+        .bind(now, CLIP_MAX_VIEWS)
+        .all<{ body: string }>();
       await db
         .prepare("DELETE FROM clips WHERE expires_at <= ? OR views >= ?")
         .bind(now, CLIP_MAX_VIEWS)
@@ -96,6 +101,7 @@ export function d1Store(db: D1Database): ClipStore {
         .prepare("DELETE FROM clip_rate WHERE window_start < ?")
         .bind(now - CLIP_RATE_WINDOW_MS * 2)
         .run();
+      return (listed.results || []).map((row) => row.body);
     },
 
     async getRate(ipHash) {
@@ -140,13 +146,18 @@ export function memoryStore(): ClipStore {
       if (row.views >= CLIP_MAX_VIEWS) clips.delete(id);
       return out;
     },
-    async purge(now) {
+    async drainDead(now) {
+      const bodies: string[] = [];
       for (const [id, row] of clips) {
-        if (row.expiresAt <= now || row.views >= CLIP_MAX_VIEWS) clips.delete(id);
+        if (row.expiresAt <= now || row.views >= CLIP_MAX_VIEWS) {
+          bodies.push(row.body);
+          clips.delete(id);
+        }
       }
       for (const [hash, rate] of rates) {
         if (now - rate.windowStart >= CLIP_RATE_WINDOW_MS * 2) rates.delete(hash);
       }
+      return bodies;
     },
     async getRate(ipHash) {
       const row = rates.get(ipHash);

@@ -15,7 +15,7 @@
   "nav": {
     "tools": "Herramientas",
     "privacy": "En el dispositivo",
-    "share": "Compartir",
+    "share": "Portapapeles",
     "image": "Imágenes",
     "convert": "Convertir"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "Portapapeles en la nube",
-      "blurb": "Pega texto y copia un enlace. Se borra a las 10 vistas o en un día. Sin cuenta."
+      "blurb": "Texto, imágenes, vídeo, archivos. Markdown y código. Se borra a las 10 vistas o en un día."
     },
     "watermark": {
       "name": "Marca de agua",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "Portapapeles en la nube",
     "back": "Todas las herramientas",
-    "privacyNote": "Las notas están en Cloudflare D1 y se borran a las 10 vistas o a las 24 horas. Sin cuenta.",
+    "privacyNote": "Texto en D1, archivos en S3. Se borra a las 10 vistas o a las 24 horas. Sin cuenta.",
     "bodyLabel": "Texto",
-    "placeholder": "Pega o escribe el texto a compartir…",
+    "placeholder": "Markdown, HTML o código. Suelta imágenes y archivos…",
     "submit": "Crear enlace",
     "paste": "Pegar",
     "copyLink": "Copiar enlace",
@@ -195,7 +195,7 @@
     "expiresM": "Caduca en {m} min",
     "expired": "Esta nota ya no existe. Se abrió 10 veces o tiene más de un día.",
     "empty": "Escribe texto primero.",
-    "tooLarge": "El texto supera 32 KB.",
+    "tooLarge": "El texto supera 64 KB.",
     "rate": "Demasiadas notas desde esta red. Prueba en una hora.",
     "unavailable": "El portapapeles no está disponible ahora.",
     "gone": "Esta nota ya no existe.",
@@ -203,7 +203,17 @@
     "ruleViews": "Se borra a las 10 vistas",
     "ruleDay": "Se borra al cabo de 1 día",
     "ruleLogin": "No hace falta cuenta",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "Imágenes, vídeo y archivos van a S3",
+    "preview": "Vista previa",
+    "edit": "Editar",
+    "imageBtn": "Imagen",
+    "videoBtn": "Vídeo",
+    "attachBtn": "Archivo",
+    "uploading": "Subiendo…",
+    "fileTooLarge": "El archivo supera 32 MB.",
+    "fileType": "Este tipo de archivo no está permitido.",
+    "copySource": "Copiar fuente",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "Las herramientas de imagen se quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y luego se borran."

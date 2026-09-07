@@ -15,7 +15,7 @@
   "nav": {
     "tools": "도구",
     "privacy": "기기 내 처리",
-    "share": "공유",
+    "share": "클립보드",
     "image": "이미지",
     "convert": "형식 변환"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "클라우드 클립보드",
-      "blurb": "텍스트를 붙여 링크를 복사. 10번 보거나 하루 뒤 삭제. 가입 없음."
+      "blurb": "텍스트, 이미지, 동영상, 첨부. Markdown과 코드. 10번 보거나 하루 뒤 삭제."
     },
     "watermark": {
       "name": "이미지 워터마크",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "클라우드 클립보드",
     "back": "모든 도구",
-    "privacyNote": "메모는 Cloudflare D1에 저장되며 10번 보거나 24시간 뒤 삭제됩니다. 가입 없음.",
+    "privacyNote": "텍스트는 D1, 파일은 S3. 10번 보거나 24시간 뒤 삭제. 가입 없음.",
     "bodyLabel": "텍스트",
-    "placeholder": "공유할 텍스트를 붙여넣거나 입력…",
+    "placeholder": "Markdown, HTML, 코드. 이미지나 파일을 드롭…",
     "submit": "링크 만들기",
     "paste": "붙여넣기",
     "copyLink": "링크 복사",
@@ -195,7 +195,7 @@
     "expiresM": "{m}분 후 삭제",
     "expired": "이 메모는 없습니다. 10번 보였거나 하루가 지났습니다.",
     "empty": "먼저 텍스트를 입력하세요.",
-    "tooLarge": "32 KB를 넘습니다.",
+    "tooLarge": "64 KB를 넘습니다.",
     "rate": "이 네트워크에서 너무 많이 만들었습니다. 한 시간 뒤 다시 시도하세요.",
     "unavailable": "클립보드를 잠시 사용할 수 없습니다.",
     "gone": "이 메모는 없습니다.",
@@ -203,7 +203,17 @@
     "ruleViews": "10번 보면 삭제",
     "ruleDay": "하루가 지나면 삭제",
     "ruleLogin": "가입 불필요",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "이미지, 동영상, 첨부는 S3에 저장",
+    "preview": "미리보기",
+    "edit": "편집",
+    "imageBtn": "이미지",
+    "videoBtn": "동영상",
+    "attachBtn": "첨부",
+    "uploading": "업로드 중…",
+    "fileTooLarge": "파일이 32 MB를 넘습니다.",
+    "fileType": "이 파일 형식은 허용되지 않습니다.",
+    "copySource": "원문 복사",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "이미지 도구는 이 탭에서 처리됩니다. 클립보드 메모는 cv.cm에 잠시 저장된 뒤 삭제됩니다."

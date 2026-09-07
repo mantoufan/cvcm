@@ -15,7 +15,7 @@
   "nav": {
     "tools": "Công cụ",
     "privacy": "Trên máy",
-    "share": "Chia sẻ",
+    "share": "Clipboard",
     "image": "Ảnh",
     "convert": "Đổi định dạng"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "Clipboard đám mây",
-      "blurb": "Dán chữ, copy liên kết. Xóa sau 10 lần xem hoặc một ngày. Không cần tài khoản."
+      "blurb": "Chữ, ảnh, video, tệp. Markdown và mã. Xóa sau 10 lần xem hoặc một ngày."
     },
     "watermark": {
       "name": "Đóng dấu ảnh",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "Clipboard đám mây",
     "back": "Tất cả công cụ",
-    "privacyNote": "Ghi chú nằm trên Cloudflare D1 và bị xóa sau 10 lần xem hoặc 24 giờ. Không cần tài khoản.",
+    "privacyNote": "Chữ trên D1, tệp trên S3. Xóa sau 10 lần xem hoặc 24 giờ. Không cần tài khoản.",
     "bodyLabel": "Văn bản",
-    "placeholder": "Dán hoặc nhập văn bản muốn chia sẻ…",
+    "placeholder": "Markdown, HTML hoặc mã. Kéo ảnh và tệp vào đây…",
     "submit": "Tạo liên kết",
     "paste": "Dán",
     "copyLink": "Sao chép liên kết",
@@ -195,7 +195,7 @@
     "expiresM": "Hết hạn sau {m} phút",
     "expired": "Ghi chú này đã mất. Đã mở 10 lần hoặc quá một ngày.",
     "empty": "Hãy nhập văn bản trước.",
-    "tooLarge": "Văn bản vượt quá 32 KB.",
+    "tooLarge": "Văn bản vượt quá 64 KB.",
     "rate": "Quá nhiều ghi chú từ mạng này. Thử lại sau một giờ.",
     "unavailable": "Clipboard tạm thời không dùng được.",
     "gone": "Ghi chú này đã mất.",
@@ -203,7 +203,17 @@
     "ruleViews": "Xóa sau 10 lần xem",
     "ruleDay": "Xóa sau 1 ngày",
     "ruleLogin": "Không cần tài khoản",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "Ảnh, video, tệp lưu trên S3",
+    "preview": "Xem trước",
+    "edit": "Sửa",
+    "imageBtn": "Ảnh",
+    "videoBtn": "Video",
+    "attachBtn": "Tệp",
+    "uploading": "Đang tải lên…",
+    "fileTooLarge": "Tệp vượt quá 32 MB.",
+    "fileType": "Không hỗ trợ loại tệp này.",
+    "copySource": "Sao chép nguồn",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "Công cụ ảnh chạy trong tab này. Ghi chú clipboard được lưu ngắn trên cv.cm rồi xóa."

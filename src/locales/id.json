@@ -15,7 +15,7 @@
   "nav": {
     "tools": "Alat",
     "privacy": "Di perangkat",
-    "share": "Bagikan",
+    "share": "Papan klip",
     "image": "Gambar",
     "convert": "Konversi"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "Papan klip awan",
-      "blurb": "Tempel teks, salin tautan. Dihapus setelah 10 kali dilihat atau satu hari. Tanpa akun."
+      "blurb": "Teks, gambar, video, berkas. Markdown dan kode. Hilang setelah 10 kali dilihat atau satu hari."
     },
     "watermark": {
       "name": "Watermark gambar",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "Papan klip awan",
     "back": "Semua alat",
-    "privacyNote": "Catatan disimpan di Cloudflare D1 dan dihapus setelah 10 kali dilihat atau 24 jam. Tanpa akun.",
+    "privacyNote": "Teks di D1, berkas di S3. Dihapus setelah 10 kali dilihat atau 24 jam. Tanpa akun.",
     "bodyLabel": "Teks",
-    "placeholder": "Tempel atau ketik teks yang ingin dibagikan…",
+    "placeholder": "Markdown, HTML, atau kode. Jatuhkan gambar dan berkas…",
     "submit": "Buat tautan",
     "paste": "Tempel",
     "copyLink": "Salin tautan",
@@ -195,7 +195,7 @@
     "expiresM": "Kedaluarsa dalam {m} mnt",
     "expired": "Catatan ini sudah hilang. Sudah dibuka 10 kali atau lebih dari satu hari.",
     "empty": "Masukkan teks dulu.",
-    "tooLarge": "Teks lebih dari 32 KB.",
+    "tooLarge": "Teks lebih dari 64 KB.",
     "rate": "Terlalu banyak catatan dari jaringan ini. Coba lagi dalam satu jam.",
     "unavailable": "Papan klip sedang tidak tersedia.",
     "gone": "Catatan ini sudah hilang.",
@@ -203,7 +203,17 @@
     "ruleViews": "Dihapus setelah 10 kali dilihat",
     "ruleDay": "Dihapus setelah 1 hari",
     "ruleLogin": "Tidak perlu akun",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "Gambar, video, berkas disimpan di S3",
+    "preview": "Pratinjau",
+    "edit": "Sunting",
+    "imageBtn": "Gambar",
+    "videoBtn": "Video",
+    "attachBtn": "Berkas",
+    "uploading": "Mengunggah…",
+    "fileTooLarge": "Berkas lebih dari 32 MB.",
+    "fileType": "Jenis berkas ini tidak diizinkan.",
+    "copySource": "Salin sumber",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "Alat gambar tetap di tab ini. Catatan papan klip disimpan sebentar di cv.cm, lalu dihapus."

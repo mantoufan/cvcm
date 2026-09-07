@@ -2,20 +2,26 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
 import { appHref, parseAppPath, STATIC_FILE } from "./shared/path";
+import type { S3Config } from "./s3-sign";
 
 export interface Env {
   ASSETS: { fetch: (request: Request | string) => Promise<Response> };
   DB?: D1Database;
+  S3_ACCESS_KEY_ID?: string;
+  S3_SECRET_ACCESS_KEY?: string;
+  S3_HOST?: string;
+  S3_BUCKET?: string;
+  S3_REGION?: string;
 }
 
 const CSP = [
   "default-src 'self'",
   "script-src 'self'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' blob: data:",
+  "img-src 'self' blob: data: https:",
   "font-src 'self'",
-  "connect-src 'self'",
-  "media-src blob:",
+  "connect-src 'self' https://files.s3.cv.cm https://s3.cv.cm",
+  "media-src blob: https:",
   "worker-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
@@ -25,6 +31,17 @@ const CSP = [
 ].join("; ");
 
 const ALLOWED = "GET, HEAD";
+
+function s3Config(env: Env): S3Config | null {
+  if (!env.S3_ACCESS_KEY_ID || !env.S3_SECRET_ACCESS_KEY) return null;
+  return {
+    accessKey: env.S3_ACCESS_KEY_ID,
+    secret: env.S3_SECRET_ACCESS_KEY,
+    host: env.S3_HOST || "files.s3.cv.cm",
+    bucket: env.S3_BUCKET || "files",
+    region: env.S3_REGION || "us-east-1",
+  };
+}
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -36,7 +53,7 @@ export default {
     }
 
     const store = env.DB ? d1Store(env.DB) : null;
-    const api = await handleClipApi(request, store);
+    const api = await handleClipApi(request, { store, s3: s3Config(env) });
     if (api) return api;
 
     if (request.method !== "GET" && request.method !== "HEAD") {

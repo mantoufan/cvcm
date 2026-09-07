@@ -6,7 +6,7 @@ Browser tools plus a tiny cloud clipboard.
 
 ## Tools
 
-- **Cloud clipboard** / 云剪切板 — paste text, copy a link, gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
+- **Cloud clipboard** / 云剪切板 — text, images, video, files. Markdown / HTML / code. Gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
 - **Image watermark** / 图片水印 — text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **PNG / JPG / WebP** — convert in the browser. [Open](https://cv.cm/en/convert/)

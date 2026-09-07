@@ -15,7 +15,7 @@
   "nav": {
     "tools": "工具",
     "privacy": "本機處理",
-    "share": "分享",
+    "share": "剪貼簿",
     "image": "圖片",
     "convert": "格式轉換"
   },
@@ -53,7 +53,7 @@
   "tools": {
     "clip": {
       "name": "雲端剪貼簿",
-      "blurb": "貼上文字，複製連結。查看 10 次或 1 天後刪除。無需登入。"
+      "blurb": "文字、圖片、影片、附件。支援 Markdown 與程式碼。查看 10 次或 1 天後刪除。"
     },
     "watermark": {
       "name": "圖片浮水印",
@@ -178,9 +178,9 @@
   "clip": {
     "title": "雲端剪貼簿",
     "back": "全部工具",
-    "privacyNote": "內容存在 Cloudflare D1，查看 10 次或 24 小時後刪除。無需登入。",
+    "privacyNote": "文字在 D1，檔案在 S3。查看 10 次或 24 小時後刪除。無需登入。",
     "bodyLabel": "文字",
-    "placeholder": "貼上或輸入要分享的文字…",
+    "placeholder": "Markdown、HTML 或程式碼。可拖入圖片和檔案…",
     "submit": "產生連結",
     "paste": "貼上",
     "copyLink": "複製連結",
@@ -195,7 +195,7 @@
     "expiresM": "{m} 分後刪除",
     "expired": "這則便條已經消失。可能已查看 10 次，或超過 1 天。",
     "empty": "請先輸入文字。",
-    "tooLarge": "超過 32 KB。",
+    "tooLarge": "超過 64 KB。",
     "rate": "這個網路建立太頻繁，請一小時後再試。",
     "unavailable": "雲端剪貼簿暫時無法使用。",
     "gone": "這則便條已經消失。",
@@ -203,7 +203,17 @@
     "ruleViews": "查看 10 次後刪除",
     "ruleDay": "超過 1 天後刪除",
     "ruleLogin": "無需登入",
-    "bytes": "{used} / 32 KB"
+    "ruleFiles": "圖片、影片、附件存在 S3",
+    "preview": "預覽",
+    "edit": "編輯",
+    "imageBtn": "圖片",
+    "videoBtn": "影片",
+    "attachBtn": "附件",
+    "uploading": "正在上傳…",
+    "fileTooLarge": "檔案超過 32 MB。",
+    "fileType": "不支援這種檔案。",
+    "copySource": "複製原文",
+    "bytes": "{used} / 64 KB"
   },
   "footer": {
     "privacy": "圖片工具在本機處理。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"

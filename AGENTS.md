@@ -4,10 +4,10 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image tools (watermark, collage, convert, image-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or third-party `connect-src` hosts.
-2. The only storage for user content is the D1 database `cvcm` (binding `DB`), table `clips`, used by the cloud clipboard tool. No KV, R2, or other stores for user content.
-3. The Worker serves static files, locale redirects, security headers, and `/api/clip`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
-4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Max 32 KB. No listing endpoint.
+1. Image tools (watermark, collage, convert, image-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
+3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
+4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
 5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
 
 ## Layout
@@ -21,7 +21,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/collage/` — photo collage
 - `src/client/convert/` — PNG / JPG / WebP
 - `src/client/image-pdf/` — images to PDF
-- `src/shared/path.ts` — `CATEGORIES` (share, image, convert) and `TOOLS`
+- `src/shared/path.ts` — `CATEGORIES` (share/clipboard, image, convert) and `TOOLS`
+- `src/shared/md.ts` — markdown/html render + highlight
+- `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 

@@ -30,11 +30,11 @@ async function post(store: ReturnType<typeof memoryStore>, body: unknown, ip = "
     },
     body: typeof body === "string" ? body : JSON.stringify(body),
   });
-  return handleClipApi(request, store, now);
+  return handleClipApi(request, { store, now });
 }
 
 async function get(store: ReturnType<typeof memoryStore>, id: string, now?: number) {
-  return handleClipApi(new Request(`${origin}/api/clip/${id}`), store, now);
+  return handleClipApi(new Request(`${origin}/api/clip/${id}`), { store, now });
 }
 
 describe("remainingClock", () => {
@@ -111,13 +111,47 @@ describe("clip API", () => {
 
   it("does not list notes", async () => {
     const store = memoryStore();
-    const res = await handleClipApi(new Request(`${origin}/api/clip`), store);
+    const res = await handleClipApi(new Request(`${origin}/api/clip`), { store });
     expect(res?.status).toBe(405);
   });
 
   it("returns 503 without a database", async () => {
-    const res = await handleClipApi(new Request(`${origin}/api/clip`, { method: "POST", body: "x" }), null);
+    const res = await handleClipApi(new Request(`${origin}/api/clip`, { method: "POST", body: "x" }), { store: null });
     expect(res?.status).toBe(503);
+  });
+
+  it("presigns S3 uploads and rejects html files", async () => {
+    const store = memoryStore();
+    const s3 = {
+      accessKey: "AKID",
+      secret: "secret",
+      host: "files.s3.cv.cm",
+      bucket: "files",
+      region: "us-east-1",
+    };
+    const ok = await handleClipApi(
+      new Request(`${origin}/api/clip/upload`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "CF-Connecting-IP": "2.2.2.2" },
+        body: JSON.stringify({ name: "pic.png", type: "image/png", size: 12 }),
+      }),
+      { store, s3 },
+    );
+    expect(ok?.status).toBe(200);
+    const payload = (await ok!.json()) as { putUrl: string; url: string; kind: string };
+    expect(payload.kind).toBe("image");
+    expect(payload.putUrl).toContain("https://files.s3.cv.cm/clip/");
+    expect(payload.putUrl).toContain("X-Amz-Signature=");
+    const bad = await handleClipApi(
+      new Request(`${origin}/api/clip/upload`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "CF-Connecting-IP": "2.2.2.2" },
+        body: JSON.stringify({ name: "x.html", type: "text/html", size: 12 }),
+      }),
+      { store, s3 },
+    );
+    expect(bad?.status).toBe(400);
+    expect(await bad!.json()).toEqual({ error: "file_type" });
   });
 });
 
