@@ -3,12 +3,18 @@
     "title": "cv.cm — alat di browser, file tidak diunggah",
     "titleWatermark": "Watermark gambar — cv.cm",
     "titleCollage": "Kolase foto — cv.cm",
-    "description": "Alat gratis yang berjalan di browser. Tambah watermark tanpa mengunggah file. Tanpa akun, tanpa basis data."
+    "description": "Alat di browser: watermark, kolase, PNG→JPG, gambar→PDF. Tanpa daftar, tanpa unggah.",
+    "titleConvert": "Ubah PNG ke JPG, WebP — cv.cm",
+    "descConvert": "Ubah PNG↔JPG↔WebP di browser. Batch dan ZIP. Tanpa unggah.",
+    "titleImagePdf": "Gambar ke PDF — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP menjadi PDF, banyak gambar satu file. Di perangkat, tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Alat",
-    "privacy": "Di perangkat"
+    "privacy": "Di perangkat",
+    "image": "Gambar",
+    "convert": "Konversi"
   },
   "lang": {
     "label": "Bahasa",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "Kolase foto",
       "blurb": "Gabungkan foto jadi satu. Pilih tata letak, jarak, lalu ekspor. Tidak diunggah."
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG ke JPG, JPG ke PNG, WebP. Unduh massal. Tidak diunggah."
+    },
+    "image-pdf": {
+      "name": "Gambar ke PDF",
+      "blurb": "Gabung foto jadi satu PDF. Di browser. Tidak diunggah."
     }
   },
   "watermark": {
@@ -156,5 +170,48 @@
   },
   "footer": {
     "privacy": "File diproses secara lokal dan tidak pernah dikirim ke cv.cm."
+  },
+  "convert": {
+    "title": "Ubah PNG, JPG, WebP",
+    "back": "Semua alat",
+    "dropTitle": "Letakkan gambar di sini",
+    "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "filesTitle": "Gambar",
+    "filesEmpty": "Belum ada gambar",
+    "remove": "Hapus",
+    "clear": "Hapus semua",
+    "exportTitle": "Keluaran",
+    "format": "Format",
+    "quality": "Kualitas",
+    "download": "Unduh",
+    "downloadAll": "Unduh semua sebagai ZIP",
+    "working": "Mengonversi…",
+    "privacyNote": "PNG ke JPG / WebP hanya di tab ini, tidak diunggah.",
+    "hint": "Pilih format lalu unduh.",
+    "errorDecode": "Browser tidak bisa membaca gambar ini.",
+    "emptyDownload": "Tambah gambar dulu."
+  },
+  "imagePdf": {
+    "title": "Ubah gambar ke PDF",
+    "back": "Semua alat",
+    "dropTitle": "Letakkan gambar di sini",
+    "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Halaman",
+    "filesEmpty": "Belum ada gambar",
+    "remove": "Hapus",
+    "clear": "Hapus semua",
+    "up": "Naik",
+    "down": "Turun",
+    "exportTitle": "PDF",
+    "pageNote": "Tiap gambar satu halaman A4, utuh, tanpa potong.",
+    "quality": "Kualitas JPEG",
+    "download": "Unduh PDF",
+    "working": "Membuat PDF…",
+    "privacyNote": "JPG ke PDF, PNG ke PDF hanya di tab ini, tidak diunggah.",
+    "hint": "Urutkan halaman, lalu unduh satu PDF.",
+    "errorDecode": "Browser tidak bisa membaca gambar ini.",
+    "emptyDownload": "Tambah gambar dulu."
   }
 }

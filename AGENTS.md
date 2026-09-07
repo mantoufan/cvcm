@@ -15,7 +15,10 @@ Browser-local toolkit. Cloudflare Worker (deployed as Pages advanced mode `_work
 - `src/client/` — SPA
 - `src/client/watermark/` — image watermark
 - `src/client/collage/` — photo collage
-- `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko`. UI language still follows the browser / cookie.
+- `src/client/convert/` — PNG / JPG / WebP
+- `src/client/image-pdf/` — images to PDF
+- `src/shared/path.ts` — `CATEGORIES` (image, convert) and `TOOLS`
+- `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 
 ## Deploy

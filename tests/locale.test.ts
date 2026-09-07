@@ -54,6 +54,16 @@ describe("parseAppPath", () => {
       locale: "zh-CN",
       tool: "collage",
     });
+    expect(parseAppPath("/en/convert/")).toEqual({
+      kind: "app",
+      locale: "en",
+      tool: "convert",
+    });
+    expect(parseAppPath("/es/image-pdf/")).toEqual({
+      kind: "app",
+      locale: "es",
+      tool: "image-pdf",
+    });
   });
 
   it("treats missing locale as bare", () => {

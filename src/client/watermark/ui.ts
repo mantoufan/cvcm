@@ -91,6 +91,7 @@ let statusEl: HTMLElement | null = null;
 let hintEl: HTMLElement | null = null;
 let pagehideBound = false;
 let restoring = false;
+let hydrated = false;
 
 const scheduleSave = debounce(() => {
   void persistWatermark();
@@ -98,9 +99,12 @@ const scheduleSave = debounce(() => {
 
 export async function mountWatermark(host: HTMLElement): Promise<void> {
   restoring = true;
-  if (sessionLive()) await restoreWatermark();
-  else await clearDraft("watermark");
-  markSession();
+  if (!hydrated) {
+    if (sessionLive()) await restoreWatermark();
+    else await clearDraft("watermark");
+    markSession();
+    hydrated = true;
+  }
   restoring = false;
   root = host;
   host.append(

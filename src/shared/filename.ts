@@ -17,11 +17,13 @@ export function outputFilename(
 ): string {
   const { stem } = stemAndExt(originalName);
   const ext =
-    mime === "image/jpeg"
-      ? "jpg"
-      : mime === "image/webp"
-        ? "webp"
-        : "png";
+    mime === "application/pdf"
+      ? "pdf"
+      : mime === "image/jpeg"
+        ? "jpg"
+        : mime === "image/webp"
+          ? "webp"
+          : "png";
   const safe = stem.replace(/[^\w\u0080-\uFFFF.-]+/g, "_").slice(0, 80) || "image";
   return `${safe}${suffix}.${ext}`;
 }

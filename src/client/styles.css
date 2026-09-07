@@ -40,7 +40,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: nowrap;
   gap: 0.5rem;
   padding: calc(0.9rem + env(safe-area-inset-top)) 0 0.9rem;
@@ -69,43 +69,60 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .nav {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.4rem;
+  justify-content: flex-start;
+  gap: 0.15rem;
   min-width: 0;
+  flex: 1;
 }
 .nav a {
   text-decoration: none;
-  font-size: 0.92rem;
-  white-space: nowrap;
-  padding: 0.4rem 0.55rem;
-  min-height: 40px;
-  display: inline-flex;
-  align-items: center;
+  color: inherit;
 }
-.tool-map {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  gap: 0.15rem;
-  padding: 0.15rem;
-  background: var(--gray);
-  border-radius: 12px;
-}
-.nav-tool {
-  color: var(--ink-soft);
+.menu { position: relative; }
+.menu-btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
   font-weight: 650;
-  font-size: 0.86rem;
-  padding: 0.35rem 0.7rem;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.75rem;
+  min-height: 40px;
   border-radius: 10px;
-  min-height: 36px;
+  color: var(--ink-soft);
 }
-.nav-tool.on {
-  background: var(--white);
+.menu-btn:hover, .menu-btn.on, .menu.open .menu-btn {
   color: var(--ink);
-  box-shadow: var(--shadow);
+  background: var(--gray);
 }
-.nav-tool:hover { color: var(--ink); }
+.menu-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.4rem);
+  min-width: 17.5rem;
+  max-width: min(22rem, 86vw);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.4rem;
+  box-shadow: var(--shadow);
+  z-index: 30;
+}
+.menu-item {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  text-align: left;
+}
+.menu-item:hover, .menu-item.on { background: var(--pink-soft); }
+.menu-item strong { font-size: 0.92rem; }
+.menu-item span {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+}
 .badge, .pill {
   font-size: 0.75rem;
   border: 1px solid var(--line);
@@ -118,6 +135,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .lang {
   width: auto;
   max-width: 10.5rem;
+  margin-left: auto;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -207,7 +225,7 @@ h1 {
   place-items: center;
   background: var(--white);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
 }
 .tile-body { padding: 1rem 1.05rem 1.15rem; }
 .tile-body h3 { margin: 0 0 0.35rem; font-size: 1.08rem; }
@@ -500,14 +518,13 @@ input[type="color"] {
   .hero-band { padding: 1.8rem 1rem 2.2rem; }
   .badge { display: none; }
   .top { gap: 0.3rem; }
-  .nav { display: contents; }
   .brand-name { display: none; }
   .mark { width: 1.7rem; height: 1.7rem; font-size: 0.62rem; border-radius: 8px; }
-  .nav a, .nav-tool, .lang { min-height: 32px; }
-  .nav-tool { padding: 0.2rem 0.42rem; font-size: 0.75rem; }
-  .lang { padding: 0.2rem 0.3rem; font-size: 0.75rem; }
-  .tool-map { padding: 0.1rem; border-radius: 10px; margin-left: auto; }
+  .menu-btn { min-height: 32px; padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+  .lang { padding: 0.2rem 0.3rem; font-size: 0.75rem; min-height: 32px; }
+  .menu-panel { min-width: 15rem; }
   .tile-cover { height: 120px; }
+  .tile-mark { font-size: 0.9rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

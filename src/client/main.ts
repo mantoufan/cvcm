@@ -1,9 +1,18 @@
 import { unmountCollage, mountCollage } from "./collage/ui";
+import { mountConvert, unmountConvert } from "./convert/ui";
 import { clear, h } from "./dom";
 import { mountHome } from "./home";
+import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
-import { TOOLS, appHref, parseAppPath, type ToolId } from "../shared/path";
+import {
+  CATEGORIES,
+  type CategoryId,
+  appHref,
+  categoryOf,
+  parseAppPath,
+  type ToolId,
+} from "../shared/path";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
 
@@ -15,6 +24,7 @@ function requireApp(): HTMLElement {
 const app = requireApp();
 
 let tool: ToolId | null = null;
+let openMenu: CategoryId | null = null;
 
 boot();
 window.addEventListener("popstate", () => render());
@@ -39,24 +49,44 @@ function boot(): void {
 }
 
 function onClick(e: MouseEvent): void {
-  const a = (e.target as HTMLElement | null)?.closest("a");
-  if (!a || a.target === "_blank" || a.origin !== location.origin) return;
-  const parsed = parseAppPath(a.pathname);
-  if (parsed.kind === "static") return;
-  e.preventDefault();
-  history.pushState(null, "", a.href);
-  render();
+  const target = e.target as HTMLElement | null;
+  const a = target?.closest("a");
+  if (a && a.target !== "_blank" && a.origin === location.origin) {
+    const parsed = parseAppPath(a.pathname);
+    if (parsed.kind !== "static") {
+      e.preventDefault();
+      openMenu = null;
+      history.pushState(null, "", a.href);
+      render();
+      return;
+    }
+  }
+  if (openMenu && !target?.closest(".menu")) {
+    openMenu = null;
+    render();
+  }
 }
 
 function unmountTools(): void {
   unmountWatermark();
   unmountCollage();
+  unmountConvert();
+  unmountImagePdf();
 }
 
 function pageTitle(): string {
   if (tool === "watermark") return t("meta.titleWatermark");
   if (tool === "collage") return t("meta.titleCollage");
+  if (tool === "convert") return t("meta.titleConvert");
+  if (tool === "image-pdf") return t("meta.titleImagePdf");
   return t("meta.title");
+}
+
+function pageDescription(): string {
+  if (tool === "convert") return t("meta.descConvert");
+  if (tool === "image-pdf") return t("meta.descImagePdf");
+  if (tool === "watermark" || tool === "collage") return t(`tools.${tool}.blurb`);
+  return t("meta.description");
 }
 
 function render(): void {
@@ -74,7 +104,7 @@ function render(): void {
 
   document.title = pageTitle();
   const desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", t("meta.description"));
+  if (desc) desc.setAttribute("content", pageDescription());
   const canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) canonical.setAttribute("href", `https://cv.cm${appHref(loc, tool)}`);
 
@@ -84,8 +114,10 @@ function render(): void {
 
 function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
-  if (tool === "watermark") mountWatermark(main);
-  else if (tool === "collage") mountCollage(main);
+  if (tool === "watermark") void mountWatermark(main);
+  else if (tool === "collage") void mountCollage(main);
+  else if (tool === "convert") void mountConvert(main);
+  else if (tool === "image-pdf") void mountImagePdf(main);
   else mountHome(main, loc);
 
   return h("div", { class: "page" + (tool ? " is-tool" : "") },
@@ -94,27 +126,48 @@ function shell(loc: Locale): HTMLElement {
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
         h("span", { class: "brand-name" }, t("brand")),
       ),
-      h("nav", { class: "nav" },
-        toolMap(loc, tool),
-        h("span", { class: "badge" }, t("nav.privacy")),
-        langSwitch(loc, tool),
+      h("nav", { class: "nav", "aria-label": t("nav.tools") },
+        ...CATEGORIES.map((cat) => categoryMenu(loc, cat.id, tool)),
       ),
+      langSwitch(loc, tool),
     ),
     main,
     h("footer", { class: "foot" }, t("footer.privacy")),
   );
 }
 
-function toolMap(loc: Locale, current: ToolId | null): HTMLElement {
-  return h("div", { class: "tool-map", "aria-label": t("nav.tools") },
-    ...TOOLS.map((id) =>
-      h("a", {
-        class: "nav-tool" + (current === id ? " on" : ""),
-        href: appHref(loc, id),
-        "data-nav": id,
-        "aria-current": current === id ? "page" : undefined,
-      }, t(`tools.${id}.name`)),
-    ),
+function categoryMenu(loc: Locale, cat: CategoryId, current: ToolId | null): HTMLElement {
+  const def = CATEGORIES.find((c) => c.id === cat)!;
+  const active = current ? categoryOf(current) === cat : false;
+  const open = openMenu === cat;
+  return h("div", { class: "menu" + (open ? " open" : "") + (active ? " current" : "") },
+    h("button", {
+      type: "button",
+      class: "menu-btn" + (active ? " on" : ""),
+      "aria-expanded": String(open),
+      "aria-haspopup": "true",
+      onClick: (e: Event) => {
+        e.stopPropagation();
+        openMenu = openMenu === cat ? null : cat;
+        render();
+      },
+    }, t(`nav.${cat}`)),
+    open
+      ? h("div", { class: "menu-panel", role: "menu" },
+          ...def.tools.map((id) =>
+            h("a", {
+              class: "menu-item" + (current === id ? " on" : ""),
+              href: appHref(loc, id),
+              role: "menuitem",
+              "data-nav": id,
+              "aria-current": current === id ? "page" : undefined,
+            },
+              h("strong", null, t(`tools.${id}.name`)),
+              h("span", null, t(`tools.${id}.blurb`)),
+            ),
+          ),
+        )
+      : null,
   );
 }
 

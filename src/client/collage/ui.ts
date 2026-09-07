@@ -42,15 +42,19 @@ let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let pagehideBound = false;
 let restoring = false;
+let hydrated = false;
 const scheduleSave = debounce(() => {
   void persistCollage();
 }, 400);
 
 export async function mountCollage(host: HTMLElement): Promise<void> {
   restoring = true;
-  if (sessionLive()) await restoreCollage();
-  else await clearDraft("collage");
-  markSession();
+  if (!hydrated) {
+    if (sessionLive()) await restoreCollage();
+    else await clearDraft("collage");
+    markSession();
+    hydrated = true;
+  }
   restoring = false;
   host.append(
     h("header", { class: "tool-head" },

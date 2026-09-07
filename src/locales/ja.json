@@ -3,12 +3,18 @@
     "title": "cv.cm — ブラウザ内ツール、ファイルは送信しません",
     "titleWatermark": "画像ウォーターマーク — cv.cm",
     "titleCollage": "フォトコラージュ — cv.cm",
-    "description": "ブラウザで動く無料ツール。画像に透かしを入れてもファイルはアップロードされません。アカウントもデータベースもありません。"
+    "description": "ブラウザ完結ツール。透かし、コラージュ、PNG→JPG、画像→PDF。登録不要、アップロードなし。",
+    "titleConvert": "PNG を JPG / WebP に変換 — cv.cm",
+    "descConvert": "ブラウザで PNG↔JPG↔WebP を変換。一括と ZIP。アップロードなし。",
+    "titleImagePdf": "画像を PDF に変換 — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP を PDF に。複数枚を1つに。端末内、アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "ツール",
-    "privacy": "端末内処理"
+    "privacy": "端末内処理",
+    "image": "画像",
+    "convert": "変換"
   },
   "lang": {
     "label": "言語",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "フォトコラージュ",
       "blurb": "複数の写真を1枚にまとめます。レイアウトと余白は端末内で処理します。"
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG を JPG に、JPG を PNG に、WebP 相互変換。一括ダウンロード。アップロードなし。"
+    },
+    "image-pdf": {
+      "name": "画像を PDF に",
+      "blurb": "複数の写真を1つの PDF に。ブラウザ内。アップロードなし。"
     }
   },
   "watermark": {
@@ -156,5 +170,48 @@
   },
   "footer": {
     "privacy": "ファイルは端末内で処理され、cv.cm には送信されません。"
+  },
+  "convert": {
+    "title": "PNG・JPG・WebP 変換",
+    "back": "すべてのツール",
+    "dropTitle": "画像をここにドロップ",
+    "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "filesTitle": "画像",
+    "filesEmpty": "まだ画像がありません",
+    "remove": "削除",
+    "clear": "すべて消去",
+    "exportTitle": "出力",
+    "format": "形式",
+    "quality": "品質",
+    "download": "ダウンロード",
+    "downloadAll": "すべてを ZIP でダウンロード",
+    "working": "変換中…",
+    "privacyNote": "PNG→JPG / WebP 変換はこのタブ内。アップロードなし。",
+    "hint": "出力形式を選んでダウンロード。",
+    "errorDecode": "この画像はブラウザで読めませんでした。",
+    "emptyDownload": "先に画像を追加してください。"
+  },
+  "imagePdf": {
+    "title": "画像を PDF に変換",
+    "back": "すべてのツール",
+    "dropTitle": "画像をここにドロップ",
+    "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "ページ",
+    "filesEmpty": "まだ画像がありません",
+    "remove": "削除",
+    "clear": "すべて消去",
+    "up": "上へ",
+    "down": "下へ",
+    "exportTitle": "PDF",
+    "pageNote": "1枚につき A4 1ページ。全体を入れてトリミングしません。",
+    "quality": "JPEG 品質",
+    "download": "PDF をダウンロード",
+    "working": "PDF を作成中…",
+    "privacyNote": "JPG→PDF、PNG→PDF はこのタブ内。アップロードなし。",
+    "hint": "ページ順を整えて PDF を1つダウンロード。",
+    "errorDecode": "この画像はブラウザで読めませんでした。",
+    "emptyDownload": "先に画像を追加してください。"
   }
 }

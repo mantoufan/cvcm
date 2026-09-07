@@ -1,7 +1,21 @@
 import { h } from "./dom";
 import { t } from "./i18n";
 import type { Locale } from "../shared/locale";
-import { appHref } from "../shared/path";
+import { CATEGORIES, appHref, type ToolId } from "../shared/path";
+
+const MARK: Record<ToolId, string> = {
+  watermark: "印",
+  collage: "拼",
+  convert: "转",
+  "image-pdf": "PDF",
+};
+
+const TONE: Record<ToolId, "pink" | "sky"> = {
+  watermark: "pink",
+  collage: "sky",
+  convert: "pink",
+  "image-pdf": "sky",
+};
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
@@ -10,13 +24,14 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       h("h1", null, t("home.title")),
       h("p", { class: "lede" }, t("home.lead")),
     ),
-    h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.tools")),
-      ),
-      h("div", { class: "tiles" },
-        tile(locale, "watermark", "pink"),
-        tile(locale, "collage", "sky"),
+    ...CATEGORIES.map((cat) =>
+      h("section", { class: "wall" },
+        h("div", { class: "wall-h" },
+          h("h2", null, t(`nav.${cat.id}`)),
+        ),
+        h("div", { class: "tiles" },
+          ...cat.tools.map((id) => tile(locale, id)),
+        ),
       ),
     ),
     h("section", { class: "points" },
@@ -27,14 +42,14 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
   );
 }
 
-function tile(locale: Locale, id: "watermark" | "collage", tone: "pink" | "sky"): HTMLElement {
+function tile(locale: Locale, id: ToolId): HTMLElement {
   return h("a", {
     class: "tile",
     href: appHref(locale, id),
     "data-nav": id,
   },
-    h("div", { class: `tile-cover ${tone}`, "aria-hidden": "true" },
-      h("span", { class: "tile-mark" }, id === "watermark" ? "印" : "拼"),
+    h("div", { class: `tile-cover ${TONE[id]}`, "aria-hidden": "true" },
+      h("span", { class: "tile-mark" }, MARK[id]),
     ),
     h("div", { class: "tile-body" },
       h("h3", null, t(`tools.${id}.name`)),

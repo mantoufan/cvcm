@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { outputFilename } from "../src/shared/filename";
+import { pdfFromJpegs } from "../src/shared/pdf";
 import { crc32, zipStore } from "../src/shared/zip";
 
 describe("crc32", () => {
@@ -20,9 +21,16 @@ describe("zipStore", () => {
   });
 });
 
+describe("pdfFromJpegs", () => {
+  it("rejects an empty page list", () => {
+    expect(() => pdfFromJpegs([])).toThrow();
+  });
+});
+
 describe("outputFilename", () => {
   it("adds a suffix and maps mime to extension", () => {
     expect(outputFilename("photo.JPEG", "image/png")).toBe("photo-watermark.png");
     expect(outputFilename("a/b/c.webp", "image/jpeg")).toBe("c-watermark.jpg");
+    expect(outputFilename("shot.png", "application/pdf", "")).toBe("shot.pdf");
   });
 });

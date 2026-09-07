@@ -3,8 +3,22 @@ import { isLocale, type Locale } from "./locale";
 export const STATIC_FILE =
   /^\/(assets\/|favicon\.svg$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
 
-export const TOOLS = ["watermark", "collage"] as const;
+export const CATEGORIES = [
+  { id: "image", tools: ["watermark", "collage"] },
+  { id: "convert", tools: ["convert", "image-pdf"] },
+] as const;
+
+export type CategoryId = (typeof CATEGORIES)[number]["id"];
+
+export const TOOLS = ["watermark", "collage", "convert", "image-pdf"] as const;
 export type ToolId = (typeof TOOLS)[number];
+
+export function categoryOf(tool: ToolId): CategoryId {
+  for (const cat of CATEGORIES) {
+    if ((cat.tools as readonly string[]).includes(tool)) return cat.id;
+  }
+  return "image";
+}
 
 export function isToolId(value: string): value is ToolId {
   return (TOOLS as readonly string[]).includes(value);

@@ -3,12 +3,18 @@
     "title": "cv.cm — 浏览器本地工具，文件不上传",
     "titleWatermark": "图片水印 — cv.cm",
     "titleCollage": "图片拼图 — cv.cm",
-    "description": "在浏览器里运行的免费工具。给图片加水印，文件不会上传。无账号，无数据库。"
+    "titleConvert": "PNG 转 JPG、WebP 图片格式转换 — cv.cm",
+    "descConvert": "浏览器里把 PNG 转 JPG、JPG 转 PNG、WebP 互转。支持批量与 ZIP。文件不上传。",
+    "titleImagePdf": "图片转 PDF — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP 转 PDF，多图合成一份。本地处理，文件不上传。",
+    "description": "浏览器本地工具：图片水印、拼图、PNG 转 JPG、图片转 PDF。无需注册，文件不上传。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "工具",
-    "privacy": "本地处理"
+    "privacy": "本地处理",
+    "image": "图片",
+    "convert": "格式转换"
   },
   "lang": {
     "label": "语言",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "图片拼图",
       "blurb": "把多张照片拼成一张。选布局、间距，本地导出。文件不上传。"
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG 转 JPG、JPG 转 PNG、WebP 互转。批量下载。文件不上传。"
+    },
+    "image-pdf": {
+      "name": "图片转 PDF",
+      "blurb": "多张照片合成一份 PDF。浏览器里完成，文件不上传。"
     }
   },
   "watermark": {
@@ -153,6 +167,49 @@
       "t1b2": "上一两下",
       "t1b3": "上一下三"
     }
+  },
+  "convert": {
+    "title": "PNG 转 JPG、WebP 转换",
+    "back": "全部工具",
+    "dropTitle": "把图片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "filesTitle": "图片",
+    "filesEmpty": "还没有图片",
+    "remove": "移除",
+    "clear": "清空",
+    "exportTitle": "输出",
+    "format": "格式",
+    "quality": "质量",
+    "download": "下载",
+    "downloadAll": "打包 ZIP 下载全部",
+    "working": "正在转换…",
+    "privacyNote": "PNG 转 JPG、WebP 转换只在这个标签页进行，不会上传。",
+    "hint": "选择输出格式后下载。",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "emptyDownload": "请先添加图片。"
+  },
+  "imagePdf": {
+    "title": "图片转 PDF",
+    "back": "全部工具",
+    "dropTitle": "把图片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "页面",
+    "filesEmpty": "还没有图片",
+    "remove": "移除",
+    "clear": "清空",
+    "up": "上移",
+    "down": "下移",
+    "exportTitle": "PDF",
+    "pageNote": "每张图一页 A4，完整放入、不裁切。",
+    "quality": "JPEG 质量",
+    "download": "下载 PDF",
+    "working": "正在生成 PDF…",
+    "privacyNote": "JPG 转 PDF、PNG 转 PDF 只在这个标签页进行，不会上传。",
+    "hint": "调整页序后下载一份 PDF。",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "emptyDownload": "请先添加图片。"
   },
   "footer": {
     "privacy": "文件在本地处理，不会发送到 cv.cm。"

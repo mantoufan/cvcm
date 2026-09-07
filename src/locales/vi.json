@@ -3,12 +3,18 @@
     "title": "cv.cm — công cụ trên trình duyệt, không tải file lên",
     "titleWatermark": "Đóng dấu ảnh — cv.cm",
     "titleCollage": "Ghép ảnh — cv.cm",
-    "description": "Công cụ miễn phí chạy trong trình duyệt. Đóng dấu ảnh mà không tải file lên. Không tài khoản, không cơ sở dữ liệu."
+    "description": "Công cụ trên trình duyệt: đóng dấu, ghép ảnh, PNG→JPG, ảnh→PDF. Không đăng ký, không tải lên.",
+    "titleConvert": "Đổi PNG sang JPG, WebP — cv.cm",
+    "descConvert": "Đổi PNG↔JPG↔WebP trong trình duyệt. Hàng loạt và ZIP. Không tải lên.",
+    "titleImagePdf": "Ảnh sang PDF — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP thành PDF, nhiều ảnh một file. Trên máy, không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Công cụ",
-    "privacy": "Trên máy"
+    "privacy": "Trên máy",
+    "image": "Ảnh",
+    "convert": "Đổi định dạng"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "Ghép ảnh",
       "blurb": "Ghép nhiều ảnh thành một. Chọn bố cục, khoảng cách rồi xuất. Không tải lên."
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG sang JPG, JPG sang PNG, WebP. Tải hàng loạt. Không tải lên."
+    },
+    "image-pdf": {
+      "name": "Ảnh sang PDF",
+      "blurb": "Nhiều ảnh thành một PDF. Trong trình duyệt. Không tải lên."
     }
   },
   "watermark": {
@@ -156,5 +170,48 @@
   },
   "footer": {
     "privacy": "File được xử lý trên máy và không bao giờ gửi tới cv.cm."
+  },
+  "convert": {
+    "title": "Đổi PNG, JPG, WebP",
+    "back": "Tất cả công cụ",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "filesTitle": "Ảnh",
+    "filesEmpty": "Chưa có ảnh",
+    "remove": "Xóa",
+    "clear": "Xóa hết",
+    "exportTitle": "Xuất",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "download": "Tải xuống",
+    "downloadAll": "Tải tất cả dạng ZIP",
+    "working": "Đang đổi…",
+    "privacyNote": "Đổi PNG sang JPG / WebP chỉ trong tab này, không tải lên.",
+    "hint": "Chọn định dạng rồi tải xuống.",
+    "errorDecode": "Trình duyệt không đọc được ảnh này.",
+    "emptyDownload": "Hãy thêm ảnh trước."
+  },
+  "imagePdf": {
+    "title": "Đổi ảnh sang PDF",
+    "back": "Tất cả công cụ",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Trang",
+    "filesEmpty": "Chưa có ảnh",
+    "remove": "Xóa",
+    "clear": "Xóa hết",
+    "up": "Lên",
+    "down": "Xuống",
+    "exportTitle": "PDF",
+    "pageNote": "Mỗi ảnh một trang A4, đưa cả ảnh, không cắt.",
+    "quality": "Chất lượng JPEG",
+    "download": "Tải PDF",
+    "working": "Đang tạo PDF…",
+    "privacyNote": "JPG sang PDF, PNG sang PDF chỉ trong tab này, không tải lên.",
+    "hint": "Sắp thứ tự trang rồi tải một PDF.",
+    "errorDecode": "Trình duyệt không đọc được ảnh này.",
+    "emptyDownload": "Hãy thêm ảnh trước."
   }
 }

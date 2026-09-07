@@ -3,12 +3,18 @@
     "title": "cv.cm — browser tools, nothing uploaded",
     "titleWatermark": "Image watermark — cv.cm",
     "titleCollage": "Photo collage — cv.cm",
-    "description": "Free tools that run in your browser. Add watermarks to images without uploading files. No account, no database."
+    "titleConvert": "PNG to JPG, WebP converter in your browser — cv.cm",
+    "descConvert": "Convert PNG, JPG, and WebP in the browser. No upload, no account. Batch export or ZIP.",
+    "titleImagePdf": "Convert images to PDF in your browser — cv.cm",
+    "descImagePdf": "Turn JPG, PNG, or WebP photos into a PDF on your device. Nothing is uploaded.",
+    "description": "Free in-browser tools: image watermark, collage, PNG to JPG, and images to PDF. Files never leave your device."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Tools",
-    "privacy": "On-device"
+    "privacy": "On-device",
+    "image": "Images",
+    "convert": "Convert"
   },
   "lang": {
     "label": "Language",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "Photo collage",
       "blurb": "Combine photos into one picture. Pick a layout, spacing, and export. Nothing is uploaded."
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "Convert PNG to JPG, JPG to PNG, or WebP. Batch download. Nothing is uploaded."
+    },
+    "image-pdf": {
+      "name": "Images to PDF",
+      "blurb": "Merge photos into one PDF. Runs in the browser. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -153,6 +167,49 @@
       "t1b2": "One top, two bottom",
       "t1b3": "One top, three bottom"
     }
+  },
+  "convert": {
+    "title": "Convert PNG, JPG, and WebP",
+    "back": "All tools",
+    "dropTitle": "Drop images here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "filesTitle": "Images",
+    "filesEmpty": "No images yet",
+    "remove": "Remove",
+    "clear": "Clear all",
+    "exportTitle": "Output",
+    "format": "Format",
+    "quality": "Quality",
+    "download": "Download",
+    "downloadAll": "Download all as ZIP",
+    "working": "Converting…",
+    "privacyNote": "PNG to JPG and WebP conversion stays in this tab. Nothing is uploaded.",
+    "hint": "Pick an output format, then download.",
+    "errorDecode": "Could not read this image in the browser.",
+    "emptyDownload": "Add an image first."
+  },
+  "imagePdf": {
+    "title": "Convert images to PDF",
+    "back": "All tools",
+    "dropTitle": "Drop images here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Pages",
+    "filesEmpty": "No images yet",
+    "remove": "Remove",
+    "clear": "Clear all",
+    "up": "Move up",
+    "down": "Move down",
+    "exportTitle": "PDF",
+    "pageNote": "Each image becomes one A4 page, fitted without cropping.",
+    "quality": "JPEG quality",
+    "download": "Download PDF",
+    "working": "Building PDF…",
+    "privacyNote": "JPG to PDF and PNG to PDF run in this tab. Nothing is uploaded.",
+    "hint": "Reorder pages, then download one PDF.",
+    "errorDecode": "Could not read this image in the browser.",
+    "emptyDownload": "Add an image first."
   },
   "footer": {
     "privacy": "Files are processed locally and are never sent to cv.cm."

@@ -3,12 +3,18 @@
     "title": "cv.cm — herramientas en el navegador, nada se sube",
     "titleWatermark": "Marca de agua — cv.cm",
     "titleCollage": "Collage de fotos — cv.cm",
-    "description": "Herramientas gratis que se ejecutan en tu navegador. Añade marcas de agua sin subir archivos. Sin cuenta ni base de datos."
+    "description": "Herramientas en el navegador: marca de agua, collage, PNG a JPG e imágenes a PDF. Sin registro ni subidas.",
+    "titleConvert": "Convertir PNG a JPG y WebP — cv.cm",
+    "descConvert": "Convierte PNG↔JPG↔WebP en el navegador. Lote y ZIP. Sin subir archivos.",
+    "titleImagePdf": "Imágenes a PDF — cv.cm",
+    "descImagePdf": "Pasa JPG / PNG / WebP a PDF, varias fotos en un archivo. En el dispositivo, sin subir nada."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Herramientas",
-    "privacy": "En el dispositivo"
+    "privacy": "En el dispositivo",
+    "image": "Imágenes",
+    "convert": "Convertir"
   },
   "lang": {
     "label": "Idioma",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "Collage",
       "blurb": "Junta fotos en una sola. Elige diseño, espacio y exporta. Nada se sube."
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG a JPG, JPG a PNG o WebP. Descarga por lotes. Nada se sube."
+    },
+    "image-pdf": {
+      "name": "Imágenes a PDF",
+      "blurb": "Junta fotos en un PDF. En el navegador. Nada se sube."
     }
   },
   "watermark": {
@@ -156,5 +170,48 @@
   },
   "footer": {
     "privacy": "Los archivos se procesan en local y nunca se envían a cv.cm."
+  },
+  "convert": {
+    "title": "Convertir PNG, JPG y WebP",
+    "back": "Todas las herramientas",
+    "dropTitle": "Suelta imágenes aquí",
+    "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, SVG",
+    "filesTitle": "Imágenes",
+    "filesEmpty": "Aún no hay imágenes",
+    "remove": "Quitar",
+    "clear": "Borrar todo",
+    "exportTitle": "Salida",
+    "format": "Formato",
+    "quality": "Calidad",
+    "download": "Descargar",
+    "downloadAll": "Descargar todo en ZIP",
+    "working": "Convirtiendo…",
+    "privacyNote": "PNG a JPG y WebP se hace en esta pestaña. Nada se sube.",
+    "hint": "Elige el formato y descarga.",
+    "errorDecode": "El navegador no pudo leer esta imagen.",
+    "emptyDownload": "Añade una imagen primero."
+  },
+  "imagePdf": {
+    "title": "Convertir imágenes a PDF",
+    "back": "Todas las herramientas",
+    "dropTitle": "Suelta imágenes aquí",
+    "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "filesTitle": "Páginas",
+    "filesEmpty": "Aún no hay imágenes",
+    "remove": "Quitar",
+    "clear": "Borrar todo",
+    "up": "Subir",
+    "down": "Bajar",
+    "exportTitle": "PDF",
+    "pageNote": "Cada imagen es una página A4, entera, sin recortar.",
+    "quality": "Calidad JPEG",
+    "download": "Descargar PDF",
+    "working": "Creando PDF…",
+    "privacyNote": "JPG a PDF y PNG a PDF se hacen en esta pestaña. Nada se sube.",
+    "hint": "Ordena las páginas y descarga un PDF.",
+    "errorDecode": "El navegador no pudo leer esta imagen.",
+    "emptyDownload": "Añade una imagen primero."
   }
 }

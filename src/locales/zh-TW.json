@@ -3,12 +3,18 @@
     "title": "cv.cm — 瀏覽器本機工具，檔案不上傳",
     "titleWatermark": "圖片浮水印 — cv.cm",
     "titleCollage": "圖片拼圖 — cv.cm",
-    "description": "在瀏覽器裡執行的免費工具。為圖片加上浮水印，檔案不會上傳。無帳號，無資料庫。"
+    "description": "瀏覽器本機工具：圖片浮水印、拼圖、PNG 轉 JPG、圖片轉 PDF。無需註冊，檔案不上傳。",
+    "titleConvert": "PNG 轉 JPG、WebP 圖片格式轉換 — cv.cm",
+    "descConvert": "在瀏覽器把 PNG 轉 JPG、JPG 轉 PNG、WebP 互轉。支援批次與 ZIP。檔案不上傳。",
+    "titleImagePdf": "圖片轉 PDF — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP 轉 PDF，多圖合成一份。本機處理，檔案不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "工具",
-    "privacy": "本機處理"
+    "privacy": "本機處理",
+    "image": "圖片",
+    "convert": "格式轉換"
   },
   "lang": {
     "label": "語言",
@@ -49,6 +55,14 @@
     "collage": {
       "name": "圖片拼圖",
       "blurb": "把多張照片拼成一張。選版面、間距，本機匯出。檔案不上傳。"
+    },
+    "convert": {
+      "name": "PNG / JPG / WebP",
+      "blurb": "PNG 轉 JPG、JPG 轉 PNG、WebP 互轉。批次下載。檔案不上傳。"
+    },
+    "image-pdf": {
+      "name": "圖片轉 PDF",
+      "blurb": "多張照片合成一份 PDF。在瀏覽器完成，檔案不上傳。"
     }
   },
   "watermark": {
@@ -156,5 +170,48 @@
   },
   "footer": {
     "privacy": "檔案在本機處理，不會傳送到 cv.cm。"
+  },
+  "convert": {
+    "title": "PNG 轉 JPG、WebP 轉換",
+    "back": "全部工具",
+    "dropTitle": "把圖片拖到這裡",
+    "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
+    "dropTypes": "PNG、JPEG、WebP、GIF、SVG",
+    "filesTitle": "圖片",
+    "filesEmpty": "還沒有圖片",
+    "remove": "移除",
+    "clear": "清空",
+    "exportTitle": "輸出",
+    "format": "格式",
+    "quality": "品質",
+    "download": "下載",
+    "downloadAll": "打包 ZIP 下載全部",
+    "working": "正在轉換…",
+    "privacyNote": "PNG 轉 JPG、WebP 轉換只在這個分頁進行，不會上傳。",
+    "hint": "選擇輸出格式後下載。",
+    "errorDecode": "瀏覽器無法讀取這張圖片。",
+    "emptyDownload": "請先加入圖片。"
+  },
+  "imagePdf": {
+    "title": "圖片轉 PDF",
+    "back": "全部工具",
+    "dropTitle": "把圖片拖到這裡",
+    "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
+    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "filesTitle": "頁面",
+    "filesEmpty": "還沒有圖片",
+    "remove": "移除",
+    "clear": "清空",
+    "up": "上移",
+    "down": "下移",
+    "exportTitle": "PDF",
+    "pageNote": "每張圖一頁 A4，完整放入、不裁切。",
+    "quality": "JPEG 品質",
+    "download": "下載 PDF",
+    "working": "正在產生 PDF…",
+    "privacyNote": "JPG 轉 PDF、PNG 轉 PDF 只在這個分頁進行，不會上傳。",
+    "hint": "調整頁序後下載一份 PDF。",
+    "errorDecode": "瀏覽器無法讀取這張圖片。",
+    "emptyDownload": "請先加入圖片。"
   }
 }
