@@ -97,7 +97,7 @@ function withHeaders(res: Response, pathname: string): Response {
   headers.set("Content-Security-Policy", CSP);
   if (pathname.startsWith("/assets/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
-  } else if (pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
+  } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
     headers.set("Cache-Control", "no-cache");
   } else {
     headers.set("Cache-Control", "public, max-age=86400");
