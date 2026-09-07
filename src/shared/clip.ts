@@ -32,6 +32,12 @@ export function clipShareUrl(origin: string, id: string): string {
   return `${origin.replace(/\/+$/, "")}${clipSharePath(id)}`;
 }
 
+export function remainingClock(ms: number): { h: number; m: number } | null {
+  if (ms <= 0) return null;
+  const totalMin = Math.max(1, Math.round(ms / 60_000));
+  return { h: Math.floor(totalMin / 60), m: totalMin % 60 };
+}
+
 export function clientIp(request: Request): string {
   const cf = request.headers.get("CF-Connecting-IP");
   if (cf) return cf.trim();

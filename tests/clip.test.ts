@@ -8,6 +8,7 @@ import {
   CLIP_TTL_MS,
   isClipId,
   newClipId,
+  remainingClock,
 } from "../src/shared/clip";
 import { appHref, parseAppPath } from "../src/shared/path";
 import worker from "../src/worker";
@@ -35,6 +36,15 @@ async function post(store: ReturnType<typeof memoryStore>, body: unknown, ip = "
 async function get(store: ReturnType<typeof memoryStore>, id: string, now?: number) {
   return handleClipApi(new Request(`${origin}/api/clip/${id}`), store, now);
 }
+
+describe("remainingClock", () => {
+  it("does not render 60 minutes", () => {
+    expect(remainingClock(24 * 60 * 60 * 1000)).toEqual({ h: 24, m: 0 });
+    expect(remainingClock(23 * 60 * 60 * 1000 + 59.7 * 60 * 1000)).toEqual({ h: 24, m: 0 });
+    expect(remainingClock(90 * 1000)).toEqual({ h: 0, m: 2 });
+    expect(remainingClock(0)).toBeNull();
+  });
+});
 
 describe("clip ids", () => {
   it("uses the 8-character alphabet", () => {

@@ -1,4 +1,4 @@
-import { CLIP_MAX_BYTES, CLIP_MAX_VIEWS, utf8Bytes } from "../../shared/clip";
+import { CLIP_MAX_BYTES, CLIP_MAX_VIEWS, remainingClock, utf8Bytes } from "../../shared/clip";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -150,12 +150,10 @@ function formatUsed(n: number): string {
 }
 
 function expireLabel(expiresAt: number): string {
-  const ms = expiresAt - Date.now();
-  if (ms <= 0) return t("clip.expired");
-  const h = Math.floor(ms / 3_600_000);
-  const m = Math.max(1, Math.round((ms % 3_600_000) / 60_000));
-  if (h > 0) return t("clip.expiresH", { h, m });
-  return t("clip.expiresM", { m });
+  const clock = remainingClock(expiresAt - Date.now());
+  if (!clock) return t("clip.expired");
+  if (clock.h > 0) return t("clip.expiresH", { h: clock.h, m: clock.m });
+  return t("clip.expiresM", { m: clock.m });
 }
 
 function setStatus(text: string): void {
