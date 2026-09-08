@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import { handleClipApi } from "../src/clip-api";
 import { memoryStore } from "../src/clip-store";
 import {
+  CLIP_ID_LENGTH,
   CLIP_MAX_BYTES,
   CLIP_MAX_VIEWS,
   CLIP_RATE_MAX,
+  CLIP_READ_MAX,
   CLIP_TTL_MS,
   isClipId,
   newClipId,
@@ -47,12 +49,19 @@ describe("remainingClock", () => {
 });
 
 describe("clip ids", () => {
-  it("uses the 8-character alphabet", () => {
+  it("uses three lowercase letters or digits", () => {
     for (let i = 0; i < 40; i++) {
       const id = newClipId();
-      expect(id).toHaveLength(8);
+      expect(id).toHaveLength(CLIP_ID_LENGTH);
+      expect(id).toMatch(/^[0-9a-z]{3}$/);
       expect(isClipId(id)).toBe(true);
     }
+    expect(isClipId("a2k")).toBe(true);
+    expect(isClipId("A2K")).toBe(true);
+    expect(isClipId("abcdefgh")).toBe(true);
+    expect(isClipId("ab")).toBe(false);
+    expect(isClipId("abcd")).toBe(false);
+    expect(isClipId("00000000")).toBe(false);
   });
 });
 
@@ -62,6 +71,7 @@ describe("clip API", () => {
     const created = await post(store, { body: "hello from phone" });
     expect(created?.status).toBe(201);
     const payload = (await created!.json()) as { id: string; url: string; maxViews: number };
+    expect(payload.id).toHaveLength(CLIP_ID_LENGTH);
     expect(isClipId(payload.id)).toBe(true);
     expect(payload.url).toBe(`${origin}/c/${payload.id}`);
     expect(payload.maxViews).toBe(CLIP_MAX_VIEWS);
@@ -76,6 +86,20 @@ describe("clip API", () => {
     const gone = await get(store, payload.id);
     expect(gone?.status).toBe(404);
     expect(await gone!.json()).toEqual({ error: "gone" });
+  });
+
+  it("looks up notes case-insensitively", async () => {
+    const store = memoryStore();
+    await store.insert({
+      id: "a2k",
+      body: "case",
+      createdAt: 1,
+      expiresAt: 1 + CLIP_TTL_MS,
+      views: 0,
+    });
+    const res = await get(store, "A2K", 2);
+    expect(res?.status).toBe(200);
+    expect(await res!.json()).toMatchObject({ body: "case", views: 1 });
   });
 
   it("deletes notes older than one day", async () => {
@@ -94,6 +118,32 @@ describe("clip API", () => {
     const res = await post(store, { body: huge });
     expect(res?.status).toBe(400);
     expect(await res!.json()).toEqual({ error: "too_large" });
+  });
+
+  it("rate-limits reads from one IP", async () => {
+    const store = memoryStore();
+    const now = 6_000_000;
+    const created = await post(store, { body: "secret" }, "7.7.7.7", now);
+    const { id } = (await created!.json()) as { id: string };
+    const readReq = () =>
+      handleClipApi(
+        new Request(`${origin}/api/clip/${id}`, { headers: { "CF-Connecting-IP": "5.5.5.5" } }),
+        { store, now },
+      );
+    for (let i = 0; i < CLIP_READ_MAX; i++) {
+      const miss = await handleClipApi(
+        new Request(`${origin}/api/clip/abcdefgh`, { headers: { "CF-Connecting-IP": "5.5.5.5" } }),
+        { store, now },
+      );
+      expect(miss?.status).toBe(404);
+    }
+    const blocked = await readReq();
+    expect(blocked?.status).toBe(429);
+    const other = await handleClipApi(
+      new Request(`${origin}/api/clip/${id}`, { headers: { "CF-Connecting-IP": "6.6.6.6" } }),
+      { store, now },
+    );
+    expect(other?.status).toBe(200);
   });
 
   it("rate-limits creates from one IP", async () => {
@@ -140,7 +190,7 @@ describe("clip API", () => {
     expect(ok?.status).toBe(200);
     const payload = (await ok!.json()) as { putUrl: string; url: string; kind: string };
     expect(payload.kind).toBe("image");
-    expect(payload.putUrl).toContain("https://files.s3.cv.cm/clip/");
+    expect(payload.putUrl).toMatch(/https:\/\/files\.s3\.cv\.cm\/clip\/[0-9a-f]{16}\//);
     expect(payload.putUrl).toContain("X-Amz-Signature=");
     const bad = await handleClipApi(
       new Request(`${origin}/api/clip/upload`, {
@@ -157,23 +207,34 @@ describe("clip API", () => {
 
 describe("clip routes", () => {
   it("parses share and tool paths", () => {
+    expect(parseAppPath("/c/a2k")).toEqual({ kind: "clip", id: "a2k" });
+    expect(parseAppPath("/c/A2K")).toEqual({ kind: "clip", id: "a2k" });
     expect(parseAppPath("/c/abcdefgh")).toEqual({ kind: "clip", id: "abcdefgh" });
     expect(parseAppPath("/zh-CN/clip/")).toEqual({ kind: "app", locale: "zh-CN", tool: "clip" });
+    expect(parseAppPath("/en/clip/a2k/")).toEqual({
+      kind: "app",
+      locale: "en",
+      tool: "clip",
+      clipId: "a2k",
+    });
     expect(parseAppPath("/en/clip/abcdefgh/")).toEqual({
       kind: "app",
       locale: "en",
       tool: "clip",
       clipId: "abcdefgh",
     });
-    expect(appHref("en", "clip", "abcdefgh")).toBe("/en/clip/abcdefgh/");
+    expect(appHref("en", "clip", "a2k")).toBe("/en/clip/a2k/");
   });
 });
 
 describe("clip worker", () => {
   it("redirects short links into the tool", async () => {
-    const res = await worker.fetch(new Request("https://cv.cm/c/abcdefgh"), { ASSETS: assets() });
+    const res = await worker.fetch(new Request("https://cv.cm/c/a2k"), { ASSETS: assets() });
     expect(res.status).toBe(302);
-    expect(res.headers.get("Location")).toBe("https://cv.cm/en/clip/abcdefgh/");
+    expect(res.headers.get("Location")).toBe("https://cv.cm/en/clip/a2k/");
+    const legacy = await worker.fetch(new Request("https://cv.cm/c/abcdefgh"), { ASSETS: assets() });
+    expect(legacy.status).toBe(302);
+    expect(legacy.headers.get("Location")).toBe("https://cv.cm/en/clip/abcdefgh/");
   });
 
   it("keeps rejecting unrelated POST", async () => {

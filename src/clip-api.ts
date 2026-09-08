@@ -1,9 +1,11 @@
 import {
+  CLIP_ID_TRIES,
   CLIP_MAX_BYTES,
   CLIP_MAX_FILE_BYTES,
   CLIP_MAX_VIEWS,
   CLIP_RATE_MAX,
   CLIP_RATE_WINDOW_MS,
+  CLIP_READ_MAX,
   CLIP_TTL_MS,
   CLIP_UPLOAD_MAX,
   clientIp,
@@ -13,6 +15,8 @@ import {
   isClipId,
   mimeForFile,
   newClipId,
+  newFilePrefix,
+  normalizeClipId,
   safeFileName,
   utf8Bytes,
 } from "./shared/clip";
@@ -142,7 +146,7 @@ export async function handleClipApi(
   }
 
   if (request.method !== "GET") return error(405, "bad_request", { Allow: "GET, OPTIONS" });
-  return readClip(parsed.id, store, s3, now);
+  return readClip(request, parsed.id, store, s3, now);
 }
 
 async function createUpload(
@@ -166,7 +170,7 @@ async function createUpload(
   const ipHash = `u:${await hashIp(clientIp(request))}`;
   if (!(await bumpRate(store, ipHash, now, CLIP_UPLOAD_MAX))) return error(429, "rate");
 
-  const key = `clip/${newClipId()}/${name}`;
+  const key = `clip/${newFilePrefix()}/${name}`;
   const putUrl = await presignS3Put(s3, key, new Date(now));
   return json(200, {
     key,
@@ -194,7 +198,7 @@ async function createClip(
   const ipHash = await hashIp(clientIp(request));
   if (!(await bumpRate(store, ipHash, now, CLIP_RATE_MAX))) return error(429, "rate");
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < CLIP_ID_TRIES; i++) {
     const id = newClipId();
     const result = await store.insert({
       id,
@@ -216,13 +220,16 @@ async function createClip(
 }
 
 async function readClip(
+  request: Request,
   id: string,
   store: ClipStore,
   s3: S3Config | null,
   now: number,
 ): Promise<Response> {
   if (!isClipId(id)) return error(404, "gone");
-  const row = await store.consume(id, now);
+  const ipHash = `r:${await hashIp(clientIp(request))}`;
+  if (!(await bumpRate(store, ipHash, now, CLIP_READ_MAX))) return error(429, "rate");
+  const row = await store.consume(normalizeClipId(id), now);
   if (!row) return error(404, "gone");
   if (row.views >= CLIP_MAX_VIEWS) await sweepFiles([row.body], s3);
   return json(200, {

@@ -42,7 +42,7 @@ export function parseAppPath(pathname: string): AppPath {
 
   const [first, second, third, ...rest] = parts;
   if (first === "c" && second && !third && isClipId(second)) {
-    return { kind: "clip", id: second };
+    return { kind: "clip", id: second.toLowerCase() };
   }
 
   if (isLocale(first)) {
@@ -51,14 +51,14 @@ export function parseAppPath(pathname: string): AppPath {
     if (!isToolId(second)) return { kind: "unknown" };
     if (!third) return { kind: "app", locale: first, tool: second };
     if (second === "clip" && isClipId(third)) {
-      return { kind: "app", locale: first, tool: "clip", clipId: third };
+      return { kind: "app", locale: first, tool: "clip", clipId: third.toLowerCase() };
     }
     return { kind: "unknown" };
   }
 
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "clip" && second && !third && isClipId(second)) {
-    return { kind: "bare", tool: "clip", clipId: second };
+    return { kind: "bare", tool: "clip", clipId: second.toLowerCase() };
   }
   return { kind: "unknown" };
 }

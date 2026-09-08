@@ -4,22 +4,47 @@ export const CLIP_MAX_BYTES = 64 * 1024;
 export const CLIP_MAX_FILE_BYTES = 32 * 1024 * 1024;
 export const CLIP_RATE_MAX = 20;
 export const CLIP_UPLOAD_MAX = 30;
+export const CLIP_READ_MAX = 80;
 export const CLIP_RATE_WINDOW_MS = 60 * 60 * 1000;
-export const CLIP_ID_LENGTH = 8;
-export const CLIP_ALPHABET = "23456789abcdefghijkmnpqrstuvwxyz";
+export const CLIP_ID_LENGTH = 3;
+export const CLIP_ID_TRIES = 12;
+export const CLIP_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz";
+export const CLIP_FILE_PREFIX_LENGTH = 16;
 
-const CLIP_ID_RE = /^[23456789abcdefghijkmnpqrstuvwxyz]{8}$/;
+const CLIP_ID_RE = /^[0-9a-z]{3}$/;
+const LEGACY_CLIP_ID_RE = /^[23456789abcdefghijkmnpqrstuvwxyz]{8}$/;
+
+export function normalizeClipId(value: string): string {
+  return value.toLowerCase();
+}
 
 export function isClipId(value: string): boolean {
-  return CLIP_ID_RE.test(value);
+  const id = normalizeClipId(value);
+  return CLIP_ID_RE.test(id) || LEGACY_CLIP_ID_RE.test(id);
+}
+
+function randomChars(alphabet: string, length: number): string {
+  const size = alphabet.length;
+  const limit = Math.floor(256 / size) * size;
+  let out = "";
+  const bytes = new Uint8Array(32);
+  while (out.length < length) {
+    crypto.getRandomValues(bytes);
+    for (const b of bytes) {
+      if (b >= limit) continue;
+      out += alphabet[b % size];
+      if (out.length === length) break;
+    }
+  }
+  return out;
 }
 
 export function newClipId(): string {
-  const bytes = new Uint8Array(CLIP_ID_LENGTH);
-  crypto.getRandomValues(bytes);
-  let id = "";
-  for (const b of bytes) id += CLIP_ALPHABET[b & 31];
-  return id;
+  return randomChars(CLIP_ALPHABET, CLIP_ID_LENGTH);
+}
+
+export function newFilePrefix(): string {
+  return randomChars("0123456789abcdef", CLIP_FILE_PREFIX_LENGTH);
 }
 
 export function utf8Bytes(text: string): number {
