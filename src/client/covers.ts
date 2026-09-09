@@ -6,6 +6,6 @@ export const COVER: Record<ToolId, string> = {
   collage: "/covers/collage-sweet.jpg?v=1",
   convert: "/covers/convert-sweet.jpg?v=1",
   "image-pdf": "/covers/image-pdf-sweet.jpg?v=1",
-  audio: "/covers/audio-sweet.jpg?v=1",
-  data: "/covers/data-sweet.jpg?v=1",
+  audio: "/covers/audio-sweet.jpg?v=2",
+  data: "/covers/data-sweet.jpg?v=2",
 };
