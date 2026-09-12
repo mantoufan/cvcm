@@ -19,16 +19,30 @@ type Item = {
 
 type Format = ImageFormat;
 
+const MAX_EDGES = [0, 2048, 1920, 1280, 800] as const;
+type MaxEdge = (typeof MAX_EDGES)[number];
+
+const CHIPS: { format: Format; key: string }[] = [
+  { format: "jpeg", key: "convert.chipHeicJpg" },
+  { format: "png", key: "convert.chipWebpPng" },
+  { format: "jpeg", key: "convert.chipPngJpg" },
+  { format: "png", key: "convert.chipJpgPng" },
+  { format: "png", key: "convert.chipSvgPng" },
+  { format: "ico", key: "convert.chipIco" },
+];
+
 const state = {
   items: [] as Item[],
   selected: null as string | null,
   format: "jpeg" as Format,
   quality: 0.92,
+  maxEdge: 0 as MaxEdge,
 };
 
 let preview: HTMLCanvasElement | null = null;
 let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
+let sizeEl: HTMLElement | null = null;
 let qualityField: HTMLElement | null = null;
 let pagehideBound = false;
 let restoring = false;
@@ -36,6 +50,9 @@ let hydrated = false;
 const scheduleSave = debounce(() => {
   void persist();
 }, 400);
+const scheduleSize = debounce(() => {
+  void refreshSize();
+}, 280);
 
 export async function mountConvert(host: HTMLElement): Promise<void> {
   restoring = true;
@@ -74,6 +91,7 @@ export function unmountConvert(): void {
   preview = null;
   fileList = null;
   statusEl = null;
+  sizeEl = null;
   qualityField = null;
 }
 
@@ -130,6 +148,7 @@ function stagePane(): HTMLElement {
       h("button", { type: "button", class: "btn", onClick: () => void downloadOne() }, t("convert.download")),
       h("button", { type: "button", class: "btn ghost", onClick: () => void downloadAll() }, t("convert.downloadAll")),
     ),
+    sizeEl = h("p", { class: "muted convert-size" }),
     statusEl,
   );
 }
@@ -145,29 +164,62 @@ function controls(): HTMLElement {
       onInput: (e: Event) => {
         state.quality = Number((e.target as HTMLInputElement).value);
         scheduleSave();
+        scheduleSize();
       },
     }),
   );
   qualityField.hidden = !lossyFormat(state.format);
+  const formatSelect = h("select", {
+    onChange: (e: Event) => {
+      state.format = (e.target as HTMLSelectElement).value as Format;
+      if (qualityField) qualityField.hidden = !lossyFormat(state.format);
+      scheduleSave();
+      redraw();
+      void refreshSize();
+    },
+  },
+    h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG / JPEG"),
+    h("option", { value: "png", selected: state.format === "png" }, "PNG"),
+    h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
+    h("option", { value: "avif", selected: state.format === "avif" }, "AVIF"),
+    h("option", { value: "gif", selected: state.format === "gif" }, "GIF"),
+    h("option", { value: "bmp", selected: state.format === "bmp" }, "BMP"),
+    h("option", { value: "ico", selected: state.format === "ico" }, "ICO"),
+  );
   return h("aside", { class: "rail controls" },
     h("fieldset", null,
       h("legend", null, t("convert.exportTitle")),
-      labeled(t("convert.format"),
+      h("div", { class: "chips convert-chips" },
+        ...CHIPS.map((chip) =>
+          h("button", {
+            type: "button",
+            class: "chip" + (state.format === chip.format ? " on" : ""),
+            onClick: () => {
+              state.format = chip.format;
+              formatSelect.value = chip.format;
+              if (qualityField) qualityField.hidden = !lossyFormat(state.format);
+              scheduleSave();
+              redraw();
+              void refreshSize();
+            },
+          }, t(chip.key)),
+        ),
+      ),
+      labeled(t("convert.format"), formatSelect),
+      labeled(t("convert.maxEdge"),
         h("select", {
           onChange: (e: Event) => {
-            state.format = (e.target as HTMLSelectElement).value as Format;
-            if (qualityField) qualityField.hidden = !lossyFormat(state.format);
+            state.maxEdge = Number((e.target as HTMLSelectElement).value) as MaxEdge;
             scheduleSave();
-            redraw();
+            void refreshSize();
           },
         },
-          h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG / JPEG"),
-          h("option", { value: "png", selected: state.format === "png" }, "PNG"),
-          h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
-          h("option", { value: "avif", selected: state.format === "avif" }, "AVIF"),
-          h("option", { value: "gif", selected: state.format === "gif" }, "GIF"),
-          h("option", { value: "bmp", selected: state.format === "bmp" }, "BMP"),
-          h("option", { value: "ico", selected: state.format === "ico" }, "ICO"),
+          ...MAX_EDGES.map((n) =>
+            h("option", {
+              value: String(n),
+              selected: state.maxEdge === n,
+            }, n === 0 ? t("convert.maxOriginal") : `${n} px`),
+          ),
         ),
       ),
       qualityField,
@@ -276,7 +328,14 @@ function current(): Item | null {
 }
 
 function redraw(): void {
-  if (!restoring) scheduleSave();
+  if (!restoring) {
+    scheduleSave();
+    scheduleSize();
+  }
+  document.querySelectorAll(".convert-chips .chip").forEach((el, i) => {
+    const chip = CHIPS[i];
+    el.classList.toggle("on", Boolean(chip && state.format === chip.format));
+  });
   if (!preview) return;
   const item = current();
   const ctx = preview.getContext("2d");
@@ -297,10 +356,36 @@ function redraw(): void {
   ctx.drawImage(item.bitmap, 0, 0, w, h);
 }
 
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / 1024 / 1024).toFixed(2)} MB`;
+}
+
+async function refreshSize(): Promise<void> {
+  if (!sizeEl) return;
+  const item = current();
+  if (!item?.bitmap) {
+    sizeEl.textContent = "";
+    return;
+  }
+  try {
+    const blob = await blobFor(item);
+    sizeEl.textContent = t("convert.sizeLabel", { size: formatBytes(blob.size) });
+  } catch {
+    sizeEl.textContent = "";
+  }
+}
+
 async function blobFor(item: Item): Promise<Blob> {
   if (!item.bitmap) throw new Error("decode");
   let width = item.width;
   let height = item.height;
+  if (state.maxEdge > 0) {
+    const scale = Math.min(1, state.maxEdge / Math.max(width, height));
+    width = Math.max(1, Math.round(width * scale));
+    height = Math.max(1, Math.round(height * scale));
+  }
   if (state.format === "ico") {
     const scale = Math.min(1, 256 / Math.max(width, height));
     width = Math.max(1, Math.round(width * scale));
@@ -377,6 +462,7 @@ async function persist(): Promise<void> {
   await saveDraft("convert", {
     format: state.format,
     quality: state.quality,
+    maxEdge: state.maxEdge,
     selected: Math.max(0, state.items.findIndex((it) => it.id === state.selected)),
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
   });
@@ -386,12 +472,14 @@ async function restore(): Promise<void> {
   const draft = await loadDraft<{
     format: Format;
     quality: number;
+    maxEdge?: number;
     selected: number;
     files: { name: string; type: string; blob: Blob }[];
   }>("convert");
   if (!draft) return;
   if (draft.format) state.format = draft.format;
   if (draft.quality) state.quality = draft.quality;
+  if (MAX_EDGES.includes((draft.maxEdge ?? 0) as MaxEdge)) state.maxEdge = (draft.maxEdge ?? 0) as MaxEdge;
   state.items = [];
   state.selected = null;
   for (const rec of draft.files || []) {

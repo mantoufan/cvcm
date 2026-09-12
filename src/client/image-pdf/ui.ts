@@ -1,5 +1,5 @@
 import { outputFilename } from "../../shared/filename";
-import { pdfFromJpegs } from "../../shared/pdf";
+import { pdfFromJpegs, type PdfPageMode } from "../../shared/pdf";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
@@ -19,6 +19,7 @@ type Item = {
 const state = {
   items: [] as Item[],
   quality: 0.92,
+  page: "a4" as PdfPageMode,
 };
 
 let preview: HTMLCanvasElement | null = null;
@@ -73,7 +74,7 @@ export function unmountImagePdf(): void {
 function filesRail(): HTMLElement {
   const input = h("input", {
     type: "file",
-    accept: "image/png,image/jpeg,image/webp,image/gif,image/*",
+    accept: "image/png,image/jpeg,image/webp,image/gif,image/heic,image/heif,image/*",
     multiple: true,
     class: "sr-only",
     id: "pdf-file-input",
@@ -131,6 +132,18 @@ function controls(): HTMLElement {
     h("fieldset", null,
       h("legend", null, t("imagePdf.exportTitle")),
       h("p", { class: "hint" }, t("imagePdf.pageNote")),
+      labeled(t("imagePdf.pageSize"),
+        h("select", {
+          onChange: (e: Event) => {
+            state.page = (e.target as HTMLSelectElement).value as PdfPageMode;
+            scheduleSave();
+          },
+        },
+          h("option", { value: "a4", selected: state.page === "a4" }, t("imagePdf.pageA4")),
+          h("option", { value: "letter", selected: state.page === "letter" }, t("imagePdf.pageLetter")),
+          h("option", { value: "fit", selected: state.page === "fit" }, t("imagePdf.pageFit")),
+        ),
+      ),
       labeled(t("imagePdf.quality"),
         h("input", {
           type: "range",
@@ -176,7 +189,7 @@ async function ingestFile(file: File): Promise<void> {
 }
 
 async function addFiles(list: FileList | File[]): Promise<void> {
-  const files = [...list].filter((f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(f.name));
+  const files = [...list].filter((f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(f.name));
   for (const file of files) await ingestFile(file);
   refreshList();
   redraw();
@@ -278,7 +291,7 @@ async function download(): Promise<void> {
         height: item.height,
       });
     }
-    const pdf = pdfFromJpegs(pages);
+    const pdf = pdfFromJpegs(pages, state.page);
     const packed = new ArrayBuffer(pdf.byteLength);
     new Uint8Array(packed).set(pdf);
     downloadBlob(
@@ -294,6 +307,7 @@ async function download(): Promise<void> {
 async function persist(): Promise<void> {
   await saveDraft("image-pdf", {
     quality: state.quality,
+    page: state.page,
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
   });
 }
@@ -301,10 +315,12 @@ async function persist(): Promise<void> {
 async function restore(): Promise<void> {
   const draft = await loadDraft<{
     quality: number;
+    page?: PdfPageMode;
     files: { name: string; type: string; blob: Blob }[];
   }>("image-pdf");
   if (!draft) return;
   if (draft.quality) state.quality = draft.quality;
+  if (draft.page === "a4" || draft.page === "letter" || draft.page === "fit") state.page = draft.page;
   state.items = [];
   for (const rec of draft.files || []) {
     await ingestFile(new File([rec.blob], rec.name, { type: rec.type || "image/png" }));

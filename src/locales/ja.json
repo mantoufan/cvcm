@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — クラウドクリップボードとブラウザツール",
-    "titleClip": "クラウドクリップボード — cv.cm",
-    "descClip": "テキストを貼り付けてリンクを発行。登録不要。10 回閲覧または 1 日で削除。",
-    "titleWatermark": "画像ウォーターマーク — cv.cm",
-    "titleCollage": "フォトコラージュ — cv.cm",
+    "titleClip": "オンラインクリップボード — 登録なしでテキスト共有 — cv.cm",
+    "descClip": "Pastebin 風のクリップボード。リンクでテキスト・画像・ファイルを共有。アカウント不要。10 回閲覧または 24 時間で削除。",
+    "titleWatermark": "写真に透かしを入れる — cv.cm",
+    "titleCollage": "フォトコラージュメーカー — cv.cm",
     "description": "クラウドクリップボードとブラウザツール。メモは 10 回閲覧または 1 日で削除。画像ツールはアップロードしません。",
-    "titleConvert": "PNG / JPG / WebP / AVIF / GIF / BMP / ICO 変換 — cv.cm",
-    "descConvert": "ブラウザで画像形式を変換。アップロードなし。",
-    "titleImagePdf": "画像を PDF に変換 — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP を PDF に。複数枚を1つに。端末内、アップロードなし。",
-    "titleAudio": "音声を WAV に変換 — cv.cm",
-    "descAudio": "MP3、M4A、OGG などを WAV に。端末内、アップロードなし。",
-    "titleData": "JSON、CSV、Base64、Markdown 変換 — cv.cm",
-    "descData": "JSON 整形、CSV↔JSON、Base64、Markdown。ブラウザ内。"
+    "titleConvert": "HEIC を JPG に、WebP を PNG に、JPG を PNG に — cv.cm",
+    "descConvert": "HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO をブラウザで変換。リサイズ可。アップロードなし。",
+    "titleImagePdf": "JPG を PDF に、PNG を PDF に — cv.cm",
+    "descImagePdf": "JPG / PNG / WebP / HEIC を 1 つの PDF に。A4、Letter、写真比率。アップロードなし。",
+    "titleAudio": "MP3 を WAV に変換 — cv.cm",
+    "descAudio": "MP3、M4A、OGG、AAC、FLAC をブラウザで WAV に。44.1 / 48 kHz を選択可。アップロードなし。",
+    "titleData": "JSON フォーマッタ、Base64、CSV を JSON に — cv.cm",
+    "descData": "JSON 整形、CSV ↔ JSON、Base64、URL エンコード、Markdown を HTML に。このタブ内。",
+    "descWatermark": "ブラウザで文字またはロゴの透かしを追加。PNG / JPEG / ZIP を一括書き出し。アップロードなし。",
+    "descCollage": "ブラウザでコラージュ作成。グリッドと Instagram サイズ。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "クラウドクリップボード",
-      "blurb": "テキスト、画像、動画、添付。Markdown とコード。10 回閲覧または 1 日で削除。"
+      "blurb": "Pastebin 風：テキスト、画像、ファイル。10 回閲覧または 1 日で削除。"
     },
     "watermark": {
       "name": "画像ウォーターマーク",
-      "blurb": "写真に文字やロゴを重ねます。PNG / JPEG / ZIP で一括書き出し。アップロードなし。"
+      "blurb": "文字またはロゴの透かし。一括書き出し。アップロードなし。"
     },
     "collage": {
       "name": "フォトコラージュ",
-      "blurb": "複数の写真を1枚にまとめます。レイアウトと余白は端末内で処理します。"
+      "blurb": "グリッドと Instagram サイズのコラージュ。アップロードなし。"
     },
     "convert": {
       "name": "画像形式",
-      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。一括ダウンロード。アップロードなし。"
+      "blurb": "HEIC→JPG、WebP→PNG、JPG↔PNG、SVG、ICO。リサイズ可。アップロードなし。"
     },
     "image-pdf": {
       "name": "画像を PDF に",
-      "blurb": "複数の写真を1つの PDF に。ブラウザ内。アップロードなし。"
+      "blurb": "JPG / PNG を PDF に。複数枚を 1 ファイル。アップロードなし。"
     },
     "audio": {
       "name": "音声を WAV に",
-      "blurb": "MP3、M4A、OGG などを WAV に。ブラウザ内。"
+      "blurb": "MP3 を WAV に。M4A / OGG も対応。サンプルレート選択可。"
     },
     "data": {
       "name": "テキストとデータ",
-      "blurb": "JSON、CSV、Base64、Markdown、URL。アップロードなし。"
+      "blurb": "JSON 整形、CSV ↔ JSON、Base64、Markdown。アップロードなし。"
     }
   },
   "watermark": {
-    "title": "画像ウォーターマーク",
+    "title": "写真に透かしを入れる",
     "back": "すべてのツール",
     "dropTitle": "画像をここにドロップ",
     "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
@@ -143,7 +145,7 @@
     "emptyDownload": "先に画像を追加してください。"
   },
   "collage": {
-    "title": "フォトコラージュ",
+    "title": "フォトコラージュメーカー",
     "back": "すべてのツール",
     "dropTitle": "写真をここにドロップ",
     "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
@@ -188,7 +190,7 @@
     }
   },
   "clip": {
-    "title": "クラウドクリップボード",
+    "title": "オンラインクリップボード",
     "back": "すべてのツール",
     "privacyNote": "テキストは D1、ファイルは S3。10 回閲覧または 24 時間で削除。登録不要。",
     "bodyLabel": "テキスト",
@@ -234,11 +236,11 @@
     "privacy": "画像ツールはこのタブ内。クリップボードのメモは cv.cm に短時間保存され、その後削除されます。"
   },
   "convert": {
-    "title": "画像形式の変換",
+    "title": "HEIC、WebP、JPG、PNG を変換",
     "back": "すべてのツール",
     "dropTitle": "画像をここにドロップ",
     "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
+    "dropTypes": "HEIC、PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "画像",
     "filesEmpty": "まだ画像がありません",
     "remove": "削除",
@@ -250,16 +252,25 @@
     "downloadAll": "すべてを ZIP でダウンロード",
     "working": "変換中…",
     "privacyNote": "画像変換はこのタブ内。アップロードなし。",
-    "hint": "出力形式を選んでダウンロード。",
+    "hint": "出力形式かショートカットを選んでダウンロード。",
     "errorDecode": "この画像はブラウザで読めませんでした。",
-    "emptyDownload": "先に画像を追加してください。"
+    "emptyDownload": "先に画像を追加してください。",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "長辺",
+    "maxOriginal": "元のサイズ",
+    "sizeLabel": "出力 ≈ {size}"
   },
   "imagePdf": {
-    "title": "画像を PDF に変換",
+    "title": "JPG / PNG を PDF に",
     "back": "すべてのツール",
     "dropTitle": "画像をここにドロップ",
     "dropHint": "またはクリックして選択 · Ctrl/⌘ V で貼り付け",
-    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
     "filesTitle": "ページ",
     "filesEmpty": "まだ画像がありません",
     "remove": "削除",
@@ -267,17 +278,21 @@
     "up": "上へ",
     "down": "下へ",
     "exportTitle": "PDF",
-    "pageNote": "1枚につき A4 1ページ。全体を入れてトリミングしません。",
+    "pageNote": "1 枚につき 1 ページ。トリミングなし。",
     "quality": "JPEG 品質",
     "download": "PDF をダウンロード",
     "working": "PDF を作成中…",
     "privacyNote": "JPG→PDF、PNG→PDF はこのタブ内。アップロードなし。",
     "hint": "ページ順を整えて PDF を1つダウンロード。",
     "errorDecode": "この画像はブラウザで読めませんでした。",
-    "emptyDownload": "先に画像を追加してください。"
+    "emptyDownload": "先に画像を追加してください。",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageSize": "ページサイズ",
+    "pageFit": "写真に合わせる"
   },
   "audio": {
-    "title": "音声を WAV に変換",
+    "title": "MP3 を WAV に変換",
     "back": "すべてのツール",
     "privacyNote": "音声はこのタブでデコードし、WAV で保存します。アップロードなし。",
     "dropTitle": "音声をここにドロップ",
@@ -294,10 +309,12 @@
     "downloadAll": "すべてを ZIP でダウンロード",
     "working": "変換中…",
     "errorDecode": "この音声はブラウザで読めませんでした。",
-    "emptyDownload": "先に音声を追加してください。"
+    "emptyDownload": "先に音声を追加してください。",
+    "sampleRate": "サンプルレート",
+    "rateOriginal": "元の値"
   },
   "data": {
-    "title": "テキストとデータの変換",
+    "title": "JSON フォーマッタ",
     "back": "すべてのツール",
     "privacyNote": "JSON、CSV、Base64、Markdown はこのタブ内。",
     "mode": "変換",
@@ -319,6 +336,95 @@
       "url-decode": "URL デコード",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
+    },
+    "copy": "結果をコピー",
+    "copied": "コピーしました"
+  },
+  "faq": {
+    "title": "よくある質問",
+    "clip": {
+      "q1": "Pastebin の代替ですか？",
+      "a1": "はい。テキストを貼り付けてリンクを発行します。アカウント不要。URL を知っている人だけが開け、10 回閲覧または 24 時間で削除されます。",
+      "q2": "登録は必要ですか？",
+      "a2": "不要です。リンクをコピーして送るだけ。ログインも公開一覧もありません。",
+      "q3": "メモはいつ削除されますか？",
+      "a3": "10 回閲覧、または 24 時間経過のどちらか早い方。最後の閲覧で削除されたことが分かります。",
+      "q4": "画像やファイルも共有できますか？",
+      "a4": "できます。テキストは D1（最大 64 KB）。画像・動画・その他は S3、各 32 MB まで。",
+      "q5": "メモは公開されますか？",
+      "a5": "ディレクトリはありません。リンクを持つ人だけが開け、期限も切れます。"
+    },
+    "watermark": {
+      "q1": "透かしを入れると写真はアップロードされますか？",
+      "a1": "いいえ。キャンバスで処理します。タブを閉じると破棄。書き出し時に EXIF も除去します。",
+      "q2": "まとめて透かしを入れられますか？",
+      "a2": "はい。複数追加して 1 枚、または PNG / JPEG の ZIP でダウンロード。",
+      "q3": "文字とロゴの両方使えますか？",
+      "a3": "両方です。角、中央、またはタイル敷きにできます。",
+      "q4": "透かしを削除できますか？",
+      "a4": "できません。追加専用で、既存の透かしは消しません。",
+      "q5": "対応形式は？",
+      "a5": "入力は PNG、JPEG、WebP、GIF。出力は PNG、JPEG、WebP。"
+    },
+    "collage": {
+      "q1": "フォトコラージュメーカーですか？",
+      "a1": "はい。ブラウザで複数枚を 1 枚に。アップロードなし。",
+      "q2": "Instagram サイズはありますか？",
+      "a2": "正方形、4:5、9:16 ストーリー、16:9 横があります。",
+      "q3": "何枚まで組み合わせられますか？",
+      "a3": "2〜9 マス。2×2、3×3、分割レイアウトあり。",
+      "q4": "書き出し形式は？",
+      "a4": "PNG、JPEG、WebP。非可逆は品質を調整できます。",
+      "q5": "写真はこの端末から出ますか？",
+      "a5": "出ません。このタブ内のみ。ページを閉じると破棄。"
+    },
+    "convert": {
+      "q1": "HEIC を JPG に変換できますか？",
+      "a1": "HEIC をデコードできるブラウザ（Safari など）なら可能で、JPG をダウンロードできます。",
+      "q2": "WebP を PNG、JPG を PNG にできますか？",
+      "a2": "できます。HEIC→JPG、WebP→PNG、PNG↔JPG、SVG→PNG、ICO のショートカットがあります。",
+      "q3": "画像はサーバーに送られますか？",
+      "a3": "いいえ。このタブのキャンバスで変換します。",
+      "q4": "まとめて変換できますか？",
+      "a4": "はい。1 枚、または ZIP。",
+      "q5": "変換時にリサイズできますか？",
+      "a5": "できます。元サイズのまま、または長辺を 2048 / 1920 / 1280 / 800 px に制限。"
+    },
+    "image-pdf": {
+      "q1": "JPG や PNG を PDF にできますか？",
+      "a1": "はい。JPG、PNG、WebP、GIF、HEIC をドロップして 1 つの PDF に。",
+      "q2": "複数枚を 1 つの PDF にできますか？",
+      "a2": "はい。順番を替えて 1 ファイルをダウンロード。",
+      "q3": "ページサイズは？",
+      "a3": "A4、US Letter、または写真の縦横比に合わせたページ。",
+      "q4": "画像はトリミングされますか？",
+      "a4": "されません。各画像はページに収まるよう拡大縮小のみ。",
+      "q5": "アップロードされますか？",
+      "a5": "いいえ。PDF はこのタブで生成します。"
+    },
+    "audio": {
+      "q1": "MP3 を WAV に変換できますか？",
+      "a1": "はい。M4A、OGG、AAC、FLAC、WebM もブラウザで WAV にできます。",
+      "q2": "音声はアップロードされますか？",
+      "a2": "いいえ。Web Audio でこのタブ内デコード。",
+      "q3": "サンプルレートを選べますか？",
+      "a3": "元の値のまま、または 44.1 kHz / 48 kHz。",
+      "q4": "複数ファイルは？",
+      "a4": "1 つの WAV、または ZIP。",
+      "q5": "MP3 書き出しは？",
+      "a5": "未対応です。このツールは非圧縮の WAV を端末内で書き出します。"
+    },
+    "data": {
+      "q1": "JSON フォーマッタですか？",
+      "a1": "はい。整形と圧縮。入力と同時に変換します。",
+      "q2": "CSV を JSON にできますか？",
+      "a2": "CSV → JSON と JSON → CSV の両方。",
+      "q3": "Base64 と URL エンコードは？",
+      "a3": "エンコード／デコード両方。Unicode も可。",
+      "q4": "Markdown を HTML にできますか？",
+      "a4": "できます。HTML から Markdown へも。コピーまたはダウンロード。",
+      "q5": "テキストはアップロードされますか？",
+      "a5": "されません。ローカルファイルを開いてもこのタブ内です。"
     }
   }
 }

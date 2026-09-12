@@ -14,12 +14,23 @@ function concat(parts: Uint8Array[]): Uint8Array {
 }
 
 export type PdfJpegPage = { jpeg: Uint8Array; width: number; height: number };
+export type PdfPageMode = "a4" | "letter" | "fit";
 
-const PAGE_W = 595.28;
-const PAGE_H = 841.89;
+export const PDF_PAGE = {
+  a4: { w: 595.28, h: 841.89 },
+  letter: { w: 612, h: 792 },
+} as const;
+
 const MARGIN = 24;
 
-export function pdfFromJpegs(pages: PdfJpegPage[]): Uint8Array {
+export function mediaBox(page: PdfJpegPage, mode: PdfPageMode): { w: number; h: number } {
+  if (mode !== "fit") return PDF_PAGE[mode];
+  const long = PDF_PAGE.a4.h;
+  const max = Math.max(page.width, page.height) || 1;
+  return { w: (page.width / max) * long, h: (page.height / max) * long };
+}
+
+export function pdfFromJpegs(pages: PdfJpegPage[], mode: PdfPageMode = "a4"): Uint8Array {
   if (pages.length === 0) throw new Error("empty");
   const n = pages.length;
   const objs: Uint8Array[] = [];
@@ -31,12 +42,13 @@ export function pdfFromJpegs(pages: PdfJpegPage[]): Uint8Array {
   const imageId = (i: number) => 3 + 2 * n + i;
 
   pages.forEach((page, i) => {
-    const box = fit(page.width, page.height, PAGE_W - MARGIN * 2, PAGE_H - MARGIN * 2);
-    const x = (PAGE_W - box.w) / 2;
-    const y = (PAGE_H - box.h) / 2;
+    const media = mediaBox(page, mode);
+    const box = fit(page.width, page.height, Math.max(1, media.w - MARGIN * 2), Math.max(1, media.h - MARGIN * 2));
+    const x = (media.w - box.w) / 2;
+    const y = (media.h - box.h) / 2;
     const stream = u(`q ${box.w.toFixed(2)} 0 0 ${box.h.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)} cm /Im${i} Do Q`);
     objs[3 + i] = u(
-      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] /Resources << /XObject << /Im${i} ${imageId(i)} 0 R >> >> /Contents ${contentId(i)} 0 R >>`,
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${media.w.toFixed(2)} ${media.h.toFixed(2)}] /Resources << /XObject << /Im${i} ${imageId(i)} 0 R >> >> /Contents ${contentId(i)} 0 R >>`,
     );
     objs[contentId(i)] = concat([
       u(`<< /Length ${stream.byteLength} >>\nstream\n`),

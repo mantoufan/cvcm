@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — clipboard đám mây và công cụ trình duyệt",
-    "titleClip": "Clipboard đám mây — cv.cm",
-    "descClip": "Dán chữ, nhận liên kết. Không cần tài khoản. Xóa sau 10 lần xem hoặc một ngày.",
-    "titleWatermark": "Đóng dấu ảnh — cv.cm",
-    "titleCollage": "Ghép ảnh — cv.cm",
+    "titleClip": "Clipboard trực tuyến — chia sẻ chữ không cần tài khoản — cv.cm",
+    "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
+    "titleWatermark": "Thêm watermark vào ảnh — cv.cm",
+    "titleCollage": "Ghép ảnh collage — cv.cm",
     "description": "Clipboard đám mây và công cụ trình duyệt. Ghi chú hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không tải file lên.",
-    "titleConvert": "Đổi PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
-    "descConvert": "Đổi định dạng ảnh trong trình duyệt. Không tải lên.",
-    "titleImagePdf": "Ảnh sang PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP thành PDF, nhiều ảnh một file. Trên máy, không tải lên.",
-    "titleAudio": "Đổi âm thanh sang WAV — cv.cm",
-    "descAudio": "MP3, M4A, OGG thành WAV trên máy. Không tải lên.",
-    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
-    "descData": "Làm đẹp JSON, CSV↔JSON, Base64, Markdown. Trong trình duyệt."
+    "titleConvert": "HEIC sang JPG, WebP sang PNG, JPG sang PNG — cv.cm",
+    "descConvert": "Đổi HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO trong trình duyệt. Có thể thu nhỏ. Không tải lên.",
+    "titleImagePdf": "JPG sang PDF, PNG sang PDF — cv.cm",
+    "descImagePdf": "Gộp JPG, PNG, WebP hoặc HEIC thành một PDF. A4, Letter hoặc theo ảnh. Không tải lên.",
+    "titleAudio": "Chuyển MP3 sang WAV — cv.cm",
+    "descAudio": "Đổi MP3, M4A, OGG, AAC, FLAC thành WAV trên trình duyệt. Chọn 44.1 / 48 kHz. Không tải lên.",
+    "titleData": "Định dạng JSON, Base64, CSV sang JSON — cv.cm",
+    "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
+    "descWatermark": "Thêm chữ hoặc logo trên trình duyệt. Xuất hàng loạt PNG, JPEG hoặc ZIP. Không tải lên.",
+    "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "Clipboard đám mây",
-      "blurb": "Chữ, ảnh, video, tệp. Markdown và mã. Xóa sau 10 lần xem hoặc một ngày."
+      "blurb": "Kiểu Pastebin: chữ, ảnh, tệp. Xóa sau 10 lần xem hoặc một ngày."
     },
     "watermark": {
       "name": "Đóng dấu ảnh",
-      "blurb": "Đóng chữ hoặc logo lên ảnh. Xuất PNG, JPEG hoặc ZIP. Không tải lên."
+      "blurb": "Thêm chữ hoặc logo. Xuất hàng loạt. Không tải lên."
     },
     "collage": {
       "name": "Ghép ảnh",
-      "blurb": "Ghép nhiều ảnh thành một. Chọn bố cục, khoảng cách rồi xuất. Không tải lên."
+      "blurb": "Ghép ảnh lưới và cỡ Instagram. Không tải lên."
     },
     "convert": {
       "name": "Định dạng ảnh",
-      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Tải hàng loạt. Không tải lên."
+      "blurb": "HEIC→JPG, WebP→PNG, JPG↔PNG, SVG, ICO. Có thu nhỏ. Không tải lên."
     },
     "image-pdf": {
       "name": "Ảnh sang PDF",
-      "blurb": "Nhiều ảnh thành một PDF. Trong trình duyệt. Không tải lên."
+      "blurb": "JPG/PNG sang PDF. Nhiều ảnh một tệp. Không tải lên."
     },
     "audio": {
       "name": "Âm thanh sang WAV",
-      "blurb": "MP3, M4A, OGG thành WAV. Trong trình duyệt."
+      "blurb": "MP3 sang WAV, cả M4A và OGG. Chọn tần số lấy mẫu."
     },
     "data": {
       "name": "Văn bản & dữ liệu",
-      "blurb": "JSON, CSV, Base64, Markdown, URL. Không tải lên."
+      "blurb": "Định dạng JSON, CSV ↔ JSON, Base64, Markdown. Không tải lên."
     }
   },
   "watermark": {
-    "title": "Đóng dấu ảnh",
+    "title": "Thêm watermark vào ảnh",
     "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
@@ -143,7 +145,7 @@
     "emptyDownload": "Hãy thêm ảnh trước."
   },
   "collage": {
-    "title": "Ghép ảnh",
+    "title": "Ghép ảnh collage",
     "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
@@ -188,7 +190,7 @@
     }
   },
   "clip": {
-    "title": "Clipboard đám mây",
+    "title": "Clipboard trực tuyến",
     "back": "Tất cả công cụ",
     "privacyNote": "Chữ trên D1, tệp trên S3. Xóa sau 10 lần xem hoặc 24 giờ. Không cần tài khoản.",
     "bodyLabel": "Văn bản",
@@ -234,11 +236,11 @@
     "privacy": "Công cụ ảnh chạy trong tab này. Ghi chú clipboard được lưu ngắn trên cv.cm rồi xóa."
   },
   "convert": {
-    "title": "Đổi định dạng ảnh",
+    "title": "Đổi HEIC, WebP, JPG, PNG",
     "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
+    "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Ảnh",
     "filesEmpty": "Chưa có ảnh",
     "remove": "Xóa",
@@ -250,16 +252,25 @@
     "downloadAll": "Tải tất cả dạng ZIP",
     "working": "Đang đổi…",
     "privacyNote": "Đổi ảnh chỉ trong tab này. Không tải lên.",
-    "hint": "Chọn định dạng rồi tải xuống.",
+    "hint": "Chọn định dạng hoặc lối tắt, rồi tải xuống.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
-    "emptyDownload": "Hãy thêm ảnh trước."
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "Cạnh dài",
+    "maxOriginal": "Kích thước gốc",
+    "sizeLabel": "Đầu ra ≈ {size}"
   },
   "imagePdf": {
-    "title": "Đổi ảnh sang PDF",
+    "title": "JPG / PNG sang PDF",
     "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
     "filesTitle": "Trang",
     "filesEmpty": "Chưa có ảnh",
     "remove": "Xóa",
@@ -267,17 +278,21 @@
     "up": "Lên",
     "down": "Xuống",
     "exportTitle": "PDF",
-    "pageNote": "Mỗi ảnh một trang A4, đưa cả ảnh, không cắt.",
+    "pageNote": "Mỗi ảnh một trang, không cắt.",
     "quality": "Chất lượng JPEG",
     "download": "Tải PDF",
     "working": "Đang tạo PDF…",
     "privacyNote": "JPG sang PDF, PNG sang PDF chỉ trong tab này, không tải lên.",
     "hint": "Sắp thứ tự trang rồi tải một PDF.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
-    "emptyDownload": "Hãy thêm ảnh trước."
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "pageSize": "Cỡ trang",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "Theo tỉ lệ ảnh"
   },
   "audio": {
-    "title": "Đổi âm thanh sang WAV",
+    "title": "Chuyển MP3 sang WAV",
     "back": "Tất cả công cụ",
     "privacyNote": "Âm thanh được giải mã trong tab này và lưu WAV. Không tải lên.",
     "dropTitle": "Thả âm thanh vào đây",
@@ -294,10 +309,12 @@
     "downloadAll": "Tải tất cả ZIP",
     "working": "Đang đổi…",
     "errorDecode": "Trình duyệt không đọc được âm thanh này.",
-    "emptyDownload": "Hãy thêm âm thanh trước."
+    "emptyDownload": "Hãy thêm âm thanh trước.",
+    "sampleRate": "Tần số lấy mẫu",
+    "rateOriginal": "Gốc"
   },
   "data": {
-    "title": "Đổi văn bản và dữ liệu",
+    "title": "Định dạng JSON",
     "back": "Tất cả công cụ",
     "privacyNote": "JSON, CSV, Base64, Markdown ở tab này.",
     "mode": "Chuyển đổi",
@@ -319,6 +336,95 @@
       "url-decode": "Giải mã URL",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
+    },
+    "copy": "Sao chép kết quả",
+    "copied": "Đã sao chép"
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "clip": {
+      "q1": "Đây có phải lựa chọn thay Pastebin?",
+      "a1": "Có. Dán chữ để lấy liên kết, không cần tài khoản. Chỉ ai có URL mới mở được; xóa sau 10 lần xem hoặc 24 giờ.",
+      "q2": "Cần đăng ký không?",
+      "a2": "Không. Tạo liên kết rồi gửi. Không đăng nhập, không danh sách công khai.",
+      "q3": "Ghi chú bị xóa khi nào?",
+      "a3": "Sau 10 lần xem hoặc 24 giờ, cái nào đến trước. Lần xem cuối cho biết đã mất.",
+      "q4": "Chia sẻ được ảnh và tệp không?",
+      "a4": "Được. Chữ lưu D1 (tối đa 64 KB). Ảnh, video và tệp khác lên S3, mỗi cái 32 MB.",
+      "q5": "Ghi chú có công khai không?",
+      "a5": "Không có mục lục. Chỉ người có liên kết mở được, và vẫn hết hạn."
+    },
+    "watermark": {
+      "q1": "Thêm watermark có tải ảnh lên không?",
+      "a1": "Không. Canvas trên trình duyệt đóng dấu. Đóng tab là bỏ. Xuất cũng gỡ EXIF.",
+      "q2": "Làm nhiều ảnh một lúc được không?",
+      "a2": "Được. Thêm hàng loạt rồi tải một ảnh hoặc ZIP PNG/JPEG.",
+      "q3": "Dùng được chữ và logo?",
+      "a3": "Cả hai. Ghim góc, giữa, hoặc lặp khắp ảnh.",
+      "q4": "Gỡ watermark được không?",
+      "a4": "Không. Công cụ này chỉ thêm dấu, không xóa watermark có sẵn.",
+      "q5": "Định dạng nào?",
+      "a5": "Vào PNG, JPEG, WebP, GIF. Ra PNG, JPEG hoặc WebP."
+    },
+    "collage": {
+      "q1": "Đây là công cụ ghép ảnh?",
+      "a1": "Có. Ghép nhiều ảnh thành một trong trình duyệt. Không tải lên.",
+      "q2": "Có cỡ Instagram không?",
+      "a2": "Vuông, 4:5 dọc, 9:16 story, 16:9 ngang.",
+      "q3": "Ghép được bao nhiêu ảnh?",
+      "a3": "Từ 2 đến 9 ô, gồm 2×2, 3×3 và khung chia.",
+      "q4": "Xuất gì?",
+      "a4": "PNG, JPEG hoặc WebP, chỉnh chất lượng với định dạng mất dữ liệu.",
+      "q5": "Ảnh có rời thiết bị không?",
+      "a5": "Không. Chỉ trong tab này. Đóng trang là bỏ."
+    },
+    "convert": {
+      "q1": "Đổi HEIC sang JPG được không?",
+      "a1": "Được trên trình duyệt giải mã được HEIC (Safari…). Rồi tải JPG.",
+      "q2": "WebP sang PNG hoặc JPG sang PNG?",
+      "a2": "Được. Lối tắt HEIC→JPG, WebP→PNG, PNG↔JPG, SVG→PNG và ICO.",
+      "q3": "Ảnh có lên máy chủ không?",
+      "a3": "Không. Đổi trên canvas của tab này.",
+      "q4": "Nhiều ảnh một lúc?",
+      "a4": "Tải một tệp hoặc ZIP.",
+      "q5": "Thu nhỏ khi chuyển được không?",
+      "a5": "Được. Giữ gốc hoặc giới hạn cạnh dài 2048, 1920, 1280, 800 px."
+    },
+    "image-pdf": {
+      "q1": "JPG hoặc PNG sang PDF?",
+      "a1": "Được. Thả JPG, PNG, WebP, GIF hoặc HEIC thành một PDF.",
+      "q2": "Nhiều ảnh một PDF?",
+      "a2": "Được. Sắp thứ tự rồi tải một tệp.",
+      "q3": "Cỡ trang nào?",
+      "a3": "A4, US Letter, hoặc trang theo tỉ lệ ảnh.",
+      "q4": "Có cắt ảnh không?",
+      "a4": "Không. Mỗi ảnh vừa khít trang, không cắt.",
+      "q5": "Có tải lên không?",
+      "a5": "Không. PDF tạo trong tab này."
+    },
+    "audio": {
+      "q1": "MP3 sang WAV được không?",
+      "a1": "Được. M4A, OGG, AAC, FLAC, WebM cũng ra WAV trên trình duyệt.",
+      "q2": "Âm thanh có tải lên không?",
+      "a2": "Không. Web Audio giải mã trong tab này.",
+      "q3": "Chọn tần số lấy mẫu?",
+      "a3": "Giữ gốc, hoặc xuất 44.1 kHz / 48 kHz.",
+      "q4": "Nhiều tệp?",
+      "a4": "Một WAV hoặc ZIP.",
+      "q5": "Xuất MP3 được không?",
+      "a5": "Chưa. Công cụ này ghi WAV không nén ngay trên máy."
+    },
+    "data": {
+      "q1": "Đây là công cụ định dạng JSON?",
+      "a1": "Có. Làm đẹp hoặc nén. Chuyển khi bạn gõ.",
+      "q2": "CSV sang JSON?",
+      "a2": "Cả hai chiều: CSV → JSON và JSON → CSV.",
+      "q3": "Base64 và URL encode?",
+      "a3": "Mã hóa và giải mã, gồm Unicode.",
+      "q4": "Markdown sang HTML?",
+      "a4": "Được, và HTML về Markdown. Sao chép hoặc tải.",
+      "q5": "Chữ có tải lên không?",
+      "a5": "Không. Mở tệp local cũng không rời tab này."
     }
   }
 }

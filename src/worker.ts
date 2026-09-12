@@ -2,6 +2,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
 import { appHref, parseAppPath, STATIC_FILE } from "./shared/path";
+import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
 export interface Env {
@@ -95,6 +96,29 @@ export default {
     let assetResponse = await env.ASSETS.fetch(request);
     if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
       assetResponse = await env.ASSETS.fetch(new URL("/index.html", url.origin).toString());
+    }
+
+    const type = assetResponse.headers.get("content-type") || "";
+    const parsed = parseAppPath(path);
+    if (type.includes("text/html") && (parsed.kind === "app" || path === "/" || path === "/index.html")) {
+      const html = await assetResponse.text();
+      const locale = parsed.kind === "app"
+        ? parsed.locale
+        : negotiateLocale(
+          request.headers.get("Accept-Language"),
+          cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE),
+        );
+      const tool = parsed.kind === "app" ? parsed.tool : null;
+      const clipId = parsed.kind === "app" ? parsed.clipId : undefined;
+      const headers = new Headers(assetResponse.headers);
+      headers.set("Content-Type", "text/html; charset=utf-8");
+      return withHeaders(
+        new Response(applyHtmlSeo(html, locale, tool, clipId), {
+          status: assetResponse.status,
+          headers,
+        }),
+        path,
+      );
     }
     return withHeaders(assetResponse, path);
   },

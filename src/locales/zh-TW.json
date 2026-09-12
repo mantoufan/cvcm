@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — 雲端剪貼簿與瀏覽器工具",
-    "titleClip": "雲端剪貼簿 — cv.cm",
-    "descClip": "貼上文字，產生連結。無需登入。查看 10 次或超過 1 天自動刪除。",
-    "titleWatermark": "圖片浮水印 — cv.cm",
-    "titleCollage": "圖片拼圖 — cv.cm",
+    "titleClip": "線上剪貼簿 — 無需登入分享文字 — cv.cm",
+    "descClip": "類似 Pastebin 的雲端剪貼簿。用連結分享文字、圖片和檔案。無需帳號。查看 10 次或 24 小時後刪除。",
+    "titleWatermark": "幫圖片加浮水印 — cv.cm",
+    "titleCollage": "線上圖片拼圖 — cv.cm",
     "description": "雲端剪貼簿與瀏覽器工具。便條查看 10 次或 1 天後刪除。圖片工具不上傳檔案。",
-    "titleConvert": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO 轉換 — cv.cm",
-    "descConvert": "在瀏覽器互轉 PNG、JPG、WebP、AVIF、GIF、BMP、ICO。檔案不上傳。",
-    "titleImagePdf": "圖片轉 PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP 轉 PDF，多圖合成一份。本機處理，檔案不上傳。",
-    "titleAudio": "音訊轉 WAV — cv.cm",
-    "descAudio": "MP3、M4A、OGG 等在瀏覽器轉成 WAV。檔案不上傳。",
-    "titleData": "JSON、CSV、Base64、Markdown 轉換 — cv.cm",
-    "descData": "JSON 格式化、CSV 轉 JSON、Base64、Markdown 轉 HTML。本機處理。"
+    "titleConvert": "HEIC 轉 JPG、WebP 轉 PNG、JPG 轉 PNG — cv.cm",
+    "descConvert": "瀏覽器互轉 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可縮小邊長。檔案不上傳。",
+    "titleImagePdf": "JPG 轉 PDF、PNG 轉 PDF — cv.cm",
+    "descImagePdf": "把 JPG、PNG、WebP 或 HEIC 合成一份 PDF。A4、Letter 或依照片比例。檔案不上傳。",
+    "titleAudio": "MP3 轉 WAV — cv.cm",
+    "descAudio": "瀏覽器把 MP3、M4A、OGG、AAC、FLAC 轉成 WAV。可選 44.1 / 48 kHz。檔案不上傳。",
+    "titleData": "JSON 格式化、Base64、CSV 轉 JSON — cv.cm",
+    "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 編碼、Markdown 轉 HTML。只在目前分頁。",
+    "descWatermark": "在瀏覽器為照片加上文字或 Logo 浮水印。可批量匯出 PNG、JPEG 或 ZIP。檔案不上傳。",
+    "descCollage": "在瀏覽器做照片拼圖。宮格版面與 Instagram 尺寸。檔案不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "雲端剪貼簿",
-      "blurb": "文字、圖片、影片、附件。支援 Markdown 與程式碼。查看 10 次或 1 天後刪除。"
+      "blurb": "類似 Pastebin：文字、圖片、附件。查看 10 次或 1 天後刪除。"
     },
     "watermark": {
       "name": "圖片浮水印",
-      "blurb": "為照片蓋上文字或 Logo。支援批次匯出 PNG、JPEG 或 ZIP。檔案不上傳。"
+      "blurb": "為照片加上文字或 Logo 浮水印。批量匯出。檔案不上傳。"
     },
     "collage": {
       "name": "圖片拼圖",
-      "blurb": "把多張照片拼成一張。選版面、間距，本機匯出。檔案不上傳。"
+      "blurb": "線上拼圖，宮格與 Instagram 尺寸。檔案不上傳。"
     },
     "convert": {
       "name": "圖片格式",
-      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。批次下載。檔案不上傳。"
+      "blurb": "HEIC 轉 JPG、WebP 轉 PNG、JPG ↔ PNG、SVG、ICO。可縮放。不上傳。"
     },
     "image-pdf": {
       "name": "圖片轉 PDF",
-      "blurb": "多張照片合成一份 PDF。在瀏覽器完成，檔案不上傳。"
+      "blurb": "JPG 轉 PDF、PNG 轉 PDF。多圖一份檔案。不上傳。"
     },
     "audio": {
       "name": "音訊轉 WAV",
-      "blurb": "MP3、M4A、OGG 等轉 WAV。在瀏覽器完成。"
+      "blurb": "MP3 轉 WAV，也支援 M4A、OGG。可選取樣率。瀏覽器完成。"
     },
     "data": {
       "name": "文字與資料",
-      "blurb": "JSON、CSV、Base64、Markdown、URL 編碼。檔案不上傳。"
+      "blurb": "JSON 格式化、CSV ↔ JSON、Base64、Markdown。不上傳。"
     }
   },
   "watermark": {
-    "title": "圖片浮水印",
+    "title": "幫圖片加浮水印",
     "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
@@ -188,7 +190,7 @@
     }
   },
   "clip": {
-    "title": "雲端剪貼簿",
+    "title": "線上剪貼簿",
     "back": "全部工具",
     "privacyNote": "文字在 D1，檔案在 S3。查看 10 次或 24 小時後刪除。無需登入。",
     "bodyLabel": "文字",
@@ -234,11 +236,11 @@
     "privacy": "圖片工具在本機處理。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"
   },
   "convert": {
-    "title": "圖片格式轉換",
+    "title": "HEIC、WebP、JPG、PNG 互轉",
     "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
+    "dropTypes": "HEIC、PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "圖片",
     "filesEmpty": "還沒有圖片",
     "remove": "移除",
@@ -250,16 +252,25 @@
     "downloadAll": "打包 ZIP 下載全部",
     "working": "正在轉換…",
     "privacyNote": "圖片格式轉換只在這個分頁進行，不上傳。",
-    "hint": "選擇輸出格式後下載。",
+    "hint": "選輸出格式或快捷轉換，然後下載。",
     "errorDecode": "瀏覽器無法讀取這張圖片。",
-    "emptyDownload": "請先加入圖片。"
+    "emptyDownload": "請先加入圖片。",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "最長邊",
+    "maxOriginal": "原始尺寸",
+    "sizeLabel": "輸出約 {size}"
   },
   "imagePdf": {
-    "title": "圖片轉 PDF",
+    "title": "JPG / PNG 轉 PDF",
     "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
-    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
     "filesTitle": "頁面",
     "filesEmpty": "還沒有圖片",
     "remove": "移除",
@@ -267,17 +278,21 @@
     "up": "上移",
     "down": "下移",
     "exportTitle": "PDF",
-    "pageNote": "每張圖一頁 A4，完整放入、不裁切。",
+    "pageNote": "每張圖一頁，完整放入、不裁切。",
     "quality": "JPEG 品質",
     "download": "下載 PDF",
     "working": "正在產生 PDF…",
     "privacyNote": "JPG 轉 PDF、PNG 轉 PDF 只在這個分頁進行，不會上傳。",
     "hint": "調整頁序後下載一份 PDF。",
     "errorDecode": "瀏覽器無法讀取這張圖片。",
-    "emptyDownload": "請先加入圖片。"
+    "emptyDownload": "請先加入圖片。",
+    "pageSize": "頁面尺寸",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "依照片比例"
   },
   "audio": {
-    "title": "音訊轉 WAV",
+    "title": "MP3 轉 WAV",
     "back": "全部工具",
     "privacyNote": "音訊在這個分頁解碼，存成 WAV。不上傳。",
     "dropTitle": "把音訊拖到這裡",
@@ -294,10 +309,12 @@
     "downloadAll": "打包 ZIP 下載全部",
     "working": "正在轉換…",
     "errorDecode": "瀏覽器無法讀取這個音訊。",
-    "emptyDownload": "請先加入音訊。"
+    "emptyDownload": "請先加入音訊。",
+    "sampleRate": "取樣率",
+    "rateOriginal": "原始"
   },
   "data": {
-    "title": "文字與資料轉換",
+    "title": "JSON 格式化",
     "back": "全部工具",
     "privacyNote": "JSON、CSV、Base64、Markdown 只在這個分頁處理。",
     "mode": "轉換",
@@ -319,6 +336,95 @@
       "url-decode": "URL 解碼",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
+    },
+    "copy": "複製結果",
+    "copied": "已複製"
+  },
+  "faq": {
+    "title": "常見問題",
+    "clip": {
+      "q1": "這是 Pastebin 一類的線上剪貼簿嗎？",
+      "a1": "是。貼上文字即可得到連結，無需帳號。只有拿到網址的人能開啟，查看 10 次或 24 小時後刪除。",
+      "q2": "需要註冊嗎？",
+      "a2": "不需要。產生連結後傳給對方即可。沒有登入，也沒有公開列表。",
+      "q3": "便條什麼時候刪除？",
+      "a3": "查看 10 次或滿 24 小時，先到先刪。最後一次查看會提示已經消失。",
+      "q4": "能分享圖片和檔案嗎？",
+      "a4": "可以。文字存在 D1（最多 64 KB）。圖片、影片和其他檔案走 S3，單個不超過 32 MB。",
+      "q5": "便條是公開的嗎？",
+      "a5": "沒有目錄。只有持有連結的人能開啟，並且仍會過期。"
+    },
+    "watermark": {
+      "q1": "加浮水印會上傳照片嗎？",
+      "a1": "不會。瀏覽器畫布完成本機蓋印。關閉分頁即丟棄。匯出時還會去掉 EXIF。",
+      "q2": "能一次給很多張圖加浮水印嗎？",
+      "a2": "可以。批量加入後下載單張，或打包 PNG / JPEG 的 ZIP。",
+      "q3": "文字和 Logo 都能用嗎？",
+      "a3": "都能。可釘在角落、置中，或斜鋪滿整張圖。",
+      "q4": "能去浮水印嗎？",
+      "a4": "不能。這個工具只負責加浮水印，不會擦除既有浮水印。",
+      "q5": "支援哪些格式？",
+      "a5": "可匯入 PNG、JPEG、WebP、GIF。匯出 PNG、JPEG 或 WebP。"
+    },
+    "collage": {
+      "q1": "這是線上拼圖工具嗎？",
+      "a1": "是。把多張照片拼成一張，全程在瀏覽器裡，檔案不上傳。",
+      "q2": "有 Instagram 常用尺寸嗎？",
+      "a2": "有正方形、4:5 直圖、9:16 限時動態和 16:9 橫圖。",
+      "q3": "最多能拼幾張？",
+      "a3": "版面從 2 格到 9 格，包括四宮格、九宮格和分割構圖。",
+      "q4": "匯出什麼格式？",
+      "a4": "PNG、JPEG 或 WebP，有損格式可調品質。",
+      "q5": "照片會離開這台裝置嗎？",
+      "a5": "不會。處理只在目前分頁，關閉頁面即丟棄。"
+    },
+    "convert": {
+      "q1": "能 HEIC 轉 JPG 嗎？",
+      "a1": "在能解碼 HEIC 的瀏覽器可以（Safari，以及支援該格式的 Chromium），然後下載 JPG。",
+      "q2": "能 WebP 轉 PNG，或 JPG 轉 PNG 嗎？",
+      "a2": "可以。快捷按鈕涵蓋 HEIC → JPG、WebP → PNG、PNG ↔ JPG、SVG → PNG 和 ICO。",
+      "q3": "圖片會上傳到伺服器嗎？",
+      "a3": "不會。轉換用的是目前分頁的畫布。",
+      "q4": "能一次轉很多張嗎？",
+      "a4": "可以。下載單張，或打包成 ZIP。",
+      "q5": "轉換時能縮小尺寸嗎？",
+      "a5": "可以。保留原尺寸，或把最長邊限制在 2048、1920、1280、800 像素。"
+    },
+    "image-pdf": {
+      "q1": "能 JPG 轉 PDF 或 PNG 轉 PDF 嗎？",
+      "a1": "可以。拖入 JPG、PNG、WebP、GIF 或 HEIC，下載一份 PDF。",
+      "q2": "多張照片能合成一個 PDF 嗎？",
+      "a2": "可以。調整頁序後下載一個檔案。",
+      "q3": "有哪些頁面尺寸？",
+      "a3": "A4、US Letter，或依照片自身比例分頁。",
+      "q4": "會裁切圖片嗎？",
+      "a4": "不會。每張圖完整放入對應頁面。",
+      "q5": "會上傳檔案嗎？",
+      "a5": "不會。PDF 在目前分頁產生。"
+    },
+    "audio": {
+      "q1": "能 MP3 轉 WAV 嗎？",
+      "a1": "可以。M4A、OGG、AAC、FLAC、WebM 也能在瀏覽器解碼成 WAV。",
+      "q2": "音訊會上傳嗎？",
+      "a2": "不會。用 Web Audio 在目前分頁解碼。",
+      "q3": "能選取樣率嗎？",
+      "a3": "可保留原始取樣率，或匯出 44.1 kHz / 48 kHz。",
+      "q4": "能一次轉多個檔案嗎？",
+      "a4": "可以。下載單個 WAV，或打包 ZIP。",
+      "q5": "能匯出 MP3 嗎？",
+      "a5": "目前不能。這個工具只寫 WAV，保持無損並完全在本機完成。"
+    },
+    "data": {
+      "q1": "這是 JSON 格式化工具嗎？",
+      "a1": "是。可美化或壓縮 JSON，輸入時就會轉換。",
+      "q2": "能 CSV 轉 JSON 嗎？",
+      "a2": "雙向都有：CSV → JSON 和 JSON → CSV。",
+      "q3": "支援 Base64 和 URL 編碼嗎？",
+      "a3": "支援編碼和解碼，包含 Unicode 文字。",
+      "q4": "能把 Markdown 轉成 HTML 嗎？",
+      "a4": "可以，也能把 HTML 轉回 Markdown。結果可複製或下載。",
+      "q5": "文字會上傳嗎？",
+      "a5": "不會。也可以開啟本機檔案，內容不會離開目前分頁。"
     }
   }
 }

@@ -1,3 +1,26 @@
+export function resampleChannels(
+  channels: Float32Array[],
+  fromRate: number,
+  toRate: number,
+): Float32Array[] {
+  if (!channels.length) return channels;
+  if (fromRate <= 0 || toRate <= 0 || fromRate === toRate) return channels;
+  const ratio = fromRate / toRate;
+  const frames = Math.max(1, Math.round((channels[0]?.length ?? 0) / ratio));
+  return channels.map((ch) => {
+    const out = new Float32Array(frames);
+    const last = Math.max(0, ch.length - 1);
+    for (let i = 0; i < frames; i++) {
+      const src = i * ratio;
+      const i0 = Math.min(last, Math.floor(src));
+      const i1 = Math.min(last, i0 + 1);
+      const t = src - i0;
+      out[i] = ch[i0] * (1 - t) + ch[i1] * t;
+    }
+    return out;
+  });
+}
+
 export function encodeWav(channels: Float32Array[], sampleRate: number): Uint8Array {
   const ch = Math.max(1, channels.length);
   const frames = channels[0]?.length ?? 0;

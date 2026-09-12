@@ -2,6 +2,7 @@ import { convertData, extForMode, type DataMode } from "../../shared/data-conver
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
+import { debounce } from "../session";
 
 const MODES: DataMode[] = [
   "json-pretty",
@@ -19,7 +20,9 @@ const MODES: DataMode[] = [
 let inputEl: HTMLTextAreaElement | null = null;
 let outputEl: HTMLTextAreaElement | null = null;
 let statusEl: HTMLElement | null = null;
+let copyBtn: HTMLButtonElement | null = null;
 let mode: DataMode = "json-pretty";
+const scheduleRun = debounce(() => run(true), 220);
 
 export function mountData(host: HTMLElement): void {
   inputEl = h("textarea", {
@@ -27,6 +30,7 @@ export function mountData(host: HTMLElement): void {
     spellcheck: "false",
     "aria-label": t("data.input"),
     placeholder: t("data.placeholder"),
+    onInput: () => scheduleRun(),
   });
   outputEl = h("textarea", {
     class: "clip-input",
@@ -59,6 +63,7 @@ export function mountData(host: HTMLElement): void {
           h("select", {
             onChange: (e: Event) => {
               mode = (e.target as HTMLSelectElement).value as DataMode;
+              run(true);
             },
           },
             ...MODES.map((id) => h("option", { value: id, selected: id === mode }, t(`data.modes.${id}`))),
@@ -66,6 +71,7 @@ export function mountData(host: HTMLElement): void {
         ),
         h("div", { class: "stage-actions" },
           h("button", { type: "button", class: "btn", onClick: () => run() }, t("data.run")),
+          copyBtn = h("button", { type: "button", class: "btn ghost", onClick: () => void copyOut() }, t("data.copy")),
           h("button", { type: "button", class: "btn ghost", onClick: () => download() }, t("data.download")),
           h("label", { class: "btn ghost", for: "data-file-input" }, t("data.openFile"), input),
         ),
@@ -84,13 +90,30 @@ export function unmountData(): void {
   inputEl = null;
   outputEl = null;
   statusEl = null;
+  copyBtn = null;
 }
 
-function run(): void {
+function run(quiet = false): void {
   if (!inputEl || !outputEl) return;
   try {
     outputEl.value = convertData(mode, inputEl.value);
     if (statusEl) statusEl.textContent = "";
+  } catch {
+    outputEl.value = "";
+    if (!quiet && statusEl) statusEl.textContent = t("data.error");
+  }
+}
+
+async function copyOut(): Promise<void> {
+  if (!outputEl) return;
+  if (!outputEl.value) run();
+  if (!outputEl.value) return;
+  try {
+    await navigator.clipboard.writeText(outputEl.value);
+    if (copyBtn) copyBtn.textContent = t("data.copied");
+    window.setTimeout(() => {
+      if (copyBtn) copyBtn.textContent = t("data.copy");
+    }, 1200);
   } catch {
     if (statusEl) statusEl.textContent = t("data.error");
   }
@@ -114,4 +137,5 @@ async function loadFile(file: File): Promise<void> {
   if (!inputEl) return;
   inputEl.value = await file.text();
   if (statusEl) statusEl.textContent = "";
+  run(true);
 }

@@ -459,7 +459,38 @@ input[type="color"] {
 }
 .chip:hover, .chip.on, .layout-btn.on, .pad-btn.on { border-color: var(--pink-deep); background: var(--pink-soft); }
 .chip.on { color: var(--ink); }
+.convert-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0 0 0.75rem; }
+.convert-chips .chip { min-height: 32px; padding: 0.22rem 0.65rem; font-size: 0.8rem; }
+.convert-size { margin: 0.2rem 0 0; }
 .file-chip { display: inline-flex; align-items: center; }
+
+.faq {
+  margin-top: 2rem;
+  padding: 1.15rem 1.3rem 0.55rem;
+  border: 1px dashed #e9bdd1;
+  border-radius: 20px;
+  background: #ffffffc9;
+}
+.faq h2 {
+  margin: 0 0 0.35rem;
+  color: #a13f6c;
+  font-size: 1.12rem;
+}
+.faq details {
+  border-bottom: 1px dashed #f0ccdc;
+  padding: 0.65rem 0;
+}
+.faq details:last-child { border-bottom: 0; }
+.faq summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: var(--ink);
+}
+.faq p {
+  margin: 0.45rem 0 0.15rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
 
 .pad {
   display: grid;

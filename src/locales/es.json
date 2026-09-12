@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — portapapeles en la nube y herramientas del navegador",
-    "titleClip": "Portapapeles en la nube — cv.cm",
-    "descClip": "Pega texto y obtén un enlace. Sin cuenta. Se borra a las 10 vistas o al cabo de un día.",
-    "titleWatermark": "Marca de agua — cv.cm",
-    "titleCollage": "Collage de fotos — cv.cm",
+    "titleClip": "Portapapeles en línea — comparte texto sin cuenta — cv.cm",
+    "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
+    "titleWatermark": "Añadir marca de agua a fotos — cv.cm",
+    "titleCollage": "Creador de collages de fotos — cv.cm",
     "description": "Portapapeles en la nube y herramientas en el navegador. Las notas caducan a las 10 vistas o en un día. Las herramientas de imagen no suben archivos.",
-    "titleConvert": "Convertir PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
-    "descConvert": "Convierte formatos de imagen en el navegador. Nada se sube.",
-    "titleImagePdf": "Imágenes a PDF — cv.cm",
-    "descImagePdf": "Pasa JPG / PNG / WebP a PDF, varias fotos en un archivo. En el dispositivo, sin subir nada.",
-    "titleAudio": "Convertir audio a WAV — cv.cm",
-    "descAudio": "Pasa MP3, M4A, OGG a WAV en el dispositivo. Nada se sube.",
-    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
-    "descData": "JSON bonito, CSV↔JSON, Base64, Markdown. En el navegador."
+    "titleConvert": "HEIC a JPG, WebP a PNG, JPG a PNG — cv.cm",
+    "descConvert": "Convierte HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP e ICO en el navegador. Puedes redimensionar. Nada se sube.",
+    "titleImagePdf": "JPG a PDF y PNG a PDF — cv.cm",
+    "descImagePdf": "Pasa JPG, PNG, WebP o HEIC a un PDF. A4, Letter o a medida de la foto. Nada se sube.",
+    "titleAudio": "Convertir MP3 a WAV — cv.cm",
+    "descAudio": "Pasa MP3, M4A, OGG, AAC y FLAC a WAV en el navegador. Elige 44,1 o 48 kHz. Nada se sube.",
+    "titleData": "Formateador JSON, Base64, CSV a JSON — cv.cm",
+    "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
+    "descWatermark": "Añade texto o un logo en el navegador. Exporta por lotes PNG, JPEG o ZIP. Nada se sube.",
+    "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "Portapapeles en la nube",
-      "blurb": "Texto, imágenes, vídeo, archivos. Markdown y código. Se borra a las 10 vistas o en un día."
+      "blurb": "Estilo Pastebin: texto, imágenes, archivos. Se borra a las 10 vistas o en un día."
     },
     "watermark": {
       "name": "Marca de agua",
-      "blurb": "Pon texto o un logo en fotos. Exporta PNG, JPEG o ZIP. Nada se sube."
+      "blurb": "Añade texto o logo. Exportación por lotes. Nada se sube."
     },
     "collage": {
       "name": "Collage",
-      "blurb": "Junta fotos en una sola. Elige diseño, espacio y exporta. Nada se sube."
+      "blurb": "Collage con cuadrículas y tamaños de Instagram. Nada se sube."
     },
     "convert": {
       "name": "Formatos de imagen",
-      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Lote y ZIP. Nada se sube."
+      "blurb": "HEIC→JPG, WebP→PNG, JPG↔PNG, SVG, ICO. Redimensiona. Sin subida."
     },
     "image-pdf": {
       "name": "Imágenes a PDF",
-      "blurb": "Junta fotos en un PDF. En el navegador. Nada se sube."
+      "blurb": "JPG/PNG a PDF. Varias fotos, un archivo. Nada se sube."
     },
     "audio": {
       "name": "Audio a WAV",
-      "blurb": "MP3, M4A, OGG a WAV. En el navegador."
+      "blurb": "MP3 a WAV, también M4A y OGG. Elige la frecuencia."
     },
     "data": {
       "name": "Texto y datos",
-      "blurb": "JSON, CSV, Base64, Markdown, URL. Nada se sube."
+      "blurb": "Formateador JSON, CSV ↔ JSON, Base64, Markdown. Nada se sube."
     }
   },
   "watermark": {
-    "title": "Marca de agua",
+    "title": "Añadir marca de agua a fotos",
     "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
@@ -143,7 +145,7 @@
     "emptyDownload": "Añade una imagen primero."
   },
   "collage": {
-    "title": "Collage de fotos",
+    "title": "Creador de collages de fotos",
     "back": "Todas las herramientas",
     "dropTitle": "Suelta fotos aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
@@ -188,7 +190,7 @@
     }
   },
   "clip": {
-    "title": "Portapapeles en la nube",
+    "title": "Portapapeles en línea",
     "back": "Todas las herramientas",
     "privacyNote": "Texto en D1, archivos en S3. Se borra a las 10 vistas o a las 24 horas. Sin cuenta.",
     "bodyLabel": "Texto",
@@ -234,11 +236,11 @@
     "privacy": "Las herramientas de imagen se quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y luego se borran."
   },
   "convert": {
-    "title": "Convertir formatos de imagen",
+    "title": "Convertir HEIC, WebP, JPG, PNG",
     "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
+    "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Imágenes",
     "filesEmpty": "Aún no hay imágenes",
     "remove": "Quitar",
@@ -250,16 +252,25 @@
     "downloadAll": "Descargar todo en ZIP",
     "working": "Convirtiendo…",
     "privacyNote": "La conversión de imagen se queda en esta pestaña. Nada se sube.",
-    "hint": "Elige el formato y descarga.",
+    "hint": "Elige un formato o un atajo y descarga.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
-    "emptyDownload": "Añade una imagen primero."
+    "emptyDownload": "Añade una imagen primero.",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "Lado más largo",
+    "maxOriginal": "Tamaño original",
+    "sizeLabel": "Salida ≈ {size}"
   },
   "imagePdf": {
-    "title": "Convertir imágenes a PDF",
+    "title": "JPG / PNG a PDF",
     "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
     "filesTitle": "Páginas",
     "filesEmpty": "Aún no hay imágenes",
     "remove": "Quitar",
@@ -267,17 +278,21 @@
     "up": "Subir",
     "down": "Bajar",
     "exportTitle": "PDF",
-    "pageNote": "Cada imagen es una página A4, entera, sin recortar.",
+    "pageNote": "Cada imagen es una página, sin recortar.",
     "quality": "Calidad JPEG",
     "download": "Descargar PDF",
     "working": "Creando PDF…",
     "privacyNote": "JPG a PDF y PNG a PDF se hacen en esta pestaña. Nada se sube.",
     "hint": "Ordena las páginas y descarga un PDF.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
-    "emptyDownload": "Añade una imagen primero."
+    "emptyDownload": "Añade una imagen primero.",
+    "pageSize": "Tamaño de página",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "Ajustar a la foto"
   },
   "audio": {
-    "title": "Convertir audio a WAV",
+    "title": "Convertir MP3 a WAV",
     "back": "Todas las herramientas",
     "privacyNote": "El audio se decodifica en esta pestaña y se guarda como WAV. Nada se sube.",
     "dropTitle": "Suelta audio aquí",
@@ -294,10 +309,12 @@
     "downloadAll": "Descargar todo en ZIP",
     "working": "Convirtiendo…",
     "errorDecode": "No se pudo leer este audio en el navegador.",
-    "emptyDownload": "Añade un audio primero."
+    "emptyDownload": "Añade un audio primero.",
+    "sampleRate": "Frecuencia de muestreo",
+    "rateOriginal": "Original"
   },
   "data": {
-    "title": "Convertir texto y datos",
+    "title": "Formateador JSON",
     "back": "Todas las herramientas",
     "privacyNote": "JSON, CSV, Base64 y Markdown se quedan en esta pestaña.",
     "mode": "Conversión",
@@ -319,6 +336,95 @@
       "url-decode": "Decodificar URL",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
+    },
+    "copy": "Copiar resultado",
+    "copied": "Copiado"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "clip": {
+      "q1": "¿Es una alternativa a Pastebin?",
+      "a1": "Sí. Pega texto y obtén un enlace, sin cuenta. Solo quien tenga la URL puede abrirla. Se borra a las 10 vistas o a las 24 horas.",
+      "q2": "¿Hay que registrarse?",
+      "a2": "No. Crea el enlace y envíalo. No hay inicio de sesión ni listado público.",
+      "q3": "¿Cuándo se borra una nota?",
+      "a3": "A las 10 vistas o a las 24 horas, lo que ocurra antes. La última vista avisa de que ya no está.",
+      "q4": "¿Puedo compartir imágenes y archivos?",
+      "a4": "Sí. El texto va a D1 (máx. 64 KB). Imágenes, vídeo y otros archivos a S3, hasta 32 MB cada uno.",
+      "q5": "¿Las notas son públicas?",
+      "a5": "No hay directorio. Solo quien tenga el enlace puede abrirla, y caduca igual."
+    },
+    "watermark": {
+      "q1": "¿Añadir una marca de agua sube las fotos?",
+      "a1": "No. El lienzo del navegador pone la marca. Al cerrar la pestaña se descartan. La exportación también quita el EXIF.",
+      "q2": "¿Puedo marcar muchas fotos a la vez?",
+      "a2": "Sí. Añade un lote y descarga una o un ZIP de PNG/JPEG.",
+      "q3": "¿Texto y logo?",
+      "a3": "Ambos. Esquina, centro o repetida por toda la foto.",
+      "q4": "¿Puedo quitar una marca de agua?",
+      "a4": "No. Esta herramienta solo añade marcas; no borra las existentes.",
+      "q5": "¿Qué formatos?",
+      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP."
+    },
+    "collage": {
+      "q1": "¿Es un creador de collages?",
+      "a1": "Sí. Combina fotos en el navegador. Nada se sube.",
+      "q2": "¿Tamaños de Instagram?",
+      "a2": "Cuadrado, 4:5, story 9:16 y 16:9 horizontal.",
+      "q3": "¿Cuántas fotos?",
+      "a3": "De 2 a 9 celdas, con 2×2, 3×3 y marcos partidos.",
+      "q4": "¿Qué exporto?",
+      "a4": "PNG, JPEG o WebP, con calidad en los formatos con pérdida.",
+      "q5": "¿Salen las fotos del dispositivo?",
+      "a5": "No. Solo esta pestaña. Al cerrar la página se descartan."
+    },
+    "convert": {
+      "q1": "¿Puedo pasar HEIC a JPG?",
+      "a1": "Sí en navegadores que decodifican HEIC (Safari, etc.). Luego descargas un JPG.",
+      "q2": "¿WebP a PNG o JPG a PNG?",
+      "a2": "Sí. Atajos HEIC→JPG, WebP→PNG, PNG↔JPG, SVG→PNG e ICO.",
+      "q3": "¿Se suben las imágenes?",
+      "a3": "No. La conversión usa el lienzo de esta pestaña.",
+      "q4": "¿Varias imágenes a la vez?",
+      "a4": "Una o un ZIP.",
+      "q5": "¿Puedo redimensionar al convertir?",
+      "a5": "Sí. Conserva el original o limita el lado largo a 2048, 1920, 1280 u 800 px."
+    },
+    "image-pdf": {
+      "q1": "¿JPG o PNG a PDF?",
+      "a1": "Sí. Suelta JPG, PNG, WebP, GIF o HEIC y descarga un PDF.",
+      "q2": "¿Varias fotos en un PDF?",
+      "a2": "Sí. Reordena las páginas y descarga un archivo.",
+      "q3": "¿Tamaños de página?",
+      "a3": "A4, US Letter o una página con la proporción de la foto.",
+      "q4": "¿Se recortan?",
+      "a4": "No. Cada imagen cabe en su página sin recorte.",
+      "q5": "¿Se sube algo?",
+      "a5": "No. El PDF se genera en esta pestaña."
+    },
+    "audio": {
+      "q1": "¿MP3 a WAV?",
+      "a1": "Sí. M4A, OGG, AAC, FLAC y WebM también salen a WAV en el navegador.",
+      "q2": "¿Se sube el audio?",
+      "a2": "No. Web Audio lo decodifica aquí.",
+      "q3": "¿Elijo la frecuencia?",
+      "a3": "Conserva la original o exporta 44,1 kHz / 48 kHz.",
+      "q4": "¿Varios archivos?",
+      "a4": "Un WAV o un ZIP.",
+      "q5": "¿Exportar MP3?",
+      "a5": "Aún no. Esta herramienta escribe WAV sin comprimir en el dispositivo."
+    },
+    "data": {
+      "q1": "¿Es un formateador JSON?",
+      "a1": "Sí. Embellece o minifica. Convierte mientras escribes.",
+      "q2": "¿CSV a JSON?",
+      "a2": "Ambos sentidos: CSV → JSON y JSON → CSV.",
+      "q3": "¿Base64 y URL encode?",
+      "a3": "Codifica y decodifica, incluido Unicode.",
+      "q4": "¿Markdown a HTML?",
+      "a4": "Sí, y HTML a Markdown. Copia o descarga el resultado.",
+      "q5": "¿Se sube el texto?",
+      "a5": "No. Abrir un archivo local tampoco sale de esta pestaña."
     }
   }
 }

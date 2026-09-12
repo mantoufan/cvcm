@@ -1,6 +1,6 @@
 import { outputFilename } from "../../shared/filename";
 import { blobFromBytes } from "../../shared/image-encode";
-import { encodeWav } from "../../shared/wav";
+import { encodeWav, resampleChannels } from "../../shared/wav";
 import { zipStore } from "../../shared/zip";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
@@ -17,9 +17,13 @@ type Item = {
   error: string | null;
 };
 
+const RATES = [0, 44100, 48000] as const;
+type Rate = (typeof RATES)[number];
+
 const state = {
   items: [] as Item[],
   selected: null as string | null,
+  rate: 0 as Rate,
 };
 
 let fileList: HTMLElement | null = null;
@@ -41,6 +45,21 @@ export async function mountAudio(host: HTMLElement): Promise<void> {
         h("fieldset", null,
           h("legend", null, t("audio.exportTitle")),
           h("p", { class: "muted" }, t("audio.hint")),
+          h("label", { class: "field" },
+            h("span", null, t("audio.sampleRate")),
+            h("select", {
+              onChange: (e: Event) => {
+                state.rate = Number((e.target as HTMLSelectElement).value) as Rate;
+              },
+            },
+              ...RATES.map((n) =>
+                h("option", {
+                  value: String(n),
+                  selected: state.rate === n,
+                }, n === 0 ? t("audio.rateOriginal") : `${n} Hz`),
+              ),
+            ),
+          ),
         ),
       ),
     ),
@@ -231,7 +250,9 @@ function wavBlob(item: Item): Blob {
   if (!item.buffer) throw new Error("decode");
   const chans = [];
   for (let i = 0; i < item.buffer.numberOfChannels; i++) chans.push(item.buffer.getChannelData(i));
-  return blobFromBytes(encodeWav(chans, item.buffer.sampleRate), "audio/wav");
+  const rate = state.rate || item.buffer.sampleRate;
+  const samples = resampleChannels(chans, item.buffer.sampleRate, rate);
+  return blobFromBytes(encodeWav(samples, rate), "audio/wav");
 }
 
 async function downloadOne(): Promise<void> {

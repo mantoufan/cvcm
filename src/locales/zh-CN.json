@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — 云剪切板与浏览器工具",
-    "titleClip": "云剪切板 — cv.cm",
-    "descClip": "粘贴文字，生成链接。无需登录。查看 10 次或超过 1 天自动删除。",
-    "titleWatermark": "图片水印 — cv.cm",
-    "titleCollage": "图片拼图 — cv.cm",
-    "titleConvert": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO 转换 — cv.cm",
-    "descConvert": "浏览器里互转 PNG、JPG、WebP、AVIF、GIF、BMP、ICO。文件不上传。",
-    "titleImagePdf": "图片转 PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP 转 PDF，多图合成一份。本地处理，文件不上传。",
-    "titleAudio": "音频转 WAV — cv.cm",
-    "descAudio": "MP3、M4A、OGG 等在浏览器里转成 WAV。文件不上传。",
-    "titleData": "JSON、CSV、Base64、Markdown 转换 — cv.cm",
-    "descData": "JSON 格式化、CSV 转 JSON、Base64、Markdown 转 HTML。本地处理。",
-    "description": "云剪切板和浏览器工具。便签查看 10 次或 1 天后删除。图片工具文件不上传。"
+    "titleClip": "在线剪贴板 — 无需登录分享文字 — cv.cm",
+    "descClip": "类似 Pastebin 的云剪切板。用链接分享文字、图片和文件。无需账号。查看 10 次或 24 小时后删除。",
+    "titleWatermark": "给图片加水印 — cv.cm",
+    "titleCollage": "在线图片拼图 — cv.cm",
+    "titleConvert": "HEIC 转 JPG、WebP 转 PNG、JPG 转 PNG — cv.cm",
+    "descConvert": "浏览器互转 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可缩小边长。文件不上传。",
+    "titleImagePdf": "JPG 转 PDF、PNG 转 PDF — cv.cm",
+    "descImagePdf": "把 JPG、PNG、WebP 或 HEIC 合成一份 PDF。A4、Letter 或按照片比例。文件不上传。",
+    "titleAudio": "MP3 转 WAV — cv.cm",
+    "descAudio": "浏览器把 MP3、M4A、OGG、AAC、FLAC 转成 WAV。可选 44.1 / 48 kHz。文件不上传。",
+    "titleData": "JSON 格式化、Base64、CSV 转 JSON — cv.cm",
+    "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 编码、Markdown 转 HTML。只在当前标签页。",
+    "description": "云剪切板和浏览器工具。便签查看 10 次或 1 天后删除。图片工具文件不上传。",
+    "descWatermark": "在浏览器里给照片加文字或 Logo 水印。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。",
+    "descCollage": "浏览器里做照片拼图。宫格布局和 Instagram 尺寸。文件不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "云剪切板",
-      "blurb": "文字、图片、视频、附件。支持 Markdown 和代码。查看 10 次或 1 天后删除。"
+      "blurb": "类似 Pastebin：文字、图片、附件。查看 10 次或 1 天后删除。"
     },
     "watermark": {
       "name": "图片水印",
-      "blurb": "给照片盖文字或 Logo。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。"
+      "blurb": "给照片加文字或 Logo 水印。批量导出。文件不上传。"
     },
     "collage": {
       "name": "图片拼图",
-      "blurb": "把多张照片拼成一张。选布局、间距，本地导出。文件不上传。"
+      "blurb": "在线拼图，宫格和 Instagram 尺寸。文件不上传。"
     },
     "convert": {
       "name": "图片格式",
-      "blurb": "PNG、JPG、WebP、AVIF、GIF、BMP、ICO。批量下载。文件不上传。"
+      "blurb": "HEIC 转 JPG、WebP 转 PNG、JPG ↔ PNG、SVG、ICO。可缩放。不上传。"
     },
     "image-pdf": {
       "name": "图片转 PDF",
-      "blurb": "多张照片合成一份 PDF。浏览器里完成，文件不上传。"
+      "blurb": "JPG 转 PDF、PNG 转 PDF。多图一份文件。不上传。"
     },
     "audio": {
       "name": "音频转 WAV",
-      "blurb": "MP3、M4A、OGG 等转 WAV。浏览器里完成。"
+      "blurb": "MP3 转 WAV，也支持 M4A、OGG。可选采样率。浏览器完成。"
     },
     "data": {
       "name": "文本与数据",
-      "blurb": "JSON、CSV、Base64、Markdown、URL 编码。文件不上传。"
+      "blurb": "JSON 格式化、CSV ↔ JSON、Base64、Markdown。不上传。"
     }
   },
   "watermark": {
-    "title": "图片水印",
+    "title": "给图片加水印",
     "back": "全部工具",
     "dropTitle": "把图片拖到这里",
     "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
@@ -188,11 +190,11 @@
     }
   },
   "convert": {
-    "title": "图片格式转换",
+    "title": "HEIC、WebP、JPG、PNG 互转",
     "back": "全部工具",
     "dropTitle": "把图片拖到这里",
     "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
-    "dropTypes": "PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
+    "dropTypes": "HEIC、PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
     "filesTitle": "图片",
     "filesEmpty": "还没有图片",
     "remove": "移除",
@@ -204,16 +206,25 @@
     "downloadAll": "打包 ZIP 下载全部",
     "working": "正在转换…",
     "privacyNote": "图片格式转换只在这个标签页进行，不会上传。",
-    "hint": "选择输出格式后下载。",
+    "hint": "选输出格式或快捷转换，然后下载。",
     "errorDecode": "浏览器无法读取这张图片。",
-    "emptyDownload": "请先添加图片。"
+    "emptyDownload": "请先添加图片。",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "最长边",
+    "maxOriginal": "原始尺寸",
+    "sizeLabel": "输出约 {size}"
   },
   "imagePdf": {
-    "title": "图片转 PDF",
+    "title": "JPG / PNG 转 PDF",
     "back": "全部工具",
     "dropTitle": "把图片拖到这里",
     "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
-    "dropTypes": "PNG、JPEG、WebP、GIF",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
     "filesTitle": "页面",
     "filesEmpty": "还没有图片",
     "remove": "移除",
@@ -221,17 +232,21 @@
     "up": "上移",
     "down": "下移",
     "exportTitle": "PDF",
-    "pageNote": "每张图一页 A4，完整放入、不裁切。",
+    "pageNote": "每张图一页，完整放入、不裁切。",
     "quality": "JPEG 质量",
     "download": "下载 PDF",
     "working": "正在生成 PDF…",
     "privacyNote": "JPG 转 PDF、PNG 转 PDF 只在这个标签页进行，不会上传。",
     "hint": "调整页序后下载一份 PDF。",
     "errorDecode": "浏览器无法读取这张图片。",
-    "emptyDownload": "请先添加图片。"
+    "emptyDownload": "请先添加图片。",
+    "pageSize": "页面尺寸",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "按照片比例"
   },
   "audio": {
-    "title": "音频转 WAV",
+    "title": "MP3 转 WAV",
     "back": "全部工具",
     "privacyNote": "音频在这个标签页解码，保存为 WAV。不会上传。",
     "dropTitle": "把音频拖到这里",
@@ -248,10 +263,12 @@
     "downloadAll": "打包 ZIP 下载全部",
     "working": "正在转换…",
     "errorDecode": "浏览器无法读取这个音频。",
-    "emptyDownload": "请先添加音频。"
+    "emptyDownload": "请先添加音频。",
+    "sampleRate": "采样率",
+    "rateOriginal": "原始"
   },
   "data": {
-    "title": "文本与数据转换",
+    "title": "JSON 格式化",
     "back": "全部工具",
     "privacyNote": "JSON、CSV、Base64、Markdown 只在这个标签页处理。",
     "mode": "转换",
@@ -273,10 +290,12 @@
       "url-decode": "URL 解码",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
-    }
+    },
+    "copy": "复制结果",
+    "copied": "已复制"
   },
   "clip": {
-    "title": "云剪切板",
+    "title": "在线剪贴板",
     "back": "全部工具",
     "privacyNote": "文字在 D1，文件在 S3。查看 10 次或 24 小时后删除。无需登录。",
     "bodyLabel": "文本",
@@ -320,5 +339,92 @@
   },
   "footer": {
     "privacy": "图片工具在本地处理。云剪切板会短暂保存在 cv.cm，到期删除。"
+  },
+  "faq": {
+    "title": "常见问题",
+    "clip": {
+      "q1": "这是 Pastebin 一类的在线剪贴板吗？",
+      "a1": "是。粘贴文字即可得到链接，无需账号。只有拿到网址的人能打开，查看 10 次或 24 小时后删除。",
+      "q2": "需要注册吗？",
+      "a2": "不需要。生成链接后发给对方即可。没有登录，也没有公开列表。",
+      "q3": "便签什么时候删除？",
+      "a3": "查看 10 次或满 24 小时，先到先删。最后一次查看会提示已经消失。",
+      "q4": "能分享图片和文件吗？",
+      "a4": "可以。文字存在 D1（最多 64 KB）。图片、视频和其他文件走 S3，单个不超过 32 MB。",
+      "q5": "便签是公开的吗？",
+      "a5": "没有目录。只有持有链接的人能打开，并且仍会过期。"
+    },
+    "watermark": {
+      "q1": "加水印会上传照片吗？",
+      "a1": "不会。浏览器画布完成本地盖印。关闭标签页即丢弃。导出时还会去掉 EXIF。",
+      "q2": "能一次给很多张图加水印吗？",
+      "a2": "可以。批量加入后下载单张，或打包 PNG / JPEG 的 ZIP。",
+      "q3": "文字和 Logo 都能用吗？",
+      "a3": "都能。可钉在角落、居中，或斜铺满整张图。",
+      "q4": "能去水印吗？",
+      "a4": "不能。这个工具只负责加水印，不会擦除已有水印。",
+      "q5": "支持哪些格式？",
+      "a5": "可导入 PNG、JPEG、WebP、GIF。导出 PNG、JPEG 或 WebP。"
+    },
+    "collage": {
+      "q1": "这是在线拼图工具吗？",
+      "a1": "是。把多张照片拼成一张，全程在浏览器里，文件不上传。",
+      "q2": "有 Instagram 常用尺寸吗？",
+      "a2": "有正方形、4:5 竖图、9:16 快拍和 16:9 横图。",
+      "q3": "最多能拼几张？",
+      "a3": "布局从 2 格到 9 格，包括四宫格、九宫格和分割构图。",
+      "q4": "导出什么格式？",
+      "a4": "PNG、JPEG 或 WebP，有损格式可调质量。",
+      "q5": "照片会离开这台设备吗？",
+      "a5": "不会。处理只在当前标签页，关闭页面即丢弃。"
+    },
+    "convert": {
+      "q1": "能 HEIC 转 JPG 吗？",
+      "a1": "在能解码 HEIC 的浏览器可以（Safari，以及支持该格式的 Chromium），然后下载 JPG。",
+      "q2": "能 WebP 转 PNG，或 JPG 转 PNG 吗？",
+      "a2": "可以。快捷按钮覆盖 HEIC → JPG、WebP → PNG、PNG ↔ JPG、SVG → PNG 和 ICO。",
+      "q3": "图片会上传到服务器吗？",
+      "a3": "不会。转换用的是当前标签页的画布。",
+      "q4": "能一次转很多张吗？",
+      "a4": "可以。下载单张，或打包成 ZIP。",
+      "q5": "转换时能缩小尺寸吗？",
+      "a5": "可以。保留原尺寸，或把最长边限制在 2048、1920、1280、800 像素。"
+    },
+    "image-pdf": {
+      "q1": "能 JPG 转 PDF 或 PNG 转 PDF 吗？",
+      "a1": "可以。拖入 JPG、PNG、WebP、GIF 或 HEIC，下载一份 PDF。",
+      "q2": "多张照片能合成一个 PDF 吗？",
+      "a2": "可以。调整页序后下载一个文件。",
+      "q3": "有哪些页面尺寸？",
+      "a3": "A4、US Letter，或按照片自身比例分页。",
+      "q4": "会裁切图片吗？",
+      "a4": "不会。每张图完整放入对应页面。",
+      "q5": "会上传文件吗？",
+      "a5": "不会。PDF 在当前标签页生成。"
+    },
+    "audio": {
+      "q1": "能 MP3 转 WAV 吗？",
+      "a1": "可以。M4A、OGG、AAC、FLAC、WebM 也能在浏览器解码成 WAV。",
+      "q2": "音频会上传吗？",
+      "a2": "不会。用 Web Audio 在当前标签页解码。",
+      "q3": "能选采样率吗？",
+      "a3": "可保留原始采样率，或导出 44.1 kHz / 48 kHz。",
+      "q4": "能一次转多个文件吗？",
+      "a4": "可以。下载单个 WAV，或打包 ZIP。",
+      "q5": "能导出 MP3 吗？",
+      "a5": "目前不能。这个工具只写 WAV，保持无损并完全在本地完成。"
+    },
+    "data": {
+      "q1": "这是 JSON 格式化工具吗？",
+      "a1": "是。可美化或压缩 JSON，输入时就会转换。",
+      "q2": "能 CSV 转 JSON 吗？",
+      "a2": "双向都有：CSV → JSON 和 JSON → CSV。",
+      "q3": "支持 Base64 和 URL 编码吗？",
+      "a3": "支持编码和解码，包含 Unicode 文本。",
+      "q4": "能把 Markdown 转成 HTML 吗？",
+      "a4": "可以，也能把 HTML 转回 Markdown。结果可复制或下载。",
+      "q5": "文本会上传吗？",
+      "a5": "不会。也可以打开本地文件，内容不会离开当前标签页。"
+    }
   }
 }

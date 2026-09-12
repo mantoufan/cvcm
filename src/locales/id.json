@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — papan klip awan dan alat browser",
-    "titleClip": "Papan klip awan — cv.cm",
-    "descClip": "Tempel teks, dapatkan tautan. Tanpa akun. Hilang setelah 10 kali dilihat atau satu hari.",
-    "titleWatermark": "Watermark gambar — cv.cm",
-    "titleCollage": "Kolase foto — cv.cm",
+    "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
+    "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
+    "titleWatermark": "Tambah watermark ke foto — cv.cm",
+    "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Papan klip awan dan alat browser. Catatan hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak diunggah.",
-    "titleConvert": "Ubah PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
-    "descConvert": "Ubah format gambar di browser. Tanpa unggah.",
-    "titleImagePdf": "Gambar ke PDF — cv.cm",
-    "descImagePdf": "JPG / PNG / WebP menjadi PDF, banyak gambar satu file. Di perangkat, tanpa unggah.",
-    "titleAudio": "Ubah audio ke WAV — cv.cm",
-    "descAudio": "MP3, M4A, OGG menjadi WAV di perangkat. Tanpa unggah.",
-    "titleData": "JSON, CSV, Base64, Markdown — cv.cm",
-    "descData": "Rapihkan JSON, CSV↔JSON, Base64, Markdown. Di browser."
+    "titleConvert": "HEIC ke JPG, WebP ke PNG, JPG ke PNG — cv.cm",
+    "descConvert": "Ubah HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO di browser. Bisa perkecil. Tanpa unggah.",
+    "titleImagePdf": "JPG ke PDF dan PNG ke PDF — cv.cm",
+    "descImagePdf": "Gabungkan JPG, PNG, WebP, atau HEIC jadi satu PDF. A4, Letter, atau sesuai foto. Tanpa unggah.",
+    "titleAudio": "Ubah MP3 ke WAV — cv.cm",
+    "descAudio": "Ubah MP3, M4A, OGG, AAC, FLAC ke WAV di browser. Pilih 44,1 / 48 kHz. Tanpa unggah.",
+    "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
+    "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
+    "descWatermark": "Tambah teks atau logo di browser. Ekspor massal PNG, JPEG, atau ZIP. Tanpa unggah.",
+    "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "Papan klip awan",
-      "blurb": "Teks, gambar, video, berkas. Markdown dan kode. Hilang setelah 10 kali dilihat atau satu hari."
+      "blurb": "Gaya Pastebin: teks, gambar, file. Hilang setelah 10 kali dilihat atau satu hari."
     },
     "watermark": {
       "name": "Watermark gambar",
-      "blurb": "Cap teks atau logo pada foto. Ekspor PNG, JPEG, atau ZIP. Tidak diunggah."
+      "blurb": "Tambah teks atau logo. Ekspor massal. Tanpa unggah."
     },
     "collage": {
       "name": "Kolase foto",
-      "blurb": "Gabungkan foto jadi satu. Pilih tata letak, jarak, lalu ekspor. Tidak diunggah."
+      "blurb": "Kolase grid dan ukuran Instagram. Tanpa unggah."
     },
     "convert": {
       "name": "Format gambar",
-      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Unduh massal. Tidak diunggah."
+      "blurb": "HEIC→JPG, WebP→PNG, JPG↔PNG, SVG, ICO. Bisa ubah ukuran. Tanpa unggah."
     },
     "image-pdf": {
       "name": "Gambar ke PDF",
-      "blurb": "Gabung foto jadi satu PDF. Di browser. Tidak diunggah."
+      "blurb": "JPG/PNG ke PDF. Banyak foto, satu file. Tanpa unggah."
     },
     "audio": {
       "name": "Audio ke WAV",
-      "blurb": "MP3, M4A, OGG menjadi WAV. Di browser."
+      "blurb": "MP3 ke WAV, plus M4A dan OGG. Pilih laju sampel."
     },
     "data": {
       "name": "Teks & data",
-      "blurb": "JSON, CSV, Base64, Markdown, URL. Tidak diunggah."
+      "blurb": "Pemformat JSON, CSV ↔ JSON, Base64, Markdown. Tanpa unggah."
     }
   },
   "watermark": {
-    "title": "Watermark gambar",
+    "title": "Tambah watermark ke foto",
     "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
@@ -143,7 +145,7 @@
     "emptyDownload": "Tambah gambar dulu."
   },
   "collage": {
-    "title": "Kolase foto",
+    "title": "Pembuat kolase foto",
     "back": "Semua alat",
     "dropTitle": "Letakkan foto di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
@@ -188,7 +190,7 @@
     }
   },
   "clip": {
-    "title": "Papan klip awan",
+    "title": "Papan klip daring",
     "back": "Semua alat",
     "privacyNote": "Teks di D1, berkas di S3. Dihapus setelah 10 kali dilihat atau 24 jam. Tanpa akun.",
     "bodyLabel": "Teks",
@@ -234,11 +236,11 @@
     "privacy": "Alat gambar tetap di tab ini. Catatan papan klip disimpan sebentar di cv.cm, lalu dihapus."
   },
   "convert": {
-    "title": "Ubah format gambar",
+    "title": "Ubah HEIC, WebP, JPG, PNG",
     "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
+    "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Gambar",
     "filesEmpty": "Belum ada gambar",
     "remove": "Hapus",
@@ -250,16 +252,25 @@
     "downloadAll": "Unduh semua sebagai ZIP",
     "working": "Mengonversi…",
     "privacyNote": "Konversi gambar hanya di tab ini. Tidak diunggah.",
-    "hint": "Pilih format lalu unduh.",
+    "hint": "Pilih format atau pintasan, lalu unduh.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
-    "emptyDownload": "Tambah gambar dulu."
+    "emptyDownload": "Tambah gambar dulu.",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "Sisi terpanjang",
+    "maxOriginal": "Ukuran asli",
+    "sizeLabel": "Keluaran ≈ {size}"
   },
   "imagePdf": {
-    "title": "Ubah gambar ke PDF",
+    "title": "JPG / PNG ke PDF",
     "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
     "filesTitle": "Halaman",
     "filesEmpty": "Belum ada gambar",
     "remove": "Hapus",
@@ -267,17 +278,21 @@
     "up": "Naik",
     "down": "Turun",
     "exportTitle": "PDF",
-    "pageNote": "Tiap gambar satu halaman A4, utuh, tanpa potong.",
+    "pageNote": "Setiap gambar satu halaman, tanpa potong.",
     "quality": "Kualitas JPEG",
     "download": "Unduh PDF",
     "working": "Membuat PDF…",
     "privacyNote": "JPG ke PDF, PNG ke PDF hanya di tab ini, tidak diunggah.",
     "hint": "Urutkan halaman, lalu unduh satu PDF.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
-    "emptyDownload": "Tambah gambar dulu."
+    "emptyDownload": "Tambah gambar dulu.",
+    "pageSize": "Ukuran halaman",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "Sesuai foto"
   },
   "audio": {
-    "title": "Ubah audio ke WAV",
+    "title": "Ubah MP3 ke WAV",
     "back": "Semua alat",
     "privacyNote": "Audio didekode di tab ini dan disimpan sebagai WAV. Tidak diunggah.",
     "dropTitle": "Letakkan audio di sini",
@@ -294,10 +309,12 @@
     "downloadAll": "Unduh semua ZIP",
     "working": "Mengubah…",
     "errorDecode": "Browser tidak bisa membaca audio ini.",
-    "emptyDownload": "Tambah audio dulu."
+    "emptyDownload": "Tambah audio dulu.",
+    "sampleRate": "Laju sampel",
+    "rateOriginal": "Asli"
   },
   "data": {
-    "title": "Ubah teks dan data",
+    "title": "Pemformat JSON",
     "back": "Semua alat",
     "privacyNote": "JSON, CSV, Base64, Markdown tetap di tab ini.",
     "mode": "Konversi",
@@ -319,6 +336,95 @@
       "url-decode": "Decode URL",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
+    },
+    "copy": "Salin hasil",
+    "copied": "Tersalin"
+  },
+  "faq": {
+    "title": "Tanya jawab",
+    "clip": {
+      "q1": "Ini alternatif Pastebin?",
+      "a1": "Ya. Tempel teks, dapat tautan, tanpa akun. Hanya yang punya URL bisa buka. Dihapus setelah 10 kali dilihat atau 24 jam.",
+      "q2": "Perlu daftar?",
+      "a2": "Tidak. Buat tautan lalu kirim. Tidak ada login atau daftar publik.",
+      "q3": "Kapan catatan dihapus?",
+      "a3": "Setelah 10 kali dilihat atau 24 jam, yang lebih dulu. Lihat terakhir memberi tahu catatan sudah hilang.",
+      "q4": "Bisa bagikan gambar dan file?",
+      "a4": "Bisa. Teks di D1 (maks 64 KB). Gambar, video, file lain ke S3, masing-masing 32 MB.",
+      "q5": "Catatan bersifat publik?",
+      "a5": "Tidak ada direktori. Hanya pemegang tautan yang bisa buka, dan tetap kedaluwarsa."
+    },
+    "watermark": {
+      "q1": "Menambah watermark mengunggah foto?",
+      "a1": "Tidak. Kanvas browser yang menandai. Tutup tab, file dibuang. Ekspor juga menghapus EXIF.",
+      "q2": "Bisa banyak foto sekaligus?",
+      "a2": "Ya. Tambah batch, unduh satu atau ZIP PNG/JPEG.",
+      "q3": "Teks dan logo?",
+      "a3": "Keduanya. Sudut, tengah, atau ubin di seluruh foto.",
+      "q4": "Bisa hapus watermark?",
+      "a4": "Tidak. Alat ini hanya menambah tanda, tidak menghapus watermark yang ada.",
+      "q5": "Format apa?",
+      "a5": "Masuk PNG, JPEG, WebP, GIF. Keluar PNG, JPEG, atau WebP."
+    },
+    "collage": {
+      "q1": "Ini pembuat kolase foto?",
+      "a1": "Ya. Gabungkan foto di browser. Tidak diunggah.",
+      "q2": "Ada ukuran Instagram?",
+      "a2": "Persegi, 4:5, story 9:16, dan 16:9.",
+      "q3": "Berapa foto?",
+      "a3": "2 sampai 9 sel, termasuk 2×2, 3×3, dan bingkai terbagi.",
+      "q4": "Ekspor apa?",
+      "a4": "PNG, JPEG, atau WebP, kualitas bisa diatur untuk format lossy.",
+      "q5": "Foto keluar dari perangkat?",
+      "a5": "Tidak. Hanya di tab ini. Tutup halaman, file dibuang."
+    },
+    "convert": {
+      "q1": "Bisa HEIC ke JPG?",
+      "a1": "Ya di browser yang bisa decode HEIC (Safari, dll.), lalu unduh JPG.",
+      "q2": "WebP ke PNG atau JPG ke PNG?",
+      "a2": "Ya. Pintasan HEIC→JPG, WebP→PNG, PNG↔JPG, SVG→PNG, dan ICO.",
+      "q3": "Gambar diunggah ke server?",
+      "a3": "Tidak. Konversi di kanvas tab ini.",
+      "q4": "Beberapa gambar sekaligus?",
+      "a4": "Satu file atau ZIP.",
+      "q5": "Bisa ubah ukuran saat konversi?",
+      "a5": "Ya. Tetap asli atau batasi sisi terpanjang 2048, 1920, 1280, 800 piksel."
+    },
+    "image-pdf": {
+      "q1": "JPG atau PNG ke PDF?",
+      "a1": "Ya. Taruh JPG, PNG, WebP, GIF, atau HEIC jadi satu PDF.",
+      "q2": "Banyak foto satu PDF?",
+      "a2": "Ya. Urutkan halaman lalu unduh satu file.",
+      "q3": "Ukuran halaman?",
+      "a3": "A4, US Letter, atau halaman sesuai rasio foto.",
+      "q4": "Dipotong?",
+      "a4": "Tidak. Setiap gambar muat di halaman tanpa dipotong.",
+      "q5": "Diunggah?",
+      "a5": "Tidak. PDF dibuat di tab ini."
+    },
+    "audio": {
+      "q1": "MP3 ke WAV?",
+      "a1": "Ya. M4A, OGG, AAC, FLAC, WebM juga jadi WAV di browser.",
+      "q2": "Audio diunggah?",
+      "a2": "Tidak. Web Audio mendekode di tab ini.",
+      "q3": "Pilih laju sampel?",
+      "a3": "Tetap asli, atau ekspor 44,1 kHz / 48 kHz.",
+      "q4": "Beberapa file?",
+      "a4": "Satu WAV atau ZIP.",
+      "q5": "Ekspor MP3?",
+      "a5": "Belum. Alat ini menulis WAV tak terkompresi di perangkat."
+    },
+    "data": {
+      "q1": "Ini pemformat JSON?",
+      "a1": "Ya. Rapikan atau minifikasi. Berjalan saat Anda mengetik.",
+      "q2": "CSV ke JSON?",
+      "a2": "Kedua arah: CSV → JSON dan JSON → CSV.",
+      "q3": "Base64 dan URL encode?",
+      "a3": "Encode dan decode, termasuk Unicode.",
+      "q4": "Markdown ke HTML?",
+      "a4": "Ya, dan HTML ke Markdown. Salin atau unduh.",
+      "q5": "Teks diunggah?",
+      "a5": "Tidak. Buka file lokal pun tidak keluar dari tab ini."
     }
   }
 }

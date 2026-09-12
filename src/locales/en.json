@@ -1,19 +1,21 @@
 {
   "meta": {
     "title": "cv.cm — cloud clipboard and browser tools",
-    "titleClip": "Cloud clipboard — cv.cm",
-    "descClip": "Paste text and share a link. No account. Notes vanish after 10 views or one day.",
-    "titleWatermark": "Image watermark — cv.cm",
-    "titleCollage": "Photo collage — cv.cm",
-    "titleConvert": "Convert PNG, JPG, WebP, AVIF, GIF, BMP, ICO — cv.cm",
-    "descConvert": "Convert images in the browser: PNG, JPG, WebP, AVIF, GIF, BMP, ICO. No upload.",
-    "titleImagePdf": "Convert images to PDF in your browser — cv.cm",
-    "descImagePdf": "Turn JPG, PNG, or WebP photos into a PDF on your device. Nothing is uploaded.",
-    "titleAudio": "Convert audio to WAV in your browser — cv.cm",
-    "descAudio": "Turn MP3, M4A, OGG, and more into WAV on your device. Nothing is uploaded.",
-    "titleData": "JSON, CSV, Base64, Markdown converter — cv.cm",
-    "descData": "Pretty-print JSON, CSV to JSON, Base64, Markdown to HTML. Runs in the browser.",
-    "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files."
+    "titleClip": "Online clipboard — share text without an account — cv.cm",
+    "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
+    "titleWatermark": "Add a watermark to photos — cv.cm",
+    "titleCollage": "Photo collage maker — cv.cm",
+    "titleConvert": "HEIC to JPG, WebP to PNG, JPG to PNG — cv.cm",
+    "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
+    "titleImagePdf": "JPG to PDF and PNG to PDF — cv.cm",
+    "descImagePdf": "Turn JPG, PNG, WebP, or HEIC photos into one PDF. A4, Letter, or fit-to-photo. Nothing is uploaded.",
+    "titleAudio": "MP3 to WAV converter — cv.cm",
+    "descAudio": "Convert MP3, M4A, OGG, AAC, and FLAC to WAV in the browser. Choose 44.1 or 48 kHz. Nothing is uploaded.",
+    "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
+    "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
+    "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files.",
+    "descWatermark": "Add text or a logo watermark to photos in the browser. Batch export PNG, JPEG, or ZIP. Files never leave this tab.",
+    "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -57,35 +59,35 @@
   "tools": {
     "clip": {
       "name": "Cloud clipboard",
-      "blurb": "Text, images, video, files. Markdown and code. Deleted after 10 views or one day."
+      "blurb": "Pastebin-style notes: text, images, files. Deleted after 10 views or one day."
     },
     "watermark": {
       "name": "Image watermark",
-      "blurb": "Stamp text or a logo onto photos. Batch export as PNG, JPEG, or ZIP. Nothing is uploaded."
+      "blurb": "Add a text or logo watermark. Batch export. Nothing is uploaded."
     },
     "collage": {
       "name": "Photo collage",
-      "blurb": "Combine photos into one picture. Pick a layout, spacing, and export. Nothing is uploaded."
+      "blurb": "Photo collage maker with grids and Instagram sizes. Nothing is uploaded."
     },
     "convert": {
       "name": "Image formats",
-      "blurb": "PNG, JPG, WebP, AVIF, GIF, BMP, ICO. Batch download. Nothing is uploaded."
+      "blurb": "HEIC to JPG, WebP to PNG, JPG ↔ PNG, SVG, ICO. Optional resize. No upload."
     },
     "image-pdf": {
       "name": "Images to PDF",
-      "blurb": "Merge photos into one PDF. Runs in the browser. Nothing is uploaded."
+      "blurb": "JPG to PDF and PNG to PDF. Several photos, one file. Nothing is uploaded."
     },
     "audio": {
       "name": "Audio to WAV",
-      "blurb": "MP3, M4A, OGG and more to WAV. Runs in the browser."
+      "blurb": "MP3 to WAV, plus M4A and OGG. Choose sample rate. Runs in the browser."
     },
     "data": {
       "name": "Text & data",
-      "blurb": "JSON, CSV, Base64, Markdown, URL encode. Nothing is uploaded."
+      "blurb": "JSON formatter, CSV ↔ JSON, Base64, Markdown. Nothing is uploaded."
     }
   },
   "watermark": {
-    "title": "Image watermark",
+    "title": "Add a watermark to photos",
     "back": "All tools",
     "dropTitle": "Drop images here",
     "dropHint": "or click to choose · paste with Ctrl/⌘ V",
@@ -143,7 +145,7 @@
     "emptyDownload": "Add an image first."
   },
   "collage": {
-    "title": "Photo collage",
+    "title": "Photo collage maker",
     "back": "All tools",
     "dropTitle": "Drop photos here",
     "dropHint": "or click to choose · paste with Ctrl/⌘ V",
@@ -188,11 +190,11 @@
     }
   },
   "convert": {
-    "title": "Convert image formats",
+    "title": "Convert HEIC, WebP, JPG, PNG",
     "back": "All tools",
     "dropTitle": "Drop images here",
     "dropHint": "or click to choose · paste with Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
+    "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
     "filesTitle": "Images",
     "filesEmpty": "No images yet",
     "remove": "Remove",
@@ -204,16 +206,25 @@
     "downloadAll": "Download all as ZIP",
     "working": "Converting…",
     "privacyNote": "Image conversion stays in this tab. Nothing is uploaded.",
-    "hint": "Pick an output format, then download.",
+    "hint": "Pick an output format or a shortcut, then download.",
     "errorDecode": "Could not read this image in the browser.",
-    "emptyDownload": "Add an image first."
+    "emptyDownload": "Add an image first.",
+    "chipHeicJpg": "HEIC → JPG",
+    "chipWebpPng": "WebP → PNG",
+    "chipPngJpg": "PNG → JPG",
+    "chipJpgPng": "JPG → PNG",
+    "chipSvgPng": "SVG → PNG",
+    "chipIco": "→ ICO",
+    "maxEdge": "Longest side",
+    "maxOriginal": "Original size",
+    "sizeLabel": "Output ≈ {size}"
   },
   "imagePdf": {
-    "title": "Convert images to PDF",
+    "title": "Convert JPG and PNG to PDF",
     "back": "All tools",
     "dropTitle": "Drop images here",
     "dropHint": "or click to choose · paste with Ctrl/⌘ V",
-    "dropTypes": "PNG, JPEG, WebP, GIF",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
     "filesTitle": "Pages",
     "filesEmpty": "No images yet",
     "remove": "Remove",
@@ -221,17 +232,21 @@
     "up": "Move up",
     "down": "Move down",
     "exportTitle": "PDF",
-    "pageNote": "Each image becomes one A4 page, fitted without cropping.",
+    "pageNote": "Each image becomes one page, fitted without cropping.",
     "quality": "JPEG quality",
     "download": "Download PDF",
     "working": "Building PDF…",
     "privacyNote": "JPG to PDF and PNG to PDF run in this tab. Nothing is uploaded.",
     "hint": "Reorder pages, then download one PDF.",
     "errorDecode": "Could not read this image in the browser.",
-    "emptyDownload": "Add an image first."
+    "emptyDownload": "Add an image first.",
+    "pageSize": "Page size",
+    "pageA4": "A4",
+    "pageLetter": "US Letter",
+    "pageFit": "Fit to photo"
   },
   "audio": {
-    "title": "Convert audio to WAV",
+    "title": "Convert MP3 to WAV",
     "back": "All tools",
     "privacyNote": "Audio is decoded in this tab and saved as WAV. Nothing is uploaded.",
     "dropTitle": "Drop audio here",
@@ -248,10 +263,12 @@
     "downloadAll": "Download all as ZIP",
     "working": "Converting…",
     "errorDecode": "Could not read this audio in the browser.",
-    "emptyDownload": "Add an audio file first."
+    "emptyDownload": "Add an audio file first.",
+    "sampleRate": "Sample rate",
+    "rateOriginal": "Original"
   },
   "data": {
-    "title": "Convert text and data",
+    "title": "JSON formatter",
     "back": "All tools",
     "privacyNote": "JSON, CSV, Base64, and Markdown stay in this tab.",
     "mode": "Conversion",
@@ -273,10 +290,12 @@
       "url-decode": "URL decode",
       "md-html": "Markdown → HTML",
       "html-md": "HTML → Markdown"
-    }
+    },
+    "copy": "Copy output",
+    "copied": "Copied"
   },
   "clip": {
-    "title": "Cloud clipboard",
+    "title": "Online clipboard",
     "back": "All tools",
     "privacyNote": "Text in D1, files on S3. Deleted after 10 views or 24 hours. No account.",
     "bodyLabel": "Text",
@@ -320,5 +339,92 @@
   },
   "footer": {
     "privacy": "Image tools stay in this tab. Clipboard notes are stored briefly on cv.cm, then deleted."
+  },
+  "faq": {
+    "title": "FAQ",
+    "clip": {
+      "q1": "Is this a Pastebin alternative?",
+      "a1": "Yes. Paste text and get a link, with no account. Notes are only reachable by URL and are deleted after 10 views or 24 hours.",
+      "q2": "Do I need to sign up?",
+      "a2": "No. Create a note, copy the link, and send it. There is no login and no public listing.",
+      "q3": "When is a note deleted?",
+      "a3": "After 10 views or 24 hours, whichever comes first. The last view tells you the note is gone.",
+      "q4": "Can I share images and files?",
+      "a4": "Yes. Text stays in D1 (up to 64 KB). Images, video, and other files go to S3, up to 32 MB each.",
+      "q5": "Are notes public?",
+      "a5": "There is no directory. Only people with the link can open a note, and it still expires."
+    },
+    "watermark": {
+      "q1": "Does adding a watermark upload my photos?",
+      "a1": "No. The browser canvas stamps the mark. Closing the tab discards the files. Export also strips EXIF.",
+      "q2": "Can I watermark many photos at once?",
+      "a2": "Yes. Add a batch, then download one file or a ZIP of PNG or JPEG.",
+      "q3": "Can I use text and a logo?",
+      "a3": "Both. Pin to a corner, center it, or tile the mark across the photo.",
+      "q4": "Can I remove a watermark?",
+      "a4": "No. This tool only adds a mark. It will not erase watermarks from photos.",
+      "q5": "Which formats work?",
+      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP."
+    },
+    "collage": {
+      "q1": "Is this a photo collage maker?",
+      "a1": "Yes. Combine photos into one picture in the browser. Nothing is uploaded.",
+      "q2": "Does it support Instagram sizes?",
+      "a2": "Square, 4:5 portrait, 9:16 story, and 16:9 landscape are built in.",
+      "q3": "How many photos can I combine?",
+      "a3": "Layouts cover two to nine cells, including 2×2, 3×3, and split frames.",
+      "q4": "What can I export?",
+      "a4": "PNG, JPEG, or WebP, with quality control for the lossy formats.",
+      "q5": "Do my photos leave this device?",
+      "a5": "No. Processing stays in this tab. Closing the page discards them."
+    },
+    "convert": {
+      "q1": "Can I convert HEIC to JPG?",
+      "a1": "Yes in browsers that can decode HEIC (Safari, and Chromium with support). Then download a JPG.",
+      "q2": "Can I convert WebP to PNG or JPG to PNG?",
+      "a2": "Yes. Shortcuts cover HEIC → JPG, WebP → PNG, PNG ↔ JPG, SVG → PNG, and ICO.",
+      "q3": "Are images uploaded to a server?",
+      "a3": "No. Conversion uses the canvas in this tab.",
+      "q4": "Can I convert several images at once?",
+      "a4": "Yes. Download one file or a ZIP of the whole batch.",
+      "q5": "Can I resize while converting?",
+      "a5": "Yes. Keep the original size or cap the longest side at 2048, 1920, 1280, or 800 pixels."
+    },
+    "image-pdf": {
+      "q1": "Can I convert JPG to PDF or PNG to PDF?",
+      "a1": "Yes. Drop JPG, PNG, WebP, GIF, or HEIC photos and download one PDF.",
+      "q2": "Can several photos become one PDF?",
+      "a2": "Yes. Reorder the pages, then download a single file.",
+      "q3": "What page sizes are available?",
+      "a3": "A4, US Letter, or a page that matches the photo’s aspect ratio.",
+      "q4": "Are images cropped?",
+      "a4": "No. Each image is fitted onto its page without cropping.",
+      "q5": "Is anything uploaded?",
+      "a5": "No. The PDF is built in this tab."
+    },
+    "audio": {
+      "q1": "Can I convert MP3 to WAV?",
+      "a1": "Yes. M4A, OGG, AAC, FLAC, and WebM also decode to WAV in the browser.",
+      "q2": "Is audio uploaded?",
+      "a2": "No. Web Audio decodes the file in this tab.",
+      "q3": "Can I choose the sample rate?",
+      "a3": "Keep the original rate, or export 44.1 kHz or 48 kHz.",
+      "q4": "Can I convert several files?",
+      "a4": "Yes. Download one WAV or a ZIP of the batch.",
+      "q5": "Can I export MP3?",
+      "a5": "Not yet. This tool writes WAV so the output stays uncompressed and on-device."
+    },
+    "data": {
+      "q1": "Is this a JSON formatter?",
+      "a1": "Yes. Pretty-print or minify JSON in this tab. Conversion runs as you type.",
+      "q2": "Can I convert CSV to JSON?",
+      "a2": "Both directions: CSV → JSON and JSON → CSV.",
+      "q3": "Does it encode Base64 and URLs?",
+      "a3": "Yes. Encode or decode Base64 and URL components, including Unicode text.",
+      "q4": "Can I turn Markdown into HTML?",
+      "a4": "Yes, and HTML back into Markdown. Copy or download the result.",
+      "q5": "Is my text uploaded?",
+      "a5": "No. You can also open a local file; it never leaves this tab."
+    }
   }
 }

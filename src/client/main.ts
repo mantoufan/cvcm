@@ -4,6 +4,7 @@ import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
 import { mountData, unmountData } from "./data/ui";
 import { clear, h } from "./dom";
+import { faqSection, syncFaqJsonLd } from "./faq";
 import { mountHome } from "./home";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
 import { COVER } from "./covers";
@@ -17,6 +18,7 @@ import {
   parseAppPath,
   type ToolId,
 } from "../shared/path";
+import { pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
 
@@ -90,27 +92,6 @@ function unmountTools(): void {
   unmountData();
 }
 
-function pageTitle(): string {
-  if (tool === "clip") return t("meta.titleClip");
-  if (tool === "watermark") return t("meta.titleWatermark");
-  if (tool === "collage") return t("meta.titleCollage");
-  if (tool === "convert") return t("meta.titleConvert");
-  if (tool === "image-pdf") return t("meta.titleImagePdf");
-  if (tool === "audio") return t("meta.titleAudio");
-  if (tool === "data") return t("meta.titleData");
-  return t("meta.title");
-}
-
-function pageDescription(): string {
-  if (tool === "clip") return t("meta.descClip");
-  if (tool === "convert") return t("meta.descConvert");
-  if (tool === "image-pdf") return t("meta.descImagePdf");
-  if (tool === "audio") return t("meta.descAudio");
-  if (tool === "data") return t("meta.descData");
-  if (tool === "watermark" || tool === "collage") return t(`tools.${tool}.blurb`);
-  return t("meta.description");
-}
-
 function render(): void {
   unmountTools();
   const parsed = parseAppPath(location.pathname);
@@ -130,11 +111,18 @@ function render(): void {
     clipId = null;
   }
 
-  document.title = pageTitle();
+  document.title = pageTitle(loc, tool);
   const desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", pageDescription());
+  if (desc) desc.setAttribute("content", pageDescription(loc, tool));
   const canonical = document.querySelector('link[rel="canonical"]');
-  if (canonical) canonical.setAttribute("href", `https://cv.cm${appHref(loc, tool, clipId)}`);
+  if (canonical) canonical.setAttribute("href", pageCanonical(loc, tool, clipId));
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute("content", pageTitle(loc, tool));
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute("content", pageDescription(loc, tool));
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute("content", pageCanonical(loc, tool, clipId));
+  syncFaqJsonLd(loc, tool);
 
   clear(app);
   app.append(shell(loc));
@@ -142,14 +130,7 @@ function render(): void {
 
 function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
-  if (tool === "clip") void mountClip(main, clipId);
-  else if (tool === "watermark") void mountWatermark(main);
-  else if (tool === "collage") void mountCollage(main);
-  else if (tool === "convert") void mountConvert(main);
-  else if (tool === "image-pdf") void mountImagePdf(main);
-  else if (tool === "audio") void mountAudio(main);
-  else if (tool === "data") mountData(main);
-  else mountHome(main, loc);
+  void mountPage(main, loc);
 
   return h("div", { class: "page" + (tool ? " is-tool" : "") },
     h("header", { class: "top" },
@@ -165,6 +146,18 @@ function shell(loc: Locale): HTMLElement {
     main,
     h("footer", { class: "foot" }, t("footer.privacy")),
   );
+}
+
+async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
+  if (tool === "clip") await mountClip(main, clipId);
+  else if (tool === "watermark") await mountWatermark(main);
+  else if (tool === "collage") await mountCollage(main);
+  else if (tool === "convert") await mountConvert(main);
+  else if (tool === "image-pdf") await mountImagePdf(main);
+  else if (tool === "audio") await mountAudio(main);
+  else if (tool === "data") mountData(main);
+  else mountHome(main, loc);
+  if (tool && !(tool === "clip" && clipId)) main.append(faqSection(loc, tool));
 }
 
 function categoryMenu(loc: Locale, cat: CategoryId, current: ToolId | null): HTMLElement {
