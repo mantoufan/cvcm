@@ -32,26 +32,38 @@ function lookup(locale: Locale, path: string): string {
   return typeof node === "string" ? node : path;
 }
 
+const TITLE: Record<ToolId, string> = {
+  clip: "meta.titleClip",
+  qr: "meta.titleQr",
+  watermark: "meta.titleWatermark",
+  collage: "meta.titleCollage",
+  convert: "meta.titleConvert",
+  "image-pdf": "meta.titleImagePdf",
+  audio: "meta.titleAudio",
+  data: "meta.titleData",
+  password: "meta.titlePassword",
+  "word-count": "meta.titleWordCount",
+};
+
+const DESC: Record<ToolId, string> = {
+  clip: "meta.descClip",
+  qr: "meta.descQr",
+  watermark: "meta.descWatermark",
+  collage: "meta.descCollage",
+  convert: "meta.descConvert",
+  "image-pdf": "meta.descImagePdf",
+  audio: "meta.descAudio",
+  data: "meta.descData",
+  password: "meta.descPassword",
+  "word-count": "meta.descWordCount",
+};
+
 export function pageTitle(locale: Locale, tool: ToolId | null): string {
-  if (tool === "clip") return lookup(locale, "meta.titleClip");
-  if (tool === "watermark") return lookup(locale, "meta.titleWatermark");
-  if (tool === "collage") return lookup(locale, "meta.titleCollage");
-  if (tool === "convert") return lookup(locale, "meta.titleConvert");
-  if (tool === "image-pdf") return lookup(locale, "meta.titleImagePdf");
-  if (tool === "audio") return lookup(locale, "meta.titleAudio");
-  if (tool === "data") return lookup(locale, "meta.titleData");
-  return lookup(locale, "meta.title");
+  return lookup(locale, tool ? TITLE[tool] : "meta.title");
 }
 
 export function pageDescription(locale: Locale, tool: ToolId | null): string {
-  if (tool === "clip") return lookup(locale, "meta.descClip");
-  if (tool === "watermark") return lookup(locale, "meta.descWatermark");
-  if (tool === "collage") return lookup(locale, "meta.descCollage");
-  if (tool === "convert") return lookup(locale, "meta.descConvert");
-  if (tool === "image-pdf") return lookup(locale, "meta.descImagePdf");
-  if (tool === "audio") return lookup(locale, "meta.descAudio");
-  if (tool === "data") return lookup(locale, "meta.descData");
-  return lookup(locale, "meta.description");
+  return lookup(locale, tool ? DESC[tool] : "meta.description");
 }
 
 export function pageCanonical(locale: Locale, tool: ToolId | null, clipId?: string | null): string {

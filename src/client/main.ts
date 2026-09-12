@@ -3,6 +3,9 @@ import { mountClip, unmountClip } from "./clip/ui";
 import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
 import { mountData, unmountData } from "./data/ui";
+import { mountPassword, unmountPassword } from "./password/ui";
+import { mountQr, unmountQr } from "./qr/ui";
+import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncFaqJsonLd } from "./faq";
 import { mountHome } from "./home";
@@ -90,6 +93,9 @@ function unmountTools(): void {
   unmountClip();
   unmountAudio();
   unmountData();
+  unmountQr();
+  unmountPassword();
+  unmountWordCount();
 }
 
 function render(): void {
@@ -156,6 +162,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "image-pdf") await mountImagePdf(main);
   else if (tool === "audio") await mountAudio(main);
   else if (tool === "data") mountData(main);
+  else if (tool === "qr") mountQr(main);
+  else if (tool === "password") mountPassword(main);
+  else if (tool === "word-count") mountWordCount(main);
   else mountHome(main, loc);
   if (tool && !(tool === "clip" && clipId)) main.append(faqSection(loc, tool));
 }

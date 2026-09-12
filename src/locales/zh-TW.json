@@ -15,7 +15,13 @@
     "titleData": "JSON 格式化、Base64、CSV 轉 JSON — cv.cm",
     "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 編碼、Markdown 轉 HTML。只在目前分頁。",
     "descWatermark": "在瀏覽器為照片加上文字或 Logo 浮水印。可批量匯出 PNG、JPEG 或 ZIP。檔案不上傳。",
-    "descCollage": "在瀏覽器做照片拼圖。宮格版面與 Instagram 尺寸。檔案不上傳。"
+    "descCollage": "在瀏覽器做照片拼圖。宮格版面與 Instagram 尺寸。檔案不上傳。",
+    "titleQr": "QR 碼產生器 — cv.cm",
+    "descQr": "在瀏覽器把網址或文字產生 QR 碼，下載 PNG。不上傳。",
+    "titlePassword": "密碼產生器 — cv.cm",
+    "descPassword": "在本機產生隨機密碼。可調長度和符號。不上傳。",
+    "titleWordCount": "字數統計 — cv.cm",
+    "descWordCount": "統計字數、字元、句子和閱讀時間。瀏覽器完成本地處理。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -23,7 +29,8 @@
     "privacy": "本機處理",
     "share": "剪貼簿",
     "image": "圖片",
-    "convert": "格式轉換"
+    "convert": "格式轉換",
+    "text": "文字"
   },
   "lang": {
     "label": "語言",
@@ -84,6 +91,18 @@
     "data": {
       "name": "文字與資料",
       "blurb": "JSON 格式化、CSV ↔ JSON、Base64、Markdown。不上傳。"
+    },
+    "qr": {
+      "name": "QR 碼",
+      "blurb": "網址或文字產生 QR 碼，下載 PNG。不上傳。"
+    },
+    "password": {
+      "name": "密碼產生",
+      "blurb": "本機產生隨機密碼。可調長度和符號。"
+    },
+    "word-count": {
+      "name": "字數統計",
+      "blurb": "字數、字元、句子、閱讀時間。不上傳。"
     }
   },
   "watermark": {
@@ -425,6 +444,94 @@
       "a4": "可以，也能把 HTML 轉回 Markdown。結果可複製或下載。",
       "q5": "文字會上傳嗎？",
       "a5": "不會。也可以開啟本機檔案，內容不會離開目前分頁。"
+    },
+    "qr": {
+      "q1": "這是 QR 碼產生器嗎？",
+      "a1": "是。輸入網址或文字，下載 PNG。編碼在目前分頁完成。",
+      "q2": "網址會上傳嗎？",
+      "a2": "不會。QR 碼畫在瀏覽器畫布上。",
+      "q3": "容錯等級有什麼用？",
+      "a3": "Q、H 更能抵抗污損或遮擋，但圖案會更大。",
+      "q4": "能改顏色嗎？",
+      "a4": "可以。下載前選擇前景和背景色。",
+      "q5": "能放多長文字？",
+      "a5": "短網址很小。幾百字也可以；過長會被拒絕。"
+    },
+    "password": {
+      "q1": "這是密碼產生器嗎？",
+      "a1": "是。用 Web Crypto 在目前分頁產生隨機密碼。",
+      "q2": "密碼會上傳或儲存嗎？",
+      "a2": "不會。產生和複製都在本機，關閉分頁即丟棄。",
+      "q3": "強度如何？",
+      "a3": "熵約等於長度 × log2(字元集)。16 位混合字元通常超過 80 bits。",
+      "q4": "能包含符號嗎？",
+      "a4": "可以。可開關大小寫、數字、符號，也可避開相似字元。",
+      "q5": "用的是 Math.random 嗎？",
+      "a5": "不是。使用 crypto.getRandomValues，並避免取模偏差。"
+    },
+    "word-count": {
+      "q1": "這是字數統計工具嗎？",
+      "a1": "是。統計詞/字、字元、句子、段落、行數，以及按 200 詞/分鐘的閱讀時間。",
+      "q2": "中文和日文怎麼算？",
+      "a2": "每個漢字或假名計為 1 個詞。英文仍按空白分詞。",
+      "q3": "文本會上傳嗎？",
+      "a3": "不會。也可以開啟本機文字檔。",
+      "q4": "空白算字元嗎？",
+      "a4": "「字元」含空白，另有一項不含空白。",
+      "q5": "閱讀時間怎麼算？",
+      "a5": "按約 200 詞/分鐘，向上取整到整分鐘。"
     }
+  },
+  "qr": {
+    "title": "QR 碼產生器",
+    "back": "全部工具",
+    "privacyNote": "QR 碼在目前分頁繪製，不會上傳。",
+    "input": "文字或網址",
+    "placeholder": "https://cv.cm",
+    "preview": "預覽",
+    "options": "選項",
+    "ec": "容錯等級",
+    "ecL": "L — 7%",
+    "ecM": "M — 15%",
+    "ecQ": "Q — 25%",
+    "ecH": "H — 30%",
+    "fg": "前景",
+    "bg": "背景",
+    "download": "下載 PNG",
+    "tooLong": "文字太長，請縮短後再產生。"
+  },
+  "password": {
+    "title": "密碼產生器",
+    "back": "全部工具",
+    "privacyNote": "用 Web Crypto 在目前分頁產生，不會上傳。",
+    "options": "選項",
+    "length": "長度",
+    "lower": "小寫字母",
+    "upper": "大寫字母",
+    "digits": "數字",
+    "symbols": "符號",
+    "excludeSimilar": "避開相似字元（0 O I l 1）",
+    "generate": "產生",
+    "copy": "複製",
+    "copied": "已複製",
+    "output": "密碼",
+    "meta": "{length} 位 · 約 {bits} bits"
+  },
+  "wordCount": {
+    "title": "字數統計",
+    "back": "全部工具",
+    "privacyNote": "統計只在目前分頁進行，不會上傳。",
+    "input": "文本",
+    "placeholder": "貼上或輸入文字…",
+    "stats": "統計",
+    "words": "詞 / 字",
+    "chars": "字元",
+    "charsNoSpace": "字元（不含空白）",
+    "sentences": "句子",
+    "paragraphs": "段落",
+    "lines": "行數",
+    "readingMinutes": "閱讀分鐘",
+    "openFile": "開啟檔案",
+    "clear": "清空"
   }
 }

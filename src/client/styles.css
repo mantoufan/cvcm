@@ -648,6 +648,33 @@ input[type="color"] {
   align-items: start;
 }
 .data-panes .clip-input { min-height: 18rem; }
+.qr-canvas {
+  width: min(280px, 100%);
+  height: auto;
+  border-radius: 16px;
+  background: #fff7fb;
+  image-rendering: pixelated;
+}
+.qr-stage { display: grid; justify-items: start; }
+.password-out {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff7fb;
+}
+.password-stage { display: grid; gap: 0.7rem; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem 1rem;
+  margin: 0;
+}
+.stats-grid dt { color: var(--ink-soft); font-size: 0.9rem; }
+.stats-grid dd { margin: 0; font-weight: 700; color: #a13f6c; text-align: right; }
 .audio-thumb {
   width: 42px;
   height: 42px;
@@ -763,6 +790,7 @@ body {
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
+  .menu-btn { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
   .top { gap: 0.3rem; padding-block: 1rem; }
   .hero-band { padding: 2rem 1rem 2.5rem; border-radius: 24px; }
   .hero-ornament { font-size: 2rem; }

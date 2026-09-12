@@ -15,7 +15,13 @@
     "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
     "descWatermark": "Tambah teks atau logo di browser. Ekspor massal PNG, JPEG, atau ZIP. Tanpa unggah.",
-    "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah."
+    "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
+    "titleQr": "Pembuat kode QR — cv.cm",
+    "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
+    "titlePassword": "Pembuat kata sandi — cv.cm",
+    "descPassword": "Buat kata sandi acak di perangkat. Pilih panjang dan simbol. Tanpa unggah.",
+    "titleWordCount": "Penghitung kata — cv.cm",
+    "descWordCount": "Hitung kata, karakter, kalimat, dan waktu baca di browser. Tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -23,7 +29,8 @@
     "privacy": "Di perangkat",
     "share": "Papan klip",
     "image": "Gambar",
-    "convert": "Konversi"
+    "convert": "Konversi",
+    "text": "Teks"
   },
   "lang": {
     "label": "Bahasa",
@@ -84,6 +91,18 @@
     "data": {
       "name": "Teks & data",
       "blurb": "Pemformat JSON, CSV ↔ JSON, Base64, Markdown. Tanpa unggah."
+    },
+    "qr": {
+      "name": "Kode QR",
+      "blurb": "URL atau teks jadi QR, unduh PNG. Tanpa unggah."
+    },
+    "password": {
+      "name": "Pembuat kata sandi",
+      "blurb": "Kata sandi acak di perangkat. Pilih panjang dan simbol."
+    },
+    "word-count": {
+      "name": "Penghitung kata",
+      "blurb": "Kata, karakter, kalimat, waktu baca. Tanpa unggah."
     }
   },
   "watermark": {
@@ -425,6 +444,94 @@
       "a4": "Ya, dan HTML ke Markdown. Salin atau unduh.",
       "q5": "Teks diunggah?",
       "a5": "Tidak. Buka file lokal pun tidak keluar dari tab ini."
+    },
+    "qr": {
+      "q1": "Ini pembuat kode QR?",
+      "a1": "Ya. Ketik URL atau teks, unduh PNG. Encoding di tab ini.",
+      "q2": "URL diunggah?",
+      "a2": "Tidak. Digambar di kanvas browser.",
+      "q3": "Koreksi kesalahan?",
+      "a3": "Q dan H lebih tahan rusak, tapi kodenya lebih besar.",
+      "q4": "Bisa ganti warna?",
+      "a4": "Ya. Pilih warna sebelum mengunduh.",
+      "q5": "Teks sepanjang apa?",
+      "a5": "URL pendek kecil. Ratusan karakter masih bisa; terlalu panjang ditolak."
+    },
+    "password": {
+      "q1": "Ini pembuat kata sandi?",
+      "a1": "Ya. Web Crypto membuatnya di tab ini.",
+      "q2": "Disimpan atau dikirim?",
+      "a2": "Tidak. Salin pun di perangkat. Tutup tab, hilang.",
+      "q3": "Seberapa kuat?",
+      "a3": "Entropi = panjang × log2(set). 16 karakter campuran biasanya 80+ bit.",
+      "q4": "Bisa pakai simbol?",
+      "a4": "Ya. Huruf besar/kecil, angka, simbol, dan hindari karakter mirip.",
+      "q5": "Pakai Math.random?",
+      "a5": "Tidak. crypto.getRandomValues tanpa bias modulo."
+    },
+    "word-count": {
+      "q1": "Ini penghitung kata?",
+      "a1": "Ya. Kata/aksara, karakter, kalimat, paragraf, baris, waktu baca 200 wpm.",
+      "q2": "Teks CJK?",
+      "a2": "Setiap aksara CJK = 1 kata. Latin dipisah spasi.",
+      "q3": "Teks diunggah?",
+      "a3": "Tidak. File lokal juga bisa dibuka.",
+      "q4": "Spasi dihitung?",
+      "a4": "Karakter termasuk spasi. Ada hitungan tanpa spasi.",
+      "q5": "Waktu baca?",
+      "a5": "Sekitar 200 kata/menit, dibulatkan ke atas."
     }
+  },
+  "qr": {
+    "title": "Pembuat kode QR",
+    "back": "Semua alat",
+    "privacyNote": "QR digambar di tab ini. Tanpa unggah.",
+    "input": "Teks atau URL",
+    "placeholder": "https://cv.cm",
+    "preview": "Pratinjau",
+    "options": "Opsi",
+    "ec": "Koreksi kesalahan",
+    "ecL": "L — 7%",
+    "ecM": "M — 15%",
+    "ecQ": "Q — 25%",
+    "ecH": "H — 30%",
+    "fg": "Latar depan",
+    "bg": "Latar",
+    "download": "Unduh PNG",
+    "tooLong": "Teks terlalu panjang. Perpendek."
+  },
+  "password": {
+    "title": "Pembuat kata sandi",
+    "back": "Semua alat",
+    "privacyNote": "Web Crypto membuatnya di tab ini. Tanpa unggah.",
+    "options": "Opsi",
+    "length": "Panjang",
+    "lower": "Huruf kecil",
+    "upper": "Huruf besar",
+    "digits": "Angka",
+    "symbols": "Simbol",
+    "excludeSimilar": "Hindari karakter mirip (0 O I l 1)",
+    "generate": "Buat",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "output": "Kata sandi",
+    "meta": "{length} karakter · ~{bits} bits"
+  },
+  "wordCount": {
+    "title": "Penghitung kata",
+    "back": "Semua alat",
+    "privacyNote": "Penghitungan di tab ini. Tanpa unggah.",
+    "input": "Teks",
+    "placeholder": "Tempel atau ketik…",
+    "stats": "Hitungan",
+    "words": "Kata / aksara",
+    "chars": "Karakter",
+    "charsNoSpace": "Karakter (tanpa spasi)",
+    "sentences": "Kalimat",
+    "paragraphs": "Paragraf",
+    "lines": "Baris",
+    "readingMinutes": "Menit baca",
+    "openFile": "Buka file",
+    "clear": "Hapus"
   }
 }

@@ -15,7 +15,13 @@
     "titleData": "Formateador JSON, Base64, CSV a JSON — cv.cm",
     "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
     "descWatermark": "Añade texto o un logo en el navegador. Exporta por lotes PNG, JPEG o ZIP. Nada se sube.",
-    "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube."
+    "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube.",
+    "titleQr": "Generador de códigos QR — cv.cm",
+    "descQr": "Crea un código QR de una URL o texto en el navegador y descarga PNG. Nada se sube.",
+    "titlePassword": "Generador de contraseñas — cv.cm",
+    "descPassword": "Genera una contraseña aleatoria en tu dispositivo. Elige longitud y símbolos. Nada se sube.",
+    "titleWordCount": "Contador de palabras — cv.cm",
+    "descWordCount": "Cuenta palabras, caracteres, frases y tiempo de lectura en el navegador. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -23,7 +29,8 @@
     "privacy": "En el dispositivo",
     "share": "Portapapeles",
     "image": "Imágenes",
-    "convert": "Convertir"
+    "convert": "Convertir",
+    "text": "Texto"
   },
   "lang": {
     "label": "Idioma",
@@ -84,6 +91,18 @@
     "data": {
       "name": "Texto y datos",
       "blurb": "Formateador JSON, CSV ↔ JSON, Base64, Markdown. Nada se sube."
+    },
+    "qr": {
+      "name": "Código QR",
+      "blurb": "URL o texto a QR. Descarga PNG. Nada se sube."
+    },
+    "password": {
+      "name": "Generador de contraseñas",
+      "blurb": "Contraseñas aleatorias en tu dispositivo. Elige longitud y símbolos."
+    },
+    "word-count": {
+      "name": "Contador de palabras",
+      "blurb": "Palabras, caracteres, frases, tiempo de lectura. Nada se sube."
     }
   },
   "watermark": {
@@ -425,6 +444,94 @@
       "a4": "Sí, y HTML a Markdown. Copia o descarga el resultado.",
       "q5": "¿Se sube el texto?",
       "a5": "No. Abrir un archivo local tampoco sale de esta pestaña."
+    },
+    "qr": {
+      "q1": "¿Es un generador de QR?",
+      "a1": "Sí. Escribe una URL o texto y descarga un PNG. Se codifica en esta pestaña.",
+      "q2": "¿Se suben las URLs?",
+      "a2": "No. Se dibuja en el lienzo del navegador.",
+      "q3": "¿Para qué sirve la corrección de errores?",
+      "a3": "Q y H resisten más daños o un logo, pero el código es más grande.",
+      "q4": "¿Puedo cambiar los colores?",
+      "a4": "Sí. Elige frente y fondo antes de descargar.",
+      "q5": "¿Cuánto texto cabe?",
+      "a5": "Una URL corta da un código pequeño. Cientos de caracteres aún caben; el texto enorme se rechaza."
+    },
+    "password": {
+      "q1": "¿Es un generador de contraseñas?",
+      "a1": "Sí. Crea una contraseña aleatoria con Web Crypto en esta pestaña.",
+      "q2": "¿Se suben o guardan?",
+      "a2": "No. Generar y copiar es local. Al cerrar la pestaña desaparecen.",
+      "q3": "¿Qué tan fuertes son?",
+      "a3": "La entropía es longitud × log2(alfabeto). 16 caracteres mixtos suelen superar 80 bits.",
+      "q4": "¿Puedo incluir símbolos?",
+      "a4": "Sí. Activa minúsculas, mayúsculas, dígitos y símbolos, y evita caracteres parecidos.",
+      "q5": "¿Usa Math.random?",
+      "a5": "No. Usa crypto.getRandomValues sin sesgo de módulo."
+    },
+    "word-count": {
+      "q1": "¿Es un contador de palabras?",
+      "a1": "Sí. Palabras, caracteres, frases, párrafos, líneas y ~200 ppm de lectura.",
+      "q2": "¿Y el chino o japonés?",
+      "a2": "Cada carácter CJK cuenta como una palabra. El latín se separa por espacios.",
+      "q3": "¿Se sube el texto?",
+      "a3": "No. También puedes abrir un archivo local.",
+      "q4": "¿Cuenta espacios?",
+      "a4": "Caracteres incluye espacios. Hay otra cifra sin espacios.",
+      "q5": "¿El tiempo de lectura?",
+      "a5": "Unas 200 palabras por minuto, redondeado hacia arriba."
     }
+  },
+  "qr": {
+    "title": "Generador de códigos QR",
+    "back": "Todas las herramientas",
+    "privacyNote": "El QR se dibuja en esta pestaña. Nada se sube.",
+    "input": "Texto o URL",
+    "placeholder": "https://cv.cm",
+    "preview": "Vista previa",
+    "options": "Opciones",
+    "ec": "Corrección de errores",
+    "ecL": "L — 7%",
+    "ecM": "M — 15%",
+    "ecQ": "Q — 25%",
+    "ecH": "H — 30%",
+    "fg": "Frente",
+    "bg": "Fondo",
+    "download": "Descargar PNG",
+    "tooLong": "El texto es demasiado largo. Acórtalo."
+  },
+  "password": {
+    "title": "Generador de contraseñas",
+    "back": "Todas las herramientas",
+    "privacyNote": "Web Crypto las genera en esta pestaña. Nada se sube.",
+    "options": "Opciones",
+    "length": "Longitud",
+    "lower": "Minúsculas",
+    "upper": "Mayúsculas",
+    "digits": "Dígitos",
+    "symbols": "Símbolos",
+    "excludeSimilar": "Evitar caracteres parecidos (0 O I l 1)",
+    "generate": "Generar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "output": "Contraseña",
+    "meta": "{length} caracteres · ~{bits} bits"
+  },
+  "wordCount": {
+    "title": "Contador de palabras",
+    "back": "Todas las herramientas",
+    "privacyNote": "El recuento queda en esta pestaña. Nada se sube.",
+    "input": "Texto",
+    "placeholder": "Pega o escribe…",
+    "stats": "Cuentas",
+    "words": "Palabras / caracteres",
+    "chars": "Caracteres",
+    "charsNoSpace": "Caracteres (sin espacios)",
+    "sentences": "Frases",
+    "paragraphs": "Párrafos",
+    "lines": "Líneas",
+    "readingMinutes": "Minutos de lectura",
+    "openFile": "Abrir archivo",
+    "clear": "Borrar"
   }
 }

@@ -15,7 +15,13 @@
     "titleData": "Định dạng JSON, Base64, CSV sang JSON — cv.cm",
     "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
     "descWatermark": "Thêm chữ hoặc logo trên trình duyệt. Xuất hàng loạt PNG, JPEG hoặc ZIP. Không tải lên.",
-    "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên."
+    "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên.",
+    "titleQr": "Tạo mã QR — cv.cm",
+    "descQr": "Tạo mã QR từ URL hoặc chữ trong trình duyệt, tải PNG. Không tải lên.",
+    "titlePassword": "Tạo mật khẩu — cv.cm",
+    "descPassword": "Tạo mật khẩu ngẫu nhiên trên máy. Chọn độ dài và ký hiệu. Không tải lên.",
+    "titleWordCount": "Đếm từ — cv.cm",
+    "descWordCount": "Đếm từ, ký tự, câu và thời gian đọc trong trình duyệt. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -23,7 +29,8 @@
     "privacy": "Trên máy",
     "share": "Clipboard",
     "image": "Ảnh",
-    "convert": "Đổi định dạng"
+    "convert": "Đổi định dạng",
+    "text": "Chữ"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -84,6 +91,18 @@
     "data": {
       "name": "Văn bản & dữ liệu",
       "blurb": "Định dạng JSON, CSV ↔ JSON, Base64, Markdown. Không tải lên."
+    },
+    "qr": {
+      "name": "Mã QR",
+      "blurb": "URL hoặc chữ thành QR, tải PNG. Không tải lên."
+    },
+    "password": {
+      "name": "Tạo mật khẩu",
+      "blurb": "Mật khẩu ngẫu nhiên trên máy. Chọn độ dài và ký hiệu."
+    },
+    "word-count": {
+      "name": "Đếm từ",
+      "blurb": "Từ, ký tự, câu, thời gian đọc. Không tải lên."
     }
   },
   "watermark": {
@@ -425,6 +444,94 @@
       "a4": "Được, và HTML về Markdown. Sao chép hoặc tải.",
       "q5": "Chữ có tải lên không?",
       "a5": "Không. Mở tệp local cũng không rời tab này."
+    },
+    "qr": {
+      "q1": "Đây là công cụ tạo QR?",
+      "a1": "Có. Nhập URL hoặc chữ, tải PNG. Mã hóa trong tab này.",
+      "q2": "URL có tải lên không?",
+      "a2": "Không. Vẽ trên canvas trình duyệt.",
+      "q3": "Sửa lỗi để làm gì?",
+      "a3": "Q, H chịu hỏng tốt hơn nhưng mã lớn hơn.",
+      "q4": "Đổi màu được không?",
+      "a4": "Được. Chọn màu trước khi tải.",
+      "q5": "Chữ dài bao nhiêu?",
+      "a5": "URL ngắn thì nhỏ. Vài trăm ký tự vẫn được; quá dài sẽ bị từ chối."
+    },
+    "password": {
+      "q1": "Đây là tạo mật khẩu?",
+      "a1": "Có. Web Crypto tạo trong tab này.",
+      "q2": "Có lưu hay gửi đi không?",
+      "a2": "Không. Sao chép cũng ở máy. Đóng tab là mất.",
+      "q3": "Mạnh cỡ nào?",
+      "a3": "Entropy = độ dài × log2(bảng chữ). 16 ký tự hỗn hợp thường trên 80 bit.",
+      "q4": "Có ký hiệu không?",
+      "a4": "Có. Bật hoa/thường, số, ký hiệu; có thể tránh ký tự giống nhau.",
+      "q5": "Dùng Math.random?",
+      "a5": "Không. Dùng crypto.getRandomValues, không lệch modulo."
+    },
+    "word-count": {
+      "q1": "Đây là đếm từ?",
+      "a1": "Có. Đếm từ/chữ, ký tự, câu, đoạn, dòng, thời gian đọc 200 wpm.",
+      "q2": "Chữ CJK?",
+      "a2": "Mỗi chữ Hán/kana là 1 từ. Tiếng Latin tách theo khoảng trắng.",
+      "q3": "Văn bản có tải lên không?",
+      "a3": "Không. Cũng mở được tệp local.",
+      "q4": "Đếm khoảng trắng?",
+      "a4": "Ký tự gồm khoảng trắng. Có mục không khoảng trắng.",
+      "q5": "Thời gian đọc?",
+      "a5": "Khoảng 200 từ/phút, làm tròn lên."
     }
+  },
+  "qr": {
+    "title": "Tạo mã QR",
+    "back": "Tất cả công cụ",
+    "privacyNote": "QR vẽ trong tab này. Không tải lên.",
+    "input": "Chữ hoặc URL",
+    "placeholder": "https://cv.cm",
+    "preview": "Xem trước",
+    "options": "Tùy chọn",
+    "ec": "Sửa lỗi",
+    "ecL": "L — 7%",
+    "ecM": "M — 15%",
+    "ecQ": "Q — 25%",
+    "ecH": "H — 30%",
+    "fg": "Nền trước",
+    "bg": "Nền",
+    "download": "Tải PNG",
+    "tooLong": "Chữ quá dài. Hãy rút ngắn."
+  },
+  "password": {
+    "title": "Tạo mật khẩu",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Web Crypto tạo trong tab này. Không tải lên.",
+    "options": "Tùy chọn",
+    "length": "Độ dài",
+    "lower": "Chữ thường",
+    "upper": "Chữ hoa",
+    "digits": "Số",
+    "symbols": "Ký hiệu",
+    "excludeSimilar": "Tránh ký tự giống nhau (0 O I l 1)",
+    "generate": "Tạo",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "output": "Mật khẩu",
+    "meta": "{length} ký tự · ~{bits} bits"
+  },
+  "wordCount": {
+    "title": "Đếm từ",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đếm trong tab này. Không tải lên.",
+    "input": "Văn bản",
+    "placeholder": "Dán hoặc gõ…",
+    "stats": "Thống kê",
+    "words": "Từ / chữ",
+    "chars": "Ký tự",
+    "charsNoSpace": "Ký tự (không khoảng trắng)",
+    "sentences": "Câu",
+    "paragraphs": "Đoạn",
+    "lines": "Dòng",
+    "readingMinutes": "Phút đọc",
+    "openFile": "Mở tệp",
+    "clear": "Xóa"
   }
 }

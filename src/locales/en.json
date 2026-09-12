@@ -15,7 +15,13 @@
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
     "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files.",
     "descWatermark": "Add text or a logo watermark to photos in the browser. Batch export PNG, JPEG, or ZIP. Files never leave this tab.",
-    "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded."
+    "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
+    "titleQr": "QR code generator — cv.cm",
+    "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
+    "titlePassword": "Password generator — cv.cm",
+    "descPassword": "Generate a strong random password on your device. Choose length and symbols. Nothing is uploaded.",
+    "titleWordCount": "Word counter — cv.cm",
+    "descWordCount": "Count words, characters, sentences, and reading time in the browser. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -23,7 +29,8 @@
     "privacy": "On-device",
     "share": "Clipboard",
     "image": "Images",
-    "convert": "Convert"
+    "convert": "Convert",
+    "text": "Text"
   },
   "lang": {
     "label": "Language",
@@ -84,6 +91,18 @@
     "data": {
       "name": "Text & data",
       "blurb": "JSON formatter, CSV ↔ JSON, Base64, Markdown. Nothing is uploaded."
+    },
+    "qr": {
+      "name": "QR code",
+      "blurb": "Turn a URL or text into a QR code. Download PNG. Nothing is uploaded."
+    },
+    "password": {
+      "name": "Password generator",
+      "blurb": "Strong random passwords on your device. Choose length and symbols."
+    },
+    "word-count": {
+      "name": "Word counter",
+      "blurb": "Words, characters, sentences, reading time. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -425,6 +444,94 @@
       "a4": "Yes, and HTML back into Markdown. Copy or download the result.",
       "q5": "Is my text uploaded?",
       "a5": "No. You can also open a local file; it never leaves this tab."
+    },
+    "qr": {
+      "q1": "Is this a QR code generator?",
+      "a1": "Yes. Type a URL or any text and download a PNG. Encoding runs in this tab.",
+      "q2": "Are URLs uploaded?",
+      "a2": "No. The code is drawn on a canvas in your browser.",
+      "q3": "What does error correction do?",
+      "a3": "Higher levels (Q, H) survive more damage or logos on the code, but need a larger QR.",
+      "q4": "Can I change colors?",
+      "a4": "Yes. Pick foreground and background colors before downloading.",
+      "q5": "How much text fits?",
+      "a5": "Short URLs fit a small code. A few hundred characters still work; very long notes will be rejected."
+    },
+    "password": {
+      "q1": "Is this a password generator?",
+      "a1": "Yes. It builds a random password with Web Crypto in this tab.",
+      "q2": "Are passwords uploaded or stored?",
+      "a2": "No. Generating and copying stay on your device. Closing the tab discards them.",
+      "q3": "How strong is it?",
+      "a3": "Entropy is length × log2(charset). 16 mixed characters is typically 80+ bits.",
+      "q4": "Can I include symbols?",
+      "a4": "Yes. Toggle lowercase, uppercase, digits, and symbols. You can also skip look-alike characters.",
+      "q5": "Does it use Math.random?",
+      "a5": "No. It uses crypto.getRandomValues with unbiased sampling."
+    },
+    "word-count": {
+      "q1": "Is this a word counter?",
+      "a1": "Yes. It counts words, characters, sentences, paragraphs, lines, and a 200 wpm reading time.",
+      "q2": "How are Chinese or Japanese words counted?",
+      "a2": "Each CJK character counts as one word. Latin text still splits on spaces.",
+      "q3": "Is my text uploaded?",
+      "a3": "No. Counting is local. You can also open a text file from your device.",
+      "q4": "Does it count spaces?",
+      "a4": "Characters includes spaces. There is a separate count without whitespace.",
+      "q5": "What is reading time?",
+      "a5": "About 200 words per minute, rounded up to a whole minute."
     }
+  },
+  "qr": {
+    "title": "QR code generator",
+    "back": "All tools",
+    "privacyNote": "The QR code is drawn in this tab. Nothing is uploaded.",
+    "input": "Text or URL",
+    "placeholder": "https://cv.cm",
+    "preview": "Preview",
+    "options": "Options",
+    "ec": "Error correction",
+    "ecL": "L — 7%",
+    "ecM": "M — 15%",
+    "ecQ": "Q — 25%",
+    "ecH": "H — 30%",
+    "fg": "Foreground",
+    "bg": "Background",
+    "download": "Download PNG",
+    "tooLong": "Text is too long for a QR code. Shorten it."
+  },
+  "password": {
+    "title": "Password generator",
+    "back": "All tools",
+    "privacyNote": "Passwords are generated with Web Crypto in this tab. Nothing is uploaded.",
+    "options": "Options",
+    "length": "Length",
+    "lower": "Lowercase",
+    "upper": "Uppercase",
+    "digits": "Digits",
+    "symbols": "Symbols",
+    "excludeSimilar": "Avoid similar characters (0 O I l 1)",
+    "generate": "Generate",
+    "copy": "Copy",
+    "copied": "Copied",
+    "output": "Password",
+    "meta": "{length} characters · ~{bits} bits"
+  },
+  "wordCount": {
+    "title": "Word counter",
+    "back": "All tools",
+    "privacyNote": "Counting stays in this tab. Nothing is uploaded.",
+    "input": "Text",
+    "placeholder": "Paste or type text…",
+    "stats": "Counts",
+    "words": "Words",
+    "chars": "Characters",
+    "charsNoSpace": "Characters (no spaces)",
+    "sentences": "Sentences",
+    "paragraphs": "Paragraphs",
+    "lines": "Lines",
+    "readingMinutes": "Reading minutes",
+    "openFile": "Open file",
+    "clear": "Clear"
   }
 }

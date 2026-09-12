@@ -13,6 +13,9 @@ Browser tools plus a tiny cloud clipboard.
 - **Images to PDF** / 图片转 PDF. [Open](https://cv.cm/en/image-pdf/)
 - **Audio to WAV** / 音频转 WAV. [Open](https://cv.cm/en/audio/)
 - **Text & data** / 文本与数据 — JSON, CSV, Base64, Markdown. [Open](https://cv.cm/en/data/)
+- **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
+- **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
+- **Word counter** / 字数统计. [Open](https://cv.cm/en/word-count/)
 
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 

@@ -23,7 +23,10 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/image-pdf/` — images to PDF
 - `src/client/audio/` — audio to WAV
 - `src/client/data/` — JSON / CSV / Base64 / Markdown
-- `src/shared/path.ts` — `CATEGORIES` (share/clipboard, image, convert) and `TOOLS` (convert includes image, PDF, audio, data)
+- `src/client/qr/` — QR code generator
+- `src/client/password/` — password generator
+- `src/client/word-count/` — word / character counter
+- `src/shared/path.ts` — `CATEGORIES` (share, image, convert, text) and `TOOLS`
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
