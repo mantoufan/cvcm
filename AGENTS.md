@@ -4,11 +4,12 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, pdf-jpg, merge-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, pdf-jpg, merge-pdf, compress-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
 5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
+6. Lessons are free same-day practice cards (photography first; court warmup/rules as aids; pool safety, not a swim class; one weekend page, not a coding course). Do not sell a multi-skill cheap course supermarket or promise that video will teach someone to play or swim.
 
 ## Layout
 
@@ -31,7 +32,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/crop/` — crop images
 - `src/client/pdf-jpg/` — PDF to JPG / PNG / WebP
 - `src/client/merge-pdf/` — merge PDFs
-- `src/shared/path.ts` — `CATEGORIES` (share, image, convert, text) and `TOOLS`
+- `src/client/compress-pdf/` — compress PDF by re-encoding pages
+- `src/client/learn/` — same-day lessons (phone photos, court, pool safety, one-page site)
+- `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`)
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`

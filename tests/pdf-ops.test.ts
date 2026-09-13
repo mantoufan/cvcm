@@ -26,6 +26,7 @@ describe("pdf routes", () => {
   it("parses pdf-jpg and merge-pdf", () => {
     expect(parseAppPath("/en/pdf-jpg/")).toEqual({ kind: "app", locale: "en", tool: "pdf-jpg" });
     expect(parseAppPath("/zh-CN/merge-pdf/")).toEqual({ kind: "app", locale: "zh-CN", tool: "merge-pdf" });
+    expect(parseAppPath("/en/compress-pdf/")).toEqual({ kind: "app", locale: "en", tool: "compress-pdf" });
     expect(appHref("es", "pdf-jpg")).toBe("/es/pdf-jpg/");
   });
 });

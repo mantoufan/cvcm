@@ -6,8 +6,10 @@ import ko from "../locales/ko.json";
 import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
+import { LEARN_COVER, TOOL_COVER, coverUrl } from "./covers";
+import { TUTORIAL_META } from "./learn";
 import { type Locale } from "./locale";
-import { appHref, type ToolId } from "./path";
+import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -32,6 +34,13 @@ function lookup(locale: Locale, path: string): string {
   return typeof node === "string" ? node : path;
 }
 
+export type SeoInput = {
+  tool?: ToolId | null;
+  clipId?: string | null;
+  tutorial?: TutorialId | null;
+  learn?: boolean;
+};
+
 const TITLE: Record<ToolId, string> = {
   clip: "meta.titleClip",
   qr: "meta.titleQr",
@@ -43,6 +52,7 @@ const TITLE: Record<ToolId, string> = {
   "image-pdf": "meta.titleImagePdf",
   "pdf-jpg": "meta.titlePdfJpg",
   "merge-pdf": "meta.titleMergePdf",
+  "compress-pdf": "meta.titleCompressPdf",
   audio: "meta.titleAudio",
   data: "meta.titleData",
   password: "meta.titlePassword",
@@ -61,6 +71,7 @@ const DESC: Record<ToolId, string> = {
   "image-pdf": "meta.descImagePdf",
   "pdf-jpg": "meta.descPdfJpg",
   "merge-pdf": "meta.descMergePdf",
+  "compress-pdf": "meta.descCompressPdf",
   audio: "meta.descAudio",
   data: "meta.descData",
   password: "meta.descPassword",
@@ -68,31 +79,83 @@ const DESC: Record<ToolId, string> = {
   color: "meta.descColor",
 };
 
-export function pageTitle(locale: Locale, tool: ToolId | null): string {
-  return lookup(locale, tool ? TITLE[tool] : "meta.title");
+const LEARN_TITLE: Record<TutorialId, string> = {
+  "phone-photos": "meta.titlePhonePhotos",
+  "window-light": "meta.titleWindowLight",
+  "crop-compose": "meta.titleCropCompose",
+  "badminton-warmup": "meta.titleBadmintonWarmup",
+  "badminton-rules": "meta.titleBadmintonRules",
+  "pool-safety": "meta.titlePoolSafety",
+  "one-page-site": "meta.titleOnePageSite",
+};
+
+const LEARN_DESC: Record<TutorialId, string> = {
+  "phone-photos": "meta.descPhonePhotos",
+  "window-light": "meta.descWindowLight",
+  "crop-compose": "meta.descCropCompose",
+  "badminton-warmup": "meta.descBadmintonWarmup",
+  "badminton-rules": "meta.descBadmintonRules",
+  "pool-safety": "meta.descPoolSafety",
+  "one-page-site": "meta.descOnePageSite",
+};
+
+export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}): string {
+  const seo = normalizeSeo(input);
+  if (seo.learn) {
+    return lookup(locale, seo.tutorial ? LEARN_TITLE[seo.tutorial] : "meta.titleLearn");
+  }
+  return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
 }
 
-export function pageDescription(locale: Locale, tool: ToolId | null): string {
-  return lookup(locale, tool ? DESC[tool] : "meta.description");
+export function pageDescription(locale: Locale, input: SeoInput | ToolId | null = {}): string {
+  const seo = normalizeSeo(input);
+  if (seo.learn) {
+    return lookup(locale, seo.tutorial ? LEARN_DESC[seo.tutorial] : "meta.descLearn");
+  }
+  return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
 }
 
-export function pageCanonical(locale: Locale, tool: ToolId | null, clipId?: string | null): string {
-  return `https://cv.cm${appHref(locale, tool, clipId)}`;
+export function pageCanonical(
+  locale: Locale,
+  input: SeoInput | ToolId | null = {},
+  clipId?: string | null,
+): string {
+  const seo = normalizeSeo(input, clipId);
+  if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
+  return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId)}`;
 }
 
-export function faqItems(locale: Locale, tool: ToolId): FaqItem[] {
+function normalizeSeo(input: SeoInput | ToolId | null, clipId?: string | null): SeoInput {
+  if (typeof input === "string") return { tool: input, clipId };
+  if (input == null) return { tool: null, clipId };
+  return clipId !== undefined ? { ...input, clipId } : input;
+}
+
+function faqFrom(locale: Locale, base: string): FaqItem[] {
   const items: FaqItem[] = [];
   for (let i = 1; i <= 6; i++) {
-    const qPath = `faq.${tool}.q${i}`;
+    const qPath = `${base}.q${i}`;
     const q = lookup(locale, qPath);
     if (q === qPath) break;
-    items.push({ q, a: lookup(locale, `faq.${tool}.a${i}`) });
+    items.push({ q, a: lookup(locale, `${base}.a${i}`) });
   }
   return items;
 }
 
-export function faqJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> | null {
-  const items = faqItems(locale, tool);
+export function faqItems(locale: Locale, tool: ToolId): FaqItem[] {
+  return faqFrom(locale, `faq.${tool}`);
+}
+
+export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
+  return faqFrom(locale, `faq.learn.${tutorial}`);
+}
+
+export function faqJsonLd(
+  locale: Locale,
+  tool: ToolId | null,
+  tutorial?: TutorialId | null,
+): Record<string, unknown> | null {
+  const items = tutorial ? learnFaqItems(locale, tutorial) : tool ? faqItems(locale, tool) : [];
   if (items.length === 0) return null;
   return {
     "@context": "https://schema.org",
@@ -103,6 +166,34 @@ export function faqJsonLd(locale: Locale, tool: ToolId): Record<string, unknown>
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
+}
+
+export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string, unknown> {
+  const steps = [];
+  for (let i = 1; i <= 5; i++) {
+    steps.push({
+      "@type": "HowToStep",
+      position: i,
+      name: lookup(locale, `learn.${tutorial}.s${i}t`),
+      text: lookup(locale, `learn.${tutorial}.s${i}b`),
+      url: `${pageCanonical(locale, { learn: true, tutorial })}#step-${i}`,
+    });
+  }
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: lookup(locale, `learn.${tutorial}.title`),
+    description: lookup(locale, `learn.${tutorial}.lead`),
+    totalTime: `PT${TUTORIAL_META[tutorial].minutes}M`,
+    image: coverUrl(LEARN_COVER[tutorial]),
+    step: steps,
+  };
+}
+
+function ogImage(seo: SeoInput): string | null {
+  if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
+  if (seo.tool) return coverUrl(TOOL_COVER[seo.tool]);
+  return null;
 }
 
 function escapeHtml(value: string): string {
@@ -116,12 +207,14 @@ function escapeHtml(value: string): string {
 export function applyHtmlSeo(
   html: string,
   locale: Locale,
-  tool: ToolId | null,
+  toolOrSeo: SeoInput | ToolId | null,
   clipId?: string | null,
 ): string {
-  const title = pageTitle(locale, tool);
-  const description = pageDescription(locale, tool);
-  const canonical = pageCanonical(locale, tool, clipId);
+  const seo = normalizeSeo(toolOrSeo, clipId);
+  const title = pageTitle(locale, seo);
+  const description = pageDescription(locale, seo);
+  const canonical = pageCanonical(locale, seo);
+  const image = ogImage(seo);
   let out = html.replace(/<html\b[^>]*>/i, `<html lang="${escapeHtml(locale)}">`);
   out = out.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   out = out.replace(
@@ -134,21 +227,26 @@ export function applyHtmlSeo(
       `$1${escapeHtml(canonical)}$2`,
     );
   }
-  out = out.replace(/<meta property="og:(title|description|url|type)"[^>]*>\s*/gi, "");
-  out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/i, "");
+  out = out.replace(/<meta property="og:(title|description|url|type|image)"[^>]*>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="website" />`,
+    `<meta property="og:type" content="${seo.learn && seo.tutorial ? "article" : "website"}" />`,
   ];
-  if (tool) {
-    const ld = faqJsonLd(locale, tool);
-    if (ld) {
-      tags.push(
-        `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
-      );
-    }
+  if (image) tags.push(`<meta property="og:image" content="${escapeHtml(image)}" />`);
+  const ld = faqJsonLd(locale, seo.tool ?? null, seo.learn ? seo.tutorial : null);
+  if (ld) {
+    tags.push(
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
+    );
+  }
+  if (seo.learn && seo.tutorial) {
+    tags.push(
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howToJsonLd(locale, seo.tutorial)).replace(/</g, "\\u003c")}</script>`,
+    );
   }
   return out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
 }
