@@ -61,7 +61,11 @@
     "titleAlgorithms": "90-minute algorithms practice: maps, binary search and recursion | cv.cm",
     "descAlgorithms": "You should be able to read JavaScript variables, arrays, loops and functions. Trace each example on paper, then check it in your browser developer-tools Console or local Node.js.",
     "titleReadCharacter": "How to read people at work — same-day practice — cv.cm",
-    "descReadCharacter": "15 minutes: watch the weaker, the absent, and first-choice. Not a verdict. Free."
+    "descReadCharacter": "15 minutes: watch the weaker, the absent, and first-choice. Not a verdict. Free.",
+    "titleTimezone": "Timezone converter — UTC, EST, PST — cv.cm",
+    "descTimezone": "Convert a time between time zones in the browser. IANA zones, daylight saving, UTC offset. Nothing is uploaded.",
+    "titleLorem": "Lorem ipsum generator — cv.cm",
+    "descLorem": "Generate lorem ipsum placeholder text in the browser. Paragraphs, sentences, or words. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -468,6 +472,14 @@
     "names": {
       "name": "Name generator",
       "blurb": "Random names and usernames. Copy a list. Nothing is uploaded."
+    },
+    "timezone": {
+      "name": "Timezone converter",
+      "blurb": "Convert a clock time between IANA zones. DST and UTC offset. Nothing is uploaded."
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "Classic placeholder paragraphs, sentences, or words. Copy in this tab."
     }
   },
   "watermark": {
@@ -1075,6 +1087,30 @@
       "a4": "No. Generation uses Web Crypto locally.",
       "q5": "Can I copy the whole list?",
       "a5": "Yes. Copy list puts every line on the clipboard."
+    },
+    "timezone": {
+      "q1": "How do I convert a time zone?",
+      "a1": "Pick the source zone, the destination zone, and a date-time. The result is the same instant shown on the other clock.",
+      "q2": "Does daylight saving apply?",
+      "a2": "Yes. Conversion uses IANA zones, so New York switches between EST and EDT automatically.",
+      "q3": "Is the time uploaded?",
+      "a3": "No. Intl.DateTimeFormat runs in this tab. Closing it discards the conversion.",
+      "q4": "What is the UTC line?",
+      "a4": "It is the same instant as ISO-8601 in UTC, useful for APIs, logs, and calendars.",
+      "q5": "Which zones are listed?",
+      "a5": "Common cities first, then every IANA zone the browser knows, including UTC."
+    },
+    "lorem": {
+      "q1": "What is a lorem ipsum generator?",
+      "a1": "It fills a layout with classic Latin-like placeholder text so you can judge spacing before the real copy is ready.",
+      "q2": "Can I choose paragraphs or words?",
+      "a2": "Yes. Switch among paragraphs, sentences, and words, then drag the count slider.",
+      "q3": "Is this real Latin?",
+      "a3": "It follows the usual dummy-text word list. It is not a translation of a real passage.",
+      "q4": "Is anything uploaded?",
+      "a4": "No. The text is built from a local word list in this tab.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the whole block on the clipboard so you can paste it into a mockup."
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "Copy list",
     "copied": "Copied",
     "output": "Results"
+  },
+  "timezone": {
+    "title": "Timezone converter",
+    "back": "All tools",
+    "privacyNote": "Conversion uses IANA time zones in this tab. Nothing is uploaded.",
+    "options": "Options",
+    "from": "From",
+    "to": "To",
+    "when": "Date and time",
+    "now": "Use now",
+    "copy": "Copy UTC",
+    "copied": "Copied",
+    "result": "Converted time",
+    "needTime": "Choose a date and time.",
+    "common": "Common",
+    "all": "All zones"
+  },
+  "lorem": {
+    "title": "Lorem ipsum generator",
+    "back": "All tools",
+    "privacyNote": "Placeholder text is built in this tab. Nothing is uploaded.",
+    "options": "Options",
+    "kind": "Kind",
+    "kindParagraphs": "Paragraphs",
+    "kindSentences": "Sentences",
+    "kindWords": "Words",
+    "count": "How many",
+    "generate": "Generate",
+    "copy": "Copy",
+    "copied": "Copied",
+    "output": "Text"
   }
 }

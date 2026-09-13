@@ -61,7 +61,11 @@
     "titleAlgorithms": "90 分鐘演算法練習：雜湊表、二分與遞迴 | cv.cm",
     "descAlgorithms": "需要能讀懂 JavaScript 變數、陣列、迴圈和函式。用紙筆跟蹤每一步，再用瀏覽器開發者工具的 Console 或本地 Node.js 核對結果。",
     "titleReadCharacter": "識人觀察速成 — 當天能練 — cv.cm",
-    "descReadCharacter": "15 分鐘：看弱者、看背後、被先選中先停。不下判決。免費。"
+    "descReadCharacter": "15 分鐘：看弱者、看背後、被先選中先停。不下判決。免費。",
+    "titleTimezone": "時區轉換 — UTC、台北時間、紐約 — cv.cm",
+    "descTimezone": "在瀏覽器裡把一個時刻轉到另一個時區。IANA 時區、夏令時間、UTC 偏移。不上傳。",
+    "titleLorem": "Lorem ipsum 佔位文字產生器 — cv.cm",
+    "descLorem": "在瀏覽器裡產生 lorem ipsum 佔位段落、句子或單字。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "名字產生",
       "blurb": "隨機人名和使用者名稱。可複製列表。不上傳。"
+    },
+    "timezone": {
+      "name": "時區轉換",
+      "blurb": "IANA 時區互轉。含夏令時間與 UTC 偏移。不上傳。"
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "經典佔位段落、句子或單字。目前分頁複製。"
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "不會。用本機 Web Crypto 抽亂數。",
       "q5": "能一次複製全部嗎？",
       "a5": "可以。複製列表會把每一行放進剪貼簿。"
+    },
+    "timezone": {
+      "q1": "怎麼轉換時區？",
+      "a1": "選擇來源時區、目標時區和日期時間。結果是同一瞬間在另一個時區的鐘面時間。",
+      "q2": "會算夏令時間嗎？",
+      "a2": "會。使用 IANA 時區，紐約會在 EST 和 EDT 之間自動切換。",
+      "q3": "時間會上傳嗎？",
+      "a3": "不會。Intl.DateTimeFormat 在目前分頁執行，關掉即丟。",
+      "q4": "UTC 那一行是什麼？",
+      "a4": "同一瞬間的 UTC ISO-8601，方便給介面、日誌和日曆用。",
+      "q5": "列表裡有哪些時區？",
+      "a5": "常用城市在前，然後是瀏覽器認識的全部 IANA 時區，含 UTC。"
+    },
+    "lorem": {
+      "q1": "什麼是 lorem ipsum 產生器？",
+      "a1": "用經典拉丁風格佔位文字填版面，方便在正文還沒寫好時看間距與換行。",
+      "q2": "能選段落或單字嗎？",
+      "a2": "可以。在段落、句子、單字之間切換，再拖動數量。",
+      "q3": "這是真正的拉丁文嗎？",
+      "a3": "沿用常見佔位詞表，不是某篇真實拉丁文的翻譯。",
+      "q4": "會上傳嗎？",
+      "a4": "不會。文字由目前分頁的本地詞表拼出。",
+      "q5": "能複製結果嗎？",
+      "a5": "可以。複製會把整段放進剪貼簿，方便貼進草稿。"
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "複製列表",
     "copied": "已複製",
     "output": "結果"
+  },
+  "timezone": {
+    "title": "時區轉換",
+    "back": "全部工具",
+    "privacyNote": "用目前分頁的 IANA 時區換算。不上傳。",
+    "options": "選項",
+    "from": "從",
+    "to": "到",
+    "when": "日期和時間",
+    "now": "現在",
+    "copy": "複製 UTC",
+    "copied": "已複製",
+    "result": "轉換結果",
+    "needTime": "請選擇日期和時間。",
+    "common": "常用",
+    "all": "全部時區"
+  },
+  "lorem": {
+    "title": "Lorem ipsum 產生器",
+    "back": "全部工具",
+    "privacyNote": "佔位文字在目前分頁產生。不上傳。",
+    "options": "選項",
+    "kind": "類型",
+    "kindParagraphs": "段落",
+    "kindSentences": "句子",
+    "kindWords": "單字",
+    "count": "數量",
+    "generate": "產生",
+    "copy": "複製",
+    "copied": "已複製",
+    "output": "文字"
   }
 }

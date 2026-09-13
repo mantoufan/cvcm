@@ -61,7 +61,11 @@
     "titleAlgorithms": "Learn algorithms in one sitting — Big-O, maps, binary search — cv.cm",
     "descAlgorithms": "Ninety minutes: Big-O, array vs hash map, binary search, recursion. Three traces. Not a CS degree. Free.",
     "titleReadCharacter": "Đọc người ở chỗ làm — 15 phút trong ngày — cv.cm",
-    "descReadCharacter": "15 phút: kẻ yếu, người vắng, bị chọn trước. Không kết án. Miễn phí."
+    "descReadCharacter": "15 phút: kẻ yếu, người vắng, bị chọn trước. Không kết án. Miễn phí.",
+    "titleTimezone": "Đổi múi giờ — UTC, EST, PST — cv.cm",
+    "descTimezone": "Đổi một thời điểm sang múi giờ khác trong trình duyệt. Múi IANA, giờ mùa hè, lệch UTC. Không tải lên.",
+    "titleLorem": "Tạo chữ lorem ipsum — cv.cm",
+    "descLorem": "Tạo đoạn lorem ipsum trong trình duyệt. Đoạn, câu hoặc từ. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "Tạo tên",
       "blurb": "Tên và username ngẫu nhiên. Sao chép danh sách. Không tải lên."
+    },
+    "timezone": {
+      "name": "Đổi múi giờ",
+      "blurb": "Đổi giờ giữa các múi IANA. Giờ mùa hè và lệch UTC. Không tải lên."
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "Đoạn, câu hoặc từ giữ chỗ cổ điển. Sao chép trong tab này."
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "Không. Web Crypto bốc thăm trên máy.",
       "q5": "Chép cả danh sách?",
       "a5": "Có. Sao chép danh sách đưa mọi dòng vào clipboard."
+    },
+    "timezone": {
+      "q1": "Đổi múi giờ thế nào?",
+      "a1": "Chọn múi nguồn, múi đích và ngày giờ. Kết quả là cùng một khoảnh khắc trên đồng hồ kia.",
+      "q2": "Có tính giờ mùa hè không?",
+      "a2": "Có. Dùng múi IANA nên New York tự chuyển EST và EDT.",
+      "q3": "Thời gian có bị tải lên không?",
+      "a3": "Không. Intl.DateTimeFormat chạy trong tab này.",
+      "q4": "Dòng UTC là gì?",
+      "a4": "Cùng khoảnh khắc dạng ISO-8601 UTC, tiện cho API, nhật ký và lịch.",
+      "q5": "Danh sách có những múi nào?",
+      "a5": "Thành phố thường dùng trước, rồi mọi múi IANA trình duyệt biết, gồm UTC."
+    },
+    "lorem": {
+      "q1": "Trình tạo lorem ipsum là gì?",
+      "a1": "Điền bố cục bằng chữ giữ chỗ kiểu Latin để xem khoảng cách trước khi có nội dung thật.",
+      "q2": "Chọn đoạn hay từ được không?",
+      "a2": "Được. Chuyển giữa đoạn, câu, từ rồi kéo thanh số lượng.",
+      "q3": "Đây có phải tiếng Latin thật?",
+      "a3": "Theo danh sách từ giả quen thuộc, không phải bản dịch một đoạn thật.",
+      "q4": "Có tải lên không?",
+      "a4": "Không. Chữ được ghép từ danh sách từ trong tab này.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa cả khối vào clipboard để dán vào bản nháp."
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "Sao chép danh sách",
     "copied": "Đã sao chép",
     "output": "Kết quả"
+  },
+  "timezone": {
+    "title": "Đổi múi giờ",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đổi giờ bằng múi IANA trong tab này. Không tải lên.",
+    "options": "Tùy chọn",
+    "from": "Từ",
+    "to": "Đến",
+    "when": "Ngày và giờ",
+    "now": "Bây giờ",
+    "copy": "Sao chép UTC",
+    "copied": "Đã sao chép",
+    "result": "Kết quả",
+    "needTime": "Hãy chọn ngày và giờ.",
+    "common": "Thường dùng",
+    "all": "Mọi múi giờ"
+  },
+  "lorem": {
+    "title": "Tạo lorem ipsum",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chữ giữ chỗ được tạo trong tab này. Không tải lên.",
+    "options": "Tùy chọn",
+    "kind": "Loại",
+    "kindParagraphs": "Đoạn",
+    "kindSentences": "Câu",
+    "kindWords": "Từ",
+    "count": "Số lượng",
+    "generate": "Tạo",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "output": "Văn bản"
   }
 }

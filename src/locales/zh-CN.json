@@ -61,7 +61,11 @@
     "titleAlgorithms": "90 分钟算法练习：哈希表、二分与递归 | cv.cm",
     "descAlgorithms": "需要能读懂 JavaScript 变量、数组、循环和函数。用纸笔跟踪每一步，再用浏览器开发者工具的 Console 或本地 Node.js 核对结果。",
     "titleReadCharacter": "识人观察速成 — 当天能练 — cv.cm",
-    "descReadCharacter": "15 分钟：看弱者、看背后、被先选中先停。不下判决。免费。"
+    "descReadCharacter": "15 分钟：看弱者、看背后、被先选中先停。不下判决。免费。",
+    "titleTimezone": "时区转换 — UTC、北京时间、纽约 — cv.cm",
+    "descTimezone": "在浏览器里把一个时刻转到另一个时区。IANA 时区、夏令时、UTC 偏移。不上传。",
+    "titleLorem": "Lorem ipsum 占位文本生成器 — cv.cm",
+    "descLorem": "在浏览器里生成 lorem ipsum 占位段落、句子或单词。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "名字生成",
       "blurb": "随机人名和用户名。可复制列表。不上传。"
+    },
+    "timezone": {
+      "name": "时区转换",
+      "blurb": "IANA 时区互转。含夏令时和 UTC 偏移。不上传。"
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "经典占位段落、句子或单词。当前标签页复制。"
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "不会。用本机 Web Crypto 抽随机数。",
       "q5": "能一次复制全部吗？",
       "a5": "可以。复制列表会把每一行放进剪贴板。"
+    },
+    "timezone": {
+      "q1": "怎么转换时区？",
+      "a1": "选择来源时区、目标时区和日期时间。结果是同一瞬间在另一个时区的钟面时间。",
+      "q2": "会算夏令时吗？",
+      "a2": "会。使用 IANA 时区，纽约会在 EST 和 EDT 之间自动切换。",
+      "q3": "时间会上传吗？",
+      "a3": "不会。Intl.DateTimeFormat 在当前标签页运行，关掉即丢。",
+      "q4": "UTC 那一行是什么？",
+      "a4": "同一瞬间的 UTC ISO-8601，方便给接口、日志和日历用。",
+      "q5": "列表里有哪些时区？",
+      "a5": "常用城市在前，然后是浏览器认识的全部 IANA 时区，含 UTC。"
+    },
+    "lorem": {
+      "q1": "什么是 lorem ipsum 生成器？",
+      "a1": "用经典拉丁风格占位文字填版面，方便在正文还没写好时看间距和换行。",
+      "q2": "能选段落或单词吗？",
+      "a2": "可以。在段落、句子、单词之间切换，再拖动数量。",
+      "q3": "这是真正的拉丁文吗？",
+      "a3": "沿用常见占位词表，不是某篇真实拉丁文的翻译。",
+      "q4": "会上传吗？",
+      "a4": "不会。文本由当前标签页的本地词表拼出。",
+      "q5": "能复制结果吗？",
+      "a5": "可以。复制会把整段放进剪贴板，方便贴进草稿。"
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "复制列表",
     "copied": "已复制",
     "output": "结果"
+  },
+  "timezone": {
+    "title": "时区转换",
+    "back": "全部工具",
+    "privacyNote": "用当前标签页的 IANA 时区换算。不上传。",
+    "options": "选项",
+    "from": "从",
+    "to": "到",
+    "when": "日期和时间",
+    "now": "现在",
+    "copy": "复制 UTC",
+    "copied": "已复制",
+    "result": "转换结果",
+    "needTime": "请选择日期和时间。",
+    "common": "常用",
+    "all": "全部时区"
+  },
+  "lorem": {
+    "title": "Lorem ipsum 生成器",
+    "back": "全部工具",
+    "privacyNote": "占位文本在当前标签页生成。不上传。",
+    "options": "选项",
+    "kind": "类型",
+    "kindParagraphs": "段落",
+    "kindSentences": "句子",
+    "kindWords": "单词",
+    "count": "数量",
+    "generate": "生成",
+    "copy": "复制",
+    "copied": "已复制",
+    "output": "文本"
   }
 }

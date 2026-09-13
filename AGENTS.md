@@ -35,6 +35,8 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/compress-pdf/` — compress PDF by re-encoding pages
 - `src/client/split-pdf/` — split PDF by page or range
 - `src/client/names/` — name and username generator
+- `src/client/timezone/` — time zone converter
+- `src/client/lorem/` — lorem ipsum generator
 - `src/client/learn/` — one-sitting courses (portrait, algorithms) plus short same-day cards
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`)
 - `src/shared/md.ts` — markdown/html render + highlight

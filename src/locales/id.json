@@ -61,7 +61,11 @@
     "titleAlgorithms": "Learn algorithms in one sitting — Big-O, maps, binary search — cv.cm",
     "descAlgorithms": "Ninety minutes: Big-O, array vs hash map, binary search, recursion. Three traces. Not a CS degree. Free.",
     "titleReadCharacter": "Membaca orang di kantor — latihan hari ini — cv.cm",
-    "descReadCharacter": "15 menit: yang lemah, yang absen, dipilih duluan. Bukan vonis. Gratis."
+    "descReadCharacter": "15 menit: yang lemah, yang absen, dipilih duluan. Bukan vonis. Gratis.",
+    "titleTimezone": "Pengubah zona waktu — UTC, EST, PST — cv.cm",
+    "descTimezone": "Ubah waktu ke zona lain di browser. Zona IANA, DST, offset UTC. Tidak diunggah.",
+    "titleLorem": "Pembuat lorem ipsum — cv.cm",
+    "descLorem": "Buat teks placeholder lorem ipsum di browser. Paragraf, kalimat, atau kata. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "Pembuat nama",
       "blurb": "Nama dan username acak. Salin daftar. Tanpa unggah."
+    },
+    "timezone": {
+      "name": "Zona waktu",
+      "blurb": "Ubah jam antar zona IANA. DST dan offset UTC. Tanpa unggah."
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "Paragraf, kalimat, atau kata placeholder klasik. Salin di tab ini."
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "Tidak. Web Crypto mengundi di perangkat.",
       "q5": "Salin semua?",
       "a5": "Ya. Salin daftar menaruh setiap baris ke papan klip."
+    },
+    "timezone": {
+      "q1": "Bagaimana mengubah zona waktu?",
+      "a1": "Pilih zona asal, zona tujuan, dan tanggal-waktu. Hasilnya momen yang sama di jam lain.",
+      "q2": "Apakah DST dihitung?",
+      "a2": "Ya. Zona IANA membuat New York beralih EST dan EDT sendiri.",
+      "q3": "Apakah waktunya diunggah?",
+      "a3": "Tidak. Intl.DateTimeFormat berjalan di tab ini.",
+      "q4": "Apa baris UTC itu?",
+      "a4": "Momen yang sama dalam ISO-8601 UTC, berguna untuk API, log, dan kalender.",
+      "q5": "Zona mana yang tampil?",
+      "a5": "Kota umum dulu, lalu semua zona IANA yang dikenal browser, termasuk UTC."
+    },
+    "lorem": {
+      "q1": "Apa itu pembuat lorem ipsum?",
+      "a1": "Mengisi tata letak dengan teks Latin palsu klasik agar jarak terlihat sebelum naskah siap.",
+      "q2": "Bisa pilih paragraf atau kata?",
+      "a2": "Bisa. Ganti antara paragraf, kalimat, dan kata, lalu geser jumlahnya.",
+      "q3": "Ini Latin sungguhan?",
+      "a3": "Mengikuti daftar kata dummy biasa, bukan terjemahan teks nyata.",
+      "q4": "Apakah diunggah?",
+      "a4": "Tidak. Teks disusun dari daftar kata di tab ini.",
+      "q5": "Bisa salin hasilnya?",
+      "a5": "Bisa. Salin menaruh seluruh blok ke papan klip untuk ditempel ke mockup."
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "Salin daftar",
     "copied": "Tersalin",
     "output": "Hasil"
+  },
+  "timezone": {
+    "title": "Pengubah zona waktu",
+    "back": "Semua alat",
+    "privacyNote": "Konversi memakai zona IANA di tab ini. Tidak diunggah.",
+    "options": "Opsi",
+    "from": "Dari",
+    "to": "Ke",
+    "when": "Tanggal dan waktu",
+    "now": "Sekarang",
+    "copy": "Salin UTC",
+    "copied": "Tersalin",
+    "result": "Hasil konversi",
+    "needTime": "Pilih tanggal dan waktu.",
+    "common": "Umum",
+    "all": "Semua zona"
+  },
+  "lorem": {
+    "title": "Pembuat lorem ipsum",
+    "back": "Semua alat",
+    "privacyNote": "Teks placeholder dibuat di tab ini. Tidak diunggah.",
+    "options": "Opsi",
+    "kind": "Jenis",
+    "kindParagraphs": "Paragraf",
+    "kindSentences": "Kalimat",
+    "kindWords": "Kata",
+    "count": "Jumlah",
+    "generate": "Buat",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "output": "Teks"
   }
 }

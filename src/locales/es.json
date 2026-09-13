@@ -61,7 +61,11 @@
     "titleAlgorithms": "Learn algorithms in one sitting — Big-O, maps, binary search — cv.cm",
     "descAlgorithms": "Ninety minutes: Big-O, array vs hash map, binary search, recursion. Three traces. Not a CS degree. Free.",
     "titleReadCharacter": "Cómo leer a la gente en el trabajo — práctica del mismo día — cv.cm",
-    "descReadCharacter": "15 minutos: el débil, el ausente, que te elijan primero. No es un veredicto. Gratis."
+    "descReadCharacter": "15 minutos: el débil, el ausente, que te elijan primero. No es un veredicto. Gratis.",
+    "titleTimezone": "Conversor de zonas horarias — UTC, EST, PST — cv.cm",
+    "descTimezone": "Convierte una hora entre zonas en el navegador. Zonas IANA, horario de verano, desfase UTC. Nada se sube.",
+    "titleLorem": "Generador de lorem ipsum — cv.cm",
+    "descLorem": "Genera texto de relleno lorem ipsum en el navegador. Párrafos, frases o palabras. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "Generador de nombres",
       "blurb": "Nombres y usuarios aleatorios. Copia la lista. Nada se sube."
+    },
+    "timezone": {
+      "name": "Zonas horarias",
+      "blurb": "Convierte la hora entre zonas IANA. Horario de verano y UTC. Nada se sube."
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "Párrafos, frases o palabras de relleno clásicas. Copia en esta pestaña."
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "No. Web Crypto sortea en el dispositivo.",
       "q5": "¿Copio toda la lista?",
       "a5": "Sí. Copiar lista pone cada línea en el portapapeles."
+    },
+    "timezone": {
+      "q1": "¿Cómo convierto una zona horaria?",
+      "a1": "Elige zona de origen, zona de destino y fecha-hora. El resultado es el mismo instante en el otro reloj.",
+      "q2": "¿Aplica el horario de verano?",
+      "a2": "Sí. Usa zonas IANA, así que Nueva York cambia sola entre EST y EDT.",
+      "q3": "¿Se sube la hora?",
+      "a3": "No. Intl.DateTimeFormat corre en esta pestaña.",
+      "q4": "¿Qué es la línea UTC?",
+      "a4": "El mismo instante en ISO-8601 UTC, útil para APIs, registros y calendarios.",
+      "q5": "¿Qué zonas aparecen?",
+      "a5": "Ciudades habituales primero, luego todas las zonas IANA que conoce el navegador, UTC incluida."
+    },
+    "lorem": {
+      "q1": "¿Qué es un generador de lorem ipsum?",
+      "a1": "Rellena el diseño con texto latino de relleno clásico para ver el espacio antes de tener la copia real.",
+      "q2": "¿Puedo elegir párrafos o palabras?",
+      "a2": "Sí. Cambia entre párrafos, frases y palabras y arrastra la cantidad.",
+      "q3": "¿Es latín de verdad?",
+      "a3": "Sigue la lista habitual de palabras ficticias. No es la traducción de un texto real.",
+      "q4": "¿Se sube algo?",
+      "a4": "No. El texto se arma con una lista local en esta pestaña.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone el bloque entero en el portapapeles para pegarlo en un mockup."
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "Copiar lista",
     "copied": "Copiado",
     "output": "Resultados"
+  },
+  "timezone": {
+    "title": "Conversor de zonas horarias",
+    "back": "Todas las herramientas",
+    "privacyNote": "La conversión usa zonas IANA en esta pestaña. Nada se sube.",
+    "options": "Opciones",
+    "from": "Desde",
+    "to": "Hacia",
+    "when": "Fecha y hora",
+    "now": "Ahora",
+    "copy": "Copiar UTC",
+    "copied": "Copiado",
+    "result": "Hora convertida",
+    "needTime": "Elige fecha y hora.",
+    "common": "Comunes",
+    "all": "Todas las zonas"
+  },
+  "lorem": {
+    "title": "Generador de lorem ipsum",
+    "back": "Todas las herramientas",
+    "privacyNote": "El texto de relleno se arma en esta pestaña. Nada se sube.",
+    "options": "Opciones",
+    "kind": "Tipo",
+    "kindParagraphs": "Párrafos",
+    "kindSentences": "Frases",
+    "kindWords": "Palabras",
+    "count": "Cantidad",
+    "generate": "Generar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "output": "Texto"
   }
 }

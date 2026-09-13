@@ -61,7 +61,11 @@
     "titleAlgorithms": "Learn algorithms in one sitting — Big-O, maps, binary search — cv.cm",
     "descAlgorithms": "Ninety minutes: Big-O, array vs hash map, binary search, recursion. Three traces. Not a CS degree. Free.",
     "titleReadCharacter": "仕事で人を見る — 当日15分 — cv.cm",
-    "descReadCharacter": "15分：弱い人、席を外した人、最初に選ばれること。判決は書かない。無料。"
+    "descReadCharacter": "15分：弱い人、席を外した人、最初に選ばれること。判決は書かない。無料。",
+    "titleTimezone": "タイムゾーン変換 — UTC・東京・NY — cv.cm",
+    "descTimezone": "ブラウザで時刻を別のタイムゾーンへ変換。IANA、サマータイム、UTC オフセット。アップロードなし。",
+    "titleLorem": "Lorem ipsum ジェネレーター — cv.cm",
+    "descLorem": "ブラウザで lorem ipsum の段落・文・単語を生成。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "名前生成",
       "blurb": "ランダムな名前とユーザー名。リストをコピー。アップロードなし。"
+    },
+    "timezone": {
+      "name": "タイムゾーン変換",
+      "blurb": "IANA ゾーン間で時刻変換。サマータイムと UTC オフセット。アップロードなし。"
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "定番のプレースホルダー段落・文・単語。このタブでコピー。"
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "されません。Web Crypto で端末内抽選です。",
       "q5": "まとめてコピーできますか？",
       "a5": "はい。リストをコピーですべての行が入ります。"
+    },
+    "timezone": {
+      "q1": "タイムゾーンはどう変換しますか？",
+      "a1": "元のゾーン、行き先のゾーン、日時を選びます。同じ瞬間を別の時計で表示します。",
+      "q2": "サマータイムは入りますか？",
+      "a2": "入ります。IANA ゾーンなので、ニューヨークは EST と EDT を自動切替します。",
+      "q3": "時刻はアップロードされますか？",
+      "a3": "されません。Intl.DateTimeFormat はこのタブで動きます。",
+      "q4": "UTC 行は何ですか？",
+      "a4": "同じ瞬間の UTC ISO-8601 です。API やログ、カレンダー向けです。",
+      "q5": "どのゾーンが並びますか？",
+      "a5": "よく使う都市が先、その後にブラウザが知る IANA ゾーンすべて（UTC 含む）。"
+    },
+    "lorem": {
+      "q1": "lorem ipsum ジェネレーターとは？",
+      "a1": "本文の前にレイアウト間隔を見るための、定番のラテン風ダミー文を埋めます。",
+      "q2": "段落と単語を選べますか？",
+      "a2": "はい。段落・文・単語を切り替えて、件数スライダーを動かします。",
+      "q3": "本物のラテン語ですか？",
+      "a3": "よくあるダミー単語リストです。実在の文章の翻訳ではありません。",
+      "q4": "アップロードされますか？",
+      "a4": "されません。このタブの単語リストから組み立てます。",
+      "q5": "結果をコピーできますか？",
+      "a5": "はい。コピーでブロック全体がクリップボードに入ります。"
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "リストをコピー",
     "copied": "コピーしました",
     "output": "結果"
+  },
+  "timezone": {
+    "title": "タイムゾーン変換",
+    "back": "すべてのツール",
+    "privacyNote": "このタブの IANA タイムゾーンで換算。アップロードなし。",
+    "options": "オプション",
+    "from": "変換元",
+    "to": "変換先",
+    "when": "日時",
+    "now": "現在",
+    "copy": "UTC をコピー",
+    "copied": "コピーしました",
+    "result": "変換結果",
+    "needTime": "日時を選んでください。",
+    "common": "よく使う",
+    "all": "すべてのゾーン"
+  },
+  "lorem": {
+    "title": "Lorem ipsum ジェネレーター",
+    "back": "すべてのツール",
+    "privacyNote": "プレースホルダーはこのタブで生成。アップロードなし。",
+    "options": "オプション",
+    "kind": "種類",
+    "kindParagraphs": "段落",
+    "kindSentences": "文",
+    "kindWords": "単語",
+    "count": "件数",
+    "generate": "生成",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "output": "テキスト"
   }
 }

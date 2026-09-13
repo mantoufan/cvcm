@@ -19,6 +19,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "word-count": "/covers/word-count-sweet.jpg?v=1",
   color: "/covers/color-sweet.jpg?v=1",
   names: "/covers/names-sweet.jpg?v=1",
+  timezone: "/covers/timezone-sweet.jpg?v=1",
+  lorem: "/covers/lorem-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

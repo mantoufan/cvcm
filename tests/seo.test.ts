@@ -27,13 +27,15 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "image-pdf")).toMatch(/JPG to PDF/i);
     expect(pageTitle("en", "audio")).toMatch(/MP3 to WAV/i);
     expect(pageTitle("en", "data")).toMatch(/JSON formatter/i);
+    expect(pageTitle("en", "timezone")).toMatch(/Timezone converter/i);
+    expect(pageTitle("en", "lorem")).toMatch(/Lorem ipsum/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-CN/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "watermark", "collage", "resize", "crop", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "data", "password", "word-count", "color", "names",
+      "clip", "qr", "watermark", "collage", "resize", "crop", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "data", "password", "word-count", "color", "names", "timezone", "lorem",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

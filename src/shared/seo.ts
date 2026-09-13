@@ -60,6 +60,8 @@ const TITLE: Record<ToolId, string> = {
   "word-count": "meta.titleWordCount",
   color: "meta.titleColor",
   names: "meta.titleNames",
+  timezone: "meta.titleTimezone",
+  lorem: "meta.titleLorem",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -81,6 +83,8 @@ const DESC: Record<ToolId, string> = {
   "word-count": "meta.descWordCount",
   color: "meta.descColor",
   names: "meta.descNames",
+  timezone: "meta.descTimezone",
+  lorem: "meta.descLorem",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

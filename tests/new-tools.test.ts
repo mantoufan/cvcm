@@ -3,6 +3,8 @@ import { charsetFor, entropyBits, generatePassword } from "../src/shared/passwor
 import { encodeQr, qrSize, qrVersion } from "../src/shared/qr";
 import { countText } from "../src/shared/word-count";
 import { generateName, generateNames } from "../src/shared/names";
+import { generateLorem, loremWords } from "../src/shared/lorem";
+import { convertWallTime } from "../src/shared/timezone";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -55,11 +57,44 @@ describe("names", () => {
   });
 });
 
+describe("timezone", () => {
+  it("converts New York wall time to UTC across DST", () => {
+    const winter = convertWallTime(2026, 1, 15, 12, 0, 0, "America/New_York", "UTC");
+    expect(winter.formatted).toBe("2026-01-15 17:00:00");
+    expect(winter.offset).toBe("UTC+00:00");
+    expect(winter.iso).toBe("2026-01-15T17:00:00.000Z");
+
+    const summer = convertWallTime(2026, 7, 15, 12, 0, 0, "America/New_York", "UTC");
+    expect(summer.formatted).toBe("2026-07-15 16:00:00");
+    expect(summer.iso).toBe("2026-07-15T16:00:00.000Z");
+
+    const tokyo = convertWallTime(2026, 7, 15, 12, 0, 0, "Asia/Tokyo", "America/New_York");
+    expect(tokyo.formatted).toBe("2026-07-14 23:00:00");
+
+    const shanghai = convertWallTime(2026, 3, 1, 12, 0, 0, "Asia/Shanghai", "UTC");
+    expect(shanghai.formatted).toBe("2026-03-01 04:00:00");
+  });
+});
+
+describe("lorem", () => {
+  it("opens with the classic sentence and stays deterministic", () => {
+    expect(loremWords(5)).toBe("lorem ipsum dolor sit amet");
+    const para = generateLorem("paragraphs", 1);
+    expect(para.startsWith("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")).toBe(true);
+    expect(para).not.toMatch(/Lorem ipsum dolor sit amet, consectetur adipiscing elit\. Lorem ipsum/);
+    expect(generateLorem("sentences", 2).split(". ")).toHaveLength(2);
+    expect(generateLorem("words", 50).split(" ")).toHaveLength(50);
+  });
+});
+
 describe("new routes", () => {
   it("parses qr, password, and word-count paths", () => {
     expect(parseAppPath("/en/qr/")).toEqual({ kind: "app", locale: "en", tool: "qr" });
     expect(parseAppPath("/zh-CN/password/")).toEqual({ kind: "app", locale: "zh-CN", tool: "password" });
     expect(parseAppPath("/es/word-count/")).toEqual({ kind: "app", locale: "es", tool: "word-count" });
+    expect(parseAppPath("/en/timezone/")).toEqual({ kind: "app", locale: "en", tool: "timezone" });
+    expect(parseAppPath("/zh-CN/lorem/")).toEqual({ kind: "app", locale: "zh-CN", tool: "lorem" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("en", "timezone")).toBe("/en/timezone/");
   });
 });

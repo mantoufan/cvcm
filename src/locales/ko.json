@@ -61,7 +61,11 @@
     "titleAlgorithms": "Learn algorithms in one sitting — Big-O, maps, binary search — cv.cm",
     "descAlgorithms": "Ninety minutes: Big-O, array vs hash map, binary search, recursion. Three traces. Not a CS degree. Free.",
     "titleReadCharacter": "직장에서 사람 읽기 — 당일 15분 — cv.cm",
-    "descReadCharacter": "15분: 약한 사람, 자리를 비운 사람, 먼저 고름. 판결 아님. 무료."
+    "descReadCharacter": "15분: 약한 사람, 자리를 비운 사람, 먼저 고름. 판결 아님. 무료.",
+    "titleTimezone": "시간대 변환 — UTC, 서울, 뉴욕 — cv.cm",
+    "descTimezone": "브라우저에서 시각을 다른 시간대로 바꿉니다. IANA, 일광절약, UTC 오프셋. 업로드 없음.",
+    "titleLorem": "Lorem ipsum 생성기 — cv.cm",
+    "descLorem": "브라우저에서 lorem ipsum 단락·문장·단어를 만듭니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -176,6 +180,14 @@
     "names": {
       "name": "이름 생성",
       "blurb": "무작위 이름과 사용자명. 목록 복사. 업로드 없음."
+    },
+    "timezone": {
+      "name": "시간대 변환",
+      "blurb": "IANA 시간대 사이 시각 변환. 일광절약과 UTC 오프셋. 업로드 없음."
+    },
+    "lorem": {
+      "name": "Lorem ipsum",
+      "blurb": "고전 자리 표시 단락·문장·단어. 이 탭에서 복사."
     }
   },
   "watermark": {
@@ -783,6 +795,30 @@
       "a4": "아니요. Web Crypto로 기기에서 뽑습니다.",
       "q5": "전체를 복사하나요?",
       "a5": "네. 목록 복사로 모든 줄이 들어갑니다."
+    },
+    "timezone": {
+      "q1": "시간대는 어떻게 바꾸나요?",
+      "a1": "출발 시간대, 도착 시간대, 날짜·시각을 고르면 같은 순간이 다른 시계로 나옵니다.",
+      "q2": "일광절약 시간이 적용되나요?",
+      "a2": "됩니다. IANA 시간대를 쓰므로 뉴욕은 EST와 EDT를 자동으로 바꿉니다.",
+      "q3": "시각이 업로드되나요?",
+      "a3": "아니요. Intl.DateTimeFormat이 이 탭에서 돌아갑니다.",
+      "q4": "UTC 줄은 무엇인가요?",
+      "a4": "같은 순간의 UTC ISO-8601입니다. API, 로그, 달력에 씁니다.",
+      "q5": "어떤 시간대가 나오나요?",
+      "a5": "자주 쓰는 도시가 먼저, 그다음 브라우저가 아는 모든 IANA 시간대(UTC 포함)."
+    },
+    "lorem": {
+      "q1": "lorem ipsum 생성기는 무엇인가요?",
+      "a1": "본문이 준비되기 전에 간격과 줄바꿈을 보려고 쓰는 고전 라틴풍 자리 표시 문장입니다.",
+      "q2": "단락이나 단어를 고를 수 있나요?",
+      "a2": "네. 단락, 문장, 단어 사이를 바꾸고 개수 슬라이더를 움직이세요.",
+      "q3": "진짜 라틴어인가요?",
+      "a3": "흔한 더미 단어 목록입니다. 실제 글을 번역한 것이 아닙니다.",
+      "q4": "업로드되나요?",
+      "a4": "아니요. 이 탭의 단어 목록으로 만듭니다.",
+      "q5": "결과를 복사할 수 있나요?",
+      "a5": "네. 복사하면 블록 전체가 클립보드에 들어갑니다."
     }
   },
   "qr": {
@@ -1286,5 +1322,36 @@
     "copy": "목록 복사",
     "copied": "복사됨",
     "output": "결과"
+  },
+  "timezone": {
+    "title": "시간대 변환",
+    "back": "모든 도구",
+    "privacyNote": "이 탭의 IANA 시간대로 환산합니다. 업로드 없음.",
+    "options": "옵션",
+    "from": "출발",
+    "to": "도착",
+    "when": "날짜와 시각",
+    "now": "지금",
+    "copy": "UTC 복사",
+    "copied": "복사됨",
+    "result": "변환 결과",
+    "needTime": "날짜와 시각을 고르세요.",
+    "common": "자주 씀",
+    "all": "모든 시간대"
+  },
+  "lorem": {
+    "title": "Lorem ipsum 생성기",
+    "back": "모든 도구",
+    "privacyNote": "자리 표시 텍스트는 이 탭에서 만듭니다. 업로드 없음.",
+    "options": "옵션",
+    "kind": "종류",
+    "kindParagraphs": "단락",
+    "kindSentences": "문장",
+    "kindWords": "단어",
+    "count": "개수",
+    "generate": "생성",
+    "copy": "복사",
+    "copied": "복사됨",
+    "output": "텍스트"
   }
 }

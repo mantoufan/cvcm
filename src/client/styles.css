@@ -717,6 +717,14 @@ input[type="color"] {
   font-size: 1.05rem;
 }
 .name-list li { padding: 0.15rem 0; }
+.timezone-out {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #a13f6c;
+  letter-spacing: -0.02em;
+}
+.timezone-stage { display: grid; gap: 0.55rem; }
 .audio-thumb {
   width: 42px;
   height: 42px;

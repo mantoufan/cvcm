@@ -24,6 +24,8 @@ Browser tools plus a tiny cloud clipboard.
 - **Compress PDF** / 压缩 PDF. [Open](https://cv.cm/en/compress-pdf/)
 - **Split PDF** / 拆分 PDF. [Open](https://cv.cm/en/split-pdf/)
 - **Name generator** / 名字与用户名. [Open](https://cv.cm/en/names/)
+- **Time zone converter** / 时区转换. [Open](https://cv.cm/en/timezone/)
+- **Lorem ipsum** / 占位文本. [Open](https://cv.cm/en/lorem/)
 
 ## Lessons
 
