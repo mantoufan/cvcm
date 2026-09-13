@@ -31,7 +31,7 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "lorem")).toMatch(/Lorem ipsum/i);
     expect(pageTitle("en", "units")).toMatch(/Unit converter/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
-    expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-CN/watermark/");
+    expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {

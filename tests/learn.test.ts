@@ -75,7 +75,7 @@ describe("learn SEO", () => {
     expect(pageTitle("en", { learn: true, tutorial: "phone-photos" })).toMatch(/phone photography/i);
     expect(pageTitle("en", { learn: true })).toMatch(/Photography and practical tutorials/i);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "pool-safety" })).toBe(
-      "https://cv.cm/zh-CN/learn/pool-safety/",
+      "https://cv.cm/zh-cn/learn/pool-safety/",
     );
     for (const id of TUTORIALS) {
       expect(learnFaqItems("en", id).length, id).toBe(5);
@@ -104,12 +104,12 @@ describe("learn sitemap", () => {
     const extra = 1 + TUTORIALS.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
     expect(xml).toContain("https://cv.cm/en/learn/");
-    expect(xml).toContain("https://cv.cm/zh-CN/learn/phone-photos/");
+    expect(xml).toContain("https://cv.cm/zh-cn/learn/phone-photos/");
     expect(xml).toContain("https://cv.cm/es/learn/one-page-site/");
-    expect(xml).toContain("https://cv.cm/zh-CN/learn/healthy-boundaries/");
-    expect(xml).toContain("https://cv.cm/zh-CN/learn/portrait/");
+    expect(xml).toContain("https://cv.cm/zh-cn/learn/healthy-boundaries/");
+    expect(xml).toContain("https://cv.cm/zh-cn/learn/portrait/");
     expect(xml).toContain("https://cv.cm/en/learn/algorithms/");
-    expect(xml).toContain("https://cv.cm/zh-CN/learn/read-character/");
+    expect(xml).toContain("https://cv.cm/zh-cn/learn/read-character/");
   });
 });
 

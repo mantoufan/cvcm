@@ -3,7 +3,7 @@ import { TOOLS, TUTORIALS, appHref, learnHref, type ToolId, type TutorialId } fr
 
 export const SITE_ORIGIN = "https://cv.cm";
 
-/** hreflang values match our URL locale codes (ISO 639-1, plus region for Chinese). */
+/** hreflang stays BCP 47 (`zh-CN`); public URL paths are lowercase (`/zh-cn/`). */
 export const HREFLANG: Record<Locale, string> = {
   en: "en",
   "zh-CN": "zh-CN",

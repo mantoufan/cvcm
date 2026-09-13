@@ -8,9 +8,9 @@ import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import {
   DEFAULT_LOCALE,
-  isLocale,
   LOCALE_COOKIE,
   LOCALES,
+  parseLocale,
   type Locale,
 } from "../shared/locale";
 
@@ -45,8 +45,8 @@ export function setLocale(next: Locale): void {
 
 export function readStoredLocale(): Locale | null {
   try {
-    const stored = localStorage.getItem(LOCALE_COOKIE);
-    if (stored && isLocale(stored)) return stored;
+    const stored = parseLocale(localStorage.getItem(LOCALE_COOKIE));
+    if (stored) return stored;
   } catch {
     /* ignore */
   }

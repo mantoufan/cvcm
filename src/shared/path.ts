@@ -1,5 +1,5 @@
 import { isClipId } from "./clip";
-import { isLocale, type Locale } from "./locale";
+import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
   /^\/(assets\/|covers\/|favicon\.svg$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
@@ -92,30 +92,31 @@ export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
   if (STATIC_FILE.test(raw)) return { kind: "static" };
 
-  const parts = raw.split("/").filter(Boolean);
+  const parts = raw.split("/").filter(Boolean).map((part) => part.toLowerCase());
   if (parts.length === 0) return { kind: "bare", tool: null };
 
   const [first, second, third, ...rest] = parts;
   if (first === "c" && second && !third && isClipId(second)) {
-    return { kind: "clip", id: second.toLowerCase() };
+    return { kind: "clip", id: second };
   }
 
-  if (isLocale(first)) {
+  const locale = parseLocale(first);
+  if (locale) {
     if (!second) {
       if (rest.length > 0) return { kind: "unknown" };
-      return { kind: "app", locale: first, tool: null };
+      return { kind: "app", locale, tool: null };
     }
     if (second === "learn") {
       if (rest.length > 0) return { kind: "unknown" };
-      if (!third) return { kind: "learn", locale: first, tutorial: null };
-      if (isTutorialId(third)) return { kind: "learn", locale: first, tutorial: third };
+      if (!third) return { kind: "learn", locale, tutorial: null };
+      if (isTutorialId(third)) return { kind: "learn", locale, tutorial: third };
       return { kind: "unknown" };
     }
     if (rest.length > 0) return { kind: "unknown" };
     if (!isToolId(second)) return { kind: "unknown" };
-    if (!third) return { kind: "app", locale: first, tool: second };
+    if (!third) return { kind: "app", locale, tool: second };
     if (second === "clip" && isClipId(third)) {
-      return { kind: "app", locale: first, tool: "clip", clipId: third.toLowerCase() };
+      return { kind: "app", locale, tool: "clip", clipId: third };
     }
     return { kind: "unknown" };
   }
@@ -127,16 +128,18 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "clip" && second && !third && isClipId(second)) {
-    return { kind: "bare", tool: "clip", clipId: second.toLowerCase() };
+    return { kind: "bare", tool: "clip", clipId: second };
   }
   return { kind: "unknown" };
 }
 
 export function appHref(locale: Locale, tool: ToolId | null, clipId?: string | null): string {
-  if (tool === "clip" && clipId) return `/${locale}/clip/${clipId}/`;
-  return tool ? `/${locale}/${tool}/` : `/${locale}/`;
+  const base = `/${localePath(locale)}`;
+  if (tool === "clip" && clipId) return `${base}/clip/${clipId.toLowerCase()}/`;
+  return tool ? `${base}/${tool}/` : `${base}/`;
 }
 
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
-  return tutorial ? `/${locale}/learn/${tutorial}/` : `/${locale}/learn/`;
+  const base = `/${localePath(locale)}/learn`;
+  return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }

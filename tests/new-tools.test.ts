@@ -111,6 +111,6 @@ describe("new routes", () => {
     expect(parseAppPath("/en/units/")).toEqual({ kind: "app", locale: "en", tool: "units" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("en", "timezone")).toBe("/en/timezone/");
-    expect(appHref("zh-CN", "units")).toBe("/zh-CN/units/");
+    expect(appHref("zh-CN", "units")).toBe("/zh-cn/units/");
   });
 });

@@ -23,6 +23,10 @@ describe("sitemap", () => {
     }
     expect(xml).toContain('hreflang="x-default"');
     expect(xml).toContain('href="https://cv.cm/en/"');
+    expect(xml).toContain("https://cv.cm/zh-cn/");
+    expect(xml).toContain("https://cv.cm/zh-tw/");
+    expect(xml).not.toContain("https://cv.cm/zh-CN/");
+    expect(xml).not.toContain("https://cv.cm/zh-TW/");
     expect(xml).toContain("<lastmod>2026-09-13</lastmod>");
     expect(xml).not.toContain("<changefreq>");
     expect(xml).not.toContain("<priority>");

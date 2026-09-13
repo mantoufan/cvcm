@@ -32,7 +32,7 @@ Browser tools plus a tiny cloud clipboard.
 
 Six featured tutorials: phone-photo comparisons, window light, cropping, a complete portrait session, three algorithm traces, and a one-page HTML project. Each edited lesson includes concrete steps and completion checks. Full editorial revisions are available in English, Simplified Chinese and Traditional Chinese.
 
-- [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-CN/learn/)
+- [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
 - [Phone photography](https://cv.cm/en/learn/phone-photos/)
 - [Window light](https://cv.cm/en/learn/window-light/)
 - [Cropping](https://cv.cm/en/learn/crop-compose/)

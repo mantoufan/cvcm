@@ -7,6 +7,20 @@ export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
 }
 
+/** Map a URL/cookie/storage value onto a locale. Paths are lowercase (`zh-cn`). */
+export function parseLocale(value: string | null | undefined): Locale | null {
+  if (!value) return null;
+  const lower = value.trim().toLowerCase();
+  for (const locale of LOCALES) {
+    if (locale.toLowerCase() === lower) return locale;
+  }
+  return null;
+}
+
+export function localePath(locale: Locale): string {
+  return locale.toLowerCase();
+}
+
 export function mapLanguageTag(tag: string): Locale | null {
   const lower = tag.trim().toLowerCase();
   if (!lower) return null;
@@ -32,7 +46,8 @@ export function negotiateLocale(
   acceptLanguage: string | null | undefined,
   cookie: string | null | undefined,
 ): Locale {
-  if (cookie && isLocale(cookie)) return cookie;
+  const fromCookie = parseLocale(cookie);
+  if (fromCookie) return fromCookie;
   if (!acceptLanguage) return DEFAULT_LOCALE;
 
   const tags = acceptLanguage
