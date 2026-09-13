@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image tools (watermark, collage, convert, image-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+1. Image tools (watermark, collage, convert, image-pdf, resize, crop) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -26,6 +26,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/qr/` — QR code generator
 - `src/client/password/` — password generator
 - `src/client/word-count/` — word / character counter
+- `src/client/color/` — color picker
+- `src/client/resize/` — resize / compress images
+- `src/client/crop/` — crop images
 - `src/shared/path.ts` — `CATEGORIES` (share, image, convert, text) and `TOOLS`
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm

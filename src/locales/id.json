@@ -21,7 +21,13 @@
     "titlePassword": "Pembuat kata sandi — cv.cm",
     "descPassword": "Buat kata sandi acak di perangkat. Pilih panjang dan simbol. Tanpa unggah.",
     "titleWordCount": "Penghitung kata — cv.cm",
-    "descWordCount": "Hitung kata, karakter, kalimat, dan waktu baca di browser. Tanpa unggah."
+    "descWordCount": "Hitung kata, karakter, kalimat, dan waktu baca di browser. Tanpa unggah.",
+    "titleResize": "Ubah ukuran dan kompres gambar — cv.cm",
+    "descResize": "Ubah ukuran ke piksel pasti atau sisi terpanjang, kompres JPG / WebP di browser. Tanpa unggah.",
+    "titleCrop": "Potong gambar online — cv.cm",
+    "descCrop": "Potong foto di browser. Bebas, 1:1, 4:5, 16:9, 9:16. Tanpa unggah.",
+    "titleColor": "Pemilih warna — hex, RGB, HSL — cv.cm",
+    "descColor": "Pilih warna, salin hex RGB HSL, cek kontras. Eyedropper jika browser mengizinkan. Tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "Penghitung kata",
       "blurb": "Kata, karakter, kalimat, waktu baca. Tanpa unggah."
+    },
+    "resize": {
+      "name": "Ubah ukuran / kompres",
+      "blurb": "Piksel atau sisi terpanjang. Kualitas JPG / WebP. Tanpa unggah."
+    },
+    "crop": {
+      "name": "Potong gambar",
+      "blurb": "Potong foto. Persegi, 4:5, 16:9. Tanpa unggah."
+    },
+    "color": {
+      "name": "Pemilih warna",
+      "blurb": "Hex, RGB, HSL, kontras, eyedropper. Tanpa unggah."
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "Karakter termasuk spasi. Ada hitungan tanpa spasi.",
       "q5": "Waktu baca?",
       "a5": "Sekitar 200 kata/menit, dibulatkan ke atas."
+    },
+    "resize": {
+      "q1": "Ini pengubah ukuran gambar?",
+      "a1": "Ya. Atur lebar dan tinggi, atau batasi sisi terpanjang 1920, 1280, 800 piksel.",
+      "q2": "Bisa kompres JPG?",
+      "a2": "Ya. Ekspor JPG atau WebP dan geser kualitas; perkiraan ukuran ikut berubah.",
+      "q3": "Foto diunggah?",
+      "a3": "Tidak. Diproses di kanvas tab ini.",
+      "q4": "Rasio dipertahankan?",
+      "a4": "Terkunci secara default. Lepas untuk meregangkan bebas.",
+      "q5": "Format apa yang bisa disimpan?",
+      "a5": "JPG, WebP, atau PNG. HEIC / AVIF bisa dibuka jika browser mendukung."
+    },
+    "crop": {
+      "q1": "Ini alat potong?",
+      "a1": "Ya. Letakkan foto, seret bingkai, lalu unduh.",
+      "q2": "Ada ukuran Instagram?",
+      "a2": "1:1, 4:5, 9:16 cerita, 16:9, plus persegi bebas.",
+      "q3": "Diunggah?",
+      "a3": "Tidak. Pemotongan lokal di tab ini.",
+      "q4": "Bisa tempel dari papan klip?",
+      "a4": "Ya. Ctrl/⌘ V menempel gambar.",
+      "q5": "Apa yang diekspor?",
+      "a5": "JPG, PNG, atau WebP hanya dari area yang dipilih."
+    },
+    "color": {
+      "q1": "Ini pemilih warna?",
+      "a1": "Ya. Pilih warna dan salin Hex, RGB, atau HSL. Tetap di tab ini.",
+      "q2": "Eyedropper jalan?",
+      "a2": "Di Chromium, EyeDropper mengambil piksel layar. Browser lain tetap punya pemilih asli.",
+      "q3": "Bisa ketik kode?",
+      "a3": "Hex, rgb(), hsl() diurai. Input salah diabaikan.",
+      "q4": "Angka kontras apa?",
+      "a4": "Rasio WCAG terhadap putih dan hitam. Teks isi biasanya 4.5:1.",
+      "q5": "Dikirim ke server?",
+      "a5": "Tidak. Tidak ada permintaan jaringan."
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "Menit baca",
     "openFile": "Buka file",
     "clear": "Hapus"
+  },
+  "resize": {
+    "title": "Ubah ukuran dan kompres gambar",
+    "back": "Semua alat",
+    "privacyNote": "Ubah ukuran dan kompresi di tab ini. Tanpa unggah.",
+    "dropTitle": "Letakkan gambar di sini",
+    "dropHint": "atau klik pilih · Ctrl/⌘ V tempel",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC, AVIF",
+    "filesTitle": "Gambar",
+    "hint": "Atur lebar dan tinggi, atau preset, lalu unduh.",
+    "download": "Unduh",
+    "exportTitle": "Keluaran",
+    "width": "Lebar",
+    "height": "Tinggi",
+    "lock": "Jaga rasio",
+    "original": "Asli",
+    "format": "Format",
+    "quality": "Kualitas",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "Gambar ini tidak bisa dibaca.",
+    "emptyDownload": "Tambah gambar dulu.",
+    "working": "Mengubah ukuran…"
+  },
+  "crop": {
+    "title": "Potong gambar",
+    "back": "Semua alat",
+    "privacyNote": "Pemotongan di tab ini. Tanpa unggah.",
+    "dropTitle": "Letakkan foto di sini",
+    "dropHint": "atau klik pilih · Ctrl/⌘ V tempel",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Foto",
+    "hint": "Seret kotak untuk memotong. Sudut mengubah ukuran.",
+    "download": "Unduh potongan",
+    "exportTitle": "Keluaran",
+    "aspect": "Rasio",
+    "aspectFree": "Bebas",
+    "format": "Format",
+    "errorDecode": "Gambar ini tidak bisa dibaca.",
+    "emptyDownload": "Tambah foto dulu.",
+    "working": "Memotong…"
+  },
+  "color": {
+    "title": "Pemilih warna",
+    "back": "Semua alat",
+    "privacyNote": "Warna tetap di tab ini. Tanpa unggah.",
+    "values": "Nilai",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "Pemilih",
+    "preview": "Pratinjau",
+    "copyHex": "Salin hex",
+    "copyRgb": "Salin RGB",
+    "copied": "Tersalin",
+    "dropper": "Eyedropper",
+    "noDropper": "Eyedropper butuh browser Chromium.",
+    "contrast": "Kontras vs putih {white}:1 · vs hitam {black}:1"
   }
 }

@@ -21,7 +21,13 @@
     "titlePassword": "Tạo mật khẩu — cv.cm",
     "descPassword": "Tạo mật khẩu ngẫu nhiên trên máy. Chọn độ dài và ký hiệu. Không tải lên.",
     "titleWordCount": "Đếm từ — cv.cm",
-    "descWordCount": "Đếm từ, ký tự, câu và thời gian đọc trong trình duyệt. Không tải lên."
+    "descWordCount": "Đếm từ, ký tự, câu và thời gian đọc trong trình duyệt. Không tải lên.",
+    "titleResize": "Thu nhỏ và nén ảnh — cv.cm",
+    "descResize": "Đổi kích thước theo pixel hoặc cạnh dài, nén JPG / WebP trong trình duyệt. Không tải lên.",
+    "titleCrop": "Cắt ảnh online — cv.cm",
+    "descCrop": "Cắt ảnh trong trình duyệt. Tự do, 1:1, 4:5, 16:9, 9:16. Không tải lên.",
+    "titleColor": "Chọn màu — Hex, RGB, HSL — cv.cm",
+    "descColor": "Chọn màu, chép Hex RGB HSL, xem độ tương phản. Ống nhỏ giọt nếu trình duyệt cho phép. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "Đếm từ",
       "blurb": "Từ, ký tự, câu, thời gian đọc. Không tải lên."
+    },
+    "resize": {
+      "name": "Thu nhỏ / nén",
+      "blurb": "Pixel hoặc cạnh dài. Chất lượng JPG / WebP. Không tải lên."
+    },
+    "crop": {
+      "name": "Cắt ảnh",
+      "blurb": "Cắt ảnh. Vuông, 4:5, 16:9. Không tải lên."
+    },
+    "color": {
+      "name": "Chọn màu",
+      "blurb": "Hex, RGB, HSL, tương phản, ống nhỏ giọt. Không tải lên."
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "Ký tự gồm khoảng trắng. Có mục không khoảng trắng.",
       "q5": "Thời gian đọc?",
       "a5": "Khoảng 200 từ/phút, làm tròn lên."
+    },
+    "resize": {
+      "q1": "Đây là công cụ thu nhỏ ảnh?",
+      "a1": "Có. Đặt rộng/cao, hoặc giới hạn cạnh dài 1920, 1280, 800 px.",
+      "q2": "Nén JPG được không?",
+      "a2": "Được. Xuất JPG hoặc WebP và kéo thanh chất lượng; dung lượng ước tính đổi theo.",
+      "q3": "Ảnh có tải lên không?",
+      "a3": "Không. Xử lý trên canvas tab này.",
+      "q4": "Giữ tỉ lệ không?",
+      "a4": "Mặc định khóa. Bỏ chọn để kéo tự do.",
+      "q5": "Lưu định dạng nào?",
+      "a5": "JPG, WebP hoặc PNG. HEIC / AVIF mở được nếu trình duyệt giải mã được."
+    },
+    "crop": {
+      "q1": "Đây là cắt ảnh?",
+      "a1": "Có. Thả ảnh, kéo khung, rồi tải.",
+      "q2": "Có cỡ Instagram?",
+      "a2": "1:1, 4:5, 9:16 story, 16:9 và hình chữ nhật tự do.",
+      "q3": "Có tải lên không?",
+      "a3": "Không. Cắt ngay tab này.",
+      "q4": "Dán từ clipboard?",
+      "a4": "Có. Ctrl/⌘ V dán ảnh như các công cụ khác.",
+      "q5": "Xuất gì?",
+      "a5": "JPG, PNG hoặc WebP đúng vùng đã chọn."
+    },
+    "color": {
+      "q1": "Đây là chọn màu?",
+      "a1": "Có. Chọn màu và chép Hex, RGB hoặc HSL. Ở tab này.",
+      "q2": "Ống nhỏ giọt chạy không?",
+      "a2": "Chromium dùng EyeDropper lấy pixel trên màn hình. Trình duyệt khác vẫn có bảng chọn.",
+      "q3": "Gõ mã màu được không?",
+      "a3": "Hex, rgb(), hsl() đều parse. Sai thì bỏ qua.",
+      "q4": "Số tương phản là gì?",
+      "a4": "Tỉ lệ WCAG với trắng và đen. Chữ thường cần 4.5:1.",
+      "q5": "Gửi lên máy chủ?",
+      "a5": "Không. Không có mạng."
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "Phút đọc",
     "openFile": "Mở tệp",
     "clear": "Xóa"
+  },
+  "resize": {
+    "title": "Thu nhỏ và nén ảnh",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Thu nhỏ và nén trong tab này. Không tải lên.",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm chọn · Ctrl/⌘ V dán",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC, AVIF",
+    "filesTitle": "Ảnh",
+    "hint": "Đặt rộng cao hoặc dùng preset, rồi tải.",
+    "download": "Tải xuống",
+    "exportTitle": "Đầu ra",
+    "width": "Rộng",
+    "height": "Cao",
+    "lock": "Giữ tỉ lệ",
+    "original": "Gốc",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "Không đọc được ảnh này.",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang thu nhỏ…"
+  },
+  "crop": {
+    "title": "Cắt ảnh",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Cắt trong tab này. Không tải lên.",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm chọn · Ctrl/⌘ V dán",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Ảnh",
+    "hint": "Kéo khung để cắt. Góc để đổi cỡ.",
+    "download": "Tải phần cắt",
+    "exportTitle": "Đầu ra",
+    "aspect": "Tỉ lệ",
+    "aspectFree": "Tự do",
+    "format": "Định dạng",
+    "errorDecode": "Không đọc được ảnh này.",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang cắt…"
+  },
+  "color": {
+    "title": "Chọn màu",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Màu ở tab này. Không tải lên.",
+    "values": "Giá trị",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "Bảng chọn",
+    "preview": "Xem trước",
+    "copyHex": "Chép hex",
+    "copyRgb": "Chép RGB",
+    "copied": "Đã chép",
+    "dropper": "Ống nhỏ giọt",
+    "noDropper": "Ống nhỏ giọt cần trình duyệt Chromium.",
+    "contrast": "Tương phản trắng {white}:1 · đen {black}:1"
   }
 }

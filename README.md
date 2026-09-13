@@ -16,6 +16,9 @@ Browser tools plus a tiny cloud clipboard.
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
 - **Word counter** / 字数统计. [Open](https://cv.cm/en/word-count/)
+- **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)
+- **Crop** / 裁剪. [Open](https://cv.cm/en/crop/)
+- **Color picker** / 取色器. [Open](https://cv.cm/en/color/)
 
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 

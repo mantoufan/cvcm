@@ -33,7 +33,7 @@ describe("seo helpers", () => {
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "watermark", "collage", "convert", "image-pdf", "audio", "data", "password", "word-count",
+      "clip", "qr", "watermark", "collage", "resize", "crop", "convert", "image-pdf", "audio", "data", "password", "word-count", "color",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

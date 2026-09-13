@@ -21,7 +21,13 @@
     "titlePassword": "비밀번호 생성기 — cv.cm",
     "descPassword": "기기에서 무작위 비밀번호 생성. 길이와 기호 선택. 업로드 없음.",
     "titleWordCount": "단어 수 세기 — cv.cm",
-    "descWordCount": "단어, 문자, 문장, 읽기 시간을 브라우저에서 계산. 업로드 없음."
+    "descWordCount": "단어, 문자, 문장, 읽기 시간을 브라우저에서 계산. 업로드 없음.",
+    "titleResize": "이미지 크기 조절·압축 — cv.cm",
+    "descResize": "정확한 픽셀 또는 긴 변으로 줄이고 JPG / WebP를 압축. 업로드 없음.",
+    "titleCrop": "이미지 자르기 — cv.cm",
+    "descCrop": "브라우저에서 사진 자르기. 자유, 1:1, 4:5, 16:9, 9:16. 업로드 없음.",
+    "titleColor": "색 선택기 — Hex, RGB, HSL — cv.cm",
+    "descColor": "색을 고르고 Hex·RGB·HSL 복사, 대비율 확인. 스포이드 지원. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "단어 수 세기",
       "blurb": "단어, 문자, 문장, 읽기 시간. 업로드 없음."
+    },
+    "resize": {
+      "name": "크기 조절 / 압축",
+      "blurb": "픽셀 또는 긴 변. JPG / WebP 품질. 업로드 없음."
+    },
+    "crop": {
+      "name": "자르기",
+      "blurb": "사진 자르기. 정사각, 4:5, 16:9. 업로드 없음."
+    },
+    "color": {
+      "name": "색 선택기",
+      "blurb": "Hex, RGB, HSL, 대비율, 스포이드. 업로드 없음."
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "문자 수는 공백 포함. 공백 없는 항목도 있습니다.",
       "q5": "읽기 시간은?",
       "a5": "분당 약 200단어, 올림합니다."
+    },
+    "resize": {
+      "q1": "이미지 리사이저인가요?",
+      "a1": "네. 정확한 너비·높이를 정하거나 긴 변을 1920 / 1280 / 800픽셀로 제한합니다.",
+      "q2": "JPG를 압축할 수 있나요?",
+      "a2": "네. JPG 또는 WebP로 품질을 조절하면 예상 용량이 바뀝니다.",
+      "q3": "사진이 업로드되나요?",
+      "a3": "아니요. 이 탭의 캔버스에서 처리합니다.",
+      "q4": "비율을 유지하나요?",
+      "a4": "기본은 잠금. 해제하면 임의의 너비와 높이로 늘릴 수 있습니다.",
+      "q5": "어떤 형식으로 저장하나요?",
+      "a5": "JPG, WebP, PNG. 브라우저가 디코드하면 HEIC / AVIF도 열 수 있습니다."
+    },
+    "crop": {
+      "q1": "자르기 도구인가요?",
+      "a1": "네. 사진을 놓고 프레임을 끈 뒤 받습니다.",
+      "q2": "인스타그램 크기가 있나요?",
+      "a2": "1:1, 4:5, 9:16 스토리, 16:9, 자유 사각형이 있습니다.",
+      "q3": "업로드되나요?",
+      "a3": "아니요. 이 탭에서만 자릅니다.",
+      "q4": "클립보드에서 붙여넣을 수 있나요?",
+      "a4": "네. Ctrl/⌘ V로 이미지를 붙입니다.",
+      "q5": "무엇을 내보내나요?",
+      "a5": "선택한 영역의 JPG, PNG 또는 WebP입니다."
+    },
+    "color": {
+      "q1": "색 선택기인가요?",
+      "a1": "네. 색을 고르고 Hex / RGB / HSL을 복사합니다. 이 탭에만 있습니다.",
+      "q2": "스포이드가 되나요?",
+      "a2": "Chromium에서는 EyeDropper로 화면 픽셀을 찍습니다. 다른 브라우저는 기본 선택기입니다.",
+      "q3": "코드를 입력할 수 있나요?",
+      "a3": "Hex, rgb(), hsl()을 파싱합니다. 잘못된 값은 무시합니다.",
+      "q4": "대비율은 무엇인가요?",
+      "a4": "흰/검에 대한 WCAG 대비. 본문은 보통 4.5:1입니다.",
+      "q5": "서버로 보내나요?",
+      "a5": "아니요. 네트워크 요청이 없습니다."
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "읽기(분)",
     "openFile": "파일 열기",
     "clear": "지우기"
+  },
+  "resize": {
+    "title": "이미지 크기 조절과 압축",
+    "back": "모든 도구",
+    "privacyNote": "조절과 압축은 이 탭에서만. 업로드 없음.",
+    "dropTitle": "이미지를 놓으세요",
+    "dropHint": "또는 클릭 · Ctrl/⌘ V 붙여넣기",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC, AVIF",
+    "filesTitle": "이미지",
+    "hint": "너비와 높이를 정하거나 프리셋을 쓴 뒤 받습니다.",
+    "download": "다운로드",
+    "exportTitle": "출력",
+    "width": "너비",
+    "height": "높이",
+    "lock": "비율 유지",
+    "original": "원본",
+    "format": "형식",
+    "quality": "품질",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "이 이미지를 읽을 수 없습니다.",
+    "emptyDownload": "먼저 이미지를 넣으세요.",
+    "working": "조절 중…"
+  },
+  "crop": {
+    "title": "이미지 자르기",
+    "back": "모든 도구",
+    "privacyNote": "자르기는 이 탭에서만. 업로드 없음.",
+    "dropTitle": "사진을 놓으세요",
+    "dropHint": "또는 클릭 · Ctrl/⌘ V 붙여넣기",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "사진",
+    "hint": "상자를 끌어 자르고, 모서리로 크기를 바꿉니다.",
+    "download": "자른 이미지 받기",
+    "exportTitle": "출력",
+    "aspect": "비율",
+    "aspectFree": "자유",
+    "format": "형식",
+    "errorDecode": "이 이미지를 읽을 수 없습니다.",
+    "emptyDownload": "먼저 사진을 넣으세요.",
+    "working": "자르는 중…"
+  },
+  "color": {
+    "title": "색 선택기",
+    "back": "모든 도구",
+    "privacyNote": "색 값은 이 탭에만 있습니다. 업로드 없음.",
+    "values": "값",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "선택기",
+    "preview": "미리보기",
+    "copyHex": "Hex 복사",
+    "copyRgb": "RGB 복사",
+    "copied": "복사됨",
+    "dropper": "스포이드",
+    "noDropper": "스포이드는 Chromium이 필요합니다.",
+    "contrast": "흰색 대비 {white}:1 · 검은색 대비 {black}:1"
   }
 }

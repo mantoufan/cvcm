@@ -3,8 +3,11 @@ import { mountClip, unmountClip } from "./clip/ui";
 import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
 import { mountData, unmountData } from "./data/ui";
+import { mountColor, unmountColor } from "./color/ui";
+import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountPassword, unmountPassword } from "./password/ui";
 import { mountQr, unmountQr } from "./qr/ui";
+import { mountResize, unmountResize } from "./resize/ui";
 import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncFaqJsonLd } from "./faq";
@@ -96,6 +99,9 @@ function unmountTools(): void {
   unmountQr();
   unmountPassword();
   unmountWordCount();
+  unmountColor();
+  unmountResize();
+  unmountCrop();
 }
 
 function render(): void {
@@ -165,6 +171,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "qr") mountQr(main);
   else if (tool === "password") mountPassword(main);
   else if (tool === "word-count") mountWordCount(main);
+  else if (tool === "color") mountColor(main);
+  else if (tool === "resize") await mountResize(main);
+  else if (tool === "crop") await mountCrop(main);
   else mountHome(main, loc);
   if (tool && !(tool === "clip" && clipId)) main.append(faqSection(loc, tool));
 }

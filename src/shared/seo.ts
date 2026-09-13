@@ -37,12 +37,15 @@ const TITLE: Record<ToolId, string> = {
   qr: "meta.titleQr",
   watermark: "meta.titleWatermark",
   collage: "meta.titleCollage",
+  resize: "meta.titleResize",
+  crop: "meta.titleCrop",
   convert: "meta.titleConvert",
   "image-pdf": "meta.titleImagePdf",
   audio: "meta.titleAudio",
   data: "meta.titleData",
   password: "meta.titlePassword",
   "word-count": "meta.titleWordCount",
+  color: "meta.titleColor",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -50,12 +53,15 @@ const DESC: Record<ToolId, string> = {
   qr: "meta.descQr",
   watermark: "meta.descWatermark",
   collage: "meta.descCollage",
+  resize: "meta.descResize",
+  crop: "meta.descCrop",
   convert: "meta.descConvert",
   "image-pdf": "meta.descImagePdf",
   audio: "meta.descAudio",
   data: "meta.descData",
   password: "meta.descPassword",
   "word-count": "meta.descWordCount",
+  color: "meta.descColor",
 };
 
 export function pageTitle(locale: Locale, tool: ToolId | null): string {

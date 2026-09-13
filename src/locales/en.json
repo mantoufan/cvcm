@@ -21,7 +21,13 @@
     "titlePassword": "Password generator — cv.cm",
     "descPassword": "Generate a strong random password on your device. Choose length and symbols. Nothing is uploaded.",
     "titleWordCount": "Word counter — cv.cm",
-    "descWordCount": "Count words, characters, sentences, and reading time in the browser. Nothing is uploaded."
+    "descWordCount": "Count words, characters, sentences, and reading time in the browser. Nothing is uploaded.",
+    "titleResize": "Resize and compress images — cv.cm",
+    "descResize": "Resize photos to exact pixels or a max edge, compress JPG or WebP, in the browser. Nothing is uploaded.",
+    "titleCrop": "Crop images online — cv.cm",
+    "descCrop": "Crop photos in the browser. Free, 1:1, 4:5, 16:9, 9:16. Nothing is uploaded.",
+    "titleColor": "Color picker — hex, RGB, HSL — cv.cm",
+    "descColor": "Pick a color, copy hex RGB or HSL, check contrast. Eyedropper when the browser allows. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "Word counter",
       "blurb": "Words, characters, sentences, reading time. Nothing is uploaded."
+    },
+    "resize": {
+      "name": "Resize & compress",
+      "blurb": "Exact pixels or a max edge. JPG / WebP quality. Nothing is uploaded."
+    },
+    "crop": {
+      "name": "Crop image",
+      "blurb": "Crop photos. Square, 4:5, 16:9. Nothing is uploaded."
+    },
+    "color": {
+      "name": "Color picker",
+      "blurb": "Hex, RGB, HSL, contrast, eyedropper. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "Characters includes spaces. There is a separate count without whitespace.",
       "q5": "What is reading time?",
       "a5": "About 200 words per minute, rounded up to a whole minute."
+    },
+    "resize": {
+      "q1": "Is this an image resizer?",
+      "a1": "Yes. Set exact width and height, or cap the longest side at 1920, 1280, or 800 pixels.",
+      "q2": "Can I compress a JPG?",
+      "a2": "Yes. Export JPG or WebP and drag the quality slider. The estimated file size updates as you edit.",
+      "q3": "Are photos uploaded?",
+      "a3": "No. Decoding and encoding use the canvas in this tab.",
+      "q4": "Does it keep the aspect ratio?",
+      "a4": "On by default. Uncheck it to stretch to any width and height.",
+      "q5": "Which formats can I save?",
+      "a5": "JPG, WebP, or PNG. HEIC and AVIF can be opened when the browser can decode them."
+    },
+    "crop": {
+      "q1": "Is this a crop tool?",
+      "a1": "Yes. Drop a photo, drag the frame, then download the cropped image.",
+      "q2": "Are Instagram sizes included?",
+      "a2": "1:1, 4:5, 9:16 story, and 16:9, plus a free rectangle.",
+      "q3": "Is the photo uploaded?",
+      "a3": "No. Cropping is local to this tab.",
+      "q4": "Can I paste from the clipboard?",
+      "a4": "Yes. Ctrl/⌘ V pastes an image, same as the other image tools.",
+      "q5": "What can I export?",
+      "a5": "JPG, PNG, or WebP of just the selected region."
+    },
+    "color": {
+      "q1": "Is this a color picker?",
+      "a1": "Yes. Pick a color and copy hex, RGB, or HSL. Everything stays in this tab.",
+      "q2": "Does the eyedropper work?",
+      "a2": "In Chromium browsers the EyeDropper API can sample any pixel on screen. Other browsers still have the native picker.",
+      "q3": "Can I type a hex code?",
+      "a3": "Yes. Hex, rgb(), and hsl() all parse. Invalid input is ignored.",
+      "q4": "What is the contrast number?",
+      "a4": "WCAG contrast against white and black. 4.5:1 is the usual body-text floor.",
+      "q5": "Is the color sent to a server?",
+      "a5": "No. There is no network call."
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "Reading minutes",
     "openFile": "Open file",
     "clear": "Clear"
+  },
+  "resize": {
+    "title": "Resize and compress images",
+    "back": "All tools",
+    "privacyNote": "Resize and compression stay in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop an image here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC, AVIF",
+    "filesTitle": "Image",
+    "hint": "Set width and height, or use a preset, then download.",
+    "download": "Download",
+    "exportTitle": "Output",
+    "width": "Width",
+    "height": "Height",
+    "lock": "Keep aspect ratio",
+    "original": "Original",
+    "format": "Format",
+    "quality": "Quality",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "Could not read this image in the browser.",
+    "emptyDownload": "Add an image first.",
+    "working": "Resizing…"
+  },
+  "crop": {
+    "title": "Crop image",
+    "back": "All tools",
+    "privacyNote": "Cropping stays in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop a photo here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Photo",
+    "hint": "Drag the box to crop. Corners resize it.",
+    "download": "Download crop",
+    "exportTitle": "Output",
+    "aspect": "Aspect",
+    "aspectFree": "Free",
+    "format": "Format",
+    "errorDecode": "Could not read this image in the browser.",
+    "emptyDownload": "Add a photo first.",
+    "working": "Cropping…"
+  },
+  "color": {
+    "title": "Color picker",
+    "back": "All tools",
+    "privacyNote": "Colors stay in this tab. Nothing is uploaded.",
+    "values": "Values",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "Picker",
+    "preview": "Preview",
+    "copyHex": "Copy hex",
+    "copyRgb": "Copy RGB",
+    "copied": "Copied",
+    "dropper": "Eyedropper",
+    "noDropper": "Eyedropper needs a Chromium browser.",
+    "contrast": "Contrast vs white {white}:1 · vs black {black}:1"
   }
 }

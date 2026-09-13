@@ -21,7 +21,13 @@
     "titlePassword": "密码生成器 — cv.cm",
     "descPassword": "在本机生成随机密码。可调长度和符号。不上传。",
     "titleWordCount": "字数统计 — cv.cm",
-    "descWordCount": "统计字数、字符、句子和阅读时间。浏览器完成本地处理。"
+    "descWordCount": "统计字数、字符、句子和阅读时间。浏览器完成本地处理。",
+    "titleResize": "图片缩放与压缩 — cv.cm",
+    "descResize": "按像素或最长边缩放照片，压缩 JPG / WebP。浏览器完成本地处理，不上传。",
+    "titleCrop": "在线裁剪图片 — cv.cm",
+    "descCrop": "浏览器里裁剪照片。自由、1:1、4:5、16:9、9:16。文件不上传。",
+    "titleColor": "取色器 — Hex、RGB、HSL — cv.cm",
+    "descColor": "选颜色，复制 Hex / RGB / HSL，查看对比度。支持系统吸色。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "字数统计",
       "blurb": "字数、字符、句子、阅读时间。不上传。"
+    },
+    "resize": {
+      "name": "缩放压缩",
+      "blurb": "精确像素或最长边。JPG / WebP 质量。不上传。"
+    },
+    "crop": {
+      "name": "裁剪图片",
+      "blurb": "裁剪照片。方形、4:5、16:9。不上传。"
+    },
+    "color": {
+      "name": "取色器",
+      "blurb": "Hex、RGB、HSL、对比度、吸色。不上传。"
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "“字符”含空格，另有一项不含空白。",
       "q5": "阅读时间怎么算？",
       "a5": "按约 200 词/分钟，向上取整到整分钟。"
+    },
+    "resize": {
+      "q1": "这是图片缩放工具吗？",
+      "a1": "是。可设精确宽高，或把最长边限制在 1920、1280、800 像素。",
+      "q2": "能压缩 JPG 吗？",
+      "a2": "可以。导出 JPG 或 WebP 并拖动质量滑杆，体积预估会跟着变。",
+      "q3": "照片会上传吗？",
+      "a3": "不会。解码和编码都在当前标签页的画布上。",
+      "q4": "会保持宽高比吗？",
+      "a4": "默认锁定。取消勾选即可拉成任意宽高。",
+      "q5": "能保存哪些格式？",
+      "a5": "JPG、WebP 或 PNG。浏览器能解码时也可打开 HEIC、AVIF。"
+    },
+    "crop": {
+      "q1": "这是裁剪工具吗？",
+      "a1": "是。拖入照片，拉动裁剪框，然后下载。",
+      "q2": "有 Instagram 常用尺寸吗？",
+      "a2": "有 1:1、4:5、9:16 快拍、16:9，以及自由矩形。",
+      "q3": "照片会上传吗？",
+      "a3": "不会。裁剪只在当前标签页。",
+      "q4": "能从剪贴板粘贴吗？",
+      "a4": "可以。Ctrl/⌘ V 粘贴图片，和其他图片工具一样。",
+      "q5": "能导出什么？",
+      "a5": "只导出选中区域的 JPG、PNG 或 WebP。"
+    },
+    "color": {
+      "q1": "这是取色器吗？",
+      "a1": "是。选颜色并复制 Hex、RGB 或 HSL。全部留在当前标签页。",
+      "q2": "吸色好用吗？",
+      "a2": "Chromium 可用 EyeDropper 吸取屏幕任意像素。其他浏览器仍有系统颜色选择器。",
+      "q3": "能输入色值吗？",
+      "a3": "可以。Hex、rgb()、hsl() 都能解析。无效输入会被忽略。",
+      "q4": "对比度是什么？",
+      "a4": "相对纯白和纯黑的 WCAG 对比度。正文通常需要 4.5:1。",
+      "q5": "颜色会发到服务器吗？",
+      "a5": "不会。没有任何网络请求。"
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "阅读分钟",
     "openFile": "打开文件",
     "clear": "清空"
+  },
+  "resize": {
+    "title": "图片缩放与压缩",
+    "back": "全部工具",
+    "privacyNote": "缩放和压缩只在当前标签页，不会上传。",
+    "dropTitle": "把图片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC、AVIF",
+    "filesTitle": "图片",
+    "hint": "设置宽高或用预设，然后下载。",
+    "download": "下载",
+    "exportTitle": "输出",
+    "width": "宽度",
+    "height": "高度",
+    "lock": "锁定比例",
+    "original": "原始",
+    "format": "格式",
+    "quality": "质量",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "emptyDownload": "请先添加图片。",
+    "working": "正在缩放…"
+  },
+  "crop": {
+    "title": "裁剪图片",
+    "back": "全部工具",
+    "privacyNote": "裁剪只在当前标签页，不会上传。",
+    "dropTitle": "把照片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
+    "filesTitle": "照片",
+    "hint": "拖动框来裁剪，角落可缩放。",
+    "download": "下载裁剪",
+    "exportTitle": "输出",
+    "aspect": "比例",
+    "aspectFree": "自由",
+    "format": "格式",
+    "errorDecode": "浏览器无法读取这张图片。",
+    "emptyDownload": "请先添加照片。",
+    "working": "正在裁剪…"
+  },
+  "color": {
+    "title": "取色器",
+    "back": "全部工具",
+    "privacyNote": "颜色只留在当前标签页，不会上传。",
+    "values": "数值",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "选择器",
+    "preview": "预览",
+    "copyHex": "复制 Hex",
+    "copyRgb": "复制 RGB",
+    "copied": "已复制",
+    "dropper": "吸色",
+    "noDropper": "吸色需要 Chromium 浏览器。",
+    "contrast": "相对白色 {white}:1 · 相对黑色 {black}:1"
   }
 }

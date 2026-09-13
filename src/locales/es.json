@@ -21,7 +21,13 @@
     "titlePassword": "Generador de contraseñas — cv.cm",
     "descPassword": "Genera una contraseña aleatoria en tu dispositivo. Elige longitud y símbolos. Nada se sube.",
     "titleWordCount": "Contador de palabras — cv.cm",
-    "descWordCount": "Cuenta palabras, caracteres, frases y tiempo de lectura en el navegador. Nada se sube."
+    "descWordCount": "Cuenta palabras, caracteres, frases y tiempo de lectura en el navegador. Nada se sube.",
+    "titleResize": "Redimensionar y comprimir imágenes — cv.cm",
+    "descResize": "Cambia el tamaño a píxeles exactos o al lado largo, comprime JPG o WebP en el navegador. Nada se sube.",
+    "titleCrop": "Recortar imágenes — cv.cm",
+    "descCrop": "Recorta fotos en el navegador. Libre, 1:1, 4:5, 16:9, 9:16. Nada se sube.",
+    "titleColor": "Selector de color — hex, RGB, HSL — cv.cm",
+    "descColor": "Elige un color, copia hex RGB o HSL, mira el contraste. Cuentagotas si el navegador lo permite. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -103,6 +109,18 @@
     "word-count": {
       "name": "Contador de palabras",
       "blurb": "Palabras, caracteres, frases, tiempo de lectura. Nada se sube."
+    },
+    "resize": {
+      "name": "Redimensionar / comprimir",
+      "blurb": "Píxeles o lado largo. Calidad JPG / WebP. Nada se sube."
+    },
+    "crop": {
+      "name": "Recortar",
+      "blurb": "Recorta fotos. Cuadrado, 4:5, 16:9. Nada se sube."
+    },
+    "color": {
+      "name": "Selector de color",
+      "blurb": "Hex, RGB, HSL, contraste, cuentagotas. Nada se sube."
     }
   },
   "watermark": {
@@ -480,6 +498,42 @@
       "a4": "Caracteres incluye espacios. Hay otra cifra sin espacios.",
       "q5": "¿El tiempo de lectura?",
       "a5": "Unas 200 palabras por minuto, redondeado hacia arriba."
+    },
+    "resize": {
+      "q1": "¿Es un redimensionador de imágenes?",
+      "a1": "Sí. Pon ancho y alto exactos, o limita el lado largo a 1920, 1280 u 800 px.",
+      "q2": "¿Puedo comprimir un JPG?",
+      "a2": "Sí. Exporta JPG o WebP y mueve la calidad; el tamaño estimado cambia.",
+      "q3": "¿Se suben las fotos?",
+      "a3": "No. Se procesan en el lienzo de esta pestaña.",
+      "q4": "¿Mantiene la proporción?",
+      "a4": "Bloqueada por defecto. Desmárcala para estirar a cualquier tamaño.",
+      "q5": "¿Qué formatos puedo guardar?",
+      "a5": "JPG, WebP o PNG. HEIC y AVIF se abren si el navegador los decodifica."
+    },
+    "crop": {
+      "q1": "¿Es una herramienta de recorte?",
+      "a1": "Sí. Suelta una foto, arrastra el marco y descarga.",
+      "q2": "¿Hay tamaños de Instagram?",
+      "a2": "1:1, 4:5, 9:16 story, 16:9 y un rectángulo libre.",
+      "q3": "¿Se sube la foto?",
+      "a3": "No. El recorte es local en esta pestaña.",
+      "q4": "¿Puedo pegar del portapapeles?",
+      "a4": "Sí. Ctrl/⌘ V pega una imagen, como en las demás herramientas.",
+      "q5": "¿Qué exporto?",
+      "a5": "JPG, PNG o WebP solo de la zona elegida."
+    },
+    "color": {
+      "q1": "¿Es un selector de color?",
+      "a1": "Sí. Elige un color y copia hex, RGB o HSL. Todo queda en esta pestaña.",
+      "q2": "¿Funciona el cuentagotas?",
+      "a2": "En Chromium, EyeDropper toma cualquier píxel de la pantalla. Otros navegadores siguen teniendo el selector nativo.",
+      "q3": "¿Puedo escribir un código?",
+      "a3": "Hex, rgb() y hsl() se interpretan. Lo inválido se ignora.",
+      "q4": "¿Qué es el contraste?",
+      "a4": "Ratio WCAG frente a blanco y negro. El texto de cuerpo suele pedir 4.5:1.",
+      "q5": "¿Se envía el color a un servidor?",
+      "a5": "No. No hay ninguna petición de red."
     }
   },
   "qr": {
@@ -533,5 +587,62 @@
     "readingMinutes": "Minutos de lectura",
     "openFile": "Abrir archivo",
     "clear": "Borrar"
+  },
+  "resize": {
+    "title": "Redimensionar y comprimir imágenes",
+    "back": "Todas las herramientas",
+    "privacyNote": "El cambio de tamaño y la compresión quedan en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta una imagen aquí",
+    "dropHint": "o haz clic · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC, AVIF",
+    "filesTitle": "Imagen",
+    "hint": "Pon ancho y alto, o un preajuste, y descarga.",
+    "download": "Descargar",
+    "exportTitle": "Salida",
+    "width": "Ancho",
+    "height": "Alto",
+    "lock": "Mantener proporción",
+    "original": "Original",
+    "format": "Formato",
+    "quality": "Calidad",
+    "sizeLabel": "{src} → {out}",
+    "errorDecode": "No se pudo leer esta imagen.",
+    "emptyDownload": "Añade una imagen primero.",
+    "working": "Redimensionando…"
+  },
+  "crop": {
+    "title": "Recortar imagen",
+    "back": "Todas las herramientas",
+    "privacyNote": "El recorte queda en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta una foto aquí",
+    "dropHint": "o haz clic · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Foto",
+    "hint": "Arrastra el recuadro para recortar. Las esquinas lo redimensionan.",
+    "download": "Descargar recorte",
+    "exportTitle": "Salida",
+    "aspect": "Proporción",
+    "aspectFree": "Libre",
+    "format": "Formato",
+    "errorDecode": "No se pudo leer esta imagen.",
+    "emptyDownload": "Añade una foto primero.",
+    "working": "Recortando…"
+  },
+  "color": {
+    "title": "Selector de color",
+    "back": "Todas las herramientas",
+    "privacyNote": "Los colores quedan en esta pestaña. Nada se sube.",
+    "values": "Valores",
+    "hex": "Hex",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "native": "Selector",
+    "preview": "Vista previa",
+    "copyHex": "Copiar hex",
+    "copyRgb": "Copiar RGB",
+    "copied": "Copiado",
+    "dropper": "Cuentagotas",
+    "noDropper": "El cuentagotas necesita un navegador Chromium.",
+    "contrast": "Contraste vs blanco {white}:1 · vs negro {black}:1"
   }
 }
