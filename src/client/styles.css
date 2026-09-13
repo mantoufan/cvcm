@@ -882,6 +882,7 @@ body {
   display: grid;
   gap: 1.15rem;
   max-width: 46rem;
+  min-width: 0;
 }
 .learn-hero {
   border-radius: 24px;
@@ -916,6 +917,7 @@ body {
   display: grid;
   gap: 1rem;
   counter-reset: step;
+  min-width: 0;
 }
 .learn-step {
   background: var(--white);
@@ -923,6 +925,7 @@ body {
   border-radius: 22px;
   padding: 1.05rem 1.1rem 1.15rem;
   counter-increment: step;
+  min-width: 0;
 }
 .learn-step h2 {
   margin: 0 0 0.45rem;
@@ -1025,9 +1028,14 @@ body {
   overflow: auto;
   font-size: 0.78rem;
   line-height: 1.45;
-  max-height: 18rem;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+  max-width: 100%;
 }
-.learn-snippet { margin-top: 0.7rem; }
+.learn-snippet { margin-top: 0.7rem; min-width: 0; }
 
 @media (min-width: 961px) {
   .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
