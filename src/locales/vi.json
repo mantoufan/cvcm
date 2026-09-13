@@ -67,7 +67,9 @@
     "titleLorem": "Tạo chữ lorem ipsum — cv.cm",
     "descLorem": "Tạo đoạn lorem ipsum trong trình duyệt. Đoạn, câu hoặc từ. Không tải lên.",
     "titleUnits": "Đổi đơn vị — cm sang inch, kg sang lbs, °C sang °F — cv.cm",
-    "descUnits": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong trình duyệt. cm sang inch. Không tải lên."
+    "descUnits": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong trình duyệt. cm sang inch. Không tải lên.",
+    "titleBarcode": "Tạo mã vạch — Code 128, Code 39, EAN-13 — cv.cm",
+    "descBarcode": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong trình duyệt, tải PNG. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -194,6 +196,10 @@
     "units": {
       "name": "Đổi đơn vị",
       "blurb": "cm sang inch, kg sang lbs, °C sang °F. Dài, nặng, thể tích, diện tích, tốc độ. Trên máy."
+    },
+    "barcode": {
+      "name": "Tạo mã vạch",
+      "blurb": "Code 128, Code 39, EAN-13. Tải PNG. Không tải lên."
     }
   },
   "watermark": {
@@ -837,6 +843,18 @@
       "a4": "Thể tích dùng cup, fl oz và gallon Mỹ. Chiều dài và khối lượng dùng yard/pound quốc tế.",
       "q5": "Có tải lên không?",
       "a5": "Không. Phép tính chạy trong tab này, đóng là mất."
+    },
+    "barcode": {
+      "q1": "Tạo mã vạch ở đây được không?",
+      "a1": "Được. Tab này vẽ Code 128, Code 39 và EAN-13, rồi tải PNG.",
+      "q2": "Code 128 khác EAN-13 thế nào?",
+      "a2": "Code 128 chứa chữ và số cho nhãn, vận chuyển. EAN-13 là mã hàng 13 số.",
+      "q3": "Mã vạch có bị tải lên không?",
+      "a3": "Không. Mã hóa và vẽ ở tab này, đóng là mất.",
+      "q4": "Điện thoại quét được không?",
+      "a4": "Camera và máy quét đọc được nếu in đủ lớn và tương phản.",
+      "q5": "Khi nào dùng QR?",
+      "a5": "URL và chữ dài hãy dùng công cụ QR. Mã vạch cho ID ngắn và mã hàng."
     }
   },
   "qr": {
@@ -1408,5 +1426,26 @@
     "copied": "Đã sao chép",
     "result": "Kết quả",
     "invalid": "Hãy nhập một số."
+  },
+  "barcode": {
+    "title": "Tạo mã vạch",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Mã vạch được vẽ trong tab này. Không tải lên.",
+    "input": "Chữ hoặc số",
+    "placeholder": "CVCM",
+    "preview": "Xem trước",
+    "options": "Tùy chọn",
+    "kind": "Loại mã",
+    "kind128": "Code 128",
+    "kind39": "Code 39",
+    "kindEan": "EAN-13",
+    "fg": "Vạch",
+    "bg": "Nền",
+    "download": "Tải PNG",
+    "error": {
+      "code128": "Dùng ASCII tối đa 80 ký tự.",
+      "code39": "Code 39 chỉ A–Z, 0–9, khoảng trắng và -.$/+%.",
+      "ean13": "EAN-13 cần 12 hoặc 13 chữ số. 12 số sẽ thêm số kiểm."
+    }
   }
 }

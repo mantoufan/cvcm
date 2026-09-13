@@ -3,6 +3,7 @@ import type { ToolId, TutorialId } from "./path";
 export const TOOL_COVER: Record<ToolId, string> = {
   clip: "/covers/clip-sweet.jpg?v=2",
   qr: "/covers/qr-sweet.jpg?v=1",
+  barcode: "/covers/barcode-sweet.jpg?v=1",
   watermark: "/covers/watermark-sweet.jpg?v=1",
   collage: "/covers/collage-sweet.jpg?v=1",
   resize: "/covers/resize-sweet.jpg?v=1",

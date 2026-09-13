@@ -67,7 +67,9 @@
     "titleLorem": "Lorem ipsum generator — cv.cm",
     "descLorem": "Generate lorem ipsum placeholder text in the browser. Paragraphs, sentences, or words. Nothing is uploaded.",
     "titleUnits": "Unit converter — cm to inches, kg to lbs, °C to °F — cv.cm",
-    "descUnits": "Convert length, weight, temperature, volume, area, and speed in the browser. cm to inches, kg to lbs. Nothing is uploaded."
+    "descUnits": "Convert length, weight, temperature, volume, area, and speed in the browser. cm to inches, kg to lbs. Nothing is uploaded.",
+    "titleBarcode": "Barcode generator — Code 128, Code 39, EAN-13 — cv.cm",
+    "descBarcode": "Create a Code 128, Code 39, or EAN-13 barcode in the browser. Download a PNG. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -500,6 +502,10 @@
     "units": {
       "name": "Unit converter",
       "blurb": "cm to inches, kg to lbs, °C to °F. Length, mass, volume, area, speed. On-device."
+    },
+    "barcode": {
+      "name": "Barcode generator",
+      "blurb": "Code 128, Code 39, EAN-13. Download PNG. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1143,6 +1149,18 @@
       "a4": "Volume uses US customary cups, fluid ounces, and gallons. Length and mass use the international yard and pound.",
       "q5": "Is anything uploaded?",
       "a5": "No. The arithmetic runs in this tab. Closing it discards the numbers."
+    },
+    "barcode": {
+      "q1": "Can I generate a barcode here?",
+      "a1": "Yes. Code 128, Code 39, and EAN-13 draw in this tab. Download a PNG when it looks right.",
+      "q2": "What is Code 128 versus EAN-13?",
+      "a2": "Code 128 holds letters and digits for labels and shipping. EAN-13 is the 13-digit retail product barcode.",
+      "q3": "Is the barcode uploaded?",
+      "a3": "No. Encoding and drawing stay in this tab. Closing it discards the image.",
+      "q4": "Will a phone scan it?",
+      "a4": "Phone cameras and USB scanners read these formats when printed with enough size and contrast.",
+      "q5": "When should I use a QR code instead?",
+      "a5": "Use the QR tool for URLs and longer text. Barcodes are for short IDs and product numbers."
     }
   },
   "qr": {
@@ -1408,5 +1426,26 @@
     "copied": "Copied",
     "result": "Result",
     "invalid": "Enter a number."
+  },
+  "barcode": {
+    "title": "Barcode generator",
+    "back": "All tools",
+    "privacyNote": "The barcode is drawn in this tab. Nothing is uploaded.",
+    "input": "Text or digits",
+    "placeholder": "CVCM",
+    "preview": "Preview",
+    "options": "Options",
+    "kind": "Symbology",
+    "kind128": "Code 128",
+    "kind39": "Code 39",
+    "kindEan": "EAN-13",
+    "fg": "Bars",
+    "bg": "Background",
+    "download": "Download PNG",
+    "error": {
+      "code128": "Use ASCII text up to 80 characters.",
+      "code39": "Code 39 allows A–Z, 0–9, space, and -.$/+%.",
+      "ean13": "EAN-13 needs 12 or 13 digits. A 12-digit code gets a check digit."
+    }
   }
 }

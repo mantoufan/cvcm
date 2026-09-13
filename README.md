@@ -14,6 +14,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Audio to WAV** / 音频转 WAV. [Open](https://cv.cm/en/audio/)
 - **Text & data** / 文本与数据 — JSON, CSV, Base64, Markdown. [Open](https://cv.cm/en/data/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
+- **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
 - **Word counter** / 字数统计. [Open](https://cv.cm/en/word-count/)
 - **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)

@@ -67,7 +67,9 @@
     "titleLorem": "Generador de lorem ipsum — cv.cm",
     "descLorem": "Genera texto de relleno lorem ipsum en el navegador. Párrafos, frases o palabras. Nada se sube.",
     "titleUnits": "Conversor de unidades — cm a pulgadas, kg a lb, °C a °F — cv.cm",
-    "descUnits": "Convierte longitud, peso, temperatura, volumen, área y velocidad en el navegador. cm a pulgadas, kg a lb. Nada se sube."
+    "descUnits": "Convierte longitud, peso, temperatura, volumen, área y velocidad en el navegador. cm a pulgadas, kg a lb. Nada se sube.",
+    "titleBarcode": "Generador de códigos de barras — Code 128, Code 39, EAN-13 — cv.cm",
+    "descBarcode": "Crea un Code 128, Code 39 o EAN-13 en el navegador y descarga un PNG. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -194,6 +196,10 @@
     "units": {
       "name": "Conversor de unidades",
       "blurb": "cm a pulgadas, kg a lb, °C a °F. Longitud, masa, volumen, área, velocidad. En el dispositivo."
+    },
+    "barcode": {
+      "name": "Código de barras",
+      "blurb": "Code 128, Code 39, EAN-13. Descarga PNG. Nada se sube."
     }
   },
   "watermark": {
@@ -837,6 +843,18 @@
       "a4": "El volumen usa tazas, onzas líquidas y galones US. Longitud y masa usan yarda y libra internacionales.",
       "q5": "¿Se sube algo?",
       "a5": "No. La cuenta corre en esta pestaña. Cerrarla descarta los números."
+    },
+    "barcode": {
+      "q1": "¿Puedo generar un código de barras aquí?",
+      "a1": "Sí. Code 128, Code 39 y EAN-13 se dibujan en esta pestaña. Descarga un PNG.",
+      "q2": "¿En qué se diferencia Code 128 de EAN-13?",
+      "a2": "Code 128 admite letras y dígitos para etiquetas. EAN-13 es el código de producto de 13 dígitos.",
+      "q3": "¿Se sube el código?",
+      "a3": "No. La codificación y el dibujo quedan en esta pestaña.",
+      "q4": "¿Lo lee el teléfono?",
+      "a4": "Cámaras y lectores USB leen estos formatos si se imprimen con tamaño y contraste suficientes.",
+      "q5": "¿Cuándo usar un QR?",
+      "a5": "Usa la herramienta QR para URLs y textos largos. El código de barras es para IDs cortos y productos."
     }
   },
   "qr": {
@@ -1408,5 +1426,26 @@
     "copied": "Copiado",
     "result": "Resultado",
     "invalid": "Escribe un número."
+  },
+  "barcode": {
+    "title": "Generador de códigos de barras",
+    "back": "Todas las herramientas",
+    "privacyNote": "El código se dibuja en esta pestaña. Nada se sube.",
+    "input": "Texto o dígitos",
+    "placeholder": "CVCM",
+    "preview": "Vista previa",
+    "options": "Opciones",
+    "kind": "Simbología",
+    "kind128": "Code 128",
+    "kind39": "Code 39",
+    "kindEan": "EAN-13",
+    "fg": "Barras",
+    "bg": "Fondo",
+    "download": "Descargar PNG",
+    "error": {
+      "code128": "Usa texto ASCII de hasta 80 caracteres.",
+      "code39": "Code 39 admite A–Z, 0–9, espacio y -.$/+%.",
+      "ean13": "EAN-13 necesita 12 o 13 dígitos. A 12 se les añade el dígito de control."
+    }
   }
 }

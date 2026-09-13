@@ -67,7 +67,9 @@
     "titleLorem": "Pembuat lorem ipsum — cv.cm",
     "descLorem": "Buat teks placeholder lorem ipsum di browser. Paragraf, kalimat, atau kata. Tidak diunggah.",
     "titleUnits": "Pengonversi satuan — cm ke inci, kg ke lbs, °C ke °F — cv.cm",
-    "descUnits": "Ubah panjang, berat, suhu, volume, luas, dan kecepatan di browser. cm ke inci, kg ke pon. Tidak diunggah."
+    "descUnits": "Ubah panjang, berat, suhu, volume, luas, dan kecepatan di browser. cm ke inci, kg ke pon. Tidak diunggah.",
+    "titleBarcode": "Pembuat barcode — Code 128, Code 39, EAN-13 — cv.cm",
+    "descBarcode": "Buat barcode Code 128, Code 39, atau EAN-13 di browser, unduh PNG. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -194,6 +196,10 @@
     "units": {
       "name": "Konversi satuan",
       "blurb": "cm ke inci, kg ke lbs, °C ke °F. Panjang, massa, volume, luas, kecepatan. Di perangkat."
+    },
+    "barcode": {
+      "name": "Pembuat barcode",
+      "blurb": "Code 128, Code 39, EAN-13. Unduh PNG. Tanpa unggah."
     }
   },
   "watermark": {
@@ -837,6 +843,18 @@
       "a4": "Volume memakai cup, fl oz, dan galon AS. Panjang dan massa memakai yard/pon internasional.",
       "q5": "Apakah diunggah?",
       "a5": "Tidak. Hitungannya di tab ini. Menutup tab membuangnya."
+    },
+    "barcode": {
+      "q1": "Bisa buat barcode di sini?",
+      "a1": "Bisa. Code 128, Code 39, dan EAN-13 digambar di tab ini, lalu unduh PNG.",
+      "q2": "Apa beda Code 128 dan EAN-13?",
+      "a2": "Code 128 menampung huruf dan angka untuk label. EAN-13 adalah kode produk 13 digit.",
+      "q3": "Apakah diunggah?",
+      "a3": "Tidak. Encoding dan gambar tetap di tab ini.",
+      "q4": "Bisa dipindai HP?",
+      "a4": "Kamera dan pemindai USB membacanya jika dicetak cukup besar dan kontras.",
+      "q5": "Kapan pakai QR?",
+      "a5": "URL dan teks panjang pakai alat QR. Barcode untuk ID pendek dan nomor produk."
     }
   },
   "qr": {
@@ -1408,5 +1426,26 @@
     "copied": "Tersalin",
     "result": "Hasil",
     "invalid": "Masukkan angka."
+  },
+  "barcode": {
+    "title": "Pembuat barcode",
+    "back": "Semua alat",
+    "privacyNote": "Barcode digambar di tab ini. Tidak diunggah.",
+    "input": "Teks atau angka",
+    "placeholder": "CVCM",
+    "preview": "Pratinjau",
+    "options": "Opsi",
+    "kind": "Simbologi",
+    "kind128": "Code 128",
+    "kind39": "Code 39",
+    "kindEan": "EAN-13",
+    "fg": "Batang",
+    "bg": "Latar",
+    "download": "Unduh PNG",
+    "error": {
+      "code128": "Gunakan ASCII hingga 80 karakter.",
+      "code39": "Code 39 hanya A–Z, 0–9, spasi, dan -.$/+%.",
+      "ean13": "EAN-13 butuh 12 atau 13 digit. 12 digit mendapat check digit."
+    }
   }
 }

@@ -656,6 +656,13 @@ input[type="color"] {
   image-rendering: pixelated;
 }
 .qr-stage { display: grid; justify-items: start; }
+.barcode-canvas {
+  width: min(520px, 100%);
+  height: auto;
+  border-radius: 16px;
+  background: #fff7fb;
+}
+.barcode-stage { display: grid; justify-items: start; }
 .password-out {
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;

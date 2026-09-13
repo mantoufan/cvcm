@@ -44,6 +44,7 @@ export type SeoInput = {
 const TITLE: Record<ToolId, string> = {
   clip: "meta.titleClip",
   qr: "meta.titleQr",
+  barcode: "meta.titleBarcode",
   watermark: "meta.titleWatermark",
   collage: "meta.titleCollage",
   resize: "meta.titleResize",
@@ -68,6 +69,7 @@ const TITLE: Record<ToolId, string> = {
 const DESC: Record<ToolId, string> = {
   clip: "meta.descClip",
   qr: "meta.descQr",
+  barcode: "meta.descBarcode",
   watermark: "meta.descWatermark",
   collage: "meta.descCollage",
   resize: "meta.descResize",

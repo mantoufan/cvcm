@@ -25,6 +25,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/audio/` — audio to WAV
 - `src/client/data/` — JSON / CSV / Base64 / Markdown
 - `src/client/qr/` — QR code generator
+- `src/client/barcode/` — barcode generator (Code 128, Code 39, EAN-13)
 - `src/client/password/` — password generator
 - `src/client/word-count/` — word / character counter
 - `src/client/color/` — color picker

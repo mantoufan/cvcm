@@ -11,6 +11,7 @@ import { mountTimezone, unmountTimezone } from "./timezone/ui";
 import { mountUnits, unmountUnits } from "./units/ui";
 import { mountPassword, unmountPassword } from "./password/ui";
 import { mountQr, unmountQr } from "./qr/ui";
+import { mountBarcode, unmountBarcode } from "./barcode/ui";
 import { mountResize, unmountResize } from "./resize/ui";
 import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { clear, h } from "./dom";
@@ -130,6 +131,7 @@ function unmountTools(): void {
   unmountAudio();
   unmountData();
   unmountQr();
+  unmountBarcode();
   unmountPassword();
   unmountWordCount();
   unmountNames();
@@ -222,6 +224,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "audio") await mountAudio(main);
   else if (tool === "data") mountData(main);
   else if (tool === "qr") mountQr(main);
+  else if (tool === "barcode") mountBarcode(main);
   else if (tool === "password") mountPassword(main);
   else if (tool === "word-count") mountWordCount(main);
   else if (tool === "names") mountNames(main);

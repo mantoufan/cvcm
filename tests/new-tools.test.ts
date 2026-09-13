@@ -6,6 +6,7 @@ import { generateName, generateNames } from "../src/shared/names";
 import { generateLorem, loremWords } from "../src/shared/lorem";
 import { convertWallTime } from "../src/shared/timezone";
 import { convertAmount, convertUnits } from "../src/shared/units";
+import { ean13Checksum, encodeBarcode } from "../src/shared/barcode";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -88,6 +89,29 @@ describe("lorem", () => {
   });
 });
 
+describe("barcode", () => {
+  it("encodes Code 128, Code 39, and EAN-13", () => {
+    const c128 = encodeBarcode("code128", "ABC");
+    expect(c128.text).toBe("ABC");
+    expect(c128.modules.filter(Boolean).length).toBeGreaterThan(20);
+
+    const digits = encodeBarcode("code128", "123456");
+    expect(digits.modules.length).toBeGreaterThan(40);
+
+    const c39 = encodeBarcode("code39", "CVCM");
+    expect(c39.text).toBe("CVCM");
+    expect(() => encodeBarcode("code39", "ab!")).toThrow();
+
+    expect(ean13Checksum("590123412345")).toBe(7);
+    const ean = encodeBarcode("ean13", "590123412345");
+    expect(ean.text).toBe("5901234123457");
+    const core = ean.modules.slice(11, 11 + 95);
+    expect(core).toHaveLength(95);
+    expect(core.slice(0, 3)).toEqual([true, false, true]);
+    expect(() => encodeBarcode("ean13", "5901234123450")).toThrow();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -109,7 +133,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/timezone/")).toEqual({ kind: "app", locale: "en", tool: "timezone" });
     expect(parseAppPath("/zh-CN/lorem/")).toEqual({ kind: "app", locale: "zh-CN", tool: "lorem" });
     expect(parseAppPath("/en/units/")).toEqual({ kind: "app", locale: "en", tool: "units" });
+    expect(parseAppPath("/en/barcode/")).toEqual({ kind: "app", locale: "en", tool: "barcode" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("en", "barcode")).toBe("/en/barcode/");
     expect(appHref("en", "timezone")).toBe("/en/timezone/");
     expect(appHref("zh-CN", "units")).toBe("/zh-cn/units/");
   });
