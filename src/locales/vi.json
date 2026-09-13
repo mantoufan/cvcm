@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — clipboard đám mây và công cụ trình duyệt",
+    "title": "cv.cm — clipboard, ảnh, PDF và chữ trong trình duyệt",
     "titleClip": "Clipboard trực tuyến — chia sẻ chữ không cần tài khoản — cv.cm",
     "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
     "titleWatermark": "Thêm watermark vào ảnh — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
-    "description": "Clipboard đám mây và công cụ trình duyệt. Ghi chú hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không tải file lên.",
+    "description": "Công cụ trên máy: clipboard, watermark, thu nhỏ, cắt, HEIC/JPG, PDF sang ảnh, gộp PDF, QR, mật khẩu. Ảnh và PDF không tải lên.",
     "titleConvert": "HEIC sang JPG, WebP sang PNG, JPG sang PNG — cv.cm",
     "descConvert": "Đổi HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO trong trình duyệt. Có thể thu nhỏ. Không tải lên.",
     "titleImagePdf": "JPG sang PDF, PNG sang PDF — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "Cắt ảnh online — cv.cm",
     "descCrop": "Cắt ảnh trong trình duyệt. Tự do, 1:1, 4:5, 16:9, 9:16. Không tải lên.",
     "titleColor": "Chọn màu — Hex, RGB, HSL — cv.cm",
-    "descColor": "Chọn màu, chép Hex RGB HSL, xem độ tương phản. Ống nhỏ giọt nếu trình duyệt cho phép. Không tải lên."
+    "descColor": "Chọn màu, chép Hex RGB HSL, xem độ tương phản. Ống nhỏ giọt nếu trình duyệt cho phép. Không tải lên.",
+    "titlePdfJpg": "PDF sang JPG — cv.cm",
+    "descPdfJpg": "Từng trang PDF thành JPG, PNG hoặc WebP. Một trang hoặc ZIP. Không tải lên.",
+    "titleMergePdf": "Gộp PDF — cv.cm",
+    "descMergePdf": "Gộp nhiều PDF thành một trong trình duyệt. Đổi thứ tự. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Công cụ",
     "privacy": "Trên máy",
-    "share": "Clipboard",
+    "share": "Chia sẻ",
     "image": "Ảnh",
     "convert": "Đổi định dạng",
     "text": "Chữ"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "Bộ công cụ local",
-    "title": "Bộ công cụ chạy trên trình duyệt",
-    "lead": "Chia sẻ ghi chú ngắn hạn, hoặc dùng công cụ ảnh trên trình duyệt. Không cần đăng ký.",
-    "cta": "Mở đóng dấu ảnh",
+    "kicker": "Bộ công cụ trên máy",
+    "title": "Clipboard, ảnh, PDF và chữ — trong trình duyệt",
+    "lead": "Ghi chú hết sau 10 lần xem hoặc một ngày. Thu nhỏ, cắt, đổi định dạng, xử lý PDF ngay tab này. Không đăng ký.",
+    "cta": "Xem công cụ",
     "points": {
       "local": {
         "title": "Trên máy",
-        "body": "Xử lý bằng canvas của trình duyệt. File không rời tab hiện tại."
+        "body": "Ảnh, PDF, QR và chữ chạy trong tab này. Các tệp đó không tải lên."
       },
       "nodb": {
         "title": "Không tài khoản",
-        "body": "Ghi chú clipboard hết sau 10 lần xem hoặc một ngày. Công cụ ảnh không rời tab này."
+        "body": "Clipboard xóa sau 10 lần xem hoặc một ngày. Công cụ khác ở lại thiết bị."
       },
       "i18n": {
         "title": "Ngôn ngữ",
@@ -121,6 +125,14 @@
     "color": {
       "name": "Chọn màu",
       "blurb": "Hex, RGB, HSL, tương phản, ống nhỏ giọt. Không tải lên."
+    },
+    "pdf-jpg": {
+      "name": "PDF sang JPG",
+      "blurb": "Trang PDF thành JPG / PNG / WebP. Nhiều trang ZIP. Không tải lên."
+    },
+    "merge-pdf": {
+      "name": "Gộp PDF",
+      "blurb": "Gộp PDF trong tab này. Sắp xếp rồi tải một tệp."
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "Công cụ ảnh chạy trong tab này. Ghi chú clipboard được lưu ngắn trên cv.cm rồi xóa."
+    "privacy": "Công cụ ảnh, PDF và chữ ở tab này. Ghi chú clipboard lưu ngắn trên cv.cm rồi xóa."
   },
   "convert": {
     "title": "Đổi HEIC, WebP, JPG, PNG",
@@ -534,6 +546,30 @@
       "a4": "Tỉ lệ WCAG với trắng và đen. Chữ thường cần 4.5:1.",
       "q5": "Gửi lên máy chủ?",
       "a5": "Không. Không có mạng."
+    },
+    "pdf-jpg": {
+      "q1": "Đổi PDF sang JPG được không?",
+      "a1": "Được. Mỗi trang vẽ trong tab này, lưu JPG, PNG hoặc WebP.",
+      "q2": "Xuất hết các trang?",
+      "a2": "Được. Một trang là ảnh, nhiều trang là ZIP.",
+      "q3": "PDF có tải lên không?",
+      "a3": "Không. pdf.js vẽ local. Đóng tab là bỏ.",
+      "q4": "2× để làm gì?",
+      "a4": "Bitmap lớn hơn, nét hơn nhưng nặng. File nhỏ dùng 1×.",
+      "q5": "PDF scan được không?",
+      "a5": "Được. Trang ảnh xuất thành hình, trang chữ cũng raster."
+    },
+    "merge-pdf": {
+      "q1": "Gộp PDF được không?",
+      "a1": "Được. Thêm hai tệp trở lên, đổi thứ tự, tải một file.",
+      "q2": "Có tải lên không?",
+      "a2": "Không. pdf-lib gộp trong tab này.",
+      "q3": "Đổi thứ tự?",
+      "a3": "Được. Dùng mũi tên trước khi tải.",
+      "q4": "PDF có mật khẩu?",
+      "a4": "PDF mã hóa thường không gộp được. Hãy mở khóa trước.",
+      "q5": "Giữ bookmark?",
+      "a5": "Trang được chép. Bookmark và form có thể mất."
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "Ống nhỏ giọt",
     "noDropper": "Ống nhỏ giọt cần trình duyệt Chromium.",
     "contrast": "Tương phản trắng {white}:1 · đen {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF sang JPG",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Trang vẽ trong tab này. Không tải lên.",
+    "dropTitle": "Thả PDF vào đây",
+    "dropHint": "hoặc bấm để chọn",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Chọn trang và định dạng, tải một ảnh hoặc tất cả ZIP.",
+    "downloadPage": "Tải trang này",
+    "downloadAll": "Tải mọi trang",
+    "exportTitle": "Đầu ra",
+    "page": "Trang",
+    "scale": "Độ phân giải",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "meta": "{name} · {pages} trang",
+    "errorDecode": "Không đọc được PDF này.",
+    "emptyDownload": "Hãy thêm PDF trước.",
+    "working": "Đang xử lý…"
+  },
+  "mergePdf": {
+    "title": "Gộp file PDF",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Gộp trong tab này. Không tải lên.",
+    "dropTitle": "Thả PDF vào đây",
+    "dropHint": "hoặc chọn nhiều tệp",
+    "dropTypes": "PDF",
+    "filesTitle": "Tệp",
+    "filesEmpty": "Chưa có PDF.",
+    "hint": "Sắp thứ tự rồi tải một PDF đã gộp.",
+    "download": "Tải PDF đã gộp",
+    "exportTitle": "Gộp",
+    "note": "Nối theo thứ tự danh sách. PDF mã hóa có thể lỗi.",
+    "pages": "{n} trang",
+    "up": "Lên",
+    "down": "Xuống",
+    "remove": "Xóa",
+    "errorDecode": "Không đọc được PDF này.",
+    "emptyDownload": "Thêm ít nhất một PDF.",
+    "working": "Đang gộp…"
   }
 }

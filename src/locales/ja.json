@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — クラウドクリップボードとブラウザツール",
+    "title": "cv.cm — ブラウザのクリップボード・画像・PDF・テキストツール",
     "titleClip": "オンラインクリップボード — 登録なしでテキスト共有 — cv.cm",
     "descClip": "Pastebin 風のクリップボード。リンクでテキスト・画像・ファイルを共有。アカウント不要。10 回閲覧または 24 時間で削除。",
     "titleWatermark": "写真に透かしを入れる — cv.cm",
     "titleCollage": "フォトコラージュメーカー — cv.cm",
-    "description": "クラウドクリップボードとブラウザツール。メモは 10 回閲覧または 1 日で削除。画像ツールはアップロードしません。",
+    "description": "端末内ツール。クリップボード、透かし、リサイズ、クロップ、HEIC/JPG、PDF を画像に、PDF 結合、QR、パスワードなど。画像と PDF はアップロードしません。",
     "titleConvert": "HEIC を JPG に、WebP を PNG に、JPG を PNG に — cv.cm",
     "descConvert": "HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO をブラウザで変換。リサイズ可。アップロードなし。",
     "titleImagePdf": "JPG を PDF に、PNG を PDF に — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "画像をクロップ — cv.cm",
     "descCrop": "ブラウザで写真をトリミング。自由、1:1、4:5、16:9、9:16。アップロードなし。",
     "titleColor": "カラーピッカー — Hex / RGB / HSL — cv.cm",
-    "descColor": "色を選んで Hex・RGB・HSL をコピー。コントラスト表示。スポイト対応。アップロードなし。"
+    "descColor": "色を選んで Hex・RGB・HSL をコピー。コントラスト表示。スポイト対応。アップロードなし。",
+    "titlePdfJpg": "PDF を JPG に変換 — cv.cm",
+    "descPdfJpg": "PDF の各ページを JPG / PNG / WebP に。1 ページまたは ZIP。アップロードなし。",
+    "titleMergePdf": "PDF を結合 — cv.cm",
+    "descMergePdf": "複数の PDF をブラウザで 1 つに。順番を入れ替え可。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "ツール",
     "privacy": "端末内処理",
-    "share": "クリップボード",
+    "share": "共有",
     "image": "画像",
     "convert": "変換",
     "text": "テキスト"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "ローカルツールキット",
-    "title": "ブラウザで動くツール集",
-    "lead": "短いメモを共有するか、ブラウザで画像ツールを使えます。登録不要。",
-    "cta": "画像ウォーターマークを開く",
+    "kicker": "端末内ツールキット",
+    "title": "クリップボード、画像、PDF、テキストをブラウザで",
+    "lead": "メモは 10 回閲覧または 1 日で削除。リサイズ、クロップ、変換、PDF もこのタブ。登録不要。",
+    "cta": "ツールを見る",
     "points": {
       "local": {
         "title": "端末内",
-        "body": "処理はブラウザの canvas で行います。ファイルはこのタブから出ません。"
+        "body": "画像、PDF、QR、テキストツールはこのタブで動きます。それらのファイルはアップロードされません。"
       },
       "nodb": {
         "title": "登録不要",
-        "body": "クリップボードのメモは 10 回閲覧または 1 日で消えます。画像ツールはこのタブ内です。"
+        "body": "クリップボードのメモは 10 回閲覧または 1 日で消えます。他のツールは端末内です。"
       },
       "i18n": {
         "title": "多言語",
@@ -121,6 +125,14 @@
     "color": {
       "name": "カラーピッカー",
       "blurb": "Hex、RGB、HSL、コントラスト、スポイト。アップロードなし。"
+    },
+    "pdf-jpg": {
+      "name": "PDF を JPG に",
+      "blurb": "PDF ページを JPG / PNG / WebP に。複数ページは ZIP。アップロードなし。"
+    },
+    "merge-pdf": {
+      "name": "PDF 結合",
+      "blurb": "PDF をこのタブで結合。並べ替えて 1 ファイルに。"
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "画像ツールはこのタブ内。クリップボードのメモは cv.cm に短時間保存され、その後削除されます。"
+    "privacy": "画像・PDF・テキストツールはこのタブ内。クリップボードのメモは cv.cm に短時間保存され、削除されます。"
   },
   "convert": {
     "title": "HEIC、WebP、JPG、PNG を変換",
@@ -534,6 +546,30 @@
       "a4": "白と黒に対する WCAG 比。本文はおおむね 4.5:1 が目安です。",
       "q5": "サーバーに送られますか？",
       "a5": "送られません。通信はありません。"
+    },
+    "pdf-jpg": {
+      "q1": "PDF を JPG にできますか？",
+      "a1": "はい。各ページをこのタブで描画し、JPG / PNG / WebP で保存します。",
+      "q2": "全ページを書き出せますか？",
+      "a2": "はい。1 ページは画像、複数は ZIP です。",
+      "q3": "PDF はアップロードされますか？",
+      "a3": "されません。pdf.js でローカル描画。タブを閉じると破棄。",
+      "q4": "2× 解像度は？",
+      "a4": "より大きいビットマップで鮮明、ファイルは重い。小さくするなら 1×。",
+      "q5": "スキャン PDF は？",
+      "a5": "できます。画像ページはそのまま絵に、文字ページもラスタライズします。"
+    },
+    "merge-pdf": {
+      "q1": "PDF を結合できますか？",
+      "a1": "はい。2 つ以上を追加し、順を変えて 1 ファイルにします。",
+      "q2": "アップロードされますか？",
+      "a2": "されません。pdf-lib でこのタブ内結合。",
+      "q3": "順番は変えられますか？",
+      "a3": "はい。保存前に矢印で入れ替えます。",
+      "q4": "パスワード付きは？",
+      "a4": "暗号化 PDF は結合できないことが多いです。先に解除してください。",
+      "q5": "しおりは残りますか？",
+      "a5": "ページはコピーされます。しおりやフォームは落ちることがあります。"
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "スポイト",
     "noDropper": "スポイトは Chromium が必要です。",
     "contrast": "白との比 {white}:1 · 黒との比 {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF を JPG に",
+    "back": "すべてのツール",
+    "privacyNote": "ページはこのタブで描画。アップロードなし。",
+    "dropTitle": "PDF をドロップ",
+    "dropHint": "またはクリックして選択",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "ページと形式を選び、1 枚または全ページの ZIP を保存。",
+    "downloadPage": "このページを保存",
+    "downloadAll": "全ページを保存",
+    "exportTitle": "出力",
+    "page": "ページ",
+    "scale": "解像度",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "形式",
+    "quality": "品質",
+    "meta": "{name} · {pages} ページ",
+    "errorDecode": "この PDF を読み取れません。",
+    "emptyDownload": "先に PDF を追加してください。",
+    "working": "処理中…"
+  },
+  "mergePdf": {
+    "title": "PDF を結合",
+    "back": "すべてのツール",
+    "privacyNote": "結合はこのタブ内。アップロードなし。",
+    "dropTitle": "PDF をドロップ",
+    "dropHint": "または複数ファイルを選択",
+    "dropTypes": "PDF",
+    "filesTitle": "ファイル",
+    "filesEmpty": "まだ PDF がありません。",
+    "hint": "順番を決めて、結合した 1 つの PDF を保存。",
+    "download": "結合 PDF を保存",
+    "exportTitle": "結合",
+    "note": "リスト順に連結します。暗号化 PDF は失敗することがあります。",
+    "pages": "{n} ページ",
+    "up": "上へ",
+    "down": "下へ",
+    "remove": "削除",
+    "errorDecode": "この PDF を読み取れません。",
+    "emptyDownload": "PDF を 1 つ以上追加してください。",
+    "working": "結合中…"
   }
 }

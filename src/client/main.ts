@@ -13,6 +13,8 @@ import { clear, h } from "./dom";
 import { faqSection, syncFaqJsonLd } from "./faq";
 import { mountHome } from "./home";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
+import { mountMergePdf, unmountMergePdf } from "./merge-pdf/ui";
+import { mountPdfJpg, unmountPdfJpg } from "./pdf-jpg/ui";
 import { COVER } from "./covers";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
@@ -102,6 +104,8 @@ function unmountTools(): void {
   unmountColor();
   unmountResize();
   unmountCrop();
+  unmountPdfJpg();
+  unmountMergePdf();
 }
 
 function render(): void {
@@ -174,6 +178,8 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
+  else if (tool === "pdf-jpg") await mountPdfJpg(main);
+  else if (tool === "merge-pdf") await mountMergePdf(main);
   else mountHome(main, loc);
   if (tool && !(tool === "clip" && clipId)) main.append(faqSection(loc, tool));
 }

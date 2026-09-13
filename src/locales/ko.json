@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — 클라우드 클립보드와 브라우저 도구",
+    "title": "cv.cm — 브라우저 클립보드, 이미지, PDF, 텍스트 도구",
     "titleClip": "온라인 클립보드 — 가입 없이 텍스트 공유 — cv.cm",
     "descClip": "Pastebin 스타일 클립보드. 링크로 텍스트·이미지·파일 공유. 계정 없음. 10번 보거나 24시간 후 삭제.",
     "titleWatermark": "사진에 워터마크 넣기 — cv.cm",
     "titleCollage": "사진 콜라주 만들기 — cv.cm",
-    "description": "클라우드 클립보드와 브라우저 도구. 메모는 10번 보거나 하루 뒤 삭제. 이미지 도구는 업로드하지 않습니다.",
+    "description": "기기 안 도구. 클립보드, 워터마크, 크기 조절, 자르기, HEIC/JPG, PDF를 이미지로, PDF 합치기, QR, 비밀번호 등. 이미지와 PDF는 업로드하지 않습니다.",
     "titleConvert": "HEIC를 JPG로, WebP를 PNG로, JPG를 PNG로 — cv.cm",
     "descConvert": "HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO를 브라우저에서 변환. 크기 조절 가능. 업로드 없음.",
     "titleImagePdf": "JPG를 PDF로, PNG를 PDF로 — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "이미지 자르기 — cv.cm",
     "descCrop": "브라우저에서 사진 자르기. 자유, 1:1, 4:5, 16:9, 9:16. 업로드 없음.",
     "titleColor": "색 선택기 — Hex, RGB, HSL — cv.cm",
-    "descColor": "색을 고르고 Hex·RGB·HSL 복사, 대비율 확인. 스포이드 지원. 업로드 없음."
+    "descColor": "색을 고르고 Hex·RGB·HSL 복사, 대비율 확인. 스포이드 지원. 업로드 없음.",
+    "titlePdfJpg": "PDF를 JPG로 — cv.cm",
+    "descPdfJpg": "PDF 각 페이지를 JPG, PNG, WebP로. 한 장 또는 ZIP. 업로드 없음.",
+    "titleMergePdf": "PDF 합치기 — cv.cm",
+    "descMergePdf": "여러 PDF를 브라우저에서 하나로. 순서 변경 가능. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "도구",
     "privacy": "기기 내 처리",
-    "share": "클립보드",
+    "share": "공유",
     "image": "이미지",
     "convert": "형식 변환",
     "text": "텍스트"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "로컬 도구모음",
-    "title": "브라우저에서 실행되는 도구 모음",
-    "lead": "짧은 메모를 공유하거나 브라우저에서 이미지 도구를 쓰세요. 가입이 없습니다.",
-    "cta": "이미지 워터마크 열기",
+    "kicker": "기기 안 도구 모음",
+    "title": "클립보드, 이미지, PDF, 텍스트를 브라우저에서",
+    "lead": "메모는 10번 보거나 하루면 삭제. 크기 조절, 자르기, 변환, PDF도 이 탭에서. 가입 없음.",
+    "cta": "도구 보기",
     "points": {
       "local": {
-        "title": "기기 내",
-        "body": "처리는 브라우저 캔버스에서 이루어집니다. 파일은 이 탭을 떠나지 않습니다."
+        "title": "기기 안",
+        "body": "이미지, PDF, QR, 텍스트 도구는 이 탭에서 돌아갑니다. 그 파일은 업로드되지 않습니다."
       },
       "nodb": {
         "title": "가입 없음",
-        "body": "클립보드 메모는 10번 보거나 하루가 지나면 삭제됩니다. 이미지 도구는 이 탭 안에 있습니다."
+        "body": "클립보드 메모는 10번 보거나 하루 뒤 삭제. 다른 도구는 기기에 남습니다."
       },
       "i18n": {
         "title": "다국어",
@@ -121,6 +125,14 @@
     "color": {
       "name": "색 선택기",
       "blurb": "Hex, RGB, HSL, 대비율, 스포이드. 업로드 없음."
+    },
+    "pdf-jpg": {
+      "name": "PDF를 JPG로",
+      "blurb": "PDF 페이지를 JPG / PNG / WebP로. 여러 장은 ZIP. 업로드 없음."
+    },
+    "merge-pdf": {
+      "name": "PDF 합치기",
+      "blurb": "이 탭에서 PDF를 합칩니다. 순서를 바꾼 뒤 한 파일로."
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "이미지 도구는 이 탭에서 처리됩니다. 클립보드 메모는 cv.cm에 잠시 저장된 뒤 삭제됩니다."
+    "privacy": "이미지·PDF·텍스트 도구는 이 탭에. 클립보드 메모는 cv.cm에 잠시 저장됐다가 삭제됩니다."
   },
   "convert": {
     "title": "HEIC, WebP, JPG, PNG 변환",
@@ -534,6 +546,30 @@
       "a4": "흰/검에 대한 WCAG 대비. 본문은 보통 4.5:1입니다.",
       "q5": "서버로 보내나요?",
       "a5": "아니요. 네트워크 요청이 없습니다."
+    },
+    "pdf-jpg": {
+      "q1": "PDF를 JPG로 바꾸나요?",
+      "a1": "네. 각 페이지를 이 탭에서 그려 JPG, PNG, WebP로 저장합니다.",
+      "q2": "모든 페이지를 내보내나요?",
+      "a2": "네. 한 장은 이미지, 여러 장은 ZIP입니다.",
+      "q3": "PDF가 업로드되나요?",
+      "a3": "아니요. pdf.js로 로컬 렌더. 탭을 닫으면 버려집니다.",
+      "q4": "2× 해상도는?",
+      "a4": "더 큰 비트맵으로 선명하지만 무겁습니다. 작은 파일은 1×.",
+      "q5": "스캔 PDF도 되나요?",
+      "a5": "됩니다. 이미지 페이지는 그림으로, 텍스트 페이지도 래스터화합니다."
+    },
+    "merge-pdf": {
+      "q1": "PDF를 합칠 수 있나요?",
+      "a1": "네. 두 개 이상 넣고 순서를 바꾼 뒤 한 파일로 받습니다.",
+      "q2": "업로드되나요?",
+      "a2": "아니요. pdf-lib로 이 탭에서 합칩니다.",
+      "q3": "순서를 바꾸나요?",
+      "a3": "네. 받기 전에 화살표로 바꿉니다.",
+      "q4": "암호 PDF는?",
+      "a4": "암호화된 PDF는 여기서 종종 합쳐지지 않습니다. 먼저 잠금을 푸세요.",
+      "q5": "북마크가 남나요?",
+      "a5": "페이지는 복사됩니다. 북마크와 폼은 빠질 수 있습니다."
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "스포이드",
     "noDropper": "스포이드는 Chromium이 필요합니다.",
     "contrast": "흰색 대비 {white}:1 · 검은색 대비 {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF를 JPG로",
+    "back": "모든 도구",
+    "privacyNote": "페이지는 이 탭에서 그립니다. 업로드 없음.",
+    "dropTitle": "PDF를 놓으세요",
+    "dropHint": "또는 클릭해서 선택",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "페이지와 형식을 고른 뒤 한 장 또는 전체 ZIP을 받으세요.",
+    "downloadPage": "이 페이지 받기",
+    "downloadAll": "모든 페이지 받기",
+    "exportTitle": "출력",
+    "page": "페이지",
+    "scale": "해상도",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "형식",
+    "quality": "품질",
+    "meta": "{name} · {pages}쪽",
+    "errorDecode": "이 PDF를 읽을 수 없습니다.",
+    "emptyDownload": "먼저 PDF를 넣으세요.",
+    "working": "처리 중…"
+  },
+  "mergePdf": {
+    "title": "PDF 합치기",
+    "back": "모든 도구",
+    "privacyNote": "합치기는 이 탭에서만. 업로드 없음.",
+    "dropTitle": "PDF를 놓으세요",
+    "dropHint": "또는 여러 파일을 선택",
+    "dropTypes": "PDF",
+    "filesTitle": "파일",
+    "filesEmpty": "아직 PDF가 없습니다.",
+    "hint": "순서를 정한 뒤 합친 PDF 하나를 받으세요.",
+    "download": "합친 PDF 받기",
+    "exportTitle": "합치기",
+    "note": "목록 순서대로 이어 붙입니다. 암호화 PDF는 실패할 수 있습니다.",
+    "pages": "{n}쪽",
+    "up": "위로",
+    "down": "아래로",
+    "remove": "제거",
+    "errorDecode": "이 PDF를 읽을 수 없습니다.",
+    "emptyDownload": "PDF를 하나 이상 넣으세요.",
+    "working": "합치는 중…"
   }
 }

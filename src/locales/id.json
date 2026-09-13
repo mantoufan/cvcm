@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — papan klip awan dan alat browser",
+    "title": "cv.cm — papan klip, gambar, PDF, dan teks di browser",
     "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
     "titleWatermark": "Tambah watermark ke foto — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
-    "description": "Papan klip awan dan alat browser. Catatan hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak diunggah.",
+    "description": "Alat di perangkat: papan klip, watermark, ubah ukuran, potong, HEIC/JPG, PDF ke gambar, gabung PDF, QR, kata sandi. Gambar dan PDF tidak diunggah.",
     "titleConvert": "HEIC ke JPG, WebP ke PNG, JPG ke PNG — cv.cm",
     "descConvert": "Ubah HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO di browser. Bisa perkecil. Tanpa unggah.",
     "titleImagePdf": "JPG ke PDF dan PNG ke PDF — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "Potong gambar online — cv.cm",
     "descCrop": "Potong foto di browser. Bebas, 1:1, 4:5, 16:9, 9:16. Tanpa unggah.",
     "titleColor": "Pemilih warna — hex, RGB, HSL — cv.cm",
-    "descColor": "Pilih warna, salin hex RGB HSL, cek kontras. Eyedropper jika browser mengizinkan. Tanpa unggah."
+    "descColor": "Pilih warna, salin hex RGB HSL, cek kontras. Eyedropper jika browser mengizinkan. Tanpa unggah.",
+    "titlePdfJpg": "PDF ke JPG — cv.cm",
+    "descPdfJpg": "Halaman PDF jadi JPG, PNG, atau WebP. Satu halaman atau ZIP. Tanpa unggah.",
+    "titleMergePdf": "Gabung PDF — cv.cm",
+    "descMergePdf": "Gabungkan beberapa PDF jadi satu di browser. Urutan bisa diubah. Tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Alat",
     "privacy": "Di perangkat",
-    "share": "Papan klip",
+    "share": "Bagikan",
     "image": "Gambar",
     "convert": "Konversi",
     "text": "Teks"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "Perangkat lokal",
-    "title": "Kumpulan alat yang berjalan di browser",
-    "lead": "Bagikan catatan singkat, atau jalankan alat gambar di browser. Tanpa daftar akun.",
-    "cta": "Buka watermark gambar",
+    "kicker": "Kit di perangkat",
+    "title": "Papan klip, gambar, PDF, dan teks — di browser",
+    "lead": "Catatan hilang setelah 10 kali dilihat atau sehari. Ubah ukuran, potong, konversi, dan PDF di tab ini. Tanpa daftar.",
+    "cta": "Lihat alat",
     "points": {
       "local": {
         "title": "Di perangkat",
-        "body": "Pemrosesan memakai canvas browser. File tidak meninggalkan tab ini."
+        "body": "Gambar, PDF, QR, dan teks berjalan di tab ini. File itu tidak diunggah."
       },
       "nodb": {
         "title": "Tanpa akun",
-        "body": "Catatan papan klip hilang setelah 10 kali dilihat atau satu hari. Alat gambar tidak meninggalkan tab ini."
+        "body": "Catatan papan klip hilang setelah 10 kali dilihat atau sehari. Alat lain tetap di perangkat."
       },
       "i18n": {
         "title": "Bahasa",
@@ -121,6 +125,14 @@
     "color": {
       "name": "Pemilih warna",
       "blurb": "Hex, RGB, HSL, kontras, eyedropper. Tanpa unggah."
+    },
+    "pdf-jpg": {
+      "name": "PDF ke JPG",
+      "blurb": "Halaman PDF ke JPG / PNG / WebP. Banyak halaman jadi ZIP. Tanpa unggah."
+    },
+    "merge-pdf": {
+      "name": "Gabung PDF",
+      "blurb": "Gabung PDF di tab ini. Urutkan, unduh satu file."
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "Alat gambar tetap di tab ini. Catatan papan klip disimpan sebentar di cv.cm, lalu dihapus."
+    "privacy": "Alat gambar, PDF, dan teks di tab ini. Catatan papan klip disimpan sebentar di cv.cm lalu dihapus."
   },
   "convert": {
     "title": "Ubah HEIC, WebP, JPG, PNG",
@@ -534,6 +546,30 @@
       "a4": "Rasio WCAG terhadap putih dan hitam. Teks isi biasanya 4.5:1.",
       "q5": "Dikirim ke server?",
       "a5": "Tidak. Tidak ada permintaan jaringan."
+    },
+    "pdf-jpg": {
+      "q1": "Bisa PDF ke JPG?",
+      "a1": "Ya. Setiap halaman digambar di tab ini dan disimpan JPG, PNG, atau WebP.",
+      "q2": "Bisa semua halaman?",
+      "a2": "Ya. Satu halaman jadi gambar, banyak halaman jadi ZIP.",
+      "q3": "PDF diunggah?",
+      "a3": "Tidak. pdf.js merender lokal. Tutup tab, file dibuang.",
+      "q4": "Resolusi 2×?",
+      "a4": "Bitmap lebih besar dan tajam, file lebih berat. Pakai 1× untuk file kecil.",
+      "q5": "PDF hasil pindai?",
+      "a5": "Bisa. Halaman gambar jadi foto, halaman teks juga diraster."
+    },
+    "merge-pdf": {
+      "q1": "Bisa gabung PDF?",
+      "a1": "Ya. Tambah dua atau lebih, ubah urutan, unduh satu file.",
+      "q2": "Diunggah?",
+      "a2": "Tidak. pdf-lib menggabung di tab ini.",
+      "q3": "Urutan bisa diubah?",
+      "a3": "Ya. Pakai panah sebelum mengunduh.",
+      "q4": "PDF berpassword?",
+      "a4": "PDF terenkripsi sering gagal. Buka kuncinya dulu.",
+      "q5": "Bookmark tetap ada?",
+      "a5": "Halaman disalin. Bookmark dan formulir bisa hilang."
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "Eyedropper",
     "noDropper": "Eyedropper butuh browser Chromium.",
     "contrast": "Kontras vs putih {white}:1 · vs hitam {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF ke JPG",
+    "back": "Semua alat",
+    "privacyNote": "Halaman digambar di tab ini. Tanpa unggah.",
+    "dropTitle": "Letakkan PDF di sini",
+    "dropHint": "atau klik untuk memilih",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Pilih halaman dan format, unduh satu gambar atau semua sebagai ZIP.",
+    "downloadPage": "Unduh halaman ini",
+    "downloadAll": "Unduh semua halaman",
+    "exportTitle": "Keluaran",
+    "page": "Halaman",
+    "scale": "Resolusi",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "Format",
+    "quality": "Kualitas",
+    "meta": "{name} · {pages} halaman",
+    "errorDecode": "PDF ini tidak bisa dibaca.",
+    "emptyDownload": "Tambah PDF dulu.",
+    "working": "Memproses…"
+  },
+  "mergePdf": {
+    "title": "Gabung file PDF",
+    "back": "Semua alat",
+    "privacyNote": "Penggabungan di tab ini. Tanpa unggah.",
+    "dropTitle": "Letakkan PDF di sini",
+    "dropHint": "atau pilih beberapa file",
+    "dropTypes": "PDF",
+    "filesTitle": "File",
+    "filesEmpty": "Belum ada PDF.",
+    "hint": "Atur urutan, lalu unduh satu PDF gabungan.",
+    "download": "Unduh PDF gabungan",
+    "exportTitle": "Gabung",
+    "note": "Disambung sesuai urutan daftar. PDF terenkripsi bisa gagal.",
+    "pages": "{n} halaman",
+    "up": "Naik",
+    "down": "Turun",
+    "remove": "Hapus",
+    "errorDecode": "PDF ini tidak bisa dibaca.",
+    "emptyDownload": "Tambah setidaknya satu PDF.",
+    "working": "Menggabung…"
   }
 }

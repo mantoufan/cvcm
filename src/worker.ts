@@ -23,7 +23,7 @@ const CSP = [
   "font-src 'self'",
   "connect-src 'self' https://files.s3.cv.cm https://s3.cv.cm",
   "media-src blob: https:",
-  "worker-src 'none'",
+  "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'none'",

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — portapapeles en la nube y herramientas del navegador",
+    "title": "cv.cm — portapapeles, imagen, PDF y texto en el navegador",
     "titleClip": "Portapapeles en línea — comparte texto sin cuenta — cv.cm",
     "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
     "titleWatermark": "Añadir marca de agua a fotos — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
-    "description": "Portapapeles en la nube y herramientas en el navegador. Las notas caducan a las 10 vistas o en un día. Las herramientas de imagen no suben archivos.",
+    "description": "Herramientas en el dispositivo: portapapeles, marcas de agua, redimensionar, recortar, HEIC/JPG, PDF a imagen, unir PDF, QR, contraseñas. Imágenes y PDF no se suben.",
     "titleConvert": "HEIC a JPG, WebP a PNG, JPG a PNG — cv.cm",
     "descConvert": "Convierte HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP e ICO en el navegador. Puedes redimensionar. Nada se sube.",
     "titleImagePdf": "JPG a PDF y PNG a PDF — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "Recortar imágenes — cv.cm",
     "descCrop": "Recorta fotos en el navegador. Libre, 1:1, 4:5, 16:9, 9:16. Nada se sube.",
     "titleColor": "Selector de color — hex, RGB, HSL — cv.cm",
-    "descColor": "Elige un color, copia hex RGB o HSL, mira el contraste. Cuentagotas si el navegador lo permite. Nada se sube."
+    "descColor": "Elige un color, copia hex RGB o HSL, mira el contraste. Cuentagotas si el navegador lo permite. Nada se sube.",
+    "titlePdfJpg": "PDF a JPG — cv.cm",
+    "descPdfJpg": "Pasa cada página PDF a JPG, PNG o WebP. Una página o un ZIP. Nada se sube.",
+    "titleMergePdf": "Unir archivos PDF — cv.cm",
+    "descMergePdf": "Junta varios PDF en uno en el navegador. Cambia el orden. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Herramientas",
     "privacy": "En el dispositivo",
-    "share": "Portapapeles",
+    "share": "Compartir",
     "image": "Imágenes",
     "convert": "Convertir",
     "text": "Texto"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "Kit local",
-    "title": "Colección de herramientas en el navegador",
-    "lead": "Comparte una nota breve o usa las herramientas de imagen en el navegador. Sin registro.",
-    "cta": "Abrir marca de agua",
+    "kicker": "Kit en el dispositivo",
+    "title": "Portapapeles, imágenes, PDF y texto — en el navegador",
+    "lead": "Una nota dura 10 vistas o un día. Redimensiona, recorta, convierte y trata PDF en esta pestaña. Sin registro.",
+    "cta": "Ver herramientas",
     "points": {
       "local": {
         "title": "En el dispositivo",
-        "body": "El procesado usa el canvas del navegador. Los archivos no salen de esta pestaña."
+        "body": "Imagen, PDF, QR y texto corren en esta pestaña. Esos archivos no se suben."
       },
       "nodb": {
         "title": "Sin cuenta",
-        "body": "Las notas del portapapeles caducan a las 10 vistas o en un día. Las herramientas de imagen no salen de esta pestaña."
+        "body": "Las notas caducan a las 10 vistas o en un día. El resto se queda en tu dispositivo."
       },
       "i18n": {
         "title": "Idiomas",
@@ -121,6 +125,14 @@
     "color": {
       "name": "Selector de color",
       "blurb": "Hex, RGB, HSL, contraste, cuentagotas. Nada se sube."
+    },
+    "pdf-jpg": {
+      "name": "PDF a JPG",
+      "blurb": "Páginas PDF a JPG / PNG / WebP. Varias páginas en ZIP. Nada se sube."
+    },
+    "merge-pdf": {
+      "name": "Unir PDF",
+      "blurb": "Junta PDFs en esta pestaña. Reordena y descarga un archivo."
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "Las herramientas de imagen se quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y luego se borran."
+    "privacy": "Las herramientas de imagen, PDF y texto quedan en esta pestaña. Las notas del portapapeles se guardan un rato en cv.cm y se borran."
   },
   "convert": {
     "title": "Convertir HEIC, WebP, JPG, PNG",
@@ -534,6 +546,30 @@
       "a4": "Ratio WCAG frente a blanco y negro. El texto de cuerpo suele pedir 4.5:1.",
       "q5": "¿Se envía el color a un servidor?",
       "a5": "No. No hay ninguna petición de red."
+    },
+    "pdf-jpg": {
+      "q1": "¿Puedo pasar un PDF a JPG?",
+      "a1": "Sí. Cada página se dibuja aquí y se guarda como JPG, PNG o WebP.",
+      "q2": "¿Exporto todas las páginas?",
+      "a2": "Sí. Una página es una imagen; varias, un ZIP.",
+      "q3": "¿Se sube el PDF?",
+      "a3": "No. pdf.js lo pinta en local. Al cerrar la pestaña se descarta.",
+      "q4": "¿Para qué es 2×?",
+      "a4": "Un mapa de bits más grande y nítido, más pesado. Usa 1× si quieres poco peso.",
+      "q5": "¿PDFs escaneados?",
+      "a5": "Sí. Las páginas imagen salen como fotos; las de texto también se rasterizan."
+    },
+    "merge-pdf": {
+      "q1": "¿Puedo unir PDFs?",
+      "a1": "Sí. Añade dos o más, reordena y descarga un archivo.",
+      "q2": "¿Se suben?",
+      "a2": "No. pdf-lib los une en esta pestaña.",
+      "q3": "¿Cambio el orden?",
+      "a3": "Sí. Usa las flechas de la lista antes de descargar.",
+      "q4": "¿Y con contraseña?",
+      "a4": "Los PDF cifrados a menudo no se pueden unir. Desbloquéalos antes.",
+      "q5": "¿Se conservan los marcadores?",
+      "a5": "Se copian las páginas. Marcadores y formularios pueden perderse."
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "Cuentagotas",
     "noDropper": "El cuentagotas necesita un navegador Chromium.",
     "contrast": "Contraste vs blanco {white}:1 · vs negro {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF a JPG",
+    "back": "Todas las herramientas",
+    "privacyNote": "Las páginas se dibujan en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta un PDF aquí",
+    "dropHint": "o haz clic para elegir",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Elige página y formato; descarga una imagen o todas en un ZIP.",
+    "downloadPage": "Descargar esta página",
+    "downloadAll": "Descargar todas",
+    "exportTitle": "Salida",
+    "page": "Página",
+    "scale": "Resolución",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "Formato",
+    "quality": "Calidad",
+    "meta": "{name} · {pages} páginas",
+    "errorDecode": "No se pudo leer este PDF.",
+    "emptyDownload": "Añade un PDF primero.",
+    "working": "Procesando…"
+  },
+  "mergePdf": {
+    "title": "Unir archivos PDF",
+    "back": "Todas las herramientas",
+    "privacyNote": "La unión queda en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta PDFs aquí",
+    "dropHint": "o elige varios archivos",
+    "dropTypes": "PDF",
+    "filesTitle": "Archivos",
+    "filesEmpty": "Aún no hay PDFs.",
+    "hint": "Ordena los archivos y descarga un PDF unido.",
+    "download": "Descargar PDF unido",
+    "exportTitle": "Unir",
+    "note": "Se concatenan en el orden de la lista. Los PDF cifrados pueden fallar.",
+    "pages": "{n} páginas",
+    "up": "Subir",
+    "down": "Bajar",
+    "remove": "Quitar",
+    "errorDecode": "No se pudo leer este PDF.",
+    "emptyDownload": "Añade al menos un PDF.",
+    "working": "Uniendo…"
   }
 }

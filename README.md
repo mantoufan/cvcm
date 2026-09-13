@@ -19,6 +19,8 @@ Browser tools plus a tiny cloud clipboard.
 - **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)
 - **Crop** / 裁剪. [Open](https://cv.cm/en/crop/)
 - **Color picker** / 取色器. [Open](https://cv.cm/en/color/)
+- **PDF to JPG** / PDF 转图片. [Open](https://cv.cm/en/pdf-jpg/)
+- **Merge PDF** / 合并 PDF. [Open](https://cv.cm/en/merge-pdf/)
 
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 

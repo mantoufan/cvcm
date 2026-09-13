@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "cv.cm — cloud clipboard and browser tools",
+    "title": "cv.cm — clipboard, image, PDF and text tools in the browser",
     "titleClip": "Online clipboard — share text without an account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
     "titleWatermark": "Add a watermark to photos — cv.cm",
@@ -13,7 +13,7 @@
     "descAudio": "Convert MP3, M4A, OGG, AAC, and FLAC to WAV in the browser. Choose 44.1 or 48 kHz. Nothing is uploaded.",
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
-    "description": "Cloud clipboard and in-browser tools. Share a note for 10 views or a day. Image tools never upload files.",
+    "description": "On-device browser tools: clipboard, watermarks, resize, crop, HEIC/JPG, PDF to JPG, merge PDF, QR, passwords and more. Image and PDF files stay in this tab.",
     "descWatermark": "Add text or a logo watermark to photos in the browser. Batch export PNG, JPEG, or ZIP. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "QR code generator — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "Crop images online — cv.cm",
     "descCrop": "Crop photos in the browser. Free, 1:1, 4:5, 16:9, 9:16. Nothing is uploaded.",
     "titleColor": "Color picker — hex, RGB, HSL — cv.cm",
-    "descColor": "Pick a color, copy hex RGB or HSL, check contrast. Eyedropper when the browser allows. Nothing is uploaded."
+    "descColor": "Pick a color, copy hex RGB or HSL, check contrast. Eyedropper when the browser allows. Nothing is uploaded.",
+    "titlePdfJpg": "PDF to JPG converter — cv.cm",
+    "descPdfJpg": "Turn PDF pages into JPG, PNG, or WebP in the browser. Download one page or a ZIP. Nothing is uploaded.",
+    "titleMergePdf": "Merge PDF files — cv.cm",
+    "descMergePdf": "Combine several PDFs into one file in the browser. Reorder pages. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "Tools",
     "privacy": "On-device",
-    "share": "Clipboard",
+    "share": "Share",
     "image": "Images",
     "convert": "Convert",
     "text": "Text"
@@ -50,18 +54,18 @@
     "es": "Español"
   },
   "home": {
-    "kicker": "Local toolkit",
-    "title": "A collection of in-browser tools",
-    "lead": "Share a short-lived note, or run image tools in the browser. No sign-up.",
-    "cta": "Open image watermark",
+    "kicker": "On-device toolkit",
+    "title": "Clipboard, images, PDF and text — in the browser",
+    "lead": "Share a note for 10 views or a day. Resize, crop, convert, and handle PDFs here. No sign-up.",
+    "cta": "Browse tools",
     "points": {
       "local": {
         "title": "On-device",
-        "body": "Processing uses your browser canvas. Files never leave this tab."
+        "body": "Images, PDFs, QR, and text tools run in this tab. Those files are not uploaded."
       },
       "nodb": {
         "title": "No account",
-        "body": "Clipboard notes expire after 10 views or one day. Image tools never leave this tab."
+        "body": "Clipboard notes expire after 10 views or one day. Everything else stays on your device."
       },
       "i18n": {
         "title": "Languages",
@@ -121,6 +125,14 @@
     "color": {
       "name": "Color picker",
       "blurb": "Hex, RGB, HSL, contrast, eyedropper. Nothing is uploaded."
+    },
+    "pdf-jpg": {
+      "name": "PDF to JPG",
+      "blurb": "PDF pages to JPG, PNG, or WebP. ZIP for many pages. Nothing is uploaded."
+    },
+    "merge-pdf": {
+      "name": "Merge PDF",
+      "blurb": "Combine PDFs in this tab. Reorder, then download one file."
     }
   },
   "watermark": {
@@ -375,7 +387,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "Image tools stay in this tab. Clipboard notes are stored briefly on cv.cm, then deleted."
+    "privacy": "Image, PDF and text tools stay in this tab. Clipboard notes are stored briefly on cv.cm, then deleted."
   },
   "faq": {
     "title": "FAQ",
@@ -534,6 +546,30 @@
       "a4": "WCAG contrast against white and black. 4.5:1 is the usual body-text floor.",
       "q5": "Is the color sent to a server?",
       "a5": "No. There is no network call."
+    },
+    "pdf-jpg": {
+      "q1": "Can I convert a PDF to JPG?",
+      "a1": "Yes. Each page is drawn in this tab and saved as JPG, PNG, or WebP.",
+      "q2": "Can I export every page?",
+      "a2": "Yes. One page downloads as an image. Several pages download as a ZIP.",
+      "q3": "Is the PDF uploaded?",
+      "a3": "No. pdf.js renders it locally. Closing the tab discards it.",
+      "q4": "What does 2× resolution do?",
+      "a4": "It paints a larger bitmap, sharper but heavier. Use 1× for small files.",
+      "q5": "Do scanned PDFs work?",
+      "a5": "Yes. Image-only pages export as pictures. Text-only pages are rasterized too."
+    },
+    "merge-pdf": {
+      "q1": "Can I merge PDF files?",
+      "a1": "Yes. Add two or more PDFs, reorder them, and download one file.",
+      "q2": "Are files uploaded?",
+      "a2": "No. Merging uses pdf-lib in this tab.",
+      "q3": "Can I change the order?",
+      "a3": "Yes. Use the arrows in the file list before downloading.",
+      "q4": "What about passwords?",
+      "a4": "Encrypted PDFs often cannot be merged here. Unlock them first.",
+      "q5": "Are bookmarks kept?",
+      "a5": "Pages are copied. Bookmarks and forms may be dropped."
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "Eyedropper",
     "noDropper": "Eyedropper needs a Chromium browser.",
     "contrast": "Contrast vs white {white}:1 · vs black {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF to JPG",
+    "back": "All tools",
+    "privacyNote": "Pages are rendered in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop a PDF here",
+    "dropHint": "or click to choose",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Pick a page and format, then download one image or all pages as a ZIP.",
+    "downloadPage": "Download this page",
+    "downloadAll": "Download all pages",
+    "exportTitle": "Output",
+    "page": "Page",
+    "scale": "Resolution",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "Format",
+    "quality": "Quality",
+    "meta": "{name} · {pages} pages",
+    "errorDecode": "Could not read this PDF in the browser.",
+    "emptyDownload": "Add a PDF first.",
+    "working": "Working…"
+  },
+  "mergePdf": {
+    "title": "Merge PDF files",
+    "back": "All tools",
+    "privacyNote": "Merging stays in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop PDFs here",
+    "dropHint": "or click to choose several files",
+    "dropTypes": "PDF",
+    "filesTitle": "Files",
+    "filesEmpty": "No PDFs yet.",
+    "hint": "Order the files, then download one merged PDF.",
+    "download": "Download merged PDF",
+    "exportTitle": "Merge",
+    "note": "Files are joined in list order. Encrypted PDFs may fail.",
+    "pages": "{n} pages",
+    "up": "Move up",
+    "down": "Move down",
+    "remove": "Remove",
+    "errorDecode": "Could not read this PDF.",
+    "emptyDownload": "Add at least one PDF.",
+    "working": "Merging…"
   }
 }

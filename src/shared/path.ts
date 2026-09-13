@@ -7,7 +7,7 @@ export const STATIC_FILE =
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr"] },
   { id: "image", tools: ["watermark", "collage", "resize", "crop"] },
-  { id: "convert", tools: ["convert", "image-pdf", "audio", "data"] },
+  { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "audio", "data"] },
   { id: "text", tools: ["password", "word-count", "color"] },
 ] as const;
 
@@ -22,6 +22,8 @@ export const TOOLS = [
   "crop",
   "convert",
   "image-pdf",
+  "pdf-jpg",
+  "merge-pdf",
   "audio",
   "data",
   "password",

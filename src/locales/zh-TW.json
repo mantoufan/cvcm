@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — 雲端剪貼簿與瀏覽器工具",
+    "title": "cv.cm — 瀏覽器裡的剪貼簿、圖片、PDF 與文字工具",
     "titleClip": "線上剪貼簿 — 無需登入分享文字 — cv.cm",
     "descClip": "類似 Pastebin 的雲端剪貼簿。用連結分享文字、圖片和檔案。無需帳號。查看 10 次或 24 小時後刪除。",
     "titleWatermark": "幫圖片加浮水印 — cv.cm",
     "titleCollage": "線上圖片拼圖 — cv.cm",
-    "description": "雲端剪貼簿與瀏覽器工具。便條查看 10 次或 1 天後刪除。圖片工具不上傳檔案。",
+    "description": "本機瀏覽器工具：雲端剪貼簿、浮水印、縮放裁剪、HEIC/JPG、PDF 轉圖片、合併 PDF、QR 碼、密碼產生等。圖片和 PDF 不上傳。",
     "titleConvert": "HEIC 轉 JPG、WebP 轉 PNG、JPG 轉 PNG — cv.cm",
     "descConvert": "瀏覽器互轉 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可縮小邊長。檔案不上傳。",
     "titleImagePdf": "JPG 轉 PDF、PNG 轉 PDF — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "線上裁剪圖片 — cv.cm",
     "descCrop": "在瀏覽器裁剪照片。自由、1:1、4:5、16:9、9:16。檔案不上傳。",
     "titleColor": "取色器 — Hex、RGB、HSL — cv.cm",
-    "descColor": "選顏色，複製 Hex / RGB / HSL，查看對比度。支援系統吸色。不上傳。"
+    "descColor": "選顏色，複製 Hex / RGB / HSL，查看對比度。支援系統吸色。不上傳。",
+    "titlePdfJpg": "PDF 轉 JPG — cv.cm",
+    "descPdfJpg": "把 PDF 每一頁轉成 JPG、PNG 或 WebP。可單頁或打包 ZIP。檔案不上傳。",
+    "titleMergePdf": "合併 PDF — cv.cm",
+    "descMergePdf": "在瀏覽器把多個 PDF 合成一份。可調整順序。檔案不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "工具",
     "privacy": "本機處理",
-    "share": "剪貼簿",
+    "share": "分享",
     "image": "圖片",
     "convert": "格式轉換",
     "text": "文字"
@@ -51,17 +55,17 @@
   },
   "home": {
     "kicker": "本機工具集",
-    "title": "瀏覽器運行工具集合",
-    "lead": "分享一則短時便條，或在瀏覽器裡處理圖片。無需註冊。",
-    "cta": "開啟圖片浮水印",
+    "title": "剪貼簿、圖片、PDF 和文字，都在瀏覽器裡",
+    "lead": "便條查看 10 次或 1 天刪除。縮放、裁剪、轉格式、處理 PDF 都在目前分頁。無需註冊。",
+    "cta": "瀏覽工具",
     "points": {
       "local": {
         "title": "本機運算",
-        "body": "處理發生在瀏覽器畫布上。檔案不會離開目前分頁。"
+        "body": "圖片、PDF、QR 碼和文字工具在目前分頁執行。這些檔案不會上傳。"
       },
       "nodb": {
         "title": "無需登入",
-        "body": "雲端剪貼簿查看 10 次或 1 天後刪除。圖片工具不會離開目前分頁。"
+        "body": "雲端剪貼簿查看 10 次或 1 天後刪除。其餘工具都留在你的裝置上。"
       },
       "i18n": {
         "title": "多語言",
@@ -121,6 +125,14 @@
     "color": {
       "name": "取色器",
       "blurb": "Hex、RGB、HSL、對比度、吸色。不上傳。"
+    },
+    "pdf-jpg": {
+      "name": "PDF 轉 JPG",
+      "blurb": "PDF 頁面轉 JPG / PNG / WebP。多頁打包 ZIP。不上傳。"
+    },
+    "merge-pdf": {
+      "name": "合併 PDF",
+      "blurb": "多個 PDF 合成一份。可排序。不上傳。"
     }
   },
   "watermark": {
@@ -270,7 +282,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "圖片工具在本機處理。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"
+    "privacy": "圖片、PDF 和文字工具留在目前分頁。雲端剪貼簿會短暫保存在 cv.cm，到期刪除。"
   },
   "convert": {
     "title": "HEIC、WebP、JPG、PNG 互轉",
@@ -534,6 +546,30 @@
       "a4": "相對純白和純黑的 WCAG 對比度。正文通常需要 4.5:1。",
       "q5": "顏色會傳到伺服器嗎？",
       "a5": "不會。沒有任何網路請求。"
+    },
+    "pdf-jpg": {
+      "q1": "能把 PDF 轉成 JPG 嗎？",
+      "a1": "可以。每一頁在目前分頁繪製，儲存為 JPG、PNG 或 WebP。",
+      "q2": "能匯出全部頁嗎？",
+      "a2": "可以。單頁下載圖片，多頁打包成 ZIP。",
+      "q3": "PDF 會上傳嗎？",
+      "a3": "不會。用 pdf.js 在本機繪製。關閉分頁即丟棄。",
+      "q4": "2× 解析度有什麼用？",
+      "a4": "畫更大的點陣圖，更清晰也更大。要小檔用 1×。",
+      "q5": "掃描件 PDF 可以嗎？",
+      "a5": "可以。純圖片頁會匯出成圖，純文字頁也會點陣化。"
+    },
+    "merge-pdf": {
+      "q1": "能合併 PDF 嗎？",
+      "a1": "可以。加入兩份以上，調整順序，下載一份檔案。",
+      "q2": "檔案會上傳嗎？",
+      "a2": "不會。用 pdf-lib 在目前分頁合併。",
+      "q3": "能改順序嗎？",
+      "a3": "可以。下載前用列表裡的箭頭調整。",
+      "q4": "有密碼的 PDF 呢？",
+      "a4": "加密 PDF 這裡經常合並不了。請先解密。",
+      "q5": "書籤還在嗎？",
+      "a5": "會複製頁面。書籤和表單可能會丟掉。"
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "吸色",
     "noDropper": "吸色需要 Chromium 瀏覽器。",
     "contrast": "相對白色 {white}:1 · 相對黑色 {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF 轉 JPG",
+    "back": "全部工具",
+    "privacyNote": "頁面在目前分頁繪製，不會上傳。",
+    "dropTitle": "把 PDF 拖到這裡",
+    "dropHint": "或点击选择",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "選擇頁碼和格式，下載單頁或全部打包。",
+    "downloadPage": "下載本頁",
+    "downloadAll": "下載全部頁",
+    "exportTitle": "輸出",
+    "page": "頁碼",
+    "scale": "解析度",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "格式",
+    "quality": "品質",
+    "meta": "{name} · {pages} 頁",
+    "errorDecode": "瀏覽器無法讀取這份 PDF。",
+    "emptyDownload": "請先新增 PDF。",
+    "working": "處理中…"
+  },
+  "mergePdf": {
+    "title": "合併 PDF",
+    "back": "全部工具",
+    "privacyNote": "合併只在目前分頁，不會上傳。",
+    "dropTitle": "把 PDF 拖到這裡",
+    "dropHint": "或點擊選擇多個檔案",
+    "dropTypes": "PDF",
+    "filesTitle": "檔案",
+    "filesEmpty": "還沒有 PDF。",
+    "hint": "排好順序，然後下載合成的一份 PDF。",
+    "download": "下載合併 PDF",
+    "exportTitle": "合併",
+    "note": "按列表順序拼接。加密 PDF 可能無法處理。",
+    "pages": "{n} 頁",
+    "up": "上移",
+    "down": "下移",
+    "remove": "移除",
+    "errorDecode": "無法讀取這份 PDF。",
+    "emptyDownload": "請至少新增一份 PDF。",
+    "working": "正在合併…"
   }
 }

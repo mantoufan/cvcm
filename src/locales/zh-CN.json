@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "cv.cm — 云剪切板与浏览器工具",
+    "title": "cv.cm — 浏览器里的剪切板、图片、PDF 与文本工具",
     "titleClip": "在线剪贴板 — 无需登录分享文字 — cv.cm",
     "descClip": "类似 Pastebin 的云剪切板。用链接分享文字、图片和文件。无需账号。查看 10 次或 24 小时后删除。",
     "titleWatermark": "给图片加水印 — cv.cm",
@@ -13,7 +13,7 @@
     "descAudio": "浏览器把 MP3、M4A、OGG、AAC、FLAC 转成 WAV。可选 44.1 / 48 kHz。文件不上传。",
     "titleData": "JSON 格式化、Base64、CSV 转 JSON — cv.cm",
     "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 编码、Markdown 转 HTML。只在当前标签页。",
-    "description": "云剪切板和浏览器工具。便签查看 10 次或 1 天后删除。图片工具文件不上传。",
+    "description": "本地浏览器工具：云剪切板、水印、缩放裁剪、HEIC/JPG、PDF 转图片、合并 PDF、二维码、密码生成等。图片和 PDF 不上传。",
     "descWatermark": "在浏览器里给照片加文字或 Logo 水印。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。",
     "descCollage": "浏览器里做照片拼图。宫格布局和 Instagram 尺寸。文件不上传。",
     "titleQr": "二维码生成器 — cv.cm",
@@ -27,13 +27,17 @@
     "titleCrop": "在线裁剪图片 — cv.cm",
     "descCrop": "浏览器里裁剪照片。自由、1:1、4:5、16:9、9:16。文件不上传。",
     "titleColor": "取色器 — Hex、RGB、HSL — cv.cm",
-    "descColor": "选颜色，复制 Hex / RGB / HSL，查看对比度。支持系统吸色。不上传。"
+    "descColor": "选颜色，复制 Hex / RGB / HSL，查看对比度。支持系统吸色。不上传。",
+    "titlePdfJpg": "PDF 转 JPG — cv.cm",
+    "descPdfJpg": "把 PDF 每一页转成 JPG、PNG 或 WebP。可单页或打包 ZIP。文件不上传。",
+    "titleMergePdf": "合并 PDF — cv.cm",
+    "descMergePdf": "在浏览器里把多个 PDF 合成一份。可调整顺序。文件不上传。"
   },
   "brand": "cv.cm",
   "nav": {
     "tools": "工具",
     "privacy": "本地处理",
-    "share": "剪切板",
+    "share": "分享",
     "image": "图片",
     "convert": "格式转换",
     "text": "文本"
@@ -51,17 +55,17 @@
   },
   "home": {
     "kicker": "本地工具集",
-    "title": "浏览器运行工具集合",
-    "lead": "分享一条短时便签，或在浏览器里处理图片。无需注册。",
-    "cta": "打开图片水印",
+    "title": "剪切板、图片、PDF 和文本，都在浏览器里",
+    "lead": "便签查看 10 次或 1 天删除。缩放、裁剪、转格式、处理 PDF 都在当前标签页。无需注册。",
+    "cta": "浏览工具",
     "points": {
       "local": {
         "title": "本地运算",
-        "body": "处理发生在浏览器画布上。文件不会离开当前标签页。"
+        "body": "图片、PDF、二维码和文本工具在当前标签页运行。这些文件不会上传。"
       },
       "nodb": {
         "title": "无需登录",
-        "body": "云剪切板查看 10 次或 1 天后删除。图片工具不会离开当前标签页。"
+        "body": "云剪切板查看 10 次或 1 天后删除。其余工具都留在你的设备上。"
       },
       "i18n": {
         "title": "多语言",
@@ -121,6 +125,14 @@
     "color": {
       "name": "取色器",
       "blurb": "Hex、RGB、HSL、对比度、吸色。不上传。"
+    },
+    "pdf-jpg": {
+      "name": "PDF 转 JPG",
+      "blurb": "PDF 页面转 JPG / PNG / WebP。多页打包 ZIP。不上传。"
+    },
+    "merge-pdf": {
+      "name": "合并 PDF",
+      "blurb": "多个 PDF 合成一份。可排序。不上传。"
     }
   },
   "watermark": {
@@ -375,7 +387,7 @@
     "bytes": "{used} / 64 KB"
   },
   "footer": {
-    "privacy": "图片工具在本地处理。云剪切板会短暂保存在 cv.cm，到期删除。"
+    "privacy": "图片、PDF 和文本工具留在当前标签页。云剪切板会短暂保存在 cv.cm，到期删除。"
   },
   "faq": {
     "title": "常见问题",
@@ -534,6 +546,30 @@
       "a4": "相对纯白和纯黑的 WCAG 对比度。正文通常需要 4.5:1。",
       "q5": "颜色会发到服务器吗？",
       "a5": "不会。没有任何网络请求。"
+    },
+    "pdf-jpg": {
+      "q1": "能把 PDF 转成 JPG 吗？",
+      "a1": "可以。每一页在当前标签页绘制，保存为 JPG、PNG 或 WebP。",
+      "q2": "能导出全部页吗？",
+      "a2": "可以。单页下载图片，多页打包成 ZIP。",
+      "q3": "PDF 会上传吗？",
+      "a3": "不会。用 pdf.js 在本地渲染。关闭标签页即丢弃。",
+      "q4": "2× 分辨率有什么用？",
+      "a4": "画更大的位图，更清晰也更大。要小文件用 1×。",
+      "q5": "扫描件 PDF 可以吗？",
+      "a5": "可以。纯图片页会导出成图，纯文字页也会栅格化。"
+    },
+    "merge-pdf": {
+      "q1": "能合并 PDF 吗？",
+      "a1": "可以。加入两份以上，调整顺序，下载一份文件。",
+      "q2": "文件会上传吗？",
+      "a2": "不会。用 pdf-lib 在当前标签页合并。",
+      "q3": "能改顺序吗？",
+      "a3": "可以。下载前用列表里的箭头调整。",
+      "q4": "有密码的 PDF 呢？",
+      "a4": "加密 PDF 这里经常合并不了。请先解密。",
+      "q5": "书签还在吗？",
+      "a5": "会复制页面。书签和表单可能会丢掉。"
     }
   },
   "qr": {
@@ -644,5 +680,49 @@
     "dropper": "吸色",
     "noDropper": "吸色需要 Chromium 浏览器。",
     "contrast": "相对白色 {white}:1 · 相对黑色 {black}:1"
+  },
+  "pdfJpg": {
+    "title": "PDF 转 JPG",
+    "back": "全部工具",
+    "privacyNote": "页面在当前标签页渲染，不会上传。",
+    "dropTitle": "把 PDF 拖到这里",
+    "dropHint": "或点击选择",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "选择页码和格式，下载单页或全部打包。",
+    "downloadPage": "下载本页",
+    "downloadAll": "下载全部页",
+    "exportTitle": "输出",
+    "page": "页码",
+    "scale": "分辨率",
+    "scale1": "1×",
+    "scale2": "2×",
+    "format": "格式",
+    "quality": "质量",
+    "meta": "{name} · {pages} 页",
+    "errorDecode": "浏览器无法读取这份 PDF。",
+    "emptyDownload": "请先添加 PDF。",
+    "working": "处理中…"
+  },
+  "mergePdf": {
+    "title": "合并 PDF",
+    "back": "全部工具",
+    "privacyNote": "合并只在当前标签页，不会上传。",
+    "dropTitle": "把 PDF 拖到这里",
+    "dropHint": "或点击选择多个文件",
+    "dropTypes": "PDF",
+    "filesTitle": "文件",
+    "filesEmpty": "还没有 PDF。",
+    "hint": "排好顺序，然后下载合成的一份 PDF。",
+    "download": "下载合并 PDF",
+    "exportTitle": "合并",
+    "note": "按列表顺序拼接。加密 PDF 可能无法处理。",
+    "pages": "{n} 页",
+    "up": "上移",
+    "down": "下移",
+    "remove": "移除",
+    "errorDecode": "无法读取这份 PDF。",
+    "emptyDownload": "请至少添加一份 PDF。",
+    "working": "正在合并…"
   }
 }
