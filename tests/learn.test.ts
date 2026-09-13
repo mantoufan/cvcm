@@ -49,6 +49,12 @@ describe("learn routes", () => {
       tutorial: "healthy-boundaries",
     });
     expect(learnHref("en", "healthy-boundaries")).toBe("/en/learn/healthy-boundaries/");
+    expect(parseAppPath("/zh-CN/learn/read-character/")).toEqual({
+      kind: "learn",
+      locale: "zh-CN",
+      tutorial: "read-character",
+    });
+    expect(learnHref("en", "read-character")).toBe("/en/learn/read-character/");
     expect(parseAppPath("/zh-CN/learn/portrait/")).toEqual({
       kind: "learn",
       locale: "zh-CN",
@@ -102,6 +108,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-CN/learn/healthy-boundaries/");
     expect(xml).toContain("https://cv.cm/zh-CN/learn/portrait/");
     expect(xml).toContain("https://cv.cm/en/learn/algorithms/");
+    expect(xml).toContain("https://cv.cm/zh-CN/learn/read-character/");
   });
 });
 
@@ -132,5 +139,11 @@ describe("learn worker", () => {
     expect(course.status).toBe(200);
     expect(courseBody).toContain("portrait photography in one sitting");
     expect(courseBody).toContain("HowTo");
+
+    const read = await worker.fetch(new Request("https://cv.cm/en/learn/read-character/"), { ASSETS: assets });
+    const readBody = await read.text();
+    expect(read.status).toBe(200);
+    expect(readBody).toContain("How to read people");
+    expect(readBody).toContain("Not a verdict");
   });
 });

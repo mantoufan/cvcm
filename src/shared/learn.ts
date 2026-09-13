@@ -76,6 +76,11 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     related: ["clip"],
     figure: "mind",
   },
+  "read-character": {
+    minutes: 15,
+    related: ["clip"],
+    figure: "mind",
+  },
 };
 
 export const ALGO_SNIPPETS = {

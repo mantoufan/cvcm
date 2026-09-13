@@ -9,7 +9,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
 5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
-6. Lessons: prefer one-sitting courses (portrait photography; algorithms as three traces, not a CS degree) plus short cards. Photography first. Court warmup/rules as aids; pool safety, not a swim class; one weekend page, not a coding course; healthy boundaries, not therapy. JK/Lolita/Hanfu portraits are adult fashion only. Do not sell a cheap course supermarket.
+6. Lessons: prefer one-sitting courses (portrait photography; algorithms as three traces, not a CS degree) plus short cards. Photography first. Court warmup/rules as aids; pool safety, not a swim class; one weekend page, not a coding course; healthy boundaries, not therapy; reading character, not a verdict. JK/Lolita/Hanfu portraits are adult fashion only. Do not sell a cheap course supermarket.
 
 ## Layout
 
