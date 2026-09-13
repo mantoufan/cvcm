@@ -86,4 +86,13 @@ describe("parseAppPath", () => {
     expect(appHref("ja", "watermark")).toBe("/ja/watermark/");
     expect(appHref("en", "clip")).toBe("/en/clip/");
   });
+
+  it("parses learn hub and lessons", () => {
+    expect(parseAppPath("/en/learn/")).toEqual({ kind: "learn", locale: "en", tutorial: null });
+    expect(parseAppPath("/zh-CN/learn/badminton-warmup/")).toEqual({
+      kind: "learn",
+      locale: "zh-CN",
+      tutorial: "badminton-warmup",
+    });
+  });
 });

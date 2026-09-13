@@ -1,7 +1,7 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
-import { appHref, parseAppPath, STATIC_FILE } from "./shared/path";
+import { appHref, learnHref, parseAppPath, STATIC_FILE } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -82,11 +82,20 @@ export default {
       if (parsed.kind === "bare") {
         return redirect(new URL(appHref(locale, parsed.tool, parsed.clipId), url.origin).toString(), 302);
       }
+      if (parsed.kind === "bare-learn") {
+        return redirect(new URL(learnHref(locale, parsed.tutorial), url.origin).toString(), 302);
+      }
       if (parsed.kind === "unknown") {
         return redirect(new URL(appHref(locale, null), url.origin).toString(), 302);
       }
       if (parsed.kind === "app") {
         const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId);
+        if (path !== canonical) {
+          return redirect(new URL(canonical, url.origin).toString(), 301);
+        }
+      }
+      if (parsed.kind === "learn") {
+        const canonical = learnHref(parsed.locale, parsed.tutorial);
         if (path !== canonical) {
           return redirect(new URL(canonical, url.origin).toString(), 301);
         }
@@ -100,20 +109,26 @@ export default {
 
     const type = assetResponse.headers.get("content-type") || "";
     const parsed = parseAppPath(path);
-    if (type.includes("text/html") && (parsed.kind === "app" || path === "/" || path === "/index.html")) {
+    if (
+      type.includes("text/html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || path === "/" || path === "/index.html")
+    ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app"
+      const locale = parsed.kind === "app" || parsed.kind === "learn"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
           cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE),
         );
-      const tool = parsed.kind === "app" ? parsed.tool : null;
-      const clipId = parsed.kind === "app" ? parsed.clipId : undefined;
+      const seo = parsed.kind === "learn"
+        ? { learn: true as const, tutorial: parsed.tutorial }
+        : parsed.kind === "app"
+          ? { tool: parsed.tool, clipId: parsed.clipId }
+          : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
       return withHeaders(
-        new Response(applyHtmlSeo(html, locale, tool, clipId), {
+        new Response(applyHtmlSeo(html, locale, seo), {
           status: assetResponse.status,
           headers,
         }),

@@ -23,6 +23,19 @@ Browser tools plus a tiny cloud clipboard.
 - **Merge PDF** / 合并 PDF. [Open](https://cv.cm/en/merge-pdf/)
 - **Compress PDF** / 压缩 PDF. [Open](https://cv.cm/en/compress-pdf/)
 
+## Lessons
+
+Free same-day practice cards (not a paid course supermarket). Photography you can post today; badminton warmup and scoring as court aids; pool safety, not a swim class; a one-page site that can take a payment.
+
+- [All lessons](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-CN/learn/)
+- [iPhone photography](https://cv.cm/en/learn/phone-photos/)
+- [Window light](https://cv.cm/en/learn/window-light/)
+- [Crop for Instagram](https://cv.cm/en/learn/crop-compose/)
+- [Badminton warmup](https://cv.cm/en/learn/badminton-warmup/)
+- [Badminton scoring](https://cv.cm/en/learn/badminton-rules/)
+- [Pool safety](https://cv.cm/en/learn/pool-safety/)
+- [One-page site](https://cv.cm/en/learn/one-page-site/)
+
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 
 ## Develop

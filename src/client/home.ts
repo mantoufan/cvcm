@@ -1,8 +1,9 @@
 import { COVER } from "./covers";
 import { h } from "./dom";
 import { t } from "./i18n";
+import { learnTile } from "./learn/ui";
 import type { Locale } from "../shared/locale";
-import { CATEGORIES, appHref, type ToolId } from "../shared/path";
+import { TOOLS, TUTORIALS, appHref, learnHref, type ToolId } from "../shared/path";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
@@ -12,14 +13,21 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       h("h1", null, t("home.title")),
       h("p", { class: "lede" }, t("home.lead")),
     ),
-    ...CATEGORIES.map((cat) =>
-      h("section", { class: "wall" },
-        h("div", { class: "wall-h" },
-          h("h2", null, t(`nav.${cat.id}`)),
-        ),
-        h("div", { class: "tiles" },
-          ...cat.tools.map((id) => tile(locale, id)),
-        ),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.tools")),
+      ),
+      h("div", { class: "tiles" },
+        ...TOOLS.map((id) => tile(locale, id)),
+      ),
+    ),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.learn")),
+        h("a", { class: "wall-more", href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all")),
+      ),
+      h("div", { class: "tiles" },
+        ...TUTORIALS.map((id) => learnTile(locale, id)),
       ),
     ),
     h("section", { class: "points" },

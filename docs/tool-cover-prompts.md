@@ -14,4 +14,10 @@ Use case: stylized-concept. Generate a new 16:9 landscape website tool cover for
 
 ## Text and data
 
+## Lessons (2026-09-13)
+
+Same character and cream-pink room as the watermark cover, props swapped per card. Saved as `public/covers/learn-*-sweet.jpg` (1280×720 JPEG). Instructional photos are `learn-fig-*.jpg`.
+
+## Text and data
+
 Use case: stylized-concept. Generate one new 16:9 landscape website tool cover for Text and Data. Input images are STYLE REFERENCES ONLY. Match their exquisite luminous pastel pink and ivory anime rendering, fine delicate linework, intricate lace, satin ribbons, rosy sparkling large eyes and chibi proportions. Centered close waist-up cheerful pale rose pink twin-tail chibi girl in fully covered frilly pink dress and lace bonnet, at a cream-pink writing desk, holding a pink fountain pen and an open beautifully bound notebook. Notebook has neatly organized small abstract lines and a tiny grid suggesting text and tabular data, no readable writing. A few floating cream paper cards with elegant rows and grids, roses, white lace curtains and little pink stationery in the softly blurred background. Focus large central face as in supplied covers, delicate hair highlights, soft studio-like glow, high detail and dimensional polished anime shading, not coarse outlines or flat coloring-book style. Wholesome all-ages. No words, letters, logos, watermarks, title or UI. Output one image.
