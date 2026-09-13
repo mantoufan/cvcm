@@ -7,7 +7,7 @@ import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import { LEARN_COVER, TOOL_COVER, coverUrl } from "./covers";
-import { TUTORIAL_META } from "./learn";
+import { TUTORIAL_META, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
 import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
 
@@ -84,6 +84,8 @@ const DESC: Record<ToolId, string> = {
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
+  portrait: "meta.titlePortrait",
+  algorithms: "meta.titleAlgorithms",
   "phone-photos": "meta.titlePhonePhotos",
   "window-light": "meta.titleWindowLight",
   "crop-compose": "meta.titleCropCompose",
@@ -95,6 +97,8 @@ const LEARN_TITLE: Record<TutorialId, string> = {
 };
 
 const LEARN_DESC: Record<TutorialId, string> = {
+  portrait: "meta.descPortrait",
+  algorithms: "meta.descAlgorithms",
   "phone-photos": "meta.descPhonePhotos",
   "window-light": "meta.descWindowLight",
   "crop-compose": "meta.descCropCompose",
@@ -176,7 +180,8 @@ export function faqJsonLd(
 
 export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string, unknown> {
   const steps = [];
-  for (let i = 1; i <= 5; i++) {
+  const count = tutorialSteps(tutorial);
+  for (let i = 1; i <= count; i++) {
     steps.push({
       "@type": "HowToStep",
       position: i,

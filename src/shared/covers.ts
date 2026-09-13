@@ -22,6 +22,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
+  portrait: "/covers/learn-portrait-sweet.jpg?v=1",
+  algorithms: "/covers/learn-algorithms-sweet.jpg?v=1",
   "phone-photos": "/covers/learn-phone-photos-sweet.jpg?v=1",
   "window-light": "/covers/learn-window-light-sweet.jpg?v=1",
   "crop-compose": "/covers/learn-crop-compose-sweet.jpg?v=1",

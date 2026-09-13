@@ -2,7 +2,7 @@ import { COVER, LEARN_COVER, LEARN_FIG } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
-import { ONE_PAGE_HTML, TUTORIAL_META } from "../../shared/learn";
+import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, tutorialSteps } from "../../shared/learn";
 import { appHref, learnHref, TUTORIAL_GROUPS, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
@@ -31,6 +31,9 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
   const loc = locale();
   const meta = TUTORIAL_META[id];
   const figSrc = LEARN_FIG[id];
+  const count = tutorialSteps(id);
+  const course = meta.kind === "course";
+  const nums = Array.from({ length: count }, (_, i) => i + 1);
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: learnHref(loc, null), "data-nav": "learn" }, t("learn.back")),
@@ -38,7 +41,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       h("h1", null, t(`learn.${id}.title`)),
       h("p", { class: "lede" }, t(`learn.${id}.lead`)),
     ),
-    h("div", { class: "learn" },
+    h("div", { class: "learn" + (course ? " is-course" : "") },
       h("div", { class: "learn-hero" },
         h("img", {
           src: LEARN_COVER[id],
@@ -49,6 +52,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       ),
       h("div", { class: "learn-meta" },
         h("span", { class: "pill" }, t("learn.minutes", { n: meta.minutes })),
+        course ? h("span", { class: "pill" }, t("learn.sitting")) : null,
         h("p", { class: "learn-result" },
           h("strong", null, t("learn.resultLabel")),
           " ",
@@ -56,13 +60,14 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
         ),
       ),
       h("aside", { class: "learn-note" }, t(`learn.${id}.note`)),
+      course ? toc(id, nums) : null,
       h("ol", { class: "learn-steps" },
-        ...[1, 2, 3, 4, 5].map((n) =>
+        ...nums.map((n) =>
           h("li", { id: `step-${n}`, class: "learn-step" },
             h("h2", null, t(`learn.${id}.s${n}t`)),
             h("p", null, t(`learn.${id}.s${n}b`)),
-            n === 2 ? stepFigure(id, figSrc) : null,
-            n === 5 && id === "one-page-site" ? siteSnippet() : null,
+            stepMedia(id, n, figSrc),
+            n === 1 && id === "one-page-site" ? siteSnippet() : null,
           ),
         ),
       ),
@@ -108,7 +113,10 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
       }),
     ),
     h("div", { class: "tile-body" },
-      h("p", { class: "tile-time" }, t("learn.minutes", { n: TUTORIAL_META[id].minutes })),
+      h("p", { class: "tile-time" },
+        t("learn.minutes", { n: TUTORIAL_META[id].minutes }),
+        TUTORIAL_META[id].kind === "course" ? ` · ${t("learn.sitting")}` : "",
+      ),
       h("h3", null, t(`learn.${id}.name`)),
       h("p", null, t(`learn.${id}.blurb`)),
     ),
@@ -122,6 +130,33 @@ function groupOf(id: TutorialId): string {
   return "photo";
 }
 
+function toc(id: TutorialId, nums: number[]): HTMLElement {
+  return h("nav", { class: "learn-toc", "aria-label": t("learn.toc") },
+    h("h2", null, t("learn.toc")),
+    h("ol", null,
+      ...nums.map((n) =>
+        h("li", null,
+          h("a", { href: `#step-${n}` }, t(`learn.${id}.s${n}t`)),
+        ),
+      ),
+    ),
+  );
+}
+
+function stepMedia(id: TutorialId, n: number, fallback: string | undefined): HTMLElement | null {
+  const meta = TUTORIAL_META[id];
+  const src = meta.figByStep?.[n];
+  if (src) return figure(id, src, n);
+  const codeKey = meta.codeByStep?.[n];
+  if (codeKey) return codeBlock(ALGO_SNIPPETS[codeKey]);
+  if (n === 2) return stepFigure(id, fallback);
+  return null;
+}
+
+function codeBlock(source: string): HTMLElement {
+  return h("pre", { class: "learn-code" }, source.trim());
+}
+
 function stepFigure(id: TutorialId, src: string | undefined): HTMLElement | null {
   const kind = TUTORIAL_META[id].figure;
   if (kind === "court") return courtFigure(id);
@@ -130,11 +165,14 @@ function stepFigure(id: TutorialId, src: string | undefined): HTMLElement | null
   return figure(id, src);
 }
 
-function figure(id: TutorialId, src: string): HTMLElement {
+function figure(id: TutorialId, src: string, n?: number): HTMLElement {
   const kind = TUTORIAL_META[id].figure;
+  const capKey = n ? `learn.${id}.f${n}` : `learn.${id}.figCap`;
+  const cap = t(capKey);
+  const caption = cap === capKey ? t(`learn.${id}.figCap`) : cap;
   const img = h("img", {
     src,
-    alt: t(`learn.${id}.figAlt`),
+    alt: caption,
     width: "1280",
     height: "720",
   });
@@ -144,7 +182,7 @@ function figure(id: TutorialId, src: string): HTMLElement {
         img,
         h("span", { class: "thirds-grid", "aria-hidden": "true" }),
       ),
-      h("figcaption", null, t(`learn.${id}.figCap`)),
+      h("figcaption", null, caption),
     );
   }
   if (kind === "crop") {
@@ -153,12 +191,12 @@ function figure(id: TutorialId, src: string): HTMLElement {
         img,
         h("span", { class: "crop-box", "aria-hidden": "true" }),
       ),
-      h("figcaption", null, t(`learn.${id}.figCap`)),
+      h("figcaption", null, caption),
     );
   }
   return h("figure", { class: "learn-fig" },
     img,
-    h("figcaption", null, t(`learn.${id}.figCap`)),
+    h("figcaption", null, caption),
   );
 }
 
@@ -196,15 +234,15 @@ function poolFigure(id: TutorialId): HTMLElement {
     h("div", { class: "pool-cards", "aria-hidden": "true" },
       h("div", { class: "pool-card" },
         h("strong", null, "1"),
-        h("span", null, t("learn.pool-safety.icon1")),
+        h("span", null, t(`learn.${id}.icon1`)),
       ),
       h("div", { class: "pool-card" },
         h("strong", null, "2"),
-        h("span", null, t("learn.pool-safety.icon2")),
+        h("span", null, t(`learn.${id}.icon2`)),
       ),
       h("div", { class: "pool-card" },
         h("strong", null, "3"),
-        h("span", null, t("learn.pool-safety.icon3")),
+        h("span", null, t(`learn.${id}.icon3`)),
       ),
     ),
     h("figcaption", null, t(`learn.${id}.figCap`)),

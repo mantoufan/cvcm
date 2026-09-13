@@ -3,10 +3,39 @@ import type { ToolId, TutorialId } from "./path";
 export type TutorialMeta = {
   minutes: number;
   related: ToolId[];
+  steps?: number;
+  kind?: "card" | "course";
   figure?: "thirds" | "window" | "crop" | "court" | "pool" | "site" | "mind";
+  figByStep?: Partial<Record<number, string>>;
+  codeByStep?: Partial<Record<number, "twoSum" | "binarySearch" | "countdown">>;
 };
 
+export function tutorialSteps(id: TutorialId): number {
+  return TUTORIAL_META[id].steps ?? 5;
+}
+
 export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
+  portrait: {
+    minutes: 75,
+    steps: 10,
+    kind: "course",
+    related: ["crop", "collage", "color"],
+    figByStep: {
+      2: "/covers/learn-fig-portrait-camera.jpg?v=1",
+      3: "/covers/learn-fig-portrait-light.jpg?v=1",
+      6: "/covers/learn-fig-portrait-lolita.jpg?v=1",
+      7: "/covers/learn-fig-portrait-jk.jpg?v=1",
+      8: "/covers/learn-fig-portrait-hanfu.jpg?v=1",
+      9: "/covers/learn-fig-portrait-cafe.jpg?v=1",
+    },
+  },
+  algorithms: {
+    minutes: 90,
+    steps: 10,
+    kind: "course",
+    related: ["data", "clip"],
+    codeByStep: { 7: "twoSum", 8: "binarySearch", 10: "countdown" },
+  },
   "phone-photos": {
     minutes: 20,
     related: ["crop", "collage", "watermark"],
@@ -48,6 +77,39 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     figure: "mind",
   },
 };
+
+export const ALGO_SNIPPETS = {
+  twoSum: `function twoSum(nums, target) {
+  const seen = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const need = target - nums[i];
+    if (seen.has(need)) return [seen.get(need), i];
+    seen.set(nums[i], i);
+  }
+  return null;
+}
+
+twoSum([2, 7, 11, 15], 9); // [0, 1]`,
+  binarySearch: `function binarySearch(sorted, target) {
+  let lo = 0;
+  let hi = sorted.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (sorted[mid] === target) return mid;
+    if (sorted[mid] < target) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return -1;
+}
+
+binarySearch([1, 3, 4, 8, 12], 8); // 3`,
+  countdown: `function countdown(n) {
+  if (n <= 0) return;
+  countdown(n - 1);
+}
+
+countdown(3);`,
+} as const;
 
 export const ONE_PAGE_HTML = `<!doctype html>
 <html lang="en">

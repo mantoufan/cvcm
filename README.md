@@ -27,9 +27,11 @@ Browser tools plus a tiny cloud clipboard.
 
 ## Lessons
 
-Free same-day practice cards (not a paid course supermarket). Photography you can post today; badminton warmup and scoring as court aids; pool safety, not a swim class; a one-page site that can take a payment; healthy boundaries, not therapy.
+Sit-down courses you can finish in one sitting, plus short cards. Not a paid course supermarket. Healthy boundaries is not therapy; reading people is not a verdict.
 
 - [All lessons](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-CN/learn/)
+- [Portrait photography (one sitting)](https://cv.cm/en/learn/portrait/) / [一口气学会人像摄影](https://cv.cm/zh-CN/learn/portrait/)
+- [Algorithms (one sitting)](https://cv.cm/en/learn/algorithms/) / [一口气学会算法](https://cv.cm/zh-CN/learn/algorithms/)
 - [iPhone photography](https://cv.cm/en/learn/phone-photos/)
 - [Window light](https://cv.cm/en/learn/window-light/)
 - [Crop for Instagram](https://cv.cm/en/learn/crop-compose/)
@@ -38,6 +40,7 @@ Free same-day practice cards (not a paid course supermarket). Photography you ca
 - [Pool safety](https://cv.cm/en/learn/pool-safety/)
 - [One-page site](https://cv.cm/en/learn/one-page-site/)
 - [Healthy boundaries](https://cv.cm/en/learn/healthy-boundaries/) / [边界感](https://cv.cm/zh-CN/learn/healthy-boundaries/)
+- [Read people](https://cv.cm/en/learn/read-character/) / [识人观察](https://cv.cm/zh-CN/learn/read-character/)
 
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 

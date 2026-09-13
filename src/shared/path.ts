@@ -36,6 +36,8 @@ export const TOOLS = [
 export type ToolId = (typeof TOOLS)[number];
 
 export const TUTORIALS = [
+  "portrait",
+  "algorithms",
   "phone-photos",
   "window-light",
   "crop-compose",
@@ -48,6 +50,7 @@ export const TUTORIALS = [
 export type TutorialId = (typeof TUTORIALS)[number];
 
 export const TUTORIAL_GROUPS = [
+  { id: "course", tutorials: ["portrait", "algorithms"] },
   { id: "photo", tutorials: ["phone-photos", "window-light", "crop-compose"] },
   { id: "court", tutorials: ["badminton-warmup", "badminton-rules"] },
   { id: "water", tutorials: ["pool-safety"] },

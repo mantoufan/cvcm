@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LEARN_COVER } from "../src/shared/covers";
-import { TUTORIAL_META } from "../src/shared/learn";
+import { TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
 import { LOCALES } from "../src/shared/locale";
 import {
   TOOLS,
@@ -49,6 +49,12 @@ describe("learn routes", () => {
       tutorial: "healthy-boundaries",
     });
     expect(learnHref("en", "healthy-boundaries")).toBe("/en/learn/healthy-boundaries/");
+    expect(parseAppPath("/zh-CN/learn/portrait/")).toEqual({
+      kind: "learn",
+      locale: "zh-CN",
+      tutorial: "portrait",
+    });
+    expect(learnHref("en", "algorithms")).toBe("/en/learn/algorithms/");
   });
 
   it("keeps tool routes unchanged", () => {
@@ -70,8 +76,12 @@ describe("learn SEO", () => {
       expect(LEARN_COVER[id]).toContain("/covers/learn-");
       const how = howToJsonLd("en", id);
       expect(how["@type"]).toBe("HowTo");
-      expect((how.step as unknown[]).length).toBe(5);
+      expect((how.step as unknown[]).length).toBe(tutorialSteps(id));
     }
+    expect(tutorialSteps("portrait")).toBe(10);
+    expect(howToJsonLd("en", "portrait").step).toHaveLength(10);
+    expect(pageTitle("en", { learn: true, tutorial: "portrait" })).toMatch(/portrait photography in one sitting/i);
+    expect(pageTitle("en", { learn: true, tutorial: "algorithms" })).toMatch(/algorithms in one sitting/i);
     const out = applyHtmlSeo(html, "en", { learn: true, tutorial: "phone-photos" });
     expect(out).toContain("iPhone photography tips");
     expect(out).toContain("HowTo");
@@ -90,6 +100,8 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-CN/learn/phone-photos/");
     expect(xml).toContain("https://cv.cm/es/learn/one-page-site/");
     expect(xml).toContain("https://cv.cm/zh-CN/learn/healthy-boundaries/");
+    expect(xml).toContain("https://cv.cm/zh-CN/learn/portrait/");
+    expect(xml).toContain("https://cv.cm/en/learn/algorithms/");
   });
 });
 
@@ -114,5 +126,11 @@ describe("learn worker", () => {
     expect(mind.status).toBe(200);
     expect(mindBody).toContain("Healthy boundaries");
     expect(mindBody).toContain("Not therapy");
+
+    const course = await worker.fetch(new Request("https://cv.cm/en/learn/portrait/"), { ASSETS: assets });
+    const courseBody = await course.text();
+    expect(course.status).toBe(200);
+    expect(courseBody).toContain("portrait photography in one sitting");
+    expect(courseBody).toContain("HowTo");
   });
 });
