@@ -1,8 +1,8 @@
-import { COVER, LEARN_COVER, LEARN_FIG } from "../covers";
+import { COVER, LEARN_FIG } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
-import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, tutorialSteps } from "../../shared/learn";
+import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
 import { appHref, learnHref, TUTORIAL_GROUPS, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
@@ -42,14 +42,6 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       h("p", { class: "lede" }, t(`learn.${id}.lead`)),
     ),
     h("div", { class: "learn" + (course ? " is-course" : "") },
-      h("div", { class: "learn-hero" },
-        h("img", {
-          src: LEARN_COVER[id],
-          alt: t(`learn.${id}.name`),
-          width: "1280",
-          height: "720",
-        }),
-      ),
       h("div", { class: "learn-meta" },
         h("span", { class: "pill" }, t("learn.minutes", { n: meta.minutes })),
         course ? h("span", { class: "pill" }, t("learn.sitting")) : null,
@@ -60,7 +52,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
         ),
       ),
       h("aside", { class: "learn-note" }, t(`learn.${id}.note`)),
-      course ? toc(id, nums) : null,
+      toc(id, nums),
       h("ol", { class: "learn-steps" },
         ...nums.map((n) =>
           h("li", { id: `step-${n}`, class: "learn-step" },
@@ -75,7 +67,13 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
         h("h2", null, t("learn.practiceLabel")),
         h("p", null, t(`learn.${id}.practice`)),
       ),
-      h("section", { class: "learn-related" },
+      TUTORIAL_SOURCES[id] ? h("section", { class: "learn-related" },
+        h("h2", null, t("learn.sources")),
+        h("ul", null, ...TUTORIAL_SOURCES[id]!.map((source) =>
+          h("li", null, h("a", { href: source.href, target: "_blank", rel: "noopener noreferrer" }, source.title)),
+        )),
+      ) : null,
+      meta.related.length ? h("section", { class: "learn-related" },
         h("h2", null, t("learn.related")),
         h("div", { class: "learn-related-list" },
           ...meta.related.map((tool) =>
@@ -92,7 +90,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
             ),
           ),
         ),
-      ),
+      ) : null,
     ),
     learnFaqSection(loc, id),
   );
@@ -104,14 +102,6 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
     href: learnHref(loc, id),
     "data-nav": `learn-${id}`,
   },
-    h("div", { class: "tile-cover" },
-      h("img", {
-        src: LEARN_COVER[id],
-        alt: t(`learn.${id}.name`),
-        width: "640",
-        height: "360",
-      }),
-    ),
     h("div", { class: "tile-body" },
       h("p", { class: "tile-time" },
         t("learn.minutes", { n: TUTORIAL_META[id].minutes }),
@@ -127,7 +117,9 @@ function groupOf(id: TutorialId): string {
   for (const group of TUTORIAL_GROUPS) {
     if ((group.tutorials as readonly string[]).includes(id)) return group.id;
   }
-  return "photo";
+  if (id.startsWith("badminton-")) return "court";
+  if (id === "pool-safety") return "water";
+  return "mind";
 }
 
 function toc(id: TutorialId, nums: number[]): HTMLElement {

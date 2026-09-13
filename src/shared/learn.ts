@@ -20,20 +20,12 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     steps: 10,
     kind: "course",
     related: ["crop", "collage", "color"],
-    figByStep: {
-      2: "/covers/learn-fig-portrait-camera.jpg?v=1",
-      3: "/covers/learn-fig-portrait-light.jpg?v=1",
-      6: "/covers/learn-fig-portrait-lolita.jpg?v=1",
-      7: "/covers/learn-fig-portrait-jk.jpg?v=1",
-      8: "/covers/learn-fig-portrait-hanfu.jpg?v=1",
-      9: "/covers/learn-fig-portrait-cafe.jpg?v=1",
-    },
   },
   algorithms: {
     minutes: 90,
     steps: 10,
     kind: "course",
-    related: ["data", "clip"],
+    related: [],
     codeByStep: { 7: "twoSum", 8: "binarySearch", 10: "countdown" },
   },
   "phone-photos": {
@@ -99,7 +91,7 @@ twoSum([2, 7, 11, 15], 9); // [0, 1]`,
   let lo = 0;
   let hi = sorted.length - 1;
   while (lo <= hi) {
-    const mid = (lo + hi) >> 1;
+    const mid = lo + Math.floor((hi - lo) / 2);
     if (sorted[mid] === target) return mid;
     if (sorted[mid] < target) lo = mid + 1;
     else hi = mid - 1;
@@ -108,12 +100,13 @@ twoSum([2, 7, 11, 15], 9); // [0, 1]`,
 }
 
 binarySearch([1, 3, 4, 8, 12], 8); // 3`,
-  countdown: `function countdown(n) {
-  if (n <= 0) return;
-  countdown(n - 1);
+  countdown: `function countdown(n, result = []) {
+  if (n === 0) return result;
+  result.push(n);
+  return countdown(n - 1, result);
 }
 
-countdown(3);`,
+countdown(3); // [3, 2, 1]`,
 } as const;
 
 export const ONE_PAGE_HTML = `<!doctype html>
@@ -130,7 +123,15 @@ export const ONE_PAGE_HTML = `<!doctype html>
 <body>
   <h1>Your name</h1>
   <p>One sentence: what you make or do.</p>
-  <p><a class="pay" href="https://buy.stripe.com/your-link">Pay / book</a></p>
+  <p><a class="pay" href="mailto:hello@example.com">Contact</a></p>
 </body>
 </html>
 `;
+
+export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href: string }[]>> = {
+  algorithms: [{ title: "JavaScript Map — MDN", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" }],
+  "one-page-site": [
+    { title: "Cloudflare Pages — Direct Upload", href: "https://developers.cloudflare.com/pages/get-started/direct-upload/" },
+    { title: "GitHub Pages — Create a site", href: "https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" },
+  ],
+};

@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { LEARN_COVER } from "../src/shared/covers";
-import { TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
+import { ALGO_SNIPPETS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
 import { LOCALES } from "../src/shared/locale";
 import {
   TOOLS,
   TUTORIALS,
+  FEATURED_TUTORIALS,
   appHref,
   learnHref,
   parseAppPath,
@@ -71,8 +72,8 @@ describe("learn routes", () => {
 
 describe("learn SEO", () => {
   it("uses keyword titles and HowTo plus FAQ JSON-LD", () => {
-    expect(pageTitle("en", { learn: true, tutorial: "phone-photos" })).toMatch(/iPhone photography/i);
-    expect(pageTitle("en", { learn: true })).toMatch(/Same-day lessons/i);
+    expect(pageTitle("en", { learn: true, tutorial: "phone-photos" })).toMatch(/phone photography/i);
+    expect(pageTitle("en", { learn: true })).toMatch(/Photography and practical tutorials/i);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "pool-safety" })).toBe(
       "https://cv.cm/zh-CN/learn/pool-safety/",
     );
@@ -86,10 +87,10 @@ describe("learn SEO", () => {
     }
     expect(tutorialSteps("portrait")).toBe(10);
     expect(howToJsonLd("en", "portrait").step).toHaveLength(10);
-    expect(pageTitle("en", { learn: true, tutorial: "portrait" })).toMatch(/portrait photography in one sitting/i);
-    expect(pageTitle("en", { learn: true, tutorial: "algorithms" })).toMatch(/algorithms in one sitting/i);
+    expect(pageTitle("en", { learn: true, tutorial: "portrait" })).toMatch(/portrait photography practice/i);
+    expect(pageTitle("en", { learn: true, tutorial: "algorithms" })).toMatch(/algorithms practice/i);
     const out = applyHtmlSeo(html, "en", { learn: true, tutorial: "phone-photos" });
-    expect(out).toContain("iPhone photography tips");
+    expect(out).toContain("phone photography practice");
     expect(out).toContain("HowTo");
     expect(out).toContain("FAQPage");
     expect(out).toContain("og:image");
@@ -137,7 +138,7 @@ describe("learn worker", () => {
     const course = await worker.fetch(new Request("https://cv.cm/en/learn/portrait/"), { ASSETS: assets });
     const courseBody = await course.text();
     expect(course.status).toBe(200);
-    expect(courseBody).toContain("portrait photography in one sitting");
+    expect(courseBody).toContain("portrait photography practice");
     expect(courseBody).toContain("HowTo");
 
     const read = await worker.fetch(new Request("https://cv.cm/en/learn/read-character/"), { ASSETS: assets });
@@ -145,5 +146,30 @@ describe("learn worker", () => {
     expect(read.status).toBe(200);
     expect(readBody).toContain("How to read people");
     expect(readBody).toContain("Not a verdict");
+  });
+});
+
+
+describe("edited learning collection", () => {
+  it("promotes six practical lessons while preserving older URLs", () => {
+    expect(FEATURED_TUTORIALS).toHaveLength(6);
+    expect(new Set(FEATURED_TUTORIALS).size).toBe(6);
+    expect(FEATURED_TUTORIALS).not.toContain("read-character");
+    expect(parseAppPath("/en/learn/read-character/").kind).toBe("learn");
+  });
+
+  it("executes the examples shown to readers, including edge cases", () => {
+    const twoSum = new Function(ALGO_SNIPPETS.twoSum + "\n; return twoSum;")();
+    const binarySearch = new Function(ALGO_SNIPPETS.binarySearch + "\n; return binarySearch;")();
+    const countdown = new Function(ALGO_SNIPPETS.countdown + "\n; return countdown;")();
+    expect(twoSum([2, 7, 11, 15], 9)).toEqual([0, 1]);
+    expect(twoSum([3, 3], 6)).toEqual([0, 1]);
+    expect(twoSum([3], 6)).toBeNull();
+    expect(binarySearch([1, 3, 4, 8, 12], 8)).toBe(3);
+    expect(binarySearch([1, 3, 4, 8, 12], 7)).toBe(-1);
+    expect(binarySearch([], 1)).toBe(-1);
+    expect(binarySearch([8], 8)).toBe(0);
+    expect(countdown(3)).toEqual([3, 2, 1]);
+    expect(countdown(0)).toEqual([]);
   });
 });

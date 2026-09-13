@@ -50,14 +50,15 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
+// Older lesson URLs remain available; only the edited collection is promoted.
 export const TUTORIAL_GROUPS = [
-  { id: "course", tutorials: ["portrait", "algorithms"] },
   { id: "photo", tutorials: ["phone-photos", "window-light", "crop-compose"] },
-  { id: "court", tutorials: ["badminton-warmup", "badminton-rules"] },
-  { id: "water", tutorials: ["pool-safety"] },
-  { id: "code", tutorials: ["one-page-site"] },
-  { id: "mind", tutorials: ["healthy-boundaries", "read-character"] },
+  { id: "course", tutorials: ["portrait"] },
+  { id: "code", tutorials: ["algorithms", "one-page-site"] },
 ] as const;
+export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
+  (group) => [...group.tutorials] as TutorialId[],
+);
 export type TutorialGroupId = (typeof TUTORIAL_GROUPS)[number]["id"];
 
 export function categoryOf(tool: ToolId): CategoryId {

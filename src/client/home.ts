@@ -3,7 +3,7 @@ import { h } from "./dom";
 import { t } from "./i18n";
 import { learnTile } from "./learn/ui";
 import type { Locale } from "../shared/locale";
-import { TOOLS, TUTORIALS, appHref, learnHref, type ToolId } from "../shared/path";
+import { TOOLS, FEATURED_TUTORIALS, appHref, learnHref, type ToolId } from "../shared/path";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   host.append(
@@ -27,7 +27,7 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
         h("a", { class: "wall-more", href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all")),
       ),
       h("div", { class: "tiles" },
-        ...TUTORIALS.map((id) => learnTile(locale, id)),
+        ...FEATURED_TUTORIALS.map((id) => learnTile(locale, id)),
       ),
     ),
     h("section", { class: "points" },

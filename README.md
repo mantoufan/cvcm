@@ -27,20 +27,17 @@ Browser tools plus a tiny cloud clipboard.
 
 ## Lessons
 
-Sit-down courses you can finish in one sitting, plus short cards. Not a paid course supermarket. Healthy boundaries is not therapy; reading people is not a verdict.
+Six featured tutorials: phone-photo comparisons, window light, cropping, a complete portrait session, three algorithm traces, and a one-page HTML project. Each edited lesson includes concrete steps and completion checks. Full editorial revisions are available in English, Simplified Chinese and Traditional Chinese.
 
-- [All lessons](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-CN/learn/)
-- [Portrait photography (one sitting)](https://cv.cm/en/learn/portrait/) / [一口气学会人像摄影](https://cv.cm/zh-CN/learn/portrait/)
-- [Algorithms (one sitting)](https://cv.cm/en/learn/algorithms/) / [一口气学会算法](https://cv.cm/zh-CN/learn/algorithms/)
-- [iPhone photography](https://cv.cm/en/learn/phone-photos/)
+- [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-CN/learn/)
+- [Phone photography](https://cv.cm/en/learn/phone-photos/)
 - [Window light](https://cv.cm/en/learn/window-light/)
-- [Crop for Instagram](https://cv.cm/en/learn/crop-compose/)
-- [Badminton warmup](https://cv.cm/en/learn/badminton-warmup/)
-- [Badminton scoring](https://cv.cm/en/learn/badminton-rules/)
-- [Pool safety](https://cv.cm/en/learn/pool-safety/)
+- [Cropping](https://cv.cm/en/learn/crop-compose/)
+- [Portrait session](https://cv.cm/en/learn/portrait/)
+- [Algorithm traces](https://cv.cm/en/learn/algorithms/)
 - [One-page site](https://cv.cm/en/learn/one-page-site/)
-- [Healthy boundaries](https://cv.cm/en/learn/healthy-boundaries/) / [边界感](https://cv.cm/zh-CN/learn/healthy-boundaries/)
-- [Read people](https://cv.cm/en/learn/read-character/) / [识人观察](https://cv.cm/zh-CN/learn/read-character/)
+
+Older court, pool and interpersonal lesson URLs remain accessible for compatibility, but are no longer promoted on the home page or in tutorial navigation.
 
 Languages: English, 简体中文, 繁體中文, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia, Español. The list starts with English; the page still follows the browser language.
 
