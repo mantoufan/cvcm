@@ -65,7 +65,9 @@
     "titleTimezone": "Pengubah zona waktu — UTC, EST, PST — cv.cm",
     "descTimezone": "Ubah waktu ke zona lain di browser. Zona IANA, DST, offset UTC. Tidak diunggah.",
     "titleLorem": "Pembuat lorem ipsum — cv.cm",
-    "descLorem": "Buat teks placeholder lorem ipsum di browser. Paragraf, kalimat, atau kata. Tidak diunggah."
+    "descLorem": "Buat teks placeholder lorem ipsum di browser. Paragraf, kalimat, atau kata. Tidak diunggah.",
+    "titleUnits": "Pengonversi satuan — cm ke inci, kg ke lbs, °C ke °F — cv.cm",
+    "descUnits": "Ubah panjang, berat, suhu, volume, luas, dan kecepatan di browser. cm ke inci, kg ke pon. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -188,6 +190,10 @@
     "lorem": {
       "name": "Lorem ipsum",
       "blurb": "Paragraf, kalimat, atau kata placeholder klasik. Salin di tab ini."
+    },
+    "units": {
+      "name": "Konversi satuan",
+      "blurb": "cm ke inci, kg ke lbs, °C ke °F. Panjang, massa, volume, luas, kecepatan. Di perangkat."
     }
   },
   "watermark": {
@@ -819,6 +825,18 @@
       "a4": "Tidak. Teks disusun dari daftar kata di tab ini.",
       "q5": "Bisa salin hasilnya?",
       "a5": "Bisa. Salin menaruh seluruh blok ke papan klip untuk ditempel ke mockup."
+    },
+    "units": {
+      "q1": "Bagaimana mengubah satuan?",
+      "a1": "Pilih jenis, satuan asal, dan satuan tujuan, lalu ketik angka. Hasilnya berubah di tab ini.",
+      "q2": "Bisa cm ke inci?",
+      "a2": "Bisa. Panjang mencakup mm, cm, m, km, inci, kaki, yard, dan mil.",
+      "q3": "Bagaimana Celsius dan Fahrenheit?",
+      "a3": "Suhu mengubah °C, °F, dan kelvin, termasuk offset, bukan hanya faktor skala.",
+      "q4": "Galon AS atau imperial?",
+      "a4": "Volume memakai cup, fl oz, dan galon AS. Panjang dan massa memakai yard/pon internasional.",
+      "q5": "Apakah diunggah?",
+      "a5": "Tidak. Hitungannya di tab ini. Menutup tab membuangnya."
     }
   },
   "qr": {
@@ -1353,5 +1371,28 @@
     "copy": "Salin",
     "copied": "Tersalin",
     "output": "Teks"
+  },
+  "units": {
+    "title": "Pengonversi satuan",
+    "back": "Semua alat",
+    "privacyNote": "Konversi memakai faktor SI di tab ini. Tidak diunggah.",
+    "options": "Opsi",
+    "kindLabel": "Jenis",
+    "kind": {
+      "length": "Panjang",
+      "mass": "Berat",
+      "temperature": "Suhu",
+      "volume": "Volume",
+      "area": "Luas",
+      "speed": "Kecepatan"
+    },
+    "value": "Nilai",
+    "from": "Dari",
+    "to": "Ke",
+    "swap": "Tukar",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "result": "Hasil",
+    "invalid": "Masukkan angka."
   }
 }

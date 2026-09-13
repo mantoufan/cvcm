@@ -8,6 +8,7 @@ import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountLorem, unmountLorem } from "./lorem/ui";
 import { mountNames, unmountNames } from "./names/ui";
 import { mountTimezone, unmountTimezone } from "./timezone/ui";
+import { mountUnits, unmountUnits } from "./units/ui";
 import { mountPassword, unmountPassword } from "./password/ui";
 import { mountQr, unmountQr } from "./qr/ui";
 import { mountResize, unmountResize } from "./resize/ui";
@@ -134,6 +135,7 @@ function unmountTools(): void {
   unmountNames();
   unmountTimezone();
   unmountLorem();
+  unmountUnits();
   unmountColor();
   unmountResize();
   unmountCrop();
@@ -225,6 +227,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "names") mountNames(main);
   else if (tool === "timezone") mountTimezone(main);
   else if (tool === "lorem") mountLorem(main);
+  else if (tool === "units") mountUnits(main);
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);

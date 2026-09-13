@@ -5,6 +5,7 @@ import { countText } from "../src/shared/word-count";
 import { generateName, generateNames } from "../src/shared/names";
 import { generateLorem, loremWords } from "../src/shared/lorem";
 import { convertWallTime } from "../src/shared/timezone";
+import { convertAmount, convertUnits } from "../src/shared/units";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -87,6 +88,19 @@ describe("lorem", () => {
   });
 });
 
+describe("units", () => {
+  it("converts length, mass, temperature, and speed", () => {
+    expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
+    expect(convertAmount("length", 1, "mi", "km")).toBeCloseTo(1.609344, 10);
+    expect(convertAmount("mass", 1, "kg", "lb")).toBeCloseTo(2.2046226218, 6);
+    expect(convertAmount("temperature", 100, "C", "F")).toBeCloseTo(212, 10);
+    expect(convertAmount("temperature", 0, "K", "C")).toBeCloseTo(-273.15, 10);
+    expect(convertAmount("speed", 1, "mph", "kph")).toBeCloseTo(1.609344, 6);
+    expect(convertAmount("volume", 1, "gal", "l")).toBeCloseTo(3.785411784, 8);
+    expect(convertUnits("length", 1, "in", "cm").formatted).toBe("2.54");
+  });
+});
+
 describe("new routes", () => {
   it("parses qr, password, and word-count paths", () => {
     expect(parseAppPath("/en/qr/")).toEqual({ kind: "app", locale: "en", tool: "qr" });
@@ -94,7 +108,9 @@ describe("new routes", () => {
     expect(parseAppPath("/es/word-count/")).toEqual({ kind: "app", locale: "es", tool: "word-count" });
     expect(parseAppPath("/en/timezone/")).toEqual({ kind: "app", locale: "en", tool: "timezone" });
     expect(parseAppPath("/zh-CN/lorem/")).toEqual({ kind: "app", locale: "zh-CN", tool: "lorem" });
+    expect(parseAppPath("/en/units/")).toEqual({ kind: "app", locale: "en", tool: "units" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("en", "timezone")).toBe("/en/timezone/");
+    expect(appHref("zh-CN", "units")).toBe("/zh-CN/units/");
   });
 });

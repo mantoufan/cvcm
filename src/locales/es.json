@@ -65,7 +65,9 @@
     "titleTimezone": "Conversor de zonas horarias — UTC, EST, PST — cv.cm",
     "descTimezone": "Convierte una hora entre zonas en el navegador. Zonas IANA, horario de verano, desfase UTC. Nada se sube.",
     "titleLorem": "Generador de lorem ipsum — cv.cm",
-    "descLorem": "Genera texto de relleno lorem ipsum en el navegador. Párrafos, frases o palabras. Nada se sube."
+    "descLorem": "Genera texto de relleno lorem ipsum en el navegador. Párrafos, frases o palabras. Nada se sube.",
+    "titleUnits": "Conversor de unidades — cm a pulgadas, kg a lb, °C a °F — cv.cm",
+    "descUnits": "Convierte longitud, peso, temperatura, volumen, área y velocidad en el navegador. cm a pulgadas, kg a lb. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -188,6 +190,10 @@
     "lorem": {
       "name": "Lorem ipsum",
       "blurb": "Párrafos, frases o palabras de relleno clásicas. Copia en esta pestaña."
+    },
+    "units": {
+      "name": "Conversor de unidades",
+      "blurb": "cm a pulgadas, kg a lb, °C a °F. Longitud, masa, volumen, área, velocidad. En el dispositivo."
     }
   },
   "watermark": {
@@ -819,6 +825,18 @@
       "a4": "No. El texto se arma con una lista local en esta pestaña.",
       "q5": "¿Puedo copiar el resultado?",
       "a5": "Sí. Copiar pone el bloque entero en el portapapeles para pegarlo en un mockup."
+    },
+    "units": {
+      "q1": "¿Cómo convierto unidades?",
+      "a1": "Elige categoría, unidad de origen y unidad de destino, y escribe un número. El resultado se actualiza aquí.",
+      "q2": "¿Puedo pasar cm a pulgadas?",
+      "a2": "Sí. Longitud incluye mm, cm, m, km, pulgadas, pies, yardas y millas.",
+      "q3": "¿Y Celsius y Fahrenheit?",
+      "a3": "La temperatura convierte entre °C, °F y kelvin, con el desfase, no solo un factor de escala.",
+      "q4": "¿Galones US o imperiales?",
+      "a4": "El volumen usa tazas, onzas líquidas y galones US. Longitud y masa usan yarda y libra internacionales.",
+      "q5": "¿Se sube algo?",
+      "a5": "No. La cuenta corre en esta pestaña. Cerrarla descarta los números."
     }
   },
   "qr": {
@@ -1353,5 +1371,28 @@
     "copy": "Copiar",
     "copied": "Copiado",
     "output": "Texto"
+  },
+  "units": {
+    "title": "Conversor de unidades",
+    "back": "Todas las herramientas",
+    "privacyNote": "La conversión usa factores SI en esta pestaña. Nada se sube.",
+    "options": "Opciones",
+    "kindLabel": "Tipo",
+    "kind": {
+      "length": "Longitud",
+      "mass": "Peso",
+      "temperature": "Temperatura",
+      "volume": "Volumen",
+      "area": "Área",
+      "speed": "Velocidad"
+    },
+    "value": "Valor",
+    "from": "Desde",
+    "to": "Hacia",
+    "swap": "Intercambiar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "result": "Resultado",
+    "invalid": "Escribe un número."
   }
 }

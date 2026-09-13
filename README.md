@@ -26,6 +26,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Name generator** / 名字与用户名. [Open](https://cv.cm/en/names/)
 - **Time zone converter** / 时区转换. [Open](https://cv.cm/en/timezone/)
 - **Lorem ipsum** / 占位文本. [Open](https://cv.cm/en/lorem/)
+- **Unit converter** / 单位换算. [Open](https://cv.cm/en/units/)
 
 ## Lessons
 

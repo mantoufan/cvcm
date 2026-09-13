@@ -65,7 +65,9 @@
     "titleTimezone": "Timezone converter — UTC, EST, PST — cv.cm",
     "descTimezone": "Convert a time between time zones in the browser. IANA zones, daylight saving, UTC offset. Nothing is uploaded.",
     "titleLorem": "Lorem ipsum generator — cv.cm",
-    "descLorem": "Generate lorem ipsum placeholder text in the browser. Paragraphs, sentences, or words. Nothing is uploaded."
+    "descLorem": "Generate lorem ipsum placeholder text in the browser. Paragraphs, sentences, or words. Nothing is uploaded.",
+    "titleUnits": "Unit converter — cm to inches, kg to lbs, °C to °F — cv.cm",
+    "descUnits": "Convert length, weight, temperature, volume, area, and speed in the browser. cm to inches, kg to lbs. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -480,6 +482,10 @@
     "lorem": {
       "name": "Lorem ipsum",
       "blurb": "Classic placeholder paragraphs, sentences, or words. Copy in this tab."
+    },
+    "units": {
+      "name": "Unit converter",
+      "blurb": "cm to inches, kg to lbs, °C to °F. Length, mass, volume, area, speed. On-device."
     }
   },
   "watermark": {
@@ -1111,6 +1117,18 @@
       "a4": "No. The text is built from a local word list in this tab.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the whole block on the clipboard so you can paste it into a mockup."
+    },
+    "units": {
+      "q1": "How do I convert units?",
+      "a1": "Choose a category, a from-unit and a to-unit, then type a number. The result updates in this tab.",
+      "q2": "Can I convert cm to inches?",
+      "a2": "Yes. Length includes mm, cm, m, km, inches, feet, yards, and miles.",
+      "q3": "What about Celsius and Fahrenheit?",
+      "a3": "Temperature converts among °C, °F, and kelvin, including the offset, not just a scale factor.",
+      "q4": "Are these US or imperial gallons?",
+      "a4": "Volume uses US customary cups, fluid ounces, and gallons. Length and mass use the international yard and pound.",
+      "q5": "Is anything uploaded?",
+      "a5": "No. The arithmetic runs in this tab. Closing it discards the numbers."
     }
   },
   "qr": {
@@ -1353,5 +1371,28 @@
     "copy": "Copy",
     "copied": "Copied",
     "output": "Text"
+  },
+  "units": {
+    "title": "Unit converter",
+    "back": "All tools",
+    "privacyNote": "Conversion uses fixed SI factors in this tab. Nothing is uploaded.",
+    "options": "Options",
+    "kindLabel": "Kind",
+    "kind": {
+      "length": "Length",
+      "mass": "Weight",
+      "temperature": "Temperature",
+      "volume": "Volume",
+      "area": "Area",
+      "speed": "Speed"
+    },
+    "value": "Value",
+    "from": "From",
+    "to": "To",
+    "swap": "Swap",
+    "copy": "Copy",
+    "copied": "Copied",
+    "result": "Result",
+    "invalid": "Enter a number."
   }
 }

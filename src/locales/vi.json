@@ -65,7 +65,9 @@
     "titleTimezone": "Đổi múi giờ — UTC, EST, PST — cv.cm",
     "descTimezone": "Đổi một thời điểm sang múi giờ khác trong trình duyệt. Múi IANA, giờ mùa hè, lệch UTC. Không tải lên.",
     "titleLorem": "Tạo chữ lorem ipsum — cv.cm",
-    "descLorem": "Tạo đoạn lorem ipsum trong trình duyệt. Đoạn, câu hoặc từ. Không tải lên."
+    "descLorem": "Tạo đoạn lorem ipsum trong trình duyệt. Đoạn, câu hoặc từ. Không tải lên.",
+    "titleUnits": "Đổi đơn vị — cm sang inch, kg sang lbs, °C sang °F — cv.cm",
+    "descUnits": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong trình duyệt. cm sang inch. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -188,6 +190,10 @@
     "lorem": {
       "name": "Lorem ipsum",
       "blurb": "Đoạn, câu hoặc từ giữ chỗ cổ điển. Sao chép trong tab này."
+    },
+    "units": {
+      "name": "Đổi đơn vị",
+      "blurb": "cm sang inch, kg sang lbs, °C sang °F. Dài, nặng, thể tích, diện tích, tốc độ. Trên máy."
     }
   },
   "watermark": {
@@ -819,6 +825,18 @@
       "a4": "Không. Chữ được ghép từ danh sách từ trong tab này.",
       "q5": "Sao chép kết quả được không?",
       "a5": "Được. Sao chép đưa cả khối vào clipboard để dán vào bản nháp."
+    },
+    "units": {
+      "q1": "Đổi đơn vị thế nào?",
+      "a1": "Chọn loại, đơn vị nguồn và đơn vị đích, rồi nhập số. Kết quả cập nhật trong tab này.",
+      "q2": "Đổi cm sang inch được không?",
+      "a2": "Được. Chiều dài có mm, cm, m, km, inch, feet, yard và dặm.",
+      "q3": "Độ C và độ F thì sao?",
+      "a3": "Nhiệt độ đổi giữa °C, °F và kelvin, gồm cả độ lệch, không chỉ nhân hệ số.",
+      "q4": "Gallon là Mỹ hay Anh?",
+      "a4": "Thể tích dùng cup, fl oz và gallon Mỹ. Chiều dài và khối lượng dùng yard/pound quốc tế.",
+      "q5": "Có tải lên không?",
+      "a5": "Không. Phép tính chạy trong tab này, đóng là mất."
     }
   },
   "qr": {
@@ -1353,5 +1371,28 @@
     "copy": "Sao chép",
     "copied": "Đã sao chép",
     "output": "Văn bản"
+  },
+  "units": {
+    "title": "Đổi đơn vị",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đổi bằng hệ số SI trong tab này. Không tải lên.",
+    "options": "Tùy chọn",
+    "kindLabel": "Loại",
+    "kind": {
+      "length": "Chiều dài",
+      "mass": "Khối lượng",
+      "temperature": "Nhiệt độ",
+      "volume": "Thể tích",
+      "area": "Diện tích",
+      "speed": "Tốc độ"
+    },
+    "value": "Giá trị",
+    "from": "Từ",
+    "to": "Đến",
+    "swap": "Đổi chỗ",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "result": "Kết quả",
+    "invalid": "Hãy nhập một số."
   }
 }
