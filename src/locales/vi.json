@@ -49,7 +49,11 @@
     "titleOnePageSite": "Làm trang một trang có nút thanh toán — cv.cm",
     "descOnePageSite": "Cuối tuần: tên, một câu, nút Stripe hoặc PayPal. Không phải khóa lập trình.",
     "titleCompressPdf": "Nén PDF — cv.cm",
-    "descCompressPdf": "Thu nhỏ PDF trong trình duyệt bằng cách mã hóa lại từng trang thành JPEG. Không tải lên."
+    "descCompressPdf": "Thu nhỏ PDF trong trình duyệt bằng cách mã hóa lại từng trang thành JPEG. Không tải lên.",
+    "titleSplitPdf": "Tách PDF — cv.cm",
+    "descSplitPdf": "Tách PDF thành từng trang, hoặc lấy một khoảng trang, trong trình duyệt. Không tải lên.",
+    "titleNames": "Tạo tên và tên người dùng — cv.cm",
+    "descNames": "Tạo tên và username ngẫu nhiên trong tab này. Không tài khoản, không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -156,6 +160,14 @@
     "compress-pdf": {
       "name": "Nén PDF",
       "blurb": "Mã hóa lại trang PDF thành JPEG. Trên máy."
+    },
+    "split-pdf": {
+      "name": "Tách PDF",
+      "blurb": "Mỗi trang một PDF, hoặc lấy 1-3,5. Trên máy."
+    },
+    "names": {
+      "name": "Tạo tên",
+      "blurb": "Tên và username ngẫu nhiên. Sao chép danh sách. Không tải lên."
     }
   },
   "watermark": {
@@ -691,6 +703,30 @@
       "a4": "Không. Trang thành ảnh.",
       "q5": "Chất lượng và độ phân giải?",
       "a5": "Chất lượng là nén JPEG. 1× nhỏ hơn; 2× nét hơn nhưng nặng."
+    },
+    "split-pdf": {
+      "q1": "Tách PDF theo trang được không?",
+      "a1": "Được. Mỗi trang thành một PDF, nhiều trang thì ZIP.",
+      "q2": "Chỉ giữ vài trang?",
+      "a2": "Được. Gõ 1-3,5 rồi tải một PDF chỉ gồm các trang đó.",
+      "q3": "Có tải lên không?",
+      "a3": "Không. pdf-lib chạy trong tab này.",
+      "q4": "PDF mã hóa?",
+      "a4": "Thường không được. Hãy mở khóa trước.",
+      "q5": "Giữ bookmark?",
+      "a5": "Trang được chép. Bookmark và form có thể mất."
+    },
+    "names": {
+      "q1": "Đây là tạo tên?",
+      "a1": "Có. Tạo tên+họ hoặc username ngẫu nhiên trong tab này.",
+      "q2": "Có phải người thật?",
+      "a2": "Không. Tổ hợp ngẫu nhiên cho mock, game, biệt danh — không phải danh tính pháp lý.",
+      "q3": "Có username không?",
+      "a3": "Có. Tính từ + danh từ, đôi khi có số.",
+      "q4": "Có tải lên không?",
+      "a4": "Không. Web Crypto bốc thăm trên máy.",
+      "q5": "Chép cả danh sách?",
+      "a5": "Có. Sao chép danh sách đưa mọi dòng vào clipboard."
     }
   },
   "qr": {
@@ -1040,5 +1076,40 @@
     "errorDecode": "Không đọc được PDF này.",
     "emptyDownload": "Hãy thêm PDF trước.",
     "working": "Đang nén…"
+  },
+  "splitPdf": {
+    "title": "Tách PDF",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tách trong tab này. Không tải lên.",
+    "dropTitle": "Thả PDF vào đây",
+    "dropHint": "hoặc bấm để chọn",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Lưu mỗi trang một file, hoặc chỉ giữ một khoảng.",
+    "download": "Tải xuống",
+    "exportTitle": "Tách",
+    "mode": "Cách",
+    "modeEach": "Mỗi trang một file (ZIP)",
+    "modeRange": "Lấy khoảng trang",
+    "range": "Trang",
+    "meta": "{name} · {pages} trang",
+    "errorDecode": "Không đọc được PDF này.",
+    "errorRange": "Kiểm tra khoảng trang, ví dụ 1-3,5.",
+    "emptyDownload": "Hãy thêm PDF trước.",
+    "working": "Đang tách…"
+  },
+  "names": {
+    "title": "Tạo tên và username",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tên được tạo ngẫu nhiên trong tab này, không phải danh tính thật.",
+    "options": "Tùy chọn",
+    "kind": "Loại",
+    "kindPerson": "Tên người",
+    "kindUser": "Username",
+    "count": "Số lượng",
+    "generate": "Tạo",
+    "copy": "Sao chép danh sách",
+    "copied": "Đã sao chép",
+    "output": "Kết quả"
   }
 }

@@ -49,7 +49,11 @@
     "titleOnePageSite": "做一个能收款的一页网站 — cv.cm",
     "descOnePageSite": "周末一页站：名字、一句话、Stripe 或 PayPal 按钮。不是编程课。",
     "titleCompressPdf": "压缩 PDF — cv.cm",
-    "descCompressPdf": "在浏览器里把每一页重编码成 JPEG，缩小 PDF。文件不上传。"
+    "descCompressPdf": "在浏览器里把每一页重编码成 JPEG，缩小 PDF。文件不上传。",
+    "titleSplitPdf": "拆分 PDF — cv.cm",
+    "descSplitPdf": "把 PDF 按页拆成多个文件，或抽出指定页。浏览器完成本地处理，不上传。",
+    "titleNames": "名字与用户名生成器 — cv.cm",
+    "descNames": "在当前标签页随机生成人名和用户名。无需账号，不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -156,6 +160,14 @@
     "compress-pdf": {
       "name": "压缩 PDF",
       "blurb": "把 PDF 页面重编码为 JPEG。本机处理。"
+    },
+    "split-pdf": {
+      "name": "拆分 PDF",
+      "blurb": "一页一个 PDF，或抽出 1-3,5。本机处理。"
+    },
+    "names": {
+      "name": "名字生成",
+      "blurb": "随机人名和用户名。可复制列表。不上传。"
     }
   },
   "watermark": {
@@ -691,6 +703,30 @@
       "a4": "不能。页面变成图片，文字不可再选。",
       "q5": "质量和分辨率是什么？",
       "a5": "质量是 JPEG 压缩。1× 更小，2× 更清晰也更大。"
+    },
+    "split-pdf": {
+      "q1": "能把 PDF 按页拆开吗？",
+      "a1": "可以。每一页变成单独的 PDF，多页会打成 ZIP。",
+      "q2": "能只留某几页吗？",
+      "a2": "可以。填写 1-3,5 这样的范围，下载一份只含这些页的 PDF。",
+      "q3": "文件会上传吗？",
+      "a3": "不会。pdf-lib 在当前标签页运行。",
+      "q4": "加密 PDF 可以吗？",
+      "a4": "经常不行。请先解密。",
+      "q5": "书签还在吗？",
+      "a5": "会复制页面。书签和表单可能会丢掉。"
+    },
+    "names": {
+      "q1": "这是名字生成器吗？",
+      "a1": "是。在当前标签页随机组合名+姓，或生成用户名。",
+      "q2": "这些是真人吗？",
+      "a2": "不是。只是随机组合，用于草稿、游戏或网名，不是法定身份。",
+      "q3": "能生成用户名吗？",
+      "a3": "可以。切到用户名，会得到形容词+名词，有时带数字。",
+      "q4": "会上传吗？",
+      "a4": "不会。用本机 Web Crypto 抽随机数。",
+      "q5": "能一次复制全部吗？",
+      "a5": "可以。复制列表会把每一行放进剪贴板。"
     }
   },
   "qr": {
@@ -1040,5 +1076,40 @@
     "errorDecode": "浏览器无法读取这份 PDF。",
     "emptyDownload": "请先添加 PDF。",
     "working": "正在压缩…"
+  },
+  "splitPdf": {
+    "title": "拆分 PDF",
+    "back": "全部工具",
+    "privacyNote": "拆分只在当前标签页，不会上传。",
+    "dropTitle": "把 PDF 拖到这里",
+    "dropHint": "或点击选择",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "每页各存一份，或只保留一个页码范围。",
+    "download": "下载",
+    "exportTitle": "拆分",
+    "mode": "方式",
+    "modeEach": "一页一个文件（ZIP）",
+    "modeRange": "抽出页码范围",
+    "range": "页码",
+    "meta": "{name} · {pages} 页",
+    "errorDecode": "无法读取这份 PDF。",
+    "errorRange": "请检查页码，例如 1-3,5。",
+    "emptyDownload": "请先添加 PDF。",
+    "working": "正在拆分…"
+  },
+  "names": {
+    "title": "名字与用户名生成器",
+    "back": "全部工具",
+    "privacyNote": "名字在当前标签页随机生成，不是真实身份。",
+    "options": "选项",
+    "kind": "类型",
+    "kindPerson": "人名",
+    "kindUser": "用户名",
+    "count": "数量",
+    "generate": "生成",
+    "copy": "复制列表",
+    "copied": "已复制",
+    "output": "结果"
   }
 }

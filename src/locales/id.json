@@ -49,7 +49,11 @@
     "titleOnePageSite": "Buat situs satu halaman dengan tautan bayar — cv.cm",
     "descOnePageSite": "Akhir pekan: nama, satu kalimat, tombol Stripe atau PayPal. Bukan kursus pemrograman.",
     "titleCompressPdf": "Kompres PDF — cv.cm",
-    "descCompressPdf": "Kecilkan PDF di browser dengan mengkode ulang halaman jadi JPEG. Tanpa unggah."
+    "descCompressPdf": "Kecilkan PDF di browser dengan mengkode ulang halaman jadi JPEG. Tanpa unggah.",
+    "titleSplitPdf": "Pisah PDF — cv.cm",
+    "descSplitPdf": "Pisah PDF per halaman, atau ambil rentang halaman, di browser. Tanpa unggah.",
+    "titleNames": "Pembuat nama dan username — cv.cm",
+    "descNames": "Buat nama dan username acak di tab ini. Tanpa akun, tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -156,6 +160,14 @@
     "compress-pdf": {
       "name": "Kompres PDF",
       "blurb": "Kode ulang halaman PDF jadi JPEG. Di perangkat."
+    },
+    "split-pdf": {
+      "name": "Pisah PDF",
+      "blurb": "Satu PDF per halaman, atau ambil 1-3,5. Di perangkat."
+    },
+    "names": {
+      "name": "Pembuat nama",
+      "blurb": "Nama dan username acak. Salin daftar. Tanpa unggah."
     }
   },
   "watermark": {
@@ -691,6 +703,30 @@
       "a4": "Tidak. Halaman menjadi gambar.",
       "q5": "Kualitas dan resolusi?",
       "a5": "Kualitas adalah kompresi JPEG. 1× lebih kecil; 2× lebih tajam dan berat."
+    },
+    "split-pdf": {
+      "q1": "Bisa pisah PDF per halaman?",
+      "a1": "Ya. Tiap halaman jadi PDF sendiri, beberapa halaman jadi ZIP.",
+      "q2": "Hanya beberapa halaman?",
+      "a2": "Ya. Isi 1-3,5 lalu unduh satu PDF berisi halaman itu.",
+      "q3": "Diunggah?",
+      "a3": "Tidak. pdf-lib berjalan di tab ini.",
+      "q4": "PDF terenkripsi?",
+      "a4": "Sering gagal. Buka kuncinya dulu.",
+      "q5": "Bookmark tetap ada?",
+      "a5": "Halaman disalin. Bookmark dan formulir bisa hilang."
+    },
+    "names": {
+      "q1": "Ini pembuat nama?",
+      "a1": "Ya. Nama depan+belakang atau username acak di tab ini.",
+      "q2": "Orang sungguhan?",
+      "a2": "Bukan. Kombinasi acak untuk mock, game, atau handle — bukan identitas legal.",
+      "q3": "Bisa username?",
+      "a3": "Ya. Kata sifat+benda, kadang ada angka.",
+      "q4": "Diunggah?",
+      "a4": "Tidak. Web Crypto mengundi di perangkat.",
+      "q5": "Salin semua?",
+      "a5": "Ya. Salin daftar menaruh setiap baris ke papan klip."
     }
   },
   "qr": {
@@ -1040,5 +1076,40 @@
     "errorDecode": "PDF ini tidak bisa dibaca.",
     "emptyDownload": "Tambah PDF dulu.",
     "working": "Mengompres…"
+  },
+  "splitPdf": {
+    "title": "Pisah PDF",
+    "back": "Semua alat",
+    "privacyNote": "Pemisanahan di tab ini. Tanpa unggah.",
+    "dropTitle": "Letakkan PDF di sini",
+    "dropHint": "atau klik untuk memilih",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Simpan tiap halaman, atau hanya rentang tertentu.",
+    "download": "Unduh",
+    "exportTitle": "Pisah",
+    "mode": "Mode",
+    "modeEach": "Satu file per halaman (ZIP)",
+    "modeRange": "Ambil rentang",
+    "range": "Halaman",
+    "meta": "{name} · {pages} halaman",
+    "errorDecode": "PDF ini tidak bisa dibaca.",
+    "errorRange": "Periksa rentang, misalnya 1-3,5.",
+    "emptyDownload": "Tambah PDF dulu.",
+    "working": "Memisah…"
+  },
+  "names": {
+    "title": "Pembuat nama dan username",
+    "back": "Semua alat",
+    "privacyNote": "Nama diacak di tab ini, bukan identitas nyata.",
+    "options": "Opsi",
+    "kind": "Jenis",
+    "kindPerson": "Nama orang",
+    "kindUser": "Username",
+    "count": "Jumlah",
+    "generate": "Buat",
+    "copy": "Salin daftar",
+    "copied": "Tersalin",
+    "output": "Hasil"
   }
 }

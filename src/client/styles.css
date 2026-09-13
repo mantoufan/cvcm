@@ -709,6 +709,14 @@ input[type="color"] {
   background: #fff7fb;
 }
 .color-stage { display: grid; gap: 0.7rem; }
+.name-list {
+  margin: 0;
+  padding: 0 0 0 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 1.05rem;
+}
+.name-list li { padding: 0.15rem 0; }
 .audio-thumb {
   width: 42px;
   height: 42px;

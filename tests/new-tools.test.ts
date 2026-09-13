@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { charsetFor, entropyBits, generatePassword } from "../src/shared/password";
 import { encodeQr, qrSize, qrVersion } from "../src/shared/qr";
 import { countText } from "../src/shared/word-count";
+import { generateName, generateNames } from "../src/shared/names";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -43,6 +44,14 @@ describe("word count", () => {
     expect(countText("  ").words).toBe(0);
     expect(countText("one.\n\ntwo!").paragraphs).toBe(2);
     expect(countText("abc").chars).toBe(3);
+  });
+});
+
+describe("names", () => {
+  it("makes person names and usernames", () => {
+    expect(generateName("person")).toMatch(/^[A-Z][a-z]+ [A-Z][A-Za-z]+$/);
+    expect(generateName("username")).toMatch(/^[a-z]+[a-z]+\d*$/);
+    expect(generateNames("username", 8)).toHaveLength(8);
   });
 });
 

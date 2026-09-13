@@ -22,6 +22,8 @@ Browser tools plus a tiny cloud clipboard.
 - **PDF to JPG** / PDF 转图片. [Open](https://cv.cm/en/pdf-jpg/)
 - **Merge PDF** / 合并 PDF. [Open](https://cv.cm/en/merge-pdf/)
 - **Compress PDF** / 压缩 PDF. [Open](https://cv.cm/en/compress-pdf/)
+- **Split PDF** / 拆分 PDF. [Open](https://cv.cm/en/split-pdf/)
+- **Name generator** / 名字与用户名. [Open](https://cv.cm/en/names/)
 
 ## Lessons
 

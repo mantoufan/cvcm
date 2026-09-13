@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, pdf-jpg, merge-pdf, compress-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, pdf-jpg, merge-pdf, compress-pdf, split-pdf) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -33,6 +33,8 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/pdf-jpg/` — PDF to JPG / PNG / WebP
 - `src/client/merge-pdf/` — merge PDFs
 - `src/client/compress-pdf/` — compress PDF by re-encoding pages
+- `src/client/split-pdf/` — split PDF by page or range
+- `src/client/names/` — name and username generator
 - `src/client/learn/` — same-day lessons (phone photos, court, pool safety, one-page site)
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`)
 - `src/shared/md.ts` — markdown/html render + highlight

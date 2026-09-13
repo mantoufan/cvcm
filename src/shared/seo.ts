@@ -53,11 +53,13 @@ const TITLE: Record<ToolId, string> = {
   "pdf-jpg": "meta.titlePdfJpg",
   "merge-pdf": "meta.titleMergePdf",
   "compress-pdf": "meta.titleCompressPdf",
+  "split-pdf": "meta.titleSplitPdf",
   audio: "meta.titleAudio",
   data: "meta.titleData",
   password: "meta.titlePassword",
   "word-count": "meta.titleWordCount",
   color: "meta.titleColor",
+  names: "meta.titleNames",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -72,11 +74,13 @@ const DESC: Record<ToolId, string> = {
   "pdf-jpg": "meta.descPdfJpg",
   "merge-pdf": "meta.descMergePdf",
   "compress-pdf": "meta.descCompressPdf",
+  "split-pdf": "meta.descSplitPdf",
   audio: "meta.descAudio",
   data: "meta.descData",
   password: "meta.descPassword",
   "word-count": "meta.descWordCount",
   color: "meta.descColor",
+  names: "meta.descNames",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

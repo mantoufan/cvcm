@@ -49,7 +49,11 @@
     "titleOnePageSite": "Make a one-page website with a payment link — cv.cm",
     "descOnePageSite": "A weekend one-page site: your name, one sentence, a Stripe or PayPal button. Not a programming course.",
     "titleCompressPdf": "Compress PDF — cv.cm",
-    "descCompressPdf": "Shrink a PDF in the browser by re-encoding pages as JPEG. Nothing is uploaded."
+    "descCompressPdf": "Shrink a PDF in the browser by re-encoding pages as JPEG. Nothing is uploaded.",
+    "titleSplitPdf": "Split PDF — cv.cm",
+    "descSplitPdf": "Split a PDF into one file per page, or extract a page range, in the browser. Nothing is uploaded.",
+    "titleNames": "Name and username generator — cv.cm",
+    "descNames": "Generate random names and usernames in this tab. No account. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -329,6 +333,14 @@
     "compress-pdf": {
       "name": "Compress PDF",
       "blurb": "Re-encode PDF pages as JPEG. Smaller file, on-device."
+    },
+    "split-pdf": {
+      "name": "Split PDF",
+      "blurb": "One PDF per page, or extract 1–3,5. On-device."
+    },
+    "names": {
+      "name": "Name generator",
+      "blurb": "Random names and usernames. Copy a list. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -864,6 +876,30 @@
       "a4": "No. Pages become images, so text is no longer selectable.",
       "q5": "What do quality and resolution do?",
       "a5": "Quality is JPEG compression. 1× is smaller; 2× is sharper and heavier."
+    },
+    "split-pdf": {
+      "q1": "Can I split a PDF into pages?",
+      "a1": "Yes. Each page becomes its own PDF, packed in a ZIP when there are several.",
+      "q2": "Can I keep only some pages?",
+      "a2": "Yes. Use a range like 1-3,5 and download one PDF with those pages.",
+      "q3": "Is the file uploaded?",
+      "a3": "No. pdf-lib runs in this tab.",
+      "q4": "Are encrypted PDFs supported?",
+      "a4": "Often not. Unlock the file first.",
+      "q5": "Do bookmarks survive?",
+      "a5": "Pages are copied. Bookmarks and forms may be dropped."
+    },
+    "names": {
+      "q1": "Is this a name generator?",
+      "a1": "Yes. It makes random given+family names or usernames in this tab.",
+      "q2": "Are these real people?",
+      "a2": "No. They are random combinations for mockups, games, or handles — not legal identities.",
+      "q3": "Can I get usernames?",
+      "a3": "Yes. Switch to username for adjective+noun handles, sometimes with digits.",
+      "q4": "Is anything uploaded?",
+      "a4": "No. Generation uses Web Crypto locally.",
+      "q5": "Can I copy the whole list?",
+      "a5": "Yes. Copy list puts every line on the clipboard."
     }
   },
   "qr": {
@@ -1040,5 +1076,40 @@
     "errorDecode": "Could not read this PDF in the browser.",
     "emptyDownload": "Add a PDF first.",
     "working": "Compressing…"
+  },
+  "splitPdf": {
+    "title": "Split PDF",
+    "back": "All tools",
+    "privacyNote": "Splitting stays in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop a PDF here",
+    "dropHint": "or click to choose",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Save every page as its own PDF, or keep only a range.",
+    "download": "Download",
+    "exportTitle": "Split",
+    "mode": "Mode",
+    "modeEach": "One file per page (ZIP)",
+    "modeRange": "Extract a range",
+    "range": "Pages",
+    "meta": "{name} · {pages} pages",
+    "errorDecode": "Could not read this PDF.",
+    "errorRange": "Check the page range, like 1-3,5.",
+    "emptyDownload": "Add a PDF first.",
+    "working": "Splitting…"
+  },
+  "names": {
+    "title": "Name and username generator",
+    "back": "All tools",
+    "privacyNote": "Names are random in this tab. They are not real identities.",
+    "options": "Options",
+    "kind": "Kind",
+    "kindPerson": "Person name",
+    "kindUser": "Username",
+    "count": "How many",
+    "generate": "Generate",
+    "copy": "Copy list",
+    "copied": "Copied",
+    "output": "Results"
   }
 }

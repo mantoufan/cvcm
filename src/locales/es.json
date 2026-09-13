@@ -49,7 +49,11 @@
     "titleOnePageSite": "Una página web que pueda cobrar — cv.cm",
     "descOnePageSite": "Un fin de semana: nombre, una frase, botón de Stripe o PayPal. No es un curso de programación.",
     "titleCompressPdf": "Comprimir PDF — cv.cm",
-    "descCompressPdf": "Reduce un PDF en el navegador recodificando cada página como JPEG. Nada se sube."
+    "descCompressPdf": "Reduce un PDF en el navegador recodificando cada página como JPEG. Nada se sube.",
+    "titleSplitPdf": "Dividir PDF — cv.cm",
+    "descSplitPdf": "Parte un PDF en un archivo por página, o extrae un rango, en el navegador. Nada se sube.",
+    "titleNames": "Generador de nombres y usuarios — cv.cm",
+    "descNames": "Genera nombres y usuarios al azar en esta pestaña. Sin cuenta. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -156,6 +160,14 @@
     "compress-pdf": {
       "name": "Comprimir PDF",
       "blurb": "Recodifica páginas PDF a JPEG. En el dispositivo."
+    },
+    "split-pdf": {
+      "name": "Dividir PDF",
+      "blurb": "Un PDF por página, o extrae 1-3,5. En el dispositivo."
+    },
+    "names": {
+      "name": "Generador de nombres",
+      "blurb": "Nombres y usuarios aleatorios. Copia la lista. Nada se sube."
     }
   },
   "watermark": {
@@ -691,6 +703,30 @@
       "a4": "No. Las páginas pasan a ser imágenes.",
       "q5": "¿Qué hacen calidad y resolución?",
       "a5": "La calidad es compresión JPEG. 1× es más pequeño; 2× es más nítido y pesado."
+    },
+    "split-pdf": {
+      "q1": "¿Puedo partir un PDF en páginas?",
+      "a1": "Sí. Cada página es un PDF; si hay varias, van en un ZIP.",
+      "q2": "¿Solo algunas páginas?",
+      "a2": "Sí. Usa un rango como 1-3,5 y descarga un PDF con esas páginas.",
+      "q3": "¿Se sube el archivo?",
+      "a3": "No. pdf-lib corre en esta pestaña.",
+      "q4": "¿PDFs cifrados?",
+      "a4": "A menudo no. Desbloquéalo primero.",
+      "q5": "¿Quedan los marcadores?",
+      "a5": "Se copian las páginas. Marcadores y formularios pueden perderse."
+    },
+    "names": {
+      "q1": "¿Es un generador de nombres?",
+      "a1": "Sí. Crea nombres (nombre+apellido) o usuarios al azar en esta pestaña.",
+      "q2": "¿Son personas reales?",
+      "a2": "No. Combinaciones aleatorias para maquetas, juegos o nicks, no identidades legales.",
+      "q3": "¿Puedo generar usuarios?",
+      "a3": "Sí. Adjetivo+sustantivo, a veces con dígitos.",
+      "q4": "¿Se sube algo?",
+      "a4": "No. Web Crypto sortea en el dispositivo.",
+      "q5": "¿Copio toda la lista?",
+      "a5": "Sí. Copiar lista pone cada línea en el portapapeles."
     }
   },
   "qr": {
@@ -1040,5 +1076,40 @@
     "errorDecode": "No se pudo leer este PDF.",
     "emptyDownload": "Añade un PDF primero.",
     "working": "Comprimiendo…"
+  },
+  "splitPdf": {
+    "title": "Dividir PDF",
+    "back": "Todas las herramientas",
+    "privacyNote": "La división queda en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta un PDF aquí",
+    "dropHint": "o haz clic para elegir",
+    "dropTypes": "PDF",
+    "filesTitle": "PDF",
+    "hint": "Guarda cada página o quédate solo con un rango.",
+    "download": "Descargar",
+    "exportTitle": "Dividir",
+    "mode": "Modo",
+    "modeEach": "Un archivo por página (ZIP)",
+    "modeRange": "Extraer un rango",
+    "range": "Páginas",
+    "meta": "{name} · {pages} páginas",
+    "errorDecode": "No se pudo leer este PDF.",
+    "errorRange": "Revisa el rango, p. ej. 1-3,5.",
+    "emptyDownload": "Añade un PDF primero.",
+    "working": "Dividiendo…"
+  },
+  "names": {
+    "title": "Generador de nombres y usuarios",
+    "back": "Todas las herramientas",
+    "privacyNote": "Los nombres se eligen al azar aquí. No son identidades reales.",
+    "options": "Opciones",
+    "kind": "Tipo",
+    "kindPerson": "Nombre de persona",
+    "kindUser": "Usuario",
+    "count": "Cantidad",
+    "generate": "Generar",
+    "copy": "Copiar lista",
+    "copied": "Copiado",
+    "output": "Resultados"
   }
 }

@@ -5,6 +5,7 @@ import { mountConvert, unmountConvert } from "./convert/ui";
 import { mountData, unmountData } from "./data/ui";
 import { mountColor, unmountColor } from "./color/ui";
 import { mountCrop, unmountCrop } from "./crop/ui";
+import { mountNames, unmountNames } from "./names/ui";
 import { mountPassword, unmountPassword } from "./password/ui";
 import { mountQr, unmountQr } from "./qr/ui";
 import { mountResize, unmountResize } from "./resize/ui";
@@ -44,6 +45,7 @@ let learnHub = false;
 let unmountPdfJpg = (): void => {};
 let unmountMergePdf = (): void => {};
 let unmountCompressPdf = (): void => {};
+let unmountSplitPdf = (): void => {};
 
 boot();
 window.addEventListener("popstate", () => render());
@@ -127,15 +129,18 @@ function unmountTools(): void {
   unmountQr();
   unmountPassword();
   unmountWordCount();
+  unmountNames();
   unmountColor();
   unmountResize();
   unmountCrop();
   unmountPdfJpg();
   unmountMergePdf();
   unmountCompressPdf();
+  unmountSplitPdf();
   unmountPdfJpg = (): void => {};
   unmountMergePdf = (): void => {};
   unmountCompressPdf = (): void => {};
+  unmountSplitPdf = (): void => {};
 }
 
 function render(): void {
@@ -213,6 +218,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "qr") mountQr(main);
   else if (tool === "password") mountPassword(main);
   else if (tool === "word-count") mountWordCount(main);
+  else if (tool === "names") mountNames(main);
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
@@ -228,6 +234,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const mod = await import("./compress-pdf/ui");
     unmountCompressPdf = mod.unmountCompressPdf;
     await mod.mountCompressPdf(main);
+  } else if (tool === "split-pdf") {
+    const mod = await import("./split-pdf/ui");
+    unmountSplitPdf = mod.unmountSplitPdf;
+    await mod.mountSplitPdf(main);
   } else if (learnHub) mountLearnHub(main);
   else if (tutorial) mountLearn(main, tutorial);
   else mountHome(main, loc);
