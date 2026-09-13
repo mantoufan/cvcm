@@ -25,15 +25,15 @@ export const TOOL_COVER: Record<ToolId, string> = {
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
-  portrait: "/covers/learn-portrait-sweet.jpg?v=1",
-  algorithms: "/covers/learn-algorithms-sweet.jpg?v=1",
-  "phone-photos": "/covers/learn-phone-photos-sweet.jpg?v=1",
-  "window-light": "/covers/learn-window-light-sweet.jpg?v=1",
-  "crop-compose": "/covers/learn-crop-compose-sweet.jpg?v=1",
+  portrait: "/covers/tutorials/portrait-frames.svg",
+  algorithms: "/covers/tutorials/algorithm-map.svg",
+  "phone-photos": "/covers/tutorials/phone-focus.svg",
+  "window-light": "/covers/tutorials/window-setup.svg",
+  "crop-compose": "/covers/tutorials/crop-ratios.svg",
   "badminton-warmup": "/covers/learn-badminton-warmup-sweet.jpg?v=1",
   "badminton-rules": "/covers/learn-badminton-rules-sweet.jpg?v=1",
   "pool-safety": "/covers/learn-pool-safety-sweet.jpg?v=1",
-  "one-page-site": "/covers/learn-one-page-site-sweet.jpg?v=1",
+  "one-page-site": "/covers/tutorials/site-structure.svg",
   "healthy-boundaries": "/covers/learn-healthy-boundaries-sweet.jpg?v=1",
   "read-character": "/covers/learn-read-character-sweet.jpg?v=1",
 };

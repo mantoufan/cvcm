@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LEARN_COVER } from "../src/shared/covers";
-import { ALGO_SNIPPETS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
+import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
 import { LOCALES } from "../src/shared/locale";
 import {
   TOOLS,
@@ -73,24 +73,24 @@ describe("learn routes", () => {
 describe("learn SEO", () => {
   it("uses keyword titles and HowTo plus FAQ JSON-LD", () => {
     expect(pageTitle("en", { learn: true, tutorial: "phone-photos" })).toMatch(/phone photography/i);
-    expect(pageTitle("en", { learn: true })).toMatch(/Photography and practical tutorials/i);
+    expect(pageTitle("en", { learn: true })).toMatch(/Simple illustrated tutorials/i);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "pool-safety" })).toBe(
       "https://cv.cm/zh-cn/learn/pool-safety/",
     );
     for (const id of TUTORIALS) {
       expect(learnFaqItems("en", id).length, id).toBe(5);
       expect(TUTORIAL_META[id].minutes).toBeGreaterThan(5);
-      expect(LEARN_COVER[id]).toContain("/covers/learn-");
+      expect(LEARN_COVER[id]).toContain("/covers/");
       const how = howToJsonLd("en", id);
       expect(how["@type"]).toBe("HowTo");
       expect((how.step as unknown[]).length).toBe(tutorialSteps(id));
     }
     expect(tutorialSteps("portrait")).toBe(10);
     expect(howToJsonLd("en", "portrait").step).toHaveLength(10);
-    expect(pageTitle("en", { learn: true, tutorial: "portrait" })).toMatch(/portrait photography practice/i);
-    expect(pageTitle("en", { learn: true, tutorial: "algorithms" })).toMatch(/algorithms practice/i);
+    expect(pageTitle("en", { learn: true, tutorial: "portrait" })).toMatch(/portrait photography, simply/i);
+    expect(pageTitle("en", { learn: true, tutorial: "algorithms" })).toMatch(/Algorithm basics, simply/i);
     const out = applyHtmlSeo(html, "en", { learn: true, tutorial: "phone-photos" });
-    expect(out).toContain("phone photography practice");
+    expect(out).toContain("Phone photography, simply");
     expect(out).toContain("HowTo");
     expect(out).toContain("FAQPage");
     expect(out).toContain("og:image");
@@ -138,7 +138,7 @@ describe("learn worker", () => {
     const course = await worker.fetch(new Request("https://cv.cm/en/learn/portrait/"), { ASSETS: assets });
     const courseBody = await course.text();
     expect(course.status).toBe(200);
-    expect(courseBody).toContain("portrait photography practice");
+    expect(courseBody).toContain("Portrait photography, simply");
     expect(courseBody).toContain("HowTo");
 
     const read = await worker.fetch(new Request("https://cv.cm/en/learn/read-character/"), { ASSETS: assets });
@@ -172,4 +172,18 @@ describe("edited learning collection", () => {
     expect(countdown(3)).toEqual([3, 2, 1]);
     expect(countdown(0)).toEqual([]);
   });
+});
+
+
+it("places instructional diagrams at valid tutorial steps", () => {
+  for (const id of FEATURED_TUTORIALS) {
+    const diagrams = TUTORIAL_DIAGRAMS[id];
+    expect(diagrams?.length, id).toBeGreaterThanOrEqual(2);
+    for (const diagram of diagrams!) {
+      expect(diagram.step).toBeGreaterThan(0);
+      expect(diagram.step).toBeLessThanOrEqual(tutorialSteps(id));
+      const step = (howToJsonLd("zh-CN", id).step as { image?: string }[])[diagram.step - 1];
+      expect(step.image).toBe(`https://cv.cm${diagram.src}`);
+    }
+  }
 });

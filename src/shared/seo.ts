@@ -7,7 +7,7 @@ import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import { LEARN_COVER, TOOL_COVER, coverUrl } from "./covers";
-import { TUTORIAL_META, tutorialSteps } from "./learn";
+import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
 import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
 
@@ -193,6 +193,8 @@ export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string
     steps.push({
       "@type": "HowToStep",
       position: i,
+      ...(TUTORIAL_DIAGRAMS[tutorial]?.find((d) => d.step === i)
+        ? { image: coverUrl(TUTORIAL_DIAGRAMS[tutorial]!.find((d) => d.step === i)!.src) } : {}),
       name: lookup(locale, `learn.${tutorial}.s${i}t`),
       text: lookup(locale, `learn.${tutorial}.s${i}b`),
       url: `${pageCanonical(locale, { learn: true, tutorial })}#step-${i}`,
@@ -203,7 +205,6 @@ export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string
     "@type": "HowTo",
     name: lookup(locale, `learn.${tutorial}.title`),
     description: lookup(locale, `learn.${tutorial}.lead`),
-    totalTime: `PT${TUTORIAL_META[tutorial].minutes}M`,
     image: coverUrl(LEARN_COVER[tutorial]),
     step: steps,
   };

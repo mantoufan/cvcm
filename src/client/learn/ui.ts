@@ -1,8 +1,8 @@
-import { COVER, LEARN_FIG } from "../covers";
+import { COVER, LEARN_COVER, LEARN_FIG } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
-import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
+import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
 import { appHref, learnHref, TUTORIAL_GROUPS, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
@@ -42,17 +42,11 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       h("p", { class: "lede" }, t(`learn.${id}.lead`)),
     ),
     h("div", { class: "learn" + (course ? " is-course" : "") },
-      h("div", { class: "learn-meta" },
-        h("span", { class: "pill" }, t("learn.minutes", { n: meta.minutes })),
-        course ? h("span", { class: "pill" }, t("learn.sitting")) : null,
-        h("p", { class: "learn-result" },
-          h("strong", null, t("learn.resultLabel")),
-          " ",
-          t(`learn.${id}.result`),
-        ),
+      h("p", { class: "learn-intro" }, t(`learn.${id}.note`)),
+      h("details", { class: "learn-contents" },
+        h("summary", null, t("learn.toc")),
+        toc(id, nums),
       ),
-      h("aside", { class: "learn-note" }, t(`learn.${id}.note`)),
-      toc(id, nums),
       h("ol", { class: "learn-steps" },
         ...nums.map((n) =>
           h("li", { id: `step-${n}`, class: "learn-step" },
@@ -62,10 +56,6 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
             n === 1 && id === "one-page-site" ? siteSnippet() : null,
           ),
         ),
-      ),
-      h("section", { class: "learn-practice" },
-        h("h2", null, t("learn.practiceLabel")),
-        h("p", null, t(`learn.${id}.practice`)),
       ),
       TUTORIAL_SOURCES[id] ? h("section", { class: "learn-related" },
         h("h2", null, t("learn.sources")),
@@ -102,11 +92,10 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
     href: learnHref(loc, id),
     "data-nav": `learn-${id}`,
   },
+    h("div", { class: "tile-cover" },
+      h("img", { src: LEARN_COVER[id], alt: t(`learn.${id}.name`), width: "960", height: "540", loading: "lazy" }),
+    ),
     h("div", { class: "tile-body" },
-      h("p", { class: "tile-time" },
-        t("learn.minutes", { n: TUTORIAL_META[id].minutes }),
-        TUTORIAL_META[id].kind === "course" ? ` · ${t("learn.sitting")}` : "",
-      ),
       h("h3", null, t(`learn.${id}.name`)),
       h("p", null, t(`learn.${id}.blurb`)),
     ),
@@ -136,12 +125,21 @@ function toc(id: TutorialId, nums: number[]): HTMLElement {
 }
 
 function stepMedia(id: TutorialId, n: number, fallback: string | undefined): HTMLElement | null {
+  const diagrams = TUTORIAL_DIAGRAMS[id];
+  const index = diagrams?.findIndex((diagram) => diagram.step === n) ?? -1;
+  if (diagrams && index >= 0) {
+    const caption = t(`learn.${id}.diagram${index + 1}`);
+    return h("figure", { class: "learn-fig learn-diagram" },
+      h("img", { src: diagrams[index].src, alt: caption, width: "960", height: "540", loading: "lazy" }),
+      h("figcaption", null, caption),
+    );
+  }
   const meta = TUTORIAL_META[id];
   const src = meta.figByStep?.[n];
   if (src) return figure(id, src, n);
   const codeKey = meta.codeByStep?.[n];
   if (codeKey) return codeBlock(ALGO_SNIPPETS[codeKey]);
-  if (n === 2) return stepFigure(id, fallback);
+  if (!diagrams && n === 2) return stepFigure(id, fallback);
   return null;
 }
 

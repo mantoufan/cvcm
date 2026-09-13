@@ -1057,3 +1057,13 @@ body {
   .learn-hero, .learn-step { border-radius: 18px; }
   .crop-box { width: 58%; left: 8%; }
 }
+
+/* Illustrated tutorials: concise prose with figures beside the relevant steps. */
+.learn-intro { margin: 0; color: var(--ink-soft); line-height: 1.7; }
+.learn-contents { border-bottom: 1px solid #ead4de; padding-bottom: 0.75rem; }
+.learn-contents summary { cursor: pointer; color: #a13f6c; font-weight: 600; }
+.learn-contents nav > h2 { display: none; }
+.learn-contents ol { padding-left: 1.5rem; line-height: 1.8; }
+.learn-step p { line-height: 1.8; }
+.learn-diagram img { border: 1px solid #ead4de; border-radius: 12px; object-fit: contain; }
+.learn-diagram figcaption { line-height: 1.6; }

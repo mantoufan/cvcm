@@ -1035,7 +1035,9 @@
       "s5b": "Benda meja, pintu, orang atau hewan, tekstur, sudut jalan, makanan, detail. Ketuk fokus, tahan untuk kunci AE/AF.",
       "practice": "Buka Potong gambar dan ekspor tiga 4:5. Objek utama di sepertiga atas.",
       "figAlt": "Ponsel memotret mawar dan cangkir di dekat jendela, dengan kisi sepertiga.",
-      "figCap": "Bunga di sepertiga, bukan tepat di tengah. Cahaya dari jendela."
+      "figCap": "Bunga di sepertiga, bukan tepat di tengah. Cahaya dari jendela.",
+      "diagram1": "Put the focus box on the subject, then adjust the exposure slider.",
+      "diagram2": "Dark, balanced and bright exposure diagrams. Preserve texture rather than simply making everything brighter."
     },
     "window-light": {
       "name": "Cahaya jendela",
@@ -1056,7 +1058,9 @@
       "s5b": "Perubahan sudut kecil lebih penting daripada filter. Ambil, geser 15 cm, ambil lagi.",
       "practice": "Foto boneka atau orang di dekat jendela. Potong yang terbaik di Potong gambar.",
       "figAlt": "Kelinci boneka di meja dekat jendela terang, cahaya samping.",
-      "figCap": "Cahaya jendela samping: satu sisi terang, satu bayangan lembut. Tanpa lampu ekstra."
+      "figCap": "Cahaya jendela samping: satu sisi terang, satu bayangan lembut. Tanpa lampu ekstra.",
+      "diagram1": "Top view: window at upper left, subject in the middle, camera in front; white card on the right can fill shadows.",
+      "diagram2": "From front light to side light, shadows increase. These direction diagrams simplify the effect; window size and distance also matter."
     },
     "crop-compose": {
       "name": "Potong untuk feed",
@@ -1077,7 +1081,9 @@
       "s5b": "Unduh JPG atau WebP dari persegi yang dipilih. Ulangi untuk dua foto lagi.",
       "practice": "Ambil tujuh dari kartu iPhone dan simpan tiga crop yang akan Anda posting.",
       "figAlt": "Buket mawar dengan persegi 4:5 di atas bunga terkuat.",
-      "figCap": "Bingkai putih adalah 4:5. Meja ekstra di tepi boleh hilang."
+      "figCap": "Bingkai putih adalah 4:5. Meja ekstra di tepi boleh hilang.",
+      "diagram1": "The same subject in square, portrait and wide frames; each ratio preserves a different area.",
+      "diagram2": "The dark outline marks the retained area. The output ratio can differ from the original."
     },
     "badminton-warmup": {
       "name": "Pemanasan bulu tangkis",
@@ -1164,7 +1170,9 @@
       "s5b": "Kirim. Opsional: buat QR URL dengan alat QR di cv.cm.",
       "practice": "Terbitkan halaman akhir pekan ini. Tagih satu hal kecil (cetakan, satu jam, satu kelas) atau hanya booking.",
       "figAlt": "Templat situs satu halaman.",
-      "figCap": "Tiga ubahan: nama, kalimat, URL bayar."
+      "figCap": "Tiga ubahan: nama, kalimat, URL bayar.",
+      "diagram1": "HTML h1, p and a become the page heading, introduction and button.",
+      "diagram2": "Local HTML → hosting with an HTTPS URL → open on a phone or browser."
     },
     "healthy-boundaries": {
       "name": "Batas sehat",
@@ -1224,7 +1232,10 @@
       "s9b": "Window (side light), tree shade (soft overhead), cafe table (glass and foreground). Same person, same clothes, three backgrounds. That is a set.",
       "s10t": "Crop 4:5 and keep three",
       "s10b": "In Crop image, export three 4:5 frames: full-length, waist-up, clothing detail. Eyes on the upper third.",
-      "practice": "Book one adult who agreed. Shoot the three locations. Crop three 4:5 frames before you go home."
+      "practice": "Book one adult who agreed. Shoot the three locations. Crop three 4:5 frames before you go home.",
+      "diagram1": "Full length shows the silhouette, half length emphasizes the person, and a detail shows texture.",
+      "diagram2": "A background line through the head distracts. Move the camera so the line clears the face and head.",
+      "diagram3": "Top view: window at upper left, subject in the middle, camera in front; white card on the right can fill shadows."
     },
     "algorithms": {
       "name": "Algorithms",
@@ -1254,7 +1265,10 @@
       "s9b": "A model can emit binary search. It cannot sit with you when the off-by-one lands. This sitting is so you can see the bug.",
       "s10t": "Three traces, then stop",
       "s10b": "On paper or in Text & data: twoSum([2, 7, 11, 15], 9); binarySearch([1, 3, 4, 8, 12], 8); countdown(3). One sentence each: why the map, why the midpoint, why the stop.",
-      "practice": "Write the three traces. Keep them in Cloud clipboard if you want. Do not collect 100 algorithm names today."
+      "practice": "Write the three traces. Keep them in Cloud clipboard if you want. Do not collect 100 algorithm names today.",
+      "diagram1": "Target 9: record 2 at index 0; on reaching 7, find 2 and return indices [0,1].",
+      "diagram2": "Find 8: compare 4, then keep the right half. Pale empty cells represent discarded positions.",
+      "diagram3": "Each call decreases n by 1. Stop at zero and return the collected [3,2,1]."
     },
     "sitting": "Sekali duduk",
     "toc": "Dalam duduk ini",
