@@ -5,7 +5,7 @@
     "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
     "titleWatermark": "Thêm watermark vào ảnh — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
-    "description": "Công cụ trong trình duyệt và bài học miễn phí: ảnh điện thoại, khởi động cầu lông và tính điểm, an toàn hồ bơi, trang một trang. Ảnh và PDF không tải lên.",
+    "description": "Công cụ trình duyệt trên máy cộng bài học miễn phí trong ngày: ảnh điện thoại, khởi động và luật cầu lông, an toàn hồ bơi, trang một trang, ranh giới. Ảnh và PDF ở lại tab này.",
     "titleConvert": "HEIC sang JPG, WebP sang PNG, JPG sang PNG — cv.cm",
     "descConvert": "Đổi HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO trong trình duyệt. Có thể thu nhỏ. Không tải lên.",
     "titleImagePdf": "JPG sang PDF, PNG sang PDF — cv.cm",
@@ -32,8 +32,8 @@
     "descPdfJpg": "Từng trang PDF thành JPG, PNG hoặc WebP. Một trang hoặc ZIP. Không tải lên.",
     "titleMergePdf": "Gộp PDF — cv.cm",
     "descMergePdf": "Gộp nhiều PDF thành một trong trình duyệt. Đổi thứ tự. Không tải lên.",
-    "titleLearn": "Bài học trong ngày — ảnh điện thoại, sân, an toàn hồ bơi, một trang — cv.cm",
-    "descLearn": "Thẻ luyện tập miễn phí. Ảnh iPhone, khởi động và giao bóng cầu lông, an toàn hồ bơi (không phải khóa bơi), trang một trang nhận thanh toán.",
+    "titleLearn": "Bài học trong ngày — ảnh điện thoại, sân, an toàn hồ bơi, một trang, ranh giới — cv.cm",
+    "descLearn": "Thẻ luyện tập miễn phí. Ảnh iPhone, khởi động và giao bóng cầu lông, an toàn hồ bơi (không phải khóa bơi), trang một trang nhận thanh toán, ranh giới (không phải trị liệu).",
     "titlePhonePhotos": "Mẹo chụp iPhone — 7 tấm hôm nay — cv.cm",
     "descPhonePhotos": "20 phút: lưới, ánh sáng, lại gần, bảy tấm đáng đăng. Miễn phí. Không tải lên.",
     "titleWindowLight": "Chụp chân dung ánh sáng cửa sổ bằng điện thoại — cv.cm",
@@ -53,7 +53,9 @@
     "titleSplitPdf": "Tách PDF — cv.cm",
     "descSplitPdf": "Tách PDF thành từng trang, hoặc lấy một khoảng trang, trong trình duyệt. Không tải lên.",
     "titleNames": "Tạo tên và tên người dùng — cv.cm",
-    "descNames": "Tạo tên và username ngẫu nhiên trong tab này. Không tài khoản, không tải lên."
+    "descNames": "Tạo tên và username ngẫu nhiên trong tab này. Không tài khoản, không tải lên.",
+    "titleHealthyBoundaries": "Ranh giới lành mạnh — 15 phút trong ngày — cv.cm",
+    "descHealthyBoundaries": "15 phút: tin chậm, một quan sát, hai câu từ chối. Không phải trị liệu, không phải đánh nhau. Miễn phí."
   },
   "brand": "cv.cm",
   "nav": {
@@ -79,7 +81,7 @@
   "home": {
     "kicker": "Bộ công cụ trên máy",
     "title": "Công cụ trình duyệt, thêm bài học trong ngày",
-    "lead": "Cắt, chuyển, chia sẻ trong tab này. Thẻ miễn phí 10–20 phút: ảnh điện thoại, khởi động sân, an toàn hồ bơi, trang một trang. Không đăng ký.",
+    "lead": "Cắt, chuyển, chia sẻ trong tab này. Thẻ miễn phí 10–20 phút: ảnh điện thoại, khởi động sân, an toàn hồ bơi, trang một trang, ranh giới. Không đăng ký.",
     "cta": "Xem công cụ",
     "points": {
       "local": {
@@ -690,6 +692,18 @@
         "a4": "Cloudflare Pages hoặc GitHub Pages. Chỉ cần link thì Notion công khai cũng được.",
         "q5": "Đây là khóa lập trình?",
         "a5": "Không. Một dự án cuối tuần. Miễn phí trên cv.cm."
+      },
+      "healthy-boundaries": {
+        "q1": "Làm sao đặt ranh giới lành mạnh ở chỗ làm?",
+        "a1": "Bớt trải lòng, xem họ đối xử thế nào với người mất thế, từ chối hai câu, nhóm lạnh đi thì đừng tự trách. Thẻ 15 phút này là bài tập đó.",
+        "q2": "Đây có phải khóa tâm lý hay trị liệu?",
+        "a2": "Không. Thẻ luyện miễn phí trong ngày. Không chẩn đoán, không điều trị. Nếu đang rất khổ, hãy gặp chuyên gia có giấy phép. Trang này không thay được.",
+        "q3": "Có nên cắt đứt người khó chịu?",
+        "a3": "Đừng làm nước cờ đầu, cũng đừng diễn công khai. Khoảng cách và câu trả lời nhạt thường đủ. Cắt đứt kịch tính là báo họ: bạn giờ là kẻ thù.",
+        "q4": "Gray rock là gì?",
+        "a4": "Câu trả lời ngắn, chán, không cho chuyện ngồi lê vật liệu. Bạn không phải giải thích cảm xúc cho người đang thu thập chúng.",
+        "q5": "Có thể giữ thẻ luyện riêng không?",
+        "a5": "Có. Clipboard đám mây trên cv.cm giữ được ghi chú. Xóa sau 10 lượt xem hoặc 24 giờ. Đừng viết tên thật người khác nếu không muốn lộ."
       }
     },
     "compress-pdf": {
@@ -894,14 +908,15 @@
       "photo": "Ảnh",
       "court": "Sân",
       "water": "Hồ bơi",
-      "code": "Một trang"
+      "code": "Một trang",
+      "mind": "Tâm lý"
     },
     "hub": {
       "kicker": "Bài học trong ngày",
       "title": "Một kết quả hôm nay, không phải siêu thị khóa học",
-      "lead": "Nhu cầu bắt đầu nhanh là có thật. Catalog rẻ hứa bạn sẽ biết đánh cầu hay bơi thì không. Mỗi thẻ là một bài luyện xong trong ngày. Ảnh để đăng. Khởi động và tính điểm — không hứa bạn sẽ đánh. An toàn hồ bơi — không phải khóa bơi. Một trang cuối tuần nhận thanh toán. Miễn phí.",
+      "lead": "Nhu cầu bắt đầu nhanh là thật. Catalog rẻ hứa bạn sẽ chơi cầu lông hay bơi thì không. Mỗi thẻ ở đây là một bài luyện xong hôm nay. Ảnh đăng được. Khởi động và điểm sân — không hứa bạn sẽ chơi. An toàn hồ bơi — không phải khóa bơi. Trang cuối tuần nhận thanh toán. Thẻ ranh giới 15 phút — không phải trị liệu. Miễn phí.",
       "menu": "Tất cả bài học",
-      "blurb": "Bảy thẻ trong ngày. Miễn phí.",
+      "blurb": "Tám thẻ trong ngày. Miễn phí.",
       "all": "Xem tất cả"
     },
     "phone-photos": {
@@ -1053,6 +1068,30 @@
       "practice": "Đăng trang cuối tuần này. Thu một thứ nhỏ (bản in, một giờ, một buổi) hoặc chỉ nhận đặt chỗ.",
       "figAlt": "Mẫu trang một trang.",
       "figCap": "Ba chỗ: tên, câu, URL thanh toán."
+    },
+    "healthy-boundaries": {
+      "name": "Ranh giới",
+      "blurb": "Tin chậm, một câu từ chối, không tự minh oan.",
+      "title": "15 phút luyện ranh giới lành mạnh",
+      "lead": "Không cần sách trăm mẹo đấu đá. Hôm nay bốn việc: đừng trải lòng ngày đầu, xem họ đối xử thế nào với người mất thế, từ chối hai câu, bị lạnh nhạt thì đừng tự đánh mình.",
+      "result": "Một thẻ: ba điều không nói tuần này, một câu từ chối, một quan sát.",
+      "note": "Thẻ luyện trong ngày, không phải trị liệu, không phải chẩn đoán, không dạy đánh đồng nghiệp. Miễn phí trên cv.cm.",
+      "s1t": "Đừng coi mọi người là bạn ngay ngày đầu",
+      "s1b": "Ấm áp không phải quyền truy cập. Chào hỏi thì được; lương, chuyện nhà, nhận xét đồng nghiệp để dành khi thời gian và hành vi xứng đáng. Bí mật nói ra không lấy lại được.",
+      "s2t": "Xem họ đối xử thế nào với người mất thế",
+      "s2b": "Khi A xuống và B lên, nhân cách lộ ra. Lòng trung thành theo quyền lực là dữ liệu. Viết một quan sát. Đừng công bố là bạn đã nhìn thấu.",
+      "s3t": "Đừng cắn mồi",
+      "s3b": "Buôn chuyện, quan tâm giả, “cậu thái quá” đều là móc. Một câu ngắn, nhạt — “không rõ” hoặc “thôi” — rồi đi. Để họ biết bạn đã nhìn thấu chỉ thêm nhiên liệu.",
+      "s4t": "Từ chối trong hai câu",
+      "s4b": "Không bài văn, không chồng lời xin lỗi. “Tôi không làm được.” Có thể thêm một sự thật. Người chỉ tôn trọng bạn khi bạn co lại sẽ thử lời giải thích dài.",
+      "s5t": "Bị cô lập hay sỉ nhục: đừng tự tấn công",
+      "s5b": "Nhóm lạnh nhạt thường về họ, không phải khuyết điểm giấu trong bạn. Đừng viết thú tội để lấy lại. Đừng tự minh oan mình tốt. Dùng giờ đó cho việc của mình.",
+      "practice": "Mở clipboard đám mây. Viết ba điều không nói tuần này, một câu từ chối bạn thật sự nói được, một quan sát (có thể bỏ tên). Giữ tờ giấy; đừng gửi.",
+      "figAlt": "Ba nhắc nhở: tin chậm, đừng cắn mồi, đừng tự minh oan.",
+      "figCap": "Ba bước luyện hôm nay. Không bước nào cần đối đầu.",
+      "icon1": "Tin chậm",
+      "icon2": "Đừng cắn mồi",
+      "icon3": "Đừng tự minh oan"
     }
   },
   "compressPdf": {

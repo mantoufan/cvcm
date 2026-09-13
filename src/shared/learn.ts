@@ -3,7 +3,7 @@ import type { ToolId, TutorialId } from "./path";
 export type TutorialMeta = {
   minutes: number;
   related: ToolId[];
-  figure?: "thirds" | "window" | "crop" | "court" | "pool" | "site";
+  figure?: "thirds" | "window" | "crop" | "court" | "pool" | "site" | "mind";
 };
 
 export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
@@ -41,6 +41,11 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     minutes: 60,
     related: ["data", "clip", "qr"],
     figure: "site",
+  },
+  "healthy-boundaries": {
+    minutes: 15,
+    related: ["clip"],
+    figure: "mind",
   },
 };
 

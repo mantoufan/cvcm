@@ -5,7 +5,7 @@
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
     "titleWatermark": "Tambah watermark ke foto — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
-    "description": "Alat di peramban plus pelajaran gratis: foto ponsel, pemanasan dan skor bulu tangkis, keselamatan kolam, situs satu halaman. Gambar dan PDF tidak diunggah.",
+    "description": "Alat peramban di perangkat plus pelajaran gratis hari ini: foto ponsel, pemanasan dan aturan bulu tangkis, keselamatan kolam, situs satu halaman, dan batas sehat. File gambar dan PDF tetap di tab ini.",
     "titleConvert": "HEIC ke JPG, WebP ke PNG, JPG ke PNG — cv.cm",
     "descConvert": "Ubah HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO di browser. Bisa perkecil. Tanpa unggah.",
     "titleImagePdf": "JPG ke PDF dan PNG ke PDF — cv.cm",
@@ -32,8 +32,8 @@
     "descPdfJpg": "Halaman PDF jadi JPG, PNG, atau WebP. Satu halaman atau ZIP. Tanpa unggah.",
     "titleMergePdf": "Gabung PDF — cv.cm",
     "descMergePdf": "Gabungkan beberapa PDF jadi satu di browser. Urutan bisa diubah. Tanpa unggah.",
-    "titleLearn": "Pelajaran hari ini — foto ponsel, lapangan, keselamatan kolam, satu halaman — cv.cm",
-    "descLearn": "Kartu latihan gratis. Foto iPhone, pemanasan dan servis bulu tangkis, keselamatan kolam (bukan kursus renang), situs satu halaman yang bisa menerima bayaran.",
+    "titleLearn": "Pelajaran hari ini — foto ponsel, lapangan, keselamatan kolam, satu halaman, batas — cv.cm",
+    "descLearn": "Kartu latihan gratis. Foto iPhone, pemanasan dan servis bulu tangkis, keselamatan kolam (bukan kursus renang), situs satu halaman yang bisa menerima bayaran, batas sehat (bukan terapi).",
     "titlePhonePhotos": "Tips foto iPhone — 7 foto hari ini — cv.cm",
     "descPhonePhotos": "Latihan 20 menit: kisi, cahaya, mendekat, tujuh foto yang pantas diposting. Gratis. Tanpa unggah.",
     "titleWindowLight": "Potret cahaya jendela di ponsel — cv.cm",
@@ -53,7 +53,9 @@
     "titleSplitPdf": "Pisah PDF — cv.cm",
     "descSplitPdf": "Pisah PDF per halaman, atau ambil rentang halaman, di browser. Tanpa unggah.",
     "titleNames": "Pembuat nama dan username — cv.cm",
-    "descNames": "Buat nama dan username acak di tab ini. Tanpa akun, tanpa unggah."
+    "descNames": "Buat nama dan username acak di tab ini. Tanpa akun, tanpa unggah.",
+    "titleHealthyBoundaries": "Batas sehat di kantor — latihan hari ini — cv.cm",
+    "descHealthyBoundaries": "15 menit: percaya pelan, satu observasi, dua kalimat menolak. Bukan terapi dan bukan pertengkaran. Gratis."
   },
   "brand": "cv.cm",
   "nav": {
@@ -79,7 +81,7 @@
   "home": {
     "kicker": "Kit di perangkat",
     "title": "Alat peramban, plus pelajaran hari ini",
-    "lead": "Crop, konversi, dan bagikan di tab ini. Kartu gratis 10–20 menit: foto ponsel, pemanasan lapangan, keselamatan kolam, situs satu halaman. Tanpa daftar.",
+    "lead": "Crop, konversi, dan bagikan di tab ini. Kartu gratis 10–20 menit: foto ponsel, pemanasan lapangan, keselamatan kolam, situs satu halaman, batas sehat. Tanpa daftar.",
     "cta": "Lihat alat",
     "points": {
       "local": {
@@ -690,6 +692,18 @@
         "a4": "Cloudflare Pages atau GitHub Pages untuk URL publik. Halaman Notion publik juga jika hanya butuh tautan.",
         "q5": "Ini kursus pemrograman?",
         "a5": "Tidak. Proyek satu akhir pekan. Gratis di cv.cm."
+      },
+      "healthy-boundaries": {
+        "q1": "Bagaimana menata batas sehat di kantor?",
+        "a1": "Perlambat rahasia, lihat bagaimana orang memperlakukan yang jatuh, tolak dalam dua kalimat, dan jangan salahkan diri saat kelompok menjadi dingin. Kartu 15 menit ini adalah latihannya.",
+        "q2": "Ini kursus psikologi atau terapi?",
+        "a2": "Bukan. Kartu latihan gratis hari ini. Bukan diagnosis, bukan pengobatan. Jika benar-benar terpuruk, temui klinisi berizin. Halaman ini tidak menggantikannya.",
+        "q3": "Haruskah memutus orang yang sulit?",
+        "a3": "Bukan langkah pertama, dan bukan adegan publik. Jarak dan jawaban datar biasanya cukup. Putus dramatis memberi tahu mereka bahwa kamu sekarang musuh.",
+        "q4": "Apa itu gray rock?",
+        "a4": "Jawaban pendek dan membosankan yang tidak memberi gosip bahan. Kamu tidak wajib menjelaskan perasaan kepada orang yang sedang mengumpulkannya.",
+        "q5": "Bisakah kartu latihan disimpan pribadi?",
+        "a5": "Bisa. Papan klip awan di cv.cm bisa menampung catatan. Terhapus setelah 10 kali dilihat atau 24 jam. Jangan tulis nama orang lain jika tidak ingin bocor."
       }
     },
     "compress-pdf": {
@@ -894,14 +908,15 @@
       "photo": "Foto",
       "court": "Lapangan",
       "water": "Kolam",
-      "code": "Satu halaman"
+      "code": "Satu halaman",
+      "mind": "Psikologi"
     },
     "hub": {
       "kicker": "Pelajaran hari ini",
       "title": "Satu hasil hari ini, bukan supermarket kursus",
-      "lead": "Permintaan mulai cepat itu nyata. Katalog murah yang janji Anda akan bisa main bulu tangkis atau berenang bukan. Setiap kartu adalah latihan yang bisa selesai hari ini. Foto yang pantas diposting. Pemanasan dan skor — tidak janji Anda akan main. Keselamatan kolam — bukan kursus renang. Satu halaman akhir pekan yang bisa menerima bayaran. Gratis.",
+      "lead": "Kebutuhan mulai cepat itu nyata. Katalog murah yang janji kamu akan bermain bulu tangkis atau berenang bukan. Setiap kartu di sini adalah satu latihan yang bisa selesai hari ini. Foto yang bisa diunggah. Pemanasan dan skor lapangan — bukan janji kamu bisa bermain. Keselamatan kolam — bukan kursus renang. Halaman akhir pekan yang bisa menerima bayaran. Kartu batas 15 menit — bukan terapi. Gratis.",
       "menu": "Semua pelajaran",
-      "blurb": "Tujuh kartu hari ini. Gratis.",
+      "blurb": "Delapan kartu hari ini. Gratis.",
       "all": "Lihat semua"
     },
     "phone-photos": {
@@ -1053,6 +1068,30 @@
       "practice": "Terbitkan halaman akhir pekan ini. Tagih satu hal kecil (cetakan, satu jam, satu kelas) atau hanya booking.",
       "figAlt": "Templat situs satu halaman.",
       "figCap": "Tiga ubahan: nama, kalimat, URL bayar."
+    },
+    "healthy-boundaries": {
+      "name": "Batas sehat",
+      "blurb": "Percaya pelan, satu tidak, tanpa pembuktian diri.",
+      "title": "Latihan batas sehat 15 menit",
+      "lead": "Tidak perlu buku seratus tip perang kantor. Hari ini empat hal: jangan curhat di hari pertama, lihat sikap mereka pada orang yang jatuh, tolak dalam dua kalimat, dan jangan hantam diri saat dikucilkan.",
+      "result": "Satu kartu: tiga hal yang tidak akan kamu bagikan minggu ini, satu kalimat penolakan, satu observasi.",
+      "note": "Kartu latihan hari ini, bukan terapi, bukan diagnosis, bukan pelajaran berkelahi dengan rekan. Gratis di cv.cm.",
+      "s1t": "Jangan anggap semua orang teman di hari pertama",
+      "s1b": "Kehangatan bukan akses. Menyapa boleh; gaji, pertengkaran keluarga, dan pendapat tentang rekan ditahan sampai waktu dan perilaku pantas. Rahasia yang terucap tidak bisa ditarik.",
+      "s2t": "Lihat bagaimana mereka memperlakukan orang yang kehilangan status",
+      "s2b": "Watak muncul saat A jatuh dan B naik. Kesetiaan yang mengikuti kuasa adalah data. Tulis satu observasi. Jangan umumkan bahwa kamu sudah melihatnya.",
+      "s3t": "Jangan makan umpan",
+      "s3b": "Gosip, kepedulian palsu, dan “kamu berlebihan” adalah kail. Kalimat pendek dan datar — “kurang tahu” atau “ya sudah” — lalu pergi. Mengumumkan bahwa kamu sudah membacanya hanya menambah bahan bakar.",
+      "s4t": "Tolak dalam dua kalimat",
+      "s4b": "Tanpa esai, tanpa tumpukan maaf. “Saya tidak bisa.” Boleh plus satu fakta. Orang yang hanya menghormatimu saat kamu mengecil akan menguji penjelasan panjang.",
+      "s5t": "Dikucilkan atau dihina: jangan serang diri sendiri",
+      "s5b": "Dinginnya kelompok sering soal mereka, bukan cacat tersembunyi padamu. Jangan menulis pengakuan untuk memenangkan mereka kembali. Jangan membuktikan kamu baik. Pakai jam itu untuk pekerjaanmu.",
+      "practice": "Buka papan klip awan. Tulis tiga hal yang tidak akan kamu bagikan minggu ini, satu kalimat penolakan yang benar-benar bisa kamu ucapkan, dan satu observasi tanpa nama jika kamu mau. Simpan catatan; jangan kirim.",
+      "figAlt": "Tiga pengingat: percaya pelan, jangan makan umpan, jangan buktikan diri.",
+      "figCap": "Tiga langkah yang bisa dilatih hari ini. Tidak perlu konfrontasi.",
+      "icon1": "Percaya pelan",
+      "icon2": "Jangan makan umpan",
+      "icon3": "Jangan buktikan diri"
     }
   },
   "compressPdf": {

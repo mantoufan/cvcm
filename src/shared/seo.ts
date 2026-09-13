@@ -91,6 +91,7 @@ const LEARN_TITLE: Record<TutorialId, string> = {
   "badminton-rules": "meta.titleBadmintonRules",
   "pool-safety": "meta.titlePoolSafety",
   "one-page-site": "meta.titleOnePageSite",
+  "healthy-boundaries": "meta.titleHealthyBoundaries",
 };
 
 const LEARN_DESC: Record<TutorialId, string> = {
@@ -101,6 +102,7 @@ const LEARN_DESC: Record<TutorialId, string> = {
   "badminton-rules": "meta.descBadmintonRules",
   "pool-safety": "meta.descPoolSafety",
   "one-page-site": "meta.descOnePageSite",
+  "healthy-boundaries": "meta.descHealthyBoundaries",
 };
 
 export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}): string {

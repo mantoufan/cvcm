@@ -5,7 +5,7 @@
     "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
     "titleWatermark": "Añadir marca de agua a fotos — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
-    "description": "Herramientas en el navegador y lecciones gratis: fotos con el móvil, calentamiento y tanteo de bádminton, seguridad en la piscina, una página. Imagen y PDF no se suben.",
+    "description": "Herramientas en el navegador más lecciones gratis del mismo día: fotos de móvil, calentamiento y reglas de bádminton, seguridad en la piscina, una página y límites sanos. Imagen y PDF se quedan en esta pestaña.",
     "titleConvert": "HEIC a JPG, WebP a PNG, JPG a PNG — cv.cm",
     "descConvert": "Convierte HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP e ICO en el navegador. Puedes redimensionar. Nada se sube.",
     "titleImagePdf": "JPG a PDF y PNG a PDF — cv.cm",
@@ -32,8 +32,8 @@
     "descPdfJpg": "Pasa cada página PDF a JPG, PNG o WebP. Una página o un ZIP. Nada se sube.",
     "titleMergePdf": "Unir archivos PDF — cv.cm",
     "descMergePdf": "Junta varios PDF en uno en el navegador. Cambia el orden. Nada se sube.",
-    "titleLearn": "Lecciones del mismo día — fotos, pista, piscina, una página — cv.cm",
-    "descLearn": "Fichas de práctica gratis. Fotografía con iPhone, calentamiento y saque de bádminton, seguridad en la piscina (no es un curso de natación) y una página que puede cobrar.",
+    "titleLearn": "Lecciones del mismo día — fotos, pista, piscina, una página, límites — cv.cm",
+    "descLearn": "Fichas de práctica gratis. Fotografía con iPhone, calentamiento y saque de bádminton, seguridad en la piscina (no es un curso de natación), una página que puede cobrar y límites sanos (no es terapia).",
     "titlePhonePhotos": "Consejos de fotografía con iPhone — 7 tomas hoy — cv.cm",
     "descPhonePhotos": "Práctica de 20 minutos: cuadrícula, luz, acércate, siete fotos que publicarías. Gratis. Sin subir nada.",
     "titleWindowLight": "Retrato con luz de ventana en el móvil — cv.cm",
@@ -53,7 +53,9 @@
     "titleSplitPdf": "Dividir PDF — cv.cm",
     "descSplitPdf": "Parte un PDF en un archivo por página, o extrae un rango, en el navegador. Nada se sube.",
     "titleNames": "Generador de nombres y usuarios — cv.cm",
-    "descNames": "Genera nombres y usuarios al azar en esta pestaña. Sin cuenta. Nada se sube."
+    "descNames": "Genera nombres y usuarios al azar en esta pestaña. Sin cuenta. Nada se sube.",
+    "titleHealthyBoundaries": "Límites sanos en el trabajo — práctica del mismo día — cv.cm",
+    "descHealthyBoundaries": "15 minutos: confianza lenta, una observación, un no de dos frases. No es terapia ni una pelea. Gratis."
   },
   "brand": "cv.cm",
   "nav": {
@@ -79,7 +81,7 @@
   "home": {
     "kicker": "Kit en el dispositivo",
     "title": "Herramientas en el navegador, más lecciones del mismo día",
-    "lead": "Recorta, convierte y comparte en esta pestaña. Fichas gratis de 10–20 minutos: fotos, calentamiento, seguridad en la piscina y una página. Sin registro.",
+    "lead": "Recorta, convierte y comparte en esta pestaña. Fichas gratis de 10–20 minutos: fotos, calentamiento, seguridad en la piscina, una página y límites sanos. Sin registro.",
     "cta": "Ver herramientas",
     "points": {
       "local": {
@@ -690,6 +692,18 @@
         "a4": "Cloudflare Pages o GitHub Pages para una URL pública. Una página pública de Notion también vale si solo necesitas un enlace.",
         "q5": "¿Esto es un curso de programación?",
         "a5": "No. Es un proyecto de un fin de semana. Gratis en cv.cm."
+      },
+      "healthy-boundaries": {
+        "q1": "¿Cómo pongo límites sanos en el trabajo?",
+        "a1": "Menos secretos, observa cómo tratan a quien cae, di que no en dos frases y no te culpes si el grupo se enfría. Esta ficha de 15 minutos es esa práctica.",
+        "q2": "¿Es un curso de psicología o terapia?",
+        "a2": "No. Es una ficha de práctica gratis del mismo día. No es diagnóstico ni tratamiento. Si estás realmente mal, ve a un clínico colegiado. Esta página no lo sustituye.",
+        "q3": "¿Debo cortar a la gente difícil?",
+        "a3": "No como primer paso ni como escena pública. Distancia y respuestas sosas suelen bastar. Un corte dramático les dice que ahora eres enemigo.",
+        "q4": "¿Qué es gray rock?",
+        "a4": "Respuestas cortas y aburridas que no dan material al chisme. No tienes que explicar tus sentimientos a quien los está recolectando.",
+        "q5": "¿Puedo guardar la ficha en privado?",
+        "a5": "Sí. El portapapeles en la nube de cv.cm puede guardarla. Se borra a las 10 vistas o 24 horas. No pongas nombres reales si no quieres que se filtren."
       }
     },
     "compress-pdf": {
@@ -894,14 +908,15 @@
       "photo": "Fotos",
       "court": "Pista",
       "water": "Piscina",
-      "code": "Una página"
+      "code": "Una página",
+      "mind": "Mente"
     },
     "hub": {
       "kicker": "Lecciones del mismo día",
       "title": "Un resultado hoy, no un supermercado de cursos",
-      "lead": "La demanda de un arranque rápido es real. Un catálogo barato que promete que sabrás jugar o nadar no lo es. Cada ficha es una práctica que puedes terminar hoy. Fotos para publicar. Calentamiento y tanteo — no promete que jugarás. Seguridad en la piscina — no es un curso de natación. Una página de fin de semana que puede cobrar. Gratis.",
+      "lead": "La gana de un arranque rápido es real. Un catálogo barato que promete que jugarás al bádminton o nadarás no lo es. Cada ficha aquí es una práctica que puedes terminar hoy. Fotos para publicar. Calentamiento y tanteo — no una promesa de que jugarás. Seguridad en la piscina — no un curso de natación. Una página de fin de semana que puede cobrar. Una ficha de límites de 15 minutos — no terapia. Gratis.",
       "menu": "Todas las lecciones",
-      "blurb": "Siete fichas del mismo día. Gratis.",
+      "blurb": "Ocho fichas del mismo día. Gratis.",
       "all": "Ver todas"
     },
     "phone-photos": {
@@ -1053,6 +1068,30 @@
       "practice": "Publica la página este fin de semana. Cobra por una cosa pequeña (una copia, una hora, una clase) o solo reservas.",
       "figAlt": "Plantilla de un sitio de una página.",
       "figCap": "Tres cambios: nombre, frase, URL de pago."
+    },
+    "healthy-boundaries": {
+      "name": "Límites sanos",
+      "blurb": "Confianza lenta, un no, sin autojustificarte.",
+      "title": "Límites sanos en 15 minutos",
+      "lead": "No hace falta un libro de cien trucos de oficina. Hoy: no te abras el primer día, observa el carácter, di que no en dos frases y no te ataques si te aíslan.",
+      "result": "Una ficha: tres cosas que no contarás esta semana, una frase de rechazo, una observación.",
+      "note": "Es una ficha de práctica del mismo día, no terapia ni un diagnóstico. No enseña a pelear con compañeros. Gratis en cv.cm.",
+      "s1t": "No trates a todo el mundo como amigo el primer día",
+      "s1b": "El calor no es acceso. Saludar sí; sueldo, peleas de casa y opiniones sobre compañeros, hasta que el tiempo y la conducta lo merezcan. Un secreto dicho no se desdice.",
+      "s2t": "Mira cómo tratan a quien perdió estatus",
+      "s2b": "El carácter se ve cuando A cae y B sube. La lealtad que sigue al poder es dato. Escribe una observación. No anuncies que ya lo viste.",
+      "s3t": "No muerdas el anzuelo",
+      "s3b": "El chisme, la falsa preocupación y el “exageras” son ganchos. Una frase corta y sosa — “no sabría” o “bueno” — y te vas. Revelar que los has calado es más leña.",
+      "s4t": "Rechaza en dos frases",
+      "s4b": "Sin ensayo ni pila de disculpas. “No puedo hacer eso.” Opcional: un hecho. Quien solo te respeta cuando te achicas probará una explicación larga.",
+      "s5t": "Aislado o insultado: no te ataques",
+      "s5b": "El frío del grupo suele ser de ellos, no un defecto oculto tuyo. No escribas una confesión para recuperarlos. No demuestres que eres bueno. Usa esa hora en tu trabajo.",
+      "practice": "Abre el portapapeles en la nube. Escribe tres cosas que no compartirás esta semana, una frase de rechazo que sí puedas decir y una observación, sin nombres si quieres. Quédate la nota; no la envíes.",
+      "figAlt": "Tres recordatorios: confianza lenta, no morder el anzuelo, no autojustificarte.",
+      "figCap": "Tres gestos para practicar hoy. Ninguno pide un enfrentamiento.",
+      "icon1": "Confianza lenta",
+      "icon2": "No muerdas el anzuelo",
+      "icon3": "No te autojustifiques"
     }
   },
   "compressPdf": {

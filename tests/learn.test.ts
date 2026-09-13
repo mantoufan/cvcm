@@ -43,6 +43,12 @@ describe("learn routes", () => {
     });
     expect(learnHref("ja", null)).toBe("/ja/learn/");
     expect(learnHref("es", "one-page-site")).toBe("/es/learn/one-page-site/");
+    expect(parseAppPath("/zh-CN/learn/healthy-boundaries/")).toEqual({
+      kind: "learn",
+      locale: "zh-CN",
+      tutorial: "healthy-boundaries",
+    });
+    expect(learnHref("en", "healthy-boundaries")).toBe("/en/learn/healthy-boundaries/");
   });
 
   it("keeps tool routes unchanged", () => {
@@ -83,6 +89,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/en/learn/");
     expect(xml).toContain("https://cv.cm/zh-CN/learn/phone-photos/");
     expect(xml).toContain("https://cv.cm/es/learn/one-page-site/");
+    expect(xml).toContain("https://cv.cm/zh-CN/learn/healthy-boundaries/");
   });
 });
 
@@ -101,5 +108,11 @@ describe("learn worker", () => {
     const bare = await worker.fetch(new Request("https://cv.cm/learn/phone-photos"), { ASSETS: assets });
     expect(bare.status).toBe(302);
     expect(bare.headers.get("Location")).toBe("https://cv.cm/en/learn/phone-photos/");
+
+    const mind = await worker.fetch(new Request("https://cv.cm/en/learn/healthy-boundaries/"), { ASSETS: assets });
+    const mindBody = await mind.text();
+    expect(mind.status).toBe(200);
+    expect(mindBody).toContain("Healthy boundaries");
+    expect(mindBody).toContain("Not therapy");
   });
 });

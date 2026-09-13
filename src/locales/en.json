@@ -13,7 +13,7 @@
     "descAudio": "Convert MP3, M4A, OGG, AAC, and FLAC to WAV in the browser. Choose 44.1 or 48 kHz. Nothing is uploaded.",
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
-    "description": "On-device browser tools plus free same-day lessons: phone photos, badminton warmup and rules, pool safety, and a one-page site. Image and PDF files stay in this tab.",
+    "description": "On-device browser tools plus free same-day lessons: phone photos, badminton warmup and rules, pool safety, a one-page site, and healthy boundaries. Image and PDF files stay in this tab.",
     "descWatermark": "Add text or a logo watermark to photos in the browser. Batch export PNG, JPEG, or ZIP. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "QR code generator — cv.cm",
@@ -32,8 +32,8 @@
     "descPdfJpg": "Turn PDF pages into JPG, PNG, or WebP in the browser. Download one page or a ZIP. Nothing is uploaded.",
     "titleMergePdf": "Merge PDF files — cv.cm",
     "descMergePdf": "Combine several PDFs into one file in the browser. Reorder pages. Nothing is uploaded.",
-    "titleLearn": "Same-day lessons — phone photos, court, pool safety, one-page site — cv.cm",
-    "descLearn": "Free same-day practice cards. iPhone photography, badminton warmup and scoring, pool safety — not a swim class — and a one-page site that can take a payment.",
+    "titleLearn": "Same-day lessons — phone photos, court, pool safety, one-page site, boundaries — cv.cm",
+    "descLearn": "Free same-day practice cards. iPhone photography, badminton warmup and scoring, pool safety — not a swim class — a one-page site that can take a payment, and healthy boundaries — not therapy.",
     "titlePhonePhotos": "iPhone photography tips — 7 shots today — cv.cm",
     "descPhonePhotos": "A 20-minute iPhone photography practice: grid, light, get closer, seven shots you would actually post. Free. Nothing is uploaded.",
     "titleWindowLight": "Window light photography on a phone — cv.cm",
@@ -53,7 +53,9 @@
     "titleSplitPdf": "Split PDF — cv.cm",
     "descSplitPdf": "Split a PDF into one file per page, or extract a page range, in the browser. Nothing is uploaded.",
     "titleNames": "Name and username generator — cv.cm",
-    "descNames": "Generate random names and usernames in this tab. No account. Nothing is uploaded."
+    "descNames": "Generate random names and usernames in this tab. No account. Nothing is uploaded.",
+    "titleHealthyBoundaries": "Healthy boundaries at work — same-day practice — cv.cm",
+    "descHealthyBoundaries": "15 minutes: slow trust, one observation, a two-sentence no. Not therapy and not a fight. Free."
   },
   "brand": "cv.cm",
   "nav": {
@@ -79,7 +81,7 @@
   "home": {
     "kicker": "On-device toolkit",
     "title": "Browser tools, plus same-day lessons",
-    "lead": "Crop, convert, and share in this tab. Free 10–20 minute cards for phone photos, court warmup, pool safety, and a one-page site. No sign-up.",
+    "lead": "Crop, convert, and share in this tab. Free 10–20 minute cards for phone photos, court warmup, pool safety, a one-page site, and healthy boundaries. No sign-up.",
     "cta": "Browse tools",
     "points": {
       "local": {
@@ -108,14 +110,15 @@
       "photo": "Photos",
       "court": "Court",
       "water": "Water",
-      "code": "Code"
+      "code": "Code",
+      "mind": "Mind"
     },
     "hub": {
       "kicker": "Same-day lessons",
       "title": "One result today, not a course supermarket",
-      "lead": "Demand for a quick start is real. A cheap catalog that promises you will play badminton or swim is not. Each card here is one practice you can finish today. Photography you can post. Court warmup and scoring — not a promise you will play. Pool safety — not a swim class. A weekend page that can take a payment. Free.",
+      "lead": "Demand for a quick start is real. A cheap catalog that promises you will play badminton or swim is not. Each card here is one practice you can finish today. Photography you can post. Court warmup and scoring — not a promise you will play. Pool safety — not a swim class. A weekend page that can take a payment. A 15-minute boundary card — not therapy. Free.",
       "menu": "All lessons",
-      "blurb": "Seven same-day cards. Free.",
+      "blurb": "Eight same-day cards. Free.",
       "all": "See all"
     },
     "phone-photos": {
@@ -267,6 +270,30 @@
       "practice": "Publish the page this weekend. Charge for one small thing (a print, an hour, a class) or just collect bookings.",
       "figAlt": "A one-page website template.",
       "figCap": "Three edits: name, sentence, payment URL."
+    },
+    "healthy-boundaries": {
+      "name": "Healthy boundaries",
+      "blurb": "Slow trust, one no, no self-prove.",
+      "title": "Healthy boundaries in 15 minutes",
+      "lead": "You do not need a 100-tip office-war book. Today: stop oversharing, watch character, refuse in two sentences, and do not attack yourself when someone is unkind.",
+      "result": "A one-page card: three things you will not share this week, one refusal line, one observation.",
+      "note": "This is a same-day practice card, not therapy and not a personality diagnosis. It will not teach you to fight coworkers. Free on cv.cm.",
+      "s1t": "Do not treat everyone as a friend on day one",
+      "s1b": "Warmth is not the same as access. Greet people; keep salary, family fights, and opinions of coworkers off the table until time and behavior earn them. You cannot unsay a secret.",
+      "s2t": "Watch how they treat people who lost status",
+      "s2b": "Character shows when A is out and B is in. Loyalty that follows power is data. Write one observation. Do not announce that you have seen it.",
+      "s3t": "Do not take the bait",
+      "s3b": "Gossip, fake concern, and “you are overreacting” are hooks. A short, dull line — “I would not know” or “anyway” — and you leave. Revealing that you have seen through them is extra fuel.",
+      "s4t": "Refuse in two sentences",
+      "s4b": "No essay, no apology pile. “I cannot do that.” Optional: one fact. People who only respect you when you shrink will test a longer explanation.",
+      "s5t": "Isolated or insulted: do not self-attack",
+      "s5b": "Group coldness is often about them, not a hidden flaw in you. Do not write a confession to win them back. Do not prove you are good. Spend the hour on your own work.",
+      "practice": "Open Cloud clipboard. Write three things you will not share this week, one refusal line you can actually say, and one observation with no names if you prefer. Keep the note; do not send it.",
+      "figAlt": "Three reminders: slow trust, do not take the bait, do not self-prove.",
+      "figCap": "Three moves you can practice today. None of them need a confrontation.",
+      "icon1": "Slow trust",
+      "icon2": "Do not take the bait",
+      "icon3": "Do not self-prove"
     }
   },
   "tools": {
@@ -863,6 +890,18 @@
         "a4": "Cloudflare Pages or GitHub Pages for a public URL. A public Notion page also works if you only need a link.",
         "q5": "Is this a programming course?",
         "a5": "No. It is one weekend project. Free on cv.cm."
+      },
+      "healthy-boundaries": {
+        "q1": "How do I set healthy boundaries at work?",
+        "a1": "Slow the secrets, watch how people treat the out-of-favor, refuse in two sentences, and do not self-blame when a group goes cold. This 15-minute card is that practice.",
+        "q2": "Is this a psychology course or therapy?",
+        "a2": "No. It is a free same-day practice card. It is not diagnosis, not treatment, and not a substitute for a licensed clinician if you are in real distress.",
+        "q3": "Should I cut off difficult people?",
+        "a3": "Not as a first move, and not as a public scene. Distance and dull replies are usually enough. A dramatic break tells them you are now an enemy.",
+        "q4": "What is gray rock?",
+        "a4": "Short, boring replies that give gossip nothing to work with. You are not obliged to explain your feelings to someone collecting them.",
+        "q5": "Can I save the practice card privately?",
+        "a5": "Yes. Cloud clipboard on cv.cm can hold the note. It deletes after 10 views or 24 hours. Do not put other people’s names if you would not want that leaked."
       }
     },
     "compress-pdf": {

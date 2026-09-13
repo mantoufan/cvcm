@@ -29,6 +29,7 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "badminton-rules": "/covers/learn-badminton-rules-sweet.jpg?v=1",
   "pool-safety": "/covers/learn-pool-safety-sweet.jpg?v=1",
   "one-page-site": "/covers/learn-one-page-site-sweet.jpg?v=1",
+  "healthy-boundaries": "/covers/learn-healthy-boundaries-sweet.jpg?v=1",
 };
 
 export const LEARN_FIG: Partial<Record<TutorialId, string>> = {

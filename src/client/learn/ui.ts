@@ -125,7 +125,7 @@ function groupOf(id: TutorialId): string {
 function stepFigure(id: TutorialId, src: string | undefined): HTMLElement | null {
   const kind = TUTORIAL_META[id].figure;
   if (kind === "court") return courtFigure(id);
-  if (kind === "pool") return poolFigure(id);
+  if (kind === "pool" || kind === "mind") return poolFigure(id);
   if (!src) return null;
   return figure(id, src);
 }

@@ -9,7 +9,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
 5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
-6. Lessons are free same-day practice cards (photography first; court warmup/rules as aids; pool safety, not a swim class; one weekend page, not a coding course). Do not sell a multi-skill cheap course supermarket or promise that video will teach someone to play or swim.
+6. Lessons are free same-day practice cards (photography first; court warmup/rules as aids; pool safety, not a swim class; one weekend page, not a coding course; healthy boundaries, not therapy and not office warfare). Do not sell a multi-skill cheap course supermarket or promise that video will teach someone to play or swim.
 
 ## Layout
 
@@ -35,7 +35,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/compress-pdf/` — compress PDF by re-encoding pages
 - `src/client/split-pdf/` — split PDF by page or range
 - `src/client/names/` — name and username generator
-- `src/client/learn/` — same-day lessons (phone photos, court, pool safety, one-page site)
+- `src/client/learn/` — same-day lessons (phone photos, court, pool safety, one-page site, healthy boundaries)
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`)
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm

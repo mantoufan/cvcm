@@ -43,6 +43,7 @@ export const TUTORIALS = [
   "badminton-rules",
   "pool-safety",
   "one-page-site",
+  "healthy-boundaries",
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
@@ -51,6 +52,7 @@ export const TUTORIAL_GROUPS = [
   { id: "court", tutorials: ["badminton-warmup", "badminton-rules"] },
   { id: "water", tutorials: ["pool-safety"] },
   { id: "code", tutorials: ["one-page-site"] },
+  { id: "mind", tutorials: ["healthy-boundaries"] },
 ] as const;
 export type TutorialGroupId = (typeof TUTORIAL_GROUPS)[number]["id"];
 
