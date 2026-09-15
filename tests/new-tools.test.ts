@@ -13,6 +13,7 @@ import { invoiceTotals, lineAmount, wrapInvoiceText } from "../src/shared/invoic
 import { clampBounds, hasInk, strokeBounds } from "../src/shared/signature";
 import { diffCounts, diffLines, unifiedDiff } from "../src/shared/diff";
 import { generateUuids, isUuidV4, uuidV4 } from "../src/shared/uuid";
+import { MAX_MATCHES, normalizeFlags, runRegex } from "../src/shared/regex";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -198,6 +199,30 @@ describe("uuid", () => {
   });
 });
 
+describe("regex", () => {
+  it("finds matches, groups, flags, and replace", () => {
+    const found = runRegex("\\d+", "g", "a12b3");
+    expect(found.ok).toBe(true);
+    if (!found.ok) return;
+    expect(found.matches.map((m) => m.text)).toEqual(["12", "3"]);
+    expect(found.matches[0]?.index).toBe(1);
+    const grouped = runRegex("(\\w+)@(\\w+)", "", "hi a@b now");
+    expect(grouped.ok).toBe(true);
+    if (!grouped.ok) return;
+    expect(grouped.matches).toHaveLength(1);
+    expect(grouped.matches[0]?.groups).toEqual(["a", "b"]);
+    const folded = runRegex("A", "i", "ba");
+    expect(folded.ok && folded.matches[0]?.text).toBe("a");
+    const swapped = runRegex("a", "g", "aa", "b");
+    expect(swapped.ok && swapped.replaced).toBe("bb");
+    expect(runRegex("(", "g", "x")).toMatchObject({ ok: false });
+    expect(runRegex("", "g", "x")).toEqual({ ok: false, error: "empty-pattern" });
+    expect(normalizeFlags("giuugx")).toBe("giu");
+    const many = runRegex("a", "g", "a".repeat(300));
+    expect(many.ok && many.matches).toHaveLength(MAX_MATCHES);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -226,8 +251,10 @@ describe("new routes", () => {
     expect(parseAppPath("/en/signature/")).toEqual({ kind: "app", locale: "en", tool: "signature" });
     expect(parseAppPath("/en/diff/")).toEqual({ kind: "app", locale: "en", tool: "diff" });
     expect(parseAppPath("/en/uuid/")).toEqual({ kind: "app", locale: "en", tool: "uuid" });
+    expect(parseAppPath("/en/regex/")).toEqual({ kind: "app", locale: "en", tool: "regex" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
+    expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

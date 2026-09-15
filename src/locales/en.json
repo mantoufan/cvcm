@@ -81,7 +81,9 @@
     "titleDiff": "Diff checker — compare two texts — cv.cm",
     "descDiff": "Compare two texts line by line in the browser. Added and removed lines. Nothing is uploaded.",
     "titleUuid": "UUID generator — v4 UUID — cv.cm",
-    "descUuid": "Generate RFC 4122 version 4 UUIDs in the browser. Copy a list. Nothing is uploaded."
+    "descUuid": "Generate RFC 4122 version 4 UUIDs in the browser. Copy a list. Nothing is uploaded.",
+    "titleRegex": "Regex tester — test regular expressions — cv.cm",
+    "descRegex": "Test a regular expression in the browser. See matches and replace. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -542,6 +544,10 @@
     "uuid": {
       "name": "UUID generator",
       "blurb": "Random v4 UUIDs. Copy a list. Nothing is uploaded."
+    },
+    "regex": {
+      "name": "Regex tester",
+      "blurb": "Test a pattern. See matches. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1269,6 +1275,18 @@
       "a4": "Yes. Uncheck hyphens for a 32-character hex string. Uppercase is optional.",
       "q5": "Can I copy several at once?",
       "a5": "Yes. Copy list puts every UUID on its own line on the clipboard."
+    },
+    "regex": {
+      "q1": "Can I test a regular expression here?",
+      "a1": "Yes. Type a pattern and sample text. Matches are listed in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. The tester runs in this tab. Closing it discards the pattern and text.",
+      "q3": "Which flags can I use?",
+      "a3": "g, i, m, s, and u. Sticky y is omitted. Invalid patterns show the engine error.",
+      "q4": "Can I replace matches?",
+      "a4": "Yes. Fill replace to preview a substitution. $1 and $& work as in JavaScript.",
+      "q5": "Is there a size limit?",
+      "a5": "Yes. Text is capped at 20,000 characters and 200 matches so the tab stays responsive."
     }
   },
   "qr": {
@@ -1675,5 +1693,26 @@
     "copy": "Copy list",
     "copied": "Copied",
     "output": "UUIDs"
+  },
+  "regex": {
+    "title": "Regex tester",
+    "back": "All tools",
+    "privacyNote": "The tester runs in this tab. Nothing is uploaded.",
+    "options": "Pattern",
+    "pattern": "Regular expression",
+    "patternPlaceholder": "e.g. \\b\\w+@\\w+\\.\\w+\\b",
+    "text": "Test text",
+    "textPlaceholder": "Paste text to search…",
+    "replace": "Replace (optional)",
+    "replacePlaceholder": "Replacement, e.g. [$&]",
+    "result": "Matches",
+    "copy": "Copy matches",
+    "copied": "Copied",
+    "empty": "Enter a pattern.",
+    "invalid": "The pattern is not a valid regular expression.",
+    "noText": "Paste text to search.",
+    "replaced": "Replace preview",
+    "truncated": "Input was truncated.",
+    "meta": "{count} matches  /{flags}/"
   }
 }

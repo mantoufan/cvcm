@@ -18,6 +18,7 @@ import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { mountTts, unmountTts } from "./tts/ui";
 import { mountDiff, unmountDiff } from "./diff/ui";
 import { mountUuid, unmountUuid } from "./uuid/ui";
+import { mountRegex, unmountRegex } from "./regex/ui";
 import { mountInvoice, unmountInvoice } from "./invoice/ui";
 import { mountSignature, unmountSignature } from "./signature/ui";
 import { clear, h } from "./dom";
@@ -147,6 +148,7 @@ function unmountTools(): void {
   unmountTts();
   unmountDiff();
   unmountUuid();
+  unmountRegex();
   unmountColor();
   unmountResize();
   unmountCrop();
@@ -246,6 +248,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "text-to-speech") mountTts(main);
   else if (tool === "diff") mountDiff(main);
   else if (tool === "uuid") mountUuid(main);
+  else if (tool === "regex") mountRegex(main);
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);

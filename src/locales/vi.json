@@ -81,7 +81,9 @@
     "titleDiff": "So sánh văn bản — Diff — cv.cm",
     "descDiff": "So sánh hai đoạn chữ theo dòng trong trình duyệt. Đánh dấu thêm và xóa. Không tải lên.",
     "titleUuid": "Tạo UUID — UUID v4 — cv.cm",
-    "descUuid": "Tạo UUID RFC 4122 phiên bản 4 trong trình duyệt. Sao chép danh sách. Không tải lên."
+    "descUuid": "Tạo UUID RFC 4122 phiên bản 4 trong trình duyệt. Sao chép danh sách. Không tải lên.",
+    "titleRegex": "Kiểm tra regex — biểu thức chính quy — cv.cm",
+    "descRegex": "Thử biểu thức chính quy trong trình duyệt. Xem khớp và thay thế. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -236,6 +238,10 @@
     "uuid": {
       "name": "Tạo UUID",
       "blurb": "UUID v4 ngẫu nhiên. Sao chép danh sách. Không tải lên."
+    },
+    "regex": {
+      "name": "Kiểm tra regex",
+      "blurb": "Thử mẫu. Xem khớp. Không tải lên."
     }
   },
   "watermark": {
@@ -963,6 +969,18 @@
       "a4": "Được. Tắt gạch nối ra chuỗi hex 32 ký tự. Có thể viết hoa.",
       "q5": "Sao chép nhiều cái một lúc được không?",
       "a5": "Được. Sao chép danh sách đưa mỗi UUID một dòng vào clipboard."
+    },
+    "regex": {
+      "q1": "Thử regex ở đây được không?",
+      "a1": "Được. Gõ mẫu và văn bản mẫu. Các khớp hiện trong tab này.",
+      "q2": "Văn bản có bị tải lên không?",
+      "a2": "Không. Công cụ chạy trong tab này. Đóng là mất.",
+      "q3": "Dùng cờ nào?",
+      "a3": "g, i, m, s và u. Không có sticky y. Mẫu sai hiện lỗi của engine.",
+      "q4": "Thay thế khớp được không?",
+      "a4": "Được. Điền thay thế để xem trước. $1 và $& như JavaScript.",
+      "q5": "Có giới hạn độ dài không?",
+      "a5": "Có. Văn bản tối đa 20.000 ký tự và 200 khớp để tab không bị đứng."
     }
   },
   "qr": {
@@ -1675,5 +1693,26 @@
     "copy": "Sao chép danh sách",
     "copied": "Đã sao chép",
     "output": "UUID"
+  },
+  "regex": {
+    "title": "Kiểm tra regex",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Công cụ chạy trong tab này. Không tải lên.",
+    "options": "Mẫu",
+    "pattern": "Biểu thức chính quy",
+    "patternPlaceholder": "vd. \\b\\w+@\\w+\\.\\w+\\b",
+    "text": "Văn bản thử",
+    "textPlaceholder": "Dán văn bản cần tìm…",
+    "replace": "Thay thế (tuỳ chọn)",
+    "replacePlaceholder": "Chuỗi thay, vd. [$&]",
+    "result": "Khớp",
+    "copy": "Sao chép khớp",
+    "copied": "Đã sao chép",
+    "empty": "Nhập một mẫu.",
+    "invalid": "Đây không phải biểu thức chính quy hợp lệ.",
+    "noText": "Dán văn bản cần tìm.",
+    "replaced": "Xem trước thay thế",
+    "truncated": "Đầu vào đã bị cắt.",
+    "meta": "{count} khớp  /{flags}/"
   }
 }

@@ -81,7 +81,9 @@
     "titleDiff": "Pemeriksa diff — bandingkan dua teks — cv.cm",
     "descDiff": "Bandingkan dua teks baris demi baris di browser. Tandai tambah dan hapus. Tidak diunggah.",
     "titleUuid": "Pembuat UUID — UUID v4 — cv.cm",
-    "descUuid": "Buat UUID RFC 4122 versi 4 di browser. Salin daftar. Tidak diunggah."
+    "descUuid": "Buat UUID RFC 4122 versi 4 di browser. Salin daftar. Tidak diunggah.",
+    "titleRegex": "Penguji regex — ekspresi reguler — cv.cm",
+    "descRegex": "Uji ekspresi reguler di browser. Lihat kecocokan dan ganti. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -236,6 +238,10 @@
     "uuid": {
       "name": "Pembuat UUID",
       "blurb": "UUID v4 acak. Salin daftar. Tanpa unggah."
+    },
+    "regex": {
+      "name": "Penguji regex",
+      "blurb": "Uji pola. Lihat kecocokan. Tanpa unggah."
     }
   },
   "watermark": {
@@ -963,6 +969,18 @@
       "a4": "Bisa. Matikan tanda hubung untuk hex 32 karakter. Huruf besar opsional.",
       "q5": "Bisa salin banyak sekaligus?",
       "a5": "Bisa. Salin daftar menaruh setiap UUID di baris sendiri."
+    },
+    "regex": {
+      "q1": "Bisa uji regex di sini?",
+      "a1": "Bisa. Ketik pola dan teks sampel. Kecocokan tercantum di tab ini.",
+      "q2": "Apakah teks diunggah?",
+      "a2": "Tidak. Penguji berjalan di tab ini. Menutup tab membuangnya.",
+      "q3": "Bendera apa yang bisa dipakai?",
+      "a3": "g, i, m, s, dan u. Tidak ada sticky y. Pola tidak valid menampilkan error mesin.",
+      "q4": "Bisa ganti kecocokan?",
+      "a4": "Bisa. Isi ganti untuk pratinjau. $1 dan $& seperti di JavaScript.",
+      "q5": "Ada batas ukuran?",
+      "a5": "Ada. Teks dibatasi 20.000 karakter dan 200 kecocokan agar tab tetap responsif."
     }
   },
   "qr": {
@@ -1675,5 +1693,26 @@
     "copy": "Salin daftar",
     "copied": "Tersalin",
     "output": "UUID"
+  },
+  "regex": {
+    "title": "Penguji regex",
+    "back": "Semua alat",
+    "privacyNote": "Penguji berjalan di tab ini. Tidak diunggah.",
+    "options": "Pola",
+    "pattern": "Ekspresi reguler",
+    "patternPlaceholder": "mis. \\b\\w+@\\w+\\.\\w+\\b",
+    "text": "Teks uji",
+    "textPlaceholder": "Tempel teks yang dicari…",
+    "replace": "Ganti (opsional)",
+    "replacePlaceholder": "Pengganti, mis. [$&]",
+    "result": "Kecocokan",
+    "copy": "Salin kecocokan",
+    "copied": "Tersalin",
+    "empty": "Masukkan pola.",
+    "invalid": "Ini bukan ekspresi reguler yang valid.",
+    "noText": "Tempel teks yang dicari.",
+    "replaced": "Pratinjau ganti",
+    "truncated": "Masukan dipotong.",
+    "meta": "{count} kecocokan  /{flags}/"
   }
 }

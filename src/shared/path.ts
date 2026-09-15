@@ -8,7 +8,7 @@ export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
   { id: "image", tools: ["watermark", "collage", "resize", "crop", "meme", "signature"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "data"] },
-  { id: "text", tools: ["password", "word-count", "color", "names", "timezone", "lorem", "units", "text-to-speech", "diff", "uuid"] },
+  { id: "text", tools: ["password", "word-count", "color", "names", "timezone", "lorem", "units", "text-to-speech", "diff", "uuid", "regex"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -42,6 +42,7 @@ export const TOOLS = [
   "text-to-speech",
   "diff",
   "uuid",
+  "regex",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 

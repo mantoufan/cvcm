@@ -70,6 +70,7 @@ const TITLE: Record<ToolId, string> = {
   "text-to-speech": "meta.titleTts",
   diff: "meta.titleDiff",
   uuid: "meta.titleUuid",
+  regex: "meta.titleRegex",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -101,6 +102,7 @@ const DESC: Record<ToolId, string> = {
   "text-to-speech": "meta.descTts",
   diff: "meta.descDiff",
   uuid: "meta.descUuid",
+  regex: "meta.descRegex",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

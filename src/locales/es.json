@@ -81,7 +81,9 @@
     "titleDiff": "Comparador de textos — diff — cv.cm",
     "descDiff": "Compara dos textos línea a línea en el navegador. Marca altas y bajas. Nada se sube.",
     "titleUuid": "Generador de UUID — UUID v4 — cv.cm",
-    "descUuid": "Genera UUID RFC 4122 versión 4 en el navegador. Copia una lista. Nada se sube."
+    "descUuid": "Genera UUID RFC 4122 versión 4 en el navegador. Copia una lista. Nada se sube.",
+    "titleRegex": "Probador de regex — expresiones regulares — cv.cm",
+    "descRegex": "Prueba una expresión regular en el navegador. Ve coincidencias y reemplaza. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -236,6 +238,10 @@
     "uuid": {
       "name": "Generador de UUID",
       "blurb": "UUID v4 aleatorios. Copia la lista. Nada se sube."
+    },
+    "regex": {
+      "name": "Probador de regex",
+      "blurb": "Prueba un patrón. Ve coincidencias. Nada se sube."
     }
   },
   "watermark": {
@@ -963,6 +969,18 @@
       "a4": "Sí. Desmarca guiones para 32 caracteres hex. Mayúsculas son opcionales.",
       "q5": "¿Puedo copiar varios a la vez?",
       "a5": "Sí. Copiar lista pone cada UUID en su propia línea."
+    },
+    "regex": {
+      "q1": "¿Puedo probar una expresión regular aquí?",
+      "a1": "Sí. Escribe un patrón y un texto de ejemplo. Las coincidencias salen en esta pestaña.",
+      "q2": "¿Se sube el texto?",
+      "a2": "No. El probador corre en esta pestaña. Cerrarla descarta el patrón y el texto.",
+      "q3": "¿Qué flags puedo usar?",
+      "a3": "g, i, m, s y u. No hay sticky y. Un patrón inválido muestra el error del motor.",
+      "q4": "¿Puedo reemplazar coincidencias?",
+      "a4": "Sí. Rellena reemplazar para previsualizar. $1 y $& funcionan como en JavaScript.",
+      "q5": "¿Hay un límite de tamaño?",
+      "a5": "Sí. El texto se recorta a 20.000 caracteres y 200 coincidencias para que la pestaña siga fluida."
     }
   },
   "qr": {
@@ -1675,5 +1693,26 @@
     "copy": "Copiar lista",
     "copied": "Copiado",
     "output": "UUIDs"
+  },
+  "regex": {
+    "title": "Probador de regex",
+    "back": "Todas las herramientas",
+    "privacyNote": "El probador corre en esta pestaña. Nada se sube.",
+    "options": "Patrón",
+    "pattern": "Expresión regular",
+    "patternPlaceholder": "p. ej. \\b\\w+@\\w+\\.\\w+\\b",
+    "text": "Texto de prueba",
+    "textPlaceholder": "Pega el texto a buscar…",
+    "replace": "Reemplazo (opcional)",
+    "replacePlaceholder": "Reemplazo, p. ej. [$&]",
+    "result": "Coincidencias",
+    "copy": "Copiar coincidencias",
+    "copied": "Copiado",
+    "empty": "Escribe un patrón.",
+    "invalid": "No es una expresión regular válida.",
+    "noText": "Pega el texto a buscar.",
+    "replaced": "Vista previa del reemplazo",
+    "truncated": "La entrada se truncó.",
+    "meta": "{count} coincidencias  /{flags}/"
   }
 }
