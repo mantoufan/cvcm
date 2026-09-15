@@ -843,25 +843,26 @@ body {
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 3.2rem 1.5rem 3.6rem;
+  padding: 1.35rem 1.6rem;
+  text-align: left;
   border: 1px solid #f3cfdf;
-  border-radius: 32px;
+  border-radius: 22px;
   background: radial-gradient(ellipse at 50% 0, #fff 10%, transparent 75%), linear-gradient(135deg, #ffe1ed, #fff5fa 50%, #ffe1ee);
   box-shadow: inset 0 0 0 7px #fff8fc, 0 12px 35px #b7467210;
 }
-.hero-band::after {
-  content: "";
-  position: absolute;
-  bottom: 12px;
-  left: 20px;
-  right: 20px;
-  height: 8px;
-  background: radial-gradient(circle at 50% 0, #f3c6da 3px, transparent 4px) 0 0 / 16px 8px;
+.hero-band h1 {
+  color: #9d3d68;
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+  max-width: none;
+  margin: 0 0 0.45rem;
+  text-align: left;
 }
-.hero-ornament { display: block; color: #d9548c; font-size: 2.6rem; line-height: 1; margin-bottom: 1rem; }
-.hero-band h1 { color: #9d3d68; font-size: clamp(2rem, 5vw, 3.35rem); letter-spacing: -0.035em; line-height: 1.25; }
+.hero-band .kicker { margin-bottom: 0.45rem; font-size: 0.65rem; }
+.hero-band + .wall { padding-top: 1.25rem; }
 .kicker { color: #a74771; letter-spacing: 0.14em; }
-.hero-band .lede { margin-bottom: 0; line-height: 1.8; }
+.hero-band .lede { max-width: none; margin: 0; font-size: 0.9rem; line-height: 1.65; }
 .wall-h { border-bottom: 1px dashed #e8bbd0; }
 .wall-h h2::before { content: "♡"; color: var(--pink-deep); margin-right: 0.6rem; }
 .tiles { gap: 1.5rem; }
@@ -889,16 +890,11 @@ body {
 @media (max-width: 640px) {
   .menu-btn { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
   .top { gap: 0.3rem; padding-block: 1rem; }
-  .hero-band { padding: 2rem 1rem 2.5rem; border-radius: 24px; }
-  .hero-ornament { font-size: 2rem; }
+  .hero-band { padding: 1rem 1.1rem; border-radius: 18px; }
   .tile-cover { height: auto; }
   .wall { padding-top: 1.7rem; }
   .tiles { gap: 1.2rem; }
 }
-.hero-ornament { position: relative; width: 60px; height: 32px; margin-inline: auto; font-size: 0; }
-.hero-ornament::before, .hero-ornament::after { content: ""; position: absolute; top: 1px; width: 29px; height: 28px; background: #ef9abd; border: 2px solid #d96b99; }
-.hero-ornament::before { left: 1px; border-radius: 8px 65% 45% 8px; transform: rotate(12deg); }
-.hero-ornament::after { right: 1px; border-radius: 65% 8px 8px 45%; transform: rotate(-12deg); }
 
 .menu-panel {
   max-height: min(70vh, 38rem);
