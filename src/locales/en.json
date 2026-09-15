@@ -73,7 +73,9 @@
     "titleMeme": "Meme generator — add text to photos — cv.cm",
     "descMeme": "Make a meme in the browser. Top and bottom captions, Impact-style outline. Download PNG. Nothing is uploaded.",
     "titleTts": "Text to speech — listen in the browser — cv.cm",
-    "descTts": "Hear text read aloud with your device voices. Rate and pitch. Nothing is uploaded. No MP3 file."
+    "descTts": "Hear text read aloud with your device voices. Rate and pitch. Nothing is uploaded. No MP3 file.",
+    "titleInvoice": "Invoice generator — PDF invoice — cv.cm",
+    "descInvoice": "Create a simple invoice PDF in the browser. Line items, tax, currency. Nothing is uploaded. Not a tax form."
   },
   "brand": "cv.cm",
   "nav": {
@@ -518,6 +520,10 @@
     "text-to-speech": {
       "name": "Text to speech",
       "blurb": "Hear text with device voices. Rate and pitch. Nothing is uploaded."
+    },
+    "invoice": {
+      "name": "Invoice generator",
+      "blurb": "Fill line items, tax, and currency. Download a PDF. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1197,6 +1203,18 @@
       "a4": "Some browsers fill voices after a moment, or they have none installed. Chrome, Safari, and Edge usually work.",
       "q5": "Does it support Chinese or other languages?",
       "a5": "If your system has that language pack, it appears in the list. The page does not fetch cloud voices."
+    },
+    "invoice": {
+      "q1": "Can I generate an invoice PDF here?",
+      "a1": "Yes. Fill from/to, line items, tax, and currency, then download a one-page A4 PDF.",
+      "q2": "Is this an official tax invoice?",
+      "a2": "No. It is a simple PDF you fill in. Not accounting software and not a government tax form.",
+      "q3": "Is anything uploaded?",
+      "a3": "No. The page is drawn in this tab and packed into a PDF here. Closing the tab discards it.",
+      "q4": "Do Chinese characters work?",
+      "a4": "Yes. The PDF is a page image, so it can include any language your browser can draw.",
+      "q5": "Which currencies are listed?",
+      "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, and IDR. Amounts use the browser's currency format."
     }
   },
   "qr": {
@@ -1526,5 +1544,39 @@
     "unsupported": "This browser has no speech synthesis.",
     "noVoices": "No voices yet",
     "error": "Playback stopped."
+  },
+  "invoice": {
+    "title": "Invoice generator",
+    "back": "All tools",
+    "privacyNote": "The invoice PDF is built in this tab. Nothing is uploaded. Not a tax form.",
+    "hint": "Preview updates as you type. Download an A4 PDF.",
+    "download": "Download PDF",
+    "working": "Saving…",
+    "error": "Could not build this PDF.",
+    "parties": "Parties",
+    "from": "From",
+    "fromName": "From name",
+    "fromAddress": "From address",
+    "billTo": "Bill to",
+    "toName": "Client name",
+    "toAddress": "Client address",
+    "meta": "Invoice",
+    "sheetTitle": "INVOICE",
+    "number": "Number",
+    "date": "Date",
+    "due": "Due",
+    "currency": "Currency",
+    "taxPercent": "Tax %",
+    "lines": "Line items",
+    "description": "Description",
+    "qty": "Qty",
+    "price": "Price",
+    "amount": "Amount",
+    "addLine": "Add line",
+    "removeLine": "Remove line",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "total": "Total",
+    "notes": "Notes"
   }
 }

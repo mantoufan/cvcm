@@ -9,6 +9,7 @@ import { convertAmount, convertUnits } from "../src/shared/units";
 import { ean13Checksum, encodeBarcode } from "../src/shared/barcode";
 import { memeFontSize, normalizeMemeText, wrapByWidth } from "../src/shared/meme";
 import { pickVoice, splitUtterances } from "../src/shared/tts";
+import { invoiceTotals, lineAmount, wrapInvoiceText } from "../src/shared/invoice";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -142,6 +143,18 @@ describe("tts", () => {
   });
 });
 
+describe("invoice", () => {
+  it("totals line items and tax", () => {
+    expect(lineAmount({ description: "A", qty: 2, price: 10 })).toBe(20);
+    expect(invoiceTotals([{ description: "A", qty: 2, price: 10 }, { description: "B", qty: 1, price: 5 }], 10)).toEqual({
+      subtotal: 25,
+      tax: 2.5,
+      total: 27.5,
+    });
+    expect(wrapInvoiceText("hello world", 5, (s) => s.length)).toEqual(["hello", "world"]);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -166,7 +179,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/barcode/")).toEqual({ kind: "app", locale: "en", tool: "barcode" });
     expect(parseAppPath("/en/meme/")).toEqual({ kind: "app", locale: "en", tool: "meme" });
     expect(parseAppPath("/en/text-to-speech/")).toEqual({ kind: "app", locale: "en", tool: "text-to-speech" });
+    expect(parseAppPath("/en/invoice/")).toEqual({ kind: "app", locale: "en", tool: "invoice" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");
     expect(appHref("zh-CN", "text-to-speech")).toBe("/zh-cn/text-to-speech/");
     expect(appHref("zh-CN", "meme")).toBe("/zh-cn/meme/");
     expect(appHref("en", "barcode")).toBe("/en/barcode/");

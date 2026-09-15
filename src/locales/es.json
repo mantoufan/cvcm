@@ -73,7 +73,9 @@
     "titleMeme": "Generador de memes — texto en fotos — cv.cm",
     "descMeme": "Haz un meme en el navegador. Textos arriba y abajo, contorno. Descarga PNG. Nada se sube.",
     "titleTts": "Texto a voz — escuchar en el navegador — cv.cm",
-    "descTts": "Escucha el texto con las voces del dispositivo. Velocidad y tono. Nada se sube. No hay archivo MP3."
+    "descTts": "Escucha el texto con las voces del dispositivo. Velocidad y tono. Nada se sube. No hay archivo MP3.",
+    "titleInvoice": "Generador de facturas — factura PDF — cv.cm",
+    "descInvoice": "Crea una factura PDF de una página en el navegador. Líneas, impuesto, moneda. Nada se sube. No es un formulario fiscal."
   },
   "brand": "cv.cm",
   "nav": {
@@ -212,6 +214,10 @@
     "text-to-speech": {
       "name": "Texto a voz",
       "blurb": "Escucha con voces del dispositivo. Velocidad. Nada se sube."
+    },
+    "invoice": {
+      "name": "Generador de facturas",
+      "blurb": "Líneas, impuesto y moneda. Descarga un PDF. Nada se sube."
     }
   },
   "watermark": {
@@ -891,6 +897,18 @@
       "a4": "Algunos navegadores las cargan un momento después, o no hay voces instaladas. Chrome, Safari y Edge suelen funcionar.",
       "q5": "¿Hay español u otros idiomas?",
       "a5": "Si el sistema tiene ese paquete de idioma, aparece. La página no trae voces de la nube."
+    },
+    "invoice": {
+      "q1": "¿Puedo generar una factura PDF aquí?",
+      "a1": "Sí. Rellena emisor, cliente, líneas e impuesto y descarga un PDF A4 de una página.",
+      "q2": "¿Es una factura fiscal oficial?",
+      "a2": "No. Es un PDF simple que rellenas tú. No es software contable ni un formulario de impuestos.",
+      "q3": "¿Se sube algo?",
+      "a3": "No. La página se dibuja en esta pestaña y se empaqueta en PDF. Cerrarla la descarta.",
+      "q4": "¿Funcionan otros idiomas?",
+      "a4": "Sí. El PDF es una imagen de página, así que entra cualquier texto que el navegador pueda dibujar.",
+      "q5": "¿Qué monedas hay?",
+      "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND e IDR. Los importes usan el formato de moneda del navegador."
     }
   },
   "qr": {
@@ -1526,5 +1544,39 @@
     "unsupported": "Este navegador no tiene síntesis de voz.",
     "noVoices": "Aún no hay voces",
     "error": "Se detuvo la reproducción."
+  },
+  "invoice": {
+    "title": "Generador de facturas",
+    "back": "Todas las herramientas",
+    "privacyNote": "El PDF se arma en esta pestaña. Nada se sube. No es un formulario fiscal.",
+    "hint": "La vista previa cambia al escribir. Descarga un PDF A4.",
+    "download": "Descargar PDF",
+    "working": "Guardando…",
+    "error": "No se pudo crear este PDF.",
+    "parties": "Partes",
+    "from": "De",
+    "fromName": "Nombre emisor",
+    "fromAddress": "Dirección emisor",
+    "billTo": "Facturar a",
+    "toName": "Nombre del cliente",
+    "toAddress": "Dirección del cliente",
+    "meta": "Factura",
+    "sheetTitle": "FACTURA",
+    "number": "Número",
+    "date": "Fecha",
+    "due": "Vence",
+    "currency": "Moneda",
+    "taxPercent": "Impuesto %",
+    "lines": "Líneas",
+    "description": "Descripción",
+    "qty": "Cant.",
+    "price": "Precio",
+    "amount": "Importe",
+    "addLine": "Añadir línea",
+    "removeLine": "Quitar línea",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto",
+    "total": "Total",
+    "notes": "Notas"
   }
 }

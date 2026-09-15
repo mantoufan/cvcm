@@ -73,7 +73,9 @@
     "titleMeme": "表情包生成器 — 给照片加上下文字 — cv.cm",
     "descMeme": "在浏览器里做表情包。上下大字、描边。下载 PNG。不上传。",
     "titleTts": "文字转语音 — 浏览器朗读 — cv.cm",
-    "descTts": "用本机语音朗读文字。可调语速和音调。不上传。不能导出 MP3。"
+    "descTts": "用本机语音朗读文字。可调语速和音调。不上传。不能导出 MP3。",
+    "titleInvoice": "发票生成器 — PDF 发票 — cv.cm",
+    "descInvoice": "在浏览器里做一页发票 PDF。明细、税率、币种。不上传。不是税务发票。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -212,6 +214,10 @@
     "text-to-speech": {
       "name": "文字转语音",
       "blurb": "用本机语音朗读。可调语速。不上传。"
+    },
+    "invoice": {
+      "name": "发票生成",
+      "blurb": "填写明细、税率和币种。下载 PDF。不上传。"
     }
   },
   "watermark": {
@@ -891,6 +897,18 @@
       "a4": "有的浏览器稍等才会列出声音，或本机没装语音包。Chrome、Safari、Edge 一般可用。",
       "q5": "支持中文或其他语言吗？",
       "a5": "系统里有对应语音包就会出现。页面不会去拉云端声音。"
+    },
+    "invoice": {
+      "q1": "能在这里生成发票 PDF 吗？",
+      "a1": "可以。填写开票方、客户、明细和税率，下载一页 A4 PDF。",
+      "q2": "这是正式税务发票吗？",
+      "a2": "不是。只是你自己填的简单 PDF，不是财务软件，也不是税务发票。",
+      "q3": "会上传吗？",
+      "a3": "不会。页面在当前标签页绘制并打成 PDF，关掉即丢。",
+      "q4": "中文能显示吗？",
+      "a4": "可以。PDF 是整页图像，浏览器能画的文字都能进去。",
+      "q5": "支持哪些货币？",
+      "a5": "USD、EUR、GBP、CNY、JPY、KRW、VND、IDR。金额按浏览器货币格式。"
     }
   },
   "qr": {
@@ -1526,5 +1544,39 @@
     "unsupported": "这个浏览器没有语音合成。",
     "noVoices": "还没有声音",
     "error": "播放已停止。"
+  },
+  "invoice": {
+    "title": "发票生成器",
+    "back": "全部工具",
+    "privacyNote": "发票 PDF 在当前标签页生成。不上传。不是税务发票。",
+    "hint": "边填边预览。下载 A4 PDF。",
+    "download": "下载 PDF",
+    "working": "正在保存…",
+    "error": "无法生成这份 PDF。",
+    "parties": "双方",
+    "from": "开票方",
+    "fromName": "开票方名称",
+    "fromAddress": "开票方地址",
+    "billTo": "客户",
+    "toName": "客户名称",
+    "toAddress": "客户地址",
+    "meta": "发票信息",
+    "sheetTitle": "发票",
+    "number": "编号",
+    "date": "日期",
+    "due": "到期",
+    "currency": "货币",
+    "taxPercent": "税率 %",
+    "lines": "明细",
+    "description": "项目",
+    "qty": "数量",
+    "price": "单价",
+    "amount": "金额",
+    "addLine": "加一行",
+    "removeLine": "删除行",
+    "subtotal": "小计",
+    "tax": "税额",
+    "total": "合计",
+    "notes": "备注"
   }
 }

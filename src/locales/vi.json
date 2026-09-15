@@ -73,7 +73,9 @@
     "titleMeme": "Tạo meme — thêm chữ lên ảnh — cv.cm",
     "descMeme": "Làm meme trong trình duyệt. Chữ trên và dưới, viền đậm. Tải PNG. Không tải lên.",
     "titleTts": "Chuyển chữ thành tiếng — nghe trong trình duyệt — cv.cm",
-    "descTts": "Đọc chữ bằng giọng trên máy. Tốc độ và cao độ. Không tải lên. Không có file MP3."
+    "descTts": "Đọc chữ bằng giọng trên máy. Tốc độ và cao độ. Không tải lên. Không có file MP3.",
+    "titleInvoice": "Tạo hóa đơn — PDF hóa đơn — cv.cm",
+    "descInvoice": "Tạo PDF hóa đơn một trang trong trình duyệt. Dòng hàng, thuế, tiền tệ. Không tải lên. Không phải chứng từ thuế."
   },
   "brand": "cv.cm",
   "nav": {
@@ -212,6 +214,10 @@
     "text-to-speech": {
       "name": "Chữ thành tiếng",
       "blurb": "Đọc bằng giọng máy. Chỉnh tốc độ. Không tải lên."
+    },
+    "invoice": {
+      "name": "Tạo hóa đơn",
+      "blurb": "Điền dòng hàng, thuế, tiền tệ. Tải PDF. Không tải lên."
     }
   },
   "watermark": {
@@ -891,6 +897,18 @@
       "a4": "Một số trình duyệt liệt kê sau vài giây, hoặc máy chưa cài giọng. Chrome, Safari, Edge thường được.",
       "q5": "Có tiếng Việt hoặc ngôn ngữ khác không?",
       "a5": "Nếu hệ thống có gói ngôn ngữ đó thì sẽ hiện. Trang không kéo giọng đám mây."
+    },
+    "invoice": {
+      "q1": "Tạo PDF hóa đơn ở đây được không?",
+      "a1": "Được. Điền bên bán, khách, dòng hàng và thuế, tải PDF A4 một trang.",
+      "q2": "Đây có phải hóa đơn thuế chính thức?",
+      "a2": "Không. Chỉ là PDF bạn tự điền. Không phải phần mềm kế toán hay mẫu thuế.",
+      "q3": "Có tải lên không?",
+      "a3": "Không. Trang vẽ trong tab này rồi đóng thành PDF. Đóng tab là mất.",
+      "q4": "Tiếng Việt hiện được không?",
+      "a4": "Được. PDF là ảnh cả trang nên chữ trình duyệt vẽ được đều vào được.",
+      "q5": "Những loại tiền nào?",
+      "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. Số tiền theo định dạng tiền của trình duyệt."
     }
   },
   "qr": {
@@ -1526,5 +1544,39 @@
     "unsupported": "Trình duyệt này không có tổng hợp giọng nói.",
     "noVoices": "Chưa có giọng",
     "error": "Đã dừng phát."
+  },
+  "invoice": {
+    "title": "Tạo hóa đơn",
+    "back": "Tất cả công cụ",
+    "privacyNote": "PDF hóa đơn được tạo trong tab này. Không tải lên. Không phải chứng từ thuế.",
+    "hint": "Xem trước khi gõ. Tải PDF A4.",
+    "download": "Tải PDF",
+    "working": "Đang lưu…",
+    "error": "Không tạo được PDF này.",
+    "parties": "Hai bên",
+    "from": "Bên bán",
+    "fromName": "Tên bên bán",
+    "fromAddress": "Địa chỉ bên bán",
+    "billTo": "Khách",
+    "toName": "Tên khách",
+    "toAddress": "Địa chỉ khách",
+    "meta": "Hóa đơn",
+    "sheetTitle": "HÓA ĐƠN",
+    "number": "Số",
+    "date": "Ngày",
+    "due": "Hạn",
+    "currency": "Tiền tệ",
+    "taxPercent": "Thuế %",
+    "lines": "Dòng hàng",
+    "description": "Mô tả",
+    "qty": "SL",
+    "price": "Đơn giá",
+    "amount": "Thành tiền",
+    "addLine": "Thêm dòng",
+    "removeLine": "Xóa dòng",
+    "subtotal": "Tạm tính",
+    "tax": "Thuế",
+    "total": "Tổng",
+    "notes": "Ghi chú"
   }
 }

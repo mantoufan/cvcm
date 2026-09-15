@@ -15,6 +15,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "merge-pdf": "/covers/merge-pdf-sweet.jpg?v=1",
   "compress-pdf": "/covers/compress-pdf-sweet.jpg?v=1",
   "split-pdf": "/covers/split-pdf-sweet.jpg?v=1",
+  invoice: "/covers/invoice-sweet.jpg?v=1",
   audio: "/covers/audio-sweet.jpg?v=2",
   data: "/covers/data-sweet.jpg?v=2",
   password: "/covers/password-sweet.jpg?v=1",

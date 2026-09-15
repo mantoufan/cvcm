@@ -16,6 +16,7 @@ import { mountBarcode, unmountBarcode } from "./barcode/ui";
 import { mountResize, unmountResize } from "./resize/ui";
 import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { mountTts, unmountTts } from "./tts/ui";
+import { mountInvoice, unmountInvoice } from "./invoice/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { mountHome } from "./home";
@@ -145,6 +146,7 @@ function unmountTools(): void {
   unmountResize();
   unmountCrop();
   unmountMeme();
+  unmountInvoice();
   unmountPdfJpg();
   unmountMergePdf();
   unmountCompressPdf();
@@ -240,6 +242,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
   else if (tool === "meme") await mountMeme(main);
+  else if (tool === "invoice") mountInvoice(main);
   else if (tool === "pdf-jpg") {
     const mod = await import("./pdf-jpg/ui");
     unmountPdfJpg = mod.unmountPdfJpg;

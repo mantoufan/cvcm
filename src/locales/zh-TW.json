@@ -73,7 +73,9 @@
     "titleMeme": "迷因產生器 — 給照片加上下文字 — cv.cm",
     "descMeme": "在瀏覽器裡做迷因。上下大字、描邊。下載 PNG。不上傳。",
     "titleTts": "文字轉語音 — 瀏覽器朗讀 — cv.cm",
-    "descTts": "用本機語音朗讀文字。可調語速和音調。不上傳。不能匯出 MP3。"
+    "descTts": "用本機語音朗讀文字。可調語速和音調。不上傳。不能匯出 MP3。",
+    "titleInvoice": "發票產生器 — PDF 發票 — cv.cm",
+    "descInvoice": "在瀏覽器裡做一頁發票 PDF。明細、稅率、幣別。不上傳。不是稅務發票。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -212,6 +214,10 @@
     "text-to-speech": {
       "name": "文字轉語音",
       "blurb": "用本機語音朗讀。可調語速。不上傳。"
+    },
+    "invoice": {
+      "name": "發票產生",
+      "blurb": "填寫明細、稅率和幣別。下載 PDF。不上傳。"
     }
   },
   "watermark": {
@@ -891,6 +897,18 @@
       "a4": "有的瀏覽器稍等才會列出聲音，或本機沒裝語音包。Chrome、Safari、Edge 一般可用。",
       "q5": "支援中文或其他語言嗎？",
       "a5": "系統裡有對應語音包就會出現。頁面不會去拉雲端聲音。"
+    },
+    "invoice": {
+      "q1": "能在這裡產生發票 PDF 嗎？",
+      "a1": "可以。填寫開立方、客戶、明細和稅率，下載一頁 A4 PDF。",
+      "q2": "這是正式稅務發票嗎？",
+      "a2": "不是。只是你自己填的簡單 PDF，不是財務軟體，也不是稅務發票。",
+      "q3": "會上傳嗎？",
+      "a3": "不會。頁面在目前分頁繪製並打成 PDF，關掉即丟。",
+      "q4": "中文能顯示嗎？",
+      "a4": "可以。PDF 是整頁圖像，瀏覽器能畫的文字都能進去。",
+      "q5": "支援哪些貨幣？",
+      "a5": "USD、EUR、GBP、CNY、JPY、KRW、VND、IDR。金額依瀏覽器貨幣格式。"
     }
   },
   "qr": {
@@ -1526,5 +1544,39 @@
     "unsupported": "這個瀏覽器沒有語音合成。",
     "noVoices": "還沒有聲音",
     "error": "播放已停止。"
+  },
+  "invoice": {
+    "title": "發票產生器",
+    "back": "全部工具",
+    "privacyNote": "發票 PDF 在目前分頁產生。不上傳。不是稅務發票。",
+    "hint": "邊填邊預覽。下載 A4 PDF。",
+    "download": "下載 PDF",
+    "working": "正在儲存…",
+    "error": "無法產生這份 PDF。",
+    "parties": "雙方",
+    "from": "開立方",
+    "fromName": "開立方名稱",
+    "fromAddress": "開立方地址",
+    "billTo": "客戶",
+    "toName": "客戶名稱",
+    "toAddress": "客戶地址",
+    "meta": "發票資訊",
+    "sheetTitle": "發票",
+    "number": "編號",
+    "date": "日期",
+    "due": "到期",
+    "currency": "貨幣",
+    "taxPercent": "稅率 %",
+    "lines": "明細",
+    "description": "項目",
+    "qty": "數量",
+    "price": "單價",
+    "amount": "金額",
+    "addLine": "加一列",
+    "removeLine": "刪除列",
+    "subtotal": "小計",
+    "tax": "稅額",
+    "total": "合計",
+    "notes": "備註"
   }
 }
