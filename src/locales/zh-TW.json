@@ -83,7 +83,9 @@
     "titleUuid": "UUID 產生器 — v4 UUID — cv.cm",
     "descUuid": "在瀏覽器裡產生 RFC 4122 第 4 版 UUID。可複製列表。不上傳。",
     "titleRegex": "正規測試 — 正規表示式 — cv.cm",
-    "descRegex": "在瀏覽器裡測試正規表示式。查看符合並可取代。不上傳。"
+    "descRegex": "在瀏覽器裡測試正規表示式。查看符合並可取代。不上傳。",
+    "titleFavicon": "Favicon 產生器 — ICO 與 PNG — cv.cm",
+    "descFavicon": "在瀏覽器裡把照片做成 favicon。下載 ICO 與 PNG 尺寸。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -242,6 +244,10 @@
     "regex": {
       "name": "正規測試",
       "blurb": "測試正規。查看符合。不上傳。"
+    },
+    "favicon": {
+      "name": "Favicon 產生",
+      "blurb": "照片轉 ICO 與 PNG。不上傳。"
     }
   },
   "watermark": {
@@ -981,6 +987,18 @@
       "a4": "可以。填寫取代即可預覽。$1 和 $& 與 JavaScript 相同。",
       "q5": "有長度限制嗎？",
       "a5": "有。文字最多 20,000 字、200 筆符合，以免卡住分頁。"
+    },
+    "favicon": {
+      "q1": "能在這裡做 favicon 嗎？",
+      "a1": "可以。放入照片，目前分頁會畫出方形 PNG 並打包 .ico。",
+      "q2": "會上傳照片嗎？",
+      "a2": "不會。解碼與繪製都在目前分頁，關掉即丟。",
+      "q3": "ICO 裡有什麼？",
+      "a3": "一個 favicon.ico 裡包含 16、32、48 像素的 PNG。",
+      "q4": "有蘋果觸控圖示嗎？",
+      "a4": "PNG 壓縮檔含 180、192、512，以及常見的 16、32、48。",
+      "q5": "能透明底嗎？",
+      "a5": "可以。取消白色背景。包含模式下透明處留空。"
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "取代預覽",
     "truncated": "輸入已被截斷。",
     "meta": "{count} 處符合  /{flags}/"
+  },
+  "favicon": {
+    "title": "Favicon 產生器",
+    "back": "全部工具",
+    "privacyNote": "照片留在目前分頁。不上傳。",
+    "filesTitle": "照片",
+    "dropTitle": "放入照片",
+    "dropHint": "或貼上。在目前分頁做成方形 favicon。",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "覆蓋鋪滿方框。包含則放下整張圖。",
+    "options": "選項",
+    "fit": "適配",
+    "fitCover": "覆蓋",
+    "fitContain": "包含",
+    "whiteBg": "白色背景",
+    "downloadIco": "下載 ICO",
+    "downloadPng": "下載 PNG 壓縮檔",
+    "emptyDownload": "請先新增照片。",
+    "working": "正在繪製…",
+    "errorDecode": "無法讀取這張圖。",
+    "errorEncode": "無法產生 favicon。"
   }
 }

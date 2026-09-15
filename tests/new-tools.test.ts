@@ -14,6 +14,7 @@ import { clampBounds, hasInk, strokeBounds } from "../src/shared/signature";
 import { diffCounts, diffLines, unifiedDiff } from "../src/shared/diff";
 import { generateUuids, isUuidV4, uuidV4 } from "../src/shared/uuid";
 import { MAX_MATCHES, normalizeFlags, runRegex } from "../src/shared/regex";
+import { packIco, squareDest, squareSource } from "../src/shared/favicon";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -223,6 +224,28 @@ describe("regex", () => {
   });
 });
 
+describe("favicon", () => {
+  it("packs ICO headers and square-fits cover vs contain", () => {
+    const png = new Uint8Array([137, 80, 78, 71, 1, 2, 3, 4]);
+    const ico = packIco([
+      { width: 16, height: 16, png },
+      { width: 32, height: 32, png },
+    ]);
+    expect(ico[2]).toBe(1);
+    expect(ico[4]).toBe(2);
+    expect(ico[6]).toBe(16);
+    const view = new DataView(ico.buffer);
+    expect(view.getUint32(14, true)).toBe(png.length);
+    expect(view.getUint32(18, true)).toBe(6 + 16 * 2);
+    expect(squareSource(100, 40, "cover")).toEqual({ sx: 30, sy: 0, sw: 40, sh: 40 });
+    expect(squareSource(50, 50, "contain")).toEqual({ sx: 0, sy: 0, sw: 50, sh: 50 });
+    const dest = squareDest(100, 50, 32, "contain");
+    expect(dest.dw).toBeCloseTo(32);
+    expect(dest.dh).toBeCloseTo(16);
+    expect(dest.dy).toBeCloseTo(8);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -252,9 +275,11 @@ describe("new routes", () => {
     expect(parseAppPath("/en/diff/")).toEqual({ kind: "app", locale: "en", tool: "diff" });
     expect(parseAppPath("/en/uuid/")).toEqual({ kind: "app", locale: "en", tool: "uuid" });
     expect(parseAppPath("/en/regex/")).toEqual({ kind: "app", locale: "en", tool: "regex" });
+    expect(parseAppPath("/en/favicon/")).toEqual({ kind: "app", locale: "en", tool: "favicon" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
+    expect(appHref("zh-CN", "favicon")).toBe("/zh-cn/favicon/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

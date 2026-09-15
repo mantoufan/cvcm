@@ -83,7 +83,9 @@
     "titleUuid": "Generador de UUID — UUID v4 — cv.cm",
     "descUuid": "Genera UUID RFC 4122 versión 4 en el navegador. Copia una lista. Nada se sube.",
     "titleRegex": "Probador de regex — expresiones regulares — cv.cm",
-    "descRegex": "Prueba una expresión regular en el navegador. Ve coincidencias y reemplaza. Nada se sube."
+    "descRegex": "Prueba una expresión regular en el navegador. Ve coincidencias y reemplaza. Nada se sube.",
+    "titleFavicon": "Generador de favicon — ICO y PNG — cv.cm",
+    "descFavicon": "Haz un favicon a partir de una foto en el navegador. Descarga ICO y tamaños PNG. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -242,6 +244,10 @@
     "regex": {
       "name": "Probador de regex",
       "blurb": "Prueba un patrón. Ve coincidencias. Nada se sube."
+    },
+    "favicon": {
+      "name": "Generador de favicon",
+      "blurb": "Foto a ICO y PNG. Nada se sube."
     }
   },
   "watermark": {
@@ -981,6 +987,18 @@
       "a4": "Sí. Rellena reemplazar para previsualizar. $1 y $& funcionan como en JavaScript.",
       "q5": "¿Hay un límite de tamaño?",
       "a5": "Sí. El texto se recorta a 20.000 caracteres y 200 coincidencias para que la pestaña siga fluida."
+    },
+    "favicon": {
+      "q1": "¿Puedo hacer un favicon aquí?",
+      "a1": "Sí. Suelta una foto. La pestaña dibuja PNG cuadrados y empaqueta un .ico.",
+      "q2": "¿Se sube la foto?",
+      "a2": "No. La decodificación y el dibujo quedan en esta pestaña. Cerrarla descarta la imagen.",
+      "q3": "¿Qué hay en el ICO?",
+      "a3": "Un favicon.ico con PNG de 16, 32 y 48 píxeles.",
+      "q4": "¿Incluye iconos Apple touch?",
+      "a4": "El zip PNG trae 180, 192 y 512 además de 16, 32 y 48.",
+      "q5": "¿Puedo dejar el fondo transparente?",
+      "a5": "Sí. Desmarca fondo blanco. Contain deja las bandas transparentes."
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "Vista previa del reemplazo",
     "truncated": "La entrada se truncó.",
     "meta": "{count} coincidencias  /{flags}/"
+  },
+  "favicon": {
+    "title": "Generador de favicon",
+    "back": "Todas las herramientas",
+    "privacyNote": "La foto se queda en esta pestaña. Nada se sube.",
+    "filesTitle": "Foto",
+    "dropTitle": "Suelta una foto",
+    "dropHint": "O pégala. Hacemos un favicon cuadrado en esta pestaña.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Cover llena el cuadrado. Contain cabe toda la foto.",
+    "options": "Opciones",
+    "fit": "Ajuste",
+    "fitCover": "Cubrir",
+    "fitContain": "Contener",
+    "whiteBg": "Fondo blanco",
+    "downloadIco": "Descargar ICO",
+    "downloadPng": "Descargar zip PNG",
+    "emptyDownload": "Añade una foto primero.",
+    "working": "Dibujando…",
+    "errorDecode": "No se pudo leer esa imagen.",
+    "errorEncode": "No se pudo crear el favicon."
   }
 }

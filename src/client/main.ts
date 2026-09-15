@@ -21,6 +21,7 @@ import { mountUuid, unmountUuid } from "./uuid/ui";
 import { mountRegex, unmountRegex } from "./regex/ui";
 import { mountInvoice, unmountInvoice } from "./invoice/ui";
 import { mountSignature, unmountSignature } from "./signature/ui";
+import { mountFavicon, unmountFavicon } from "./favicon/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { mountHome } from "./home";
@@ -155,6 +156,7 @@ function unmountTools(): void {
   unmountMeme();
   unmountInvoice();
   unmountSignature();
+  unmountFavicon();
   unmountPdfJpg();
   unmountMergePdf();
   unmountCompressPdf();
@@ -255,6 +257,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "meme") await mountMeme(main);
   else if (tool === "invoice") mountInvoice(main);
   else if (tool === "signature") mountSignature(main);
+  else if (tool === "favicon") await mountFavicon(main);
   else if (tool === "pdf-jpg") {
     const mod = await import("./pdf-jpg/ui");
     unmountPdfJpg = mod.unmountPdfJpg;

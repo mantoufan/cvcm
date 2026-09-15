@@ -83,7 +83,9 @@
     "titleUuid": "Tạo UUID — UUID v4 — cv.cm",
     "descUuid": "Tạo UUID RFC 4122 phiên bản 4 trong trình duyệt. Sao chép danh sách. Không tải lên.",
     "titleRegex": "Kiểm tra regex — biểu thức chính quy — cv.cm",
-    "descRegex": "Thử biểu thức chính quy trong trình duyệt. Xem khớp và thay thế. Không tải lên."
+    "descRegex": "Thử biểu thức chính quy trong trình duyệt. Xem khớp và thay thế. Không tải lên.",
+    "titleFavicon": "Tạo favicon — ICO và PNG — cv.cm",
+    "descFavicon": "Tạo favicon từ ảnh trong trình duyệt. Tải ICO và các cỡ PNG. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -242,6 +244,10 @@
     "regex": {
       "name": "Kiểm tra regex",
       "blurb": "Thử mẫu. Xem khớp. Không tải lên."
+    },
+    "favicon": {
+      "name": "Tạo favicon",
+      "blurb": "Ảnh thành ICO và PNG. Không tải lên."
     }
   },
   "watermark": {
@@ -981,6 +987,18 @@
       "a4": "Được. Điền thay thế để xem trước. $1 và $& như JavaScript.",
       "q5": "Có giới hạn độ dài không?",
       "a5": "Có. Văn bản tối đa 20.000 ký tự và 200 khớp để tab không bị đứng."
+    },
+    "favicon": {
+      "q1": "Tạo favicon ở đây được không?",
+      "a1": "Được. Thả ảnh. Tab này vẽ PNG vuông và đóng gói .ico.",
+      "q2": "Ảnh có bị tải lên không?",
+      "a2": "Không. Giải mã và vẽ ở tab này. Đóng là mất.",
+      "q3": "ICO chứa gì?",
+      "a3": "Một favicon.ico gồm PNG 16, 32 và 48 pixel.",
+      "q4": "Có icon Apple touch không?",
+      "a4": "Zip PNG có 180, 192, 512 cùng 16, 32, 48 quen thuộc.",
+      "q5": "Giữ nền trong suốt được không?",
+      "a5": "Được. Bỏ chọn nền trắng. Contain sẽ chừa chỗ trống trong suốt."
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "Xem trước thay thế",
     "truncated": "Đầu vào đã bị cắt.",
     "meta": "{count} khớp  /{flags}/"
+  },
+  "favicon": {
+    "title": "Tạo favicon",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả một ảnh",
+    "dropHint": "Hoặc dán. Tab này làm favicon vuông.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Cover lấp ô vuông. Contain nhét cả tấm ảnh.",
+    "options": "Tùy chọn",
+    "fit": "Vừa",
+    "fitCover": "Phủ",
+    "fitContain": "Chứa",
+    "whiteBg": "Nền trắng",
+    "downloadIco": "Tải ICO",
+    "downloadPng": "Tải zip PNG",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang vẽ…",
+    "errorDecode": "Không đọc được ảnh đó.",
+    "errorEncode": "Không tạo được favicon."
   }
 }

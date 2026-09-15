@@ -10,6 +10,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   crop: "/covers/crop-sweet.jpg?v=1",
   meme: "/covers/meme-sweet.jpg?v=2",
   signature: "/covers/signature-sweet.jpg?v=2",
+  favicon: "/covers/favicon-sweet.jpg?v=1",
   convert: "/covers/convert-sweet.jpg?v=1",
   "image-pdf": "/covers/image-pdf-sweet.jpg?v=1",
   "pdf-jpg": "/covers/pdf-jpg-sweet.jpg?v=1",

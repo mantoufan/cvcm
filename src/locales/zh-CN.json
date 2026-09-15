@@ -83,7 +83,9 @@
     "titleUuid": "UUID 生成器 — v4 UUID — cv.cm",
     "descUuid": "在浏览器里生成 RFC 4122 第 4 版 UUID。可复制列表。不上传。",
     "titleRegex": "正则测试 — 正则表达式 — cv.cm",
-    "descRegex": "在浏览器里测试正则表达式。查看匹配并可替换。不上传。"
+    "descRegex": "在浏览器里测试正则表达式。查看匹配并可替换。不上传。",
+    "titleFavicon": "Favicon 生成器 — ICO 和 PNG — cv.cm",
+    "descFavicon": "在浏览器里把照片做成 favicon。下载 ICO 和 PNG 尺寸。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -242,6 +244,10 @@
     "regex": {
       "name": "正则测试",
       "blurb": "测试正则。查看匹配。不上传。"
+    },
+    "favicon": {
+      "name": "Favicon 生成",
+      "blurb": "照片转 ICO 和 PNG。不上传。"
     }
   },
   "watermark": {
@@ -981,6 +987,18 @@
       "a4": "可以。填写替换即可预览。$1 和 $& 与 JavaScript 相同。",
       "q5": "有长度限制吗？",
       "a5": "有。文本最多 20,000 字、200 条匹配，以免卡住标签页。"
+    },
+    "favicon": {
+      "q1": "能在这里做 favicon 吗？",
+      "a1": "可以。放入照片，当前标签页会画出方形 PNG 并打包 .ico。",
+      "q2": "会上传照片吗？",
+      "a2": "不会。解码和绘制都在当前标签页，关掉即丢。",
+      "q3": "ICO 里有什么？",
+      "a3": "一个 favicon.ico 里包含 16、32、48 像素的 PNG。",
+      "q4": "有苹果触摸图标吗？",
+      "a4": "PNG 压缩包含 180、192、512，以及常见的 16、32、48。",
+      "q5": "能透明底吗？",
+      "a5": "可以。取消白色背景。包含模式下透明处留空。"
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "替换预览",
     "truncated": "输入已被截断。",
     "meta": "{count} 处匹配  /{flags}/"
+  },
+  "favicon": {
+    "title": "Favicon 生成器",
+    "back": "全部工具",
+    "privacyNote": "照片留在当前标签页。不上传。",
+    "filesTitle": "照片",
+    "dropTitle": "放入照片",
+    "dropHint": "或粘贴。在当前标签页做成方形 favicon。",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "覆盖铺满方框。包含则放下整张图。",
+    "options": "选项",
+    "fit": "适配",
+    "fitCover": "覆盖",
+    "fitContain": "包含",
+    "whiteBg": "白色背景",
+    "downloadIco": "下载 ICO",
+    "downloadPng": "下载 PNG 压缩包",
+    "emptyDownload": "请先添加照片。",
+    "working": "正在绘制…",
+    "errorDecode": "无法读取这张图。",
+    "errorEncode": "无法生成 favicon。"
   }
 }

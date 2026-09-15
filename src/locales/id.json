@@ -83,7 +83,9 @@
     "titleUuid": "Pembuat UUID — UUID v4 — cv.cm",
     "descUuid": "Buat UUID RFC 4122 versi 4 di browser. Salin daftar. Tidak diunggah.",
     "titleRegex": "Penguji regex — ekspresi reguler — cv.cm",
-    "descRegex": "Uji ekspresi reguler di browser. Lihat kecocokan dan ganti. Tidak diunggah."
+    "descRegex": "Uji ekspresi reguler di browser. Lihat kecocokan dan ganti. Tidak diunggah.",
+    "titleFavicon": "Pembuat favicon — ICO dan PNG — cv.cm",
+    "descFavicon": "Buat favicon dari foto di browser. Unduh ICO dan ukuran PNG. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -242,6 +244,10 @@
     "regex": {
       "name": "Penguji regex",
       "blurb": "Uji pola. Lihat kecocokan. Tanpa unggah."
+    },
+    "favicon": {
+      "name": "Pembuat favicon",
+      "blurb": "Foto menjadi ICO dan PNG. Tanpa unggah."
     }
   },
   "watermark": {
@@ -981,6 +987,18 @@
       "a4": "Bisa. Isi ganti untuk pratinjau. $1 dan $& seperti di JavaScript.",
       "q5": "Ada batas ukuran?",
       "a5": "Ada. Teks dibatasi 20.000 karakter dan 200 kecocokan agar tab tetap responsif."
+    },
+    "favicon": {
+      "q1": "Bisa buat favicon di sini?",
+      "a1": "Bisa. Jatuhkan foto. Tab ini menggambar PNG persegi dan mengemas .ico.",
+      "q2": "Apakah foto diunggah?",
+      "a2": "Tidak. Dekode dan gambar tetap di tab ini. Menutup tab membuangnya.",
+      "q3": "Apa isi ICO?",
+      "a3": "Satu favicon.ico berisi PNG 16, 32, dan 48 piksel.",
+      "q4": "Ada ikon Apple touch?",
+      "a4": "Zip PNG punya 180, 192, dan 512 plus ukuran klasik 16, 32, dan 48.",
+      "q5": "Bisa latar transparan?",
+      "a5": "Bisa. Matikan latar putih. Mode contain lalu menyisakan transparansi."
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "Pratinjau ganti",
     "truncated": "Masukan dipotong.",
     "meta": "{count} kecocokan  /{flags}/"
+  },
+  "favicon": {
+    "title": "Pembuat favicon",
+    "back": "Semua alat",
+    "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Jatuhkan foto",
+    "dropHint": "Atau tempel. Kami buat favicon persegi di tab ini.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Cover mengisi kotak. Contain memuat seluruh foto.",
+    "options": "Opsi",
+    "fit": "Pas",
+    "fitCover": "Cover",
+    "fitContain": "Contain",
+    "whiteBg": "Latar putih",
+    "downloadIco": "Unduh ICO",
+    "downloadPng": "Unduh zip PNG",
+    "emptyDownload": "Tambahkan foto dulu.",
+    "working": "Menggambar…",
+    "errorDecode": "Tidak bisa membaca gambar itu.",
+    "errorEncode": "Tidak bisa membuat favicon."
   }
 }

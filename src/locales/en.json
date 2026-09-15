@@ -83,7 +83,9 @@
     "titleUuid": "UUID generator — v4 UUID — cv.cm",
     "descUuid": "Generate RFC 4122 version 4 UUIDs in the browser. Copy a list. Nothing is uploaded.",
     "titleRegex": "Regex tester — test regular expressions — cv.cm",
-    "descRegex": "Test a regular expression in the browser. See matches and replace. Nothing is uploaded."
+    "descRegex": "Test a regular expression in the browser. See matches and replace. Nothing is uploaded.",
+    "titleFavicon": "Favicon generator — ICO and PNG — cv.cm",
+    "descFavicon": "Make a favicon from a photo in the browser. Download ICO and PNG sizes. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -548,6 +550,10 @@
     "regex": {
       "name": "Regex tester",
       "blurb": "Test a pattern. See matches. Nothing is uploaded."
+    },
+    "favicon": {
+      "name": "Favicon generator",
+      "blurb": "Photo to ICO and PNG. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1287,6 +1293,18 @@
       "a4": "Yes. Fill replace to preview a substitution. $1 and $& work as in JavaScript.",
       "q5": "Is there a size limit?",
       "a5": "Yes. Text is capped at 20,000 characters and 200 matches so the tab stays responsive."
+    },
+    "favicon": {
+      "q1": "Can I make a favicon here?",
+      "a1": "Yes. Drop a photo. The tab draws square PNG sizes and packs a .ico.",
+      "q2": "Is the photo uploaded?",
+      "a2": "No. Decoding and drawing stay in this tab. Closing it discards the image.",
+      "q3": "What is in the ICO?",
+      "a3": "16, 32, and 48 pixel PNG images inside one favicon.ico file.",
+      "q4": "Do you include Apple touch icons?",
+      "a4": "The PNG zip has 180, 192, and 512 as well as the classic 16, 32, and 48 sizes.",
+      "q5": "Can I keep a transparent background?",
+      "a5": "Yes. Uncheck white background. Contain mode then letterboxes on transparency."
     }
   },
   "qr": {
@@ -1714,5 +1732,26 @@
     "replaced": "Replace preview",
     "truncated": "Input was truncated.",
     "meta": "{count} matches  /{flags}/"
+  },
+  "favicon": {
+    "title": "Favicon generator",
+    "back": "All tools",
+    "privacyNote": "The photo stays in this tab. Nothing is uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a photo",
+    "dropHint": "Or paste. We make a square favicon in this tab.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Cover fills the square. Contain fits the whole photo.",
+    "options": "Options",
+    "fit": "Fit",
+    "fitCover": "Cover",
+    "fitContain": "Contain",
+    "whiteBg": "White background",
+    "downloadIco": "Download ICO",
+    "downloadPng": "Download PNG zip",
+    "emptyDownload": "Add a photo first.",
+    "working": "Drawing…",
+    "errorDecode": "Could not read that image.",
+    "errorEncode": "Could not build the favicon."
   }
 }
