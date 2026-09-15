@@ -19,6 +19,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Word counter** / 字数统计. [Open](https://cv.cm/en/word-count/)
 - **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)
 - **Crop** / 裁剪. [Open](https://cv.cm/en/crop/)
+- **Meme generator** / 表情包. [Open](https://cv.cm/en/meme/)
 - **Color picker** / 取色器. [Open](https://cv.cm/en/color/)
 - **PDF to JPG** / PDF 转图片. [Open](https://cv.cm/en/pdf-jpg/)
 - **Merge PDF** / 合并 PDF. [Open](https://cv.cm/en/merge-pdf/)

@@ -69,7 +69,9 @@
     "titleUnits": "單位換算 — 公分英吋、公斤磅、攝氏華氏 — cv.cm",
     "descUnits": "在瀏覽器裡換算長度、重量、溫度、體積、面積和速度。公分到英吋、公斤到磅。不上傳。",
     "titleBarcode": "條碼產生器 — Code 128、Code 39、EAN-13 — cv.cm",
-    "descBarcode": "在瀏覽器裡產生 Code 128、Code 39 或 EAN-13 條碼，下載 PNG。不上傳。"
+    "descBarcode": "在瀏覽器裡產生 Code 128、Code 39 或 EAN-13 條碼，下載 PNG。不上傳。",
+    "titleMeme": "迷因產生器 — 給照片加上下文字 — cv.cm",
+    "descMeme": "在瀏覽器裡做迷因。上下大字、描邊。下載 PNG。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -200,6 +202,10 @@
     "barcode": {
       "name": "條碼產生",
       "blurb": "Code 128、Code 39、EAN-13。下載 PNG。不上傳。"
+    },
+    "meme": {
+      "name": "迷因產生",
+      "blurb": "給照片加上下大字。下載 PNG。不上傳。"
     }
   },
   "watermark": {
@@ -855,6 +861,18 @@
       "a4": "手機鏡頭和掃描器都能讀這些格式，列印時注意尺寸和對比。",
       "q5": "什麼時候該用 QR？",
       "a5": "網址和較長文字請用 QR 工具。條碼適合短編號和商品碼。"
+    },
+    "meme": {
+      "q1": "能在這裡做迷因嗎？",
+      "a1": "可以。拖入照片，寫上上下兩行字，下載 PNG。檔案不上傳。",
+      "q2": "這是什麼字型？",
+      "a2": "經典迷因風格：Impact 或粗黑體，白字黑邊。",
+      "q3": "照片會上傳嗎？",
+      "a3": "不會。繪製在目前分頁完成，關掉即丟。",
+      "q4": "能貼上截圖嗎？",
+      "a4": "可以。貼上或拖入 PNG、JPEG、WebP、GIF，瀏覽器支援時也可用 HEIC。",
+      "q5": "和浮水印有什麼不同？",
+      "a5": "浮水印是版權小標。這個工具是上下兩行大字。"
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 僅支援 A–Z、0–9、空白和 -.$/+%。",
       "ean13": "EAN-13 需要 12 或 13 位數字。12 位會自動加檢查碼。"
     }
+  },
+  "meme": {
+    "title": "迷因產生器",
+    "back": "全部工具",
+    "privacyNote": "文字在目前分頁畫到照片上。不上傳。",
+    "dropTitle": "把照片拖到這裡",
+    "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
+    "filesTitle": "照片",
+    "hint": "上下文字疊在照片上。下載 PNG。",
+    "download": "下載 PNG",
+    "captions": "文案",
+    "top": "上方文字",
+    "bottom": "下方文字",
+    "topPlaceholder": "上方文字",
+    "bottomPlaceholder": "下方文字",
+    "caps": "全部大寫",
+    "size": "字級",
+    "emptyDownload": "請先新增照片。",
+    "working": "正在儲存…",
+    "errorDecode": "無法讀取這張圖片。"
   }
 }

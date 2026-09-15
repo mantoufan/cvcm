@@ -8,6 +8,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   collage: "/covers/collage-sweet.jpg?v=1",
   resize: "/covers/resize-sweet.jpg?v=1",
   crop: "/covers/crop-sweet.jpg?v=1",
+  meme: "/covers/meme-sweet.jpg?v=1",
   convert: "/covers/convert-sweet.jpg?v=1",
   "image-pdf": "/covers/image-pdf-sweet.jpg?v=1",
   "pdf-jpg": "/covers/pdf-jpg-sweet.jpg?v=1",

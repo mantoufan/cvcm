@@ -69,7 +69,9 @@
     "titleUnits": "Unit converter — cm to inches, kg to lbs, °C to °F — cv.cm",
     "descUnits": "Convert length, weight, temperature, volume, area, and speed in the browser. cm to inches, kg to lbs. Nothing is uploaded.",
     "titleBarcode": "Barcode generator — Code 128, Code 39, EAN-13 — cv.cm",
-    "descBarcode": "Create a Code 128, Code 39, or EAN-13 barcode in the browser. Download a PNG. Nothing is uploaded."
+    "descBarcode": "Create a Code 128, Code 39, or EAN-13 barcode in the browser. Download a PNG. Nothing is uploaded.",
+    "titleMeme": "Meme generator — add text to photos — cv.cm",
+    "descMeme": "Make a meme in the browser. Top and bottom captions, Impact-style outline. Download PNG. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -506,6 +508,10 @@
     "barcode": {
       "name": "Barcode generator",
       "blurb": "Code 128, Code 39, EAN-13. Download PNG. Nothing is uploaded."
+    },
+    "meme": {
+      "name": "Meme generator",
+      "blurb": "Top and bottom captions on a photo. Download PNG. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1161,6 +1167,18 @@
       "a4": "Phone cameras and USB scanners read these formats when printed with enough size and contrast.",
       "q5": "When should I use a QR code instead?",
       "a5": "Use the QR tool for URLs and longer text. Barcodes are for short IDs and product numbers."
+    },
+    "meme": {
+      "q1": "Can I make a meme here?",
+      "a1": "Yes. Drop a photo, type top and bottom captions, then download a PNG. Nothing is uploaded.",
+      "q2": "What font is that?",
+      "a2": "Classic meme style: Impact or a heavy sans, white fill and a black outline.",
+      "q3": "Is the photo uploaded?",
+      "a3": "No. Drawing stays in this tab. Closing it discards the image.",
+      "q4": "Can I paste a screenshot?",
+      "a4": "Yes. Paste or drop PNG, JPEG, WebP, GIF, or HEIC when the browser can decode it.",
+      "q5": "How is this different from watermark?",
+      "a5": "Watermark is for a logo or copyright mark. This tool is for large top and bottom captions."
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 allows A–Z, 0–9, space, and -.$/+%.",
       "ean13": "EAN-13 needs 12 or 13 digits. A 12-digit code gets a check digit."
     }
+  },
+  "meme": {
+    "title": "Meme generator",
+    "back": "All tools",
+    "privacyNote": "Captions are drawn in this tab. Nothing is uploaded.",
+    "dropTitle": "Drop a photo here",
+    "dropHint": "or click to choose · paste with Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Photo",
+    "hint": "Top and bottom text stay on the photo. Download a PNG.",
+    "download": "Download PNG",
+    "captions": "Captions",
+    "top": "Top text",
+    "bottom": "Bottom text",
+    "topPlaceholder": "TOP TEXT",
+    "bottomPlaceholder": "BOTTOM TEXT",
+    "caps": "All caps",
+    "size": "Text size",
+    "emptyDownload": "Add a photo first.",
+    "working": "Saving…",
+    "errorDecode": "Could not read this image."
   }
 }

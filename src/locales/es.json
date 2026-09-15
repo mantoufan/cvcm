@@ -69,7 +69,9 @@
     "titleUnits": "Conversor de unidades — cm a pulgadas, kg a lb, °C a °F — cv.cm",
     "descUnits": "Convierte longitud, peso, temperatura, volumen, área y velocidad en el navegador. cm a pulgadas, kg a lb. Nada se sube.",
     "titleBarcode": "Generador de códigos de barras — Code 128, Code 39, EAN-13 — cv.cm",
-    "descBarcode": "Crea un Code 128, Code 39 o EAN-13 en el navegador y descarga un PNG. Nada se sube."
+    "descBarcode": "Crea un Code 128, Code 39 o EAN-13 en el navegador y descarga un PNG. Nada se sube.",
+    "titleMeme": "Generador de memes — texto en fotos — cv.cm",
+    "descMeme": "Haz un meme en el navegador. Textos arriba y abajo, contorno. Descarga PNG. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -200,6 +202,10 @@
     "barcode": {
       "name": "Código de barras",
       "blurb": "Code 128, Code 39, EAN-13. Descarga PNG. Nada se sube."
+    },
+    "meme": {
+      "name": "Generador de memes",
+      "blurb": "Textos grandes arriba y abajo. Descarga PNG. Nada se sube."
     }
   },
   "watermark": {
@@ -855,6 +861,18 @@
       "a4": "Cámaras y lectores USB leen estos formatos si se imprimen con tamaño y contraste suficientes.",
       "q5": "¿Cuándo usar un QR?",
       "a5": "Usa la herramienta QR para URLs y textos largos. El código de barras es para IDs cortos y productos."
+    },
+    "meme": {
+      "q1": "¿Puedo hacer un meme aquí?",
+      "a1": "Sí. Suelta una foto, escribe arriba y abajo, descarga un PNG. Nada se sube.",
+      "q2": "¿Qué fuente es esa?",
+      "a2": "Estilo meme clásico: Impact o un sans grueso, blanco con borde negro.",
+      "q3": "¿Se sube la foto?",
+      "a3": "No. El dibujo queda en esta pestaña. Cerrarla descarta la imagen.",
+      "q4": "¿Puedo pegar una captura?",
+      "a4": "Sí. Pega o suelta PNG, JPEG, WebP, GIF o HEIC si el navegador lo lee.",
+      "q5": "¿En qué se diferencia de la marca de agua?",
+      "a5": "La marca de agua es un logo o copyright. Esta herramienta es para textos grandes arriba y abajo."
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 admite A–Z, 0–9, espacio y -.$/+%.",
       "ean13": "EAN-13 necesita 12 o 13 dígitos. A 12 se les añade el dígito de control."
     }
+  },
+  "meme": {
+    "title": "Generador de memes",
+    "back": "Todas las herramientas",
+    "privacyNote": "Los textos se dibujan en esta pestaña. Nada se sube.",
+    "dropTitle": "Suelta una foto aquí",
+    "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Foto",
+    "hint": "El texto de arriba y abajo queda en la foto. Descarga un PNG.",
+    "download": "Descargar PNG",
+    "captions": "Textos",
+    "top": "Texto superior",
+    "bottom": "Texto inferior",
+    "topPlaceholder": "ARRIBA",
+    "bottomPlaceholder": "ABAJO",
+    "caps": "Todo en mayúsculas",
+    "size": "Tamaño del texto",
+    "emptyDownload": "Añade una foto primero.",
+    "working": "Guardando…",
+    "errorDecode": "No se pudo leer esta imagen."
   }
 }

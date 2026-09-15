@@ -69,7 +69,9 @@
     "titleUnits": "单位换算 — 厘米英寸、千克磅、摄氏华氏 — cv.cm",
     "descUnits": "在浏览器里换算长度、重量、温度、体积、面积和速度。厘米到英寸、千克到磅。不上传。",
     "titleBarcode": "条码生成器 — Code 128、Code 39、EAN-13 — cv.cm",
-    "descBarcode": "在浏览器里生成 Code 128、Code 39 或 EAN-13 条码，下载 PNG。不上传。"
+    "descBarcode": "在浏览器里生成 Code 128、Code 39 或 EAN-13 条码，下载 PNG。不上传。",
+    "titleMeme": "表情包生成器 — 给照片加上下文字 — cv.cm",
+    "descMeme": "在浏览器里做表情包。上下大字、描边。下载 PNG。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -200,6 +202,10 @@
     "barcode": {
       "name": "条码生成",
       "blurb": "Code 128、Code 39、EAN-13。下载 PNG。不上传。"
+    },
+    "meme": {
+      "name": "表情包",
+      "blurb": "给照片加上下大字。下载 PNG。不上传。"
     }
   },
   "watermark": {
@@ -855,6 +861,18 @@
       "a4": "手机摄像头和扫描枪都能读这些格式，打印时注意尺寸和对比度。",
       "q5": "什么时候该用二维码？",
       "a5": "网址和较长文字请用二维码工具。条码适合短编号和商品码。"
+    },
+    "meme": {
+      "q1": "能在这里做表情包吗？",
+      "a1": "可以。拖入照片，写上上下两行字，下载 PNG。文件不上传。",
+      "q2": "这是什么字体？",
+      "a2": "经典表情包风格：Impact 或粗黑体，白字黑边。",
+      "q3": "照片会上传吗？",
+      "a3": "不会。绘制在当前标签页完成，关掉即丢。",
+      "q4": "能粘贴截图吗？",
+      "a4": "可以。粘贴或拖入 PNG、JPEG、WebP、GIF，浏览器支持时也可用 HEIC。",
+      "q5": "和水印有什么不同？",
+      "a5": "水印是版权小标。这个工具是上下两行大字。"
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 仅支持 A–Z、0–9、空格和 -.$/+%。",
       "ean13": "EAN-13 需要 12 或 13 位数字。12 位会自动加校验位。"
     }
+  },
+  "meme": {
+    "title": "表情包生成器",
+    "back": "全部工具",
+    "privacyNote": "文字在当前标签页画到照片上。不上传。",
+    "dropTitle": "把照片拖到这里",
+    "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
+    "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
+    "filesTitle": "照片",
+    "hint": "上下文字叠在照片上。下载 PNG。",
+    "download": "下载 PNG",
+    "captions": "文案",
+    "top": "上方文字",
+    "bottom": "下方文字",
+    "topPlaceholder": "上方文字",
+    "bottomPlaceholder": "下方文字",
+    "caps": "全部大写",
+    "size": "字号",
+    "emptyDownload": "请先添加照片。",
+    "working": "正在保存…",
+    "errorDecode": "无法读取这张图片。"
   }
 }

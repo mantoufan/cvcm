@@ -69,7 +69,9 @@
     "titleUnits": "Pengonversi satuan — cm ke inci, kg ke lbs, °C ke °F — cv.cm",
     "descUnits": "Ubah panjang, berat, suhu, volume, luas, dan kecepatan di browser. cm ke inci, kg ke pon. Tidak diunggah.",
     "titleBarcode": "Pembuat barcode — Code 128, Code 39, EAN-13 — cv.cm",
-    "descBarcode": "Buat barcode Code 128, Code 39, atau EAN-13 di browser, unduh PNG. Tidak diunggah."
+    "descBarcode": "Buat barcode Code 128, Code 39, atau EAN-13 di browser, unduh PNG. Tidak diunggah.",
+    "titleMeme": "Pembuat meme — teks di foto — cv.cm",
+    "descMeme": "Buat meme di browser. Teks atas dan bawah, garis tepi. Unduh PNG. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -200,6 +202,10 @@
     "barcode": {
       "name": "Pembuat barcode",
       "blurb": "Code 128, Code 39, EAN-13. Unduh PNG. Tanpa unggah."
+    },
+    "meme": {
+      "name": "Pembuat meme",
+      "blurb": "Teks besar di atas dan bawah foto. Unduh PNG. Tanpa unggah."
     }
   },
   "watermark": {
@@ -855,6 +861,18 @@
       "a4": "Kamera dan pemindai USB membacanya jika dicetak cukup besar dan kontras.",
       "q5": "Kapan pakai QR?",
       "a5": "URL dan teks panjang pakai alat QR. Barcode untuk ID pendek dan nomor produk."
+    },
+    "meme": {
+      "q1": "Bisa buat meme di sini?",
+      "a1": "Bisa. Letakkan foto, ketik teks atas dan bawah, unduh PNG. Tidak diunggah.",
+      "q2": "Font apa itu?",
+      "a2": "Gaya meme klasik: Impact atau sans tebal, huruf putih berbingkai hitam.",
+      "q3": "Apakah fotonya diunggah?",
+      "a3": "Tidak. Menggambar di tab ini. Menutup tab membuangnya.",
+      "q4": "Bisa tempel tangkapan layar?",
+      "a4": "Bisa. Tempel atau jatuhkan PNG, JPEG, WebP, GIF, atau HEIC jika browser bisa.",
+      "q5": "Apa bedanya dengan watermark?",
+      "a5": "Watermark untuk logo/hak cipta. Alat ini untuk teks besar di atas dan bawah."
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 hanya A–Z, 0–9, spasi, dan -.$/+%.",
       "ean13": "EAN-13 butuh 12 atau 13 digit. 12 digit mendapat check digit."
     }
+  },
+  "meme": {
+    "title": "Pembuat meme",
+    "back": "Semua alat",
+    "privacyNote": "Teks digambar di foto pada tab ini. Tidak diunggah.",
+    "dropTitle": "Letakkan foto di sini",
+    "dropHint": "atau klik untuk pilih · tempel Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Foto",
+    "hint": "Teks atas dan bawah menempel di foto. Unduh PNG.",
+    "download": "Unduh PNG",
+    "captions": "Teks",
+    "top": "Teks atas",
+    "bottom": "Teks bawah",
+    "topPlaceholder": "TEKS ATAS",
+    "bottomPlaceholder": "TEKS BAWAH",
+    "caps": "Huruf besar semua",
+    "size": "Ukuran teks",
+    "emptyDownload": "Tambah foto dulu.",
+    "working": "Menyimpan…",
+    "errorDecode": "Gambar ini tidak bisa dibaca."
   }
 }

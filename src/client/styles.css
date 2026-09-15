@@ -663,6 +663,14 @@ input[type="color"] {
   background: #fff7fb;
 }
 .barcode-stage { display: grid; justify-items: start; }
+.meme-caption {
+  min-height: 4.2rem;
+  width: 100%;
+  resize: vertical;
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
 .password-out {
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;

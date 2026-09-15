@@ -69,7 +69,9 @@
     "titleUnits": "Đổi đơn vị — cm sang inch, kg sang lbs, °C sang °F — cv.cm",
     "descUnits": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong trình duyệt. cm sang inch. Không tải lên.",
     "titleBarcode": "Tạo mã vạch — Code 128, Code 39, EAN-13 — cv.cm",
-    "descBarcode": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong trình duyệt, tải PNG. Không tải lên."
+    "descBarcode": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong trình duyệt, tải PNG. Không tải lên.",
+    "titleMeme": "Tạo meme — thêm chữ lên ảnh — cv.cm",
+    "descMeme": "Làm meme trong trình duyệt. Chữ trên và dưới, viền đậm. Tải PNG. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -200,6 +202,10 @@
     "barcode": {
       "name": "Tạo mã vạch",
       "blurb": "Code 128, Code 39, EAN-13. Tải PNG. Không tải lên."
+    },
+    "meme": {
+      "name": "Tạo meme",
+      "blurb": "Chữ lớn trên và dưới ảnh. Tải PNG. Không tải lên."
     }
   },
   "watermark": {
@@ -855,6 +861,18 @@
       "a4": "Camera và máy quét đọc được nếu in đủ lớn và tương phản.",
       "q5": "Khi nào dùng QR?",
       "a5": "URL và chữ dài hãy dùng công cụ QR. Mã vạch cho ID ngắn và mã hàng."
+    },
+    "meme": {
+      "q1": "Làm meme ở đây được không?",
+      "a1": "Được. Thả ảnh, gõ chữ trên/dưới, tải PNG. Không tải file lên.",
+      "q2": "Font gì vậy?",
+      "a2": "Kiểu meme cổ điển: Impact hoặc sans đậm, chữ trắng viền đen.",
+      "q3": "Ảnh có bị tải lên không?",
+      "a3": "Không. Vẽ trong tab này, đóng là mất.",
+      "q4": "Dán ảnh chụp màn hình được không?",
+      "a4": "Được. Dán hoặc thả PNG, JPEG, WebP, GIF, HEIC nếu trình duyệt đọc được.",
+      "q5": "Khác watermark chỗ nào?",
+      "a5": "Watermark là logo/bản quyền. Công cụ này là hai dòng chữ lớn trên và dưới."
     }
   },
   "qr": {
@@ -1447,5 +1465,26 @@
       "code39": "Code 39 chỉ A–Z, 0–9, khoảng trắng và -.$/+%.",
       "ean13": "EAN-13 cần 12 hoặc 13 chữ số. 12 số sẽ thêm số kiểm."
     }
+  },
+  "meme": {
+    "title": "Tạo meme",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chữ được vẽ lên ảnh trong tab này. Không tải lên.",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "hoặc bấm để chọn · dán Ctrl/⌘ V",
+    "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
+    "filesTitle": "Ảnh",
+    "hint": "Chữ trên và dưới nằm trên ảnh. Tải PNG.",
+    "download": "Tải PNG",
+    "captions": "Chữ",
+    "top": "Chữ trên",
+    "bottom": "Chữ dưới",
+    "topPlaceholder": "CHỮ TRÊN",
+    "bottomPlaceholder": "CHỮ DƯỚI",
+    "caps": "Viết hoa hết",
+    "size": "Cỡ chữ",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang lưu…",
+    "errorDecode": "Không đọc được ảnh này."
   }
 }

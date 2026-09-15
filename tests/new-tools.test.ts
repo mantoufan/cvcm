@@ -7,6 +7,7 @@ import { generateLorem, loremWords } from "../src/shared/lorem";
 import { convertWallTime } from "../src/shared/timezone";
 import { convertAmount, convertUnits } from "../src/shared/units";
 import { ean13Checksum, encodeBarcode } from "../src/shared/barcode";
+import { memeFontSize, normalizeMemeText, wrapByWidth } from "../src/shared/meme";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -112,6 +113,19 @@ describe("barcode", () => {
   });
 });
 
+describe("meme", () => {
+  it("uppercases captions and wraps by measured width", () => {
+    expect(normalizeMemeText("  one does   not  ", true)).toBe("ONE DOES NOT");
+    expect(normalizeMemeText("Keep Case", false)).toBe("Keep Case");
+    expect(wrapByWidth("ONE DOES NOT SIMPLY", 8, (s) => s.length)).toEqual([
+      "ONE DOES",
+      "NOT",
+      "SIMPLY",
+    ]);
+    expect(memeFontSize(1000, 1000, 1)).toBe(85);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -134,7 +148,9 @@ describe("new routes", () => {
     expect(parseAppPath("/zh-CN/lorem/")).toEqual({ kind: "app", locale: "zh-CN", tool: "lorem" });
     expect(parseAppPath("/en/units/")).toEqual({ kind: "app", locale: "en", tool: "units" });
     expect(parseAppPath("/en/barcode/")).toEqual({ kind: "app", locale: "en", tool: "barcode" });
+    expect(parseAppPath("/en/meme/")).toEqual({ kind: "app", locale: "en", tool: "meme" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("zh-CN", "meme")).toBe("/zh-cn/meme/");
     expect(appHref("en", "barcode")).toBe("/en/barcode/");
     expect(appHref("en", "timezone")).toBe("/en/timezone/");
     expect(appHref("zh-CN", "units")).toBe("/zh-cn/units/");
