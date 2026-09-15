@@ -75,7 +75,9 @@
     "titleTts": "Chuyển chữ thành tiếng — nghe trong trình duyệt — cv.cm",
     "descTts": "Đọc chữ bằng giọng trên máy. Tốc độ và cao độ. Không tải lên. Không có file MP3.",
     "titleInvoice": "Tạo hóa đơn — PDF hóa đơn — cv.cm",
-    "descInvoice": "Tạo PDF hóa đơn một trang trong trình duyệt. Dòng hàng, thuế, tiền tệ. Không tải lên. Không phải chứng từ thuế."
+    "descInvoice": "Tạo PDF hóa đơn một trang trong trình duyệt. Dòng hàng, thuế, tiền tệ. Không tải lên. Không phải chứng từ thuế.",
+    "titleSignature": "Tạo chữ ký — vẽ PNG — cv.cm",
+    "descSignature": "Vẽ chữ ký trong trình duyệt và tải PNG. Không tải lên. Không phải chữ ký điện tử pháp lý."
   },
   "brand": "cv.cm",
   "nav": {
@@ -218,6 +220,10 @@
     "invoice": {
       "name": "Tạo hóa đơn",
       "blurb": "Điền dòng hàng, thuế, tiền tệ. Tải PDF. Không tải lên."
+    },
+    "signature": {
+      "name": "Tạo chữ ký",
+      "blurb": "Vẽ chữ ký, tải PNG. Không tải lên. Không phải e-sign pháp lý."
     }
   },
   "watermark": {
@@ -909,6 +915,18 @@
       "a4": "Được. PDF là ảnh cả trang nên chữ trình duyệt vẽ được đều vào được.",
       "q5": "Những loại tiền nào?",
       "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. Số tiền theo định dạng tiền của trình duyệt."
+    },
+    "signature": {
+      "q1": "Tạo chữ ký ở đây được không?",
+      "a1": "Được. Vẽ bằng chuột hoặc ngón tay, tải PNG đã cắt. Không tải lên.",
+      "q2": "Đây có phải chữ ký điện tử có pháp lý?",
+      "a2": "Không. Chỉ là ảnh nét vẽ. Không phải DocuSign hay chữ ký điện tử đủ điều kiện.",
+      "q3": "Nét vẽ có bị tải lên không?",
+      "a3": "Không. Bảng vẽ chạy trong tab này, đóng là mất.",
+      "q4": "PNG có nền trong suốt không?",
+      "a4": "Có. Xuất cắt theo mực và giữ nền trong suốt để dán lên tài liệu.",
+      "q5": "Hoàn tác một nét được không?",
+      "a5": "Được. Hoàn tác xóa nét cuối. Xóa trắng cả bảng."
     }
   },
   "qr": {
@@ -1578,5 +1596,19 @@
     "tax": "Thuế",
     "total": "Tổng",
     "notes": "Ghi chú"
+  },
+  "signature": {
+    "title": "Tạo chữ ký",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Nét vẽ ở tab này. Không tải lên. Không phải e-sign pháp lý.",
+    "pad": "Bảng vẽ",
+    "hint": "Vẽ bằng chuột, bút hoặc ngón tay. Tải PNG.",
+    "options": "Bút",
+    "color": "Màu",
+    "width": "Độ dày",
+    "download": "Tải PNG",
+    "undo": "Hoàn tác",
+    "clear": "Xóa",
+    "empty": "Hãy vẽ trước."
   }
 }

@@ -20,6 +20,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)
 - **Crop** / 裁剪. [Open](https://cv.cm/en/crop/)
 - **Meme generator** / 表情包. [Open](https://cv.cm/en/meme/)
+- **Signature generator** / 签名. [Open](https://cv.cm/en/signature/)
 - **Color picker** / 取色器. [Open](https://cv.cm/en/color/)
 - **PDF to JPG** / PDF 转图片. [Open](https://cv.cm/en/pdf-jpg/)
 - **Merge PDF** / 合并 PDF. [Open](https://cv.cm/en/merge-pdf/)

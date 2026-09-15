@@ -693,6 +693,16 @@ input[type="color"] {
   border-radius: 10px;
   cursor: pointer;
 }
+.signature-pad {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  border-radius: 16px;
+  background: #fff7fb;
+  cursor: crosshair;
+  touch-action: none;
+}
+.signature-stage { display: grid; gap: 0.45rem; }
 .password-out {
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;

@@ -75,7 +75,9 @@
     "titleTts": "Texto a voz — escuchar en el navegador — cv.cm",
     "descTts": "Escucha el texto con las voces del dispositivo. Velocidad y tono. Nada se sube. No hay archivo MP3.",
     "titleInvoice": "Generador de facturas — factura PDF — cv.cm",
-    "descInvoice": "Crea una factura PDF de una página en el navegador. Líneas, impuesto, moneda. Nada se sube. No es un formulario fiscal."
+    "descInvoice": "Crea una factura PDF de una página en el navegador. Líneas, impuesto, moneda. Nada se sube. No es un formulario fiscal.",
+    "titleSignature": "Generador de firmas — dibuja un PNG — cv.cm",
+    "descSignature": "Dibuja una firma en el navegador y descarga un PNG. Nada se sube. No es una firma electrónica legal."
   },
   "brand": "cv.cm",
   "nav": {
@@ -218,6 +220,10 @@
     "invoice": {
       "name": "Generador de facturas",
       "blurb": "Líneas, impuesto y moneda. Descarga un PDF. Nada se sube."
+    },
+    "signature": {
+      "name": "Generador de firmas",
+      "blurb": "Dibuja una firma, descarga PNG. Nada se sube. No es e-sign legal."
     }
   },
   "watermark": {
@@ -909,6 +915,18 @@
       "a4": "Sí. El PDF es una imagen de página, así que entra cualquier texto que el navegador pueda dibujar.",
       "q5": "¿Qué monedas hay?",
       "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND e IDR. Los importes usan el formato de moneda del navegador."
+    },
+    "signature": {
+      "q1": "¿Puedo generar una firma aquí?",
+      "a1": "Sí. Dibuja con ratón o dedo y descarga un PNG recortado. Nada se sube.",
+      "q2": "¿Es una firma electrónica con valor legal?",
+      "a2": "No. Es la imagen de un trazo. No es DocuSign ni una firma electrónica cualificada.",
+      "q3": "¿Se sube el dibujo?",
+      "a3": "No. El bloc corre en esta pestaña. Cerrarla descarta los trazos.",
+      "q4": "¿El PNG tiene fondo transparente?",
+      "a4": "Sí. La exportación recorta a la tinta y deja fondo transparente para pegarlo en documentos.",
+      "q5": "¿Puedo deshacer un trazo?",
+      "a5": "Sí. Deshacer quita el último trazo. Borrar limpia el bloc."
     }
   },
   "qr": {
@@ -1578,5 +1596,19 @@
     "tax": "Impuesto",
     "total": "Total",
     "notes": "Notas"
+  },
+  "signature": {
+    "title": "Generador de firmas",
+    "back": "Todas las herramientas",
+    "privacyNote": "El dibujo queda en esta pestaña. Nada se sube. No es una e-sign legal.",
+    "pad": "Bloc",
+    "hint": "Dibuja con ratón, lápiz o dedo. Descarga un PNG.",
+    "options": "Lápiz",
+    "color": "Color",
+    "width": "Grosor",
+    "download": "Descargar PNG",
+    "undo": "Deshacer",
+    "clear": "Borrar",
+    "empty": "Dibuja una firma primero."
   }
 }

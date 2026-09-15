@@ -75,7 +75,9 @@
     "titleTts": "Teks ke suara — dengar di browser — cv.cm",
     "descTts": "Dengarkan teks dengan suara perangkat. Kecepatan dan nada. Tidak diunggah. Tidak ada file MP3.",
     "titleInvoice": "Pembuat invoice — PDF invoice — cv.cm",
-    "descInvoice": "Buat PDF invoice satu halaman di browser. Baris item, pajak, mata uang. Tidak diunggah. Bukan faktur pajak."
+    "descInvoice": "Buat PDF invoice satu halaman di browser. Baris item, pajak, mata uang. Tidak diunggah. Bukan faktur pajak.",
+    "titleSignature": "Pembuat tanda tangan — gambar PNG — cv.cm",
+    "descSignature": "Gambar tanda tangan di browser dan unduh PNG. Tidak diunggah. Bukan e-sign legal."
   },
   "brand": "cv.cm",
   "nav": {
@@ -218,6 +220,10 @@
     "invoice": {
       "name": "Pembuat invoice",
       "blurb": "Isi item, pajak, mata uang. Unduh PDF. Tanpa unggah."
+    },
+    "signature": {
+      "name": "Pembuat tanda tangan",
+      "blurb": "Gambar tanda tangan, unduh PNG. Tanpa unggah. Bukan e-sign legal."
     }
   },
   "watermark": {
@@ -909,6 +915,18 @@
       "a4": "Bisa. PDF adalah gambar halaman, jadi teks yang bisa digambar browser ikut masuk.",
       "q5": "Mata uang apa?",
       "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. Jumlah memakai format mata uang browser."
+    },
+    "signature": {
+      "q1": "Bisa buat tanda tangan di sini?",
+      "a1": "Bisa. Gambar dengan mouse atau jari, unduh PNG yang dipotong. Tidak diunggah.",
+      "q2": "Apakah ini tanda tangan elektronik yang sah?",
+      "a2": "Bukan. Hanya gambar goresan. Bukan DocuSign dan bukan tanda tangan elektronik tersertifikasi.",
+      "q3": "Apakah goresannya diunggah?",
+      "a3": "Tidak. Pad berjalan di tab ini. Menutup tab membuangnya.",
+      "q4": "PNG-nya transparan?",
+      "a4": "Ya. Ekspor memotong ke tinta dan menjaga latar transparan untuk ditaruh di dokumen.",
+      "q5": "Bisa urungkan satu goresan?",
+      "a5": "Bisa. Urungkan menghapus goresan terakhir. Hapus membersihkan pad."
     }
   },
   "qr": {
@@ -1578,5 +1596,19 @@
     "tax": "Pajak",
     "total": "Total",
     "notes": "Catatan"
+  },
+  "signature": {
+    "title": "Pembuat tanda tangan",
+    "back": "Semua alat",
+    "privacyNote": "Goresan tetap di tab ini. Tidak diunggah. Bukan e-sign legal.",
+    "pad": "Pad",
+    "hint": "Gambar dengan mouse, stylus, atau jari. Unduh PNG.",
+    "options": "Pena",
+    "color": "Warna",
+    "width": "Tebal",
+    "download": "Unduh PNG",
+    "undo": "Urungkan",
+    "clear": "Hapus",
+    "empty": "Gambar dulu."
   }
 }
