@@ -71,7 +71,9 @@
     "titleBarcode": "Barcode generator — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Create a Code 128, Code 39, or EAN-13 barcode in the browser. Download a PNG. Nothing is uploaded.",
     "titleMeme": "Meme generator — add text to photos — cv.cm",
-    "descMeme": "Make a meme in the browser. Top and bottom captions, Impact-style outline. Download PNG. Nothing is uploaded."
+    "descMeme": "Make a meme in the browser. Top and bottom captions, Impact-style outline. Download PNG. Nothing is uploaded.",
+    "titleTts": "Text to speech — listen in the browser — cv.cm",
+    "descTts": "Hear text read aloud with your device voices. Rate and pitch. Nothing is uploaded. No MP3 file."
   },
   "brand": "cv.cm",
   "nav": {
@@ -512,6 +514,10 @@
     "meme": {
       "name": "Meme generator",
       "blurb": "Top and bottom captions on a photo. Download PNG. Nothing is uploaded."
+    },
+    "text-to-speech": {
+      "name": "Text to speech",
+      "blurb": "Hear text with device voices. Rate and pitch. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1179,6 +1185,18 @@
       "a4": "Yes. Paste or drop PNG, JPEG, WebP, GIF, or HEIC when the browser can decode it.",
       "q5": "How is this different from watermark?",
       "a5": "Watermark is for a logo or copyright mark. This tool is for large top and bottom captions."
+    },
+    "text-to-speech": {
+      "q1": "Can I convert text to speech here?",
+      "a1": "Yes. Paste text, pick a voice, and press Speak. The browser reads it with voices already on your device.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. SpeechSynthesis runs in this tab. Closing it stops playback.",
+      "q3": "Can I download an MP3?",
+      "a3": "No. The browser voice engine does not give an audio file, so this tool only plays sound.",
+      "q4": "Why is the voice list empty?",
+      "a4": "Some browsers fill voices after a moment, or they have none installed. Chrome, Safari, and Edge usually work.",
+      "q5": "Does it support Chinese or other languages?",
+      "a5": "If your system has that language pack, it appears in the list. The page does not fetch cloud voices."
     }
   },
   "qr": {
@@ -1486,5 +1504,27 @@
     "emptyDownload": "Add a photo first.",
     "working": "Saving…",
     "errorDecode": "Could not read this image."
+  },
+  "tts": {
+    "title": "Text to speech",
+    "back": "All tools",
+    "privacyNote": "Playback uses voices on this device. Nothing is uploaded.",
+    "input": "Text",
+    "placeholder": "Paste or type text to hear…",
+    "sample": "Hello. This is text to speech in this tab.",
+    "options": "Voice",
+    "voice": "Voice",
+    "rate": "Rate",
+    "pitch": "Pitch",
+    "speak": "Speak",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "speaking": "Speaking…",
+    "paused": "Paused",
+    "empty": "Type some text first.",
+    "unsupported": "This browser has no speech synthesis.",
+    "noVoices": "No voices yet",
+    "error": "Playback stopped."
   }
 }

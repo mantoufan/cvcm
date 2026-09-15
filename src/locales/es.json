@@ -71,7 +71,9 @@
     "titleBarcode": "Generador de códigos de barras — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Crea un Code 128, Code 39 o EAN-13 en el navegador y descarga un PNG. Nada se sube.",
     "titleMeme": "Generador de memes — texto en fotos — cv.cm",
-    "descMeme": "Haz un meme en el navegador. Textos arriba y abajo, contorno. Descarga PNG. Nada se sube."
+    "descMeme": "Haz un meme en el navegador. Textos arriba y abajo, contorno. Descarga PNG. Nada se sube.",
+    "titleTts": "Texto a voz — escuchar en el navegador — cv.cm",
+    "descTts": "Escucha el texto con las voces del dispositivo. Velocidad y tono. Nada se sube. No hay archivo MP3."
   },
   "brand": "cv.cm",
   "nav": {
@@ -206,6 +208,10 @@
     "meme": {
       "name": "Generador de memes",
       "blurb": "Textos grandes arriba y abajo. Descarga PNG. Nada se sube."
+    },
+    "text-to-speech": {
+      "name": "Texto a voz",
+      "blurb": "Escucha con voces del dispositivo. Velocidad. Nada se sube."
     }
   },
   "watermark": {
@@ -873,6 +879,18 @@
       "a4": "Sí. Pega o suelta PNG, JPEG, WebP, GIF o HEIC si el navegador lo lee.",
       "q5": "¿En qué se diferencia de la marca de agua?",
       "a5": "La marca de agua es un logo o copyright. Esta herramienta es para textos grandes arriba y abajo."
+    },
+    "text-to-speech": {
+      "q1": "¿Puedo pasar texto a voz aquí?",
+      "a1": "Sí. Pega texto, elige una voz y pulsa Hablar. El navegador usa voces que ya están en el dispositivo.",
+      "q2": "¿Se sube el texto?",
+      "a2": "No. SpeechSynthesis corre en esta pestaña. Cerrarla detiene la lectura.",
+      "q3": "¿Puedo descargar un MP3?",
+      "a3": "No. El motor de voz del navegador no entrega un archivo; esta herramienta solo reproduce.",
+      "q4": "¿La lista de voces está vacía?",
+      "a4": "Algunos navegadores las cargan un momento después, o no hay voces instaladas. Chrome, Safari y Edge suelen funcionar.",
+      "q5": "¿Hay español u otros idiomas?",
+      "a5": "Si el sistema tiene ese paquete de idioma, aparece. La página no trae voces de la nube."
     }
   },
   "qr": {
@@ -1486,5 +1504,27 @@
     "emptyDownload": "Añade una foto primero.",
     "working": "Guardando…",
     "errorDecode": "No se pudo leer esta imagen."
+  },
+  "tts": {
+    "title": "Texto a voz",
+    "back": "Todas las herramientas",
+    "privacyNote": "La reproducción usa voces de este dispositivo. Nada se sube.",
+    "input": "Texto",
+    "placeholder": "Pega o escribe texto para oírlo…",
+    "sample": "Hola. Esto es texto a voz en esta pestaña.",
+    "options": "Voz",
+    "voice": "Voz",
+    "rate": "Velocidad",
+    "pitch": "Tono",
+    "speak": "Hablar",
+    "pause": "Pausa",
+    "resume": "Seguir",
+    "stop": "Parar",
+    "speaking": "Hablando…",
+    "paused": "En pausa",
+    "empty": "Escribe texto primero.",
+    "unsupported": "Este navegador no tiene síntesis de voz.",
+    "noVoices": "Aún no hay voces",
+    "error": "Se detuvo la reproducción."
   }
 }

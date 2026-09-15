@@ -29,6 +29,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Time zone converter** / 时区转换. [Open](https://cv.cm/en/timezone/)
 - **Lorem ipsum** / 占位文本. [Open](https://cv.cm/en/lorem/)
 - **Unit converter** / 单位换算. [Open](https://cv.cm/en/units/)
+- **Text to speech** / 文字转语音. [Open](https://cv.cm/en/text-to-speech/)
 
 ## Lessons
 

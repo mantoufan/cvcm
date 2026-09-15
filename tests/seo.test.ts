@@ -32,13 +32,14 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "units")).toMatch(/Unit converter/i);
     expect(pageTitle("en", "barcode")).toMatch(/Barcode generator/i);
     expect(pageTitle("en", "meme")).toMatch(/Meme generator/i);
+    expect(pageTitle("en", "text-to-speech")).toMatch(/Text to speech/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "meme", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "data", "password", "word-count", "color", "names", "timezone", "lorem", "units",
+      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "meme", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "data", "password", "word-count", "color", "names", "timezone", "lorem", "units", "text-to-speech",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

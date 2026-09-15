@@ -71,7 +71,9 @@
     "titleBarcode": "Tạo mã vạch — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong trình duyệt, tải PNG. Không tải lên.",
     "titleMeme": "Tạo meme — thêm chữ lên ảnh — cv.cm",
-    "descMeme": "Làm meme trong trình duyệt. Chữ trên và dưới, viền đậm. Tải PNG. Không tải lên."
+    "descMeme": "Làm meme trong trình duyệt. Chữ trên và dưới, viền đậm. Tải PNG. Không tải lên.",
+    "titleTts": "Chuyển chữ thành tiếng — nghe trong trình duyệt — cv.cm",
+    "descTts": "Đọc chữ bằng giọng trên máy. Tốc độ và cao độ. Không tải lên. Không có file MP3."
   },
   "brand": "cv.cm",
   "nav": {
@@ -206,6 +208,10 @@
     "meme": {
       "name": "Tạo meme",
       "blurb": "Chữ lớn trên và dưới ảnh. Tải PNG. Không tải lên."
+    },
+    "text-to-speech": {
+      "name": "Chữ thành tiếng",
+      "blurb": "Đọc bằng giọng máy. Chỉnh tốc độ. Không tải lên."
     }
   },
   "watermark": {
@@ -873,6 +879,18 @@
       "a4": "Được. Dán hoặc thả PNG, JPEG, WebP, GIF, HEIC nếu trình duyệt đọc được.",
       "q5": "Khác watermark chỗ nào?",
       "a5": "Watermark là logo/bản quyền. Công cụ này là hai dòng chữ lớn trên và dưới."
+    },
+    "text-to-speech": {
+      "q1": "Đổi chữ thành tiếng ở đây được không?",
+      "a1": "Được. Dán chữ, chọn giọng, bấm Đọc. Trình duyệt dùng giọng đã có trên máy.",
+      "q2": "Chữ có bị tải lên không?",
+      "a2": "Không. SpeechSynthesis chạy trong tab này, đóng là dừng.",
+      "q3": "Tải MP3 được không?",
+      "a3": "Không. Bộ máy giọng trình duyệt không đưa file, công cụ này chỉ phát.",
+      "q4": "Danh sách giọng trống?",
+      "a4": "Một số trình duyệt liệt kê sau vài giây, hoặc máy chưa cài giọng. Chrome, Safari, Edge thường được.",
+      "q5": "Có tiếng Việt hoặc ngôn ngữ khác không?",
+      "a5": "Nếu hệ thống có gói ngôn ngữ đó thì sẽ hiện. Trang không kéo giọng đám mây."
     }
   },
   "qr": {
@@ -1486,5 +1504,27 @@
     "emptyDownload": "Hãy thêm ảnh trước.",
     "working": "Đang lưu…",
     "errorDecode": "Không đọc được ảnh này."
+  },
+  "tts": {
+    "title": "Chữ thành tiếng",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Phát bằng giọng trên máy này. Không tải lên.",
+    "input": "Chữ",
+    "placeholder": "Dán hoặc gõ chữ để nghe…",
+    "sample": "Xin chào. Đây là chuyển chữ thành tiếng trong tab này.",
+    "options": "Giọng",
+    "voice": "Giọng",
+    "rate": "Tốc độ",
+    "pitch": "Cao độ",
+    "speak": "Đọc",
+    "pause": "Tạm dừng",
+    "resume": "Tiếp tục",
+    "stop": "Dừng",
+    "speaking": "Đang đọc…",
+    "paused": "Đã tạm dừng",
+    "empty": "Hãy nhập chữ trước.",
+    "unsupported": "Trình duyệt này không có tổng hợp giọng nói.",
+    "noVoices": "Chưa có giọng",
+    "error": "Đã dừng phát."
   }
 }

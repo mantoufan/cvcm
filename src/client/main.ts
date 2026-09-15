@@ -15,6 +15,7 @@ import { mountQr, unmountQr } from "./qr/ui";
 import { mountBarcode, unmountBarcode } from "./barcode/ui";
 import { mountResize, unmountResize } from "./resize/ui";
 import { mountWordCount, unmountWordCount } from "./word-count/ui";
+import { mountTts, unmountTts } from "./tts/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { mountHome } from "./home";
@@ -139,6 +140,7 @@ function unmountTools(): void {
   unmountTimezone();
   unmountLorem();
   unmountUnits();
+  unmountTts();
   unmountColor();
   unmountResize();
   unmountCrop();
@@ -233,6 +235,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "timezone") mountTimezone(main);
   else if (tool === "lorem") mountLorem(main);
   else if (tool === "units") mountUnits(main);
+  else if (tool === "text-to-speech") mountTts(main);
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);

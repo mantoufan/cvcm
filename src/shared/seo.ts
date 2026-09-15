@@ -65,6 +65,7 @@ const TITLE: Record<ToolId, string> = {
   timezone: "meta.titleTimezone",
   lorem: "meta.titleLorem",
   units: "meta.titleUnits",
+  "text-to-speech": "meta.titleTts",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -91,6 +92,7 @@ const DESC: Record<ToolId, string> = {
   timezone: "meta.descTimezone",
   lorem: "meta.descLorem",
   units: "meta.descUnits",
+  "text-to-speech": "meta.descTts",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

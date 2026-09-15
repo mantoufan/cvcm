@@ -71,7 +71,9 @@
     "titleBarcode": "Pembuat barcode — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Buat barcode Code 128, Code 39, atau EAN-13 di browser, unduh PNG. Tidak diunggah.",
     "titleMeme": "Pembuat meme — teks di foto — cv.cm",
-    "descMeme": "Buat meme di browser. Teks atas dan bawah, garis tepi. Unduh PNG. Tidak diunggah."
+    "descMeme": "Buat meme di browser. Teks atas dan bawah, garis tepi. Unduh PNG. Tidak diunggah.",
+    "titleTts": "Teks ke suara — dengar di browser — cv.cm",
+    "descTts": "Dengarkan teks dengan suara perangkat. Kecepatan dan nada. Tidak diunggah. Tidak ada file MP3."
   },
   "brand": "cv.cm",
   "nav": {
@@ -206,6 +208,10 @@
     "meme": {
       "name": "Pembuat meme",
       "blurb": "Teks besar di atas dan bawah foto. Unduh PNG. Tanpa unggah."
+    },
+    "text-to-speech": {
+      "name": "Teks ke suara",
+      "blurb": "Dengar teks dengan suara perangkat. Atur kecepatan. Tanpa unggah."
     }
   },
   "watermark": {
@@ -873,6 +879,18 @@
       "a4": "Bisa. Tempel atau jatuhkan PNG, JPEG, WebP, GIF, atau HEIC jika browser bisa.",
       "q5": "Apa bedanya dengan watermark?",
       "a5": "Watermark untuk logo/hak cipta. Alat ini untuk teks besar di atas dan bawah."
+    },
+    "text-to-speech": {
+      "q1": "Bisa mengubah teks jadi suara di sini?",
+      "a1": "Bisa. Tempel teks, pilih suara, tekan Bicara. Browser memakai suara yang sudah ada di perangkat.",
+      "q2": "Apakah teks diunggah?",
+      "a2": "Tidak. SpeechSynthesis berjalan di tab ini. Menutup tab menghentikannya.",
+      "q3": "Bisa unduh MP3?",
+      "a3": "Tidak. Mesin suara browser tidak memberi berkas audio, alat ini hanya memutar.",
+      "q4": "Daftar suara kosong?",
+      "a4": "Beberapa browser mengisi suara belakangan, atau belum terpasang. Chrome, Safari, dan Edge biasanya bisa.",
+      "q5": "Bahasa lain?",
+      "a5": "Jika sistem punya paket bahasa itu, akan muncul. Halaman tidak mengambil suara awan."
     }
   },
   "qr": {
@@ -1486,5 +1504,27 @@
     "emptyDownload": "Tambah foto dulu.",
     "working": "Menyimpan…",
     "errorDecode": "Gambar ini tidak bisa dibaca."
+  },
+  "tts": {
+    "title": "Teks ke suara",
+    "back": "Semua alat",
+    "privacyNote": "Pemutaran memakai suara di perangkat ini. Tidak diunggah.",
+    "input": "Teks",
+    "placeholder": "Tempel atau ketik teks untuk didengar…",
+    "sample": "Halo. Ini teks ke suara di tab ini.",
+    "options": "Suara",
+    "voice": "Suara",
+    "rate": "Kecepatan",
+    "pitch": "Nada",
+    "speak": "Bicara",
+    "pause": "Jeda",
+    "resume": "Lanjut",
+    "stop": "Berhenti",
+    "speaking": "Berbicara…",
+    "paused": "Dijeda",
+    "empty": "Ketik teks dulu.",
+    "unsupported": "Browser ini tidak punya sintesis suara.",
+    "noVoices": "Belum ada suara",
+    "error": "Pemutaran berhenti."
   }
 }

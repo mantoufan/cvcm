@@ -24,6 +24,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   timezone: "/covers/timezone-sweet.jpg?v=1",
   lorem: "/covers/lorem-sweet.jpg?v=1",
   units: "/covers/units-sweet.jpg?v=1",
+  "text-to-speech": "/covers/text-to-speech-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
