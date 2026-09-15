@@ -77,7 +77,9 @@
     "titleInvoice": "Generador de facturas — factura PDF — cv.cm",
     "descInvoice": "Crea una factura PDF de una página en el navegador. Líneas, impuesto, moneda. Nada se sube. No es un formulario fiscal.",
     "titleSignature": "Generador de firmas — dibuja un PNG — cv.cm",
-    "descSignature": "Dibuja una firma en el navegador y descarga un PNG. Nada se sube. No es una firma electrónica legal."
+    "descSignature": "Dibuja una firma en el navegador y descarga un PNG. Nada se sube. No es una firma electrónica legal.",
+    "titleDiff": "Comparador de textos — diff — cv.cm",
+    "descDiff": "Compara dos textos línea a línea en el navegador. Marca altas y bajas. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -224,6 +226,10 @@
     "signature": {
       "name": "Generador de firmas",
       "blurb": "Dibuja una firma, descarga PNG. Nada se sube. No es e-sign legal."
+    },
+    "diff": {
+      "name": "Comparador de textos",
+      "blurb": "Compara dos textos. Altas y bajas. Nada se sube."
     }
   },
   "watermark": {
@@ -927,6 +933,18 @@
       "a4": "Sí. La exportación recorta a la tinta y deja fondo transparente para pegarlo en documentos.",
       "q5": "¿Puedo deshacer un trazo?",
       "a5": "Sí. Deshacer quita el último trazo. Borrar limpia el bloc."
+    },
+    "diff": {
+      "q1": "¿Puedo comparar dos textos aquí?",
+      "a1": "Sí. Pega el original a la izquierda y la versión nueva a la derecha. El resultado marca líneas añadidas y quitadas.",
+      "q2": "¿Es un diff de Git?",
+      "a2": "Es una comparación por líneas en esta pestaña. No se conecta a Git ni abre archivos de un repo.",
+      "q3": "¿Se sube el texto?",
+      "a3": "No. La comparación corre aquí. Cerrar la pestaña descarta ambos lados.",
+      "q4": "¿Puedo ignorar espacios?",
+      "a4": "Sí. Ignorar espacios extra colapsa el blanco antes de comparar.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone un listado unificado +/− en el portapapeles."
     }
   },
   "qr": {
@@ -1610,5 +1628,21 @@
     "undo": "Deshacer",
     "clear": "Borrar",
     "empty": "Dibuja una firma primero."
+  },
+  "diff": {
+    "title": "Comparador de textos",
+    "back": "Todas las herramientas",
+    "privacyNote": "La comparación queda en esta pestaña. Nada se sube.",
+    "left": "Original",
+    "right": "Cambiado",
+    "leftPlaceholder": "Pega el texto original…",
+    "rightPlaceholder": "Pega el texto nuevo…",
+    "result": "Diff",
+    "options": "Opciones",
+    "ignoreSpace": "Ignorar espacios extra",
+    "copy": "Copiar diff unificado",
+    "copied": "Copiado",
+    "empty": "Pega texto en ambos lados.",
+    "meta": "+{added}  −{removed}  igual {same}"
   }
 }

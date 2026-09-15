@@ -1,5 +1,7 @@
 # Tool cover generation
 
+**From 2026-09-16:** generate tool covers with **Codex** (OpenAI image tool + style-reference covers). Do not use Grok `image_gen` for `public/covers/*-sweet.jpg`. Same extra-cute pink twin-tail chibi, lace bonnet, cream-pink room. 1280×720 JPEG. No words, letters, numbers, titles, logos, or watermark. Style refs: `qr-sweet.jpg`, `password-sweet.jpg`, `names-sweet.jpg`, `watermark-sweet.jpg`.
+
 Generated with the built-in OpenAI image generation tool on 2026-09-09. Reference images are the existing covers in public/covers. Outputs converted to 1280×720 JPEG for the site.
 
 ## Cloud clipboard (2026-09-12)

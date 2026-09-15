@@ -16,6 +16,7 @@ import { mountBarcode, unmountBarcode } from "./barcode/ui";
 import { mountResize, unmountResize } from "./resize/ui";
 import { mountWordCount, unmountWordCount } from "./word-count/ui";
 import { mountTts, unmountTts } from "./tts/ui";
+import { mountDiff, unmountDiff } from "./diff/ui";
 import { mountInvoice, unmountInvoice } from "./invoice/ui";
 import { mountSignature, unmountSignature } from "./signature/ui";
 import { clear, h } from "./dom";
@@ -143,6 +144,7 @@ function unmountTools(): void {
   unmountLorem();
   unmountUnits();
   unmountTts();
+  unmountDiff();
   unmountColor();
   unmountResize();
   unmountCrop();
@@ -240,6 +242,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "lorem") mountLorem(main);
   else if (tool === "units") mountUnits(main);
   else if (tool === "text-to-speech") mountTts(main);
+  else if (tool === "diff") mountDiff(main);
   else if (tool === "color") mountColor(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);

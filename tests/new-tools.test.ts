@@ -11,6 +11,7 @@ import { memeFontSize, normalizeMemeText, wrapByWidth } from "../src/shared/meme
 import { pickVoice, splitUtterances } from "../src/shared/tts";
 import { invoiceTotals, lineAmount, wrapInvoiceText } from "../src/shared/invoice";
 import { clampBounds, hasInk, strokeBounds } from "../src/shared/signature";
+import { diffCounts, diffLines, unifiedDiff } from "../src/shared/diff";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -165,6 +166,21 @@ describe("signature", () => {
   });
 });
 
+describe("diff", () => {
+  it("marks added and removed lines", () => {
+    const lines = diffLines("a\nb\nc", "a\nx\nc");
+    expect(lines).toEqual([
+      { kind: "eq", text: "a" },
+      { kind: "del", text: "b" },
+      { kind: "add", text: "x" },
+      { kind: "eq", text: "c" },
+    ]);
+    expect(diffCounts(lines)).toEqual({ added: 1, removed: 1, same: 2 });
+    expect(unifiedDiff(lines)).toBe("  a\n- b\n+ x\n  c");
+    expect(diffLines("a  b", "a b", true)).toEqual([{ kind: "eq", text: "a b" }]);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -191,7 +207,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/text-to-speech/")).toEqual({ kind: "app", locale: "en", tool: "text-to-speech" });
     expect(parseAppPath("/en/invoice/")).toEqual({ kind: "app", locale: "en", tool: "invoice" });
     expect(parseAppPath("/en/signature/")).toEqual({ kind: "app", locale: "en", tool: "signature" });
+    expect(parseAppPath("/en/diff/")).toEqual({ kind: "app", locale: "en", tool: "diff" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");
     expect(appHref("zh-CN", "text-to-speech")).toBe("/zh-cn/text-to-speech/");

@@ -77,7 +77,9 @@
     "titleInvoice": "Pembuat invoice — PDF invoice — cv.cm",
     "descInvoice": "Buat PDF invoice satu halaman di browser. Baris item, pajak, mata uang. Tidak diunggah. Bukan faktur pajak.",
     "titleSignature": "Pembuat tanda tangan — gambar PNG — cv.cm",
-    "descSignature": "Gambar tanda tangan di browser dan unduh PNG. Tidak diunggah. Bukan e-sign legal."
+    "descSignature": "Gambar tanda tangan di browser dan unduh PNG. Tidak diunggah. Bukan e-sign legal.",
+    "titleDiff": "Pemeriksa diff — bandingkan dua teks — cv.cm",
+    "descDiff": "Bandingkan dua teks baris demi baris di browser. Tandai tambah dan hapus. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -224,6 +226,10 @@
     "signature": {
       "name": "Pembuat tanda tangan",
       "blurb": "Gambar tanda tangan, unduh PNG. Tanpa unggah. Bukan e-sign legal."
+    },
+    "diff": {
+      "name": "Pemeriksa diff",
+      "blurb": "Bandingkan dua teks. Tambah dan hapus. Tanpa unggah."
     }
   },
   "watermark": {
@@ -927,6 +933,18 @@
       "a4": "Ya. Ekspor memotong ke tinta dan menjaga latar transparan untuk ditaruh di dokumen.",
       "q5": "Bisa urungkan satu goresan?",
       "a5": "Bisa. Urungkan menghapus goresan terakhir. Hapus membersihkan pad."
+    },
+    "diff": {
+      "q1": "Bisa bandingkan dua teks di sini?",
+      "a1": "Bisa. Tempel asli di kiri, versi baru di kanan. Hasil menandai baris tambah dan hapus.",
+      "q2": "Ini Git diff?",
+      "a2": "Perbandingan tingkat baris di tab ini. Tidak terhubung ke Git dan tidak membuka file repo.",
+      "q3": "Apakah teks diunggah?",
+      "a3": "Tidak. Perbandingan di tab ini. Menutup tab membuang keduanya.",
+      "q4": "Bisa abaikan spasi?",
+      "a4": "Bisa. Abaikan spasi merapatkan spasi ekstra sebelum membandingkan.",
+      "q5": "Bisa salin hasilnya?",
+      "a5": "Bisa. Salin menaruh daftar +/− terpadu ke papan klip."
     }
   },
   "qr": {
@@ -1610,5 +1628,21 @@
     "undo": "Urungkan",
     "clear": "Hapus",
     "empty": "Gambar dulu."
+  },
+  "diff": {
+    "title": "Pemeriksa diff",
+    "back": "Semua alat",
+    "privacyNote": "Perbandingan di tab ini. Tidak diunggah.",
+    "left": "Asli",
+    "right": "Diubah",
+    "leftPlaceholder": "Tempel teks asli…",
+    "rightPlaceholder": "Tempel teks baru…",
+    "result": "Diff",
+    "options": "Opsi",
+    "ignoreSpace": "Abaikan spasi ekstra",
+    "copy": "Salin unified diff",
+    "copied": "Tersalin",
+    "empty": "Tempel teks di kedua sisi.",
+    "meta": "+{added}  −{removed}  sama {same}"
   }
 }

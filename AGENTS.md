@@ -10,6 +10,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
 5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
 6. Tutorials must be minimal, complete, and illustrated (owner correction, 2026-09-13). Explain the whole task from preparation through completion with concise steps and meaningful instructional diagrams. Use captions to explain each image. Present tutorials, not exercise cards, assignments, submission requirements, or grading criteria. Keep photography first. JK/Lolita/Hanfu fashion examples use adults.
+7. Tool covers (`public/covers/*-sweet.jpg`, 1280×720 JPEG): generate with **Codex** using existing covers as style references (same pink twin-tail chibi, lace bonnet, cream-pink room). Do not use Grok `image_gen` for new tool covers. See `docs/tool-cover-prompts.md`.
 
 ## Layout
 
@@ -43,6 +44,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/lorem/` — lorem ipsum generator
 - `src/client/units/` — unit converter
 - `src/client/tts/` — text to speech (browser SpeechSynthesis)
+- `src/client/diff/` — text diff checker
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight

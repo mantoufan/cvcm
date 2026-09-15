@@ -77,7 +77,9 @@
     "titleInvoice": "Tạo hóa đơn — PDF hóa đơn — cv.cm",
     "descInvoice": "Tạo PDF hóa đơn một trang trong trình duyệt. Dòng hàng, thuế, tiền tệ. Không tải lên. Không phải chứng từ thuế.",
     "titleSignature": "Tạo chữ ký — vẽ PNG — cv.cm",
-    "descSignature": "Vẽ chữ ký trong trình duyệt và tải PNG. Không tải lên. Không phải chữ ký điện tử pháp lý."
+    "descSignature": "Vẽ chữ ký trong trình duyệt và tải PNG. Không tải lên. Không phải chữ ký điện tử pháp lý.",
+    "titleDiff": "So sánh văn bản — Diff — cv.cm",
+    "descDiff": "So sánh hai đoạn chữ theo dòng trong trình duyệt. Đánh dấu thêm và xóa. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -224,6 +226,10 @@
     "signature": {
       "name": "Tạo chữ ký",
       "blurb": "Vẽ chữ ký, tải PNG. Không tải lên. Không phải e-sign pháp lý."
+    },
+    "diff": {
+      "name": "So sánh văn bản",
+      "blurb": "So sánh hai đoạn chữ. Thêm và xóa. Không tải lên."
     }
   },
   "watermark": {
@@ -927,6 +933,18 @@
       "a4": "Có. Xuất cắt theo mực và giữ nền trong suốt để dán lên tài liệu.",
       "q5": "Hoàn tác một nét được không?",
       "a5": "Được. Hoàn tác xóa nét cuối. Xóa trắng cả bảng."
+    },
+    "diff": {
+      "q1": "So sánh hai đoạn chữ ở đây được không?",
+      "a1": "Được. Dán bản gốc bên trái, bản mới bên phải. Kết quả đánh dấu dòng thêm và xóa.",
+      "q2": "Đây có phải Git diff?",
+      "a2": "Chỉ so sánh theo dòng trong tab này. Không nối Git, không mở file kho.",
+      "q3": "Chữ có bị tải lên không?",
+      "a3": "Không. So sánh trong tab này, đóng là mất.",
+      "q4": "Bỏ qua khoảng trắng được không?",
+      "a4": "Được. Bỏ khoảng trắng thừa sẽ gom khoảng trắng trước khi so.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa danh sách +/− vào clipboard."
     }
   },
   "qr": {
@@ -1610,5 +1628,21 @@
     "undo": "Hoàn tác",
     "clear": "Xóa",
     "empty": "Hãy vẽ trước."
+  },
+  "diff": {
+    "title": "So sánh văn bản",
+    "back": "Tất cả công cụ",
+    "privacyNote": "So sánh ở tab này. Không tải lên.",
+    "left": "Gốc",
+    "right": "Đã đổi",
+    "leftPlaceholder": "Dán bản gốc…",
+    "rightPlaceholder": "Dán bản mới…",
+    "result": "Khác biệt",
+    "options": "Tùy chọn",
+    "ignoreSpace": "Bỏ khoảng trắng thừa",
+    "copy": "Sao chép unified diff",
+    "copied": "Đã sao chép",
+    "empty": "Hãy dán chữ cả hai bên.",
+    "meta": "+{added}  −{removed}  giống {same}"
   }
 }

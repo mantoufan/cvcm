@@ -77,7 +77,9 @@
     "titleInvoice": "Invoice generator — PDF invoice — cv.cm",
     "descInvoice": "Create a simple invoice PDF in the browser. Line items, tax, currency. Nothing is uploaded. Not a tax form.",
     "titleSignature": "Signature generator — draw a signature PNG — cv.cm",
-    "descSignature": "Draw a signature in the browser and download a PNG. Nothing is uploaded. Not a legal e-sign."
+    "descSignature": "Draw a signature in the browser and download a PNG. Nothing is uploaded. Not a legal e-sign.",
+    "titleDiff": "Diff checker — compare two texts — cv.cm",
+    "descDiff": "Compare two texts line by line in the browser. Added and removed lines. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -530,6 +532,10 @@
     "signature": {
       "name": "Signature generator",
       "blurb": "Draw a signature, download PNG. Nothing is uploaded. Not a legal e-sign."
+    },
+    "diff": {
+      "name": "Diff checker",
+      "blurb": "Compare two texts. Added and removed lines. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1233,6 +1239,18 @@
       "a4": "Yes. Export crops to the ink and keeps a transparent background for placing on documents.",
       "q5": "Can I undo a stroke?",
       "a5": "Yes. Undo removes the last stroke. Clear wipes the pad."
+    },
+    "diff": {
+      "q1": "Can I compare two texts here?",
+      "a1": "Yes. Paste the original on the left and the new version on the right. The result marks added and removed lines.",
+      "q2": "Is this a Git diff?",
+      "a2": "It is a line-level comparison in this tab. It is not connected to Git and does not open files from a repo.",
+      "q3": "Is the text uploaded?",
+      "a3": "No. Comparison runs in this tab. Closing it discards both sides.",
+      "q4": "Can I ignore spaces?",
+      "a4": "Yes. Ignore spaces collapses extra whitespace before comparing.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a unified +/− listing on the clipboard."
     }
   },
   "qr": {
@@ -1610,5 +1628,21 @@
     "undo": "Undo",
     "clear": "Clear",
     "empty": "Draw a signature first."
+  },
+  "diff": {
+    "title": "Diff checker",
+    "back": "All tools",
+    "privacyNote": "Comparison stays in this tab. Nothing is uploaded.",
+    "left": "Original",
+    "right": "Changed",
+    "leftPlaceholder": "Paste original text…",
+    "rightPlaceholder": "Paste new text…",
+    "result": "Diff",
+    "options": "Options",
+    "ignoreSpace": "Ignore extra spaces",
+    "copy": "Copy unified diff",
+    "copied": "Copied",
+    "empty": "Paste text on both sides.",
+    "meta": "+{added}  −{removed}  same {same}"
   }
 }
