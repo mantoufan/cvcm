@@ -79,7 +79,9 @@
     "titleSignature": "Generador de firmas — dibuja un PNG — cv.cm",
     "descSignature": "Dibuja una firma en el navegador y descarga un PNG. Nada se sube. No es una firma electrónica legal.",
     "titleDiff": "Comparador de textos — diff — cv.cm",
-    "descDiff": "Compara dos textos línea a línea en el navegador. Marca altas y bajas. Nada se sube."
+    "descDiff": "Compara dos textos línea a línea en el navegador. Marca altas y bajas. Nada se sube.",
+    "titleUuid": "Generador de UUID — UUID v4 — cv.cm",
+    "descUuid": "Genera UUID RFC 4122 versión 4 en el navegador. Copia una lista. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -230,6 +232,10 @@
     "diff": {
       "name": "Comparador de textos",
       "blurb": "Compara dos textos. Altas y bajas. Nada se sube."
+    },
+    "uuid": {
+      "name": "Generador de UUID",
+      "blurb": "UUID v4 aleatorios. Copia la lista. Nada se sube."
     }
   },
   "watermark": {
@@ -945,6 +951,18 @@
       "a4": "Sí. Ignorar espacios extra colapsa el blanco antes de comparar.",
       "q5": "¿Puedo copiar el resultado?",
       "a5": "Sí. Copiar pone un listado unificado +/− en el portapapeles."
+    },
+    "uuid": {
+      "q1": "¿Puedo generar un UUID aquí?",
+      "a1": "Sí. Hace UUID RFC 4122 versión 4 con Web Crypto en esta pestaña.",
+      "q2": "¿Son secuenciales o usan la MAC?",
+      "a2": "No. La versión 4 es aleatoria. No hay tiempo ni dirección de hardware de v1.",
+      "q3": "¿Se sube algo?",
+      "a3": "No. Los bytes aleatorios salen de Web Crypto local. Cerrar la pestaña descarta la lista.",
+      "q4": "¿Puedo quitar los guiones?",
+      "a4": "Sí. Desmarca guiones para 32 caracteres hex. Mayúsculas son opcionales.",
+      "q5": "¿Puedo copiar varios a la vez?",
+      "a5": "Sí. Copiar lista pone cada UUID en su propia línea."
     }
   },
   "qr": {
@@ -1644,5 +1662,18 @@
     "copied": "Copiado",
     "empty": "Pega texto en ambos lados.",
     "meta": "+{added}  −{removed}  igual {same}"
+  },
+  "uuid": {
+    "title": "Generador de UUID",
+    "back": "Todas las herramientas",
+    "privacyNote": "Los UUID se eligen al azar aquí con Web Crypto. Nada se sube.",
+    "options": "Opciones",
+    "count": "Cantidad",
+    "hyphens": "Guiones",
+    "upper": "Mayúsculas",
+    "generate": "Generar",
+    "copy": "Copiar lista",
+    "copied": "Copiado",
+    "output": "UUIDs"
   }
 }

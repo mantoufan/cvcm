@@ -79,7 +79,9 @@
     "titleSignature": "Pembuat tanda tangan — gambar PNG — cv.cm",
     "descSignature": "Gambar tanda tangan di browser dan unduh PNG. Tidak diunggah. Bukan e-sign legal.",
     "titleDiff": "Pemeriksa diff — bandingkan dua teks — cv.cm",
-    "descDiff": "Bandingkan dua teks baris demi baris di browser. Tandai tambah dan hapus. Tidak diunggah."
+    "descDiff": "Bandingkan dua teks baris demi baris di browser. Tandai tambah dan hapus. Tidak diunggah.",
+    "titleUuid": "Pembuat UUID — UUID v4 — cv.cm",
+    "descUuid": "Buat UUID RFC 4122 versi 4 di browser. Salin daftar. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -230,6 +232,10 @@
     "diff": {
       "name": "Pemeriksa diff",
       "blurb": "Bandingkan dua teks. Tambah dan hapus. Tanpa unggah."
+    },
+    "uuid": {
+      "name": "Pembuat UUID",
+      "blurb": "UUID v4 acak. Salin daftar. Tanpa unggah."
     }
   },
   "watermark": {
@@ -945,6 +951,18 @@
       "a4": "Bisa. Abaikan spasi merapatkan spasi ekstra sebelum membandingkan.",
       "q5": "Bisa salin hasilnya?",
       "a5": "Bisa. Salin menaruh daftar +/− terpadu ke papan klip."
+    },
+    "uuid": {
+      "q1": "Bisa buat UUID di sini?",
+      "a1": "Bisa. Web Crypto di tab ini membuat UUID RFC 4122 versi 4.",
+      "q2": "Apakah berurutan atau dari MAC?",
+      "a2": "Tidak. Versi 4 acak. Tidak ada waktu atau alamat perangkat v1.",
+      "q3": "Apakah diunggah?",
+      "a3": "Tidak. Byte acak dari Web Crypto lokal. Menutup tab membuang daftar.",
+      "q4": "Bisa tanpa tanda hubung?",
+      "a4": "Bisa. Matikan tanda hubung untuk hex 32 karakter. Huruf besar opsional.",
+      "q5": "Bisa salin banyak sekaligus?",
+      "a5": "Bisa. Salin daftar menaruh setiap UUID di baris sendiri."
     }
   },
   "qr": {
@@ -1644,5 +1662,18 @@
     "copied": "Tersalin",
     "empty": "Tempel teks di kedua sisi.",
     "meta": "+{added}  −{removed}  sama {same}"
+  },
+  "uuid": {
+    "title": "Pembuat UUID",
+    "back": "Semua alat",
+    "privacyNote": "UUID diacak di tab ini dengan Web Crypto. Tidak diunggah.",
+    "options": "Opsi",
+    "count": "Jumlah",
+    "hyphens": "Tanda hubung",
+    "upper": "Huruf besar",
+    "generate": "Buat",
+    "copy": "Salin daftar",
+    "copied": "Tersalin",
+    "output": "UUID"
   }
 }

@@ -69,6 +69,7 @@ const TITLE: Record<ToolId, string> = {
   units: "meta.titleUnits",
   "text-to-speech": "meta.titleTts",
   diff: "meta.titleDiff",
+  uuid: "meta.titleUuid",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -99,6 +100,7 @@ const DESC: Record<ToolId, string> = {
   units: "meta.descUnits",
   "text-to-speech": "meta.descTts",
   diff: "meta.descDiff",
+  uuid: "meta.descUuid",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

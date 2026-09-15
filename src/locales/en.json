@@ -79,7 +79,9 @@
     "titleSignature": "Signature generator — draw a signature PNG — cv.cm",
     "descSignature": "Draw a signature in the browser and download a PNG. Nothing is uploaded. Not a legal e-sign.",
     "titleDiff": "Diff checker — compare two texts — cv.cm",
-    "descDiff": "Compare two texts line by line in the browser. Added and removed lines. Nothing is uploaded."
+    "descDiff": "Compare two texts line by line in the browser. Added and removed lines. Nothing is uploaded.",
+    "titleUuid": "UUID generator — v4 UUID — cv.cm",
+    "descUuid": "Generate RFC 4122 version 4 UUIDs in the browser. Copy a list. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -536,6 +538,10 @@
     "diff": {
       "name": "Diff checker",
       "blurb": "Compare two texts. Added and removed lines. Nothing is uploaded."
+    },
+    "uuid": {
+      "name": "UUID generator",
+      "blurb": "Random v4 UUIDs. Copy a list. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1251,6 +1257,18 @@
       "a4": "Yes. Ignore spaces collapses extra whitespace before comparing.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts a unified +/− listing on the clipboard."
+    },
+    "uuid": {
+      "q1": "Can I generate a UUID here?",
+      "a1": "Yes. It makes RFC 4122 version 4 UUIDs with Web Crypto in this tab.",
+      "q2": "Are these sequential or based on MAC?",
+      "a2": "No. Version 4 is random. There is no v1 time or hardware address.",
+      "q3": "Is anything uploaded?",
+      "a3": "No. Random bytes come from Web Crypto locally. Closing the tab discards the list.",
+      "q4": "Can I drop the hyphens?",
+      "a4": "Yes. Uncheck hyphens for a 32-character hex string. Uppercase is optional.",
+      "q5": "Can I copy several at once?",
+      "a5": "Yes. Copy list puts every UUID on its own line on the clipboard."
     }
   },
   "qr": {
@@ -1644,5 +1662,18 @@
     "copied": "Copied",
     "empty": "Paste text on both sides.",
     "meta": "+{added}  −{removed}  same {same}"
+  },
+  "uuid": {
+    "title": "UUID generator",
+    "back": "All tools",
+    "privacyNote": "UUIDs are random in this tab with Web Crypto. Nothing is uploaded.",
+    "options": "Options",
+    "count": "How many",
+    "hyphens": "Hyphens",
+    "upper": "Uppercase",
+    "generate": "Generate",
+    "copy": "Copy list",
+    "copied": "Copied",
+    "output": "UUIDs"
   }
 }

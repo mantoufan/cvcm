@@ -12,6 +12,7 @@ import { pickVoice, splitUtterances } from "../src/shared/tts";
 import { invoiceTotals, lineAmount, wrapInvoiceText } from "../src/shared/invoice";
 import { clampBounds, hasInk, strokeBounds } from "../src/shared/signature";
 import { diffCounts, diffLines, unifiedDiff } from "../src/shared/diff";
+import { generateUuids, isUuidV4, uuidV4 } from "../src/shared/uuid";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -181,6 +182,22 @@ describe("diff", () => {
   });
 });
 
+describe("uuid", () => {
+  it("makes RFC 4122 version 4 ids", () => {
+    const id = uuidV4();
+    expect(isUuidV4(id)).toBe(true);
+    expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    const batch = generateUuids(8, false, true);
+    expect(batch).toHaveLength(8);
+    expect(new Set(batch).size).toBe(8);
+    expect(batch[0]).toMatch(/^[0-9A-F]{32}$/);
+    expect(generateUuids(0, true, false)).toHaveLength(1);
+    expect(generateUuids(99, true, false)).toHaveLength(50);
+    expect(generateUuids(1, true, false)[0]).toMatch(/^[0-9a-f-]{36}$/);
+    expect(isUuidV4("not-a-uuid")).toBe(false);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -208,7 +225,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/invoice/")).toEqual({ kind: "app", locale: "en", tool: "invoice" });
     expect(parseAppPath("/en/signature/")).toEqual({ kind: "app", locale: "en", tool: "signature" });
     expect(parseAppPath("/en/diff/")).toEqual({ kind: "app", locale: "en", tool: "diff" });
+    expect(parseAppPath("/en/uuid/")).toEqual({ kind: "app", locale: "en", tool: "uuid" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
+    expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

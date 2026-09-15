@@ -45,6 +45,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/units/` — unit converter
 - `src/client/tts/` — text to speech (browser SpeechSynthesis)
 - `src/client/diff/` — text diff checker
+- `src/client/uuid/` — UUID v4 generator
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight

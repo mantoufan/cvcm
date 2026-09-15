@@ -720,6 +720,7 @@ input[type="color"] {
 .diff-line.is-add { background: #e7f8ee; color: #1f6b3a; }
 .diff-line.is-del { background: #fde8f0; color: #a13f6c; }
 .diff-line.is-eq { color: var(--ink-soft); }
+.uuid-list { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92rem; }
 .password-out {
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;

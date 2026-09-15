@@ -33,6 +33,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Unit converter** / 单位换算. [Open](https://cv.cm/en/units/)
 - **Text to speech** / 文字转语音. [Open](https://cv.cm/en/text-to-speech/)
 - **Diff checker** / 文本对比. [Open](https://cv.cm/en/diff/)
+- **UUID generator** / UUID. [Open](https://cv.cm/en/uuid/)
 
 ## Lessons
 

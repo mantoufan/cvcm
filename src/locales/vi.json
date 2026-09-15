@@ -79,7 +79,9 @@
     "titleSignature": "Tạo chữ ký — vẽ PNG — cv.cm",
     "descSignature": "Vẽ chữ ký trong trình duyệt và tải PNG. Không tải lên. Không phải chữ ký điện tử pháp lý.",
     "titleDiff": "So sánh văn bản — Diff — cv.cm",
-    "descDiff": "So sánh hai đoạn chữ theo dòng trong trình duyệt. Đánh dấu thêm và xóa. Không tải lên."
+    "descDiff": "So sánh hai đoạn chữ theo dòng trong trình duyệt. Đánh dấu thêm và xóa. Không tải lên.",
+    "titleUuid": "Tạo UUID — UUID v4 — cv.cm",
+    "descUuid": "Tạo UUID RFC 4122 phiên bản 4 trong trình duyệt. Sao chép danh sách. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -230,6 +232,10 @@
     "diff": {
       "name": "So sánh văn bản",
       "blurb": "So sánh hai đoạn chữ. Thêm và xóa. Không tải lên."
+    },
+    "uuid": {
+      "name": "Tạo UUID",
+      "blurb": "UUID v4 ngẫu nhiên. Sao chép danh sách. Không tải lên."
     }
   },
   "watermark": {
@@ -945,6 +951,18 @@
       "a4": "Được. Bỏ khoảng trắng thừa sẽ gom khoảng trắng trước khi so.",
       "q5": "Sao chép kết quả được không?",
       "a5": "Được. Sao chép đưa danh sách +/− vào clipboard."
+    },
+    "uuid": {
+      "q1": "Tạo UUID ở đây được không?",
+      "a1": "Được. Dùng Web Crypto trong tab này để tạo UUID RFC 4122 phiên bản 4.",
+      "q2": "Có dựa trên thời gian hay MAC không?",
+      "a2": "Không. Phiên bản 4 là ngẫu nhiên. Không có thời gian hay địa chỉ phần cứng kiểu v1.",
+      "q3": "Có tải lên không?",
+      "a3": "Không. Byte ngẫu nhiên từ Web Crypto trên máy. Đóng tab là mất.",
+      "q4": "Bỏ gạch nối được không?",
+      "a4": "Được. Tắt gạch nối ra chuỗi hex 32 ký tự. Có thể viết hoa.",
+      "q5": "Sao chép nhiều cái một lúc được không?",
+      "a5": "Được. Sao chép danh sách đưa mỗi UUID một dòng vào clipboard."
     }
   },
   "qr": {
@@ -1644,5 +1662,18 @@
     "copied": "Đã sao chép",
     "empty": "Hãy dán chữ cả hai bên.",
     "meta": "+{added}  −{removed}  giống {same}"
+  },
+  "uuid": {
+    "title": "Tạo UUID",
+    "back": "Tất cả công cụ",
+    "privacyNote": "UUID được tạo ngẫu nhiên bằng Web Crypto trong tab này. Không tải lên.",
+    "options": "Tùy chọn",
+    "count": "Số lượng",
+    "hyphens": "Gạch nối",
+    "upper": "Chữ hoa",
+    "generate": "Tạo",
+    "copy": "Sao chép danh sách",
+    "copied": "Đã sao chép",
+    "output": "UUID"
   }
 }
