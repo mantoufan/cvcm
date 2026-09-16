@@ -91,7 +91,9 @@
     "titleTimestamp": "Pengonversi timestamp — Unix time ke tanggal — cv.cm",
     "descTimestamp": "Ubah timestamp Unix menjadi tanggal di browser. Detik, milidetik, ISO 8601. Tidak diunggah.",
     "titleRotate": "Putar gambar — putar JPG PNG — cv.cm",
-    "descRotate": "Putar atau balik foto di browser. 90°, 180°, sudut apa pun. Unduh JPG, PNG, atau WebP. Tidak diunggah."
+    "descRotate": "Putar atau balik foto di browser. 90°, 180°, sudut apa pun. Unduh JPG, PNG, atau WebP. Tidak diunggah.",
+    "titleExif": "Penghapus EXIF — buang metadata foto — cv.cm",
+    "descExif": "Buang EXIF dan GPS dari foto di browser. Unduh JPG, PNG, atau WebP bersih. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -266,6 +268,10 @@
     "rotate": {
       "name": "Putar gambar",
       "blurb": "Putar atau balik foto. Unduh JPG atau PNG. Tanpa unggah."
+    },
+    "exif": {
+      "name": "Penghapus EXIF",
+      "blurb": "Buang EXIF dan GPS. Unduh foto bersih. Tanpa unggah."
     }
   },
   "watermark": {
@@ -1053,6 +1059,18 @@
       "a4": "Bisa. Balik horizontal dan vertikal digabung dengan sudut rotasi.",
       "q5": "Apa yang bisa diunduh?",
       "a5": "JPG, PNG, atau WebP. JPG dan WebP punya penggeser kualitas."
+    },
+    "exif": {
+      "q1": "Bisa hapus EXIF di sini?",
+      "a1": "Bisa. Tab mengenkode ulang foto, sehingga EXIF, GPS, dan tag serupa hilang.",
+      "q2": "Apakah foto diunggah?",
+      "a2": "Tidak. Dekode dan ekspor tetap di tab ini. Menutup tab membuangnya.",
+      "q3": "GPS juga hilang?",
+      "a3": "Ya. Lokasi ada di EXIF. Berkas baru digambar tanpa blok itu.",
+      "q4": "Ini penghapusan forensik?",
+      "a4": "Bukan. Ia menulis gambar baru tanpa tag metadata asli. Bukan jaminan terhadap setiap saluran tersembunyi.",
+      "q5": "Apa yang bisa diunduh?",
+      "a5": "JPG, PNG, atau WebP. Berkas baru dari gambar ulang kanvas."
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "Tambahkan foto dulu.",
     "working": "Memutar…",
+    "errorDecode": "Tidak bisa membaca gambar itu.",
+    "errorEncode": "Tidak bisa menulis gambar."
+  },
+  "exif": {
+    "title": "Penghapus EXIF",
+    "back": "Semua alat",
+    "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Jatuhkan foto",
+    "dropHint": "Atau tempel. Kami menggambar ulang tanpa tag EXIF.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Enkode ulang di tab ini membuang EXIF dan GPS. Bukan penghapusan forensik.",
+    "found": "Tag metadata ditemukan. Unduh salinan bersih.",
+    "none": "Tidak ada EXIF, teks PNG, atau EXIF WebP. Anda masih bisa mengunduh berkas gambar ulang.",
+    "options": "Ekspor",
+    "format": "Format",
+    "quality": "Kualitas",
+    "download": "Unduh foto bersih",
+    "emptyDownload": "Tambahkan foto dulu.",
+    "working": "Menggambar ulang…",
     "errorDecode": "Tidak bisa membaca gambar itu.",
     "errorEncode": "Tidak bisa menulis gambar."
   }

@@ -91,7 +91,9 @@
     "titleTimestamp": "Timestamp converter — Unix time to date — cv.cm",
     "descTimestamp": "Convert Unix timestamps to dates in the browser. Seconds, milliseconds, ISO 8601. Nothing is uploaded.",
     "titleRotate": "Rotate image — rotate JPG PNG — cv.cm",
-    "descRotate": "Rotate or flip a photo in the browser. 90°, 180°, any angle. Download JPG, PNG, or WebP. Nothing is uploaded."
+    "descRotate": "Rotate or flip a photo in the browser. 90°, 180°, any angle. Download JPG, PNG, or WebP. Nothing is uploaded.",
+    "titleExif": "EXIF remover — strip photo metadata — cv.cm",
+    "descExif": "Remove EXIF and GPS from a photo in the browser. Download a clean JPG, PNG, or WebP. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -572,6 +574,10 @@
     "rotate": {
       "name": "Rotate image",
       "blurb": "Rotate or flip a photo. Download JPG or PNG. Nothing is uploaded."
+    },
+    "exif": {
+      "name": "EXIF remover",
+      "blurb": "Strip EXIF and GPS. Download a clean photo. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1359,6 +1365,18 @@
       "a4": "Yes. Horizontal and vertical flips combine with the rotation angle.",
       "q5": "What can I download?",
       "a5": "JPG, PNG, or WebP. JPG and WebP have a quality slider."
+    },
+    "exif": {
+      "q1": "Can I remove EXIF here?",
+      "a1": "Yes. The tab re-encodes the photo, which drops EXIF, GPS, and similar tags.",
+      "q2": "Is the photo uploaded?",
+      "a2": "No. Decode and export stay in this tab. Closing it discards the file.",
+      "q3": "Does GPS go away too?",
+      "a3": "Yes. Location tags live in EXIF. The new file is drawn without that block.",
+      "q4": "Is this a forensic wipe?",
+      "a4": "No. It writes a new picture without the original metadata tags. It is not a guarantee against every hidden channel.",
+      "q5": "What can I download?",
+      "a5": "JPG, PNG, or WebP. The new file comes from a canvas redraw."
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "Add a photo first.",
     "working": "Rotating…",
+    "errorDecode": "Could not read that image.",
+    "errorEncode": "Could not write the image."
+  },
+  "exif": {
+    "title": "EXIF remover",
+    "back": "All tools",
+    "privacyNote": "The photo stays in this tab. Nothing is uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a photo",
+    "dropHint": "Or paste. We redraw it without EXIF tags.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Re-encoding in this tab drops EXIF and GPS. Not a forensic wipe.",
+    "found": "Metadata tags were found. Download a clean copy.",
+    "none": "No EXIF, PNG text, or WebP EXIF tags were found. You can still download a redrawn file.",
+    "options": "Export",
+    "format": "Format",
+    "quality": "Quality",
+    "download": "Download clean photo",
+    "emptyDownload": "Add a photo first.",
+    "working": "Redrawing…",
     "errorDecode": "Could not read that image.",
     "errorEncode": "Could not write the image."
   }

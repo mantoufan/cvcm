@@ -7,6 +7,7 @@ import { mountData, unmountData } from "./data/ui";
 import { mountColor, unmountColor } from "./color/ui";
 import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountRotate, unmountRotate } from "./rotate/ui";
+import { mountExif, unmountExif } from "./exif/ui";
 import { mountMeme, unmountMeme } from "./meme/ui";
 import { mountLorem, unmountLorem } from "./lorem/ui";
 import { mountNames, unmountNames } from "./names/ui";
@@ -159,6 +160,7 @@ function unmountTools(): void {
   unmountResize();
   unmountCrop();
   unmountRotate();
+  unmountExif();
   unmountMeme();
   unmountInvoice();
   unmountSignature();
@@ -263,6 +265,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
   else if (tool === "rotate") await mountRotate(main);
+  else if (tool === "exif") await mountExif(main);
   else if (tool === "meme") await mountMeme(main);
   else if (tool === "invoice") mountInvoice(main);
   else if (tool === "signature") mountSignature(main);

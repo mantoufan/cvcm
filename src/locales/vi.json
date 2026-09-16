@@ -91,7 +91,9 @@
     "titleTimestamp": "Đổi timestamp — Unix time sang ngày — cv.cm",
     "descTimestamp": "Đổi timestamp Unix thành ngày trong trình duyệt. Giây, mili giây, ISO 8601. Không tải lên.",
     "titleRotate": "Xoay ảnh — xoay JPG PNG — cv.cm",
-    "descRotate": "Xoay hoặc lật ảnh trong trình duyệt. 90°, 180°, góc bất kỳ. Tải JPG, PNG hoặc WebP. Không tải lên."
+    "descRotate": "Xoay hoặc lật ảnh trong trình duyệt. 90°, 180°, góc bất kỳ. Tải JPG, PNG hoặc WebP. Không tải lên.",
+    "titleExif": "Xóa EXIF — gỡ metadata ảnh — cv.cm",
+    "descExif": "Gỡ EXIF và GPS khỏi ảnh trong trình duyệt. Tải JPG, PNG hoặc WebP sạch. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -266,6 +268,10 @@
     "rotate": {
       "name": "Xoay ảnh",
       "blurb": "Xoay hoặc lật ảnh. Tải JPG hoặc PNG. Không tải lên."
+    },
+    "exif": {
+      "name": "Xóa EXIF",
+      "blurb": "Gỡ EXIF và GPS. Tải ảnh sạch. Không tải lên."
     }
   },
   "watermark": {
@@ -1053,6 +1059,18 @@
       "a4": "Được. Lật ngang và dọc dùng cùng góc xoay.",
       "q5": "Tải được định dạng nào?",
       "a5": "JPG, PNG hoặc WebP. JPG và WebP có thanh chất lượng."
+    },
+    "exif": {
+      "q1": "Xóa EXIF ở đây được không?",
+      "a1": "Được. Tab mã hóa lại ảnh, EXIF, GPS và thẻ tương tự sẽ rơi.",
+      "q2": "Ảnh có bị tải lên không?",
+      "a2": "Không. Giải mã và xuất ở tab này. Đóng là mất.",
+      "q3": "GPS cũng mất chứ?",
+      "a3": "Có. Vị trí nằm trong EXIF. File mới vẽ không có khối đó.",
+      "q4": "Đây có phải xóa mức pháp y không?",
+      "a4": "Không. Nó viết ảnh mới không thẻ metadata gốc. Không đảm bảo mọi kênh ẩn.",
+      "q5": "Tải được gì?",
+      "a5": "JPG, PNG hoặc WebP. File mới từ vẽ lại canvas."
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "Hãy thêm ảnh trước.",
     "working": "Đang xoay…",
+    "errorDecode": "Không đọc được ảnh đó.",
+    "errorEncode": "Không ghi được ảnh."
+  },
+  "exif": {
+    "title": "Xóa EXIF",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả một ảnh",
+    "dropHint": "Hoặc dán. Chúng tôi vẽ lại không EXIF.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Mã hóa lại trong tab này làm rơi EXIF và GPS. Không phải xóa pháp y.",
+    "found": "Tìm thấy thẻ metadata. Hãy tải bản sạch.",
+    "none": "Không thấy EXIF, chữ PNG hay EXIF WebP. Vẫn tải được file vẽ lại.",
+    "options": "Xuất",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "download": "Tải ảnh sạch",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang vẽ lại…",
     "errorDecode": "Không đọc được ảnh đó.",
     "errorEncode": "Không ghi được ảnh."
   }

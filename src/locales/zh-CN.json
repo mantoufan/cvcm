@@ -91,7 +91,9 @@
     "titleTimestamp": "时间戳转换 — Unix 时间转日期 — cv.cm",
     "descTimestamp": "在浏览器里把 Unix 时间戳转成日期。秒、毫秒、ISO 8601。不上传。",
     "titleRotate": "旋转图片 — 旋转 JPG PNG — cv.cm",
-    "descRotate": "在浏览器里旋转或翻转照片。90°、180°或任意角度。下载 JPG、PNG 或 WebP。不上传。"
+    "descRotate": "在浏览器里旋转或翻转照片。90°、180°或任意角度。下载 JPG、PNG 或 WebP。不上传。",
+    "titleExif": "清除 EXIF — 去掉照片信息 — cv.cm",
+    "descExif": "在浏览器里去掉照片的 EXIF 和 GPS。下载干净的 JPG、PNG 或 WebP。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -266,6 +268,10 @@
     "rotate": {
       "name": "旋转图片",
       "blurb": "旋转或翻转照片。下载 JPG 或 PNG。不上传。"
+    },
+    "exif": {
+      "name": "清除 EXIF",
+      "blurb": "去掉 EXIF 和 GPS。下载干净照片。不上传。"
     }
   },
   "watermark": {
@@ -1053,6 +1059,18 @@
       "a4": "可以。水平和垂直翻转可以和旋转角度一起用。",
       "q5": "能下载什么格式？",
       "a5": "JPG、PNG 或 WebP。JPG 和 WebP 有质量滑杆。"
+    },
+    "exif": {
+      "q1": "能在这里去掉 EXIF 吗？",
+      "a1": "可以。标签页会重新编码照片，EXIF、GPS 等标记会丢掉。",
+      "q2": "会上传照片吗？",
+      "a2": "不会。解码和导出都在当前标签页，关掉即丢。",
+      "q3": "GPS 也会去掉吗？",
+      "a3": "会。位置在 EXIF 里。新文件是重画的，没有那一块。",
+      "q4": "这是取证级擦除吗？",
+      "a4": "不是。它写出一张没有原元数据标记的新图，不保证对付所有隐藏通道。",
+      "q5": "能下载什么？",
+      "a5": "JPG、PNG 或 WebP。新文件来自画布重绘。"
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "请先添加照片。",
     "working": "正在旋转…",
+    "errorDecode": "无法读取这张图。",
+    "errorEncode": "无法写出图片。"
+  },
+  "exif": {
+    "title": "清除 EXIF",
+    "back": "全部工具",
+    "privacyNote": "照片留在当前标签页。不上传。",
+    "filesTitle": "照片",
+    "dropTitle": "放入照片",
+    "dropHint": "或粘贴。我们重画一张，不带 EXIF。",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "在当前标签页重编码会去掉 EXIF 和 GPS。不是取证级擦除。",
+    "found": "发现元数据标记。请下载干净副本。",
+    "none": "未发现 EXIF、PNG 文本或 WebP EXIF。仍可下载重绘文件。",
+    "options": "导出",
+    "format": "格式",
+    "quality": "质量",
+    "download": "下载干净照片",
+    "emptyDownload": "请先添加照片。",
+    "working": "正在重绘…",
     "errorDecode": "无法读取这张图。",
     "errorEncode": "无法写出图片。"
   }

@@ -91,7 +91,9 @@
     "titleTimestamp": "타임스탬프 변환 — Unix 시간을 날짜로 — cv.cm",
     "descTimestamp": "브라우저에서 Unix 타임스탬프를 날짜로 바꿉니다. 초, 밀리초, ISO 8601. 업로드 없음.",
     "titleRotate": "이미지 회전 — JPG PNG 회전 — cv.cm",
-    "descRotate": "브라우저에서 사진을 회전하거나 뒤집습니다. 90°, 180°, 임의 각도. JPG, PNG, WebP 다운로드. 업로드 없음."
+    "descRotate": "브라우저에서 사진을 회전하거나 뒤집습니다. 90°, 180°, 임의 각도. JPG, PNG, WebP 다운로드. 업로드 없음.",
+    "titleExif": "EXIF 제거 — 사진 메타데이터 지우기 — cv.cm",
+    "descExif": "브라우저에서 사진의 EXIF와 GPS를 제거합니다. 깨끗한 JPG, PNG, WebP를 받습니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -266,6 +268,10 @@
     "rotate": {
       "name": "이미지 회전",
       "blurb": "사진을 회전·뒤집기. JPG 또는 PNG. 업로드 없음."
+    },
+    "exif": {
+      "name": "EXIF 제거",
+      "blurb": "EXIF와 GPS를 제거. 깨끗한 사진을 받습니다. 업로드 없음."
     }
   },
   "watermark": {
@@ -1053,6 +1059,18 @@
       "a4": "네. 가로·세로 뒤집기는 회전 각도와 함께 쓸 수 있습니다.",
       "q5": "무엇을 받을 수 있나요?",
       "a5": "JPG, PNG, WebP. JPG와 WebP는 품질 슬라이더가 있습니다."
+    },
+    "exif": {
+      "q1": "여기서 EXIF를 지울 수 있나요?",
+      "a1": "네. 탭에서 사진을 다시 인코드하면 EXIF, GPS 같은 태그가 빠집니다.",
+      "q2": "사진이 업로드되나요?",
+      "a2": "아니요. 디코딩과 보내기는 이 탭에서 끝납니다. 닫으면 사라집니다.",
+      "q3": "GPS도 사라지나요?",
+      "a3": "네. 위치는 EXIF에 있습니다. 새 파일은 그 블록 없이 그립니다.",
+      "q4": "포렌식 수준 삭제인가요?",
+      "a4": "아니요. 원래 메타데이터 태그 없는 새 그림을 씁니다. 모든 숨은 경로를 보장하지 않습니다.",
+      "q5": "무엇을 받을 수 있나요?",
+      "a5": "JPG, PNG, WebP. 새 파일은 캔버스 다시 그리기입니다."
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "먼저 사진을 넣으세요.",
     "working": "회전 중…",
+    "errorDecode": "그 이미지를 읽지 못했습니다.",
+    "errorEncode": "이미지를 쓰지 못했습니다."
+  },
+  "exif": {
+    "title": "EXIF 제거",
+    "back": "모든 도구",
+    "privacyNote": "사진은 이 탭에 남습니다. 업로드 없음.",
+    "filesTitle": "사진",
+    "dropTitle": "사진 놓기",
+    "dropHint": "또는 붙여넣기. EXIF 없이 다시 그립니다.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "이 탭에서 다시 인코드하면 EXIF와 GPS가 빠집니다. 포렌식 삭제가 아닙니다.",
+    "found": "메타데이터 태그를 찾았습니다. 깨끗한 사본을 받으세요.",
+    "none": "EXIF, PNG 텍스트, WebP EXIF는 없습니다. 다시 그린 파일은 받을 수 있습니다.",
+    "options": "보내기",
+    "format": "형식",
+    "quality": "품질",
+    "download": "깨끗한 사진 받기",
+    "emptyDownload": "먼저 사진을 넣으세요.",
+    "working": "다시 그리는 중…",
     "errorDecode": "그 이미지를 읽지 못했습니다.",
     "errorEncode": "이미지를 쓰지 못했습니다."
   }

@@ -91,7 +91,9 @@
     "titleTimestamp": "Convertidor de timestamp — Unix a fecha — cv.cm",
     "descTimestamp": "Convierte timestamps Unix a fechas en el navegador. Segundos, milisegundos, ISO 8601. Nada se sube.",
     "titleRotate": "Rotar imagen — rota JPG PNG — cv.cm",
-    "descRotate": "Rota o voltea una foto en el navegador. 90°, 180° o cualquier ángulo. Descarga JPG, PNG o WebP. Nada se sube."
+    "descRotate": "Rota o voltea una foto en el navegador. 90°, 180° o cualquier ángulo. Descarga JPG, PNG o WebP. Nada se sube.",
+    "titleExif": "Quitar EXIF — borrar metadatos de foto — cv.cm",
+    "descExif": "Quita EXIF y GPS de una foto en el navegador. Descarga un JPG, PNG o WebP limpio. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -266,6 +268,10 @@
     "rotate": {
       "name": "Rotar imagen",
       "blurb": "Rota o voltea una foto. Descarga JPG o PNG. Nada se sube."
+    },
+    "exif": {
+      "name": "Quitar EXIF",
+      "blurb": "Quita EXIF y GPS. Descarga una foto limpia. Nada se sube."
     }
   },
   "watermark": {
@@ -1053,6 +1059,18 @@
       "a4": "Sí. Los volteos horizontal y vertical se combinan con el ángulo.",
       "q5": "¿Qué puedo descargar?",
       "a5": "JPG, PNG o WebP. JPG y WebP tienen un control de calidad."
+    },
+    "exif": {
+      "q1": "¿Puedo quitar EXIF aquí?",
+      "a1": "Sí. La pestaña recodifica la foto y se caen EXIF, GPS y etiquetas parecidas.",
+      "q2": "¿Se sube la foto?",
+      "a2": "No. La decodificación y la exportación quedan en esta pestaña. Cerrarla descarta el archivo.",
+      "q3": "¿También se va el GPS?",
+      "a3": "Sí. La ubicación vive en EXIF. El archivo nuevo se dibuja sin ese bloque.",
+      "q4": "¿Es un borrado forense?",
+      "a4": "No. Escribe una imagen nueva sin las etiquetas originales. No garantiza todos los canales ocultos.",
+      "q5": "¿Qué puedo descargar?",
+      "a5": "JPG, PNG o WebP. El archivo nuevo sale de un redibujo en canvas."
     }
   },
   "qr": {
@@ -1872,6 +1890,26 @@
     "sizeLabel": "{src} → {out} · {bytes}",
     "emptyDownload": "Añade una foto primero.",
     "working": "Rotando…",
+    "errorDecode": "No se pudo leer esa imagen.",
+    "errorEncode": "No se pudo escribir la imagen."
+  },
+  "exif": {
+    "title": "Quitar EXIF",
+    "back": "Todas las herramientas",
+    "privacyNote": "La foto se queda en esta pestaña. Nada se sube.",
+    "filesTitle": "Foto",
+    "dropTitle": "Suelta una foto",
+    "dropHint": "O pégala. La redibujamos sin etiquetas EXIF.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Recodificar en esta pestaña quita EXIF y GPS. No es un borrado forense.",
+    "found": "Se encontraron etiquetas de metadatos. Descarga una copia limpia.",
+    "none": "No se vieron EXIF, texto PNG ni EXIF WebP. Aún puedes descargar un archivo redibujado.",
+    "options": "Exportar",
+    "format": "Formato",
+    "quality": "Calidad",
+    "download": "Descargar foto limpia",
+    "emptyDownload": "Añade una foto primero.",
+    "working": "Redibujando…",
     "errorDecode": "No se pudo leer esa imagen.",
     "errorEncode": "No se pudo escribir la imagen."
   }
