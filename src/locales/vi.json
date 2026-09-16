@@ -93,7 +93,9 @@
     "titleRotate": "Xoay ảnh — xoay JPG PNG — cv.cm",
     "descRotate": "Xoay hoặc lật ảnh trong trình duyệt. 90°, 180°, góc bất kỳ. Tải JPG, PNG hoặc WebP. Không tải lên.",
     "titleExif": "Xóa EXIF — gỡ metadata ảnh — cv.cm",
-    "descExif": "Gỡ EXIF và GPS khỏi ảnh trong trình duyệt. Tải JPG, PNG hoặc WebP sạch. Không tải lên."
+    "descExif": "Gỡ EXIF và GPS khỏi ảnh trong trình duyệt. Tải JPG, PNG hoặc WebP sạch. Không tải lên.",
+    "titleAudioJoiner": "Ghép audio — nối MP3 và WAV — cv.cm",
+    "descAudioJoiner": "Nối clip audio trong trình duyệt. Sắp thứ tự, tải một WAV. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -272,6 +274,10 @@
     "exif": {
       "name": "Xóa EXIF",
       "blurb": "Gỡ EXIF và GPS. Tải ảnh sạch. Không tải lên."
+    },
+    "audio-joiner": {
+      "name": "Ghép audio",
+      "blurb": "Nối clip thành một WAV. Không tải lên."
     }
   },
   "watermark": {
@@ -1071,6 +1077,18 @@
       "a4": "Không. Nó viết ảnh mới không thẻ metadata gốc. Không đảm bảo mọi kênh ẩn.",
       "q5": "Tải được gì?",
       "a5": "JPG, PNG hoặc WebP. File mới từ vẽ lại canvas."
+    },
+    "audio-joiner": {
+      "q1": "Ghép audio ở đây được không?",
+      "a1": "Được. Thả từ hai clip, sắp thứ tự, tải một WAV.",
+      "q2": "Có tải lên không?",
+      "a2": "Không. Giải mã và ghép ở tab này. Đóng là mất.",
+      "q3": "Mở được định dạng nào?",
+      "a3": "Những gì trình duyệt giải mã được: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. Xuất luôn là WAV.",
+      "q4": "Tần số lấy mẫu khác nhau thì sao?",
+      "a4": "Clip sau được lấy mẫu lại theo clip đầu trước khi ghép.",
+      "q5": "Giữ MP3 được không?",
+      "a5": "Không. File ghép là WAV, tab không mã hoá MP3."
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "Đang vẽ lại…",
     "errorDecode": "Không đọc được ảnh đó.",
     "errorEncode": "Không ghi được ảnh."
+  },
+  "audioJoiner": {
+    "title": "Ghép audio",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tệp ở lại tab này. Không tải lên.",
+    "filesTitle": "Clip",
+    "dropTitle": "Thả audio vào đây",
+    "dropHint": "Nhiều tệp. Ghép theo thứ tự danh sách.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "Chưa có clip.",
+    "hint": "Thêm ít nhất hai clip, sắp thứ tự, tải một WAV.",
+    "meta": "{count} clip · {duration}s",
+    "clear": "Xóa",
+    "up": "Lên",
+    "down": "Xuống",
+    "download": "Tải WAV",
+    "emptyDownload": "Hãy thêm ít nhất hai tệp audio.",
+    "working": "Đang ghép…",
+    "errorDecode": "Trình duyệt không đọc được audio này.",
+    "errorEncode": "Không ghi được WAV."
   }
 }

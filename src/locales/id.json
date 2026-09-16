@@ -93,7 +93,9 @@
     "titleRotate": "Putar gambar — putar JPG PNG — cv.cm",
     "descRotate": "Putar atau balik foto di browser. 90°, 180°, sudut apa pun. Unduh JPG, PNG, atau WebP. Tidak diunggah.",
     "titleExif": "Penghapus EXIF — buang metadata foto — cv.cm",
-    "descExif": "Buang EXIF dan GPS dari foto di browser. Unduh JPG, PNG, atau WebP bersih. Tidak diunggah."
+    "descExif": "Buang EXIF dan GPS dari foto di browser. Unduh JPG, PNG, atau WebP bersih. Tidak diunggah.",
+    "titleAudioJoiner": "Penggabung audio — gabung MP3 dan WAV — cv.cm",
+    "descAudioJoiner": "Gabungkan klip audio di browser. Urutkan, lalu unduh satu WAV. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -272,6 +274,10 @@
     "exif": {
       "name": "Penghapus EXIF",
       "blurb": "Buang EXIF dan GPS. Unduh foto bersih. Tanpa unggah."
+    },
+    "audio-joiner": {
+      "name": "Penggabung audio",
+      "blurb": "Gabung klip jadi satu WAV. Tanpa unggah."
     }
   },
   "watermark": {
@@ -1071,6 +1077,18 @@
       "a4": "Bukan. Ia menulis gambar baru tanpa tag metadata asli. Bukan jaminan terhadap setiap saluran tersembunyi.",
       "q5": "Apa yang bisa diunduh?",
       "a5": "JPG, PNG, atau WebP. Berkas baru dari gambar ulang kanvas."
+    },
+    "audio-joiner": {
+      "q1": "Bisa gabung audio di sini?",
+      "a1": "Bisa. Jatuhkan dua klip atau lebih, urutkan, unduh satu WAV.",
+      "q2": "Apakah diunggah?",
+      "a2": "Tidak. Dekode dan gabung tetap di tab ini. Menutup tab membuangnya.",
+      "q3": "Format apa yang bisa dibuka?",
+      "a3": "Apa pun yang bisa didekode browser: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. Keluaran selalu WAV.",
+      "q4": "Jika laju sampel berbeda?",
+      "a4": "Klip berikutnya diresample ke laju klip pertama sebelum digabung.",
+      "q5": "Bisa tetap MP3?",
+      "a5": "Tidak. Hasil gabungan adalah WAV. Tab tidak perlu encoder MP3."
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "Menggambar ulang…",
     "errorDecode": "Tidak bisa membaca gambar itu.",
     "errorEncode": "Tidak bisa menulis gambar."
+  },
+  "audioJoiner": {
+    "title": "Penggabung audio",
+    "back": "Semua alat",
+    "privacyNote": "Berkas tetap di tab ini. Tidak diunggah.",
+    "filesTitle": "Klip",
+    "dropTitle": "Jatuhkan audio di sini",
+    "dropHint": "Beberapa berkas. Digabung sesuai urutan daftar.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "Belum ada klip.",
+    "hint": "Tambahkan minimal dua klip, urutkan, unduh satu WAV.",
+    "meta": "{count} klip · {duration}d",
+    "clear": "Hapus",
+    "up": "Naik",
+    "down": "Turun",
+    "download": "Unduh WAV",
+    "emptyDownload": "Tambahkan setidaknya dua berkas audio.",
+    "working": "Menggabungkan…",
+    "errorDecode": "Browser tidak bisa membaca audio ini.",
+    "errorEncode": "Tidak bisa menulis WAV."
   }
 }

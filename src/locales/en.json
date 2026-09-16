@@ -93,7 +93,9 @@
     "titleRotate": "Rotate image — rotate JPG PNG — cv.cm",
     "descRotate": "Rotate or flip a photo in the browser. 90°, 180°, any angle. Download JPG, PNG, or WebP. Nothing is uploaded.",
     "titleExif": "EXIF remover — strip photo metadata — cv.cm",
-    "descExif": "Remove EXIF and GPS from a photo in the browser. Download a clean JPG, PNG, or WebP. Nothing is uploaded."
+    "descExif": "Remove EXIF and GPS from a photo in the browser. Download a clean JPG, PNG, or WebP. Nothing is uploaded.",
+    "titleAudioJoiner": "Audio joiner — merge MP3 and WAV — cv.cm",
+    "descAudioJoiner": "Join audio clips in the browser. Reorder, then download one WAV. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -578,6 +580,10 @@
     "exif": {
       "name": "EXIF remover",
       "blurb": "Strip EXIF and GPS. Download a clean photo. Nothing is uploaded."
+    },
+    "audio-joiner": {
+      "name": "Audio joiner",
+      "blurb": "Join clips into one WAV. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1377,6 +1383,18 @@
       "a4": "No. It writes a new picture without the original metadata tags. It is not a guarantee against every hidden channel.",
       "q5": "What can I download?",
       "a5": "JPG, PNG, or WebP. The new file comes from a canvas redraw."
+    },
+    "audio-joiner": {
+      "q1": "Can I join audio files here?",
+      "a1": "Yes. Drop two or more clips, put them in order, then download one WAV.",
+      "q2": "Is the audio uploaded?",
+      "a2": "No. Decoding and joining stay in this tab. Closing it discards the files.",
+      "q3": "What can I open?",
+      "a3": "Whatever this browser can decode: MP3, WAV, M4A, OGG, AAC, FLAC, or WebM. Output is always WAV.",
+      "q4": "What if sample rates differ?",
+      "a4": "Later clips are resampled to the first clip’s rate before they are joined.",
+      "q5": "Can I keep MP3?",
+      "a5": "No. The joined file is WAV so the tab does not need an MP3 encoder."
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "Redrawing…",
     "errorDecode": "Could not read that image.",
     "errorEncode": "Could not write the image."
+  },
+  "audioJoiner": {
+    "title": "Audio joiner",
+    "back": "All tools",
+    "privacyNote": "The files stay in this tab. Nothing is uploaded.",
+    "filesTitle": "Clips",
+    "dropTitle": "Drop audio here",
+    "dropHint": "Several files. We join them in list order.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "No clips yet.",
+    "hint": "Add at least two clips, reorder, then download one WAV.",
+    "meta": "{count} clips · {duration}s",
+    "clear": "Clear",
+    "up": "Up",
+    "down": "Down",
+    "download": "Download WAV",
+    "emptyDownload": "Add at least two audio files.",
+    "working": "Joining…",
+    "errorDecode": "Could not read this audio in the browser.",
+    "errorEncode": "Could not write the WAV."
   }
 }

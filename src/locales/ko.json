@@ -93,7 +93,9 @@
     "titleRotate": "이미지 회전 — JPG PNG 회전 — cv.cm",
     "descRotate": "브라우저에서 사진을 회전하거나 뒤집습니다. 90°, 180°, 임의 각도. JPG, PNG, WebP 다운로드. 업로드 없음.",
     "titleExif": "EXIF 제거 — 사진 메타데이터 지우기 — cv.cm",
-    "descExif": "브라우저에서 사진의 EXIF와 GPS를 제거합니다. 깨끗한 JPG, PNG, WebP를 받습니다. 업로드 없음."
+    "descExif": "브라우저에서 사진의 EXIF와 GPS를 제거합니다. 깨끗한 JPG, PNG, WebP를 받습니다. 업로드 없음.",
+    "titleAudioJoiner": "오디오 합치기 — MP3와 WAV 병합 — cv.cm",
+    "descAudioJoiner": "브라우저에서 오디오를 이어 붙입니다. 순서를 정한 뒤 WAV 하나를 받습니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -272,6 +274,10 @@
     "exif": {
       "name": "EXIF 제거",
       "blurb": "EXIF와 GPS를 제거. 깨끗한 사진을 받습니다. 업로드 없음."
+    },
+    "audio-joiner": {
+      "name": "오디오 합치기",
+      "blurb": "클립을 하나의 WAV로. 업로드 없음."
     }
   },
   "watermark": {
@@ -1071,6 +1077,18 @@
       "a4": "아니요. 원래 메타데이터 태그 없는 새 그림을 씁니다. 모든 숨은 경로를 보장하지 않습니다.",
       "q5": "무엇을 받을 수 있나요?",
       "a5": "JPG, PNG, WebP. 새 파일은 캔버스 다시 그리기입니다."
+    },
+    "audio-joiner": {
+      "q1": "여기서 오디오를 이어 붙일 수 있나요?",
+      "a1": "네. 두 개 이상 넣고 순서를 정한 뒤 WAV 하나를 받습니다.",
+      "q2": "업로드되나요?",
+      "a2": "아니요. 디코딩과 이어 붙이기는 이 탭에서 끝납니다. 닫으면 사라집니다.",
+      "q3": "어떤 형식을 열 수 있나요?",
+      "a3": "이 브라우저가 디코드하는 것: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. 출력은 항상 WAV입니다.",
+      "q4": "샘플레이트가 다르면요?",
+      "a4": "뒤 클립은 이어 붙이기 전에 첫 클립의 레이트로 다시 샘플링합니다.",
+      "q5": "MP3를 유지할 수 있나요?",
+      "a5": "아니요. 결과는 WAV입니다. 탭에서 MP3를 인코드하지 않습니다."
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "다시 그리는 중…",
     "errorDecode": "그 이미지를 읽지 못했습니다.",
     "errorEncode": "이미지를 쓰지 못했습니다."
+  },
+  "audioJoiner": {
+    "title": "오디오 합치기",
+    "back": "모든 도구",
+    "privacyNote": "파일은 이 탭에 남습니다. 업로드 없음.",
+    "filesTitle": "클립",
+    "dropTitle": "오디오 놓기",
+    "dropHint": "여러 파일. 목록 순서로 이어 붙입니다.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "아직 클립이 없습니다.",
+    "hint": "두 개 이상 넣고 순서를 정한 뒤 WAV 하나를 받으세요.",
+    "meta": "{count}개 · {duration}초",
+    "clear": "지우기",
+    "up": "위로",
+    "down": "아래로",
+    "download": "WAV 다운로드",
+    "emptyDownload": "오디오를 두 개 이상 넣으세요.",
+    "working": "합치는 중…",
+    "errorDecode": "이 브라우저에서 그 오디오를 읽지 못했습니다.",
+    "errorEncode": "WAV를 쓰지 못했습니다."
   }
 }

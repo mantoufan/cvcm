@@ -25,6 +25,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/image-pdf/` — images to PDF
 - `src/client/audio/` — audio to WAV
 - `src/client/audio-cutter/` — trim audio to WAV
+- `src/client/audio-joiner/` — join audio clips to WAV
 - `src/client/data/` — JSON / CSV / Base64 / Markdown
 - `src/client/qr/` — QR code generator
 - `src/client/barcode/` — barcode generator (Code 128, Code 39, EAN-13)

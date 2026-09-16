@@ -22,6 +22,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   invoice: "/covers/invoice-sweet.jpg?v=2",
   audio: "/covers/audio-sweet.jpg?v=2",
   "audio-cutter": "/covers/audio-cutter-sweet.jpg?v=1",
+  "audio-joiner": "/covers/audio-joiner-sweet.jpg?v=1",
   data: "/covers/data-sweet.jpg?v=2",
   password: "/covers/password-sweet.jpg?v=1",
   "word-count": "/covers/word-count-sweet.jpg?v=1",

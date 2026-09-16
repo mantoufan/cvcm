@@ -93,7 +93,9 @@
     "titleRotate": "旋转图片 — 旋转 JPG PNG — cv.cm",
     "descRotate": "在浏览器里旋转或翻转照片。90°、180°或任意角度。下载 JPG、PNG 或 WebP。不上传。",
     "titleExif": "清除 EXIF — 去掉照片信息 — cv.cm",
-    "descExif": "在浏览器里去掉照片的 EXIF 和 GPS。下载干净的 JPG、PNG 或 WebP。不上传。"
+    "descExif": "在浏览器里去掉照片的 EXIF 和 GPS。下载干净的 JPG、PNG 或 WebP。不上传。",
+    "titleAudioJoiner": "音频拼接 — 合并 MP3 和 WAV — cv.cm",
+    "descAudioJoiner": "在浏览器里拼接音频。调整顺序，下载一条 WAV。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -272,6 +274,10 @@
     "exif": {
       "name": "清除 EXIF",
       "blurb": "去掉 EXIF 和 GPS。下载干净照片。不上传。"
+    },
+    "audio-joiner": {
+      "name": "音频拼接",
+      "blurb": "多段合成一条 WAV。不上传。"
     }
   },
   "watermark": {
@@ -1071,6 +1077,18 @@
       "a4": "不是。它写出一张没有原元数据标记的新图，不保证对付所有隐藏通道。",
       "q5": "能下载什么？",
       "a5": "JPG、PNG 或 WebP。新文件来自画布重绘。"
+    },
+    "audio-joiner": {
+      "q1": "能在这里拼接音频吗？",
+      "a1": "可以。放入两段以上，排好顺序，下载一条 WAV。",
+      "q2": "会上传吗？",
+      "a2": "不会。解码和拼接都在当前标签页，关掉即丢。",
+      "q3": "能打开哪些格式？",
+      "a3": "浏览器能解码的都可以：MP3、WAV、M4A、OGG、AAC、FLAC、WebM。导出一律是 WAV。",
+      "q4": "采样率不同怎么办？",
+      "a4": "后面的片段会先重采样到第一段的采样率再拼接。",
+      "q5": "能保留 MP3 吗？",
+      "a5": "不能。拼出来是 WAV，标签页不必编码 MP3。"
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "正在重绘…",
     "errorDecode": "无法读取这张图。",
     "errorEncode": "无法写出图片。"
+  },
+  "audioJoiner": {
+    "title": "音频拼接",
+    "back": "全部工具",
+    "privacyNote": "文件留在当前标签页。不上传。",
+    "filesTitle": "片段",
+    "dropTitle": "放入音频",
+    "dropHint": "可多选。按列表顺序拼接。",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "还没有片段。",
+    "hint": "至少两段，排好顺序，下载一条 WAV。",
+    "meta": "{count} 段 · {duration} 秒",
+    "clear": "清空",
+    "up": "上移",
+    "down": "下移",
+    "download": "下载 WAV",
+    "emptyDownload": "请至少添加两段音频。",
+    "working": "正在拼接…",
+    "errorDecode": "浏览器无法读取这段音频。",
+    "errorEncode": "无法写出 WAV。"
   }
 }

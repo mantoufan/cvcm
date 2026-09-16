@@ -93,7 +93,9 @@
     "titleRotate": "Rotar imagen — rota JPG PNG — cv.cm",
     "descRotate": "Rota o voltea una foto en el navegador. 90°, 180° o cualquier ángulo. Descarga JPG, PNG o WebP. Nada se sube.",
     "titleExif": "Quitar EXIF — borrar metadatos de foto — cv.cm",
-    "descExif": "Quita EXIF y GPS de una foto en el navegador. Descarga un JPG, PNG o WebP limpio. Nada se sube."
+    "descExif": "Quita EXIF y GPS de una foto en el navegador. Descarga un JPG, PNG o WebP limpio. Nada se sube.",
+    "titleAudioJoiner": "Unir audio — junta MP3 y WAV — cv.cm",
+    "descAudioJoiner": "Junta clips de audio en el navegador. Ordénalos y descarga un WAV. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -272,6 +274,10 @@
     "exif": {
       "name": "Quitar EXIF",
       "blurb": "Quita EXIF y GPS. Descarga una foto limpia. Nada se sube."
+    },
+    "audio-joiner": {
+      "name": "Unir audio",
+      "blurb": "Junta clips en un WAV. Nada se sube."
     }
   },
   "watermark": {
@@ -1071,6 +1077,18 @@
       "a4": "No. Escribe una imagen nueva sin las etiquetas originales. No garantiza todos los canales ocultos.",
       "q5": "¿Qué puedo descargar?",
       "a5": "JPG, PNG o WebP. El archivo nuevo sale de un redibujo en canvas."
+    },
+    "audio-joiner": {
+      "q1": "¿Puedo unir audios aquí?",
+      "a1": "Sí. Suelta dos o más clips, ordénalos y descarga un WAV.",
+      "q2": "¿Se sube el audio?",
+      "a2": "No. La decodificación y la unión quedan en esta pestaña. Cerrarla descarta los archivos.",
+      "q3": "¿Qué puedo abrir?",
+      "a3": "Lo que este navegador sepa decodificar: MP3, WAV, M4A, OGG, AAC, FLAC o WebM. La salida es siempre WAV.",
+      "q4": "¿Y si las frecuencias de muestreo difieren?",
+      "a4": "Los clips siguientes se remuestrean a la frecuencia del primero antes de unirse.",
+      "q5": "¿Puedo conservar MP3?",
+      "a5": "No. El archivo unido es WAV para no tener que codificar MP3 en la pestaña."
     }
   },
   "qr": {
@@ -1912,5 +1930,25 @@
     "working": "Redibujando…",
     "errorDecode": "No se pudo leer esa imagen.",
     "errorEncode": "No se pudo escribir la imagen."
+  },
+  "audioJoiner": {
+    "title": "Unir audio",
+    "back": "Todas las herramientas",
+    "privacyNote": "Los archivos se quedan en esta pestaña. Nada se sube.",
+    "filesTitle": "Clips",
+    "dropTitle": "Suelta el audio aquí",
+    "dropHint": "Varios archivos. Se unen en el orden de la lista.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "filesEmpty": "Aún no hay clips.",
+    "hint": "Añade al menos dos clips, ordénalos y descarga un WAV.",
+    "meta": "{count} clips · {duration}s",
+    "clear": "Vaciar",
+    "up": "Subir",
+    "down": "Bajar",
+    "download": "Descargar WAV",
+    "emptyDownload": "Añade al menos dos archivos de audio.",
+    "working": "Uniendo…",
+    "errorDecode": "Este navegador no pudo leer ese audio.",
+    "errorEncode": "No se pudo escribir el WAV."
   }
 }
