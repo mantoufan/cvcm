@@ -1,5 +1,5 @@
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
-import { TOOLS, TUTORIALS, appHref, learnHref, type ToolId, type TutorialId } from "./path";
+import { TOOLS, FEATURED_TUTORIALS, appHref, learnHref, type ToolId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -26,7 +26,7 @@ export function sitemapPages(): SitemapPage[] {
     pages.push({ locale, kind: "home" });
     for (const tool of TOOLS) pages.push({ locale, kind: "tool", tool });
     pages.push({ locale, kind: "learn", tutorial: null });
-    for (const tutorial of TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
+    for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
   }
   return pages;
 }

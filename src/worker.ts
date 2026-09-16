@@ -1,7 +1,7 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
-import { appHref, learnHref, parseAppPath, STATIC_FILE } from "./shared/path";
+import { appHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -95,6 +95,9 @@ export default {
         }
       }
       if (parsed.kind === "learn") {
+        if (parsed.tutorial && !isPublishedTutorial(parsed.tutorial)) {
+          return redirect(new URL(learnHref(parsed.locale, null), url.origin).toString(), 301);
+        }
         const canonical = learnHref(parsed.locale, parsed.tutorial);
         if (path !== canonical) {
           return redirect(new URL(canonical, url.origin).toString(), 301);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
-import { TOOLS, TUTORIALS, appHref, learnHref } from "../src/shared/path";
+import { TOOLS, FEATURED_TUTORIALS, appHref, learnHref } from "../src/shared/path";
 import { buildSitemapXml, HREFLANG, pageUrl, sitemapPages } from "../src/shared/sitemap";
 
 describe("sitemap", () => {
@@ -9,7 +9,7 @@ describe("sitemap", () => {
     expect(xml.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")).toBe(true);
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
-    expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + 1 + TUTORIALS.length));
+    expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + 1 + FEATURED_TUTORIALS.length));
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
       expect(xml).toContain(`hreflang="${HREFLANG[locale]}"`);
@@ -17,7 +17,7 @@ describe("sitemap", () => {
       for (const tool of TOOLS) {
         expect(xml).toContain(pageUrl({ locale, kind: "tool", tool }));
       }
-      for (const tutorial of TUTORIALS) {
+      for (const tutorial of FEATURED_TUTORIALS) {
         expect(xml).toContain(pageUrl({ locale, kind: "learn", tutorial }));
       }
     }

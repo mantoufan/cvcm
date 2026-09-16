@@ -76,16 +76,21 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-// Older lesson URLs remain available; only the edited collection is promoted.
-export const TUTORIAL_GROUPS = [
-  { id: "photo", tutorials: ["phone-photos", "window-light", "crop-compose"] },
-  { id: "course", tutorials: ["portrait"] },
-  { id: "code", tutorials: ["algorithms", "one-page-site"] },
-] as const;
+export type TutorialGroupId = "photo" | "court" | "water" | "code" | "mind" | "course";
+
+// Lesson URLs still parse so old links 301 to the hub. The published set is empty
+// while copy and diagrams are rewritten against search demand.
+export const TUTORIAL_GROUPS: readonly {
+  id: TutorialGroupId;
+  tutorials: readonly TutorialId[];
+}[] = [];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
-  (group) => [...group.tutorials] as TutorialId[],
+  (group) => [...group.tutorials],
 );
-export type TutorialGroupId = (typeof TUTORIAL_GROUPS)[number]["id"];
+
+export function isPublishedTutorial(id: TutorialId): boolean {
+  return FEATURED_TUTORIALS.includes(id);
+}
 
 export function categoryOf(tool: ToolId): CategoryId {
   for (const cat of CATEGORIES) {

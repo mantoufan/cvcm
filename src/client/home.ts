@@ -6,6 +6,17 @@ import type { Locale } from "../shared/locale";
 import { TOOLS, FEATURED_TUTORIALS, appHref, learnHref, type ToolId } from "../shared/path";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
+  const learnWall = FEATURED_TUTORIALS.length
+    ? h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.learn")),
+        h("a", { class: "wall-more", href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all")),
+      ),
+      h("div", { class: "tiles" },
+        ...FEATURED_TUTORIALS.map((id) => learnTile(locale, id)),
+      ),
+    )
+    : null;
   host.append(
     h("section", { class: "hero-band" },
       h("p", { class: "kicker" }, t("home.kicker")),
@@ -20,15 +31,7 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
         ...TOOLS.map((id) => tile(locale, id)),
       ),
     ),
-    h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.learn")),
-        h("a", { class: "wall-more", href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all")),
-      ),
-      h("div", { class: "tiles" },
-        ...FEATURED_TUTORIALS.map((id) => learnTile(locale, id)),
-      ),
-    ),
+    ...(learnWall ? [learnWall] : []),
     h("section", { class: "points" },
       point("local"),
       point("nodb"),

@@ -13,6 +13,7 @@ export function mountLearnHub(host: HTMLElement): void {
       h("p", { class: "kicker" }, t("learn.hub.kicker")),
       h("h1", null, t("learn.hub.title")),
       h("p", { class: "lede" }, t("learn.hub.lead")),
+      TUTORIAL_GROUPS.length === 0 ? h("p", { class: "learn-empty" }, t("learn.hub.empty")) : null,
     ),
     ...TUTORIAL_GROUPS.map((group) =>
       h("section", { class: "wall" },

@@ -49,6 +49,7 @@ import {
   CATEGORIES,
   TUTORIAL_GROUPS,
   appHref,
+  isPublishedTutorial,
   learnHref,
   parseAppPath,
   type ToolId,
@@ -221,11 +222,16 @@ function render(): void {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else if (parsed.kind === "learn") {
     setLocale(parsed.locale);
-    applyLearn(parsed.tutorial);
+    const published = parsed.tutorial && isPublishedTutorial(parsed.tutorial);
+    if (parsed.tutorial && !published) {
+      history.replaceState(null, "", learnHref(parsed.locale, null));
+    }
+    applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "clip") {
     applyTool("clip", parsed.id);
   } else if (parsed.kind === "bare-learn") {
-    applyLearn(parsed.tutorial);
+    const published = parsed.tutorial && isPublishedTutorial(parsed.tutorial);
+    applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {

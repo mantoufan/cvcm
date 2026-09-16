@@ -137,31 +137,4 @@ export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href:
 };
 
 // Each diagram is placed beside the step it explains. Assets use scalable vectors.
-export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: string }[]>> = {
-  "phone-photos": [
-    { step: 2, src: "/covers/tutorials/phone-focus.svg" },
-    { step: 3, src: "/covers/tutorials/phone-exposure.svg" },
-  ],
-  "window-light": [
-    { step: 2, src: "/covers/tutorials/window-setup.svg" },
-    { step: 4, src: "/covers/tutorials/window-angles.svg" },
-  ],
-  "crop-compose": [
-    { step: 2, src: "/covers/tutorials/crop-ratios.svg" },
-    { step: 4, src: "/covers/tutorials/crop-selection.svg" },
-  ],
-  portrait: [
-    { step: 6, src: "/covers/tutorials/portrait-frames.svg" },
-    { step: 7, src: "/covers/tutorials/portrait-background.svg" },
-    { step: 3, src: "/covers/tutorials/window-setup.svg" },
-  ],
-  algorithms: [
-    { step: 3, src: "/covers/tutorials/algorithm-map.svg" },
-    { step: 5, src: "/covers/tutorials/algorithm-search.svg" },
-    { step: 6, src: "/covers/tutorials/algorithm-recursion.svg" },
-  ],
-  "one-page-site": [
-    { step: 2, src: "/covers/tutorials/site-structure.svg" },
-    { step: 4, src: "/covers/tutorials/site-publish.svg" },
-  ],
-};
+export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: string }[]>> = {};
