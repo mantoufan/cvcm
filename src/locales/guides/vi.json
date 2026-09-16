@@ -354,31 +354,31 @@
       "s4b": "Điền ô thay để xem trước phép thế, rồi sao chép một khớp nếu cần."
     },
     "yaml-json": {
-      "lead": "Convert YAML to JSON or JSON to YAML in this tab. Simple maps and lists are enough for most configs.",
-      "s1t": "Open YAML to JSON",
-      "s1b": "A short sample document is already converted. The direction menu sits on the left.",
-      "s2t": "Paste YAML or JSON",
-      "s2b": "Switch YAML → JSON or JSON → YAML. Nested maps and lists indent as usual.",
-      "s3t": "Copy the result",
-      "s3b": "Copy when the output looks right. Closing the tab discards both sides."
+      "lead": "Đổi YAML sang JSON hoặc JSON sang YAML trong thẻ này. Map và list thường là đủ.",
+      "s1t": "Mở YAML JSON",
+      "s1b": "Một mẫu ngắn đã được đổi thành JSON. Menu hướng nằm bên trái.",
+      "s2t": "Dán YAML hoặc JSON",
+      "s2b": "Nếu cần, đổi JSON → YAML. Map và list lồng nhau viết bằng thụt dòng.",
+      "s3t": "Sao chép kết quả",
+      "s3b": "Khi đầu ra đúng thì sao chép. Đóng thẻ là bỏ cả hai phía."
     },
     "case": {
-      "lead": "Change letter case in this tab: upper, lower, title, camel, snake, and more.",
-      "s1t": "Open Case converter",
-      "s1b": "A sample sentence is already converted to Title Case.",
-      "s2t": "Paste your text",
-      "s2b": "Pick a case from the menu. camelCase and snake_case split on spaces and punctuation.",
-      "s3t": "Copy the result",
-      "s3b": "Copy the converted text. Nothing is uploaded."
+      "lead": "Đổi chữ hoa/thường trong thẻ này: hoa, thường, tiêu đề, camel, snake, v.v.",
+      "s1t": "Mở Đổi kiểu chữ",
+      "s1b": "Một câu mẫu đã được đổi thành Title Case.",
+      "s2t": "Dán chữ của bạn",
+      "s2b": "Chọn kiểu từ menu. camelCase và snake_case tách theo khoảng trắng và dấu câu.",
+      "s3t": "Sao chép kết quả",
+      "s3b": "Sao chép chữ đã đổi. Không tải lên."
     },
     "jwt": {
-      "lead": "Read a JWT header and payload in this tab. The signature is never verified.",
-      "s1t": "Open JWT decoder",
-      "s1b": "The token field is empty. Header and payload panes wait on the right.",
-      "s2t": "Paste the token",
-      "s2b": "A JWT has two or three parts separated by dots. Header and payload appear as JSON.",
-      "s3t": "Read the claims",
-      "s3b": "Copy the payload if you need it. This is not proof the token is authentic."
+      "lead": "Đọc header và payload JWT trong thẻ này. Chữ ký không được kiểm.",
+      "s1t": "Mở Giải JWT",
+      "s1b": "Ô token trống. Bên phải chờ header và payload.",
+      "s2t": "Dán token",
+      "s2b": "JWT có hai hoặc ba phần cách bởi dấu chấm. Header và payload hiện thành JSON.",
+      "s3t": "Đọc claim",
+      "s3b": "Sao chép payload nếu cần. Đây không phải bằng chứng token là thật."
     }
   }
 }

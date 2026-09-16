@@ -354,31 +354,31 @@
       "s4b": "Rellena el campo de reemplazo para previsualizar y copia una coincidencia si la necesitas."
     },
     "yaml-json": {
-      "lead": "Convert YAML to JSON or JSON to YAML in this tab. Simple maps and lists are enough for most configs.",
-      "s1t": "Open YAML to JSON",
-      "s1b": "A short sample document is already converted. The direction menu sits on the left.",
-      "s2t": "Paste YAML or JSON",
-      "s2b": "Switch YAML → JSON or JSON → YAML. Nested maps and lists indent as usual.",
-      "s3t": "Copy the result",
-      "s3b": "Copy when the output looks right. Closing the tab discards both sides."
+      "lead": "Convierte YAML a JSON o JSON a YAML en esta pestaña. Mapas y listas simples bastan.",
+      "s1t": "Abre YAML a JSON",
+      "s1b": "Un documento de ejemplo ya está convertido. El menú de dirección está a la izquierda.",
+      "s2t": "Pega YAML o JSON",
+      "s2b": "Si hace falta, cambia a JSON → YAML. Los mapas y listas anidados se escriben con sangría.",
+      "s3t": "Copia el resultado",
+      "s3b": "Copia cuando la salida se vea bien. Al cerrar la pestaña se descartan ambos lados."
     },
     "case": {
-      "lead": "Change letter case in this tab: upper, lower, title, camel, snake, and more.",
-      "s1t": "Open Case converter",
-      "s1b": "A sample sentence is already converted to Title Case.",
-      "s2t": "Paste your text",
-      "s2b": "Pick a case from the menu. camelCase and snake_case split on spaces and punctuation.",
-      "s3t": "Copy the result",
-      "s3b": "Copy the converted text. Nothing is uploaded."
+      "lead": "Cambia mayúsculas y minúsculas en esta pestaña: upper, lower, title, camel, snake y más.",
+      "s1t": "Abre Conversor de mayúsculas",
+      "s1b": "Una frase de ejemplo ya está en Title Case.",
+      "s2t": "Pega tu texto",
+      "s2b": "Elige un formato en el menú. camelCase y snake_case parten por espacios y puntuación.",
+      "s3t": "Copia el resultado",
+      "s3b": "Copia el texto convertido. Nada se sube."
     },
     "jwt": {
-      "lead": "Read a JWT header and payload in this tab. The signature is never verified.",
-      "s1t": "Open JWT decoder",
-      "s1b": "The token field is empty. Header and payload panes wait on the right.",
-      "s2t": "Paste the token",
-      "s2b": "A JWT has two or three parts separated by dots. Header and payload appear as JSON.",
-      "s3t": "Read the claims",
-      "s3b": "Copy the payload if you need it. This is not proof the token is authentic."
+      "lead": "Lee el header y el payload de un JWT en esta pestaña. La firma no se verifica.",
+      "s1t": "Abre Decodificador JWT",
+      "s1b": "El campo del token está vacío. A la derecha esperan header y payload.",
+      "s2t": "Pega el token",
+      "s2b": "Un JWT tiene dos o tres partes separadas por puntos. Header y payload salen como JSON.",
+      "s3t": "Lee las claims",
+      "s3b": "Copia el payload si lo necesitas. Esto no demuestra que el token sea auténtico."
     }
   }
 }

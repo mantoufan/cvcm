@@ -60,6 +60,9 @@ const STEPS = {
   regex: 4,
   case: 3,
   jwt: 3,
+  screenshot: 3,
+  percent: 3,
+  random: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -383,6 +386,7 @@ async function runTool(send, id, fx) {
     rotate: "#rotate-file-input",
     exif: "#exif-file-input",
     favicon: "#favicon-file-input",
+    screenshot: "#screenshot-file-input",
     convert: "#convert-file-input",
     "image-pdf": "#pdf-file-input",
   };
@@ -723,6 +727,104 @@ async function runTool(send, id, fx) {
     })()`);
     await sleep(200);
     await snap(4);
+    return;
+  }
+
+  if (id === "yaml-json") {
+    await snap(1);
+    await evalValue(send, fillExpr(".data-tool textarea, textarea.clip-input", "note:\n  to: cv.cm\n  n: 2\n  tags:\n    - yaml\n    - json\n"));
+    await sleep(250);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const input = document.querySelector(".data-tool textarea") || document.querySelector("textarea.clip-input");
+      if (input) {
+        input.value = '{"tool":"cv.cm","ok":true}';
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+      const sel = document.querySelector(".controls select");
+      if (!sel) throw new Error("yaml-json direction missing");
+      sel.value = "json-yaml";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return sel.value;
+    })()`);
+    await sleep(250);
+    await snap(3);
+    return;
+  }
+
+  if (id === "case") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector(".controls select");
+      if (!sel) throw new Error("case select missing");
+      sel.value = "camel";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return sel.value;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, fillExpr(".data-tool textarea, textarea.clip-input", "Convert This Title To Snake"));
+    await evalValue(send, `(() => {
+      const sel = document.querySelector(".controls select");
+      if (!sel) throw new Error("case select missing");
+      sel.value = "snake";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return sel.value;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "jwt") {
+    await evalValue(send, `(() => {
+      const el = document.querySelector(".data-tool textarea") || document.querySelector("textarea.clip-input");
+      if (el) { el.value = ""; el.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(150);
+    await snap(1);
+    const token = await evalValue(send, `(() => {
+      const b64 = (obj) => btoa(JSON.stringify(obj)).replace(/=+$/,"").replace(/\\+/g,"-").replace(/\\//g,"_");
+      return b64({ alg: "HS256", typ: "JWT" }) + "." + b64({ sub: "cv.cm", name: "guide", iat: 1700000000, exp: 1893456000 }) + ".sig";
+    })()`);
+    await evalValue(send, fillExpr(".data-tool textarea, textarea.clip-input", token));
+    await sleep(250);
+    await snap(2);
+    await clickSel(send, ".stage-actions .btn");
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "percent") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "18"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "90"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "random") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) nums[0].value = "1";
+      if (nums[1]) nums[1].value = "6";
+      if (nums[2]) nums[2].value = "8";
+      nums.forEach((n) => n.dispatchEvent(new Event("input", { bubbles: true })));
+      return true;
+    })()`);
+    await clickText(send, "Roll").catch(() => clickSel(send, ".stage-actions .btn"));
+    await sleep(200);
+    await snap(2);
+    await snap(3);
     return;
   }
 

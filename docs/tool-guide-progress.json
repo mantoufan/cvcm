@@ -422,7 +422,40 @@
       ],
       "ms": 2919,
       "error": null
+    },
+    "yaml-json": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/yaml-json/01.jpg",
+        "covers/guides/yaml-json/02.jpg",
+        "covers/guides/yaml-json/03.jpg"
+      ],
+      "ms": 2394,
+      "error": null
+    },
+    "case": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/case/01.jpg",
+        "covers/guides/case/02.jpg",
+        "covers/guides/case/03.jpg"
+      ],
+      "ms": 2041,
+      "error": null
+    },
+    "jwt": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/jwt/01.jpg",
+        "covers/guides/jwt/02.jpg",
+        "covers/guides/jwt/03.jpg"
+      ],
+      "ms": 2169,
+      "error": null
     }
   },
-  "updated": "2026-09-16T05:40:27.639Z"
+  "updated": "2026-09-16T06:33:08.279Z"
 }

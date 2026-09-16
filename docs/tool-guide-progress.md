@@ -1,16 +1,18 @@
 # cv.cm tool test and guide progress
 
-Updated: `2026-09-16T05:40:27.639Z`
+Updated: `2026-09-16T06:36:00.000Z`
 
 Each tool was exercised in Chrome (bb-browser CDP). Passing tools got step screenshots at `public/covers/guides/{id}/` and an illustrated how-to above the FAQ.
 
-**38 pass / 0 fail / 38 tools**
+**41 pass / 0 fail / 41 tools**
 
 ## Production verify (2026-09-16, deploy `71c9bfc`)
 
 All 38 English tool URLs return 200, include HowTo JSON-LD, and reference `/covers/guides/{id}/01.jpg`. Every step JPEG is 200 `image/jpeg`.
 
 Browser (logged-in Chrome CDP) on `zh-cn` unless noted: `clip`, `convert`, `invoice`, `regex`, `hash`, `password`, `watermark`, plus `en/xml-json`. Each page shows **使用步骤 / How to use this tool** above **常见问题 / FAQ**, with the expected step count. Guide images decode (1080×726) once they enter the viewport (`loading=lazy`).
+
+`yaml-json`, `case`, and `jwt` shipped with the wrong neighbouring-tool screenshots. Recaptured from production 2026-09-16; 8-locale how-to copy filled in (they had been English in every file).
 
 | Tool | Status | Steps | Screenshots | Notes |
 |---|---|---:|---|---|
@@ -52,6 +54,9 @@ Browser (logged-in Chrome CDP) on `zh-cn` unless noted: `clip`, `convert`, `invo
 | `uuid` | pass | 3 | `covers/guides/uuid/01.jpg`, `covers/guides/uuid/02.jpg`, `covers/guides/uuid/03.jpg` | On-device happy path; screenshot per step. |
 | `hash` | pass | 3 | `covers/guides/hash/01.jpg`, `covers/guides/hash/02.jpg`, `covers/guides/hash/03.jpg` | Not on production yet (302). Captured from local Vite. |
 | `regex` | pass | 4 | `covers/guides/regex/01.jpg`, `covers/guides/regex/02.jpg`, `covers/guides/regex/03.jpg`, `covers/guides/regex/04.jpg` | On-device happy path; screenshot per step. |
+| `yaml-json` | pass | 3 | `covers/guides/yaml-json/01.jpg`, `covers/guides/yaml-json/02.jpg`, `covers/guides/yaml-json/03.jpg` | Recaptured 2026-09-16. First ship used XML-to-JSON screenshots by mistake. YAML→JSON sample, richer YAML, then JSON→YAML. |
+| `case` | pass | 3 | `covers/guides/case/01.jpg`, `covers/guides/case/02.jpg`, `covers/guides/case/03.jpg` | Recaptured. Title Case sample, camelCase, snake_case. |
+| `jwt` | pass | 3 | `covers/guides/jwt/01.jpg`, `covers/guides/jwt/02.jpg`, `covers/guides/jwt/03.jpg` | Recaptured. Empty pad, pasted HS256 token, decoded header/payload (signature not verified). |
 
 ## GitHub layout
 

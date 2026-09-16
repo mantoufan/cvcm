@@ -354,31 +354,31 @@
       "s4b": "填寫取代欄可預覽取代结果，需要時再複製某一处符合。"
     },
     "yaml-json": {
-      "lead": "Convert YAML to JSON or JSON to YAML in this tab. Simple maps and lists are enough for most configs.",
-      "s1t": "Open YAML to JSON",
-      "s1b": "A short sample document is already converted. The direction menu sits on the left.",
-      "s2t": "Paste YAML or JSON",
-      "s2b": "Switch YAML → JSON or JSON → YAML. Nested maps and lists indent as usual.",
-      "s3t": "Copy the result",
-      "s3b": "Copy when the output looks right. Closing the tab discards both sides."
+      "lead": "在本頁把 YAML 轉成 JSON，或把 JSON 轉成 YAML。普通的物件和列表就夠用。",
+      "s1t": "開啟 YAML JSON",
+      "s1b": "已放一段範例並轉成 JSON。左側可選方向。",
+      "s2t": "貼上 YAML 或 JSON",
+      "s2b": "需要時改成 JSON → YAML。巢狀的物件和列表按縮排書寫。",
+      "s3t": "複製結果",
+      "s3b": "輸出看起來對了就複製。關掉分頁即丟棄兩邊內容。"
     },
     "case": {
-      "lead": "Change letter case in this tab: upper, lower, title, camel, snake, and more.",
-      "s1t": "Open Case converter",
-      "s1b": "A sample sentence is already converted to Title Case.",
-      "s2t": "Paste your text",
-      "s2b": "Pick a case from the menu. camelCase and snake_case split on spaces and punctuation.",
-      "s3t": "Copy the result",
-      "s3b": "Copy the converted text. Nothing is uploaded."
+      "lead": "在本頁轉換大小寫：全大寫、全小寫、標題、camel、snake 等。",
+      "s1t": "開啟大小寫轉換",
+      "s1b": "已有一句範例，並轉成 Title Case。",
+      "s2t": "貼上你的文字",
+      "s2b": "在選單裡選一種格式。camelCase 和 snake_case 會按空白和標點拆詞。",
+      "s3t": "複製結果",
+      "s3b": "複製轉換後的文字。檔案不會上傳。"
     },
     "jwt": {
-      "lead": "Read a JWT header and payload in this tab. The signature is never verified.",
-      "s1t": "Open JWT decoder",
-      "s1b": "The token field is empty. Header and payload panes wait on the right.",
-      "s2t": "Paste the token",
-      "s2b": "A JWT has two or three parts separated by dots. Header and payload appear as JSON.",
-      "s3t": "Read the claims",
-      "s3b": "Copy the payload if you need it. This is not proof the token is authentic."
+      "lead": "在本頁查看 JWT 的 header 和 payload。不會校驗簽章。",
+      "s1t": "開啟 JWT 解碼",
+      "s1b": "權杖欄是空的。右側等待 header 和 payload。",
+      "s2t": "貼上權杖",
+      "s2b": "JWT 由點號分成兩段或三段。header 和 payload 會顯示為 JSON。",
+      "s3t": "閱讀宣告",
+      "s3b": "需要時可複製 payload。這不能證明權杖真實有效。"
     }
   }
 }
