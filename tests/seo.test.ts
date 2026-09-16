@@ -56,13 +56,14 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "html")).toMatch(/HTML encode/i);
     expect(pageTitle("en", "cron")).toMatch(/Cron/i);
     expect(pageTitle("en", "slug")).toMatch(/Slug/i);
+    expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug",
+      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

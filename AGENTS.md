@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+1. Image and PDF tools (watermark, collage, portrait-sim, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -21,6 +21,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/clip/` — cloud clipboard
 - `src/client/watermark/` — image watermark
 - `src/client/collage/` — photo collage
+- `src/client/portrait-sim/` — portrait camera simulator
 - `src/client/convert/` — image formats (PNG / JPG / WebP / AVIF / GIF / BMP / ICO)
 - `src/client/image-pdf/` — images to PDF
 - `src/client/audio/` — audio to WAV

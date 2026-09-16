@@ -179,8 +179,8 @@ function cutout(person: PersonId, pose: PoseId, distanceM: number): CutoutSpec {
     src: `/covers/portrait-sim/people/${person}/${pose}.webp`,
     widthPx: 900,
     heightPx: 1400,
-    feetY: 0.96,
-    eye: { x: 0.5, y: 0.16 },
+    feetY: 0.9,
+    eye: { x: 0.5, y: 0.13 },
     subjectDistanceM: distanceM,
   };
 }

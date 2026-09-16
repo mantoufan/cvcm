@@ -21,7 +21,7 @@ export const SHUTTERS = [
   1 / 4000, 1 / 2000, 1 / 1000, 1 / 500, 1 / 250, 1 / 125, 1 / 60, 1 / 15, 1 / 30, 1 / 8, 1 / 4, 1 / 2, 1,
 ] as const;
 
-const SHUTTER_TABLE = [1 / 4000, 1 / 2000, 1 / 1000, 1 / 500, 1 / 250, 1 / 125, 1 / 60, 1 / 30, 1 / 15, 1 / 8, 1 / 4, 1 / 2, 1];
+export const SHUTTER_TABLE = [1 / 4000, 1 / 2000, 1 / 1000, 1 / 500, 1 / 250, 1 / 125, 1 / 60, 1 / 30, 1 / 15, 1 / 8, 1 / 4, 1 / 2, 1];
 
 export type LensOptics = {
   maxAperture: number;
@@ -179,6 +179,17 @@ export function nearestIso(iso: number): number {
 
 export function nearestShutter(t: number): number {
   return nearest(t, SHUTTER_TABLE);
+}
+
+export function formatShutter(t: number): string {
+  if (t >= 0.95) return `${Math.round(t)}s`;
+  if (t >= 0.3) return `${t.toFixed(1).replace(/0+$/, "").replace(/\.$/, "")}s`;
+  return `1/${Math.max(1, Math.round(1 / t))}`;
+}
+
+export function formatAperture(n: number): string {
+  const rounded = Math.round(n * 10) / 10;
+  return Number.isInteger(rounded) ? `f/${rounded}` : `f/${rounded.toFixed(1)}`;
 }
 
 export type ExposureSolve = { aperture: number; iso: number; shutterSec: number };

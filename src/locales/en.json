@@ -119,7 +119,9 @@
     "titleCron": "Cron expression explainer — crontab — cv.cm",
     "descCron": "Read a 5-field cron expression in the browser. Minutes, hours, days, months. Nothing is uploaded.",
     "titleSlug": "Slug generator — URL slug — cv.cm",
-    "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded."
+    "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded.",
+    "titlePortraitSim": "Portrait camera simulator — learn exposure in the browser — cv.cm",
+    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on illustrated adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -378,6 +380,10 @@
     "slug": {
       "name": "Slug generator",
       "blurb": "Title to URL slug. Nothing is uploaded."
+    },
+    "portrait-sim": {
+      "name": "Portrait camera sim",
+      "blurb": "Learn aperture, shutter and lenses on illustrated adults. Export in this tab."
     }
   },
   "watermark": {
@@ -1200,6 +1206,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "Does this use my camera or upload photos?",
+      "a1": "No. Illustrated plates stay on cv.cm. Nothing is uploaded. Snap downloads stay on your device. Your camera is not used.",
+      "q2": "Why doesn’t UV change the picture?",
+      "a2": "Digital sensors already block UV. A UV filter is nearly clear. It is not a UV lens. ND, polarizer and diffusion are the filters you can see.",
+      "q3": "Can I try a phone lens?",
+      "a3": "Yes. Choose Phone 26 mm-e. Aperture stays at f/1.8 because a phone iris is fixed.",
+      "q4": "Is this studio lighting or a moving key light?",
+      "a4": "No. v1 only changes exposure and white balance on a pre-lit plate. Studio relight is a later step.",
+      "q5": "Are the people real, or children?",
+      "a5": "They are illustrated adults only. There are no minors and no uploads of real faces."
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "Portrait camera sim",
+    "back": "All tools",
+    "privacyNote": "Plates are part of cv.cm. Nothing is uploaded. Snap downloads stay on your device.",
+    "lede": "Swap person, pose and scene. Set aperture, shutter and ISO like a camera. A photography course may return later; this is the practice bench.",
+    "people": "Person",
+    "poses": "Pose",
+    "scenes": "Scene",
+    "camera": "Camera",
+    "mode": "Mode",
+    "iso": "ISO",
+    "aperture": "Aperture",
+    "shutter": "Shutter",
+    "focus": "Focus",
+    "distance": "Distance",
+    "tripod": "Tripod",
+    "frame": "Frame",
+    "filterGroupProtection": "Protection",
+    "filterGroupExposure": "Exposure",
+    "filterGroupLook": "Look",
+    "exposureLook": "Scene exposure / white balance",
+    "lightNote": "This is exposure and white balance on a pre-lit plate, not a studio key light.",
+    "snapPng": "Snap PNG",
+    "snapJpeg": "Snap photo",
+    "loading": "Loading plates…",
+    "errorPlate": "Could not load this scene. Retry.",
+    "retry": "Retry",
+    "limitedBlur": "This browser skips blur; crop and exposure still work.",
+    "hintUnderexposed": "The meter is dark. Open the aperture, slow the shutter, or raise ISO.",
+    "hintOverexposed": "The meter is bright. Stop down, speed up, or lower ISO.",
+    "hintHandshake": "Shutter is slow for this lens. Use a tripod or a faster speed.",
+    "hintWideClose": "On a real camera, a wide lens this close also changes facial proportions; this sim keeps the drawing’s proportions.",
+    "hintMissFocus": "Focus is off the sitter. Match focus to distance.",
+    "hintUvNoop": "A UV filter is almost clear on a digital sensor. It is not a UV lens.",
+    "hintNdTripod": "ND darkened the shutter. A tripod helps if the speed is slow.",
+    "hintLightMismatch": "This exposure look does not match the scene’s default light.",
+    "ready": "Ready.",
+    "working": "Snapping…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "Stand 3/4",
+      "sit45": "Sit 45°",
+      "prop": "With a prop",
+      "away": "Looking away"
+    },
+    "scene": {
+      "window": "Window",
+      "shade": "Open shade",
+      "cafe": "Cafe",
+      "indoor": "Indoor"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26 mm-e"
+    },
+    "lens": "Lens",
+    "filters": {
+      "none": "None",
+      "uv": "UV",
+      "nd3": "ND 3-stop",
+      "nd6": "ND 6-stop",
+      "cpl": "Polarizer",
+      "soft": "Soft",
+      "warm": "Warm",
+      "cool": "Cool"
+    },
+    "filter": "Filter",
+    "lights": {
+      "sunny": "Sunny",
+      "shade": "Open shade",
+      "window": "Window",
+      "overcast": "Overcast",
+      "golden": "Golden hour"
+    }
   }
 }

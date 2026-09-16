@@ -6,7 +6,7 @@ export const STATIC_FILE =
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
-  { id: "image", tools: ["watermark", "collage", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
+  { id: "image", tools: ["watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json"] },
   { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug"] },
 ] as const;
@@ -19,6 +19,7 @@ export const TOOLS = [
   "barcode",
   "watermark",
   "collage",
+  "portrait-sim",
   "resize",
   "crop",
   "rotate",

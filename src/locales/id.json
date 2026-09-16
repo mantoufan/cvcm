@@ -119,7 +119,9 @@
     "titleCron": "Penjelas cron — crontab — cv.cm",
     "descCron": "Baca ekspresi cron 5 kolom di browser. Tidak diunggah.",
     "titleSlug": "Pembuat slug — URL slug — cv.cm",
-    "descSlug": "Ubah judul jadi slug URL. Huruf kecil, tanda hubung. Tidak diunggah."
+    "descSlug": "Ubah judul jadi slug URL. Huruf kecil, tanda hubung. Tidak diunggah.",
+    "titlePortraitSim": "Simulator kamera potret — belajar eksposur di browser — cv.cm",
+    "descPortraitSim": "Latihan diafragma, rana, ISO, lensa, dan filter pada model dewasa bergambar. Simpan PNG/JPEG di tab ini. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "Pembuat slug",
       "blurb": "Judul jadi slug URL. Tanpa unggah."
+    },
+    "portrait-sim": {
+      "name": "Simulasi kamera potret",
+      "blurb": "Latihan diafragma dan lensa pada model dewasa. Ekspor di tab ini."
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "Apakah ini memakai kamera saya atau mengunggah foto?",
+      "a1": "Tidak. Plat ada di cv.cm dan tidak diunggah. Unduhan tetap di perangkat Anda. Kamera tidak dipakai.",
+      "q2": "Mengapa UV tidak mengubah gambar?",
+      "a2": "Sensor digital sudah memblokir UV. Filter UV hampir bening. Ini bukan lensa UV. ND, polarizer, dan difusi yang terlihat.",
+      "q3": "Bisa coba lensa ponsel?",
+      "a3": "Ya. Pilih Phone 26 mm-e. Diafragma terkunci di f/1.8.",
+      "q4": "Apakah ini pencahayaan studio?",
+      "a4": "Tidak. v1 hanya mengubah eksposur dan white balance. Relight studio belakangan.",
+      "q5": "Apakah orangnya nyata atau anak-anak?",
+      "a5": "Hanya dewasa bergambar. Tidak ada anak, tidak ada unggahan wajah nyata."
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "Simulasi kamera potret",
+    "back": "Semua alat",
+    "privacyNote": "Plat adalah bagian cv.cm. Tidak diunggah. Unduhan tetap di perangkat Anda.",
+    "lede": "Ganti orang, pose, dan latar. Atur diafragma, rana, dan ISO seperti kamera.",
+    "people": "Orang",
+    "poses": "Pose",
+    "scenes": "Latar",
+    "camera": "Kamera",
+    "mode": "Mode",
+    "iso": "ISO",
+    "aperture": "Diafragma",
+    "shutter": "Rana",
+    "focus": "Fokus",
+    "distance": "Jarak",
+    "tripod": "Tripod",
+    "frame": "Bingkai",
+    "filterGroupProtection": "Pelindung",
+    "filterGroupExposure": "Eksposur",
+    "filterGroupLook": "Tampilan",
+    "exposureLook": "Eksposur adegan / white balance",
+    "lightNote": "Ini eksposur dan white balance pada plat yang sudah disinari, bukan lampu kunci studio.",
+    "snapPng": "Simpan PNG",
+    "snapJpeg": "Ambil foto",
+    "loading": "Memuat plat…",
+    "errorPlate": "Adegan gagal dimuat. Coba lagi.",
+    "retry": "Coba lagi",
+    "limitedBlur": "Peramban ini melewati buram; potong dan eksposur tetap jalan.",
+    "hintUnderexposed": "Terlalu gelap. Buka diafragma, perlambat rana, atau naikkan ISO.",
+    "hintOverexposed": "Terlalu terang. Tutup, percepat, atau turunkan ISO.",
+    "hintHandshake": "Rana lambat untuk lensa ini. Pakai tripod atau kecepatan lebih tinggi.",
+    "hintWideClose": "Kamera nyata sudut lebar sedekat ini juga mengubah proporsi wajah; sim ini menjaga proporsi gambar.",
+    "hintMissFocus": "Fokus tidak pada model. Sesuaikan fokus dengan jarak.",
+    "hintUvNoop": "Filter UV hampir bening di sensor digital. Bukan lensa UV.",
+    "hintNdTripod": "ND memperlambat rana. Tripod membantu jika kecepatannya lambat.",
+    "hintLightMismatch": "Tampilan eksposur ini tidak cocok dengan cahaya bawaan adegan.",
+    "ready": "Siap.",
+    "working": "Mengambil…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "Berdiri 3/4",
+      "sit45": "Duduk 45°",
+      "prop": "Dengan properti",
+      "away": "Menoleh"
+    },
+    "scene": {
+      "window": "Jendela",
+      "shade": "Teduh",
+      "cafe": "Kafe",
+      "indoor": "Dalam ruangan"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26mm-e"
+    },
+    "lens": "Lensa",
+    "filters": {
+      "none": "Tidak ada",
+      "uv": "UV",
+      "nd3": "ND 3 stop",
+      "nd6": "ND 6 stop",
+      "cpl": "Polarizer",
+      "soft": "Lembut",
+      "warm": "Hangat",
+      "cool": "Dingin"
+    },
+    "filter": "Filter",
+    "lights": {
+      "sunny": "Cerah",
+      "shade": "Teduh",
+      "window": "Jendela",
+      "overcast": "Mendung",
+      "golden": "Golden hour"
+    }
   }
 }

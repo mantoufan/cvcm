@@ -119,7 +119,9 @@
     "titleCron": "Giải thích cron — crontab — cv.cm",
     "descCron": "Đọc biểu thức cron 5 trường trong trình duyệt. Không tải lên.",
     "titleSlug": "Tạo slug — URL slug — cv.cm",
-    "descSlug": "Đổi tiêu đề thành slug URL. Chữ thường, gạch nối. Không tải lên."
+    "descSlug": "Đổi tiêu đề thành slug URL. Chữ thường, gạch nối. Không tải lên.",
+    "titlePortraitSim": "Mô phỏng máy ảnh chân dung — học khẩu độ trong trình duyệt — cv.cm",
+    "descPortraitSim": "Luyện khẩu độ, tốc độ, ISO, ống kính và kính lọc trên người mẫu minh họa người lớn. Tải PNG/JPEG trong tab này. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "Tạo slug",
       "blurb": "Tiêu đề thành slug URL. Không tải lên."
+    },
+    "portrait-sim": {
+      "name": "Mô phỏng máy ảnh",
+      "blurb": "Luyện khẩu độ và ống kính trên người lớn minh họa. Xuất trong tab này."
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "Có dùng camera của tôi hoặc tải ảnh lên không?",
+      "a1": "Không. Bản in nằm trên cv.cm, không tải lên. Ảnh xuất ra ở máy bạn. Không mở camera.",
+      "q2": "Vì sao UV không đổi hình?",
+      "a2": "Cảm biến số đã chặn UV. Kính UV gần như trong suốt. Đây không phải ống kính UV. ND, phân cực và khuếch tán mới thấy rõ.",
+      "q3": "Thử được ống kính điện thoại không?",
+      "a3": "Có. Chọn Phone 26 mm-e. Khẩu độ khóa f/1.8 vì điện thoại thường không đổi khẩu.",
+      "q4": "Đây có phải đèn studio không?",
+      "a4": "Không. Bản 1 chỉ đổi phơi sáng và cân bằng trắng. Đèn key chạy trên mặt là bước sau.",
+      "q5": "Có phải người thật hay trẻ em không?",
+      "a5": "Chỉ người lớn minh họa. Không có trẻ vị thành niên, không tải khuôn mặt thật."
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "Mô phỏng máy ảnh chân dung",
+    "back": "Mọi công cụ",
+    "privacyNote": "Bản in thuộc cv.cm. Không tải lên. Ảnh xuất ra ở máy bạn.",
+    "lede": "Đổi người, dáng và cảnh. Chỉnh khẩu độ, tốc độ và ISO như máy ảnh.",
+    "people": "Người",
+    "poses": "Dáng",
+    "scenes": "Cảnh",
+    "camera": "Máy ảnh",
+    "mode": "Chế độ",
+    "iso": "ISO",
+    "aperture": "Khẩu độ",
+    "shutter": "Tốc độ",
+    "focus": "Lấy nét",
+    "distance": "Khoảng cách",
+    "tripod": "Chân máy",
+    "frame": "Khung",
+    "filterGroupProtection": "Bảo vệ",
+    "filterGroupExposure": "Phơi sáng",
+    "filterGroupLook": "Vẻ",
+    "exposureLook": "Phơi sáng cảnh / cân bằng trắng",
+    "lightNote": "Đây là phơi sáng và cân bằng trắng trên bản đã có ánh sáng, không phải đèn key studio.",
+    "snapPng": "Xuất PNG",
+    "snapJpeg": "Chụp",
+    "loading": "Đang tải bản in…",
+    "errorPlate": "Không tải được cảnh. Thử lại.",
+    "retry": "Thử lại",
+    "limitedBlur": "Trình duyệt này bỏ làm mờ; cắt và phơi sáng vẫn dùng được.",
+    "hintUnderexposed": "Tối. Mở khẩu, chậm cửa trập hoặc tăng ISO.",
+    "hintOverexposed": "Sáng. Khép khẩu, nhanh hơn hoặc giảm ISO.",
+    "hintHandshake": "Tốc độ chậm với tiêu cự này. Dùng chân máy hoặc nhanh hơn.",
+    "hintWideClose": "Máy thật góc rộng gần thế này còn đổi tỉ lệ mặt; mô phỏng giữ tỉ lệ bản vẽ.",
+    "hintMissFocus": "Nét không ở người. Khớp lấy nét với khoảng cách.",
+    "hintUvNoop": "Kính UV gần như trong suốt trên máy số. Không phải ống kính UV.",
+    "hintNdTripod": "ND làm chậm cửa trập. Chân máy giúp khi tốc độ chậm.",
+    "hintLightMismatch": "Kiểu phơi sáng này khác ánh sáng mặc định của cảnh.",
+    "ready": "Sẵn sàng.",
+    "working": "Đang chụp…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "Đứng 3/4",
+      "sit45": "Ngồi 45°",
+      "prop": "Đạo cụ",
+      "away": "Nhìn đi"
+    },
+    "scene": {
+      "window": "Cửa sổ",
+      "shade": "Bóng râm",
+      "cafe": "Quán",
+      "indoor": "Trong nhà"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26mm-e"
+    },
+    "lens": "Ống kính",
+    "filters": {
+      "none": "Không",
+      "uv": "UV",
+      "nd3": "ND 3 stop",
+      "nd6": "ND 6 stop",
+      "cpl": "Phân cực",
+      "soft": "Mềm",
+      "warm": "Ấm",
+      "cool": "Lạnh"
+    },
+    "filter": "Kính lọc",
+    "lights": {
+      "sunny": "Nắng",
+      "shade": "Bóng râm",
+      "window": "Cửa sổ",
+      "overcast": "U ám",
+      "golden": "Giờ vàng"
+    }
   }
 }

@@ -24,6 +24,7 @@ const STEPS = {
   barcode: 3,
   watermark: 4,
   collage: 4,
+  "portrait-sim": 4,
   resize: 3,
   crop: 3,
   rotate: 3,
@@ -879,6 +880,42 @@ async function runTool(send, id, fx) {
     await sleep(200);
     await snap(2);
     await snap(3);
+    return;
+  }
+
+  if (id === "portrait-sim") {
+    await waitFor(send, `!!document.querySelector("#ps-preview")`);
+    await evalValue(send, `(() => {
+      localStorage.removeItem("cvcm.portrait-sim");
+      location.replace(location.pathname);
+      return true;
+    })()`);
+    await waitFor(
+      send,
+      `!!document.querySelector("#ps-preview") && /Ready|就绪|就緒/.test(document.querySelector(".status")?.textContent||"")`,
+      20000,
+    );
+    await sleep(400);
+    await snap(1);
+    await evalValue(send, `(() => {
+      document.querySelector('[data-person="ken"]')?.click();
+      document.querySelector('[data-scene="cafe"]')?.click();
+      return true;
+    })()`);
+    await sleep(800);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const lens = document.querySelector("#ps-lens");
+      if (lens) { lens.value = "24"; lens.dispatchEvent(new Event("change", { bubbles: true })); }
+      const dist = document.querySelector("#ps-distance");
+      if (dist) { dist.value = "1.4"; dist.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(800);
+    await snap(3);
+    await clickSel(send, "#ps-snap");
+    await sleep(600);
+    await snap(4);
     return;
   }
 

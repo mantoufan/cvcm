@@ -6,6 +6,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   barcode: "/covers/barcode-sweet.jpg?v=2",
   watermark: "/covers/watermark-sweet.jpg?v=1",
   collage: "/covers/collage-sweet.jpg?v=1",
+  "portrait-sim": "/covers/portrait-sim-sweet.jpg?v=1",
   resize: "/covers/resize-sweet.jpg?v=1",
   crop: "/covers/crop-sweet.jpg?v=1",
   rotate: "/covers/rotate-sweet.jpg?v=1",

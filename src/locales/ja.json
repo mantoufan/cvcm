@@ -119,7 +119,9 @@
     "titleCron": "Cron 式の説明 — crontab — cv.cm",
     "descCron": "ブラウザで 5 フィールドの cron を読む。アップロードなし。",
     "titleSlug": "スラッグ生成 — URL slug — cv.cm",
-    "descSlug": "ブラウザでタイトルを URL スラッグに。小文字・ハイフン。アップロードなし。"
+    "descSlug": "ブラウザでタイトルを URL スラッグに。小文字・ハイフン。アップロードなし。",
+    "titlePortraitSim": "ポートレートカメラシミュレーター — ブラウザで露出を学ぶ — cv.cm",
+    "descPortraitSim": "イラストの大人モデルで絞り・シャッター・ISO・レンズ・フィルターを練習。このタブで PNG / JPEG を保存。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "スラッグ生成",
       "blurb": "タイトルを URL スラッグに。アップロードなし。"
+    },
+    "portrait-sim": {
+      "name": "ポートレートカメラ",
+      "blurb": "イラストの大人モデルで絞りとレンズを練習。このタブで書き出し。"
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "カメラや写真のアップロードは使いますか？",
+      "a1": "いいえ。プレートは cv.cm 上にあり、アップロードしません。書き出した写真は端末に残ります。カメラは使いません。",
+      "q2": "UV で絵が変わらないのはなぜ？",
+      "a2": "デジタルセンサーはもともと UV を遮ります。UV フィルターはほぼ透明です。UV レンズではありません。ND・PL・拡散が見える効果です。",
+      "q3": "スマホのレンズも試せますか？",
+      "a3": "はい。「Phone 26mm-e」を選びます。絞りは f/1.8 固定です。",
+      "q4": "スタジオ照明ですか？",
+      "a4": "いいえ。v1 は露出とホワイトバランスだけです。キーライトが顔を横切る表現は後の段階です。",
+      "q5": "実在の人や子どもですか？",
+      "a5": "イラストの大人だけです。未成年は出ません。実写の顔もアップロードしません。"
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "ポートレートカメラ",
+    "back": "すべてのツール",
+    "privacyNote": "プレートは cv.cm の一部です。アップロードしません。書き出しは端末に残ります。",
+    "lede": "人物・ポーズ・背景を切り替え、絞り・シャッター・ISO をカメラのように設定します。",
+    "people": "人物",
+    "poses": "ポーズ",
+    "scenes": "背景",
+    "camera": "カメラ",
+    "mode": "モード",
+    "iso": "ISO",
+    "aperture": "絞り",
+    "shutter": "シャッター",
+    "focus": "フォーカス",
+    "distance": "距離",
+    "tripod": "三脚",
+    "frame": "フレーム",
+    "filterGroupProtection": "保護",
+    "filterGroupExposure": "露出",
+    "filterGroupLook": "ルック",
+    "exposureLook": "シーン露出 / ホワイトバランス",
+    "lightNote": "プリライト済みプレートの露出とホワイトバランスであり、スタジオのキーライトではありません。",
+    "snapPng": "PNG を保存",
+    "snapJpeg": "撮影",
+    "loading": "プレートを読み込み中…",
+    "errorPlate": "読み込めませんでした。再試行してください。",
+    "retry": "再試行",
+    "limitedBlur": "このブラウザはぼかしを省略します。トリミングと露出は使えます。",
+    "hintUnderexposed": "露出が足りません。絞りを開く、遅くする、ISO を上げる。",
+    "hintOverexposed": "露出過多です。絞る、速くする、ISO を下げる。",
+    "hintHandshake": "この焦点距離ではシャッターが遅すぎます。三脚か高速を。",
+    "hintWideClose": "実機の広角では顔の比率も変わります。このシミュレーターは絵の比率を保ちます。",
+    "hintMissFocus": "ピントが人物から外れています。距離に合わせてください。",
+    "hintUvNoop": "デジタルでは UV フィルターはほぼ透明です。UV レンズではありません。",
+    "hintNdTripod": "ND でシャッターが遅くなります。三脚が助けになります。",
+    "hintLightMismatch": "この露出ルックはシーンの初期設定と違います。",
+    "ready": "準備完了。",
+    "working": "撮影中…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "立ち 3/4",
+      "sit45": "座り 45°",
+      "prop": "小物",
+      "away": "視線を外す"
+    },
+    "scene": {
+      "window": "窓辺",
+      "shade": "日陰",
+      "cafe": "カフェ",
+      "indoor": "室内"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26mm-e"
+    },
+    "lens": "レンズ",
+    "filters": {
+      "none": "なし",
+      "uv": "UV",
+      "nd3": "ND 3段",
+      "nd6": "ND 6段",
+      "cpl": "PL",
+      "soft": "ソフト",
+      "warm": "暖色",
+      "cool": "寒色"
+    },
+    "filter": "フィルター",
+    "lights": {
+      "sunny": "晴天",
+      "shade": "日陰",
+      "window": "窓光",
+      "overcast": "曇天",
+      "golden": "ゴールデンアワー"
+    }
   }
 }

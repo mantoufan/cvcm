@@ -119,7 +119,9 @@
     "titleCron": "Cron 설명 — crontab — cv.cm",
     "descCron": "브라우저에서 5필드 cron을 읽습니다. 업로드 없음.",
     "titleSlug": "슬러그 생성 — URL slug — cv.cm",
-    "descSlug": "브라우저에서 제목을 URL 슬러그로. 소문자, 하이픈. 업로드 없음."
+    "descSlug": "브라우저에서 제목을 URL 슬러그로. 소문자, 하이픈. 업로드 없음.",
+    "titlePortraitSim": "인물 카메라 시뮬레이터 — 브라우저에서 노출 배우기 — cv.cm",
+    "descPortraitSim": "일러스트 성인 모델로 조리개, 셔터, ISO, 렌즈, 필터를 연습하세요. 이 탭에서 PNG/JPEG로 저장. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "슬러그 생성",
       "blurb": "제목을 URL 슬러그로. 업로드 없음."
+    },
+    "portrait-sim": {
+      "name": "인물 카메라 시뮬",
+      "blurb": "일러스트 성인 모델로 조리개와 렌즈를 연습. 이 탭에서 저장."
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "내 카메라나 사진 업로드를 쓰나요?",
+      "a1": "아니요. 플레이트는 cv.cm에 있고 업로드하지 않습니다. 저장한 사진은 기기에 남습니다. 카메라는 쓰지 않습니다.",
+      "q2": "UV를 켜도 화면이 안 바뀌는 이유는?",
+      "a2": "디지털 센서는 이미 자외선을 막습니다. UV 필터는 거의 투명합니다. UV 렌즈가 아닙니다. ND, 편광, 디퓨전이 보이는 효과입니다.",
+      "q3": "휴대폰 렌즈도 해볼 수 있나요?",
+      "a3": "네. Phone 26mm-e를 고르세요. 조리개는 f/1.8로 고정됩니다.",
+      "q4": "스튜디오 조명인가요?",
+      "a4": "아니요. 1단계는 노출과 화이트밸런스만 바꿉니다. 키 라이트가 얼굴을 가로지르는 연출은 나중입니다.",
+      "q5": "실제 사람이나 어린이인가요?",
+      "a5": "일러스트 성인만 나옵니다. 미성년자는 없고 실제 얼굴도 올리지 않습니다."
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "인물 카메라 시뮬",
+    "back": "모든 도구",
+    "privacyNote": "플레이트는 cv.cm 자산입니다. 업로드하지 않습니다. 저장본은 기기에 남습니다.",
+    "lede": "인물, 포즈, 장면을 바꾸고 조리개·셔터·ISO를 카메라처럼 맞춥니다.",
+    "people": "인물",
+    "poses": "포즈",
+    "scenes": "장면",
+    "camera": "카메라",
+    "mode": "모드",
+    "iso": "ISO",
+    "aperture": "조리개",
+    "shutter": "셔터",
+    "focus": "초점",
+    "distance": "거리",
+    "tripod": "삼각대",
+    "frame": "프레임",
+    "filterGroupProtection": "보호",
+    "filterGroupExposure": "노출",
+    "filterGroupLook": "룩",
+    "exposureLook": "장면 노출 / 화이트밸런스",
+    "lightNote": "미리 조명된 플레이트의 노출과 화이트밸런스이며 스튜디오 키 라이트가 아닙니다.",
+    "snapPng": "PNG 저장",
+    "snapJpeg": "촬영",
+    "loading": "플레이트 불러오는 중…",
+    "errorPlate": "장면을 불러오지 못했습니다. 다시 시도하세요.",
+    "retry": "다시",
+    "limitedBlur": "이 브라우저는 블러를 건너뜁니다. 크롭과 노출은 됩니다.",
+    "hintUnderexposed": "어둡습니다. 조리개를 열거나 셔터를 느리게, ISO를 올리세요.",
+    "hintOverexposed": "밝습니다. 조여거나 빠르게, ISO를 낮추세요.",
+    "hintHandshake": "이 초점거리에는 셔터가 느립니다. 삼각대나 더 빠른 속도.",
+    "hintWideClose": "실제 광각은 이 거리에서 이목구비 비율도 바꿉니다. 시뮬은 그림 비율을 유지합니다.",
+    "hintMissFocus": "초점이 모델에서 벗어났습니다. 거리에 맞추세요.",
+    "hintUvNoop": "디지털에서 UV 필터는 거의 투명합니다. UV 렌즈가 아닙니다.",
+    "hintNdTripod": "ND 때문에 셔터가 느려집니다. 삼각대가 도움이 됩니다.",
+    "hintLightMismatch": "이 노출 룩은 장면 기본 빛과 다릅니다.",
+    "ready": "준비됨.",
+    "working": "촬영 중…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "서기 3/4",
+      "sit45": "앉기 45°",
+      "prop": "소품",
+      "away": "시선 돌림"
+    },
+    "scene": {
+      "window": "창가",
+      "shade": "그늘",
+      "cafe": "카페",
+      "indoor": "실내"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26mm-e"
+    },
+    "lens": "렌즈",
+    "filters": {
+      "none": "없음",
+      "uv": "UV",
+      "nd3": "ND 3스톱",
+      "nd6": "ND 6스톱",
+      "cpl": "편광",
+      "soft": "소프트",
+      "warm": "웜",
+      "cool": "쿨"
+    },
+    "filter": "필터",
+    "lights": {
+      "sunny": "맑음",
+      "shade": "그늘",
+      "window": "창빛",
+      "overcast": "흐림",
+      "golden": "골든아워"
+    }
   }
 }

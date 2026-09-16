@@ -471,6 +471,7 @@ describe("new routes", () => {
     expect(parseAppPath("/en/html/")).toEqual({ kind: "app", locale: "en", tool: "html" });
     expect(parseAppPath("/en/cron/")).toEqual({ kind: "app", locale: "en", tool: "cron" });
     expect(parseAppPath("/en/slug/")).toEqual({ kind: "app", locale: "en", tool: "slug" });
+    expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
@@ -492,6 +493,7 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "html")).toBe("/zh-cn/html/");
     expect(appHref("zh-CN", "cron")).toBe("/zh-cn/cron/");
     expect(appHref("zh-CN", "slug")).toBe("/zh-cn/slug/");
+    expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

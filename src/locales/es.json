@@ -119,7 +119,9 @@
     "titleCron": "Explicador de cron — crontab — cv.cm",
     "descCron": "Lee una expresión cron de 5 campos en el navegador. Nada se sube.",
     "titleSlug": "Generador de slug — URL slug — cv.cm",
-    "descSlug": "Convierte un título en slug de URL. Minúsculas y guiones. Nada se sube."
+    "descSlug": "Convierte un título en slug de URL. Minúsculas y guiones. Nada se sube.",
+    "titlePortraitSim": "Simulador de cámara de retrato — aprende exposición en el navegador — cv.cm",
+    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos ilustrados. Descarga PNG o JPEG en esta pestaña. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "Generador de slug",
       "blurb": "Título a slug de URL. Nada se sube."
+    },
+    "portrait-sim": {
+      "name": "Simulador de retrato",
+      "blurb": "Practica diafragma y objetivos con adultos ilustrados. Exporta aquí."
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "¿Usa mi cámara o sube fotos?",
+      "a1": "No. Las placas están en cv.cm y no se suben. Las descargas se quedan en tu dispositivo. No se usa la cámara.",
+      "q2": "¿Por qué el UV no cambia la imagen?",
+      "a2": "El sensor digital ya bloquea el UV. Un filtro UV es casi transparente. No es un objetivo UV. ND, polarizador y difusión sí se ven.",
+      "q3": "¿Puedo probar un objetivo de móvil?",
+      "a3": "Sí. Elige Phone 26 mm-e. El diafragma queda en f/1.8 porque el iris del móvil es fijo.",
+      "q4": "¿Es iluminación de estudio?",
+      "a4": "No. La v1 solo cambia exposición y balance de blancos. El relight de estudio es un paso posterior.",
+      "q5": "¿Son personas reales o menores?",
+      "a5": "Solo adultos ilustrados. No hay menores ni se suben caras reales."
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "Simulador de retrato",
+    "back": "Todas las herramientas",
+    "privacyNote": "Las placas son de cv.cm. Nada se sube. Las descargas se quedan en tu dispositivo.",
+    "lede": "Cambia persona, pose y escena. Ajusta diafragma, obturador e ISO como en una cámara.",
+    "people": "Persona",
+    "poses": "Pose",
+    "scenes": "Escena",
+    "camera": "Cámara",
+    "mode": "Modo",
+    "iso": "ISO",
+    "aperture": "Diafragma",
+    "shutter": "Obturador",
+    "focus": "Enfoque",
+    "distance": "Distancia",
+    "tripod": "Trípode",
+    "frame": "Encuadre",
+    "filterGroupProtection": "Protección",
+    "filterGroupExposure": "Exposición",
+    "filterGroupLook": "Look",
+    "exposureLook": "Exposición de escena / balance de blancos",
+    "lightNote": "Es exposición y balance de blancos sobre una placa ya iluminada, no una luz clave de estudio.",
+    "snapPng": "Exportar PNG",
+    "snapJpeg": "Disparar",
+    "loading": "Cargando placas…",
+    "errorPlate": "No se pudo cargar la escena. Reintenta.",
+    "retry": "Reintentar",
+    "limitedBlur": "Este navegador omite el desenfoque; recorte y exposición siguen.",
+    "hintUnderexposed": "Está oscuro. Abre el diafragma, baja la velocidad o sube ISO.",
+    "hintOverexposed": "Está claro. Cierra, sube velocidad o baja ISO.",
+    "hintHandshake": "El obturador es lento para este objetivo. Usa trípode o más velocidad.",
+    "hintWideClose": "En una cámara real, un gran angular tan cerca también cambia las proporciones de la cara; esta simulación conserva el dibujo.",
+    "hintMissFocus": "El enfoque no está en la persona. Iguala el foco a la distancia.",
+    "hintUvNoop": "Un filtro UV es casi transparente en digital. No es un objetivo UV.",
+    "hintNdTripod": "El ND ralentiza el obturador. Un trípode ayuda si va lento.",
+    "hintLightMismatch": "Este look de exposición no coincide con la luz por defecto de la escena.",
+    "ready": "Listo.",
+    "working": "Disparando…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "De pie 3/4",
+      "sit45": "Sentada 45°",
+      "prop": "Con atrezo",
+      "away": "Mirando afuera"
+    },
+    "scene": {
+      "window": "Ventana",
+      "shade": "Sombra abierta",
+      "cafe": "Café",
+      "indoor": "Interior"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "Phone 26 mm-e"
+    },
+    "lens": "Objetivo",
+    "filters": {
+      "none": "Ninguno",
+      "uv": "UV",
+      "nd3": "ND 3 pasos",
+      "nd6": "ND 6 pasos",
+      "cpl": "Polarizador",
+      "soft": "Suave",
+      "warm": "Cálido",
+      "cool": "Frío"
+    },
+    "filter": "Filtro",
+    "lights": {
+      "sunny": "Sol",
+      "shade": "Sombra",
+      "window": "Ventana",
+      "overcast": "Nublado",
+      "golden": "Hora dorada"
+    }
   }
 }

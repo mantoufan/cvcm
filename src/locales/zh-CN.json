@@ -119,7 +119,9 @@
     "titleCron": "Cron 表达式 — crontab — cv.cm",
     "descCron": "在浏览器里读懂五段 cron。分、时、日、月、周。不上传。",
     "titleSlug": "Slug 生成 — URL 别名 — cv.cm",
-    "descSlug": "在浏览器里把标题变成 URL slug。小写、连字符、去掉标点。不上传。"
+    "descSlug": "在浏览器里把标题变成 URL slug。小写、连字符、去掉标点。不上传。",
+    "titlePortraitSim": "人像相机模拟器 — 在浏览器里学曝光 — cv.cm",
+    "descPortraitSim": "用插画成年模特练习光圈、快门、ISO、镜头和滤镜。在本页导出 PNG 或 JPEG，不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -350,6 +352,10 @@
     "slug": {
       "name": "Slug 生成",
       "blurb": "标题变 URL 别名。不上传。"
+    },
+    "portrait-sim": {
+      "name": "人像相机模拟",
+      "blurb": "用插画成年模特练习光圈、快门和镜头。本页导出。"
     }
   },
   "watermark": {
@@ -1172,6 +1178,18 @@
       "a4": "It is capped at 80 characters, without a trailing hyphen.",
       "q5": "Can I copy it?",
       "a5": "Yes. Copy puts the slug on the clipboard."
+    },
+    "portrait-sim": {
+      "q1": "会调用我的相机或上传照片吗？",
+      "a1": "不会。底板在 cv.cm 上，不上传。导出的照片留在你的设备。不会打开摄像头。",
+      "q2": "为什么 UV 看起来没变化？",
+      "a2": "数码传感器已经挡住紫外线，UV 镜几乎是透明的。它不是 UV 镜头。ND、偏振和柔光才会明显改变画面。",
+      "q3": "可以试手机镜头吗？",
+      "a3": "可以。选「手机 26mm-e」。光圈锁在 f/1.8，因为手机光圈通常不可调。",
+      "q4": "这是棚拍打光吗？",
+      "a4": "不是。第一版只改曝光和白平衡，灯光方向不会在脸上移动。棚拍打光是下一步。",
+      "q5": "这些人是真人吗？有儿童吗？",
+      "a5": "只有插画成年模特。没有未成年人，也不上传真实人脸。"
     }
   },
   "qr": {
@@ -1943,5 +1961,88 @@
     "placeholder": "Hello, cv.cm",
     "copy": "Copy slug",
     "copied": "Copied"
+  },
+  "portraitSim": {
+    "title": "人像相机模拟",
+    "back": "全部工具",
+    "privacyNote": "底板属于 cv.cm，不上传。导出的照片留在你的设备。",
+    "lede": "更换人物、姿势和场景。像相机一样调光圈、快门和 ISO。摄影课以后可能回来；这里是练习台。",
+    "people": "人物",
+    "poses": "姿势",
+    "scenes": "场景",
+    "camera": "相机",
+    "mode": "模式",
+    "iso": "ISO",
+    "aperture": "光圈",
+    "shutter": "快门",
+    "focus": "对焦",
+    "distance": "距离",
+    "tripod": "脚架",
+    "frame": "画幅",
+    "filterGroupProtection": "保护",
+    "filterGroupExposure": "曝光",
+    "filterGroupLook": "效果",
+    "exposureLook": "场景曝光 / 白平衡",
+    "lightNote": "这是预打光底板上的曝光和白平衡，不是棚拍主灯。",
+    "snapPng": "导出 PNG",
+    "snapJpeg": "拍照",
+    "loading": "正在载入底板…",
+    "errorPlate": "场景载入失败。请重试。",
+    "retry": "重试",
+    "limitedBlur": "此浏览器跳过模糊；裁切和曝光仍可用。",
+    "hintUnderexposed": "测光偏暗。开大光圈、放慢快门或提高 ISO。",
+    "hintOverexposed": "测光偏亮。缩小光圈、加快快门或降低 ISO。",
+    "hintHandshake": "这支镜头下快门偏慢。上脚架或提高速度。",
+    "hintWideClose": "真相机广角贴得这么近还会改变五官比例；本模拟保持插画比例。",
+    "hintMissFocus": "焦点不在人物上。把对焦对准距离。",
+    "hintUvNoop": "数码机上的 UV 镜几乎透明。它不是 UV 镜头。",
+    "hintNdTripod": "ND 让快门变慢。速度不够时请上脚架。",
+    "hintLightMismatch": "当前曝光风格与场景默认光线不一致。",
+    "ready": "就绪。",
+    "working": "正在拍照…",
+    "person": {
+      "mira": "Mira",
+      "ken": "Ken",
+      "lin": "Lin"
+    },
+    "pose": {
+      "stand34": "站立 3/4",
+      "sit45": "坐姿 45°",
+      "prop": "手持道具",
+      "away": "侧望"
+    },
+    "scene": {
+      "window": "窗边",
+      "shade": "树荫",
+      "cafe": "咖啡馆",
+      "indoor": "室内"
+    },
+    "lenses": {
+      "24": "24 mm",
+      "35": "35 mm",
+      "50": "50 mm",
+      "85": "85 mm",
+      "135": "135 mm",
+      "phone": "手机 26mm-e"
+    },
+    "lens": "镜头",
+    "filters": {
+      "none": "无",
+      "uv": "UV",
+      "nd3": "ND 3 档",
+      "nd6": "ND 6 档",
+      "cpl": "偏振",
+      "soft": "柔光",
+      "warm": "暖调",
+      "cool": "冷调"
+    },
+    "filter": "滤镜",
+    "lights": {
+      "sunny": "晴天",
+      "shade": "树荫",
+      "window": "窗光",
+      "overcast": "阴天",
+      "golden": "黄金时刻"
+    }
   }
 }

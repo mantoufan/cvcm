@@ -55,6 +55,7 @@ import {
   isPublishedTutorial,
   learnHref,
   parseAppPath,
+  withSearch,
   type ToolId,
   type TutorialId,
 } from "../shared/path";
@@ -77,6 +78,8 @@ let unmountPdfJpg = (): void => {};
 let unmountMergePdf = (): void => {};
 let unmountCompressPdf = (): void => {};
 let unmountSplitPdf = (): void => {};
+let unmountPortraitSim = (): void => {};
+let pageGen = 0;
 
 boot();
 window.addEventListener("popstate", () => render());
@@ -89,28 +92,32 @@ function boot(): void {
     setLocale(parsed.locale);
     applyTool(parsed.tool, parsed.clipId ?? null);
     const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId);
-    if (location.pathname !== canonical) history.replaceState(null, "", canonical);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
   } else if (parsed.kind === "learn") {
     setLocale(parsed.locale);
     applyLearn(parsed.tutorial);
     const canonical = learnHref(parsed.locale, parsed.tutorial);
-    if (location.pathname !== canonical) history.replaceState(null, "", canonical);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
     applyTool("clip", parsed.id);
-    history.replaceState(null, "", appHref(loc, "clip", parsed.id));
+    history.replaceState(null, "", withSearch(appHref(loc, "clip", parsed.id), location.search));
   } else if (parsed.kind === "bare-learn") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
     applyLearn(parsed.tutorial);
-    history.replaceState(null, "", learnHref(loc, parsed.tutorial));
+    history.replaceState(null, "", withSearch(learnHref(loc, parsed.tutorial), location.search));
   } else {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
     setLocale(loc);
     applyTool(nextTool, parsed.kind === "bare" ? parsed.clipId ?? null : null);
-    history.replaceState(null, "", appHref(loc, nextTool, clipId));
+    history.replaceState(null, "", withSearch(appHref(loc, nextTool, clipId), location.search));
   }
   render();
 }
@@ -213,13 +220,16 @@ function unmountTools(): void {
   unmountMergePdf();
   unmountCompressPdf();
   unmountSplitPdf();
+  unmountPortraitSim();
   unmountPdfJpg = (): void => {};
   unmountMergePdf = (): void => {};
   unmountCompressPdf = (): void => {};
   unmountSplitPdf = (): void => {};
+  unmountPortraitSim = (): void => {};
 }
 
 function render(): void {
+  pageGen += 1;
   unmountTools();
   const parsed = parseAppPath(location.pathname);
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" ? parsed.locale : locale();
@@ -230,7 +240,7 @@ function render(): void {
     setLocale(parsed.locale);
     const published = parsed.tutorial && isPublishedTutorial(parsed.tutorial);
     if (parsed.tutorial && !published) {
-      history.replaceState(null, "", learnHref(parsed.locale, null));
+      history.replaceState(null, "", withSearch(learnHref(parsed.locale, null), location.search));
     }
     applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "clip") {
@@ -289,6 +299,7 @@ function shell(loc: Locale): HTMLElement {
 }
 
 async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
+  const gen = pageGen;
   if (tool === "clip") await mountClip(main, clipId);
   else if (tool === "watermark") await mountWatermark(main);
   else if (tool === "collage") await mountCollage(main);
@@ -346,11 +357,18 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     await mod.mountCompressPdf(main);
   } else if (tool === "split-pdf") {
     const mod = await import("./split-pdf/ui");
+    if (gen !== pageGen) return;
     unmountSplitPdf = mod.unmountSplitPdf;
     await mod.mountSplitPdf(main);
+  } else if (tool === "portrait-sim") {
+    const mod = await import("./portrait-sim/ui");
+    if (gen !== pageGen) return;
+    unmountPortraitSim = mod.unmountPortraitSim;
+    await mod.mountPortraitSim(main);
   } else if (learnHub) mountLearnHub(main);
   else if (tutorial) mountLearn(main, tutorial);
   else mountHome(main, loc);
+  if (gen !== pageGen) return;
   if (tool && !(tool === "clip" && clipId)) {
     main.append(guideSection(tool), faqSection(loc, tool));
   }
@@ -457,8 +475,8 @@ function langSwitch(current: Locale): HTMLElement {
       const next = (e.target as HTMLSelectElement).value as Locale;
       setLocale(next);
       const href = learnHub || tutorial
-        ? learnHref(next, tutorial)
-        : appHref(next, tool, clipId);
+        ? withSearch(learnHref(next, tutorial), location.search)
+        : withSearch(appHref(next, tool, clipId), location.search);
       history.pushState(null, "", href);
       render();
     },
