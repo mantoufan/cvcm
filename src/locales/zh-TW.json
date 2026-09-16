@@ -89,7 +89,9 @@
     "titleAudioCutter": "音訊剪輯 — 裁剪 MP3 與 WAV — cv.cm",
     "descAudioCutter": "在瀏覽器裡裁剪音訊。設定起迄，下載 WAV。不上傳。",
     "titleTimestamp": "時間戳轉換 — Unix 時間轉日期 — cv.cm",
-    "descTimestamp": "在瀏覽器裡把 Unix 時間戳轉成日期。秒、毫秒、ISO 8601。不上傳。"
+    "descTimestamp": "在瀏覽器裡把 Unix 時間戳轉成日期。秒、毫秒、ISO 8601。不上傳。",
+    "titleRotate": "旋轉圖片 — 旋轉 JPG PNG — cv.cm",
+    "descRotate": "在瀏覽器裡旋轉或翻轉照片。90°、180°或任意角度。下載 JPG、PNG 或 WebP。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -260,6 +262,10 @@
     "timestamp": {
       "name": "時間戳轉換",
       "blurb": "Unix 時間轉日期。秒、毫秒、ISO。不上傳。"
+    },
+    "rotate": {
+      "name": "旋轉圖片",
+      "blurb": "旋轉或翻轉照片。下載 JPG 或 PNG。不上傳。"
     }
   },
   "watermark": {
@@ -1035,6 +1041,18 @@
       "a4": "現在會填入目前 Unix 秒。另有一行即時顯示目前秒。",
       "q5": "能複製結果嗎？",
       "a5": "可以。複製會把秒、毫秒、ISO 和 UTC 字串放進剪貼簿。"
+    },
+    "rotate": {
+      "q1": "能在這裡旋轉照片嗎？",
+      "a1": "可以。放入照片，轉 90° 或任意角度，翻轉後下載。",
+      "q2": "會上傳照片嗎？",
+      "a2": "不會。解碼、旋轉和匯出都在目前分頁，關掉即丟。",
+      "q3": "旋轉會裁掉畫面嗎？",
+      "a3": "90° 和 180° 保留整張圖。其他角度會擴大畫布，不會裁掉。",
+      "q4": "能翻轉嗎？",
+      "a4": "可以。水平和垂直翻轉可以和旋轉角度一起用。",
+      "q5": "能下載什麼格式？",
+      "a5": "JPG、PNG 或 WebP。JPG 和 WebP 有品質滑桿。"
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "這不是本頁能解析的 Unix 時間或日期。",
     "range": "超出 JavaScript Date 能表示的範圍。",
     "live": "現在：{seconds}"
+  },
+  "rotateTool": {
+    "title": "旋轉圖片",
+    "back": "全部工具",
+    "privacyNote": "照片留在目前分頁。不上傳。",
+    "filesTitle": "照片",
+    "dropTitle": "放入照片",
+    "dropHint": "或貼上。在目前分頁旋轉後下載。",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "左轉或右轉 90°、180°，或拖動角度。需要鏡像就翻轉。",
+    "options": "旋轉",
+    "angle": "角度",
+    "left": "左轉 90°",
+    "right": "右轉 90°",
+    "reset": "重設",
+    "flipH": "水平翻轉",
+    "flipV": "垂直翻轉",
+    "format": "格式",
+    "quality": "品質",
+    "download": "下載",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "請先新增照片。",
+    "working": "正在旋轉…",
+    "errorDecode": "無法讀取這張圖。",
+    "errorEncode": "無法寫出圖片。"
   }
 }

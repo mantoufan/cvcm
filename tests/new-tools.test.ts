@@ -17,6 +17,7 @@ import { MAX_MATCHES, normalizeFlags, runRegex } from "../src/shared/regex";
 import { packIco, squareDest, squareSource } from "../src/shared/favicon";
 import { clampRange, formatClock, sliceChannels, waveformPeaks } from "../src/shared/audio-cut";
 import { parseStamp, unixToMs } from "../src/shared/timestamp";
+import { normalizeDegrees, rotatedSize } from "../src/shared/rotate";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -289,6 +290,16 @@ describe("timestamp", () => {
   });
 });
 
+describe("rotate", () => {
+  it("normalizes degrees and swaps size at 90", () => {
+    expect(normalizeDegrees(-90)).toBe(270);
+    expect(normalizeDegrees(450)).toBe(90);
+    expect(rotatedSize(100, 50, 0)).toEqual({ width: 100, height: 50 });
+    expect(rotatedSize(100, 50, 90)).toEqual({ width: 50, height: 100 });
+    expect(rotatedSize(100, 50, 180)).toEqual({ width: 100, height: 50 });
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -321,12 +332,14 @@ describe("new routes", () => {
     expect(parseAppPath("/en/favicon/")).toEqual({ kind: "app", locale: "en", tool: "favicon" });
     expect(parseAppPath("/en/audio-cutter/")).toEqual({ kind: "app", locale: "en", tool: "audio-cutter" });
     expect(parseAppPath("/en/timestamp/")).toEqual({ kind: "app", locale: "en", tool: "timestamp" });
+    expect(parseAppPath("/en/rotate/")).toEqual({ kind: "app", locale: "en", tool: "rotate" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
     expect(appHref("zh-CN", "favicon")).toBe("/zh-cn/favicon/");
     expect(appHref("zh-CN", "audio-cutter")).toBe("/zh-cn/audio-cutter/");
     expect(appHref("zh-CN", "timestamp")).toBe("/zh-cn/timestamp/");
+    expect(appHref("zh-CN", "rotate")).toBe("/zh-cn/rotate/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

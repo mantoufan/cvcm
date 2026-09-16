@@ -89,7 +89,9 @@
     "titleAudioCutter": "音频剪辑 — 裁剪 MP3 和 WAV — cv.cm",
     "descAudioCutter": "在浏览器里裁剪音频。设定起止，下载 WAV。不上传。",
     "titleTimestamp": "时间戳转换 — Unix 时间转日期 — cv.cm",
-    "descTimestamp": "在浏览器里把 Unix 时间戳转成日期。秒、毫秒、ISO 8601。不上传。"
+    "descTimestamp": "在浏览器里把 Unix 时间戳转成日期。秒、毫秒、ISO 8601。不上传。",
+    "titleRotate": "旋转图片 — 旋转 JPG PNG — cv.cm",
+    "descRotate": "在浏览器里旋转或翻转照片。90°、180°或任意角度。下载 JPG、PNG 或 WebP。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -260,6 +262,10 @@
     "timestamp": {
       "name": "时间戳转换",
       "blurb": "Unix 时间转日期。秒、毫秒、ISO。不上传。"
+    },
+    "rotate": {
+      "name": "旋转图片",
+      "blurb": "旋转或翻转照片。下载 JPG 或 PNG。不上传。"
     }
   },
   "watermark": {
@@ -1035,6 +1041,18 @@
       "a4": "现在会填入当前 Unix 秒。另有一行实时显示当前秒。",
       "q5": "能复制结果吗？",
       "a5": "可以。复制会把秒、毫秒、ISO 和 UTC 字符串放进剪贴板。"
+    },
+    "rotate": {
+      "q1": "能在这里旋转照片吗？",
+      "a1": "可以。放入照片，转 90° 或任意角度，翻转后下载。",
+      "q2": "会上传照片吗？",
+      "a2": "不会。解码、旋转和导出都在当前标签页，关掉即丢。",
+      "q3": "旋转会裁掉画面吗？",
+      "a3": "90° 和 180° 保留整张图。其他角度会扩大画布，不会裁掉。",
+      "q4": "能翻转吗？",
+      "a4": "可以。水平和垂直翻转可以和旋转角度一起用。",
+      "q5": "能下载什么格式？",
+      "a5": "JPG、PNG 或 WebP。JPG 和 WebP 有质量滑杆。"
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "这不是本页能解析的 Unix 时间或日期。",
     "range": "超出 JavaScript Date 能表示的范围。",
     "live": "现在：{seconds}"
+  },
+  "rotateTool": {
+    "title": "旋转图片",
+    "back": "全部工具",
+    "privacyNote": "照片留在当前标签页。不上传。",
+    "filesTitle": "照片",
+    "dropTitle": "放入照片",
+    "dropHint": "或粘贴。在当前标签页旋转后下载。",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "左转或右转 90°、180°，或拖动角度。需要镜像就翻转。",
+    "options": "旋转",
+    "angle": "角度",
+    "left": "左转 90°",
+    "right": "右转 90°",
+    "reset": "重置",
+    "flipH": "水平翻转",
+    "flipV": "垂直翻转",
+    "format": "格式",
+    "quality": "质量",
+    "download": "下载",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "请先添加照片。",
+    "working": "正在旋转…",
+    "errorDecode": "无法读取这张图。",
+    "errorEncode": "无法写出图片。"
   }
 }

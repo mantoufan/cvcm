@@ -89,7 +89,9 @@
     "titleAudioCutter": "Cắt audio — cắt MP3 và WAV — cv.cm",
     "descAudioCutter": "Cắt audio trong trình duyệt. Chọn đầu-cuối, tải WAV. Không tải lên.",
     "titleTimestamp": "Đổi timestamp — Unix time sang ngày — cv.cm",
-    "descTimestamp": "Đổi timestamp Unix thành ngày trong trình duyệt. Giây, mili giây, ISO 8601. Không tải lên."
+    "descTimestamp": "Đổi timestamp Unix thành ngày trong trình duyệt. Giây, mili giây, ISO 8601. Không tải lên.",
+    "titleRotate": "Xoay ảnh — xoay JPG PNG — cv.cm",
+    "descRotate": "Xoay hoặc lật ảnh trong trình duyệt. 90°, 180°, góc bất kỳ. Tải JPG, PNG hoặc WebP. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -260,6 +262,10 @@
     "timestamp": {
       "name": "Đổi timestamp",
       "blurb": "Unix time thành ngày. Giây, mili giây, ISO. Không tải lên."
+    },
+    "rotate": {
+      "name": "Xoay ảnh",
+      "blurb": "Xoay hoặc lật ảnh. Tải JPG hoặc PNG. Không tải lên."
     }
   },
   "watermark": {
@@ -1035,6 +1041,18 @@
       "a4": "Now điền Unix giây hiện tại. Một dòng live cũng hiện giây hiện tại.",
       "q5": "Sao chép kết quả được không?",
       "a5": "Được. Sao chép đưa giây, mili giây, ISO và chuỗi UTC vào clipboard."
+    },
+    "rotate": {
+      "q1": "Xoay ảnh ở đây được không?",
+      "a1": "Được. Thả ảnh, xoay 90° hoặc góc bất kỳ, lật rồi tải.",
+      "q2": "Ảnh có bị tải lên không?",
+      "a2": "Không. Giải mã, xoay và xuất ở tab này. Đóng là mất.",
+      "q3": "Xoay có cắt ảnh không?",
+      "a3": "90° và 180° giữ cả tấm. Góc khác nới canvas nên không bị cắt.",
+      "q4": "Lật được không?",
+      "a4": "Được. Lật ngang và dọc dùng cùng góc xoay.",
+      "q5": "Tải được định dạng nào?",
+      "a5": "JPG, PNG hoặc WebP. JPG và WebP có thanh chất lượng."
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "Đây không phải Unix time hay ngày tab này đọc được.",
     "range": "Nằm ngoài phạm vi JavaScript Date biểu diễn được.",
     "live": "Bây giờ: {seconds}"
+  },
+  "rotateTool": {
+    "title": "Xoay ảnh",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả một ảnh",
+    "dropHint": "Hoặc dán. Xoay trong tab này rồi tải.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Trái hoặc phải 90°, 180°, hoặc kéo góc. Cần gương thì lật.",
+    "options": "Xoay",
+    "angle": "Góc",
+    "left": "Trái 90°",
+    "right": "Phải 90°",
+    "reset": "Đặt lại",
+    "flipH": "Lật ngang",
+    "flipV": "Lật dọc",
+    "format": "Định dạng",
+    "quality": "Chất lượng",
+    "download": "Tải",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "working": "Đang xoay…",
+    "errorDecode": "Không đọc được ảnh đó.",
+    "errorEncode": "Không ghi được ảnh."
   }
 }

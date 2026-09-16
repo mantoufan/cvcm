@@ -89,7 +89,9 @@
     "titleAudioCutter": "오디오 커터 — MP3와 WAV 자르기 — cv.cm",
     "descAudioCutter": "브라우저에서 오디오를 자릅니다. 시작과 끝을 정하고 WAV를 받습니다. 업로드 없음.",
     "titleTimestamp": "타임스탬프 변환 — Unix 시간을 날짜로 — cv.cm",
-    "descTimestamp": "브라우저에서 Unix 타임스탬프를 날짜로 바꿉니다. 초, 밀리초, ISO 8601. 업로드 없음."
+    "descTimestamp": "브라우저에서 Unix 타임스탬프를 날짜로 바꿉니다. 초, 밀리초, ISO 8601. 업로드 없음.",
+    "titleRotate": "이미지 회전 — JPG PNG 회전 — cv.cm",
+    "descRotate": "브라우저에서 사진을 회전하거나 뒤집습니다. 90°, 180°, 임의 각도. JPG, PNG, WebP 다운로드. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -260,6 +262,10 @@
     "timestamp": {
       "name": "타임스탬프 변환",
       "blurb": "Unix 시간을 날짜로. 초, 밀리초, ISO. 업로드 없음."
+    },
+    "rotate": {
+      "name": "이미지 회전",
+      "blurb": "사진을 회전·뒤집기. JPG 또는 PNG. 업로드 없음."
     }
   },
   "watermark": {
@@ -1035,6 +1041,18 @@
       "a4": "지금은 현재 Unix 초를 넣습니다. 현재 초를 보여주는 줄도 갱신됩니다.",
       "q5": "결과를 복사할 수 있나요?",
       "a5": "네. 초, 밀리초, ISO, UTC 문자열이 클립보드에 들어갑니다."
+    },
+    "rotate": {
+      "q1": "여기서 사진을 회전할 수 있나요?",
+      "a1": "네. 사진을 넣고 90°나 임의 각도로 돌린 뒤 뒤집고 받으세요.",
+      "q2": "사진이 업로드되나요?",
+      "a2": "아니요. 디코딩, 회전, 보내기는 이 탭에서 끝납니다. 닫으면 사라집니다.",
+      "q3": "회전하면 잘리나요?",
+      "a3": "90°와 180°는 전체를 남깁니다. 다른 각도는 캔버스를 넓혀 잘리지 않습니다.",
+      "q4": "뒤집을 수 있나요?",
+      "a4": "네. 가로·세로 뒤집기는 회전 각도와 함께 쓸 수 있습니다.",
+      "q5": "무엇을 받을 수 있나요?",
+      "a5": "JPG, PNG, WebP. JPG와 WebP는 품질 슬라이더가 있습니다."
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "이 탭이 파싱할 수 있는 Unix 시간이나 날짜가 아닙니다.",
     "range": "JavaScript Date가 표현할 수 있는 범위를 벗어났습니다.",
     "live": "지금: {seconds}"
+  },
+  "rotateTool": {
+    "title": "이미지 회전",
+    "back": "모든 도구",
+    "privacyNote": "사진은 이 탭에 남습니다. 업로드 없음.",
+    "filesTitle": "사진",
+    "dropTitle": "사진 놓기",
+    "dropHint": "또는 붙여넣기. 이 탭에서 돌린 뒤 받으세요.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "왼쪽이나 오른쪽 90°, 180°, 또는 각도를 드래그. 거울이면 뒤집기.",
+    "options": "회전",
+    "angle": "각도",
+    "left": "왼쪽 90°",
+    "right": "오른쪽 90°",
+    "reset": "재설정",
+    "flipH": "가로 뒤집기",
+    "flipV": "세로 뒤집기",
+    "format": "형식",
+    "quality": "품질",
+    "download": "다운로드",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "먼저 사진을 넣으세요.",
+    "working": "회전 중…",
+    "errorDecode": "그 이미지를 읽지 못했습니다.",
+    "errorEncode": "이미지를 쓰지 못했습니다."
   }
 }

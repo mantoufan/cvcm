@@ -89,7 +89,9 @@
     "titleAudioCutter": "Audio cutter — trim MP3 and WAV — cv.cm",
     "descAudioCutter": "Trim audio in the browser. Set start and end, download WAV. Nothing is uploaded.",
     "titleTimestamp": "Timestamp converter — Unix time to date — cv.cm",
-    "descTimestamp": "Convert Unix timestamps to dates in the browser. Seconds, milliseconds, ISO 8601. Nothing is uploaded."
+    "descTimestamp": "Convert Unix timestamps to dates in the browser. Seconds, milliseconds, ISO 8601. Nothing is uploaded.",
+    "titleRotate": "Rotate image — rotate JPG PNG — cv.cm",
+    "descRotate": "Rotate or flip a photo in the browser. 90°, 180°, any angle. Download JPG, PNG, or WebP. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -566,6 +568,10 @@
     "timestamp": {
       "name": "Timestamp converter",
       "blurb": "Unix time to date. Seconds, milliseconds, ISO. Nothing is uploaded."
+    },
+    "rotate": {
+      "name": "Rotate image",
+      "blurb": "Rotate or flip a photo. Download JPG or PNG. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1341,6 +1347,18 @@
       "a4": "Now fills the current Unix time in seconds. A live line also shows the current second.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts seconds, milliseconds, ISO, and the UTC string on the clipboard."
+    },
+    "rotate": {
+      "q1": "Can I rotate a photo here?",
+      "a1": "Yes. Drop a photo, turn it 90° or any angle, flip it, then download.",
+      "q2": "Is the photo uploaded?",
+      "a2": "No. Decode, rotate, and export stay in this tab. Closing it discards the file.",
+      "q3": "Does rotation crop the picture?",
+      "a3": "90° and 180° keep the full photo. Other angles expand the canvas so nothing is clipped.",
+      "q4": "Can I flip it?",
+      "a4": "Yes. Horizontal and vertical flips combine with the rotation angle.",
+      "q5": "What can I download?",
+      "a5": "JPG, PNG, or WebP. JPG and WebP have a quality slider."
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "That is not a Unix time or a date this tab can parse.",
     "range": "That value is outside the range JavaScript Date can represent.",
     "live": "Now: {seconds}"
+  },
+  "rotateTool": {
+    "title": "Rotate image",
+    "back": "All tools",
+    "privacyNote": "The photo stays in this tab. Nothing is uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a photo",
+    "dropHint": "Or paste. Rotate in this tab, then download.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "90° left or right, 180°, or drag the angle. Flip if you need a mirror.",
+    "options": "Rotate",
+    "angle": "Angle",
+    "left": "90° left",
+    "right": "90° right",
+    "reset": "Reset",
+    "flipH": "Flip horizontal",
+    "flipV": "Flip vertical",
+    "format": "Format",
+    "quality": "Quality",
+    "download": "Download",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "Add a photo first.",
+    "working": "Rotating…",
+    "errorDecode": "Could not read that image.",
+    "errorEncode": "Could not write the image."
   }
 }

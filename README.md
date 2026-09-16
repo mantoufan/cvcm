@@ -20,6 +20,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Word counter** / 字数统计. [Open](https://cv.cm/en/word-count/)
 - **Resize / compress** / 缩放压缩. [Open](https://cv.cm/en/resize/)
 - **Crop** / 裁剪. [Open](https://cv.cm/en/crop/)
+- **Rotate image** / 旋转图片. [Open](https://cv.cm/en/rotate/)
 - **Meme generator** / 表情包. [Open](https://cv.cm/en/meme/)
 - **Signature generator** / 签名. [Open](https://cv.cm/en/signature/)
 - **Favicon generator** / Favicon. [Open](https://cv.cm/en/favicon/)

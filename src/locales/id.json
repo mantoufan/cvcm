@@ -89,7 +89,9 @@
     "titleAudioCutter": "Pemotong audio — potong MP3 dan WAV — cv.cm",
     "descAudioCutter": "Potong audio di browser. Atur awal dan akhir, unduh WAV. Tidak diunggah.",
     "titleTimestamp": "Pengonversi timestamp — Unix time ke tanggal — cv.cm",
-    "descTimestamp": "Ubah timestamp Unix menjadi tanggal di browser. Detik, milidetik, ISO 8601. Tidak diunggah."
+    "descTimestamp": "Ubah timestamp Unix menjadi tanggal di browser. Detik, milidetik, ISO 8601. Tidak diunggah.",
+    "titleRotate": "Putar gambar — putar JPG PNG — cv.cm",
+    "descRotate": "Putar atau balik foto di browser. 90°, 180°, sudut apa pun. Unduh JPG, PNG, atau WebP. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -260,6 +262,10 @@
     "timestamp": {
       "name": "Pengonversi timestamp",
       "blurb": "Unix time ke tanggal. Detik, milidetik, ISO. Tanpa unggah."
+    },
+    "rotate": {
+      "name": "Putar gambar",
+      "blurb": "Putar atau balik foto. Unduh JPG atau PNG. Tanpa unggah."
     }
   },
   "watermark": {
@@ -1035,6 +1041,18 @@
       "a4": "Now mengisi Unix time saat ini dalam detik. Ada juga baris langsung yang menampilkan detik sekarang.",
       "q5": "Bisa salin hasilnya?",
       "a5": "Bisa. Salin menaruh detik, milidetik, ISO, dan string UTC ke clipboard."
+    },
+    "rotate": {
+      "q1": "Bisa putar foto di sini?",
+      "a1": "Bisa. Jatuhkan foto, putar 90° atau sudut apa pun, balik, lalu unduh.",
+      "q2": "Apakah foto diunggah?",
+      "a2": "Tidak. Dekode, putar, dan ekspor tetap di tab ini. Menutup tab membuangnya.",
+      "q3": "Apakah rotasi memotong gambar?",
+      "a3": "90° dan 180° menyimpan seluruh foto. Sudut lain memperluas kanvas agar tidak terpotong.",
+      "q4": "Bisa dibalik?",
+      "a4": "Bisa. Balik horizontal dan vertikal digabung dengan sudut rotasi.",
+      "q5": "Apa yang bisa diunduh?",
+      "a5": "JPG, PNG, atau WebP. JPG dan WebP punya penggeser kualitas."
     }
   },
   "qr": {
@@ -1831,5 +1849,30 @@
     "invalid": "Ini bukan Unix time atau tanggal yang bisa diurai tab ini.",
     "range": "Nilai di luar jangkauan yang bisa diwakili JavaScript Date.",
     "live": "Sekarang: {seconds}"
+  },
+  "rotateTool": {
+    "title": "Putar gambar",
+    "back": "Semua alat",
+    "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Jatuhkan foto",
+    "dropHint": "Atau tempel. Putar di tab ini, lalu unduh.",
+    "dropTypes": "PNG, JPG, WebP, GIF, AVIF, HEIC",
+    "hint": "Kiri atau kanan 90°, 180°, atau geser sudut. Perlu cermin, balik.",
+    "options": "Putar",
+    "angle": "Sudut",
+    "left": "Kiri 90°",
+    "right": "Kanan 90°",
+    "reset": "Reset",
+    "flipH": "Balik horizontal",
+    "flipV": "Balik vertikal",
+    "format": "Format",
+    "quality": "Kualitas",
+    "download": "Unduh",
+    "sizeLabel": "{src} → {out} · {bytes}",
+    "emptyDownload": "Tambahkan foto dulu.",
+    "working": "Memutar…",
+    "errorDecode": "Tidak bisa membaca gambar itu.",
+    "errorEncode": "Tidak bisa menulis gambar."
   }
 }

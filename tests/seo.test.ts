@@ -41,13 +41,14 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "favicon")).toMatch(/Favicon generator/i);
     expect(pageTitle("en", "audio-cutter")).toMatch(/Audio cutter/i);
     expect(pageTitle("en", "timestamp")).toMatch(/Timestamp converter/i);
+    expect(pageTitle("en", "rotate")).toMatch(/Rotate image/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "meme", "signature", "favicon", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "data", "password", "word-count", "color", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "regex",
+      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "rotate", "meme", "signature", "favicon", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "data", "password", "word-count", "color", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "regex",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);
