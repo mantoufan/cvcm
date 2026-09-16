@@ -120,14 +120,16 @@ The owner asked for the tool, multilingual, lighting as a designed next step, an
 | Privacy | **No user files, no upload, no D1/S3** | Snap is a local download. |
 | Filename | **`outputFilename("portrait-sim.png", mime, "")`** | Avoid `portrait-portrait.png`. |
 | Foreground | **`PlateSpec.fgSrc` per wide/tele**, same pixels as that plate | One FG file cannot match 3072 and 2048. Indoor/shade `null`. |
-| Distance default | **`MATCH.distanceM = 2.2`** for first paint; pose chips write `subjectDistanceM` unless the user moved the slider | Avoid three competing metres (MATCH 2.2 / stand34 2.4 / cutout). |
+| Distance | **Slider moves the sitter (camera fixed).** Per-scene `distanceMinM` / `distanceMaxM` so sitter stays in front of BG and behind FG | Indoor bg 3.5 m vs 8 m would invert paint order. |
 | MATCH reframe | **Feet→floor, then 3:2 eye lift, then pan destY so the *final crop* still has 8% headroom** | 16:9 crop y=75 would still clip the forehead if headroom is only on uncropped 3:2. Scale unchanged. |
 | Ship gate | **Do not add `portrait-sim` to `TOOLS` until the viewfinder composites on silhouettes** | `main` auto-deploys. No “Loading…” homepage tile. Merge old 2a+2b into one PR. |
 | Auto ISO | **P-only.** Default Av uses the ISO slider. No Auto ISO toggle in v1 | `autoIso` true on Av would have no UI and no solver. |
 | Facial warp | **v1 does not warp faces.** FOV crop + scale + DOF + exposure + handshake | Flat cutout cannot fatten a nose. `wideClose` is copy-only. |
 | Phone DOF | **`LensSpec.sensorWidthMm`**: phone 6.4 mm; other lenses 36 mm | Phone vs 85 mm DOF comparison is true only on a small-sensor CoC path. |
 | Soft live | **Cheap live bloom when filter is `soft`** | Skipping bloom hides the only visible Soft effect. |
-| Memory | **distance 0.8–8 m; destH ≤ 2×sensor.h; blur AABB ∩ sensor+pad; working set ≤ 64 MB** | Unclamped 135 mm / 0.5 m scratch is hundreds of MB. |
+| Blur kernel | **`cocDiameterPx` vs `gaussianSigmaPx = diameter/2`** | CSS `blur()` is σ, not CoC diameter. Scale with render width. |
+| Alpha | **Premultiplied `filter=blur` on a transparent layer** | `max(α, blur(α))` after opaque pad makes outer coverage p² (dark ring). |
+| Memory | **Per-scene distance clamp; destH uncapped; rasterize dest ∩ sensor+pad; decoded+live+scratch+snap ≤ 64 MB** | destH clamp made 85 mm and 135 mm the same size. Native 3072 LRU can exceed 90 MB. |
 | Export size | **Never upscale.** `min(desired, source crop)` per lens **and** frame | 135 mm 4:5 must not invent pixels. |
 | P-mode phone | **`apertureLocked` → `N = maxAperture`; skip f/4 band** | `clamp(4, 2.8, 1.8)` is inverted. Phone `minAperture: 1.8`. |
 
@@ -193,7 +195,9 @@ Home tiles follow `TOOLS`; the image nav group follows `CATEGORIES`. Sitemap ite
 
 ```ts
 } else if (tool === "portrait-sim") {
+  const gen = pageGen; // captured **before** the dynamic import
   const mod = await import("./portrait-sim/ui");
+  if (gen !== pageGen) return; // navigated away; do not install unmount or mount
   unmountPortraitSim = mod.unmountPortraitSim;
   await mod.mountPortraitSim(main);
 }
@@ -278,14 +282,14 @@ flowchart TB
 - Fieldsets with `.chip` + thumbs: Person, Pose, Scene.
 - Thumb URLs come **only** from the catalog (`PersonSpec.thumb`, `PoseSpec.thumb`, `SceneSpec.thumb`). Do not hardcode `/covers/portrait-sim/thumbs/${id}.webp`. `loading="lazy"`.
 - Changing person keeps pose+scene if that combo exists; else that person’s `defaultPose`.
-- Changing pose writes `distanceM` and `focusM` to `PoseSpec.subjectDistanceM` **unless** the user has moved the distance slider (`distanceDirty` in UI memory, not persisted). Reset clears the dirty flag.
+- Changing pose writes `distanceM` and `focusM` to `PoseSpec.subjectDistanceM` **unless** the user has moved the distance slider (`distanceDirty` in UI memory, not persisted), then **clamps to the current scene**. Reset clears the dirty flag.
 
 **Center — viewfinder**
 
 - Frame chips **above** `.stage-frame`: `3:2` (default, on), `4:5`, `16:9`. `.chip.on` as convert.
 - `canvas.preview` inside `.stage-frame`. Canvas internal size follows the frame (table below); CSS contain-fits the stage.
 - **HUD is HTML**, `pointer-events: none`, never baked into export:
-  - AF box: 2px `var(--pink-deep)` at the nearer eye, mapped **sensor → preview**: `sx = dest.x + dest.w * cutout.eye.x`, `sy = dest.y + dest.h * cutout.eye.y` (`dest = sitterDest32` **after** the headroom lift), then through `frameCropFrom32` into `canvas.preview` CSS pixels: `px = (sx - crop.x) / crop.w * preview.w`, `py = (sy - crop.y) / crop.h * preview.h`. After MATCH reframe the eye is on-canvas in 3:2; 4:5 side-trim keeps it (centered); 16:9 top trim still contains y ≈ 0.08 × 960. Do not place the HUD on raw cutout UV.
+  - AF box: 2px `var(--pink-deep)` at the nearer eye, mapped **sensor → preview**: `sx = dest.x + dest.w * cutout.eye.x`, `sy = dest.y + dest.h * cutout.eye.y` (`dest = sitterDest32` **after** the headroom lift), then through `frameCropFrom32` into `canvas.preview` CSS pixels: `px = (sx - crop.x) / crop.w * preview.w`, `py = (sy - crop.y) / crop.h * preview.h`. After MATCH reframe the eye is on-canvas in 3:2; 4:5 side-trim keeps it; 16:9 uses **crop** headroom (min Y ≈ 140, not 76.8). Do not place the HUD on raw cutout UV. Snap/export copies the compositor canvas **without** this HUD.
   - EV meter: `−3 … 0 … +3`, fill `var(--pink-deep)`.
   - Readout: `1/250  f/2.8  ISO 200  50mm` in `var(--ink)`, not white-on-black chrome.
 - `.hint` `aria-live="polite"`.
@@ -295,7 +299,7 @@ flowchart TB
 
 - Mode chips `P / Av / Tv / M`.
 - ISO, aperture, shutter: ranges with global `accent-color: var(--pink-deep)` plus numeric labels. Disabled per mode (**ISO disabled in P**; aperture disabled on phone). Phone lens **locks aperture** at f/1.8 (visible, disabled, `portraitSim.phoneApertureHint`). No Auto ISO checkbox.
-- Focus distance and camera-to-subject distance: metres.
+- Focus distance and camera-to-subject **sitter** distance: metres, range = current scene `distanceMinM`–`distanceMaxM` (camera fixed).
 - Lens `<select>`.
 - Filter `<select>` with **optgroups**:
   - Protection: None, UV
@@ -307,7 +311,7 @@ flowchart TB
 
 **Lede.** Privacy sentence + “A portrait photography lesson may return on cv.cm; this simulator stands on its own.” No `learnHref(..., "portrait")` until that id is in `TUTORIAL_GROUPS`.
 
-**Mobile.** Existing `@media (max-width: 960px)` stacks `.tool` and sticks `.stage-actions`. Compact chips. No custom chrome.
+**Mobile.** Existing `@media (max-width: 960px)` stacks `.tool` and sticks `.stage-actions`. **Also** stick `.stage-frame` (or a compact clone) so a preview stays on screen while scrolling the 300 px controls: `max-height: ~40vh` at ≤960 px, `position: sticky` with the same `top` as the desktop rails. At **390 px** width, translated labels (ja/zh ISO/aperture) must not overflow the rail — production visual check, not key-parity. Compact chips. No CameraSim chrome.
 
 **Tokens.** Do not fork `:root`. New CSS is a short `.viewfinder` / `.ev-meter` / `.af-box` / `.frame-chips` block.
 
@@ -374,7 +378,7 @@ HFOV is always the **36 mm-wide 3:2 capture**. `horizontalFovRad` / `SENSOR_WIDT
 2. **Size and place the sitter in that 3:2 buffer** (`sitterDest32`): contact solve feet→`floorY`, then **lift `destY` if the eye would clip** (8% headroom). Do not leave MATCH as a pair of legs.
 3. **Crop the 3:2 buffer** to 4:5 or 16:9 (`frameCropFrom32`: largest centered rect of the target aspect that fits). 3:2 is identity. Blit that crop to `FRAME_LIVE[frame]` / export size.
 
-`blurPx` / `handshakePx` use the **3:2 sensor width** (1440 live, 1920 export), not the cropped frame width.
+`cocDiameterPx` / `gaussianSigmaPx` / `handshakePx` use the **3:2 sensor width** (1440 live, 1920 export), not the cropped frame width.
 
 **Perspective (2.5D)** — all numbers on the catalog:
 
@@ -410,21 +414,29 @@ export function circleOfConfusionMm(opts: {
   return (Math.abs(s - d) / d) * (f * f) / (N * (s - f));
 }
 
-export function blurPx(cocMm: number, viewWidthPx: number, sensorWidthMm = SENSOR_WIDTH_MM): number {
+/** CoC diameter on the sensor, in pixels of `viewWidthPx`. */
+export function cocDiameterPx(cocMm: number, viewWidthPx: number, sensorWidthMm = SENSOR_WIDTH_MM): number {
   return Math.min(48, (cocMm / sensorWidthMm) * viewWidthPx);
 }
+
+/** CSS `filter: blur(σ)` uses Gaussian σ, not CoC diameter. Live and snap share this. */
+export function gaussianSigmaPx(diameterPx: number): number {
+  return diameterPx / 2; // FWHM alternative is / 2.355; freeze /2 and snapshot it
+}
 ```
+
+`ctx.filter = blur(${sigma}px)` uses **`gaussianSigmaPx`**, not the CoC diameter. Both scale with `viewWidthPx` so 1440 live and 1920 snap match in **world** blur. Tests lock `cocDiameterPx` (50 mm f/1.8 window ≈ 13.2 at 1440) **and** `gaussianSigmaPx(13.2) === 6.6`. `missFocus` if `cocDiameterPx > 2`.
 
 **FOV vs DOF.** `plateCrop` / `horizontalFovRad` always use **equivalent** `lens.focalMm` (phone 26 mm-e looks as wide as a 26 mm FF). `circleOfConfusionMm` uses **actual** focal `equiv × sensorWidth/36`. Phone 6.4 mm sensor → actual ~4.6 mm at 26 mm-e → much deeper DOF than 85 mm on FF at the same distance. That comparison is the teaching beat. UI label: “Phone 26 mm-e” (FOV like 26 mm; DOF of a 6.4 mm sensor).
 
 Worked example (must be a test) using **`(s - f)`**, not the old `|s-d|/d · f²/(N·s)` number. 50 mm **FF (36 mm)**, f/1.8, focus 2.2 m, window plane 4.5 m, 3:2 live width 1440:
 
 - `s = 2200`, `d = 4500`, `c = (2300/4500) · 2500 / (1.8 · 2150) ≈ 0.330 mm`
-- `blurPx = (0.330/36)·1440 ≈ 13.2` (well below 48)
+- `cocDiameterPx = (0.330/36)·1440 ≈ 13.2` (well below 48); `gaussianSigmaPx ≈ 6.6`
 
-Same at f/8: `c ≈ 0.074 mm`, `blurPx ≈ 3.0`. **f/1.8 vs f/8 on the window plane must differ by a documented band below the clamp** (assert `wide > 10`, `narrow < 5`, `wide / narrow` ≈ 8/1.8). Do **not** “correct” the implementation to match 0.322. If this test fails, DOF teaching is broken.
+Same at f/8: `c ≈ 0.074 mm`, diameter ≈ 3.0, σ ≈ 1.5. **f/1.8 vs f/8 on the window plane must differ by a documented band below the clamp** (assert diameter `wide > 10`, `narrow < 5`, `wide / narrow` ≈ 8/1.8). Do **not** “correct” the implementation to match 0.322. If this test fails, DOF teaching is broken.
 
-Phone vs 85 mm (same 2.2 m / 4.5 m / f/1.8 / 1440): phone `blurPx` **<** 85 mm FF `blurPx` (deeper DOF). If they match, the small-sensor path is missing.
+Phone vs 85 mm (same 2.2 m / 4.5 m / f/1.8 / 1440): phone `cocDiameterPx` **<** 85 mm FF (deeper DOF). If they match, the small-sensor path is missing.
 
 v1 applies **one radius per plane** (bg / subject / fg), not per-pixel gather.
 
@@ -571,7 +583,7 @@ Four scene plates × five grades ≠ twenty lighting setups. Copy under the sele
 1. `|deltaEV| ≥ 1.5` → `underexposed` / `overexposed`
 2. `handshakePx > 2` → `handshake`
 3. `focalMm ≤ 28 && distanceM < 1.5` → `wideClose` — copy: “On a real camera, a wide lens this close also changes facial proportions; this sim keeps the drawing’s proportions.” **Not** a renderer warp.
-4. `subjectBlurPx > 2` → `missFocus` (pixel threshold so phone small-sensor CoC still teaches)
+4. `cocDiameterPx > 2` → `missFocus` (pixel threshold so phone small-sensor CoC still teaches)
 5. filter `uv` → `uvNoop`
 6. ND and `handshakePx > 0` → `ndTripod`
 7. `state.light !== scene.defaultLight` → `lightMismatch`
@@ -625,6 +637,9 @@ export type SceneSpec = {
   plates: Record<PlateKind, PlateSpec>;
   bgDistanceM: number;
   fgDistanceM: number | null;
+  /** Sitter (camera fixed) must stay behind FG and in front of BG. */
+  distanceMinM: number; // fg ? fg + 0.2 : 0.8
+  distanceMaxM: number; // bg - 0.3
   defaultLight: LightId;
   /** Floor line, fraction of *full plate* height (0 = top). Mapped through the 3:2 source rect. */
   floorY: number;
@@ -692,6 +707,13 @@ export function sitterDest32(
 ): Rect;
 /** Largest centered target-aspect rect inside the 3:2 sensor. Identity for "3-2". */
 export function frameCropFrom32(frame: FrameId, sensor: { w: number; h: number }): Rect;
+/** Native src crop + integer output size; 1280 is a ceiling. */
+export function exportGeometry(
+  plate: PlateSpec,
+  focalMm: number,
+  frame: FrameId,
+  lens: LensId,
+): { nativeSrc: Rect; workingSensor: { w: number; h: number }; output: { w: number; h: number } };
 /** Nearer-eye in preview CSS pixels. dest = sitterDest32 (after lift); crop = frameCropFrom32. */
 export function eyeInPreview(
   dest: Rect,
@@ -726,12 +748,14 @@ Half-length vs full-length is **frame crop + distance + lens** (4:5 post-crop of
 
 **v1 scenes (4) — empty, no people, no playground**
 
-| id | `bgDistanceM` | `fgDistanceM` | `defaultLight` | `floorY` | `horizonY` | FG |
-|---|---|---|---|---|---|---|
-| `window` | 4.5 | 1.2 | `window` | 0.82 | 0.58 | `plates.wide.fgSrc` + `plates.tele.fgSrc` (curtain) |
-| `shade` | 8.0 | `null` | `shade` | 0.78 | 0.48 | both `fgSrc` **null** |
-| `cafe` | 5.0 | 0.90 | `window` | 0.80 | 0.52 | two FG URLs (table), same pixels as each plate |
-| `indoor` | 3.5 | `null` | `overcast` | 0.84 | 0.60 | both `fgSrc` **null** |
+| id | `bgDistanceM` | `fgDistanceM` | `distanceMinM` | `distanceMaxM` | `defaultLight` | `floorY` | FG |
+|---|---|---|---|---|---|---|---|
+| `window` | 4.5 | 1.2 | **1.4** (fg+0.2) | **4.2** (bg−0.3) | `window` | 0.82 | wide+tele curtain |
+| `shade` | 8.0 | `null` | **0.8** | **7.7** | `shade` | 0.78 | null |
+| `cafe` | 5.0 | 0.90 | **1.1** | **4.7** | `window` | 0.80 | wide+tele table |
+| `indoor` | 3.5 | `null` | **0.8** | **3.2** | `overcast` | 0.84 | null |
+
+The **slider moves the sitter**; camera and plates stay put. Paint order is always BG → subject → FG. Tests: every scene `distanceMinM < distanceMaxM`, `distanceMaxM ≤ bgDistanceM − 0.3`, and if FG exists `distanceMinM ≥ fgDistanceM + 0.2`. MATCH 2.2 m sits inside every v1 interval. Switching scene **clamps** `distanceM`/`focusM` into that interval. Pose chips write `subjectDistanceM` then clamp.
 
 Tests: `catalog.scenes.cafe.plates.wide.fgSrc` and `.tele.fgSrc` are non-null and distinct; `indoor`/`shade` both null.
 
@@ -765,15 +789,12 @@ function sensorSourceRect(plate: PlateSpec, focalMm: number): Rect {
   return { x: (plate.widthPx - w) / 2, y: (plate.heightPx - h) / 2, w, h };
 }
 
-export const DISTANCE_MIN_M = 0.8;
-export const DISTANCE_MAX_M = 8;
-export const DEST_H_MAX_FACTOR = 2; // destH ≤ 2 × sensor.h
 export const MAX_BLUR_PX = 48;
 
 // 2. Sitter in 3:2 sensor pixels. destH does not depend on FrameId.
+// destH is **not** clamped to the canvas — 85 mm must stay larger than 50 mm at 2.2 m.
 function sitterDest32(cutout, subjectScale, scene, src, plateHeightPx, sensor, frame): Rect {
-  const rawH = MATCH.destHPx * subjectScale * (sensor.h / FRAME_LIVE["3-2"].h);
-  const destH = Math.min(rawH, DEST_H_MAX_FACTOR * sensor.h);
+  const destH = MATCH.destHPx * subjectScale * (sensor.h / FRAME_LIVE["3-2"].h);
   const destW = destH * (cutout.widthPx / cutout.heightPx);
   const floorInSrc = (scene.floorY * plateHeightPx - src.y) / src.h;
   let floorPx = floorInSrc * sensor.h;
@@ -811,10 +832,28 @@ function frameCropFrom32(frame: FrameId, sensor: { w: number; h: number }): Rect
 - `dest.h` equal across frames (scale unchanged; only `destY` pans).
 - For **each** of 3:2, 4:5, 16:9: `eyeY` in the crop ≥ `MATCH.eyeHeadroom * crop.h` and `< crop.y + crop.h`. 16:9 crop y=75, h=810 → min eye Y = 75 + 0.08×810 ≈ 140 (not 76.8).
 - **Wide** 24 mm / 2.2 m: `destY >= 0` and feet still map to `floorY` (no crop pan needed).
+- **Magnification (P1a):** at MATCH 2.2 m, `destH(135) > destH(85) > destH(50)` (no destH canvas cap). Visible overlap of dest with the 3:2 crop **increases with focal length until the frame is filled** (e.g. at 6 m: 50 mm destH < 960, 135 mm destH larger and more of the frame is sitter).
 
 Worked 4:5: 3:2 sensor 1440×960, 4:5 crop = **768×960** centered (`x=336`), then scale to `FRAME_LIVE["4-5"]` 1080×1350. Worked 16:9: **1440×810** (`y=75`), then scale to 1280×720.
 
-**Export — never upscale.** Desired size = `FRAME_EXPORT[frame]` scaled so `max(w,h) ≤ EXPORT_LONG_EDGE_PX[lens]`. Then `s = min(1, srcCrop.w / desired.w, srcCrop.h / desired.h)`; output `{ w: desired.w * s, h: desired.h * s }`. 135 mm 4:5 uses the tele plate crop (~1290 px class), **not** 1440×1800 upscaled. `EXPORT_LONG_EDGE_PX` is per lens; 4:5 height is `min(desired, source crop height)`.
+**Export — one helper, never upscale.** `EXPORT_LONG_EDGE_PX[lens]` is a **ceiling**, not a target to scale up to.
+
+```ts
+export function exportGeometry(plate: PlateSpec, focalMm: number, frame: FrameId, lens: LensId): {
+  nativeSrc: Rect;       // sensorSourceRect in *native* plate pixels
+  workingSensor: { w: number; h: number }; // FRAME_EXPORT["3-2"] or smaller if src is thin
+  output: { w: number; h: number };        // integer; aspect = frame
+} {
+  const nativeSrc = sensorSourceRect(plate, focalMm);
+  const desired = scaleToLongEdge(FRAME_EXPORT[frame], EXPORT_LONG_EDGE_PX[lens]);
+  const srcFrame = frameCropFrom32(frame, { w: nativeSrc.w, h: nativeSrc.h });
+  const s = Math.min(1, srcFrame.w / desired.w, srcFrame.h / desired.h);
+  const output = { w: Math.max(1, Math.round(desired.w * s)), h: Math.max(1, Math.round(desired.h * s)) };
+  return { nativeSrc, workingSensor: FRAME_EXPORT["3-2"], output };
+}
+```
+
+Test **every lens × frame**: `output.w ≤ native crop`, `output.h ≤ native crop`, `max(w,h) ≤ EXPORT_LONG_EDGE_PX[lens]`, aspect matches frame within 1 px. 1280 is a ceiling. 135 mm 4:5 stays in the tele plate’s pixel class.
 
 **Order (crop-then-blur, then grade):**
 
@@ -829,18 +868,18 @@ flowchart TD
   G --> H["frameCropFrom32 → visible canvas; HUD HTML"]
 ```
 
-1. **3:2 FOV crop.** `drawImage` `sensorSourceRect` into a 1440×960 (live) sensor canvas. No blur. No aspect yet.
+1. **3:2 FOV crop.** Native `sensorSourceRect` mapped into decoded pixels (`× decodedW/nativeW`), then `drawImage` into a 1440×960 (live) sensor canvas. No blur. No aspect yet.
 2. **Background blur.** `ctx.filter = blur(bgBlurPx)` on that opaque plane.
-3. **Subject, alpha-safe**, dest = `sitterDest32` after the headroom lift (may extend below the sensor; clip to the buffer). HUD uses this dest, not the pre-lift contact rect.
-   - If `subjectBlurPx === 0`: skip the AABB path; `drawImage` the cutout at dest.
-   - If `subjectBlurPx > 0` (`missFocus` or shallow DOF):
-     1. `pad = ceil(3 * min(subjectBlurPx, MAX_BLUR_PX))`. AABB = intersection of `expand(dest, pad)` with `expand(sensor, pad)`. Never allocate a scratch larger than that intersection.
-     2. Stamp the **already-drawn background** into an offscreen of that AABB (opaque pad for RGB).
-     3. `source-over` the cutout.
-     4. Blur the opaque RGB (`subjectBlurPx`).
-     5. **Required** alpha: `max(original, blur(original, subjectBlurPx))`. Do **not** restore sharp cutout alpha — that yields a crisp sticker outline with a mushy interior, the opposite of defocus.
-     6. `drawImage` onto the 3:2 sensor buffer.
-4. **Foreground** if `plate.fgSrc`: draw with the **same** `sensorSourceRect` (authored with that plate, same pixels). If `fgBlurPx === 0`, skip AABB. If `fgBlurPx > 0`, same **required** `max(original, blur(original))` alpha. Do **not** scale a wide FG onto a tele plate.
+3. **Subject, premultiplied blur**, dest = `sitterDest32` after the headroom lift. `dest` may be **larger than the sensor** (135 mm destH ~3456 at 2.2 m). **Only the overlap is rasterized.** HUD uses this dest.
+   - AABB = `intersect(expand(dest, pad), expand(sensor, pad))` with `pad = ceil(3 * min(sigma, MAX_BLUR_PX))`. Scratch size is that AABB, **not** destH×destW.
+   - If sigma === 0: `drawImage` the cutout at dest (clipped by the sensor).
+   - If sigma > 0:
+     1. Create a **transparent** offscreen the size of the AABB (not a background-filled pad).
+     2. Draw the cutout into it at dest-relative coords, **premultiplied** (Canvas2D default).
+     3. `ctx.filter = blur(${sigma}px)` on **that layer**. Browsers blur premultiplied RGBA; do **not** reconstruct alpha with `max(original, blur(original))` (outer coverage becomes p² → dark ring over a dark BG).
+     4. Composite the blurred layer over the already-drawn background (`source-over`).
+   - Fixture (unit or compositor test): white disc on transparent, blur, composite over **black**. No dark halo around the disc.
+4. **Foreground** if `plate.fgSrc`: same `sensorSourceRect` (map native→decoded). Same **premultiplied** blur path. Do **not** scale a wide FG onto a tele plate. FG always composites **on top** of the sitter (closer plane); distance clamps keep the sitter behind FG.
 5. **Handshake:** if `handshakePx > 0`, isotropic blur of the 3:2 buffer. Copy: “camera shake”, not panning.
 6. **Grade** on the 3:2 buffer using `composeGrade` (same object tests lock). UV is a no-op. CPL `highlightCompress` ran on the **background plane** before step 3 (`max(r,g,b) > 0.85`).
 7. **Aspect crop.** `drawImage` `frameCropFrom32` into the visible `canvas.preview` at `FRAME_LIVE[frame]`. HUD stays HTML.
@@ -893,9 +932,15 @@ public/covers/portrait-sim/thumbs/…   # URLs listed on PersonSpec / PoseSpec /
 
 `bitmap.close()` on eviction. Never decode all 8 plates + 4 FG + 12 cutouts. **Window (default) and cafe first paint:** 1 plate + 1 FG + 1 cutout. Indoor/shade: no FG. Thumbs are small and may stay decoded (not counted against the 8 hero bitmaps, or decode thumbs as HTMLImageElement).
 
-**Working-memory budget: decoded ImageBitmaps + compositor scratch ≤ 64 MB.** Enforce by: (1) `distanceM` clamped to **0.8–8 m** in UI, `parseSimQuery`, and localStorage load; (2) `destH ≤ 2 × sensor.h`; (3) blur scratch = intersection of padded dest with sensor expanded by `min(blur, MAX_BLUR_PX)` pad — never a 135 mm / 0.5 m 595 MB RGBA buffer; (4) downsample a bitmap to 1536 long edge on live if adding it would exceed 64 MB; snap may decode the current plate at native size then close it. `parseSimQuery` / localStorage drop non-enum keys and clamp all numbers (`iso`, `aperture`, `shutterSec`, `focusM`, `distanceM`) to catalog ranges.
+**Working-memory budget: decoded cache + live canvas + scratch + snap ≤ 64 MB.** destH is **not** the memory knob (reverting the 2×sensor destH cap). Enforce by:
 
-**Loader.** There is no `createImageBitmap(url: string)`. Follow `decode.ts`: `const res = await fetch(src); const blob = await res.blob(); return createImageBitmap(blob)`. Same-origin `/covers/` so the canvas stays untainted.
+1. **Per-scene** `distanceMinM`/`distanceMaxM` (not a global 0.8–8 m that inverts indoor).
+2. Rasterize only `dest ∩ (sensor + blur pad)` — a 3456 px destH still costs one 1440×960-class scratch.
+3. LRU of `DecodedImage = { bitmap, nativeW, nativeH, decodedW, decodedH }`. `sensorSourceRect` is in **native** plate pixels. `drawImage` source rect = `nativeSrc * (decodedW / nativeW)` (and height). If you downsample, **always** map.
+4. **Evict before decode.** If adding a native 3072×2048 (~25 MB) would exceed 64 MB, close LRU entries first. Live may decode at 1536 long edge. Snap may decode the **current** plate at native size after evicting LRU, then close it.
+5. `parseSimQuery` / localStorage drop unknown enums and clamp numbers to the **current scene’s** distance interval plus ISO/aperture/shutter tables.
+
+**Loader.** There is no `createImageBitmap(url: string)`. Follow `decode.ts`: `const res = await fetch(src, { signal }); const blob = await res.blob(); return createImageBitmap(blob)`. Same-origin `/covers/` so the canvas stays untainted.
 
 **Art direction (frozen).**
 
@@ -941,7 +986,7 @@ export type SimState = {
 
 Defaults: `mira + stand34 + window + 50mm + 3:2 + Av + f/2.8 + ISO 200 + **autoIso false** + **focusM = distanceM = MATCH.distanceM (2.2)** + light=window + filter=none + tripod off`. First paint is a *good* window portrait. Pose `stand34.subjectDistanceM` is also **2.2** so the first pose chip does not jump.
 
-Solver **always** uses `SimState.distanceM` / `focusM` (not the cutout’s copy), after clamp to **0.8–8 m**. Pose chips write both metres from `PoseSpec.subjectDistanceM` unless `distanceDirty`. Reset restores MATCH 2.2 and clears dirty.
+Solver **always** uses `SimState.distanceM` / `focusM` (not the cutout’s copy), after clamp to the **current scene** `[distanceMinM, distanceMaxM]`. Pose chips write both metres from `PoseSpec.subjectDistanceM` then clamp. Reset restores MATCH 2.2 (in range for every v1 scene) and clears dirty. Changing **scene** reclamps.
 
 `localStorage` key `cvcm.portrait-sim`: JSON `SimState` only. On load, **clamp every number** and drop unknown enums (same as `parseSimQuery`). Ignore quota errors. No IndexedDB.
 
@@ -949,7 +994,7 @@ ISO slider: enabled in Av/Tv/M; **disabled in P** (no Auto ISO toggle).
 
 ### Export
 
-- Snap = compositor canvas only (no HUD).
+- Snap = compositor canvas only (**no HUD** — AF box / EV meter are HTML). PNG/JPEG download never bakes the overlay.
 - `canvasToBlob(canvas, mime, quality)` then `downloadBlob(blob, outputFilename("portrait-sim.png", mime, ""))` → `portrait-sim.png` / `portrait-sim.jpg`.
 - PNG default or JPEG 0.92. No WebP, no ZIP, no upload.
 - Keep one `Blob` until the next snap; drop on unmount.
@@ -993,7 +1038,8 @@ Locale UI namespace: **`portraitSim`**. Nav/SEO/FAQ use hyphenated `portrait-sim
 ### Defaults, load, errors
 
 - Fetch default scene + person in parallel. Status “Loading plates…”. On failure, `portraitSim.errorPlate` + Retry. **Snap disabled** until current person + pose + scene plate (+ FG if any) have decoded.
-- **`mountGen` token:** increment on `mountPortraitSim`, on `unmountPortraitSim`, and on person/pose/scene/lens change. Each fetch uses an `AbortController`; unmount and catalog changes `abort()`. A compose whose `gen !== mountGen` is ignored (no draw, no Snap). Stale `ImageBitmap`s `close()`d.
+- **`pageGen` (main.ts):** increment at the start of `render()` / unmount. Capture `const gen = pageGen` **before** `await import("./portrait-sim/ui")`. After the import, if `gen !== pageGen`, **do not** assign `unmountPortraitSim` and **do not** call `mountPortraitSim`. Same token on asset decode: a bitmap whose gen is stale is `close()`d, never drawn.
+- **`mountGen` (tool):** increment on mount, unmount, and person/pose/scene/lens change. Each fetch uses an `AbortController`. A compose whose gen is stale is ignored. Snap stays disabled until current person+pose+scene+plate(+FG) have decoded for this gen.
 - `fetch(src, { signal })` → `blob()` → `createImageBitmap(blob)` (not `createImageBitmap(url)`).
 
 ---
@@ -1091,9 +1137,11 @@ No feature flags. Rollout **is** the PR train.
 | UV feels broken | **P2** | Protection optgroup + FAQ + hint; no fake tint. |
 | Users think v1 is 打光 | **P2** | Control label + mismatch hint + FAQ. |
 | 135 mm mush | **P2** | Dual FOV plates; long edge 1280. |
-| `ctx.filter` jank / halo | **P2** | Crop-then-blur; opaque pad; **required** `max(original, blur(original))` alpha when blur > 0; 0.5× blur buffers; feature-detect. |
+| `ctx.filter` jank / halo | **P2** | Premultiplied blur on a transparent layer; AABB ∩ sensor+pad; feature-detect. |
 | Asset authoring slips | **P2** | Start plates with PR 1; silhouettes unblock UI. |
-| RGBA memory | **P2** | LRU **8**; destH clamp; blur AABB ∩ sensor; working set **≤ 64 MB**. |
+| RGBA memory | **P2** | LRU 8 `DecodedImage`; evict before decode; destH **uncapped**; scratch = dest ∩ sensor; ≤ 64 MB. |
+| Layer order | **P1** | Per-scene distanceMin/Max; sitter between FG and BG. |
+| Tele magnification | **P1** | No destH canvas cap; destH(135)>destH(85)>destH(50) at 2.2 m. |
 | Stub on production | **P1** | Do not insert `TOOLS` until the compositor draws silhouettes. |
 | 16:9 forehead clip | **P1** | Headroom in the **final crop**, not only uncropped 3:2. |
 | WebP heavier than 4.7 MB | **P2** | 8 MB ceiling, recompress. |
@@ -1139,7 +1187,7 @@ None blocking PR 1–3. Previously open items are decided:
 | Sailor-collar | **v2** extra mira wardrobe, not v1 files. |
 | Query as public contract | **Yes**, Worker + `boot()` + **`langSwitch`**. |
 | 3:2 vs 4:5 geometry | Canonical 3:2 sensor after `plateCrop`; aspect is a post-crop. |
-| First-paint distance | **2.2 m** (`MATCH` and `stand34`). |
+| First-paint distance | **2.2 m** (`MATCH` and `stand34`); per-scene clamp. |
 | MATCH face clip | **Lift destY for 8% eye headroom in the final crop** (3:2, 4:5, 16:9). 24 mm keeps feet on floor. |
 | FG files | Per-plate `fgSrc`; LRU 8. |
 | Auto ISO | **P-only.** Default Av, `autoIso false`. |
@@ -1154,13 +1202,16 @@ None blocking PR 1–3. Previously open items are decided:
 | Test | File | Asserts |
 |---|---|---|
 | EV / sunny-16 | `tests/camera.test.ts` | `exposureValue(16, 1/100, 100)` ≈ 14.6–15 |
-| CoC units | same | 50 mm f/1.8 vs f/8 at 2.2 m vs 4.5 m: `c ≈ 0.330 mm`, `blurPx ≈ 13.2`; both **< 48**, ratio ≈ 8/1.8, f/1.8 `> 10`. Not 0.322. |
+| CoC units | same | 50 mm f/1.8 vs f/8: `c ≈ 0.330 mm`, `cocDiameterPx ≈ 13.2`, `gaussianSigmaPx === 6.6`; ratio ≈ 8/1.8 |
 | P solver | same | table in Camera math (EV11 → 1/125 ISO 100 f/4; EV8 85 mm → ISO 800; **P+phone N===1.8**) |
 | Phone iris | same | Av **and P** keep N = 1.8; phone `minAperture === 1.8` |
 | 3:2 dest | same | `dest.h` equal across frames; **each** 3:2/4:5/16:9 MATCH eye in crop ≥ 8% of crop.h (16:9 min Y ≈ 140); 24 mm destY ≥ 0 feet on floor |
-| Phone DOF | same | phone blurPx < 85 mm FF blurPx at 2.2/4.5 m f/1.8 |
+| Magnification | same | at 2.2 m `destH(135) > destH(85) > destH(50)`; at 6 m visible height still grows with focal until the frame fills |
+| Scene distance | same | every scene min < max; max ≤ bg−0.3; min ≥ fg+0.2 if FG |
+| Phone DOF | same | phone `cocDiameterPx` < 85 mm FF at 2.2/4.5 m f/1.8 |
+| exportGeometry | same | every lens×frame: no upscale, aspect ok, long edge ≤ ceiling |
 | Auto ISO | same | default Av keeps ISO 200; enter P climbs; leave P keeps solved ISO |
-| Query clamp | same | `distanceM` 0.8–8; junk dropped; destH capped |
+| Query clamp | same | `distanceM` clamped to **scene** interval; junk dropped |
 | withSearch | `tests/new-tools.test.ts` | `withSearch("/en/crop/", "?lens=85")`; Worker `/portrait-sim/?lens=85` **and** `/crop/?x=1` keep search |
 | Grade order | same | `composeGrade` snapshots warm/cool diagonals; UV identity |
 | Cafe FG | same | two `fgSrc` URLs; indoor/shade null |
@@ -1171,7 +1222,7 @@ None blocking PR 1–3. Previously open items are decided:
 | Query | same | `?lens=85&scene=cafe&frame=4-5`; junk ignored; serialize stable |
 | Catalog | same | 12 cutouts; `PersonSpec.thumb` + `PoseSpec.thumb`; `MATCH.destHPx===1280`; `EXPORT_LONG_EDGE_PX["135"]===1280`; cutout distance equals pose |
 | Route | `tests/new-tools.test.ts` | `parseAppPath("/en/portrait-sim/")`; `appHref("zh-CN","portrait-sim")==="/zh-cn/portrait-sim/"` |
-| Search | `tests/worker.test.ts` | `/portrait-sim/?lens=85` and `/crop/?x=1` Locations keep search |
+| Search | `tests/worker.test.ts` | `/crop/?x=1` 302 **and** `/en/crop?x=1` 301 keep search; after PR 2, same for `portrait-sim` |
 | capture-guides | `scripts/capture-guides.mjs` | `STEPS["portrait-sim"]=4` **and** `runTool` branch with four snaps or it throws `no scenario` |
 | i18n | `tests/i18n-keys.test.ts` | automatic |
 | FAQ 5 | `tests/seo.test.ts` | **append id to the hardcoded list** |
@@ -1184,10 +1235,10 @@ Do not pixel-diff Canvas in Node (same split as `tests/collage.test.ts`). Do not
 `runTool` for portrait-sim (required or capture throws `no scenario for portrait-sim` at `scripts/capture-guides.mjs` ~885):
 
 1. Open `/en/portrait-sim/`, wait for `canvas.preview` and Snap enabled.
-2. Snap 1: default window MATCH.
-3. Switch frame to 4:5, snap 2.
-4. Set lens 24 mm, snap 3 (`wideClose` hint visible).
-5. Set filter Soft, snap 4 (live bloom visible).
+2. Guide shot 1: default window MATCH (3:2).
+3. Guide shot 2: switch frame to 4:5.
+4. Guide shot 3: lens **24 mm** and **distance < 1.5 m** (`wideClose` hint visible).
+5. Guide shot 4: filter Soft (live bloom) then **click export** (PNG). Canvas snap / export **excludes HUD** (HTML overlay, `pointer-events: none`).
 
 ---
 
@@ -1220,16 +1271,16 @@ Each PR independently reviewable. Dual review is paused for cv.cm; keep slices s
 ### PR 1 — Camera math + catalog types
 
 - **Title:** `feat: add portrait camera math on shared camera`
-- **Files:** `src/shared/camera.ts`, `src/shared/portrait-sim.ts` (full `Catalog`, `MATCH`, `sensorSourceRect` / `sitterDest32(frame)` / `frameCropFrom32` / `eyeInPreview`, clamps, phone `sensorWidthMm`, P-only autoIso, query parse), `src/shared/path.ts` (`withSearch` — no `TOOLS` insert yet), `src/worker.ts` (preserve `url.search` on `appHref` redirects), `tests/camera.test.ts`, `tests/new-tools.test.ts` (`withSearch`), `tests/worker.test.ts` (search on an existing tool e.g. `/crop/?x=1`)
+- **Files:** `src/shared/camera.ts`, `src/shared/portrait-sim.ts` (full `Catalog`, `MATCH`, `sensorSourceRect` / `sitterDest32(frame)` / `frameCropFrom32` / `eyeInPreview` / `exportGeometry` / `cocDiameterPx` / `gaussianSigmaPx`, **per-scene distanceMin/Max**, phone `sensorWidthMm`, P-only autoIso, query parse), `src/shared/path.ts` (`withSearch` — no `TOOLS` insert yet), `src/worker.ts` (preserve `url.search` on `appHref` redirects including trailing-slash **301**), `tests/camera.test.ts`, `tests/new-tools.test.ts` (`withSearch`), `tests/worker.test.ts` (`/crop/?x=1` 302 and `/en/crop?x=1` 301)
 - **Depends on:** none
-- **Changes:** EV, CoC (metres→mm + **phone 6.4 mm path**), FOV, handshake, **deterministic P with `apertureLocked`**, Av/Tv/M, **P-only Auto ISO**, `composeGrade`, hints (`wideClose` copy-only), catalog, **final-crop eye headroom**, distance/destH clamps. `withSearch` on Worker + path tests. **No homepage tile.** URLs in the catalog may 404 until plates exist.
+- **Changes:** EV, CoC + **σ = diameter/2**, phone 6.4 mm path, P-only Auto ISO, `composeGrade`, hints, catalog, **final-crop eye headroom**, **uncapped destH**, per-scene distance clamps, `exportGeometry`. `withSearch` unit + Worker 302/301. **No homepage tile.**
 
 ### PR 2 — Shippable tool (compositor + registration together)
 
 - **Title:** `feat: add portrait sim viewfinder on image tools`
-- **Files:** `src/shared/path.ts` (`TOOLS` + `CATEGORIES` after collage), `src/shared/covers.ts`, `src/shared/seo.ts`, `src/shared/guide.ts`, 8 locale JSON, 8 guide JSON, `src/client/main.ts` (lazy mount, `unmount`, `langSwitch` `withSearch`), `src/client/portrait-sim/ui.ts`, `compositor.ts`, `assets.ts` (`mountGen`, AbortController, LRU 8, 64 MB cap, `fetch`+`createImageBitmap`), `src/client/styles.css`, `AGENTS.md`, `tests/seo.test.ts`, silhouette WebP, `public/covers/portrait-sim-sweet.jpg` (copy existing sweet), `public/covers/guides/portrait-sim/01.jpg`–`04.jpg` (**screenshots of this silhouette viewfinder**, not collage copies), `scripts/capture-guides.mjs` (`STEPS["portrait-sim"]=4` **and** `runTool` four-step scenario)
+- **Files:** `src/shared/path.ts` (`TOOLS` + `CATEGORIES` after collage), `src/shared/covers.ts`, `src/shared/seo.ts`, `src/shared/guide.ts`, 8 locale JSON, 8 guide JSON, `src/client/main.ts` (**`pageGen` before `import`**, `unmount`, `boot()` `replaceState` **and** `langSwitch` `withSearch`), `src/client/portrait-sim/ui.ts`, `compositor.ts`, `assets.ts` (`DecodedImage`, native→decoded src map, evict-before-decode, AbortController), `src/client/styles.css` (sticky `.stage-frame` ~40vh on small screens), `AGENTS.md`, `tests/seo.test.ts`, silhouette WebP, `public/covers/portrait-sim-sweet.jpg` (copy existing sweet), `public/covers/guides/portrait-sim/01.jpg`–`04.jpg` (**screenshots of this silhouette viewfinder**, not collage copies), `scripts/capture-guides.mjs` (`STEPS` + `runTool`: 24 mm at **< 1.5 m**, end with export click)
 - **Depends on:** PR 1
-- **Changes:** First time the id is in `TOOLS`, the viewfinder **already composites**. Homepage tile is a real JPEG. HowTo JSON-LD images are this tool. Snap disabled until plates decode. Cheap live Soft bloom. ISO slider disabled in P. **Do not** edit `learn.*` lesson bodies. Locale layout wrap is a **production visual check**, not `tests/i18n-keys.test.ts`.
+- **Changes:** First `TOOLS` insert already composites. Premultiplied blur. Snap/export **exclude HUD**. Cheap live Soft bloom. Sticky mini-viewfinder on mobile. Checklist: Vite boot on bare `/portrait-sim/?lens=85`, locale switch keeps search, back/forward. Locale wrap at 390 px is a **production visual check**.
 
 ### PR 3 — Production plates
 
