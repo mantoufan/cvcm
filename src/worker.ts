@@ -77,30 +77,30 @@ export default {
       );
 
       if (parsed.kind === "clip") {
-        return redirect(new URL(appHref(locale, "clip", parsed.id), url.origin).toString(), 302);
+        return redirectTo(appHref(locale, "clip", parsed.id), url, 302);
       }
       if (parsed.kind === "bare") {
-        return redirect(new URL(appHref(locale, parsed.tool, parsed.clipId), url.origin).toString(), 302);
+        return redirectTo(appHref(locale, parsed.tool, parsed.clipId), url, 302);
       }
       if (parsed.kind === "bare-learn") {
-        return redirect(new URL(learnHref(locale, parsed.tutorial), url.origin).toString(), 302);
+        return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
       }
       if (parsed.kind === "unknown") {
-        return redirect(new URL(appHref(locale, null), url.origin).toString(), 302);
+        return redirectTo(appHref(locale, null), url, 302);
       }
       if (parsed.kind === "app") {
         const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId);
         if (path !== canonical) {
-          return redirect(new URL(canonical, url.origin).toString(), 301);
+          return redirectTo(canonical, url, 301);
         }
       }
       if (parsed.kind === "learn") {
         if (parsed.tutorial && !isPublishedTutorial(parsed.tutorial)) {
-          return redirect(new URL(learnHref(parsed.locale, null), url.origin).toString(), 301);
+          return redirectTo(learnHref(parsed.locale, null), url, 301);
         }
         const canonical = learnHref(parsed.locale, parsed.tutorial);
         if (path !== canonical) {
-          return redirect(new URL(canonical, url.origin).toString(), 301);
+          return redirectTo(canonical, url, 301);
         }
       }
     }
@@ -141,6 +141,12 @@ export default {
     return withHeaders(assetResponse, path);
   },
 };
+
+function redirectTo(path: string, url: URL, status: 301 | 302): Response {
+  const next = new URL(path, url.origin);
+  next.search = url.search;
+  return redirect(next.toString(), status);
+}
 
 function redirect(location: string, status: 301 | 302 | 307): Response {
   return new Response(null, {

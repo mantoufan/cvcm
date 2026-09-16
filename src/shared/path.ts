@@ -174,3 +174,8 @@ export function learnHref(locale: Locale, tutorial: TutorialId | null = null): s
   const base = `/${localePath(locale)}/learn`;
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }
+
+/** Keep `location.search` / `url.search` on canonical redirects. */
+export function withSearch(path: string, search: string): string {
+  return search && search !== "?" ? `${path}${search}` : path;
+}

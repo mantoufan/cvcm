@@ -30,7 +30,7 @@ import { randomInt, randomInts } from "../src/shared/random";
 import { decodeHtml, encodeHtml } from "../src/shared/html";
 import { describeCron } from "../src/shared/cron";
 import { slugify } from "../src/shared/slug";
-import { appHref, parseAppPath } from "../src/shared/path";
+import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
   it("paints finders and grows with payload", () => {
@@ -500,5 +500,11 @@ describe("new routes", () => {
     expect(appHref("en", "barcode")).toBe("/en/barcode/");
     expect(appHref("en", "timezone")).toBe("/en/timezone/");
     expect(appHref("zh-CN", "units")).toBe("/zh-cn/units/");
+  });
+
+  it("keeps a query string on canonical paths", () => {
+    expect(withSearch("/en/crop/", "?lens=85")).toBe("/en/crop/?lens=85");
+    expect(withSearch("/en/crop/", "")).toBe("/en/crop/");
+    expect(withSearch("/en/crop/", "?")).toBe("/en/crop/");
   });
 });
