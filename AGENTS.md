@@ -32,6 +32,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/password/` — password generator
 - `src/client/word-count/` — word / character counter
 - `src/client/color/` — color picker
+- `src/client/hex-rgb/` — hex / RGB / HSL / CMYK converter
+- `src/client/xml-json/` — XML ↔ JSON converter
+- `src/client/hash/` — MD5 / SHA hash generator
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

@@ -7,6 +7,7 @@ import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import { LEARN_COVER, TOOL_COVER, coverUrl } from "./covers";
+import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
 import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
@@ -65,9 +66,11 @@ const TITLE: Record<ToolId, string> = {
   "audio-cutter": "meta.titleAudioCutter",
   "audio-joiner": "meta.titleAudioJoiner",
   data: "meta.titleData",
+  "xml-json": "meta.titleXmlJson",
   password: "meta.titlePassword",
   "word-count": "meta.titleWordCount",
   color: "meta.titleColor",
+  "hex-rgb": "meta.titleHexRgb",
   names: "meta.titleNames",
   timezone: "meta.titleTimezone",
   timestamp: "meta.titleTimestamp",
@@ -76,6 +79,7 @@ const TITLE: Record<ToolId, string> = {
   "text-to-speech": "meta.titleTts",
   diff: "meta.titleDiff",
   uuid: "meta.titleUuid",
+  hash: "meta.titleHash",
   regex: "meta.titleRegex",
 };
 
@@ -103,9 +107,11 @@ const DESC: Record<ToolId, string> = {
   "audio-cutter": "meta.descAudioCutter",
   "audio-joiner": "meta.descAudioJoiner",
   data: "meta.descData",
+  "xml-json": "meta.descXmlJson",
   password: "meta.descPassword",
   "word-count": "meta.descWordCount",
   color: "meta.descColor",
+  "hex-rgb": "meta.descHexRgb",
   names: "meta.descNames",
   timezone: "meta.descTimezone",
   timestamp: "meta.descTimestamp",
@@ -114,6 +120,7 @@ const DESC: Record<ToolId, string> = {
   "text-to-speech": "meta.descTts",
   diff: "meta.descDiff",
   uuid: "meta.descUuid",
+  hash: "meta.descHash",
   regex: "meta.descRegex",
 };
 
@@ -294,6 +301,10 @@ export function applyHtmlSeo(
   if (seo.learn && seo.tutorial) {
     tags.push(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howToJsonLd(locale, seo.tutorial)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.tool) {
+    tags.push(
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(toolHowToJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
     );
   }
   return out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);

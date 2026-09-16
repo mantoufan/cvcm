@@ -95,7 +95,13 @@
     "titleExif": "EXIF 제거 — 사진 메타데이터 지우기 — cv.cm",
     "descExif": "브라우저에서 사진의 EXIF와 GPS를 제거합니다. 깨끗한 JPG, PNG, WebP를 받습니다. 업로드 없음.",
     "titleAudioJoiner": "오디오 합치기 — MP3와 WAV 병합 — cv.cm",
-    "descAudioJoiner": "브라우저에서 오디오를 이어 붙입니다. 순서를 정한 뒤 WAV 하나를 받습니다. 업로드 없음."
+    "descAudioJoiner": "브라우저에서 오디오를 이어 붙입니다. 순서를 정한 뒤 WAV 하나를 받습니다. 업로드 없음.",
+    "titleHexRgb": "HEX를 RGB로 — HEX RGB HSL — cv.cm",
+    "descHexRgb": "브라우저에서 HEX를 RGB와 HSL로 바꿉니다. 색을 붙여 rgb()를 복사. 업로드 없음.",
+    "titleXmlJson": "XML을 JSON으로 — JSON을 XML로 — cv.cm",
+    "descXmlJson": "브라우저에서 XML과 JSON을 서로 바꿉니다. 업로드 없음.",
+    "titleHash": "해시 생성 — MD5 SHA-256 SHA-1 — cv.cm",
+    "descHash": "브라우저에서 텍스트나 파일을 해시. MD5, SHA-1, SHA-256, SHA-384, SHA-512. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -278,6 +284,18 @@
     "audio-joiner": {
       "name": "오디오 합치기",
       "blurb": "클립을 하나의 WAV로. 업로드 없음."
+    },
+    "hex-rgb": {
+      "name": "HEX를 RGB로",
+      "blurb": "HEX, RGB, HSL, CMYK. 값 복사. 업로드 없음."
+    },
+    "xml-json": {
+      "name": "XML을 JSON으로",
+      "blurb": "이 탭에서 XML ↔ JSON. 업로드 없음."
+    },
+    "hash": {
+      "name": "해시 생성",
+      "blurb": "MD5, SHA-256, SHA-1. 텍스트나 파일. 업로드 없음."
     }
   },
   "watermark": {
@@ -1089,6 +1107,42 @@
       "a4": "뒤 클립은 이어 붙이기 전에 첫 클립의 레이트로 다시 샘플링합니다.",
       "q5": "MP3를 유지할 수 있나요?",
       "a5": "아니요. 결과는 WAV입니다. 탭에서 MP3를 인코드하지 않습니다."
+    },
+    "hex-rgb": {
+      "q1": "Can I convert HEX to RGB here?",
+      "a1": "Yes. Paste #hex, rgb(), or hsl(). The tab shows RGB, HSL, and CMYK.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards the color.",
+      "q3": "Does it accept 3-digit hex?",
+      "a3": "Yes. #f7b expands to #ff77bb.",
+      "q4": "Can I copy rgb()?",
+      "a4": "Yes. Copy puts HEX, rgb(), hsl(), and cmyk() on the clipboard.",
+      "q5": "Is this the color picker?",
+      "a5": "The picker is a separate tool. This page is for converting values."
+    },
+    "xml-json": {
+      "q1": "Can I convert XML to JSON here?",
+      "a1": "Yes. Paste XML for JSON, or JSON for XML. It runs in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards both sides.",
+      "q3": "How are attributes shown?",
+      "a3": "Attributes become keys prefixed with @. Text nodes use #text when mixed with children.",
+      "q4": "Will every XML round-trip?",
+      "a4": "Simple documents do. Namespaces, mixed content, and DTDs are not a full XML suite.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "hash": {
+      "q1": "Can I hash text here?",
+      "a1": "Yes. MD5, SHA-1, SHA-256, SHA-384, and SHA-512 run in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Hashing stays in this tab. Closing it discards the input.",
+      "q3": "Can I hash a file?",
+      "a3": "Yes. Open file reads it locally and hashes the bytes.",
+      "q4": "Is MD5 safe for passwords?",
+      "a4": "No. MD5 and SHA-1 are broken for security. Use them for checksums, not password storage.",
+      "q5": "What does Copy copy?",
+      "a5": "The hexadecimal digest."
     }
   },
   "qr": {
@@ -1950,5 +2004,52 @@
     "working": "합치는 중…",
     "errorDecode": "이 브라우저에서 그 오디오를 읽지 못했습니다.",
     "errorEncode": "WAV를 쓰지 못했습니다."
+  },
+  "hexRgb": {
+    "title": "HEX를 RGB로",
+    "back": "모든 도구",
+    "privacyNote": "변환은 이 탭에서 실행됩니다. 업로드 없음.",
+    "options": "Color",
+    "input": "HEX, RGB, or HSL",
+    "placeholder": "#f7b6cb or rgb(247, 182, 203)",
+    "result": "Converted",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "cmyk": "CMYK",
+    "copy": "Copy values",
+    "copied": "Copied",
+    "invalid": "Paste a HEX, rgb(), or hsl() color."
+  },
+  "xmlJson": {
+    "title": "XML을 JSON으로",
+    "back": "모든 도구",
+    "privacyNote": "변환은 이 탭에서 실행됩니다. 업로드 없음.",
+    "options": "Direction",
+    "xmlJson": "XML → JSON",
+    "jsonXml": "JSON → XML",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<note><to>cv.cm</to></note>",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "empty": "Paste XML or JSON.",
+    "invalid": "Could not convert that input."
+  },
+  "hash": {
+    "title": "해시 생성",
+    "back": "모든 도구",
+    "privacyNote": "해시는 이 탭에서 실행됩니다. 업로드 없음.",
+    "options": "Algorithm",
+    "algo": "Hash",
+    "input": "Text",
+    "placeholder": "Type or paste text…",
+    "hex": "Hex",
+    "b64": "Base64",
+    "copy": "Copy hex",
+    "copied": "Copied",
+    "openFile": "Hash a file",
+    "fileMeta": "File: {name}",
+    "error": "Could not hash that input."
   }
 }

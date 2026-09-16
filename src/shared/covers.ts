@@ -24,9 +24,11 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "audio-cutter": "/covers/audio-cutter-sweet.jpg?v=1",
   "audio-joiner": "/covers/audio-joiner-sweet.jpg?v=1",
   data: "/covers/data-sweet.jpg?v=2",
+  "xml-json": "/covers/xml-json-sweet.jpg?v=1",
   password: "/covers/password-sweet.jpg?v=1",
   "word-count": "/covers/word-count-sweet.jpg?v=1",
   color: "/covers/color-sweet.jpg?v=1",
+  "hex-rgb": "/covers/hex-rgb-sweet.jpg?v=1",
   names: "/covers/names-sweet.jpg?v=1",
   timezone: "/covers/timezone-sweet.jpg?v=2",
   timestamp: "/covers/timestamp-sweet.jpg?v=1",
@@ -35,6 +37,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "text-to-speech": "/covers/text-to-speech-sweet.jpg?v=2",
   diff: "/covers/diff-sweet.jpg?v=1",
   uuid: "/covers/uuid-sweet.jpg?v=1",
+  hash: "/covers/hash-sweet.jpg?v=1",
   regex: "/covers/regex-sweet.jpg?v=1",
 };
 

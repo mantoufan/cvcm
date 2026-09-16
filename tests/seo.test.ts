@@ -44,13 +44,16 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "rotate")).toMatch(/Rotate image/i);
     expect(pageTitle("en", "exif")).toMatch(/EXIF remover/i);
     expect(pageTitle("en", "audio-joiner")).toMatch(/Audio joiner/i);
+    expect(pageTitle("en", "hex-rgb")).toMatch(/Hex to RGB/i);
+    expect(pageTitle("en", "xml-json")).toMatch(/XML to JSON/i);
+    expect(pageTitle("en", "hash")).toMatch(/Hash generator/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "password", "word-count", "color", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "regex",
+      "clip", "qr", "barcode", "watermark", "collage", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);
@@ -69,6 +72,8 @@ describe("seo helpers", () => {
     expect(out).toContain('href="https://cv.cm/en/convert/"');
     expect(out).toContain('id="faq-jsonld"');
     expect(out).toContain("FAQPage");
+    expect(out).toContain('id="howto-jsonld"');
+    expect(out).toContain("HowTo");
     expect(out).toContain('lang="en"');
   });
 });

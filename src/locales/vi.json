@@ -95,7 +95,13 @@
     "titleExif": "Xóa EXIF — gỡ metadata ảnh — cv.cm",
     "descExif": "Gỡ EXIF và GPS khỏi ảnh trong trình duyệt. Tải JPG, PNG hoặc WebP sạch. Không tải lên.",
     "titleAudioJoiner": "Ghép audio — nối MP3 và WAV — cv.cm",
-    "descAudioJoiner": "Nối clip audio trong trình duyệt. Sắp thứ tự, tải một WAV. Không tải lên."
+    "descAudioJoiner": "Nối clip audio trong trình duyệt. Sắp thứ tự, tải một WAV. Không tải lên.",
+    "titleHexRgb": "HEX sang RGB — HEX RGB HSL — cv.cm",
+    "descHexRgb": "Đổi HEX sang RGB và HSL trong trình duyệt. Dán màu, sao chép rgb(). Không tải lên.",
+    "titleXmlJson": "XML sang JSON — JSON sang XML — cv.cm",
+    "descXmlJson": "Đổi XML sang JSON và JSON sang XML trong trình duyệt. Không tải lên.",
+    "titleHash": "Tạo hash — MD5 SHA-256 SHA-1 — cv.cm",
+    "descHash": "Hash văn bản hoặc tệp trong trình duyệt. MD5, SHA-1, SHA-256, SHA-384, SHA-512. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -278,6 +284,18 @@
     "audio-joiner": {
       "name": "Ghép audio",
       "blurb": "Nối clip thành một WAV. Không tải lên."
+    },
+    "hex-rgb": {
+      "name": "HEX sang RGB",
+      "blurb": "HEX, RGB, HSL, CMYK. Sao chép giá trị. Không tải lên."
+    },
+    "xml-json": {
+      "name": "XML sang JSON",
+      "blurb": "XML ↔ JSON trong tab này. Không tải lên."
+    },
+    "hash": {
+      "name": "Tạo hash",
+      "blurb": "MD5, SHA-256, SHA-1. Hash chữ hoặc tệp. Không tải lên."
     }
   },
   "watermark": {
@@ -1089,6 +1107,42 @@
       "a4": "Clip sau được lấy mẫu lại theo clip đầu trước khi ghép.",
       "q5": "Giữ MP3 được không?",
       "a5": "Không. File ghép là WAV, tab không mã hoá MP3."
+    },
+    "hex-rgb": {
+      "q1": "Can I convert HEX to RGB here?",
+      "a1": "Yes. Paste #hex, rgb(), or hsl(). The tab shows RGB, HSL, and CMYK.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards the color.",
+      "q3": "Does it accept 3-digit hex?",
+      "a3": "Yes. #f7b expands to #ff77bb.",
+      "q4": "Can I copy rgb()?",
+      "a4": "Yes. Copy puts HEX, rgb(), hsl(), and cmyk() on the clipboard.",
+      "q5": "Is this the color picker?",
+      "a5": "The picker is a separate tool. This page is for converting values."
+    },
+    "xml-json": {
+      "q1": "Can I convert XML to JSON here?",
+      "a1": "Yes. Paste XML for JSON, or JSON for XML. It runs in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards both sides.",
+      "q3": "How are attributes shown?",
+      "a3": "Attributes become keys prefixed with @. Text nodes use #text when mixed with children.",
+      "q4": "Will every XML round-trip?",
+      "a4": "Simple documents do. Namespaces, mixed content, and DTDs are not a full XML suite.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "hash": {
+      "q1": "Can I hash text here?",
+      "a1": "Yes. MD5, SHA-1, SHA-256, SHA-384, and SHA-512 run in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Hashing stays in this tab. Closing it discards the input.",
+      "q3": "Can I hash a file?",
+      "a3": "Yes. Open file reads it locally and hashes the bytes.",
+      "q4": "Is MD5 safe for passwords?",
+      "a4": "No. MD5 and SHA-1 are broken for security. Use them for checksums, not password storage.",
+      "q5": "What does Copy copy?",
+      "a5": "The hexadecimal digest."
     }
   },
   "qr": {
@@ -1950,5 +2004,52 @@
     "working": "Đang ghép…",
     "errorDecode": "Trình duyệt không đọc được audio này.",
     "errorEncode": "Không ghi được WAV."
+  },
+  "hexRgb": {
+    "title": "HEX sang RGB",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đổi trong tab này. Không tải lên.",
+    "options": "Color",
+    "input": "HEX, RGB, or HSL",
+    "placeholder": "#f7b6cb or rgb(247, 182, 203)",
+    "result": "Converted",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "cmyk": "CMYK",
+    "copy": "Copy values",
+    "copied": "Copied",
+    "invalid": "Paste a HEX, rgb(), or hsl() color."
+  },
+  "xmlJson": {
+    "title": "XML sang JSON",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đổi trong tab này. Không tải lên.",
+    "options": "Direction",
+    "xmlJson": "XML → JSON",
+    "jsonXml": "JSON → XML",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<note><to>cv.cm</to></note>",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "empty": "Paste XML or JSON.",
+    "invalid": "Could not convert that input."
+  },
+  "hash": {
+    "title": "Tạo hash",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Hash trong tab này. Không tải lên.",
+    "options": "Algorithm",
+    "algo": "Hash",
+    "input": "Text",
+    "placeholder": "Type or paste text…",
+    "hex": "Hex",
+    "b64": "Base64",
+    "copy": "Copy hex",
+    "copied": "Copied",
+    "openFile": "Hash a file",
+    "fileMeta": "File: {name}",
+    "error": "Could not hash that input."
   }
 }

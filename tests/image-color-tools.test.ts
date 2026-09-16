@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contrastRatio, hexToRgb, parseColor, rgbToHex, rgbToHsl, hslToRgb } from "../src/shared/color";
+import { contrastRatio, formatCmyk, hexToRgb, parseColor, rgbToCmyk, rgbToHex, rgbToHsl, hslToRgb } from "../src/shared/color";
 import { clampRect, applyAspect, fitContain } from "../src/shared/crop";
 import { targetSize, formatBytes } from "../src/shared/resize";
 import { appHref, parseAppPath } from "../src/shared/path";
@@ -13,6 +13,7 @@ describe("color", () => {
     const back = hslToRgb(rgbToHsl(rgb));
     expect(back.r).toBeGreaterThan(240);
     expect(contrastRatio({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 })).toBeCloseTo(21, 5);
+    expect(formatCmyk(rgbToCmyk({ r: 255, g: 0, b: 0 }))).toBe("cmyk(0%, 100%, 100%, 0%)");
   });
 });
 
@@ -39,6 +40,7 @@ describe("crop", () => {
 describe("new image routes", () => {
   it("parses color, resize, and crop paths", () => {
     expect(parseAppPath("/en/color/")).toEqual({ kind: "app", locale: "en", tool: "color" });
+    expect(parseAppPath("/en/hex-rgb/")).toEqual({ kind: "app", locale: "en", tool: "hex-rgb" });
     expect(parseAppPath("/zh-CN/resize/")).toEqual({ kind: "app", locale: "zh-CN", tool: "resize" });
     expect(parseAppPath("/es/crop/")).toEqual({ kind: "app", locale: "es", tool: "crop" });
     expect(appHref("ja", "resize")).toBe("/ja/resize/");

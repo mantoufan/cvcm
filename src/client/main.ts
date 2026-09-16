@@ -6,6 +6,9 @@ import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
 import { mountData, unmountData } from "./data/ui";
 import { mountColor, unmountColor } from "./color/ui";
+import { mountHexRgb, unmountHexRgb } from "./hex-rgb/ui";
+import { mountXmlJson, unmountXmlJson } from "./xml-json/ui";
+import { mountHash, unmountHash } from "./hash/ui";
 import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountRotate, unmountRotate } from "./rotate/ui";
 import { mountExif, unmountExif } from "./exif/ui";
@@ -29,6 +32,7 @@ import { mountSignature, unmountSignature } from "./signature/ui";
 import { mountFavicon, unmountFavicon } from "./favicon/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
+import { guideSection } from "./guide";
 import { mountHome } from "./home";
 import { mountLearn, mountLearnHub } from "./learn/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
@@ -159,6 +163,9 @@ function unmountTools(): void {
   unmountUuid();
   unmountRegex();
   unmountColor();
+  unmountHexRgb();
+  unmountXmlJson();
+  unmountHash();
   unmountResize();
   unmountCrop();
   unmountRotate();
@@ -265,6 +272,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "uuid") mountUuid(main);
   else if (tool === "regex") mountRegex(main);
   else if (tool === "color") mountColor(main);
+  else if (tool === "hex-rgb") mountHexRgb(main);
+  else if (tool === "xml-json") mountXmlJson(main);
+  else if (tool === "hash") mountHash(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
   else if (tool === "rotate") await mountRotate(main);
@@ -292,7 +302,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   } else if (learnHub) mountLearnHub(main);
   else if (tutorial) mountLearn(main, tutorial);
   else mountHome(main, loc);
-  if (tool && !(tool === "clip" && clipId)) main.append(faqSection(loc, tool));
+  if (tool && !(tool === "clip" && clipId)) {
+    main.append(guideSection(tool), faqSection(loc, tool));
+  }
 }
 
 function menuToggle(e: Event): void {

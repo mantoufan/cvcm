@@ -74,6 +74,27 @@ export function formatHsl({ h, s, l }: HSL): string {
   return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
 }
 
+export type CMYK = { c: number; m: number; y: number; k: number };
+
+export function rgbToCmyk({ r, g, b }: RGB): CMYK {
+  const R = clamp(r) / 255;
+  const G = clamp(g) / 255;
+  const B = clamp(b) / 255;
+  const k = 1 - Math.max(R, G, B);
+  if (k >= 1 - 1e-9) return { c: 0, m: 0, y: 0, k: 1 };
+  return {
+    c: (1 - R - k) / (1 - k),
+    m: (1 - G - k) / (1 - k),
+    y: (1 - B - k) / (1 - k),
+    k,
+  };
+}
+
+export function formatCmyk({ c, m, y, k }: CMYK): string {
+  const p = (n: number) => Math.round(n * 100);
+  return `cmyk(${p(c)}%, ${p(m)}%, ${p(y)}%, ${p(k)}%)`;
+}
+
 export function parseColor(input: string): RGB | null {
   const text = input.trim();
   const hex = hexToRgb(text);

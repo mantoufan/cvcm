@@ -20,6 +20,8 @@ import { parseStamp, unixToMs } from "../src/shared/timestamp";
 import { normalizeDegrees, rotatedSize } from "../src/shared/rotate";
 import { detectMetadata, hasJpegExif } from "../src/shared/exif";
 import { concatClips } from "../src/shared/audio-join";
+import { jsonToXml, xmlToJson } from "../src/shared/xml-json";
+import { digest, md5, toHex } from "../src/shared/hash";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -322,6 +324,23 @@ describe("audio joiner", () => {
   });
 });
 
+describe("xml-json", () => {
+  it("converts attributes, children, and numbers", () => {
+    const json = xmlToJson('<note id="1"><to>cv.cm</to><n>2</n></note>');
+    expect(json).toEqual({ "@id": "1", to: "cv.cm", n: 2 });
+    expect(jsonToXml({ item: "x" }, "root")).toContain("<item>x</item>");
+  });
+});
+
+describe("hash", () => {
+  it("hashes MD5 and SHA-256", async () => {
+    expect(toHex(md5(new TextEncoder().encode("")))).toBe("d41d8cd98f00b204e9800998ecf8427e");
+    expect(toHex(md5(new TextEncoder().encode("abc")))).toBe("900150983cd24fb0d6963f7d28e17f72");
+    const sha = await digest("SHA-256", new TextEncoder().encode(""));
+    expect(toHex(sha)).toBe("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -357,6 +376,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/rotate/")).toEqual({ kind: "app", locale: "en", tool: "rotate" });
     expect(parseAppPath("/en/exif/")).toEqual({ kind: "app", locale: "en", tool: "exif" });
     expect(parseAppPath("/en/audio-joiner/")).toEqual({ kind: "app", locale: "en", tool: "audio-joiner" });
+    expect(parseAppPath("/en/hex-rgb/")).toEqual({ kind: "app", locale: "en", tool: "hex-rgb" });
+    expect(parseAppPath("/en/xml-json/")).toEqual({ kind: "app", locale: "en", tool: "xml-json" });
+    expect(parseAppPath("/en/hash/")).toEqual({ kind: "app", locale: "en", tool: "hash" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
@@ -366,6 +388,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "rotate")).toBe("/zh-cn/rotate/");
     expect(appHref("zh-CN", "exif")).toBe("/zh-cn/exif/");
     expect(appHref("zh-CN", "audio-joiner")).toBe("/zh-cn/audio-joiner/");
+    expect(appHref("zh-CN", "hex-rgb")).toBe("/zh-cn/hex-rgb/");
+    expect(appHref("zh-CN", "xml-json")).toBe("/zh-cn/xml-json/");
+    expect(appHref("zh-CN", "hash")).toBe("/zh-cn/hash/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

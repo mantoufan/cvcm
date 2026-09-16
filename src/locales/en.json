@@ -95,7 +95,13 @@
     "titleExif": "EXIF remover — strip photo metadata — cv.cm",
     "descExif": "Remove EXIF and GPS from a photo in the browser. Download a clean JPG, PNG, or WebP. Nothing is uploaded.",
     "titleAudioJoiner": "Audio joiner — merge MP3 and WAV — cv.cm",
-    "descAudioJoiner": "Join audio clips in the browser. Reorder, then download one WAV. Nothing is uploaded."
+    "descAudioJoiner": "Join audio clips in the browser. Reorder, then download one WAV. Nothing is uploaded.",
+    "titleHexRgb": "Hex to RGB converter — HEX RGB HSL — cv.cm",
+    "descHexRgb": "Convert HEX to RGB and HSL in the browser. Paste a color, copy rgb(). Nothing is uploaded.",
+    "titleXmlJson": "XML to JSON converter — JSON to XML — cv.cm",
+    "descXmlJson": "Convert XML to JSON and JSON to XML in the browser. Nothing is uploaded.",
+    "titleHash": "Hash generator — MD5 SHA-256 SHA-1 — cv.cm",
+    "descHash": "Hash text or a file in the browser. MD5, SHA-1, SHA-256, SHA-384, SHA-512. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -584,6 +590,18 @@
     "audio-joiner": {
       "name": "Audio joiner",
       "blurb": "Join clips into one WAV. Nothing is uploaded."
+    },
+    "hex-rgb": {
+      "name": "Hex to RGB",
+      "blurb": "HEX, RGB, HSL, CMYK. Copy values. Nothing is uploaded."
+    },
+    "xml-json": {
+      "name": "XML to JSON",
+      "blurb": "XML ↔ JSON in this tab. Nothing is uploaded."
+    },
+    "hash": {
+      "name": "Hash generator",
+      "blurb": "MD5, SHA-256, SHA-1. Hash text or a file. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1395,6 +1413,42 @@
       "a4": "Later clips are resampled to the first clip’s rate before they are joined.",
       "q5": "Can I keep MP3?",
       "a5": "No. The joined file is WAV so the tab does not need an MP3 encoder."
+    },
+    "hex-rgb": {
+      "q1": "Can I convert HEX to RGB here?",
+      "a1": "Yes. Paste #hex, rgb(), or hsl(). The tab shows RGB, HSL, and CMYK.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards the color.",
+      "q3": "Does it accept 3-digit hex?",
+      "a3": "Yes. #f7b expands to #ff77bb.",
+      "q4": "Can I copy rgb()?",
+      "a4": "Yes. Copy puts HEX, rgb(), hsl(), and cmyk() on the clipboard.",
+      "q5": "Is this the color picker?",
+      "a5": "The picker is a separate tool. This page is for converting values."
+    },
+    "xml-json": {
+      "q1": "Can I convert XML to JSON here?",
+      "a1": "Yes. Paste XML for JSON, or JSON for XML. It runs in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards both sides.",
+      "q3": "How are attributes shown?",
+      "a3": "Attributes become keys prefixed with @. Text nodes use #text when mixed with children.",
+      "q4": "Will every XML round-trip?",
+      "a4": "Simple documents do. Namespaces, mixed content, and DTDs are not a full XML suite.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "hash": {
+      "q1": "Can I hash text here?",
+      "a1": "Yes. MD5, SHA-1, SHA-256, SHA-384, and SHA-512 run in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Hashing stays in this tab. Closing it discards the input.",
+      "q3": "Can I hash a file?",
+      "a3": "Yes. Open file reads it locally and hashes the bytes.",
+      "q4": "Is MD5 safe for passwords?",
+      "a4": "No. MD5 and SHA-1 are broken for security. Use them for checksums, not password storage.",
+      "q5": "What does Copy copy?",
+      "a5": "The hexadecimal digest."
     }
   },
   "qr": {
@@ -1950,5 +2004,52 @@
     "working": "Joining…",
     "errorDecode": "Could not read this audio in the browser.",
     "errorEncode": "Could not write the WAV."
+  },
+  "hexRgb": {
+    "title": "Hex to RGB",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Color",
+    "input": "HEX, RGB, or HSL",
+    "placeholder": "#f7b6cb or rgb(247, 182, 203)",
+    "result": "Converted",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "cmyk": "CMYK",
+    "copy": "Copy values",
+    "copied": "Copied",
+    "invalid": "Paste a HEX, rgb(), or hsl() color."
+  },
+  "xmlJson": {
+    "title": "XML to JSON",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "xmlJson": "XML → JSON",
+    "jsonXml": "JSON → XML",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<note><to>cv.cm</to></note>",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "empty": "Paste XML or JSON.",
+    "invalid": "Could not convert that input."
+  },
+  "hash": {
+    "title": "Hash generator",
+    "back": "All tools",
+    "privacyNote": "Hashing stays in this tab. Nothing is uploaded.",
+    "options": "Algorithm",
+    "algo": "Hash",
+    "input": "Text",
+    "placeholder": "Type or paste text…",
+    "hex": "Hex",
+    "b64": "Base64",
+    "copy": "Copy hex",
+    "copied": "Copied",
+    "openFile": "Hash a file",
+    "fileMeta": "File: {name}",
+    "error": "Could not hash that input."
   }
 }
