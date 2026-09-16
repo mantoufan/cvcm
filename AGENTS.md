@@ -43,6 +43,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/invoice/` — invoice PDF generator
 - `src/client/names/` — name and username generator
 - `src/client/timezone/` — time zone converter
+- `src/client/timestamp/` — Unix timestamp converter
 - `src/client/lorem/` — lorem ipsum generator
 - `src/client/units/` — unit converter
 - `src/client/tts/` — text to speech (browser SpeechSynthesis)

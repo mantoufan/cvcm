@@ -774,6 +774,11 @@ input[type="color"] {
   background: #fff7fb;
 }
 .password-stage { display: grid; gap: 0.7rem; }
+.timestamp-out dd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr auto;

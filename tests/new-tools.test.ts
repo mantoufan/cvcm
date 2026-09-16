@@ -16,6 +16,7 @@ import { generateUuids, isUuidV4, uuidV4 } from "../src/shared/uuid";
 import { MAX_MATCHES, normalizeFlags, runRegex } from "../src/shared/regex";
 import { packIco, squareDest, squareSource } from "../src/shared/favicon";
 import { clampRange, formatClock, sliceChannels, waveformPeaks } from "../src/shared/audio-cut";
+import { parseStamp, unixToMs } from "../src/shared/timestamp";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -267,6 +268,27 @@ describe("audio cutter", () => {
   });
 });
 
+describe("timestamp", () => {
+  it("parses unix seconds, milliseconds, ISO, and now", () => {
+    const sec = parseStamp("1700000000");
+    expect(sec.ok).toBe(true);
+    if (!sec.ok) return;
+    expect(sec.stamp.iso).toBe("2023-11-14T22:13:20.000Z");
+    expect(sec.stamp.seconds).toBe("1700000000");
+    const ms = parseStamp("1700000000000");
+    expect(ms.ok && ms.stamp.iso).toBe("2023-11-14T22:13:20.000Z");
+    const iso = parseStamp("2023-11-14T22:13:20.000Z");
+    expect(iso.ok && iso.stamp.milliseconds).toBe("1700000000000");
+    const now = parseStamp("now", 1700000000000);
+    expect(now.ok && now.stamp.seconds).toBe("1700000000");
+    expect(parseStamp("")).toEqual({ ok: false, error: "empty" });
+    expect(parseStamp("not-a-date")).toEqual({ ok: false, error: "invalid" });
+    expect(unixToMs(1700000000)).toBe(1700000000000);
+    expect(unixToMs(1700000000000)).toBe(1700000000000);
+    expect(unixToMs(1700000000000000)).toBe(1700000000000);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -298,11 +320,13 @@ describe("new routes", () => {
     expect(parseAppPath("/en/regex/")).toEqual({ kind: "app", locale: "en", tool: "regex" });
     expect(parseAppPath("/en/favicon/")).toEqual({ kind: "app", locale: "en", tool: "favicon" });
     expect(parseAppPath("/en/audio-cutter/")).toEqual({ kind: "app", locale: "en", tool: "audio-cutter" });
+    expect(parseAppPath("/en/timestamp/")).toEqual({ kind: "app", locale: "en", tool: "timestamp" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
     expect(appHref("zh-CN", "favicon")).toBe("/zh-cn/favicon/");
     expect(appHref("zh-CN", "audio-cutter")).toBe("/zh-cn/audio-cutter/");
+    expect(appHref("zh-CN", "timestamp")).toBe("/zh-cn/timestamp/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

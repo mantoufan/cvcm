@@ -87,7 +87,9 @@
     "titleFavicon": "Favicon generator — ICO and PNG — cv.cm",
     "descFavicon": "Make a favicon from a photo in the browser. Download ICO and PNG sizes. Nothing is uploaded.",
     "titleAudioCutter": "Audio cutter — trim MP3 and WAV — cv.cm",
-    "descAudioCutter": "Trim audio in the browser. Set start and end, download WAV. Nothing is uploaded."
+    "descAudioCutter": "Trim audio in the browser. Set start and end, download WAV. Nothing is uploaded.",
+    "titleTimestamp": "Timestamp converter — Unix time to date — cv.cm",
+    "descTimestamp": "Convert Unix timestamps to dates in the browser. Seconds, milliseconds, ISO 8601. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -560,6 +562,10 @@
     "audio-cutter": {
       "name": "Audio cutter",
       "blurb": "Trim a clip. Download WAV. Nothing is uploaded."
+    },
+    "timestamp": {
+      "name": "Timestamp converter",
+      "blurb": "Unix time to date. Seconds, milliseconds, ISO. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1323,6 +1329,18 @@
       "a4": "Yes. Play selection plays from the start mark to the end mark.",
       "q5": "Can I keep the original format?",
       "a5": "No. The cut is written as WAV so the tab does not need an encoder for MP3 or AAC."
+    },
+    "timestamp": {
+      "q1": "Can I convert a Unix timestamp here?",
+      "a1": "Yes. Paste seconds, milliseconds, or an ISO date. The tab shows UTC and your local time.",
+      "q2": "How do you tell seconds from milliseconds?",
+      "a2": "About 13 or more digits are milliseconds. Shorter numbers are seconds. ISO dates are parsed as dates.",
+      "q3": "Is anything uploaded?",
+      "a3": "No. Conversion runs in this tab. Closing it discards the input.",
+      "q4": "What is Now?",
+      "a4": "Now fills the current Unix time in seconds. A live line also shows the current second.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts seconds, milliseconds, ISO, and the UTC string on the clipboard."
     }
   },
   "qr": {
@@ -1792,5 +1810,26 @@
     "errorDecode": "Could not read this audio in the browser.",
     "errorEncode": "Could not write the WAV.",
     "meta": "{duration} total · {start}–{end} · {cut} kept"
+  },
+  "timestamp": {
+    "title": "Timestamp converter",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Input",
+    "input": "Timestamp or date",
+    "placeholder": "1700000000 or 2023-11-14T22:13:20Z",
+    "now": "Now",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "result": "Converted",
+    "seconds": "Unix seconds",
+    "milliseconds": "Milliseconds",
+    "iso": "ISO 8601 (UTC)",
+    "utc": "UTC",
+    "local": "Local",
+    "empty": "Type a timestamp or a date.",
+    "invalid": "That is not a Unix time or a date this tab can parse.",
+    "range": "That value is outside the range JavaScript Date can represent.",
+    "live": "Now: {seconds}"
   }
 }

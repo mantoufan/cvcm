@@ -87,7 +87,9 @@
     "titleFavicon": "Favicon 生成器 — ICO 和 PNG — cv.cm",
     "descFavicon": "在浏览器里把照片做成 favicon。下载 ICO 和 PNG 尺寸。不上传。",
     "titleAudioCutter": "音频剪辑 — 裁剪 MP3 和 WAV — cv.cm",
-    "descAudioCutter": "在浏览器里裁剪音频。设定起止，下载 WAV。不上传。"
+    "descAudioCutter": "在浏览器里裁剪音频。设定起止，下载 WAV。不上传。",
+    "titleTimestamp": "时间戳转换 — Unix 时间转日期 — cv.cm",
+    "descTimestamp": "在浏览器里把 Unix 时间戳转成日期。秒、毫秒、ISO 8601。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -254,6 +256,10 @@
     "audio-cutter": {
       "name": "音频剪辑",
       "blurb": "裁一段音频，下载 WAV。不上传。"
+    },
+    "timestamp": {
+      "name": "时间戳转换",
+      "blurb": "Unix 时间转日期。秒、毫秒、ISO。不上传。"
     }
   },
   "watermark": {
@@ -1017,6 +1023,18 @@
       "a4": "可以。播放选区会从起点播到终点。",
       "q5": "能保留原格式吗？",
       "a5": "不能。切出来写成 WAV，这样标签页不必编码 MP3 或 AAC。"
+    },
+    "timestamp": {
+      "q1": "能在这里转换 Unix 时间戳吗？",
+      "a1": "可以。粘贴秒、毫秒或 ISO 日期。标签页会显示 UTC 和本地时间。",
+      "q2": "怎么区分秒和毫秒？",
+      "a2": "大约 13 位及以上当毫秒，更短的当秒。ISO 日期按日期解析。",
+      "q3": "会上传吗？",
+      "a3": "不会。转换在当前标签页进行，关掉即丢。",
+      "q4": "现在是什么？",
+      "a4": "现在会填入当前 Unix 秒。另有一行实时显示当前秒。",
+      "q5": "能复制结果吗？",
+      "a5": "可以。复制会把秒、毫秒、ISO 和 UTC 字符串放进剪贴板。"
     }
   },
   "qr": {
@@ -1792,5 +1810,26 @@
     "errorDecode": "浏览器无法读取这段音频。",
     "errorEncode": "无法写出 WAV。",
     "meta": "全长 {duration} · {start}–{end} · 保留 {cut}"
+  },
+  "timestamp": {
+    "title": "时间戳转换",
+    "back": "全部工具",
+    "privacyNote": "转换在当前标签页进行。不上传。",
+    "options": "输入",
+    "input": "时间戳或日期",
+    "placeholder": "1700000000 或 2023-11-14T22:13:20Z",
+    "now": "现在",
+    "copy": "复制结果",
+    "copied": "已复制",
+    "result": "转换结果",
+    "seconds": "Unix 秒",
+    "milliseconds": "毫秒",
+    "iso": "ISO 8601（UTC）",
+    "utc": "UTC",
+    "local": "本地",
+    "empty": "请输入时间戳或日期。",
+    "invalid": "这不是本页能解析的 Unix 时间或日期。",
+    "range": "超出 JavaScript Date 能表示的范围。",
+    "live": "现在：{seconds}"
   }
 }

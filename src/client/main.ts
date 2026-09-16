@@ -10,6 +10,7 @@ import { mountMeme, unmountMeme } from "./meme/ui";
 import { mountLorem, unmountLorem } from "./lorem/ui";
 import { mountNames, unmountNames } from "./names/ui";
 import { mountTimezone, unmountTimezone } from "./timezone/ui";
+import { mountTimestamp, unmountTimestamp } from "./timestamp/ui";
 import { mountUnits, unmountUnits } from "./units/ui";
 import { mountPassword, unmountPassword } from "./password/ui";
 import { mountQr, unmountQr } from "./qr/ui";
@@ -146,6 +147,7 @@ function unmountTools(): void {
   unmountWordCount();
   unmountNames();
   unmountTimezone();
+  unmountTimestamp();
   unmountLorem();
   unmountUnits();
   unmountTts();
@@ -248,6 +250,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "word-count") mountWordCount(main);
   else if (tool === "names") mountNames(main);
   else if (tool === "timezone") mountTimezone(main);
+  else if (tool === "timestamp") mountTimestamp(main);
   else if (tool === "lorem") mountLorem(main);
   else if (tool === "units") mountUnits(main);
   else if (tool === "text-to-speech") mountTts(main);

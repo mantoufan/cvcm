@@ -26,6 +26,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   color: "/covers/color-sweet.jpg?v=1",
   names: "/covers/names-sweet.jpg?v=1",
   timezone: "/covers/timezone-sweet.jpg?v=2",
+  timestamp: "/covers/timestamp-sweet.jpg?v=1",
   lorem: "/covers/lorem-sweet.jpg?v=2",
   units: "/covers/units-sweet.jpg?v=2",
   "text-to-speech": "/covers/text-to-speech-sweet.jpg?v=2",

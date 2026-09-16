@@ -87,7 +87,9 @@
     "titleFavicon": "Tạo favicon — ICO và PNG — cv.cm",
     "descFavicon": "Tạo favicon từ ảnh trong trình duyệt. Tải ICO và các cỡ PNG. Không tải lên.",
     "titleAudioCutter": "Cắt audio — cắt MP3 và WAV — cv.cm",
-    "descAudioCutter": "Cắt audio trong trình duyệt. Chọn đầu-cuối, tải WAV. Không tải lên."
+    "descAudioCutter": "Cắt audio trong trình duyệt. Chọn đầu-cuối, tải WAV. Không tải lên.",
+    "titleTimestamp": "Đổi timestamp — Unix time sang ngày — cv.cm",
+    "descTimestamp": "Đổi timestamp Unix thành ngày trong trình duyệt. Giây, mili giây, ISO 8601. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -254,6 +256,10 @@
     "audio-cutter": {
       "name": "Cắt audio",
       "blurb": "Cắt một đoạn, tải WAV. Không tải lên."
+    },
+    "timestamp": {
+      "name": "Đổi timestamp",
+      "blurb": "Unix time thành ngày. Giây, mili giây, ISO. Không tải lên."
     }
   },
   "watermark": {
@@ -1017,6 +1023,18 @@
       "a4": "Được. Phát vùng chọn chạy từ mốc đầu đến mốc cuối.",
       "q5": "Giữ nguyên định dạng gốc được không?",
       "a5": "Không. Đoạn cắt ghi thành WAV, tab không mã hoá MP3 hay AAC."
+    },
+    "timestamp": {
+      "q1": "Đổi timestamp Unix ở đây được không?",
+      "a1": "Được. Dán giây, mili giây hoặc ngày ISO. Tab hiện UTC và giờ máy bạn.",
+      "q2": "Phân biệt giây và mili giây thế nào?",
+      "a2": "Khoảng 13 chữ số trở lên là mili giây. Số ngắn hơn là giây. Ngày ISO được phân tích như ngày.",
+      "q3": "Có tải lên không?",
+      "a3": "Không. Đổi trong tab này. Đóng là mất.",
+      "q4": "Now là gì?",
+      "a4": "Now điền Unix giây hiện tại. Một dòng live cũng hiện giây hiện tại.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa giây, mili giây, ISO và chuỗi UTC vào clipboard."
     }
   },
   "qr": {
@@ -1792,5 +1810,26 @@
     "errorDecode": "Trình duyệt không đọc được audio này.",
     "errorEncode": "Không ghi được WAV.",
     "meta": "Tổng {duration} · {start}–{end} · giữ {cut}"
+  },
+  "timestamp": {
+    "title": "Đổi timestamp",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đổi trong tab này. Không tải lên.",
+    "options": "Nhập",
+    "input": "Timestamp hoặc ngày",
+    "placeholder": "1700000000 hoặc 2023-11-14T22:13:20Z",
+    "now": "Bây giờ",
+    "copy": "Sao chép kết quả",
+    "copied": "Đã sao chép",
+    "result": "Đã đổi",
+    "seconds": "Unix giây",
+    "milliseconds": "Mili giây",
+    "iso": "ISO 8601 (UTC)",
+    "utc": "UTC",
+    "local": "Địa phương",
+    "empty": "Nhập timestamp hoặc ngày.",
+    "invalid": "Đây không phải Unix time hay ngày tab này đọc được.",
+    "range": "Nằm ngoài phạm vi JavaScript Date biểu diễn được.",
+    "live": "Bây giờ: {seconds}"
   }
 }

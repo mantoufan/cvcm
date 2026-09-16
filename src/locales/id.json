@@ -87,7 +87,9 @@
     "titleFavicon": "Pembuat favicon — ICO dan PNG — cv.cm",
     "descFavicon": "Buat favicon dari foto di browser. Unduh ICO dan ukuran PNG. Tidak diunggah.",
     "titleAudioCutter": "Pemotong audio — potong MP3 dan WAV — cv.cm",
-    "descAudioCutter": "Potong audio di browser. Atur awal dan akhir, unduh WAV. Tidak diunggah."
+    "descAudioCutter": "Potong audio di browser. Atur awal dan akhir, unduh WAV. Tidak diunggah.",
+    "titleTimestamp": "Pengonversi timestamp — Unix time ke tanggal — cv.cm",
+    "descTimestamp": "Ubah timestamp Unix menjadi tanggal di browser. Detik, milidetik, ISO 8601. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -254,6 +256,10 @@
     "audio-cutter": {
       "name": "Pemotong audio",
       "blurb": "Potong klip, unduh WAV. Tanpa unggah."
+    },
+    "timestamp": {
+      "name": "Pengonversi timestamp",
+      "blurb": "Unix time ke tanggal. Detik, milidetik, ISO. Tanpa unggah."
     }
   },
   "watermark": {
@@ -1017,6 +1023,18 @@
       "a4": "Bisa. Putar pilihan memutar dari tanda awal sampai tanda akhir.",
       "q5": "Bisa tetap format asli?",
       "a5": "Tidak. Potongan ditulis sebagai WAV agar tab tidak perlu encoder MP3 atau AAC."
+    },
+    "timestamp": {
+      "q1": "Bisa ubah timestamp Unix di sini?",
+      "a1": "Bisa. Tempel detik, milidetik, atau tanggal ISO. Tab menampilkan UTC dan waktu lokal.",
+      "q2": "Bagaimana membedakan detik dan milidetik?",
+      "a2": "Sekitar 13 digit atau lebih adalah milidetik. Angka lebih pendek adalah detik. Tanggal ISO diurai sebagai tanggal.",
+      "q3": "Apakah diunggah?",
+      "a3": "Tidak. Konversi berjalan di tab ini. Menutup tab membuang masukan.",
+      "q4": "Apa itu Now?",
+      "a4": "Now mengisi Unix time saat ini dalam detik. Ada juga baris langsung yang menampilkan detik sekarang.",
+      "q5": "Bisa salin hasilnya?",
+      "a5": "Bisa. Salin menaruh detik, milidetik, ISO, dan string UTC ke clipboard."
     }
   },
   "qr": {
@@ -1792,5 +1810,26 @@
     "errorDecode": "Browser tidak bisa membaca audio ini.",
     "errorEncode": "Tidak bisa menulis WAV.",
     "meta": "Total {duration} · {start}–{end} · disimpan {cut}"
+  },
+  "timestamp": {
+    "title": "Pengonversi timestamp",
+    "back": "Semua alat",
+    "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
+    "options": "Masukan",
+    "input": "Timestamp atau tanggal",
+    "placeholder": "1700000000 atau 2023-11-14T22:13:20Z",
+    "now": "Sekarang",
+    "copy": "Salin hasil",
+    "copied": "Tersalin",
+    "result": "Hasil",
+    "seconds": "Unix detik",
+    "milliseconds": "Milidetik",
+    "iso": "ISO 8601 (UTC)",
+    "utc": "UTC",
+    "local": "Lokal",
+    "empty": "Ketik timestamp atau tanggal.",
+    "invalid": "Ini bukan Unix time atau tanggal yang bisa diurai tab ini.",
+    "range": "Nilai di luar jangkauan yang bisa diwakili JavaScript Date.",
+    "live": "Sekarang: {seconds}"
   }
 }

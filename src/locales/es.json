@@ -87,7 +87,9 @@
     "titleFavicon": "Generador de favicon — ICO y PNG — cv.cm",
     "descFavicon": "Haz un favicon a partir de una foto en el navegador. Descarga ICO y tamaños PNG. Nada se sube.",
     "titleAudioCutter": "Cortador de audio — recorta MP3 y WAV — cv.cm",
-    "descAudioCutter": "Recorta audio en el navegador. Marca inicio y fin, descarga WAV. Nada se sube."
+    "descAudioCutter": "Recorta audio en el navegador. Marca inicio y fin, descarga WAV. Nada se sube.",
+    "titleTimestamp": "Convertidor de timestamp — Unix a fecha — cv.cm",
+    "descTimestamp": "Convierte timestamps Unix a fechas en el navegador. Segundos, milisegundos, ISO 8601. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -254,6 +256,10 @@
     "audio-cutter": {
       "name": "Cortador de audio",
       "blurb": "Recorta un clip. Descarga WAV. Nada se sube."
+    },
+    "timestamp": {
+      "name": "Convertidor de timestamp",
+      "blurb": "Unix a fecha. Segundos, milisegundos, ISO. Nada se sube."
     }
   },
   "watermark": {
@@ -1017,6 +1023,18 @@
       "a4": "Sí. Reproducir selección suena desde la marca de inicio hasta la de fin.",
       "q5": "¿Puedo conservar el formato original?",
       "a5": "No. El corte se escribe como WAV para no tener que codificar MP3 o AAC en la pestaña."
+    },
+    "timestamp": {
+      "q1": "¿Puedo convertir un timestamp Unix aquí?",
+      "a1": "Sí. Pega segundos, milisegundos o una fecha ISO. La pestaña muestra UTC y tu hora local.",
+      "q2": "¿Cómo distinguís segundos de milisegundos?",
+      "a2": "Unos 13 dígitos o más son milisegundos. Números más cortos son segundos. Las fechas ISO se interpretan como fechas.",
+      "q3": "¿Se sube algo?",
+      "a3": "No. La conversión corre en esta pestaña. Cerrarla descarta la entrada.",
+      "q4": "¿Qué es Now?",
+      "a4": "Now rellena el Unix actual en segundos. Una línea en vivo también muestra el segundo actual.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone segundos, milisegundos, ISO y el texto UTC en el portapapeles."
     }
   },
   "qr": {
@@ -1792,5 +1810,26 @@
     "errorDecode": "Este navegador no pudo leer ese audio.",
     "errorEncode": "No se pudo escribir el WAV.",
     "meta": "{duration} total · {start}–{end} · {cut} conservado"
+  },
+  "timestamp": {
+    "title": "Convertidor de timestamp",
+    "back": "Todas las herramientas",
+    "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
+    "options": "Entrada",
+    "input": "Timestamp o fecha",
+    "placeholder": "1700000000 o 2023-11-14T22:13:20Z",
+    "now": "Ahora",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "result": "Convertido",
+    "seconds": "Unix segundos",
+    "milliseconds": "Milisegundos",
+    "iso": "ISO 8601 (UTC)",
+    "utc": "UTC",
+    "local": "Local",
+    "empty": "Escribe un timestamp o una fecha.",
+    "invalid": "No es un Unix time ni una fecha que esta pestaña pueda interpretar.",
+    "range": "Ese valor está fuera del rango que JavaScript Date puede representar.",
+    "live": "Ahora: {seconds}"
   }
 }
