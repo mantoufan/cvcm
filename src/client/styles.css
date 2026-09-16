@@ -82,7 +82,10 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   text-decoration: none;
   color: inherit;
 }
-.menu { position: relative; }
+.menu { position: relative; z-index: 1; }
+.menu.open,
+.menu:focus-within { z-index: 20; }
+.menu:hover { z-index: 30; }
 .menu-btn {
   background: none;
   border: 0;
@@ -125,6 +128,12 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   .menu:focus-within > .menu-panel { display: grid; }
 }
 .menu.open > .menu-panel { display: grid; }
+@media (hover: hover) and (pointer: fine) {
+  .nav:has(.menu:hover) .menu:not(:hover) > .menu-panel,
+  .nav:has(.menu:focus-within) .menu:not(:focus-within):not(:hover) > .menu-panel {
+    display: none;
+  }
+}
 .menu-item {
   display: grid;
   grid-template-columns: 72px 1fr;

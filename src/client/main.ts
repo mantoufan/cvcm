@@ -124,8 +124,24 @@ function onClick(e: MouseEvent): void {
   if (!target?.closest(".menu")) closeMenus();
 }
 
+function blurInside(el: Element): void {
+  const active = document.activeElement;
+  if (active instanceof HTMLElement && el.contains(active)) active.blur();
+}
+
 function closeMenus(): void {
-  document.querySelectorAll(".menu.open").forEach((el) => el.classList.remove("open"));
+  document.querySelectorAll(".menu").forEach((el) => {
+    el.classList.remove("open");
+    blurInside(el);
+  });
+}
+
+function closeOtherMenus(keep: Element | null): void {
+  document.querySelectorAll(".menu").forEach((el) => {
+    if (el === keep) return;
+    el.classList.remove("open");
+    blurInside(el);
+  });
 }
 
 function applyTool(next: ToolId | null, nextClip: string | null): void {
@@ -318,14 +334,23 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
 
 function menuToggle(e: Event): void {
   e.stopPropagation();
-  const menu = (e.currentTarget as HTMLElement).closest(".menu");
-  const willOpen = !menu?.classList.contains("open");
-  closeMenus();
+  const btn = e.currentTarget as HTMLElement;
+  const menu = btn.closest(".menu");
+  const willOpen = Boolean(menu && !menu.classList.contains("open"));
+  closeOtherMenus(willOpen ? menu : null);
   if (willOpen) menu?.classList.add("open");
+  else {
+    menu?.classList.remove("open");
+    btn.blur();
+  }
+}
+
+function menuPointerEnter(e: Event): void {
+  closeOtherMenus(e.currentTarget as Element);
 }
 
 function toolsMenu(loc: Locale, current: ToolId | null): HTMLElement {
-  return h("div", { class: "menu" + (current ? " current" : "") },
+  return h("div", { class: "menu" + (current ? " current" : ""), onPointerEnter: menuPointerEnter },
     h("button", {
       type: "button",
       class: "menu-btn" + (current ? " on" : ""),
@@ -358,7 +383,7 @@ function toolsMenu(loc: Locale, current: ToolId | null): HTMLElement {
 
 function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLElement {
   const active = hub || Boolean(current);
-  return h("div", { class: "menu" + (active ? " current" : "") },
+  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
     h("button", {
       type: "button",
       class: "menu-btn" + (active ? " on" : ""),
