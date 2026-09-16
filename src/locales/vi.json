@@ -85,7 +85,9 @@
     "titleRegex": "Kiểm tra regex — biểu thức chính quy — cv.cm",
     "descRegex": "Thử biểu thức chính quy trong trình duyệt. Xem khớp và thay thế. Không tải lên.",
     "titleFavicon": "Tạo favicon — ICO và PNG — cv.cm",
-    "descFavicon": "Tạo favicon từ ảnh trong trình duyệt. Tải ICO và các cỡ PNG. Không tải lên."
+    "descFavicon": "Tạo favicon từ ảnh trong trình duyệt. Tải ICO và các cỡ PNG. Không tải lên.",
+    "titleAudioCutter": "Cắt audio — cắt MP3 và WAV — cv.cm",
+    "descAudioCutter": "Cắt audio trong trình duyệt. Chọn đầu-cuối, tải WAV. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -248,6 +250,10 @@
     "favicon": {
       "name": "Tạo favicon",
       "blurb": "Ảnh thành ICO và PNG. Không tải lên."
+    },
+    "audio-cutter": {
+      "name": "Cắt audio",
+      "blurb": "Cắt một đoạn, tải WAV. Không tải lên."
     }
   },
   "watermark": {
@@ -999,6 +1005,18 @@
       "a4": "Zip PNG có 180, 192, 512 cùng 16, 32, 48 quen thuộc.",
       "q5": "Giữ nền trong suốt được không?",
       "a5": "Được. Bỏ chọn nền trắng. Contain sẽ chừa chỗ trống trong suốt."
+    },
+    "audio-cutter": {
+      "q1": "Cắt audio ở đây được không?",
+      "a1": "Được. Thả tệp, chọn đầu và cuối, rồi tải WAV của đoạn đó.",
+      "q2": "Tệp có bị tải lên không?",
+      "a2": "Không. Giải mã và cắt ở tab này. Đóng là mất.",
+      "q3": "Mở được định dạng nào?",
+      "a3": "Những gì trình duyệt giải mã được: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. Xuất luôn là WAV.",
+      "q4": "Nghe trước đoạn cắt được không?",
+      "a4": "Được. Phát vùng chọn chạy từ mốc đầu đến mốc cuối.",
+      "q5": "Giữ nguyên định dạng gốc được không?",
+      "a5": "Không. Đoạn cắt ghi thành WAV, tab không mã hoá MP3 hay AAC."
     }
   },
   "qr": {
@@ -1753,5 +1771,26 @@
     "working": "Đang vẽ…",
     "errorDecode": "Không đọc được ảnh đó.",
     "errorEncode": "Không tạo được favicon."
+  },
+  "audioCutter": {
+    "title": "Cắt audio",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tệp ở lại tab này. Không tải lên.",
+    "filesTitle": "Audio",
+    "dropTitle": "Thả audio vào đây",
+    "dropHint": "Hoặc dán. Tab này cắt và xuất WAV.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "hint": "Chọn đầu-cuối rồi tải đoạn đó dạng WAV.",
+    "options": "Khoảng",
+    "start": "Bắt đầu (giây)",
+    "end": "Kết thúc (giây)",
+    "play": "Phát vùng chọn",
+    "stop": "Dừng",
+    "download": "Tải WAV",
+    "emptyDownload": "Hãy thêm tệp audio trước.",
+    "working": "Đang đọc audio…",
+    "errorDecode": "Trình duyệt không đọc được audio này.",
+    "errorEncode": "Không ghi được WAV.",
+    "meta": "Tổng {duration} · {start}–{end} · giữ {cut}"
   }
 }

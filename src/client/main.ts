@@ -1,4 +1,5 @@
 import { mountAudio, unmountAudio } from "./audio/ui";
+import { mountAudioCutter, unmountAudioCutter } from "./audio-cutter/ui";
 import { mountClip, unmountClip } from "./clip/ui";
 import { unmountCollage, mountCollage } from "./collage/ui";
 import { mountConvert, unmountConvert } from "./convert/ui";
@@ -137,6 +138,7 @@ function unmountTools(): void {
   unmountImagePdf();
   unmountClip();
   unmountAudio();
+  unmountAudioCutter();
   unmountData();
   unmountQr();
   unmountBarcode();
@@ -238,6 +240,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "convert") await mountConvert(main);
   else if (tool === "image-pdf") await mountImagePdf(main);
   else if (tool === "audio") await mountAudio(main);
+  else if (tool === "audio-cutter") await mountAudioCutter(main);
   else if (tool === "data") mountData(main);
   else if (tool === "qr") mountQr(main);
   else if (tool === "barcode") mountBarcode(main);

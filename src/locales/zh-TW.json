@@ -85,7 +85,9 @@
     "titleRegex": "正規測試 — 正規表示式 — cv.cm",
     "descRegex": "在瀏覽器裡測試正規表示式。查看符合並可取代。不上傳。",
     "titleFavicon": "Favicon 產生器 — ICO 與 PNG — cv.cm",
-    "descFavicon": "在瀏覽器裡把照片做成 favicon。下載 ICO 與 PNG 尺寸。不上傳。"
+    "descFavicon": "在瀏覽器裡把照片做成 favicon。下載 ICO 與 PNG 尺寸。不上傳。",
+    "titleAudioCutter": "音訊剪輯 — 裁剪 MP3 與 WAV — cv.cm",
+    "descAudioCutter": "在瀏覽器裡裁剪音訊。設定起迄，下載 WAV。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -248,6 +250,10 @@
     "favicon": {
       "name": "Favicon 產生",
       "blurb": "照片轉 ICO 與 PNG。不上傳。"
+    },
+    "audio-cutter": {
+      "name": "音訊剪輯",
+      "blurb": "裁一段音訊，下載 WAV。不上傳。"
     }
   },
   "watermark": {
@@ -999,6 +1005,18 @@
       "a4": "PNG 壓縮檔含 180、192、512，以及常見的 16、32、48。",
       "q5": "能透明底嗎？",
       "a5": "可以。取消白色背景。包含模式下透明處留空。"
+    },
+    "audio-cutter": {
+      "q1": "能在這裡剪音訊嗎？",
+      "a1": "可以。放入檔案，設定起迄，然後下載這一段的 WAV。",
+      "q2": "會上傳檔案嗎？",
+      "a2": "不會。解碼與裁剪都在目前分頁，關掉即丟。",
+      "q3": "能打開哪些格式？",
+      "a3": "瀏覽器能解碼的都可以：MP3、WAV、M4A、OGG、AAC、FLAC、WebM。匯出一律是 WAV。",
+      "q4": "能預覽剪出來的一段嗎？",
+      "a4": "可以。播放選區會從起點播到終點。",
+      "q5": "能保留原格式嗎？",
+      "a5": "不能。切出來寫成 WAV，這樣分頁不必編碼 MP3 或 AAC。"
     }
   },
   "qr": {
@@ -1753,5 +1771,26 @@
     "working": "正在繪製…",
     "errorDecode": "無法讀取這張圖。",
     "errorEncode": "無法產生 favicon。"
+  },
+  "audioCutter": {
+    "title": "音訊剪輯",
+    "back": "全部工具",
+    "privacyNote": "檔案留在目前分頁。不上傳。",
+    "filesTitle": "音訊",
+    "dropTitle": "放入音訊",
+    "dropHint": "或貼上。在目前分頁裁剪並匯出 WAV。",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "hint": "設定起迄，然後把這一段下載成 WAV。",
+    "options": "範圍",
+    "start": "起點（秒）",
+    "end": "終點（秒）",
+    "play": "播放選區",
+    "stop": "停止",
+    "download": "下載 WAV",
+    "emptyDownload": "請先新增音訊。",
+    "working": "正在讀取音訊…",
+    "errorDecode": "瀏覽器無法讀取這段音訊。",
+    "errorEncode": "無法寫出 WAV。",
+    "meta": "全長 {duration} · {start}–{end} · 保留 {cut}"
   }
 }

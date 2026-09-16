@@ -85,7 +85,9 @@
     "titleRegex": "정규식 테스터 — 정규 표현식 — cv.cm",
     "descRegex": "브라우저에서 정규 표현식을 시험합니다. 일치 항목을 보고 바꿀 수 있습니다. 업로드 없음.",
     "titleFavicon": "파비콘 생성기 — ICO와 PNG — cv.cm",
-    "descFavicon": "브라우저에서 사진으로 파비콘을 만듭니다. ICO와 PNG 크기를 받습니다. 업로드 없음."
+    "descFavicon": "브라우저에서 사진으로 파비콘을 만듭니다. ICO와 PNG 크기를 받습니다. 업로드 없음.",
+    "titleAudioCutter": "오디오 커터 — MP3와 WAV 자르기 — cv.cm",
+    "descAudioCutter": "브라우저에서 오디오를 자릅니다. 시작과 끝을 정하고 WAV를 받습니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -248,6 +250,10 @@
     "favicon": {
       "name": "파비콘 생성",
       "blurb": "사진을 ICO와 PNG로. 업로드 없음."
+    },
+    "audio-cutter": {
+      "name": "오디오 커터",
+      "blurb": "구간을 잘라 WAV로. 업로드 없음."
     }
   },
   "watermark": {
@@ -999,6 +1005,18 @@
       "a4": "PNG zip에 180, 192, 512와 흔한 16, 32, 48이 있습니다.",
       "q5": "배경을 투명하게 할 수 있나요?",
       "a5": "네. 흰 배경을 끄세요. Contain이면 여백이 투명합니다."
+    },
+    "audio-cutter": {
+      "q1": "여기서 오디오를 자를 수 있나요?",
+      "a1": "네. 파일을 넣고 시작과 끝을 정한 뒤 그 구간의 WAV를 받습니다.",
+      "q2": "파일이 업로드되나요?",
+      "a2": "아니요. 디코딩과 자르기는 이 탭에서 끝납니다. 닫으면 사라집니다.",
+      "q3": "어떤 형식을 열 수 있나요?",
+      "a3": "이 브라우저가 디코드하는 것: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. 출력은 항상 WAV입니다.",
+      "q4": "자른 구간을 미리 들을 수 있나요?",
+      "a4": "네. 선택 재생은 시작 표시부터 끝 표시까지 재생합니다.",
+      "q5": "원래 형식을 유지할 수 있나요?",
+      "a5": "아니요. 자른 결과는 WAV입니다. 탭에서 MP3나 AAC를 인코드하지 않습니다."
     }
   },
   "qr": {
@@ -1753,5 +1771,26 @@
     "working": "그리는 중…",
     "errorDecode": "그 이미지를 읽지 못했습니다.",
     "errorEncode": "파비콘을 만들지 못했습니다."
+  },
+  "audioCutter": {
+    "title": "오디오 커터",
+    "back": "모든 도구",
+    "privacyNote": "파일은 이 탭에 남습니다. 업로드 없음.",
+    "filesTitle": "오디오",
+    "dropTitle": "오디오 놓기",
+    "dropHint": "또는 붙여넣기. 이 탭에서 잘라 WAV로 보냅니다.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "hint": "시작과 끝을 정한 뒤 구간을 WAV로 받으세요.",
+    "options": "범위",
+    "start": "시작(초)",
+    "end": "끝(초)",
+    "play": "선택 재생",
+    "stop": "중지",
+    "download": "WAV 다운로드",
+    "emptyDownload": "먼저 오디오를 넣으세요.",
+    "working": "오디오 읽는 중…",
+    "errorDecode": "이 브라우저에서 그 오디오를 읽지 못했습니다.",
+    "errorEncode": "WAV를 쓰지 못했습니다.",
+    "meta": "전체 {duration} · {start}–{end} · 유지 {cut}"
   }
 }

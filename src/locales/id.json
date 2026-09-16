@@ -85,7 +85,9 @@
     "titleRegex": "Penguji regex — ekspresi reguler — cv.cm",
     "descRegex": "Uji ekspresi reguler di browser. Lihat kecocokan dan ganti. Tidak diunggah.",
     "titleFavicon": "Pembuat favicon — ICO dan PNG — cv.cm",
-    "descFavicon": "Buat favicon dari foto di browser. Unduh ICO dan ukuran PNG. Tidak diunggah."
+    "descFavicon": "Buat favicon dari foto di browser. Unduh ICO dan ukuran PNG. Tidak diunggah.",
+    "titleAudioCutter": "Pemotong audio — potong MP3 dan WAV — cv.cm",
+    "descAudioCutter": "Potong audio di browser. Atur awal dan akhir, unduh WAV. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -248,6 +250,10 @@
     "favicon": {
       "name": "Pembuat favicon",
       "blurb": "Foto menjadi ICO dan PNG. Tanpa unggah."
+    },
+    "audio-cutter": {
+      "name": "Pemotong audio",
+      "blurb": "Potong klip, unduh WAV. Tanpa unggah."
     }
   },
   "watermark": {
@@ -999,6 +1005,18 @@
       "a4": "Zip PNG punya 180, 192, dan 512 plus ukuran klasik 16, 32, dan 48.",
       "q5": "Bisa latar transparan?",
       "a5": "Bisa. Matikan latar putih. Mode contain lalu menyisakan transparansi."
+    },
+    "audio-cutter": {
+      "q1": "Bisa potong audio di sini?",
+      "a1": "Bisa. Jatuhkan berkas, atur awal dan akhir, lalu unduh WAV cuplikan itu.",
+      "q2": "Apakah berkas diunggah?",
+      "a2": "Tidak. Dekode dan potong tetap di tab ini. Menutup tab membuangnya.",
+      "q3": "Format apa yang bisa dibuka?",
+      "a3": "Apa pun yang bisa didekode browser: MP3, WAV, M4A, OGG, AAC, FLAC, WebM. Keluaran selalu WAV.",
+      "q4": "Bisa pratinjau potongan?",
+      "a4": "Bisa. Putar pilihan memutar dari tanda awal sampai tanda akhir.",
+      "q5": "Bisa tetap format asli?",
+      "a5": "Tidak. Potongan ditulis sebagai WAV agar tab tidak perlu encoder MP3 atau AAC."
     }
   },
   "qr": {
@@ -1753,5 +1771,26 @@
     "working": "Menggambar…",
     "errorDecode": "Tidak bisa membaca gambar itu.",
     "errorEncode": "Tidak bisa membuat favicon."
+  },
+  "audioCutter": {
+    "title": "Pemotong audio",
+    "back": "Semua alat",
+    "privacyNote": "Berkas tetap di tab ini. Tidak diunggah.",
+    "filesTitle": "Audio",
+    "dropTitle": "Jatuhkan audio di sini",
+    "dropHint": "Atau tempel. Kami potong di tab ini dan ekspor WAV.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "hint": "Atur awal dan akhir, lalu unduh cuplikan sebagai WAV.",
+    "options": "Rentang",
+    "start": "Awal (detik)",
+    "end": "Akhir (detik)",
+    "play": "Putar pilihan",
+    "stop": "Berhenti",
+    "download": "Unduh WAV",
+    "emptyDownload": "Tambahkan berkas audio dulu.",
+    "working": "Membaca audio…",
+    "errorDecode": "Browser tidak bisa membaca audio ini.",
+    "errorEncode": "Tidak bisa menulis WAV.",
+    "meta": "Total {duration} · {start}–{end} · disimpan {cut}"
   }
 }

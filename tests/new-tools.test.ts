@@ -15,6 +15,7 @@ import { diffCounts, diffLines, unifiedDiff } from "../src/shared/diff";
 import { generateUuids, isUuidV4, uuidV4 } from "../src/shared/uuid";
 import { MAX_MATCHES, normalizeFlags, runRegex } from "../src/shared/regex";
 import { packIco, squareDest, squareSource } from "../src/shared/favicon";
+import { clampRange, formatClock, sliceChannels, waveformPeaks } from "../src/shared/audio-cut";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -246,6 +247,26 @@ describe("favicon", () => {
   });
 });
 
+describe("audio cutter", () => {
+  it("clamps range, slices samples, and formats clocks", () => {
+    expect(clampRange(5, 1, 10)).toEqual({ start: 1, end: 5 });
+    expect(clampRange(-2, 99, 10)).toEqual({ start: 0, end: 10 });
+    expect(formatClock(0)).toBe("0:00.00");
+    expect(formatClock(0.5)).toBe("0:00.50");
+    expect(formatClock(65.2)).toBe("1:05.20");
+    expect(formatClock(59.996)).toBe("1:00.00");
+    const ch = new Float32Array(1000);
+    for (let i = 0; i < 1000; i++) ch[i] = i;
+    const cut = sliceChannels([ch], 100, 1, 2);
+    expect(cut[0]?.length).toBe(100);
+    expect(cut[0]?.[0]).toBe(100);
+    expect(cut[0]?.[99]).toBe(199);
+    const peaks = waveformPeaks(new Float32Array([0, 0.2, -0.9, 0.1]), 2);
+    expect(peaks[0]).toBeCloseTo(0.2);
+    expect(peaks[1]).toBeCloseTo(0.9);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -276,10 +297,12 @@ describe("new routes", () => {
     expect(parseAppPath("/en/uuid/")).toEqual({ kind: "app", locale: "en", tool: "uuid" });
     expect(parseAppPath("/en/regex/")).toEqual({ kind: "app", locale: "en", tool: "regex" });
     expect(parseAppPath("/en/favicon/")).toEqual({ kind: "app", locale: "en", tool: "favicon" });
+    expect(parseAppPath("/en/audio-cutter/")).toEqual({ kind: "app", locale: "en", tool: "audio-cutter" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
     expect(appHref("zh-CN", "favicon")).toBe("/zh-cn/favicon/");
+    expect(appHref("zh-CN", "audio-cutter")).toBe("/zh-cn/audio-cutter/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

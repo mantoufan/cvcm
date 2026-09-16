@@ -85,7 +85,9 @@
     "titleRegex": "Probador de regex — expresiones regulares — cv.cm",
     "descRegex": "Prueba una expresión regular en el navegador. Ve coincidencias y reemplaza. Nada se sube.",
     "titleFavicon": "Generador de favicon — ICO y PNG — cv.cm",
-    "descFavicon": "Haz un favicon a partir de una foto en el navegador. Descarga ICO y tamaños PNG. Nada se sube."
+    "descFavicon": "Haz un favicon a partir de una foto en el navegador. Descarga ICO y tamaños PNG. Nada se sube.",
+    "titleAudioCutter": "Cortador de audio — recorta MP3 y WAV — cv.cm",
+    "descAudioCutter": "Recorta audio en el navegador. Marca inicio y fin, descarga WAV. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -248,6 +250,10 @@
     "favicon": {
       "name": "Generador de favicon",
       "blurb": "Foto a ICO y PNG. Nada se sube."
+    },
+    "audio-cutter": {
+      "name": "Cortador de audio",
+      "blurb": "Recorta un clip. Descarga WAV. Nada se sube."
     }
   },
   "watermark": {
@@ -999,6 +1005,18 @@
       "a4": "El zip PNG trae 180, 192 y 512 además de 16, 32 y 48.",
       "q5": "¿Puedo dejar el fondo transparente?",
       "a5": "Sí. Desmarca fondo blanco. Contain deja las bandas transparentes."
+    },
+    "audio-cutter": {
+      "q1": "¿Puedo cortar audio aquí?",
+      "a1": "Sí. Suelta un archivo, marca inicio y fin, y descarga un WAV de ese tramo.",
+      "q2": "¿Se sube el archivo?",
+      "a2": "No. La decodificación y el corte quedan en esta pestaña. Cerrarla descarta el audio.",
+      "q3": "¿Qué puedo abrir?",
+      "a3": "Lo que este navegador sepa decodificar: MP3, WAV, M4A, OGG, AAC, FLAC o WebM. La salida es siempre WAV.",
+      "q4": "¿Puedo preescuchar el corte?",
+      "a4": "Sí. Reproducir selección suena desde la marca de inicio hasta la de fin.",
+      "q5": "¿Puedo conservar el formato original?",
+      "a5": "No. El corte se escribe como WAV para no tener que codificar MP3 o AAC en la pestaña."
     }
   },
   "qr": {
@@ -1753,5 +1771,26 @@
     "working": "Dibujando…",
     "errorDecode": "No se pudo leer esa imagen.",
     "errorEncode": "No se pudo crear el favicon."
+  },
+  "audioCutter": {
+    "title": "Cortador de audio",
+    "back": "Todas las herramientas",
+    "privacyNote": "El archivo se queda en esta pestaña. Nada se sube.",
+    "filesTitle": "Audio",
+    "dropTitle": "Suelta el audio aquí",
+    "dropHint": "O pégalo. Recortamos en esta pestaña y exportamos WAV.",
+    "dropTypes": "MP3, WAV, M4A, OGG, AAC, FLAC, WebM",
+    "hint": "Marca inicio y fin, luego descarga el tramo como WAV.",
+    "options": "Rango",
+    "start": "Inicio (segundos)",
+    "end": "Fin (segundos)",
+    "play": "Reproducir selección",
+    "stop": "Parar",
+    "download": "Descargar WAV",
+    "emptyDownload": "Añade un archivo de audio primero.",
+    "working": "Leyendo audio…",
+    "errorDecode": "Este navegador no pudo leer ese audio.",
+    "errorEncode": "No se pudo escribir el WAV.",
+    "meta": "{duration} total · {start}–{end} · {cut} conservado"
   }
 }
