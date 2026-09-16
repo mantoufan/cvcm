@@ -113,7 +113,13 @@
     "titlePercent": "Percentage calculator — what percent — cv.cm",
     "descPercent": "Find a percentage of a number, or what percent one number is of another. Nothing is uploaded.",
     "titleRandom": "Random number generator — min max — cv.cm",
-    "descRandom": "Generate random integers in the browser with Web Crypto. Set min, max, and count. Nothing is uploaded."
+    "descRandom": "Generate random integers in the browser with Web Crypto. Set min, max, and count. Nothing is uploaded.",
+    "titleHtml": "HTML encode decode — entities — cv.cm",
+    "descHtml": "Encode or decode HTML entities in the browser. &lt; &gt; &amp; and numeric codes. Nothing is uploaded.",
+    "titleCron": "Cron expression explainer — crontab — cv.cm",
+    "descCron": "Read a 5-field cron expression in the browser. Minutes, hours, days, months. Nothing is uploaded.",
+    "titleSlug": "Slug generator — URL slug — cv.cm",
+    "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -360,6 +366,18 @@
     "random": {
       "name": "Random number",
       "blurb": "Random integers with Web Crypto. Nothing is uploaded."
+    },
+    "html": {
+      "name": "HTML encode",
+      "blurb": "Encode or decode entities. Nothing is uploaded."
+    },
+    "cron": {
+      "name": "Cron explainer",
+      "blurb": "Read a crontab line. Nothing is uploaded."
+    },
+    "slug": {
+      "name": "Slug generator",
+      "blurb": "Title to URL slug. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1146,6 +1164,42 @@
       "a4": "Up to 200 at a time.",
       "q5": "Can I copy them?",
       "a5": "Yes. Copy puts one number per line."
+    },
+    "html": {
+      "q1": "Can I encode HTML here?",
+      "a1": "Yes. Paste text. Encode turns <>&\"' into entities. Decode reverses named and numeric codes.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Which entities are named?",
+      "a3": "amp, lt, gt, quot, apos, and nbsp. Other names stay as written. Numeric &#…; codes decode.",
+      "q4": "Does it run scripts?",
+      "a4": "No. This only rewrites characters. It does not execute HTML.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "cron": {
+      "q1": "Can I read a cron expression here?",
+      "a1": "Yes. Paste five fields: minute hour day-of-month month day-of-week.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Parsing stays in this tab.",
+      "q3": "Do you support @hourly?",
+      "a3": "No. Only the five numeric fields, *, ranges, lists, and */n steps.",
+      "q4": "Is 7 Sunday?",
+      "a4": "Yes. 0 and 7 are Sunday.",
+      "q5": "Is this a scheduler?",
+      "a5": "No. It only explains the expression. It does not run jobs."
+    },
+    "slug": {
+      "q1": "Can I make a URL slug here?",
+      "a1": "Yes. Paste a title. The tab lowercases it, drops accents, and joins words with hyphens.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. The slug is built in this tab.",
+      "q3": "What happens to Chinese or emoji?",
+      "a3": "Characters that are not a–z or 0–9 become hyphens and then get trimmed.",
+      "q4": "How long is the slug?",
+      "a4": "It is capped at 80 characters, without a trailing hyphen.",
+      "q5": "Can I copy it?",
+      "a5": "Yes. Copy puts the slug on the clipboard."
     }
   },
   "qr": {
@@ -1851,6 +1905,43 @@
     "result": "Numbers",
     "roll": "Roll",
     "copy": "Copy",
+    "copied": "Copied"
+  },
+  "html": {
+    "title": "HTML encode / decode",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "encode": "Encode",
+    "decode": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<a href=\"https://cv.cm\">cv.cm</a>",
+    "copy": "Copy result",
+    "copied": "Copied"
+  },
+  "cron": {
+    "title": "Cron explainer",
+    "back": "All tools",
+    "privacyNote": "Parsing stays in this tab. Nothing is uploaded.",
+    "options": "Expression",
+    "input": "Cron",
+    "placeholder": "*/15 9-17 * * 1-5",
+    "result": "Meaning",
+    "copy": "Copy",
+    "copied": "Copied",
+    "empty": "Paste a five-field cron line.",
+    "fields": "Use five fields: minute hour day-of-month month weekday.",
+    "range": "A field is out of range or not a number, *, or step."
+  },
+  "slug": {
+    "title": "Slug generator",
+    "back": "All tools",
+    "privacyNote": "The slug is built in this tab. Nothing is uploaded.",
+    "input": "Title",
+    "output": "Slug",
+    "placeholder": "Hello, cv.cm",
+    "copy": "Copy slug",
     "copied": "Copied"
   }
 }

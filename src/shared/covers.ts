@@ -45,6 +45,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   jwt: "/covers/jwt-sweet.jpg?v=1",
   percent: "/covers/percent-sweet.jpg?v=1",
   random: "/covers/random-sweet.jpg?v=1",
+  html: "/covers/html-sweet.jpg?v=1",
+  cron: "/covers/cron-sweet.jpg?v=1",
+  slug: "/covers/slug-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

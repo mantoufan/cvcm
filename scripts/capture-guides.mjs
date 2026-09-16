@@ -63,6 +63,9 @@ const STEPS = {
   screenshot: 3,
   percent: 3,
   random: 3,
+  html: 3,
+  cron: 3,
+  slug: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -839,6 +842,40 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await clickText(send, "Roll").catch(() => clickSel(send, ".stage-actions .btn"));
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "html") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "decode";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "cron") {
+    await snap(1);
+    await evalValue(send, fillExpr("input.regex-pattern, input", "0 9 * * 1-5"));
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "slug") {
+    await snap(1);
+    await evalValue(send, fillExpr("textarea", "Hello, cv.cm — YAML to JSON"));
     await sleep(200);
     await snap(2);
     await snap(3);

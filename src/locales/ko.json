@@ -113,7 +113,13 @@
     "titlePercent": "백분율 계산 — 몇 퍼센트 — cv.cm",
     "descPercent": "어떤 수의 몇 퍼센트, 또는 한 수가 다른 수의 몇 퍼센트인지 계산. 업로드 없음.",
     "titleRandom": "난수 생성기 — 최소 최대 — cv.cm",
-    "descRandom": "브라우저 Web Crypto로 정수 난수. 최소, 최대, 개수. 업로드 없음."
+    "descRandom": "브라우저 Web Crypto로 정수 난수. 최소, 최대, 개수. 업로드 없음.",
+    "titleHtml": "HTML 인코드 — 엔티티 — cv.cm",
+    "descHtml": "브라우저에서 HTML 엔티티를 인코드하거나 디코드. 업로드 없음.",
+    "titleCron": "Cron 설명 — crontab — cv.cm",
+    "descCron": "브라우저에서 5필드 cron을 읽습니다. 업로드 없음.",
+    "titleSlug": "슬러그 생성 — URL slug — cv.cm",
+    "descSlug": "브라우저에서 제목을 URL 슬러그로. 소문자, 하이픈. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -332,6 +338,18 @@
     "random": {
       "name": "난수",
       "blurb": "Web Crypto 정수 난수. 업로드 없음."
+    },
+    "html": {
+      "name": "HTML 인코드",
+      "blurb": "엔티티 인코드/디코드. 업로드 없음."
+    },
+    "cron": {
+      "name": "Cron 설명",
+      "blurb": "crontab 한 줄 읽기. 업로드 없음."
+    },
+    "slug": {
+      "name": "슬러그 생성",
+      "blurb": "제목을 URL 슬러그로. 업로드 없음."
     }
   },
   "watermark": {
@@ -1118,6 +1136,42 @@
       "a4": "Up to 200 at a time.",
       "q5": "Can I copy them?",
       "a5": "Yes. Copy puts one number per line."
+    },
+    "html": {
+      "q1": "Can I encode HTML here?",
+      "a1": "Yes. Paste text. Encode turns <>&\"' into entities. Decode reverses named and numeric codes.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Which entities are named?",
+      "a3": "amp, lt, gt, quot, apos, and nbsp. Other names stay as written. Numeric &#…; codes decode.",
+      "q4": "Does it run scripts?",
+      "a4": "No. This only rewrites characters. It does not execute HTML.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "cron": {
+      "q1": "Can I read a cron expression here?",
+      "a1": "Yes. Paste five fields: minute hour day-of-month month day-of-week.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Parsing stays in this tab.",
+      "q3": "Do you support @hourly?",
+      "a3": "No. Only the five numeric fields, *, ranges, lists, and */n steps.",
+      "q4": "Is 7 Sunday?",
+      "a4": "Yes. 0 and 7 are Sunday.",
+      "q5": "Is this a scheduler?",
+      "a5": "No. It only explains the expression. It does not run jobs."
+    },
+    "slug": {
+      "q1": "Can I make a URL slug here?",
+      "a1": "Yes. Paste a title. The tab lowercases it, drops accents, and joins words with hyphens.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. The slug is built in this tab.",
+      "q3": "What happens to Chinese or emoji?",
+      "a3": "Characters that are not a–z or 0–9 become hyphens and then get trimmed.",
+      "q4": "How long is the slug?",
+      "a4": "It is capped at 80 characters, without a trailing hyphen.",
+      "q5": "Can I copy it?",
+      "a5": "Yes. Copy puts the slug on the clipboard."
     }
   },
   "qr": {
@@ -1851,6 +1905,43 @@
     "result": "Numbers",
     "roll": "Roll",
     "copy": "Copy",
+    "copied": "Copied"
+  },
+  "html": {
+    "title": "HTML 인코드",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Direction",
+    "encode": "Encode",
+    "decode": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<a href=\"https://cv.cm\">cv.cm</a>",
+    "copy": "Copy result",
+    "copied": "Copied"
+  },
+  "cron": {
+    "title": "Cron 설명",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Expression",
+    "input": "Cron",
+    "placeholder": "*/15 9-17 * * 1-5",
+    "result": "Meaning",
+    "copy": "Copy",
+    "copied": "Copied",
+    "empty": "Paste a five-field cron line.",
+    "fields": "Use five fields: minute hour day-of-month month weekday.",
+    "range": "A field is out of range or not a number, *, or step."
+  },
+  "slug": {
+    "title": "슬러그 생성",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "input": "Title",
+    "output": "Slug",
+    "placeholder": "Hello, cv.cm",
+    "copy": "Copy slug",
     "copied": "Copied"
   }
 }

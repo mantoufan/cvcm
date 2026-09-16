@@ -41,6 +41,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/screenshot/` — annotate a screenshot
 - `src/client/percent/` — percentage calculator
 - `src/client/random/` — random number generator
+- `src/client/html/` — HTML encode / decode
+- `src/client/cron/` — cron expression explainer
+- `src/client/slug/` — URL slug generator
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

@@ -87,6 +87,9 @@ const TITLE: Record<ToolId, string> = {
   jwt: "meta.titleJwt",
   percent: "meta.titlePercent",
   random: "meta.titleRandom",
+  html: "meta.titleHtml",
+  cron: "meta.titleCron",
+  slug: "meta.titleSlug",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -134,6 +137,9 @@ const DESC: Record<ToolId, string> = {
   jwt: "meta.descJwt",
   percent: "meta.descPercent",
   random: "meta.descRandom",
+  html: "meta.descHtml",
+  cron: "meta.descCron",
+  slug: "meta.descSlug",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

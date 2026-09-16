@@ -406,6 +406,33 @@
       "s2b": "Đổi min, max và số lượng, rồi gieo lại.",
       "s3t": "Sao chép danh sách",
       "s3b": "Mỗi dòng một số nguyên. Giá trị từ crypto.getRandomValues."
+    },
+    "html": {
+      "lead": "Encode or decode HTML entities in this tab. The text never leaves the browser.",
+      "s1t": "Open HTML encode",
+      "s1b": "A sample tag is already encoded. Encode and Decode sit in the left menu.",
+      "s2t": "Paste your text",
+      "s2b": "Encode turns <>&\"' into entities. Decode reverses named codes and &#…; numbers.",
+      "s3t": "Copy the result",
+      "s3b": "Copy when it looks right. Closing the tab discards both sides."
+    },
+    "cron": {
+      "lead": "Read a five-field cron expression in this tab. It does not run jobs.",
+      "s1t": "Open Cron explainer",
+      "s1b": "A weekday office-hours sample is already explained on the right.",
+      "s2t": "Paste your line",
+      "s2b": "Use minute hour day-of-month month weekday. Stars, lists, ranges, and */n work.",
+      "s3t": "Copy the meaning",
+      "s3b": "Copy the English summary. This is not a scheduler."
+    },
+    "slug": {
+      "lead": "Turn a title into a URL slug in this tab: lowercase, hyphens, no punctuation.",
+      "s1t": "Open Slug generator",
+      "s1b": "A sample title is already turned into a slug.",
+      "s2t": "Paste the title",
+      "s2b": "Accents fold, other characters become hyphens, and the slug is capped at 80 characters.",
+      "s3t": "Copy the slug",
+      "s3b": "Copy when it looks right. Nothing is uploaded."
     }
   }
 }

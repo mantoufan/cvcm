@@ -113,7 +113,13 @@
     "titlePercent": "パーセント計算 — 何パーセント — cv.cm",
     "descPercent": "ある数の何％か、ある数が別の数の何％かを計算。アップロードなし。",
     "titleRandom": "乱数ジェネレータ — 最小最大 — cv.cm",
-    "descRandom": "ブラウザの Web Crypto で整数乱数。最小・最大・個数。アップロードなし。"
+    "descRandom": "ブラウザの Web Crypto で整数乱数。最小・最大・個数。アップロードなし。",
+    "titleHtml": "HTML エンコード — 実体参照 — cv.cm",
+    "descHtml": "ブラウザで HTML 実体をエンコード／デコード。アップロードなし。",
+    "titleCron": "Cron 式の説明 — crontab — cv.cm",
+    "descCron": "ブラウザで 5 フィールドの cron を読む。アップロードなし。",
+    "titleSlug": "スラッグ生成 — URL slug — cv.cm",
+    "descSlug": "ブラウザでタイトルを URL スラッグに。小文字・ハイフン。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -332,6 +338,18 @@
     "random": {
       "name": "乱数",
       "blurb": "Web Crypto の整数乱数。アップロードなし。"
+    },
+    "html": {
+      "name": "HTML エンコード",
+      "blurb": "実体のエンコード／デコード。アップロードなし。"
+    },
+    "cron": {
+      "name": "Cron 説明",
+      "blurb": "crontab 1 行を読む。アップロードなし。"
+    },
+    "slug": {
+      "name": "スラッグ生成",
+      "blurb": "タイトルを URL スラッグに。アップロードなし。"
     }
   },
   "watermark": {
@@ -1118,6 +1136,42 @@
       "a4": "Up to 200 at a time.",
       "q5": "Can I copy them?",
       "a5": "Yes. Copy puts one number per line."
+    },
+    "html": {
+      "q1": "Can I encode HTML here?",
+      "a1": "Yes. Paste text. Encode turns <>&\"' into entities. Decode reverses named and numeric codes.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Which entities are named?",
+      "a3": "amp, lt, gt, quot, apos, and nbsp. Other names stay as written. Numeric &#…; codes decode.",
+      "q4": "Does it run scripts?",
+      "a4": "No. This only rewrites characters. It does not execute HTML.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "cron": {
+      "q1": "Can I read a cron expression here?",
+      "a1": "Yes. Paste five fields: minute hour day-of-month month day-of-week.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Parsing stays in this tab.",
+      "q3": "Do you support @hourly?",
+      "a3": "No. Only the five numeric fields, *, ranges, lists, and */n steps.",
+      "q4": "Is 7 Sunday?",
+      "a4": "Yes. 0 and 7 are Sunday.",
+      "q5": "Is this a scheduler?",
+      "a5": "No. It only explains the expression. It does not run jobs."
+    },
+    "slug": {
+      "q1": "Can I make a URL slug here?",
+      "a1": "Yes. Paste a title. The tab lowercases it, drops accents, and joins words with hyphens.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. The slug is built in this tab.",
+      "q3": "What happens to Chinese or emoji?",
+      "a3": "Characters that are not a–z or 0–9 become hyphens and then get trimmed.",
+      "q4": "How long is the slug?",
+      "a4": "It is capped at 80 characters, without a trailing hyphen.",
+      "q5": "Can I copy it?",
+      "a5": "Yes. Copy puts the slug on the clipboard."
     }
   },
   "qr": {
@@ -1851,6 +1905,43 @@
     "result": "Numbers",
     "roll": "Roll",
     "copy": "Copy",
+    "copied": "Copied"
+  },
+  "html": {
+    "title": "HTML エンコード",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Direction",
+    "encode": "Encode",
+    "decode": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<a href=\"https://cv.cm\">cv.cm</a>",
+    "copy": "Copy result",
+    "copied": "Copied"
+  },
+  "cron": {
+    "title": "Cron 説明",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Expression",
+    "input": "Cron",
+    "placeholder": "*/15 9-17 * * 1-5",
+    "result": "Meaning",
+    "copy": "Copy",
+    "copied": "Copied",
+    "empty": "Paste a five-field cron line.",
+    "fields": "Use five fields: minute hour day-of-month month weekday.",
+    "range": "A field is out of range or not a number, *, or step."
+  },
+  "slug": {
+    "title": "スラッグ生成",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "input": "Title",
+    "output": "Slug",
+    "placeholder": "Hello, cv.cm",
+    "copy": "Copy slug",
     "copied": "Copied"
   }
 }

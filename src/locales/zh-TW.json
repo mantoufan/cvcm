@@ -113,7 +113,13 @@
     "titlePercent": "百分比計算 — 百分之幾 — cv.cm",
     "descPercent": "算一個數的百分之幾，或一個數是另一個數的百分之幾。不上傳。",
     "titleRandom": "隨機數 — 最小最大 — cv.cm",
-    "descRandom": "在瀏覽器裡用 Web Crypto 產生隨機整數。設定最小、最大和個數。不上傳。"
+    "descRandom": "在瀏覽器裡用 Web Crypto 產生隨機整數。設定最小、最大和個數。不上傳。",
+    "titleHtml": "HTML 跳脫 — 實體編碼 — cv.cm",
+    "descHtml": "在瀏覽器裡編碼或解碼 HTML 實體。&lt; &gt; &amp; 和數字編碼。不上傳。",
+    "titleCron": "Cron 表示式 — crontab — cv.cm",
+    "descCron": "在瀏覽器裡讀懂五段 cron。分、時、日、月、週。不上傳。",
+    "titleSlug": "Slug 產生 — URL 別名 — cv.cm",
+    "descSlug": "在瀏覽器裡把標題變成 URL slug。小寫、連字符、去掉標點。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -332,6 +338,18 @@
     "random": {
       "name": "隨機數",
       "blurb": "Web Crypto 隨機整數。不上傳。"
+    },
+    "html": {
+      "name": "HTML 跳脫",
+      "blurb": "編碼或解碼實體。不上傳。"
+    },
+    "cron": {
+      "name": "Cron 說明",
+      "blurb": "讀懂 crontab 一行。不上傳。"
+    },
+    "slug": {
+      "name": "Slug 產生",
+      "blurb": "標題變 URL 別名。不上傳。"
     }
   },
   "watermark": {
@@ -1118,6 +1136,42 @@
       "a4": "Up to 200 at a time.",
       "q5": "Can I copy them?",
       "a5": "Yes. Copy puts one number per line."
+    },
+    "html": {
+      "q1": "Can I encode HTML here?",
+      "a1": "Yes. Paste text. Encode turns <>&\"' into entities. Decode reverses named and numeric codes.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Which entities are named?",
+      "a3": "amp, lt, gt, quot, apos, and nbsp. Other names stay as written. Numeric &#…; codes decode.",
+      "q4": "Does it run scripts?",
+      "a4": "No. This only rewrites characters. It does not execute HTML.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "cron": {
+      "q1": "Can I read a cron expression here?",
+      "a1": "Yes. Paste five fields: minute hour day-of-month month day-of-week.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Parsing stays in this tab.",
+      "q3": "Do you support @hourly?",
+      "a3": "No. Only the five numeric fields, *, ranges, lists, and */n steps.",
+      "q4": "Is 7 Sunday?",
+      "a4": "Yes. 0 and 7 are Sunday.",
+      "q5": "Is this a scheduler?",
+      "a5": "No. It only explains the expression. It does not run jobs."
+    },
+    "slug": {
+      "q1": "Can I make a URL slug here?",
+      "a1": "Yes. Paste a title. The tab lowercases it, drops accents, and joins words with hyphens.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. The slug is built in this tab.",
+      "q3": "What happens to Chinese or emoji?",
+      "a3": "Characters that are not a–z or 0–9 become hyphens and then get trimmed.",
+      "q4": "How long is the slug?",
+      "a4": "It is capped at 80 characters, without a trailing hyphen.",
+      "q5": "Can I copy it?",
+      "a5": "Yes. Copy puts the slug on the clipboard."
     }
   },
   "qr": {
@@ -1851,6 +1905,43 @@
     "result": "Numbers",
     "roll": "Roll",
     "copy": "Copy",
+    "copied": "Copied"
+  },
+  "html": {
+    "title": "HTML 跳脫",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Direction",
+    "encode": "Encode",
+    "decode": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "<a href=\"https://cv.cm\">cv.cm</a>",
+    "copy": "Copy result",
+    "copied": "Copied"
+  },
+  "cron": {
+    "title": "Cron 說明",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Expression",
+    "input": "Cron",
+    "placeholder": "*/15 9-17 * * 1-5",
+    "result": "Meaning",
+    "copy": "Copy",
+    "copied": "Copied",
+    "empty": "Paste a five-field cron line.",
+    "fields": "Use five fields: minute hour day-of-month month weekday.",
+    "range": "A field is out of range or not a number, *, or step."
+  },
+  "slug": {
+    "title": "Slug 產生",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "input": "Title",
+    "output": "Slug",
+    "placeholder": "Hello, cv.cm",
+    "copy": "Copy slug",
     "copied": "Copied"
   }
 }

@@ -66,6 +66,9 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   jwt: 3,
   percent: 3,
   random: 3,
+  html: 3,
+  cron: 3,
+  slug: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

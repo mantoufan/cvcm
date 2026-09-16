@@ -27,6 +27,9 @@ import { convertCase } from "../src/shared/case";
 import { decodeJwt } from "../src/shared/jwt";
 import { isWhatPercent, percentOf } from "../src/shared/percent";
 import { randomInt, randomInts } from "../src/shared/random";
+import { decodeHtml, encodeHtml } from "../src/shared/html";
+import { describeCron } from "../src/shared/cron";
+import { slugify } from "../src/shared/slug";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -395,6 +398,32 @@ describe("random", () => {
   });
 });
 
+describe("html", () => {
+  it("encodes and decodes entities", () => {
+    expect(encodeHtml(`<a href="x">`)).toBe("&lt;a href=&quot;x&quot;&gt;");
+    expect(decodeHtml("&lt;a href=&quot;x&quot;&gt;")).toBe(`<a href="x">`);
+    expect(decodeHtml("&#39;&#x41;")).toBe("'A");
+  });
+});
+
+describe("cron", () => {
+  it("explains a weekday range", () => {
+    const out = describeCron("*/15 9-17 * * 1-5");
+    expect(out.ok).toBe(true);
+    if (!out.ok) return;
+    expect(out.summary).toMatch(/every 15 minutes/);
+    expect(out.summary).toMatch(/monday/);
+    expect(describeCron("bad")).toEqual({ ok: false, error: "fields" });
+  });
+});
+
+describe("slug", () => {
+  it("folds punctuation and case", () => {
+    expect(slugify("Hello, cv.cm — YAML")).toBe("hello-cv-cm-yaml");
+    expect(slugify("")).toBe("");
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -439,6 +468,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/screenshot/")).toEqual({ kind: "app", locale: "en", tool: "screenshot" });
     expect(parseAppPath("/en/percent/")).toEqual({ kind: "app", locale: "en", tool: "percent" });
     expect(parseAppPath("/en/random/")).toEqual({ kind: "app", locale: "en", tool: "random" });
+    expect(parseAppPath("/en/html/")).toEqual({ kind: "app", locale: "en", tool: "html" });
+    expect(parseAppPath("/en/cron/")).toEqual({ kind: "app", locale: "en", tool: "cron" });
+    expect(parseAppPath("/en/slug/")).toEqual({ kind: "app", locale: "en", tool: "slug" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
@@ -457,6 +489,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "screenshot")).toBe("/zh-cn/screenshot/");
     expect(appHref("zh-CN", "percent")).toBe("/zh-cn/percent/");
     expect(appHref("zh-CN", "random")).toBe("/zh-cn/random/");
+    expect(appHref("zh-CN", "html")).toBe("/zh-cn/html/");
+    expect(appHref("zh-CN", "cron")).toBe("/zh-cn/cron/");
+    expect(appHref("zh-CN", "slug")).toBe("/zh-cn/slug/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");
