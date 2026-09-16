@@ -67,6 +67,7 @@ const TITLE: Record<ToolId, string> = {
   "audio-joiner": "meta.titleAudioJoiner",
   data: "meta.titleData",
   "xml-json": "meta.titleXmlJson",
+  "yaml-json": "meta.titleYamlJson",
   password: "meta.titlePassword",
   "word-count": "meta.titleWordCount",
   color: "meta.titleColor",
@@ -81,6 +82,8 @@ const TITLE: Record<ToolId, string> = {
   uuid: "meta.titleUuid",
   hash: "meta.titleHash",
   regex: "meta.titleRegex",
+  case: "meta.titleCase",
+  jwt: "meta.titleJwt",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -108,6 +111,7 @@ const DESC: Record<ToolId, string> = {
   "audio-joiner": "meta.descAudioJoiner",
   data: "meta.descData",
   "xml-json": "meta.descXmlJson",
+  "yaml-json": "meta.descYamlJson",
   password: "meta.descPassword",
   "word-count": "meta.descWordCount",
   color: "meta.descColor",
@@ -122,6 +126,8 @@ const DESC: Record<ToolId, string> = {
   uuid: "meta.descUuid",
   hash: "meta.descHash",
   regex: "meta.descRegex",
+  case: "meta.descCase",
+  jwt: "meta.descJwt",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

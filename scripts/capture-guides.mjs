@@ -43,6 +43,7 @@ const STEPS = {
   "audio-joiner": 3,
   data: 3,
   "xml-json": 3,
+  "yaml-json": 3,
   password: 3,
   "word-count": 3,
   color: 3,
@@ -57,6 +58,8 @@ const STEPS = {
   uuid: 3,
   hash: 3,
   regex: 4,
+  case: 3,
+  jwt: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

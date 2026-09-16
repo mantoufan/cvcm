@@ -101,7 +101,13 @@
     "titleXmlJson": "XML から JSON — JSON から XML — cv.cm",
     "descXmlJson": "ブラウザで XML と JSON を相互変換。アップロードなし。",
     "titleHash": "ハッシュ生成 — MD5 SHA-256 SHA-1 — cv.cm",
-    "descHash": "ブラウザでテキストやファイルをハッシュ。MD5、SHA-1、SHA-256、SHA-384、SHA-512。アップロードなし。"
+    "descHash": "ブラウザでテキストやファイルをハッシュ。MD5、SHA-1、SHA-256、SHA-384、SHA-512。アップロードなし。",
+    "titleYamlJson": "YAML から JSON — JSON から YAML — cv.cm",
+    "descYamlJson": "ブラウザで YAML と JSON を相互変換。アップロードなし。",
+    "titleCase": "大文字小文字変換 — uppercase lowercase — cv.cm",
+    "descCase": "ブラウザで大文字・小文字・タイトル・camelCase・snake_case に変換。アップロードなし。",
+    "titleJwt": "JWT デコーダ — JSON Web Token を復号 — cv.cm",
+    "descJwt": "ブラウザで JWT の header と payload を読む。署名は検証しない。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -296,6 +302,18 @@
     "hash": {
       "name": "ハッシュ生成",
       "blurb": "MD5、SHA-256、SHA-1。テキストやファイル。アップロードなし。"
+    },
+    "yaml-json": {
+      "name": "YAML から JSON",
+      "blurb": "このタブで YAML ↔ JSON。アップロードなし。"
+    },
+    "case": {
+      "name": "大文字小文字変換",
+      "blurb": "大文字、小文字、タイトル、camel、snake。アップロードなし。"
+    },
+    "jwt": {
+      "name": "JWT デコーダ",
+      "blurb": "header と payload を表示。署名は検証しない。アップロードなし。"
     }
   },
   "watermark": {
@@ -1143,6 +1161,42 @@
       "a4": "No. MD5 and SHA-1 are broken for security. Use them for checksums, not password storage.",
       "q5": "What does Copy copy?",
       "a5": "The hexadecimal digest."
+    },
+    "yaml-json": {
+      "q1": "Can I convert YAML to JSON here?",
+      "a1": "Yes. Paste YAML for JSON, or JSON for YAML. It runs in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards both sides.",
+      "q3": "What YAML is supported?",
+      "a3": "Maps, lists, scalars, quotes, and simple inline [] {}. Anchors and tags are not a full YAML 1.2 suite.",
+      "q4": "Will every document round-trip?",
+      "a4": "Simple configs do. Complex YAML (merge keys, custom tags) may not.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "case": {
+      "q1": "Can I change letter case here?",
+      "a1": "Yes. Upper, lower, title, sentence, camel, Pascal, snake, kebab, and CONSTANT.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards the text.",
+      "q3": "How does Title Case split words?",
+      "a3": "It splits on spaces, punctuation, and camelCase boundaries.",
+      "q4": "Does it handle Unicode letters?",
+      "a4": "Basic Latin letters convert with toUpperCase/toLowerCase. Word splits keep common Latin letters.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "jwt": {
+      "q1": "Can I decode a JWT here?",
+      "a1": "Yes. Paste a token. The tab shows the header and payload as JSON.",
+      "q2": "Is the token uploaded?",
+      "a2": "No. Decoding stays in this tab. Closing it discards the token.",
+      "q3": "Do you verify the signature?",
+      "a3": "No. This is a decoder only. It does not prove the token is authentic.",
+      "q4": "What about expiry?",
+      "a4": "If payload.exp is a Unix second, the tab says whether that time has passed.",
+      "q5": "Can I copy the payload?",
+      "a5": "Yes. Copy puts the payload JSON on the clipboard."
     }
   },
   "qr": {
@@ -2051,5 +2105,57 @@
     "openFile": "Hash a file",
     "fileMeta": "File: {name}",
     "error": "Could not hash that input."
+  },
+  "yamlJson": {
+    "title": "YAML から JSON",
+    "back": "すべてのツール",
+    "privacyNote": "変換はこのタブで実行。アップロードなし。",
+    "options": "Direction",
+    "yamlJson": "YAML → JSON",
+    "jsonYaml": "JSON → YAML",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "key: value",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "empty": "Paste YAML or JSON.",
+    "invalid": "Could not convert that input."
+  },
+  "caseTool": {
+    "title": "大文字小文字変換",
+    "back": "すべてのツール",
+    "privacyNote": "変換はこのタブで実行。アップロードなし。",
+    "options": "Case",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "upper": "UPPERCASE",
+    "lower": "lowercase",
+    "sentence": "Sentence case",
+    "camel": "camelCase",
+    "pascal": "PascalCase",
+    "snake": "snake_case",
+    "kebab": "kebab-case",
+    "constant": "CONSTANT_CASE"
+  },
+  "jwt": {
+    "title": "JWT デコーダ",
+    "back": "すべてのツール",
+    "privacyNote": "復号はこのタブで実行。署名は検証しません。",
+    "options": "Token",
+    "note": "Decoder only. It does not check signatures or trust the issuer.",
+    "input": "JWT",
+    "header": "Header",
+    "payload": "Payload",
+    "placeholder": "eyJhbGciOi…",
+    "copy": "Copy payload",
+    "copied": "Copied",
+    "empty": "Paste a JWT.",
+    "format": "A JWT has two or three dot-separated parts.",
+    "decode": "Could not decode that token.",
+    "meta": "alg {alg}. Signature is not verified.",
+    "expired": "alg {alg}. Payload exp is in the past. Signature is not verified."
   }
 }

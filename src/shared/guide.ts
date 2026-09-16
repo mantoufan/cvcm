@@ -46,6 +46,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "audio-joiner": 3,
   data: 3,
   "xml-json": 3,
+  "yaml-json": 3,
   password: 3,
   "word-count": 3,
   color: 3,
@@ -60,6 +61,8 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   uuid: 3,
   hash: 3,
   regex: 4,
+  case: 3,
+  jwt: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

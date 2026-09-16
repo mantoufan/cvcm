@@ -22,6 +22,9 @@ import { detectMetadata, hasJpegExif } from "../src/shared/exif";
 import { concatClips } from "../src/shared/audio-join";
 import { jsonToXml, xmlToJson } from "../src/shared/xml-json";
 import { digest, md5, toHex } from "../src/shared/hash";
+import { jsonToYaml, yamlToJson } from "../src/shared/yaml-json";
+import { convertCase } from "../src/shared/case";
+import { decodeJwt } from "../src/shared/jwt";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -341,6 +344,36 @@ describe("hash", () => {
   });
 });
 
+describe("yaml-json", () => {
+  it("parses maps, lists, and scalars", () => {
+    expect(yamlToJson("a: 1\nb: two")).toEqual({ a: 1, b: "two" });
+    expect(yamlToJson("list:\n  - a\n  - 2")).toEqual({ list: ["a", 2] });
+    expect(jsonToYaml({ a: 1 })).toContain("a: 1");
+  });
+});
+
+describe("case", () => {
+  it("converts title, snake, and camel", () => {
+    expect(convertCase("hello cv.cm", "title")).toBe("Hello Cv Cm");
+    expect(convertCase("HelloWorld", "snake")).toBe("hello_world");
+    expect(convertCase("hello-world", "camel")).toBe("helloWorld");
+  });
+});
+
+describe("jwt", () => {
+  it("decodes header and payload without verifying", () => {
+    const b64url = (s: string) => btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+    const token = `${b64url('{"alg":"none"}')}.${b64url('{"sub":"1","exp":2000000000}')}.x`;
+    const out = decodeJwt(token, 1_700_000_000_000);
+    expect(out.ok).toBe(true);
+    if (!out.ok) return;
+    expect(out.alg).toBe("none");
+    expect(out.payload).toEqual({ sub: "1", exp: 2000000000 });
+    expect(out.expired).toBe(false);
+    expect(decodeJwt("not-a-jwt")).toEqual({ ok: false, error: "format" });
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -379,6 +412,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/hex-rgb/")).toEqual({ kind: "app", locale: "en", tool: "hex-rgb" });
     expect(parseAppPath("/en/xml-json/")).toEqual({ kind: "app", locale: "en", tool: "xml-json" });
     expect(parseAppPath("/en/hash/")).toEqual({ kind: "app", locale: "en", tool: "hash" });
+    expect(parseAppPath("/en/yaml-json/")).toEqual({ kind: "app", locale: "en", tool: "yaml-json" });
+    expect(parseAppPath("/en/case/")).toEqual({ kind: "app", locale: "en", tool: "case" });
+    expect(parseAppPath("/en/jwt/")).toEqual({ kind: "app", locale: "en", tool: "jwt" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
@@ -391,6 +427,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "hex-rgb")).toBe("/zh-cn/hex-rgb/");
     expect(appHref("zh-CN", "xml-json")).toBe("/zh-cn/xml-json/");
     expect(appHref("zh-CN", "hash")).toBe("/zh-cn/hash/");
+    expect(appHref("zh-CN", "yaml-json")).toBe("/zh-cn/yaml-json/");
+    expect(appHref("zh-CN", "case")).toBe("/zh-cn/case/");
+    expect(appHref("zh-CN", "jwt")).toBe("/zh-cn/jwt/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");

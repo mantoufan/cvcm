@@ -25,6 +25,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "audio-joiner": "/covers/audio-joiner-sweet.jpg?v=1",
   data: "/covers/data-sweet.jpg?v=2",
   "xml-json": "/covers/xml-json-sweet.jpg?v=1",
+  "yaml-json": "/covers/yaml-json-sweet.jpg?v=1",
   password: "/covers/password-sweet.jpg?v=1",
   "word-count": "/covers/word-count-sweet.jpg?v=1",
   color: "/covers/color-sweet.jpg?v=1",
@@ -39,6 +40,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
   uuid: "/covers/uuid-sweet.jpg?v=1",
   hash: "/covers/hash-sweet.jpg?v=1",
   regex: "/covers/regex-sweet.jpg?v=1",
+  case: "/covers/case-sweet.jpg?v=1",
+  jwt: "/covers/jwt-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

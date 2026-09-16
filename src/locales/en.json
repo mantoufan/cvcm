@@ -101,7 +101,13 @@
     "titleXmlJson": "XML to JSON converter — JSON to XML — cv.cm",
     "descXmlJson": "Convert XML to JSON and JSON to XML in the browser. Nothing is uploaded.",
     "titleHash": "Hash generator — MD5 SHA-256 SHA-1 — cv.cm",
-    "descHash": "Hash text or a file in the browser. MD5, SHA-1, SHA-256, SHA-384, SHA-512. Nothing is uploaded."
+    "descHash": "Hash text or a file in the browser. MD5, SHA-1, SHA-256, SHA-384, SHA-512. Nothing is uploaded.",
+    "titleYamlJson": "YAML to JSON converter — JSON to YAML — cv.cm",
+    "descYamlJson": "Convert YAML to JSON and JSON to YAML in the browser. Nothing is uploaded.",
+    "titleCase": "Case converter — uppercase lowercase — cv.cm",
+    "descCase": "Convert text to uppercase, lowercase, title case, camelCase, or snake_case in the browser. Nothing is uploaded.",
+    "titleJwt": "JWT decoder — decode JSON Web Token — cv.cm",
+    "descJwt": "Decode a JWT header and payload in the browser. Signatures are not verified. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -602,6 +608,18 @@
     "hash": {
       "name": "Hash generator",
       "blurb": "MD5, SHA-256, SHA-1. Hash text or a file. Nothing is uploaded."
+    },
+    "yaml-json": {
+      "name": "YAML to JSON",
+      "blurb": "YAML ↔ JSON in this tab. Nothing is uploaded."
+    },
+    "case": {
+      "name": "Case converter",
+      "blurb": "Upper, lower, title, camel, snake. Nothing is uploaded."
+    },
+    "jwt": {
+      "name": "JWT decoder",
+      "blurb": "Read header and payload. Not a signature check. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1449,6 +1467,42 @@
       "a4": "No. MD5 and SHA-1 are broken for security. Use them for checksums, not password storage.",
       "q5": "What does Copy copy?",
       "a5": "The hexadecimal digest."
+    },
+    "yaml-json": {
+      "q1": "Can I convert YAML to JSON here?",
+      "a1": "Yes. Paste YAML for JSON, or JSON for YAML. It runs in this tab.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards both sides.",
+      "q3": "What YAML is supported?",
+      "a3": "Maps, lists, scalars, quotes, and simple inline [] {}. Anchors and tags are not a full YAML 1.2 suite.",
+      "q4": "Will every document round-trip?",
+      "a4": "Simple configs do. Complex YAML (merge keys, custom tags) may not.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "case": {
+      "q1": "Can I change letter case here?",
+      "a1": "Yes. Upper, lower, title, sentence, camel, Pascal, snake, kebab, and CONSTANT.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab. Closing it discards the text.",
+      "q3": "How does Title Case split words?",
+      "a3": "It splits on spaces, punctuation, and camelCase boundaries.",
+      "q4": "Does it handle Unicode letters?",
+      "a4": "Basic Latin letters convert with toUpperCase/toLowerCase. Word splits keep common Latin letters.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "jwt": {
+      "q1": "Can I decode a JWT here?",
+      "a1": "Yes. Paste a token. The tab shows the header and payload as JSON.",
+      "q2": "Is the token uploaded?",
+      "a2": "No. Decoding stays in this tab. Closing it discards the token.",
+      "q3": "Do you verify the signature?",
+      "a3": "No. This is a decoder only. It does not prove the token is authentic.",
+      "q4": "What about expiry?",
+      "a4": "If payload.exp is a Unix second, the tab says whether that time has passed.",
+      "q5": "Can I copy the payload?",
+      "a5": "Yes. Copy puts the payload JSON on the clipboard."
     }
   },
   "qr": {
@@ -2051,5 +2105,57 @@
     "openFile": "Hash a file",
     "fileMeta": "File: {name}",
     "error": "Could not hash that input."
+  },
+  "yamlJson": {
+    "title": "YAML to JSON",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "yamlJson": "YAML → JSON",
+    "jsonYaml": "JSON → YAML",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "key: value",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "empty": "Paste YAML or JSON.",
+    "invalid": "Could not convert that input."
+  },
+  "caseTool": {
+    "title": "Title Case",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Case",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "upper": "UPPERCASE",
+    "lower": "lowercase",
+    "sentence": "Sentence case",
+    "camel": "camelCase",
+    "pascal": "PascalCase",
+    "snake": "snake_case",
+    "kebab": "kebab-case",
+    "constant": "CONSTANT_CASE"
+  },
+  "jwt": {
+    "title": "JWT decoder",
+    "back": "All tools",
+    "privacyNote": "Decoding stays in this tab. The signature is not verified.",
+    "options": "Token",
+    "note": "Decoder only. It does not check signatures or trust the issuer.",
+    "input": "JWT",
+    "header": "Header",
+    "payload": "Payload",
+    "placeholder": "eyJhbGciOi…",
+    "copy": "Copy payload",
+    "copied": "Copied",
+    "empty": "Paste a JWT.",
+    "format": "A JWT has two or three dot-separated parts.",
+    "decode": "Could not decode that token.",
+    "meta": "alg {alg}. Signature is not verified.",
+    "expired": "alg {alg}. Payload exp is in the past. Signature is not verified."
   }
 }
