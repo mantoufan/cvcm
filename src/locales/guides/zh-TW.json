@@ -379,6 +379,33 @@
       "s2b": "JWT 由點號分成兩段或三段。header 和 payload 會顯示為 JSON。",
       "s3t": "閱讀宣告",
       "s3b": "需要時可複製 payload。這不能證明權杖真實有效。"
+    },
+    "screenshot": {
+      "lead": "Mark up a screenshot in this tab. Draw a box or arrow, add a label, download a PNG.",
+      "s1t": "Open Screenshot editor",
+      "s1b": "The drop zone is on the left. PNG, JPG, WebP, and GIF work.",
+      "s2t": "Add the screenshot",
+      "s2b": "Drop or paste a photo. Pick Box, Arrow, or Text, then drag on the preview.",
+      "s3t": "Download the PNG",
+      "s3b": "Undo if a mark is wrong, then download. Closing the tab discards the file."
+    },
+    "percent": {
+      "lead": "Work out percentages in this tab: a percent of a number, or what percent one number is of another.",
+      "s1t": "Open Percentage calculator",
+      "s1b": "A and B start with sample values. Four results appear on the right.",
+      "s2t": "Enter A and B",
+      "s2b": "A% of B, A as a percent of B, B plus A%, and the change from B to A all update as you type.",
+      "s3t": "Copy the results",
+      "s3b": "Copy puts all four lines on the clipboard. Nothing is uploaded."
+    },
+    "random": {
+      "lead": "Generate random integers in this tab with Web Crypto. Min and max are inclusive.",
+      "s1t": "Open Random number",
+      "s1b": "The default range is 1 to 100. One number is already rolled.",
+      "s2t": "Set the range",
+      "s2b": "Change min, max, and how many numbers you want, then roll.",
+      "s3t": "Copy the list",
+      "s3b": "Copy puts one integer per line. Values come from crypto.getRandomValues."
     }
   }
 }

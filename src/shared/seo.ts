@@ -55,6 +55,7 @@ const TITLE: Record<ToolId, string> = {
   meme: "meta.titleMeme",
   signature: "meta.titleSignature",
   favicon: "meta.titleFavicon",
+  screenshot: "meta.titleScreenshot",
   convert: "meta.titleConvert",
   "image-pdf": "meta.titleImagePdf",
   "pdf-jpg": "meta.titlePdfJpg",
@@ -84,6 +85,8 @@ const TITLE: Record<ToolId, string> = {
   regex: "meta.titleRegex",
   case: "meta.titleCase",
   jwt: "meta.titleJwt",
+  percent: "meta.titlePercent",
+  random: "meta.titleRandom",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -99,6 +102,7 @@ const DESC: Record<ToolId, string> = {
   meme: "meta.descMeme",
   signature: "meta.descSignature",
   favicon: "meta.descFavicon",
+  screenshot: "meta.descScreenshot",
   convert: "meta.descConvert",
   "image-pdf": "meta.descImagePdf",
   "pdf-jpg": "meta.descPdfJpg",
@@ -128,6 +132,8 @@ const DESC: Record<ToolId, string> = {
   regex: "meta.descRegex",
   case: "meta.descCase",
   jwt: "meta.descJwt",
+  percent: "meta.descPercent",
+  random: "meta.descRandom",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

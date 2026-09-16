@@ -34,6 +34,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   meme: 4,
   signature: 3,
   favicon: 3,
+  screenshot: 3,
   convert: 3,
   "image-pdf": 3,
   "pdf-jpg": 3,
@@ -63,6 +64,8 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   regex: 4,
   case: 3,
   jwt: 3,
+  percent: 3,
+  random: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

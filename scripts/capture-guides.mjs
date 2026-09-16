@@ -410,6 +410,23 @@ async function runTool(send, id, fx) {
       })()`);
       await sleep(300);
     }
+    if (id === "screenshot") {
+      const box = await evalValue(send, `(() => {
+        const c = document.querySelector("canvas.preview, canvas");
+        if (!c) return null;
+        const r = c.getBoundingClientRect();
+        return { x: r.x, y: r.y, w: r.width, h: r.height };
+      })()`);
+      if (!box) throw new Error("screenshot canvas missing");
+      const x1 = box.x + box.w * 0.18;
+      const y1 = box.y + box.h * 0.2;
+      const x2 = box.x + box.w * 0.72;
+      const y2 = box.y + box.h * 0.58;
+      await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x1, y: y1, button: "left", clickCount: 1 });
+      await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x2, y: y2, button: "left" });
+      await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x2, y: y2, button: "left", clickCount: 1 });
+      await sleep(250);
+    }
     await snap(3);
     return;
   }

@@ -107,7 +107,13 @@
     "titleCase": "Case converter — uppercase lowercase — cv.cm",
     "descCase": "Convert text to uppercase, lowercase, title case, camelCase, or snake_case in the browser. Nothing is uploaded.",
     "titleJwt": "JWT decoder — decode JSON Web Token — cv.cm",
-    "descJwt": "Decode a JWT header and payload in the browser. Signatures are not verified. Nothing is uploaded."
+    "descJwt": "Decode a JWT header and payload in the browser. Signatures are not verified. Nothing is uploaded.",
+    "titleScreenshot": "Screenshot editor — annotate PNG JPG — cv.cm",
+    "descScreenshot": "Annotate a screenshot in the browser. Draw boxes, arrows, and labels. Download PNG. Nothing is uploaded.",
+    "titlePercent": "Percentage calculator — what percent — cv.cm",
+    "descPercent": "Find a percentage of a number, or what percent one number is of another. Nothing is uploaded.",
+    "titleRandom": "Random number generator — min max — cv.cm",
+    "descRandom": "Generate random integers in the browser with Web Crypto. Set min, max, and count. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -620,6 +626,18 @@
     "jwt": {
       "name": "JWT decoder",
       "blurb": "Read header and payload. Not a signature check. Nothing is uploaded."
+    },
+    "screenshot": {
+      "name": "Screenshot editor",
+      "blurb": "Boxes, arrows, labels on a photo. Download PNG. Nothing is uploaded."
+    },
+    "percent": {
+      "name": "Percentage calculator",
+      "blurb": "What percent, percent of, increase. Nothing is uploaded."
+    },
+    "random": {
+      "name": "Random number",
+      "blurb": "Random integers with Web Crypto. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1503,6 +1521,42 @@
       "a4": "If payload.exp is a Unix second, the tab says whether that time has passed.",
       "q5": "Can I copy the payload?",
       "a5": "Yes. Copy puts the payload JSON on the clipboard."
+    },
+    "screenshot": {
+      "q1": "Can I mark up a screenshot here?",
+      "a1": "Yes. Drop a photo, draw a box or arrow, add a label, then download a PNG.",
+      "q2": "Is the image uploaded?",
+      "a2": "No. Drawing stays in this tab. Closing it discards the file.",
+      "q3": "What marks can I add?",
+      "a3": "Rectangles, arrows, and text. Pick a color in the rail.",
+      "q4": "Can I undo?",
+      "a4": "Yes. Undo removes the last mark.",
+      "q5": "What do I download?",
+      "a5": "A PNG of the photo plus the marks."
+    },
+    "percent": {
+      "q1": "Can I calculate a percentage here?",
+      "a1": "Yes. Enter A and B. The tab shows A% of B, A as a percent of B, B plus A%, and the change from B to A.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What if B is zero?",
+      "a3": "“What percent” and percent change are blank when the base is zero.",
+      "q4": "Are results exact?",
+      "a4": "They use ordinary JavaScript numbers and are rounded for display.",
+      "q5": "Can I copy the results?",
+      "a5": "Yes. Copy puts all four lines on the clipboard."
+    },
+    "random": {
+      "q1": "Can I generate a random number here?",
+      "a1": "Yes. Set min, max, and how many integers you want, then roll.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Numbers come from crypto.getRandomValues in this tab.",
+      "q3": "Are the bounds inclusive?",
+      "a3": "Yes. Both min and max can appear.",
+      "q4": "How many numbers can I make?",
+      "a4": "Up to 200 at a time.",
+      "q5": "Can I copy them?",
+      "a5": "Yes. Copy puts one number per line."
     }
   },
   "qr": {
@@ -2157,5 +2211,57 @@
     "decode": "Could not decode that token.",
     "meta": "alg {alg}. Signature is not verified.",
     "expired": "alg {alg}. Payload exp is in the past. Signature is not verified."
+  },
+  "screenshot": {
+    "title": "Screenshot editor",
+    "back": "All tools",
+    "privacyNote": "The photo stays in this tab. Nothing is uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a screenshot",
+    "dropHint": "Or paste. Draw boxes and arrows in this tab.",
+    "dropTypes": "PNG, JPG, WebP, GIF",
+    "hint": "Drag to draw. Text places a label at the click.",
+    "options": "Marks",
+    "rect": "Box",
+    "arrow": "Arrow",
+    "text": "Text",
+    "color": "Color",
+    "label": "Label",
+    "undo": "Undo",
+    "download": "Download PNG",
+    "emptyDownload": "Add a screenshot first.",
+    "working": "Drawing…",
+    "errorDecode": "Could not read that image.",
+    "errorEncode": "Could not write the PNG."
+  },
+  "percent": {
+    "title": "Percentage calculator",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Values",
+    "a": "A",
+    "b": "B",
+    "result": "Results",
+    "copy": "Copy results",
+    "copied": "Copied",
+    "of": "A% of B",
+    "what": "A is what % of B",
+    "plus": "B plus A%",
+    "delta": "Change B → A",
+    "ofWord": "of",
+    "is": "is"
+  },
+  "random": {
+    "title": "Random number generator",
+    "back": "All tools",
+    "privacyNote": "Numbers are generated in this tab. Nothing is uploaded.",
+    "options": "Range",
+    "min": "Min",
+    "max": "Max",
+    "count": "How many",
+    "result": "Numbers",
+    "roll": "Roll",
+    "copy": "Copy",
+    "copied": "Copied"
   }
 }

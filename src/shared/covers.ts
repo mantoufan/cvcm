@@ -13,6 +13,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   meme: "/covers/meme-sweet.jpg?v=2",
   signature: "/covers/signature-sweet.jpg?v=2",
   favicon: "/covers/favicon-sweet.jpg?v=1",
+  screenshot: "/covers/screenshot-sweet.jpg?v=1",
   convert: "/covers/convert-sweet.jpg?v=1",
   "image-pdf": "/covers/image-pdf-sweet.jpg?v=1",
   "pdf-jpg": "/covers/pdf-jpg-sweet.jpg?v=1",
@@ -42,6 +43,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
   regex: "/covers/regex-sweet.jpg?v=1",
   case: "/covers/case-sweet.jpg?v=1",
   jwt: "/covers/jwt-sweet.jpg?v=1",
+  percent: "/covers/percent-sweet.jpg?v=1",
+  random: "/covers/random-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

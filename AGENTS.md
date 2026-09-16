@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
+1. Image and PDF tools (watermark, collage, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -38,6 +38,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/hash/` — MD5 / SHA hash generator
 - `src/client/case/` — case converter
 - `src/client/jwt/` — JWT decoder (no signature verify)
+- `src/client/screenshot/` — annotate a screenshot
+- `src/client/percent/` — percentage calculator
+- `src/client/random/` — random number generator
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

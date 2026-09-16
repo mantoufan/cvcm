@@ -107,7 +107,13 @@
     "titleCase": "大小写转换 — 大写小写 — cv.cm",
     "descCase": "在浏览器里把文本转成大写、小写、标题、camelCase 或 snake_case。不上传。",
     "titleJwt": "JWT 解码 — 解码 JSON Web Token — cv.cm",
-    "descJwt": "在浏览器里解码 JWT 的 header 和 payload。不校验签名。不上传。"
+    "descJwt": "在浏览器里解码 JWT 的 header 和 payload。不校验签名。不上传。",
+    "titleScreenshot": "截图标注 — 标注 PNG JPG — cv.cm",
+    "descScreenshot": "在浏览器里给截图画框、箭头和文字。下载 PNG。不上传。",
+    "titlePercent": "百分比计算 — 百分之几 — cv.cm",
+    "descPercent": "算一个数的百分之几，或一个数是另一个数的百分之几。不上传。",
+    "titleRandom": "随机数 — 最小最大 — cv.cm",
+    "descRandom": "在浏览器里用 Web Crypto 生成随机整数。设定最小、最大和个数。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -314,6 +320,18 @@
     "jwt": {
       "name": "JWT 解码",
       "blurb": "查看 header 和 payload。不校验签名。不上传。"
+    },
+    "screenshot": {
+      "name": "截图标注",
+      "blurb": "照片上画框、箭头、文字。下载 PNG。不上传。"
+    },
+    "percent": {
+      "name": "百分比计算",
+      "blurb": "百分之几、占多少、增减。不上传。"
+    },
+    "random": {
+      "name": "随机数",
+      "blurb": "Web Crypto 随机整数。不上传。"
     }
   },
   "watermark": {
@@ -1197,6 +1215,42 @@
       "a4": "If payload.exp is a Unix second, the tab says whether that time has passed.",
       "q5": "Can I copy the payload?",
       "a5": "Yes. Copy puts the payload JSON on the clipboard."
+    },
+    "screenshot": {
+      "q1": "Can I mark up a screenshot here?",
+      "a1": "Yes. Drop a photo, draw a box or arrow, add a label, then download a PNG.",
+      "q2": "Is the image uploaded?",
+      "a2": "No. Drawing stays in this tab. Closing it discards the file.",
+      "q3": "What marks can I add?",
+      "a3": "Rectangles, arrows, and text. Pick a color in the rail.",
+      "q4": "Can I undo?",
+      "a4": "Yes. Undo removes the last mark.",
+      "q5": "What do I download?",
+      "a5": "A PNG of the photo plus the marks."
+    },
+    "percent": {
+      "q1": "Can I calculate a percentage here?",
+      "a1": "Yes. Enter A and B. The tab shows A% of B, A as a percent of B, B plus A%, and the change from B to A.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What if B is zero?",
+      "a3": "“What percent” and percent change are blank when the base is zero.",
+      "q4": "Are results exact?",
+      "a4": "They use ordinary JavaScript numbers and are rounded for display.",
+      "q5": "Can I copy the results?",
+      "a5": "Yes. Copy puts all four lines on the clipboard."
+    },
+    "random": {
+      "q1": "Can I generate a random number here?",
+      "a1": "Yes. Set min, max, and how many integers you want, then roll.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Numbers come from crypto.getRandomValues in this tab.",
+      "q3": "Are the bounds inclusive?",
+      "a3": "Yes. Both min and max can appear.",
+      "q4": "How many numbers can I make?",
+      "a4": "Up to 200 at a time.",
+      "q5": "Can I copy them?",
+      "a5": "Yes. Copy puts one number per line."
     }
   },
   "qr": {
@@ -2157,5 +2211,57 @@
     "decode": "Could not decode that token.",
     "meta": "alg {alg}. Signature is not verified.",
     "expired": "alg {alg}. Payload exp is in the past. Signature is not verified."
+  },
+  "screenshot": {
+    "title": "截图标注",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a screenshot",
+    "dropHint": "Or paste. Draw boxes and arrows in this tab.",
+    "dropTypes": "PNG, JPG, WebP, GIF",
+    "hint": "Drag to draw. Text places a label at the click.",
+    "options": "Marks",
+    "rect": "Box",
+    "arrow": "Arrow",
+    "text": "Text",
+    "color": "Color",
+    "label": "Label",
+    "undo": "Undo",
+    "download": "Download PNG",
+    "emptyDownload": "Add a screenshot first.",
+    "working": "Drawing…",
+    "errorDecode": "Could not read that image.",
+    "errorEncode": "Could not write the PNG."
+  },
+  "percent": {
+    "title": "百分比计算",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Values",
+    "a": "A",
+    "b": "B",
+    "result": "Results",
+    "copy": "Copy results",
+    "copied": "Copied",
+    "of": "A% of B",
+    "what": "A is what % of B",
+    "plus": "B plus A%",
+    "delta": "Change B → A",
+    "ofWord": "of",
+    "is": "is"
+  },
+  "random": {
+    "title": "随机数",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Range",
+    "min": "Min",
+    "max": "Max",
+    "count": "How many",
+    "result": "Numbers",
+    "roll": "Roll",
+    "copy": "Copy",
+    "copied": "Copied"
   }
 }

@@ -25,6 +25,8 @@ import { digest, md5, toHex } from "../src/shared/hash";
 import { jsonToYaml, yamlToJson } from "../src/shared/yaml-json";
 import { convertCase } from "../src/shared/case";
 import { decodeJwt } from "../src/shared/jwt";
+import { isWhatPercent, percentOf } from "../src/shared/percent";
+import { randomInt, randomInts } from "../src/shared/random";
 import { appHref, parseAppPath } from "../src/shared/path";
 
 describe("qr", () => {
@@ -374,6 +376,25 @@ describe("jwt", () => {
   });
 });
 
+describe("percent", () => {
+  it("computes percent-of and what-percent", () => {
+    expect(percentOf(200, 25)).toBe(50);
+    expect(isWhatPercent(50, 200)).toBe(25);
+    expect(isWhatPercent(1, 0)).toBeNull();
+  });
+});
+
+describe("random", () => {
+  it("stays inside the inclusive range", () => {
+    for (let i = 0; i < 40; i++) {
+      const n = randomInt(3, 5);
+      expect(n).toBeGreaterThanOrEqual(3);
+      expect(n).toBeLessThanOrEqual(5);
+    }
+    expect(randomInts(1, 1, 4)).toEqual([1, 1, 1, 1]);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -415,6 +436,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/yaml-json/")).toEqual({ kind: "app", locale: "en", tool: "yaml-json" });
     expect(parseAppPath("/en/case/")).toEqual({ kind: "app", locale: "en", tool: "case" });
     expect(parseAppPath("/en/jwt/")).toEqual({ kind: "app", locale: "en", tool: "jwt" });
+    expect(parseAppPath("/en/screenshot/")).toEqual({ kind: "app", locale: "en", tool: "screenshot" });
+    expect(parseAppPath("/en/percent/")).toEqual({ kind: "app", locale: "en", tool: "percent" });
+    expect(parseAppPath("/en/random/")).toEqual({ kind: "app", locale: "en", tool: "random" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
     expect(appHref("zh-CN", "regex")).toBe("/zh-cn/regex/");
@@ -430,6 +454,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "yaml-json")).toBe("/zh-cn/yaml-json/");
     expect(appHref("zh-CN", "case")).toBe("/zh-cn/case/");
     expect(appHref("zh-CN", "jwt")).toBe("/zh-cn/jwt/");
+    expect(appHref("zh-CN", "screenshot")).toBe("/zh-cn/screenshot/");
+    expect(appHref("zh-CN", "percent")).toBe("/zh-cn/percent/");
+    expect(appHref("zh-CN", "random")).toBe("/zh-cn/random/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");
     expect(appHref("zh-CN", "invoice")).toBe("/zh-cn/invoice/");
