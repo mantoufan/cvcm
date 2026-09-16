@@ -6,6 +6,12 @@ Each tool was exercised in Chrome (bb-browser CDP). Passing tools got step scree
 
 **38 pass / 0 fail / 38 tools**
 
+## Production verify (2026-09-16, deploy `71c9bfc`)
+
+All 38 English tool URLs return 200, include HowTo JSON-LD, and reference `/covers/guides/{id}/01.jpg`. Every step JPEG is 200 `image/jpeg`.
+
+Browser (logged-in Chrome CDP) on `zh-cn` unless noted: `clip`, `convert`, `invoice`, `regex`, `hash`, `password`, `watermark`, plus `en/xml-json`. Each page shows **使用步骤 / How to use this tool** above **常见问题 / FAQ**, with the expected step count. Guide images decode (1080×726) once they enter the viewport (`loading=lazy`).
+
 | Tool | Status | Steps | Screenshots | Notes |
 |---|---|---:|---|---|
 | `clip` | pass | 3 | `covers/guides/clip/01.jpg`, `covers/guides/clip/02.jpg`, `covers/guides/clip/03.jpg` | Created a real expiring note during the test. |
