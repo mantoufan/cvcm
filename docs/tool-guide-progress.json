@@ -1,0 +1,428 @@
+{
+  "tools": {
+    "clip": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/clip/01.jpg",
+        "covers/guides/clip/02.jpg",
+        "covers/guides/clip/03.jpg"
+      ],
+      "ms": 6498,
+      "error": null
+    },
+    "qr": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/qr/01.jpg",
+        "covers/guides/qr/02.jpg",
+        "covers/guides/qr/03.jpg"
+      ],
+      "ms": 2269,
+      "error": null
+    },
+    "barcode": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/barcode/01.jpg",
+        "covers/guides/barcode/02.jpg",
+        "covers/guides/barcode/03.jpg"
+      ],
+      "ms": 2953,
+      "error": null
+    },
+    "watermark": {
+      "status": "pass",
+      "steps": 4,
+      "shots": [
+        "covers/guides/watermark/01.jpg",
+        "covers/guides/watermark/02.jpg",
+        "covers/guides/watermark/03.jpg",
+        "covers/guides/watermark/04.jpg"
+      ],
+      "ms": 4802,
+      "error": null
+    },
+    "collage": {
+      "status": "pass",
+      "steps": 4,
+      "shots": [
+        "covers/guides/collage/01.jpg",
+        "covers/guides/collage/02.jpg",
+        "covers/guides/collage/03.jpg",
+        "covers/guides/collage/04.jpg"
+      ],
+      "ms": 3534,
+      "error": null
+    },
+    "resize": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/resize/01.jpg",
+        "covers/guides/resize/02.jpg",
+        "covers/guides/resize/03.jpg"
+      ],
+      "ms": 2493,
+      "error": null
+    },
+    "crop": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/crop/01.jpg",
+        "covers/guides/crop/02.jpg",
+        "covers/guides/crop/03.jpg"
+      ],
+      "ms": 2802,
+      "error": null
+    },
+    "rotate": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/rotate/01.jpg",
+        "covers/guides/rotate/02.jpg",
+        "covers/guides/rotate/03.jpg"
+      ],
+      "ms": 2831,
+      "error": null
+    },
+    "exif": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/exif/01.jpg",
+        "covers/guides/exif/02.jpg",
+        "covers/guides/exif/03.jpg"
+      ],
+      "ms": 2483,
+      "error": null
+    },
+    "meme": {
+      "status": "pass",
+      "steps": 4,
+      "shots": [
+        "covers/guides/meme/01.jpg",
+        "covers/guides/meme/02.jpg",
+        "covers/guides/meme/03.jpg",
+        "covers/guides/meme/04.jpg"
+      ],
+      "ms": 3066,
+      "error": null
+    },
+    "signature": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/signature/01.jpg",
+        "covers/guides/signature/02.jpg",
+        "covers/guides/signature/03.jpg"
+      ],
+      "ms": 3348,
+      "error": null
+    },
+    "favicon": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/favicon/01.jpg",
+        "covers/guides/favicon/02.jpg",
+        "covers/guides/favicon/03.jpg"
+      ],
+      "ms": 2814,
+      "error": null
+    },
+    "convert": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/convert/01.jpg",
+        "covers/guides/convert/02.jpg",
+        "covers/guides/convert/03.jpg"
+      ],
+      "ms": 2689,
+      "error": null
+    },
+    "image-pdf": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/image-pdf/01.jpg",
+        "covers/guides/image-pdf/02.jpg",
+        "covers/guides/image-pdf/03.jpg"
+      ],
+      "ms": 2680,
+      "error": null
+    },
+    "pdf-jpg": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/pdf-jpg/01.jpg",
+        "covers/guides/pdf-jpg/02.jpg",
+        "covers/guides/pdf-jpg/03.jpg"
+      ],
+      "ms": 3778,
+      "error": null
+    },
+    "merge-pdf": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/merge-pdf/01.jpg",
+        "covers/guides/merge-pdf/02.jpg",
+        "covers/guides/merge-pdf/03.jpg"
+      ],
+      "ms": 4212,
+      "error": null
+    },
+    "compress-pdf": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/compress-pdf/01.jpg",
+        "covers/guides/compress-pdf/02.jpg",
+        "covers/guides/compress-pdf/03.jpg"
+      ],
+      "ms": 5039,
+      "error": null
+    },
+    "split-pdf": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/split-pdf/01.jpg",
+        "covers/guides/split-pdf/02.jpg",
+        "covers/guides/split-pdf/03.jpg"
+      ],
+      "ms": 5946,
+      "error": null
+    },
+    "invoice": {
+      "status": "pass",
+      "steps": 4,
+      "shots": [
+        "covers/guides/invoice/01.jpg",
+        "covers/guides/invoice/02.jpg",
+        "covers/guides/invoice/03.jpg",
+        "covers/guides/invoice/04.jpg"
+      ],
+      "ms": 4869,
+      "error": null
+    },
+    "audio": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/audio/01.jpg",
+        "covers/guides/audio/02.jpg",
+        "covers/guides/audio/03.jpg"
+      ],
+      "ms": 3444,
+      "error": null
+    },
+    "audio-cutter": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/audio-cutter/01.jpg",
+        "covers/guides/audio-cutter/02.jpg",
+        "covers/guides/audio-cutter/03.jpg"
+      ],
+      "ms": 4552,
+      "error": null
+    },
+    "audio-joiner": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/audio-joiner/01.jpg",
+        "covers/guides/audio-joiner/02.jpg",
+        "covers/guides/audio-joiner/03.jpg"
+      ],
+      "ms": 2632,
+      "error": null
+    },
+    "data": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/data/01.jpg",
+        "covers/guides/data/02.jpg",
+        "covers/guides/data/03.jpg"
+      ],
+      "ms": 5666,
+      "error": null
+    },
+    "xml-json": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/xml-json/01.jpg",
+        "covers/guides/xml-json/02.jpg",
+        "covers/guides/xml-json/03.jpg"
+      ],
+      "ms": 2012,
+      "error": null
+    },
+    "password": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/password/01.jpg",
+        "covers/guides/password/02.jpg",
+        "covers/guides/password/03.jpg"
+      ],
+      "ms": 2356,
+      "error": null
+    },
+    "word-count": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/word-count/01.jpg",
+        "covers/guides/word-count/02.jpg",
+        "covers/guides/word-count/03.jpg"
+      ],
+      "ms": 2197,
+      "error": null
+    },
+    "color": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/color/01.jpg",
+        "covers/guides/color/02.jpg",
+        "covers/guides/color/03.jpg"
+      ],
+      "ms": 2190,
+      "error": null
+    },
+    "hex-rgb": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/hex-rgb/01.jpg",
+        "covers/guides/hex-rgb/02.jpg",
+        "covers/guides/hex-rgb/03.jpg"
+      ],
+      "ms": 1803,
+      "error": null
+    },
+    "names": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/names/01.jpg",
+        "covers/guides/names/02.jpg",
+        "covers/guides/names/03.jpg"
+      ],
+      "ms": 2166,
+      "error": null
+    },
+    "timezone": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/timezone/01.jpg",
+        "covers/guides/timezone/02.jpg",
+        "covers/guides/timezone/03.jpg"
+      ],
+      "ms": 4611,
+      "error": null
+    },
+    "timestamp": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/timestamp/01.jpg",
+        "covers/guides/timestamp/02.jpg",
+        "covers/guides/timestamp/03.jpg"
+      ],
+      "ms": 2150,
+      "error": null
+    },
+    "lorem": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/lorem/01.jpg",
+        "covers/guides/lorem/02.jpg",
+        "covers/guides/lorem/03.jpg"
+      ],
+      "ms": 2196,
+      "error": null
+    },
+    "units": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/units/01.jpg",
+        "covers/guides/units/02.jpg",
+        "covers/guides/units/03.jpg"
+      ],
+      "ms": 2874,
+      "error": null
+    },
+    "text-to-speech": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/text-to-speech/01.jpg",
+        "covers/guides/text-to-speech/02.jpg",
+        "covers/guides/text-to-speech/03.jpg"
+      ],
+      "ms": 2151,
+      "error": null
+    },
+    "diff": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/diff/01.jpg",
+        "covers/guides/diff/02.jpg",
+        "covers/guides/diff/03.jpg"
+      ],
+      "ms": 2253,
+      "error": null
+    },
+    "uuid": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/uuid/01.jpg",
+        "covers/guides/uuid/02.jpg",
+        "covers/guides/uuid/03.jpg"
+      ],
+      "ms": 2145,
+      "error": null
+    },
+    "hash": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/hash/01.jpg",
+        "covers/guides/hash/02.jpg",
+        "covers/guides/hash/03.jpg"
+      ],
+      "ms": 1851,
+      "error": null
+    },
+    "regex": {
+      "status": "pass",
+      "steps": 4,
+      "shots": [
+        "covers/guides/regex/01.jpg",
+        "covers/guides/regex/02.jpg",
+        "covers/guides/regex/03.jpg",
+        "covers/guides/regex/04.jpg"
+      ],
+      "ms": 2919,
+      "error": null
+    }
+  },
+  "updated": "2026-09-16T05:40:27.639Z"
+}

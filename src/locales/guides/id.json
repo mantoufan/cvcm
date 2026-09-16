@@ -1,0 +1,357 @@
+{
+  "title": "Cara memakai alat ini",
+  "tools": {
+    "clip": {
+      "lead": "Buat catatan singkat dalam tiga langkah. Teks ada di cv.cm sampai 10 kali dilihat atau satu hari.",
+      "s1t": "Buka papan klip awan",
+      "s1b": "Anda mulai dengan catatan kosong. Tidak ada daftar publik. Hanya yang punya tautan yang bisa membuka.",
+      "s2t": "Tempel atau ketik catatan",
+      "s2b": "Bisa teks, Markdown, gambar, atau berkas. Penghitung menunjukkan berapa dari 64 KB teks yang terpakai.",
+      "s3t": "Buat tautan",
+      "s3b": "Kirim catatan, salin URL, lalu bagikan. Tampilan terakhir memberi tahu catatan sudah hilang."
+    },
+    "qr": {
+      "lead": "Ubah URL atau satu baris teks menjadi kode QR di tab ini. Tidak diunggah.",
+      "s1t": "Buka pembuat QR",
+      "s1b": "URL contoh cv.cm sudah terisi dan pratinjau langsung tergambar.",
+      "s2t": "Ganti teks",
+      "s2b": "Tempel URL atau pesan Anda. Koreksi kesalahan, warna batang, dan latar ada di kiri.",
+      "s3t": "Periksa pratinjau lalu unduh",
+      "s3b": "Jika kotak sudah benar, unduh PNG. Menutup tab membuang data."
+    },
+    "barcode": {
+      "lead": "Buat barcode Code 128, Code 39, atau EAN-13 di tab ini lalu unduh PNG.",
+      "s1t": "Buka pembuat barcode",
+      "s1b": "Code 128 terpilih, dengan nilai contoh pendek sudah tergambar.",
+      "s2t": "Masukkan nilai",
+      "s2b": "Ketik string atau digit. Ganti ke Code 39 atau EAN-13 jika perlu (EAN-13 butuh 12 atau 13 digit).",
+      "s3t": "Unduh PNG",
+      "s3b": "Pratinjau diperbarui saat mengetik. Unduh jika batangnya sudah benar."
+    },
+    "watermark": {
+      "lead": "Cap teks pada foto di tab ini. Berkas tidak meninggalkan peramban.",
+      "s1t": "Buka Cap air gambar",
+      "s1b": "Pakai zona taruh di kiri. PNG, JPEG, WebP, dan GIF bisa.",
+      "s2t": "Tambah foto",
+      "s2b": "Taruh berkas atau klik zona. Pratinjau muncul begitu peramban bisa mendekode.",
+      "s3t": "Ketik cap",
+      "s3b": "Masukkan teks cap. Sematkan di sudut, ubin, atau pakai logo.",
+      "s4t": "Periksa pratinjau lalu ekspor",
+      "s4b": "Jika cap di tempat yang diinginkan, unduh satu berkas atau ZIP seluruh batch."
+    },
+    "collage": {
+      "lead": "Gabungkan foto jadi satu gambar. Tata letak dan ukuran Instagram tetap di tab ini.",
+      "s1t": "Buka Kolase foto",
+      "s1b": "Rel kiri adalah zona taruh. Tidak diunggah.",
+      "s2t": "Tambah dua foto atau lebih",
+      "s2b": "Taruh beberapa berkas. Mereka muncul di daftar untuk diurutkan atau dihapus.",
+      "s3t": "Pilih tata letak",
+      "s3b": "Kisi atau belah. Persegi, 4:5, 9:16, dan 16:9 sudah ada.",
+      "s4t": "Pratinjau lalu unduh",
+      "s4b": "Periksa gambar gabungan, lalu ekspor PNG, JPEG, atau WebP."
+    },
+    "resize": {
+      "lead": "Ubah ukuran atau kompres foto ke piksel pasti atau sisi terpanjang. Berkas tetap di tab ini.",
+      "s1t": "Buka Ubah ukuran & kompres",
+      "s1b": "Taruh PNG, JPEG, WebP, atau foto serupa di kiri.",
+      "s2t": "Tambah foto",
+      "s2b": "Pratinjau menunjukkan piksel saat ini. Atur lebar, tinggi, atau sisi maksimum.",
+      "s3t": "Unduh berkas yang lebih kecil",
+      "s3b": "Pilih mutu JPEG atau WebP jika butuh lebih ringan, lalu unduh."
+    },
+    "crop": {
+      "lead": "Potong foto di tab ini. Bebas, 1:1, 4:5, 16:9, dan 9:16.",
+      "s1t": "Buka Potong gambar",
+      "s1b": "Taruh foto di kiri. Tidak diunggah.",
+      "s2t": "Tambah foto",
+      "s2b": "Kotak potong muncul di pratinjau. Seret atau ganti ke 1:1 dan rasio lain.",
+      "s3t": "Ekspor potongan",
+      "s3b": "Jika bingkai sudah benar, unduh JPEG, PNG, atau WebP."
+    },
+    "rotate": {
+      "lead": "Putar atau balik foto di tab ini. 90°, 180°, atau sudut apa pun.",
+      "s1t": "Buka Putar gambar",
+      "s1b": "Taruh foto di kiri. Pratinjau kosong sampai ada berkas.",
+      "s2t": "Tambah foto",
+      "s2b": "Orientasi asli tampil dulu. Pakai Kiri, Kanan, 180°, atau penggeser sudut.",
+      "s3t": "Unduh berkas yang diputar",
+      "s3b": "Balik horizontal atau vertikal jika butuh cermin, lalu unduh."
+    },
+    "exif": {
+      "lead": "Hapus EXIF dan GPS dari foto di tab ini, lalu unduh berkas bersih.",
+      "s1t": "Buka Penghapus EXIF",
+      "s1b": "Taruh JPEG atau foto lain di kiri. Berkas tidak diunggah.",
+      "s2t": "Tambah foto",
+      "s2b": "Alat memberitahu apakah metadata ditemukan. Pratinjau hanya gambar.",
+      "s3t": "Unduh berkas bersih",
+      "s3b": "Ekspor JPEG, PNG, atau WebP tanpa tag EXIF dan GPS kamera."
+    },
+    "meme": {
+      "lead": "Pasang teks gaya Impact pada foto di tab ini lalu unduh PNG.",
+      "s1t": "Buka Pembuat meme",
+      "s1b": "Taruh foto di kiri. Tidak diunggah.",
+      "s2t": "Tambah foto",
+      "s2b": "Gambar mengisi pratinjau. Kolom teks atas dan bawah ada di rel kanan.",
+      "s3t": "Ketik teks",
+      "s3b": "Satu baris atas dan satu baris bawah. Teks bergaris tepi mengikuti ukuran foto.",
+      "s4t": "Unduh meme",
+      "s4b": "Periksa pratinjau, lalu unduh PNG."
+    },
+    "signature": {
+      "lead": "Gambar tanda tangan di tab ini lalu unduh PNG transparan yang dipotong. Bukan e-tanda tangan legal.",
+      "s1t": "Buka Pembuat tanda tangan",
+      "s1b": "Pad kosong. Di kiri bisa pilih warna dan ketebalan.",
+      "s2t": "Gambar di pad",
+      "s2b": "Tulis dengan mouse atau jari. Urungkan menghapus goresan terakhir; Hapus membersihkan pad.",
+      "s3t": "Unduh PNG",
+      "s3b": "Ekspor memotong ke tinta. Ini gambar, bukan DocuSign dan bukan tanda tangan elektronik yang memenuhi syarat."
+    },
+    "favicon": {
+      "lead": "Buat favicon ICO dan PNG dari foto di tab ini.",
+      "s1t": "Buka Pembuat favicon",
+      "s1b": "Taruh foto atau logo yang hampir persegi di kiri.",
+      "s2t": "Tambah gambar",
+      "s2b": "Pratinjau menunjukkan cara dikuadratkan. Cover atau contain mengubah potongan.",
+      "s3t": "Unduh ICO dan ukuran PNG",
+      "s3b": "Ekspor paket jika kotak sudah benar. Tidak diunggah."
+    },
+    "convert": {
+      "lead": "Ubah HEIC, WebP, PNG, JPEG, dan format terkait di tab ini. Ubah ukuran opsional.",
+      "s1t": "Buka Format gambar",
+      "s1b": "Taruh satu berkas atau batch di kiri. Ada pintasan HEIC → JPG dan WebP → PNG.",
+      "s2t": "Tambah foto",
+      "s2b": "Pilih format keluaran dan, jika mau, sisi maksimum agar foto besar mengecil.",
+      "s3t": "Unduh satu berkas atau ZIP",
+      "s3b": "Unduh berkas saat ini, atau seluruh batch sebagai ZIP. Konversi tetap di tab ini."
+    },
+    "image-pdf": {
+      "lead": "Ubah foto JPG atau PNG menjadi satu PDF di tab ini. A4, Letter, atau sesuai foto.",
+      "s1t": "Buka Gambar ke PDF",
+      "s1b": "Taruh satu foto atau beberapa. Mereka jadi halaman, berurutan.",
+      "s2t": "Tambah foto",
+      "s2b": "Urutkan ulang daftar jika urutan halaman salah. Pilih A4, Letter, atau halaman yang cocok dengan rasio foto.",
+      "s3t": "Unduh PDF",
+      "s3b": "Setiap gambar dimasukkan ke halamannya tanpa dipotong. PDF dibangun di sini."
+    },
+    "pdf-jpg": {
+      "lead": "Render halaman PDF ke JPG, PNG, atau WebP di tab ini. Unduh satu halaman atau ZIP.",
+      "s1t": "Buka PDF ke JPG",
+      "s1b": "Taruh PDF di kiri. Berkas tidak diunggah.",
+      "s2t": "Tambah PDF",
+      "s2b": "Halaman dirender di pratinjau. Pilih JPG, PNG, atau WebP.",
+      "s3t": "Unduh halaman",
+      "s3b": "Simpan satu halaman atau ZIP semua halaman."
+    },
+    "merge-pdf": {
+      "lead": "Gabungkan beberapa PDF menjadi satu berkas di tab ini. Urutkan, lalu unduh.",
+      "s1t": "Buka Gabung PDF",
+      "s1b": "Taruh dua PDF atau lebih di kiri.",
+      "s2t": "Tambah berkas",
+      "s2b": "Mereka muncul di daftar. Seret jika berkas pertama tidak boleh di depan.",
+      "s3t": "Unduh PDF gabungan",
+      "s3b": "Berkas baru dibangun di tab ini. Menutup halaman membuang aslinya."
+    },
+    "compress-pdf": {
+      "lead": "Kecilkan PDF dengan mengkode ulang halaman sebagai JPEG. Ini terjadi di peramban.",
+      "s1t": "Buka Kompres PDF",
+      "s1b": "Taruh PDF di kiri.",
+      "s2t": "Tambah PDF",
+      "s2b": "Halaman dirender agar Anda menilai mutu. Ukuran setelah kompres muncul saat siap.",
+      "s3t": "Unduh PDF yang lebih kecil",
+      "s3b": "Ekspor saat pratinjau masih terbaca. Teks vektor menjadi gambar."
+    },
+    "split-pdf": {
+      "lead": "Pisah PDF menjadi satu berkas per halaman, atau ambil rentang, di tab ini.",
+      "s1t": "Buka Pisah PDF",
+      "s1b": "Taruh PDF di kiri.",
+      "s2t": "Tambah PDF",
+      "s2b": "Satu berkas per halaman, atau rentang seperti 1–3,5.",
+      "s3t": "Unduh bagiannya",
+      "s3b": "Simpan ZIP halaman atau rentang yang diambil. Tidak diunggah."
+    },
+    "invoice": {
+      "lead": "Isi penerbit, pelanggan, dan baris, lalu unduh PDF A4. Bukan faktur pajak.",
+      "s1t": "Buka Pembuat faktur",
+      "s1b": "Formulir di kiri; pratinjau A4 di kanan. Tidak diunggah.",
+      "s2t": "Isi pihak dan baris",
+      "s2b": "Siapa Anda, siapa ditagih, mata uang, pajak, dan setidaknya satu baris.",
+      "s3t": "Periksa pratinjau",
+      "s3b": "Total diperbarui saat mengetik. Teks CJK digambar ke halaman agar bisa dicetak.",
+      "s4t": "Unduh PDF",
+      "s4b": "Ekspor satu halaman A4. Bukan perangkat lunak akuntansi dan bukan formulir pajak pemerintah."
+    },
+    "audio": {
+      "lead": "Dekode MP3, M4A, OGG, dan sejenisnya ke WAV di tab ini.",
+      "s1t": "Buka Audio ke WAV",
+      "s1b": "Taruh berkas audio di kiri. Tidak diunggah.",
+      "s2t": "Tambah klip",
+      "s2b": "Peramban mendekodenya. Pilih laju cuplikan asli, 44.1 kHz, atau 48 kHz.",
+      "s3t": "Unduh WAV",
+      "s3b": "Putar pratinjau jika mau, lalu unduh. Menutup tab membuang berkas."
+    },
+    "audio-cutter": {
+      "lead": "Potong klip di tab ini lalu unduh rentangnya sebagai WAV.",
+      "s1t": "Buka Pemotong audio",
+      "s1b": "Taruh MP3 atau WAV di kiri.",
+      "s2t": "Tambah klip",
+      "s2b": "Setelah dekode muncul gelombang dan kontrol awal/akhir.",
+      "s3t": "Atur rentang lalu unduh",
+      "s3b": "Geser awal dan akhir, dengar jika mau, lalu unduh WAV yang dipotong."
+    },
+    "audio-joiner": {
+      "lead": "Gabungkan beberapa klip menjadi satu WAV di tab ini.",
+      "s1t": "Buka Penggabung audio",
+      "s1b": "Taruh dua berkas audio atau lebih di kiri.",
+      "s2t": "Tambah klip",
+      "s2b": "Mereka terdaftar berurutan. Urutkan ulang jika berkas pertama tidak boleh diputar dulu.",
+      "s3t": "Unduh WAV gabungan",
+      "s3b": "Ekspor satu berkas. Dekode dan gabung tetap di tab ini."
+    },
+    "data": {
+      "lead": "Rapikan JSON, ubah CSV, Base64, pengodean URL, dan Markdown di tab ini.",
+      "s1t": "Buka Teks & data",
+      "s1b": "Mode bawaan adalah JSON rapi. Tempel di kiri.",
+      "s2t": "Tempel teks",
+      "s2b": "Panel kanan merapikan saat Anda mengetik. Ganti mode untuk CSV, Base64, atau Markdown.",
+      "s3t": "Salin atau unduh",
+      "s3b": "Salin hasil, atau unduh berkas. Anda juga bisa membuka .json / .csv / .md dari disk."
+    },
+    "xml-json": {
+      "lead": "Ubah XML ke JSON atau JSON ke XML di tab ini.",
+      "s1t": "Buka XML ke JSON",
+      "s1b": "Contoh XML kecil sudah diubah agar Anda melihat bentuknya.",
+      "s2t": "Baca JSON",
+      "s2b": "Panel kanan adalah hasil ubahan. Tempel XML Anda di kiri untuk mengganti contoh.",
+      "s3t": "Ganti arah jika butuh JSON → XML",
+      "s3b": "Pakai menu mode, lalu salin keluaran. Tidak diunggah."
+    },
+    "password": {
+      "lead": "Buat kata sandi kuat di perangkat ini. Panjang dan set karakter Anda pilih sendiri.",
+      "s1t": "Buka Pembuat kata sandi",
+      "s1b": "Sudah ada kata sandi 16 karakter dengan huruf, digit, dan simbol.",
+      "s2t": "Atur panjang dan set karakter",
+      "s2b": "Geser penggeser. Centang huruf kecil, besar, digit, simbol, dan apakah melewatkan 0/O/1/l.",
+      "s3t": "Buat lagi lalu salin",
+      "s3b": "Klik Buat untuk string baru, lalu Salin. Simpan di pengelola kata sandi Anda sendiri."
+    },
+    "word-count": {
+      "lead": "Hitung kata, karakter, kalimat, dan waktu baca di tab ini.",
+      "s1t": "Buka Penghitung kata",
+      "s1b": "Statistik mulai dari nol. Tempel di kanan, atau buka .txt / .md.",
+      "s2t": "Tempel teks",
+      "s2b": "Hitungan diperbarui saat mengetik. Karakter CJK dihitung sebagai kata.",
+      "s3t": "Baca statistik",
+      "s3b": "Kata, karakter, kalimat, paragraf, baris, dan waktu baca. Tidak diunggah."
+    },
+    "color": {
+      "lead": "Pilih warna, salin hex / RGB / HSL, dan cek kontras. Pipet jika peramban mengizinkan.",
+      "s1t": "Buka Pemilih warna",
+      "s1b": "Merah muda contoh sudah dimuat. Hex, RGB, dan HSL bersama.",
+      "s2t": "Masukkan atau pilih warna",
+      "s2b": "Ketik hex, pakai input warna asli, atau pipet jika peramban punya.",
+      "s3t": "Salin hex atau RGB",
+      "s3b": "Sampel dan catatan kontras diperbarui langsung. Salin format yang Anda butuhkan."
+    },
+    "hex-rgb": {
+      "lead": "Tempel warna hex dan baca RGB, HSL, serta CMYK di tab ini.",
+      "s1t": "Buka Hex ke RGB",
+      "s1b": "Hex contoh sudah diubah.",
+      "s2t": "Tempel warna Anda",
+      "s2b": "Ketik #rrggbb atau warna CSS. Sampel dan nilai langsung diperbarui.",
+      "s3t": "Salin hasil ubahan",
+      "s3b": "Salin rgb() atau format lain. Tidak diunggah."
+    },
+    "names": {
+      "lead": "Buat nama orang atau nama pengguna di tab ini lalu salin daftarnya.",
+      "s1t": "Buka Pembuat nama",
+      "s1b": "Daftar nama orang sudah terisi.",
+      "s2t": "Ganti ke nama pengguna jika butuh handle",
+      "s2b": "Pakai menu jenis dan penggeser jumlah. Buat menyegarkan daftar.",
+      "s3t": "Salin daftar",
+      "s3b": "Salin semua sekaligus. Ini string acak, bukan daftar orang nyata."
+    },
+    "timezone": {
+      "lead": "Ubah waktu jam antar zona IANA, termasuk waktu musim panas.",
+      "s1t": "Buka Pengubah zona waktu",
+      "s1b": "Dari adalah zona lokal yang diduga; ke mulai di UTC.",
+      "s2t": "Pilih zona dan waktu",
+      "s2b": "Atur dari, ke, dan tanggal-waktu. Pakai Sekarang untuk saat ini.",
+      "s3t": "Baca waktu hasil ubahan",
+      "s3b": "Hasil dan string ISO diperbarui langsung. Salin saat perlu menempelkannya."
+    },
+    "timestamp": {
+      "lead": "Ubah waktu Unix ke tanggal, atau tanggal ke Unix, di tab ini.",
+      "s1t": "Buka Pengubah cap waktu",
+      "s1b": "Unix saat ini sudah terisi agar Anda melihat setiap format.",
+      "s2t": "Tempel cap waktu atau tanggal",
+      "s2b": "Detik, milidetik, dan ISO-8601 semua diurai. Sekarang kembali ke saat ini.",
+      "s3t": "Salin nilai yang Anda butuhkan",
+      "s3b": "Baca UTC, lokal, dan Unix, lalu salin salah satunya."
+    },
+    "lorem": {
+      "lead": "Buat paragraf, kalimat, atau kata lorem ipsum di tab ini.",
+      "s1t": "Buka Lorem ipsum",
+      "s1b": "Tiga paragraf sudah dibuat.",
+      "s2t": "Pilih jenis dan jumlah",
+      "s2b": "Ganti ke kalimat atau kata, lalu geser penggeser jumlah.",
+      "s3t": "Salin penanda tempat",
+      "s3b": "Salin blok ke tata letak. Tidak diunggah."
+    },
+    "units": {
+      "lead": "Ubah panjang, massa, suhu, volume, luas, dan kecepatan di tab ini.",
+      "s1t": "Buka Pengubah satuan",
+      "s1b": "Panjang mulai inci → sentimeter dengan 1 in.",
+      "s2t": "Masukkan nilai",
+      "s2b": "Ketik jumlah. Ubah jenis, dari, dan ke jika butuh kg, °C, atau pasangan lain.",
+      "s3t": "Salin hasil",
+      "s3b": "Di kanan ada nilai hasil dan rumus singkat. Tukar membalik pasangan."
+    },
+    "text-to-speech": {
+      "lead": "Dengar teks dengan suara perangkat. Laju dan nada tetap di tab ini. Tidak ada MP3 yang diunggah.",
+      "s1t": "Buka Teks ke ucapan",
+      "s1b": "Kalimat contoh sudah di kotak. Suara datang dari peramban.",
+      "s2t": "Tempel teks",
+      "s2b": "Ganti contoh. Pilih suara, lalu atur laju dan nada jika mau.",
+      "s3t": "Bicara di perangkat ini",
+      "s3b": "Tekan Bicara. Jeda dan Berhenti mengontrol pemutaran. Ini bukan ekspor berkas."
+    },
+    "diff": {
+      "lead": "Bandingkan dua teks baris demi baris di tab ini. Baris tambah dan hapus ditandai.",
+      "s1t": "Buka Pemeriksa diff",
+      "s1b": "Kiri adalah asli; kanan adalah revisi. Keduanya mulai kosong.",
+      "s2t": "Tempel kedua sisi",
+      "s2b": "Diff terpadu tergambar di bawah panel. Centang abaikan spasi ekstra jika spasi hanya derau.",
+      "s3t": "Salin diff",
+      "s3b": "Salin diff terpadu saat perlu menempelkannya ke tinjauan."
+    },
+    "uuid": {
+      "lead": "Buat UUID versi 4 RFC 4122 di tab ini. v1 tidak ditawarkan.",
+      "s1t": "Buka Pembuat UUID",
+      "s1b": "Daftar pendek UUID v4 sudah dibuat.",
+      "s2t": "Atur berapa yang Anda butuhkan",
+      "s2b": "Geser penggeser jumlah. Tanda hubung dan huruf besar opsional.",
+      "s3t": "Salin daftar",
+      "s3b": "Buat lagi jika butuh batch baru, lalu salin. Nilai dari crypto.getRandomValues."
+    },
+    "hash": {
+      "lead": "Hash teks atau berkas di tab ini. MD5, SHA-1, SHA-256, SHA-384, SHA-512.",
+      "s1t": "Buka Pembuat hash",
+      "s1b": "SHA-256 adalah bawaan. Tempel di kanan atau buka berkas.",
+      "s2t": "Masukkan teks",
+      "s2b": "Ringkasan hex dan Base64 muncul saat mengetik. Ganti algoritme dari menu.",
+      "s3t": "Salin ringkasan",
+      "s3b": "Salin hex (atau Base64). Meng-hash berkas juga tidak mengunggahnya."
+    },
+    "regex": {
+      "lead": "Uji ekspresi reguler di tab ini. Lihat kecocokan dan pratinjau ganti.",
+      "s1t": "Buka Penguji regex",
+      "s1b": "Pola, bendera, dan kolom ganti di kiri. Teks uji di kanan.",
+      "s2t": "Masukkan pola",
+      "s2b": "Ketik ekspresi. g aktif secara bawaan; tambah i, m, s, atau u jika perlu.",
+      "s3t": "Tempel teks subjek",
+      "s3b": "Kecocokan disorot di teks. Daftar tangkapan ada di bawah pratinjau.",
+      "s4t": "Coba penggantian",
+      "s4b": "Isi kolom ganti untuk melihat substitusi, lalu salin kecocokan jika perlu."
+    }
+  }
+}

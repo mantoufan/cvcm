@@ -1,0 +1,357 @@
+{
+  "title": "Cómo usar esta herramienta",
+  "tools": {
+    "clip": {
+      "lead": "Crea una nota breve en tres pasos. El texto vive en cv.cm hasta 10 visitas o un día.",
+      "s1t": "Abre el portapapeles en la nube",
+      "s1b": "Empiezas con una nota vacía. No hay listado público. Solo abre quien tenga el enlace.",
+      "s2t": "Pega o escribe la nota",
+      "s2b": "Puedes poner texto, Markdown, una imagen o un archivo. El contador muestra cuánto de los 64 KB de texto has usado.",
+      "s3t": "Crea el enlace",
+      "s3b": "Envía la nota, copia la URL y compártela. La última visita avisa de que la nota ya no está."
+    },
+    "qr": {
+      "lead": "Convierte una URL o una línea de texto en un código QR en esta pestaña. Nada se sube.",
+      "s1t": "Abre el generador QR",
+      "s1b": "Ya hay una URL de ejemplo de cv.cm y la vista previa se dibuja al instante.",
+      "s2t": "Sustituye el texto",
+      "s2b": "Pega tu propia URL o mensaje. Corrección de errores, color de barras y fondo están a la izquierda.",
+      "s3t": "Revisa la vista previa y descarga",
+      "s3b": "Cuando el cuadrado se vea bien, descarga un PNG. Al cerrar la pestaña se descartan los datos."
+    },
+    "barcode": {
+      "lead": "Crea un código Code 128, Code 39 o EAN-13 en esta pestaña y descarga un PNG.",
+      "s1t": "Abre el generador de códigos de barras",
+      "s1b": "Code 128 está seleccionado y ya hay un valor de ejemplo dibujado.",
+      "s2t": "Introduce el valor",
+      "s2b": "Escribe la cadena o los dígitos. Cambia a Code 39 o EAN-13 si los necesitas (EAN-13 pide 12 o 13 dígitos).",
+      "s3t": "Descarga el PNG",
+      "s3b": "La vista previa se actualiza al escribir. Descarga cuando las barras se vean correctas."
+    },
+    "watermark": {
+      "lead": "Estampa texto sobre una foto en esta pestaña. Los archivos no salen del navegador.",
+      "s1t": "Abre Marca de agua",
+      "s1b": "Usa la zona de soltar a la izquierda. Valen PNG, JPEG, WebP y GIF.",
+      "s2t": "Añade una foto",
+      "s2b": "Suelta un archivo o haz clic en la zona. La vista previa aparece en cuanto el navegador puede decodificarla.",
+      "s3t": "Escribe la marca",
+      "s3b": "Introduce el texto. Fíjala a una esquina, tesélala o usa un logotipo.",
+      "s4t": "Revisa y exporta",
+      "s4b": "Cuando la marca esté donde quieres, descarga un archivo o un ZIP del lote."
+    },
+    "collage": {
+      "lead": "Junta fotos en una sola imagen. Las plantillas y tamaños de Instagram se quedan en esta pestaña.",
+      "s1t": "Abre Collage de fotos",
+      "s1b": "El rail izquierdo es la zona de soltar. Nada se sube.",
+      "s2t": "Añade dos o más fotos",
+      "s2b": "Suelta varios archivos. Aparecen en la lista para reordenar o quitar.",
+      "s3t": "Elige un diseño",
+      "s3b": "Cuadrícula o división. Cuadrado, 4:5, 9:16 y 16:9 vienen incluidos.",
+      "s4t": "Previsualiza y descarga",
+      "s4b": "Revisa la imagen combinada y exporta PNG, JPEG o WebP."
+    },
+    "resize": {
+      "lead": "Cambia el tamaño o comprime una foto a píxeles exactos o a un lado máximo. El archivo se queda aquí.",
+      "s1t": "Abre Redimensionar y comprimir",
+      "s1b": "Suelta un PNG, JPEG, WebP u otra foto a la izquierda.",
+      "s2t": "Añade la foto",
+      "s2b": "La vista previa muestra los píxeles actuales. Define ancho, alto o un lado máximo.",
+      "s3t": "Descarga el archivo más pequeño",
+      "s3b": "Ajusta la calidad JPEG o WebP si lo quieres más ligero y descarga."
+    },
+    "crop": {
+      "lead": "Recorta una foto en esta pestaña. Libre, 1:1, 4:5, 16:9 y 9:16.",
+      "s1t": "Abre Recortar imagen",
+      "s1b": "Suelta una foto a la izquierda. Nada se sube.",
+      "s2t": "Añade la foto",
+      "s2b": "Aparece un recuadro en la vista previa. Arrástralo o cambia a 1:1 y otras proporciones.",
+      "s3t": "Exporta el recorte",
+      "s3b": "Cuando el encuadre esté bien, descarga JPEG, PNG o WebP."
+    },
+    "rotate": {
+      "lead": "Rota o voltea una foto en esta pestaña. 90°, 180° o cualquier ángulo.",
+      "s1t": "Abre Rotar imagen",
+      "s1b": "Suelta una foto a la izquierda. La vista previa está vacía hasta que hay un archivo.",
+      "s2t": "Añade la foto",
+      "s2b": "Primero se ve la orientación original. Usa Izquierda, Derecha, 180° o el deslizador.",
+      "s3t": "Descarga el archivo rotado",
+      "s3b": "Voltea en horizontal o vertical si necesitas un espejo y descarga."
+    },
+    "exif": {
+      "lead": "Quita EXIF y GPS de una foto en esta pestaña y descarga un archivo limpio.",
+      "s1t": "Abre Quitar EXIF",
+      "s1b": "Suelta un JPEG u otra foto a la izquierda. El archivo no se sube.",
+      "s2t": "Añade la foto",
+      "s2b": "La herramienta indica si hay metadatos. La vista previa es solo la imagen.",
+      "s3t": "Descarga el archivo limpio",
+      "s3b": "Exporta JPEG, PNG o WebP sin las etiquetas EXIF y GPS de la cámara."
+    },
+    "meme": {
+      "lead": "Pon textos estilo Impact sobre una foto en esta pestaña y descarga un PNG.",
+      "s1t": "Abre Generador de memes",
+      "s1b": "Suelta una foto a la izquierda. Nada se sube.",
+      "s2t": "Añade la foto",
+      "s2b": "La imagen llena la vista previa. Arriba y abajo están los campos de texto a la derecha.",
+      "s3t": "Escribe los textos",
+      "s3b": "Una línea superior y otra inferior. El contorno escala con la foto.",
+      "s4t": "Descarga el meme",
+      "s4b": "Revisa la vista previa y descarga un PNG."
+    },
+    "signature": {
+      "lead": "Dibuja una firma en esta pestaña y descarga un PNG transparente recortado. No es una firma electrónica legal.",
+      "s1t": "Abre Generador de firma",
+      "s1b": "La tableta está vacía. A la izquierda puedes elegir color y grosor.",
+      "s2t": "Dibuja en la tableta",
+      "s2b": "Escribe con el ratón o el dedo. Deshacer quita el último trazo; Borrar limpia todo.",
+      "s3t": "Descarga el PNG",
+      "s3b": "La exportación recorta a la tinta. Es una imagen, no DocuSign ni una firma electrónica cualificada."
+    },
+    "favicon": {
+      "lead": "Crea favicons ICO y PNG a partir de una foto en esta pestaña.",
+      "s1t": "Abre Generador de favicon",
+      "s1b": "Suelta una foto o logo más o menos cuadrado a la izquierda.",
+      "s2t": "Añade la imagen",
+      "s2b": "La vista previa muestra cómo se recuadra. Cover o contain cambia el recorte.",
+      "s3t": "Descarga ICO y tamaños PNG",
+      "s3b": "Exporta el paquete cuando el cuadrado se vea bien. Nada se sube."
+    },
+    "convert": {
+      "lead": "Convierte HEIC, WebP, PNG, JPEG y formatos afines en esta pestaña. El redimensionado es opcional.",
+      "s1t": "Abre Formatos de imagen",
+      "s1b": "Suelta un archivo o un lote a la izquierda. Hay atajos HEIC → JPG y WebP → PNG.",
+      "s2t": "Añade la foto",
+      "s2b": "Elige el formato de salida y, si quieres, un lado máximo para fotos enormes.",
+      "s3t": "Descarga un archivo o un ZIP",
+      "s3b": "Descarga el archivo actual o todo el lote en ZIP. La conversión se queda en esta pestaña."
+    },
+    "image-pdf": {
+      "lead": "Convierte fotos JPG o PNG en un PDF en esta pestaña. A4, Letter o a medida de la foto.",
+      "s1t": "Abre Imágenes a PDF",
+      "s1b": "Suelta una foto o varias. Se convierten en páginas, en orden.",
+      "s2t": "Añade las fotos",
+      "s2b": "Reordena la lista si el orden de páginas no es el correcto. Elige A4, Letter o una página que coincida con la foto.",
+      "s3t": "Descarga el PDF",
+      "s3b": "Cada imagen se encaja en su página sin recortar. El PDF se construye aquí."
+    },
+    "pdf-jpg": {
+      "lead": "Renderiza páginas PDF a JPG, PNG o WebP en esta pestaña. Descarga una página o un ZIP.",
+      "s1t": "Abre PDF a JPG",
+      "s1b": "Suelta un PDF a la izquierda. El archivo no se sube.",
+      "s2t": "Añade el PDF",
+      "s2b": "Las páginas se renderizan en la vista previa. Elige JPG, PNG o WebP.",
+      "s3t": "Descarga las páginas",
+      "s3b": "Guarda una página o un ZIP de todas."
+    },
+    "merge-pdf": {
+      "lead": "Junta varios PDF en un solo archivo en esta pestaña. Reordena y descarga.",
+      "s1t": "Abre Combinar PDF",
+      "s1b": "Suelta dos o más PDF a la izquierda.",
+      "s2t": "Añade los archivos",
+      "s2b": "Aparecen en una lista. Arrastra si el primero no debe ir primero.",
+      "s3t": "Descarga el PDF combinado",
+      "s3b": "El archivo nuevo se construye en esta pestaña. Al cerrar se descartan los originales."
+    },
+    "compress-pdf": {
+      "lead": "Reduce un PDF recodificando las páginas como JPEG. Todo ocurre en el navegador.",
+      "s1t": "Abre Comprimir PDF",
+      "s1b": "Suelta un PDF a la izquierda.",
+      "s2t": "Añade el PDF",
+      "s2b": "Las páginas se renderizan para juzgar la calidad. El tamaño tras comprimir aparece cuando está listo.",
+      "s3t": "Descarga el PDF más pequeño",
+      "s3b": "Exporta mientras la vista previa siga siendo legible. El texto vectorial se convierte en imagen."
+    },
+    "split-pdf": {
+      "lead": "Parte un PDF en un archivo por página, o extrae un rango, en esta pestaña.",
+      "s1t": "Abre Dividir PDF",
+      "s1b": "Suelta un PDF a la izquierda.",
+      "s2t": "Añade el PDF",
+      "s2b": "Un archivo por página, o un rango como 1–3,5.",
+      "s3t": "Descarga las partes",
+      "s3b": "Guarda un ZIP de páginas o el rango extraído. Nada se sube."
+    },
+    "invoice": {
+      "lead": "Rellena emisor, cliente y líneas y descarga un PDF A4. No es una factura fiscal.",
+      "s1t": "Abre Generador de facturas",
+      "s1b": "El formulario está a la izquierda; la vista A4 a la derecha. Nada se sube.",
+      "s2t": "Rellena las partes y las líneas",
+      "s2b": "Quién eres, a quién facturas, moneda, impuesto y al menos una línea.",
+      "s3t": "Revisa la vista previa",
+      "s3b": "Los totales se actualizan al escribir. El texto CJK se dibuja en la página para imprimir.",
+      "s4t": "Descarga el PDF",
+      "s4b": "Exporta una página A4. No es software contable ni un formulario tributario."
+    },
+    "audio": {
+      "lead": "Decodifica MP3, M4A, OGG y similares a WAV en esta pestaña.",
+      "s1t": "Abre Audio a WAV",
+      "s1b": "Suelta un archivo de audio a la izquierda. No se sube.",
+      "s2t": "Añade el clip",
+      "s2b": "El navegador lo decodifica. Elige la frecuencia original, 44.1 kHz o 48 kHz.",
+      "s3t": "Descarga WAV",
+      "s3b": "Reproduce una vista previa si quieres y descarga. Al cerrar la pestaña se descarta el archivo."
+    },
+    "audio-cutter": {
+      "lead": "Recorta un clip en esta pestaña y descarga el rango como WAV.",
+      "s1t": "Abre Cortador de audio",
+      "s1b": "Suelta un MP3 o WAV a la izquierda.",
+      "s2t": "Añade el clip",
+      "s2b": "Tras decodificar aparecen la forma de onda y los controles de inicio y fin.",
+      "s3t": "Define el rango y descarga",
+      "s3b": "Mueve inicio y fin, escucha si quieres y descarga el WAV recortado."
+    },
+    "audio-joiner": {
+      "lead": "Une varios clips en un solo WAV en esta pestaña.",
+      "s1t": "Abre Unir audio",
+      "s1b": "Suelta dos o más archivos de audio a la izquierda.",
+      "s2t": "Añade los clips",
+      "s2b": "Se listan en orden. Reordena si el primero no debe sonar primero.",
+      "s3t": "Descarga el WAV unido",
+      "s3b": "Exporta un archivo. La decodificación y la unión se quedan en esta pestaña."
+    },
+    "data": {
+      "lead": "Formatea JSON, convierte CSV, Base64, URL y Markdown en esta pestaña.",
+      "s1t": "Abre Texto y datos",
+      "s1b": "El modo por defecto es JSON bonito. Pega a la izquierda.",
+      "s2t": "Pega el texto",
+      "s2b": "El panel derecho formatea al escribir. Cambia de modo para CSV, Base64 o Markdown.",
+      "s3t": "Copia o descarga",
+      "s3b": "Copia el resultado o descarga un archivo. También puedes abrir un .json / .csv / .md del disco."
+    },
+    "xml-json": {
+      "lead": "Convierte XML a JSON o JSON a XML en esta pestaña.",
+      "s1t": "Abre XML a JSON",
+      "s1b": "Ya hay un XML de ejemplo convertido para que veas la forma.",
+      "s2t": "Lee el JSON",
+      "s2b": "El panel derecho es la conversión. Pega tu XML a la izquierda para sustituir el ejemplo.",
+      "s3t": "Cambia de dirección si necesitas JSON → XML",
+      "s3b": "Usa el menú de modo y copia la salida. Nada se sube."
+    },
+    "password": {
+      "lead": "Genera una contraseña fuerte en este dispositivo. Tú eliges longitud y conjuntos de caracteres.",
+      "s1t": "Abre Generador de contraseñas",
+      "s1b": "Ya hay una de 16 caracteres con letras, dígitos y símbolos.",
+      "s2t": "Elige longitud y conjuntos",
+      "s2b": "Mueve el deslizador. Marca minúsculas, mayúsculas, dígitos, símbolos y si omites 0/O/1/l.",
+      "s3t": "Genera de nuevo y copia",
+      "s3b": "Pulsa Generar para otra cadena y luego Copiar. Guárdala en tu gestor de contraseñas."
+    },
+    "word-count": {
+      "lead": "Cuenta palabras, caracteres, frases y tiempo de lectura en esta pestaña.",
+      "s1t": "Abre Contador de palabras",
+      "s1b": "Las estadísticas empiezan en cero. Pega a la derecha o abre un .txt / .md.",
+      "s2t": "Pega el texto",
+      "s2b": "Los recuentos se actualizan al escribir. Los caracteres CJK cuentan como palabras.",
+      "s3t": "Lee las estadísticas",
+      "s3b": "Palabras, caracteres, frases, párrafos, líneas y tiempo de lectura. Nada se sube."
+    },
+    "color": {
+      "lead": "Elige un color, copia hex / RGB / HSL y mira el contraste. Cuentagotas si el navegador lo permite.",
+      "s1t": "Abre Selector de color",
+      "s1b": "Hay un rosa de ejemplo. Hex, RGB y HSL van juntos.",
+      "s2t": "Introduce o elige un color",
+      "s2b": "Escribe un hex, usa el selector nativo o el cuentagotas si tu navegador lo tiene.",
+      "s3t": "Copia hex o RGB",
+      "s3b": "La muestra y la nota de contraste se actualizan en vivo. Copia el formato que necesites."
+    },
+    "hex-rgb": {
+      "lead": "Pega un color hex y lee RGB, HSL y CMYK en esta pestaña.",
+      "s1t": "Abre Hex a RGB",
+      "s1b": "Ya hay un hex de ejemplo convertido.",
+      "s2t": "Pega tu color",
+      "s2b": "Escribe #rrggbb o un color CSS. La muestra y los valores se actualizan al instante.",
+      "s3t": "Copia la conversión",
+      "s3b": "Copia rgb() u otros formatos. Nada se sube."
+    },
+    "names": {
+      "lead": "Genera nombres de persona o de usuario en esta pestaña y copia la lista.",
+      "s1t": "Abre Generador de nombres",
+      "s1b": "Ya hay una lista de nombres de persona.",
+      "s2t": "Pasa a nombres de usuario si necesitas handles",
+      "s2b": "Usa el menú de tipo y el deslizador de cantidad. Generar refresca la lista.",
+      "s3t": "Copia la lista",
+      "s3b": "Copia todos a la vez. Son cadenas aleatorias, no un registro de personas reales."
+    },
+    "timezone": {
+      "lead": "Convierte una hora de reloj entre zonas IANA, incluido el horario de verano.",
+      "s1t": "Abre Conversor de zonas horarias",
+      "s1b": "Origen es tu zona local estimada; destino empieza en UTC.",
+      "s2t": "Elige zonas y una hora",
+      "s2b": "Define origen, destino y fecha-hora. Usa Ahora para el instante actual.",
+      "s3t": "Lee la hora convertida",
+      "s3b": "El resultado y la cadena ISO se actualizan al instante. Copia cuando quieras pegarla."
+    },
+    "timestamp": {
+      "lead": "Convierte tiempo Unix a fecha, o una fecha a Unix, en esta pestaña.",
+      "s1t": "Abre Conversor de marcas de tiempo",
+      "s1b": "Está rellenado el Unix actual para ver cada formato.",
+      "s2t": "Pega una marca o una fecha",
+      "s2b": "Se interpretan segundos, milisegundos e ISO-8601. Ahora vuelve a este instante.",
+      "s3t": "Copia el valor que necesites",
+      "s3b": "Mira UTC, local y Unix, y copia uno."
+    },
+    "lorem": {
+      "lead": "Genera párrafos, frases o palabras de lorem ipsum en esta pestaña.",
+      "s1t": "Abre Lorem ipsum",
+      "s1b": "Ya hay tres párrafos generados.",
+      "s2t": "Elige tipo y cantidad",
+      "s2b": "Pasa a frases o palabras y mueve el deslizador.",
+      "s3t": "Copia el marcador de posición",
+      "s3b": "Copia el bloque a un diseño. Nada se sube."
+    },
+    "units": {
+      "lead": "Convierte longitud, masa, temperatura, volumen, área y velocidad en esta pestaña.",
+      "s1t": "Abre Conversor de unidades",
+      "s1b": "La longitud empieza en pulgadas → centímetros con 1 in.",
+      "s2t": "Introduce un valor",
+      "s2b": "Escribe la cantidad. Cambia tipo, origen y destino si necesitas kg, °C u otro par.",
+      "s3t": "Copia el resultado",
+      "s3b": "A la derecha ves el valor convertido y una fórmula breve. Intercambiar invierte el par."
+    },
+    "text-to-speech": {
+      "lead": "Escucha texto con las voces del dispositivo. Velocidad y tono se quedan aquí. No se sube ningún MP3.",
+      "s1t": "Abre Texto a voz",
+      "s1b": "Ya hay una frase de ejemplo. Las voces vienen del navegador.",
+      "s2t": "Pega el texto",
+      "s2b": "Sustituye el ejemplo. Elige voz y, si quieres, velocidad y tono.",
+      "s3t": "Habla en este dispositivo",
+      "s3b": "Pulsa Hablar. Pausa y Detener controlan la reproducción. No es una exportación de archivo."
+    },
+    "diff": {
+      "lead": "Compara dos textos línea a línea en esta pestaña. Se marcan altas y bajas.",
+      "s1t": "Abre Comparador de texto",
+      "s1b": "Izquierda es el original; derecha, la revisión. Empiezan vacíos.",
+      "s2t": "Pega ambos lados",
+      "s2b": "El diff unificado se dibuja debajo. Marca ignorar espacios extra si el espaciado es ruido.",
+      "s3t": "Copia el diff",
+      "s3b": "Copia el diff unificado cuando quieras pegarlo en una revisión."
+    },
+    "uuid": {
+      "lead": "Genera UUID versión 4 RFC 4122 en esta pestaña. No se ofrece v1.",
+      "s1t": "Abre Generador UUID",
+      "s1b": "Ya hay una lista corta de UUID v4.",
+      "s2t": "Elige cuántos necesitas",
+      "s2b": "Mueve el deslizador. Guiones y mayúsculas son opcionales.",
+      "s3t": "Copia la lista",
+      "s3b": "Genera de nuevo si quieres otro lote y copia. Los valores salen de crypto.getRandomValues."
+    },
+    "hash": {
+      "lead": "Hashea texto o un archivo en esta pestaña. MD5, SHA-1, SHA-256, SHA-384, SHA-512.",
+      "s1t": "Abre Generador de hash",
+      "s1b": "SHA-256 es el valor por defecto. Pega a la derecha o abre un archivo.",
+      "s2t": "Introduce el texto",
+      "s2b": "Aparecen resúmenes hex y Base64 al escribir. Cambia el algoritmo en el menú.",
+      "s3t": "Copia el resumen",
+      "s3b": "Copia hex (o Base64). Hashear un archivo tampoco lo sube."
+    },
+    "regex": {
+      "lead": "Prueba una expresión regular en esta pestaña. Ves coincidencias y una vista de reemplazo.",
+      "s1t": "Abre Probador de regex",
+      "s1b": "Patrón, flags y reemplazo están a la izquierda. El texto de prueba, a la derecha.",
+      "s2t": "Introduce el patrón",
+      "s2b": "Escribe la expresión. g está activo; añade i, m, s o u si las necesitas.",
+      "s3t": "Pega el texto sujeto",
+      "s3b": "Las coincidencias se resaltan. Debajo hay una lista de capturas.",
+      "s4t": "Prueba un reemplazo",
+      "s4b": "Rellena el campo de reemplazo para previsualizar y copia una coincidencia si la necesitas."
+    }
+  }
+}

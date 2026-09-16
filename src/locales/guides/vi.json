@@ -1,0 +1,357 @@
+{
+  "title": "Cách dùng công cụ này",
+  "tools": {
+    "clip": {
+      "lead": "Tạo ghi chú ngắn trong ba bước. Chữ nằm trên cv.cm đến 10 lượt xem hoặc một ngày.",
+      "s1t": "Mở clipboard đám mây",
+      "s1b": "Bạn bắt đầu với ghi chú trống. Không có danh sách công khai. Chỉ người có liên kết mới mở được.",
+      "s2t": "Dán hoặc gõ ghi chú",
+      "s2b": "Có thể đặt chữ, Markdown, ảnh hoặc tệp. Bộ đếm cho biết đã dùng bao nhiêu trong hạn 64 KB chữ.",
+      "s3t": "Tạo liên kết",
+      "s3b": "Gửi ghi chú, sao chép URL rồi chia sẻ. Lượt xem cuối báo ghi chú đã mất."
+    },
+    "qr": {
+      "lead": "Đổi URL hoặc một dòng chữ thành mã QR trong thẻ này. Không tải lên.",
+      "s1t": "Mở bộ tạo QR",
+      "s1b": "Đã có URL mẫu cv.cm và bản xem trước vẽ ngay.",
+      "s2t": "Thay chữ",
+      "s2b": "Dán URL hoặc tin nhắn của bạn. Sửa lỗi, màu vạch và nền nằm bên trái.",
+      "s3t": "Kiểm tra xem trước rồi tải",
+      "s3b": "Khi hình vuông ổn, tải PNG. Đóng thẻ là bỏ dữ liệu."
+    },
+    "barcode": {
+      "lead": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong thẻ này rồi tải PNG.",
+      "s1t": "Mở bộ tạo mã vạch",
+      "s1b": "Code 128 được chọn, đã vẽ một giá trị mẫu ngắn.",
+      "s2t": "Nhập giá trị",
+      "s2b": "Gõ chuỗi hoặc chữ số. Đổi sang Code 39 hoặc EAN-13 nếu cần (EAN-13 cần 12 hoặc 13 chữ số).",
+      "s3t": "Tải PNG",
+      "s3b": "Xem trước cập nhật khi gõ. Tải khi các vạch trông đúng."
+    },
+    "watermark": {
+      "lead": "Đóng chữ lên ảnh trong thẻ này. Tệp không rời trình duyệt.",
+      "s1t": "Mở Watermark ảnh",
+      "s1b": "Dùng vùng thả bên trái. PNG, JPEG, WebP, GIF đều được.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Thả tệp hoặc bấm vùng. Xem trước hiện khi trình duyệt giải mã xong.",
+      "s3t": "Gõ dấu",
+      "s3b": "Nhập chữ watermark. Ghim góc, lát nền, hoặc dùng logo.",
+      "s4t": "Kiểm tra xem trước rồi xuất",
+      "s4b": "Khi dấu đúng chỗ, tải một tệp hoặc ZIP cả lô."
+    },
+    "collage": {
+      "lead": "Ghép ảnh thành một tấm. Bố cục và cỡ Instagram ở lại thẻ này.",
+      "s1t": "Mở Ghép ảnh",
+      "s1b": "Cột trái là vùng thả. Không tải lên.",
+      "s2t": "Thêm hai ảnh trở lên",
+      "s2b": "Thả nhiều tệp. Chúng hiện trong danh sách để sắp lại hoặc xóa.",
+      "s3t": "Chọn bố cục",
+      "s3b": "Lưới hoặc tách. Có sẵn vuông, 4:5, 9:16, 16:9.",
+      "s4t": "Xem trước rồi tải",
+      "s4b": "Xem ảnh ghép rồi xuất PNG, JPEG hoặc WebP."
+    },
+    "resize": {
+      "lead": "Đổi cỡ hoặc nén ảnh theo pixel đúng hoặc cạnh dài nhất. Tệp ở lại thẻ này.",
+      "s1t": "Mở Đổi cỡ & nén",
+      "s1b": "Thả PNG, JPEG, WebP hoặc ảnh tương tự bên trái.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Xem trước hiện pixel hiện tại. Đặt rộng, cao hoặc cạnh tối đa.",
+      "s3t": "Tải tệp nhỏ hơn",
+      "s3b": "Chọn chất lượng JPEG hoặc WebP nếu cần nhẹ hơn rồi tải."
+    },
+    "crop": {
+      "lead": "Cắt ảnh trong thẻ này. Tự do, 1:1, 4:5, 16:9, 9:16.",
+      "s1t": "Mở Cắt ảnh",
+      "s1b": "Thả ảnh bên trái. Không tải lên.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Hộp cắt hiện trên xem trước. Kéo hoặc đổi sang 1:1 và tỉ lệ khác.",
+      "s3t": "Xuất phần cắt",
+      "s3b": "Khi khung đúng, tải JPEG, PNG hoặc WebP."
+    },
+    "rotate": {
+      "lead": "Xoay hoặc lật ảnh trong thẻ này. 90°, 180° hoặc góc bất kỳ.",
+      "s1t": "Mở Xoay ảnh",
+      "s1b": "Thả ảnh bên trái. Xem trước trống đến khi có tệp.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Hướng gốc hiện trước. Dùng Trái, Phải, 180° hoặc thanh trượt góc.",
+      "s3t": "Tải tệp đã xoay",
+      "s3b": "Lật ngang hoặc dọc nếu cần gương rồi tải."
+    },
+    "exif": {
+      "lead": "Gỡ EXIF và GPS khỏi ảnh trong thẻ này rồi tải tệp sạch.",
+      "s1t": "Mở Gỡ EXIF",
+      "s1b": "Thả JPEG hoặc ảnh khác bên trái. Tệp không được tải lên.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Công cụ báo có metadata hay không. Xem trước chỉ là hình.",
+      "s3t": "Tải tệp sạch",
+      "s3b": "Xuất JPEG, PNG hoặc WebP không thẻ EXIF và GPS máy ảnh."
+    },
+    "meme": {
+      "lead": "Đặt chữ kiểu Impact lên ảnh trong thẻ này rồi tải PNG.",
+      "s1t": "Mở Tạo meme",
+      "s1b": "Thả ảnh bên trái. Không tải lên.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Hình lấp xem trước. Ô chữ trên và dưới nằm bên phải.",
+      "s3t": "Gõ chú thích",
+      "s3b": "Một dòng trên và một dòng dưới. Chữ viền phóng theo ảnh.",
+      "s4t": "Tải meme",
+      "s4b": "Xem trước rồi tải PNG."
+    },
+    "signature": {
+      "lead": "Vẽ chữ ký trong thẻ này rồi tải PNG trong suốt đã cắt. Không phải chữ ký điện tử pháp lý.",
+      "s1t": "Mở Tạo chữ ký",
+      "s1b": "Bảng trống. Bên trái có thể chọn màu và độ dày.",
+      "s2t": "Vẽ trên bảng",
+      "s2b": "Viết bằng chuột hoặc ngón. Hoàn tác xóa nét cuối; Xóa sạch bảng.",
+      "s3t": "Tải PNG",
+      "s3b": "Xuất cắt theo mực. Đây là hình, không phải DocuSign hay chữ ký điện tử đủ điều kiện."
+    },
+    "favicon": {
+      "lead": "Làm favicon ICO và PNG từ ảnh trong thẻ này.",
+      "s1t": "Mở Tạo favicon",
+      "s1b": "Thả ảnh hoặc logo gần vuông bên trái.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Xem trước cho thấy cách cắt vuông. Cover hoặc contain đổi cách cắt.",
+      "s3t": "Tải ICO và các cỡ PNG",
+      "s3b": "Xuất gói khi hình vuông ổn. Không tải lên."
+    },
+    "convert": {
+      "lead": "Đổi HEIC, WebP, PNG, JPEG và định dạng gần trong thẻ này. Đổi cỡ là tùy chọn.",
+      "s1t": "Mở Định dạng ảnh",
+      "s1b": "Thả một tệp hoặc cả lô bên trái. Có lối tắt HEIC → JPG và WebP → PNG.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Chọn định dạng ra và, nếu muốn, cạnh tối đa để ảnh lớn thu nhỏ.",
+      "s3t": "Tải một tệp hoặc ZIP",
+      "s3b": "Tải tệp hiện tại hoặc cả lô ZIP. Việc đổi định dạng ở lại thẻ này."
+    },
+    "image-pdf": {
+      "lead": "Đổi ảnh JPG hoặc PNG thành một PDF trong thẻ này. A4, Letter hoặc khít ảnh.",
+      "s1t": "Mở Ảnh sang PDF",
+      "s1b": "Thả một hoặc nhiều ảnh. Chúng thành trang, theo thứ tự.",
+      "s2t": "Thêm ảnh",
+      "s2b": "Sắp lại danh sách nếu thứ tự trang sai. Chọn A4, Letter, hoặc trang khớp tỉ lệ ảnh.",
+      "s3t": "Tải PDF",
+      "s3b": "Mỗi ảnh được khít vào trang, không cắt. PDF được dựng ở đây."
+    },
+    "pdf-jpg": {
+      "lead": "Vẽ trang PDF thành JPG, PNG hoặc WebP trong thẻ này. Tải một trang hoặc ZIP.",
+      "s1t": "Mở PDF sang JPG",
+      "s1b": "Thả PDF bên trái. Tệp không được tải lên.",
+      "s2t": "Thêm PDF",
+      "s2b": "Các trang hiện trong xem trước. Chọn JPG, PNG hoặc WebP.",
+      "s3t": "Tải các trang",
+      "s3b": "Lưu một trang hoặc ZIP mọi trang."
+    },
+    "merge-pdf": {
+      "lead": "Gộp vài PDF thành một tệp trong thẻ này. Sắp lại rồi tải.",
+      "s1t": "Mở Gộp PDF",
+      "s1b": "Thả hai PDF trở lên bên trái.",
+      "s2t": "Thêm tệp",
+      "s2b": "Chúng hiện trong danh sách. Kéo nếu tệp đầu không nên đứng đầu.",
+      "s3t": "Tải PDF đã gộp",
+      "s3b": "Tệp mới được dựng trong thẻ này. Đóng trang là bỏ bản gốc."
+    },
+    "compress-pdf": {
+      "lead": "Thu nhỏ PDF bằng cách mã hóa lại trang thành JPEG. Việc này ở trong trình duyệt.",
+      "s1t": "Mở Nén PDF",
+      "s1b": "Thả PDF bên trái.",
+      "s2t": "Thêm PDF",
+      "s2b": "Trang được vẽ để bạn đánh giá chất lượng. Cỡ sau nén hiện khi sẵn sàng.",
+      "s3t": "Tải PDF nhỏ hơn",
+      "s3b": "Xuất khi xem trước vẫn đọc được. Chữ vector thành hình."
+    },
+    "split-pdf": {
+      "lead": "Tách PDF thành một tệp mỗi trang, hoặc lấy một khoảng, trong thẻ này.",
+      "s1t": "Mở Tách PDF",
+      "s1b": "Thả PDF bên trái.",
+      "s2t": "Thêm PDF",
+      "s2b": "Một tệp mỗi trang, hoặc khoảng như 1–3,5.",
+      "s3t": "Tải các phần",
+      "s3b": "Lưu ZIP các trang hoặc khoảng đã lấy. Không tải lên."
+    },
+    "invoice": {
+      "lead": "Điền người phát, khách và dòng hàng rồi tải PDF A4. Không phải hóa đơn thuế.",
+      "s1t": "Mở Tạo hóa đơn",
+      "s1b": "Biểu mẫu bên trái; xem trước A4 bên phải. Không tải lên.",
+      "s2t": "Điền các bên và dòng",
+      "s2b": "Bạn là ai, gửi cho ai, tiền tệ, thuế, và ít nhất một dòng.",
+      "s3t": "Kiểm tra xem trước",
+      "s3b": "Tổng cập nhật khi gõ. Chữ CJK được vẽ vào trang để in.",
+      "s4t": "Tải PDF",
+      "s4b": "Xuất một trang A4. Không phải phần mềm kế toán hay mẫu thuế nhà nước."
+    },
+    "audio": {
+      "lead": "Giải mã MP3, M4A, OGG và tương tự thành WAV trong thẻ này.",
+      "s1t": "Mở Âm thanh sang WAV",
+      "s1b": "Thả tệp âm thanh bên trái. Không tải lên.",
+      "s2t": "Thêm clip",
+      "s2b": "Trình duyệt giải mã. Chọn tần số gốc, 44.1 kHz hoặc 48 kHz.",
+      "s3t": "Tải WAV",
+      "s3b": "Nghe trước nếu muốn rồi tải. Đóng thẻ là bỏ tệp."
+    },
+    "audio-cutter": {
+      "lead": "Cắt clip trong thẻ này rồi tải khoảng đó thành WAV.",
+      "s1t": "Mở Cắt âm thanh",
+      "s1b": "Thả MP3 hoặc WAV bên trái.",
+      "s2t": "Thêm clip",
+      "s2b": "Sau khi giải mã hiện dạng sóng và điều khiển đầu/cuối.",
+      "s3t": "Chọn khoảng rồi tải",
+      "s3b": "Kéo đầu và cuối, nghe nếu muốn, rồi tải WAV đã cắt."
+    },
+    "audio-joiner": {
+      "lead": "Nối vài clip thành một WAV trong thẻ này.",
+      "s1t": "Mở Nối âm thanh",
+      "s1b": "Thả hai tệp âm thanh trở lên bên trái.",
+      "s2t": "Thêm clip",
+      "s2b": "Chúng liệt kê theo thứ tự. Sắp lại nếu tệp đầu không nên phát trước.",
+      "s3t": "Tải WAV đã nối",
+      "s3b": "Xuất một tệp. Giải mã và nối ở lại thẻ này."
+    },
+    "data": {
+      "lead": "Làm đẹp JSON, đổi CSV, Base64, mã hóa URL và Markdown trong thẻ này.",
+      "s1t": "Mở Chữ & dữ liệu",
+      "s1b": "Chế độ mặc định là JSON đẹp. Dán bên trái.",
+      "s2t": "Dán chữ",
+      "s2b": "Ô phải định dạng khi bạn gõ. Đổi chế độ cho CSV, Base64 hoặc Markdown.",
+      "s3t": "Sao chép hoặc tải",
+      "s3b": "Sao chép kết quả, hoặc tải tệp. Cũng có thể mở .json / .csv / .md từ đĩa."
+    },
+    "xml-json": {
+      "lead": "Đổi XML sang JSON hoặc JSON sang XML trong thẻ này.",
+      "s1t": "Mở XML sang JSON",
+      "s1b": "Đã có XML mẫu được đổi để bạn thấy hình dạng.",
+      "s2t": "Đọc JSON",
+      "s2b": "Ô phải là kết quả đổi. Dán XML của bạn bên trái để thay mẫu.",
+      "s3t": "Đổi chiều nếu cần JSON → XML",
+      "s3b": "Dùng menu chế độ rồi sao chép đầu ra. Không tải lên."
+    },
+    "password": {
+      "lead": "Tạo mật khẩu mạnh trên thiết bị này. Bạn chọn độ dài và bộ ký tự.",
+      "s1t": "Mở Tạo mật khẩu",
+      "s1b": "Đã có mật khẩu 16 ký tự gồm chữ, số và ký hiệu.",
+      "s2t": "Chọn độ dài và bộ ký tự",
+      "s2b": "Kéo thanh trượt. Đánh dấu chữ thường, hoa, số, ký hiệu, và có bỏ 0/O/1/l hay không.",
+      "s3t": "Tạo lại rồi sao chép",
+      "s3b": "Bấm Tạo cho chuỗi mới, rồi Sao chép. Cất vào trình quản lý mật khẩu của bạn."
+    },
+    "word-count": {
+      "lead": "Đếm từ, ký tự, câu và thời gian đọc trong thẻ này.",
+      "s1t": "Mở Đếm từ",
+      "s1b": "Thống kê bắt đầu từ không. Dán bên phải, hoặc mở .txt / .md.",
+      "s2t": "Dán chữ",
+      "s2b": "Số cập nhật khi gõ. Ký tự CJK đếm như từ.",
+      "s3t": "Đọc thống kê",
+      "s3b": "Từ, ký tự, câu, đoạn, dòng và thời gian đọc. Không tải lên."
+    },
+    "color": {
+      "lead": "Chọn màu, sao chép hex / RGB / HSL, và xem tương phản. Ống nhỏ giọt khi trình duyệt cho phép.",
+      "s1t": "Mở Chọn màu",
+      "s1b": "Đã nạp hồng mẫu. Hex, RGB và HSL nằm cùng nhau.",
+      "s2t": "Nhập hoặc chọn màu",
+      "s2b": "Gõ hex, dùng ô màu gốc, hoặc ống nhỏ giọt nếu trình duyệt có.",
+      "s3t": "Sao chép hex hoặc RGB",
+      "s3b": "Mẫu màu và ghi chú tương phản cập nhật ngay. Sao chép định dạng bạn cần."
+    },
+    "hex-rgb": {
+      "lead": "Dán màu hex và đọc RGB, HSL, CMYK trong thẻ này.",
+      "s1t": "Mở Hex sang RGB",
+      "s1b": "Đã có hex mẫu được đổi.",
+      "s2t": "Dán màu của bạn",
+      "s2b": "Gõ #rrggbb hoặc màu CSS. Mẫu và giá trị cập nhật ngay.",
+      "s3t": "Sao chép phép đổi",
+      "s3b": "Sao chép rgb() hoặc định dạng khác. Không tải lên."
+    },
+    "names": {
+      "lead": "Tạo tên người hoặc tên người dùng trong thẻ này rồi sao chép danh sách.",
+      "s1t": "Mở Tạo tên",
+      "s1b": "Đã có danh sách tên người.",
+      "s2t": "Đổi sang tên người dùng nếu cần handle",
+      "s2b": "Dùng menu loại và thanh số lượng. Tạo làm mới danh sách.",
+      "s3t": "Sao chép danh sách",
+      "s3b": "Sao chép tất cả một lúc. Đây là chuỗi ngẫu nhiên, không phải sổ người thật."
+    },
+    "timezone": {
+      "lead": "Đổi giờ đồng hồ giữa các vùng IANA, kể cả giờ mùa hè.",
+      "s1t": "Mở Đổi múi giờ",
+      "s1b": "Nguồn là vùng địa phương đoán được; đích bắt đầu là UTC.",
+      "s2t": "Chọn vùng và thời điểm",
+      "s2b": "Đặt nguồn, đích và ngày giờ. Dùng Bây giờ cho thời điểm hiện tại.",
+      "s3t": "Đọc giờ đã đổi",
+      "s3b": "Kết quả và chuỗi ISO cập nhật ngay. Sao chép khi cần dán chỗ khác."
+    },
+    "timestamp": {
+      "lead": "Đổi thời gian Unix sang ngày, hoặc ngày sang Unix, trong thẻ này.",
+      "s1t": "Mở Đổi dấu thời gian",
+      "s1b": "Unix hiện tại đã điền để bạn thấy mọi định dạng.",
+      "s2t": "Dán dấu thời gian hoặc ngày",
+      "s2b": "Giây, mili giây và ISO-8601 đều được phân tích. Bây giờ đưa về lúc này.",
+      "s3t": "Sao chép giá trị cần",
+      "s3b": "Xem UTC, địa phương và Unix, rồi sao chép một cái."
+    },
+    "lorem": {
+      "lead": "Tạo đoạn, câu hoặc từ lorem ipsum trong thẻ này.",
+      "s1t": "Mở Lorem ipsum",
+      "s1b": "Đã có ba đoạn được tạo.",
+      "s2t": "Chọn loại và số lượng",
+      "s2b": "Đổi sang câu hoặc từ, rồi kéo thanh số lượng.",
+      "s3t": "Sao chép chỗ giữ chỗ",
+      "s3b": "Sao chép khối vào bố cục. Không tải lên."
+    },
+    "units": {
+      "lead": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong thẻ này.",
+      "s1t": "Mở Đổi đơn vị",
+      "s1b": "Chiều dài bắt đầu inch → centimet với 1 in.",
+      "s2t": "Nhập giá trị",
+      "s2b": "Gõ lượng. Đổi loại, nguồn và đích nếu cần kg, °C hoặc cặp khác.",
+      "s3t": "Sao chép kết quả",
+      "s3b": "Bên phải là giá trị đã đổi và công thức ngắn. Đổi chỗ đảo cặp."
+    },
+    "text-to-speech": {
+      "lead": "Nghe chữ bằng giọng thiết bị. Tốc độ và cao độ ở lại thẻ này. Không tải MP3.",
+      "s1t": "Mở Chữ thành tiếng",
+      "s1b": "Đã có câu mẫu. Giọng đến từ trình duyệt.",
+      "s2t": "Dán chữ",
+      "s2b": "Thay mẫu. Chọn giọng, rồi đặt tốc độ và cao độ nếu muốn.",
+      "s3t": "Nói trên thiết bị này",
+      "s3b": "Bấm Nói. Tạm dừng và Dừng điều khiển phát. Đây không phải xuất tệp."
+    },
+    "diff": {
+      "lead": "So hai đoạn chữ từng dòng trong thẻ này. Dòng thêm và xóa được đánh dấu.",
+      "s1t": "Mở So chữ",
+      "s1b": "Trái là bản gốc; phải là bản sửa. Cả hai bắt đầu trống.",
+      "s2t": "Dán cả hai phía",
+      "s2b": "Diff thống nhất vẽ dưới các ô. Đánh dấu bỏ khoảng trắng thừa nếu khoảng cách chỉ là nhiễu.",
+      "s3t": "Sao chép diff",
+      "s3b": "Sao chép diff thống nhất khi cần dán vào bản xem xét."
+    },
+    "uuid": {
+      "lead": "Tạo UUID phiên bản 4 RFC 4122 trong thẻ này. Không có v1.",
+      "s1t": "Mở Tạo UUID",
+      "s1b": "Đã có danh sách ngắn UUID v4.",
+      "s2t": "Chọn số lượng cần",
+      "s2b": "Kéo thanh số lượng. Gạch nối và chữ hoa là tùy chọn.",
+      "s3t": "Sao chép danh sách",
+      "s3b": "Tạo lại nếu cần lô mới rồi sao chép. Giá trị từ crypto.getRandomValues."
+    },
+    "hash": {
+      "lead": "Băm chữ hoặc tệp trong thẻ này. MD5, SHA-1, SHA-256, SHA-384, SHA-512.",
+      "s1t": "Mở Tạo hash",
+      "s1b": "SHA-256 là mặc định. Dán bên phải hoặc mở tệp.",
+      "s2t": "Nhập chữ",
+      "s2b": "Tóm tắt hex và Base64 hiện khi gõ. Đổi thuật toán từ menu.",
+      "s3t": "Sao chép tóm tắt",
+      "s3b": "Sao chép hex (hoặc Base64). Băm tệp cũng không tải lên."
+    },
+    "regex": {
+      "lead": "Thử biểu thức chính quy trong thẻ này. Xem khớp và xem trước thay thế.",
+      "s1t": "Mở Thử regex",
+      "s1b": "Mẫu, cờ và ô thay thế bên trái. Chữ thử bên phải.",
+      "s2t": "Nhập mẫu",
+      "s2b": "Gõ biểu thức. g mặc định bật; thêm i, m, s hoặc u nếu cần.",
+      "s3t": "Dán chữ nguồn",
+      "s3b": "Chỗ khớp được tô. Dưới xem trước có danh sách bắt.",
+      "s4t": "Thử thay thế",
+      "s4b": "Điền ô thay để xem trước phép thế, rồi sao chép một khớp nếu cần."
+    }
+  }
+}

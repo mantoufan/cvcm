@@ -464,6 +464,51 @@ input[type="color"] {
 .convert-size { margin: 0.2rem 0 0; }
 .file-chip { display: inline-flex; align-items: center; }
 
+.tool-guide {
+  margin-top: 2rem;
+  padding: 1.15rem 1.3rem 1.15rem;
+  border: 1px dashed #e9bdd1;
+  border-radius: 20px;
+  background: #ffffffc9;
+}
+.tool-guide h2 {
+  margin: 0 0 0.35rem;
+  color: #a13f6c;
+  font-size: 1.12rem;
+}
+.tool-guide-lead {
+  margin: 0 0 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.tool-guide .learn-steps { gap: 0.85rem; }
+.tool-guide .learn-step h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1.08rem;
+  color: #a13f6c;
+}
+.tool-guide .learn-step h3::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  margin-right: 0.45rem;
+  border-radius: 999px;
+  background: #d9548c;
+  color: #fff;
+  font-size: 0.78rem;
+  vertical-align: middle;
+}
+.tool-guide .learn-fig img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ead4de;
+  border-radius: 12px;
+  background: #fff;
+}
+
 .faq {
   margin-top: 2rem;
   padding: 1.15rem 1.3rem 0.55rem;

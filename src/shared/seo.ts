@@ -7,6 +7,7 @@ import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import { LEARN_COVER, TOOL_COVER, coverUrl } from "./covers";
+import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
 import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
@@ -300,6 +301,10 @@ export function applyHtmlSeo(
   if (seo.learn && seo.tutorial) {
     tags.push(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howToJsonLd(locale, seo.tutorial)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.tool) {
+    tags.push(
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(toolHowToJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
     );
   }
   return out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);

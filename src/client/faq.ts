@@ -1,5 +1,6 @@
 import { h } from "./dom";
 import { t } from "./i18n";
+import { toolHowToJsonLd } from "../shared/guide";
 import { faqItems, faqJsonLd, howToJsonLd, learnFaqItems, type FaqItem } from "../shared/seo";
 import type { Locale } from "../shared/locale";
 import type { ToolId, TutorialId } from "../shared/path";
@@ -40,7 +41,7 @@ export function syncPageJsonLd(
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "howto-jsonld",
-    tutorial ? howToJsonLd(locale, tutorial) : null,
+    tutorial ? howToJsonLd(locale, tutorial) : tool ? toolHowToJsonLd(locale, tool) : null,
   );
 }
 

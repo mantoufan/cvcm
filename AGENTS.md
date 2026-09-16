@@ -56,11 +56,14 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/diff/` — text diff checker
 - `src/client/uuid/` — UUID v4 generator
 - `src/client/regex/` — regex tester
+- `src/client/guide.ts` — illustrated how-to above FAQ (test screenshots)
+- `src/locales/guides/` — 8-locale how-to copy
+- `public/covers/guides/` — per-tool step screenshots
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
-- `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es`
+- `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es` (tool how-tos in `guides/`)
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 
 ## Deploy

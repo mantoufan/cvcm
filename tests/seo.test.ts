@@ -72,6 +72,8 @@ describe("seo helpers", () => {
     expect(out).toContain('href="https://cv.cm/en/convert/"');
     expect(out).toContain('id="faq-jsonld"');
     expect(out).toContain("FAQPage");
+    expect(out).toContain('id="howto-jsonld"');
+    expect(out).toContain("HowTo");
     expect(out).toContain('lang="en"');
   });
 });

@@ -1,0 +1,357 @@
+{
+  "title": "How to use this tool",
+  "tools": {
+    "clip": {
+      "lead": "Create a short-lived note in three steps. Text stays on cv.cm until 10 views or one day.",
+      "s1t": "Open Cloud clipboard",
+      "s1b": "You get a blank note. Nothing is listed publicly. Only people with the link can open it.",
+      "s2t": "Paste or type the note",
+      "s2b": "Drop text, Markdown, an image, or a file. The counter shows how much of the 64 KB text budget you have used.",
+      "s3t": "Create the link",
+      "s3b": "Submit the note, copy the URL, and send it. The last view tells the reader the note is gone."
+    },
+    "qr": {
+      "lead": "Turn a URL or line of text into a QR code in this tab. Nothing is uploaded.",
+      "s1t": "Open the QR generator",
+      "s1b": "A sample cv.cm URL is already filled in, and the preview draws at once.",
+      "s2t": "Replace the text",
+      "s2b": "Paste your own URL or message. Error correction, foreground, and background colors sit in the left rail.",
+      "s3t": "Check the preview and download",
+      "s3b": "When the square looks right, download a PNG. Closing the tab discards the data."
+    },
+    "barcode": {
+      "lead": "Make a Code 128, Code 39, or EAN-13 barcode in this tab and download a PNG.",
+      "s1t": "Open the barcode generator",
+      "s1b": "Code 128 is selected, with a short sample value already drawn.",
+      "s2t": "Enter the value",
+      "s2b": "Type the string or digits. Switch to Code 39 or EAN-13 if you need those formats (EAN-13 wants 12 or 13 digits).",
+      "s3t": "Download the PNG",
+      "s3b": "The preview updates as you type. Download when the bars look correct."
+    },
+    "watermark": {
+      "lead": "Stamp text on a photo in this tab. Files never leave the browser.",
+      "s1t": "Open Image watermark",
+      "s1b": "Use the drop zone on the left. PNG, JPEG, WebP, and GIF work.",
+      "s2t": "Add a photo",
+      "s2b": "Drop a file or click the zone. A preview appears as soon as the browser can decode it.",
+      "s3t": "Type the mark",
+      "s3b": "Enter the watermark text. Pin it to a corner, tile it, or use a logo instead.",
+      "s4t": "Check the preview and export",
+      "s4b": "When the mark sits where you want, download one file or a ZIP of the batch."
+    },
+    "collage": {
+      "lead": "Combine photos into one picture. Layouts and Instagram sizes stay in this tab.",
+      "s1t": "Open Photo collage",
+      "s1b": "The left rail is the drop zone. Nothing is uploaded.",
+      "s2t": "Add two or more photos",
+      "s2b": "Drop several files. They show up in the list so you can reorder or remove them.",
+      "s3t": "Pick a layout",
+      "s3b": "Choose a grid or split. Square, 4:5, 9:16, and 16:9 sizes are built in.",
+      "s4t": "Preview and download",
+      "s4b": "Check the combined picture, then export PNG, JPEG, or WebP."
+    },
+    "resize": {
+      "lead": "Resize or compress a photo to exact pixels or a max edge. The file stays in this tab.",
+      "s1t": "Open Resize & compress",
+      "s1b": "Drop a PNG, JPEG, WebP, or similar photo on the left.",
+      "s2t": "Add the photo",
+      "s2b": "The preview shows the current pixels. Set width, height, or a maximum edge.",
+      "s3t": "Download the smaller file",
+      "s3b": "Pick JPEG or WebP quality if you need a lighter file, then download."
+    },
+    "crop": {
+      "lead": "Crop a photo in this tab. Free, 1:1, 4:5, 16:9, and 9:16.",
+      "s1t": "Open Crop image",
+      "s1b": "Drop a photo on the left. Nothing is uploaded.",
+      "s2t": "Add the photo",
+      "s2b": "A crop box appears on the preview. Drag it or switch to 1:1 and other ratios.",
+      "s3t": "Export the crop",
+      "s3b": "When the frame is right, download JPEG, PNG, or WebP."
+    },
+    "rotate": {
+      "lead": "Rotate or flip a photo in this tab. 90°, 180°, or any angle.",
+      "s1t": "Open Rotate image",
+      "s1b": "Drop a photo on the left. The preview is empty until a file is added.",
+      "s2t": "Add the photo",
+      "s2b": "The original orientation shows first. Use Left, Right, 180°, or the angle slider.",
+      "s3t": "Download the rotated file",
+      "s3b": "Flip horizontally or vertically if you need a mirror, then download."
+    },
+    "exif": {
+      "lead": "Strip EXIF and GPS from a photo in this tab, then download a clean file.",
+      "s1t": "Open EXIF remover",
+      "s1b": "Drop a JPEG or other photo on the left. The file is not uploaded.",
+      "s2t": "Add the photo",
+      "s2b": "The tool reports whether metadata was found. The preview is the picture only.",
+      "s3t": "Download the clean file",
+      "s3b": "Export JPEG, PNG, or WebP without the camera EXIF and GPS tags."
+    },
+    "meme": {
+      "lead": "Put Impact-style captions on a photo in this tab and download a PNG.",
+      "s1t": "Open Meme generator",
+      "s1b": "Drop a photo on the left. Nothing is uploaded.",
+      "s2t": "Add the photo",
+      "s2b": "The picture fills the preview. Top and bottom caption fields sit in the right rail.",
+      "s3t": "Type the captions",
+      "s3b": "Enter a top line and a bottom line. Outline text scales with the photo.",
+      "s4t": "Download the meme",
+      "s4b": "Check the preview, then download a PNG."
+    },
+    "signature": {
+      "lead": "Draw a signature in this tab and download a cropped transparent PNG. Not a legal e-sign.",
+      "s1t": "Open Signature generator",
+      "s1b": "The pad is empty. Pick stroke color and thickness on the left if you want.",
+      "s2t": "Draw on the pad",
+      "s2b": "Write with the mouse or a finger. Undo removes the last stroke; Clear wipes the pad.",
+      "s3t": "Download the PNG",
+      "s3b": "Export crops to the ink. This is a picture, not DocuSign and not a qualified e-signature."
+    },
+    "favicon": {
+      "lead": "Make ICO and PNG favicons from a photo in this tab.",
+      "s1t": "Open Favicon generator",
+      "s1b": "Drop a square-ish photo or logo on the left.",
+      "s2t": "Add the image",
+      "s2b": "The preview shows how the icon is squared. Cover or contain changes the crop.",
+      "s3t": "Download ICO and PNG sizes",
+      "s3b": "Export the pack when the square looks right. Nothing is uploaded."
+    },
+    "convert": {
+      "lead": "Convert HEIC, WebP, PNG, JPEG, and related formats in this tab. Optional resize.",
+      "s1t": "Open Image formats",
+      "s1b": "Drop one file or a batch on the left. Shortcuts cover HEIC → JPG and WebP → PNG.",
+      "s2t": "Add the photo",
+      "s2b": "Pick the output format and, if you want, a max edge so huge photos shrink.",
+      "s3t": "Download one file or a ZIP",
+      "s3b": "Download the current file, or the whole batch as a ZIP. Conversion stays in this tab."
+    },
+    "image-pdf": {
+      "lead": "Turn JPG or PNG photos into one PDF in this tab. A4, Letter, or fit-to-photo.",
+      "s1t": "Open Images to PDF",
+      "s1b": "Drop one photo or several. They become pages, in order.",
+      "s2t": "Add the photos",
+      "s2b": "Reorder the list if the page order is wrong. Choose A4, Letter, or a page that matches the photo.",
+      "s3t": "Download the PDF",
+      "s3b": "Each image is fitted onto its page without cropping. The PDF is built here."
+    },
+    "pdf-jpg": {
+      "lead": "Render PDF pages to JPG, PNG, or WebP in this tab. Download one page or a ZIP.",
+      "s1t": "Open PDF to JPG",
+      "s1b": "Drop a PDF on the left. The file is not uploaded.",
+      "s2t": "Add the PDF",
+      "s2b": "Pages render in the preview. Pick JPG, PNG, or WebP.",
+      "s3t": "Download pages",
+      "s3b": "Save one page or a ZIP of every page."
+    },
+    "merge-pdf": {
+      "lead": "Combine several PDFs into one file in this tab. Reorder, then download.",
+      "s1t": "Open Merge PDF",
+      "s1b": "Drop two or more PDFs on the left.",
+      "s2t": "Add the files",
+      "s2b": "They appear in a list. Drag to change order if the first file should not be first.",
+      "s3t": "Download the merged PDF",
+      "s3b": "The new file is built in this tab. Closing the page discards the originals."
+    },
+    "compress-pdf": {
+      "lead": "Shrink a PDF by re-encoding pages as JPEG. This stays in the browser.",
+      "s1t": "Open Compress PDF",
+      "s1b": "Drop a PDF on the left.",
+      "s2t": "Add the PDF",
+      "s2b": "Pages render so you can judge quality. Size after compress is shown when ready.",
+      "s3t": "Download the smaller PDF",
+      "s3b": "Export when the preview is still readable. Vector text becomes a picture."
+    },
+    "split-pdf": {
+      "lead": "Split a PDF into one file per page, or extract a range, in this tab.",
+      "s1t": "Open Split PDF",
+      "s1b": "Drop a PDF on the left.",
+      "s2t": "Add the PDF",
+      "s2b": "Choose one file per page, or type a range such as 1–3,5.",
+      "s3t": "Download the parts",
+      "s3b": "Save a ZIP of pages or the extracted range. Nothing is uploaded."
+    },
+    "invoice": {
+      "lead": "Fill issuer, customer, and line items, then download an A4 PDF. Not a tax invoice.",
+      "s1t": "Open Invoice generator",
+      "s1b": "The form is on the left; the A4 preview is on the right. Nothing is uploaded.",
+      "s2t": "Fill the parties and lines",
+      "s2b": "Enter who you are, who you bill, currency, tax, and at least one line item.",
+      "s3t": "Check the preview",
+      "s3b": "Totals update as you type. CJK text is drawn into the page so it prints.",
+      "s4t": "Download the PDF",
+      "s4b": "Export one A4 page. This is not accounting software and not a government tax form."
+    },
+    "audio": {
+      "lead": "Decode MP3, M4A, OGG, and similar files to WAV in this tab.",
+      "s1t": "Open Audio to WAV",
+      "s1b": "Drop an audio file on the left. It is not uploaded.",
+      "s2t": "Add the clip",
+      "s2b": "The browser decodes it. Pick the original sample rate, 44.1 kHz, or 48 kHz.",
+      "s3t": "Download WAV",
+      "s3b": "Play a preview if you want, then download. Closing the tab discards the file."
+    },
+    "audio-cutter": {
+      "lead": "Trim a clip in this tab and download the range as WAV.",
+      "s1t": "Open Audio cutter",
+      "s1b": "Drop an MP3 or WAV on the left.",
+      "s2t": "Add the clip",
+      "s2b": "A waveform and start/end controls appear after decode.",
+      "s3t": "Set the range and download",
+      "s3b": "Move start and end, listen if you want, then download the trimmed WAV."
+    },
+    "audio-joiner": {
+      "lead": "Join several clips into one WAV in this tab.",
+      "s1t": "Open Audio joiner",
+      "s1b": "Drop two or more audio files on the left.",
+      "s2t": "Add the clips",
+      "s2b": "They list in order. Reorder if the first file should not play first.",
+      "s3t": "Download the joined WAV",
+      "s3b": "Export one file. Decode and join stay in this tab."
+    },
+    "data": {
+      "lead": "Pretty-print JSON, convert CSV, Base64, URL encoding, and Markdown in this tab.",
+      "s1t": "Open Text & data",
+      "s1b": "JSON pretty-print is the default mode. Paste on the left.",
+      "s2t": "Paste the text",
+      "s2b": "The right pane formats as you type. Switch mode for CSV, Base64, or Markdown.",
+      "s3t": "Copy or download",
+      "s3b": "Copy the result, or download a file. You can also open a .json / .csv / .md from disk."
+    },
+    "xml-json": {
+      "lead": "Convert XML to JSON or JSON to XML in this tab.",
+      "s1t": "Open XML to JSON",
+      "s1b": "A small XML sample is already converted so you can see the shape.",
+      "s2t": "Read the JSON",
+      "s2b": "The right pane is the conversion. Paste your own XML on the left to replace the sample.",
+      "s3t": "Switch direction if you need JSON → XML",
+      "s3b": "Use the mode menu, then copy the output. Nothing is uploaded."
+    },
+    "password": {
+      "lead": "Generate a strong password on this device. Length and character sets are yours to pick.",
+      "s1t": "Open Password generator",
+      "s1b": "A 16-character password is already generated with letters, digits, and symbols.",
+      "s2t": "Set length and character sets",
+      "s2b": "Move the slider. Tick lower case, upper case, digits, symbols, and whether to skip 0/O/1/l.",
+      "s3t": "Generate again and copy",
+      "s3b": "Click Generate for a new string, then Copy. Store it in your own password manager."
+    },
+    "word-count": {
+      "lead": "Count words, characters, sentences, and reading time in this tab.",
+      "s1t": "Open Word counter",
+      "s1b": "The stats rail starts at zero. Paste on the right, or open a .txt / .md file.",
+      "s2t": "Paste the text",
+      "s2b": "Counts update as you type. CJK characters count as words.",
+      "s3t": "Read the stats",
+      "s3b": "Use words, characters, sentences, paragraphs, lines, and reading time. Nothing is uploaded."
+    },
+    "color": {
+      "lead": "Pick a color, copy hex / RGB / HSL, and check contrast. Eyedropper when the browser allows.",
+      "s1t": "Open Color picker",
+      "s1b": "A sample pink is loaded. Hex, RGB, and HSL fields sit together.",
+      "s2t": "Enter or pick a color",
+      "s2b": "Type a hex value, use the native color input, or the eyedropper when your browser has one.",
+      "s3t": "Copy hex or RGB",
+      "s3b": "The swatch and contrast note update live. Copy the format you need."
+    },
+    "hex-rgb": {
+      "lead": "Paste a hex color and read RGB, HSL, and CMYK in this tab.",
+      "s1t": "Open Hex to RGB",
+      "s1b": "A sample hex is already converted.",
+      "s2t": "Paste your color",
+      "s2b": "Type #rrggbb or a CSS color. The swatch and values update at once.",
+      "s3t": "Copy the conversion",
+      "s3b": "Copy rgb() or the other formats. Nothing is uploaded."
+    },
+    "names": {
+      "lead": "Generate person names or usernames in this tab and copy the list.",
+      "s1t": "Open Name generator",
+      "s1b": "A list of person names is already filled in.",
+      "s2t": "Switch to usernames if you need handles",
+      "s2b": "Use the kind menu and the count slider. Generate refreshes the list.",
+      "s3t": "Copy the list",
+      "s3b": "Copy all names at once. They are random strings, not a registry of real people."
+    },
+    "timezone": {
+      "lead": "Convert a clock time between IANA zones, including daylight saving.",
+      "s1t": "Open Timezone converter",
+      "s1b": "From is your guessed local zone; to starts at UTC.",
+      "s2t": "Pick zones and a time",
+      "s2b": "Set from, to, and the datetime. Use Now if you want the current instant.",
+      "s3t": "Read the converted time",
+      "s3b": "The result and ISO string update at once. Copy when you need to paste it elsewhere."
+    },
+    "timestamp": {
+      "lead": "Convert Unix time to a date, or a date to Unix time, in this tab.",
+      "s1t": "Open Timestamp converter",
+      "s1b": "The current Unix time is filled in so you can see every format.",
+      "s2t": "Paste a timestamp or date",
+      "s2b": "Seconds, milliseconds, and ISO-8601 all parse. Use Now to reset to this instant.",
+      "s3t": "Copy the value you need",
+      "s3b": "Read UTC, local, and Unix fields, then copy one of them."
+    },
+    "lorem": {
+      "lead": "Generate lorem ipsum paragraphs, sentences, or words in this tab.",
+      "s1t": "Open Lorem ipsum",
+      "s1b": "Three paragraphs are already generated.",
+      "s2t": "Choose kind and count",
+      "s2b": "Switch to sentences or words, then move the count slider.",
+      "s3t": "Copy the placeholder",
+      "s3b": "Copy the block into a layout. Nothing is uploaded."
+    },
+    "units": {
+      "lead": "Convert length, mass, temperature, volume, area, and speed in this tab.",
+      "s1t": "Open Unit converter",
+      "s1b": "Length starts at inches → centimetres with 1 in filled in.",
+      "s2t": "Enter a value",
+      "s2b": "Type the amount. Change kind, from, and to if you need kg, °C, or another pair.",
+      "s3t": "Copy the result",
+      "s3b": "The converted value and a short formula show on the right. Swap flips the pair."
+    },
+    "text-to-speech": {
+      "lead": "Hear text with your device voices. Rate and pitch stay in this tab. No MP3 file is uploaded.",
+      "s1t": "Open Text to speech",
+      "s1b": "A sample sentence is already in the box. Voices come from the browser.",
+      "s2t": "Paste the text",
+      "s2b": "Replace the sample. Pick a voice, then set rate and pitch if you want.",
+      "s3t": "Speak on this device",
+      "s3b": "Press Speak. Pause and Stop control playback. This is not a file export."
+    },
+    "diff": {
+      "lead": "Compare two texts line by line in this tab. Added and removed lines are marked.",
+      "s1t": "Open Diff checker",
+      "s1b": "Left is the original; right is the revision. Both start empty.",
+      "s2t": "Paste both sides",
+      "s2b": "The unified diff draws under the panes. Tick ignore extra whitespace if spacing is noise.",
+      "s3t": "Copy the diff",
+      "s3b": "Copy the unified diff when you need to paste it into a review."
+    },
+    "uuid": {
+      "lead": "Generate RFC 4122 version 4 UUIDs in this tab. v1 is not offered.",
+      "s1t": "Open UUID generator",
+      "s1b": "A short list of v4 UUIDs is already generated.",
+      "s2t": "Set how many you need",
+      "s2b": "Move the count slider. Hyphens and uppercase are optional.",
+      "s3t": "Copy the list",
+      "s3b": "Generate again if you need a fresh batch, then copy. Values come from crypto.getRandomValues."
+    },
+    "hash": {
+      "lead": "Hash text or a file in this tab. MD5, SHA-1, SHA-256, SHA-384, SHA-512.",
+      "s1t": "Open Hash generator",
+      "s1b": "SHA-256 is the default. Paste on the right or open a file.",
+      "s2t": "Enter the text",
+      "s2b": "Hex and Base64 digests appear as you type. Switch algorithm from the menu.",
+      "s3t": "Copy the digest",
+      "s3b": "Copy hex (or Base64). Hashing a file never uploads it."
+    },
+    "regex": {
+      "lead": "Test a regular expression in this tab. See matches and a replace preview.",
+      "s1t": "Open Regex tester",
+      "s1b": "Pattern, flags, and a replace field sit on the left. The sample text is on the right.",
+      "s2t": "Enter the pattern",
+      "s2b": "Type the expression. g is on by default; add i, m, s, or u if you need them.",
+      "s3t": "Paste the subject text",
+      "s3b": "Matches highlight in the text. A list of captures sits under the preview.",
+      "s4t": "Try a replacement",
+      "s4b": "Fill the replace field to preview substitutions, then copy a match if you need it."
+    }
+  }
+}
