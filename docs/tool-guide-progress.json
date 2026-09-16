@@ -488,7 +488,40 @@
       ],
       "ms": 1800,
       "error": null
+    },
+    "html": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/html/01.jpg",
+        "covers/guides/html/02.jpg",
+        "covers/guides/html/03.jpg"
+      ],
+      "ms": 5608,
+      "error": null
+    },
+    "cron": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/cron/01.jpg",
+        "covers/guides/cron/02.jpg",
+        "covers/guides/cron/03.jpg"
+      ],
+      "ms": 1780,
+      "error": null
+    },
+    "slug": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/slug/01.jpg",
+        "covers/guides/slug/02.jpg",
+        "covers/guides/slug/03.jpg"
+      ],
+      "ms": 1764,
+      "error": null
     }
   },
-  "updated": "2026-09-16T07:00:52.154Z"
+  "updated": "2026-09-16T08:03:41.905Z"
 }
