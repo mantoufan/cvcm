@@ -381,31 +381,31 @@
       "s3b": "Sao chép payload nếu cần. Đây không phải bằng chứng token là thật."
     },
     "screenshot": {
-      "lead": "Mark up a screenshot in this tab. Draw a box or arrow, add a label, download a PNG.",
-      "s1t": "Open Screenshot editor",
-      "s1b": "The drop zone is on the left. PNG, JPG, WebP, and GIF work.",
-      "s2t": "Add the screenshot",
-      "s2b": "Drop or paste a photo. Pick Box, Arrow, or Text, then drag on the preview.",
-      "s3t": "Download the PNG",
-      "s3b": "Undo if a mark is wrong, then download. Closing the tab discards the file."
+      "lead": "Đánh dấu ảnh chụp trong thẻ này. Vẽ khung, mũi tên, chữ, rồi tải PNG.",
+      "s1t": "Mở Sửa ảnh chụp",
+      "s1b": "Vùng thả bên trái. PNG, JPG, WebP, GIF đều được.",
+      "s2t": "Thêm ảnh chụp",
+      "s2b": "Thả hoặc dán ảnh. Chọn khung, mũi tên hoặc chữ, rồi kéo trên xem trước.",
+      "s3t": "Tải PNG",
+      "s3b": "Sai thì hoàn tác rồi tải. Đóng thẻ là bỏ tệp."
     },
     "percent": {
-      "lead": "Work out percentages in this tab: a percent of a number, or what percent one number is of another.",
-      "s1t": "Open Percentage calculator",
-      "s1b": "A and B start with sample values. Four results appear on the right.",
-      "s2t": "Enter A and B",
-      "s2b": "A% of B, A as a percent of B, B plus A%, and the change from B to A all update as you type.",
-      "s3t": "Copy the results",
-      "s3b": "Copy puts all four lines on the clipboard. Nothing is uploaded."
+      "lead": "Tính phần trăm trong thẻ này: bao nhiêu phần trăm của một số, hoặc một số là bao nhiêu phần trăm của số khác.",
+      "s1t": "Mở Phần trăm",
+      "s1b": "A và B đã có mẫu. Bên phải hiện bốn kết quả.",
+      "s2t": "Nhập A và B",
+      "s2b": "A% của B, A là bao nhiêu % của B, B cộng A%, và đổi từ B sang A đều cập nhật khi gõ.",
+      "s3t": "Sao chép kết quả",
+      "s3b": "Sao chép đặt cả bốn dòng vào clipboard. Không tải lên."
     },
     "random": {
-      "lead": "Generate random integers in this tab with Web Crypto. Min and max are inclusive.",
-      "s1t": "Open Random number",
-      "s1b": "The default range is 1 to 100. One number is already rolled.",
-      "s2t": "Set the range",
-      "s2b": "Change min, max, and how many numbers you want, then roll.",
-      "s3t": "Copy the list",
-      "s3b": "Copy puts one integer per line. Values come from crypto.getRandomValues."
+      "lead": "Tạo số nguyên ngẫu nhiên trong thẻ này bằng Web Crypto. Min và max đều tính.",
+      "s1t": "Mở Số ngẫu nhiên",
+      "s1b": "Phạm vi mặc định là 1 đến 100. Đã gieo một số.",
+      "s2t": "Đặt phạm vi",
+      "s2b": "Đổi min, max và số lượng, rồi gieo lại.",
+      "s3t": "Sao chép danh sách",
+      "s3b": "Mỗi dòng một số nguyên. Giá trị từ crypto.getRandomValues."
     }
   }
 }

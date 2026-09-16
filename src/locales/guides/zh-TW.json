@@ -381,31 +381,31 @@
       "s3b": "需要時可複製 payload。這不能證明權杖真實有效。"
     },
     "screenshot": {
-      "lead": "Mark up a screenshot in this tab. Draw a box or arrow, add a label, download a PNG.",
-      "s1t": "Open Screenshot editor",
-      "s1b": "The drop zone is on the left. PNG, JPG, WebP, and GIF work.",
-      "s2t": "Add the screenshot",
-      "s2b": "Drop or paste a photo. Pick Box, Arrow, or Text, then drag on the preview.",
-      "s3t": "Download the PNG",
-      "s3b": "Undo if a mark is wrong, then download. Closing the tab discards the file."
+      "lead": "在本頁給截圖加框、箭頭和文字，再下載 PNG。",
+      "s1t": "開啟截圖標註",
+      "s1b": "左側是拖放區。支援 PNG、JPG、WebP、GIF。",
+      "s2t": "加入截圖",
+      "s2b": "拖入或貼上照片。選方框、箭頭或文字，再在預覽上拖動。",
+      "s3t": "下載 PNG",
+      "s3b": "標錯了就撤銷，然後下載。關掉分頁即丟棄檔案。"
     },
     "percent": {
-      "lead": "Work out percentages in this tab: a percent of a number, or what percent one number is of another.",
-      "s1t": "Open Percentage calculator",
-      "s1b": "A and B start with sample values. Four results appear on the right.",
-      "s2t": "Enter A and B",
-      "s2b": "A% of B, A as a percent of B, B plus A%, and the change from B to A all update as you type.",
-      "s3t": "Copy the results",
-      "s3b": "Copy puts all four lines on the clipboard. Nothing is uploaded."
+      "lead": "在本頁算百分比：某數的百分之幾，或一個數是另一個數的百分之幾。",
+      "s1t": "開啟百分比",
+      "s1b": "A 和 B 已有範例。右側會列出四項結果。",
+      "s2t": "輸入 A 和 B",
+      "s2b": "B 的 A%、A 占 B 的百分比、B 加 A%、以及從 B 到 A 的變化，都會隨輸入更新。",
+      "s3t": "複製結果",
+      "s3b": "複製會把四行都放進剪貼簿。檔案不會上傳。"
     },
     "random": {
-      "lead": "Generate random integers in this tab with Web Crypto. Min and max are inclusive.",
-      "s1t": "Open Random number",
-      "s1b": "The default range is 1 to 100. One number is already rolled.",
-      "s2t": "Set the range",
-      "s2b": "Change min, max, and how many numbers you want, then roll.",
-      "s3t": "Copy the list",
-      "s3b": "Copy puts one integer per line. Values come from crypto.getRandomValues."
+      "lead": "在本頁用 Web Crypto 產生隨機整數。最小和最大都包含在內。",
+      "s1t": "開啟隨機數",
+      "s1b": "預設範圍是 1 到 100。已經擲出了一個數。",
+      "s2t": "設定範圍",
+      "s2b": "改最小、最大和個數，再擲一次。",
+      "s3t": "複製清單",
+      "s3b": "複製時一行一個整數。數值來自 crypto.getRandomValues。"
     }
   }
 }

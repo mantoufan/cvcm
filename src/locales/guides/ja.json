@@ -381,31 +381,31 @@
       "s3b": "必要なら payload をコピーします。トークンが本物である証明にはなりません。"
     },
     "screenshot": {
-      "lead": "Mark up a screenshot in this tab. Draw a box or arrow, add a label, download a PNG.",
-      "s1t": "Open Screenshot editor",
-      "s1b": "The drop zone is on the left. PNG, JPG, WebP, and GIF work.",
-      "s2t": "Add the screenshot",
-      "s2b": "Drop or paste a photo. Pick Box, Arrow, or Text, then drag on the preview.",
-      "s3t": "Download the PNG",
-      "s3b": "Undo if a mark is wrong, then download. Closing the tab discards the file."
+      "lead": "このタブでスクリーンショットに枠、矢印、文字を足し、PNG を保存します。",
+      "s1t": "スクリーンショット編集を開く",
+      "s1b": "左がドロップ欄です。PNG、JPG、WebP、GIF が使えます。",
+      "s2t": "画像を追加する",
+      "s2b": "落とすか貼ります。枠、矢印、文字を選び、プレビュー上でドラッグします。",
+      "s3t": "PNG をダウンロード",
+      "s3b": "マークが違えば Undo してから保存します。タブを閉じると捨てられます。"
     },
     "percent": {
-      "lead": "Work out percentages in this tab: a percent of a number, or what percent one number is of another.",
-      "s1t": "Open Percentage calculator",
-      "s1b": "A and B start with sample values. Four results appear on the right.",
-      "s2t": "Enter A and B",
-      "s2b": "A% of B, A as a percent of B, B plus A%, and the change from B to A all update as you type.",
-      "s3t": "Copy the results",
-      "s3b": "Copy puts all four lines on the clipboard. Nothing is uploaded."
+      "lead": "このタブで百分率を出します。ある数の何パーセントか、一方が他方の何パーセントか。",
+      "s1t": "パーセント計算を開く",
+      "s1b": "A と B にサンプルがあります。右に 4 つの結果が出ます。",
+      "s2t": "A と B を入れる",
+      "s2b": "B の A%、A が B の何%、B に A% を足す、B から A への変化が入力に追随します。",
+      "s3t": "結果をコピー",
+      "s3b": "コピーは 4 行をクリップボードに入れます。アップロードしません。"
     },
     "random": {
-      "lead": "Generate random integers in this tab with Web Crypto. Min and max are inclusive.",
-      "s1t": "Open Random number",
-      "s1b": "The default range is 1 to 100. One number is already rolled.",
-      "s2t": "Set the range",
-      "s2b": "Change min, max, and how many numbers you want, then roll.",
-      "s3t": "Copy the list",
-      "s3b": "Copy puts one integer per line. Values come from crypto.getRandomValues."
+      "lead": "このタブで Web Crypto の乱整数を出します。最小と最大を含みます。",
+      "s1t": "乱数を開く",
+      "s1b": "既定は 1 から 100 です。すでに 1 個出ています。",
+      "s2t": "範囲を決める",
+      "s2b": "最小、最大、個数を変えてから振ります。",
+      "s3t": "一覧をコピー",
+      "s3b": "1 行に 1 整数です。値は crypto.getRandomValues です。"
     }
   }
 }

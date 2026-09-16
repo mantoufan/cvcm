@@ -1,10 +1,10 @@
 # cv.cm tool test and guide progress
 
-Updated: `2026-09-16T06:36:00.000Z`
+Updated: `2026-09-16T07:00:00.000Z`
 
 Each tool was exercised in Chrome (bb-browser CDP). Passing tools got step screenshots at `public/covers/guides/{id}/` and an illustrated how-to above the FAQ.
 
-**41 pass / 0 fail / 41 tools**
+**44 pass / 0 fail / 44 tools**
 
 ## Production verify (2026-09-16, deploy `71c9bfc`)
 
@@ -57,6 +57,9 @@ Browser (logged-in Chrome CDP) on `zh-cn` unless noted: `clip`, `convert`, `invo
 | `yaml-json` | pass | 3 | `covers/guides/yaml-json/01.jpg`, `covers/guides/yaml-json/02.jpg`, `covers/guides/yaml-json/03.jpg` | Recaptured 2026-09-16. First ship used XML-to-JSON screenshots by mistake. YAML→JSON sample, richer YAML, then JSON→YAML. |
 | `case` | pass | 3 | `covers/guides/case/01.jpg`, `covers/guides/case/02.jpg`, `covers/guides/case/03.jpg` | Recaptured. Title Case sample, camelCase, snake_case. |
 | `jwt` | pass | 3 | `covers/guides/jwt/01.jpg`, `covers/guides/jwt/02.jpg`, `covers/guides/jwt/03.jpg` | Recaptured. Empty pad, pasted HS256 token, decoded header/payload (signature not verified). |
+| `screenshot` | pass | 3 | `covers/guides/screenshot/01.jpg`, `covers/guides/screenshot/02.jpg`, `covers/guides/screenshot/03.jpg` | Local Vite. Empty editor, photo added, pink box drawn. First placeholder shots were Rotate. |
+| `percent` | pass | 3 | `covers/guides/percent/01.jpg`, `covers/guides/percent/02.jpg`, `covers/guides/percent/03.jpg` | Local Vite. Sample 25/200, then 18/90 (18% of 90 = 16.2). First placeholder shots were Unit converter. |
+| `random` | pass | 3 | `covers/guides/random/01.jpg`, `covers/guides/random/02.jpg`, `covers/guides/random/03.jpg` | Local Vite. Default 1–100, then roll 8 integers from 1–6. First placeholder shots were UUID. |
 
 ## GitHub layout
 

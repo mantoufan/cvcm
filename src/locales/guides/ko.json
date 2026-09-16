@@ -381,31 +381,31 @@
       "s3b": "필요하면 payload를 복사합니다. 토큰이 진짜라는 증명은 아닙니다."
     },
     "screenshot": {
-      "lead": "Mark up a screenshot in this tab. Draw a box or arrow, add a label, download a PNG.",
-      "s1t": "Open Screenshot editor",
-      "s1b": "The drop zone is on the left. PNG, JPG, WebP, and GIF work.",
-      "s2t": "Add the screenshot",
-      "s2b": "Drop or paste a photo. Pick Box, Arrow, or Text, then drag on the preview.",
-      "s3t": "Download the PNG",
-      "s3b": "Undo if a mark is wrong, then download. Closing the tab discards the file."
+      "lead": "이 탭에서 스크린샷에 상자, 화살표, 글을 넣고 PNG로 받습니다.",
+      "s1t": "스크린샷 편집 열기",
+      "s1b": "왼쪽이 놓기 영역입니다. PNG, JPG, WebP, GIF가 됩니다.",
+      "s2t": "스크린샷 추가",
+      "s2b": "놓거나 붙입니다. 상자, 화살표, 글을 고른 뒤 미리보기에서 드래그합니다.",
+      "s3t": "PNG 다운로드",
+      "s3b": "표시가 틀리면 실행 취소 후 받습니다. 탭을 닫으면 파일이 버려집니다."
     },
     "percent": {
-      "lead": "Work out percentages in this tab: a percent of a number, or what percent one number is of another.",
-      "s1t": "Open Percentage calculator",
-      "s1b": "A and B start with sample values. Four results appear on the right.",
-      "s2t": "Enter A and B",
-      "s2b": "A% of B, A as a percent of B, B plus A%, and the change from B to A all update as you type.",
-      "s3t": "Copy the results",
-      "s3b": "Copy puts all four lines on the clipboard. Nothing is uploaded."
+      "lead": "이 탭에서 백분율을 냅니다. 어떤 수의 몇 퍼센트, 또는 한 수가 다른 수의 몇 퍼센트인지.",
+      "s1t": "백분율 열기",
+      "s1b": "A와 B에 예시가 있습니다. 오른쪽에 결과 네 가지가 나옵니다.",
+      "s2t": "A와 B 입력",
+      "s2b": "B의 A%, A가 B의 몇 %, B에 A%를 더한 값, B에서 A로의 변화가 입력에 따라 바뀝니다.",
+      "s3t": "결과 복사",
+      "s3b": "복사하면 네 줄이 클립보드에 들어갑니다. 업로드하지 않습니다."
     },
     "random": {
-      "lead": "Generate random integers in this tab with Web Crypto. Min and max are inclusive.",
-      "s1t": "Open Random number",
-      "s1b": "The default range is 1 to 100. One number is already rolled.",
-      "s2t": "Set the range",
-      "s2b": "Change min, max, and how many numbers you want, then roll.",
-      "s3t": "Copy the list",
-      "s3b": "Copy puts one integer per line. Values come from crypto.getRandomValues."
+      "lead": "이 탭에서 Web Crypto로 난수 정수를 만듭니다. 최솟값과 최댓값을 포함합니다.",
+      "s1t": "난수 열기",
+      "s1b": "기본 범위는 1에서 100입니다. 이미 하나가 나왔습니다.",
+      "s2t": "범위 정하기",
+      "s2b": "최소, 최대, 개수를 바꾼 뒤 다시 굴립니다.",
+      "s3t": "목록 복사",
+      "s3b": "한 줄에 정수 하나입니다. 값은 crypto.getRandomValues입니다."
     }
   }
 }
