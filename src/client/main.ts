@@ -32,7 +32,6 @@ import { mountSignature, unmountSignature } from "./signature/ui";
 import { mountFavicon, unmountFavicon } from "./favicon/ui";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
-import { guideSection } from "./guide";
 import { mountHome } from "./home";
 import { mountLearn, mountLearnHub } from "./learn/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
@@ -303,7 +302,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tutorial) mountLearn(main, tutorial);
   else mountHome(main, loc);
   if (tool && !(tool === "clip" && clipId)) {
-    main.append(guideSection(tool), faqSection(loc, tool));
+    main.append(faqSection(loc, tool));
   }
 }
 
