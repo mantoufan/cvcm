@@ -79,8 +79,14 @@ export function guideSteps(tool: ToolId): number {
   return GUIDE_STEP_COUNT[tool];
 }
 
+const GUIDE_VER: Partial<Record<ToolId, string>> = {
+  "portrait-sim": "2",
+};
+
 export function guideImage(tool: ToolId, step: number): string {
-  return `/covers/guides/${tool}/${String(step).padStart(2, "0")}.jpg`;
+  const src = `/covers/guides/${tool}/${String(step).padStart(2, "0")}.jpg`;
+  const ver = GUIDE_VER[tool];
+  return ver ? `${src}?v=${ver}` : src;
 }
 
 export function guideText(locale: Locale, path: string): string {

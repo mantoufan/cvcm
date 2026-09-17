@@ -22,6 +22,7 @@ export type PlateKind = "wide" | "tele";
 export type FrameId = "3-2" | "4-5" | "16-9";
 
 export const MATCH = { focalMm: 50, distanceM: 2.2, k: 1, destHPx: 1080, eyeHeadroom: 0.12 } as const;
+export const PLATE_VER = "2";
 
 export const FRAME_LIVE: Record<FrameId, { w: number; h: number }> = {
   "3-2": { w: 1440, h: 960 },
@@ -145,8 +146,8 @@ function plate(scene: SceneId, kind: PlateKind, fg: boolean): PlateSpec {
     focalMm: wide ? 24 : 85,
     widthPx: wide ? 3072 : 2048,
     heightPx: wide ? 2048 : 1365,
-    src: `/covers/portrait-sim/scenes/${scene}-${kind}.webp`,
-    fgSrc: fg ? `/covers/portrait-sim/scenes/${scene}-${kind}-fg.webp` : null,
+    src: `/covers/portrait-sim/scenes/${scene}-${kind}.webp?v=${PLATE_VER}`,
+    fgSrc: fg ? `/covers/portrait-sim/scenes/${scene}-${kind}-fg.webp?v=${PLATE_VER}` : null,
   };
 }
 
@@ -168,7 +169,7 @@ function scene(
     defaultLight: light,
     floorY,
     horizonY: floorY - 0.28,
-    thumb: `/covers/portrait-sim/thumbs/scene-${id}.webp`,
+    thumb: `/covers/portrait-sim/thumbs/scene-${id}.webp?v=${PLATE_VER}`,
   };
 }
 
@@ -176,7 +177,7 @@ function cutout(person: PersonId, pose: PoseId, distanceM: number): CutoutSpec {
   return {
     person,
     pose,
-    src: `/covers/portrait-sim/people/${person}/${pose}.webp`,
+    src: `/covers/portrait-sim/people/${person}/${pose}.webp?v=${PLATE_VER}`,
     widthPx: 900,
     heightPx: 1400,
     feetY: 0.97,
@@ -192,26 +193,26 @@ export const catalog: Catalog = {
       id: "mira",
       defaultPose: "stand34",
       poses: POSES,
-      thumb: "/covers/portrait-sim/thumbs/mira.webp",
+      thumb: `/covers/portrait-sim/thumbs/mira.webp?v=${PLATE_VER}`,
     },
     ken: {
       id: "ken",
       defaultPose: "stand34",
       poses: POSES,
-      thumb: "/covers/portrait-sim/thumbs/ken.webp",
+      thumb: `/covers/portrait-sim/thumbs/ken.webp?v=${PLATE_VER}`,
     },
     lin: {
       id: "lin",
       defaultPose: "stand34",
       poses: POSES,
-      thumb: "/covers/portrait-sim/thumbs/lin.webp",
+      thumb: `/covers/portrait-sim/thumbs/lin.webp?v=${PLATE_VER}`,
     },
   },
   poses: {
-    stand34: { id: "stand34", thumb: "/covers/portrait-sim/thumbs/pose-stand34.webp", subjectDistanceM: 2.2 },
-    sit45: { id: "sit45", thumb: "/covers/portrait-sim/thumbs/pose-sit45.webp", subjectDistanceM: 2 },
-    prop: { id: "prop", thumb: "/covers/portrait-sim/thumbs/pose-prop.webp", subjectDistanceM: 2 },
-    away: { id: "away", thumb: "/covers/portrait-sim/thumbs/pose-away.webp", subjectDistanceM: 2.2 },
+    stand34: { id: "stand34", thumb: `/covers/portrait-sim/thumbs/pose-stand34.webp?v=${PLATE_VER}`, subjectDistanceM: 2.2 },
+    sit45: { id: "sit45", thumb: `/covers/portrait-sim/thumbs/pose-sit45.webp?v=${PLATE_VER}`, subjectDistanceM: 2 },
+    prop: { id: "prop", thumb: `/covers/portrait-sim/thumbs/pose-prop.webp?v=${PLATE_VER}`, subjectDistanceM: 2 },
+    away: { id: "away", thumb: `/covers/portrait-sim/thumbs/pose-away.webp?v=${PLATE_VER}`, subjectDistanceM: 2.2 },
   },
   scenes: {
     window: scene("window", 4.5, null, "window", 0.82, false),
