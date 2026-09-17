@@ -45,6 +45,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/html/` — HTML encode / decode
 - `src/client/cron/` — cron expression explainer
 - `src/client/slug/` — URL slug generator
+- `src/client/age/` — age calculator
+- `src/client/bmi/` — BMI calculator
+- `src/client/binary/` — text to binary
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

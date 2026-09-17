@@ -121,7 +121,13 @@
     "titleSlug": "Tạo slug — URL slug — cv.cm",
     "descSlug": "Đổi tiêu đề thành slug URL. Chữ thường, gạch nối. Không tải lên.",
     "titlePortraitSim": "Mô phỏng máy ảnh chân dung — học khẩu độ trong trình duyệt — cv.cm",
-    "descPortraitSim": "Luyện khẩu độ, tốc độ, ISO, ống kính và kính lọc trên người mẫu minh họa người lớn. Tải PNG/JPEG trong tab này. Không tải lên."
+    "descPortraitSim": "Luyện khẩu độ, tốc độ, ISO, ống kính và kính lọc trên người mẫu minh họa người lớn. Tải PNG/JPEG trong tab này. Không tải lên.",
+    "titleAge": "Tính tuổi — năm tháng ngày — cv.cm",
+    "descAge": "Tính tuổi theo năm, tháng, ngày trong trình duyệt. Chọn ngày sinh và một ngày. Không tải lên.",
+    "titleBmi": "Tính BMI — chỉ số khối cơ thể — cv.cm",
+    "descBmi": "Tính BMI từ kg và cm trong trình duyệt. Ngưỡng WHO. Không tải lên.",
+    "titleBinary": "Đổi nhị phân — chữ sang nhị phân — cv.cm",
+    "descBinary": "Đổi chữ sang nhị phân và ngược lại trong trình duyệt. UTF-8. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "Mô phỏng máy ảnh",
       "blurb": "Luyện khẩu độ và ống kính trên người lớn minh họa. Xuất trong tab này."
+    },
+    "age": {
+      "name": "Tính tuổi",
+      "blurb": "Ngày sinh ra năm, tháng, ngày. Không tải lên."
+    },
+    "bmi": {
+      "name": "Tính BMI",
+      "blurb": "BMI từ kg và cm. Ngưỡng WHO. Không tải lên."
+    },
+    "binary": {
+      "name": "Đổi nhị phân",
+      "blurb": "Chữ ↔ nhị phân (UTF-8). Không tải lên."
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "Không. Bản 1 chỉ đổi phơi sáng và cân bằng trắng. Đèn key chạy trên mặt là bước sau.",
       "q5": "Có phải người thật hay trẻ em không?",
       "a5": "Chỉ người lớn minh họa. Không có trẻ vị thành niên, không tải khuôn mặt thật."
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "U ám",
       "golden": "Giờ vàng"
     }
+  },
+  "age": {
+    "title": "Tính tuổi",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "Tính BMI",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "Đổi nhị phân",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

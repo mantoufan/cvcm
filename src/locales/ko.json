@@ -121,7 +121,13 @@
     "titleSlug": "슬러그 생성 — URL slug — cv.cm",
     "descSlug": "브라우저에서 제목을 URL 슬러그로. 소문자, 하이픈. 업로드 없음.",
     "titlePortraitSim": "인물 카메라 시뮬레이터 — 브라우저에서 노출 배우기 — cv.cm",
-    "descPortraitSim": "일러스트 성인 모델로 조리개, 셔터, ISO, 렌즈, 필터를 연습하세요. 이 탭에서 PNG/JPEG로 저장. 업로드 없음."
+    "descPortraitSim": "일러스트 성인 모델로 조리개, 셔터, ISO, 렌즈, 필터를 연습하세요. 이 탭에서 PNG/JPEG로 저장. 업로드 없음.",
+    "titleAge": "나이 계산 — 년 월 일 — cv.cm",
+    "descAge": "브라우저에서 나이를 년, 월, 일로 계산. 생년월일과 다른 날. 업로드 없음.",
+    "titleBmi": "BMI 계산 — 체질량지수 — cv.cm",
+    "descBmi": "브라우저에서 kg과 cm으로 BMI. WHO 구간. 업로드 없음.",
+    "titleBinary": "이진 변환 — 텍스트를 이진으로 — cv.cm",
+    "descBinary": "브라우저에서 텍스트와 이진을 서로 바꿉니다. UTF-8. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "인물 카메라 시뮬",
       "blurb": "일러스트 성인 모델로 조리개와 렌즈를 연습. 이 탭에서 저장."
+    },
+    "age": {
+      "name": "나이 계산",
+      "blurb": "생년월일로 년, 월, 일. 업로드 없음."
+    },
+    "bmi": {
+      "name": "BMI 계산",
+      "blurb": "kg과 cm으로 BMI. WHO 구간. 업로드 없음."
+    },
+    "binary": {
+      "name": "이진 변환",
+      "blurb": "텍스트 ↔ 이진(UTF-8). 업로드 없음."
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "아니요. 1단계는 노출과 화이트밸런스만 바꿉니다. 키 라이트가 얼굴을 가로지르는 연출은 나중입니다.",
       "q5": "실제 사람이나 어린이인가요?",
       "a5": "일러스트 성인만 나옵니다. 미성년자는 없고 실제 얼굴도 올리지 않습니다."
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "흐림",
       "golden": "골든아워"
     }
+  },
+  "age": {
+    "title": "나이 계산",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "BMI 계산",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "이진 변환",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

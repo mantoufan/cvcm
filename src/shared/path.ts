@@ -8,7 +8,7 @@ export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
   { id: "image", tools: ["watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json"] },
-  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug"] },
+  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -62,6 +62,9 @@ export const TOOLS = [
   "html",
   "cron",
   "slug",
+  "age",
+  "bmi",
+  "binary",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 

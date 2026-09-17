@@ -67,6 +67,9 @@ const STEPS = {
   html: 3,
   cron: 3,
   slug: 3,
+  age: 3,
+  bmi: 3,
+  binary: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -879,6 +882,50 @@ async function runTool(send, id, fx) {
     await evalValue(send, fillExpr("textarea", "Hello, cv.cm — YAML to JSON"));
     await sleep(200);
     await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "age") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const dates = [...document.querySelectorAll("input[type=date]")];
+      if (dates[0]) { dates[0].value = "1990-06-15"; dates[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (dates[1]) { dates[1].value = "2026-09-16"; dates[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return dates.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "bmi") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "70"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "170"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "binary") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "from";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
     await snap(3);
     return;
   }

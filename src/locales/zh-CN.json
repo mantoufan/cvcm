@@ -121,7 +121,13 @@
     "titleSlug": "Slug 生成 — URL 别名 — cv.cm",
     "descSlug": "在浏览器里把标题变成 URL slug。小写、连字符、去掉标点。不上传。",
     "titlePortraitSim": "人像相机模拟器 — 在浏览器里学曝光 — cv.cm",
-    "descPortraitSim": "用插画成年模特练习光圈、快门、ISO、镜头和滤镜。在本页导出 PNG 或 JPEG，不上传。"
+    "descPortraitSim": "用插画成年模特练习光圈、快门、ISO、镜头和滤镜。在本页导出 PNG 或 JPEG，不上传。",
+    "titleAge": "年龄计算 — 年 月 日 — cv.cm",
+    "descAge": "在浏览器里算年龄：年、月、日。选出生日期和另一天。不上传。",
+    "titleBmi": "BMI 计算 — 身体质量指数 — cv.cm",
+    "descBmi": "在浏览器里用公斤和厘米算 BMI。WHO 分档。不上传。",
+    "titleBinary": "二进制转换 — 文本转二进制 — cv.cm",
+    "descBinary": "在浏览器里把文本转成二进制，或把二进制转回文本。UTF-8。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "人像相机模拟",
       "blurb": "用插画成年模特练习光圈、快门和镜头。本页导出。"
+    },
+    "age": {
+      "name": "年龄计算",
+      "blurb": "出生日期算年、月、日。不上传。"
+    },
+    "bmi": {
+      "name": "BMI 计算",
+      "blurb": "公斤和厘米算 BMI。WHO 分档。不上传。"
+    },
+    "binary": {
+      "name": "二进制转换",
+      "blurb": "文本 ↔ 二进制（UTF-8）。不上传。"
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "不是。第一版只改曝光和白平衡，灯光方向不会在脸上移动。棚拍打光是下一步。",
       "q5": "这些人是真人吗？有儿童吗？",
       "a5": "只有插画成年模特。没有未成年人，也不上传真实人脸。"
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "阴天",
       "golden": "黄金时刻"
     }
+  },
+  "age": {
+    "title": "年龄计算",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "BMI 计算",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "二进制转换",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

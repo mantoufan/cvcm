@@ -121,7 +121,13 @@
     "titleSlug": "Slug 產生 — URL 別名 — cv.cm",
     "descSlug": "在瀏覽器裡把標題變成 URL slug。小寫、連字符、去掉標點。不上傳。",
     "titlePortraitSim": "人像相機模擬器 — 在瀏覽器裡學曝光 — cv.cm",
-    "descPortraitSim": "用插畫成年模特練習光圈、快門、ISO、鏡頭與濾鏡。在本頁匯出 PNG 或 JPEG，不上傳。"
+    "descPortraitSim": "用插畫成年模特練習光圈、快門、ISO、鏡頭與濾鏡。在本頁匯出 PNG 或 JPEG，不上傳。",
+    "titleAge": "年齡計算 — 年 月 日 — cv.cm",
+    "descAge": "在瀏覽器裡算年齡：年、月、日。選出生日期和另一天。不上傳。",
+    "titleBmi": "BMI 計算 — 身體質量指數 — cv.cm",
+    "descBmi": "在瀏覽器裡用公斤和公分算 BMI。WHO 分檔。不上傳。",
+    "titleBinary": "二進位轉換 — 文字轉二進位 — cv.cm",
+    "descBinary": "在瀏覽器裡把文字轉成二進位，或把二進位轉回文字。UTF-8。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "人像相機模擬",
       "blurb": "用插畫成年模特練習光圈、快門與鏡頭。本頁匯出。"
+    },
+    "age": {
+      "name": "年齡計算",
+      "blurb": "出生日期算年、月、日。不上傳。"
+    },
+    "bmi": {
+      "name": "BMI 計算",
+      "blurb": "公斤和公分算 BMI。WHO 分檔。不上傳。"
+    },
+    "binary": {
+      "name": "二進位轉換",
+      "blurb": "文字 ↔ 二進位（UTF-8）。不上傳。"
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "不是。第一版只改曝光與白平衡，燈光方向不會在臉上移動。棚拍打光是下一步。",
       "q5": "這些人是真人嗎？有兒童嗎？",
       "a5": "只有插畫成年模特。沒有未成年人，也不上傳真實人臉。"
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "陰天",
       "golden": "黃金時刻"
     }
+  },
+  "age": {
+    "title": "年齡計算",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "BMI 計算",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "二進位轉換",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

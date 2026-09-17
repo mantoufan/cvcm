@@ -121,7 +121,13 @@
     "titleSlug": "Slug generator — URL slug — cv.cm",
     "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded.",
     "titlePortraitSim": "Portrait camera simulator — learn exposure in the browser — cv.cm",
-    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on illustrated adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded."
+    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on illustrated adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded.",
+    "titleAge": "Age calculator — years months days — cv.cm",
+    "descAge": "Find age in years, months, and days in the browser. Pick a birth date and a date. Nothing is uploaded.",
+    "titleBmi": "BMI calculator — body mass index — cv.cm",
+    "descBmi": "Work out BMI from kilograms and centimetres in the browser. WHO bands. Nothing is uploaded.",
+    "titleBinary": "Binary converter — text to binary — cv.cm",
+    "descBinary": "Convert text to binary and binary back to text in the browser. UTF-8 bytes. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -384,6 +390,18 @@
     "portrait-sim": {
       "name": "Portrait camera sim",
       "blurb": "Learn aperture, shutter and lenses on illustrated adults. Export in this tab."
+    },
+    "age": {
+      "name": "Age calculator",
+      "blurb": "Years, months, days from a birth date. Nothing is uploaded."
+    },
+    "bmi": {
+      "name": "BMI calculator",
+      "blurb": "BMI from kg and cm. WHO bands. Nothing is uploaded."
+    },
+    "binary": {
+      "name": "Binary converter",
+      "blurb": "Text ↔ binary (UTF-8). Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1218,6 +1236,42 @@
       "a4": "No. v1 only changes exposure and white balance on a pre-lit plate. Studio relight is a later step.",
       "q5": "Are the people real, or children?",
       "a5": "They are illustrated adults only. There are no minors and no uploads of real faces."
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "Overcast",
       "golden": "Golden hour"
     }
+  },
+  "age": {
+    "title": "Age calculator",
+    "back": "All tools",
+    "privacyNote": "The dates stay in this tab. Nothing is uploaded.",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "BMI calculator",
+    "back": "All tools",
+    "privacyNote": "The numbers stay in this tab. Nothing is uploaded.",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "Binary converter",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

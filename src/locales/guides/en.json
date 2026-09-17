@@ -444,6 +444,33 @@
       "s3b": "Choose 24 mm and move closer than 1.5 m to see the wide-and-close hint. Facial proportions stay drawn; a real camera would also change them.",
       "s4t": "Snap and download",
       "s4b": "Export JPEG or PNG. The AF box stays off the file. Closing the tab discards the sitting."
+    },
+    "age": {
+      "lead": "Find age in years, months, and days in this tab. Nothing is uploaded.",
+      "s1t": "Open Age calculator",
+      "s1b": "Birth date and “on this date” sit on the left. Results appear on the right.",
+      "s2t": "Pick the dates",
+      "s2b": "Change the birth date or the other date. Years, months, days, and total days update.",
+      "s3t": "Copy the age",
+      "s3b": "Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "lead": "Work out adult BMI from kilograms and centimetres. This is not medical advice.",
+      "s1t": "Open BMI calculator",
+      "s1b": "Sample weight and height are already filled. BMI and a WHO band sit on the right.",
+      "s2t": "Enter kg and cm",
+      "s2b": "The index updates as you type. Bands are under 18.5, 18.5–24.9, 25–29.9, and 30+.",
+      "s3t": "Copy the BMI",
+      "s3b": "Copy puts the number and band on the clipboard. Nothing is uploaded."
+    },
+    "binary": {
+      "lead": "Convert text to UTF-8 binary, or binary back to text, in this tab.",
+      "s1t": "Open Binary converter",
+      "s1b": "A sample word is already turned into 8-bit groups.",
+      "s2t": "Paste text or bits",
+      "s2b": "Switch Text → binary or Binary → text. Spaces in binary are ignored when decoding.",
+      "s3t": "Copy the result",
+      "s3b": "Copy when it looks right. Closing the tab discards both sides."
     }
   }
 }

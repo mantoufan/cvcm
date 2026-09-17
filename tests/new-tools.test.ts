@@ -30,6 +30,9 @@ import { randomInt, randomInts } from "../src/shared/random";
 import { decodeHtml, encodeHtml } from "../src/shared/html";
 import { describeCron } from "../src/shared/cron";
 import { slugify } from "../src/shared/slug";
+import { ageOn } from "../src/shared/age";
+import { bmiBand, bmiFrom } from "../src/shared/bmi";
+import { binaryToText, textToBinary } from "../src/shared/binary";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -424,6 +427,30 @@ describe("slug", () => {
   });
 });
 
+describe("age", () => {
+  it("counts civil years months and days", () => {
+    expect(ageOn("2000-01-01", "2001-01-01")).toEqual({ years: 1, months: 0, days: 0, totalDays: 366 });
+    expect(ageOn("2020-06-01", "2019-01-01")).toBeNull();
+  });
+});
+
+describe("bmi", () => {
+  it("uses WHO bands", () => {
+    const v = bmiFrom(70, 170);
+    expect(v).toBeCloseTo(24.221, 3);
+    expect(bmiBand(v!)).toBe("normal");
+    expect(bmiFrom(0, 170)).toBeNull();
+  });
+});
+
+describe("binary", () => {
+  it("round-trips UTF-8 text", () => {
+    expect(textToBinary("A")).toBe("01000001");
+    expect(binaryToText("01000001")).toBe("A");
+    expect(binaryToText("01")).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -471,6 +498,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/html/")).toEqual({ kind: "app", locale: "en", tool: "html" });
     expect(parseAppPath("/en/cron/")).toEqual({ kind: "app", locale: "en", tool: "cron" });
     expect(parseAppPath("/en/slug/")).toEqual({ kind: "app", locale: "en", tool: "slug" });
+    expect(parseAppPath("/en/age/")).toEqual({ kind: "app", locale: "en", tool: "age" });
+    expect(parseAppPath("/en/bmi/")).toEqual({ kind: "app", locale: "en", tool: "bmi" });
+    expect(parseAppPath("/en/binary/")).toEqual({ kind: "app", locale: "en", tool: "binary" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -493,6 +523,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "html")).toBe("/zh-cn/html/");
     expect(appHref("zh-CN", "cron")).toBe("/zh-cn/cron/");
     expect(appHref("zh-CN", "slug")).toBe("/zh-cn/slug/");
+    expect(appHref("zh-CN", "age")).toBe("/zh-cn/age/");
+    expect(appHref("zh-CN", "bmi")).toBe("/zh-cn/bmi/");
+    expect(appHref("zh-CN", "binary")).toBe("/zh-cn/binary/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

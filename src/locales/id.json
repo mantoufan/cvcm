@@ -121,7 +121,13 @@
     "titleSlug": "Pembuat slug — URL slug — cv.cm",
     "descSlug": "Ubah judul jadi slug URL. Huruf kecil, tanda hubung. Tidak diunggah.",
     "titlePortraitSim": "Simulator kamera potret — belajar eksposur di browser — cv.cm",
-    "descPortraitSim": "Latihan diafragma, rana, ISO, lensa, dan filter pada model dewasa bergambar. Simpan PNG/JPEG di tab ini. Tidak diunggah."
+    "descPortraitSim": "Latihan diafragma, rana, ISO, lensa, dan filter pada model dewasa bergambar. Simpan PNG/JPEG di tab ini. Tidak diunggah.",
+    "titleAge": "Kalkulator usia — tahun bulan hari — cv.cm",
+    "descAge": "Hitung usia dalam tahun, bulan, dan hari di browser. Pilih tanggal lahir dan suatu tanggal. Tidak diunggah.",
+    "titleBmi": "Kalkulator BMI — indeks massa tubuh — cv.cm",
+    "descBmi": "Hitung BMI dari kilogram dan sentimeter di browser. Pita WHO. Tidak diunggah.",
+    "titleBinary": "Pengonversi biner — teks ke biner — cv.cm",
+    "descBinary": "Ubah teks ke biner dan biner kembali ke teks di browser. UTF-8. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "Simulasi kamera potret",
       "blurb": "Latihan diafragma dan lensa pada model dewasa. Ekspor di tab ini."
+    },
+    "age": {
+      "name": "Kalkulator usia",
+      "blurb": "Tanggal lahir ke tahun, bulan, hari. Tanpa unggah."
+    },
+    "bmi": {
+      "name": "Kalkulator BMI",
+      "blurb": "BMI dari kg dan cm. Pita WHO. Tanpa unggah."
+    },
+    "binary": {
+      "name": "Pengonversi biner",
+      "blurb": "Teks ↔ biner (UTF-8). Tanpa unggah."
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "Tidak. v1 hanya mengubah eksposur dan white balance. Relight studio belakangan.",
       "q5": "Apakah orangnya nyata atau anak-anak?",
       "a5": "Hanya dewasa bergambar. Tidak ada anak, tidak ada unggahan wajah nyata."
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "Mendung",
       "golden": "Golden hour"
     }
+  },
+  "age": {
+    "title": "Kalkulator usia",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "Kalkulator BMI",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "Pengonversi biner",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

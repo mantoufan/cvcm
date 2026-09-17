@@ -121,7 +121,13 @@
     "titleSlug": "スラッグ生成 — URL slug — cv.cm",
     "descSlug": "ブラウザでタイトルを URL スラッグに。小文字・ハイフン。アップロードなし。",
     "titlePortraitSim": "ポートレートカメラシミュレーター — ブラウザで露出を学ぶ — cv.cm",
-    "descPortraitSim": "イラストの大人モデルで絞り・シャッター・ISO・レンズ・フィルターを練習。このタブで PNG / JPEG を保存。アップロードなし。"
+    "descPortraitSim": "イラストの大人モデルで絞り・シャッター・ISO・レンズ・フィルターを練習。このタブで PNG / JPEG を保存。アップロードなし。",
+    "titleAge": "年齢計算 — 年 月 日 — cv.cm",
+    "descAge": "ブラウザで年齢を年・月・日で計算。生年月日ともう一日。アップロードなし。",
+    "titleBmi": "BMI 計算 — 体格指数 — cv.cm",
+    "descBmi": "ブラウザで kg と cm から BMI。WHO 区分。アップロードなし。",
+    "titleBinary": "バイナリ変換 — テキストからバイナリ — cv.cm",
+    "descBinary": "ブラウザでテキストとバイナリを相互変換。UTF-8。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "ポートレートカメラ",
       "blurb": "イラストの大人モデルで絞りとレンズを練習。このタブで書き出し。"
+    },
+    "age": {
+      "name": "年齢計算",
+      "blurb": "生年月日から年・月・日。アップロードなし。"
+    },
+    "bmi": {
+      "name": "BMI 計算",
+      "blurb": "kg と cm から BMI。WHO 区分。アップロードなし。"
+    },
+    "binary": {
+      "name": "バイナリ変換",
+      "blurb": "テキスト ↔ バイナリ（UTF-8）。アップロードなし。"
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "いいえ。v1 は露出とホワイトバランスだけです。キーライトが顔を横切る表現は後の段階です。",
       "q5": "実在の人や子どもですか？",
       "a5": "イラストの大人だけです。未成年は出ません。実写の顔もアップロードしません。"
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "曇天",
       "golden": "ゴールデンアワー"
     }
+  },
+  "age": {
+    "title": "年齢計算",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "BMI 計算",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "バイナリ変換",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

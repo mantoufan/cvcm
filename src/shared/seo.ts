@@ -91,6 +91,9 @@ const TITLE: Record<ToolId, string> = {
   html: "meta.titleHtml",
   cron: "meta.titleCron",
   slug: "meta.titleSlug",
+  age: "meta.titleAge",
+  bmi: "meta.titleBmi",
+  binary: "meta.titleBinary",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -142,6 +145,9 @@ const DESC: Record<ToolId, string> = {
   html: "meta.descHtml",
   cron: "meta.descCron",
   slug: "meta.descSlug",
+  age: "meta.descAge",
+  bmi: "meta.descBmi",
+  binary: "meta.descBinary",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

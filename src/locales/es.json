@@ -121,7 +121,13 @@
     "titleSlug": "Generador de slug — URL slug — cv.cm",
     "descSlug": "Convierte un título en slug de URL. Minúsculas y guiones. Nada se sube.",
     "titlePortraitSim": "Simulador de cámara de retrato — aprende exposición en el navegador — cv.cm",
-    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos ilustrados. Descarga PNG o JPEG en esta pestaña. Nada se sube."
+    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos ilustrados. Descarga PNG o JPEG en esta pestaña. Nada se sube.",
+    "titleAge": "Calculadora de edad — años meses días — cv.cm",
+    "descAge": "Calcula la edad en años, meses y días en el navegador. Elige nacimiento y una fecha. Nada se sube.",
+    "titleBmi": "Calculadora de IMC — índice de masa corporal — cv.cm",
+    "descBmi": "Calcula el IMC con kilogramos y centímetros en el navegador. Bandas OMS. Nada se sube.",
+    "titleBinary": "Convertidor binario — texto a binario — cv.cm",
+    "descBinary": "Convierte texto a binario y binario a texto en el navegador. UTF-8. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -356,6 +362,18 @@
     "portrait-sim": {
       "name": "Simulador de retrato",
       "blurb": "Practica diafragma y objetivos con adultos ilustrados. Exporta aquí."
+    },
+    "age": {
+      "name": "Calculadora de edad",
+      "blurb": "Años, meses y días desde la fecha de nacimiento. Nada se sube."
+    },
+    "bmi": {
+      "name": "Calculadora de IMC",
+      "blurb": "IMC con kg y cm. Bandas OMS. Nada se sube."
+    },
+    "binary": {
+      "name": "Convertidor binario",
+      "blurb": "Texto ↔ binario (UTF-8). Nada se sube."
     }
   },
   "watermark": {
@@ -1190,6 +1208,42 @@
       "a4": "No. La v1 solo cambia exposición y balance de blancos. El relight de estudio es un paso posterior.",
       "q5": "¿Son personas reales o menores?",
       "a5": "Solo adultos ilustrados. No hay menores ni se suben caras reales."
+    },
+    "age": {
+      "q1": "Can I calculate age here?",
+      "a1": "Yes. Pick a birth date and a date. The tab shows years, months, days, and total days.",
+      "q2": "Is the date uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How are months counted?",
+      "a3": "Civil months: if the day has not been reached, the previous month is used.",
+      "q4": "What about leap days?",
+      "a4": "February 29 is a real date. The next years count from the civil calendar.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts a one-line summary on the clipboard."
+    },
+    "bmi": {
+      "q1": "Can I calculate BMI here?",
+      "a1": "Yes. Enter kilograms and centimetres. The tab shows BMI and a WHO band.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which bands do you use?",
+      "a3": "Under 18.5, 18.5–24.9, 25–29.9, and 30+ as used by WHO adult BMI.",
+      "q4": "Is BMI a diagnosis?",
+      "a4": "No. It is a simple index. It is not medical advice.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the BMI and band on the clipboard."
+    },
+    "binary": {
+      "q1": "Can I convert text to binary here?",
+      "a1": "Yes. Text becomes 8-bit UTF-8 groups. Binary can be turned back into text.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in binary?",
+      "a3": "Spaces are ignored when decoding. Encoding puts a space between bytes.",
+      "q4": "What if the bits are not a multiple of 8?",
+      "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
     }
   },
   "qr": {
@@ -2044,5 +2098,54 @@
       "overcast": "Nublado",
       "golden": "Hora dorada"
     }
+  },
+  "age": {
+    "title": "Calculadora de edad",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Dates",
+    "birth": "Birth date",
+    "on": "On this date",
+    "result": "Age",
+    "copy": "Copy",
+    "copied": "Copied",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "total": "Total days",
+    "invalid": "Pick a birth date on or before the other date.",
+    "line": "{years} years, {months} months, {days} days ({total} days)"
+  },
+  "bmi": {
+    "title": "Calculadora de IMC",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Body",
+    "kg": "Kilograms",
+    "cm": "Centimetres",
+    "result": "BMI",
+    "copy": "Copy",
+    "copied": "Copied",
+    "value": "BMI",
+    "band": "WHO band",
+    "under": "Underweight",
+    "normal": "Normal",
+    "over": "Overweight",
+    "obese": "Obesity",
+    "invalid": "Enter a weight and height above zero."
+  },
+  "binary": {
+    "title": "Convertidor binario",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Direction",
+    "to": "Text → binary",
+    "from": "Binary → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or 01000001…",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Binary must be 0 and 1 in groups of eight bits."
   }
 }

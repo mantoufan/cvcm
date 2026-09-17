@@ -70,6 +70,9 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   html: 3,
   cron: 3,
   slug: 3,
+  age: 3,
+  bmi: 3,
+  binary: 3,
 };
 
 export function guideSteps(tool: ToolId): number {
