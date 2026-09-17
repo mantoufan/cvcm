@@ -1,4 +1,4 @@
-import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO } from "../covers";
+import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO, localizedTutorialSrc } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
@@ -57,7 +57,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       heroSrc
         ? h("figure", { class: "learn-hero" },
           h("img", {
-            src: heroSrc,
+            src: localizedTutorialSrc(heroSrc, loc),
             alt: t(`learn.${id}.title`),
             width: "1280",
             height: "720",
@@ -175,7 +175,7 @@ function stepMedia(id: TutorialId, n: number, fallback: string | undefined): HTM
   if (diagrams && index >= 0) {
     const caption = t(`learn.${id}.diagram${index + 1}`);
     return h("figure", { class: "learn-fig learn-diagram" },
-      h("img", { src: diagrams[index].src, alt: caption, width: "960", height: "540", loading: "lazy" }),
+      h("img", { src: localizedTutorialSrc(diagrams[index].src, locale()), alt: caption, width: "960", height: "540", loading: "lazy" }),
       h("figcaption", null, caption),
     );
   }

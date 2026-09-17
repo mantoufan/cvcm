@@ -1,3 +1,4 @@
+import { localePath, type Locale } from "./locale";
 import type { ToolId, TutorialId } from "./path";
 
 export const TOOL_COVER: Record<ToolId, string> = {
@@ -95,5 +96,13 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
 };
 
 export function coverUrl(path: string): string {
-  return `https://cv.cm${path}`;
+  return `https://cv.cm${path.split("?")[0]}`;
+}
+
+/** English diagrams live in /covers/tutorials/. Other locales use /covers/tutorials/{locale}/. */
+export function localizedTutorialSrc(src: string, locale: Locale): string {
+  if (locale === "en" || !src.startsWith("/covers/tutorials/")) return src;
+  const rest = src.slice("/covers/tutorials/".length);
+  if (rest.includes("/")) return src;
+  return `/covers/tutorials/${localePath(locale)}/${rest}`;
 }

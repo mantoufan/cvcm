@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="先に種類を選ぶ">
+  <rect width="960" height="540" rx="28" fill="#fff7fb"/>
+  <text x="48" y="54" fill="#a13f6c" font-size="32" font-weight="800" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif">先に種類を選ぶ</text>
+  <rect x="40" y="100" width="280" height="330" rx="22" fill="#ffe4ee" stroke="#c83f79" stroke-width="3"/>
+  <text x="62" y="140" fill="#a13f6c" font-size="22" font-weight="700" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif">Code 128</text>
+  <text x="62" y="172" fill="#59364b" font-size="18" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif"><tspan x="62" dy="0">英数字。</tspan><tspan x="62" dy="22">倉庫・チケット・</tspan><tspan x="62" dy="22">内部ID。</tspan></text>
+
+  <rect x="340" y="100" width="280" height="330" rx="22" fill="#ffffff" stroke="#f2d9e5" stroke-width="3"/>
+  <text x="362" y="140" fill="#a13f6c" font-size="22" font-weight="700" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif">Code 39</text>
+  <text x="362" y="172" fill="#59364b" font-size="18" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif"><tspan x="362" dy="0">古いスキャナ。</tspan><tspan x="362" dy="22">大文字・数字・</tspan><tspan x="362" dy="22">一部の記号。</tspan></text>
+
+  <rect x="640" y="100" width="280" height="330" rx="22" fill="#ffffff" stroke="#f2d9e5" stroke-width="3"/>
+  <text x="662" y="140" fill="#a13f6c" font-size="22" font-weight="700" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif">EAN-13</text>
+  <text x="662" y="172" fill="#59364b" font-size="18" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif"><tspan x="662" dy="0">小売商品。</tspan><tspan x="662" dy="22">12桁+チェック。</tspan><tspan x="662" dy="22">URLではない。</tspan></text>
+<text x="48" y="500" fill="#876579" font-size="18" font-family="system-ui,'PingFang SC','Noto Sans SC','Hiragino Sans',sans-serif">QRはリンク。バーコードはモノ。混ぜない。</text>
+</svg>

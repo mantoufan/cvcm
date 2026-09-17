@@ -10,6 +10,7 @@ import {
   learnHref,
   parseAppPath,
 } from "../src/shared/path";
+import { localizedTutorialSrc } from "../src/shared/covers";
 import {
   applyHtmlSeo,
   howToJsonLd,
@@ -122,6 +123,15 @@ it("places instructional diagrams on published lessons", () => {
       expect(step.image).toBe(`https://cv.cm${diagram.src}`);
     }
   }
+});
+
+it("localizes instructional diagrams for Chinese HowTo JSON-LD", () => {
+  expect(localizedTutorialSrc("/covers/tutorials/make-qr.svg", "en")).toBe("/covers/tutorials/make-qr.svg");
+  expect(localizedTutorialSrc("/covers/tutorials/make-qr.svg", "zh-CN")).toBe("/covers/tutorials/zh-cn/make-qr.svg");
+  const step = (howToJsonLd("zh-CN", "make-qr").step as { image?: string }[])[0];
+  expect(step.image).toBe("https://cv.cm/covers/tutorials/zh-cn/make-qr-contents.svg");
+  const out = applyHtmlSeo(html, "zh-CN", { learn: true, tutorial: "heic-to-jpg" });
+  expect(out).toContain("/covers/tutorials/zh-cn/heic-to-jpg-why.svg");
 });
 
 it("gives each published lesson FAQ, HowTo, and a search-query title", () => {
