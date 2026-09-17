@@ -944,7 +944,7 @@ public/covers/portrait-sim/thumbs/…   # URLs listed on PersonSpec / PoseSpec /
 
 **Art direction (frozen).**
 
-- Sitters: **instructional illustrated adults**, semi-realistic, not chibi, not photoreal stock of unknown age.
+- Sitters: **instructional photoreal adult sitters**, fictional 25+, not chibi, not named real people.
 - Stages: **empty** window / open shade / cafe / simple indoor. Photographic preferred; illustrated OK if the set matches. **No people in the plate.**
 - Covers stay Codex chibi; in-sim plates do not.
 

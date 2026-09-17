@@ -95,5 +95,5 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
 };
 
 export function coverUrl(path: string): string {
-  return `https://cv.cm${path.split("?")[0]}`;
+  return `https://cv.cm${path}`;
 }

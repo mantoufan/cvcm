@@ -121,7 +121,7 @@
     "titleSlug": "Generador de slug — URL slug — cv.cm",
     "descSlug": "Convierte un título en slug de URL. Minúsculas y guiones. Nada se sube.",
     "titlePortraitSim": "Simulador de cámara de retrato — aprende exposición en el navegador — cv.cm",
-    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos ilustrados. Descarga PNG o JPEG en esta pestaña. Nada se sube.",
+    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos fotorrealistas. Descarga PNG o JPEG en esta pestaña. Nada se sube.",
     "titleAge": "Calculadora de edad — años meses días — cv.cm",
     "descAge": "Calcula la edad en años, meses y días en el navegador. Elige nacimiento y una fecha. Nada se sube.",
     "titleBmi": "Calculadora de IMC — índice de masa corporal — cv.cm",
@@ -377,7 +377,7 @@
     },
     "portrait-sim": {
       "name": "Simulador de retrato",
-      "blurb": "Practica diafragma y objetivos con adultos ilustrados. Exporta aquí."
+      "blurb": "Practica diafragma y objetivos con adultos fotorrealistas. Exporta aquí."
     },
     "age": {
       "name": "Calculadora de edad",
@@ -1320,7 +1320,7 @@
       "q4": "¿Es iluminación de estudio?",
       "a4": "No. La v1 solo cambia exposición y balance de blancos. El relight de estudio es un paso posterior.",
       "q5": "¿Son personas reales o menores?",
-      "a5": "Solo adultos ilustrados. No hay menores ni se suben caras reales."
+      "a5": "Solo adultos simulados. No hay menores ni se suben caras reales."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2341,7 +2341,7 @@
     "hintUnderexposed": "Está oscuro. Abre el diafragma, baja la velocidad o sube ISO.",
     "hintOverexposed": "Está claro. Cierra, sube velocidad o baja ISO.",
     "hintHandshake": "El obturador es lento para este objetivo. Usa trípode o más velocidad.",
-    "hintWideClose": "En una cámara real, un gran angular tan cerca también cambia las proporciones de la cara; esta simulación conserva el dibujo.",
+    "hintWideClose": "En una cámara real, un gran angular tan cerca también cambia las proporciones de la cara; esta simulación conserva las del modelo.",
     "hintMissFocus": "El enfoque no está en la persona. Iguala el foco a la distancia.",
     "hintUvNoop": "Un filtro UV es casi transparente en digital. No es un objetivo UV.",
     "hintNdTripod": "El ND ralentiza el obturador. Un trípode ayuda si va lento.",

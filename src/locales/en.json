@@ -121,7 +121,7 @@
     "titleSlug": "Slug generator — URL slug — cv.cm",
     "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded.",
     "titlePortraitSim": "Portrait camera simulator — learn exposure in the browser — cv.cm",
-    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on illustrated adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded.",
+    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on photoreal adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded.",
     "titleAge": "Age calculator — years months days — cv.cm",
     "descAge": "Find age in years, months, and days in the browser. Pick a birth date and a date. Nothing is uploaded.",
     "titleBmi": "BMI calculator — body mass index — cv.cm",
@@ -586,7 +586,7 @@
     },
     "portrait-sim": {
       "name": "Portrait camera sim",
-      "blurb": "Learn aperture, shutter and lenses on illustrated adults. Export in this tab."
+      "blurb": "Learn aperture, shutter and lenses on photoreal adults. Export in this tab."
     },
     "age": {
       "name": "Age calculator",
@@ -1521,7 +1521,7 @@
     },
     "portrait-sim": {
       "q1": "Does this use my camera or upload photos?",
-      "a1": "No. Illustrated plates stay on cv.cm. Nothing is uploaded. Snap downloads stay on your device. Your camera is not used.",
+      "a1": "No. Photoreal plates stay on cv.cm. Nothing is uploaded. Snap downloads stay on your device. Your camera is not used.",
       "q2": "Why doesn’t UV change the picture?",
       "a2": "Digital sensors already block UV. A UV filter is nearly clear. It is not a UV lens. ND, polarizer and diffusion are the filters you can see.",
       "q3": "Can I try a phone lens?",
@@ -1529,7 +1529,7 @@
       "q4": "Is this studio lighting or a moving key light?",
       "a4": "No. v1 only changes exposure and white balance on a pre-lit plate. Studio relight is a later step.",
       "q5": "Are the people real, or children?",
-      "a5": "They are illustrated adults only. There are no minors and no uploads of real faces."
+      "a5": "They are simulated adult sitters only. There are no minors and no uploads of real faces."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2341,7 +2341,7 @@
     "hintUnderexposed": "The meter is dark. Open the aperture, slow the shutter, or raise ISO.",
     "hintOverexposed": "The meter is bright. Stop down, speed up, or lower ISO.",
     "hintHandshake": "Shutter is slow for this lens. Use a tripod or a faster speed.",
-    "hintWideClose": "On a real camera, a wide lens this close also changes facial proportions; this sim keeps the drawing’s proportions.",
+    "hintWideClose": "On a real camera, a wide lens this close also changes facial proportions; this sim keeps the sitter’s proportions.",
     "hintMissFocus": "Focus is off the sitter. Match focus to distance.",
     "hintUvNoop": "A UV filter is almost clear on a digital sensor. It is not a UV lens.",
     "hintNdTripod": "ND darkened the shutter. A tripod helps if the speed is slow.",

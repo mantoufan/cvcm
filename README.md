@@ -9,7 +9,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Cloud clipboard** / 云剪切板 — text, images, video, files. Markdown / HTML / code. Gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
 - **Image watermark** / 图片水印 — text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
-- **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on illustrated adults. [Open](https://cv.cm/en/portrait-sim/)
+- **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)
 - **Images to PDF** / 图片转 PDF. [Open](https://cv.cm/en/image-pdf/)
 - **Audio to WAV** / 音频转 WAV. [Open](https://cv.cm/en/audio/)
