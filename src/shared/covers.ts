@@ -64,6 +64,11 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "jpg-to-pdf": "/covers/image-pdf-sweet.jpg?v=1",
   "pdf-to-jpg": "/covers/pdf-jpg-sweet.jpg?v=1",
   "crop-photo": "/covers/crop-sweet.jpg?v=1",
+  "webp-to-png": "/covers/convert-sweet.jpg?v=1",
+  "resize-image": "/covers/resize-sweet.jpg?v=1",
+  "split-pdf": "/covers/split-pdf-sweet.jpg?v=1",
+  "add-watermark": "/covers/watermark-sweet.jpg?v=1",
+  "remove-exif": "/covers/exif-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -93,6 +98,11 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "jpg-to-pdf": "/covers/tutorials/jpg-to-pdf.svg",
   "pdf-to-jpg": "/covers/tutorials/pdf-to-jpg.svg",
   "crop-photo": "/covers/tutorials/crop-photo.svg",
+  "webp-to-png": "/covers/tutorials/webp-to-png.svg",
+  "resize-image": "/covers/tutorials/resize-image.svg",
+  "split-pdf": "/covers/tutorials/split-pdf.svg",
+  "add-watermark": "/covers/tutorials/add-watermark.svg",
+  "remove-exif": "/covers/tutorials/remove-exif.svg",
 };
 
 export function coverUrl(path: string): string {

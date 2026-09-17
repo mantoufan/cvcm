@@ -64,6 +64,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["crop", "resize", "convert"],
   },
+  "webp-to-png": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["convert", "resize", "image-pdf"],
+  },
+  "resize-image": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["resize", "crop", "convert"],
+  },
+  "split-pdf": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["split-pdf", "merge-pdf", "compress-pdf"],
+  },
+  "add-watermark": {
+    minutes: 7,
+    steps: 6,
+    openAt: 2,
+    related: ["watermark", "exif", "resize"],
+  },
+  "remove-exif": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["exif", "watermark", "resize"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -218,5 +248,25 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "crop-photo": [
     { step: 1, src: "/covers/tutorials/crop-photo-ratios.svg" },
     { step: 4, src: "/covers/tutorials/crop-photo-edges.svg" },
+  ],
+  "webp-to-png": [
+    { step: 1, src: "/covers/tutorials/webp-to-png-why.svg" },
+    { step: 4, src: "/covers/tutorials/webp-to-png-alpha.svg" },
+  ],
+  "resize-image": [
+    { step: 1, src: "/covers/tutorials/resize-image-limit.svg" },
+    { step: 4, src: "/covers/tutorials/resize-image-lock.svg" },
+  ],
+  "split-pdf": [
+    { step: 1, src: "/covers/tutorials/split-pdf-each.svg" },
+    { step: 4, src: "/covers/tutorials/split-pdf-range.svg" },
+  ],
+  "add-watermark": [
+    { step: 1, src: "/covers/tutorials/add-watermark-place.svg" },
+    { step: 4, src: "/covers/tutorials/add-watermark-opacity.svg" },
+  ],
+  "remove-exif": [
+    { step: 1, src: "/covers/tutorials/remove-exif-gps.svg" },
+    { step: 6, src: "/covers/tutorials/remove-exif-check.svg" },
   ],
 };

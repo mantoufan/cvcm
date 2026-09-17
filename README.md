@@ -60,17 +60,22 @@ Browser tools plus a tiny cloud clipboard.
 
 ## Lessons
 
-Eight illustrated how-tos that finish in the browser: QR and barcode, merge and compress PDF, HEIC to JPG, JPG to PDF, PDF to JPG, and crop a photo. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
+Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, HEIC and WebP conversion, crop, resize, watermark, and strip EXIF. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
 
 - [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
 - [How to make a QR code](https://cv.cm/en/learn/make-qr/)
 - [How to make a barcode](https://cv.cm/en/learn/make-barcode/)
 - [How to merge PDF files](https://cv.cm/en/learn/merge-pdf/)
 - [How to compress a PDF](https://cv.cm/en/learn/compress-pdf/)
+- [How to split a PDF](https://cv.cm/en/learn/split-pdf/)
 - [How to convert HEIC to JPG](https://cv.cm/en/learn/heic-to-jpg/)
 - [How to convert JPG to PDF](https://cv.cm/en/learn/jpg-to-pdf/)
 - [How to convert PDF to JPG](https://cv.cm/en/learn/pdf-to-jpg/)
+- [How to convert WebP to PNG](https://cv.cm/en/learn/webp-to-png/)
 - [How to crop a photo](https://cv.cm/en/learn/crop-photo/)
+- [How to resize or compress an image](https://cv.cm/en/learn/resize-image/)
+- [How to add a watermark](https://cv.cm/en/learn/add-watermark/)
+- [How to remove EXIF / location](https://cv.cm/en/learn/remove-exif/)
 
 Older photography, court, pool and interpersonal lesson URLs still parse, then 301 to the hub.
 

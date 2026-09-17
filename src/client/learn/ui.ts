@@ -143,11 +143,22 @@ function groupOf(id: TutorialId): string {
   if (
     id === "merge-pdf"
     || id === "compress-pdf"
+    || id === "split-pdf"
     || id === "heic-to-jpg"
     || id === "jpg-to-pdf"
     || id === "pdf-to-jpg"
+    || id === "webp-to-png"
   ) return "files";
-  if (id === "crop-photo" || id === "phone-photos" || id === "window-light" || id === "crop-compose" || id === "portrait") {
+  if (
+    id === "crop-photo"
+    || id === "resize-image"
+    || id === "add-watermark"
+    || id === "remove-exif"
+    || id === "phone-photos"
+    || id === "window-light"
+    || id === "crop-compose"
+    || id === "portrait"
+  ) {
     return "photo";
   }
   if (id === "algorithms" || id === "one-page-site") return "code";

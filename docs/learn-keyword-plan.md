@@ -86,6 +86,11 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `jpg-to-pdf`
 - `pdf-to-jpg`
 - `crop-photo`
+- `webp-to-png`
+- `resize-image`
+- `split-pdf`
+- `add-watermark`
+- `remove-exif`
 
 ## Evidence notes
 

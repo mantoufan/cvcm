@@ -77,6 +77,11 @@ export const TUTORIALS = [
   "jpg-to-pdf",
   "pdf-to-jpg",
   "crop-photo",
+  "webp-to-png",
+  "resize-image",
+  "split-pdf",
+  "add-watermark",
+  "remove-exif",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -99,8 +104,8 @@ export const TUTORIAL_GROUPS: readonly {
   tutorials: readonly TutorialId[];
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
-  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg"] },
-  { id: "photo", tutorials: ["crop-photo"] },
+  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png"] },
+  { id: "photo", tutorials: ["crop-photo", "resize-image", "add-watermark", "remove-exif"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],
