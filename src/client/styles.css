@@ -1136,11 +1136,36 @@ body {
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
+.learn-hero img {
+  object-fit: contain;
+  background: #fff7fb;
+}
 .learn-meta {
   display: grid;
   gap: 0.55rem;
 }
-.learn-result { margin: 0; color: var(--ink); }
+.learn-result {
+  margin: 0;
+  color: var(--ink);
+  background: #fff0f7;
+  border: 1px solid #f0ccdc;
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  line-height: 1.65;
+}
+.learn-result strong {
+  display: block;
+  color: #a13f6c;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.learn-tool-cta {
+  width: fit-content;
+  margin: 0.15rem 0 0.25rem;
+}
+.learn-step .learn-tool-cta { margin-top: 0.9rem; }
 .learn-note {
   background: #fff0f7;
   border: 1px dashed #e9bdd1;

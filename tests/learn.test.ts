@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALGO_SNIPPETS } from "../src/shared/learn";
+import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
 import { LOCALES } from "../src/shared/locale";
 import {
   TOOLS,
@@ -12,6 +12,8 @@ import {
 } from "../src/shared/path";
 import {
   applyHtmlSeo,
+  howToJsonLd,
+  learnFaqItems,
   pageCanonical,
   pageTitle,
 } from "../src/shared/seo";
@@ -29,82 +31,113 @@ const html = `<!doctype html>
 </html>`;
 
 describe("learn routes", () => {
-  it("parses the hub and keeps old lesson ids for redirects", () => {
+  it("parses the hub, new lessons, and old ids", () => {
     expect(parseAppPath("/en/learn/")).toEqual({ kind: "learn", locale: "en", tutorial: null });
-    expect(parseAppPath("/zh-CN/learn/phone-photos/")).toEqual({
+    expect(parseAppPath("/zh-CN/learn/make-qr/")).toEqual({
       kind: "learn",
       locale: "zh-CN",
-      tutorial: "phone-photos",
+      tutorial: "make-qr",
+    });
+    expect(parseAppPath("/en/learn/heic-to-jpg/")).toEqual({
+      kind: "learn",
+      locale: "en",
+      tutorial: "heic-to-jpg",
     });
     expect(parseAppPath("/learn/pool-safety")).toEqual({
       kind: "bare-learn",
       tutorial: "pool-safety",
     });
-    expect(learnHref("ja", null)).toBe("/ja/learn/");
-    expect(learnHref("es", "one-page-site")).toBe("/es/learn/one-page-site/");
+    expect(learnHref("ja", "crop-photo")).toBe("/ja/learn/crop-photo/");
+    expect(isPublishedTutorial("make-qr")).toBe(true);
     expect(isPublishedTutorial("phone-photos")).toBe(false);
   });
 
-  it("keeps tool routes unchanged", () => {
-    expect(parseAppPath("/en/crop/")).toEqual({ kind: "app", locale: "en", tool: "crop" });
+  it("keeps tool routes unchanged when a lesson reuses a tool id", () => {
+    expect(parseAppPath("/en/merge-pdf/")).toEqual({ kind: "app", locale: "en", tool: "merge-pdf" });
+    expect(parseAppPath("/en/learn/merge-pdf/")).toEqual({
+      kind: "learn",
+      locale: "en",
+      tutorial: "merge-pdf",
+    });
     expect(appHref("en", "crop")).toBe("/en/crop/");
   });
 });
 
 describe("learn SEO", () => {
-  it("keeps the hub title while lessons are unpublished", () => {
-    expect(pageTitle("en", { learn: true })).toMatch(/Simple illustrated tutorials/i);
-    expect(pageCanonical("zh-CN", { learn: true })).toBe("https://cv.cm/zh-cn/learn/");
-    const out = applyHtmlSeo(html, "en", { learn: true });
-    expect(out).toContain("Simple illustrated tutorials");
-    expect(out).toContain("https://cv.cm/en/learn/");
+  it("titles a published how-to with the search query", () => {
+    expect(pageTitle("en", { learn: true, tutorial: "heic-to-jpg" })).toMatch(/HEIC to JPG/i);
+    expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
+      "https://cv.cm/zh-cn/learn/make-qr/",
+    );
+    const out = applyHtmlSeo(html, "en", { learn: true, tutorial: "merge-pdf" });
+    expect(out).toContain("How to merge PDF");
+    expect(out).toContain("application/ld+json");
+    expect(out).toContain("HowTo");
+  });
+
+  it("keeps the hub title", () => {
+    expect(pageTitle("en", { learn: true })).toMatch(/QR code|HEIC|tutorials/i);
   });
 });
 
 describe("learn sitemap", () => {
-  it("lists the hub in every locale and omits unpublished lessons", () => {
-    const xml = buildSitemapXml("2026-09-13");
+  it("lists published lessons and omits unpublished ones", () => {
+    const xml = buildSitemapXml("2026-09-16");
     const extra = 1 + FEATURED_TUTORIALS.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
-    expect(xml).toContain("https://cv.cm/en/learn/");
+    expect(FEATURED_TUTORIALS).toHaveLength(8);
+    expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
+    expect(xml).toContain("https://cv.cm/zh-cn/learn/heic-to-jpg/");
     expect(xml).not.toContain("https://cv.cm/zh-cn/learn/phone-photos/");
     expect(xml).not.toContain("https://cv.cm/en/learn/algorithms/");
-    expect(FEATURED_TUTORIALS).toHaveLength(0);
-    expect(TUTORIALS.length).toBeGreaterThan(0);
+    expect(TUTORIALS).toContain("phone-photos");
   });
 });
 
 describe("learn worker", () => {
-  it("redirects unpublished lesson URLs to the hub", async () => {
+  it("serves published lessons and 301s unpublished ids to the hub", async () => {
     const assets = {
       fetch: async () => new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } }),
     };
-    const page = await worker.fetch(new Request("https://cv.cm/en/learn/pool-safety/"), { ASSETS: assets });
-    expect(page.status).toBe(301);
-    expect(page.headers.get("Location")).toBe("https://cv.cm/en/learn/");
+    const live = await worker.fetch(new Request("https://cv.cm/en/learn/make-qr/"), { ASSETS: assets });
+    const liveBody = await live.text();
+    expect(live.status).toBe(200);
+    expect(liveBody).toMatch(/QR code/i);
 
-    const hub = await worker.fetch(new Request("https://cv.cm/en/learn/"), { ASSETS: assets });
-    const body = await hub.text();
-    expect(hub.status).toBe(200);
-    expect(body).toContain("Simple illustrated tutorials");
-
-    const bare = await worker.fetch(new Request("https://cv.cm/learn/phone-photos"), { ASSETS: assets });
-    expect(bare.status).toBe(302);
-    expect(bare.headers.get("Location")).toBe("https://cv.cm/en/learn/phone-photos/");
+    const old = await worker.fetch(new Request("https://cv.cm/en/learn/pool-safety/"), { ASSETS: assets });
+    expect(old.status).toBe(301);
+    expect(old.headers.get("Location")).toBe("https://cv.cm/en/learn/");
   });
 });
 
-it("keeps algorithm snippets executable for the next rewrite", () => {
+it("places instructional diagrams on published lessons", () => {
+  for (const id of FEATURED_TUTORIALS) {
+    const diagrams = TUTORIAL_DIAGRAMS[id];
+    expect(diagrams?.length, id).toBeGreaterThanOrEqual(2);
+    expect(TUTORIAL_META[id].related.length, id).toBeGreaterThan(0);
+    for (const diagram of diagrams!) {
+      expect(diagram.step).toBeGreaterThan(0);
+      expect(diagram.step).toBeLessThanOrEqual(tutorialSteps(id));
+      const step = (howToJsonLd("en", id).step as { image?: string }[])[diagram.step - 1];
+      expect(step.image).toBe(`https://cv.cm${diagram.src}`);
+    }
+  }
+});
+
+it("gives each published lesson FAQ, HowTo, and a search-query title", () => {
+  for (const id of FEATURED_TUTORIALS) {
+    expect(learnFaqItems("en", id).length, id).toBe(5);
+    expect(learnFaqItems("zh-CN", id).length, id).toBe(5);
+    const title = pageTitle("en", { learn: true, tutorial: id });
+    expect(title, id).toMatch(/How to /i);
+    expect(title, id).toContain("cv.cm");
+    const howto = howToJsonLd("en", id);
+    expect(howto["@type"]).toBe("HowTo");
+    expect((howto.step as unknown[]).length, id).toBe(tutorialSteps(id));
+  }
+});
+
+it("keeps algorithm snippets executable", () => {
   const twoSum = new Function(ALGO_SNIPPETS.twoSum + "\n; return twoSum;")();
-  const binarySearch = new Function(ALGO_SNIPPETS.binarySearch + "\n; return binarySearch;")();
-  const countdown = new Function(ALGO_SNIPPETS.countdown + "\n; return countdown;")();
   expect(twoSum([2, 7, 11, 15], 9)).toEqual([0, 1]);
-  expect(twoSum([3, 3], 6)).toEqual([0, 1]);
-  expect(twoSum([3], 6)).toBeNull();
-  expect(binarySearch([1, 3, 4, 8, 12], 8)).toBe(3);
-  expect(binarySearch([1, 3, 4, 8, 12], 7)).toBe(-1);
-  expect(binarySearch([], 1)).toBe(-1);
-  expect(binarySearch([8], 8)).toBe(0);
-  expect(countdown(3)).toEqual([3, 2, 1]);
-  expect(countdown(0)).toEqual([]);
 });

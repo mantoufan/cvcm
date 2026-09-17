@@ -69,6 +69,14 @@ export const TOOLS = [
 export type ToolId = (typeof TOOLS)[number];
 
 export const TUTORIALS = [
+  "make-qr",
+  "make-barcode",
+  "merge-pdf",
+  "compress-pdf",
+  "heic-to-jpg",
+  "jpg-to-pdf",
+  "pdf-to-jpg",
+  "crop-photo",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -83,14 +91,17 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-export type TutorialGroupId = "photo" | "court" | "water" | "code" | "mind" | "course";
+export type TutorialGroupId = "codes" | "files" | "photo" | "court" | "water" | "code" | "mind" | "course";
 
-// Lesson URLs still parse so old links 301 to the hub. The published set is empty
-// while copy and diagrams are rewritten against search demand.
+// New how-tos are published. Legacy ids still parse so old URLs 301 to the hub.
 export const TUTORIAL_GROUPS: readonly {
   id: TutorialGroupId;
   tutorials: readonly TutorialId[];
-}[] = [];
+}[] = [
+  { id: "codes", tutorials: ["make-qr", "make-barcode"] },
+  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg"] },
+  { id: "photo", tutorials: ["crop-photo"] },
+];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],
 );

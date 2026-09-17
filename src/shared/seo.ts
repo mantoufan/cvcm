@@ -151,6 +151,14 @@ const DESC: Record<ToolId, string> = {
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
+  "make-qr": "meta.titleMakeQr",
+  "make-barcode": "meta.titleMakeBarcode",
+  "merge-pdf": "meta.titleLearnMergePdf",
+  "compress-pdf": "meta.titleLearnCompressPdf",
+  "heic-to-jpg": "meta.titleHeicToJpg",
+  "jpg-to-pdf": "meta.titleJpgToPdf",
+  "pdf-to-jpg": "meta.titleLearnPdfToJpg",
+  "crop-photo": "meta.titleCropPhoto",
   portrait: "meta.titlePortrait",
   algorithms: "meta.titleAlgorithms",
   "phone-photos": "meta.titlePhonePhotos",
@@ -165,6 +173,14 @@ const LEARN_TITLE: Record<TutorialId, string> = {
 };
 
 const LEARN_DESC: Record<TutorialId, string> = {
+  "make-qr": "meta.descMakeQr",
+  "make-barcode": "meta.descMakeBarcode",
+  "merge-pdf": "meta.descLearnMergePdf",
+  "compress-pdf": "meta.descLearnCompressPdf",
+  "heic-to-jpg": "meta.descHeicToJpg",
+  "jpg-to-pdf": "meta.descJpgToPdf",
+  "pdf-to-jpg": "meta.descLearnPdfToJpg",
+  "crop-photo": "meta.descCropPhoto",
   portrait: "meta.descPortrait",
   algorithms: "meta.descAlgorithms",
   "phone-photos": "meta.descPhonePhotos",

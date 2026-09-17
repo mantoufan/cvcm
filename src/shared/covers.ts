@@ -55,6 +55,14 @@ export const TOOL_COVER: Record<ToolId, string> = {
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
+  "make-qr": "/covers/qr-sweet.jpg?v=1",
+  "make-barcode": "/covers/barcode-sweet.jpg?v=2",
+  "merge-pdf": "/covers/merge-pdf-sweet.jpg?v=1",
+  "compress-pdf": "/covers/compress-pdf-sweet.jpg?v=1",
+  "heic-to-jpg": "/covers/convert-sweet.jpg?v=1",
+  "jpg-to-pdf": "/covers/image-pdf-sweet.jpg?v=1",
+  "pdf-to-jpg": "/covers/pdf-jpg-sweet.jpg?v=1",
+  "crop-photo": "/covers/crop-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -72,6 +80,18 @@ export const LEARN_FIG: Partial<Record<TutorialId, string>> = {
   "phone-photos": "/covers/learn-fig-phone-photos.jpg?v=1",
   "window-light": "/covers/learn-fig-window-light.jpg?v=1",
   "crop-compose": "/covers/learn-fig-crop-compose.jpg?v=1",
+};
+
+/** Instructional overview SVG shown at the top of a published lesson. */
+export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
+  "make-qr": "/covers/tutorials/make-qr.svg",
+  "make-barcode": "/covers/tutorials/make-barcode.svg",
+  "merge-pdf": "/covers/tutorials/merge-pdf.svg",
+  "compress-pdf": "/covers/tutorials/compress-pdf.svg",
+  "heic-to-jpg": "/covers/tutorials/heic-to-jpg.svg",
+  "jpg-to-pdf": "/covers/tutorials/jpg-to-pdf.svg",
+  "pdf-to-jpg": "/covers/tutorials/pdf-to-jpg.svg",
+  "crop-photo": "/covers/tutorials/crop-photo.svg",
 };
 
 export function coverUrl(path: string): string {

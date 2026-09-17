@@ -5,6 +5,7 @@ export type TutorialMeta = {
   related: ToolId[];
   steps?: number;
   kind?: "card" | "course";
+  openAt?: number;
   figure?: "thirds" | "window" | "crop" | "court" | "pool" | "site" | "mind";
   figByStep?: Partial<Record<number, string>>;
   codeByStep?: Partial<Record<number, "twoSum" | "binarySearch" | "countdown">>;
@@ -15,6 +16,54 @@ export function tutorialSteps(id: TutorialId): number {
 }
 
 export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
+  "make-qr": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["qr", "barcode", "clip"],
+  },
+  "make-barcode": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["barcode", "qr"],
+  },
+  "merge-pdf": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["merge-pdf", "compress-pdf", "split-pdf"],
+  },
+  "compress-pdf": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["compress-pdf", "merge-pdf", "split-pdf"],
+  },
+  "heic-to-jpg": {
+    minutes: 8,
+    steps: 7,
+    openAt: 3,
+    related: ["convert", "image-pdf", "crop"],
+  },
+  "jpg-to-pdf": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["image-pdf", "merge-pdf", "convert"],
+  },
+  "pdf-to-jpg": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["pdf-jpg", "image-pdf", "compress-pdf"],
+  },
+  "crop-photo": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["crop", "resize", "convert"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -137,4 +186,37 @@ export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href:
 };
 
 // Each diagram is placed beside the step it explains. Assets use scalable vectors.
-export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: string }[]>> = {};
+export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: string }[]>> = {
+  "make-qr": [
+    { step: 1, src: "/covers/tutorials/make-qr-contents.svg" },
+    { step: 5, src: "/covers/tutorials/make-qr-scan.svg" },
+  ],
+  "make-barcode": [
+    { step: 1, src: "/covers/tutorials/make-barcode-types.svg" },
+    { step: 3, src: "/covers/tutorials/make-barcode-digits.svg" },
+  ],
+  "merge-pdf": [
+    { step: 3, src: "/covers/tutorials/merge-pdf-order.svg" },
+    { step: 6, src: "/covers/tutorials/merge-pdf-check.svg" },
+  ],
+  "compress-pdf": [
+    { step: 1, src: "/covers/tutorials/compress-pdf-limit.svg" },
+    { step: 4, src: "/covers/tutorials/compress-pdf-quality.svg" },
+  ],
+  "heic-to-jpg": [
+    { step: 1, src: "/covers/tutorials/heic-to-jpg-why.svg" },
+    { step: 4, src: "/covers/tutorials/heic-to-jpg-convert.svg" },
+  ],
+  "jpg-to-pdf": [
+    { step: 4, src: "/covers/tutorials/jpg-to-pdf-page.svg" },
+    { step: 6, src: "/covers/tutorials/jpg-to-pdf-pages.svg" },
+  ],
+  "pdf-to-jpg": [
+    { step: 4, src: "/covers/tutorials/pdf-to-jpg-scale.svg" },
+    { step: 6, src: "/covers/tutorials/pdf-to-jpg-check.svg" },
+  ],
+  "crop-photo": [
+    { step: 1, src: "/covers/tutorials/crop-photo-ratios.svg" },
+    { step: 4, src: "/covers/tutorials/crop-photo-edges.svg" },
+  ],
+};

@@ -1,9 +1,9 @@
-import { COVER, LEARN_COVER, LEARN_FIG } from "../covers";
+import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
-import { appHref, learnHref, TUTORIAL_GROUPS, type TutorialId } from "../../shared/path";
+import { appHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
@@ -32,9 +32,12 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
   const loc = locale();
   const meta = TUTORIAL_META[id];
   const figSrc = LEARN_FIG[id];
+  const heroSrc = LEARN_HERO[id];
   const count = tutorialSteps(id);
   const course = meta.kind === "course";
   const nums = Array.from({ length: count }, (_, i) => i + 1);
+  const tool = meta.related[0];
+  const openAt = meta.openAt ?? 2;
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: learnHref(loc, null), "data-nav": "learn" }, t("learn.back")),
@@ -43,7 +46,26 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       h("p", { class: "lede" }, t(`learn.${id}.lead`)),
     ),
     h("div", { class: "learn" + (course ? " is-course" : "") },
+      h("div", { class: "learn-meta" },
+        h("span", { class: "pill" }, t("learn.minutes", { n: meta.minutes })),
+        h("p", { class: "learn-result" },
+          h("strong", null, t("learn.resultLabel")),
+          " ",
+          t(`learn.${id}.result`),
+        ),
+      ),
+      heroSrc
+        ? h("figure", { class: "learn-hero" },
+          h("img", {
+            src: heroSrc,
+            alt: t(`learn.${id}.title`),
+            width: "1280",
+            height: "720",
+          }),
+        )
+        : null,
       h("p", { class: "learn-intro" }, t(`learn.${id}.note`)),
+      tool ? toolCta(loc, tool) : null,
       h("details", { class: "learn-contents" },
         h("summary", null, t("learn.toc")),
         toc(id, nums),
@@ -54,6 +76,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
             h("h2", null, t(`learn.${id}.s${n}t`)),
             h("p", null, t(`learn.${id}.s${n}b`)),
             stepMedia(id, n, figSrc),
+            n === openAt && tool ? toolCta(loc, tool) : null,
             n === 1 && id === "one-page-site" ? siteSnippet() : null,
           ),
         ),
@@ -97,16 +120,37 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
       h("img", { src: LEARN_COVER[id], alt: t(`learn.${id}.name`), width: "960", height: "540", loading: "lazy" }),
     ),
     h("div", { class: "tile-body" },
+      h("p", { class: "tile-time" }, t("learn.minutes", { n: TUTORIAL_META[id].minutes })),
       h("h3", null, t(`learn.${id}.name`)),
       h("p", null, t(`learn.${id}.blurb`)),
     ),
   );
 }
 
+function toolCta(loc: ReturnType<typeof locale>, tool: ToolId): HTMLElement {
+  return h("a", {
+    class: "btn learn-tool-cta",
+    href: appHref(loc, tool),
+    "data-nav": tool,
+  }, t("learn.openTool", { name: t(`tools.${tool}.name`) }));
+}
+
 function groupOf(id: TutorialId): string {
   for (const group of TUTORIAL_GROUPS) {
     if ((group.tutorials as readonly string[]).includes(id)) return group.id;
   }
+  if (id === "make-qr" || id === "make-barcode") return "codes";
+  if (
+    id === "merge-pdf"
+    || id === "compress-pdf"
+    || id === "heic-to-jpg"
+    || id === "jpg-to-pdf"
+    || id === "pdf-to-jpg"
+  ) return "files";
+  if (id === "crop-photo" || id === "phone-photos" || id === "window-light" || id === "crop-compose" || id === "portrait") {
+    return "photo";
+  }
+  if (id === "algorithms" || id === "one-page-site") return "code";
   if (id.startsWith("badminton-")) return "court";
   if (id === "pool-safety") return "water";
   return "mind";
