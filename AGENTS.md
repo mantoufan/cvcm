@@ -48,6 +48,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/age/` — age calculator
 - `src/client/bmi/` — BMI calculator
 - `src/client/binary/` — text to binary
+- `src/client/tip/` — tip calculator
+- `src/client/morse/` — Morse code
+- `src/client/roman/` — Roman numerals
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

@@ -33,6 +33,9 @@ import { slugify } from "../src/shared/slug";
 import { ageOn } from "../src/shared/age";
 import { bmiBand, bmiFrom } from "../src/shared/bmi";
 import { binaryToText, textToBinary } from "../src/shared/binary";
+import { tipSplit } from "../src/shared/tip";
+import { morseToText, textToMorse } from "../src/shared/morse";
+import { fromRoman, toRoman } from "../src/shared/roman";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -451,6 +454,31 @@ describe("binary", () => {
   });
 });
 
+describe("tip", () => {
+  it("splits a bill", () => {
+    const out = tipSplit(100, 15, 2);
+    expect(out).toEqual({ tip: 15, total: 115, perPerson: 57.5 });
+    expect(tipSplit(-1, 10, 1)).toBeNull();
+  });
+});
+
+describe("morse", () => {
+  it("round-trips a short phrase", () => {
+    expect(textToMorse("sos")).toBe("... --- ...");
+    expect(morseToText("... --- ...")).toBe("sos");
+    expect(morseToText("not-morse")).toBeNull();
+  });
+});
+
+describe("roman", () => {
+  it("converts 1–3999 and rejects additive IIII", () => {
+    expect(toRoman(2026)).toBe("MMXXVI");
+    expect(fromRoman("iv")).toBe(4);
+    expect(fromRoman("IIII")).toBeNull();
+    expect(toRoman(0)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -501,6 +529,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/age/")).toEqual({ kind: "app", locale: "en", tool: "age" });
     expect(parseAppPath("/en/bmi/")).toEqual({ kind: "app", locale: "en", tool: "bmi" });
     expect(parseAppPath("/en/binary/")).toEqual({ kind: "app", locale: "en", tool: "binary" });
+    expect(parseAppPath("/en/tip/")).toEqual({ kind: "app", locale: "en", tool: "tip" });
+    expect(parseAppPath("/en/morse/")).toEqual({ kind: "app", locale: "en", tool: "morse" });
+    expect(parseAppPath("/en/roman/")).toEqual({ kind: "app", locale: "en", tool: "roman" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -526,6 +557,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "age")).toBe("/zh-cn/age/");
     expect(appHref("zh-CN", "bmi")).toBe("/zh-cn/bmi/");
     expect(appHref("zh-CN", "binary")).toBe("/zh-cn/binary/");
+    expect(appHref("zh-CN", "tip")).toBe("/zh-cn/tip/");
+    expect(appHref("zh-CN", "morse")).toBe("/zh-cn/morse/");
+    expect(appHref("zh-CN", "roman")).toBe("/zh-cn/roman/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

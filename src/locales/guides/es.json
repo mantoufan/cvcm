@@ -471,6 +471,33 @@
       "s2b": "Switch Text → binary or Binary → text. Spaces in binary are ignored when decoding.",
       "s3t": "Copy the result",
       "s3b": "Copy when it looks right. Closing the tab discards both sides."
+    },
+    "tip": {
+      "lead": "Work out a tip and split a bill in this tab. Nothing is uploaded.",
+      "s1t": "Open Tip calculator",
+      "s1b": "Sample bill, percent, and people are already filled. Tip, total, and share sit on the right.",
+      "s2t": "Change the numbers",
+      "s2b": "The tip is bill × percent. Each person pays the total divided by the people count.",
+      "s3t": "Copy the split",
+      "s3b": "Copy puts tip, total, and per person on the clipboard."
+    },
+    "morse": {
+      "lead": "Convert Latin text to International Morse, or Morse back to text, in this tab.",
+      "s1t": "Open Morse code",
+      "s1b": "A sample word is already converted. Direction sits on the left.",
+      "s2t": "Paste text or Morse",
+      "s2b": "Letters are spaced. Words use a slash. Unknown Morse shows an error.",
+      "s3t": "Copy the result",
+      "s3b": "Copy when it looks right. Closing the tab discards both sides."
+    },
+    "roman": {
+      "lead": "Convert 1–3999 to standard Roman numerals, or valid Roman back to a number.",
+      "s1t": "Open Roman numerals",
+      "s1b": "A sample year is already converted. Direction sits on the left.",
+      "s2t": "Enter a number or a numeral",
+      "s2b": "IV is 4. Additive IIII is rejected. The range stops at 3999.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the converted value on the clipboard. Nothing is uploaded."
     }
   }
 }

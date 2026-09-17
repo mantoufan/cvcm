@@ -53,6 +53,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   age: "/covers/age-sweet.jpg?v=1",
   bmi: "/covers/bmi-sweet.jpg?v=1",
   binary: "/covers/binary-sweet.jpg?v=1",
+  tip: "/covers/tip-sweet.jpg?v=1",
+  morse: "/covers/morse-sweet.jpg?v=1",
+  roman: "/covers/roman-sweet.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

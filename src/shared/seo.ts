@@ -94,6 +94,9 @@ const TITLE: Record<ToolId, string> = {
   age: "meta.titleAge",
   bmi: "meta.titleBmi",
   binary: "meta.titleBinary",
+  tip: "meta.titleTip",
+  morse: "meta.titleMorse",
+  roman: "meta.titleRoman",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -148,6 +151,9 @@ const DESC: Record<ToolId, string> = {
   age: "meta.descAge",
   bmi: "meta.descBmi",
   binary: "meta.descBinary",
+  tip: "meta.descTip",
+  morse: "meta.descMorse",
+  roman: "meta.descRoman",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

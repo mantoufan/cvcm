@@ -70,6 +70,9 @@ const STEPS = {
   age: 3,
   bmi: 3,
   binary: 3,
+  tip: 3,
+  morse: 3,
+  roman: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -926,6 +929,46 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "tip") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "80"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "18"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[2]) { nums[2].value = "4"; nums[2].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "morse") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "from";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "roman") {
+    await snap(1);
+    await evalValue(send, fillExpr("input.regex-pattern", "2026"));
+    await sleep(200);
+    await snap(2);
     await snap(3);
     return;
   }

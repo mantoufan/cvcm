@@ -153,7 +153,13 @@
     "titleAddWatermark": "Cómo añadir una marca de agua a una foto | cv.cm",
     "descAddWatermark": "Estampe un nombre o logo, ajuste la opacidad, descargue un ZIP y mire al 100%. Añade; no quita. Nada se sube.",
     "titleRemoveExif": "Cómo quitar EXIF y la ubicación de una foto | cv.cm",
-    "descRemoveExif": "Exporte una copia limpia aquí, suéltela otra vez para probar que el GPS se fue, y conserve el original si quiere el pin."
+    "descRemoveExif": "Exporte una copia limpia aquí, suéltela otra vez para probar que el GPS se fue, y conserve el original si quiere el pin.",
+    "titleTip": "Calculadora de propina — dividir cuenta — cv.cm",
+    "descTip": "Calcula la propina y divide la cuenta en el navegador. Porcentaje y personas. Nada se sube.",
+    "titleMorse": "Código Morse — texto a Morse — cv.cm",
+    "descMorse": "Convierte texto a Morse y Morse a texto en el navegador. Nada se sube.",
+    "titleRoman": "Números romanos — arábigos a romanos — cv.cm",
+    "descRoman": "Convierte 1–3999 a romanos y al revés en el navegador. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -400,6 +406,18 @@
     "binary": {
       "name": "Convertidor binario",
       "blurb": "Texto ↔ binario (UTF-8). Nada se sube."
+    },
+    "tip": {
+      "name": "Calculadora de propina",
+      "blurb": "Propina y división. Nada se sube."
+    },
+    "morse": {
+      "name": "Código Morse",
+      "blurb": "Texto ↔ Morse. Nada se sube."
+    },
+    "roman": {
+      "name": "Números romanos",
+      "blurb": "1–3999 ↔ romanos. Nada se sube."
     }
   },
   "watermark": {
@@ -1427,6 +1445,42 @@
       "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "tip": {
+      "q1": "Can I calculate a tip here?",
+      "a1": "Yes. Enter the bill, a percent, and how many people. The tab shows the tip, total, and share.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Are people rounded?",
+      "a3": "The people count is a whole number of 1 or more. The share is the total divided by that count.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts tip, total, and per person on the clipboard."
+    },
+    "morse": {
+      "q1": "Can I convert Morse here?",
+      "a1": "Yes. Text becomes dots and dashes. Morse can be turned back into letters.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "How are words split?",
+      "a3": "Letters are spaced. Words use a slash. Unknown Morse returns an error.",
+      "q4": "Which alphabet?",
+      "a4": "International Morse for Latin letters, digits, and a few punctuation marks.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "roman": {
+      "q1": "Can I convert Roman numerals here?",
+      "a1": "Yes. Numbers 1 to 3999 become standard subtractive Roman, and valid Roman becomes a number.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Why is IIII invalid?",
+      "a3": "This tab uses the common form IV for 4. Additive IIII is rejected.",
+      "q4": "What about 4000?",
+      "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted value on the clipboard."
     }
   },
   "qr": {
@@ -2621,5 +2675,50 @@
     "copy": "Copy result",
     "copied": "Copied",
     "invalid": "Binary must be 0 and 1 in groups of eight bits."
+  },
+  "tip": {
+    "title": "Calculadora de propina",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Bill",
+    "bill": "Bill",
+    "pct": "Tip %",
+    "people": "People",
+    "result": "Split",
+    "copy": "Copy",
+    "copied": "Copied",
+    "tip": "Tip",
+    "total": "Total",
+    "each": "Each",
+    "invalid": "Enter a bill of 0 or more and at least one person."
+  },
+  "morse": {
+    "title": "Código Morse",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Direction",
+    "to": "Text → Morse",
+    "from": "Morse → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or ... --- ...",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Use dots, dashes, spaces, and / between words."
+  },
+  "roman": {
+    "title": "Números romanos",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Direction",
+    "to": "Number → Roman",
+    "from": "Roman → number",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "2026 or MMXXVI",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalidTo": "Enter a whole number from 1 to 3999.",
+    "invalidFrom": "That is not standard Roman (1–3999)."
   }
 }

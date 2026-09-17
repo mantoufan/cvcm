@@ -153,7 +153,13 @@
     "titleAddWatermark": "사진에 워터마크 넣는 법 | cv.cm",
     "descAddWatermark": "가게 이름이나 로고를 찍고 투명도를 맞춘 뒤 ZIP으로 받아 100%로 보세요. 넣기만 하고 지우지는 않습니다. 업로드 없음.",
     "titleRemoveExif": "사진에서 위치와 EXIF를 지우는 법 | cv.cm",
-    "descRemoveExif": "이 탭에서 깨끗한 복사본을 보낸 뒤 다시 넣어 GPS가 없어졌는지 확인하세요. 핀이 필요하면 원본을 남기세요."
+    "descRemoveExif": "이 탭에서 깨끗한 복사본을 보낸 뒤 다시 넣어 GPS가 없어졌는지 확인하세요. 핀이 필요하면 원본을 남기세요.",
+    "titleTip": "팁 계산 — 더치페이 — cv.cm",
+    "descTip": "브라우저에서 팁과 더치페이. 퍼센트와 인원. 업로드 없음.",
+    "titleMorse": "모스 부호 — 텍스트를 모스로 — cv.cm",
+    "descMorse": "브라우저에서 텍스트와 모스를 서로 바꿉니다. 업로드 없음.",
+    "titleRoman": "로마 숫자 — 아라비아 숫자를 로마로 — cv.cm",
+    "descRoman": "브라우저에서 1–3999와 로마 숫자를 서로 바꿉니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -400,6 +406,18 @@
     "binary": {
       "name": "이진 변환",
       "blurb": "텍스트 ↔ 이진(UTF-8). 업로드 없음."
+    },
+    "tip": {
+      "name": "팁 계산",
+      "blurb": "팁과 더치페이. 업로드 없음."
+    },
+    "morse": {
+      "name": "모스 부호",
+      "blurb": "텍스트 ↔ 모스. 업로드 없음."
+    },
+    "roman": {
+      "name": "로마 숫자",
+      "blurb": "1–3999 ↔ 로마 숫자. 업로드 없음."
     }
   },
   "watermark": {
@@ -1427,6 +1445,42 @@
       "a4": "Decode fails. Each UTF-8 byte needs eight 0/1 digits.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "tip": {
+      "q1": "Can I calculate a tip here?",
+      "a1": "Yes. Enter the bill, a percent, and how many people. The tab shows the tip, total, and share.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Are people rounded?",
+      "a3": "The people count is a whole number of 1 or more. The share is the total divided by that count.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts tip, total, and per person on the clipboard."
+    },
+    "morse": {
+      "q1": "Can I convert Morse here?",
+      "a1": "Yes. Text becomes dots and dashes. Morse can be turned back into letters.",
+      "q2": "Is the text uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "How are words split?",
+      "a3": "Letters are spaced. Words use a slash. Unknown Morse returns an error.",
+      "q4": "Which alphabet?",
+      "a4": "International Morse for Latin letters, digits, and a few punctuation marks.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted text on the clipboard."
+    },
+    "roman": {
+      "q1": "Can I convert Roman numerals here?",
+      "a1": "Yes. Numbers 1 to 3999 become standard subtractive Roman, and valid Roman becomes a number.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Why is IIII invalid?",
+      "a3": "This tab uses the common form IV for 4. Additive IIII is rejected.",
+      "q4": "What about 4000?",
+      "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted value on the clipboard."
     }
   },
   "qr": {
@@ -2621,5 +2675,50 @@
     "copy": "Copy result",
     "copied": "Copied",
     "invalid": "Binary must be 0 and 1 in groups of eight bits."
+  },
+  "tip": {
+    "title": "팁 계산",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Bill",
+    "bill": "Bill",
+    "pct": "Tip %",
+    "people": "People",
+    "result": "Split",
+    "copy": "Copy",
+    "copied": "Copied",
+    "tip": "Tip",
+    "total": "Total",
+    "each": "Each",
+    "invalid": "Enter a bill of 0 or more and at least one person."
+  },
+  "morse": {
+    "title": "모스 부호",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Direction",
+    "to": "Text → Morse",
+    "from": "Morse → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type text or ... --- ...",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalid": "Use dots, dashes, spaces, and / between words."
+  },
+  "roman": {
+    "title": "로마 숫자",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서 끝납니다. 업로드 없음.",
+    "options": "Direction",
+    "to": "Number → Roman",
+    "from": "Roman → number",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "2026 or MMXXVI",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "invalidTo": "Enter a whole number from 1 to 3999.",
+    "invalidFrom": "That is not standard Roman (1–3999)."
   }
 }
