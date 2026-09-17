@@ -1144,6 +1144,10 @@ body {
   display: grid;
   gap: 0.55rem;
 }
+.learn-meta .pill {
+  width: fit-content;
+  justify-self: start;
+}
 .learn-result {
   margin: 0;
   color: var(--ink);
