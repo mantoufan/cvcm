@@ -154,7 +154,7 @@ describe("hints", () => {
 describe("catalog", () => {
   it("has twelve adult cutouts and matching pose distances", () => {
     expect(catalog.cutouts).toHaveLength(12);
-    expect(MATCH.destHPx).toBe(1280);
+    expect(MATCH.destHPx).toBe(1080);
     expect(EXPORT_LONG_EDGE_PX["135"]).toBe(1280);
     expect(catalog.lenses.phone.minAperture).toBe(1.8);
     expect(catalog.lenses.phone.sensorWidthMm).toBe(6.4);
@@ -191,7 +191,7 @@ describe("3:2 geometry", () => {
       expect(eyeY).toBeLessThan(crop.y + crop.h);
       return dest.h;
     });
-    expect(heights[0]).toBeCloseTo(1280, 6);
+    expect(heights[0]).toBeCloseTo(1080, 6);
     expect(heights[1]).toBeCloseTo(heights[0], 6);
     expect(heights[2]).toBeCloseTo(heights[0], 6);
     const crop45 = frameCropFrom32("4-5", SENSOR);

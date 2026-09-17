@@ -21,7 +21,7 @@ export type LensId = "phone" | "24" | "35" | "50" | "85" | "135";
 export type PlateKind = "wide" | "tele";
 export type FrameId = "3-2" | "4-5" | "16-9";
 
-export const MATCH = { focalMm: 50, distanceM: 2.2, k: 1, destHPx: 1280, eyeHeadroom: 0.08 } as const;
+export const MATCH = { focalMm: 50, distanceM: 2.2, k: 1, destHPx: 1080, eyeHeadroom: 0.12 } as const;
 
 export const FRAME_LIVE: Record<FrameId, { w: number; h: number }> = {
   "3-2": { w: 1440, h: 960 },
@@ -179,8 +179,8 @@ function cutout(person: PersonId, pose: PoseId, distanceM: number): CutoutSpec {
     src: `/covers/portrait-sim/people/${person}/${pose}.webp`,
     widthPx: 900,
     heightPx: 1400,
-    feetY: 0.9,
-    eye: { x: 0.5, y: 0.13 },
+    feetY: 0.97,
+    eye: { x: 0.52, y: pose === "sit45" ? 0.22 : 0.18 },
     subjectDistanceM: distanceM,
   };
 }
@@ -214,7 +214,7 @@ export const catalog: Catalog = {
     away: { id: "away", thumb: "/covers/portrait-sim/thumbs/pose-away.webp", subjectDistanceM: 2.2 },
   },
   scenes: {
-    window: scene("window", 4.5, 1.2, "window", 0.82, true),
+    window: scene("window", 4.5, null, "window", 0.82, false),
     shade: scene("shade", 8, null, "shade", 0.78, false),
     cafe: scene("cafe", 5, 0.9, "window", 0.8, true),
     indoor: scene("indoor", 3.5, null, "overcast", 0.84, false),
