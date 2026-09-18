@@ -67,3 +67,15 @@ Same character and room. A stack of cream index cards tied with a pink ribbon. N
 ## Days between dates
 
 Same character and room. Two cream calendar pages or an open booklet with a heart on each side. No numerals. Save `public/covers/days-sweet.jpg`, `sips -z 720 1280`.
+
+## Sort lines
+
+Same character and room. Three cream cards fanned in height order, each with a heart stamp. No letters. Save `public/covers/sort-sweet.jpg`, `sips -z 720 1280`.
+
+## Find and replace
+
+Same character and room. A cream card and a tiny pink eraser, swapping a heart stamp. No writing. Save `public/covers/replace-sweet.jpg`, `sips -z 720 1280`.
+
+## Number to words
+
+Same character and room. A tiny cream abacus with heart beads. No digits. Save `public/covers/words-sweet.jpg`, `sips -z 720 1280`.

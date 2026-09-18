@@ -63,6 +63,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/json/` — JSON pretty / minify
 - `src/client/base64/` — Base64 encode / decode
 - `src/client/days/` — days between dates
+- `src/client/sort/` — sort lines / unique
+- `src/client/replace/` — find and replace
+- `src/client/words/` — number to English words
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

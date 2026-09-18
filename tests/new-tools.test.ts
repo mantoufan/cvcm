@@ -48,6 +48,9 @@ import { hexToText, textToHex } from "../src/shared/text-hex";
 import { minifyJson, prettyJson } from "../src/shared/json";
 import { decodeBase64, encodeBase64 } from "../src/shared/base64";
 import { daysBetween } from "../src/shared/days";
+import { sortLines } from "../src/shared/sort";
+import { replaceText } from "../src/shared/replace";
+import { numberToWords } from "../src/shared/words";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -598,6 +601,31 @@ describe("days", () => {
   });
 });
 
+describe("sort", () => {
+  it("sorts and uniques lines", () => {
+    expect(sortLines("b\na\nc", "az")).toBe("a\nb\nc");
+    expect(sortLines("b\na", "za")).toBe("b\na");
+    expect(sortLines("b\na\na", "unique")).toBe("b\na");
+  });
+});
+
+describe("replace", () => {
+  it("replaces literal text", () => {
+    expect(replaceText("aa", "a", "b", false)).toBe("ba");
+    expect(replaceText("aa", "a", "b", true)).toBe("bb");
+    expect(replaceText("aa", "", "x", true)).toBe("aa");
+  });
+});
+
+describe("words", () => {
+  it("names integers in US English", () => {
+    expect(numberToWords(0)).toBe("zero");
+    expect(numberToWords(21)).toBe("twenty-one");
+    expect(numberToWords(2026)).toBe("two thousand twenty-six");
+    expect(numberToWords(-1)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -663,6 +691,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/json/")).toEqual({ kind: "app", locale: "en", tool: "json" });
     expect(parseAppPath("/en/base64/")).toEqual({ kind: "app", locale: "en", tool: "base64" });
     expect(parseAppPath("/en/days/")).toEqual({ kind: "app", locale: "en", tool: "days" });
+    expect(parseAppPath("/en/sort/")).toEqual({ kind: "app", locale: "en", tool: "sort" });
+    expect(parseAppPath("/en/replace/")).toEqual({ kind: "app", locale: "en", tool: "replace" });
+    expect(parseAppPath("/en/words/")).toEqual({ kind: "app", locale: "en", tool: "words" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -703,6 +734,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "json")).toBe("/zh-cn/json/");
     expect(appHref("zh-CN", "base64")).toBe("/zh-cn/base64/");
     expect(appHref("zh-CN", "days")).toBe("/zh-cn/days/");
+    expect(appHref("zh-CN", "sort")).toBe("/zh-cn/sort/");
+    expect(appHref("zh-CN", "replace")).toBe("/zh-cn/replace/");
+    expect(appHref("zh-CN", "words")).toBe("/zh-cn/words/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

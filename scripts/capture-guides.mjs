@@ -85,6 +85,9 @@ const STEPS = {
   json: 3,
   base64: 3,
   days: 3,
+  sort: 3,
+  replace: 3,
+  words: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1151,6 +1154,44 @@ async function runTool(send, id, fx) {
       if (dates[0]) { dates[0].value = "2026-01-01"; dates[0].dispatchEvent(new Event("input", { bubbles: true })); }
       if (dates[1]) { dates[1].value = "2026-09-18"; dates[1].dispatchEvent(new Event("input", { bubbles: true })); }
       return dates.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "sort") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "unique";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "replace") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "words") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const n = document.querySelector("input[type=number]");
+      if (!n) return false;
+      n.value = "2026";
+      n.dispatchEvent(new Event("input", { bubbles: true }));
+      return true;
     })()`);
     await sleep(200);
     await snap(2);
