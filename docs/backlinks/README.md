@@ -19,10 +19,15 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 |---|---|---|---|
 | GitHub repo | https://github.com/mantoufan/cvcm | live | homepage `https://cv.cm` |
 | GitHub profile | https://github.com/mantoufan | live 2026-09-18 | badge + table row |
+| yZhanCrop README | https://github.com/mantoufan/yZhanCrop | live | links `/en/crop/` |
 | awesome-pastebin (own) | https://github.com/mantoufan/awesome-pastebin | live | clip + in-browser tools blurb |
-| Telegraph | https://telegra.ph/Merge-PDF-files-in-the-browser-without-uploading-09-18 | live | how-to with merge/compress/split/HEIC/QR links |
-| write.as | https://write.as/09go32w2scojx | live | same how-to |
-| rentry | https://rentry.co/s4uwsncb | live | same how-to |
+| Telegraph | https://telegra.ph/Merge-PDF-files-in-the-browser-without-uploading-09-18 | live | merge/compress/split/HEIC/QR |
+| Telegraph QR | https://telegra.ph/How-to-make-a-QR-code-in-the-browser-09-18 | live | QR/barcode/merge/HEIC |
+| Telegraph HEIC | https://telegra.ph/Convert-HEIC-to-JPG-without-uploading-the-photo-09-18 | live | convert/JPG-PDF/crop/EXIF |
+| write.as | https://write.as/09go32w2scojx | live | merge how-to |
+| rentry | https://rentry.co/s4uwsncb | live | merge how-to |
+| dpaste | https://dpaste.com/FC497TECD | live | HEIC how-to |
+| GitHub gist | https://gist.github.com/mantoufan/04731c2e92d29c2fc03feeb8e1355dcf | live | QR how-to |
 | nologin.tools | https://nologin.tools/tool/cv-cm | pending review | API slug `cv-cm` (2026-09-18) |
 | Launching Next | https://www.launchingnext.com/thanks/?i=151926 | submitted | id 151926 |
 | awesome-no-login-web-apps | https://github.com/aviaryan/awesome-no-login-web-apps | merged #473 | clipboard blurb; follow-up to add PDF/image |
@@ -50,12 +55,15 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 | https://github.com/aviaryan/awesome-no-login-web-apps/pull/598 | expand merged blurb |
 | https://github.com/YSGStudyHards/Awesome-Tools/pull/101 | 短剧 Agent → PDF 管理工具 |
 | https://github.com/lorien/awesome-pastebins/pull/58 | Public Pastebins + https://cv.cm |
+| https://github.com/ZihangDong/awesome-free-browser-tools/pull/34 | PDF / image / QR rows |
+| https://github.com/make-github-pseudonymous-again/awesome-qr-code/pull/40 | Apps → Generators |
+| https://github.com/1c7/chinese-independent-developer/pull/1396 | 去掉 Seedance，改成本地工具 |
 
 ## Do not resubmit (already attempted)
 
 10words, osalt.com, aitoolsdirectory.com, ai-bot.cn, backdata.net, hhlink.com, iforai.com, ainavpro.com, dropyourai.com, apprater.net, startupcollections.com, nextool.ai, toolhunter.ai, humanornot.co, aitoolsmasters.com, bufferapps.com, ababtools.com, fwol.cn.
 
-Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal). Joinly `/submit-startup` is paid (PayPro checkout) — do not finish. once.tools is pay-once software only. free-for-dev rejects generic toolbox sites.
+Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal). Joinly `/submit-startup` is paid (PayPro checkout) — do not finish. once.tools is pay-once software only. free-for-dev rejects generic toolbox sites. Wayback Save Page Now now requires login. archive.today returned 429.
 
 ## Closed 2026-09-18 (retired AI-video product)
 
