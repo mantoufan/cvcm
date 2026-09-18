@@ -115,9 +115,6 @@ const TITLE: Record<ToolId, string> = {
   json: "meta.titleJson",
   base64: "meta.titleBase64",
   days: "meta.titleDays",
-  sort: "meta.titleSort",
-  replace: "meta.titleReplace",
-  words: "meta.titleWords",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -187,9 +184,6 @@ const DESC: Record<ToolId, string> = {
   json: "meta.descJson",
   base64: "meta.descBase64",
   days: "meta.descDays",
-  sort: "meta.descSort",
-  replace: "meta.descReplace",
-  words: "meta.descWords",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

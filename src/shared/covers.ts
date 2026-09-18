@@ -69,9 +69,6 @@ export const TOOL_COVER: Record<ToolId, string> = {
   json: "/covers/json-sweet.jpg?v=1",
   base64: "/covers/base64-sweet.jpg?v=1",
   days: "/covers/days-sweet.jpg?v=1",
-  sort: "/covers/sort-sweet.jpg?v=1",
-  replace: "/covers/replace-sweet.jpg?v=1",
-  words: "/covers/words-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {
