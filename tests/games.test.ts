@@ -148,8 +148,8 @@ describe("games worker", () => {
 
   it("boots the emulator from an external script so CSP can block inline JS", () => {
     expect(playerHtml).not.toMatch(/<script>/);
-    expect(playerHtml).toContain('src="/emu/player.js"');
-    expect(playerJs).toContain("EJS_pathtodata");
+    expect(playerHtml).toContain('src="/emu/player.js?v=2"');
+    expect(playerJs).toContain('EJS_pathtodata = "/emu/assets/"');
   });
 
   it("allows the emulator player to be framed with wasm eval", async () => {
@@ -166,17 +166,32 @@ describe("games worker", () => {
     }
   });
 
-  it("proxies emulator cores from S3", async () => {
+  it("proxies emulator cores from S3 under data and assets prefixes", async () => {
     const original = globalThis.fetch;
     globalThis.fetch = async (input) => {
-      const url = String(input);
-      expect(url).toBe("https://files.s3.cv.cm/games/emu/loader.js");
+      expect(String(input)).toBe("https://files.s3.cv.cm/games/emu/loader.js");
       return new Response("loader", { status: 200, headers: { "Content-Type": "application/javascript" } });
     };
     try {
-      const response = await worker.fetch(new Request("https://cv.cm/emu/data/loader.js"), { ASSETS: assets });
-      expect(response.status).toBe(200);
-      expect(await response.text()).toBe("loader");
+      for (const path of ["/emu/data/loader.js", "/emu/assets/loader.js"]) {
+        const response = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: assets });
+        expect(response.status, path).toBe(200);
+        expect(await response.text(), path).toBe("loader");
+      }
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
+
+  it("does not cache missing emulator cores", async () => {
+    const original = globalThis.fetch;
+    globalThis.fetch = async () => new Response("missing", { status: 404 });
+    try {
+      const response = await worker.fetch(new Request("https://cv.cm/emu/assets/cores/fceumm-legacy-wasm.data"), {
+        ASSETS: assets,
+      });
+      expect(response.status).toBe(404);
+      expect(response.headers.get("Cache-Control")).toBe("no-store");
     } finally {
       globalThis.fetch = original;
     }

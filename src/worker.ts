@@ -49,7 +49,7 @@ const EMU_CSP = [
   "upgrade-insecure-requests",
 ].join("; ");
 
-const EMU_PROXY = /^\/emu\/(data|roms)\/([A-Za-z0-9._/-]+)$/;
+const EMU_PROXY = /^\/emu\/(data|assets|roms)\/([A-Za-z0-9._/-]+)$/;
 const COVER_PROXY = /^\/covers\/([A-Za-z0-9._/-]+)$/;
 
 const ALLOWED = "GET, HEAD";
@@ -206,10 +206,13 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
   }
-  const key = kind === "data" ? `games/emu/${rest}` : `games/roms/${rest}`;
+  const key = kind === "roms" ? `games/roms/${rest}` : `games/emu/${rest}`;
   const upstream = await fetch(`https://files.s3.cv.cm/${key}`);
   if (!upstream.ok) {
-    return new Response("Not Found", { status: 404 });
+    return new Response("Not Found", {
+      status: 404,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
   const headers = new Headers(upstream.headers);
   headers.delete("Access-Control-Allow-Origin");
@@ -260,7 +263,9 @@ function withHeaders(res: Response, pathname: string): Response {
     "camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=()",
   );
   headers.set("Content-Security-Policy", player ? EMU_CSP : CSP);
-  if (pathname.startsWith("/assets/")) {
+  if (res.status !== 200) {
+    headers.set("Cache-Control", "no-store");
+  } else if (pathname.startsWith("/assets/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
   } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
     headers.set("Cache-Control", "no-cache");

@@ -6,7 +6,7 @@
   var booted = false;
   window.EJS_player = "#game";
   window.EJS_core = core;
-  window.EJS_pathtodata = "/emu/data/";
+  window.EJS_pathtodata = "/emu/assets/";
   window.EJS_gameName = name;
   window.EJS_color = "#c83f79";
   window.EJS_startOnLoaded = true;
@@ -22,7 +22,7 @@
     if (booted || !window.EJS_gameUrl) return;
     booted = true;
     var script = document.createElement("script");
-    script.src = "/emu/data/loader.js";
+    script.src = "/emu/assets/loader.js";
     document.body.appendChild(script);
   }
 
