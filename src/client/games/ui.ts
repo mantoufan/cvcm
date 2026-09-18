@@ -15,7 +15,8 @@ import {
   type GameGenreId,
   type GameId,
 } from "../../shared/games";
-import { gameCheatLabels, gameCopy, gameFaqItems, gameGuideSteps } from "../../shared/games-i18n";
+import { gameCheatLabels, gameCopy, gameFaqItems } from "../../shared/games-i18n";
+import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
 import { gamesHref } from "../../shared/path";
 
 function currentGenre(): GameGenreId | null {
@@ -114,7 +115,8 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   const copy = gameCopy(loc, id);
   const cheats = game.cheats;
   const labels = gameCheatLabels(loc, id);
-  const steps = gameGuideSteps(loc, id);
+  const walkthrough = gameWalkthrough(loc, id);
+  const steps = walkthrough.steps;
   const faqs = gameFaqItems(loc, id);
   const related = GAMES.filter((item) => item.id !== id && (item.console === game.console || item.genre === game.genre)).slice(0, 4);
 
@@ -149,13 +151,28 @@ export function mountGame(host: HTMLElement, id: GameId): void {
         ),
       )]
       : []),
-    h("section", { class: "game-section", "aria-labelledby": "guide-title" },
+    h("section", { class: "game-section game-guide-section", "aria-labelledby": "guide-title" },
       h("h2", { id: "guide-title" }, t("games.guide")),
-      h("ol", { class: "learn-steps" },
-        ...steps.map((step, i) =>
-          h("li", { id: `guide-${i + 1}`, class: "learn-step" },
+      h("p", { class: "guide-intro" }, walkthrough.intro),
+      h("nav", { class: "guide-toc", "aria-label": t("games.guide") },
+        ...steps.map((step) => h("a", { href: `#guide-${step.id}` }, step.title)),
+      ),
+      h("ol", { class: "game-guide" },
+        ...steps.map((step) =>
+          h("li", { id: `guide-${step.id}`, class: "guide-step" },
             h("h3", null, step.title),
-            h("p", null, step.body),
+            ...(step.image
+              ? [h("figure", { class: "guide-figure" },
+                h("img", {
+                  src: walkthroughImage(id, step.image),
+                  alt: step.title,
+                  width: "1280",
+                  height: "720",
+                  loading: "lazy",
+                }),
+              )]
+              : []),
+            ...step.body.split("\n\n").map((para) => h("p", null, para)),
           ),
         ),
       ),

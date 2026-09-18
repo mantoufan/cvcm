@@ -1,0 +1,924 @@
+{
+  "super-mario-bros": {
+    "intro": "Full Super Mario Bros. clear: 8 worlds × 4 stages (32 levels), hidden 1-UPs, warp zones, water stages, and Bowser. Play in order, or skip with the 1-2 / 4-2 warps. Save-state after each flag.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Controls and power-ups",
+        "body": "D-pad walks and ducks; up enters pipes. A jumps, B runs. A running jump clears wide pits. Mushrooms grow Small Mario; flowers add fireballs (B). Stars grant brief invincibility. Higher flag grabs score more.\n\nYou start with 3 lives. Hidden bricks hold 1-UPs. Beating 8-4 means hitting the axe that drops Bowser.",
+        "image": "items"
+      },
+      {
+        "id": "1-1",
+        "title": "1-1 Grass",
+        "body": "Go right. The first ? block row: coins, then a mushroom from the middle brick while standing on the row. Jump the first pipe and the pit after it with a run-up. Hit the flagpole.\n\nHidden 1-UP: fourth brick after the first pipe. You can jump onto the top of the flag from the high stairs.",
+        "image": "w1"
+      },
+      {
+        "id": "1-2",
+        "title": "1-2 Underground (warp)",
+        "body": "Enter the first pipe. Cross the underground, take the upward pipe at the end.\n\nWarp: do not enter the exit pipe. Walk on the bricks above it into the secret room and take the pipe labeled 2, 3, or 4. For a full clear, take the normal exit to 1-3.",
+        "image": "warp"
+      },
+      {
+        "id": "1-3",
+        "title": "1-3 Platforms",
+        "body": "Outdoor platforms. Kick red Koopas from behind. Wait for moving lifts. Run before wide gaps."
+      },
+      {
+        "id": "1-4",
+        "title": "1-4 Castle",
+        "body": "Time the firebars. Fake bridges collapse — keep moving. The fake Bowser turns into a Goomba/Koopa; then hit the axe."
+      },
+      {
+        "id": "2-1",
+        "title": "2-1",
+        "body": "Denser enemies. Wait for Piranhas to duck into pipes. A star in the brick cluster lets you rush.",
+        "image": "w2"
+      },
+      {
+        "id": "2-2",
+        "title": "2-2 Water",
+        "body": "B swims faster. Steer around Cheep-Cheeps and plants. Exit through the pipe on the right. You cannot duck underwater."
+      },
+      {
+        "id": "2-3",
+        "title": "2-3 Lifts",
+        "body": "One-way collapsing lifts. Short hops. Flying fish come from below."
+      },
+      {
+        "id": "2-4",
+        "title": "2-4 Castle",
+        "body": "Faster firebars and elevators. Axe after the fake Bowser."
+      },
+      {
+        "id": "3-1",
+        "title": "3-1",
+        "body": "Night grass. Hidden 1-UP near the first bricks. Bait Hammer Bros, then stomp.",
+        "image": "w3"
+      },
+      {
+        "id": "3-2",
+        "title": "3-2",
+        "body": "Koopa shells can clear a crowd — do not catch the rebound. More pits than 1-1."
+      },
+      {
+        "id": "3-3",
+        "title": "3-3",
+        "body": "High platforms. Falling is a life. Wait for lifts to line up."
+      },
+      {
+        "id": "3-4",
+        "title": "3-4 Castle",
+        "body": "Wrong paths loop. Prefer upward-right corridors. Fireballs help in tight halls."
+      },
+      {
+        "id": "4-1",
+        "title": "4-1",
+        "body": "More Piranha pipes. Hammer Bros: fire from range or wait for a jump.",
+        "image": "w4"
+      },
+      {
+        "id": "4-2",
+        "title": "4-2 Underground (second warp)",
+        "body": "Normal exit goes to 4-3.\n\nWarp: hit the hidden beanstalk brick late in the stage, climb into the clouds, then take pipes to worlds 6–8."
+      },
+      {
+        "id": "4-3",
+        "title": "4-3",
+        "body": "See-saws. Stay near the center and make short hops."
+      },
+      {
+        "id": "4-4",
+        "title": "4-4 Castle",
+        "body": "Maze. Remember the up/down forks; usually down then right. Axe to world 5."
+      },
+      {
+        "id": "5-1",
+        "title": "5-1",
+        "body": "Duck under Bullet Bills. Use cannons as steps.",
+        "image": "w5"
+      },
+      {
+        "id": "5-2",
+        "title": "5-2",
+        "body": "Ground then water. Pick one swim line (ceiling or floor) and stick to it."
+      },
+      {
+        "id": "5-3",
+        "title": "5-3",
+        "body": "Like 1-3 with winged Koopas. Stomp twice or use fire."
+      },
+      {
+        "id": "5-4",
+        "title": "5-4 Castle",
+        "body": "Firebars and lifts. Fireballs melt the fake Bowser."
+      },
+      {
+        "id": "6-1",
+        "title": "6-1",
+        "body": "Night. Probe for hidden blocks with your head.",
+        "image": "w6"
+      },
+      {
+        "id": "6-2",
+        "title": "6-2",
+        "body": "Pipe maze. Take pipes that lead right. Wait out Piranhas."
+      },
+      {
+        "id": "6-3",
+        "title": "6-3",
+        "body": "Sky lifts. One fall is a life. Wait for a full cycle before the next jump."
+      },
+      {
+        "id": "6-4",
+        "title": "6-4 Castle",
+        "body": "Looping maze. Bias right at forks."
+      },
+      {
+        "id": "7-1",
+        "title": "7-1",
+        "body": "Hammer Bros packs. Star or fire. Cannons are platforms.",
+        "image": "w7"
+      },
+      {
+        "id": "7-2",
+        "title": "7-2 Water",
+        "body": "Long underwater. Circle around Bloobers; do not sit in front of their ink."
+      },
+      {
+        "id": "7-3",
+        "title": "7-3",
+        "body": "Same rhythm as 2-3, less room for error."
+      },
+      {
+        "id": "7-4",
+        "title": "7-4 Castle",
+        "body": "Ordered maze (up-right-down). Wrong turn resets. Save-state and trial-and-error."
+      },
+      {
+        "id": "8-1",
+        "title": "8-1",
+        "body": "World 8. Ignore coins. Stomp or skip.",
+        "image": "w8"
+      },
+      {
+        "id": "8-2",
+        "title": "8-2",
+        "body": "Cannons and plants. Slow, then sprint the gaps. Beanstalk is optional."
+      },
+      {
+        "id": "8-3",
+        "title": "8-3",
+        "body": "Hammer Bros gauntlet. Fire from far or stomp. Last stage before the final castle."
+      },
+      {
+        "id": "8-4",
+        "title": "8-4 Final castle",
+        "body": "Land/water maze: right, down a pipe, swim, next pipe, then real Bowser.\n\nBowser jumps and breathes fire. Fireball him on landing, or run under a jump to the axe. The axe drops the bridge — that is the credits."
+      },
+      {
+        "id": "minus",
+        "title": "Minus World and ending",
+        "body": "A wrong warp pipe can trap you in the Minus World on some dumps; reset. The real ending is the princess after the 8-4 axe. All 32 stages is a full clear; warps skip worlds."
+      }
+    ]
+  },
+  "contra": {
+    "intro": "Full Contra (NES) clear: 8 stages. The US title code Up Up Down Down Left Right Left Right B A Start gives 30 lives. Grab S (spread) first. Save-state before bosses.",
+    "steps": [
+      {
+        "id": "prep",
+        "title": "30 lives, weapons, controls",
+        "body": "Title screen: ↑↑↓↓←→←→BA then Start for 30 lives. Many FC dumps skip it — use Game Genie instead. A jump, B shoot, down+jump to drop through.\n\nWeapons: S spread (best), M machine gun, L laser, F fire, R barrier, B bombs. A hit drops you back to the default gun.",
+        "image": "weapons"
+      },
+      {
+        "id": "s1",
+        "title": "Stage 1 Jungle",
+        "body": "Push right. Crouch under shots. Shoot flying soldiers as they leap in. Take S from the first flying weapon bay.\n\nEnd turrets: ground guns first, then the raised one. Shoot when the barrel faces away.",
+        "image": "s1"
+      },
+      {
+        "id": "s2",
+        "title": "Stage 2 Base 1",
+        "body": "Auto-scroll indoors. Destroy flashing sensors to open doors. Moving floors — keep walking. Clear above you before a jump.\n\nBoss: the wall core. Shoot when it opens; dodge the ring. Spread melts it.",
+        "image": "s2"
+      },
+      {
+        "id": "s3",
+        "title": "Stage 3 Waterfall",
+        "body": "Climb. Plant your feet, then shoot. Side gunners. Falling platforms.\n\nBoss at the top: turrets on the sides. Stand on the side ledges.",
+        "image": "s3"
+      },
+      {
+        "id": "s4",
+        "title": "Stage 4 Base 2",
+        "body": "Indoor sensors with extra vertical loops. Time flame jets.\n\nBoss like stage 2, denser bullets. Hug a wall and shoot openings.",
+        "image": "s4"
+      },
+      {
+        "id": "s5",
+        "title": "Stage 5 Snowfield",
+        "body": "Snow slides — do not over-run pits. Alternate snowmen and turrets. Planes overhead.\n\nBunker boss: lower ports, then upper. Spread covers the face.",
+        "image": "s5"
+      },
+      {
+        "id": "s6",
+        "title": "Stage 6 Energy Zone",
+        "body": "Slopes and orbiting energy balls. Thread the gaps. Do not tunnel-vision on soldiers.\n\nBoss: mechanical core. Weak when open. Missiles from the sides.",
+        "image": "s6"
+      },
+      {
+        "id": "s7",
+        "title": "Stage 7 Hangar",
+        "body": "Conveyor belts push you into fire. Walk against them. Priority: incoming transports.\n\nBoss: dual cores or a moving turret. Clear adds, then dump spread.",
+        "image": "s7"
+      },
+      {
+        "id": "s8",
+        "title": "Stage 8 Alien's Lair",
+        "body": "Tight halls, aliens from walls. Spread the path. Mouth-doors need a core destroyed first.\n\nFinal boss: organs on the sides, then the heart. Circle the ring shots. Credits after it dies.",
+        "image": "s8"
+      },
+      {
+        "id": "clear",
+        "title": "Clear route",
+        "body": "Jungle → Base 1 → Waterfall → Base 2 → Snow → Energy → Hangar → Lair. Keep S. 30 lives is for learning; turn cheats off for a clean clear."
+      }
+    ]
+  },
+  "battle-city": {
+    "intro": "Battle City / 90 Tank: protect the eagle, clear each stage's tanks. Flash tanks drop power-ups. 35 stages is a loop/clear depending on the dump.",
+    "steps": [
+      {
+        "id": "rules",
+        "title": "Rules and the eagle",
+        "body": "You spawn at the bottom. If the eagle is shot, you lose. Shots break and rebuild brick. Steel needs a starred tank. Trees hide, ice slides, water blocks.\n\nEnemies spawn from the top. Clear the quota (usually 20) to finish the stage.",
+        "image": "base"
+      },
+      {
+        "id": "items",
+        "title": "Power-ups",
+        "body": "Star (shot power, steel at level 3), grenade (screen clear), shovel (steel eagle wall), tank (life), clock (freeze), helmet (brief armor). Shovel and star first. Do not tunnel into your own base."
+      },
+      {
+        "id": "early",
+        "title": "Stages 1–10",
+        "body": "Brick-heavy. Patch the eagle wall immediately. One player guards, one hunts. Focus flashing tanks for stars.",
+        "image": "early"
+      },
+      {
+        "id": "mid",
+        "title": "Stages 11–20",
+        "body": "More steel and trees. Enemies flank the eagle. Eat the clock only when surrounded."
+      },
+      {
+        "id": "late",
+        "title": "Stages 21–35",
+        "body": "Faster, thicker tanks. Leave a path home. Some maps are almost all steel — you need stars. Stage 35 is the clear."
+      },
+      {
+        "id": "fail",
+        "title": "How runs die",
+        "body": "You open the eagle wall yourself; two reds sneak home while you hunt; ice slides you into steel. Grenade before a breach."
+      }
+    ]
+  },
+  "adventure-island": {
+    "intro": "Adventure Island: 8 worlds. The flame timer is your health — eat fruit. Eggs give hammer, skateboard, or bees. Beat world 8's boss to clear.",
+    "steps": [
+      {
+        "id": "rules",
+        "title": "Flame, fruit, eggs",
+        "body": "Empty flame = death. Eat fruit. Eggs: hammer (shoot, duck-shoot), skateboard (pits; a hit knocks it off), bees (avoid). Letter eggs are optional.",
+        "image": "items"
+      },
+      {
+        "id": "w1",
+        "title": "World 1",
+        "body": "Tutorial flats. Keep the hammer. Rock boss: mid-range, jump stones, hit when open. Do not skate into the boss room.",
+        "image": "w1"
+      },
+      {
+        "id": "w2",
+        "title": "World 2",
+        "body": "Wider pits — skateboard helps. Faster boss shots. Save at the door."
+      },
+      {
+        "id": "w3",
+        "title": "World 3",
+        "body": "Caves. Still eat. Bee eggs: skip. Boss charges; jump, then hit."
+      },
+      {
+        "id": "w4",
+        "title": "World 4",
+        "body": "Ice/rain. Leave more runway. Two-phase boss."
+      },
+      {
+        "id": "w5",
+        "title": "World 5",
+        "body": "Clouds. Falling is a life. Hammer air eggs."
+      },
+      {
+        "id": "w6",
+        "title": "World 6",
+        "body": "Throwing enemies. Duck-throw. Do not skip fruit."
+      },
+      {
+        "id": "w7",
+        "title": "World 7",
+        "body": "Long. Backtrack if the flame is low. Save-state before the boss."
+      },
+      {
+        "id": "w8",
+        "title": "World 8 and ending",
+        "body": "Tightest traps. Final boss is a harder version of earlier patterns. Credits after it dies.",
+        "image": "w8"
+      }
+    ]
+  },
+  "tetris-nes": {
+    "intro": "NES Tetris: A-Type is endless. B-Type 25 lines is the 'clear' (9-5 for the rocket). Keep a well for the I-piece.",
+    "steps": [
+      {
+        "id": "modes",
+        "title": "A-Type vs B-Type",
+        "body": "A-Type endless. B-Type 25 lines with a starting height. 9-5 is the usual credits goal.",
+        "image": "modes"
+      },
+      {
+        "id": "stack",
+        "title": "Stacking",
+        "body": "10 columns. Keep a 1-wide well on the right for I. Burn singles to fix holes.",
+        "image": "stack"
+      },
+      {
+        "id": "a-type",
+        "title": "A-Type",
+        "body": "Levels 1–9: flatten. 10+: soft drop earlier. Top-out ends the run. No official clear."
+      },
+      {
+        "id": "b-type",
+        "title": "B-Type 9-5 clear",
+        "body": "Level 9 height 5. Dig a well, Tetris the garbage, finish 25 lines for the rocket."
+      },
+      {
+        "id": "clear",
+        "title": "End states",
+        "body": "A-Type: top-out. B-Type: 25 lines. Versus: top the other player out."
+      }
+    ]
+  },
+  "double-dragon": {
+    "intro": "Double Dragon NES: 4 missions. Punch, kick, grab, weapons. Beat the last boss and rescue Marian.",
+    "steps": [
+      {
+        "id": "moves",
+        "title": "Moves and weapons",
+        "body": "Punch then kick. Jump-kick doors. Elbow out of grabs. Weapons drop if you get hit.",
+        "image": "moves"
+      },
+      {
+        "id": "m1",
+        "title": "Mission 1 Streets",
+        "body": "Right. Bat from the first alley. Jump-kick the door pack. Small boss: jump-kick plus punches.",
+        "image": "m1"
+      },
+      {
+        "id": "m2",
+        "title": "Mission 2 Stairs",
+        "body": "Clear the screen before you climb. Conveyor pits. Keep a weapon for the knife enemy at the top."
+      },
+      {
+        "id": "m3",
+        "title": "Mission 3",
+        "body": "Gunners: rush to melee. Mid-boss grabs — mash out."
+      },
+      {
+        "id": "m4",
+        "title": "Mission 4 ending",
+        "body": "Room by room. Save a weapon for the last fight. Dodge charges, combo, rescue Marian.",
+        "image": "m4"
+      }
+    ]
+  },
+  "super-mario-world": {
+    "intro": "Super Mario World main line: Yoshi's Island → Donut → Vanilla → Twin Bridges → Forest → Chocolate → Valley → Bowser. Switch palaces and Star Road are extra.",
+    "steps": [
+      {
+        "id": "yoshi",
+        "title": "Yoshi's Island",
+        "body": "Grab Yoshi in 1-1/1-2. Yellow switch palace from a key exit — do it. Castle, then Donut.",
+        "image": "yoshi"
+      },
+      {
+        "id": "donut",
+        "title": "Donut Plains",
+        "body": "Main exits toward the castle. Keyholes open red switch and Star Road. Cape: run, hold jump, glide.",
+        "image": "donut"
+      },
+      {
+        "id": "vanilla",
+        "title": "Vanilla Dome",
+        "body": "Caves and ghost houses. Follow the hint blocks to the real door."
+      },
+      {
+        "id": "bridges",
+        "title": "Twin Bridges",
+        "body": "Either bridge reaches the Forest castle. Hit the Koopaling on the platform."
+      },
+      {
+        "id": "forest",
+        "title": "Forest of Illusion",
+        "body": "Follow exit arrows. Blue switch is here — recommended."
+      },
+      {
+        "id": "chocolate",
+        "title": "Chocolate Island",
+        "body": "Exits reshape the map. Take newly opened paths."
+      },
+      {
+        "id": "valley",
+        "title": "Valley to Bowser",
+        "body": "Ghost house then castle. The gate to Bowser opens after. Cape recommended.",
+        "image": "valley"
+      },
+      {
+        "id": "bowser",
+        "title": "Bowser and ending",
+        "body": "Clown car. Hit the mech, then hit Bowser from below when the car opens. Star World is post-game.",
+        "image": "bowser"
+      }
+    ]
+  },
+  "zelda-alttp": {
+    "intro": "A Link to the Past full clear: 3 light-world pendants, Master Sword, Agahnim, 7 dark crystals, Ganon.",
+    "steps": [
+      {
+        "id": "open",
+        "title": "Rain and the castle",
+        "body": "Sword from uncle, Zelda in the sewers, sanctuary, Sahasrahla, Eastern Palace.",
+        "image": "open"
+      },
+      {
+        "id": "east",
+        "title": "Eastern Palace (bow)",
+        "body": "Get the bow. Armos Knights: keep moving, arrows. Pendant 1.",
+        "image": "east"
+      },
+      {
+        "id": "desert",
+        "title": "Desert Palace (gloves)",
+        "body": "Book on the plaque. Power gloves. Lanmolas. Pendant 2."
+      },
+      {
+        "id": "hera",
+        "title": "Tower of Hera (moon pearl)",
+        "body": "Death Mountain with gloves. Moon pearl. Moldorm. Pendant 3."
+      },
+      {
+        "id": "master",
+        "title": "Master Sword and Agahnim",
+        "body": "Lost Woods. Castle tower. Reflect Agahnim's shots. Fall to the Dark World.",
+        "image": "master"
+      },
+      {
+        "id": "dark1",
+        "title": "Dark palaces 1–3",
+        "body": "Darkness (hammer), Swamp (hookshot), Skull Woods (fire). One crystal each."
+      },
+      {
+        "id": "dark2",
+        "title": "Dark palaces 4–7",
+        "body": "Thieves, Ice, Misery Mire, Turtle Rock. Seven crystals."
+      },
+      {
+        "id": "ganon",
+        "title": "Ganon's Tower and Ganon",
+        "body": "Silver arrows. Agahnim again, then Ganon in the dark with silvers. Credits.",
+        "image": "ganon"
+      }
+    ]
+  },
+  "street-fighter-ii": {
+    "intro": "Street Fighter II SNES arcade mode: a gauntlet ending in M. Bison. Hadouken + shoryuken is enough for the CPU.",
+    "steps": [
+      {
+        "id": "char",
+        "title": "Character and buttons",
+        "body": "Ryu/Ken are the easy clear. Map punch/kick strengths. A pad beats touch.",
+        "image": "char"
+      },
+      {
+        "id": "moves",
+        "title": "Fireball, DP, block",
+        "body": "Hadouken: d, df, f, punch. Shoryuken anti-air. Block, then punish."
+      },
+      {
+        "id": "arcade",
+        "title": "Arcade flow",
+        "body": "Win, next fighter. Bonus car/barrels: crouch fierce. Continues on a loss.",
+        "image": "arcade"
+      },
+      {
+        "id": "boss",
+        "title": "Bosses and ending",
+        "body": "Balrog, Vega, Sagat, Bison. Jump Sagat's grand fireball. DP Bison's scissor kick. Credits after Bison.",
+        "image": "boss"
+      }
+    ]
+  },
+  "pokemon-red": {
+    "intro": "Pokémon Red full story: 8 badges, Elite Four, Champion. Dex 151 is optional.",
+    "steps": [
+      {
+        "id": "pallet",
+        "title": "Pallet and starter",
+        "body": "Bulbasaur eases Brock; Squirtle is even; Charmander is the hard early game. Parcel for Oak. Grind Route 1 to ~8.",
+        "image": "pallet"
+      },
+      {
+        "id": "brock",
+        "title": "Forest to Brock",
+        "body": "Pikachu/Weedle in the forest. Water/Grass for Brock. Charmander needs Ember and extra levels. Badge 1.",
+        "image": "brock"
+      },
+      {
+        "id": "misty",
+        "title": "Mt. Moon to Misty",
+        "body": "Fossil optional. Electric/Grass for Misty. Badge 2."
+      },
+      {
+        "id": "surge",
+        "title": "SS Anne to Surge",
+        "body": "Cut from the ship. Trash cans: first random, second adjacent. Ground types. Badge 3."
+      },
+      {
+        "id": "erika",
+        "title": "Rock Tunnel to Erika",
+        "body": "Fire/Flying/Poison. Badge 4."
+      },
+      {
+        "id": "koga",
+        "title": "Tower to Koga",
+        "body": "Silph Scope, then Fuchsia. Psychic/Ground. Safari for HM slaves. Badge 5."
+      },
+      {
+        "id": "rest",
+        "title": "Sabrina, Blaine, Giovanni",
+        "body": "Saffron psychic, Cinnabar fire, Viridian ground. Badges 6–8."
+      },
+      {
+        "id": "e4",
+        "title": "Victory Road and Elite Four",
+        "body": "Lorelei ice, Bruno fighting, Agatha ghost, Lance dragon (ice). Heal between.",
+        "image": "e4"
+      },
+      {
+        "id": "champ",
+        "title": "Champion Blue",
+        "body": "He uses the starter that beats yours. Hall of Fame is the clear. Birds and Mewtwo are post-game.",
+        "image": "champ"
+      }
+    ]
+  },
+  "tetris-gb": {
+    "intro": "GB Tetris: A-Type endless, B-Type 25 lines. 9-5 is the usual clear.",
+    "steps": [
+      {
+        "id": "modes",
+        "title": "A / B",
+        "body": "A-Type to learn. B-Type for a finish line.",
+        "image": "modes"
+      },
+      {
+        "id": "play",
+        "title": "Stack",
+        "body": "Right well, keep it flat. Soft drop on GB's gentle gravity.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "B-Type clear",
+        "body": "9-5, 25 lines, rockets. A-Type ends on top-out."
+      }
+    ]
+  },
+  "kirby-dream-land": {
+    "intro": "Kirby's Dream Land: 5 stages. Inhale, spit, float. Dedede is the clear.",
+    "steps": [
+      {
+        "id": "moves",
+        "title": "Inhale and float",
+        "body": "B inhale/spit. Hold A to float. No copy in this first game.",
+        "image": "moves"
+      },
+      {
+        "id": "g1",
+        "title": "Green Greens",
+        "body": "Whispy: float the wind, spit apples.",
+        "image": "g1"
+      },
+      {
+        "id": "g2",
+        "title": "Castle Lololo",
+        "body": "Doors loop. Spit boxes at Lololo & Lalala."
+      },
+      {
+        "id": "g3",
+        "title": "Float Islands",
+        "body": "More hovering. Spit projectiles at the cloud boss."
+      },
+      {
+        "id": "g4",
+        "title": "Bubbly Clouds / ice",
+        "body": "Float instead of walking ice. Throw-boss."
+      },
+      {
+        "id": "g5",
+        "title": "Mt. Dedede",
+        "body": "Float over the hammer, spit stars back. Credits.",
+        "image": "g5"
+      }
+    ]
+  },
+  "pokemon-gold": {
+    "intro": "Pokémon Gold full Johto clear: 8 gyms, Elite Four, Champion. Kanto is post-game. Do not skip gym flags.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "New Bark to Falkner (badge 1)",
+        "body": "Elm's egg errand. Falkner flying: electric/rock.",
+        "image": "start"
+      },
+      {
+        "id": "bugsy",
+        "title": "Bugsy (badge 2)",
+        "body": "Ilex Cut. Fire/Flying. Sprout Tower for EXP."
+      },
+      {
+        "id": "whitney",
+        "title": "Whitney (badge 3)",
+        "body": "Miltank rollout: status or fighting. Do not tank it."
+      },
+      {
+        "id": "morty",
+        "title": "Morty (badge 4)",
+        "body": "Ecruteak ghost gym. Follow the tower story."
+      },
+      {
+        "id": "chuck",
+        "title": "Chuck (badge 5)",
+        "body": "Cianwood fighting. Flying/psychic. Surf opens west Johto."
+      },
+      {
+        "id": "jasmine",
+        "title": "Jasmine (badge 6)",
+        "body": "Olivine steel. Fire/fighting. Finish the lighthouse first."
+      },
+      {
+        "id": "pryce",
+        "title": "Pryce (badge 7)",
+        "body": "Mahogany ice. Rockets hideout is on this stretch."
+      },
+      {
+        "id": "clair",
+        "title": "Clair (badge 8)",
+        "body": "Blackthorn dragon. Ice types. Dragon's Den first."
+      },
+      {
+        "id": "e4",
+        "title": "E4, Champion, Kanto",
+        "body": "Mt. Silver E4 then Champion. Hall of Fame is the story clear. Kanto after.",
+        "image": "e4"
+      }
+    ]
+  },
+  "pokemon-emerald": {
+    "intro": "Pokémon Emerald full Hoenn clear: 8 gyms and the Champion. Follow Aqua/Magma. Frontier is optional.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Littleroot to Roxanne (badge 1)",
+        "body": "Running Shoes. Water/Grass for Rock. Badge 1.",
+        "image": "start"
+      },
+      {
+        "id": "brawly",
+        "title": "Brawly (badge 2)",
+        "body": "Dewford fighting. Flying types."
+      },
+      {
+        "id": "wattson",
+        "title": "Wattson (badge 3)",
+        "body": "Mauville electric. Ground moves. Weather institute story."
+      },
+      {
+        "id": "flannery",
+        "title": "Flannery (badge 4)",
+        "body": "Lavaridge fire. Water/Ground."
+      },
+      {
+        "id": "norman",
+        "title": "Norman (badge 5)",
+        "body": "Petalburg normal. Fighting. Story flag — do not skip."
+      },
+      {
+        "id": "winona",
+        "title": "Winona (badge 6)",
+        "body": "Fortree flying. Electric/Ice. Surf and Fly."
+      },
+      {
+        "id": "tate",
+        "title": "Tate & Liza (badge 7)",
+        "body": "Mossdeep dual psychic. Dark/Ghost after Dive."
+      },
+      {
+        "id": "juan",
+        "title": "Juan (badge 8)",
+        "body": "Sootopolis water. Electric/Grass. Then Victory Road."
+      },
+      {
+        "id": "champ",
+        "title": "Champion and Frontier",
+        "body": "Hall of Fame is the clear. Battle Frontier is post-game.",
+        "image": "champ"
+      }
+    ]
+  },
+  "mario-kart-super-circuit": {
+    "intro": "Mario Kart Super Circuit: Mushroom → Flower → Star → Special → Extra. 150cc gold is the clear.",
+    "steps": [
+      {
+        "id": "drive",
+        "title": "Drift and items",
+        "body": "Hold a drift for mini-turbo. Shells on straights, bananas on corners, mushrooms before jumps.",
+        "image": "drive"
+      },
+      {
+        "id": "mushroom",
+        "title": "Mushroom Cup",
+        "body": "50cc to learn, 100cc to rank. Don't mushroom into walls."
+      },
+      {
+        "id": "flower",
+        "title": "Flower Cup",
+        "body": "Jumps start here. Save mushrooms for air."
+      },
+      {
+        "id": "star",
+        "title": "Star Cup",
+        "body": "Rivals attack more. Mushroom after a shell hit."
+      },
+      {
+        "id": "special",
+        "title": "Special Cup and Rainbow",
+        "body": "Save-state before Rainbow. Falling costs places.",
+        "image": "cups"
+      },
+      {
+        "id": "extra",
+        "title": "Extra and 150cc",
+        "body": "Unlock Extra (SNES tracks). 150cc gold cups is the full clear. Cheats off for ghosts."
+      }
+    ]
+  },
+  "minish-cap": {
+    "intro": "Minish Cap: four elements, Palace of Winds, Vaati. Shrink, Kinstones, Four Sword.",
+    "steps": [
+      {
+        "id": "south",
+        "title": "South Hyrule to Deepwood",
+        "body": "Ezlo, smith's sword, Minish Village, Gust Jar / earth element. Fuse Kinstones.",
+        "image": "south"
+      },
+      {
+        "id": "fire",
+        "title": "Cave of Flames",
+        "body": "Fire element. Bombs and digging."
+      },
+      {
+        "id": "water",
+        "title": "Temple of Droplets",
+        "body": "Water element. Flippers open the map."
+      },
+      {
+        "id": "wind",
+        "title": "Palace of Winds to Vaati",
+        "body": "Fourth element, then split with the Four Sword. Credits after Vaati.",
+        "image": "vaati"
+      }
+    ]
+  },
+  "sonic": {
+    "intro": "Sonic 1: six zones × 3 acts plus Final Zone. Chaos Emeralds are 100%, not required for the credits.",
+    "steps": [
+      {
+        "id": "gh",
+        "title": "Green Hill 1–3",
+        "body": "Build speed, keep rings. Boss: jump the wrecking ball car.",
+        "image": "gh"
+      },
+      {
+        "id": "marble",
+        "title": "Marble 1–3",
+        "body": "Lava. Walk. Push blocks. Save on act 3.",
+        "image": "marble"
+      },
+      {
+        "id": "spring",
+        "title": "Spring Yard 1–3",
+        "body": "Springs and spikes. Boss: spiked ball, hit when it stops."
+      },
+      {
+        "id": "labyrinth",
+        "title": "Labyrinth 1–3",
+        "body": "Bubbles. Drown timer. Level select skips this if you only want Scrap Brain."
+      },
+      {
+        "id": "star",
+        "title": "Star Light 1–3",
+        "body": "Speed is safe. Jump bombs. Rings before the boss."
+      },
+      {
+        "id": "scrap",
+        "title": "Scrap Brain and Final",
+        "body": "Traps. Final Zone is boss-only. Hit Robotnik until the ending. Emeralds change the credits.",
+        "image": "final"
+      }
+    ]
+  },
+  "streets-of-rage-2": {
+    "intro": "Streets of Rage 2: 8 stages to Mr. X. Axel or Blaze for a first clear.",
+    "steps": [
+      {
+        "id": "char",
+        "title": "Roster",
+        "body": "Axel even, Blaze fast, Max heavy, Skate fragile. First clear: Axel/Blaze.",
+        "image": "char"
+      },
+      {
+        "id": "s1",
+        "title": "Stages 1–3",
+        "body": "Throw, eat when yellow, specials in crowds.",
+        "image": "s1"
+      },
+      {
+        "id": "s2",
+        "title": "Stages 4–6",
+        "body": "Boat, arena, elevators. Clear a wave before you push."
+      },
+      {
+        "id": "s3",
+        "title": "Stages 7–8 and Mr. X",
+        "body": "Gun phase then melee. Dodge, combo, special at low HP. Credits.",
+        "image": "mx"
+      }
+    ]
+  },
+  "alter-ego": {
+    "intro": "Alter Ego (Shiru freeware): swap with your twin, collect pixels, finish every room. ROM is hosted.",
+    "steps": [
+      {
+        "id": "swap",
+        "title": "Swap",
+        "body": "The twin mirrors you. Swap to stand on tiles only the ghost can reach. Think before you swap.",
+        "image": "swap"
+      },
+      {
+        "id": "rooms",
+        "title": "Rooms",
+        "body": "Collect every bouncing pixel to open the exit. Late rooms need two swaps in a row. Reset the room if both bodies are stuck.",
+        "image": "rooms"
+      },
+      {
+        "id": "end",
+        "title": "Clear",
+        "body": "Finish all rooms for the ending. No commercial boss. Time attacks are optional."
+      }
+    ]
+  },
+  "lawn-mower": {
+    "intro": "Lawn Mower (Shiru freeware): mow every grass tile without trapping yourself. ROM is hosted.",
+    "steps": [
+      {
+        "id": "mow",
+        "title": "Rules",
+        "body": "Mowed tiles may not be a path back. Plan like a snake. D-pad only.",
+        "image": "mow"
+      },
+      {
+        "id": "stages",
+        "title": "Stages",
+        "body": "Obstacles later. Reset if trapped. Do not start in the center.",
+        "image": "stages"
+      },
+      {
+        "id": "end",
+        "title": "Clear",
+        "body": "Finish every stage. No boss."
+      }
+    ]
+  }
+}

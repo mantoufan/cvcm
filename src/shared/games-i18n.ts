@@ -76,17 +76,7 @@ export function gameFaqItems(locale: Locale, id: GameId): { q: string; a: string
   return items;
 }
 
-export function gameGuideSteps(locale: Locale, id: GameId): { title: string; body: string }[] {
-  const copy = gameCopy(locale, id);
-  const steps = [];
-  for (let i = 1; i <= 5; i++) {
-    const title = field(copy, `s${i}t` as keyof GameCopy);
-    const body = field(copy, `s${i}b` as keyof GameCopy);
-    if (!title || !body) break;
-    steps.push({ title, body });
-  }
-  return steps;
-}
+export { gameGuideSteps, gameWalkthrough, walkthroughImage } from "./game-walkthrough";
 
 export function gameCheatLabels(locale: Locale, id: GameId): string[] {
   const copy = gameCopy(locale, id);

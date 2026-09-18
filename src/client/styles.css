@@ -1386,6 +1386,41 @@ body {
 .game-note.muted { font-size: 0.82rem; }
 .game-section { margin: 1.4rem 0; }
 .game-section h2 { margin: 0 0 0.55rem; }
+.guide-intro { margin: 0 0 0.85rem; line-height: 1.75; }
+.guide-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  margin: 0 0 1.1rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.guide-toc a {
+  font-size: 0.82rem;
+  font-weight: 650;
+  text-decoration: none;
+  color: var(--pink-deep);
+}
+.guide-toc a:hover { text-decoration: underline; }
+.game-guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.15rem; }
+.guide-step {
+  padding: 0.9rem 1rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.guide-step h3 { margin: 0 0 0.55rem; font-size: 1.05rem; }
+.guide-step p { margin: 0 0 0.65rem; line-height: 1.8; }
+.guide-step p:last-child { margin-bottom: 0; }
+.guide-figure {
+  margin: 0 0 0.75rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.guide-figure img { display: block; width: 100%; height: auto; object-fit: cover; }
 .cheat-table { display: grid; gap: 0.45rem; }
 .cheat-row {
   display: grid;

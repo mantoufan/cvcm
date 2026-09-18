@@ -10,7 +10,8 @@ import {
   gamesFor,
   isGameId,
 } from "../src/shared/games";
-import { gameCopy, gameFaqItems, gameGuideSteps } from "../src/shared/games-i18n";
+import { gameCopy, gameFaqItems } from "../src/shared/games-i18n";
+import { gameGuideSteps, gameWalkthrough } from "../src/shared/game-walkthrough";
 import { LOCALES } from "../src/shared/locale";
 import { gamesHref, parseAppPath } from "../src/shared/path";
 import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
@@ -51,11 +52,22 @@ describe("games catalog", () => {
     expect(Object.keys(GAME_COVER).sort()).toEqual([...GAMES.map((game) => game.id)].sort());
   });
 
-  it("keeps five FAQ items and five walkthrough steps on every game", () => {
+  it("keeps five FAQ items and a full walkthrough on every game", () => {
     for (const game of GAMES) {
       expect(gameFaqItems("en", game.id).length, game.id).toBe(5);
-      expect(gameGuideSteps("zh-CN", game.id).length, game.id).toBe(5);
+      const steps = gameGuideSteps("zh-CN", game.id);
+      expect(steps.length, game.id).toBeGreaterThanOrEqual(3);
+      expect(gameWalkthrough("zh-CN", game.id).intro.length, game.id).toBeGreaterThan(40);
       expect(gameCopy("zh-CN", game.id).title).toMatch(/cv\.cm/);
+    }
+    expect(gameGuideSteps("zh-CN", "super-mario-bros").length).toBeGreaterThanOrEqual(24);
+    expect(gameGuideSteps("zh-CN", "contra").length).toBeGreaterThanOrEqual(8);
+  });
+
+  it("keeps the same walkthrough step ids in every locale", () => {
+    for (const game of GAMES) {
+      const ids = gameGuideSteps("en", game.id).map((step) => step.id);
+      expect(gameGuideSteps("zh-CN", game.id).map((step) => step.id), game.id).toEqual(ids);
     }
   });
 });
