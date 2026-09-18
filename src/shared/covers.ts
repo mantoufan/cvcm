@@ -112,6 +112,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "make-meme": "/covers/meme-sweet.jpg?v=2",
   "count-words": "/covers/word-count-sweet.jpg?v=1",
   "trim-audio": "/covers/audio-cutter-sweet.jpg?v=1",
+  "png-to-jpg": "/covers/convert-sweet.jpg?v=1",
+  "jpg-to-png": "/covers/convert-sweet.jpg?v=1",
+  "avif-to-jpg": "/covers/convert-sweet.jpg?v=1",
+  "rotate-photo": "/covers/rotate-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -150,6 +154,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "make-meme": "/covers/tutorials/make-meme.svg",
   "count-words": "/covers/tutorials/count-words.svg",
   "trim-audio": "/covers/tutorials/trim-audio.svg",
+  "png-to-jpg": "/covers/tutorials/png-to-jpg.svg",
+  "jpg-to-png": "/covers/tutorials/jpg-to-png.svg",
+  "avif-to-jpg": "/covers/tutorials/avif-to-jpg.svg",
+  "rotate-photo": "/covers/tutorials/rotate-photo.svg",
 };
 
 export function coverUrl(path: string): string {

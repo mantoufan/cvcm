@@ -95,6 +95,21 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `make-meme`
 - `count-words`
 - `trim-audio`
+- `png-to-jpg`
+- `jpg-to-png`
+- `avif-to-jpg`
+- `rotate-photo`
+
+## Fourth batch (ship)
+
+Same dump as the first pull (`~/.grok/tmp/cvcm-keyword-ideas.json`, convert seed). How-to clusters were thin; job volume is the ranking signal. Rotate was not in that seed — it ships as the missing photo-edit sibling of crop/resize.
+
+| Lesson query | Job vol | Tool | Notes |
+|---|---:|---|---|
+| How to convert PNG to JPG | 60,500 (`png to jpg`) | `convert` | Distinct from HEIC/WebP: size vs alpha. JPG fills a clear PNG, often black. |
+| How to convert JPG to PNG | 49,500 (`jpg to png`) | `convert` | Myth: PNG will not invent transparency. File usually grows. |
+| How to convert AVIF to JPG | 33,100 (`avif to jpg`) | `convert` | Chrome/new sites save AVIF; older Windows/print/chat want JPG. |
+| How to rotate or flip a photo | — (not seeded) | `rotate` | 90° vs mirror flip; export bakes pixels so EXIF-only sideways photos stand up. |
 
 ## Evidence notes
 

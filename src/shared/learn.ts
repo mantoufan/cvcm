@@ -118,6 +118,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["audio-cutter", "audio-joiner", "audio"],
   },
+  "png-to-jpg": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["convert", "resize", "crop"],
+  },
+  "jpg-to-png": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["convert", "resize", "image-pdf"],
+  },
+  "avif-to-jpg": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["convert", "resize", "image-pdf"],
+  },
+  "rotate-photo": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["rotate", "crop", "resize"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -308,5 +332,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "trim-audio": [
     { step: 1, src: "/covers/tutorials/trim-audio-range.svg" },
     { step: 6, src: "/covers/tutorials/trim-audio-listen.svg" },
+  ],
+  "png-to-jpg": [
+    { step: 1, src: "/covers/tutorials/png-to-jpg-why.svg" },
+    { step: 4, src: "/covers/tutorials/png-to-jpg-matte.svg" },
+  ],
+  "jpg-to-png": [
+    { step: 1, src: "/covers/tutorials/jpg-to-png-why.svg" },
+    { step: 4, src: "/covers/tutorials/jpg-to-png-myth.svg" },
+  ],
+  "avif-to-jpg": [
+    { step: 1, src: "/covers/tutorials/avif-to-jpg-why.svg" },
+    { step: 4, src: "/covers/tutorials/avif-to-jpg-do.svg" },
+  ],
+  "rotate-photo": [
+    { step: 1, src: "/covers/tutorials/rotate-photo-turn.svg" },
+    { step: 6, src: "/covers/tutorials/rotate-photo-bake.svg" },
   ],
 };

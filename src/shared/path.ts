@@ -108,6 +108,10 @@ export const TUTORIALS = [
   "make-meme",
   "count-words",
   "trim-audio",
+  "png-to-jpg",
+  "jpg-to-png",
+  "avif-to-jpg",
+  "rotate-photo",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -130,8 +134,8 @@ export const TUTORIAL_GROUPS: readonly {
   tutorials: readonly TutorialId[];
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
-  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png"] },
-  { id: "photo", tutorials: ["crop-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme"] },
+  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg"] },
+  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme"] },
   { id: "audio", tutorials: ["trim-audio"] },
   { id: "text", tutorials: ["count-words"] },
 ];

@@ -148,9 +148,13 @@ function groupOf(id: TutorialId): string {
     || id === "jpg-to-pdf"
     || id === "pdf-to-jpg"
     || id === "webp-to-png"
+    || id === "png-to-jpg"
+    || id === "jpg-to-png"
+    || id === "avif-to-jpg"
   ) return "files";
   if (
     id === "crop-photo"
+    || id === "rotate-photo"
     || id === "resize-image"
     || id === "add-watermark"
     || id === "remove-exif"
