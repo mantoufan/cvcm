@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import playerHtml from "../public/emu/player.html?raw";
 import playerJs from "../public/emu/player.js?raw";
 import { GAME_COVER } from "../src/shared/covers";
+import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
 import {
   GAME_CONSOLES,
   GAMES,
@@ -41,6 +42,13 @@ const assets = {
 };
 
 describe("games catalog", () => {
+  it("lists keyboard controls for every console", () => {
+    for (const id of GAME_CONSOLES) {
+      expect(CONSOLE_CONTROLS[id].length, id).toBeGreaterThanOrEqual(4);
+      expect(CONSOLE_CONTROLS[id].some((row) => row.action === "start"), id).toBe(true);
+    }
+  });
+
   it("covers every console and gives every game an S3 ROM filename", () => {
     for (const id of GAME_CONSOLES) {
       expect(gamesFor(id).length, id).toBeGreaterThan(0);

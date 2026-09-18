@@ -1383,6 +1383,25 @@ body {
   background: #1a1020;
 }
 .game-note { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+.game-controls { margin: 0.2rem 0 1rem; }
+.game-controls h2 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.control-table { display: grid; gap: 0.35rem; }
+.control-row {
+  display: grid;
+  grid-template-columns: minmax(5rem, 8rem) 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.control-action { font-weight: 650; }
+.control-row kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86rem;
+  font-weight: 650;
+}
 .game-note.muted { font-size: 0.82rem; }
 .game-section { margin: 1.4rem 0; }
 .game-section h2 { margin: 0 0 0.55rem; }

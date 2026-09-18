@@ -1,6 +1,7 @@
 import { GAME_COVER } from "../covers";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
+import { CONSOLE_CONTROLS } from "../../shared/game-controls";
 import {
   GAME_CONSOLES,
   GAME_GENRES,
@@ -213,7 +214,7 @@ function player(game: Game, name: string): HTMLElement {
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
     const qs = new URLSearchParams({ core: game.core, name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
-    frame.src = `/emu/player?v=3&${qs.toString()}`;
+    frame.src = `/emu/player?v=4&${qs.toString()}`;
     const send = (): void => {
       frame.contentWindow?.postMessage({ type: "boot", core: game.core, name, ...payload }, location.origin);
     };
@@ -241,6 +242,7 @@ function player(game: Game, name: string): HTMLElement {
       status,
     ),
     h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
+    controls(game.console),
   );
 
   queueMicrotask(() => {
@@ -253,6 +255,22 @@ function player(game: Game, name: string): HTMLElement {
     });
   });
   return box;
+}
+
+function controls(consoleId: Game["console"]): HTMLElement {
+  const rows = CONSOLE_CONTROLS[consoleId];
+  return h("section", { class: "game-controls", "aria-labelledby": "controls-title" },
+    h("h2", { id: "controls-title" }, t("games.controls.title")),
+    h("p", { class: "game-note" }, t("games.controls.touch")),
+    h("div", { class: "control-table" },
+      ...rows.map((row) =>
+        h("div", { class: "control-row" },
+          h("span", { class: "control-action" }, t(`games.controls.${row.action}`)),
+          h("kbd", null, row.keys),
+        ),
+      ),
+    ),
+  );
 }
 
 function emulatorCheats(game: Game): { name: string; code: string }[] {
