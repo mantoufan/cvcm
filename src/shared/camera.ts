@@ -1,4 +1,5 @@
 export type FilterId = "none" | "uv" | "nd3" | "nd6" | "cpl" | "soft" | "warm" | "cool";
+export type FillId = "off" | "white" | "black" | "gold";
 export type LightId = "sunny" | "shade" | "window" | "overcast" | "golden";
 export type Mode = "P" | "Av" | "Tv" | "M";
 export type HintId =
@@ -101,6 +102,14 @@ export function exposureValue(aperture: number, shutterSec: number, iso: number)
 
 export function exposureDelta(cameraEV: number, sceneEV: number): number {
   return cameraEV - sceneEV;
+}
+
+export function formatDeltaEV(delta: number): string {
+  const clamped = Math.max(-3, Math.min(3, delta));
+  if (Math.abs(clamped) < 0.08) return "0.0 EV";
+  const shown = Math.round(clamped * 10) / 10;
+  if (shown === 0) return "0.0 EV";
+  return `${shown > 0 ? "+" : ""}${shown.toFixed(1)} EV`;
 }
 
 export function exposureGain(deltaEV: number): number {
@@ -262,9 +271,23 @@ function emptyGrade(matrix: Grade["matrix"], extras: Partial<Grade> = {}): Grade
 export function filterGrade(id: FilterId): Grade {
   if (id === "warm") return emptyGrade(diag(1.2, 1, 0.72));
   if (id === "cool") return emptyGrade(diag(0.88, 0.98, 1.18));
-  if (id === "soft") return emptyGrade(IDENTITY, { bloom: 0.35 });
+  if (id === "soft") return emptyGrade(IDENTITY, { bloom: 0.55, contrast: 0.86 });
   if (id === "cpl") return emptyGrade(IDENTITY, { highlightCompress: 0.45 });
   return emptyGrade(IDENTITY);
+}
+
+export function fillGrade(id: FillId): Grade {
+  if (id === "white") return emptyGrade(diag(1.04, 1.05, 1.08), { gain: 1.38, contrast: 0.88 });
+  if (id === "black") return emptyGrade(diag(0.95, 0.42, 1.58), { gain: 1.55, contrast: 1.12, bloom: 0.3 });
+  if (id === "gold") return emptyGrade(diag(1.42, 1.08, 0.48), { gain: 1.22, contrast: 1.06, bloom: 0.18 });
+  return emptyGrade(IDENTITY);
+}
+
+export function fillSceneGain(id: FillId): number {
+  if (id === "black") return 0.48;
+  if (id === "white") return 1.04;
+  if (id === "gold") return 1.03;
+  return 1;
 }
 
 export function lightGrade(id: LightId): Grade {
@@ -289,7 +312,7 @@ export function composeGrade(light: LightId, filter: FilterId, gain: number): Gr
     gain: gain * L.gain * F.gain,
     bloom: F.bloom,
     highlightCompress: F.highlightCompress,
-    contrast: L.contrast,
+    contrast: L.contrast * F.contrast,
   };
 }
 

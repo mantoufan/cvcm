@@ -92,7 +92,7 @@ export function guideSteps(tool: ToolId): number {
 }
 
 const GUIDE_VER: Partial<Record<ToolId, string>> = {
-  "portrait-sim": "3",
+  "portrait-sim": "4",
 };
 
 export function guideImage(tool: ToolId, step: number): string {

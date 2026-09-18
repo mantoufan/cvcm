@@ -30,6 +30,20 @@ const PEOPLE = {
     prop: "20.jpg",
     away: "19.jpg",
   },
+  yuki: {
+    key: "magenta",
+    stand34: "26.jpg",
+    sit45: "31.jpg",
+    prop: "27.jpg",
+    away: "30.jpg",
+  },
+  ren: {
+    key: "magenta",
+    stand34: "25.jpg",
+    sit45: "32.jpg",
+    prop: "29.jpg",
+    away: "28.jpg",
+  },
 };
 
 const SCENES = {
@@ -114,6 +128,34 @@ function keepLargestComponent(data, width, height, channels, thresh = 40) {
   }
 }
 
+function erodeAlpha(data, width, height, channels, px) {
+  const copy = Buffer.from(data);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * channels;
+      let minA = copy[i + 3];
+      if (minA === 0) continue;
+      outer: for (let dy = -px; dy <= px; dy++) {
+        for (let dx = -px; dx <= px; dx++) {
+          const xx = x + dx;
+          const yy = y + dy;
+          if (xx < 0 || yy < 0 || xx >= width || yy >= height) {
+            minA = 0;
+            break outer;
+          }
+          minA = Math.min(minA, copy[(yy * width + xx) * channels + 3]);
+        }
+      }
+      data[i + 3] = minA;
+      if (minA === 0) {
+        data[i] = 0;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+      }
+    }
+  }
+}
+
 function dropGreyFloor(data, width, height, channels) {
   const y0 = Math.floor(height * 0.55);
   for (let y = y0; y < height; y++) {
@@ -155,6 +197,7 @@ async function keyPerson(src, dest, mode) {
   }
   keepLargestComponent(data, width, height, channels);
   if (mode === "green") dropGreyFloor(data, width, height, channels);
+  if (mode === "magenta") erodeAlpha(data, width, height, channels, 1);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = (y * width + x) * channels;

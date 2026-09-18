@@ -8,6 +8,7 @@ import {
   ISOS,
   SHUTTER_TABLE,
   formatAperture,
+  formatDeltaEV,
   formatShutter,
   type HintId,
 } from "../../shared/camera";
@@ -118,10 +119,7 @@ function syncReadouts(aperture: number, iso: number, shutter: number, deltaEV: n
   if (isoLabel) isoLabel.textContent = `ISO ${iso}`;
   if (apertureLabel) apertureLabel.textContent = formatAperture(aperture);
   if (shutterLabel) shutterLabel.textContent = formatShutter(shutter);
-  if (hudMeter) {
-    const stops = Math.max(-3, Math.min(3, deltaEV));
-    hudMeter.textContent = `${stops > 0 ? "+" : ""}${stops.toFixed(1)} EV`;
-  }
+  if (hudMeter) hudMeter.textContent = formatDeltaEV(deltaEV);
 }
 
 function placeAf(eye: { x: number; y: number }): void {
@@ -210,6 +208,8 @@ function change(partial: Partial<SimState>): void {
   if (filterSel) filterSel.value = state.filter;
   const lightSel = hostEl?.querySelector("#ps-light") as HTMLSelectElement | null;
   if (lightSel) lightSel.value = state.light;
+  const fillSel = hostEl?.querySelector("#ps-fill") as HTMLSelectElement | null;
+  if (fillSel) fillSel.value = state.fill;
   const tripod = hostEl?.querySelector("#ps-tripod") as HTMLInputElement | null;
   if (tripod) tripod.checked = state.tripod;
   refillApertures();
@@ -277,7 +277,7 @@ function rail(): HTMLElement {
   return h("aside", { class: "rail" },
     h("h2", null, t("portraitSim.people")),
     h("div", { class: "ps-thumbs" },
-      ...(["mira", "ken", "lin"] as PersonId[]).map((id) =>
+      ...(Object.keys(catalog.people) as PersonId[]).map((id) =>
         thumbBtn(catalog.people[id].thumb, t(`portraitSim.person.${id}`), state.person === id, () => change({ person: id }), { person: id }),
       ),
     ),
@@ -420,6 +420,18 @@ function controls(): HTMLElement {
         }),
         t("portraitSim.tripod"),
       ),
+    ),
+    h("fieldset", null,
+      h("legend", null, t("portraitSim.fill")),
+      h("select", {
+        id: "ps-fill",
+        onChange: (e: Event) => change({ fill: (e.target as HTMLSelectElement).value as SimState["fill"] }),
+      },
+        ...(["off", "white", "black", "gold"] as const).map((id) =>
+          h("option", { value: id, selected: state.fill === id }, t(`portraitSim.fills.${id}`)),
+        ),
+      ),
+      h("p", { class: "muted" }, t("portraitSim.fillNote")),
     ),
     h("fieldset", null,
       h("legend", null, t("portraitSim.filter")),

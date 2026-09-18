@@ -121,7 +121,7 @@
     "titleSlug": "Tạo slug — URL slug — cv.cm",
     "descSlug": "Đổi tiêu đề thành slug URL. Chữ thường, gạch nối. Không tải lên.",
     "titlePortraitSim": "Mô phỏng máy ảnh chân dung — học khẩu độ trong trình duyệt — cv.cm",
-    "descPortraitSim": "Luyện khẩu độ, tốc độ, ISO, ống kính và kính lọc trên người mẫu người lớn chân thực. Tải PNG/JPEG trong tab này. Không tải lên.",
+    "descPortraitSim": "Luyện khẩu độ, tốc độ, ISO, ống kính và kính lọc trên người lớn chân thực và anime. Tải PNG/JPEG trong tab này. Không tải lên.",
     "titleAge": "Tính tuổi — năm tháng ngày — cv.cm",
     "descAge": "Tính tuổi theo năm, tháng, ngày trong trình duyệt. Chọn ngày sinh và một ngày. Không tải lên.",
     "titleBmi": "Tính BMI — chỉ số khối cơ thể — cv.cm",
@@ -434,7 +434,7 @@
     },
     "portrait-sim": {
       "name": "Mô phỏng máy ảnh",
-      "blurb": "Luyện khẩu độ và ống kính trên người lớn chân thực. Xuất trong tab này."
+      "blurb": "Luyện khẩu độ và ống kính trên người lớn chân thực và anime. Xuất trong tab này."
     },
     "age": {
       "name": "Tính tuổi",
@@ -1533,9 +1533,9 @@
       "q3": "Thử được ống kính điện thoại không?",
       "a3": "Có. Chọn Phone 26 mm-e. Khẩu độ khóa f/1.8 vì điện thoại thường không đổi khẩu.",
       "q4": "Đây có phải đèn studio không?",
-      "a4": "Không. Bản 1 chỉ đổi phơi sáng và cân bằng trắng. Đèn key chạy trên mặt là bước sau.",
+      "a4": "Phơi sáng cảnh là cân bằng trắng trên tấm đã chiếu sáng. Đèn phụ (trắng, đèn UV, vàng) là gel trên người, không phải đèn chính di chuyển.",
       "q5": "Có phải người thật hay trẻ em không?",
-      "a5": "Chỉ người lớn mô phỏng. Không có trẻ vị thành niên, không tải khuôn mặt thật."
+      "a5": "Chỉ người lớn mô phỏng — chân thực và anime. Không có trẻ vị thành niên, không tải khuôn mặt thật."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2922,7 +2922,9 @@
     "person": {
       "mira": "Mira",
       "ken": "Ken",
-      "lin": "Lin"
+      "lin": "Lin",
+      "yuki": "Yuki",
+      "ren": "Ren"
     },
     "pose": {
       "stand34": "Đứng 3/4",
@@ -2951,7 +2953,7 @@
       "nd3": "ND 3 stop",
       "nd6": "ND 6 stop",
       "cpl": "Phân cực",
-      "soft": "Mềm",
+      "soft": "Khuếch tán",
       "warm": "Ấm",
       "cool": "Lạnh"
     },
@@ -2962,6 +2964,14 @@
       "window": "Cửa sổ",
       "overcast": "U ám",
       "golden": "Giờ vàng"
+    },
+    "fill": "Đèn phụ",
+    "fillNote": "Đèn hoặc gel trên người. Trắng nâng bóng. Đèn đen là UV. Vàng là gel ấm.",
+    "fills": {
+      "off": "Tắt",
+      "white": "Ánh trắng",
+      "black": "Đèn đen",
+      "gold": "Ánh vàng"
     }
   },
   "age": {

@@ -121,7 +121,7 @@
     "titleSlug": "Pembuat slug — URL slug — cv.cm",
     "descSlug": "Ubah judul jadi slug URL. Huruf kecil, tanda hubung. Tidak diunggah.",
     "titlePortraitSim": "Simulator kamera potret — belajar eksposur di browser — cv.cm",
-    "descPortraitSim": "Latihan diafragma, rana, ISO, lensa, dan filter pada model dewasa fotorealistik. Simpan PNG/JPEG di tab ini. Tidak diunggah.",
+    "descPortraitSim": "Latihan diafragma, rana, ISO, lensa, dan filter pada dewasa fotorealistik dan anime. Simpan PNG/JPEG di tab ini. Tidak diunggah.",
     "titleAge": "Kalkulator usia — tahun bulan hari — cv.cm",
     "descAge": "Hitung usia dalam tahun, bulan, dan hari di browser. Pilih tanggal lahir dan suatu tanggal. Tidak diunggah.",
     "titleBmi": "Kalkulator BMI — indeks massa tubuh — cv.cm",
@@ -434,7 +434,7 @@
     },
     "portrait-sim": {
       "name": "Simulasi kamera potret",
-      "blurb": "Latihan diafragma dan lensa pada model dewasa. Ekspor di tab ini."
+      "blurb": "Latihan diafragma dan lensa pada dewasa fotorealistik dan anime. Simpan di tab ini."
     },
     "age": {
       "name": "Kalkulator usia",
@@ -1533,9 +1533,9 @@
       "q3": "Bisa coba lensa ponsel?",
       "a3": "Ya. Pilih Phone 26 mm-e. Diafragma terkunci di f/1.8.",
       "q4": "Apakah ini pencahayaan studio?",
-      "a4": "Tidak. v1 hanya mengubah eksposur dan white balance. Relight studio belakangan.",
+      "a4": "Eksposur adegan adalah white balance pada pelat yang sudah disinari. Lampu isi (putih, blacklight, emas) adalah gel pada model, bukan key yang bergerak.",
       "q5": "Apakah orangnya nyata atau anak-anak?",
-      "a5": "Hanya dewasa simulasi. Tidak ada anak, tidak ada unggahan wajah nyata."
+      "a5": "Hanya dewasa simulasi — fotorealistik dan anime. Tidak ada anak, tidak ada unggahan wajah nyata."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2922,7 +2922,9 @@
     "person": {
       "mira": "Mira",
       "ken": "Ken",
-      "lin": "Lin"
+      "lin": "Lin",
+      "yuki": "Yuki",
+      "ren": "Ren"
     },
     "pose": {
       "stand34": "Berdiri 3/4",
@@ -2951,7 +2953,7 @@
       "nd3": "ND 3 stop",
       "nd6": "ND 6 stop",
       "cpl": "Polarizer",
-      "soft": "Lembut",
+      "soft": "Difusi",
       "warm": "Hangat",
       "cool": "Dingin"
     },
@@ -2962,6 +2964,14 @@
       "window": "Jendela",
       "overcast": "Mendung",
       "golden": "Golden hour"
+    },
+    "fill": "Lampu isi",
+    "fillNote": "Lampu atau gel pada model. Putih mengangkat bayangan. Blacklight adalah UV. Emas adalah gel hangat.",
+    "fills": {
+      "off": "Mati",
+      "white": "Cahaya putih",
+      "black": "Blacklight",
+      "gold": "Cahaya emas"
     }
   },
   "age": {

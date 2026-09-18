@@ -4,7 +4,9 @@ import {
   cocDiameterPx,
   composeGrade,
   exposureValue,
+  fillGrade,
   filterGrade,
+  formatDeltaEV,
   gaussianSigmaPx,
   handshakePx,
   solveAv,
@@ -36,6 +38,15 @@ const MIRA_STAND = catalog.cutouts.find((c) => c.person === "mira" && c.pose ===
 describe("exposure", () => {
   it("puts sunny 16 near EV 15 at ISO 100", () => {
     expect(exposureValue(16, 1 / 100, 100)).toBeCloseTo(14.64, 1);
+  });
+
+  it("shows 0.0 EV for the default window sitting", () => {
+    const delta = exposureValue(2.8, 1 / 500, 200) - 11;
+    expect(delta).toBeGreaterThan(-0.08);
+    expect(delta).toBeLessThan(0);
+    expect(formatDeltaEV(delta)).toBe("0.0 EV");
+    expect(formatDeltaEV(0.12)).toBe("+0.1 EV");
+    expect(formatDeltaEV(-1.2)).toBe("-1.2 EV");
   });
 });
 
@@ -123,6 +134,14 @@ describe("handshake and grade", () => {
     expect(grade.bloom).toBe(0);
   });
 
+  it("makes the soft filter bloom and gold fill warm", () => {
+    expect(filterGrade("soft").bloom).toBeGreaterThan(0.4);
+    expect(fillGrade("gold").matrix[0]).toBeGreaterThan(1.2);
+    expect(fillGrade("black").matrix[8]).toBeGreaterThan(1.2);
+    expect(fillGrade("white").gain).toBeGreaterThan(1.2);
+    expect(fillGrade("off").gain).toBe(1);
+  });
+
   it("snapshots warm and cool diagonals and light-then-filter order", () => {
     expect(filterGrade("warm").matrix).toEqual([1.2, 0, 0, 0, 1, 0, 0, 0, 0.72]);
     expect(filterGrade("cool").matrix).toEqual([0.88, 0, 0, 0, 0.98, 0, 0, 0, 1.18]);
@@ -152,8 +171,8 @@ describe("hints", () => {
 });
 
 describe("catalog", () => {
-  it("has twelve adult cutouts and matching pose distances", () => {
-    expect(catalog.cutouts).toHaveLength(12);
+  it("has twenty adult cutouts and matching pose distances", () => {
+    expect(catalog.cutouts).toHaveLength(20);
     expect(MATCH.destHPx).toBe(1080);
     expect(EXPORT_LONG_EDGE_PX["135"]).toBe(1280);
     expect(catalog.lenses.phone.minAperture).toBe(1.8);
@@ -252,13 +271,16 @@ function FRAME_ASPECT_SAFE(frame: "3-2" | "4-5" | "16-9"): number {
 
 describe("query", () => {
   it("parses valid keys and ignores junk", () => {
-    const parsed = parseSimQuery("?lens=85&scene=cafe&frame=4-5&nope=1&iso=abc");
+    const parsed = parseSimQuery("?lens=85&scene=cafe&frame=4-5&fill=gold&person=yuki&nope=1&iso=abc");
     expect(parsed.lens).toBe("85");
     expect(parsed.scene).toBe("cafe");
     expect(parsed.frame).toBe("4-5");
+    expect(parsed.fill).toBe("gold");
+    expect(parsed.person).toBe("yuki");
     expect(parsed.iso).toBeUndefined();
     const text = serializeSimQuery(defaultSimState());
     expect(text.startsWith("?")).toBe(true);
     expect(text).toContain("person=mira");
+    expect(text).toContain("fill=off");
   });
 });

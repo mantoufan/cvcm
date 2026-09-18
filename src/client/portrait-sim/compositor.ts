@@ -6,6 +6,8 @@ import {
   exposureDelta,
   exposureGain,
   exposureValue,
+  fillGrade,
+  fillSceneGain,
   gaussianSigmaPx,
   handshakePx,
   sceneEV,
@@ -110,6 +112,52 @@ function applyGrade(ctx: CanvasRenderingContext2D, grade: Grade, highlightOnly =
   ctx.putImageData(img, 0, 0);
 }
 
+function paintFillWash(ctx: CanvasRenderingContext2D, fill: "white" | "black" | "gold"): void {
+  const { width: w, height: h } = ctx.canvas;
+  const g = ctx.createRadialGradient(w * 0.28, h * 0.18, 6, w * 0.48, h * 0.42, Math.max(w, h) * 0.8);
+  if (fill === "white") {
+    g.addColorStop(0, "rgba(255,255,255,0.42)");
+    g.addColorStop(1, "rgba(220,230,255,0)");
+  } else if (fill === "gold") {
+    g.addColorStop(0, "rgba(255,200,90,0.48)");
+    g.addColorStop(1, "rgba(255,140,40,0)");
+  } else {
+    g.addColorStop(0, "rgba(190,90,255,0.46)");
+    g.addColorStop(1, "rgba(40,0,90,0)");
+  }
+  ctx.save();
+  ctx.globalCompositeOperation = "source-atop";
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+}
+
+function stampSubject(
+  ctx: CanvasRenderingContext2D,
+  subject: DecodedImage,
+  dest: Rect,
+  fill: SimState["fill"],
+): void {
+  if (fill === "off") {
+    ctx.drawImage(subject.bitmap, dest.x, dest.y, dest.w, dest.h);
+    return;
+  }
+  const layer = document.createElement("canvas");
+  layer.width = Math.max(1, Math.round(dest.w));
+  layer.height = Math.max(1, Math.round(dest.h));
+  const lctx = layer.getContext("2d", { willReadFrequently: true });
+  if (!lctx) {
+    ctx.drawImage(subject.bitmap, dest.x, dest.y, dest.w, dest.h);
+    return;
+  }
+  lctx.drawImage(subject.bitmap, 0, 0, layer.width, layer.height);
+  const fg = fillGrade(fill);
+  applyGrade(lctx, fg);
+  paintFillWash(lctx, fill);
+  if (fg.bloom > 0) bloom(lctx, fg.bloom, true);
+  ctx.drawImage(layer, dest.x, dest.y, dest.w, dest.h);
+}
+
 function bloom(ctx: CanvasRenderingContext2D, amount: number, cheap: boolean): void {
   if (amount <= 0) return;
   const src = ctx.canvas;
@@ -205,7 +253,8 @@ export function composePortrait(
   const camEV = exposureValue(solved.aperture, solved.shutterSec, solved.iso);
   const deltaEV = exposureDelta(camEV, evScene);
   const gain = exposureGain(deltaEV);
-  const grade = composeGrade(state.light, state.filter, gain);
+  const fill = state.fill;
+  const grade = composeGrade(state.light, state.filter, gain * fillSceneGain(fill));
 
   const bgCoc = circleOfConfusionMm({
     focalMm: lens.focalMm,
@@ -263,12 +312,12 @@ export function composePortrait(
   if (grade.highlightCompress > 0) applyGrade(ctx, grade, true);
 
   const drawSubject = (into: CanvasRenderingContext2D, ox: number, oy: number) => {
-    into.drawImage(subject.bitmap, dest.x - ox, dest.y - oy, dest.w, dest.h);
+    stampSubject(into, subject, { ...dest, x: dest.x - ox, y: dest.y - oy }, fill);
   };
   if (canBlur && subSigma > 0.4) {
     blurLayer(ctx, drawSubject, dest, subSigma, sensor);
   } else {
-    ctx.drawImage(subject.bitmap, dest.x, dest.y, dest.w, dest.h);
+    stampSubject(ctx, subject, dest, fill);
   }
 
   if (fg && plateSpec.fgSrc) {

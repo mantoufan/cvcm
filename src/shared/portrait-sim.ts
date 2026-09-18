@@ -8,13 +8,14 @@ import {
   nearestShutter,
   plateCrop,
   type FilterId,
+  type FillId,
   type LightId,
   type Mode,
 } from "./camera";
 
-export type { FilterId, LightId, Mode };
+export type { FilterId, FillId, LightId, Mode };
 
-export type PersonId = "mira" | "ken" | "lin";
+export type PersonId = "mira" | "ken" | "lin" | "yuki" | "ren";
 export type PoseId = "stand34" | "sit45" | "prop" | "away";
 export type SceneId = "window" | "shade" | "cafe" | "indoor";
 export type LensId = "phone" | "24" | "35" | "50" | "85" | "135";
@@ -22,7 +23,7 @@ export type PlateKind = "wide" | "tele";
 export type FrameId = "3-2" | "4-5" | "16-9";
 
 export const MATCH = { focalMm: 50, distanceM: 2.2, k: 1, destHPx: 1080, eyeHeadroom: 0.12 } as const;
-export const PLATE_VER = "2";
+export const PLATE_VER = "3";
 
 export const FRAME_LIVE: Record<FrameId, { w: number; h: number }> = {
   "3-2": { w: 1440, h: 960 },
@@ -133,11 +134,12 @@ export type SimState = {
   distanceM: number;
   tripod: boolean;
   filter: FilterId;
+  fill: FillId;
   light: LightId;
 };
 
 const POSES: readonly PoseId[] = ["stand34", "sit45", "prop", "away"];
-const PEOPLE: readonly PersonId[] = ["mira", "ken", "lin"];
+const PEOPLE: readonly PersonId[] = ["mira", "ken", "lin", "yuki", "ren"];
 
 function plate(scene: SceneId, kind: PlateKind, fg: boolean): PlateSpec {
   const wide = kind === "wide";
@@ -208,6 +210,18 @@ export const catalog: Catalog = {
       poses: POSES,
       thumb: `/covers/portrait-sim/thumbs/lin.webp?v=${PLATE_VER}`,
     },
+    yuki: {
+      id: "yuki",
+      defaultPose: "stand34",
+      poses: POSES,
+      thumb: `/covers/portrait-sim/thumbs/yuki.webp?v=${PLATE_VER}`,
+    },
+    ren: {
+      id: "ren",
+      defaultPose: "stand34",
+      poses: POSES,
+      thumb: `/covers/portrait-sim/thumbs/ren.webp?v=${PLATE_VER}`,
+    },
   },
   poses: {
     stand34: { id: "stand34", thumb: `/covers/portrait-sim/thumbs/pose-stand34.webp?v=${PLATE_VER}`, subjectDistanceM: 2.2 },
@@ -250,6 +264,7 @@ export function defaultSimState(): SimState {
     distanceM: MATCH.distanceM,
     tripod: false,
     filter: "none",
+    fill: "off",
     light: "window",
   };
 }
@@ -351,6 +366,7 @@ const LENSES = new Set<string>(["phone", "24", "35", "50", "85", "135"]);
 const FRAMES = new Set<string>(["3-2", "4-5", "16-9"]);
 const MODES = new Set<string>(["P", "Av", "Tv", "M"]);
 const FILTERS = new Set<string>(["none", "uv", "nd3", "nd6", "cpl", "soft", "warm", "cool"]);
+const FILLS = new Set<string>(["off", "white", "black", "gold"]);
 const LIGHTS = new Set<string>(["sunny", "shade", "window", "overcast", "golden"]);
 
 function parseNum(raw: string | null): number | undefined {
@@ -388,6 +404,7 @@ export function clampSimState(partial: Partial<SimState>, base = defaultSimState
     distanceM,
     tripod: Boolean(partial.tripod ?? base.tripod),
     filter: partial.filter && FILTERS.has(partial.filter) ? partial.filter : base.filter,
+    fill: partial.fill && FILLS.has(partial.fill) ? partial.fill : base.fill,
     light: partial.light && LIGHTS.has(partial.light) ? partial.light : base.light,
   };
 }
@@ -402,6 +419,7 @@ export function parseSimQuery(search: string): Partial<SimState> {
   const frame = q.get("frame");
   const mode = q.get("mode");
   const filter = q.get("filter");
+  const fill = q.get("fill");
   const light = q.get("light");
   if (person && PERSONS.has(person)) out.person = person as PersonId;
   if (pose && POSE_IDS.has(pose)) out.pose = pose as PoseId;
@@ -410,6 +428,7 @@ export function parseSimQuery(search: string): Partial<SimState> {
   if (frame && FRAMES.has(frame)) out.frame = frame as FrameId;
   if (mode && MODES.has(mode)) out.mode = mode as Mode;
   if (filter && FILTERS.has(filter)) out.filter = filter as FilterId;
+  if (fill && FILLS.has(fill)) out.fill = fill as FillId;
   if (light && LIGHTS.has(light)) out.light = light as LightId;
   const iso = parseNum(q.get("iso"));
   const aperture = parseNum(q.get("aperture"));
@@ -440,6 +459,7 @@ export function serializeSimQuery(state: SimState): string {
   q.set("focus", String(state.focusM));
   q.set("distance", String(state.distanceM));
   q.set("filter", state.filter);
+  q.set("fill", state.fill);
   q.set("light", state.light);
   if (state.tripod) q.set("tripod", "1");
   const text = q.toString();

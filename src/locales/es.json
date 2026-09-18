@@ -121,7 +121,7 @@
     "titleSlug": "Generador de slug — URL slug — cv.cm",
     "descSlug": "Convierte un título en slug de URL. Minúsculas y guiones. Nada se sube.",
     "titlePortraitSim": "Simulador de cámara de retrato — aprende exposición en el navegador — cv.cm",
-    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos fotorrealistas. Descarga PNG o JPEG en esta pestaña. Nada se sube.",
+    "descPortraitSim": "Practica diafragma, obturador, ISO, objetivos y filtros con modelos adultos fotorrealistas y de anime. Descarga PNG o JPEG en esta pestaña. Nada se sube.",
     "titleAge": "Calculadora de edad — años meses días — cv.cm",
     "descAge": "Calcula la edad en años, meses y días en el navegador. Elige nacimiento y una fecha. Nada se sube.",
     "titleBmi": "Calculadora de IMC — índice de masa corporal — cv.cm",
@@ -434,7 +434,7 @@
     },
     "portrait-sim": {
       "name": "Simulador de retrato",
-      "blurb": "Practica diafragma y objetivos con adultos fotorrealistas. Exporta aquí."
+      "blurb": "Practica diafragma y objetivos con adultos fotorrealistas y de anime. Exporta aquí."
     },
     "age": {
       "name": "Calculadora de edad",
@@ -1533,9 +1533,9 @@
       "q3": "¿Puedo probar un objetivo de móvil?",
       "a3": "Sí. Elige Phone 26 mm-e. El diafragma queda en f/1.8 porque el iris del móvil es fijo.",
       "q4": "¿Es iluminación de estudio?",
-      "a4": "No. La v1 solo cambia exposición y balance de blancos. El relight de estudio es un paso posterior.",
+      "a4": "La exposición de escena es el balance de blancos de una placa preiluminada. La luz de relleno (blanca, luz negra, oro) es un gel sobre el modelo, no una clave móvil.",
       "q5": "¿Son personas reales o menores?",
-      "a5": "Solo adultos simulados. No hay menores ni se suben caras reales."
+      "a5": "Solo adultos simulados — fotorrealistas y de anime. No hay menores ni se suben caras reales."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2922,7 +2922,9 @@
     "person": {
       "mira": "Mira",
       "ken": "Ken",
-      "lin": "Lin"
+      "lin": "Lin",
+      "yuki": "Yuki",
+      "ren": "Ren"
     },
     "pose": {
       "stand34": "De pie 3/4",
@@ -2951,7 +2953,7 @@
       "nd3": "ND 3 pasos",
       "nd6": "ND 6 pasos",
       "cpl": "Polarizador",
-      "soft": "Suave",
+      "soft": "Difusión",
       "warm": "Cálido",
       "cool": "Frío"
     },
@@ -2962,6 +2964,14 @@
       "window": "Ventana",
       "overcast": "Nublado",
       "golden": "Hora dorada"
+    },
+    "fill": "Luz de relleno",
+    "fillNote": "Lámpara o gel sobre el modelo. El blanco abre sombras. La luz negra es UV. El oro es un gel cálido.",
+    "fills": {
+      "off": "Apagada",
+      "white": "Blanca",
+      "black": "Luz negra",
+      "gold": "Dorada"
     }
   },
   "age": {

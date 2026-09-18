@@ -121,7 +121,7 @@
     "titleSlug": "Slug generator — URL slug — cv.cm",
     "descSlug": "Turn a title into a URL slug in the browser. Lowercase, hyphens, no punctuation. Nothing is uploaded.",
     "titlePortraitSim": "Portrait camera simulator — learn exposure in the browser — cv.cm",
-    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on photoreal adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded.",
+    "descPortraitSim": "Practice aperture, shutter, ISO, lenses and filters on photoreal and anime adult sitters. Snap PNG or JPEG in this tab. Nothing is uploaded.",
     "titleAge": "Age calculator — years months days — cv.cm",
     "descAge": "Find age in years, months, and days in the browser. Pick a birth date and a date. Nothing is uploaded.",
     "titleBmi": "BMI calculator — body mass index — cv.cm",
@@ -843,7 +843,7 @@
     },
     "portrait-sim": {
       "name": "Portrait camera sim",
-      "blurb": "Learn aperture, shutter and lenses on photoreal adults. Export in this tab."
+      "blurb": "Learn aperture, shutter and lenses on photoreal and anime adults. Export in this tab."
     },
     "age": {
       "name": "Age calculator",
@@ -1942,9 +1942,9 @@
       "q3": "Can I try a phone lens?",
       "a3": "Yes. Choose Phone 26 mm-e. Aperture stays at f/1.8 because a phone iris is fixed.",
       "q4": "Is this studio lighting or a moving key light?",
-      "a4": "No. v1 only changes exposure and white balance on a pre-lit plate. Studio relight is a later step.",
+      "a4": "Scene exposure is white balance on a pre-lit plate. Fill light (white, blacklight, gold) is a gel on the sitter, not a moving key.",
       "q5": "Are the people real, or children?",
-      "a5": "They are simulated adult sitters only. There are no minors and no uploads of real faces."
+      "a5": "They are simulated adult sitters only — photoreal and anime. There are no minors and no uploads of real faces."
     },
     "age": {
       "q1": "Can I calculate age here?",
@@ -2922,7 +2922,9 @@
     "person": {
       "mira": "Mira",
       "ken": "Ken",
-      "lin": "Lin"
+      "lin": "Lin",
+      "yuki": "Yuki",
+      "ren": "Ren"
     },
     "pose": {
       "stand34": "Stand 3/4",
@@ -2951,7 +2953,7 @@
       "nd3": "ND 3-stop",
       "nd6": "ND 6-stop",
       "cpl": "Polarizer",
-      "soft": "Soft",
+      "soft": "Soft diffusion",
       "warm": "Warm",
       "cool": "Cool"
     },
@@ -2962,6 +2964,14 @@
       "window": "Window",
       "overcast": "Overcast",
       "golden": "Golden hour"
+    },
+    "fill": "Fill light",
+    "fillNote": "A lamp or gel on the sitter. White lifts shadows. Blacklight is UV. Gold is a warm gel.",
+    "fills": {
+      "off": "Off",
+      "white": "White",
+      "black": "Blacklight",
+      "gold": "Gold"
     }
   },
   "age": {
