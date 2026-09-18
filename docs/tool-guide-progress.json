@@ -665,7 +665,40 @@
       ],
       "ms": 2049,
       "error": null
+    },
+    "reverse": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/reverse/01.jpg",
+        "covers/guides/reverse/02.jpg",
+        "covers/guides/reverse/03.jpg"
+      ],
+      "ms": 1986,
+      "error": null
+    },
+    "url-encode": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/url-encode/01.jpg",
+        "covers/guides/url-encode/02.jpg",
+        "covers/guides/url-encode/03.jpg"
+      ],
+      "ms": 2077,
+      "error": null
+    },
+    "text-hex": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/text-hex/01.jpg",
+        "covers/guides/text-hex/02.jpg",
+        "covers/guides/text-hex/03.jpg"
+      ],
+      "ms": 2087,
+      "error": null
     }
   },
-  "updated": "2026-09-18T01:38:48.903Z"
+  "updated": "2026-09-18T03:28:38.849Z"
 }
