@@ -159,7 +159,21 @@
     "titleMorse": "Mã Morse — chữ sang Morse — cv.cm",
     "descMorse": "Đổi chữ sang Morse và Morse về chữ trong trình duyệt. Không tải lên.",
     "titleRoman": "Số La Mã — Ả Rập sang La Mã — cv.cm",
-    "descRoman": "Đổi 1–3999 sang số La Mã và ngược lại trong trình duyệt. Không tải lên."
+    "descRoman": "Đổi 1–3999 sang số La Mã và ngược lại trong trình duyệt. Không tải lên.",
+    "titleDiscount": "Tính giảm giá — phần trăm off — cv.cm",
+    "descDiscount": "Tính giá sau khi giảm trong trình duyệt. Giá gốc và phần trăm. Không tải lên.",
+    "titleCountdown": "Đếm ngược — giờ phút giây — cv.cm",
+    "descCountdown": "Đếm ngược trong trình duyệt. Đặt giờ, phút, giây. Không tải lên.",
+    "titleLoan": "Tính khoản vay — trả tháng — cv.cm",
+    "descLoan": "Ước trả tháng cố định trong trình duyệt. Gốc, lãi, số năm. Không tải lên.",
+    "titleMakeCollage": "Cách làm ảnh ghép | cv.cm",
+    "descMakeCollage": "Chọn lưới và cỡ, thả ảnh, Contain hay Cover để khỏi cắt mặt, tải, xem 100%. Không tải lên.",
+    "titleMakeMeme": "Cách làm meme | cv.cm",
+    "descMakeMeme": "Thả ảnh, chữ trên dưới ngắn, tải PNG, xem bề ngang điện thoại. Không tải lên.",
+    "titleCountWords": "Cách đếm từ và ký tự | cv.cm",
+    "descCountWords": "Dán bản thảo, đọc từ hoặc ký tự (bài Trung: không khoảng), cắt theo hạn, đếm lại. Không tải lên.",
+    "titleTrimAudio": "Cách cắt audio / cắt MP3 | cv.cm",
+    "descTrimAudio": "Đánh đầu cuối, nghe trong trang, tải WAV, phát file. Bản gốc còn. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -418,6 +432,18 @@
     "roman": {
       "name": "Số La Mã",
       "blurb": "1–3999 ↔ số La Mã. Không tải lên."
+    },
+    "discount": {
+      "name": "Tính giảm giá",
+      "blurb": "Giá sau giảm. Không tải lên."
+    },
+    "countdown": {
+      "name": "Đếm ngược",
+      "blurb": "Giờ, phút, giây. Không tải lên."
+    },
+    "loan": {
+      "name": "Tính khoản vay",
+      "blurb": "Gốc, lãi, năm ra trả tháng. Không tải lên."
     }
   },
   "watermark": {
@@ -1012,6 +1038,54 @@
         "a4": "Không. Bạn tải file mới. Giữ hay xóa gốc do bạn.",
         "q5": "Còn ảnh chụp PNG?",
         "a5": "Thường không có GPS. Thả vào; đã sạch thì xong."
+      },
+      "make-collage": {
+        "q1": "Làm collage miễn phí online?",
+        "a1": "Được. Làm trong tab này, không tải lên.",
+        "q2": "Collage 2×2 Instagram?",
+        "a2": "Chọn 2×2 và vuông (hoặc 4:5). Thả bốn ảnh, xem Contain/Cover, tải.",
+        "q3": "Vì sao mặt bị cắt?",
+        "a3": "Cover lấp ô. Đổi Contain, hoặc chọn ảnh có chỗ quanh đầu.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Không cần Canva hay Photoshop?",
+        "a5": "Được. Trang này là collage. Không tài khoản."
+      },
+      "make-meme": {
+        "q1": "Làm meme miễn phí online?",
+        "a1": "Được. Vẽ trong tab này, không tải lên.",
+        "q2": "Cần Photoshop hay app?",
+        "a2": "Không. Trình duyệt hiện tại đủ.",
+        "q3": "Font nào?",
+        "a3": "Sans đậm viền tối, thường viết hoa. Công cụ này đúng kiểu đó.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Làm trên iPhone được không?",
+        "a5": "Được trên Safari. HEIC không xem trước thì đổi JPG trước."
+      },
+      "count-words": {
+        "q1": "Đếm từ online?",
+        "a1": "Dán vào đếm từ cv.cm trong tab này, đọc Words. Không tải lên.",
+        "q2": "Từ khác ký tự thế nào?",
+        "a2": "Từ tách theo khoảng (ở đây mỗi chữ Hán cũng là một từ). Ký tự đếm cả chữ, khoảng, dấu.",
+        "q3": "Đếm chữ Hán thế nào?",
+        "a3": "Giáo viên cần 字数 thì dùng không khoảng. Bài 800 chữ đừng dùng Words.",
+        "q4": "Chữ có bị tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Sao không khớp Word?",
+        "a5": "Mỗi app tách từ khác, nhất là chữ Hán, gạch nối, số. Đếm đúng chỗ đặt hạn."
+      },
+      "trim-audio": {
+        "q1": "Cắt MP3 online miễn phí?",
+        "a1": "Thả vào cắt audio cv.cm trong tab này, đánh đầu cuối, nghe, tải WAV. Không tải lên.",
+        "q2": "Sao tải về là WAV không phải MP3?",
+        "a2": "Công cụ mã hóa lại đoạn thành WAV trong trình duyệt. Cần MP3 thì đổi sau.",
+        "q3": "Cắt M4A hoặc ghi âm?",
+        "a3": "Trình duyệt giải được thì được. Không phát được thì xuất WAV từ máy ghi trước.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Có sửa file gốc không?",
+        "a5": "Không. Bạn tải WAV mới. MP3 trên đĩa còn."
       }
     },
     "compress-pdf": {
@@ -1481,6 +1555,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -1652,7 +1762,9 @@
       "mind": "Tâm lý",
       "course": "Một ngồi",
       "codes": "Mã",
-      "files": "Tệp"
+      "files": "Tệp",
+      "audio": "Âm thanh",
+      "text": "Chữ"
     },
     "hub": {
       "kicker": "Bài học trong ngày",
@@ -1953,6 +2065,94 @@
       "s6b": "Chat đôi khi tự gỡ GPS. Đừng tin khi đăng công khai — chứng minh bằng lần thả thứ hai.",
       "diagram1": "File ảnh = pixel + GPS. Xuất = chỉ pixel.",
       "diagram2": "Thả, xuất, thả bản xuất lại. Lần hai phải sạch."
+    },
+    "make-collage": {
+      "name": "Cách làm ảnh ghép",
+      "blurb": "Chọn lưới, thả ảnh, contain hay cover, tải, kiểm mặt.",
+      "title": "Cách làm ảnh ghép",
+      "lead": "Collage là bố cục trước. Chọn lưới và kích thước, thả ảnh theo thứ tự, kiểm Cover không cắt mặt.",
+      "result": "Một ảnh: ô đúng, mặt còn, đúng cỡ chỗ đăng.",
+      "note": "Có ảnh trên đĩa thì mở collage. Contain giữ cả ảnh (có lề). Cover lấp ô, có thể cắt mặt. Không tải lên.",
+      "s1t": "Chọn lưới và cỡ trước",
+      "s1b": "Bộ ảnh dùng 2×2 hoặc 3×3. Feed vuông, dọc 4:5, story 9:16, bìa 16:9. Đổi cỡ sau sẽ cắt lại mọi ô.",
+      "s2t": "Mở collage trên cv.cm",
+      "s2b": "Làm trong tab này. Không tải lên.",
+      "s3t": "Thả ảnh theo thứ tự xuất hiện",
+      "s3b": "File đầu là ô đầu. Sai thì sắp lại rồi mới xuất.",
+      "s4t": "Chọn Contain hay Cover",
+      "s4b": "Contain giữ cả ảnh, có thể có lề. Cover lấp ô, có thể cắt trán hoặc cằm. Có mặt thì bắt đầu Contain.",
+      "s5t": "Tải PNG hoặc JPEG",
+      "s5b": "Mép sắc dùng PNG. Feed nhẹ dùng JPEG.",
+      "s6t": "Mở 100% và đi từng ô",
+      "s6b": "Mặt bị cắt thì đổi Contain hoặc đổi ảnh. Sai thứ tự thì sắp lại rồi xuất. Giữ gốc.",
+      "diagram1": "Bố cục trước: 2×2, 3×3, vuông, 4:5, 9:16.",
+      "diagram2": "Contain giữ cả ảnh. Cover lấp ô, có thể cắt mặt."
+    },
+    "make-meme": {
+      "name": "Cách làm meme",
+      "blurb": "Thả ảnh, chữ trên dưới, tải PNG, xem bề ngang điện thoại.",
+      "title": "Cách làm meme",
+      "lead": "Meme là ảnh cộng hai dòng ngắn. Thả ảnh, gõ trên dưới, xem còn đọc được cỡ bong bóng chat.",
+      "result": "PNG: chữ trên dưới đọc được, không che mặt.",
+      "note": "Có ảnh trên đĩa thì mở meme. Câu ngắn. Không tải lên.",
+      "s1t": "Chọn ảnh nhỏ vẫn đọc được",
+      "s1b": "Nền rối tranh chữ. Mặt hoặc một vật rõ hơn phong cảnh.",
+      "s2t": "Mở meme trên cv.cm",
+      "s2b": "Làm trong tab này.",
+      "s3t": "Thả ảnh",
+      "s3b": "Xem trước trống thì đổi HEIC sang JPG trước.",
+      "s4t": "Gõ một dòng trên và dưới, ngắn",
+      "s4b": "Thường viết hoa. Hai đến bảy từ một dòng. Đừng viết một đoạn.",
+      "s5t": "Xem xuống dòng và viền",
+      "s5b": "Chữ trắng đọc được nhờ viền. Che mặt thì rút ngắn.",
+      "s6t": "Tải PNG và xem bề ngang điện thoại",
+      "s6b": "Chỉ đọc được full màn hình thì gửi chat sẽ fail. Giữ ảnh gốc chưa chữ.",
+      "diagram1": "Dòng trên mở, dòng dưới chốt. Cả hai phải ngắn.",
+      "diagram2": "Viền giúp chữ đọc được. Đừng che mặt."
+    },
+    "count-words": {
+      "name": "Cách đếm từ và ký tự",
+      "blurb": "Dán chữ, đọc đúng chỉ số. Form có hạn thì cắt rồi đếm lại.",
+      "title": "Cách đếm từ và ký tự",
+      "lead": "Bài tiếng Anh đếm từ. Form thường đếm ký tự. Bài tiếng Trung thường đếm không khoảng trắng. Dán chữ và đọc đúng số.",
+      "result": "Đúng con số form hoặc giáo viên hỏi. Chữ không rời tab này.",
+      "note": "Chữ sẵn thì mở đếm. Từ, ký tự, ký tự không khoảng là ba số khác. Không tải lên.",
+      "s1t": "Biết cần số nào",
+      "s1b": "Bài Anh: từ. Form web: ký tự. Bài Trung: ký tự không khoảng. Đừng trộn.",
+      "s2t": "Mở đếm từ trên cv.cm",
+      "s2b": "Đếm trong tab này.",
+      "s3t": "Dán chữ, hoặc thả .txt",
+      "s3b": "Dán đúng bản sẽ nộp. Đếm bản khác thì dễ vượt hạn.",
+      "s4t": "Đọc đúng chỉ số",
+      "s4b": "Tiếng Anh: từ. Form: ký tự. Bài Trung: không khoảng. Ở đây mỗi chữ Hán cũng là một từ — bài 800 chữ đừng nhìn Words.",
+      "s5t": "Có hạn thì cắt rồi đếm lại",
+      "s5b": "Xóa xong vẫn nhìn cùng một hàng. Đừng đổi từ sang ký tự giữa chừng.",
+      "s6t": "Đừng lấy số app khác cho form này",
+      "s6b": "Word, Docs và form web thường lệch. Đếm đúng chỗ sẽ dán.",
+      "diagram1": "Từ · ký tự · không khoảng. Ba việc, ba số.",
+      "diagram2": "Bài Trung dùng ký tự không khoảng, đừng dùng Words."
+    },
+    "trim-audio": {
+      "name": "Cách cắt audio / cắt MP3",
+      "blurb": "Đặt đầu và cuối, nghe, tải WAV, phát lại trước khi gửi.",
+      "title": "Cách cắt audio / cắt MP3",
+      "lead": "Bạn cần một đoạn, không cả file: nhạc chuông, trích, voicemail. Đánh đầu cuối trong tab này, nghe, tải WAV. Bản gốc còn trên đĩa.",
+      "result": "WAV bắt và kết đúng chỗ đánh, đã phát một lần.",
+      "note": "Có audio trên đĩa thì mở cắt. File tải là WAV, dù thả MP3. Nghe trước khi gửi. Không tải lên.",
+      "s1t": "Biết cắt từ đâu đến đâu",
+      "s1b": "Nhạc chuông thường 20–40 giây. Trích một câu. File dài thì ghi mốc.",
+      "s2t": "Mở cắt audio trên cv.cm",
+      "s2b": "Cắt trong tab này.",
+      "s3t": "Thả MP3, WAV hoặc M4A",
+      "s3b": "Không phát được thì codec không hỗ trợ. Thử WAV hoặc trình duyệt khác.",
+      "s4t": "Đặt đầu và cuối, rồi nghe",
+      "s4b": "Phát đoạn trong trang. Từ đầu bị cắt thì kéo start sớm hơn. Hơi thừa ở cuối thì kéo end vào.",
+      "s5t": "Tải WAV",
+      "s5b": "Dù thả MP3, xuất vẫn WAV. Form bắt MP3 thì đổi sau. Giữ gốc.",
+      "s6t": "Phát file đã tải một lần",
+      "s6b": "Đừng gửi chỉ vì nghe trong trang. Đầu muộn hoặc cuối sớm thì cắt lại.",
+      "diagram1": "Đầu và cuối trên sóng. Nghe đoạn trước khi tải.",
+      "diagram2": "Xuất là WAV. Phát file. MP3 gốc còn trên đĩa."
     }
   },
   "compressPdf": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "Tính giảm giá",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "Đếm ngược",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "Tính khoản vay",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Chạy trong tab này. Không tải lên.",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }

@@ -32,6 +32,9 @@ Browser tools plus a tiny cloud clipboard.
 - **Tip calculator** / 小费. [Open](https://cv.cm/en/tip/)
 - **Morse code** / 摩尔斯. [Open](https://cv.cm/en/morse/)
 - **Roman numerals** / 罗马数字. [Open](https://cv.cm/en/roman/)
+- **Discount calculator** / 折扣. [Open](https://cv.cm/en/discount/)
+- **Countdown** / 倒计时. [Open](https://cv.cm/en/countdown/)
+- **Loan calculator** / 贷款. [Open](https://cv.cm/en/loan/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
@@ -79,6 +82,10 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to resize or compress an image](https://cv.cm/en/learn/resize-image/)
 - [How to add a watermark](https://cv.cm/en/learn/add-watermark/)
 - [How to remove EXIF / location](https://cv.cm/en/learn/remove-exif/)
+- [How to make a photo collage](https://cv.cm/en/learn/make-collage/)
+- [How to make a meme](https://cv.cm/en/learn/make-meme/)
+- [How to count words and characters](https://cv.cm/en/learn/count-words/)
+- [How to trim audio / cut an MP3](https://cv.cm/en/learn/trim-audio/)
 
 Older photography, court, pool and interpersonal lesson URLs still parse, then 301 to the hub.
 

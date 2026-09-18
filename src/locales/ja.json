@@ -159,7 +159,21 @@
     "titleMorse": "モールス信号 — テキストからモールス — cv.cm",
     "descMorse": "ブラウザでテキストとモールスを相互変換。アップロードなし。",
     "titleRoman": "ローマ数字 — アラビア数字からローマ — cv.cm",
-    "descRoman": "ブラウザで 1–3999 とローマ数字を相互変換。アップロードなし。"
+    "descRoman": "ブラウザで 1–3999 とローマ数字を相互変換。アップロードなし。",
+    "titleDiscount": "割引計算 — パーセントオフ — cv.cm",
+    "descDiscount": "ブラウザで割引後の価格。元値と割引率。アップロードなし。",
+    "titleCountdown": "カウントダウン — 時 分 秒 — cv.cm",
+    "descCountdown": "ブラウザでカウントダウン。時・分・秒。アップロードなし。",
+    "titleLoan": "ローン計算 — 月々の支払い — cv.cm",
+    "descLoan": "ブラウザで固定月額を概算。元金・金利・年数。アップロードなし。",
+    "titleMakeCollage": "写真コラージュの作り方 | cv.cm",
+    "descMakeCollage": "グリッドとサイズを選び、写真を入れ、Contain/Coverで顔を守り、100%で確認。アップロードなし。",
+    "titleMakeMeme": "ミームの作り方 | cv.cm",
+    "descMakeMeme": "写真を入れ、上下に短い行、PNGを保存しスマホ幅で見る。アップロードなし。",
+    "titleCountWords": "単語と文字数の数え方 | cv.cm",
+    "descCountWords": "原稿を貼り、単語か文字（中国語宿題は空白なし）を見て、上限まで削って再カウント。アップロードなし。",
+    "titleTrimAudio": "音声のトリム / MP3を切る方法 | cv.cm",
+    "descTrimAudio": "開始と終了を付け、ページで聴き、WAVを保存して再生。元は残る。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -418,6 +432,18 @@
     "roman": {
       "name": "ローマ数字",
       "blurb": "1–3999 ↔ ローマ数字。アップロードなし。"
+    },
+    "discount": {
+      "name": "割引計算",
+      "blurb": "割引後の価格。アップロードなし。"
+    },
+    "countdown": {
+      "name": "カウントダウン",
+      "blurb": "時・分・秒。アップロードなし。"
+    },
+    "loan": {
+      "name": "ローン計算",
+      "blurb": "元金・金利・年数から月額。アップロードなし。"
     }
   },
   "watermark": {
@@ -1012,6 +1038,54 @@
         "a4": "しない。新しいファイルを保存する。原版は自分で残すか消す。",
         "q5": "PNGのスクショは？",
         "a5": "GPSがないことが多い。入れてきれいなら終わり。"
+      },
+      "make-collage": {
+        "q1": "無料でコラージュできる？",
+        "a1": "できる。このタブ。アップロードなし。",
+        "q2": "Instagram用の2×2は？",
+        "a2": "2×2と正方形（または4:5）。4枚入れてContain/Coverを見て保存。",
+        "q3": "顔が切れたのはなぜ？",
+        "a3": "Coverがセルを埋める。Containにするか、頭の周りに余白がある写真に変える。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "CanvaやPhotoshopなしで？",
+        "a5": "できる。このページがコラージュ。アカウント不要。"
+      },
+      "make-meme": {
+        "q1": "無料でミームを作れる？",
+        "a1": "できる。このタブで描く。アップロードなし。",
+        "q2": "Photoshopやアプリは要る？",
+        "a2": "不要。今のブラウザで足りる。",
+        "q3": "フォントは？",
+        "a3": "太いサンセリフに暗い縁。だいたい全部大文字。このツールがその見た目。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "iPhoneでも？",
+        "a5": "Safariなら可。HEICがプレビューできないなら先にJPGへ。"
+      },
+      "count-words": {
+        "q1": "オンラインで単語を数えるには？",
+        "a1": "このタブに貼って単語を見る。アップロードなし。",
+        "q2": "単語と文字の違いは？",
+        "a2": "単語は空白で切る（ここでは漢字1字も1語）。文字は字母・空白・句読点も数える。",
+        "q3": "中国語の文字数は？",
+        "a3": "先生が字数なら空白なし。800字の作文に単語を使わない。",
+        "q4": "テキストはアップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "Wordと合わないのはなぜ？",
+        "a5": "アプリごとに切れ方が違う。漢字・ハイフン・数字は特に。上限を数える道具で数える。"
+      },
+      "trim-audio": {
+        "q1": "MP3を無料で切るには？",
+        "a1": "このタブのカットにドロップし、開始と終了を付け、聴いてWAVを保存。アップロードなし。",
+        "q2": "保存がWAVなのはなぜ？",
+        "a2": "選択をブラウザでWAVに再エンコードする。MP3が要るなら後で変換。",
+        "q3": "M4Aやボイスメモは？",
+        "a3": "ブラウザがデコードできれば可。再生できないなら先にWAVを書き出す。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "元ファイルは変わる？",
+        "a5": "しない。新しいWAVを保存。元のMP3は残る。"
       }
     },
     "compress-pdf": {
@@ -1481,6 +1555,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -1652,7 +1762,9 @@
       "mind": "こころ",
       "course": "一気",
       "codes": "コード",
-      "files": "ファイル"
+      "files": "ファイル",
+      "audio": "音声",
+      "text": "テキスト"
     },
     "hub": {
       "kicker": "当日レッスン",
@@ -1953,6 +2065,94 @@
       "s6b": "チャットは勝手にGPSを落とすこともある。公開出品では当てにせず、再ドロップで証明。",
       "diagram1": "写真ファイル＝画素+GPS。書き出し＝画素だけ。",
       "diagram2": "ドロップ→書き出し→再ドロップ。2回目はきれい。"
+    },
+    "make-collage": {
+      "name": "写真コラージュの作り方",
+      "blurb": "先にグリッド、写真を入れ、containかcoverか。保存して顔が切れてないか見る。",
+      "title": "写真コラージュの作り方",
+      "lead": "コラージュは先にレイアウト。グリッドとサイズを選び、順に入れて、Coverで顔が切れていないか見る。",
+      "result": "セルが正しく、顔が残り、投稿先のサイズに合う1枚。",
+      "note": "写真が手元にあってから開く。Containは全体（余白）。Coverはセルを埋め、顔を切ることがある。アップロードなし。",
+      "s1t": "先にグリッドとサイズ",
+      "s1b": "セットは2×2や3×3。フィードは正方形、縦4:5、ストーリー9:16、カバー16:9。後からサイズを変えると全セルが再クロップ。",
+      "s2t": "cv.cmのコラージュを開く",
+      "s2b": "このタブで処理。アップロードなし。",
+      "s3t": "出したい順にドロップ",
+      "s3b": "先頭が最初のセル。違うなら並べ替えてから書き出す。",
+      "s4t": "ContainかCoverか",
+      "s4b": "Containは全体（余白あり）。Coverはセルを埋め額や顎を切ることがある。顔があるならContainから。",
+      "s5t": "PNGかJPEGを保存",
+      "s5b": "端をSharpにするならPNG。フィードを軽くするならJPEG。",
+      "s6t": "100%で開きセルを歩く",
+      "s6b": "顔が切れたらContainにするか写真を変える。順が違うなら並べ直して再書き出し。原版は残す。",
+      "diagram1": "先にレイアウト：2×2、3×3、正方形、4:5、9:16。",
+      "diagram2": "Containは全体。Coverは埋めて顔を切ることがある。"
+    },
+    "make-meme": {
+      "name": "ミームの作り方",
+      "blurb": "写真を入れ、上下に文字、PNGを保存し、スマホ幅で見る。",
+      "title": "ミームの作り方",
+      "lead": "ミームは写真と短い2行。画像を入れ、上下を打ち、チャットの大きさで読めるか見る。",
+      "result": "上下が読めて顔を隠さないPNG。",
+      "note": "写真が手元にあってから開く。文は短く。アップロードなし。",
+      "s1t": "小さくても分かる写真",
+      "s1b": "賑やかな背景は文字と喧嘩する。顔やはっきりした物の方が風景より向く。",
+      "s2t": "cv.cmのミームを開く",
+      "s2b": "このタブで処理。",
+      "s3t": "画像をドロップ",
+      "s3b": "プレビューが空なら先にHEICをJPGに。",
+      "s4t": "上下に短い1行",
+      "s4b": "だいたい全部大文字。1行2–7語。段落を書かない。",
+      "s5t": "折り返しと縁を見る",
+      "s5b": "白い文字が読めるのは縁のおかげ。顔を隠すなら短くする。",
+      "s6t": "PNGを保存しスマホ幅で見る",
+      "s6b": "全画面でしか読めないならチャットで失敗する。無字の原版は残す。",
+      "diagram1": "上は振り、下は落ち。どちらも短く。",
+      "diagram2": "縁で文字が読める。顔を隠さない。"
+    },
+    "count-words": {
+      "name": "単語と文字数の数え方",
+      "blurb": "テキストを貼り、合う数字を見る。上限があれば削って再カウント。",
+      "title": "単語と文字数の数え方",
+      "lead": "英語の課題は単語。フォームは文字数。中国語の宿題は空白なしの文字が多い。貼って合う数字を見る。",
+      "result": "フォームや先生が本当に欲しい数字。テキストはこのタブから出ていない。",
+      "note": "テキストが揃ってから開く。単語・文字・空白なし文字は別の数。アップロードなし。",
+      "s1t": "欲しい数字を決める",
+      "s1b": "英語課題は単語。ウェブの上限は文字。中国語宿題は空白なし文字。混ぜない。",
+      "s2t": "cv.cmの文字数を開く",
+      "s2b": "このタブで数える。",
+      "s3t": "貼るか.txtをドロップ",
+      "s3b": "提出する原稿を貼る。別コピーを数えると上限を外す。",
+      "s4t": "合う項目を読む",
+      "s4b": "英語は単語。フォームは文字。中国語課題は空白なし。ここでは漢字1字も1語なので800字の作文に単語を使わない。",
+      "s5t": "上限があれば削って再カウント",
+      "s5b": "削ったら同じ行を見る。途中で単語から文字に切り替えない。",
+      "s6t": "別アプリの数字をこのフォームに使わない",
+      "s6b": "Word、Docs、ウェブフォームは食い違う。貼る場所で数える。",
+      "diagram1": "単語・文字・空白なし。3つの仕事、3つの数。",
+      "diagram2": "中国語宿題は空白なし文字。単語は使わない。"
+    },
+    "trim-audio": {
+      "name": "音声のトリム / MP3を切る",
+      "blurb": "開始と終了を決め、聴いて、WAVを保存し、送る前にもう一度再生。",
+      "title": "音声のトリム / MP3を切る方法",
+      "lead": "欲しいのは一部。着信音、引用、留守電。このタブで開始と終了を付け、聴いてWAVを保存。元ファイルは残る。",
+      "result": "印を付けた位置で始まるWAV。一度再生して確認。",
+      "note": "音声が手元にあってから開く。保存はWAV。元がMP3でもWAV。送る前に聴く。アップロードなし。",
+      "s1t": "開始と終了を決める",
+      "s1b": "着信音はだいたい20–40秒。引用は1文。長いファイルなら時刻を書く。",
+      "s2t": "cv.cmの音声カットを開く",
+      "s2b": "このタブで切る。",
+      "s3t": "MP3 / WAV / M4Aをドロップ",
+      "s3b": "再生できないならコーデック不可。WAVか別ブラウザ。",
+      "s4t": "開始と終了を付けて聴く",
+      "s4b": "ページで範囲を再生。最初の語が切れたら開始を前に。末尾の息が残るなら終了を詰める。",
+      "s5t": "WAVを保存",
+      "s5b": "元がMP3でも書き出しはWAV。フォームがMP3なら後で変換。原版は残す。",
+      "s6t": "保存したファイルを一度再生",
+      "s6b": "ページ内プレビューだけで送らない。開始が遅い・終了が早いなら切り直す。",
+      "diagram1": "波形に開始と終了。保存前に範囲を聴く。",
+      "diagram2": "書き出しはWAV。ファイルを再生。元のMP3は残る。"
     }
   },
   "compressPdf": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "割引計算",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "カウントダウン",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "ローン計算",
+    "back": "すべてのツール",
+    "privacyNote": "このタブで完結。アップロードなし。",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }

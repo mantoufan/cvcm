@@ -91,6 +91,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `split-pdf`
 - `add-watermark`
 - `remove-exif`
+- `make-collage`
+- `make-meme`
+- `count-words`
+- `trim-audio`
 
 ## Evidence notes
 

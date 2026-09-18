@@ -97,6 +97,9 @@ const TITLE: Record<ToolId, string> = {
   tip: "meta.titleTip",
   morse: "meta.titleMorse",
   roman: "meta.titleRoman",
+  discount: "meta.titleDiscount",
+  countdown: "meta.titleCountdown",
+  loan: "meta.titleLoan",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -154,6 +157,9 @@ const DESC: Record<ToolId, string> = {
   tip: "meta.descTip",
   morse: "meta.descMorse",
   roman: "meta.descRoman",
+  discount: "meta.descDiscount",
+  countdown: "meta.descCountdown",
+  loan: "meta.descLoan",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

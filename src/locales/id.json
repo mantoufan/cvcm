@@ -159,7 +159,21 @@
     "titleMorse": "Kode Morse — teks ke Morse — cv.cm",
     "descMorse": "Ubah teks ke Morse dan Morse kembali ke teks di browser. Tidak diunggah.",
     "titleRoman": "Angka Romawi — Arab ke Romawi — cv.cm",
-    "descRoman": "Ubah 1–3999 ke angka Romawi dan sebaliknya di browser. Tidak diunggah."
+    "descRoman": "Ubah 1–3999 ke angka Romawi dan sebaliknya di browser. Tidak diunggah.",
+    "titleDiscount": "Kalkulator diskon — persen off — cv.cm",
+    "descDiscount": "Hitung harga jual setelah diskon di browser. Harga asli dan persen. Tidak diunggah.",
+    "titleCountdown": "Hitung mundur — jam menit detik — cv.cm",
+    "descCountdown": "Jalankan hitung mundur di browser. Atur jam, menit, detik. Tidak diunggah.",
+    "titleLoan": "Kalkulator pinjaman — cicilan bulanan — cv.cm",
+    "descLoan": "Perkirakan cicilan bulanan tetap di browser. Pokok, suku bunga, tahun. Tidak diunggah.",
+    "titleMakeCollage": "Cara buat kolase foto | cv.cm",
+    "descMakeCollage": "Pilih kisi dan ukuran, letakkan foto, Contain vs Cover agar wajah utuh, unduh, cek 100%. Tidak diunggah.",
+    "titleMakeMeme": "Cara buat meme | cv.cm",
+    "descMakeMeme": "Letakkan foto, baris atas/bawah pendek, unduh PNG, cek lebar ponsel. Tidak diunggah.",
+    "titleCountWords": "Cara hitung kata dan karakter | cv.cm",
+    "descCountWords": "Tempel draf, baca kata atau karakter (PR Tionghoa: tanpa spasi), potong ke batas, hitung lagi. Tidak diunggah.",
+    "titleTrimAudio": "Cara potong audio / potong MP3 | cv.cm",
+    "descTrimAudio": "Tandai awal/akhir, dengar di halaman, unduh WAV, putar file. Asli tetap. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -418,6 +432,18 @@
     "roman": {
       "name": "Angka Romawi",
       "blurb": "1–3999 ↔ Romawi. Tanpa unggah."
+    },
+    "discount": {
+      "name": "Kalkulator diskon",
+      "blurb": "Harga setelah diskon. Tanpa unggah."
+    },
+    "countdown": {
+      "name": "Hitung mundur",
+      "blurb": "Jam, menit, detik. Tanpa unggah."
+    },
+    "loan": {
+      "name": "Kalkulator pinjaman",
+      "blurb": "Pokok, bunga, tahun ke cicilan. Tanpa unggah."
     }
   },
   "watermark": {
@@ -1012,6 +1038,54 @@
         "a4": "Tidak. Anda mengunduh file baru. Asli Anda yang simpan atau hapus.",
         "q5": "Tangkapan PNG?",
         "a5": "Sering tidak punya GPS. Letakkan; kalau sudah bersih, selesai."
+      },
+      "make-collage": {
+        "q1": "Kolase gratis online?",
+        "a1": "Ya. Di tab ini. Tidak diunggah.",
+        "q2": "Kolase 2×2 Instagram?",
+        "a2": "Pilih 2×2 dan persegi (atau 4:5). Empat foto, cek Contain/Cover, unduh.",
+        "q3": "Kenapa wajah terpotong?",
+        "a3": "Cover mengisi sel. Ganti Contain, atau foto dengan ruang di sekitar kepala.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Tanpa Canva atau Photoshop?",
+        "a5": "Ya. Halaman ini kolasenya. Tanpa akun."
+      },
+      "make-meme": {
+        "q1": "Meme gratis online?",
+        "a1": "Ya. Menggambar di tab ini. Tidak diunggah.",
+        "q2": "Perlu Photoshop atau app?",
+        "a2": "Tidak. Peramban sekarang cukup.",
+        "q3": "Font apa?",
+        "a3": "Sans tebal dengan stroke gelap, biasanya kapital. Alat ini memakai tampilan itu.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Bisa di iPhone?",
+        "a5": "Ya di Safari. HEIC tidak pratinjau: ubah ke JPG dulu."
+      },
+      "count-words": {
+        "q1": "Hitung kata online?",
+        "a1": "Tempel di hitung kata cv.cm di tab ini, baca Words. Tidak diunggah.",
+        "q2": "Beda kata dan karakter?",
+        "a2": "Kata dipisah spasi (di sini tiap hanzi = satu kata). Karakter menghitung huruf, spasi, tanda baca.",
+        "q3": "Hitung karakter Tionghoa?",
+        "a3": "Guru minta 字数: karakter tanpa spasi. Jangan Words untuk 800 字.",
+        "q4": "Teks diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Kenapa beda dengan Word?",
+        "a5": "Tiap app memotong kata beda, apalagi CJK, tanda hubung, angka. Hitung di alat yang sama dengan batas."
+      },
+      "trim-audio": {
+        "q1": "Potong MP3 gratis online?",
+        "a1": "Letakkan di potong audio cv.cm di tab ini, tandai awal/akhir, dengar, unduh WAV. Tidak diunggah.",
+        "q2": "Kenapa unduhan WAV, bukan MP3?",
+        "a2": "Pemotong meng-encode ulang pilihan jadi WAV di peramban. Butuh MP3: konversi nanti.",
+        "q3": "Potong M4A atau memo suara?",
+        "a3": "Jika peramban bisa decode, ya. Gagal diputar: ekspor WAV dari perekam dulu.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Apakah file asli berubah?",
+        "a5": "Tidak. Anda mengunduh WAV baru. MP3 di disk tetap."
       }
     },
     "compress-pdf": {
@@ -1481,6 +1555,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -1652,7 +1762,9 @@
       "mind": "Psikologi",
       "course": "Sekali duduk",
       "codes": "Kode",
-      "files": "Berkas"
+      "files": "Berkas",
+      "audio": "Audio",
+      "text": "Teks"
     },
     "hub": {
       "kicker": "Pelajaran hari ini",
@@ -1953,6 +2065,94 @@
       "s6b": "Chat kadang menghapus GPS sendiri. Jangan percaya untuk listing publik — buktikan dengan drop kedua.",
       "diagram1": "File foto = piksel + GPS. Ekspor = piksel saja.",
       "diagram2": "Letakkan, ekspor, letakkan hasilnya lagi. Pass kedua harus bersih."
+    },
+    "make-collage": {
+      "name": "Cara buat kolase foto",
+      "blurb": "Pilih kisi, letakkan foto, contain vs cover, unduh, cek wajah.",
+      "title": "Cara buat kolase foto",
+      "lead": "Kolase itu layout dulu. Pilih kisi dan ukuran, letakkan berurutan, cek Cover tidak memotong wajah.",
+      "result": "Satu gambar: sel benar, wajah utuh, ukuran sesuai tempat posting.",
+      "note": "Foto di disk, baru buka kolase. Contain menjaga seluruh foto (ada bar). Cover mengisi sel, bisa memotong wajah. Tidak diunggah.",
+      "s1t": "Pilih kisi dan ukuran dulu",
+      "s1b": "Set: 2×2 atau 3×3. Feed persegi, 4:5 potret, 9:16 cerita, 16:9 sampul. Ubah ukuran nanti: semua sel dipotong ulang.",
+      "s2t": "Buka kolase di cv.cm",
+      "s2b": "Proses di tab ini. Tidak diunggah.",
+      "s3t": "Letakkan foto berurutan",
+      "s3b": "File pertama = sel pertama. Salah: urutkan dulu baru ekspor.",
+      "s4t": "Pilih Contain atau Cover",
+      "s4b": "Contain menjaga seluruh foto, bisa ada bar. Cover mengisi sel, bisa memotong dahi atau dagu. Ada wajah: mulai Contain.",
+      "s5t": "Unduh PNG atau JPEG",
+      "s5b": "Tepi tajam: PNG. Feed lebih kecil: JPEG.",
+      "s6t": "Buka 100% dan cek tiap sel",
+      "s6b": "Wajah terpotong: ganti Contain atau foto. Urutan salah: urutkan, ekspor lagi. Simpan asli.",
+      "diagram1": "Layout dulu: 2×2, 3×3, persegi, 4:5, 9:16.",
+      "diagram2": "Contain menjaga seluruh foto. Cover mengisi, bisa memotong wajah."
+    },
+    "make-meme": {
+      "name": "Cara buat meme",
+      "blurb": "Letakkan foto, teks atas/bawah, unduh PNG, cek lebar ponsel.",
+      "title": "Cara buat meme",
+      "lead": "Meme adalah foto plus dua baris pendek. Letakkan gambar, ketik atas/bawah, cek kebaca seukuran gelembung chat.",
+      "result": "PNG: teks atas/bawah terbaca, tidak menutupi wajah.",
+      "note": "Foto di disk, baru buka meme. Kalimat pendek. Tidak diunggah.",
+      "s1t": "Pilih foto yang masih kebaca kecil",
+      "s1b": "Latar ramai bertarung dengan teks. Wajah atau benda jelas lebih baik daripada lanskap.",
+      "s2t": "Buka meme di cv.cm",
+      "s2b": "Proses di tab ini.",
+      "s3t": "Letakkan gambar",
+      "s3b": "Pratinjau kosong: ubah HEIC ke JPG dulu.",
+      "s4t": "Ketik satu baris atas dan bawah, pendek",
+      "s4b": "Biasanya huruf besar. Dua sampai tujuh kata per baris. Jangan paragraf.",
+      "s5t": "Cek bungkus dan stroke",
+      "s5b": "Teks putih kebaca karena stroke. Menutupi wajah: persingkat.",
+      "s6t": "Unduh PNG dan lihat lebar ponsel",
+      "s6b": "Hanya kebaca full screen: gagal di chat. Simpan foto asli tanpa teks.",
+      "diagram1": "Baris atas setup, bawah punch. Keduanya pendek.",
+      "diagram2": "Stroke membuat teks kebaca. Jangan tutupi wajah."
+    },
+    "count-words": {
+      "name": "Cara hitung kata dan karakter",
+      "blurb": "Tempel teks, baca angka yang cocok. Ada batas: potong, hitung lagi.",
+      "title": "Cara hitung kata dan karakter",
+      "lead": "Esai Inggris: kata. Formulir: karakter. PR Tionghoa: karakter tanpa spasi. Tempel dan baca angka yang cocok.",
+      "result": "Angka yang diminta formulir atau guru. Teks tidak keluar tab ini.",
+      "note": "Teks siap, baru buka hitung. Kata, karakter, karakter tanpa spasi: tiga angka. Tidak diunggah.",
+      "s1t": "Tahu angka mana yang dibutuhkan",
+      "s1b": "Esai Inggris: kata. Formulir web: karakter. PR Tionghoa: karakter tanpa spasi. Jangan campur.",
+      "s2t": "Buka hitung kata di cv.cm",
+      "s2b": "Hitung di tab ini.",
+      "s3t": "Tempel teks, atau letakkan .txt",
+      "s3b": "Tempel draf yang akan dikumpul. Menghitung salinan lain: mudah kelewatan batas.",
+      "s4t": "Baca statistik yang cocok",
+      "s4b": "Inggris: kata. Formulir: karakter. PR Tionghoa: tanpa spasi. Di sini tiap hanzi dihitung kata: jangan pakai Words untuk 800 字.",
+      "s5t": "Ada batas: potong, hitung lagi",
+      "s5b": "Hapus, lalu lihat baris yang sama. Jangan pindah dari kata ke karakter di tengah jalan.",
+      "s6t": "Jangan pakai hitungan app lain untuk formulir ini",
+      "s6b": "Word, Docs, dan formulir web sering beda. Hitung di tempat Anda akan menempel.",
+      "diagram1": "Kata · karakter · tanpa spasi. Tiga kerja, tiga angka.",
+      "diagram2": "PR Tionghoa: karakter tanpa spasi, bukan Words."
+    },
+    "trim-audio": {
+      "name": "Cara potong audio / potong MP3",
+      "blurb": "Set awal dan akhir, dengar, unduh WAV, putar lagi sebelum kirim.",
+      "title": "Cara potong audio / potong MP3",
+      "lead": "Anda butuh klip, bukan seluruh file: nada dering, kutipan, voicemail. Tandai awal/akhir di tab ini, dengar, unduh WAV. Asli tetap di disk.",
+      "result": "WAV yang mulai dan selesai di tanda Anda, sudah diputar sekali.",
+      "note": "Audio di disk, baru buka potong. Unduhan WAV, meski Anda taruh MP3. Dengar sebelum kirim. Tidak diunggah.",
+      "s1t": "Tahu awal dan akhir",
+      "s1b": "Nada dering sering 20–40 detik. Kutipan satu kalimat. File panjang: tulis waktunya.",
+      "s2t": "Buka potong audio di cv.cm",
+      "s2b": "Potong di tab ini.",
+      "s3t": "Letakkan MP3, WAV, atau M4A",
+      "s3b": "Tidak diputar: codec mungkin tidak didukung. Coba WAV atau peramban lain.",
+      "s4t": "Set awal dan akhir, lalu dengar",
+      "s4b": "Putar pilihan di halaman. Kata pertama terpotong: geser awal lebih awal. Napas di akhir: tarik akhir masuk.",
+      "s5t": "Unduh WAV",
+      "s5b": "Meski mulai dari MP3, ekspor WAV. Formulir minta MP3: konversi nanti. Simpan asli.",
+      "s6t": "Putar file unduhan sekali",
+      "s6b": "Jangan kirim hanya dari pratinjau halaman. Awal terlambat atau akhir terlalu cepat: potong lagi.",
+      "diagram1": "Awal dan akhir di gelombang. Dengar pilihan sebelum unduh.",
+      "diagram2": "Ekspor WAV. Putar file. MP3 asli tetap di disk."
     }
   },
   "compressPdf": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "Kalkulator diskon",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "Hitung mundur",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "Kalkulator pinjaman",
+    "back": "Semua alat",
+    "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }

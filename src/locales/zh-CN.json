@@ -159,7 +159,21 @@
     "titleMorse": "摩尔斯电码 — 文本转摩尔斯 — cv.cm",
     "descMorse": "在浏览器里把文本转成摩尔斯，或把摩尔斯转回文本。不上传。",
     "titleRoman": "罗马数字 — 阿拉伯数字转罗马 — cv.cm",
-    "descRoman": "在浏览器里把 1–3999 转成罗马数字，或转回来。不上传。"
+    "descRoman": "在浏览器里把 1–3999 转成罗马数字，或转回来。不上传。",
+    "titleDiscount": "折扣计算 — 打折 — cv.cm",
+    "descDiscount": "在浏览器里算打折后的售价。原价和折扣。不上传。",
+    "titleCountdown": "倒计时 — 时 分 秒 — cv.cm",
+    "descCountdown": "在浏览器里倒计时。设定时、分、秒。不上传。",
+    "titleLoan": "贷款计算 — 月供 — cv.cm",
+    "descLoan": "在浏览器里估算固定月供。本金、年利率、年数。不上传。",
+    "titleMakeCollage": "怎么做照片拼图 | cv.cm",
+    "descMakeCollage": "先选宫格和尺寸，放入照片，用 Contain 还是 Cover 免得切脸，下载后用 100% 看。不上传。",
+    "titleMakeMeme": "怎么做表情包 | cv.cm",
+    "descMakeMeme": "放入照片，上下打短句，下载 PNG，再用手机宽度看。不上传。",
+    "titleCountWords": "怎么统计字数和词数 | cv.cm",
+    "descCountWords": "贴上稿子，看词数或字符（中文作业看不含空格），按上限删完再数。不上传。",
+    "titleTrimAudio": "怎么裁剪音频 / 剪 MP3 | cv.cm",
+    "descTrimAudio": "标起点终点，在页面里先听，下载 WAV，再播文件。原文件还在。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -418,6 +432,18 @@
     "roman": {
       "name": "罗马数字",
       "blurb": "1–3999 ↔ 罗马数字。不上传。"
+    },
+    "discount": {
+      "name": "折扣计算",
+      "blurb": "打折后的售价。不上传。"
+    },
+    "countdown": {
+      "name": "倒计时",
+      "blurb": "时、分、秒。不上传。"
+    },
+    "loan": {
+      "name": "贷款计算",
+      "blurb": "本金、利率、年数算月供。不上传。"
     }
   },
   "watermark": {
@@ -1012,6 +1038,54 @@
         "a4": "不会。你下载的是新文件。原图留不留你自己决定。",
         "q5": "PNG 截图呢？",
         "a5": "往往没有定位。拖进去看一眼，已经干净就不用转。"
+      },
+      "make-collage": {
+        "q1": "可以免费在线做拼图吗？",
+        "a1": "可以。cv.cm 在当前标签页做，不上传。",
+        "q2": "怎么做 2×2 的 Instagram 拼图？",
+        "a2": "选 2×2 和正方形（或 4:5）。放入四张，看 Contain/Cover，下载。",
+        "q3": "为什么脸被切了？",
+        "a3": "Cover 会铺满格子。改 Contain，或换一张头周围更空的图。",
+        "q4": "会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "不用 Canva 或 Photoshop 能拼吗？",
+        "a5": "可以。本页就是拼图。不用账号。"
+      },
+      "make-meme": {
+        "q1": "可以免费在线做表情包吗？",
+        "a1": "可以。cv.cm 在当前标签页画，不上传。",
+        "q2": "要 Photoshop 或 App 吗？",
+        "a2": "不用。现在的浏览器就够。",
+        "q3": "表情包用什么字体？",
+        "a3": "粗无衬线加深描边，通常全大写。本工具就是这种。",
+        "q4": "会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "iPhone 能做吗？",
+        "a5": "Safari 可以。HEIC 预览不了，先转成 JPG。"
+      },
+      "count-words": {
+        "q1": "怎么在线数字数？",
+        "a1": "贴进 cv.cm 的字数，看词数。不上传。",
+        "q2": "词和字符有什么差别？",
+        "a2": "词按空格切（这里每个汉字也算一词）。字符把字母、空格、标点都算上。",
+        "q3": "中文字怎么数？",
+        "a3": "老师要字数，就看不含空格。八百字作文不要看词数。",
+        "q4": "文字会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "为什么和 Word 对不上？",
+        "a5": "各软件切词不一样，汉字、连字符、数字更乱。上限用哪个工具数，就在哪个工具数。"
+      },
+      "trim-audio": {
+        "q1": "怎么免费在线剪 MP3？",
+        "a1": "拖进 cv.cm 的音频裁剪，标起点终点，先听，再下载 WAV。不上传。",
+        "q2": "为什么下载是 WAV 不是 MP3？",
+        "a2": "裁剪在浏览器里把选段重编码成 WAV。还要 MP3，就再转一次。",
+        "q3": "能剪 M4A 或语音备忘录吗？",
+        "a3": "浏览器解得开就可以。播不了，先从录音机导出 WAV。",
+        "q4": "会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "会改原文件吗？",
+        "a5": "不会。你下载的是新 WAV。磁盘上的 MP3 还在。"
       }
     },
     "compress-pdf": {
@@ -1481,6 +1555,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -1652,7 +1762,9 @@
       "mind": "心理",
       "course": "人像摄影",
       "codes": "二维码与条码",
-      "files": "图片与 PDF"
+      "files": "图片与 PDF",
+      "audio": "音频",
+      "text": "文字"
     },
     "hub": {
       "kicker": "极简 · 完整 · 图解",
@@ -1953,6 +2065,94 @@
       "s6b": "聊天软件有时会自己去掉定位。上架别赌这个——用第二次拖入来证明。",
       "diagram1": "照片文件 = 像素 + 定位。导出 = 只剩像素。",
       "diagram2": "拖入，导出，再把导出拖回来。第二次应该是干净的。"
+    },
+    "make-collage": {
+      "name": "怎么做照片拼图",
+      "blurb": "先选宫格，放入照片，选完整放入还是铺满，下载后再看脸有没有被切。",
+      "title": "怎么做照片拼图",
+      "lead": "拼图先定格子，再放图。选宫格和尺寸，按顺序放入，再确认 Cover 没有切到脸。",
+      "result": "一张拼图：格子对、脸还在、尺寸对得上要发的地方。",
+      "note": "照片在磁盘上再打开拼图。Contain 放下整张（会留边）。Cover 铺满格子，可能切到脸。不上传。",
+      "s1t": "先选宫格和尺寸",
+      "s1b": "一组图用 2×2 或 3×3。信息流正方形，竖图 4:5，故事 9:16，封面 16:9。后改尺寸会重切每一格。",
+      "s2t": "打开 cv.cm 的拼图",
+      "s2b": "拼图留在当前标签页。不上传。",
+      "s3t": "按出现顺序拖入照片",
+      "s3b": "第一张就是第一格。格子不对先改顺序再导出。",
+      "s4t": "选 Contain 还是 Cover",
+      "s4b": "Contain 放下整张，可能留边。Cover 铺满格子，可能切到额或下巴。有人脸先用 Contain。",
+      "s5t": "下载 PNG 或 JPEG",
+      "s5b": "边缘要利用 PNG。上信息流要小就用 JPEG。",
+      "s6t": "用 100% 打开，逐格看",
+      "s6b": "脸被切了，就改 Contain 或换图。顺序错了，排好再导。原图留下。",
+      "diagram1": "先定格子：2×2、3×3、正方形、4:5、9:16。",
+      "diagram2": "Contain 放下整张。Cover 铺满，可能切脸。"
+    },
+    "make-meme": {
+      "name": "怎么做表情包",
+      "blurb": "放入照片，上下打字，下载 PNG，再用手机宽度看一眼。",
+      "title": "怎么做表情包",
+      "lead": "表情包就是一张图加两行短字。拖入照片，打上下句，再按聊天气泡那么大看清不清。",
+      "result": "一张 PNG：上下字能读，没有挡住脸。",
+      "note": "照片在磁盘上再打开表情包。句子要短。不上传。",
+      "s1t": "选一张缩得很小仍能看懂的图",
+      "s1b": "背景太花会抢字。一张脸或一件清楚的东西，比风景好用。",
+      "s2t": "打开 cv.cm 的表情包",
+      "s2b": "做图留在当前标签页。",
+      "s3t": "拖入图片",
+      "s3b": "预览空白，先把 HEIC 转成 JPG。",
+      "s4t": "上下各打一句短的",
+      "s4b": "通常全大写。一行两到七个词。不要写成一段。",
+      "s5t": "看换行和描边",
+      "s5b": "白字能读，靠的是描边。挡住脸了，就缩短。",
+      "s6t": "下载 PNG，按手机宽度看",
+      "s6b": "只有全屏才看得清，发聊天就会失败。没字的原图留下。",
+      "diagram1": "上一句铺垫，下一句收束。都要短。",
+      "diagram2": "描边让字能读。不要挡住脸。"
+    },
+    "count-words": {
+      "name": "怎么统计字数和词数",
+      "blurb": "贴上文字，看对得上的那个数字。表单有上限就删完再数。",
+      "title": "怎么统计字数和词数",
+      "lead": "英文作业数词。表单多数数字符。中文作业常算不含空格的字。贴上文字，看对得上的那个数。",
+      "result": "表单或老师真正要的那个数字。文字没有离开当前标签页。",
+      "note": "文字准备好再打开字数。词数、字符、不含空格的字符是三个数。不上传。",
+      "s1t": "先知道要哪一个数",
+      "s1b": "英文作业：词。很多网页表单：字符。中文作业：去掉空格的字。不要混用。",
+      "s2t": "打开 cv.cm 的字数统计",
+      "s2b": "统计留在当前标签页。",
+      "s3t": "贴上文字，或拖入 .txt",
+      "s3b": "用你要交的那一稿来贴。数另一份，就容易超限。",
+      "s4t": "看对得上的那一项",
+      "s4b": "英文看词。多数表单看字符。中文作业看不含空格。这里每个汉字也算一个词，八百字作文不要看词数。",
+      "s5t": "有上限就删完再数",
+      "s5b": "删完仍看同一行。不要中途从词改成字符。",
+      "s6t": "别拿别的软件的数去填这个表",
+      "s6b": "Word、Docs 和网页表单经常对不上。在你要粘贴的地方数。",
+      "diagram1": "词 · 字符 · 不含空格。三件事，三个数。",
+      "diagram2": "中文作业看不含空格的字，不要看词数。"
+    },
+    "trim-audio": {
+      "name": "怎么裁剪音频 / 剪 MP3",
+      "blurb": "定起点和终点，先听，下载 WAV，发出去之前再播一遍。",
+      "title": "怎么裁剪音频 / 剪 MP3",
+      "lead": "你要的是一段，不是整首：铃声、摘句、语音。在当前标签页标起点终点，先听，再下载 WAV。原文件还在。",
+      "result": "一份 WAV：起止就是你标的位置，播过一遍才算数。",
+      "note": "音频在磁盘上再打开裁剪。下载是 WAV，即使拖进来的是 MP3。发出去之前先听。不上传。",
+      "s1t": "先想清楚从哪切到哪",
+      "s1b": "铃声常见 20–40 秒。摘句就一句。文件很长就把时间写下来。",
+      "s2t": "打开 cv.cm 的音频裁剪",
+      "s2b": "裁剪留在当前标签页。",
+      "s3t": "拖入 MP3、WAV 或 M4A",
+      "s3b": "播不了，可能是编码不支持。换 WAV 或换浏览器。",
+      "s4t": "定起点和终点，再听",
+      "s4b": "在页面里先播选段。第一个字被切了，就把起点提前。结尾还在喘气，就把终点往回收。",
+      "s5t": "下载 WAV",
+      "s5b": "即使拖进来是 MP3，导出也是 WAV。表单只要 MP3，就再转一次。原文件留下。",
+      "s6t": "把下载的文件播一遍",
+      "s6b": "不要只信页面里的预览。起点晚了或终点早了，就再裁一次。",
+      "diagram1": "在波形上标起点和终点。下载前先听选段。",
+      "diagram2": "导出是 WAV。播文件。原来的 MP3 还在磁盘上。"
     }
   },
   "compressPdf": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "折扣计算",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "倒计时",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "贷款计算",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }

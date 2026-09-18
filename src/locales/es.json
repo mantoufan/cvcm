@@ -159,7 +159,21 @@
     "titleMorse": "Código Morse — texto a Morse — cv.cm",
     "descMorse": "Convierte texto a Morse y Morse a texto en el navegador. Nada se sube.",
     "titleRoman": "Números romanos — arábigos a romanos — cv.cm",
-    "descRoman": "Convierte 1–3999 a romanos y al revés en el navegador. Nada se sube."
+    "descRoman": "Convierte 1–3999 a romanos y al revés en el navegador. Nada se sube.",
+    "titleDiscount": "Calculadora de descuento — porcentaje off — cv.cm",
+    "descDiscount": "Calcula el precio de oferta en el navegador. Precio original y descuento. Nada se sube.",
+    "titleCountdown": "Cuenta atrás — horas minutos segundos — cv.cm",
+    "descCountdown": "Cuenta atrás en el navegador. Horas, minutos y segundos. Nada se sube.",
+    "titleLoan": "Calculadora de préstamo — cuota mensual — cv.cm",
+    "descLoan": "Estima una cuota mensual fija en el navegador. Principal, tipo, años. Nada se sube.",
+    "titleMakeCollage": "Cómo hacer un collage de fotos | cv.cm",
+    "descMakeCollage": "Elija cuadrícula y tamaño, suelte fotos, Contain o Cover para no cortar caras, descargue y mire al 100%. Nada se sube.",
+    "titleMakeMeme": "Cómo hacer un meme | cv.cm",
+    "descMakeMeme": "Suelte una foto, líneas cortas arriba y abajo, descargue PNG y mírelo al ancho del teléfono. Nada se sube.",
+    "titleCountWords": "Cómo contar palabras y caracteres | cv.cm",
+    "descCountWords": "Pegue el borrador, mire palabras o caracteres (sin espacios para deberes en chino), recorte al tope y vuelva a contar. Nada se sube.",
+    "titleTrimAudio": "Cómo recortar audio / cortar un MP3 | cv.cm",
+    "descTrimAudio": "Marque inicio y fin, escuche en la página, descargue WAV y reprodúzcalo. El original se queda. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -418,6 +432,18 @@
     "roman": {
       "name": "Números romanos",
       "blurb": "1–3999 ↔ romanos. Nada se sube."
+    },
+    "discount": {
+      "name": "Calculadora de descuento",
+      "blurb": "Precio tras el descuento. Nada se sube."
+    },
+    "countdown": {
+      "name": "Cuenta atrás",
+      "blurb": "Horas, minutos, segundos. Nada se sube."
+    },
+    "loan": {
+      "name": "Calculadora de préstamo",
+      "blurb": "Principal, tipo y años a cuota. Nada se sube."
     }
   },
   "watermark": {
@@ -1012,6 +1038,54 @@
         "a4": "No. Descarga un archivo nuevo. El original lo guarda o borra usted.",
         "q5": "¿Y las capturas PNG?",
         "a5": "A menudo no tienen GPS. Suelte una; si ya está limpia, listo."
+      },
+      "make-collage": {
+        "q1": "¿Puedo hacer un collage gratis en línea?",
+        "a1": "Sí. En esta pestaña. Nada se sube.",
+        "q2": "¿Cómo hago un collage 2×2 de Instagram?",
+        "a2": "Elija 2×2 y cuadrado (o 4:5). Suelte cuatro, mire Contain/Cover y descargue.",
+        "q3": "¿Por qué se recortó una cara?",
+        "a3": "Cover llena la celda. Pase a Contain, o elija una foto con más aire alrededor de la cabeza.",
+        "q4": "¿Se suben las fotos?",
+        "a4": "No. Al cerrar la pestaña se pierden.",
+        "q5": "¿Sin Canva ni Photoshop?",
+        "a5": "Sí. Esta página es el collage. Sin cuenta."
+      },
+      "make-meme": {
+        "q1": "¿Puedo hacer un meme gratis en línea?",
+        "a1": "Sí. Se dibuja en esta pestaña. Nada se sube.",
+        "q2": "¿Necesito Photoshop o una app?",
+        "a2": "No. Con el navegador actual basta.",
+        "q3": "¿Qué fuente?",
+        "a3": "Sans gruesa con trazo oscuro, casi siempre en mayúsculas. Esta herramienta usa ese aspecto.",
+        "q4": "¿Se suben las fotos?",
+        "a4": "No. Al cerrar la pestaña se pierden.",
+        "q5": "¿Puedo hacerlo en el iPhone?",
+        "a5": "Sí en Safari. Si el HEIC no se ve, páselo a JPG primero."
+      },
+      "count-words": {
+        "q1": "¿Cómo cuento palabras en línea?",
+        "a1": "Pegue en el contador de cv.cm y mire Words. Nada se sube.",
+        "q2": "¿Qué diferencia hay entre palabras y caracteres?",
+        "a2": "Las palabras se parten por espacios (aquí cada hanzi cuenta como palabra). Los caracteres cuentan letras, espacios y signos.",
+        "q3": "¿Cómo cuento caracteres chinos?",
+        "a3": "Si el profesor pide 字数, use caracteres sin espacios. No use Words para 800 字.",
+        "q4": "¿Se sube el texto?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Por qué no coincide con Word?",
+        "a5": "Cada app parte las palabras distinto, sobre todo con CJK, guiones y números. Cuente en la misma herramienta que el tope."
+      },
+      "trim-audio": {
+        "q1": "¿Cómo recorto un MP3 gratis en línea?",
+        "a1": "Suelte el archivo en recortar audio de cv.cm, marque inicio y fin, escuche y descargue WAV. Nada se sube.",
+        "q2": "¿Por qué la descarga es WAV y no MP3?",
+        "a2": "El recorte recodifica la selección a WAV en el navegador. Si necesita MP3, conviértalo después.",
+        "q3": "¿Puedo recortar M4A o notas de voz?",
+        "a3": "Si el navegador lo decodifica, sí. Si no suena, exporte WAV desde la grabadora primero.",
+        "q4": "¿Se sube el audio?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Cambia el archivo original?",
+        "a5": "No. Descarga un WAV nuevo. El MP3 del disco se queda."
       }
     },
     "compress-pdf": {
@@ -1481,6 +1555,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -1652,7 +1762,9 @@
       "mind": "Mente",
       "course": "De una sentada",
       "codes": "Códigos",
-      "files": "Archivos"
+      "files": "Archivos",
+      "audio": "Audio",
+      "text": "Texto"
     },
     "hub": {
       "kicker": "Lecciones del mismo día",
@@ -1953,6 +2065,94 @@
       "s6b": "Un chat a veces quita el GPS solo. No se fíe en un anuncio público: pruébelo con la segunda suelta.",
       "diagram1": "Archivo = píxeles + GPS. Exportación = solo píxeles.",
       "diagram2": "Suelte, exporte, suelte la exportación. La segunda pasada debe estar limpia."
+    },
+    "make-collage": {
+      "name": "Cómo hacer un collage de fotos",
+      "blurb": "Elija la cuadrícula, suelte fotos, contain o cover, descargue y mire las caras.",
+      "title": "Cómo hacer un collage de fotos",
+      "lead": "Un collage es primero una plantilla. Elija cuadrícula y tamaño, suelte en orden y compruebe que Cover no recortó caras.",
+      "result": "Una imagen con las celdas bien, caras enteras y el tamaño del sitio donde la va a publicar.",
+      "note": "Abra collage con las fotos en el disco. Contain deja la foto entera (bandas). Cover llena la celda y puede recortar. Nada se sube.",
+      "s1t": "Elija primero la cuadrícula y el tamaño",
+      "s1b": "Un set: 2×2 o 3×3. Feed cuadrado, 4:5 vertical, 9:16 stories, 16:9 portada. Cambiar el tamaño después recorta cada celda.",
+      "s2t": "Abra collage en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña. Nada se sube.",
+      "s3t": "Suelte las fotos en el orden de aparición",
+      "s3b": "El primer archivo es la primera celda. Si el grid falla, reordene antes de exportar.",
+      "s4t": "Elija Contain o Cover",
+      "s4b": "Contain deja la foto entera y puede dejar bandas. Cover llena la celda y puede cortar frente o barbilla. Con caras, empiece por Contain.",
+      "s5t": "Descargue PNG o JPEG",
+      "s5b": "PNG para bordes nítidos. JPEG para un feed más liviano.",
+      "s6t": "Ábralo al 100% y recorra las celdas",
+      "s6b": "Si una cara está cortada, pase a Contain o cambie la foto. Si el orden falla, reordene y exporte. Conserve los originales.",
+      "diagram1": "Primero la plantilla: 2×2, 3×3, cuadrado, 4:5, 9:16.",
+      "diagram2": "Contain deja la foto entera. Cover llena y puede recortar caras."
+    },
+    "make-meme": {
+      "name": "Cómo hacer un meme",
+      "blurb": "Suelte una foto, texto arriba y abajo, descargue PNG y mírelo al ancho del teléfono.",
+      "title": "Cómo hacer un meme",
+      "lead": "Un meme es una foto y dos líneas cortas. Suelte la imagen, escriba arriba y abajo, y compruebe que se lee al tamaño de un chat.",
+      "result": "Un PNG con líneas legibles que no tapan la cara.",
+      "note": "Abra el meme con la foto en el disco. Líneas cortas. Nada se sube.",
+      "s1t": "Elija una foto que se lea pequeña",
+      "s1b": "Un fondo ocupado pelea con el texto. Una cara o un objeto claro funciona mejor que un paisaje.",
+      "s2t": "Abra meme en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña.",
+      "s3t": "Suelte la imagen",
+      "s3b": "Si la vista está en blanco, pase HEIC a JPG antes.",
+      "s4t": "Escriba una línea corta arriba y otra abajo",
+      "s4b": "Suele ir en mayúsculas. De dos a siete palabras por línea. No escriba un párrafo.",
+      "s5t": "Revise el salto y el trazo",
+      "s5b": "El trazo hace legible el blanco sobre una foto clara. Si tapa una cara, acórtela.",
+      "s6t": "Descargue PNG y mírelo al ancho del teléfono",
+      "s6b": "Si solo se lee a pantalla completa, fallará en el chat. Conserve la foto original sin texto.",
+      "diagram1": "Arriba plantea, abajo cierra. Las dos, cortas.",
+      "diagram2": "El trazo hace legible el texto. No tape la cara."
+    },
+    "count-words": {
+      "name": "Cómo contar palabras y caracteres",
+      "blurb": "Pegue el texto, mire el número que corresponde. Si hay tope, recorte y vuelva a contar.",
+      "title": "Cómo contar palabras y caracteres",
+      "lead": "Los ensayos piden palabras. Los formularios, caracteres. Los deberes en chino, caracteres sin espacios. Pegue el texto y mire el número que toca.",
+      "result": "El número que pedía el formulario o el profesor. El texto no salió de esta pestaña.",
+      "note": "Abra el contador con el texto listo. Palabras, caracteres y caracteres sin espacios son tres cifras. Nada se sube.",
+      "s1t": "Sepa qué número necesita",
+      "s1b": "Ensayos en inglés: palabras. Formularios: caracteres. Deberes en chino: caracteres sin espacios. No los mezcle.",
+      "s2t": "Abra el contador en cv.cm",
+      "s2b": "El recuento queda en esta pestaña.",
+      "s3t": "Pegue el texto o suelte un .txt",
+      "s3b": "Pegue el mismo borrador que va a entregar. Contar otra copia es cómo se pasa el tope.",
+      "s4t": "Lea la cifra que corresponde",
+      "s4b": "Inglés: palabras. Formularios: caracteres. Deberes en chino: sin espacios. Aquí cada hanzi cuenta como palabra: no use Words para 800 字.",
+      "s5t": "Si hay tope, recorte y vuelva a contar",
+      "s5b": "Borre y mire la misma fila. No pase de palabras a caracteres a mitad.",
+      "s6t": "No use el recuento de otra app para este formulario",
+      "s6b": "Word, Docs y el formulario web suelen discrepar. Cuente donde vaya a pegar.",
+      "diagram1": "Palabras · caracteres · sin espacios. Tres trabajos, tres cifras.",
+      "diagram2": "En los deberes en chino use caracteres sin espacios, no Words."
+    },
+    "trim-audio": {
+      "name": "Cómo recortar audio / cortar un MP3",
+      "blurb": "Fije inicio y fin, escuche, descargue WAV y reprodúzcalo antes de enviarlo.",
+      "title": "Cómo recortar audio / cortar un MP3",
+      "lead": "Necesita un recorte, no el archivo entero: tono, cita, buzón. Marque inicio y fin aquí, escuche y descargue WAV. El original sigue en el disco.",
+      "result": "Un WAV que empieza y acaba donde marcó, comprobado al reproducirlo una vez.",
+      "note": "Abra recortar con el audio en el disco. La descarga es WAV, aunque haya soltado un MP3. Escuche antes de enviar. Nada se sube.",
+      "s1t": "Sepa el inicio y el fin",
+      "s1b": "Un tono suele durar 20–40 s. Una cita, una frase. Si el archivo es largo, anote los tiempos.",
+      "s2t": "Abra recortar audio en cv.cm",
+      "s2b": "El recorte queda en esta pestaña.",
+      "s3t": "Suelte MP3, WAV o M4A",
+      "s3b": "Si no suena, el códec puede no valer. Pruebe WAV u otro navegador.",
+      "s4t": "Fije inicio y fin, y escuche",
+      "s4b": "Reproduzca la selección en la página. Si se corta la primera palabra, adelante el inicio. Si queda un respiro al final, recoja el fin.",
+      "s5t": "Descargue WAV",
+      "s5b": "La exportación es WAV aunque empezara en MP3. Si el formulario exige MP3, conviértalo después. Conserve el original.",
+      "s6t": "Reproduzca el archivo descargado una vez",
+      "s6b": "No envíe solo por la vista previa. Si el inicio llega tarde o el final se queda corto, recorte otra vez.",
+      "diagram1": "Inicio y fin en la forma de onda. Escuche la selección antes de descargar.",
+      "diagram2": "La exportación es WAV. Reproduzca el archivo. El MP3 original sigue en el disco."
     }
   },
   "compressPdf": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "Calculadora de descuento",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "Cuenta atrás",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "Calculadora de préstamo",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }

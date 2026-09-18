@@ -159,7 +159,21 @@
     "titleMorse": "Morse code translator — text to Morse — cv.cm",
     "descMorse": "Convert text to Morse code and Morse back to text in the browser. Nothing is uploaded.",
     "titleRoman": "Roman numerals converter — Arabic to Roman — cv.cm",
-    "descRoman": "Convert numbers 1–3999 to Roman numerals and back in the browser. Nothing is uploaded."
+    "descRoman": "Convert numbers 1–3999 to Roman numerals and back in the browser. Nothing is uploaded.",
+    "titleDiscount": "Discount calculator — percent off — cv.cm",
+    "descDiscount": "Find the sale price after a percent off in the browser. Original price and discount. Nothing is uploaded.",
+    "titleCountdown": "Countdown timer — hours minutes seconds — cv.cm",
+    "descCountdown": "Run a countdown timer in the browser. Set hours, minutes, and seconds. Nothing is uploaded.",
+    "titleLoan": "Loan calculator — monthly payment — cv.cm",
+    "descLoan": "Estimate a fixed monthly loan payment in the browser. Principal, rate, years. Nothing is uploaded.",
+    "titleMakeCollage": "How to make a photo collage | cv.cm",
+    "descMakeCollage": "Pick a grid and size, drop photos, choose Contain vs Cover so faces stay intact, download, then check at 100%. Nothing is uploaded.",
+    "titleMakeMeme": "How to make a meme | cv.cm",
+    "descMakeMeme": "Drop a photo, type short top and bottom lines, download a PNG, then check it at phone width. Nothing is uploaded.",
+    "titleCountWords": "How to count words and characters | cv.cm",
+    "descCountWords": "Paste the draft, read words or characters (or characters with no spaces for Chinese homework), trim to the cap, recount. Nothing is uploaded.",
+    "titleTrimAudio": "How to trim audio / cut an MP3 | cv.cm",
+    "descTrimAudio": "Mark start and end, listen in the page, download WAV, then play the file. The original stays on disk. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -218,7 +232,9 @@
       "mind": "Mind",
       "course": "Portrait photography",
       "codes": "QR codes and barcodes",
-      "files": "PDF and photos"
+      "files": "PDF and photos",
+      "audio": "Audio",
+      "text": "Text"
     },
     "hub": {
       "kicker": "Simple · Complete · Illustrated",
@@ -519,6 +535,94 @@
       "s6b": "A chat app may strip GPS on its own. Do not trust that for a public listing — prove it with the second drop.",
       "diagram1": "Photo file = pixels + GPS. Export = pixels only.",
       "diagram2": "Drop, export, drop the export again. The second pass should be clean."
+    },
+    "make-collage": {
+      "name": "How to make a photo collage",
+      "blurb": "Pick a grid, drop photos, choose contain vs cover, download, then check faces.",
+      "title": "How to make a photo collage",
+      "lead": "A collage is a layout first, then photos. You will pick a grid and a size, drop pictures in order, and check that faces were not cropped by Cover.",
+      "result": "One image with the photos in the right cells, faces intact, sized for the place you will post.",
+      "note": "Open collage when the photos are on disk. Contain keeps the whole photo (bars). Cover fills the cell and may crop. Nothing is uploaded.",
+      "s1t": "Pick the grid and the size first",
+      "s1b": "2×2 or 3×3 for a set. Square for a feed, 4:5 portrait, 9:16 stories, 16:9 cover. Changing size later re-crops every cell.",
+      "s2t": "Open collage on cv.cm",
+      "s2b": "Work stays in this tab. Nothing is uploaded.",
+      "s3t": "Drop photos in the order they should appear",
+      "s3b": "First file is the first cell. Reorder before you export if the grid looks wrong.",
+      "s4t": "Choose Contain or Cover",
+      "s4b": "Contain keeps the whole photo and may add bars. Cover fills the cell and can cut a forehead or a chin. For faces, start with Contain.",
+      "s5t": "Download PNG or JPEG",
+      "s5b": "PNG for sharp edges. JPEG for a smaller feed upload.",
+      "s6t": "Open at 100% and walk the cells",
+      "s6b": "If a face is cut, switch that cell to Contain or pick a different photo. If the order is wrong, reorder and export again. Keep the originals.",
+      "diagram1": "Layout first: 2×2, 3×3, square, 4:5, 9:16.",
+      "diagram2": "Contain keeps the whole photo. Cover fills and may crop faces."
+    },
+    "make-meme": {
+      "name": "How to make a meme",
+      "blurb": "Drop a photo, type top and bottom text, download a PNG, then check it at phone width.",
+      "title": "How to make a meme",
+      "lead": "A meme is a photo plus two short lines. You will drop an image, type top and bottom, and check that the type still reads at the size of a chat bubble.",
+      "result": "A PNG with readable top and bottom lines that do not cover the face.",
+      "note": "Open the meme tool when the photo is on disk. Keep lines short. Nothing is uploaded.",
+      "s1t": "Pick a photo that still reads small",
+      "s1b": "A busy background fights the type. A face or a clear object works better than a landscape.",
+      "s2t": "Open meme on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop the image",
+      "s3b": "If the preview is blank, convert HEIC first.",
+      "s4t": "Type a short top and bottom line",
+      "s4b": "All caps is the usual look. Two to seven words per line. Do not write a paragraph.",
+      "s5t": "Check wrap and stroke",
+      "s5b": "The outline is what keeps white type readable on a bright photo. If a line covers a face, shorten it.",
+      "s6t": "Download PNG and view at phone width",
+      "s6b": "If it only reads full-screen, it will fail in a chat. Keep the original unmarked photo.",
+      "diagram1": "Top line sets up. Bottom line pays off. Keep both short.",
+      "diagram2": "Stroke keeps type readable. Do not cover the face."
+    },
+    "count-words": {
+      "name": "How to count words and characters",
+      "blurb": "Paste the text, read the matching number, trim if a form has a cap.",
+      "title": "How to count words and characters",
+      "lead": "Essays want words. Forms often want characters. Chinese homework often wants characters with no spaces. You will paste the text and read the matching number.",
+      "result": "The number the form or teacher actually asked for, from text that never left this tab.",
+      "note": "Open word count when the text is ready. Words, characters, and characters without spaces are three different counts. Nothing is uploaded.",
+      "s1t": "Know which number you need",
+      "s1b": "English essays: words. Twitter-style caps and many web forms: characters. Chinese homework: characters with spaces removed. Do not mix them.",
+      "s2t": "Open word count on cv.cm",
+      "s2b": "Counting stays in this tab.",
+      "s3t": "Paste the text, or drop a .txt file",
+      "s3b": "Paste from the same draft you will submit. Counting a different copy is how people miss the cap.",
+      "s4t": "Read the matching stat",
+      "s4b": "Words for English. Characters for most forms. Characters with no spaces for many CN assignments. CJK characters each count as a word here, so do not use Words for a 800-字 paper.",
+      "s5t": "If there is a cap, trim and count again",
+      "s5b": "Delete, then look at the same row. Do not switch from words to characters halfway.",
+      "s6t": "Do not trust a different app's count for this form",
+      "s6b": "Word, Google Docs, and a web form often disagree. Count in the same place you will paste.",
+      "diagram1": "Words · characters · characters with no spaces. Three jobs, three numbers.",
+      "diagram2": "For Chinese homework use characters with no spaces, not Words."
+    },
+    "trim-audio": {
+      "name": "How to trim audio / cut an MP3",
+      "blurb": "Set start and end, listen, download WAV, then play the file before you send it.",
+      "title": "How to trim audio / cut an MP3",
+      "lead": "You need a clip, not the whole file: a ring, a quote, a voicemail. You will mark start and end in this tab, listen, and download WAV. The original stays on disk.",
+      "result": "A WAV that starts and ends where you marked, verified by playing it once.",
+      "note": "Open trim when the audio is on disk. The download is WAV, even if you dropped an MP3. Listen before you send. Nothing is uploaded.",
+      "s1t": "Know the start and end you want",
+      "s1b": "A ringtone is often 20–40 seconds. A quote is one sentence. Write the times down if the file is long.",
+      "s2t": "Open audio cutter on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop the MP3, WAV, or M4A",
+      "s3b": "If nothing plays, the codec may be unsupported. Try WAV or another browser.",
+      "s4t": "Set start and end, then listen",
+      "s4b": "Play the selection in the page. If the first word is clipped, nudge start earlier. If a breath hangs at the end, pull end in.",
+      "s5t": "Download WAV",
+      "s5b": "The export is WAV even if you started from MP3. If a form insists on MP3, convert the WAV afterwards. Keep the original.",
+      "s6t": "Play the downloaded file once",
+      "s6b": "Do not send on the in-page preview alone. If the start is late or the end is early, trim again.",
+      "diagram1": "Start and end on the waveform. Listen to the selection before you download.",
+      "diagram2": "Export is WAV. Play the file. The original MP3 stays on disk."
     }
   },
   "tools": {
@@ -737,6 +841,18 @@
     "roman": {
       "name": "Roman numerals",
       "blurb": "1–3999 ↔ Roman. Nothing is uploaded."
+    },
+    "discount": {
+      "name": "Discount calculator",
+      "blurb": "Sale price after a percent off. Nothing is uploaded."
+    },
+    "countdown": {
+      "name": "Countdown",
+      "blurb": "Hours, minutes, seconds. Nothing is uploaded."
+    },
+    "loan": {
+      "name": "Loan calculator",
+      "blurb": "Monthly payment from principal, rate, years. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1331,6 +1447,54 @@
         "a4": "No. You download a new file. Keep or delete the original yourself.",
         "q5": "What about PNG screenshots?",
         "a5": "They often have no GPS. Drop one in; if it is already clean, you are done."
+      },
+      "make-collage": {
+        "q1": "Can I make a photo collage free online?",
+        "a1": "Yes. cv.cm runs in this tab. Nothing is uploaded.",
+        "q2": "How do I make a 2×2 Instagram collage?",
+        "a2": "Pick 2×2 and square (or 4:5). Drop four photos, check Contain vs Cover, download.",
+        "q3": "Why did a face get cropped?",
+        "a3": "Cover fills the cell. Switch to Contain, or pick a photo with more room around the head.",
+        "q4": "Are photos uploaded?",
+        "a4": "No. Closing the tab discards them.",
+        "q5": "Can I collage without Canva or Photoshop?",
+        "a5": "Yes. This page is the collage. No account."
+      },
+      "make-meme": {
+        "q1": "Can I make a meme free online?",
+        "a1": "Yes. cv.cm draws in this tab. Nothing is uploaded.",
+        "q2": "Do I need Photoshop or an app?",
+        "a2": "No. A current browser is enough.",
+        "q3": "What font should a meme use?",
+        "a3": "Heavy sans with a dark stroke, usually all caps. This tool uses that look.",
+        "q4": "Are photos uploaded?",
+        "a4": "No. Closing the tab discards them.",
+        "q5": "Can I make a meme on iPhone?",
+        "a5": "Yes in Safari. If a HEIC will not preview, convert it to JPG first."
+      },
+      "count-words": {
+        "q1": "How do I count words online?",
+        "a1": "Paste into cv.cm word count in this tab. Read Words. Nothing is uploaded.",
+        "q2": "What is the difference between words and characters?",
+        "a2": "Words split on spaces (and each CJK character counts as a word here). Characters count every letter, space, and punctuation.",
+        "q3": "How do I count Chinese characters?",
+        "a3": "Use characters with no spaces if the teacher wants 字数. Do not use Words for an 800-字 paper.",
+        "q4": "Is the text uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Why doesn't it match Microsoft Word?",
+        "a5": "Each app splits words differently, especially with CJK, hyphens, and numbers. Count in the same tool as the cap."
+      },
+      "trim-audio": {
+        "q1": "How do I cut an MP3 online for free?",
+        "a1": "Drop it on cv.cm audio cutter in this tab, mark start and end, listen, download WAV. Nothing is uploaded.",
+        "q2": "Why is the download WAV, not MP3?",
+        "a2": "The cutter re-encodes the selection as WAV in the browser. If you need MP3, convert the WAV afterwards.",
+        "q3": "Can I trim M4A or voice memos?",
+        "a3": "If the browser can decode the file, yes. If playback fails, export WAV from the recorder first.",
+        "q4": "Is the audio uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Will this change the original file?",
+        "a5": "No. You download a new WAV. The MP3 on disk stays."
       }
     },
     "compress-pdf": {
@@ -1800,6 +1964,42 @@
       "a4": "Standard Roman here stops at 3999 (MMMCMXCIX).",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "discount": {
+      "q1": "Can I calculate a discount here?",
+      "a1": "Yes. Enter the original price and a percent off. The tab shows the sale price and how much you save.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Can the percent be over 100?",
+      "a3": "Yes. A 120% off price can go negative. That is still just arithmetic.",
+      "q4": "What currency?",
+      "a4": "None. It is just a number with two decimal places.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "q1": "Can I run a countdown here?",
+      "a1": "Yes. Set hours, minutes, and seconds, then start. Pause and reset are in this tab.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab. Closing it stops the count.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. It is not a system alarm.",
+      "q4": "What happens at zero?",
+      "a4": "The timer stops at 00:00:00.",
+      "q5": "Can I change the time while it runs?",
+      "a5": "Pause or reset, then edit the fields."
+    },
+    "loan": {
+      "q1": "Can I estimate a loan payment here?",
+      "a1": "Yes. Enter principal, yearly interest percent, and years. The tab shows a fixed monthly payment.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A standard amortizing payment: n is months, r is yearly rate / 12.",
+      "q4": "Is this a bank quote?",
+      "a4": "No. Fees, compounding, and extra payments are not included.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
     }
   },
   "qr": {
@@ -2720,5 +2920,48 @@
     "copied": "Copied",
     "invalidTo": "Enter a whole number from 1 to 3999.",
     "invalidFrom": "That is not standard Roman (1–3999)."
+  },
+  "discount": {
+    "title": "Discount calculator",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Price",
+    "price": "Original",
+    "pct": "Off %",
+    "result": "Sale",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sale": "Sale price",
+    "saved": "You save",
+    "invalid": "Enter an original price of 0 or more."
+  },
+  "countdown": {
+    "title": "Countdown",
+    "back": "All tools",
+    "privacyNote": "The timer stays in this tab. Nothing is uploaded.",
+    "options": "Duration",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "result": "Time left",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "loan": {
+    "title": "Loan calculator",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Loan",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "result": "Payment",
+    "copy": "Copy",
+    "copied": "Copied",
+    "payment": "Monthly",
+    "interest": "Total interest",
+    "total": "Total paid",
+    "invalid": "Enter a principal above 0 and at least one year."
   }
 }
