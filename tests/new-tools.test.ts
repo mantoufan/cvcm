@@ -39,6 +39,9 @@ import { fromRoman, toRoman } from "../src/shared/roman";
 import { discountOf } from "../src/shared/discount";
 import { fromSeconds, toSeconds } from "../src/shared/countdown";
 import { loanPayment } from "../src/shared/loan";
+import { formatElapsed } from "../src/shared/stopwatch";
+import { compoundGrowth } from "../src/shared/compound";
+import { vatOf } from "../src/shared/vat";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -505,6 +508,36 @@ describe("loan", () => {
   });
 });
 
+describe("stopwatch", () => {
+  it("formats elapsed time to hundredths", () => {
+    expect(formatElapsed(0)).toBe("00:00:00.00");
+    expect(formatElapsed(1234)).toBe("00:00:01.23");
+    expect(formatElapsed(3723120)).toBe("01:02:03.12");
+  });
+});
+
+describe("compound", () => {
+  it("grows a principal yearly", () => {
+    const out = compoundGrowth(1000, 5, 10, 1);
+    expect(out).not.toBeNull();
+    expect(out!.future).toBeCloseTo(1628.89, 2);
+    expect(compoundGrowth(1000, 0, 10, 12)).toEqual({ future: 1000, interest: 0 });
+    expect(compoundGrowth(-1, 5, 10, 12)).toBeNull();
+  });
+});
+
+describe("vat", () => {
+  it("adds and extracts tax", () => {
+    expect(vatOf(100, 20, false)).toEqual({ net: 100, tax: 20, gross: 120 });
+    const inc = vatOf(120, 20, true);
+    expect(inc).not.toBeNull();
+    expect(inc!.net).toBeCloseTo(100, 8);
+    expect(inc!.tax).toBeCloseTo(20, 8);
+    expect(inc!.gross).toBe(120);
+    expect(vatOf(-1, 10, false)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -561,6 +594,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/discount/")).toEqual({ kind: "app", locale: "en", tool: "discount" });
     expect(parseAppPath("/en/countdown/")).toEqual({ kind: "app", locale: "en", tool: "countdown" });
     expect(parseAppPath("/en/loan/")).toEqual({ kind: "app", locale: "en", tool: "loan" });
+    expect(parseAppPath("/en/stopwatch/")).toEqual({ kind: "app", locale: "en", tool: "stopwatch" });
+    expect(parseAppPath("/en/compound/")).toEqual({ kind: "app", locale: "en", tool: "compound" });
+    expect(parseAppPath("/en/vat/")).toEqual({ kind: "app", locale: "en", tool: "vat" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -592,6 +628,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "discount")).toBe("/zh-cn/discount/");
     expect(appHref("zh-CN", "countdown")).toBe("/zh-cn/countdown/");
     expect(appHref("zh-CN", "loan")).toBe("/zh-cn/loan/");
+    expect(appHref("zh-CN", "stopwatch")).toBe("/zh-cn/stopwatch/");
+    expect(appHref("zh-CN", "compound")).toBe("/zh-cn/compound/");
+    expect(appHref("zh-CN", "vat")).toBe("/zh-cn/vat/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

@@ -525,6 +525,33 @@
       "s2b": "Months are years × 12. The rate is yearly percent divided by 12.",
       "s3t": "Copy the payment",
       "s3b": "Copy puts monthly payment, total interest, and total paid on the clipboard."
+    },
+    "stopwatch": {
+      "lead": "Time elapsed seconds in this tab. Closing the tab stops it. It is not a system clock.",
+      "s1t": "Open Stopwatch",
+      "s1b": "Elapsed time starts at 00:00:00.00 on the right. Start and reset sit on the left.",
+      "s2t": "Start the timer",
+      "s2b": "Start, pause, or reset. The count only runs while this tab stays open.",
+      "s3t": "Read the elapsed time",
+      "s3b": "The display is hours, minutes, seconds, and hundredths. Reset returns to zero."
+    },
+    "compound": {
+      "lead": "Estimate a future value from principal, yearly rate, years, and compounding. Not investment advice.",
+      "s1t": "Open Compound interest",
+      "s1b": "A sample 10-year amount is already filled. Future value sits on the right.",
+      "s2t": "Change principal, rate, years, or frequency",
+      "s2b": "A = P (1 + r/n)^(n t). Monthly compounds 12 times a year.",
+      "s3t": "Copy the future value",
+      "s3b": "Copy puts future value and interest on the clipboard."
+    },
+    "vat": {
+      "lead": "Add VAT or split a gross price into net and tax in this tab. Not a tax filing.",
+      "s1t": "Open VAT calculator",
+      "s1b": "A sample amount and 20% rate are already filled. Net, tax, and gross sit on the right.",
+      "s2t": "Choose exclusive or inclusive",
+      "s2b": "Exclusive adds tax on top. Inclusive works backwards from a gross price.",
+      "s3t": "Copy the breakdown",
+      "s3b": "Copy puts net, tax, and gross on the clipboard."
     }
   }
 }

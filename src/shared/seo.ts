@@ -100,6 +100,9 @@ const TITLE: Record<ToolId, string> = {
   discount: "meta.titleDiscount",
   countdown: "meta.titleCountdown",
   loan: "meta.titleLoan",
+  stopwatch: "meta.titleStopwatch",
+  compound: "meta.titleCompound",
+  vat: "meta.titleVat",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -160,6 +163,9 @@ const DESC: Record<ToolId, string> = {
   discount: "meta.descDiscount",
   countdown: "meta.descCountdown",
   loan: "meta.descLoan",
+  stopwatch: "meta.descStopwatch",
+  compound: "meta.descCompound",
+  vat: "meta.descVat",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

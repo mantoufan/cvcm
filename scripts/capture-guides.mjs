@@ -76,6 +76,9 @@ const STEPS = {
   discount: 3,
   countdown: 3,
   loan: 3,
+  stopwatch: 3,
+  compound: 3,
+  vat: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1013,6 +1016,47 @@ async function runTool(send, id, fx) {
       if (nums[0]) { nums[0].value = "200000"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
       if (nums[1]) { nums[1].value = "5"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
       if (nums[2]) { nums[2].value = "30"; nums[2].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "stopwatch") {
+    await snap(1);
+    await clickText(send, "Start");
+    await sleep(800);
+    await snap(2);
+    await clickText(send, "Pause");
+    await snap(3);
+    return;
+  }
+
+  if (id === "compound") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "1000"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "5"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[2]) { nums[2].value = "10"; nums[2].dispatchEvent(new Event("input", { bubbles: true })); }
+      const sel = document.querySelector("select");
+      if (sel) { sel.value = "12"; sel.dispatchEvent(new Event("change", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "vat") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "100"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "20"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
       return nums.length;
     })()`);
     await sleep(200);

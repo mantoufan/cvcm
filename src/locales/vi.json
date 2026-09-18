@@ -173,7 +173,13 @@
     "titleCountWords": "Cách đếm từ và ký tự | cv.cm",
     "descCountWords": "Dán bản thảo, đọc từ hoặc ký tự (bài Trung: không khoảng), cắt theo hạn, đếm lại. Không tải lên.",
     "titleTrimAudio": "Cách cắt audio / cắt MP3 | cv.cm",
-    "descTrimAudio": "Đánh đầu cuối, nghe trong trang, tải WAV, phát file. Bản gốc còn. Không tải lên."
+    "descTrimAudio": "Đánh đầu cuối, nghe trong trang, tải WAV, phát file. Bản gốc còn. Không tải lên.",
+    "titleStopwatch": "Đồng hồ bấm giờ — thời gian trôi — cv.cm",
+    "descStopwatch": "Bấm giờ trong trình duyệt. Bắt đầu, tạm dừng, đặt lại. Không tải lên.",
+    "titleCompound": "Lãi kép — giá trị tương lai — cv.cm",
+    "descCompound": "Ước giá trị tương lai trong trình duyệt. Gốc, lãi, năm, lần ghép. Không tải lên.",
+    "titleVat": "Tính VAT — thuế bán hàng — cv.cm",
+    "descVat": "Cộng VAT hoặc tách giá gồm thuế trong trình duyệt. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -444,6 +450,18 @@
     "loan": {
       "name": "Tính khoản vay",
       "blurb": "Gốc, lãi, năm ra trả tháng. Không tải lên."
+    },
+    "stopwatch": {
+      "name": "Đồng hồ bấm giờ",
+      "blurb": "Bắt đầu, tạm dừng, đặt lại. Không tải lên."
+    },
+    "compound": {
+      "name": "Lãi kép",
+      "blurb": "Gốc, lãi, số năm. Không tải lên."
+    },
+    "vat": {
+      "name": "VAT",
+      "blurb": "Gồm thuế hoặc chưa thuế. Không tải lên."
     }
   },
   "watermark": {
@@ -1591,6 +1609,42 @@
       "a4": "No. Fees, compounding, and extra payments are not included.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
+    },
+    "stopwatch": {
+      "q1": "Can I time something here?",
+      "a1": "Yes. Start, pause, and reset a stopwatch in this tab. It shows hours, minutes, seconds, and hundredths.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. Closing the tab stops it. It is not a system clock.",
+      "q4": "How precise is it?",
+      "a4": "The display is hundredths of a second. It is for elapsed time, not a certified lab timer.",
+      "q5": "Are there laps?",
+      "a5": "No. This tab only tracks total elapsed time."
+    },
+    "compound": {
+      "q1": "Can I calculate compound interest here?",
+      "a1": "Yes. Enter principal, yearly percent, years, and how often it compounds. The tab shows future value and interest earned.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A = P (1 + r/n)^(n t). n is compounds per year. Yearly, quarterly, monthly, and daily are built in.",
+      "q4": "Is this investment advice?",
+      "a4": "No. Fees, inflation, and taxes are not included.",
+      "q5": "What currency?",
+      "a5": "None. It is just a number with two decimal places."
+    },
+    "vat": {
+      "q1": "Can I calculate VAT or sales tax here?",
+      "a1": "Yes. Enter an amount and a rate. Exclusive adds tax. Inclusive splits a gross price into net and tax.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which rate should I use?",
+      "a3": "The rate you enter. This tab does not look up a country rate.",
+      "q4": "Is this a tax filing?",
+      "a4": "No. It is arithmetic on the numbers you type.",
+      "q5": "What currency?",
+      "a5": "None. It is just a number with two decimal places."
     }
   },
   "qr": {
@@ -2963,5 +3017,53 @@
     "interest": "Total interest",
     "total": "Total paid",
     "invalid": "Enter a principal above 0 and at least one year."
+  },
+  "stopwatch": {
+    "title": "Đồng hồ bấm giờ",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đồng hồ ở tab này. Không tải lên.",
+    "options": "Controls",
+    "result": "Elapsed",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "compound": {
+    "title": "Lãi kép",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tính trong tab này. Không tải lên.",
+    "options": "Inputs",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "freq": "Compounds",
+    "yearly": "Yearly",
+    "quarterly": "Quarterly",
+    "monthly": "Monthly",
+    "daily": "Daily",
+    "result": "Future value",
+    "copy": "Copy",
+    "copied": "Copied",
+    "future": "Future value",
+    "interest": "Interest",
+    "invalid": "Enter a principal of 0 or more, years of 0 or more, and a compounding frequency."
+  },
+  "vat": {
+    "title": "Tính VAT",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tính trong tab này. Không tải lên.",
+    "options": "Amount",
+    "amount": "Amount",
+    "rate": "Rate %",
+    "mode": "Price",
+    "exclusive": "Tax exclusive",
+    "inclusive": "Tax inclusive",
+    "result": "Breakdown",
+    "copy": "Copy",
+    "copied": "Copied",
+    "net": "Net",
+    "tax": "Tax",
+    "gross": "Gross",
+    "invalid": "Enter an amount of 0 or more and a rate of 0 or more."
   }
 }

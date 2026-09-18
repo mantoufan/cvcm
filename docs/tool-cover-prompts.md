@@ -31,3 +31,15 @@ Keep the exact same extra-cute pink twin-tail chibi girl, lace bonnet, frilly fu
 ## Text and data
 
 Use case: stylized-concept. Generate one new 16:9 landscape website tool cover for Text and Data. Input images are STYLE REFERENCES ONLY. Match their exquisite luminous pastel pink and ivory anime rendering, fine delicate linework, intricate lace, satin ribbons, rosy sparkling large eyes and chibi proportions. Centered close waist-up cheerful pale rose pink twin-tail chibi girl in fully covered frilly pink dress and lace bonnet, at a cream-pink writing desk, holding a pink fountain pen and an open beautifully bound notebook. Notebook has neatly organized small abstract lines and a tiny grid suggesting text and tabular data, no readable writing. A few floating cream paper cards with elegant rows and grids, roses, white lace curtains and little pink stationery in the softly blurred background. Focus large central face as in supplied covers, delicate hair highlights, soft studio-like glow, high detail and dimensional polished anime shading, not coarse outlines or flat coloring-book style. Wholesome all-ages. No words, letters, logos, watermarks, title or UI. Output one image.
+
+## Stopwatch
+
+Same extra-cute pale-rose twin-tail chibi, lace bonnet, cream-pink room. She holds a round pearlescent pink pocket stopwatch with a heart-shaped button and a blank cream face of tiny heart ticks — no numerals. Save `public/covers/stopwatch-sweet.jpg`, `sips -z 720 1280`.
+
+## Compound interest
+
+Same character and room. She holds a tiny cream flowerpot with a sprouting pink plant; stacked pearlescent coins with heart stamps sit on the desk. No letters or numbers. Save `public/covers/compound-sweet.jpg`, `sips -z 720 1280`.
+
+## VAT / sales tax
+
+Same character and room. She holds a rolled cream receipt with a heart wax seal and a tiny pink stamp pad. No writing. Save `public/covers/vat-sweet.jpg`, `sips -z 720 1280`.

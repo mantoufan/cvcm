@@ -173,7 +173,13 @@
     "titleCountWords": "단어·글자 수 세는 법 | cv.cm",
     "descCountWords": "초안을 붙여 단어 또는 글자(중국어 숙제는 공백 없는 글자)를 보고 한도에 맞춰 줄인 뒤 다시 세요. 업로드 없음.",
     "titleTrimAudio": "오디오 자르기 / MP3 컷하는 법 | cv.cm",
-    "descTrimAudio": "시작과 끝을 표시하고 페이지에서 들은 뒤 WAV를 받아 파일을 재생하세요. 원본은 남습니다. 업로드 없음."
+    "descTrimAudio": "시작과 끝을 표시하고 페이지에서 들은 뒤 WAV를 받아 파일을 재생하세요. 원본은 남습니다. 업로드 없음.",
+    "titleStopwatch": "스톱워치 — 경과 시간 — cv.cm",
+    "descStopwatch": "브라우저에서 스톱워치. 시작, 일시정지, 리셋. 업로드 없음.",
+    "titleCompound": "복리 계산 — 미래 가치 — cv.cm",
+    "descCompound": "브라우저에서 복리 미래 가치. 원금, 이율, 연수, 복리 횟수. 업로드 없음.",
+    "titleVat": "부가세 계산 — 판매세 — cv.cm",
+    "descVat": "브라우저에서 부가세나 판매세. 세포함 또는 세별도. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -444,6 +450,18 @@
     "loan": {
       "name": "대출 계산",
       "blurb": "원금, 이율, 연수로 월 상환. 업로드 없음."
+    },
+    "stopwatch": {
+      "name": "스톱워치",
+      "blurb": "시작, 일시정지, 리셋. 업로드 없음."
+    },
+    "compound": {
+      "name": "복리 계산",
+      "blurb": "원금, 이율, 연수. 업로드 없음."
+    },
+    "vat": {
+      "name": "부가세",
+      "blurb": "세포함 또는 세별도. 업로드 없음."
     }
   },
   "watermark": {
@@ -1591,6 +1609,42 @@
       "a4": "No. Fees, compounding, and extra payments are not included.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts payment, total interest, and total paid on the clipboard."
+    },
+    "stopwatch": {
+      "q1": "Can I time something here?",
+      "a1": "Yes. Start, pause, and reset a stopwatch in this tab. It shows hours, minutes, seconds, and hundredths.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The timer runs in this tab.",
+      "q3": "Does it keep running in the background?",
+      "a3": "Only while this tab stays open. Closing the tab stops it. It is not a system clock.",
+      "q4": "How precise is it?",
+      "a4": "The display is hundredths of a second. It is for elapsed time, not a certified lab timer.",
+      "q5": "Are there laps?",
+      "a5": "No. This tab only tracks total elapsed time."
+    },
+    "compound": {
+      "q1": "Can I calculate compound interest here?",
+      "a1": "Yes. Enter principal, yearly percent, years, and how often it compounds. The tab shows future value and interest earned.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What formula?",
+      "a3": "A = P (1 + r/n)^(n t). n is compounds per year. Yearly, quarterly, monthly, and daily are built in.",
+      "q4": "Is this investment advice?",
+      "a4": "No. Fees, inflation, and taxes are not included.",
+      "q5": "What currency?",
+      "a5": "None. It is just a number with two decimal places."
+    },
+    "vat": {
+      "q1": "Can I calculate VAT or sales tax here?",
+      "a1": "Yes. Enter an amount and a rate. Exclusive adds tax. Inclusive splits a gross price into net and tax.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Which rate should I use?",
+      "a3": "The rate you enter. This tab does not look up a country rate.",
+      "q4": "Is this a tax filing?",
+      "a4": "No. It is arithmetic on the numbers you type.",
+      "q5": "What currency?",
+      "a5": "None. It is just a number with two decimal places."
     }
   },
   "qr": {
@@ -2963,5 +3017,53 @@
     "interest": "Total interest",
     "total": "Total paid",
     "invalid": "Enter a principal above 0 and at least one year."
+  },
+  "stopwatch": {
+    "title": "스톱워치",
+    "back": "모든 도구",
+    "privacyNote": "타이머는 이 탭에 머뭅니다. 업로드 없음.",
+    "options": "Controls",
+    "result": "Elapsed",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset"
+  },
+  "compound": {
+    "title": "복리 계산",
+    "back": "모든 도구",
+    "privacyNote": "계산은 이 탭에서. 업로드 없음.",
+    "options": "Inputs",
+    "principal": "Principal",
+    "rate": "Yearly %",
+    "years": "Years",
+    "freq": "Compounds",
+    "yearly": "Yearly",
+    "quarterly": "Quarterly",
+    "monthly": "Monthly",
+    "daily": "Daily",
+    "result": "Future value",
+    "copy": "Copy",
+    "copied": "Copied",
+    "future": "Future value",
+    "interest": "Interest",
+    "invalid": "Enter a principal of 0 or more, years of 0 or more, and a compounding frequency."
+  },
+  "vat": {
+    "title": "부가세 계산",
+    "back": "모든 도구",
+    "privacyNote": "계산은 이 탭에서. 업로드 없음.",
+    "options": "Amount",
+    "amount": "Amount",
+    "rate": "Rate %",
+    "mode": "Price",
+    "exclusive": "Tax exclusive",
+    "inclusive": "Tax inclusive",
+    "result": "Breakdown",
+    "copy": "Copy",
+    "copied": "Copied",
+    "net": "Net",
+    "tax": "Tax",
+    "gross": "Gross",
+    "invalid": "Enter an amount of 0 or more and a rate of 0 or more."
   }
 }
