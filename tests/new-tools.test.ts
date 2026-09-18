@@ -45,6 +45,9 @@ import { vatOf } from "../src/shared/vat";
 import { isPalindrome, reverseText } from "../src/shared/reverse";
 import { decodeUrl, encodeUrl } from "../src/shared/url-encode";
 import { hexToText, textToHex } from "../src/shared/text-hex";
+import { minifyJson, prettyJson } from "../src/shared/json";
+import { decodeBase64, encodeBase64 } from "../src/shared/base64";
+import { daysBetween } from "../src/shared/days";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -569,6 +572,32 @@ describe("text-hex", () => {
   });
 });
 
+describe("json", () => {
+  it("pretty-prints and minifies", () => {
+    expect(prettyJson('{"a":1}')).toBe("{\n  \"a\": 1\n}");
+    expect(minifyJson('{\n  "a": 1\n}')).toBe('{"a":1}');
+    expect(prettyJson("nope")).toBeNull();
+  });
+});
+
+describe("base64", () => {
+  it("round-trips UTF-8", () => {
+    expect(encodeBase64("Hi")).toBe("SGk=");
+    expect(decodeBase64("SGk=")).toBe("Hi");
+    expect(decodeBase64(encodeBase64("你好"))).toBe("你好");
+    expect(decodeBase64("!!!!")).toBeNull();
+  });
+});
+
+describe("days", () => {
+  it("counts civil days", () => {
+    expect(daysBetween("2026-01-01", "2026-01-02")).toBe(1);
+    expect(daysBetween("2024-02-28", "2024-03-01")).toBe(2);
+    expect(daysBetween("2026-01-02", "2026-01-01")).toBe(-1);
+    expect(daysBetween("2026-02-30", "2026-03-01")).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -631,6 +660,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/reverse/")).toEqual({ kind: "app", locale: "en", tool: "reverse" });
     expect(parseAppPath("/en/url-encode/")).toEqual({ kind: "app", locale: "en", tool: "url-encode" });
     expect(parseAppPath("/en/text-hex/")).toEqual({ kind: "app", locale: "en", tool: "text-hex" });
+    expect(parseAppPath("/en/json/")).toEqual({ kind: "app", locale: "en", tool: "json" });
+    expect(parseAppPath("/en/base64/")).toEqual({ kind: "app", locale: "en", tool: "base64" });
+    expect(parseAppPath("/en/days/")).toEqual({ kind: "app", locale: "en", tool: "days" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -668,6 +700,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "reverse")).toBe("/zh-cn/reverse/");
     expect(appHref("zh-CN", "url-encode")).toBe("/zh-cn/url-encode/");
     expect(appHref("zh-CN", "text-hex")).toBe("/zh-cn/text-hex/");
+    expect(appHref("zh-CN", "json")).toBe("/zh-cn/json/");
+    expect(appHref("zh-CN", "base64")).toBe("/zh-cn/base64/");
+    expect(appHref("zh-CN", "days")).toBe("/zh-cn/days/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

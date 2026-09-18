@@ -199,7 +199,13 @@
     "titleUrlEncode": "URL 인코드 — 퍼센트 인코딩 — cv.cm",
     "descUrlEncode": "브라우저에서 퍼센트 인코드 또는 디코드. 업로드 없음.",
     "titleTextHex": "텍스트를 16진수로 — hex — cv.cm",
-    "descTextHex": "브라우저에서 텍스트와 UTF-8 16진수를 서로 바꿉니다. 업로드 없음."
+    "descTextHex": "브라우저에서 텍스트와 UTF-8 16진수를 서로 바꿉니다. 업로드 없음.",
+    "titleJson": "JSON 포맷 — 예쁘게/압축 — cv.cm",
+    "descJson": "브라우저에서 JSON을 예쁘게 하거나 압축. 업로드 없음.",
+    "titleBase64": "Base64 인코드 — UTF-8 — cv.cm",
+    "descBase64": "브라우저에서 텍스트를 Base64로. UTF-8. 업로드 없음.",
+    "titleDays": "날짜 간격 — 일수 — cv.cm",
+    "descDays": "브라우저에서 두 날짜 사이 일수. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -495,6 +501,18 @@
     "text-hex": {
       "name": "16진수",
       "blurb": "텍스트 ↔ UTF-8 hex. 업로드 없음."
+    },
+    "json": {
+      "name": "JSON 포맷",
+      "blurb": "예쁘게 또는 압축. 업로드 없음."
+    },
+    "base64": {
+      "name": "Base64",
+      "blurb": "UTF-8 인코드. 업로드 없음."
+    },
+    "days": {
+      "name": "날짜 간격",
+      "blurb": "두 날짜 사이 일수. 업로드 없음."
     }
   },
   "watermark": {
@@ -1728,6 +1746,42 @@
       "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "json": {
+      "q1": "Can I format JSON here?",
+      "a1": "Yes. Paste JSON and pretty-print it with indent, or minify it to one line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Formatting stays in this tab.",
+      "q3": "What if the JSON is invalid?",
+      "a3": "The tab shows an error. Trailing commas and comments are not JSON.",
+      "q4": "Is this the same as Text and data?",
+      "a4": "Text and data also formats JSON. This page is only pretty-print and minify.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the formatted JSON on the clipboard."
+    },
+    "base64": {
+      "q1": "Can I encode Base64 here?",
+      "a1": "Yes. Encode text as Base64, or decode Base64 back to text. UTF-8 is used.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about files?",
+      "a3": "This tab is for text. It is not a file host.",
+      "q4": "What if decode fails?",
+      "a4": "Padding must be valid Base64. Broken input shows an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the encoded or decoded string on the clipboard."
+    },
+    "days": {
+      "q1": "Can I count days between two dates here?",
+      "a1": "Yes. Pick a start date and an end date. The tab shows the signed day count, the absolute days, and whole weeks.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Are time zones included?",
+      "a3": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q4": "Do leap days count?",
+      "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the day counts on the clipboard."
     }
   },
   "qr": {
@@ -3241,5 +3295,48 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter even-length hex (UTF-8 bytes)."
+  },
+  "json": {
+    "title": "JSON 포맷",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Format",
+    "pretty": "Pretty print",
+    "minify": "Minify",
+    "input": "JSON",
+    "output": "Result",
+    "placeholder": "{ \"ok\": true }",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid JSON."
+  },
+  "base64": {
+    "title": "Base64 인코드",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid Base64."
+  },
+  "days": {
+    "title": "날짜 간격",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Dates",
+    "from": "From",
+    "to": "To",
+    "result": "Difference",
+    "diff": "Days (signed)",
+    "abs": "Days (absolute)",
+    "weeks": "Whole weeks",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter two real calendar dates."
   }
 }

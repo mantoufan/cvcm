@@ -60,6 +60,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/reverse/` — reverse text / palindrome
 - `src/client/url-encode/` — URL encode / decode
 - `src/client/text-hex/` — text ↔ hex
+- `src/client/json/` — JSON pretty / minify
+- `src/client/base64/` — Base64 encode / decode
+- `src/client/days/` — days between dates
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

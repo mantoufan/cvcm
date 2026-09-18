@@ -579,6 +579,33 @@
       "s2b": "Switch to Hex → text to decode. Spaces in the hex are fine.",
       "s3t": "Copy the result",
       "s3b": "Copy puts the hex or the decoded text on the clipboard."
+    },
+    "json": {
+      "lead": "Pretty-print or minify JSON in this tab. Nothing is uploaded.",
+      "s1t": "Open JSON formatter",
+      "s1b": "A sample object is already pretty-printed on the right.",
+      "s2t": "Paste your JSON",
+      "s2b": "Switch to Minify for one line. Invalid JSON shows an error.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the formatted JSON on the clipboard."
+    },
+    "base64": {
+      "lead": "Encode text as Base64 or decode it back in this tab. Nothing is uploaded.",
+      "s1t": "Open Base64",
+      "s1b": "A sample string is already encoded on the right.",
+      "s2t": "Paste text or Base64",
+      "s2b": "Switch to Decode to turn Base64 back into text. UTF-8 is used.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the encoded or decoded string on the clipboard."
+    },
+    "days": {
+      "lead": "Count calendar days between two dates in this tab. Nothing is uploaded.",
+      "s1t": "Open Days between dates",
+      "s1b": "A sample start date and today are already filled. The day count sits on the right.",
+      "s2t": "Change the dates",
+      "s2b": "The signed count can be negative if the end date is earlier. Leap days are included.",
+      "s3t": "Copy the count",
+      "s3b": "Copy puts signed days, absolute days, and whole weeks on the clipboard."
     }
   }
 }

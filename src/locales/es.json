@@ -199,7 +199,13 @@
     "titleUrlEncode": "URL encode — codificación percent — cv.cm",
     "descUrlEncode": "Codifica o decodifica percent-encoding en el navegador. Nada se sube.",
     "titleTextHex": "Texto a hex — hex a texto — cv.cm",
-    "descTextHex": "Convierte texto a hex UTF-8 y al revés en el navegador. Nada se sube."
+    "descTextHex": "Convierte texto a hex UTF-8 y al revés en el navegador. Nada se sube.",
+    "titleJson": "JSON formatter — pretty minify — cv.cm",
+    "descJson": "Formatea o comprime JSON en el navegador. Nada se sube.",
+    "titleBase64": "Base64 — UTF-8 — cv.cm",
+    "descBase64": "Codifica o decodifica Base64 en el navegador. UTF-8. Nada se sube.",
+    "titleDays": "Días entre fechas — diferencia — cv.cm",
+    "descDays": "Cuenta los días entre dos fechas en el navegador. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -495,6 +501,18 @@
     "text-hex": {
       "name": "Hex",
       "blurb": "Texto ↔ UTF-8 hex. Nada se sube."
+    },
+    "json": {
+      "name": "JSON formatter",
+      "blurb": "Pretty o minify. Nada se sube."
+    },
+    "base64": {
+      "name": "Base64",
+      "blurb": "UTF-8 encode. Nada se sube."
+    },
+    "days": {
+      "name": "Días entre fechas",
+      "blurb": "Días de calendario. Nada se sube."
     }
   },
   "watermark": {
@@ -1728,6 +1746,42 @@
       "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "json": {
+      "q1": "Can I format JSON here?",
+      "a1": "Yes. Paste JSON and pretty-print it with indent, or minify it to one line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Formatting stays in this tab.",
+      "q3": "What if the JSON is invalid?",
+      "a3": "The tab shows an error. Trailing commas and comments are not JSON.",
+      "q4": "Is this the same as Text and data?",
+      "a4": "Text and data also formats JSON. This page is only pretty-print and minify.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the formatted JSON on the clipboard."
+    },
+    "base64": {
+      "q1": "Can I encode Base64 here?",
+      "a1": "Yes. Encode text as Base64, or decode Base64 back to text. UTF-8 is used.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about files?",
+      "a3": "This tab is for text. It is not a file host.",
+      "q4": "What if decode fails?",
+      "a4": "Padding must be valid Base64. Broken input shows an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the encoded or decoded string on the clipboard."
+    },
+    "days": {
+      "q1": "Can I count days between two dates here?",
+      "a1": "Yes. Pick a start date and an end date. The tab shows the signed day count, the absolute days, and whole weeks.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Are time zones included?",
+      "a3": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q4": "Do leap days count?",
+      "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the day counts on the clipboard."
     }
   },
   "qr": {
@@ -3241,5 +3295,48 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter even-length hex (UTF-8 bytes)."
+  },
+  "json": {
+    "title": "JSON formatter",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Format",
+    "pretty": "Pretty print",
+    "minify": "Minify",
+    "input": "JSON",
+    "output": "Result",
+    "placeholder": "{ \"ok\": true }",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid JSON."
+  },
+  "base64": {
+    "title": "Base64",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid Base64."
+  },
+  "days": {
+    "title": "Días entre fechas",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Dates",
+    "from": "From",
+    "to": "To",
+    "result": "Difference",
+    "diff": "Days (signed)",
+    "abs": "Days (absolute)",
+    "weeks": "Whole weeks",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter two real calendar dates."
   }
 }

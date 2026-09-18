@@ -199,7 +199,13 @@
     "titleUrlEncode": "URL encode — mã hóa phần trăm — cv.cm",
     "descUrlEncode": "Mã hóa hoặc giải mã phần trăm trong trình duyệt. Không tải lên.",
     "titleTextHex": "Chữ sang hex — hex sang chữ — cv.cm",
-    "descTextHex": "Đổi chữ sang hex UTF-8 và ngược lại trong trình duyệt. Không tải lên."
+    "descTextHex": "Đổi chữ sang hex UTF-8 và ngược lại trong trình duyệt. Không tải lên.",
+    "titleJson": "JSON formatter — pretty minify — cv.cm",
+    "descJson": "Làm đẹp hoặc nén JSON trong trình duyệt. Không tải lên.",
+    "titleBase64": "Base64 — UTF-8 — cv.cm",
+    "descBase64": "Mã hóa hoặc giải mã Base64 trong trình duyệt. UTF-8. Không tải lên.",
+    "titleDays": "Khoảng ngày — số ngày — cv.cm",
+    "descDays": "Đếm ngày giữa hai mốc trong trình duyệt. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -495,6 +501,18 @@
     "text-hex": {
       "name": "Hex",
       "blurb": "Chữ ↔ UTF-8 hex. Không tải lên."
+    },
+    "json": {
+      "name": "JSON formatter",
+      "blurb": "Làm đẹp hoặc nén. Không tải lên."
+    },
+    "base64": {
+      "name": "Base64",
+      "blurb": "UTF-8 encode. Không tải lên."
+    },
+    "days": {
+      "name": "Khoảng ngày",
+      "blurb": "Số ngày giữa hai mốc. Không tải lên."
     }
   },
   "watermark": {
@@ -1728,6 +1746,42 @@
       "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the converted value on the clipboard."
+    },
+    "json": {
+      "q1": "Can I format JSON here?",
+      "a1": "Yes. Paste JSON and pretty-print it with indent, or minify it to one line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Formatting stays in this tab.",
+      "q3": "What if the JSON is invalid?",
+      "a3": "The tab shows an error. Trailing commas and comments are not JSON.",
+      "q4": "Is this the same as Text and data?",
+      "a4": "Text and data also formats JSON. This page is only pretty-print and minify.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the formatted JSON on the clipboard."
+    },
+    "base64": {
+      "q1": "Can I encode Base64 here?",
+      "a1": "Yes. Encode text as Base64, or decode Base64 back to text. UTF-8 is used.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about files?",
+      "a3": "This tab is for text. It is not a file host.",
+      "q4": "What if decode fails?",
+      "a4": "Padding must be valid Base64. Broken input shows an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the encoded or decoded string on the clipboard."
+    },
+    "days": {
+      "q1": "Can I count days between two dates here?",
+      "a1": "Yes. Pick a start date and an end date. The tab shows the signed day count, the absolute days, and whole weeks.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Are time zones included?",
+      "a3": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q4": "Do leap days count?",
+      "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the day counts on the clipboard."
     }
   },
   "qr": {
@@ -3241,5 +3295,48 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter even-length hex (UTF-8 bytes)."
+  },
+  "json": {
+    "title": "JSON formatter",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Format",
+    "pretty": "Pretty print",
+    "minify": "Minify",
+    "input": "JSON",
+    "output": "Result",
+    "placeholder": "{ \"ok\": true }",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid JSON."
+  },
+  "base64": {
+    "title": "Base64",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That is not valid Base64."
+  },
+  "days": {
+    "title": "Khoảng ngày",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Dates",
+    "from": "From",
+    "to": "To",
+    "result": "Difference",
+    "diff": "Days (signed)",
+    "abs": "Days (absolute)",
+    "weeks": "Whole weeks",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter two real calendar dates."
   }
 }

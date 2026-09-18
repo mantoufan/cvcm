@@ -111,6 +111,9 @@ const TITLE: Record<ToolId, string> = {
   reverse: "meta.titleReverse",
   "url-encode": "meta.titleUrlEncode",
   "text-hex": "meta.titleTextHex",
+  json: "meta.titleJson",
+  base64: "meta.titleBase64",
+  days: "meta.titleDays",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -177,6 +180,9 @@ const DESC: Record<ToolId, string> = {
   reverse: "meta.descReverse",
   "url-encode": "meta.descUrlEncode",
   "text-hex": "meta.descTextHex",
+  json: "meta.descJson",
+  base64: "meta.descBase64",
+  days: "meta.descDays",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

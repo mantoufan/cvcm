@@ -55,3 +55,15 @@ Same character and room. A chain of three pearlescent heart-shaped paper clips a
 ## Text to hex
 
 Same character and room. A cream honeycomb of tiny heart hexagons. No digits. Save `public/covers/text-hex-sweet.jpg`, `sips -z 720 1280`.
+
+## JSON formatter
+
+Same character and room. Nested cream gift boxes, inner one with a heart stamp. No braces or writing. Save `public/covers/json-sweet.jpg`, `sips -z 720 1280`.
+
+## Base64
+
+Same character and room. A stack of cream index cards tied with a pink ribbon. No writing. Save `public/covers/base64-sweet.jpg`, `sips -z 720 1280`.
+
+## Days between dates
+
+Same character and room. Two cream calendar pages or an open booklet with a heart on each side. No numerals. Save `public/covers/days-sweet.jpg`, `sips -z 720 1280`.

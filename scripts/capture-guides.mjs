@@ -82,6 +82,9 @@ const STEPS = {
   reverse: 3,
   "url-encode": 3,
   "text-hex": 3,
+  json: 3,
+  base64: 3,
+  days: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1105,6 +1108,52 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "json") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "minify";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "base64") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "from";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "days") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const dates = [...document.querySelectorAll("input[type=date]")];
+      if (dates[0]) { dates[0].value = "2026-01-01"; dates[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (dates[1]) { dates[1].value = "2026-09-18"; dates[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return dates.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
     await snap(3);
     return;
   }
