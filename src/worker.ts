@@ -50,6 +50,7 @@ const EMU_CSP = [
 ].join("; ");
 
 const EMU_PROXY = /^\/emu\/(data|roms)\/([A-Za-z0-9._/-]+)$/;
+const COVER_PROXY = /^\/covers\/([A-Za-z0-9._/-]+)$/;
 
 const ALLOWED = "GET, HEAD";
 
@@ -91,6 +92,8 @@ export default {
     const path = url.pathname;
     const emu = await proxyEmu(path, request.method);
     if (emu) return withHeaders(emu, path);
+    const cover = await proxyCovers(path, request.method);
+    if (cover) return withHeaders(cover, path);
 
     if (!STATIC_FILE.test(path)) {
       const parsed = parseAppPath(path);
@@ -215,6 +218,31 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
     return new Response(null, { status: 200, headers });
   }
   return new Response(upstream.body, { status: 200, headers });
+}
+
+async function proxyCovers(pathname: string, method: string): Promise<Response | null> {
+  const match = COVER_PROXY.exec(pathname);
+  if (!match) return null;
+  if (method !== "GET" && method !== "HEAD") {
+    return new Response("Method Not Allowed", { status: 405, headers: { Allow: ALLOWED } });
+  }
+  const rest = match[1];
+  if (!rest || rest.includes("..") || rest.includes("//")) {
+    return new Response("Bad Request", { status: 400 });
+  }
+  try {
+    const upstream = await fetch(`https://files.s3.cv.cm/covers/${rest}`);
+    if (!upstream.ok) return null;
+    const headers = new Headers(upstream.headers);
+    headers.delete("Access-Control-Allow-Origin");
+    headers.set("Cache-Control", "public, max-age=86400");
+    if (method === "HEAD") {
+      return new Response(null, { status: 200, headers });
+    }
+    return new Response(upstream.body, { status: 200, headers });
+  } catch {
+    return null;
+  }
 }
 
 function withHeaders(res: Response, pathname: string): Response {

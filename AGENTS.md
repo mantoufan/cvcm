@@ -83,7 +83,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/regex/` — regex tester
 - `src/client/guide.ts` — illustrated how-to above FAQ (test screenshots)
 - `src/locales/guides/` — 8-locale how-to copy
-- `public/covers/guides/` — per-tool step screenshots
+- `public/covers/` — tool/game/learn images; production serves them from S3 (`files.s3.cv.cm/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)
 - `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted; Shiru freeware is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/data/`
