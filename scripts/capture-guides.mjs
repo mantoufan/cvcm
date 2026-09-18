@@ -73,6 +73,9 @@ const STEPS = {
   tip: 3,
   morse: 3,
   roman: 3,
+  discount: 3,
+  countdown: 3,
+  loan: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -967,6 +970,51 @@ async function runTool(send, id, fx) {
   if (id === "roman") {
     await snap(1);
     await evalValue(send, fillExpr("input.regex-pattern", "2026"));
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "discount") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "80"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "25"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "countdown") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) nums[0].value = "0";
+      if (nums[1]) nums[1].value = "1";
+      if (nums[2]) nums[2].value = "0";
+      nums.forEach((n) => n.dispatchEvent(new Event("input", { bubbles: true })));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "loan") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "200000"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "5"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[2]) { nums[2].value = "30"; nums[2].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
+    })()`);
     await sleep(200);
     await snap(2);
     await snap(3);

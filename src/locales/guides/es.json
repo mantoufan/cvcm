@@ -498,6 +498,33 @@
       "s2b": "IV is 4. Additive IIII is rejected. The range stops at 3999.",
       "s3t": "Copy the result",
       "s3b": "Copy puts the converted value on the clipboard. Nothing is uploaded."
+    },
+    "discount": {
+      "lead": "Find the sale price after a percent off in this tab. Nothing is uploaded.",
+      "s1t": "Open Discount calculator",
+      "s1b": "A sample price and percent are already filled. Sale price and savings sit on the right.",
+      "s2t": "Change the numbers",
+      "s2b": "Sale price is original minus original × percent. Savings is the amount off.",
+      "s3t": "Copy the sale",
+      "s3b": "Copy puts sale price and savings on the clipboard."
+    },
+    "countdown": {
+      "lead": "Run a countdown in this tab. Closing the tab stops it. It is not a system alarm.",
+      "s1t": "Open Countdown",
+      "s1b": "Hours, minutes, and seconds sit on the left. The remaining time is on the right.",
+      "s2t": "Set a duration",
+      "s2b": "Start, pause, or reset. The count only runs while this tab stays open.",
+      "s3t": "Watch it hit zero",
+      "s3b": "At 00:00:00 the timer stops. Reset to load the fields again."
+    },
+    "loan": {
+      "lead": "Estimate a fixed monthly payment from principal, yearly rate, and years. Not a bank quote.",
+      "s1t": "Open Loan calculator",
+      "s1b": "A sample 30-year loan is already filled. Monthly payment sits on the right.",
+      "s2t": "Change principal, rate, or years",
+      "s2b": "Months are years × 12. The rate is yearly percent divided by 12.",
+      "s3t": "Copy the payment",
+      "s3b": "Copy puts monthly payment, total interest, and total paid on the clipboard."
     }
   }
 }

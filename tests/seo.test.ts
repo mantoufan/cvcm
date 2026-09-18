@@ -62,6 +62,9 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "tip")).toMatch(/Tip calculator/i);
     expect(pageTitle("en", "morse")).toMatch(/Morse/i);
     expect(pageTitle("en", "roman")).toMatch(/Roman/i);
+    expect(pageTitle("en", "discount")).toMatch(/Discount/i);
+    expect(pageTitle("en", "countdown")).toMatch(/Countdown/i);
+    expect(pageTitle("en", "loan")).toMatch(/Loan/i);
     expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
@@ -69,7 +72,7 @@ describe("seo helpers", () => {
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman",
+      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

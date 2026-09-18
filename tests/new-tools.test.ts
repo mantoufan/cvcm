@@ -36,6 +36,9 @@ import { binaryToText, textToBinary } from "../src/shared/binary";
 import { tipSplit } from "../src/shared/tip";
 import { morseToText, textToMorse } from "../src/shared/morse";
 import { fromRoman, toRoman } from "../src/shared/roman";
+import { discountOf } from "../src/shared/discount";
+import { fromSeconds, toSeconds } from "../src/shared/countdown";
+import { loanPayment } from "../src/shared/loan";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -479,6 +482,29 @@ describe("roman", () => {
   });
 });
 
+describe("discount", () => {
+  it("applies a percent off", () => {
+    expect(discountOf(80, 25)).toEqual({ sale: 60, saved: 20 });
+    expect(discountOf(-1, 10)).toBeNull();
+  });
+});
+
+describe("countdown", () => {
+  it("packs and unpacks h:m:s", () => {
+    expect(toSeconds(0, 5, 0)).toBe(300);
+    expect(fromSeconds(300).label).toBe("00:05:00");
+  });
+});
+
+describe("loan", () => {
+  it("computes a 30-year payment", () => {
+    const out = loanPayment(200000, 5, 30);
+    expect(out).not.toBeNull();
+    expect(out!.payment).toBeCloseTo(1073.64, 2);
+    expect(loanPayment(0, 5, 30)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -532,6 +558,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/tip/")).toEqual({ kind: "app", locale: "en", tool: "tip" });
     expect(parseAppPath("/en/morse/")).toEqual({ kind: "app", locale: "en", tool: "morse" });
     expect(parseAppPath("/en/roman/")).toEqual({ kind: "app", locale: "en", tool: "roman" });
+    expect(parseAppPath("/en/discount/")).toEqual({ kind: "app", locale: "en", tool: "discount" });
+    expect(parseAppPath("/en/countdown/")).toEqual({ kind: "app", locale: "en", tool: "countdown" });
+    expect(parseAppPath("/en/loan/")).toEqual({ kind: "app", locale: "en", tool: "loan" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -560,6 +589,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "tip")).toBe("/zh-cn/tip/");
     expect(appHref("zh-CN", "morse")).toBe("/zh-cn/morse/");
     expect(appHref("zh-CN", "roman")).toBe("/zh-cn/roman/");
+    expect(appHref("zh-CN", "discount")).toBe("/zh-cn/discount/");
+    expect(appHref("zh-CN", "countdown")).toBe("/zh-cn/countdown/");
+    expect(appHref("zh-CN", "loan")).toBe("/zh-cn/loan/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

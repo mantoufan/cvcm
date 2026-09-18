@@ -76,6 +76,9 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   tip: 3,
   morse: 3,
   roman: 3,
+  discount: 3,
+  countdown: 3,
+  loan: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

@@ -51,6 +51,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/tip/` — tip calculator
 - `src/client/morse/` — Morse code
 - `src/client/roman/` — Roman numerals
+- `src/client/discount/` — discount calculator
+- `src/client/countdown/` — countdown timer
+- `src/client/loan/` — loan payment calculator
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images
