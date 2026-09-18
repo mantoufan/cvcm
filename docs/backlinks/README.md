@@ -19,6 +19,12 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 |---|---|---|---|
 | GitHub repo | https://github.com/mantoufan/cvcm | live | homepage `https://cv.cm` |
 | GitHub profile | https://github.com/mantoufan | live 2026-09-18 | badge + table row |
+| awesome-pastebin (own) | https://github.com/mantoufan/awesome-pastebin | live | clip + in-browser tools blurb |
+| Telegraph | https://telegra.ph/Merge-PDF-files-in-the-browser-without-uploading-09-18 | live | how-to with merge/compress/split/HEIC/QR links |
+| write.as | https://write.as/09go32w2scojx | live | same how-to |
+| rentry | https://rentry.co/s4uwsncb | live | same how-to |
+| nologin.tools | https://nologin.tools/tool/cv-cm | pending review | API slug `cv-cm` (2026-09-18) |
+| Launching Next | https://www.launchingnext.com/thanks/?i=151926 | submitted | id 151926 |
 | awesome-no-login-web-apps | https://github.com/aviaryan/awesome-no-login-web-apps | merged #473 | clipboard blurb; follow-up to add PDF/image |
 | Awesome-Tools | https://github.com/YSGStudyHards/Awesome-Tools | merged #71 | stale 短剧 Agent; rewrite PR #101 |
 | wechalet.cn | https://wechalet.cn/en/appstore/detail/4t99 | live | old clipboard copy |
@@ -43,12 +49,13 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 | https://github.com/pluja/awesome-privacy/pull/1117 | Photo Editing → Web |
 | https://github.com/aviaryan/awesome-no-login-web-apps/pull/598 | expand merged blurb |
 | https://github.com/YSGStudyHards/Awesome-Tools/pull/101 | 短剧 Agent → PDF 管理工具 |
+| https://github.com/lorien/awesome-pastebins/pull/58 | Public Pastebins + https://cv.cm |
 
 ## Do not resubmit (already attempted)
 
 10words, osalt.com, aitoolsdirectory.com, ai-bot.cn, backdata.net, hhlink.com, iforai.com, ainavpro.com, dropyourai.com, apprater.net, startupcollections.com, nextool.ai, toolhunter.ai, humanornot.co, aitoolsmasters.com, bufferapps.com, ababtools.com, fwol.cn.
 
-Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal).
+Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal). Joinly `/submit-startup` is paid (PayPro checkout) — do not finish. once.tools is pay-once software only. free-for-dev rejects generic toolbox sites.
 
 ## Closed 2026-09-18 (retired AI-video product)
 
