@@ -174,14 +174,15 @@ function scene(
 }
 
 function cutout(person: PersonId, pose: PoseId, distanceM: number): CutoutSpec {
+  const sit = pose === "sit45";
   return {
     person,
     pose,
     src: `/covers/portrait-sim/people/${person}/${pose}.webp?v=${PLATE_VER}`,
     widthPx: 900,
     heightPx: 1400,
-    feetY: 0.97,
-    eye: { x: 0.52, y: pose === "sit45" ? 0.22 : 0.18 },
+    feetY: 0.985,
+    eye: { x: sit ? 0.56 : 0.48, y: sit ? 0.12 : 0.1 },
     subjectDistanceM: distanceM,
   };
 }

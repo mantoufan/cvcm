@@ -160,6 +160,12 @@ describe("catalog", () => {
     expect(catalog.lenses.phone.sensorWidthMm).toBe(6.4);
     for (const item of catalog.cutouts) {
       expect(item.subjectDistanceM).toBe(catalog.poses[item.pose].subjectDistanceM);
+      expect(item.feetY).toBeCloseTo(0.985, 5);
+      if (item.pose === "sit45") {
+        expect(item.eye.y).toBeCloseTo(0.12, 5);
+      } else {
+        expect(item.eye.y).toBeCloseTo(0.1, 5);
+      }
     }
     expect(catalog.scenes.cafe.plates.wide.fgSrc).toBeTruthy();
     expect(catalog.scenes.cafe.plates.tele.fgSrc).toBeTruthy();
