@@ -43,3 +43,15 @@ Same character and room. She holds a tiny cream flowerpot with a sprouting pink 
 ## VAT / sales tax
 
 Same character and room. She holds a rolled cream receipt with a heart wax seal and a tiny pink stamp pad. No writing. Save `public/covers/vat-sweet.jpg`, `sips -z 720 1280`.
+
+## Reverse text
+
+Same character and room. Two cream cards that mirror each other, each with a tiny heart stamp. No letters. Save `public/covers/reverse-sweet.jpg`, `sips -z 720 1280`.
+
+## URL encode
+
+Same character and room. A chain of three pearlescent heart-shaped paper clips as a link. No letters or percent signs. Save `public/covers/url-encode-sweet.jpg`, `sips -z 720 1280`.
+
+## Text to hex
+
+Same character and room. A cream honeycomb of tiny heart hexagons. No digits. Save `public/covers/text-hex-sweet.jpg`, `sips -z 720 1280`.

@@ -42,6 +42,9 @@ import { loanPayment } from "../src/shared/loan";
 import { formatElapsed } from "../src/shared/stopwatch";
 import { compoundGrowth } from "../src/shared/compound";
 import { vatOf } from "../src/shared/vat";
+import { isPalindrome, reverseText } from "../src/shared/reverse";
+import { decodeUrl, encodeUrl } from "../src/shared/url-encode";
+import { hexToText, textToHex } from "../src/shared/text-hex";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -538,6 +541,34 @@ describe("vat", () => {
   });
 });
 
+describe("reverse", () => {
+  it("reverses text and checks palindromes", () => {
+    expect(reverseText("hello")).toBe("olleh");
+    expect(reverseText("你好")).toBe("好你");
+    expect(isPalindrome("Race car")).toBe(true);
+    expect(isPalindrome("hello")).toBe(false);
+    expect(isPalindrome("上海自来水来自海上")).toBe(true);
+  });
+});
+
+describe("url-encode", () => {
+  it("encodes and decodes percent-encoding", () => {
+    expect(encodeUrl("a b")).toBe("a%20b");
+    expect(decodeUrl("a%20b")).toBe("a b");
+    expect(decodeUrl("a+b")).toBe("a b");
+    expect(decodeUrl("%")).toBeNull();
+  });
+});
+
+describe("text-hex", () => {
+  it("round-trips UTF-8 hex", () => {
+    expect(textToHex("Hi")).toBe("48 69");
+    expect(hexToText("48 69")).toBe("Hi");
+    expect(hexToText("4869")).toBe("Hi");
+    expect(hexToText("gg")).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -597,6 +628,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/stopwatch/")).toEqual({ kind: "app", locale: "en", tool: "stopwatch" });
     expect(parseAppPath("/en/compound/")).toEqual({ kind: "app", locale: "en", tool: "compound" });
     expect(parseAppPath("/en/vat/")).toEqual({ kind: "app", locale: "en", tool: "vat" });
+    expect(parseAppPath("/en/reverse/")).toEqual({ kind: "app", locale: "en", tool: "reverse" });
+    expect(parseAppPath("/en/url-encode/")).toEqual({ kind: "app", locale: "en", tool: "url-encode" });
+    expect(parseAppPath("/en/text-hex/")).toEqual({ kind: "app", locale: "en", tool: "text-hex" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -631,6 +665,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "stopwatch")).toBe("/zh-cn/stopwatch/");
     expect(appHref("zh-CN", "compound")).toBe("/zh-cn/compound/");
     expect(appHref("zh-CN", "vat")).toBe("/zh-cn/vat/");
+    expect(appHref("zh-CN", "reverse")).toBe("/zh-cn/reverse/");
+    expect(appHref("zh-CN", "url-encode")).toBe("/zh-cn/url-encode/");
+    expect(appHref("zh-CN", "text-hex")).toBe("/zh-cn/text-hex/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

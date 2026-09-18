@@ -552,6 +552,33 @@
       "s2b": "Exclusive adds tax on top. Inclusive works backwards from a gross price.",
       "s3t": "Copy the breakdown",
       "s3b": "Copy puts net, tax, and gross on the clipboard."
+    },
+    "reverse": {
+      "lead": "Reverse a line of text in this tab and see if it is a palindrome. Nothing is uploaded.",
+      "s1t": "Open Reverse text",
+      "s1b": "A sample line is already filled. The reversed string sits on the right.",
+      "s2t": "Paste your own text",
+      "s2b": "The reverse updates as you type. Palindrome ignores spaces, punctuation, and case.",
+      "s3t": "Copy the reverse",
+      "s3b": "Copy puts the reversed text on the clipboard."
+    },
+    "url-encode": {
+      "lead": "Percent-encode or decode a string in this tab. Nothing is uploaded.",
+      "s1t": "Open URL encode",
+      "s1b": "A sample query is already encoded on the right. Encode is selected.",
+      "s2t": "Paste text or a query",
+      "s2b": "Encode uses encodeURIComponent. Switch to Decode to turn % sequences back.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the encoded or decoded string on the clipboard."
+    },
+    "text-hex": {
+      "lead": "Turn text into UTF-8 hex, or hex back into text, in this tab. Nothing is uploaded.",
+      "s1t": "Open Text to hex",
+      "s1b": "A sample string is already converted to spaced hex on the right.",
+      "s2t": "Paste text or hex",
+      "s2b": "Switch to Hex → text to decode. Spaces in the hex are fine.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the hex or the decoded text on the clipboard."
     }
   }
 }

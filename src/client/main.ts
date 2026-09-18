@@ -30,6 +30,9 @@ import { mountLoan, unmountLoan } from "./loan/ui";
 import { mountStopwatch, unmountStopwatch } from "./stopwatch/ui";
 import { mountCompound, unmountCompound } from "./compound/ui";
 import { mountVat, unmountVat } from "./vat/ui";
+import { mountReverse, unmountReverse } from "./reverse/ui";
+import { mountUrlEncode, unmountUrlEncode } from "./url-encode/ui";
+import { mountTextHex, unmountTextHex } from "./text-hex/ui";
 import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountRotate, unmountRotate } from "./rotate/ui";
 import { mountExif, unmountExif } from "./exif/ui";
@@ -268,6 +271,9 @@ function unmountTools(): void {
   unmountStopwatch();
   unmountCompound();
   unmountVat();
+  unmountReverse();
+  unmountUrlEncode();
+  unmountTextHex();
   unmountResize();
   unmountCrop();
   unmountRotate();
@@ -356,7 +362,7 @@ function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
   void mountPage(main, loc);
 
-  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId ? " is-tool" : "") },
+  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId ? " is-tool" : "") + (gameId ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
@@ -423,6 +429,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "stopwatch") mountStopwatch(main);
   else if (tool === "compound") mountCompound(main);
   else if (tool === "vat") mountVat(main);
+  else if (tool === "reverse") mountReverse(main);
+  else if (tool === "url-encode") mountUrlEncode(main);
+  else if (tool === "text-hex") mountTextHex(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
   else if (tool === "rotate") await mountRotate(main);

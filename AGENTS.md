@@ -57,6 +57,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/stopwatch/` — elapsed stopwatch
 - `src/client/compound/` — compound interest
 - `src/client/vat/` — VAT / sales tax
+- `src/client/reverse/` — reverse text / palindrome
+- `src/client/url-encode/` — URL encode / decode
+- `src/client/text-hex/` — text ↔ hex
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

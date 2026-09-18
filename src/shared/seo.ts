@@ -108,6 +108,9 @@ const TITLE: Record<ToolId, string> = {
   stopwatch: "meta.titleStopwatch",
   compound: "meta.titleCompound",
   vat: "meta.titleVat",
+  reverse: "meta.titleReverse",
+  "url-encode": "meta.titleUrlEncode",
+  "text-hex": "meta.titleTextHex",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -171,6 +174,9 @@ const DESC: Record<ToolId, string> = {
   stopwatch: "meta.descStopwatch",
   compound: "meta.descCompound",
   vat: "meta.descVat",
+  reverse: "meta.descReverse",
+  "url-encode": "meta.descUrlEncode",
+  "text-hex": "meta.descTextHex",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

@@ -79,6 +79,9 @@ const STEPS = {
   stopwatch: 3,
   compound: 3,
   vat: 3,
+  reverse: 3,
+  "url-encode": 3,
+  "text-hex": 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1061,6 +1064,47 @@ async function runTool(send, id, fx) {
     })()`);
     await sleep(200);
     await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "reverse") {
+    await snap(1);
+    await evalValue(send, fillExpr("textarea", "A man a plan a canal Panama"));
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "url-encode") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "from";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "text-hex") {
+    await snap(1);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const sel = document.querySelector("select");
+      if (!sel) return false;
+      sel.value = "from";
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
     await snap(3);
     return;
   }

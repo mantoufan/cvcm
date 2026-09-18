@@ -193,7 +193,13 @@
     "titleGamesGba": "GBA games — cheats and walkthroughs — cv.cm",
     "descGamesGba": "Play GBA games in the browser. Pokémon Emerald, Mario Kart, Minish Cap. Cheats and walkthroughs.",
     "titleGamesMd": "Mega Drive / Genesis games — cheats and walkthroughs — cv.cm",
-    "descGamesMd": "Play Sonic and Streets of Rage 2 in the browser. Cheats and walkthroughs. Load your own ROM."
+    "descGamesMd": "Play Sonic and Streets of Rage 2 in the browser. Cheats and walkthroughs. Load your own ROM.",
+    "titleReverse": "Reverse text — palindrome check — cv.cm",
+    "descReverse": "Reverse text and check palindromes in the browser. Nothing is uploaded.",
+    "titleUrlEncode": "URL encode decode — percent encoding — cv.cm",
+    "descUrlEncode": "Percent-encode or decode a string in the browser. Nothing is uploaded.",
+    "titleTextHex": "Text to hex — hex to text — cv.cm",
+    "descTextHex": "Convert text to UTF-8 hex and hex back to text in the browser. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -886,6 +892,18 @@
     "vat": {
       "name": "VAT calculator",
       "blurb": "Add tax or split a gross price. Nothing is uploaded."
+    },
+    "reverse": {
+      "name": "Reverse text",
+      "blurb": "Backwards text and palindrome check. Nothing is uploaded."
+    },
+    "url-encode": {
+      "name": "URL encode",
+      "blurb": "Percent-encode or decode. Nothing is uploaded."
+    },
+    "text-hex": {
+      "name": "Text to hex",
+      "blurb": "UTF-8 hex. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -2083,6 +2101,42 @@
       "a4": "No. A local file is read in this tab and handed to the emulator. Homebrew we may redistribute is fetched from our S3 bucket.",
       "q5": "Which consoles work on a phone?",
       "a5": "NES, GB, GBC, and most GBA / Mega Drive titles. SNES is heavier. Landscape plus a Bluetooth pad helps fighters and karts."
+    },
+    "reverse": {
+      "q1": "Can I reverse text here?",
+      "a1": "Yes. Paste text and the tab shows it backwards. It also says whether the letters and digits form a palindrome.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The text stays in this tab.",
+      "q3": "Does palindrome ignore spaces?",
+      "a3": "Yes. Spaces, punctuation, and letter case are ignored. “Race car” counts as a palindrome.",
+      "q4": "What about Chinese?",
+      "a4": "Graphemes reverse in order. Palindrome uses letters and digits, including CJK characters.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the reversed text on the clipboard."
+    },
+    "url-encode": {
+      "q1": "Can I URL-encode text here?",
+      "a1": "Yes. Encode uses percent-encoding (encodeURIComponent). Decode turns % sequences back into text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about plus signs?",
+      "a3": "On decode, + becomes a space, like query strings often do.",
+      "q4": "Is this a full URL parser?",
+      "a4": "No. It encodes or decodes the string you paste. It does not split a URL into parts.",
+      "q5": "What if decode fails?",
+      "a5": "A broken % sequence shows an error. Fix the hex pairs and try again."
+    },
+    "text-hex": {
+      "q1": "Can I convert text to hex here?",
+      "a1": "Yes. Text becomes UTF-8 bytes as two-digit hex. Hex can convert back to text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in the hex?",
+      "a3": "Spaces, colons, and 0x prefixes are ignored on decode. Odd-length hex is invalid.",
+      "q4": "What encoding?",
+      "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted value on the clipboard."
     }
   },
   "qr": {
@@ -3136,5 +3190,46 @@
       "fighting": "Fighting",
       "racing": "Racing"
     }
+  },
+  "reverse": {
+    "title": "Reverse text",
+    "back": "All tools",
+    "privacyNote": "The text stays in this tab. Nothing is uploaded.",
+    "options": "Reverse",
+    "input": "Text",
+    "output": "Reversed",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "yes": "Palindrome: yes",
+    "no": "Palindrome: no"
+  },
+  "url-encode": {
+    "title": "URL encode / decode",
+    "back": "All tools",
+    "privacyNote": "Encoding stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "https://cv.cm/?q=hello world",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That percent-encoding is not valid."
+  },
+  "text-hex": {
+    "title": "Text to hex",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Direction",
+    "to": "Text → hex",
+    "from": "Hex → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter even-length hex (UTF-8 bytes)."
   }
 }

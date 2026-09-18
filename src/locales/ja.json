@@ -193,7 +193,13 @@
     "titleGamesGba": "GBA｜チートと攻略 — cv.cm",
     "descGamesGba": "エメラルド、マリカ、ふしぎのぼうし。",
     "titleGamesMd": "メガドライブ｜チートと攻略 — cv.cm",
-    "descGamesMd": "ソニック、ベア・ナックル2。"
+    "descGamesMd": "ソニック、ベア・ナックル2。",
+    "titleReverse": "文字列の逆順 — 回文 — cv.cm",
+    "descReverse": "ブラウザで文字列を逆順にし、回文か確認。アップロードなし。",
+    "titleUrlEncode": "URLエンコード — パーセントエンコード — cv.cm",
+    "descUrlEncode": "ブラウザでパーセントエンコード／デコード。アップロードなし。",
+    "titleTextHex": "テキストを16進数に — hex — cv.cm",
+    "descTextHex": "ブラウザでテキストとUTF-8の16進数を相互変換。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -477,6 +483,18 @@
     "vat": {
       "name": "VAT計算",
       "blurb": "税込または税抜。アップロードなし。"
+    },
+    "reverse": {
+      "name": "逆順",
+      "blurb": "逆順と回文。アップロードなし。"
+    },
+    "url-encode": {
+      "name": "URLエンコード",
+      "blurb": "パーセントエンコード。アップロードなし。"
+    },
+    "text-hex": {
+      "name": "16進数",
+      "blurb": "テキスト ↔ UTF-8 hex。アップロードなし。"
     }
   },
   "watermark": {
@@ -1674,6 +1692,42 @@
       "a4": "しません。ローカルファイルはこのタブだけ。再配布できる自作は S3 から取得します。",
       "q5": "スマホ向きの機種は？",
       "a5": "NES、GB、GBC、多くの GBA / MD。SFC は重いです。格闘とカートは横画面とパッド。"
+    },
+    "reverse": {
+      "q1": "Can I reverse text here?",
+      "a1": "Yes. Paste text and the tab shows it backwards. It also says whether the letters and digits form a palindrome.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The text stays in this tab.",
+      "q3": "Does palindrome ignore spaces?",
+      "a3": "Yes. Spaces, punctuation, and letter case are ignored. “Race car” counts as a palindrome.",
+      "q4": "What about Chinese?",
+      "a4": "Graphemes reverse in order. Palindrome uses letters and digits, including CJK characters.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the reversed text on the clipboard."
+    },
+    "url-encode": {
+      "q1": "Can I URL-encode text here?",
+      "a1": "Yes. Encode uses percent-encoding (encodeURIComponent). Decode turns % sequences back into text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about plus signs?",
+      "a3": "On decode, + becomes a space, like query strings often do.",
+      "q4": "Is this a full URL parser?",
+      "a4": "No. It encodes or decodes the string you paste. It does not split a URL into parts.",
+      "q5": "What if decode fails?",
+      "a5": "A broken % sequence shows an error. Fix the hex pairs and try again."
+    },
+    "text-hex": {
+      "q1": "Can I convert text to hex here?",
+      "a1": "Yes. Text becomes UTF-8 bytes as two-digit hex. Hex can convert back to text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in the hex?",
+      "a3": "Spaces, colons, and 0x prefixes are ignored on decode. Odd-length hex is invalid.",
+      "q4": "What encoding?",
+      "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted value on the clipboard."
     }
   },
   "qr": {
@@ -3136,5 +3190,46 @@
       "fighting": "格闘",
       "racing": "レース"
     }
+  },
+  "reverse": {
+    "title": "文字列の逆順",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Reverse",
+    "input": "Text",
+    "output": "Reversed",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "yes": "Palindrome: yes",
+    "no": "Palindrome: no"
+  },
+  "url-encode": {
+    "title": "URLエンコード",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "https://cv.cm/?q=hello world",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That percent-encoding is not valid."
+  },
+  "text-hex": {
+    "title": "テキストを16進数に",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Direction",
+    "to": "Text → hex",
+    "from": "Hex → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter even-length hex (UTF-8 bytes)."
   }
 }

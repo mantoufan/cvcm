@@ -63,6 +63,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   stopwatch: "/covers/stopwatch-sweet.jpg?v=1",
   compound: "/covers/compound-sweet.jpg?v=1",
   vat: "/covers/vat-sweet.jpg?v=1",
+  reverse: "/covers/reverse-sweet.jpg?v=1",
+  "url-encode": "/covers/url-encode-sweet.jpg?v=1",
+  "text-hex": "/covers/text-hex-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {

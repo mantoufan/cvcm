@@ -193,7 +193,13 @@
     "titleGamesGba": "GBA 游戏 在线玩｜金手指 攻略 — cv.cm",
     "descGamesGba": "绿宝石、马里奥赛车、缩小帽。金手指和攻略。",
     "titleGamesMd": "世嘉 MD 游戏 在线玩｜金手指 攻略 — cv.cm",
-    "descGamesMd": "索尼克、怒之铁拳2。金手指和攻略。商业 ROM 自行载入。"
+    "descGamesMd": "索尼克、怒之铁拳2。金手指和攻略。商业 ROM 自行载入。",
+    "titleReverse": "文字倒序 — 回文 — cv.cm",
+    "descReverse": "在浏览器里把文字倒过来，并检查是否回文。不上传。",
+    "titleUrlEncode": "URL 编码 — 百分号编码 — cv.cm",
+    "descUrlEncode": "在浏览器里做百分号编码或解码。不上传。",
+    "titleTextHex": "文本转十六进制 — hex — cv.cm",
+    "descTextHex": "在浏览器里把文本转成 UTF-8 十六进制，或转回来。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -477,6 +483,18 @@
     "vat": {
       "name": "增值税",
       "blurb": "含税或不含税。不上传。"
+    },
+    "reverse": {
+      "name": "文字倒序",
+      "blurb": "倒过来，并看是否回文。不上传。"
+    },
+    "url-encode": {
+      "name": "URL 编码",
+      "blurb": "百分号编码或解码。不上传。"
+    },
+    "text-hex": {
+      "name": "十六进制",
+      "blurb": "文本 ↔ UTF-8 hex。不上传。"
     }
   },
   "watermark": {
@@ -1674,6 +1692,42 @@
       "a4": "不会。本地文件只在当前标签页交给模拟器。可合法分发的自制 ROM 从我们的 S3 读取。",
       "q5": "手机能玩哪些机种？",
       "a5": "FC、GB、GBC，以及多数 GBA / MD。SFC 更吃性能。格斗和赛车建议横屏加手柄。"
+    },
+    "reverse": {
+      "q1": "Can I reverse text here?",
+      "a1": "Yes. Paste text and the tab shows it backwards. It also says whether the letters and digits form a palindrome.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The text stays in this tab.",
+      "q3": "Does palindrome ignore spaces?",
+      "a3": "Yes. Spaces, punctuation, and letter case are ignored. “Race car” counts as a palindrome.",
+      "q4": "What about Chinese?",
+      "a4": "Graphemes reverse in order. Palindrome uses letters and digits, including CJK characters.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the reversed text on the clipboard."
+    },
+    "url-encode": {
+      "q1": "Can I URL-encode text here?",
+      "a1": "Yes. Encode uses percent-encoding (encodeURIComponent). Decode turns % sequences back into text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Encoding stays in this tab.",
+      "q3": "What about plus signs?",
+      "a3": "On decode, + becomes a space, like query strings often do.",
+      "q4": "Is this a full URL parser?",
+      "a4": "No. It encodes or decodes the string you paste. It does not split a URL into parts.",
+      "q5": "What if decode fails?",
+      "a5": "A broken % sequence shows an error. Fix the hex pairs and try again."
+    },
+    "text-hex": {
+      "q1": "Can I convert text to hex here?",
+      "a1": "Yes. Text becomes UTF-8 bytes as two-digit hex. Hex can convert back to text.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Spaces in the hex?",
+      "a3": "Spaces, colons, and 0x prefixes are ignored on decode. Odd-length hex is invalid.",
+      "q4": "What encoding?",
+      "a4": "UTF-8. Invalid UTF-8 bytes return an error.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted value on the clipboard."
     }
   },
   "qr": {
@@ -3136,5 +3190,46 @@
       "fighting": "格斗",
       "racing": "竞速"
     }
+  },
+  "reverse": {
+    "title": "文字倒序",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Reverse",
+    "input": "Text",
+    "output": "Reversed",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "yes": "Palindrome: yes",
+    "no": "Palindrome: no"
+  },
+  "url-encode": {
+    "title": "URL 编码",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Direction",
+    "to": "Encode",
+    "from": "Decode",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "https://cv.cm/?q=hello world",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "That percent-encoding is not valid."
+  },
+  "text-hex": {
+    "title": "文本转十六进制",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Direction",
+    "to": "Text → hex",
+    "from": "Hex → text",
+    "input": "Input",
+    "output": "Output",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter even-length hex (UTF-8 bytes)."
   }
 }
