@@ -3,7 +3,7 @@
     "title": "cv.cm — クリップボード、画像、PDF ツール",
     "titleClip": "オンラインクリップボード — 登録なしでテキスト共有 — cv.cm",
     "descClip": "Pastebin 風のクリップボード。リンクでテキスト・画像・ファイルを共有。アカウント不要。10 回閲覧または 24 時間で削除。",
-    "titleWatermark": "写真に透かしを入れる — cv.cm",
+    "titleWatermark": "写真に透かしを入れる — 身分証はこのタブ — cv.cm",
     "titleCollage": "フォトコラージュメーカー — cv.cm",
     "description": "端末内のブラウザツール。画像と PDF はこのタブに留まります。",
     "titleConvert": "HEIC を JPG に、WebP を PNG に、JPG を PNG に — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "MP3、M4A、OGG、AAC、FLAC をブラウザで WAV に。44.1 / 48 kHz を選択可。アップロードなし。",
     "titleData": "JSON フォーマッタ、Base64、CSV を JSON に — cv.cm",
     "descData": "JSON 整形、CSV ↔ JSON、Base64、URL エンコード、Markdown を HTML に。このタブ内。",
-    "descWatermark": "ブラウザで文字またはロゴの透かしを追加。PNG / JPEG / ZIP を一括書き出し。アップロードなし。",
+    "descWatermark": "写真や身分証のコピーに透かしを入れます。用途限定の文字をタイル敷き。PNG / JPEG / ZIP を一括書き出し。EXIF を除去。アップロードなし。",
     "descCollage": "ブラウザでコラージュ作成。グリッドと Instagram サイズ。アップロードなし。",
     "titleQr": "QR コード生成 — cv.cm",
     "descQr": "ブラウザで URL や文字から QR コードを作り PNG を保存。アップロードなし。",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "画像ウォーターマーク",
-      "blurb": "文字またはロゴの透かし。一括書き出し。アップロードなし。"
+      "blurb": "写真や身分証に用途限定の透かし。アップロードなし。"
     },
     "collage": {
       "name": "フォトコラージュ",
@@ -477,7 +477,7 @@
     "count": "{n} 枚",
     "textTitle": "テキスト",
     "textContent": "透かし文字",
-    "textPlaceholder": "© 2026 あなたの名前",
+    "textPlaceholder": "関係者限り・目的外使用不可",
     "font": "フォント",
     "fontSans": "ゴシック",
     "fontSerif": "明朝",
@@ -510,14 +510,16 @@
     "presetConfidential": "機密（斜め）",
     "presetCopyright": "隅のクレジット",
     "presetCenter": "中央の淡い印",
+    "presetIdentity": "用途限定",
+    "presetIdentityText": "関係者限り\n目的外使用不可\n{date}",
     "exportTitle": "書き出し",
     "format": "形式",
     "quality": "品質",
     "download": "ダウンロード",
     "downloadAll": "すべてを ZIP でダウンロード",
     "working": "生成中…",
-    "privacyNote": "画像はこのタブ内に留まります。書き出し時に EXIF は落ちます。ページを閉じると破棄されます。",
-    "hintMark": "文字を入力するかロゴを追加すると、画像に重ねられます。",
+    "privacyNote": "身分証のコピーと写真はこのタブ内に留まります。書き出し時に EXIF は落ちます。ページを閉じると破棄されます。",
+    "hintMark": "身分証は用途限定の文字をタイル敷き。店の写真は名前やロゴでも構いません。",
     "errorDecode": "この画像はブラウザで読めませんでした。",
     "errorHuge": "画像が非常に大きいため、書き出し時に縮小される場合があります。",
     "emptyDownload": "先に画像を追加してください。"
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "透かしを入れると写真はアップロードされますか？",
-      "a1": "いいえ。キャンバスで処理します。タブを閉じると破棄。書き出し時に EXIF も除去します。",
+      "a1": "いいえ。身分証のコピーもこのタブ内です。キャンバスで処理し、閉じると破棄。書き出し時に EXIF も除去します。",
       "q2": "まとめて透かしを入れられますか？",
       "a2": "はい。複数追加して 1 枚、または PNG / JPEG の ZIP でダウンロード。",
-      "q3": "文字とロゴの両方使えますか？",
-      "a3": "両方です。角、中央、またはタイル敷きにできます。",
+      "q3": "身分証やパスポートのコピーに透かしを入れられますか？",
+      "a3": "はい。「用途限定」でタイル敷きにします。アップロードなし。抑止にはなりますが法的保証ではありません。提出先が無印を求める場合もあります。",
       "q4": "透かしを削除できますか？",
       "a4": "できません。追加専用で、既存の透かしは消しません。",
       "q5": "対応形式は？",
-      "a5": "入力は PNG、JPEG、WebP、GIF。出力は PNG、JPEG、WebP。"
+      "a5": "入力は PNG、JPEG、WebP、GIF。出力は PNG、JPEG、WebP。文字、ロゴ、または両方。"
     },
     "collage": {
       "q1": "フォトコラージュメーカーですか？",

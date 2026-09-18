@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, ảnh và PDF",
     "titleClip": "Clipboard trực tuyến — chia sẻ chữ không cần tài khoản — cv.cm",
     "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
-    "titleWatermark": "Thêm watermark vào ảnh — cv.cm",
+    "titleWatermark": "Thêm watermark vào ảnh — giấy tờ ở tab này — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
     "description": "Công cụ trình duyệt trên máy. Ảnh và PDF ở lại tab này.",
     "titleConvert": "HEIC sang JPG, WebP sang PNG, JPG sang PNG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Đổi MP3, M4A, OGG, AAC, FLAC thành WAV trên trình duyệt. Chọn 44.1 / 48 kHz. Không tải lên.",
     "titleData": "Định dạng JSON, Base64, CSV sang JSON — cv.cm",
     "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
-    "descWatermark": "Thêm chữ hoặc logo trên trình duyệt. Xuất hàng loạt PNG, JPEG hoặc ZIP. Không tải lên.",
+    "descWatermark": "Đóng dấu ảnh hoặc bản sao giấy tờ trên trình duyệt. Lặp chữ “chỉ dùng cho”. Xuất hàng loạt PNG, JPEG hoặc ZIP. Bỏ EXIF. Không tải lên.",
     "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên.",
     "titleQr": "Tạo mã QR — cv.cm",
     "descQr": "Tạo mã QR từ URL hoặc chữ trong trình duyệt, tải PNG. Không tải lên.",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "Đóng dấu ảnh",
-      "blurb": "Thêm chữ hoặc logo. Xuất hàng loạt. Không tải lên."
+      "blurb": "Đóng dấu ảnh hoặc giấy tờ, chỉ dùng cho. Không tải lên."
     },
     "collage": {
       "name": "Ghép ảnh",
@@ -477,7 +477,7 @@
     "count": "{n} ảnh",
     "textTitle": "Chữ",
     "textContent": "Nội dung đóng dấu",
-    "textPlaceholder": "© 2026 Tên của bạn",
+    "textPlaceholder": "CHỈ DÙNG CHO [TỔ CHỨC]",
     "font": "Phông",
     "fontSans": "Sans",
     "fontSerif": "Serif",
@@ -510,14 +510,16 @@
     "presetConfidential": "Bí mật",
     "presetCopyright": "Góc trang",
     "presetCenter": "Giữa nhạt",
+    "presetIdentity": "Chỉ dùng cho",
+    "presetIdentityText": "CHỈ DÙNG CHO [TỔ CHỨC]\nDÙNG KHÁC KHÔNG HỢP LỆ\n{date}",
     "exportTitle": "Xuất",
     "format": "Định dạng",
     "quality": "Chất lượng",
     "download": "Tải xuống",
     "downloadAll": "Tải tất cả dạng ZIP",
     "working": "Đang tạo…",
-    "privacyNote": "Ảnh ở lại tab này. Xuất sẽ bỏ EXIF. Đóng trang là xóa.",
-    "hintMark": "Gõ chữ hoặc thêm logo để đóng lên ảnh.",
+    "privacyNote": "Bản sao giấy tờ và ảnh ở lại tab này. Xuất sẽ bỏ EXIF. Đóng trang là xóa.",
+    "hintMark": "Giấy tờ: lặp “chỉ dùng cho”. Ảnh cửa hàng: tên hoặc logo.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
     "errorHuge": "Ảnh rất lớn; khi xuất có thể bị thu nhỏ.",
     "emptyDownload": "Hãy thêm ảnh trước."
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "Thêm watermark có tải ảnh lên không?",
-      "a1": "Không. Canvas trên trình duyệt đóng dấu. Đóng tab là bỏ. Xuất cũng gỡ EXIF.",
+      "a1": "Không. Bản sao giấy tờ cũng ở lại tab này. Canvas đóng dấu tại chỗ. Đóng tab là bỏ. Xuất cũng gỡ EXIF.",
       "q2": "Làm nhiều ảnh một lúc được không?",
       "a2": "Được. Thêm hàng loạt rồi tải một ảnh hoặc ZIP PNG/JPEG.",
-      "q3": "Dùng được chữ và logo?",
-      "a3": "Cả hai. Ghim góc, giữa, hoặc lặp khắp ảnh.",
+      "q3": "Có đóng dấu bản sao CMND hoặc hộ chiếu được không?",
+      "a3": "Được. Dùng «Chỉ dùng cho» để lặp dòng mục đích lên ảnh. Không tải lên. Đây là rào cản, không phải bảo đảm pháp lý. Một số nơi vẫn đòi bản không dấu.",
       "q4": "Gỡ watermark được không?",
       "a4": "Không. Công cụ này chỉ thêm dấu, không xóa watermark có sẵn.",
       "q5": "Định dạng nào?",
-      "a5": "Vào PNG, JPEG, WebP, GIF. Ra PNG, JPEG hoặc WebP."
+      "a5": "Vào PNG, JPEG, WebP, GIF. Ra PNG, JPEG hoặc WebP. Chữ, logo, hoặc cả hai."
     },
     "collage": {
       "q1": "Đây là công cụ ghép ảnh?",

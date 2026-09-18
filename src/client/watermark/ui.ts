@@ -51,6 +51,7 @@ type Logo = {
 
 type Format = "png" | "jpeg" | "webp";
 type WmLayout = "single" | LayoutId;
+type WmPreset = "identity" | "confidential" | "copyright" | "center";
 
 const ANCHORS: Anchor[] = ["tl", "tc", "tr", "ml", "mc", "mr", "bl", "bc", "br"];
 
@@ -72,7 +73,7 @@ const state = {
   collageRadius: 12,
   collageBg: "#eef1f4",
   collageFit: "contain" as FitMode,
-  preset: null as "confidential" | "copyright" | "center" | null,
+  preset: null as WmPreset | null,
   collageAspect: "square" as AspectId,
   anchor: "br" as Anchor,
   logo: null as Logo | null,
@@ -210,6 +211,7 @@ function controlsRail(): HTMLElement {
     h("fieldset", null,
       h("legend", null, t("watermark.presetsTitle")),
       h("div", { class: "row wrap" },
+        presetChip("identity", t("watermark.presetIdentity")),
         presetChip("confidential", t("watermark.presetConfidential")),
         presetChip("copyright", t("watermark.presetCopyright")),
         presetChip("center", t("watermark.presetCenter")),
@@ -401,7 +403,7 @@ function collageOptions(): HTMLElement {
   return box;
 }
 
-function presetChip(id: "confidential" | "copyright" | "center", label: string): HTMLElement {
+function presetChip(id: WmPreset, label: string): HTMLElement {
   return h("button", {
     type: "button",
     class: "chip" + (state.preset === id ? " on" : ""),
@@ -742,9 +744,23 @@ function redraw(): void {
   if (source.width * source.height > 25_000_000) setStatus(t("watermark.errorHuge"));
 }
 
-function applyPreset(kind: "confidential" | "copyright" | "center"): void {
+function todayStamp(): string {
+  const d = new Date();
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+function applyPreset(kind: WmPreset): void {
   state.preset = kind;
-  if (kind === "confidential") {
+  if (kind === "identity") {
+    state.text = t("watermark.presetIdentityText", { date: todayStamp() });
+    state.tiled = true;
+    state.rotate = -32;
+    state.opacity = 0.34;
+    state.size = 0.048;
+    state.color = "#ffffff";
+    state.stroke = true;
+  } else if (kind === "confidential") {
     if (!state.text.trim()) state.text = "CONFIDENTIAL";
     state.tiled = true;
     state.rotate = -32;
@@ -913,7 +929,7 @@ type WmDraft = {
     logoRotate: number;
     format: Format;
     quality: number;
-    preset: "confidential" | "copyright" | "center" | null;
+    preset: WmPreset | null;
   };
   files: { name: string; type: string; blob: Blob }[];
   logo: { name: string; type: string; blob: Blob } | null;

@@ -3,7 +3,7 @@
     "title": "cv.cm — portapapeles, imagen y PDF",
     "titleClip": "Portapapeles en línea — comparte texto sin cuenta — cv.cm",
     "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
-    "titleWatermark": "Añadir marca de agua a fotos — cv.cm",
+    "titleWatermark": "Añadir marca de agua a fotos — copias de ID en esta pestaña — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
     "description": "Herramientas en el navegador. Las imágenes y los PDF se quedan en esta pestaña.",
     "titleConvert": "HEIC a JPG, WebP a PNG, JPG a PNG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Pasa MP3, M4A, OGG, AAC y FLAC a WAV en el navegador. Elige 44,1 o 48 kHz. Nada se sube.",
     "titleData": "Formateador JSON, Base64, CSV a JSON — cv.cm",
     "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
-    "descWatermark": "Añade texto o un logo en el navegador. Exporta por lotes PNG, JPEG o ZIP. Nada se sube.",
+    "descWatermark": "Marca fotos o copias de identidad en el navegador. Tesela “solo para [org]”. Exporta PNG, JPEG o ZIP. Quita el EXIF. Nada se sube.",
     "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube.",
     "titleQr": "Generador de códigos QR — cv.cm",
     "descQr": "Crea un código QR de una URL o texto en el navegador y descarga PNG. Nada se sube.",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "Marca de agua",
-      "blurb": "Añade texto o logo. Exportación por lotes. Nada se sube."
+      "blurb": "Marca fotos o copias de ID, solo para un uso. Nada se sube."
     },
     "collage": {
       "name": "Collage",
@@ -477,7 +477,7 @@
     "count": "{n} imágenes",
     "textTitle": "Texto",
     "textContent": "Texto de la marca",
-    "textPlaceholder": "© 2026 Tu nombre",
+    "textPlaceholder": "SOLO PARA [ORG]",
     "font": "Fuente",
     "fontSans": "Sans",
     "fontSerif": "Serif",
@@ -510,14 +510,16 @@
     "presetConfidential": "Confidencial",
     "presetCopyright": "Marca en esquina",
     "presetCenter": "Centrado suave",
+    "presetIdentity": "Solo para",
+    "presetIdentityText": "SOLO PARA [ORG]\nNO VÁLIDO PARA OTRO USO\n{date}",
     "exportTitle": "Exportar",
     "format": "Formato",
     "quality": "Calidad",
     "download": "Descargar",
     "downloadAll": "Descargar todo en ZIP",
     "working": "Generando…",
-    "privacyNote": "Las imágenes se quedan en esta pestaña. Exportar quita el EXIF. Cerrar la página las descarta.",
-    "hintMark": "Escribe texto o añade un logo para marcar la imagen.",
+    "privacyNote": "Las copias de identidad y las fotos se quedan en esta pestaña. Exportar quita el EXIF. Cerrar la página las descarta.",
+    "hintMark": "En un DNI, tesela “solo para [org]”. En una foto de tienda, un nombre o logo.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
     "errorHuge": "La imagen es muy grande; al exportar puede reducirse.",
     "emptyDownload": "Añade una imagen primero."
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "¿Añadir una marca de agua sube las fotos?",
-      "a1": "No. El lienzo del navegador pone la marca. Al cerrar la pestaña se descartan. La exportación también quita el EXIF.",
+      "a1": "No. Las copias de identidad también se quedan en esta pestaña. El lienzo pone la marca aquí. Al cerrar se descartan. La exportación también quita el EXIF.",
       "q2": "¿Puedo marcar muchas fotos a la vez?",
       "a2": "Sí. Añade un lote y descarga una o un ZIP de PNG/JPEG.",
-      "q3": "¿Texto y logo?",
-      "a3": "Ambos. Esquina, centro o repetida por toda la foto.",
+      "q3": "¿Puedo marcar una copia de DNI o pasaporte?",
+      "a3": "Sí. Usa «Solo para» para teselar “solo para [org]” sobre la foto. Nada se sube. Es un disuasorio, no una garantía legal. Algunas oficinas piden una copia sin marca.",
       "q4": "¿Puedo quitar una marca de agua?",
       "a4": "No. Esta herramienta solo añade marcas; no borra las existentes.",
       "q5": "¿Qué formatos?",
-      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP."
+      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP. Texto, logo, o ambos."
     },
     "collage": {
       "q1": "¿Es un creador de collages?",

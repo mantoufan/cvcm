@@ -3,7 +3,7 @@
     "title": "cv.cm — 剪切板、图片、PDF 工具",
     "titleClip": "在线剪贴板 — 无需登录分享文字 — cv.cm",
     "descClip": "类似 Pastebin 的云剪切板。用链接分享文字、图片和文件。无需账号。查看 10 次或 24 小时后删除。",
-    "titleWatermark": "给图片加水印 — cv.cm",
+    "titleWatermark": "给图片加水印，证件防盗用 — cv.cm",
     "titleCollage": "在线图片拼图 — cv.cm",
     "titleConvert": "HEIC 转 JPG、WebP 转 PNG、JPG 转 PNG — cv.cm",
     "descConvert": "浏览器互转 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可缩小边长。文件不上传。",
@@ -14,7 +14,7 @@
     "titleData": "JSON 格式化、Base64、CSV 转 JSON — cv.cm",
     "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 编码、Markdown 转 HTML。只在当前标签页。",
     "description": "浏览器本地工具。图片和 PDF 留在当前标签页。",
-    "descWatermark": "在浏览器里给照片加文字或 Logo 水印。支持批量导出 PNG、JPEG 或 ZIP。文件不上传。",
+    "descWatermark": "在浏览器给照片或证件加文字水印。斜铺「仅供XX使用，他用无效」，批量导出 PNG、JPEG 或 ZIP。导出去掉 EXIF。文件不上传。",
     "descCollage": "浏览器里做照片拼图。宫格布局和 Instagram 尺寸。文件不上传。",
     "titleQr": "二维码生成器 — cv.cm",
     "descQr": "在浏览器里把网址或文字生成二维码，下载 PNG。不上传。",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "图片水印",
-      "blurb": "给照片加文字或 Logo 水印。批量导出。文件不上传。"
+      "blurb": "证件防盗用、店图版权。斜铺「仅供XX使用」。文件不上传。"
     },
     "collage": {
       "name": "图片拼图",
@@ -465,7 +465,7 @@
     }
   },
   "watermark": {
-    "title": "给图片加水印",
+    "title": "给图片加水印，保护身份隐私",
     "back": "全部工具",
     "dropTitle": "把图片拖到这里",
     "dropHint": "或点击选择 · Ctrl/⌘ V 粘贴",
@@ -477,7 +477,7 @@
     "count": "{n} 张图片",
     "textTitle": "文字",
     "textContent": "水印文字",
-    "textPlaceholder": "© 2026 你的名字",
+    "textPlaceholder": "仅供XX办理使用，他用无效",
     "font": "字体",
     "fontSans": "黑体",
     "fontSerif": "宋体",
@@ -510,14 +510,16 @@
     "presetConfidential": "机密斜铺",
     "presetCopyright": "角落署名",
     "presetCenter": "居中淡印",
+    "presetIdentity": "证件防盗用",
+    "presetIdentityText": "仅供XX办理使用\n他用无效\n{date}",
     "exportTitle": "导出",
     "format": "格式",
     "quality": "质量",
     "download": "下载",
     "downloadAll": "打包 ZIP 下载全部",
     "working": "正在生成…",
-    "privacyNote": "图片只留在这个标签页。导出时会去掉 EXIF。关闭页面即丢弃。",
-    "hintMark": "输入文字或添加 Logo，即可盖到图上。",
+    "privacyNote": "证件和照片只留在这个标签页。导出时去掉 EXIF。关闭页面即丢弃。",
+    "hintMark": "证件请斜铺「仅供XX使用」；店图可盖店名或 Logo。",
     "errorDecode": "浏览器无法读取这张图片。",
     "errorHuge": "图片过大，导出时可能会缩小。",
     "emptyDownload": "请先添加图片。"
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "加水印会上传照片吗？",
-      "a1": "不会。浏览器画布完成本地盖印。关闭标签页即丢弃。导出时还会去掉 EXIF。",
+      "a1": "不会。证件和照片都留在当前标签页。浏览器画布完成本地盖印。关闭即丢弃。导出时还会去掉 EXIF。",
       "q2": "能一次给很多张图加水印吗？",
       "a2": "可以。批量加入后下载单张，或打包 PNG / JPEG 的 ZIP。",
-      "q3": "文字和 Logo 都能用吗？",
-      "a3": "都能。可钉在角落、居中，或斜铺满整张图。",
+      "q3": "身份证或证件复印件能加水印吗？",
+      "a3": "能。点「证件防盗用」，斜铺「仅供XX办理使用，他用无效」和当天日期。全程不上传。水印能降低盗用，但不是法律保证。有的窗口仍要无水印件。",
       "q4": "能去水印吗？",
       "a4": "不能。这个工具只负责加水印，不会擦除已有水印。",
       "q5": "支持哪些格式？",
-      "a5": "可导入 PNG、JPEG、WebP、GIF。导出 PNG、JPEG 或 WebP。"
+      "a5": "可导入 PNG、JPEG、WebP、GIF。导出 PNG、JPEG 或 WebP。文字、Logo 或两者一起。"
     },
     "collage": {
       "q1": "这是在线拼图工具吗？",

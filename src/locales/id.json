@@ -3,7 +3,7 @@
     "title": "cv.cm — papan klip, gambar, dan PDF",
     "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
-    "titleWatermark": "Tambah watermark ke foto — cv.cm",
+    "titleWatermark": "Tambah watermark ke foto — salinan KTP di tab ini — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Alat peramban di perangkat. Gambar dan PDF tetap di tab ini.",
     "titleConvert": "HEIC ke JPG, WebP ke PNG, JPG ke PNG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Ubah MP3, M4A, OGG, AAC, FLAC ke WAV di browser. Pilih 44,1 / 48 kHz. Tanpa unggah.",
     "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
-    "descWatermark": "Tambah teks atau logo di browser. Ekspor massal PNG, JPEG, atau ZIP. Tanpa unggah.",
+    "descWatermark": "Cap foto atau salinan identitas di browser. Ubin teks “hanya untuk”. Ekspor massal PNG, JPEG, atau ZIP. Hapus EXIF. Tanpa unggah.",
     "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
     "titleQr": "Pembuat kode QR — cv.cm",
     "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "Watermark gambar",
-      "blurb": "Tambah teks atau logo. Ekspor massal. Tanpa unggah."
+      "blurb": "Cap foto atau identitas, hanya untuk. Tanpa unggah."
     },
     "collage": {
       "name": "Kolase foto",
@@ -477,7 +477,7 @@
     "count": "{n} gambar",
     "textTitle": "Teks",
     "textContent": "Teks watermark",
-    "textPlaceholder": "© 2026 Nama Anda",
+    "textPlaceholder": "HANYA UNTUK [ORG]",
     "font": "Font",
     "fontSans": "Sans",
     "fontSerif": "Serif",
@@ -510,14 +510,16 @@
     "presetConfidential": "Rahasia",
     "presetCopyright": "Tanda sudut",
     "presetCenter": "Tengah pudar",
+    "presetIdentity": "Hanya untuk",
+    "presetIdentityText": "HANYA UNTUK [ORG]\nTIDAK BERLAKU UNTUK HAL LAIN\n{date}",
     "exportTitle": "Ekspor",
     "format": "Format",
     "quality": "Kualitas",
     "download": "Unduh",
     "downloadAll": "Unduh semua sebagai ZIP",
     "working": "Merender…",
-    "privacyNote": "Gambar tetap di tab ini. Ekspor menghapus EXIF. Menutup halaman membuangnya.",
-    "hintMark": "Ketik teks atau tambah logo untuk cap gambar.",
+    "privacyNote": "Salinan identitas dan foto tetap di tab ini. Ekspor menghapus EXIF. Menutup halaman membuangnya.",
+    "hintMark": "Identitas: ubin “hanya untuk”. Foto toko: nama atau logo.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
     "errorHuge": "Gambar sangat besar; ekspor mungkin diperkecil.",
     "emptyDownload": "Tambah gambar dulu."
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "Menambah watermark mengunggah foto?",
-      "a1": "Tidak. Kanvas browser yang menandai. Tutup tab, file dibuang. Ekspor juga menghapus EXIF.",
+      "a1": "Tidak. Salinan identitas juga tetap di tab ini. Kanvas browser yang menandai. Tutup tab, file dibuang. Ekspor juga menghapus EXIF.",
       "q2": "Bisa banyak foto sekaligus?",
       "a2": "Ya. Tambah batch, unduh satu atau ZIP PNG/JPEG.",
-      "q3": "Teks dan logo?",
-      "a3": "Keduanya. Sudut, tengah, atau ubin di seluruh foto.",
+      "q3": "Bisa cap salinan KTP atau paspor?",
+      "a3": "Ya. Pakai «Hanya untuk» agar teks tujuan menutupi foto. Tanpa unggah. Ini pencegah, bukan jaminan hukum. Beberapa kantor tetap minta salinan tanpa cap.",
       "q4": "Bisa hapus watermark?",
       "a4": "Tidak. Alat ini hanya menambah tanda, tidak menghapus watermark yang ada.",
       "q5": "Format apa?",
-      "a5": "Masuk PNG, JPEG, WebP, GIF. Keluar PNG, JPEG, atau WebP."
+      "a5": "Masuk PNG, JPEG, WebP, GIF. Keluar PNG, JPEG, atau WebP. Teks, logo, atau keduanya."
     },
     "collage": {
       "q1": "Ini pembuat kolase foto?",

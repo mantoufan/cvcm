@@ -69,8 +69,21 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "compound")).toMatch(/Compound/i);
     expect(pageTitle("en", "vat")).toMatch(/VAT/i);
     expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
+    expect(pageTitle("en", "watermark")).toMatch(/watermark/i);
+    expect(pageTitle("en", "watermark")).toMatch(/ID copies/i);
+    expect(pageTitle("zh-CN", "watermark")).toMatch(/证件/);
+    expect(pageDescription("en", "watermark")).toMatch(/ID copies/i);
+    expect(pageDescription("zh-CN", "watermark")).toMatch(/仅供/);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
+  });
+
+  it("lays out identity-privacy keywords on the watermark FAQ", () => {
+    const zh = faqItems("zh-CN", "watermark");
+    expect(zh).toHaveLength(5);
+    expect(zh.some((item) => /证件|身份证|仅供/.test(`${item.q}${item.a}`))).toBe(true);
+    const en = faqItems("en", "watermark");
+    expect(en.some((item) => /ID|passport|for-use|for \[org\]/i.test(`${item.q}${item.a}`))).toBe(true);
   });
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {

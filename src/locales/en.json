@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, image, and PDF tools",
     "titleClip": "Online clipboard — share text without an account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
-    "titleWatermark": "Add a watermark to photos — cv.cm",
+    "titleWatermark": "Add a watermark to photos — ID copies stay local — cv.cm",
     "titleCollage": "Photo collage maker — cv.cm",
     "titleConvert": "HEIC to JPG, WebP to PNG, JPG to PNG — cv.cm",
     "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
@@ -14,7 +14,7 @@
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
     "description": "On-device browser tools. Image and PDF files stay in this tab.",
-    "descWatermark": "Add text or a logo watermark to photos in the browser. Batch export PNG, JPEG, or ZIP. Files never leave this tab.",
+    "descWatermark": "Watermark photos or ID copies in the browser. Tile a for-use-only mark, batch PNG, JPEG, or ZIP. Export drops EXIF. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "QR code generator — cv.cm",
     "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
@@ -638,7 +638,7 @@
     },
     "watermark": {
       "name": "Image watermark",
-      "blurb": "Add a text or logo watermark. Batch export. Nothing is uploaded."
+      "blurb": "Watermark photos or ID copies. Tile a for-use-only mark. Nothing is uploaded."
     },
     "collage": {
       "name": "Photo collage",
@@ -886,7 +886,7 @@
     "count": "{n} images",
     "textTitle": "Text",
     "textContent": "Watermark text",
-    "textPlaceholder": "© 2026 Your name",
+    "textPlaceholder": "FOR [ORG] USE ONLY",
     "font": "Font",
     "fontSans": "Sans",
     "fontSerif": "Serif",
@@ -919,14 +919,16 @@
     "presetConfidential": "Confidential",
     "presetCopyright": "Corner mark",
     "presetCenter": "Centered",
+    "presetIdentity": "For-use only",
+    "presetIdentityText": "FOR [ORG] USE ONLY\nNOT VALID OTHERWISE\n{date}",
     "exportTitle": "Export",
     "format": "Format",
     "quality": "Quality",
     "download": "Download",
     "downloadAll": "Download all as ZIP",
     "working": "Rendering…",
-    "privacyNote": "Images stay in this tab. Export also drops EXIF. Closing the page discards them.",
-    "hintMark": "Type text or add a logo to stamp the image.",
+    "privacyNote": "ID copies and photos stay in this tab. Export also drops EXIF. Closing the page discards them.",
+    "hintMark": "Tile a for-use-only line on ID copies, or stamp a name or logo.",
     "errorDecode": "Could not read this image in the browser.",
     "errorHuge": "Image is very large; export may be scaled down.",
     "emptyDownload": "Add an image first."
@@ -1143,15 +1145,15 @@
     },
     "watermark": {
       "q1": "Does adding a watermark upload my photos?",
-      "a1": "No. The browser canvas stamps the mark. Closing the tab discards the files. Export also strips EXIF.",
+      "a1": "No. ID copies and photos stay in this tab. The canvas stamps the mark here. Closing the tab discards the files. Export also strips EXIF.",
       "q2": "Can I watermark many photos at once?",
       "a2": "Yes. Add a batch, then download one file or a ZIP of PNG or JPEG.",
-      "q3": "Can I use text and a logo?",
-      "a3": "Both. Pin to a corner, center it, or tile the mark across the photo.",
+      "q3": "Can I watermark an ID or passport copy?",
+      "a3": "Yes. Use For-use only so a tiled “for [org] use only” line covers the photo. Work stays in this tab. A watermark is a deterrent, not a legal guarantee. Some offices still want an unmarked copy.",
       "q4": "Can I remove a watermark?",
       "a4": "No. This tool only adds a mark. It will not erase watermarks from photos.",
       "q5": "Which formats work?",
-      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP."
+      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP. Text, a logo, or both."
     },
     "collage": {
       "q1": "Is this a photo collage maker?",

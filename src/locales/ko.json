@@ -3,7 +3,7 @@
     "title": "cv.cm — 클립보드, 이미지, PDF 도구",
     "titleClip": "온라인 클립보드 — 가입 없이 텍스트 공유 — cv.cm",
     "descClip": "Pastebin 스타일 클립보드. 링크로 텍스트·이미지·파일 공유. 계정 없음. 10번 보거나 24시간 후 삭제.",
-    "titleWatermark": "사진에 워터마크 넣기 — cv.cm",
+    "titleWatermark": "사진에 워터마크 넣기 — 신분증은 이 탭 — cv.cm",
     "titleCollage": "사진 콜라주 만들기 — cv.cm",
     "description": "기기 안 브라우저 도구. 이미지와 PDF는 이 탭에 남습니다.",
     "titleConvert": "HEIC를 JPG로, WebP를 PNG로, JPG를 PNG로 — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "MP3, M4A, OGG, AAC, FLAC을 브라우저에서 WAV로. 44.1/48 kHz 선택. 업로드 없음.",
     "titleData": "JSON 포맷터, Base64, CSV를 JSON으로 — cv.cm",
     "descData": "JSON 정리, CSV ↔ JSON, Base64, URL 인코딩, Markdown을 HTML로. 이 탭에서.",
-    "descWatermark": "브라우저에서 텍스트 또는 로고 워터마크. PNG/JPEG/ZIP 일괄 내보내기. 업로드 없음.",
+    "descWatermark": "사진이나 신분증 사본에 워터마크. 용도 한정 문구를 타일로 반복. PNG/JPEG/ZIP 일괄 내보내기. EXIF 제거. 업로드 없음.",
     "descCollage": "브라우저에서 콜라주. 그리드와 인스타그램 크기. 업로드 없음.",
     "titleQr": "QR 코드 생성기 — cv.cm",
     "descQr": "브라우저에서 URL이나 텍스트로 QR 코드를 만들고 PNG로 저장. 업로드 없음.",
@@ -229,7 +229,7 @@
     },
     "watermark": {
       "name": "이미지 워터마크",
-      "blurb": "텍스트 또는 로고 워터마크. 일괄 내보내기. 업로드 없음."
+      "blurb": "사진·신분증에 용도 한정 워터마크. 업로드 없음."
     },
     "collage": {
       "name": "사진 콜라주",
@@ -477,7 +477,7 @@
     "count": "{n}장",
     "textTitle": "텍스트",
     "textContent": "워터마크 문구",
-    "textPlaceholder": "© 2026 이름",
+    "textPlaceholder": "지정 용도 한정 · 다른 용도 무효",
     "font": "글꼴",
     "fontSans": "고딕",
     "fontSerif": "명조",
@@ -510,14 +510,16 @@
     "presetConfidential": "기밀 사선",
     "presetCopyright": "모서리 표기",
     "presetCenter": "가운데 옅은 도장",
+    "presetIdentity": "용도 한정",
+    "presetIdentityText": "지정 용도 한정\n다른 용도 무효\n{date}",
     "exportTitle": "내보내기",
     "format": "형식",
     "quality": "품질",
     "download": "다운로드",
     "downloadAll": "모두 ZIP으로 다운로드",
     "working": "생성 중…",
-    "privacyNote": "이미지는 이 탭에만 남습니다. 내보내면 EXIF가 제거됩니다. 페이지를 닫으면 버려집니다.",
-    "hintMark": "글자를 입력하거나 로고를 추가하면 이미지에 찍힙니다.",
+    "privacyNote": "신분증 사본과 사진은 이 탭에만 남습니다. 내보내면 EXIF가 제거됩니다. 페이지를 닫으면 버려집니다.",
+    "hintMark": "신분증은 용도 한정 문구를 타일로. 상점 사진은 이름이나 로고면 됩니다.",
     "errorDecode": "브라우저에서 이 이미지를 읽을 수 없습니다.",
     "errorHuge": "이미지가 매우 커서 내보낼 때 축소될 수 있습니다.",
     "emptyDownload": "먼저 이미지를 추가하세요."
@@ -734,15 +736,15 @@
     },
     "watermark": {
       "q1": "워터마크를 넣으면 사진이 업로드되나요?",
-      "a1": "아니요. 브라우저 캔버스에서 처리합니다. 탭을 닫으면 버려집니다. 내보낼 때 EXIF도 제거됩니다.",
+      "a1": "아니요. 신분증 사본도 이 탭에 남습니다. 브라우저 캔버스에서 처리하고, 탭을 닫으면 버려집니다. 내보낼 때 EXIF도 제거됩니다.",
       "q2": "여러 장에 한꺼번에 넣을 수 있나요?",
       "a2": "네. 여러 장을 넣고 한 장 또는 PNG/JPEG ZIP으로 받습니다.",
-      "q3": "텍스트와 로고 둘 다 쓰나요?",
-      "a3": "둘 다. 모서리, 가운데, 또는 타일로 반복할 수 있습니다.",
+      "q3": "신분증이나 여권 사본에 워터마크를 넣을 수 있나요?",
+      "a3": "네. 「용도 한정」으로 타일 문구를 덮습니다. 업로드 없음. 도용을 어렵게 할 뿐 법적 보장은 아닙니다. 기관이 무표시본을 요구할 수 있습니다.",
       "q4": "워터마크를 지울 수 있나요?",
       "a4": "아니요. 추가만 하며 기존 워터마크는 지우지 않습니다.",
       "q5": "어떤 형식을 지원하나요?",
-      "a5": "입력 PNG, JPEG, WebP, GIF. 출력 PNG, JPEG, WebP."
+      "a5": "입력 PNG, JPEG, WebP, GIF. 출력 PNG, JPEG, WebP. 글자, 로고, 또는 둘 다."
     },
     "collage": {
       "q1": "사진 콜라주 메이커인가요?",
