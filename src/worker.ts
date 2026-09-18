@@ -34,7 +34,8 @@ const CSP = [
 
 const EMU_CSP = [
   "default-src 'self'",
-  "script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' blob:",
+  "script-src-elem 'self' 'unsafe-eval' blob:",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",

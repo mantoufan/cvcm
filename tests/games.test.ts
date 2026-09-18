@@ -169,6 +169,7 @@ describe("games worker", () => {
       const response = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: playerAssets });
       expect(response.status, path).toBe(200);
       expect(response.headers.get("Content-Security-Policy"), path).toContain("wasm-unsafe-eval");
+      expect(response.headers.get("Content-Security-Policy"), path).toMatch(/script-src[^;]*blob:/);
       expect(response.headers.get("Content-Security-Policy"), path).toContain("frame-ancestors 'self'");
       expect(response.headers.get("X-Frame-Options"), path).toBeNull();
       expect(response.headers.get("Cache-Control"), path).toBe("no-store");
