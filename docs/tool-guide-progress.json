@@ -698,7 +698,40 @@
       ],
       "ms": 2087,
       "error": null
+    },
+    "json": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/json/01.jpg",
+        "covers/guides/json/02.jpg",
+        "covers/guides/json/03.jpg"
+      ],
+      "ms": 4330,
+      "error": null
+    },
+    "base64": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/base64/01.jpg",
+        "covers/guides/base64/02.jpg",
+        "covers/guides/base64/03.jpg"
+      ],
+      "ms": 2301,
+      "error": null
+    },
+    "days": {
+      "status": "pass",
+      "steps": 3,
+      "shots": [
+        "covers/guides/days/01.jpg",
+        "covers/guides/days/02.jpg",
+        "covers/guides/days/03.jpg"
+      ],
+      "ms": 2167,
+      "error": null
     }
   },
-  "updated": "2026-09-18T03:50:43.664Z"
+  "updated": "2026-09-18T06:49:19.874Z"
 }
