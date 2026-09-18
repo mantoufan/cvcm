@@ -20,7 +20,7 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 | GitHub repo | https://github.com/mantoufan/cvcm | live | homepage `https://cv.cm` |
 | GitHub profile | https://github.com/mantoufan | live 2026-09-18 | badge + table row |
 | awesome-no-login-web-apps | https://github.com/aviaryan/awesome-no-login-web-apps | merged #473 | clipboard blurb; follow-up to add PDF/image |
-| Awesome-Tools | https://github.com/YSGStudyHards/Awesome-Tools | merged #71 | stale 短剧 Agent `/v/agent` — needs rewrite |
+| Awesome-Tools | https://github.com/YSGStudyHards/Awesome-Tools | merged #71 | stale 短剧 Agent; rewrite PR #101 |
 | wechalet.cn | https://wechalet.cn/en/appstore/detail/4t99 | live | old clipboard copy |
 | SourceForge | submitted 2026-05-18 | pending review | |
 | Blogger | https://shonwu.blogspot.com/2026/06/i-cant-edit-video-or-draw-heres-how-i.html | live | old `/v` article; still dofollow to cv.cm |
@@ -42,9 +42,21 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 |---|---|
 | https://github.com/pluja/awesome-privacy/pull/1117 | Photo Editing → Web |
 | https://github.com/aviaryan/awesome-no-login-web-apps/pull/598 | expand merged blurb |
+| https://github.com/YSGStudyHards/Awesome-Tools/pull/101 | 短剧 Agent → PDF 管理工具 |
 
 ## Do not resubmit (already attempted)
 
 10words, osalt.com, aitoolsdirectory.com, ai-bot.cn, backdata.net, hhlink.com, iforai.com, ainavpro.com, dropyourai.com, apprater.net, startupcollections.com, nextool.ai, toolhunter.ai, humanornot.co, aitoolsmasters.com, bufferapps.com, ababtools.com, fwol.cn.
 
 Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal).
+
+## Closed 2026-09-18 (retired AI-video product)
+
+public-apis/public-apis#6255, xyflow/awesome-node-based-uis#79, backblaze-labs/awesome-video-generation#4, backblaze-labs/awesome-image-generation#10, mahseema/awesome-ai-tools#1478, n0shake/Public-APIs#792.
+
+## Next (needs your login / captcha)
+
+- AlternativeTo `https://alternativeto.net/manage-item/` (account + verified email; then add as alternative to iLovePDF / Smallpdf / Pastebin / QRCode Monkey)
+- SaaSHub `https://www.saashub.com/services/submit` (Continue did not advance while logged out)
+- OpenAlternative `https://openalternative.co/submit` (GitHub/Google sign-in)
+- 博客园 / Blogger: new article on merge-PDF without upload (old posts still point at retired `/v`)
