@@ -142,6 +142,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["rotate", "crop", "resize"],
   },
+  "png-to-webp": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["convert", "resize", "image-pdf"],
+  },
+  "mp3-to-wav": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["audio", "audio-cutter", "audio-joiner"],
+  },
+  "join-audio": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["audio-joiner", "audio-cutter", "audio"],
+  },
+  "make-favicon": {
+    minutes: 7,
+    steps: 6,
+    openAt: 2,
+    related: ["favicon", "convert", "crop"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -348,5 +372,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "rotate-photo": [
     { step: 1, src: "/covers/tutorials/rotate-photo-turn.svg" },
     { step: 6, src: "/covers/tutorials/rotate-photo-bake.svg" },
+  ],
+  "png-to-webp": [
+    { step: 1, src: "/covers/tutorials/png-to-webp-why.svg" },
+    { step: 4, src: "/covers/tutorials/png-to-webp-alpha.svg" },
+  ],
+  "mp3-to-wav": [
+    { step: 1, src: "/covers/tutorials/mp3-to-wav-why.svg" },
+    { step: 4, src: "/covers/tutorials/mp3-to-wav-rate.svg" },
+  ],
+  "join-audio": [
+    { step: 1, src: "/covers/tutorials/join-audio-order.svg" },
+    { step: 4, src: "/covers/tutorials/join-audio-rate.svg" },
+  ],
+  "make-favicon": [
+    { step: 1, src: "/covers/tutorials/make-favicon-fit.svg" },
+    { step: 5, src: "/covers/tutorials/make-favicon-sizes.svg" },
   ],
 };

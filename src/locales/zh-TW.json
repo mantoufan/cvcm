@@ -213,7 +213,21 @@
     "titleAvifToJpg": "怎麼把 AVIF 轉成 JPG | cv.cm",
     "descAvifToJpg": "Chrome 常存 AVIF。用較新的瀏覽器匯出 JPG，再到打不開 AVIF 的地方打開。不上傳。",
     "titleRotatePhoto": "怎麼旋轉或翻轉照片 | cv.cm",
-    "descRotatePhoto": "轉 90° 或 180°，或鏡像翻轉。匯出會把方向寫進像素，橫的 EXIF 照片可以真正立正。不上傳。"
+    "descRotatePhoto": "轉 90° 或 180°，或鏡像翻轉。匯出會把方向寫進像素，橫的 EXIF 照片可以真正立正。不上傳。",
+    "titleSort": "行排序 — 去重倒序 — cv.cm",
+    "descSort": "在瀏覽器裡按行排序或去掉重複行。不上傳。",
+    "titleReplace": "尋找取代 — 文字取代 — cv.cm",
+    "descReplace": "在瀏覽器裡尋找並取代字面文字。不上傳。",
+    "titleWords": "數字轉英文 — 英文單字 — cv.cm",
+    "descWords": "在瀏覽器裡把整數寫成美式英文。不上傳。",
+    "titlePngToWebp": "怎麼把 PNG 轉成 WebP | cv.cm",
+    "descPngToWebp": "要更小還能留透明底，就選 WebP。用現在的瀏覽器打開。老表單可能仍要 PNG。不上傳。",
+    "titleMp3ToWav": "怎麼把 MP3 轉成 WAV | cv.cm",
+    "descMp3ToWav": "拖入 MP3，必要時選 44.1 或 48 kHz，下載 WAV，再播檔。原檔還在。不上傳。",
+    "titleJoinAudio": "怎麼拼接音訊 / 合併 MP3 | cv.cm",
+    "descJoinAudio": "按順序放入兩段或更多，下載一份 WAV，從頭到尾播一遍。後面的對齊第一段的取樣率。不上傳。",
+    "titleMakeFavicon": "怎麼做網站圖示 / favicon | cv.cm",
+    "descMakeFavicon": "裁成正方形，選 Cover 或 Contain，下載 ICO（16/32/48）和 PNG 壓縮檔（180/192/512），再看 16 像素那份。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "日期間隔",
       "blurb": "兩個日期相差幾天。不上傳。"
+    },
+    "sort": {
+      "name": "行排序",
+      "blurb": "排序或去重。不上傳。"
+    },
+    "replace": {
+      "name": "尋找取代",
+      "blurb": "字面尋找取代。不上傳。"
+    },
+    "words": {
+      "name": "數字轉英文",
+      "blurb": "美式英文單字。不上傳。"
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "不會。關掉分頁就沒了。",
         "q5": "不用 Photoshop 能轉嗎？",
         "a5": "可以。本頁就是旋轉。不用帳號。"
+      },
+      "png-to-webp": {
+        "q1": "可以免費線上把 PNG 轉成 WebP 嗎？",
+        "a1": "可以。cv.cm 在目前分頁轉換，不上傳。",
+        "q2": "WebP 還能留透明底嗎？",
+        "a2": "匯出 WebP 就還在。JPG 會填死背景。表單不認 WebP，就留 PNG。",
+        "q3": "會上傳嗎？",
+        "a3": "不會。關掉分頁就沒了。",
+        "q4": "要更小的照片，選 WebP 還是 JPG？",
+        "a4": "要透明或上網頁，用 WebP。郵件或不認 WebP 的表單，用 JPG。",
+        "q5": "不用 Photoshop 能轉嗎？",
+        "a5": "可以。本頁就是轉換。不用帳號。"
+      },
+      "mp3-to-wav": {
+        "q1": "可以免費線上把 MP3 轉成 WAV 嗎？",
+        "a1": "可以。cv.cm 在目前分頁解碼，下載 WAV。不上傳。",
+        "q2": "轉成 WAV 音質會變好嗎？",
+        "a2": "不會。WAV 只是把 MP3 壓縮後剩下的存下來。檔會變大。",
+        "q3": "選 44.1 還是 48 kHz？",
+        "a3": "音樂和 CD 用 44.1。影片用 48。不確定就留原始。",
+        "q4": "會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "能轉 M4A 或語音備忘錄嗎？",
+        "a5": "瀏覽器解得開就可以。匯出仍是 WAV。"
+      },
+      "join-audio": {
+        "q1": "可以免費線上合併 MP3 嗎？",
+        "a1": "可以。在目前分頁拖入兩段或更多，排好順序，下載 WAV。不上傳。",
+        "q2": "為什麼下載是 WAV 不是 MP3？",
+        "a2": "拼接在瀏覽器裡把解碼後的 PCM 接起來寫成 WAV。還要 MP3，就再轉一次。",
+        "q3": "一定要兩段嗎？",
+        "a3": "對。一段算不上拼接。只要切一段，去裁剪。",
+        "q4": "會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "會改原檔嗎？",
+        "a5": "不會。你下載的是新 WAV。磁碟上的 MP3 還在。"
+      },
+      "make-favicon": {
+        "q1": "可以免費線上做網站圖示嗎？",
+        "a1": "可以。cv.cm 在目前分頁畫，不上傳。",
+        "q2": "ICO 裡有哪些尺寸？",
+        "a2": "16、32、48 像素的 PNG，打進一份 favicon.ico。",
+        "q3": "還要蘋果觸控圖示嗎？",
+        "a3": "PNG 壓縮檔裡有 180、192、512。在 HTML 裡鏈上，給主畫面圖示用。",
+        "q4": "會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "能留透明底嗎？",
+        "a5": "可以。關掉白底。Contain 會在透明底上留邊。"
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "不要只信頁面預覽。檔案總管裡還是橫的，就是傳了原圖。字是反的，就是該轉 90° 卻用了翻轉。",
       "diagram1": "旋轉 90°/180° 是轉向。翻轉是鏡子。",
       "diagram2": "匯出會把方向寫進像素。打開檔，只有方向資訊是橫的圖才能真正立正。"
+    },
+    "png-to-webp": {
+      "name": "怎麼把 PNG 轉成 WebP",
+      "blurb": "要更小還能留透明底，就選 WebP。再用瀏覽器打開看，不要丟進不認 WebP 的老表單。",
+      "title": "怎麼把 PNG 轉成 WebP",
+      "lead": "WebP 比 PNG 小，還能留透明，JPG 做不到。給網頁轉一份，再用現在的瀏覽器打開核對。",
+      "result": "一份比 PNG 更小的 WebP；原圖有透明底就還在。原 PNG 還在磁碟上。",
+      "note": "檔在磁碟上再打開格式轉換。要透明底就選 WebP，不要選 JPG。老表單可能仍不認 WebP。不上傳。",
+      "s1t": "先想清楚為什麼要 WebP",
+      "s1b": "網站或聊天認 WebP，就會更快。郵件和不少學校表單仍要 PNG 或 JPG。對方不認就別轉。",
+      "s2t": "打開 cv.cm 的圖片格式",
+      "s2b": "轉換留在目前分頁。關掉就沒了。",
+      "s3t": "拖入 .png",
+      "s3b": "一張或一批。預覽空白，換瀏覽器。",
+      "s4t": "要透明底就選 WebP，不要選 JPG",
+      "s4b": "WebP 能留透明。JPG 會填死。品質先從 0.9。頁面有像素上限再限制長邊。",
+      "s5t": "下載 WebP",
+      "s5b": "打開 WebP 之前留著 PNG。",
+      "s6t": "用現在的瀏覽器打開",
+      "s6b": "看邊緣，再和 PNG 比體積。表單仍拒收，就傳 PNG。轉換不會讓圖更清晰。",
+      "diagram1": "WebP 比 PNG 小，還能留透明。JPG 不行。",
+      "diagram2": "要透明就選 WebP。用瀏覽器打開。老表單可能仍要 PNG。"
+    },
+    "mp3-to-wav": {
+      "name": "怎麼把 MP3 轉成 WAV",
+      "blurb": "拖入 MP3，必要時選取樣率，下載 WAV，再播檔。原檔還在。",
+      "title": "怎麼把 MP3 轉成 WAV",
+      "lead": "DAW、編輯器或表單可能只要 WAV，不要 MP3。在目前分頁解碼一份，必要時選 44.1 或 48 kHz，再把下載播一遍。",
+      "result": "一份能播的 WAV，取樣率是你選的，原來的 MP3 還在。",
+      "note": "音訊在磁碟上再打開 MP3 轉 WAV。即使拖進來是 M4A，下載也是 WAV。寄出去之前先聽。不上傳。",
+      "s1t": "先知道為什麼要 WAV",
+      "s1b": "WAV 是未壓縮的 PCM。編輯器和有的上傳表單要它。體積會比 MP3 大很多。不要指望這一步能讓音質變好——MP3 丟掉的回不來。",
+      "s2t": "打開 cv.cm 的 MP3 轉 WAV",
+      "s2b": "轉換留在目前分頁。",
+      "s3t": "拖入 MP3、M4A 或 WAV",
+      "s3b": "播不了，就是這款瀏覽器解不了。換 WAV 或換瀏覽器。Safari 和 Chrome 一般能解 MP3。",
+      "s4t": "選原始、44.1 kHz 或 48 kHz",
+      "s4b": "不確定就留原始。44.1 是 CD / 音樂預設。48 是影片預設。重取樣不會憑空變亮。",
+      "s5t": "下載 WAV",
+      "s5b": "播過 WAV 之前留著 MP3。",
+      "s6t": "把下載的檔播一遍",
+      "s6b": "不要只信頁面裡的播放器。沒聲音，就是解碼失敗。表單其實要 MP3，就傳原檔。",
+      "diagram1": "WAV 未壓縮。MP3 已經丟掉資料。轉回去找不回來。",
+      "diagram2": "音樂用 44.1 kHz。影片用 48 kHz。播下載的 WAV。"
+    },
+    "join-audio": {
+      "name": "怎麼拼接音訊 / 合併 MP3",
+      "blurb": "按順序放入兩段或更多，下載一份 WAV，從頭到尾播一遍。",
+      "title": "怎麼拼接音訊 / 合併 MP3",
+      "lead": "你要的是一份檔，不是播放列表：前奏再接歌、兩段語音、墊樂加留言。列表順序就是播放順序。匯出是 WAV。",
+      "result": "一份 WAV：按你排的順序播完，從頭到尾核對過，原檔還在。",
+      "note": "音訊在磁碟上再打開拼接。至少兩段。後面的會重取樣到第一段的取樣率。下載是 WAV。不上傳。",
+      "s1t": "先按播放順序排好",
+      "s1b": "前奏在前，墊樂在後。改名也行。拖進去以後還能上下移動。",
+      "s2t": "打開 cv.cm 的音訊拼接",
+      "s2b": "拼接留在目前分頁。",
+      "s3t": "拖入兩段或更多",
+      "s3b": "一段算不上拼接。某一行報錯，就是解碼失敗——先轉成 WAV，或先跳過。",
+      "s4t": "順序不對就上下移動",
+      "s4b": "第一行先播。後面的會重取樣到第一段的取樣率，免得越接越飄。",
+      "s5t": "下載一份 WAV",
+      "s5b": "即使全是 MP3，匯出也是 WAV。聽完之前留著原檔。",
+      "s6t": "從頭到尾播這份檔",
+      "s6b": "聽有沒有缺一段、中間空一截、接頭變調。順序錯了，排好再導。不要只信頁面上的列表。",
+      "diagram1": "列表順序就是播放順序。至少兩段。",
+      "diagram2": "匯出是一份 WAV。後面的對齊第一段的取樣率。"
+    },
+    "make-favicon": {
+      "name": "怎麼做網站圖示 / favicon",
+      "blurb": "裁成正方形，選鋪滿還是完整放入，下載 ICO 和各尺寸 PNG，再看 16 像素那一檔。",
+      "title": "怎麼做網站圖示 / favicon",
+      "lead": "網站圖示要在 16 像素還能認出來。把標誌裁成正方形，選鋪滿還是完整放入，再下載經典分頁用的 ICO，以及觸控圖示用的 PNG 壓縮檔。",
+      "result": "一份 favicon.ico（16/32/48）和一份 PNG 壓縮檔（含 180/192/512），在分頁那麼大仍能認出來。",
+      "note": "標誌在磁碟上再打開網站圖示。Cover 鋪滿正方形，可能裁切。Contain 留邊。預設白底。不上傳。",
+      "s1t": "選一個縮得很小仍能認的標誌",
+      "s1b": "花的照片縮到 16 像素就沒了。一個字母、簡單形狀或高對比 logo 才行。畫面太寬，先裁到主體再過來。",
+      "s2t": "打開 cv.cm 的網站圖示",
+      "s2b": "做圖示留在目前分頁。",
+      "s3t": "拖入圖片",
+      "s3b": "預覽空白，先把 HEIC 轉成 JPG。",
+      "s4t": "選 Cover 還是 Contain，以及要不要白底",
+      "s4b": "Cover 鋪滿正方形，可能裁切。Contain 放下整個標誌，會留邊。經典分頁就留著白底。要透明 PNG 再關掉。",
+      "s5t": "下載 ICO 和 PNG 壓縮檔",
+      "s5b": "ICO 裡是 16、32、48，給經典分頁。壓縮檔還有 180、192、512，給蘋果觸控圖示和 PWA。原標誌留下。",
+      "s6t": "打開 16 像素的 PNG",
+      "s6b": "256 的預覽會騙人。16 像素糊了，就簡化標誌或改 Contain。把 favicon.ico 放到網站根目錄，並在 HTML 裡鏈上 PNG。",
+      "diagram1": "Cover 鋪滿，可能裁切。Contain 放下整個標誌，會留邊。",
+      "diagram2": "ICO 是 16/32/48。PNG 壓縮檔還有 180/192/512。看 16 像素那份。"
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "行排序",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "尋找取代",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "數字轉英文",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

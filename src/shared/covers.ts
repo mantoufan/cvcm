@@ -69,6 +69,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   json: "/covers/json-sweet.jpg?v=1",
   base64: "/covers/base64-sweet.jpg?v=1",
   days: "/covers/days-sweet.jpg?v=1",
+  sort: "/covers/sort-sweet.jpg?v=1",
+  replace: "/covers/replace-sweet.jpg?v=1",
+  words: "/covers/words-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {
@@ -116,6 +119,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "jpg-to-png": "/covers/convert-sweet.jpg?v=1",
   "avif-to-jpg": "/covers/convert-sweet.jpg?v=1",
   "rotate-photo": "/covers/rotate-sweet.jpg?v=1",
+  "png-to-webp": "/covers/convert-sweet.jpg?v=1",
+  "mp3-to-wav": "/covers/audio-sweet.jpg?v=2",
+  "join-audio": "/covers/audio-joiner-sweet.jpg?v=1",
+  "make-favicon": "/covers/favicon-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -158,6 +165,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "jpg-to-png": "/covers/tutorials/jpg-to-png.svg",
   "avif-to-jpg": "/covers/tutorials/avif-to-jpg.svg",
   "rotate-photo": "/covers/tutorials/rotate-photo.svg",
+  "png-to-webp": "/covers/tutorials/png-to-webp.svg",
+  "mp3-to-wav": "/covers/tutorials/mp3-to-wav.svg",
+  "join-audio": "/covers/tutorials/join-audio.svg",
+  "make-favicon": "/covers/tutorials/make-favicon.svg",
 };
 
 export function coverUrl(path: string): string {

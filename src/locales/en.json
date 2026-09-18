@@ -213,7 +213,21 @@
     "titleAvifToJpg": "How to convert AVIF to JPG | cv.cm",
     "descAvifToJpg": "Chrome often saves AVIF. Export JPG in a current browser, then open it where AVIF was rejected. Nothing is uploaded.",
     "titleRotatePhoto": "How to rotate or flip a photo | cv.cm",
-    "descRotatePhoto": "Turn 90° or 180°, or flip a mirror. Export writes pixels so a sideways EXIF photo can become actually upright. Nothing is uploaded."
+    "descRotatePhoto": "Turn 90° or 180°, or flip a mirror. Export writes pixels so a sideways EXIF photo can become actually upright. Nothing is uploaded.",
+    "titleSort": "Sort lines — unique reverse — cv.cm",
+    "descSort": "Sort lines A to Z, Z to A, or drop duplicates in the browser. Nothing is uploaded.",
+    "titleReplace": "Find and replace — text replace — cv.cm",
+    "descReplace": "Find literal text and replace it in the browser. Nothing is uploaded.",
+    "titleWords": "Number to words — English — cv.cm",
+    "descWords": "Turn a whole number into US English words in the browser. Nothing is uploaded.",
+    "titlePngToWebp": "How to convert PNG to WebP | cv.cm",
+    "descPngToWebp": "Pick WebP for a smaller file that can keep a clear background. Open it in a current browser. Old forms may still want PNG. Nothing is uploaded.",
+    "titleMp3ToWav": "How to convert MP3 to WAV | cv.cm",
+    "descMp3ToWav": "Drop the MP3, pick 44.1 or 48 kHz if you need a target, download WAV, then play the file. The original stays on disk. Nothing is uploaded.",
+    "titleJoinAudio": "How to join audio files / merge MP3s | cv.cm",
+    "descJoinAudio": "Drop two or more clips in order, download one WAV, then play it from start to end. Later clips match the first clip's sample rate. Nothing is uploaded.",
+    "titleMakeFavicon": "How to make a favicon | cv.cm",
+    "descMakeFavicon": "Square the mark, pick Cover or Contain, download ICO (16/32/48) and a PNG zip (180/192/512), then check the 16-pixel file. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -752,6 +766,94 @@
       "s6b": "Do not trust the in-page preview alone. If Explorer still shows it sideways, you sent the original. If letters are backward, you flipped when you needed 90°.",
       "diagram1": "Rotate 90° / 180° turns the photo. Flip is a mirror.",
       "diagram2": "Export writes pixels. Open the file so EXIF-only sideways photos become actually upright."
+    },
+    "png-to-webp": {
+      "name": "How to convert PNG to WebP",
+      "blurb": "Pick WebP for a smaller file that can keep a clear background. Then open it in a browser, not in an old form.",
+      "title": "How to convert PNG to WebP",
+      "lead": "WebP is smaller than PNG and can keep transparency, unlike JPG. You convert a copy for the web, then check the file in a current browser.",
+      "result": "A WebP that is smaller than the PNG, with transparency intact if the original had it, plus the PNG still on disk.",
+      "note": "Open convert when the .png is on disk. Pick WebP, not JPG, if you need a clear background. Old forms may still reject WebP. Nothing is uploaded.",
+      "s1t": "Decide why you need WebP",
+      "s1b": "A site or a chat that accepts WebP will load faster. Email and many school forms still want PNG or JPG. Do not convert if the destination rejects WebP.",
+      "s2t": "Open image formats on cv.cm",
+      "s2b": "Work stays in this tab. Closing it discards the file.",
+      "s3t": "Drop the .png file",
+      "s3b": "One file or a batch. If the preview is blank, try another browser.",
+      "s4t": "Pick WebP, not JPG, if you need transparency",
+      "s4b": "WebP can keep a clear background. JPG will fill it. Start quality near 0.9. Optional max edge only if a page has a pixel cap.",
+      "s5t": "Download the WebP",
+      "s5b": "Keep the PNG until you have opened the WebP.",
+      "s6t": "Open it in a current browser",
+      "s6b": "Check the edges and the file size against the PNG. If a form still rejects it, send the PNG. Converting does not add sharpness.",
+      "diagram1": "WebP is smaller than PNG and can keep a clear background. JPG cannot.",
+      "diagram2": "Pick WebP to keep alpha. Open it in a browser. Old forms may still want PNG."
+    },
+    "mp3-to-wav": {
+      "name": "How to convert MP3 to WAV",
+      "blurb": "Drop the MP3, pick a sample rate if you need one, download WAV, then play the file. The original stays on disk.",
+      "title": "How to convert MP3 to WAV",
+      "lead": "A DAW, an editor, or a form may want WAV, not MP3. You will decode a copy in this tab, pick 44.1 or 48 kHz if you need a target, and play the download.",
+      "result": "A WAV that plays, at the sample rate you chose, with the original MP3 still on disk.",
+      "note": "Open MP3 to WAV when the audio is on disk. The download is WAV even if you dropped M4A. Listen before you send. Nothing is uploaded.",
+      "s1t": "Know why you need WAV",
+      "s1b": "WAV is uncompressed PCM. Editors and some upload forms want it. It will be much larger than the MP3. Do not convert just to 'improve quality' — you cannot get back what MP3 already threw away.",
+      "s2t": "Open MP3 to WAV on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop the MP3, M4A, or WAV",
+      "s3b": "If nothing plays, this browser cannot decode that codec. Try WAV or another browser. Safari and Chrome usually handle MP3.",
+      "s4t": "Pick original, 44.1 kHz, or 48 kHz",
+      "s4b": "Leave original if you are unsure. 44.1 is the CD / music default. 48 is the video default. Resampling does not add highs.",
+      "s5t": "Download WAV",
+      "s5b": "Keep the MP3 until you have played the WAV.",
+      "s6t": "Play the downloaded file once",
+      "s6b": "Do not send on the in-page player alone. If it is silent, the codec failed. If a form still wants MP3, send the original.",
+      "diagram1": "WAV is uncompressed. MP3 already threw data away. Converting does not restore it.",
+      "diagram2": "44.1 kHz for music. 48 kHz for video. Play the downloaded WAV."
+    },
+    "join-audio": {
+      "name": "How to join audio files / merge MP3s",
+      "blurb": "Drop two or more clips in order, download one WAV, then play the file from start to end.",
+      "title": "How to join audio files / merge MP3s",
+      "lead": "You need one file, not a playlist: intro then song, two voice notes, a bed under a voicemail. List order is playback order. Export is WAV.",
+      "result": "One WAV that plays the clips in the order you set, verified from start to end, with the originals still on disk.",
+      "note": "Open join when the clips are on disk. You need two or more. Later clips are resampled to the first clip's rate. Download is WAV. Nothing is uploaded.",
+      "s1t": "Put the clips in playback order",
+      "s1b": "Intro first, bed last. Rename if it helps. You will still be able to move rows after you drop them.",
+      "s2t": "Open audio joiner on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop two or more files",
+      "s3b": "One file is not a join. If a row shows an error, that codec failed — convert that clip to WAV first, or skip it.",
+      "s4t": "Reorder if the list is wrong",
+      "s4b": "The first row plays first. Later clips are resampled to the first clip's sample rate so the join does not drift.",
+      "s5t": "Download one WAV",
+      "s5b": "Export is WAV even if every source was MP3. Keep the originals until you have listened through.",
+      "s6t": "Play the file from start to end",
+      "s6b": "Listen for a missing clip, a gap, or a pitch change at a join. If the order is wrong, move rows and export again. Do not send on the in-page list alone.",
+      "diagram1": "List order is playback order. You need two or more clips.",
+      "diagram2": "Export is one WAV. Later clips match the first clip's sample rate."
+    },
+    "make-favicon": {
+      "name": "How to make a favicon",
+      "blurb": "Crop to a square, pick Cover or Contain, download ICO plus PNG sizes, then check the 16-pixel version.",
+      "title": "How to make a favicon",
+      "lead": "A favicon has to read at 16 pixels. You will square the mark, choose Cover or Contain, and download an ICO for classic tabs plus a PNG zip for touch icons.",
+      "result": "A favicon.ico (16/32/48) and a PNG zip (including 180/192/512) that still reads at tab size.",
+      "note": "Open favicon when the mark is on disk. Cover fills the square and may crop. Contain letterboxes. White background is on by default. Nothing is uploaded.",
+      "s1t": "Start from a mark that still reads tiny",
+      "s1b": "A busy photo dies at 16 pixels. A letter, a simple shape, or a high-contrast logo works. Crop the subject before you come here if the frame is wide.",
+      "s2t": "Open favicon on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop the image",
+      "s3b": "If the preview is blank, convert HEIC first.",
+      "s4t": "Choose Cover or Contain, and white background",
+      "s4b": "Cover fills the square and may crop. Contain keeps the whole mark and letterboxes. Leave white background on for a classic tab. Uncheck it if you need a transparent PNG.",
+      "s5t": "Download ICO and the PNG zip",
+      "s5b": "ICO packs 16, 32, and 48 for classic tabs. The zip also has 180, 192, and 512 for Apple touch and PWA icons. Keep the original mark.",
+      "s6t": "Open the 16-pixel PNG",
+      "s6b": "The 256 preview lies. If the 16px file is a blur, simplify the mark or switch to Contain. Put favicon.ico at the site root and link the PNGs in the HTML.",
+      "diagram1": "Cover fills and may crop. Contain keeps the whole mark and letterboxes.",
+      "diagram2": "ICO is 16/32/48. PNG zip adds 180/192/512. Check the 16px file."
     }
   },
   "tools": {
@@ -1018,6 +1120,18 @@
     "days": {
       "name": "Days between dates",
       "blurb": "Calendar day count. Nothing is uploaded."
+    },
+    "sort": {
+      "name": "Sort lines",
+      "blurb": "A→Z, Z→A, or unique. Nothing is uploaded."
+    },
+    "replace": {
+      "name": "Find and replace",
+      "blurb": "Literal find and replace. Nothing is uploaded."
+    },
+    "words": {
+      "name": "Number to words",
+      "blurb": "US English words. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1710,6 +1824,54 @@
         "a4": "No. Closing the tab discards them.",
         "q5": "Can I rotate without Photoshop?",
         "a5": "Yes. This page is the rotator. No account."
+      },
+      "png-to-webp": {
+        "q1": "Can I convert PNG to WebP free online?",
+        "a1": "Yes. cv.cm converts in this tab. Nothing is uploaded.",
+        "q2": "Will transparency survive in WebP?",
+        "a2": "Yes if you export WebP. JPG will fill the background. Keep PNG if a form rejects WebP.",
+        "q3": "Are files uploaded?",
+        "a3": "No. Closing the tab discards them.",
+        "q4": "WebP or JPG for a smaller photo?",
+        "a4": "WebP if you need transparency or a web page. JPG if email or a form that rejects WebP.",
+        "q5": "Can I convert PNG to WebP without Photoshop?",
+        "a5": "Yes. This page is the converter. No account."
+      },
+      "mp3-to-wav": {
+        "q1": "Can I convert MP3 to WAV free online?",
+        "a1": "Yes. cv.cm decodes in this tab and downloads WAV. Nothing is uploaded.",
+        "q2": "Will converting MP3 to WAV improve quality?",
+        "a2": "No. WAV only stores what is left after MP3 compression. The file gets larger.",
+        "q3": "44.1 or 48 kHz?",
+        "a3": "44.1 for music and CD-style work. 48 for video. Leave original if you are unsure.",
+        "q4": "Is the audio uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Can I convert M4A or voice memos?",
+        "a5": "If the browser can decode the file, yes. Output is still WAV."
+      },
+      "join-audio": {
+        "q1": "Can I merge MP3 files free online?",
+        "a1": "Yes. Drop two or more on cv.cm audio joiner in this tab, reorder, download WAV. Nothing is uploaded.",
+        "q2": "Why is the download WAV, not MP3?",
+        "a2": "The joiner concatenates decoded PCM and writes WAV in the browser. If you need MP3, convert the WAV afterwards.",
+        "q3": "Do I need two files?",
+        "a3": "Yes. One clip is not a join. Add a second file or go to trim if you only need a slice.",
+        "q4": "Is the audio uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Will this change the original files?",
+        "a5": "No. You download a new WAV. The MP3s on disk stay."
+      },
+      "make-favicon": {
+        "q1": "Can I make a favicon free online?",
+        "a1": "Yes. cv.cm draws in this tab. Nothing is uploaded.",
+        "q2": "What sizes are in the ICO?",
+        "a2": "16, 32, and 48 pixel PNG images packed into one favicon.ico.",
+        "q3": "Do I need Apple touch icons too?",
+        "a3": "The PNG zip includes 180, 192, and 512. Link those in HTML for home-screen icons.",
+        "q4": "Are photos uploaded?",
+        "a4": "No. Closing the tab discards them.",
+        "q5": "Can I keep a transparent background?",
+        "a5": "Yes. Uncheck white background. Contain then letterboxes on transparency."
       }
     },
     "compress-pdf": {
@@ -2335,6 +2497,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "Sort lines",
+    "back": "All tools",
+    "privacyNote": "Sorting stays in this tab. Nothing is uploaded.",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "Find and replace",
+    "back": "All tools",
+    "privacyNote": "Replacement stays in this tab. Nothing is uploaded.",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "Number to words",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

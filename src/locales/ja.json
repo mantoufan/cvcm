@@ -213,7 +213,21 @@
     "titleAvifToJpg": "AVIFをJPGにする方法 | cv.cm",
     "descAvifToJpg": "ChromeはAVIFを保存しがち。新しいブラウザでJPGを書き出し、拒んだ先で開く。アップロードなし。",
     "titleRotatePhoto": "写真を回転・反転する方法 | cv.cm",
-    "descRotatePhoto": "90°か180°、または鏡反転。書き出しは画素に向きを焼くので、横のEXIF写真を正立にできる。アップロードなし。"
+    "descRotatePhoto": "90°か180°、または鏡反転。書き出しは画素に向きを焼くので、横のEXIF写真を正立にできる。アップロードなし。",
+    "titleSort": "行の並べ替え — 重複削除 — cv.cm",
+    "descSort": "ブラウザで行を並べ替えるか重複を除く。アップロードなし。",
+    "titleReplace": "検索と置換 — テキスト置換 — cv.cm",
+    "descReplace": "ブラウザで文字列を検索して置換。アップロードなし。",
+    "titleWords": "数字を英語に — 英単語 — cv.cm",
+    "descWords": "ブラウザで整数を米語の単語に。アップロードなし。",
+    "titlePngToWebp": "PNGをWebPにする方法 | cv.cm",
+    "descPngToWebp": "小さくて透明も残すならWebP。今のブラウザで開く。古い提出はまだPNG。アップロードなし。",
+    "titleMp3ToWav": "MP3をWAVにする方法 | cv.cm",
+    "descMp3ToWav": "MP3を入れ、必要なら44.1または48kHz、WAVを保存して再生。元は残る。アップロードなし。",
+    "titleJoinAudio": "音声をつなぐ / MP3を結合する方法 | cv.cm",
+    "descJoinAudio": "2本以上を順に入れ、WAVを1つ保存し通しで再生。後続は先頭の周波数に合わせる。アップロードなし。",
+    "titleMakeFavicon": "ファビコンの作り方 | cv.cm",
+    "descMakeFavicon": "正方形にしてCoverかContain、ICO（16/32/48）とPNGのZIP（180/192/512）を保存し16pxを見る。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "日付の差",
       "blurb": "日数。アップロードなし。"
+    },
+    "sort": {
+      "name": "行の並べ替え",
+      "blurb": "並べ替えまたは重複削除。アップロードなし。"
+    },
+    "replace": {
+      "name": "検索と置換",
+      "blurb": "文字列の置換。アップロードなし。"
+    },
+    "words": {
+      "name": "数字を英語に",
+      "blurb": "米語の単語。アップロードなし。"
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "しない。タブを閉じると消える。",
         "q5": "Photoshopなしで？",
         "a5": "できる。このページが回転。アカウント不要。"
+      },
+      "png-to-webp": {
+        "q1": "PNGをWebPに無料で変換できる？",
+        "a1": "できる。このタブで変換。アップロードなし。",
+        "q2": "WebPでも透明は残る？",
+        "a2": "WebPなら残る。JPGは背景を埋める。提出がWebPを拒むならPNGを残す。",
+        "q3": "アップロードされる？",
+        "a3": "しない。タブを閉じると消える。",
+        "q4": "小さくするならWebPとJPGどちら？",
+        "a4": "透明やウェブならWebP。メールやWebP拒否の提出ならJPG。",
+        "q5": "Photoshopなしで？",
+        "a5": "できる。このページが変換。アカウント不要。"
+      },
+      "mp3-to-wav": {
+        "q1": "MP3をWAVに無料で変換できる？",
+        "a1": "できる。このタブでデコードしWAVを保存。アップロードなし。",
+        "q2": "WAVにすると音質は上がる？",
+        "a2": "上がらない。WAVはMP3圧縮の残りを入れるだけ。ファイルは大きくなる。",
+        "q3": "44.1と48kHzどちら？",
+        "a3": "音楽・CDは44.1。映像は48。不明なら元のまま。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "M4Aやボイスメモは？",
+        "a5": "ブラウザがデコードできれば可。書き出しはWAV。"
+      },
+      "join-audio": {
+        "q1": "MP3を無料で結合できる？",
+        "a1": "できる。このタブに2本以上入れ、並べてWAVを保存。アップロードなし。",
+        "q2": "保存がWAVなのはなぜ？",
+        "a2": "デコードしたPCMをつないでブラウザでWAVにする。MP3が要るなら後で変換。",
+        "q3": "2本必要？",
+        "a3": "そう。1本は結合ではない。切り出しだけならトリムへ。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "元ファイルは変わる？",
+        "a5": "しない。新しいWAVを保存。元のMP3は残る。"
+      },
+      "make-favicon": {
+        "q1": "ファビコンを無料で作れる？",
+        "a1": "できる。このタブで描く。アップロードなし。",
+        "q2": "ICOのサイズは？",
+        "a2": "16/32/48pxのPNGを1つのfavicon.icoに入れる。",
+        "q3": "Appleタッチアイコンも要る？",
+        "a3": "PNGのZIPに180/192/512。HTMLでリンクしてホーム画面用。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "透明背景にできる？",
+        "a5": "できる。白背景を外す。Containなら透明の余白。"
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "ページ内プレビューだけで送らない。エクスプローラーでまだ横なら原版を送っている。文字が逆なら90°ではなく反転した。",
       "diagram1": "90°/180°は向き。反転は鏡。",
       "diagram2": "書き出しは画素に向きを焼く。ファイルを開けば、EXIFだけ横の写真が本当に正立する。"
+    },
+    "png-to-webp": {
+      "name": "PNGをWebPにする",
+      "blurb": "小さくて透明も残すならWebP。ブラウザで開く。WebPを拒む提出には入れない。",
+      "title": "PNGをWebPにする方法",
+      "lead": "WebPはPNGより小さく透明も残せる。JPGにはできない。ウェブ用にコピーを変換し、今のブラウザで確認。",
+      "result": "PNGより小さいWebP。元が透明なら残る。元のPNGは残る。",
+      "note": "ファイルが手元にあってから変換を開く。透明が要るならJPGではなくWebP。古い提出はまだ拒むことがある。アップロードなし。",
+      "s1t": "なぜWebPか決める",
+      "s1b": "WebPを受け入れるサイトやチャットは軽い。メールや提出はまだPNG/JPG。先が拒むなら変換しない。",
+      "s2t": "cv.cmの画像形式を開く",
+      "s2b": "このタブで処理。閉じると消える。",
+      "s3t": ".pngをドロップ",
+      "s3b": "1枚でもまとめてでも。プレビューが空ならブラウザを変える。",
+      "s4t": "透明が要るならJPGではなくWebP",
+      "s4b": "WebPは透明を残せる。JPGは埋める。品質は0.9前後。画素上限があるときだけ長辺を制限。",
+      "s5t": "WebPを保存",
+      "s5b": "WebPを開くまでPNGを残す。",
+      "s6t": "今のブラウザで開く",
+      "s6b": "端とサイズをPNGと比べる。提出が拒むならPNGを送る。変換してもSharpにはならない。",
+      "diagram1": "WebPはPNGより小さく透明も残せる。JPGは不可。",
+      "diagram2": "透明ならWebP。ブラウザで開く。古い提出はまだPNG。"
+    },
+    "mp3-to-wav": {
+      "name": "MP3をWAVにする",
+      "blurb": "MP3を入れ、必要ならサンプリング周波数を選び、WAVを保存して再生。元は残る。",
+      "title": "MP3をWAVにする方法",
+      "lead": "DAWや提出はWAVを欲し、MP3を拒むことがある。このタブでコピーをデコードし、必要なら44.1または48kHzを選び、保存ファイルを再生。",
+      "result": "選んだ周波数の、再生できるWAV。元のMP3は残る。",
+      "note": "音声が手元にあってから開く。元がM4Aでも保存はWAV。送る前に聴く。アップロードなし。",
+      "s1t": "なぜWAVか決める",
+      "s1b": "WAVは非圧縮PCM。編集ソフトや提出が欲しがる。MP3よりずっと大きい。「音質を上げる」ためではない。MP3が捨てたものは戻らない。",
+      "s2t": "cv.cmのMP3→WAVを開く",
+      "s2b": "このタブで処理。",
+      "s3t": "MP3 / M4A / WAVをドロップ",
+      "s3b": "再生できないならこのブラウザは不可。WAVか別ブラウザ。SafariとChromeはだいたいMP3可。",
+      "s4t": "元のまま、44.1kHz、48kHz",
+      "s4b": "不明なら元のまま。44.1はCD/音楽。48は映像。リサンプルしても高域は増えない。",
+      "s5t": "WAVを保存",
+      "s5b": "WAVを再生するまでMP3を残す。",
+      "s6t": "保存したファイルを一度再生",
+      "s6b": "ページ内プレーヤーだけで送らない。無音ならデコード失敗。提出がMP3なら元を送る。",
+      "diagram1": "WAVは非圧縮。MP3はすでに捨てている。戻しても復元しない。",
+      "diagram2": "音楽は44.1kHz。映像は48kHz。保存したWAVを再生。"
+    },
+    "join-audio": {
+      "name": "音声をつなぐ / MP3を結合",
+      "blurb": "2本以上を順に入れ、1つのWAVを保存し、最初から最後まで再生。",
+      "title": "音声をつなぐ / MP3を結合する方法",
+      "lead": "欲しいのは1ファイル。イントロのあと曲、2本のボイス、BGMの上に留守電。リスト順が再生順。書き出しはWAV。",
+      "result": "並べた順で全部鳴る1つのWAV。最初から最後まで確認。元は残る。",
+      "note": "クリップが手元にあってから結合を開く。2本以上。後続は先頭の周波数にリサンプル。保存はWAV。アップロードなし。",
+      "s1t": "再生順に並べる",
+      "s1b": "イントロが先、BGMが後。リネームしてもよい。ドロップ後も上下できる。",
+      "s2t": "cv.cmの音声結合を開く",
+      "s2b": "このタブでつなぐ。",
+      "s3t": "2本以上をドロップ",
+      "s3b": "1本では結合にならない。行がエラーならデコード失敗。先にWAVにするか外す。",
+      "s4t": "順が違うなら並べ替える",
+      "s4b": "先頭が最初に鳴る。後続は先頭の周波数に合わせるので、つなぎがずれない。",
+      "s5t": "WAVを1つ保存",
+      "s5b": "全部MP3でも書き出しはWAV。通しで聴くまで原版を残す。",
+      "s6t": "ファイルを最初から最後まで再生",
+      "s6b": "欠け、無音、つなぎのピッチを聴く。順が違うなら並べ直して再書き出し。リスト見ただけで送らない。",
+      "diagram1": "リスト順が再生順。2本以上。",
+      "diagram2": "書き出しはWAV1つ。後続は先頭の周波数に合わせる。"
+    },
+    "make-favicon": {
+      "name": "ファビコンの作り方",
+      "blurb": "正方形にしてCoverかContain、ICOとPNGサイズを保存し、16pxを見る。",
+      "title": "ファビコンの作り方",
+      "lead": "ファビコンは16pxで読めないとダメ。マークを正方形にし、CoverかContainを選び、タブ用ICOとタッチ用PNGのZIPを保存。",
+      "result": "favicon.ico（16/32/48）とPNGのZIP（180/192/512含む）。タブサイズでも読める。",
+      "note": "マークが手元にあってから開く。Coverは正方形を埋め切ることがある。Containは余白。白背景が初期値。アップロードなし。",
+      "s1t": "小さくても分かるマーク",
+      "s1b": "賑やかな写真は16pxで死ぬ。1文字、単純な形、コントラストの高いロゴ。横長なら先にクロップ。",
+      "s2t": "cv.cmのファビコンを開く",
+      "s2b": "このタブで処理。",
+      "s3t": "画像をドロップ",
+      "s3b": "プレビューが空なら先にHEICをJPGに。",
+      "s4t": "CoverかContain、白背景の有無",
+      "s4b": "Coverは正方形を埋め切ることがある。Containは全体（余白）。クラシックなタブは白背景のまま。透明PNGが要るなら外す。",
+      "s5t": "ICOとPNGのZIPを保存",
+      "s5b": "ICOは16/32/48（クラシックなタブ）。ZIPには180/192/512（AppleタッチとPWA）も入る。元のマークは残す。",
+      "s6t": "16pxのPNGを開く",
+      "s6b": "256のプレビューは嘘。16pxがボケるならマークを単純にするかContain。favicon.icoをルートに置き、HTMLでPNGをリンク。",
+      "diagram1": "Coverは埋めて切ることがある。Containは全体（余白）。",
+      "diagram2": "ICOは16/32/48。PNGのZIPに180/192/512。16pxを見る。"
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "行の並べ替え",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "検索と置換",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "数字を英語に",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

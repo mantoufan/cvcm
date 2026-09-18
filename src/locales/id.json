@@ -213,7 +213,21 @@
     "titleAvifToJpg": "Cara ubah AVIF ke JPG | cv.cm",
     "descAvifToJpg": "Chrome sering simpan AVIF. Ekspor JPG di peramban baru, buka di tempat yang menolak AVIF. Tidak diunggah.",
     "titleRotatePhoto": "Cara putar atau balik foto | cv.cm",
-    "descRotatePhoto": "Putar 90° atau 180°, atau balik cermin. Ekspor menulis piksel, foto EXIF miring bisa tegak. Tidak diunggah."
+    "descRotatePhoto": "Putar 90° atau 180°, atau balik cermin. Ekspor menulis piksel, foto EXIF miring bisa tegak. Tidak diunggah.",
+    "titleSort": "Urut baris — unik — cv.cm",
+    "descSort": "Urut baris atau buang duplikat di browser. Tidak diunggah.",
+    "titleReplace": "Cari ganti — ganti teks — cv.cm",
+    "descReplace": "Cari teks dan ganti di browser. Tidak diunggah.",
+    "titleWords": "Angka ke kata — Inggris — cv.cm",
+    "descWords": "Ubah bilangan bulat ke bahasa Inggris AS di browser. Tidak diunggah.",
+    "titlePngToWebp": "Cara ubah PNG ke WebP | cv.cm",
+    "descPngToWebp": "Lebih kecil dan bisa jaga latar tembus: pilih WebP. Buka di peramban baru. Formulir lama mungkin masih PNG. Tidak diunggah.",
+    "titleMp3ToWav": "Cara ubah MP3 ke WAV | cv.cm",
+    "descMp3ToWav": "Letakkan MP3, pilih 44.1 atau 48 kHz jika perlu, unduh WAV, putar. Asli tetap. Tidak diunggah.",
+    "titleJoinAudio": "Cara gabung audio / gabung MP3 | cv.cm",
+    "descJoinAudio": "Letakkan dua atau lebih berurutan, unduh satu WAV, putar sampai akhir. Klip berikutnya mengikuti rate klip pertama. Tidak diunggah.",
+    "titleMakeFavicon": "Cara buat favicon | cv.cm",
+    "descMakeFavicon": "Potong persegi, pilih Cover atau Contain, unduh ICO (16/32/48) dan zip PNG (180/192/512), cek 16px. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "Selisih tanggal",
       "blurb": "Hari antara dua tanggal. Tidak diunggah."
+    },
+    "sort": {
+      "name": "Urut baris",
+      "blurb": "Urut atau unik. Tidak diunggah."
+    },
+    "replace": {
+      "name": "Cari ganti",
+      "blurb": "Cari teks dan ganti. Tidak diunggah."
+    },
+    "words": {
+      "name": "Angka ke kata",
+      "blurb": "Inggris AS. Tidak diunggah."
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "Tidak. Tutup tab, hilang.",
         "q5": "Tanpa Photoshop?",
         "a5": "Ya. Halaman ini pemutarnya. Tanpa akun."
+      },
+      "png-to-webp": {
+        "q1": "Bisa ubah PNG ke WebP gratis online?",
+        "a1": "Ya. cv.cm mengubah di tab ini. Tidak diunggah.",
+        "q2": "Transparansi tetap ada di WebP?",
+        "a2": "Ya jika ekspor WebP. JPG mengisi latar. Formulir menolak WebP: simpan PNG.",
+        "q3": "Apakah diunggah?",
+        "a3": "Tidak. Tutup tab, hilang.",
+        "q4": "Foto lebih kecil: WebP atau JPG?",
+        "a4": "Transparansi atau web: WebP. Email atau formulir yang menolak WebP: JPG.",
+        "q5": "Tanpa Photoshop?",
+        "a5": "Ya. Halaman ini konverternya. Tanpa akun."
+      },
+      "mp3-to-wav": {
+        "q1": "Bisa ubah MP3 ke WAV gratis online?",
+        "a1": "Ya. cv.cm men-decode di tab ini dan mengunduh WAV. Tidak diunggah.",
+        "q2": "MP3 ke WAV menaikkan kualitas?",
+        "a2": "Tidak. WAV hanya menyimpan sisa kompresi MP3. File membesar.",
+        "q3": "44.1 atau 48 kHz?",
+        "a3": "Musik/CD: 44.1. Video: 48. Ragu: asli.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Ubah M4A atau memo suara?",
+        "a5": "Jika peramban bisa decode, ya. Ekspor tetap WAV."
+      },
+      "join-audio": {
+        "q1": "Bisa gabung MP3 gratis online?",
+        "a1": "Ya. Letakkan dua atau lebih di gabung audio cv.cm di tab ini, urutkan, unduh WAV. Tidak diunggah.",
+        "q2": "Kenapa unduhan WAV, bukan MP3?",
+        "a2": "Penggabung menyambung PCM ter-decode dan menulis WAV di peramban. Butuh MP3: konversi nanti.",
+        "q3": "Harus dua file?",
+        "a3": "Ya. Satu klip bukan gabungan. Hanya butuh potongan: ke potong audio.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Apakah file asli berubah?",
+        "a5": "Tidak. Anda mengunduh WAV baru. MP3 di disk tetap."
+      },
+      "make-favicon": {
+        "q1": "Bisa buat favicon gratis online?",
+        "a1": "Ya. Menggambar di tab ini. Tidak diunggah.",
+        "q2": "Ukuran apa di ICO?",
+        "a2": "PNG 16, 32, dan 48 piksel dalam satu favicon.ico.",
+        "q3": "Perlu ikon Apple touch juga?",
+        "a3": "Zip PNG berisi 180, 192, 512. Tautkan di HTML untuk ikon layar utama.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Bisa jaga latar tembus?",
+        "a5": "Ya. Matikan latar putih. Contain lalu membuat bar di atas transparansi."
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "Jangan percaya pratinjau halaman saja. Explorer masih miring: Anda kirim asli. Huruf terbalik: Anda membalik padahal perlu 90°.",
       "diagram1": "Putar 90°/180° memutar. Balik adalah cermin.",
       "diagram2": "Ekspor menulis piksel. Buka file agar foto yang miring hanya karena EXIF benar-benar tegak."
+    },
+    "png-to-webp": {
+      "name": "Cara ubah PNG ke WebP",
+      "blurb": "Lebih kecil dan bisa jaga latar tembus: pilih WebP. Buka di peramban, jangan ke formulir lama yang menolak WebP.",
+      "title": "Cara ubah PNG ke WebP",
+      "lead": "WebP lebih kecil dari PNG dan bisa jaga transparansi, JPG tidak. Ubah salinan untuk web, cek di peramban baru.",
+      "result": "WebP lebih kecil dari PNG; transparansi utuh jika aslinya ada. PNG asli tetap di disk.",
+      "note": "File .png di disk, baru buka konversi. Butuh latar tembus: pilih WebP, bukan JPG. Formulir lama mungkin menolak WebP. Tidak diunggah.",
+      "s1t": "Tentukan kenapa perlu WebP",
+      "s1b": "Situs atau chat yang menerima WebP lebih cepat. Email dan banyak formulir masih PNG/JPG. Jika ditolak, jangan ubah.",
+      "s2t": "Buka format gambar di cv.cm",
+      "s2b": "Proses di tab ini. Tutup, hilang.",
+      "s3t": "Letakkan .png",
+      "s3b": "Satu atau batch. Pratinjau kosong: ganti peramban.",
+      "s4t": "Butuh transparansi: pilih WebP, bukan JPG",
+      "s4b": "WebP menjaga latar tembus. JPG mengisi. Kualitas sekitar 0.9. Batasi sisi hanya jika halaman punya batas piksel.",
+      "s5t": "Unduh WebP",
+      "s5b": "Simpan PNG sampai WebP terbuka.",
+      "s6t": "Buka di peramban baru",
+      "s6b": "Cek tepi dan ukuran dibanding PNG. Formulir menolak: kirim PNG. Konversi tidak menambah ketajaman.",
+      "diagram1": "WebP lebih kecil dari PNG dan bisa jaga latar tembus. JPG tidak.",
+      "diagram2": "Butuh alpha: pilih WebP. Buka di peramban. Formulir lama mungkin masih PNG."
+    },
+    "mp3-to-wav": {
+      "name": "Cara ubah MP3 ke WAV",
+      "blurb": "Letakkan MP3, pilih sample rate jika perlu, unduh WAV, putar file. Asli tetap.",
+      "title": "Cara ubah MP3 ke WAV",
+      "lead": "DAW, editor, atau formulir mungkin minta WAV, bukan MP3. Decode salinan di tab ini, pilih 44.1 atau 48 kHz jika perlu, putar unduhan.",
+      "result": "WAV yang bisa diputar, di sample rate yang Anda pilih, MP3 asli tetap ada.",
+      "note": "Audio di disk, baru buka MP3 ke WAV. Meski taruh M4A, unduhan WAV. Dengar sebelum kirim. Tidak diunggah.",
+      "s1t": "Tahu kenapa perlu WAV",
+      "s1b": "WAV adalah PCM tanpa kompresi. Editor dan beberapa formulir menginginkannya. Jauh lebih besar dari MP3. Jangan ubah untuk 'menaikkan kualitas' — yang dibuang MP3 tidak kembali.",
+      "s2t": "Buka MP3 ke WAV di cv.cm",
+      "s2b": "Proses di tab ini.",
+      "s3t": "Letakkan MP3, M4A, atau WAV",
+      "s3b": "Tidak diputar: peramban ini gagal. Coba WAV atau peramban lain. Safari dan Chrome biasanya bisa MP3.",
+      "s4t": "Pilih asli, 44.1 kHz, atau 48 kHz",
+      "s4b": "Ragu: biarkan asli. 44.1 default CD/musik. 48 default video. Resample tidak menambah treble.",
+      "s5t": "Unduh WAV",
+      "s5b": "Simpan MP3 sampai WAV diputar.",
+      "s6t": "Putar file unduhan sekali",
+      "s6b": "Jangan kirim hanya dari pemutar halaman. Senyap: decode gagal. Formulir minta MP3: kirim asli.",
+      "diagram1": "WAV tanpa kompresi. MP3 sudah membuang data. Konversi tidak mengembalikan.",
+      "diagram2": "Musik 44.1 kHz. Video 48 kHz. Putar WAV unduhan."
+    },
+    "join-audio": {
+      "name": "Cara gabung audio / gabung MP3",
+      "blurb": "Letakkan dua klip atau lebih berurutan, unduh satu WAV, putar dari awal sampai akhir.",
+      "title": "Cara gabung audio / gabung MP3",
+      "lead": "Anda butuh satu file, bukan playlist: intro lalu lagu, dua memo, bed di bawah voicemail. Urutan daftar = urutan putar. Ekspor WAV.",
+      "result": "Satu WAV yang memutar klip sesuai urutan, sudah dicek awal sampai akhir, asli tetap ada.",
+      "note": "Klip di disk, baru buka gabung. Minimal dua. Klip berikutnya di-resample ke rate klip pertama. Unduhan WAV. Tidak diunggah.",
+      "s1t": "Urutkan klip sesuai putar",
+      "s1b": "Intro dulu, bed terakhir. Ganti nama boleh. Setelah diletakkan masih bisa geser.",
+      "s2t": "Buka gabung audio di cv.cm",
+      "s2b": "Gabung di tab ini.",
+      "s3t": "Letakkan dua file atau lebih",
+      "s3b": "Satu file bukan gabungan. Baris error: decode gagal. Ubah ke WAV dulu, atau lewati.",
+      "s4t": "Urutan salah: geser",
+      "s4b": "Baris pertama diputar dulu. Klip berikutnya di-resample ke rate klip pertama agar sambungan tidak geser.",
+      "s5t": "Unduh satu WAV",
+      "s5b": "Meski semua MP3, ekspor WAV. Simpan asli sampai selesai didengar.",
+      "s6t": "Putar file dari awal sampai akhir",
+      "s6b": "Dengar klip hilang, jeda, atau pitch berubah di sambungan. Urutan salah: urutkan, ekspor lagi. Jangan kirim hanya dari daftar halaman.",
+      "diagram1": "Urutan daftar = urutan putar. Minimal dua klip.",
+      "diagram2": "Ekspor satu WAV. Klip berikutnya mengikuti rate klip pertama."
+    },
+    "make-favicon": {
+      "name": "Cara buat favicon",
+      "blurb": "Potong persegi, pilih Cover atau Contain, unduh ICO plus PNG, cek versi 16 piksel.",
+      "title": "Cara buat favicon",
+      "lead": "Favicon harus kebaca di 16 piksel. Buat tanda jadi persegi, pilih Cover atau Contain, unduh ICO untuk tab klasik plus zip PNG untuk ikon sentuh.",
+      "result": "favicon.ico (16/32/48) dan zip PNG (termasuk 180/192/512) yang masih kebaca seukuran tab.",
+      "note": "Tanda di disk, baru buka favicon. Cover mengisi persegi, bisa memotong. Contain ada bar. Latar putih default. Tidak diunggah.",
+      "s1t": "Pilih tanda yang masih kebaca kecil",
+      "s1b": "Foto ramai mati di 16 piksel. Huruf, bentuk sederhana, atau logo kontras tinggi. Frame lebar: crop subjek dulu.",
+      "s2t": "Buka favicon di cv.cm",
+      "s2b": "Proses di tab ini.",
+      "s3t": "Letakkan gambar",
+      "s3b": "Pratinjau kosong: ubah HEIC ke JPG dulu.",
+      "s4t": "Pilih Cover atau Contain, dan latar putih",
+      "s4b": "Cover mengisi persegi, bisa memotong. Contain menjaga seluruh tanda, ada bar. Tab klasik: biarkan latar putih. Butuh PNG tembus: matikan.",
+      "s5t": "Unduh ICO dan zip PNG",
+      "s5b": "ICO berisi 16, 32, 48 untuk tab klasik. Zip juga 180, 192, 512 untuk Apple touch dan PWA. Simpan tanda asli.",
+      "s6t": "Buka PNG 16 piksel",
+      "s6b": "Pratinjau 256 berbohong. File 16px buram: sederhanakan tanda atau ganti Contain. Taruh favicon.ico di root situs dan tautkan PNG di HTML.",
+      "diagram1": "Cover mengisi, bisa memotong. Contain menjaga seluruh tanda, ada bar.",
+      "diagram2": "ICO 16/32/48. Zip PNG menambah 180/192/512. Cek file 16px."
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "Urut baris",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "Cari ganti",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "Angka ke kata",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

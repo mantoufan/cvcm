@@ -213,7 +213,21 @@
     "titleAvifToJpg": "Cómo pasar AVIF a JPG | cv.cm",
     "descAvifToJpg": "Chrome suele guardar AVIF. Exporte JPG en un navegador actual y ábralo donde lo rechazaron. Nada se sube.",
     "titleRotatePhoto": "Cómo rotar o voltear una foto | cv.cm",
-    "descRotatePhoto": "Gire 90° o 180°, o voltee en espejo. Exportar escribe los píxeles para que una foto EXIF de lado quede derecha. Nada se sube."
+    "descRotatePhoto": "Gire 90° o 180°, o voltee en espejo. Exportar escribe los píxeles para que una foto EXIF de lado quede derecha. Nada se sube.",
+    "titleSort": "Ordenar líneas — únicos — cv.cm",
+    "descSort": "Ordena líneas o quita duplicados en el navegador. Nada se sube.",
+    "titleReplace": "Buscar y reemplazar — texto — cv.cm",
+    "descReplace": "Busca texto literal y reemplázalo en el navegador. Nada se sube.",
+    "titleWords": "Número a palabras — inglés — cv.cm",
+    "descWords": "Pasa un entero a inglés de EE. UU. en el navegador. Nada se sube.",
+    "titlePngToWebp": "Cómo pasar PNG a WebP | cv.cm",
+    "descPngToWebp": "Elija WebP para menos peso y fondo transparente. Ábralo en un navegador actual. Los formularios viejos aún pueden pedir PNG. Nada se sube.",
+    "titleMp3ToWav": "Cómo pasar MP3 a WAV | cv.cm",
+    "descMp3ToWav": "Suelte el MP3, elija 44.1 o 48 kHz si hace falta, descargue WAV y reprodúzcalo. El original se queda. Nada se sube.",
+    "titleJoinAudio": "Cómo unir archivos de audio / fusionar MP3 | cv.cm",
+    "descJoinAudio": "Suelte dos o más en orden, descargue un WAV y reprodúzcalo entero. Los siguientes coinciden con la frecuencia del primero. Nada se sube.",
+    "titleMakeFavicon": "Cómo hacer un favicon | cv.cm",
+    "descMakeFavicon": "Cuadre la marca, elija Cover o Contain, descargue ICO (16/32/48) y un zip PNG (180/192/512) y mire el de 16 px. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "Días entre fechas",
       "blurb": "Días de calendario. Nada se sube."
+    },
+    "sort": {
+      "name": "Ordenar líneas",
+      "blurb": "A→Z o únicos. Nada se sube."
+    },
+    "replace": {
+      "name": "Buscar y reemplazar",
+      "blurb": "Reemplazo literal. Nada se sube."
+    },
+    "words": {
+      "name": "Número a palabras",
+      "blurb": "Inglés de EE. UU. Nada se sube."
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "No. Al cerrar la pestaña se pierden.",
         "q5": "¿Sin Photoshop?",
         "a5": "Sí. Esta página es el rotador. Sin cuenta."
+      },
+      "png-to-webp": {
+        "q1": "¿Puedo pasar PNG a WebP gratis en línea?",
+        "a1": "Sí. cv.cm convierte en esta pestaña. Nada se sube.",
+        "q2": "¿Se conserva la transparencia en WebP?",
+        "a2": "Sí si exporta WebP. JPG rellena el fondo. Si el formulario rechaza WebP, quédese en PNG.",
+        "q3": "¿Se suben los archivos?",
+        "a3": "No. Al cerrar la pestaña se pierden.",
+        "q4": "¿WebP o JPG para menos peso?",
+        "a4": "WebP si necesita transparencia o una página. JPG si es correo o un formulario que rechaza WebP.",
+        "q5": "¿Sin Photoshop?",
+        "a5": "Sí. Esta página es el conversor. Sin cuenta."
+      },
+      "mp3-to-wav": {
+        "q1": "¿Puedo pasar MP3 a WAV gratis en línea?",
+        "a1": "Sí. cv.cm decodifica en esta pestaña y descarga WAV. Nada se sube.",
+        "q2": "¿Mejora la calidad pasar MP3 a WAV?",
+        "a2": "No. WAV solo guarda lo que quedó tras el MP3. El archivo crece.",
+        "q3": "¿44.1 o 48 kHz?",
+        "a3": "44.1 para música y CD. 48 para vídeo. Si no está seguro, deje original.",
+        "q4": "¿Se sube el audio?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Puedo convertir M4A o notas de voz?",
+        "a5": "Si el navegador lo decodifica, sí. La salida sigue siendo WAV."
+      },
+      "join-audio": {
+        "q1": "¿Puedo fusionar MP3 gratis en línea?",
+        "a1": "Sí. Suelte dos o más en unir audio de cv.cm, reordene y descargue WAV. Nada se sube.",
+        "q2": "¿Por qué la descarga es WAV y no MP3?",
+        "a2": "El unidor concatena PCM decodificado y escribe WAV en el navegador. Si necesita MP3, conviértalo después.",
+        "q3": "¿Hacen falta dos archivos?",
+        "a3": "Sí. Un clip no es una unión. Si solo necesita un recorte, vaya a recortar.",
+        "q4": "¿Se sube el audio?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Cambia los archivos originales?",
+        "a5": "No. Descarga un WAV nuevo. Los MP3 del disco se quedan."
+      },
+      "make-favicon": {
+        "q1": "¿Puedo hacer un favicon gratis en línea?",
+        "a1": "Sí. Se dibuja en esta pestaña. Nada se sube.",
+        "q2": "¿Qué tamaños lleva el ICO?",
+        "a2": "PNG de 16, 32 y 48 píxeles empaquetados en un favicon.ico.",
+        "q3": "¿También iconos Apple touch?",
+        "a3": "El zip PNG incluye 180, 192 y 512. Enlácelos en el HTML para iconos de inicio.",
+        "q4": "¿Se suben las fotos?",
+        "a4": "No. Al cerrar la pestaña se pierden.",
+        "q5": "¿Puedo dejar el fondo transparente?",
+        "a5": "Sí. Quite el fondo blanco. Contain entonces deja bandas sobre transparencia."
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "No confíe solo en la vista previa. Si el Explorador aún la muestra de lado, envió el original. Si las letras van al revés, volteó cuando debía girar 90°.",
       "diagram1": "Rotar 90° / 180° gira. Voltear es un espejo.",
       "diagram2": "Exportar escribe los píxeles. Abra el archivo para que una foto de lado solo por EXIF quede derecha."
+    },
+    "png-to-webp": {
+      "name": "Cómo pasar PNG a WebP",
+      "blurb": "Elija WebP para menos peso y fondo transparente. Ábralo en un navegador, no en un formulario viejo que lo rechace.",
+      "title": "Cómo pasar PNG a WebP",
+      "lead": "WebP pesa menos que PNG y puede conservar transparencia; JPG no. Convierta una copia para la web y compruébela en un navegador actual.",
+      "result": "Un WebP más liviano que el PNG, con transparencia si el original la tenía, y el PNG en el disco.",
+      "note": "Abra convertir con el .png en el disco. Si necesita fondo transparente, elija WebP, no JPG. Los formularios viejos aún pueden rechazar WebP. Nada se sube.",
+      "s1t": "Decida por qué necesita WebP",
+      "s1b": "Un sitio o un chat que acepta WebP carga más rápido. El correo y muchos formularios siguen pidiendo PNG o JPG. No convierta si el destino rechaza WebP.",
+      "s2t": "Abra formatos de imagen en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña. Al cerrarla se pierde.",
+      "s3t": "Suelte el .png",
+      "s3b": "Uno o varios. Si la vista está en blanco, cambie de navegador.",
+      "s4t": "Si necesita transparencia, elija WebP, no JPG",
+      "s4b": "WebP puede conservar el fondo. JPG lo rellena. Calidad cerca de 0.9. Limite el lado largo solo si hay tope de píxeles.",
+      "s5t": "Descargue el WebP",
+      "s5b": "Conserve el PNG hasta haber abierto el WebP.",
+      "s6t": "Ábralo en un navegador actual",
+      "s6b": "Mire los bordes y el peso frente al PNG. Si el formulario lo rechaza, envíe el PNG. Convertir no añade nitidez.",
+      "diagram1": "WebP pesa menos que PNG y puede conservar el fondo. JPG no.",
+      "diagram2": "Elija WebP para el alfa. Ábralo en un navegador. Los formularios viejos aún pueden pedir PNG."
+    },
+    "mp3-to-wav": {
+      "name": "Cómo pasar MP3 a WAV",
+      "blurb": "Suelte el MP3, elija una frecuencia si hace falta, descargue WAV y reprodúzcalo. El original se queda.",
+      "title": "Cómo pasar MP3 a WAV",
+      "lead": "Un DAW, un editor o un formulario puede pedir WAV, no MP3. Decodifique una copia aquí, elija 44.1 o 48 kHz si hace falta, y reproduzca la descarga.",
+      "result": "Un WAV que suena, a la frecuencia que eligió, con el MP3 original en el disco.",
+      "note": "Abra MP3 a WAV con el audio en el disco. Aunque suelte M4A, la descarga es WAV. Escuche antes de enviar. Nada se sube.",
+      "s1t": "Sepa por qué necesita WAV",
+      "s1b": "WAV es PCM sin comprimir. Editores y algunos formularios lo piden. Pesará mucho más que el MP3. No convierta para 'mejorar calidad': lo que el MP3 tiró no vuelve.",
+      "s2t": "Abra MP3 a WAV en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña.",
+      "s3t": "Suelte MP3, M4A o WAV",
+      "s3b": "Si no suena, este navegador no lo decodifica. Pruebe WAV u otro navegador. Safari y Chrome suelen abrir MP3.",
+      "s4t": "Elija original, 44.1 kHz o 48 kHz",
+      "s4b": "Si no está seguro, deje original. 44.1 es el default de CD/música. 48, el de vídeo. Remuestrear no añade agudos.",
+      "s5t": "Descargue WAV",
+      "s5b": "Conserve el MP3 hasta haber reproducido el WAV.",
+      "s6t": "Reproduzca el archivo descargado una vez",
+      "s6b": "No envíe solo por el reproductor de la página. Si no suena, falló el códec. Si el formulario pide MP3, envíe el original.",
+      "diagram1": "WAV no está comprimido. El MP3 ya tiró datos. Convertir no los restaura.",
+      "diagram2": "44.1 kHz para música. 48 kHz para vídeo. Reproduzca el WAV descargado."
+    },
+    "join-audio": {
+      "name": "Cómo unir archivos de audio / fusionar MP3",
+      "blurb": "Suelte dos o más clips en orden, descargue un WAV y reprodúzcalo de principio a fin.",
+      "title": "Cómo unir archivos de audio / fusionar MP3",
+      "lead": "Necesita un archivo, no una lista: intro y luego la canción, dos notas de voz. El orden de la lista es el de reproducción. La exportación es WAV.",
+      "result": "Un WAV que reproduce los clips en el orden que fijó, comprobado de punta a punta, con los originales en el disco.",
+      "note": "Abra unir con los clips en el disco. Hacen falta dos o más. Los siguientes se remuestrean a la frecuencia del primero. La descarga es WAV. Nada se sube.",
+      "s1t": "Ponga los clips en orden de reproducción",
+      "s1b": "Intro primero, cama al final. Renombre si ayuda. Después de soltar aún puede mover filas.",
+      "s2t": "Abra unir audio en cv.cm",
+      "s2b": "La unión queda en esta pestaña.",
+      "s3t": "Suelte dos o más archivos",
+      "s3b": "Un solo archivo no es una unión. Si una fila falla, ese códec no vale: páselo a WAV o sáltelo.",
+      "s4t": "Si el orden falla, reordene",
+      "s4b": "La primera fila suena primero. Los siguientes se remuestrean a la frecuencia del primero para que no deriven.",
+      "s5t": "Descargue un WAV",
+      "s5b": "Aunque todas sean MP3, la exportación es WAV. Conserve los originales hasta haber escuchado entero.",
+      "s6t": "Reproduzca el archivo de principio a fin",
+      "s6b": "Escuche un clip faltante, un hueco o un cambio de tono en el empalme. Si el orden falla, reordene y exporte. No envíe solo por la lista.",
+      "diagram1": "El orden de la lista es el de reproducción. Hacen falta dos o más.",
+      "diagram2": "La exportación es un WAV. Los siguientes coinciden con la frecuencia del primero."
+    },
+    "make-favicon": {
+      "name": "Cómo hacer un favicon",
+      "blurb": "Recorte a cuadrado, elija Cover o Contain, descargue ICO y PNG, y mire la de 16 píxeles.",
+      "title": "Cómo hacer un favicon",
+      "lead": "Un favicon tiene que leerse a 16 píxeles. Cuadre la marca, elija Cover o Contain y descargue un ICO para pestañas clásicas más un zip PNG para iconos táctiles.",
+      "result": "Un favicon.ico (16/32/48) y un zip PNG (con 180/192/512) que aún se lee al tamaño de una pestaña.",
+      "note": "Abra favicon con la marca en el disco. Cover llena el cuadrado y puede recortar. Contain deja bandas. El fondo blanco viene activado. Nada se sube.",
+      "s1t": "Empiece por una marca que se lea minúscula",
+      "s1b": "Una foto ocupada muere a 16 px. Una letra, una forma simple o un logo de alto contraste. Si el encuadre es ancho, recorte el sujeto antes.",
+      "s2t": "Abra favicon en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña.",
+      "s3t": "Suelte la imagen",
+      "s3b": "Si la vista está en blanco, pase HEIC a JPG antes.",
+      "s4t": "Elija Cover o Contain, y el fondo blanco",
+      "s4b": "Cover llena el cuadrado y puede recortar. Contain deja la marca entera y añade bandas. Deje el fondo blanco para una pestaña clásica. Quítelo si necesita PNG transparente.",
+      "s5t": "Descargue ICO y el zip PNG",
+      "s5b": "El ICO empaqueta 16, 32 y 48 para pestañas clásicas. El zip también tiene 180, 192 y 512 para Apple touch y PWA. Conserve la marca original.",
+      "s6t": "Abra el PNG de 16 píxeles",
+      "s6b": "La vista de 256 miente. Si el de 16 px es un borrón, simplifique la marca o pase a Contain. Ponga favicon.ico en la raíz y enlace los PNG en el HTML.",
+      "diagram1": "Cover llena y puede recortar. Contain deja la marca entera y añade bandas.",
+      "diagram2": "El ICO es 16/32/48. El zip PNG añade 180/192/512. Mire el de 16 px."
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "Ordenar líneas",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "Buscar y reemplazar",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "Número a palabras",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

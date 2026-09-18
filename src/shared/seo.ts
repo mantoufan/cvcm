@@ -8,7 +8,8 @@ import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
 import { GAME_COVER, LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
 import { gameById, type GameConsoleId, type GameId } from "./games";
-import { gameCopy, gameFaqItems, gameGuideSteps } from "./games-i18n";
+import { gameCopy, gameFaqItems } from "./games-i18n";
+import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
@@ -114,6 +115,9 @@ const TITLE: Record<ToolId, string> = {
   json: "meta.titleJson",
   base64: "meta.titleBase64",
   days: "meta.titleDays",
+  sort: "meta.titleSort",
+  replace: "meta.titleReplace",
+  words: "meta.titleWords",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -183,6 +187,9 @@ const DESC: Record<ToolId, string> = {
   json: "meta.descJson",
   base64: "meta.descBase64",
   days: "meta.descDays",
+  sort: "meta.descSort",
+  replace: "meta.descReplace",
+  words: "meta.descWords",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -207,6 +214,10 @@ const LEARN_TITLE: Record<TutorialId, string> = {
   "jpg-to-png": "meta.titleJpgToPng",
   "avif-to-jpg": "meta.titleAvifToJpg",
   "rotate-photo": "meta.titleRotatePhoto",
+  "png-to-webp": "meta.titlePngToWebp",
+  "mp3-to-wav": "meta.titleMp3ToWav",
+  "join-audio": "meta.titleJoinAudio",
+  "make-favicon": "meta.titleMakeFavicon",
   portrait: "meta.titlePortrait",
   algorithms: "meta.titleAlgorithms",
   "phone-photos": "meta.titlePhonePhotos",
@@ -242,6 +253,10 @@ const LEARN_DESC: Record<TutorialId, string> = {
   "jpg-to-png": "meta.descJpgToPng",
   "avif-to-jpg": "meta.descAvifToJpg",
   "rotate-photo": "meta.descRotatePhoto",
+  "png-to-webp": "meta.descPngToWebp",
+  "mp3-to-wav": "meta.descMp3ToWav",
+  "join-audio": "meta.descJoinAudio",
+  "make-favicon": "meta.descMakeFavicon",
   portrait: "meta.descPortrait",
   algorithms: "meta.descAlgorithms",
   "phone-photos": "meta.descPhonePhotos",
@@ -391,7 +406,8 @@ export function gameHowToJsonLd(locale: Locale, id: GameId): Record<string, unkn
       position: i + 1,
       name: step.title,
       text: step.body,
-      url: `${pageCanonical(locale, { games: true, console: game.console, game: id })}#guide-${i + 1}`,
+      url: `${pageCanonical(locale, { games: true, console: game.console, game: id })}#guide-${step.id}`,
+      ...(step.image ? { image: coverUrl(walkthroughImage(id, step.image)) } : {}),
     })),
   };
 }

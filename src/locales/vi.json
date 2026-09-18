@@ -213,7 +213,21 @@
     "titleAvifToJpg": "Cách đổi AVIF sang JPG | cv.cm",
     "descAvifToJpg": "Chrome hay lưu AVIF. Xuất JPG trong trình duyệt mới, mở nơi từng từ chối AVIF. Không tải lên.",
     "titleRotatePhoto": "Cách xoay hoặc lật ảnh | cv.cm",
-    "descRotatePhoto": "Xoay 90° hoặc 180°, hoặc lật gương. Xuất ghi hướng vào pixel, ảnh EXIF nằm ngang có thể đứng thật. Không tải lên."
+    "descRotatePhoto": "Xoay 90° hoặc 180°, hoặc lật gương. Xuất ghi hướng vào pixel, ảnh EXIF nằm ngang có thể đứng thật. Không tải lên.",
+    "titleSort": "Sắp dòng — unique — cv.cm",
+    "descSort": "Sắp dòng hoặc bỏ trùng trong trình duyệt. Không tải lên.",
+    "titleReplace": "Tìm thay — thay chữ — cv.cm",
+    "descReplace": "Tìm chữ và thay trong trình duyệt. Không tải lên.",
+    "titleWords": "Số thành chữ — tiếng Anh — cv.cm",
+    "descWords": "Đổi số nguyên thành tiếng Anh Mỹ trong trình duyệt. Không tải lên.",
+    "titlePngToWebp": "Cách đổi PNG sang WebP | cv.cm",
+    "descPngToWebp": "Muốn nhẹ mà còn nền trong thì chọn WebP. Mở bằng trình duyệt mới. Form cũ vẫn có thể cần PNG. Không tải lên.",
+    "titleMp3ToWav": "Cách đổi MP3 sang WAV | cv.cm",
+    "descMp3ToWav": "Thả MP3, chọn 44.1 hoặc 48 kHz nếu cần, tải WAV, phát file. Bản gốc còn. Không tải lên.",
+    "titleJoinAudio": "Cách ghép audio / gộp MP3 | cv.cm",
+    "descJoinAudio": "Thả từ hai đoạn theo thứ tự, tải một WAV, phát hết. Đoạn sau khớp tần số đoạn đầu. Không tải lên.",
+    "titleMakeFavicon": "Cách làm favicon | cv.cm",
+    "descMakeFavicon": "Cắt vuông, chọn Cover hay Contain, tải ICO (16/32/48) và zip PNG (180/192/512), xem file 16px. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "Khoảng ngày",
       "blurb": "Số ngày giữa hai mốc. Không tải lên."
+    },
+    "sort": {
+      "name": "Sắp dòng",
+      "blurb": "Sắp hoặc bỏ trùng. Không tải lên."
+    },
+    "replace": {
+      "name": "Tìm thay",
+      "blurb": "Tìm chữ và thay. Không tải lên."
+    },
+    "words": {
+      "name": "Số thành chữ",
+      "blurb": "Tiếng Anh Mỹ. Không tải lên."
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "Không. Đóng tab là mất.",
         "q5": "Không cần Photoshop?",
         "a5": "Được. Trang này là xoay. Không tài khoản."
+      },
+      "png-to-webp": {
+        "q1": "Đổi PNG sang WebP miễn phí online được không?",
+        "a1": "Được. cv.cm đổi trong tab này, không tải lên.",
+        "q2": "WebP còn nền trong không?",
+        "a2": "Xuất WebP thì còn. JPG sẽ lấp nền. Form từ chối WebP thì giữ PNG.",
+        "q3": "Có tải lên không?",
+        "a3": "Không. Đóng tab là mất.",
+        "q4": "Muốn ảnh nhẹ thì WebP hay JPG?",
+        "a4": "Cần nền trong hoặc lên web thì WebP. Email hoặc form từ chối WebP thì JPG.",
+        "q5": "Không cần Photoshop?",
+        "a5": "Được. Trang này là bộ chuyển. Không tài khoản."
+      },
+      "mp3-to-wav": {
+        "q1": "Đổi MP3 sang WAV miễn phí online được không?",
+        "a1": "Được. cv.cm giải trong tab này, tải WAV. Không tải lên.",
+        "q2": "Đổi WAV có nghe hay hơn không?",
+        "a2": "Không. WAV chỉ lưu những gì MP3 còn lại. File nặng hơn.",
+        "q3": "44.1 hay 48 kHz?",
+        "a3": "Nhạc/CD: 44.1. Video: 48. Không chắc thì để gốc.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Đổi M4A hoặc ghi âm?",
+        "a5": "Trình duyệt giải được thì được. Xuất vẫn WAV."
+      },
+      "join-audio": {
+        "q1": "Gộp MP3 miễn phí online được không?",
+        "a1": "Được. Thả từ hai đoạn vào ghép audio cv.cm trong tab này, sắp, tải WAV. Không tải lên.",
+        "q2": "Sao tải về là WAV không phải MP3?",
+        "a2": "Công cụ nối PCM đã giải rồi ghi WAV trong trình duyệt. Cần MP3 thì đổi sau.",
+        "q3": "Bắt buộc hai file?",
+        "a3": "Phải. Một đoạn không phải ghép. Chỉ cần cắt thì sang cắt audio.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Có sửa file gốc không?",
+        "a5": "Không. Bạn tải WAV mới. MP3 trên đĩa còn."
+      },
+      "make-favicon": {
+        "q1": "Làm favicon miễn phí online được không?",
+        "a1": "Được. Vẽ trong tab này, không tải lên.",
+        "q2": "ICO có cỡ nào?",
+        "a2": "PNG 16, 32 và 48 pixel đóng trong một favicon.ico.",
+        "q3": "Cần thêm Apple touch icon?",
+        "a3": "Zip PNG có 180, 192, 512. Link trong HTML cho icon màn hình chính.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Giữ nền trong được không?",
+        "a5": "Được. Tắt nền trắng. Contain sẽ để lề trên nền trong."
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "Đừng chỉ tin xem trước trong trang. Explorer vẫn nằm ngang thì bạn gửi bản gốc. Chữ ngược thì bạn lật khi đáng lẽ xoay 90°.",
       "diagram1": "Xoay 90°/180° là quay. Lật là gương.",
       "diagram2": "Xuất ghi hướng vào pixel. Mở file để ảnh chỉ lệch vì EXIF đứng thật."
+    },
+    "png-to-webp": {
+      "name": "Cách đổi PNG sang WebP",
+      "blurb": "Muốn nhẹ mà còn nền trong thì chọn WebP. Mở bằng trình duyệt, đừng thả vào form cũ từ chối WebP.",
+      "title": "Cách đổi PNG sang WebP",
+      "lead": "WebP nhẹ hơn PNG và giữ nền trong, JPG thì không. Đổi một bản cho web, mở bằng trình duyệt hiện tại.",
+      "result": "WebP nhẹ hơn PNG; nền trong còn nếu bản gốc có. PNG gốc còn trên đĩa.",
+      "note": "Có file .png trên đĩa thì mở chuyển đổi. Cần nền trong thì chọn WebP, đừng JPG. Form cũ vẫn có thể từ chối WebP. Không tải lên.",
+      "s1t": "Quyết định vì sao cần WebP",
+      "s1b": "Site hoặc chat nhận WebP sẽ nhẹ hơn. Email và nhiều form vẫn cần PNG hoặc JPG. Đích từ chối thì đừng đổi.",
+      "s2t": "Mở định dạng ảnh trên cv.cm",
+      "s2b": "Xử lý trong tab này. Đóng là mất.",
+      "s3t": "Thả file .png",
+      "s3b": "Một hoặc nhiều. Xem trước trống thì đổi trình duyệt.",
+      "s4t": "Cần nền trong thì chọn WebP, đừng JPG",
+      "s4b": "WebP giữ nền trong. JPG sẽ lấp. Chất lượng khoảng 0.9. Chỉ giới hạn cạnh dài nếu trang có trần pixel.",
+      "s5t": "Tải WebP",
+      "s5b": "Giữ PNG đến khi đã mở WebP.",
+      "s6t": "Mở bằng trình duyệt hiện tại",
+      "s6b": "Kiểm mép và dung lượng so với PNG. Form vẫn từ chối thì gửi PNG. Đổi định dạng không làm nét hơn.",
+      "diagram1": "WebP nhẹ hơn PNG và giữ nền trong. JPG thì không.",
+      "diagram2": "Cần trong thì chọn WebP. Mở bằng trình duyệt. Form cũ vẫn có thể cần PNG."
+    },
+    "mp3-to-wav": {
+      "name": "Cách đổi MP3 sang WAV",
+      "blurb": "Thả MP3, chọn tần số lấy mẫu nếu cần, tải WAV, phát file. Bản gốc còn.",
+      "title": "Cách đổi MP3 sang WAV",
+      "lead": "DAW, editor hoặc form có thể cần WAV, không phải MP3. Giải một bản trong tab này, chọn 44.1 hoặc 48 kHz nếu cần, rồi phát file tải.",
+      "result": "WAV phát được, đúng tần số bạn chọn, MP3 gốc còn.",
+      "note": "Có audio trên đĩa thì mở MP3 sang WAV. Dù thả M4A, tải về vẫn WAV. Nghe trước khi gửi. Không tải lên.",
+      "s1t": "Biết vì sao cần WAV",
+      "s1b": "WAV là PCM không nén. Editor và một số form upload cần nó. Sẽ nặng hơn MP3 nhiều. Đừng đổi để 'cải thiện chất lượng' — MP3 đã bỏ thì không lấy lại.",
+      "s2t": "Mở MP3 sang WAV trên cv.cm",
+      "s2b": "Xử lý trong tab này.",
+      "s3t": "Thả MP3, M4A hoặc WAV",
+      "s3b": "Không phát được thì trình duyệt không giải được. Thử WAV hoặc trình duyệt khác. Safari và Chrome thường đọc được MP3.",
+      "s4t": "Chọn gốc, 44.1 kHz hoặc 48 kHz",
+      "s4b": "Không chắc thì để gốc. 44.1 là mặc định CD/nhạc. 48 là mặc định video. Đổi tần số không thêm treble.",
+      "s5t": "Tải WAV",
+      "s5b": "Giữ MP3 đến khi đã phát WAV.",
+      "s6t": "Phát file đã tải một lần",
+      "s6b": "Đừng gửi chỉ vì nghe trong trang. Im lặng thì decode fail. Form cần MP3 thì gửi bản gốc.",
+      "diagram1": "WAV không nén. MP3 đã bỏ dữ liệu. Đổi lại không lấy được.",
+      "diagram2": "Nhạc 44.1 kHz. Video 48 kHz. Phát WAV đã tải."
+    },
+    "join-audio": {
+      "name": "Cách ghép audio / gộp MP3",
+      "blurb": "Thả hai đoạn trở lên theo thứ tự, tải một WAV, phát từ đầu đến cuối.",
+      "title": "Cách ghép audio / gộp MP3",
+      "lead": "Bạn cần một file, không phải playlist: intro rồi bài, hai voice, nền dưới voicemail. Thứ tự list là thứ tự phát. Xuất WAV.",
+      "result": "Một WAV phát các đoạn đúng thứ tự bạn xếp, đã nghe hết, bản gốc còn.",
+      "note": "Có clip trên đĩa thì mở ghép. Cần từ hai đoạn. Đoạn sau resample theo tần số đoạn đầu. Tải về WAV. Không tải lên.",
+      "s1t": "Xếp clip theo thứ tự phát",
+      "s1b": "Intro trước, nền sau. Đổi tên cũng được. Thả xong vẫn kéo lên xuống.",
+      "s2t": "Mở ghép audio trên cv.cm",
+      "s2b": "Ghép trong tab này.",
+      "s3t": "Thả từ hai file",
+      "s3b": "Một file không phải ghép. Hàng báo lỗi thì codec fail — đổi WAV trước, hoặc bỏ.",
+      "s4t": "Sai thứ tự thì sắp lại",
+      "s4b": "Hàng đầu phát trước. Đoạn sau resample theo tần số đoạn đầu, khỏi lệch.",
+      "s5t": "Tải một WAV",
+      "s5b": "Dù toàn MP3, xuất vẫn WAV. Giữ gốc đến khi đã nghe hết.",
+      "s6t": "Phát file từ đầu đến cuối",
+      "s6b": "Nghe đoạn thiếu, khoảng trống, hoặc lệch cao độ ở chỗ ghép. Sai thứ tự thì sắp lại rồi xuất. Đừng gửi chỉ vì nhìn list.",
+      "diagram1": "Thứ tự list là thứ tự phát. Cần từ hai đoạn.",
+      "diagram2": "Xuất một WAV. Đoạn sau khớp tần số đoạn đầu."
+    },
+    "make-favicon": {
+      "name": "Cách làm favicon",
+      "blurb": "Cắt vuông, chọn Cover hay Contain, tải ICO và các cỡ PNG, xem bản 16 pixel.",
+      "title": "Cách làm favicon",
+      "lead": "Favicon phải đọc được ở 16 pixel. Cắt dấu thành vuông, chọn Cover hay Contain, tải ICO cho tab cổ điển và zip PNG cho icon chạm.",
+      "result": "favicon.ico (16/32/48) và zip PNG (gồm 180/192/512) vẫn đọc được cỡ tab.",
+      "note": "Có dấu trên đĩa thì mở favicon. Cover lấp ô vuông, có thể cắt. Contain để lề. Nền trắng bật sẵn. Không tải lên.",
+      "s1t": "Chọn dấu nhỏ vẫn đọc được",
+      "s1b": "Ảnh rối chết ở 16 pixel. Một chữ, hình đơn hoặc logo tương phản cao mới được. Khung rộng thì crop chủ thể trước.",
+      "s2t": "Mở favicon trên cv.cm",
+      "s2b": "Làm trong tab này.",
+      "s3t": "Thả ảnh",
+      "s3b": "Xem trước trống thì đổi HEIC sang JPG trước.",
+      "s4t": "Chọn Cover hay Contain, và nền trắng",
+      "s4b": "Cover lấp ô vuông, có thể cắt. Contain giữ cả dấu, có lề. Tab cổ điển để nền trắng. Cần PNG trong thì tắt.",
+      "s5t": "Tải ICO và zip PNG",
+      "s5b": "ICO gồm 16, 32, 48 cho tab cổ điển. Zip còn 180, 192, 512 cho Apple touch và PWA. Giữ dấu gốc.",
+      "s6t": "Mở PNG 16 pixel",
+      "s6b": "Xem trước 256 nói dối. File 16px mờ thì đơn giản hóa dấu hoặc đổi Contain. Đặt favicon.ico ở gốc site và link PNG trong HTML.",
+      "diagram1": "Cover lấp ô, có thể cắt. Contain giữ cả dấu, có lề.",
+      "diagram2": "ICO là 16/32/48. Zip PNG thêm 180/192/512. Xem file 16px."
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "Sắp dòng",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "Tìm thay",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "Số thành chữ",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

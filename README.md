@@ -44,6 +44,9 @@ Browser tools plus a tiny cloud clipboard.
 - **JSON formatter** / JSON 格式化. [Open](https://cv.cm/en/json/)
 - **Base64** / Base64. [Open](https://cv.cm/en/base64/)
 - **Days between dates** / 日期间隔. [Open](https://cv.cm/en/days/)
+- **Sort lines** / 排序去重. [Open](https://cv.cm/en/sort/)
+- **Find and replace** / 查找替换. [Open](https://cv.cm/en/replace/)
+- **Number to words** / 数字转英文. [Open](https://cv.cm/en/words/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
@@ -87,7 +90,7 @@ Retro emulator games in the browser, grouped by console and genre. Cheats (金�
 
 ## Lessons
 
-Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, HEIC / WebP / PNG / JPG / AVIF conversion, crop, rotate, resize, watermark, and strip EXIF. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
+Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, HEIC / WebP / PNG / JPG / AVIF conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, and favicon. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
 
 - [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
 - [How to make a QR code](https://cv.cm/en/learn/make-qr/)
@@ -102,6 +105,7 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to convert PNG to JPG](https://cv.cm/en/learn/png-to-jpg/)
 - [How to convert JPG to PNG](https://cv.cm/en/learn/jpg-to-png/)
 - [How to convert AVIF to JPG](https://cv.cm/en/learn/avif-to-jpg/)
+- [How to convert PNG to WebP](https://cv.cm/en/learn/png-to-webp/)
 - [How to crop a photo](https://cv.cm/en/learn/crop-photo/)
 - [How to rotate or flip a photo](https://cv.cm/en/learn/rotate-photo/)
 - [How to resize or compress an image](https://cv.cm/en/learn/resize-image/)
@@ -109,8 +113,11 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to remove EXIF / location](https://cv.cm/en/learn/remove-exif/)
 - [How to make a photo collage](https://cv.cm/en/learn/make-collage/)
 - [How to make a meme](https://cv.cm/en/learn/make-meme/)
+- [How to make a favicon](https://cv.cm/en/learn/make-favicon/)
 - [How to count words and characters](https://cv.cm/en/learn/count-words/)
 - [How to trim audio / cut an MP3](https://cv.cm/en/learn/trim-audio/)
+- [How to convert MP3 to WAV](https://cv.cm/en/learn/mp3-to-wav/)
+- [How to join audio files / merge MP3s](https://cv.cm/en/learn/join-audio/)
 
 Older photography, court, pool and interpersonal lesson URLs still parse, then 301 to the hub.
 

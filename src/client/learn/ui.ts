@@ -151,6 +151,7 @@ function groupOf(id: TutorialId): string {
     || id === "png-to-jpg"
     || id === "jpg-to-png"
     || id === "avif-to-jpg"
+    || id === "png-to-webp"
   ) return "files";
   if (
     id === "crop-photo"
@@ -160,6 +161,7 @@ function groupOf(id: TutorialId): string {
     || id === "remove-exif"
     || id === "make-collage"
     || id === "make-meme"
+    || id === "make-favicon"
     || id === "phone-photos"
     || id === "window-light"
     || id === "crop-compose"
@@ -167,7 +169,7 @@ function groupOf(id: TutorialId): string {
   ) {
     return "photo";
   }
-  if (id === "trim-audio") return "audio";
+  if (id === "trim-audio" || id === "mp3-to-wav" || id === "join-audio") return "audio";
   if (id === "count-words") return "text";
   if (id === "algorithms" || id === "one-page-site") return "code";
   if (id.startsWith("badminton-")) return "court";

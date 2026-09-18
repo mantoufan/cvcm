@@ -213,7 +213,21 @@
     "titleAvifToJpg": "AVIF를 JPG로 변환하는 법 | cv.cm",
     "descAvifToJpg": "Chrome은 AVIF를 자주 저장합니다. 최신 브라우저에서 JPG로 보낸 뒤 거부한 곳에서 여세요. 업로드 없음.",
     "titleRotatePhoto": "사진을 회전·뒤집는 법 | cv.cm",
-    "descRotatePhoto": "90° 또는 180°로 돌리거나 거울처럼 뒤집으세요. 보내면 픽셀에 방향이 들어가 가로 EXIF 사진이 바로 섭니다. 업로드 없음."
+    "descRotatePhoto": "90° 또는 180°로 돌리거나 거울처럼 뒤집으세요. 보내면 픽셀에 방향이 들어가 가로 EXIF 사진이 바로 섭니다. 업로드 없음.",
+    "titleSort": "줄 정렬 — 중복 제거 — cv.cm",
+    "descSort": "브라우저에서 줄을 정렬하거나 중복을 뺍니다. 업로드 없음.",
+    "titleReplace": "찾아 바꾸기 — 텍스트 바꾸기 — cv.cm",
+    "descReplace": "브라우저에서 글자를 찾아 바꿉니다. 업로드 없음.",
+    "titleWords": "숫자를 영어로 — 영단어 — cv.cm",
+    "descWords": "브라우저에서 정수를 미국식 영어로. 업로드 없음.",
+    "titlePngToWebp": "PNG를 WebP로 변환하는 법 | cv.cm",
+    "descPngToWebp": "더 작으면서 투명을 남기려면 WebP. 최신 브라우저에서 여세요. 옛 서류는 아직 PNG일 수 있습니다. 업로드 없음.",
+    "titleMp3ToWav": "MP3를 WAV로 변환하는 법 | cv.cm",
+    "descMp3ToWav": "MP3를 넣고 필요하면 44.1 또는 48kHz를 고른 뒤 WAV를 받아 재생하세요. 원본은 남습니다. 업로드 없음.",
+    "titleJoinAudio": "오디오 이어붙이기 / MP3 합치는 법 | cv.cm",
+    "descJoinAudio": "두 개 이상을 순서대로 넣고 WAV 하나를 받은 뒤 처음부터 끝까지 재생하세요. 뒤 클립은 첫 클립의 레이트에 맞춥니다. 업로드 없음.",
+    "titleMakeFavicon": "파비콘 만드는 법 | cv.cm",
+    "descMakeFavicon": "정사각으로 맞추고 Cover 또는 Contain을 고른 뒤 ICO(16/32/48)와 PNG zip(180/192/512)을 받고 16픽셀을 보세요. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -521,6 +535,18 @@
     "days": {
       "name": "날짜 간격",
       "blurb": "두 날짜 사이 일수. 업로드 없음."
+    },
+    "sort": {
+      "name": "줄 정렬",
+      "blurb": "정렬 또는 중복 제거. 업로드 없음."
+    },
+    "replace": {
+      "name": "찾아 바꾸기",
+      "blurb": "글자 찾아 바꾸기. 업로드 없음."
+    },
+    "words": {
+      "name": "숫자를 영어로",
+      "blurb": "미국식 영단어. 업로드 없음."
     }
   },
   "watermark": {
@@ -1213,6 +1239,54 @@
         "a4": "아니요. 탭을 닫으면 사라집니다.",
         "q5": "포토샵 없이?",
         "a5": "됩니다. 이 페이지가 회전기입니다. 계정 없음."
+      },
+      "png-to-webp": {
+        "q1": "PNG를 WebP로 무료 변환할 수 있나요?",
+        "a1": "됩니다. 이 탭에서 변환합니다. 업로드 없음.",
+        "q2": "WebP에서도 투명이 남나요?",
+        "a2": "WebP로 보내면 남습니다. JPG는 배경을 메웁니다. 서류가 WebP를 거부하면 PNG를 남기세요.",
+        "q3": "업로드되나요?",
+        "a3": "아니요. 탭을 닫으면 사라집니다.",
+        "q4": "더 작은 사진이면 WebP와 JPG 중?",
+        "a4": "투명이 필요하거나 웹이면 WebP. 이메일이나 WebP를 거부하는 서류면 JPG.",
+        "q5": "포토샵 없이?",
+        "a5": "됩니다. 이 페이지가 변환기입니다. 계정 없음."
+      },
+      "mp3-to-wav": {
+        "q1": "MP3를 WAV로 무료 변환할 수 있나요?",
+        "a1": "됩니다. 이 탭에서 풀고 WAV를 받습니다. 업로드 없음.",
+        "q2": "WAV로 바꾸면 음질이 좋아지나요?",
+        "a2": "아니요. WAV는 MP3 압축 뒤에 남은 것만 담습니다. 파일은 커집니다.",
+        "q3": "44.1과 48kHz 중?",
+        "a3": "음악·CD는 44.1. 영상은 48. 모르면 원본.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "M4A나 음성 메모는?",
+        "a5": "브라우저가 풀 수 있으면 됩니다. 보낸 파일은 WAV입니다."
+      },
+      "join-audio": {
+        "q1": "MP3를 무료로 합칠 수 있나요?",
+        "a1": "됩니다. 이 탭에 두 개 이상을 넣고 순서를 맞춘 뒤 WAV를 받으세요. 업로드 없음.",
+        "q2": "받은 파일이 WAV인 이유는?",
+        "a2": "이어붙이기가 디코드된 PCM을 연결해 브라우저에서 WAV로 씁니다. MP3가 필요하면 나중에 변환하세요.",
+        "q3": "두 개가 필요한가요?",
+        "a3": "네. 하나로는 이어붙일 수 없습니다. 한 조각만 필요하면 자르기로 가세요.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "원본이 바뀌나요?",
+        "a5": "아니요. 새 WAV를 받습니다. 디스크의 MP3는 그대로입니다."
+      },
+      "make-favicon": {
+        "q1": "파비콘을 무료로 만들 수 있나요?",
+        "a1": "됩니다. 이 탭에서 그립니다. 업로드 없음.",
+        "q2": "ICO에는 어떤 크기가?",
+        "a2": "16, 32, 48픽셀 PNG를 favicon.ico 하나에 넣습니다.",
+        "q3": "애플 터치 아이콘도 필요하나요?",
+        "a3": "PNG zip에 180, 192, 512가 있습니다. HTML에서 연결해 홈 화면 아이콘으로 쓰세요.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "투명 배경을 남길 수 있나요?",
+        "a5": "됩니다. 흰 배경을 끄세요. Contain이면 투명 위에 여백이 생깁니다."
       }
     },
     "compress-pdf": {
@@ -1838,6 +1912,42 @@
       "a4": "Yes. 28 Feb 2024 to 1 Mar 2024 is 2 days.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the day counts on the clipboard."
+    },
+    "sort": {
+      "q1": "Can I sort lines here?",
+      "a1": "Yes. Paste one item per line. Sort A→Z, Z→A, or keep the first copy of each line.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Sorting stays in this tab.",
+      "q3": "Is unique a sort?",
+      "a3": "No. Unique keeps the first time a line appears, in the original order.",
+      "q4": "Does case matter?",
+      "a4": "Yes. Uppercase letters sort before lowercase in Unicode order.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the lines on the clipboard."
+    },
+    "replace": {
+      "q1": "Can I find and replace text here?",
+      "a1": "Yes. Enter the find string and the replacement. Replace all matches or only the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Replacement stays in this tab.",
+      "q3": "Is find a regex?",
+      "a3": "No. It is literal text. Use the regex tester if you need patterns.",
+      "q4": "What if find is empty?",
+      "a4": "Nothing changes. An empty find is ignored.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "q1": "Can I turn a number into words here?",
+      "a1": "Yes. Whole numbers from 0 to 999,999,999,999 become US English words.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "British “and”?",
+      "a3": "No. 101 is “one hundred one”, not “one hundred and one”.",
+      "q4": "Decimals or negatives?",
+      "a4": "No. Only whole numbers from 0 up.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the words on the clipboard."
     }
   },
   "qr": {
@@ -2488,6 +2598,94 @@
       "s6b": "페이지 미리보기만 믿지 마세요. 탐색기에서 아직 가로면 원본을 보낸 것입니다. 글자가 거꾸로면 90°가 아니라 뒤집기를 쓴 것입니다.",
       "diagram1": "90°/180°는 방향을 돌림. 뒤집기는 거울.",
       "diagram2": "보내면 픽셀에 방향이 들어갑니다. 파일을 열면 EXIF만 가로였던 사진이 실제로 바로 섭니다."
+    },
+    "png-to-webp": {
+      "name": "PNG를 WebP로",
+      "blurb": "더 작으면서 투명을 남기려면 WebP. 브라우저에서 여세요. WebP를 거부하는 옛 서류에는 넣지 마세요.",
+      "title": "PNG를 WebP로 변환하는 법",
+      "lead": "WebP는 PNG보다 작고 투명을 남길 수 있습니다. JPG는 못 합니다. 웹용 복사본을 변환한 뒤 최신 브라우저에서 확인하세요.",
+      "result": "PNG보다 작은 WebP. 원본에 투명이 있으면 남습니다. 원본 PNG는 디스크에 남습니다.",
+      "note": "파일이 디스크에 있으면 변환을 여세요. 투명이 필요하면 JPG가 아니라 WebP. 옛 서류는 여전히 WebP를 거부할 수 있습니다. 업로드 없음.",
+      "s1t": "왜 WebP인지 정하기",
+      "s1b": "WebP를 받는 사이트나 채팅은 더 빠릅니다. 이메일과 많은 서류는 아직 PNG나 JPG. 상대가 거부하면 바꾸지 마세요.",
+      "s2t": "cv.cm 이미지 형식을 열기",
+      "s2b": "이 탭에서 변환합니다. 닫으면 사라집니다.",
+      "s3t": ".png 넣기",
+      "s3b": "한 장 또는 여러 장. 미리보기가 비면 브라우저를 바꾸세요.",
+      "s4t": "투명이 필요하면 JPG가 아니라 WebP",
+      "s4b": "WebP는 투명을 남길 수 있습니다. JPG는 메웁니다. 품질은 0.9 근처. 페이지에 픽셀 한도가 있을 때만 긴 변을 제한하세요.",
+      "s5t": "WebP 받기",
+      "s5b": "WebP를 열 때까지 PNG를 남기세요.",
+      "s6t": "최신 브라우저에서 열기",
+      "s6b": "가장자리와 용량을 PNG와 비교하세요. 서류가 거부하면 PNG를 보내세요. 변환한다고 더 선명해지지 않습니다.",
+      "diagram1": "WebP는 PNG보다 작고 투명을 남길 수 있습니다. JPG는 안 됩니다.",
+      "diagram2": "투명이면 WebP. 브라우저에서 여세요. 옛 서류는 아직 PNG일 수 있습니다."
+    },
+    "mp3-to-wav": {
+      "name": "MP3를 WAV로",
+      "blurb": "MP3를 넣고 필요하면 샘플레이트를 고른 뒤 WAV를 받아 파일을 재생하세요. 원본은 남습니다.",
+      "title": "MP3를 WAV로 변환하는 법",
+      "lead": "DAW, 편집기, 서류가 MP3가 아니라 WAV를 원할 수 있습니다. 이 탭에서 복사본을 푼 뒤 필요하면 44.1 또는 48kHz를 고르고 받은 파일을 재생하세요.",
+      "result": "고른 샘플레이트의, 재생되는 WAV. 원래 MP3는 남습니다.",
+      "note": "오디오가 디스크에 있으면 MP3→WAV를 여세요. M4A를 넣어도 받은 파일은 WAV. 보내기 전에 들으세요. 업로드 없음.",
+      "s1t": "왜 WAV인지 정하기",
+      "s1b": "WAV는 비압축 PCM입니다. 편집기와 일부 업로드 서류가 원합니다. MP3보다 훨씬 큽니다. 음질을 '올리려고' 바꾸지 마세요. MP3가 버린 것은 돌아오지 않습니다.",
+      "s2t": "cv.cm MP3→WAV를 열기",
+      "s2b": "이 탭에서 변환합니다.",
+      "s3t": "MP3, M4A 또는 WAV 넣기",
+      "s3b": "재생이 안 되면 이 브라우저가 못 풉니다. WAV나 다른 브라우저. Safari와 Chrome은 보통 MP3를 엽니다.",
+      "s4t": "원본, 44.1kHz 또는 48kHz",
+      "s4b": "모르면 원본을 두세요. 44.1은 CD/음악 기본. 48은 영상 기본. 리샘플한다고 고음이 생기지 않습니다.",
+      "s5t": "WAV 받기",
+      "s5b": "WAV를 재생할 때까지 MP3를 남기세요.",
+      "s6t": "받은 파일을 한 번 재생",
+      "s6b": "페이지 플레이어만 믿고 보내지 마세요. 무음이면 디코드 실패. 서류가 MP3를 원하면 원본을 보내세요.",
+      "diagram1": "WAV는 비압축. MP3는 이미 버린 데이터가 있습니다. 바꿔도 돌아오지 않습니다.",
+      "diagram2": "음악은 44.1kHz. 영상은 48kHz. 받은 WAV를 재생하세요."
+    },
+    "join-audio": {
+      "name": "오디오 이어붙이기 / MP3 합치기",
+      "blurb": "두 개 이상을 순서대로 넣고 WAV 하나를 받은 뒤 처음부터 끝까지 재생하세요.",
+      "title": "오디오 이어붙이기 / MP3 합치는 법",
+      "lead": "재생목록이 아니라 파일 하나가 필요합니다. 인트로 다음 곡, 음성 두 개, 깔린 음악 위 음성. 목록 순서가 재생 순서. 보낸 파일은 WAV.",
+      "result": "정한 순서로 모두 재생되는 WAV 하나. 처음부터 끝까지 확인. 원본은 남습니다.",
+      "note": "클립이 디스크에 있으면 이어붙이기를 여세요. 두 개 이상. 뒤 클립은 첫 클립의 레이트로 리샘플됩니다. 받은 파일은 WAV. 업로드 없음.",
+      "s1t": "재생 순서로 맞추기",
+      "s1b": "인트로가 먼저, 깔린 음악이 나중. 이름 바꿔도 됩니다. 넣은 뒤에도 위아래로 옮길 수 있습니다.",
+      "s2t": "cv.cm 오디오 이어붙이기를 열기",
+      "s2b": "이 탭에서 이어붙입니다.",
+      "s3t": "두 개 이상 넣기",
+      "s3b": "하나로는 이어붙일 수 없습니다. 한 줄이 오류면 디코드 실패. 먼저 WAV로 바꾸거나 빼세요.",
+      "s4t": "순서가 틀리면 위아래로",
+      "s4b": "첫 줄이 먼저 재생됩니다. 뒤 클립은 첫 클립의 레이트로 맞춰 이어붙일 때 밀리지 않습니다.",
+      "s5t": "WAV 하나 받기",
+      "s5b": "모두 MP3여도 보낸 파일은 WAV. 끝까지 듣기 전에 원본을 남기세요.",
+      "s6t": "파일을 처음부터 끝까지 재생",
+      "s6b": "빠진 클립, 공백, 이음부의 음높이를 들으세요. 순서가 틀리면 다시 맞춰 보내세요. 페이지 목록만 보고 보내지 마세요.",
+      "diagram1": "목록 순서가 재생 순서. 두 개 이상.",
+      "diagram2": "보낸 파일은 WAV 하나. 뒤 클립은 첫 클립의 레이트에 맞춥니다."
+    },
+    "make-favicon": {
+      "name": "파비콘 만드는 법",
+      "blurb": "정사각으로 맞추고 Cover 또는 Contain을 고른 뒤 ICO와 PNG 크기를 받고 16픽셀을 보세요.",
+      "title": "파비콘 만드는 법",
+      "lead": "파비콘은 16픽셀에서도 알아봐야 합니다. 마크를 정사각으로 맞추고 Cover 또는 Contain을 고른 뒤 탭용 ICO와 터치 아이콘용 PNG zip을 받으세요.",
+      "result": "favicon.ico(16/32/48)와 PNG zip(180/192/512 포함). 탭 크기에서도 알아봅니다.",
+      "note": "마크가 디스크에 있으면 파비콘을 여세요. Cover는 정사각을 채우며 자를 수 있습니다. Contain은 여백. 흰 배경이 기본입니다. 업로드 없음.",
+      "s1t": "작아도 알아보는 마크",
+      "s1b": "복잡한 사진은 16픽셀에서 죽습니다. 글자 하나, 단순한 도형, 대비 높은 로고. 프레임이 넓으면 먼저 자르고 오세요.",
+      "s2t": "cv.cm 파비콘을 열기",
+      "s2b": "이 탭에서 만듭니다.",
+      "s3t": "이미지를 넣기",
+      "s3b": "미리보기가 비면 HEIC를 JPG로 먼저 바꾸세요.",
+      "s4t": "Cover 또는 Contain, 그리고 흰 배경",
+      "s4b": "Cover는 정사각을 채우며 자를 수 있습니다. Contain은 전체를 넣고 여백이 생깁니다. 고전 탭은 흰 배경을 켜 두세요. 투명 PNG가 필요하면 끄세요.",
+      "s5t": "ICO와 PNG zip 받기",
+      "s5b": "ICO는 16, 32, 48(고전 탭). zip에는 180, 192, 512(애플 터치와 PWA)도 있습니다. 원본 마크는 남깁니다.",
+      "s6t": "16픽셀 PNG 열기",
+      "s6b": "256 미리보기는 거짓말입니다. 16px가 흐리면 마크를 단순화하거나 Contain으로 바꾸세요. favicon.ico를 사이트 루트에 두고 HTML에서 PNG를 연결하세요.",
+      "diagram1": "Cover는 채우며 자를 수 있습니다. Contain은 전체를 넣고 여백이 생깁니다.",
+      "diagram2": "ICO는 16/32/48. PNG zip에 180/192/512. 16px 파일을 보세요."
     }
   },
   "compressPdf": {
@@ -3482,5 +3680,45 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter two real calendar dates."
+  },
+  "sort": {
+    "title": "줄 정렬",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Order",
+    "az": "A → Z",
+    "za": "Z → A",
+    "unique": "Unique (keep first)",
+    "input": "Lines",
+    "output": "Result",
+    "placeholder": "One item per line",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "replace": {
+    "title": "찾아 바꾸기",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Find",
+    "find": "Find",
+    "repl": "Replace with",
+    "all": "Replace all",
+    "first": "Replace first",
+    "input": "Text",
+    "output": "Result",
+    "placeholder": "Type or paste text",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "words": {
+    "title": "숫자를 영어로",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Number",
+    "number": "Integer",
+    "result": "Words",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a whole number from 0 to 999,999,999,999."
   }
 }

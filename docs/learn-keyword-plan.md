@@ -99,6 +99,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `jpg-to-png`
 - `avif-to-jpg`
 - `rotate-photo`
+- `png-to-webp`
+- `mp3-to-wav`
+- `join-audio`
+- `make-favicon`
 
 ## Fourth batch (ship)
 
@@ -110,6 +114,17 @@ Same dump as the first pull (`~/.grok/tmp/cvcm-keyword-ideas.json`, convert seed
 | How to convert JPG to PNG | 49,500 (`jpg to png`) | `convert` | Myth: PNG will not invent transparency. File usually grows. |
 | How to convert AVIF to JPG | 33,100 (`avif to jpg`) | `convert` | Chrome/new sites save AVIF; older Windows/print/chat want JPG. |
 | How to rotate or flip a photo | — (not seeded) | `rotate` | 90° vs mirror flip; export bakes pixels so EXIF-only sideways photos stand up. |
+
+## Fifth batch (ship)
+
+PNG→WebP is the last convert cluster with job volume in this dump. Audio convert/join and favicon were not seeded; they ship as companions to trim-audio and the photo tools.
+
+| Lesson query | Job vol | Tool | Notes |
+|---|---:|---|---|
+| How to convert PNG to WebP | 14,800 (`png to webp`) | `convert` | Smaller than PNG; can keep alpha (JPG cannot). Old forms may still want PNG. |
+| How to convert MP3 to WAV | — (not seeded) | `audio` | Tool money page is MP3 to WAV. WAV does not restore MP3 losses. 44.1 vs 48. |
+| How to join audio files / merge MP3s | — (not seeded) | `audio-joiner` | Two or more clips; list order; later clips resample to the first clip's rate; WAV out. |
+| How to make a favicon | — (not seeded) | `favicon` | Cover vs Contain; ICO 16/32/48; PNG zip 180/192/512; check the 16px file. |
 
 ## Evidence notes
 
