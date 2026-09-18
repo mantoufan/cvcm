@@ -88,6 +88,10 @@ export const TUTORIALS = [
   "split-pdf",
   "add-watermark",
   "remove-exif",
+  "make-collage",
+  "make-meme",
+  "count-words",
+  "trim-audio",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -102,7 +106,7 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-export type TutorialGroupId = "codes" | "files" | "photo" | "court" | "water" | "code" | "mind" | "course";
+export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "court" | "water" | "code" | "mind" | "course";
 
 // New how-tos are published. Legacy ids still parse so old URLs 301 to the hub.
 export const TUTORIAL_GROUPS: readonly {
@@ -111,7 +115,9 @@ export const TUTORIAL_GROUPS: readonly {
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png"] },
-  { id: "photo", tutorials: ["crop-photo", "resize-image", "add-watermark", "remove-exif"] },
+  { id: "photo", tutorials: ["crop-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme"] },
+  { id: "audio", tutorials: ["trim-audio"] },
+  { id: "text", tutorials: ["count-words"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

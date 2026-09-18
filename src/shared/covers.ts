@@ -75,6 +75,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "split-pdf": "/covers/split-pdf-sweet.jpg?v=1",
   "add-watermark": "/covers/watermark-sweet.jpg?v=1",
   "remove-exif": "/covers/exif-sweet.jpg?v=1",
+  "make-collage": "/covers/collage-sweet.jpg?v=1",
+  "make-meme": "/covers/meme-sweet.jpg?v=2",
+  "count-words": "/covers/word-count-sweet.jpg?v=1",
+  "trim-audio": "/covers/audio-cutter-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -109,6 +113,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "split-pdf": "/covers/tutorials/split-pdf.svg",
   "add-watermark": "/covers/tutorials/add-watermark.svg",
   "remove-exif": "/covers/tutorials/remove-exif.svg",
+  "make-collage": "/covers/tutorials/make-collage.svg",
+  "make-meme": "/covers/tutorials/make-meme.svg",
+  "count-words": "/covers/tutorials/count-words.svg",
+  "trim-audio": "/covers/tutorials/trim-audio.svg",
 };
 
 export function coverUrl(path: string): string {

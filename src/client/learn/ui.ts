@@ -154,6 +154,8 @@ function groupOf(id: TutorialId): string {
     || id === "resize-image"
     || id === "add-watermark"
     || id === "remove-exif"
+    || id === "make-collage"
+    || id === "make-meme"
     || id === "phone-photos"
     || id === "window-light"
     || id === "crop-compose"
@@ -161,6 +163,8 @@ function groupOf(id: TutorialId): string {
   ) {
     return "photo";
   }
+  if (id === "trim-audio") return "audio";
+  if (id === "count-words") return "text";
   if (id === "algorithms" || id === "one-page-site") return "code";
   if (id.startsWith("badminton-")) return "court";
   if (id === "pool-safety") return "water";

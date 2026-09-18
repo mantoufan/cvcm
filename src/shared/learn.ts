@@ -94,6 +94,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["exif", "watermark", "resize"],
   },
+  "make-collage": {
+    minutes: 7,
+    steps: 6,
+    openAt: 2,
+    related: ["collage", "crop", "watermark"],
+  },
+  "make-meme": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["meme", "crop", "resize"],
+  },
+  "count-words": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["word-count", "case", "diff"],
+  },
+  "trim-audio": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["audio-cutter", "audio-joiner", "audio"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -268,5 +292,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "remove-exif": [
     { step: 1, src: "/covers/tutorials/remove-exif-gps.svg" },
     { step: 6, src: "/covers/tutorials/remove-exif-check.svg" },
+  ],
+  "make-collage": [
+    { step: 1, src: "/covers/tutorials/make-collage-layout.svg" },
+    { step: 4, src: "/covers/tutorials/make-collage-fit.svg" },
+  ],
+  "make-meme": [
+    { step: 1, src: "/covers/tutorials/make-meme-text.svg" },
+    { step: 5, src: "/covers/tutorials/make-meme-stroke.svg" },
+  ],
+  "count-words": [
+    { step: 1, src: "/covers/tutorials/count-words-which.svg" },
+    { step: 4, src: "/covers/tutorials/count-words-cjk.svg" },
+  ],
+  "trim-audio": [
+    { step: 1, src: "/covers/tutorials/trim-audio-range.svg" },
+    { step: 6, src: "/covers/tutorials/trim-audio-listen.svg" },
   ],
 };

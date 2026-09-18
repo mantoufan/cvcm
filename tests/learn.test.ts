@@ -92,7 +92,7 @@ describe("learn sitemap", () => {
     const xml = buildSitemapXml("2026-09-16");
     const extra = 1 + FEATURED_TUTORIALS.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
-    expect(FEATURED_TUTORIALS).toHaveLength(13);
+    expect(FEATURED_TUTORIALS).toHaveLength(17);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/heic-to-jpg/");
     expect(xml).not.toContain("https://cv.cm/zh-cn/learn/phone-photos/");
