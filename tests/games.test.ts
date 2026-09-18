@@ -163,6 +163,7 @@ describe("games worker", () => {
       expect(response.headers.get("Content-Security-Policy"), path).toContain("wasm-unsafe-eval");
       expect(response.headers.get("Content-Security-Policy"), path).toContain("frame-ancestors 'self'");
       expect(response.headers.get("X-Frame-Options"), path).toBeNull();
+      expect(response.headers.get("Cache-Control"), path).toBe("no-store");
     }
   });
 

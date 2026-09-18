@@ -213,7 +213,7 @@ function player(game: Game, name: string): HTMLElement {
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
     const qs = new URLSearchParams({ core: game.core, name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
-    frame.src = `/emu/player?${qs.toString()}`;
+    frame.src = `/emu/player?v=3&${qs.toString()}`;
     const send = (): void => {
       frame.contentWindow?.postMessage({ type: "boot", core: game.core, name, ...payload }, location.origin);
     };
