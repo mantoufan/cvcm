@@ -88,9 +88,6 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   json: 3,
   base64: 3,
   days: 3,
-  sort: 3,
-  replace: 3,
-  words: 3,
 };
 
 export function guideSteps(tool: ToolId): number {
