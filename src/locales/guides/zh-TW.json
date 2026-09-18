@@ -606,6 +606,33 @@
       "s2b": "The signed count can be negative if the end date is earlier. Leap days are included.",
       "s3t": "Copy the count",
       "s3b": "Copy puts signed days, absolute days, and whole weeks on the clipboard."
+    },
+    "sort": {
+      "lead": "Sort lines or drop duplicates in this tab. Nothing is uploaded.",
+      "s1t": "Open Sort lines",
+      "s1b": "A sample list is already sorted A→Z on the right.",
+      "s2t": "Paste your lines",
+      "s2b": "Switch to Z→A or Unique. Unique keeps the first copy of each line.",
+      "s3t": "Copy the list",
+      "s3b": "Copy puts the result on the clipboard."
+    },
+    "replace": {
+      "lead": "Find literal text and replace it in this tab. Nothing is uploaded.",
+      "s1t": "Open Find and replace",
+      "s1b": "A sample line and find string are already filled.",
+      "s2t": "Change find and replace",
+      "s2b": "Replace all is the default. Switch to Replace first for one match. This is not regex.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the replaced text on the clipboard."
+    },
+    "words": {
+      "lead": "Turn a whole number into US English words in this tab. Nothing is uploaded.",
+      "s1t": "Open Number to words",
+      "s1b": "2026 is already filled as two thousand twenty-six.",
+      "s2t": "Change the number",
+      "s2b": "0 to 999,999,999,999. No “and”, no decimals.",
+      "s3t": "Copy the words",
+      "s3b": "Copy puts the English words on the clipboard."
     }
   }
 }
