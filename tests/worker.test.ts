@@ -8,6 +8,17 @@ const assets = {
     }),
 };
 
+it("serves PNG favicons instead of locale-redirecting them", async () => {
+  const response = await worker.fetch(new Request("https://cv.cm/favicon-512.png"), {
+    ASSETS: {
+      fetch: async () =>
+        new Response("png", { headers: { "Content-Type": "image/png" } }),
+    },
+  });
+  expect(response.status).toBe(200);
+  expect(response.headers.get("Content-Type")).toBe("image/png");
+});
+
 it("revalidates favicon.svg instead of caching the previous icon for a day", async () => {
   const response = await worker.fetch(new Request("https://cv.cm/favicon.svg"), {
     ASSETS: {

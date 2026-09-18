@@ -80,6 +80,7 @@ describe("parseAppPath", () => {
 
   it("keeps static files out of the app router", () => {
     expect(parseAppPath("/favicon.svg")).toEqual({ kind: "static" });
+    expect(parseAppPath("/favicon-512.png")).toEqual({ kind: "static" });
     expect(parseAppPath("/assets/index-abc.js")).toEqual({ kind: "static" });
   });
 
