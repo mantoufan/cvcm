@@ -131,6 +131,20 @@ describe("games worker", () => {
     expect(html.headers.get("Content-Security-Policy")).toContain("frame-src 'self'");
   });
 
+  it("allows the emulator player to be framed with wasm eval", async () => {
+    const html = "<!doctype html><title>cv.cm games</title>";
+    const playerAssets = {
+      fetch: async () => new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } }),
+    };
+    for (const path of ["/emu/player", "/emu/player/", "/emu/player.html"]) {
+      const response = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: playerAssets });
+      expect(response.status, path).toBe(200);
+      expect(response.headers.get("Content-Security-Policy"), path).toContain("wasm-unsafe-eval");
+      expect(response.headers.get("Content-Security-Policy"), path).toContain("frame-ancestors 'self'");
+      expect(response.headers.get("X-Frame-Options"), path).toBeNull();
+    }
+  });
+
   it("proxies emulator cores from S3", async () => {
     const original = globalThis.fetch;
     globalThis.fetch = async (input) => {

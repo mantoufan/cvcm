@@ -222,7 +222,7 @@ function withHeaders(res: Response, pathname: string): Response {
   headers.delete("Access-Control-Allow-Origin");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "no-referrer");
-  const player = pathname === "/emu/player.html";
+  const player = pathname === "/emu/player.html" || pathname === "/emu/player" || pathname === "/emu/player/";
   if (player) headers.delete("X-Frame-Options");
   else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
