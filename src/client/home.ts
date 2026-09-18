@@ -1,9 +1,11 @@
 import { COVER } from "./covers";
 import { h } from "./dom";
 import { t } from "./i18n";
+import { gameTile } from "./games/ui";
 import { learnTile } from "./learn/ui";
 import type { Locale } from "../shared/locale";
-import { TOOLS, FEATURED_TUTORIALS, appHref, learnHref, type ToolId } from "../shared/path";
+import { GAMES } from "../shared/games";
+import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, type ToolId } from "../shared/path";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   const learnWall = FEATURED_TUTORIALS.length
@@ -32,6 +34,15 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       ),
     ),
     ...(learnWall ? [learnWall] : []),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.games")),
+        h("a", { class: "wall-more", href: gamesHref(locale, null), "data-nav": "games" }, t("games.hub.all")),
+      ),
+      h("div", { class: "tiles" },
+        ...GAMES.slice(0, 8).map((game) => gameTile(locale, game)),
+      ),
+    ),
     h("section", { class: "points" },
       point("local"),
       point("nodb"),

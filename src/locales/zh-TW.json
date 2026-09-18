@@ -179,7 +179,21 @@
     "titleCompound": "複利計算 — 終值 — cv.cm",
     "descCompound": "在瀏覽器裡算複利終值。本金、年利率、年數、複利次數。不上傳。",
     "titleVat": "增值稅計算 — 銷售稅 — cv.cm",
-    "descVat": "在瀏覽器裡算增值稅或銷售稅。含稅或不含稅。不上傳。"
+    "descVat": "在瀏覽器裡算增值稅或銷售稅。含稅或不含稅。不上傳。",
+    "titleGames": "FC SFC GB GBA 線上玩｜金手指 攻略 — cv.cm",
+    "descGames": "浏览器裡玩紅白機、超任、GB、GBA。金手指、攻略、開源模拟器。自製遊戲即開。商業 ROM 自行載入，不上传。",
+    "titleGamesFc": "FC 紅白機遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesFc": "魂斗罗、超級瑪利歐、坦克大戰。金手指和攻略。商業 ROM 自行載入。",
+    "titleGamesSfc": "SFC 超任遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesSfc": "超級瑪利歐世界、塞尔达、街霸2。金手指和攻略。",
+    "titleGamesGb": "GB 遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesGb": "口袋妖怪红、俄罗斯方块、卡比。金手指和攻略。",
+    "titleGamesGbc": "GBC 遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesGbc": "口袋妖怪金。城都攻略和金手指。",
+    "titleGamesGba": "GBA 遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesGba": "绿宝石、马裡奥赛车、缩小帽。金手指和攻略。",
+    "titleGamesMd": "世嘉 MD 遊戲 線上玩｜金手指 攻略 — cv.cm",
+    "descGamesMd": "索尼克、怒之铁拳2。金手指和攻略。商業 ROM 自行載入。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -189,7 +203,8 @@
     "image": "圖片",
     "convert": "格式轉換",
     "text": "文字",
-    "learn": "教程"
+    "learn": "教程",
+    "games": "遊戲"
   },
   "lang": {
     "label": "語言",
@@ -1647,6 +1662,18 @@
       "a4": "No. It is arithmetic on the numbers you type.",
       "q5": "What currency?",
       "a5": "None. It is just a number with two decimal places."
+    },
+    "games": {
+      "q1": "能在浏览器玩 FC 嗎？",
+      "a1": "能。cv.cm 嵌入 GitHub 上的 EmulatorJS（fceumm、snes9x、gambatte、mGBA、Genesis Plus GX）。核心在 S3。手机有虛擬手柄。",
+      "q2": "有超級瑪利歐、魂斗罗 ROM 嗎？",
+      "a2": "不提供商業 ROM。那些頁面有金手指和攻略，請載入你自己的檔案。Shiru 的 Alter Ego、Lawn Mower 可直接玩。",
+      "q3": "金手指怎么用？",
+      "a3": "每個遊戲頁列出 Game Genie / Gameshark 碼。ROM 启动後粘到模拟器金手指選單。版本不同可能無效。",
+      "q4": "ROM 會上传嗎？",
+      "a4": "不會。本地檔案只在當前分頁交给模拟器。可合法分發的自製 ROM 從我們的 S3 讀取。",
+      "q5": "手机能玩哪些機種？",
+      "a5": "FC、GB、GBC，以及多数 GBA / MD。SFC 更吃性能。格鬥和赛车建议横屏加手柄。"
     }
   },
   "qr": {
@@ -3067,5 +3094,47 @@
     "tax": "Tax",
     "gross": "Gross",
     "invalid": "Enter an amount of 0 or more and a rate of 0 or more."
+  },
+  "games": {
+    "back": "全部遊戲",
+    "play": "開始玩",
+    "loadRom": "選擇 ROM",
+    "loadRomHint": "檔案留在當前分頁。商業 ROM 不託管。",
+    "hostedNote": "免费自製 ROM 在 cv.cm S3，模拟器會直接開始。",
+    "byoNote": "商業作不託管。選擇你已有的 ROM，不會上传。",
+    "cheats": "金手指",
+    "guide": "攻略",
+    "related": "更多遊戲",
+    "year": "{n}",
+    "emulator": "EmulatorJS（GitHub 開源）",
+    "mobile": "手机有虛擬手柄。格鬥和赛车更建议蓝牙手柄。",
+    "legal": "模拟器核心和免费自製 ROM 在 S3。商業 ROM 留在你的设备上。",
+    "filterAll": "全部",
+    "empty": "這個篩選没有遊戲。",
+    "hub": {
+      "kicker": "紅白機 · 浏览器 · 手机",
+      "title": "FC、SFC、GB、GBA 線上玩",
+      "lead": "金手指、攻略、開源模拟器。自製遊戲即開。商業作載入你自己的 ROM，不上传。",
+      "menu": "全部遊戲",
+      "blurb": "模拟器老遊戲，带金手指和攻略。",
+      "all": "查看全部"
+    },
+    "consoles": {
+      "fc": "FC 紅白機",
+      "sfc": "SFC 超任",
+      "gb": "Game Boy",
+      "gbc": "Game Boy Color",
+      "gba": "GBA",
+      "md": "世嘉 MD"
+    },
+    "genres": {
+      "platform": "平台",
+      "action": "動作",
+      "shooting": "射擊",
+      "rpg": "角色扮演",
+      "puzzle": "益智",
+      "fighting": "格鬥",
+      "racing": "竞速"
+    }
   }
 }

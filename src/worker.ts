@@ -1,7 +1,7 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
-import { appHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE } from "./shared/path";
+import { appHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -24,12 +24,32 @@ const CSP = [
   "connect-src 'self' https://files.s3.cv.cm https://s3.cv.cm",
   "media-src blob: https:",
   "worker-src 'self' blob:",
+  "frame-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'none'",
   "frame-ancestors 'none'",
   "upgrade-insecure-requests",
 ].join("; ");
+
+const EMU_CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' blob: data:",
+  "font-src 'self'",
+  "connect-src 'self' blob:",
+  "media-src blob:",
+  "worker-src 'self' blob:",
+  "child-src blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+  "frame-ancestors 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const EMU_PROXY = /^\/emu\/(data|roms)\/([A-Za-z0-9._/-]+)$/;
 
 const ALLOWED = "GET, HEAD";
 
@@ -69,6 +89,9 @@ export default {
     }
 
     const path = url.pathname;
+    const emu = await proxyEmu(path, request.method);
+    if (emu) return withHeaders(emu, path);
+
     if (!STATIC_FILE.test(path)) {
       const parsed = parseAppPath(path);
       const locale = negotiateLocale(
@@ -84,6 +107,9 @@ export default {
       }
       if (parsed.kind === "bare-learn") {
         return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
+      }
+      if (parsed.kind === "bare-games") {
+        return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
       }
       if (parsed.kind === "unknown") {
         return redirectTo(appHref(locale, null), url, 302);
@@ -103,6 +129,12 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
+      if (parsed.kind === "games") {
+        const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
     }
 
     let assetResponse = await env.ASSETS.fetch(request);
@@ -114,10 +146,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -125,9 +157,11 @@ export default {
         );
       const seo = parsed.kind === "learn"
         ? { learn: true as const, tutorial: parsed.tutorial }
-        : parsed.kind === "app"
-          ? { tool: parsed.tool, clipId: parsed.clipId }
-          : { tool: null };
+        : parsed.kind === "games"
+          ? { games: true as const, console: parsed.console, game: parsed.game }
+          : parsed.kind === "app"
+            ? { tool: parsed.tool, clipId: parsed.clipId }
+            : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
       return withHeaders(
@@ -158,19 +192,46 @@ function redirect(location: string, status: 301 | 302 | 307): Response {
   });
 }
 
+async function proxyEmu(pathname: string, method: string): Promise<Response | null> {
+  const match = EMU_PROXY.exec(pathname);
+  if (!match) return null;
+  if (method !== "GET" && method !== "HEAD") {
+    return new Response("Method Not Allowed", { status: 405, headers: { Allow: ALLOWED } });
+  }
+  const kind = match[1];
+  const rest = match[2];
+  if (!rest || rest.includes("..") || rest.includes("//")) {
+    return new Response("Bad Request", { status: 400 });
+  }
+  const key = kind === "data" ? `games/emu/${rest}` : `games/roms/${rest}`;
+  const upstream = await fetch(`https://files.s3.cv.cm/${key}`);
+  if (!upstream.ok) {
+    return new Response("Not Found", { status: 404 });
+  }
+  const headers = new Headers(upstream.headers);
+  headers.delete("Access-Control-Allow-Origin");
+  headers.set("Cache-Control", "public, max-age=86400");
+  if (method === "HEAD") {
+    return new Response(null, { status: 200, headers });
+  }
+  return new Response(upstream.body, { status: 200, headers });
+}
+
 function withHeaders(res: Response, pathname: string): Response {
   const headers = new Headers(res.headers);
   headers.delete("Access-Control-Allow-Origin");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "no-referrer");
-  headers.set("X-Frame-Options", "DENY");
+  const player = pathname === "/emu/player.html";
+  if (player) headers.delete("X-Frame-Options");
+  else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");
   headers.set(
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=()",
   );
-  headers.set("Content-Security-Policy", CSP);
+  headers.set("Content-Security-Policy", player ? EMU_CSP : CSP);
   if (pathname.startsWith("/assets/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
   } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {

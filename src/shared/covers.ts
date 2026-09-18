@@ -1,3 +1,4 @@
+import type { GameId } from "./games";
 import { localePath, type Locale } from "./locale";
 import type { ToolId, TutorialId } from "./path";
 
@@ -62,6 +63,29 @@ export const TOOL_COVER: Record<ToolId, string> = {
   stopwatch: "/covers/stopwatch-sweet.jpg?v=1",
   compound: "/covers/compound-sweet.jpg?v=1",
   vat: "/covers/vat-sweet.jpg?v=1",
+};
+
+export const GAME_COVER: Record<GameId, string> = {
+  "super-mario-bros": "/covers/games/super-mario-bros.jpg?v=1",
+  contra: "/covers/games/contra.jpg?v=1",
+  "battle-city": "/covers/games/battle-city.jpg?v=1",
+  "adventure-island": "/covers/games/adventure-island.jpg?v=1",
+  "tetris-nes": "/covers/games/tetris-nes.jpg?v=1",
+  "double-dragon": "/covers/games/double-dragon.jpg?v=1",
+  "super-mario-world": "/covers/games/super-mario-world.jpg?v=1",
+  "zelda-alttp": "/covers/games/zelda-alttp.jpg?v=1",
+  "street-fighter-ii": "/covers/games/street-fighter-ii.jpg?v=1",
+  "pokemon-red": "/covers/games/pokemon-red.jpg?v=1",
+  "tetris-gb": "/covers/games/tetris-gb.jpg?v=1",
+  "kirby-dream-land": "/covers/games/kirby-dream-land.jpg?v=1",
+  "pokemon-gold": "/covers/games/pokemon-gold.jpg?v=1",
+  "pokemon-emerald": "/covers/games/pokemon-emerald.jpg?v=1",
+  "mario-kart-super-circuit": "/covers/games/mario-kart-super-circuit.jpg?v=1",
+  "minish-cap": "/covers/games/minish-cap.jpg?v=1",
+  sonic: "/covers/games/sonic.jpg?v=1",
+  "streets-of-rage-2": "/covers/games/streets-of-rage-2.jpg?v=1",
+  "alter-ego": "/covers/games/alter-ego.jpg?v=1",
+  "lawn-mower": "/covers/games/lawn-mower.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

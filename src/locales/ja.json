@@ -179,7 +179,21 @@
     "titleCompound": "複利計算 — 将来価値 — cv.cm",
     "descCompound": "ブラウザで複利の将来価値。元金・金利・年数・回数。アップロードなし。",
     "titleVat": "VAT計算 — 消費税 — cv.cm",
-    "descVat": "ブラウザでVATや消費税。税込または税抜。アップロードなし。"
+    "descVat": "ブラウザでVATや消費税。税込または税抜。アップロードなし。",
+    "titleGames": "FC・SFC・GB・GBAをブラウザで｜チートと攻略 — cv.cm",
+    "descGames": "ブラウザでレトロゲーム。チート、攻略、GitHub の EmulatorJS。自作 ROM はそのまま。商用 ROM は自分のファイル。アップロードしません。",
+    "titleGamesFc": "FC / NES｜チートと攻略 — cv.cm",
+    "descGamesFc": "魂斗羅、マリオ、戦車。チートと攻略。ROM は自分で読み込み。",
+    "titleGamesSfc": "SFC / SNES｜チートと攻略 — cv.cm",
+    "descGamesSfc": "マリオワールド、ゼルダ、ストII。",
+    "titleGamesGb": "ゲームボーイ｜チートと攻略 — cv.cm",
+    "descGamesGb": "ポケモン赤、テトリス、カービィ。",
+    "titleGamesGbc": "GBC｜チートと攻略 — cv.cm",
+    "descGamesGbc": "ポケモン金。ジョウト攻略。",
+    "titleGamesGba": "GBA｜チートと攻略 — cv.cm",
+    "descGamesGba": "エメラルド、マリカ、ふしぎのぼうし。",
+    "titleGamesMd": "メガドライブ｜チートと攻略 — cv.cm",
+    "descGamesMd": "ソニック、ベア・ナックル2。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -189,7 +203,8 @@
     "image": "画像",
     "convert": "変換",
     "text": "テキスト",
-    "learn": "レッスン"
+    "learn": "レッスン",
+    "games": "ゲーム"
   },
   "lang": {
     "label": "言語",
@@ -1647,6 +1662,18 @@
       "a4": "No. It is arithmetic on the numbers you type.",
       "q5": "What currency?",
       "a5": "None. It is just a number with two decimal places."
+    },
+    "games": {
+      "q1": "ブラウザで NES は遊べますか？",
+      "a1": "はい。GitHub の EmulatorJS です。コアは S3。スマホは仮想パッド。",
+      "q2": "マリオや魂斗羅の ROM はありますか？",
+      "a2": "商用 ROM はありません。チートと攻略はあり、ROM は自分で読みます。Alter Ego などは即プレイ。",
+      "q3": "チートの使い方は？",
+      "a3": "各ページのコードを、ROM 起動後にエミュレータのチートメニューへ。版で違います。",
+      "q4": "ROM はアップロードされますか？",
+      "a4": "しません。ローカルファイルはこのタブだけ。再配布できる自作は S3 から取得します。",
+      "q5": "スマホ向きの機種は？",
+      "a5": "NES、GB、GBC、多くの GBA / MD。SFC は重いです。格闘とカートは横画面とパッド。"
     }
   },
   "qr": {
@@ -3067,5 +3094,47 @@
     "tax": "Tax",
     "gross": "Gross",
     "invalid": "Enter an amount of 0 or more and a rate of 0 or more."
+  },
+  "games": {
+    "back": "すべてのゲーム",
+    "play": "プレイ",
+    "loadRom": "ROMを選ぶ",
+    "loadRomHint": "ファイルはこのタブに残ります。商用 ROM は置きません。",
+    "hostedNote": "フリーの自作 ROM を S3 から起動します。",
+    "byoNote": "商用タイトルは置きません。持っている ROM を選んでください。アップロードしません。",
+    "cheats": "チート",
+    "guide": "攻略",
+    "related": "ほかのゲーム",
+    "year": "{n}",
+    "emulator": "EmulatorJS（GitHub オープンソース）",
+    "mobile": "スマホは仮想パッド。格闘とカートは Bluetooth パッド向き。",
+    "legal": "コアとフリー ROM は S3。商用ダンプは端末に残します。",
+    "filterAll": "すべて",
+    "empty": "この条件のゲームはありません。",
+    "hub": {
+      "kicker": "レトロ · ブラウザ · スマホ",
+      "title": "FC・SFC・GB・GBAをブラウザで",
+      "lead": "チート、攻略、オープンソースのエミュレータ。自作はそのまま。商用は自分の ROM。",
+      "menu": "すべてのゲーム",
+      "blurb": "チートと攻略つきのエミュレータゲーム。",
+      "all": "すべて見る"
+    },
+    "consoles": {
+      "fc": "FC / NES",
+      "sfc": "SFC / SNES",
+      "gb": "ゲームボーイ",
+      "gbc": "GBC",
+      "gba": "GBA",
+      "md": "メガドライブ"
+    },
+    "genres": {
+      "platform": "アクション",
+      "action": "アクション",
+      "shooting": "シューティング",
+      "rpg": "RPG",
+      "puzzle": "パズル",
+      "fighting": "格闘",
+      "racing": "レース"
+    }
   }
 }

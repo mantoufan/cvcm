@@ -67,6 +67,18 @@ Browser tools plus a tiny cloud clipboard.
 - **UUID generator** / UUID. [Open](https://cv.cm/en/uuid/)
 - **Regex tester** / 正则测试. [Open](https://cv.cm/en/regex/)
 
+## Games
+
+Retro emulator games in the browser, grouped by console and genre. Cheats (金手指), a short walkthrough, and FAQ on every game page. Play uses [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) cores on S3. Shiru freeware (Alter Ego, Lawn Mower) starts immediately. Commercial dumps are not hosted — load a ROM you already have; it stays in this tab.
+
+- [All games](https://cv.cm/en/games/) / [全部游戏](https://cv.cm/zh-cn/games/)
+- [FC / NES](https://cv.cm/zh-cn/games/fc/) — Contra, Super Mario Bros, Battle City
+- [SFC / SNES](https://cv.cm/zh-cn/games/sfc/)
+- [Game Boy](https://cv.cm/zh-cn/games/gb/)
+- [GBA](https://cv.cm/zh-cn/games/gba/)
+- [Mega Drive](https://cv.cm/zh-cn/games/md/)
+- [Alter Ego (freeware)](https://cv.cm/en/games/fc/alter-ego/)
+
 ## Lessons
 
 Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, HEIC and WebP conversion, crop, resize, watermark, and strip EXIF. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.

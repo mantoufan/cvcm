@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
+import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { LOCALES } from "../src/shared/locale";
 import {
   TOOLS,
@@ -90,7 +91,7 @@ describe("learn SEO", () => {
 describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
     const xml = buildSitemapXml("2026-09-16");
-    const extra = 1 + FEATURED_TUTORIALS.length;
+    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
     expect(FEATURED_TUTORIALS).toHaveLength(17);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");

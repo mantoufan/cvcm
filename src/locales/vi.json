@@ -179,7 +179,21 @@
     "titleCompound": "Lãi kép — giá trị tương lai — cv.cm",
     "descCompound": "Ước giá trị tương lai trong trình duyệt. Gốc, lãi, năm, lần ghép. Không tải lên.",
     "titleVat": "Tính VAT — thuế bán hàng — cv.cm",
-    "descVat": "Cộng VAT hoặc tách giá gồm thuế trong trình duyệt. Không tải lên."
+    "descVat": "Cộng VAT hoặc tách giá gồm thuế trong trình duyệt. Không tải lên.",
+    "titleGames": "Play NES, SNES, GB, GBA in the browser — cheats and walkthroughs — cv.cm",
+    "descGames": "Retro games in this tab. Cheats, walkthroughs, and EmulatorJS from GitHub. Homebrew plays instantly. Classic titles load from your ROM. Nothing is uploaded.",
+    "titleGamesFc": "FC / NES games — cheats and walkthroughs — cv.cm",
+    "descGamesFc": "Play NES games in the browser. Contra, Super Mario Bros, Battle City. Cheats and short walkthroughs. Load your own ROM.",
+    "titleGamesSfc": "SFC / SNES games — cheats and walkthroughs — cv.cm",
+    "descGamesSfc": "Play SNES games in the browser. Super Mario World, Zelda, Street Fighter II. Cheats and walkthroughs.",
+    "titleGamesGb": "Game Boy games — cheats and walkthroughs — cv.cm",
+    "descGamesGb": "Play Game Boy games in the browser. Pokémon Red, Tetris, Kirby. Cheats and walkthroughs.",
+    "titleGamesGbc": "Game Boy Color games — cheats and walkthroughs — cv.cm",
+    "descGamesGbc": "Play GBC games in the browser. Pokémon Gold cheats and a Johto walkthrough.",
+    "titleGamesGba": "GBA games — cheats and walkthroughs — cv.cm",
+    "descGamesGba": "Play GBA games in the browser. Pokémon Emerald, Mario Kart, Minish Cap. Cheats and walkthroughs.",
+    "titleGamesMd": "Mega Drive / Genesis games — cheats and walkthroughs — cv.cm",
+    "descGamesMd": "Play Sonic and Streets of Rage 2 in the browser. Cheats and walkthroughs. Load your own ROM."
   },
   "brand": "cv.cm",
   "nav": {
@@ -189,7 +203,8 @@
     "image": "Ảnh",
     "convert": "Đổi định dạng",
     "text": "Chữ",
-    "learn": "Bài học"
+    "learn": "Bài học",
+    "games": "Trò chơi"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -1647,6 +1662,18 @@
       "a4": "No. It is arithmetic on the numbers you type.",
       "q5": "What currency?",
       "a5": "None. It is just a number with two decimal places."
+    },
+    "games": {
+      "q1": "Can I play NES games in the browser?",
+      "a1": "Yes. cv.cm embeds EmulatorJS from GitHub (fceumm, snes9x, gambatte, mGBA, Genesis Plus GX). Cores are on S3. Touch controls work on phones.",
+      "q2": "Do you host Super Mario or Contra ROMs?",
+      "a2": "No commercial dumps. Those pages have cheats and walkthroughs; you load a ROM you own. Shiru freeware (Alter Ego, Lawn Mower) starts without a file.",
+      "q3": "How do cheat codes work?",
+      "a3": "Each game page lists Game Genie / Gameshark-style codes. After the ROM boots, paste them in the emulator cheat menu. Codes depend on the dump version.",
+      "q4": "Does the ROM get uploaded?",
+      "a4": "No. A local file is read in this tab and handed to the emulator. Homebrew we may redistribute is fetched from our S3 bucket.",
+      "q5": "Which consoles work on a phone?",
+      "a5": "NES, GB, GBC, and most GBA / Mega Drive titles. SNES is heavier. Landscape plus a Bluetooth pad helps fighters and karts."
     }
   },
   "qr": {
@@ -3067,5 +3094,47 @@
     "tax": "Tax",
     "gross": "Gross",
     "invalid": "Enter an amount of 0 or more and a rate of 0 or more."
+  },
+  "games": {
+    "back": "Tất cả game",
+    "play": "Chơi",
+    "loadRom": "Chọn ROM",
+    "loadRomHint": "The file stays in this tab. Commercial ROMs are not hosted.",
+    "hostedNote": "Freeware / homebrew ROM on cv.cm S3. Starts in the emulator.",
+    "byoNote": "This commercial title is not hosted. Choose a ROM you already have. It is never uploaded.",
+    "cheats": "Cheat",
+    "guide": "Hướng dẫn",
+    "related": "More games",
+    "year": "{n}",
+    "emulator": "EmulatorJS (open source, GitHub)",
+    "mobile": "Touch pad on phones. A Bluetooth gamepad is better for fighters and karts.",
+    "legal": "Cores and freeware ROMs live on S3. Classic dumps stay on your device.",
+    "filterAll": "All",
+    "empty": "No games in this filter.",
+    "hub": {
+      "kicker": "Retro · Browser · Phone",
+      "title": "Chơi FC, SFC, GB, GBA trên trình duyệt",
+      "lead": "Cheats, walkthroughs, and an open-source emulator. Homebrew starts here. Classic games load from your ROM. Nothing is uploaded.",
+      "menu": "Tất cả game",
+      "blurb": "Retro emulator games with cheats and guides.",
+      "all": "See all"
+    },
+    "consoles": {
+      "fc": "FC / NES",
+      "sfc": "SFC / SNES",
+      "gb": "Game Boy",
+      "gbc": "Game Boy Color",
+      "gba": "Game Boy Advance",
+      "md": "Mega Drive"
+    },
+    "genres": {
+      "platform": "Platform",
+      "action": "Action",
+      "shooting": "Shooter",
+      "rpg": "RPG",
+      "puzzle": "Puzzle",
+      "fighting": "Fighting",
+      "racing": "Racing"
+    }
   }
 }

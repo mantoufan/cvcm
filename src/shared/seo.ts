@@ -6,11 +6,13 @@ import ko from "../locales/ko.json";
 import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
-import { LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
+import { GAME_COVER, LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
+import { gameById, type GameConsoleId, type GameId } from "./games";
+import { gameCopy, gameFaqItems, gameGuideSteps } from "./games-i18n";
 import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { type Locale } from "./locale";
-import { appHref, learnHref, type ToolId, type TutorialId } from "./path";
+import { appHref, gamesHref, learnHref, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -40,6 +42,9 @@ export type SeoInput = {
   clipId?: string | null;
   tutorial?: TutorialId | null;
   learn?: boolean;
+  games?: boolean;
+  console?: GameConsoleId | null;
+  game?: GameId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -235,6 +240,11 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.learn) {
     return lookup(locale, seo.tutorial ? LEARN_TITLE[seo.tutorial] : "meta.titleLearn");
   }
+  if (seo.games) {
+    if (seo.game) return gameCopy(locale, seo.game).title;
+    if (seo.console) return lookup(locale, `meta.titleGames${consoleMeta(seo.console)}`);
+    return lookup(locale, "meta.titleGames");
+  }
   return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
 }
 
@@ -242,6 +252,11 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   const seo = normalizeSeo(input);
   if (seo.learn) {
     return lookup(locale, seo.tutorial ? LEARN_DESC[seo.tutorial] : "meta.descLearn");
+  }
+  if (seo.games) {
+    if (seo.game) return gameCopy(locale, seo.game).description;
+    if (seo.console) return lookup(locale, `meta.descGames${consoleMeta(seo.console)}`);
+    return lookup(locale, "meta.descGames");
   }
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
 }
@@ -253,7 +268,12 @@ export function pageCanonical(
 ): string {
   const seo = normalizeSeo(input, clipId);
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
+  if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId)}`;
+}
+
+function consoleMeta(id: GameConsoleId): string {
+  return id[0].toUpperCase() + id.slice(1);
 }
 
 function normalizeSeo(input: SeoInput | ToolId | null, clipId?: string | null): SeoInput {
@@ -281,12 +301,26 @@ export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
   return faqFrom(locale, `faq.learn.${tutorial}`);
 }
 
+export function gamesHubFaqItems(locale: Locale): FaqItem[] {
+  return faqFrom(locale, "faq.games");
+}
+
 export function faqJsonLd(
   locale: Locale,
   tool: ToolId | null,
   tutorial?: TutorialId | null,
+  game?: GameId | null,
+  gamesHub?: boolean,
 ): Record<string, unknown> | null {
-  const items = tutorial ? learnFaqItems(locale, tutorial) : tool ? faqItems(locale, tool) : [];
+  const items = game
+    ? gameFaqItems(locale, game)
+    : gamesHub
+      ? gamesHubFaqItems(locale)
+      : tutorial
+        ? learnFaqItems(locale, tutorial)
+        : tool
+          ? faqItems(locale, tool)
+          : [];
   if (items.length === 0) return null;
   return {
     "@context": "https://schema.org",
@@ -323,8 +357,44 @@ export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string
   };
 }
 
+export function gameHowToJsonLd(locale: Locale, id: GameId): Record<string, unknown> {
+  const copy = gameCopy(locale, id);
+  const game = gameById(id)!;
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: copy.title,
+    description: copy.lead,
+    image: coverUrl(GAME_COVER[id]),
+    step: gameGuideSteps(locale, id).map((step, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: step.title,
+      text: step.body,
+      url: `${pageCanonical(locale, { games: true, console: game.console, game: id })}#guide-${i + 1}`,
+    })),
+  };
+}
+
+export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, unknown> {
+  const copy = gameCopy(locale, id);
+  const game = gameById(id)!;
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    name: copy.name,
+    description: copy.description,
+    image: coverUrl(GAME_COVER[id]),
+    gamePlatform: lookup(locale, `games.consoles.${game.console}`),
+    genre: lookup(locale, `games.genres.${game.genre}`),
+    datePublished: String(game.year),
+    url: pageCanonical(locale, { games: true, console: game.console, game: id }),
+  };
+}
+
 function ogImage(seo: SeoInput): string | null {
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
+  if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.tool) return coverUrl(TOOL_COVER[seo.tool]);
   return null;
 }
@@ -363,20 +433,32 @@ export function applyHtmlSeo(
   out = out.replace(/<meta property="og:(title|description|url|type|image)"[^>]*>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${seo.learn && seo.tutorial ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game ? "article" : "website"}" />`,
   ];
   if (image) tags.push(`<meta property="og:image" content="${escapeHtml(image)}" />`);
-  const ld = faqJsonLd(locale, seo.tool ?? null, seo.learn ? seo.tutorial : null);
+  const ld = faqJsonLd(
+    locale,
+    seo.tool ?? null,
+    seo.learn ? seo.tutorial : null,
+    seo.game ?? null,
+    Boolean(seo.games && !seo.game),
+  );
   if (ld) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (seo.learn && seo.tutorial) {
+  if (seo.game) {
+    tags.push(
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(gameHowToJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="game-jsonld">${JSON.stringify(gameVideoGameJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.learn && seo.tutorial) {
     tags.push(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howToJsonLd(locale, seo.tutorial)).replace(/</g, "\\u003c")}</script>`,
     );

@@ -82,7 +82,10 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/locales/guides/` — 8-locale how-to copy
 - `public/covers/guides/` — per-tool step screenshots
 - `src/client/learn/` — minimal, complete illustrated tutorials
-- `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS` (`/{locale}/learn/{id}/`; locale paths lowercase: `zh-cn` `zh-tw`)
+- `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)
+- `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted; Shiru freeware is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/data/`
+- `src/locales/games/` — per-game SEO copy (cheats, walkthrough, FAQ)
+- `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS`, games (`/{locale}/learn/{id}/`, `/{locale}/games/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es` (tool how-tos in `guides/`)

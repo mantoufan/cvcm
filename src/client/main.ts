@@ -56,14 +56,16 @@ import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { mountHome } from "./home";
 import { mountLearn, mountLearnHub } from "./learn/ui";
+import { mountGame, mountGamesHub } from "./games/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
-import { COVER, LEARN_COVER } from "./covers";
+import { COVER, GAME_COVER, LEARN_COVER } from "./covers";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
   TUTORIAL_GROUPS,
   appHref,
+  gamesHref,
   isPublishedTutorial,
   learnHref,
   parseAppPath,
@@ -71,6 +73,9 @@ import {
   type ToolId,
   type TutorialId,
 } from "../shared/path";
+import type { GameConsoleId, GameId } from "../shared/games";
+import { GAME_CONSOLES, GAMES } from "../shared/games";
+import { gameCopy } from "../shared/games-i18n";
 import { pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
@@ -86,6 +91,9 @@ let tool: ToolId | null = null;
 let clipId: string | null = null;
 let tutorial: TutorialId | null = null;
 let learnHub = false;
+let gamesHub = false;
+let gameConsole: GameConsoleId | null = null;
+let gameId: GameId | null = null;
 let unmountPdfJpg = (): void => {};
 let unmountMergePdf = (): void => {};
 let unmountCompressPdf = (): void => {};
@@ -114,6 +122,13 @@ function boot(): void {
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
+  } else if (parsed.kind === "games") {
+    setLocale(parsed.locale);
+    applyGames(parsed.console, parsed.game);
+    const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -124,6 +139,11 @@ function boot(): void {
     setLocale(loc);
     applyLearn(parsed.tutorial);
     history.replaceState(null, "", withSearch(learnHref(loc, parsed.tutorial), location.search));
+  } else if (parsed.kind === "bare-games") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyGames(parsed.console, parsed.game);
+    history.replaceState(null, "", withSearch(gamesHref(loc, parsed.console, parsed.game), location.search));
   } else {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
@@ -175,6 +195,9 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   clipId = nextClip;
   tutorial = null;
   learnHub = false;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -182,6 +205,19 @@ function applyLearn(next: TutorialId | null): void {
   clipId = null;
   tutorial = next;
   learnHub = next === null;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
+}
+
+function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
+  tool = null;
+  clipId = null;
+  tutorial = null;
+  learnHub = false;
+  gamesHub = nextGame === null;
+  gameConsole = consoleId;
+  gameId = nextGame;
 }
 
 function unmountTools(): void {
@@ -256,7 +292,9 @@ function render(): void {
   pageGen += 1;
   unmountTools();
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" ? parsed.locale : locale();
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games"
+    ? parsed.locale
+    : locale();
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     applyTool(parsed.tool, parsed.clipId ?? null);
@@ -267,11 +305,16 @@ function render(): void {
       history.replaceState(null, "", withSearch(learnHref(parsed.locale, null), location.search));
     }
     applyLearn(published ? parsed.tutorial : null);
+  } else if (parsed.kind === "games") {
+    setLocale(parsed.locale);
+    applyGames(parsed.console, parsed.game);
   } else if (parsed.kind === "clip") {
     applyTool("clip", parsed.id);
   } else if (parsed.kind === "bare-learn") {
     const published = parsed.tutorial && isPublishedTutorial(parsed.tutorial);
     applyLearn(published ? parsed.tutorial : null);
+  } else if (parsed.kind === "bare-games") {
+    applyGames(parsed.console, parsed.game);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -280,7 +323,9 @@ function render(): void {
 
   const seo = learnHub || tutorial
     ? { learn: true as const, tutorial }
-    : { tool, clipId };
+    : gamesHub || gameId
+      ? { games: true as const, console: gameConsole, game: gameId }
+      : { tool, clipId };
   document.title = pageTitle(loc, seo);
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute("content", pageDescription(loc, seo));
@@ -293,9 +338,15 @@ function render(): void {
   const ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.setAttribute("content", pageCanonical(loc, seo));
   const ogImage = document.querySelector('meta[property="og:image"]');
-  const image = tutorial ? LEARN_COVER[tutorial] : tool ? COVER[tool] : null;
+  const image = tutorial
+    ? LEARN_COVER[tutorial]
+    : gameId
+      ? GAME_COVER[gameId]
+      : tool
+        ? COVER[tool]
+        : null;
   if (ogImage && image) ogImage.setAttribute("content", `https://cv.cm${image.split("?")[0]}`);
-  syncPageJsonLd(loc, tool, tutorial);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub);
 
   clear(app);
   app.append(shell(loc));
@@ -305,7 +356,7 @@ function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
   void mountPage(main, loc);
 
-  return h("div", { class: "page" + (tool || tutorial || learnHub ? " is-tool" : "") },
+  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId ? " is-tool" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
@@ -313,6 +364,7 @@ function shell(loc: Locale): HTMLElement {
       ),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         toolsMenu(loc, tool),
+        gamesMenu(loc, gameConsole, gameId, gamesHub),
         learnMenu(loc, tutorial, learnHub),
       ),
       langSwitch(loc),
@@ -403,6 +455,8 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     await mod.mountPortraitSim(main);
   } else if (learnHub) mountLearnHub(main);
   else if (tutorial) mountLearn(main, tutorial);
+  else if (gameId) mountGame(main, gameId);
+  else if (gamesHub) mountGamesHub(main, gameConsole);
   else mountHome(main, loc);
   if (gen !== pageGen) return;
   if (tool && !(tool === "clip" && clipId)) {
@@ -503,6 +557,50 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
   );
 }
 
+function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId | null, hub: boolean): HTMLElement {
+  const active = hub || Boolean(current);
+  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
+    h("button", {
+      type: "button",
+      class: "menu-btn" + (active ? " on" : ""),
+      "aria-haspopup": "true",
+      onClick: menuToggle,
+    }, t("nav.games")),
+    h("div", { class: "menu-panel wide", role: "menu" },
+      h("a", {
+        class: "menu-item plain" + (hub && !consoleId ? " on" : ""),
+        href: gamesHref(loc, null),
+        role: "menuitem",
+        "data-nav": "games",
+        "aria-current": hub && !consoleId ? "page" : undefined,
+      },
+        h("div", { class: "menu-copy" },
+          h("strong", null, t("games.hub.menu")),
+          h("span", null, t("games.hub.blurb")),
+        ),
+      ),
+      ...GAME_CONSOLES.flatMap((id) => [
+        h("div", { class: "menu-group" }, t(`games.consoles.${id}`)),
+        ...GAMES.filter((game) => game.console === id).map((game) =>
+          h("a", {
+            class: "menu-item" + (current === game.id ? " on" : ""),
+            href: gamesHref(loc, game.console, game.id),
+            role: "menuitem",
+            "data-nav": `game-${game.id}`,
+            "aria-current": current === game.id ? "page" : undefined,
+          },
+            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40" }),
+            h("div", { class: "menu-copy" },
+              h("strong", null, gameCopy(loc, game.id).name),
+              h("span", null, gameCopy(loc, game.id).blurb),
+            ),
+          ),
+        ),
+      ]),
+    ),
+  );
+}
+
 function langSwitch(current: Locale): HTMLElement {
   const sel = h("select", {
     class: "lang",
@@ -512,7 +610,9 @@ function langSwitch(current: Locale): HTMLElement {
       setLocale(next);
       const href = learnHub || tutorial
         ? withSearch(learnHref(next, tutorial), location.search)
-        : withSearch(appHref(next, tool, clipId), location.search);
+        : gamesHub || gameId
+          ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
+          : withSearch(appHref(next, tool, clipId), location.search);
       history.pushState(null, "", href);
       render();
     },

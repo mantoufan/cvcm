@@ -1,8 +1,17 @@
 import { h } from "./dom";
 import { t } from "./i18n";
 import { toolHowToJsonLd } from "../shared/guide";
-import { faqItems, faqJsonLd, howToJsonLd, learnFaqItems, type FaqItem } from "../shared/seo";
+import {
+  faqItems,
+  faqJsonLd,
+  gameHowToJsonLd,
+  gameVideoGameJsonLd,
+  howToJsonLd,
+  learnFaqItems,
+  type FaqItem,
+} from "../shared/seo";
 import type { Locale } from "../shared/locale";
+import type { GameId } from "../shared/games";
 import type { ToolId, TutorialId } from "../shared/path";
 
 function renderFaq(items: FaqItem[]): HTMLElement {
@@ -36,13 +45,22 @@ export function syncPageJsonLd(
   locale: Locale,
   tool: ToolId | null,
   tutorial: TutorialId | null,
+  game: GameId | null = null,
+  gamesHub = false,
 ): void {
-  const faq = faqJsonLd(locale, tool, tutorial);
+  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub);
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "howto-jsonld",
-    tutorial ? howToJsonLd(locale, tutorial) : tool ? toolHowToJsonLd(locale, tool) : null,
+    game
+      ? gameHowToJsonLd(locale, game)
+      : tutorial
+        ? howToJsonLd(locale, tutorial)
+        : tool
+          ? toolHowToJsonLd(locale, tool)
+          : null,
   );
+  writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
 }
 
 function writeJsonLd(id: string, data: Record<string, unknown> | null): void {

@@ -1,8 +1,15 @@
 import { isClipId } from "./clip";
+import {
+  gameById,
+  isGameConsoleId,
+  isGameId,
+  type GameConsoleId,
+  type GameId,
+} from "./games";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
-  /^\/(assets\/|covers\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
+  /^\/(assets\/|covers\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
@@ -145,14 +152,37 @@ export function isTutorialId(value: string): value is TutorialId {
   return (TUTORIALS as readonly string[]).includes(value);
 }
 
+export type GamesPath = {
+  console: GameConsoleId | null;
+  game: GameId | null;
+};
+
 export type AppPath =
   | { kind: "static" }
   | { kind: "bare"; tool: ToolId | null; clipId?: string }
   | { kind: "bare-learn"; tutorial: TutorialId | null }
+  | ({ kind: "bare-games" } & GamesPath)
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
+  | ({ kind: "games"; locale: Locale } & GamesPath)
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
+
+function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: string[]): GamesPath | "unknown" {
+  if (extra && extra.length > 0) return "unknown";
+  if (!consoleOrGame) return { console: null, game: null };
+  if (isGameConsoleId(consoleOrGame)) {
+    if (!gamePart) return { console: consoleOrGame, game: null };
+    const game = gameById(gamePart);
+    if (game && game.console === consoleOrGame) return { console: consoleOrGame, game: game.id };
+    return "unknown";
+  }
+  if (isGameId(consoleOrGame) && !gamePart) {
+    const game = gameById(consoleOrGame)!;
+    return { console: game.console, game: game.id };
+  }
+  return "unknown";
+}
 
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
@@ -178,6 +208,11 @@ export function parseAppPath(pathname: string): AppPath {
       if (isTutorialId(third)) return { kind: "learn", locale, tutorial: third };
       return { kind: "unknown" };
     }
+    if (second === "games") {
+      const games = parseGamesTail(third, rest[0], rest.slice(1));
+      if (games === "unknown") return { kind: "unknown" };
+      return { kind: "games", locale, ...games };
+    }
     if (rest.length > 0) return { kind: "unknown" };
     if (!isToolId(second)) return { kind: "unknown" };
     if (!third) return { kind: "app", locale, tool: second };
@@ -191,6 +226,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (!second) return { kind: "bare-learn", tutorial: null };
     if (isTutorialId(second) && !third) return { kind: "bare-learn", tutorial: second };
     return { kind: "unknown" };
+  }
+  if (first === "games") {
+    const games = parseGamesTail(second, third, rest);
+    if (games === "unknown") return { kind: "unknown" };
+    return { kind: "bare-games", ...games };
   }
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "clip" && second && !third && isClipId(second)) {
@@ -208,6 +248,19 @@ export function appHref(locale: Locale, tool: ToolId | null, clipId?: string | n
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
   const base = `/${localePath(locale)}/learn`;
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
+}
+
+export function gamesHref(
+  locale: Locale,
+  consoleId: GameConsoleId | null = null,
+  game: GameId | null = null,
+): string {
+  const base = `/${localePath(locale)}/games`;
+  if (game) {
+    const resolved = consoleId ?? gameById(game)?.console;
+    return resolved ? `${base}/${resolved}/${game}/` : `${base}/`;
+  }
+  return consoleId ? `${base}/${consoleId}/` : `${base}/`;
 }
 
 /** Keep `location.search` / `url.search` on canonical redirects. */
