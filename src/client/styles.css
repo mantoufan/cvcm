@@ -1329,6 +1329,32 @@ body {
 .learn-diagram img { border: 1px solid #ead4de; border-radius: 12px; object-fit: contain; }
 .learn-diagram figcaption { line-height: 1.6; }
 
+.page.is-game { padding-bottom: 1.2rem; }
+.page.is-game .tool-head { padding: 0.15rem 0 0.35rem; }
+.page.is-game .tool-head h1 {
+  font-size: clamp(1.15rem, 4vw, 1.55rem);
+  margin: 0;
+}
+.page.is-game .back { min-height: 32px; margin: 0; }
+.page.is-game .kicker { margin: 0 0 0.15rem; }
+.game-lead { margin: 0 0 1rem; }
+.game-play { display: grid; gap: 0.45rem; margin: 0 0 1rem; }
+.game-playbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+.game-rom-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 .game-filters { display: grid; gap: 0.55rem; padding: 1.2rem 0 0; }
 .game-filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .game-chip {
@@ -1347,10 +1373,11 @@ body {
 .game-meta { margin: 0 0 0.25rem; color: var(--pink-deep); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; }
 .game-hero { margin: 0 0 1.1rem; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
 .game-hero img { display: block; width: 100%; height: auto; object-fit: cover; }
-.game-player { margin: 0 0 1.4rem; display: grid; gap: 0.7rem; }
 .game-frame {
   width: 100%;
-  min-height: min(70vh, 540px);
+  height: calc(100dvh - 11.25rem);
+  min-height: 260px;
+  max-height: 720px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: #1a1020;
@@ -1378,5 +1405,5 @@ body {
 .game-legal { margin-top: 1.4rem; color: var(--ink-soft); font-size: 0.82rem; }
 @media (max-width: 640px) {
   .cheat-row { grid-template-columns: 1fr; }
-  .game-frame { min-height: 70vw; }
+  .game-frame { height: calc(100dvh - 10.5rem); min-height: 220px; }
 }

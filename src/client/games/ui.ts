@@ -7,6 +7,7 @@ import {
   GAME_ROM_BASE,
   GAMES,
   gameById,
+  gameRomFile,
   gamesFor,
   isGameGenreId,
   type Game,
@@ -118,21 +119,22 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   const related = GAMES.filter((item) => item.id !== id && (item.console === game.console || item.genre === game.genre)).slice(0, 4);
 
   host.append(
-    h("header", { class: "tool-head" },
+    h("header", { class: "tool-head game-head" },
       h("a", { class: "back", href: gamesHref(loc, game.console), "data-nav": `games-${game.console}` }, t("games.back")),
       h("p", { class: "kicker" }, `${t(`games.consoles.${game.console}`)} · ${t(`games.genres.${game.genre}`)}`),
       h("h1", null, copy.name),
-      h("p", { class: "lede" }, copy.lead),
     ),
+    player(game, copy.name),
+    h("p", { class: "lede game-lead" }, copy.lead),
     h("figure", { class: "game-hero" },
       h("img", {
         src: GAME_COVER[id],
         alt: copy.name,
         width: "1280",
         height: "720",
+        loading: "lazy",
       }),
     ),
-    player(game, copy.name),
     ...(cheats.length
       ? [h("section", { class: "game-section", "aria-labelledby": "cheats-title" },
         h("h2", { id: "cheats-title" }, t("games.cheats")),
@@ -180,13 +182,15 @@ export function mountGame(host: HTMLElement, id: GameId): void {
 }
 
 function player(game: Game, name: string): HTMLElement {
-  const box = h("section", { class: "game-player" });
+  const box = h("section", { class: "game-play", "aria-label": t("games.play") });
   const frame = h("iframe", {
     class: "game-frame",
     title: name,
     allow: "autoplay; gamepad",
     src: "about:blank",
   }) as HTMLIFrameElement;
+  const status = h("p", { class: "game-note" }, t("games.byoNote"));
+  const romUrl = `${GAME_ROM_BASE}${gameRomFile(game)}`;
 
   const boot = (payload: Record<string, unknown>): void => {
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
@@ -199,39 +203,38 @@ function player(game: Game, name: string): HTMLElement {
     frame.addEventListener("load", send, { once: true });
   };
 
-  if (game.rom) {
-    box.append(
-      h("p", { class: "game-note" }, t("games.hostedNote")),
-      frame,
-      h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
-    );
-    queueMicrotask(() => boot({
-      rom: `${GAME_ROM_BASE}${game.rom}`,
-      cheats: emulatorCheats(game),
-    }));
-    return box;
-  }
-
   const picker = h("input", {
     type: "file",
     accept: game.accept,
-    class: "file",
+    class: "game-rom-input",
     "aria-label": t("games.loadRom"),
   }) as HTMLInputElement;
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
+    status.textContent = t("games.loadRomHint");
     const buffer = await file.arrayBuffer();
     boot({ buffer, cheats: emulatorCheats(game) });
   });
 
   box.append(
-    h("p", { class: "game-note" }, t("games.byoNote")),
-    h("label", { class: "btn" }, t("games.loadRom"), picker),
-    h("p", { class: "game-note muted" }, t("games.loadRomHint")),
     frame,
+    h("div", { class: "game-playbar" },
+      h("label", { class: "btn" }, t("games.loadRom"), picker),
+      status,
+    ),
     h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
   );
+
+  queueMicrotask(() => {
+    void fetch(romUrl, { method: "HEAD" }).then((res) => {
+      if (!res.ok || picker.files?.length) return;
+      status.textContent = t("games.hostedNote");
+      boot({ rom: romUrl, cheats: emulatorCheats(game) });
+    }).catch(() => {
+      /* keep the file picker; a missing hosted ROM is expected */
+    });
+  });
   return box;
 }
 

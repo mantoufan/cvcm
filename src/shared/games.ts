@@ -339,3 +339,17 @@ export function isGameGenreId(value: string): value is GameGenreId {
 export const GAME_EMU_DATA = "/emu/data/";
 export const GAME_ROM_BASE = "/emu/roms/";
 export const GAME_S3_PREFIX = "https://files.s3.cv.cm/games/";
+
+const ROM_EXT: Record<GameConsoleId, string> = {
+  fc: ".nes",
+  sfc: ".sfc",
+  gb: ".gb",
+  gbc: ".gbc",
+  gba: ".gba",
+  md: ".md",
+};
+
+/** S3 object name under `/emu/roms/`. Hosted when that object exists; every page still accepts a local file. */
+export function gameRomFile(game: Game): string {
+  return game.rom ?? `${game.id}${ROM_EXT[game.console]}`;
+}

@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
+import playerHtml from "../public/emu/player.html?raw";
+import playerJs from "../public/emu/player.js?raw";
 import { GAME_COVER } from "../src/shared/covers";
 import {
   GAME_CONSOLES,
   GAMES,
   gameById,
+  gameRomFile,
   gamesFor,
   isGameId,
 } from "../src/shared/games";
@@ -37,14 +40,14 @@ const assets = {
 };
 
 describe("games catalog", () => {
-  it("covers every console and hosts only freeware ROMs", () => {
+  it("covers every console and gives every game an S3 ROM filename", () => {
     for (const id of GAME_CONSOLES) {
       expect(gamesFor(id).length, id).toBeGreaterThan(0);
     }
-    expect(GAMES.filter((game) => game.rom).map((game) => game.id).sort()).toEqual([
-      "alter-ego",
-      "lawn-mower",
-    ]);
+    const files = GAMES.map((game) => gameRomFile(game));
+    expect(new Set(files).size).toBe(files.length);
+    expect(gameRomFile(gameById("contra")!)).toBe("contra.nes");
+    expect(gameRomFile(gameById("alter-ego")!)).toBe("alter-ego.nes");
     expect(Object.keys(GAME_COVER).sort()).toEqual([...GAMES.map((game) => game.id)].sort());
   });
 
@@ -129,6 +132,12 @@ describe("games worker", () => {
     const body = await html.text();
     expect(body).toContain("魂斗罗");
     expect(html.headers.get("Content-Security-Policy")).toContain("frame-src 'self'");
+  });
+
+  it("boots the emulator from an external script so CSP can block inline JS", () => {
+    expect(playerHtml).not.toMatch(/<script>/);
+    expect(playerHtml).toContain('src="/emu/player.js"');
+    expect(playerJs).toContain("EJS_pathtodata");
   });
 
   it("allows the emulator player to be framed with wasm eval", async () => {

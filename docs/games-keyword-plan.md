@@ -6,7 +6,7 @@ Mainland Google volume is small; zh pages still target 百度 / 小红书 / 知�
 
 ## Do not host
 
-Commercial Nintendo / Sega / Pokémon ROMs. Game pages for those titles are cheats + walkthrough + an in-tab emulator that reads a local file. Only Shiru freeware (`alter-ego`, `lawn-mower`) is on S3.
+cv.cm will not scrape or copy commercial dumps from third-party sites. Every game page can start from an S3 object named `{id}.{ext}` when that file exists, and always keeps a local file picker. Shiru freeware (`alter-ego`, `lawn-mower`) is already on S3.
 
 ## Query families (every game page)
 
