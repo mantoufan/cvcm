@@ -36,6 +36,13 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 | Telegraph JPG→PDF | https://telegra.ph/Turn-JPG-photos-into-a-PDF-without-an-account-09-20 | live | image-pdf/merge/HEIC |
 | write.as compress | https://write.as/mdu6vpw659gxy | live | compress how-to |
 | rentry barcode | https://rentry.co/a4m3622b | live | barcode/QR/merge |
+| paste.rs split | https://paste.rs/j3Dc5.md | live | split PDF |
+| dpaste split | https://dpaste.com/37JPPTNQH | live | split PDF |
+| GitHub gist split | https://gist.github.com/mantoufan/0d51ba4a438491480d9fb37a1ab9caac | live | split PDF |
+| Telegraph split | https://telegra.ph/Split-a-PDF-in-the-browser-without-uploading-09-20 | live | split/merge/compress/PDF-JPG |
+| Telegraph PDF→JPG | https://telegra.ph/Convert-PDF-pages-to-JPG-without-uploading-09-20 | live | pdf-jpg/image-pdf/split |
+| write.as split | https://write.as/rp1rnpjwq06br | live | split PDF |
+| rentry PDF→JPG | https://rentry.co/5vt4z2ek | live | pdf-jpg/image-pdf/split |
 | nologin.tools | https://nologin.tools/tool/cv-cm | pending review | API slug `cv-cm` (2026-09-18) |
 | Launching Next | https://www.launchingnext.com/thanks/?i=151926 | submitted | id 151926 |
 | awesome-no-login-web-apps | https://github.com/aviaryan/awesome-no-login-web-apps | merged #473 | clipboard blurb; follow-up to add PDF/image |
@@ -67,12 +74,17 @@ Ads yaml lived in the old clipboard repo and is gone. Drop a fresh `google-ads.y
 | https://github.com/1c7/chinese-independent-developer/pull/1396 | merged — 去掉 Seedance |
 | https://github.com/YSGStudyHards/Awesome-Tools/pull/101 | merged — PDF 管理工具 |
 | https://github.com/anondotli/awesome-privacy-tools/pull/58 | EXIF / PDF metadata |
+| https://github.com/james-see/awesome-pastes/pull/3 | clip pastebin |
+| https://github.com/LlamaGenAI/awesome-free-saas/pull/101 | retargeted: clip + in-browser tools |
+| https://github.com/GetStream/awesome-saas-services/pull/141 | retargeted |
+| https://github.com/Micro-SaaS-Examples/Best-Micro-SaaS-Tools/pull/87 | retargeted |
+| https://github.com/ProductivityDirectory/awesome-productivity-tools/pull/69 | retargeted |
 
 ## Do not resubmit (already attempted)
 
 10words, osalt.com, aitoolsdirectory.com, ai-bot.cn, backdata.net, hhlink.com, iforai.com, ainavpro.com, dropyourai.com, apprater.net, startupcollections.com, nextool.ai, toolhunter.ai, humanornot.co, aitoolsmasters.com, bufferapps.com, ababtools.com, fwol.cn.
 
-Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal). Joinly `/submit-startup` is paid (PayPro checkout) — do not finish. once.tools is pay-once software only. free-for-dev rejects generic toolbox sites. Wayback Save Page Now now requires login. archive.today returned 429. opensourcealternative.to is paid/waitlist and self-hosted-only. hastebin API needs a token.
+Skip: twelve.tools, microlaunch, whatlaunched.today (reciprocal). Joinly `/submit-startup` is paid (PayPro checkout) — do not finish. once.tools is pay-once software only. free-for-dev rejects generic toolbox sites. Wayback Save Page Now now requires login. archive.today returned 429. opensourcealternative.to is paid/waitlist and self-hosted-only. hastebin API needs a token. 0x0.st uploads disabled (spam). RunaCapital/awesome-oss-alternatives needs 100+ GitHub stars and a for-profit company.
 
 ## Closed 2026-09-18 (retired AI-video product)
 
