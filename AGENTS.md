@@ -66,6 +66,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/sort/` — sort lines / unique
 - `src/client/replace/` — find and replace
 - `src/client/words/` — number to English words
+- `src/client/add-days/` — add / subtract days from a date
+- `src/client/week/` — ISO week number
+- `src/client/aspect/` — aspect ratio from width and height
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

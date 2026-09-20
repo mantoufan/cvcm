@@ -88,6 +88,9 @@ const STEPS = {
   sort: 3,
   replace: 3,
   words: 3,
+  "add-days": 3,
+  week: 3,
+  aspect: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1192,6 +1195,50 @@ async function runTool(send, id, fx) {
       n.value = "2026";
       n.dispatchEvent(new Event("input", { bubbles: true }));
       return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "add-days") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const d = document.querySelector("input[type=date]");
+      const n = document.querySelector("input[type=number]");
+      if (d) { d.value = "2026-01-01"; d.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (n) { n.value = "30"; n.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "week") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const d = document.querySelector("input[type=date]");
+      if (!d) return false;
+      d.value = "2026-01-01";
+      d.dispatchEvent(new Event("input", { bubbles: true }));
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "aspect") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const nums = [...document.querySelectorAll("input[type=number]")];
+      if (nums[0]) { nums[0].value = "1920"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
+      if (nums[1]) { nums[1].value = "1080"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
+      return nums.length;
     })()`);
     await sleep(200);
     await snap(2);

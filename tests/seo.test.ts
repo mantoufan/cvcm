@@ -77,6 +77,9 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "sort")).toMatch(/Sort lines/i);
     expect(pageTitle("en", "replace")).toMatch(/Find and replace/i);
     expect(pageTitle("en", "words")).toMatch(/Number to words/i);
+    expect(pageTitle("en", "add-days")).toMatch(/Add days/i);
+    expect(pageTitle("en", "week")).toMatch(/Week number/i);
+    expect(pageTitle("en", "aspect")).toMatch(/Aspect ratio/i);
     expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
     expect(pageTitle("en", "watermark")).toMatch(/watermark/i);
     expect(pageTitle("en", "watermark")).toMatch(/ID copies/i);
@@ -97,7 +100,7 @@ describe("seo helpers", () => {
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words",
+      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words", "add-days", "week", "aspect",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

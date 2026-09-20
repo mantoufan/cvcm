@@ -51,6 +51,9 @@ import { daysBetween } from "../src/shared/days";
 import { sortLines } from "../src/shared/sort";
 import { replaceText } from "../src/shared/replace";
 import { numberToWords } from "../src/shared/words";
+import { addDays } from "../src/shared/add-days";
+import { isoWeek, isoWeekLabel } from "../src/shared/week";
+import { aspectOf } from "../src/shared/aspect";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -626,6 +629,31 @@ describe("words", () => {
   });
 });
 
+describe("add-days", () => {
+  it("adds and subtracts civil days", () => {
+    expect(addDays("2026-01-01", 1)).toBe("2026-01-02");
+    expect(addDays("2024-02-28", 1)).toBe("2024-02-29");
+    expect(addDays("2026-01-01", -1)).toBe("2025-12-31");
+    expect(addDays("2026-02-30", 1)).toBeNull();
+  });
+});
+
+describe("week", () => {
+  it("uses ISO weeks", () => {
+    expect(isoWeek("2026-01-01")).toEqual({ year: 2026, week: 1, weekday: 4 });
+    expect(isoWeek("2021-01-01")).toEqual({ year: 2020, week: 53, weekday: 5 });
+    expect(isoWeekLabel({ year: 2026, week: 1, weekday: 4 })).toBe("2026-W01");
+  });
+});
+
+describe("aspect", () => {
+  it("simplifies width and height", () => {
+    expect(aspectOf(1920, 1080)).toEqual({ w: 16, h: 9, ratio: "16:9", decimal: 1920 / 1080 });
+    expect(aspectOf(1, 1)?.ratio).toBe("1:1");
+    expect(aspectOf(0, 10)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -694,6 +722,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/sort/")).toEqual({ kind: "app", locale: "en", tool: "sort" });
     expect(parseAppPath("/en/replace/")).toEqual({ kind: "app", locale: "en", tool: "replace" });
     expect(parseAppPath("/en/words/")).toEqual({ kind: "app", locale: "en", tool: "words" });
+    expect(parseAppPath("/en/add-days/")).toEqual({ kind: "app", locale: "en", tool: "add-days" });
+    expect(parseAppPath("/en/week/")).toEqual({ kind: "app", locale: "en", tool: "week" });
+    expect(parseAppPath("/en/aspect/")).toEqual({ kind: "app", locale: "en", tool: "aspect" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -737,6 +768,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "sort")).toBe("/zh-cn/sort/");
     expect(appHref("zh-CN", "replace")).toBe("/zh-cn/replace/");
     expect(appHref("zh-CN", "words")).toBe("/zh-cn/words/");
+    expect(appHref("zh-CN", "add-days")).toBe("/zh-cn/add-days/");
+    expect(appHref("zh-CN", "week")).toBe("/zh-cn/week/");
+    expect(appHref("zh-CN", "aspect")).toBe("/zh-cn/aspect/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

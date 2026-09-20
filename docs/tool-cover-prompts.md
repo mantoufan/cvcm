@@ -79,3 +79,15 @@ Same character and room. A cream card and a tiny pink eraser, swapping a heart s
 ## Number to words
 
 Same character and room. A tiny cream abacus with heart beads. No digits. Save `public/covers/words-sweet.jpg`, `sips -z 720 1280`.
+
+## Add days to a date
+
+Same character and room. Two cream calendar pages joined by a pink plus ribbon. No numerals. Save `public/covers/add-days-sweet.jpg`, `sips -z 720 1280`.
+
+## Week number
+
+Same character and room. A cream week strip of seven heart stamps. No letters. Save `public/covers/week-sweet.jpg`, `sips -z 720 1280`.
+
+## Aspect ratio
+
+Same character and room. A wide cream picture frame with a heart instead of a photo. No numbers. Save `public/covers/aspect-sweet.jpg`, `sips -z 720 1280`.
