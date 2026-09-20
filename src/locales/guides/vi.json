@@ -633,6 +633,33 @@
       "s2b": "0 to 999,999,999,999. No “and”, no decimals.",
       "s3t": "Copy the words",
       "s3b": "Copy puts the English words on the clipboard."
+    },
+    "add-days": {
+      "lead": "Add or subtract whole days from a calendar date in this tab. Nothing is uploaded.",
+      "s1t": "Open Add days to a date",
+      "s1b": "Today and +30 days are already filled. The new date sits on the right.",
+      "s2t": "Change the date or the day count",
+      "s2b": "Negative days go backwards. Leap days are included.",
+      "s3t": "Copy the new date",
+      "s3b": "Copy puts YYYY-MM-DD on the clipboard."
+    },
+    "week": {
+      "lead": "Find the ISO week number for a date in this tab. Nothing is uploaded.",
+      "s1t": "Open Week number",
+      "s1b": "Today is already filled. ISO week, year, and weekday sit on the right.",
+      "s2t": "Pick another date",
+      "s2b": "Week 1 contains the first Thursday of the year. Monday is weekday 1.",
+      "s3t": "Copy the week",
+      "s3b": "Copy puts the ISO week label on the clipboard."
+    },
+    "aspect": {
+      "lead": "Simplify a width and height to a ratio such as 16:9 in this tab. Nothing is uploaded.",
+      "s1t": "Open Aspect ratio",
+      "s1b": "1920×1080 is already filled as 16:9.",
+      "s2t": "Change width or height",
+      "s2b": "The numbers are rounded to pixels, then reduced by their greatest common divisor.",
+      "s3t": "Copy the ratio",
+      "s3b": "Copy puts 16:9 (or your ratio) on the clipboard."
     }
   }
 }
