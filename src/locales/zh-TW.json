@@ -227,7 +227,21 @@
     "titleJoinAudio": "怎麼拼接音訊 / 合併 MP3 | cv.cm",
     "descJoinAudio": "按順序放入兩段或更多，下載一份 WAV，從頭到尾播一遍。後面的對齊第一段的取樣率。不上傳。",
     "titleMakeFavicon": "怎麼做網站圖示 / favicon | cv.cm",
-    "descMakeFavicon": "裁成正方形，選 Cover 或 Contain，下載 ICO（16/32/48）和 PNG 壓縮檔（180/192/512），再看 16 像素那份。不上傳。"
+    "descMakeFavicon": "裁成正方形，選 Cover 或 Contain，下載 ICO（16/32/48）和 PNG 壓縮檔（180/192/512），再看 16 像素那份。不上傳。",
+    "titleAddDays": "日期加減 — 加天數 — cv.cm",
+    "descAddDays": "在瀏覽器裡給日期加上或減去整天。不上傳。",
+    "titleWeek": "週數 — ISO 週 — cv.cm",
+    "descWeek": "在瀏覽器裡查某個日期的 ISO 週數。不上傳。",
+    "titleAspect": "寬高比計算 — 16:9 4:3 — cv.cm",
+    "descAspect": "在瀏覽器裡把寬高約成 16:9 這樣的比例。不上傳。",
+    "titleMakeSignature": "怎麼手寫簽名 PNG | cv.cm",
+    "descMakeSignature": "在板上寫，下載按墨跡裁好、底透明的 PNG，再按表單那麼大看。不是法律電子簽。不上傳。",
+    "titleAnnotateScreenshot": "怎麼給截圖做標註 | cv.cm",
+    "descAnnotateScreenshot": "拖入或貼上截圖，加框、箭頭或短字，下載 PNG，再按聊天那麼大看。原圖沒標。不上傳。",
+    "titleMakeInvoice": "怎麼做發票 PDF | cv.cm",
+    "descMakeInvoice": "填買賣雙方，加明細，稅按小計百分比，下載 PDF，再把數字看一遍。不是稅務申報表。不上傳。",
+    "titleMakePassword": "怎麼生成強密碼 | cv.cm",
+    "descMakePassword": "長度 16+，留著字母數字符號，複製一次貼進一個帳號，存進管理器，關掉分頁。隨機位元組留在這台裝置。不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "數字轉英文",
       "blurb": "美式英文單字。不上傳。"
+    },
+    "add-days": {
+      "name": "日期加減",
+      "blurb": "給日期加或減整天。不上傳。"
+    },
+    "week": {
+      "name": "週數",
+      "blurb": "ISO 週數。不上傳。"
+    },
+    "aspect": {
+      "name": "寬高比",
+      "blurb": "1920×1080 → 16:9。不上傳。"
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "不會。關掉分頁就沒了。",
         "q5": "能留透明底嗎？",
         "a5": "可以。關掉白底。Contain 會在透明底上留邊。"
+      },
+      "make-signature": {
+        "q1": "可以免費線上手寫簽名嗎？",
+        "a1": "可以。cv.cm 在目前分頁畫，不上傳。不是法律電子簽。",
+        "q2": "這是有法律效力的電子簽嗎？",
+        "a2": "不是。你得到的是墨跡 PNG。銀行和政府通常要合格電子簽或手寫原件。",
+        "q3": "會蓋到 PDF 上嗎？",
+        "a3": "不會。下載 PNG，只有表單要貼圖時才貼。",
+        "q4": "會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "為什麼 PNG 被裁過？",
+        "a5": "匯出只留墨跡，空白底板不要了。底透明，好貼進表單。"
+      },
+      "annotate-screenshot": {
+        "q1": "可以免費線上給截圖做標註嗎？",
+        "a1": "可以。cv.cm 在目前分頁畫，不上傳。",
+        "q2": "能加哪些標記？",
+        "a2": "矩形、箭頭或短文字。撤銷會去掉上一筆。",
+        "q3": "會上傳嗎？",
+        "a3": "不會。關掉分頁就沒了。",
+        "q4": "會改原檔嗎？",
+        "a4": "不會。你下載的是新 PNG。磁碟上的截圖還沒標。",
+        "q5": "能從剪貼簿貼上嗎？",
+        "a5": "可以，只要截圖是圖片。然後標註，下載 PNG。"
+      },
+      "make-invoice": {
+        "q1": "可以免費線上做發票 PDF 嗎？",
+        "a1": "可以。cv.cm 在目前分頁畫，下載 PDF。不上傳。",
+        "q2": "這是稅務表或法定電子發票嗎？",
+        "a2": "不是。這是一張簡單的一頁帳單。不會申報加值稅，也不是合格電子發票。",
+        "q3": "稅怎麼算？",
+        "a3": "小計的百分比（每行數量×單價之和）。這裡不徵稅就填 0。",
+        "q4": "會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "能用哪些貨幣？",
+        "a5": "USD、EUR、GBP、CNY、JPY、KRW、VND、IDR。選買方會付的那種。"
+      },
+      "make-password": {
+        "q1": "可以免費線上生成強密碼嗎？",
+        "a1": "可以。cv.cm 在目前分頁用 Web Crypto，不上傳。",
+        "q2": "密碼要多長？",
+        "a2": "站點允許就 16 或更長。這裡預設 16。不到 12 只給仍限制長度的站點。",
+        "q3": "排除相似是做什麼？",
+        "a3": "會去掉 0、O、I、l、1，免得手打時認錯。",
+        "q4": "密碼會上傳嗎？",
+        "a4": "不會。關掉分頁就沒了。",
+        "q5": "要把密碼寄到自己信箱嗎？",
+        "a5": "不要。貼進帳號，存進密碼管理器，關掉分頁。"
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "256 的預覽會騙人。16 像素糊了，就簡化標誌或改 Contain。把 favicon.ico 放到網站根目錄，並在 HTML 裡鏈上 PNG。",
       "diagram1": "Cover 鋪滿，可能裁切。Contain 放下整個標誌，會留邊。",
       "diagram2": "ICO 是 16/32/48。PNG 壓縮檔還有 180/192/512。看 16 像素那份。"
+    },
+    "make-signature": {
+      "name": "怎麼手寫簽名 PNG",
+      "blurb": "在板上寫，下載裁好的 PNG，再按表單那麼大看一眼。這不是法律電子簽。",
+      "title": "怎麼手寫簽名 PNG",
+      "lead": "你要的是名字的圖，不是有法律效力的電子簽。在目前分頁寫，下載按墨跡裁好的 PNG，再按表單格子那麼大看。",
+      "result": "一份按墨跡裁好的 PNG，表單那麼大仍能認，不是法律電子簽。",
+      "note": "準備好再打開簽名。預覽板是米色；下載的 PNG 按墨跡裁切，底是透明的。不是法律電子簽，也不會蓋到 PDF 上。不上傳。",
+      "s1t": "先知道這是一張圖，不是法律電子簽",
+      "s1b": "銀行和政府要的是合格電子簽或手寫原件。這張 PNG 是給「請貼一張名字圖」的表單。它不會給 PDF 賦予效力。",
+      "s2t": "打開 cv.cm 的簽名",
+      "s2b": "書寫留在目前分頁。",
+      "s3t": "用手指、手寫筆或滑鼠寫",
+      "s3b": "連筆的名字比散開的縮寫好裁。一筆寫壞了就撤銷。滑鼠不如手指。",
+      "s4t": "下載 PNG",
+      "s4b": "匯出會按墨跡裁切，米色底板不要了。背景是透明的。下載是空的，就是還沒寫。",
+      "s5t": "按表單格子那麼大打開看",
+      "s5b": "只有全螢幕才看得清，塞進 200 像素的格子就會糊。太細就加粗再寫。留著 PNG，不要給寫字板拍照。",
+      "s6t": "別把它當成簽過的 PDF",
+      "s6b": "對方要的是蓋在 PDF 頁上的簽，那是另一件事。只有表單要貼圖時才貼這張 PNG。",
+      "diagram1": "這是名字的圖。不是法律電子簽，也不會給 PDF 賦予效力。",
+      "diagram2": "匯出會按墨跡裁切。PNG 底是透明的。按表單那麼大看。"
+    },
+    "annotate-screenshot": {
+      "name": "怎麼給截圖做標註",
+      "blurb": "拖入截圖，加框、箭頭或字，下載 PNG，再按要發的大小看一眼。",
+      "title": "怎麼給截圖做標註",
+      "lead": "報 bug、寫步驟、發聊天，要的是圖上的標記，不是一段話。拖入截圖，畫框或箭頭，再按訊息那麼大看 PNG。",
+      "result": "一份帶框、箭頭或短字的 PNG，聊天那麼大仍能認，沒標的原圖還在。",
+      "note": "截圖在磁碟或剪貼簿上再打開標註。框、箭頭或字。匯出是 PNG。原圖還在。不上傳。",
+      "s1t": "先定是框、箭頭還是短字",
+      "s1b": "壞掉的控制項套框。要點的按鈕畫箭頭。兩三個詞，不要一段。標太多會搶截圖。",
+      "s2t": "打開 cv.cm 的截圖標註",
+      "s2b": "標註留在目前分頁。",
+      "s3t": "拖入或貼上截圖",
+      "s3b": "剛截的就從剪貼簿貼。預覽空白，就是這款瀏覽器解不了這張圖。",
+      "s4t": "畫一兩處標記",
+      "s4b": "框住那一塊。箭頭指要點的地方。兩個詞的標籤用文字。擋住要給看的東西，就撤銷上一筆。",
+      "s5t": "下載 PNG",
+      "s5b": "沒標的原圖留下。匯出不會改磁碟上的檔。",
+      "s6t": "按聊天或工單那麼大打開看",
+      "s6b": "縮小後箭頭沒了，就加粗、靠近一點。字糊了，就縮短標籤。別誤傳沒標的原圖。",
+      "diagram1": "壞掉的控制項套框。要點的畫箭頭。兩個詞，不要一段。",
+      "diagram2": "匯出是 PNG。沒標的原圖留下。按聊天那麼大看。"
+    },
+    "make-invoice": {
+      "name": "怎麼做發票 PDF",
+      "blurb": "填買賣雙方，加明細，核對稅額和合計，下載 PDF，再把數字看一遍。這不是稅務申報表。",
+      "title": "怎麼做發票 PDF",
+      "lead": "一張簡單帳單：你是誰、誰付錢、賣了什麼、稅、到期日。在目前分頁填好，核對合計，打開 PDF。這不是政府稅務表。",
+      "result": "一份一頁 PDF：明細金額和稅對得上你填的數字，寄出去之前打開看過。",
+      "note": "買賣雙方和明細清楚再打開發票。稅是小計的百分比。不是加值稅申報，也不是法定電子發票。不上傳。",
+      "s1t": "先備齊賣方、買方和明細",
+      "s1b": "兩邊各有名稱和地址。賣的每樣東西一行：說明、數量、單價。合約用哪種貨幣、百分之幾的稅，寫清楚。",
+      "s2t": "打開 cv.cm 的發票",
+      "s2b": "填寫留在目前分頁。",
+      "s3t": "填雙方、編號、日期和貨幣",
+      "s3b": "到期日不要早於開票日。貨幣要選買方真正會付的那種。",
+      "s4t": "每一行寫說明、數量、單價",
+      "s4b": "金額是數量×單價。說明空著，PDF 會亂。一件一行，不要把一段話塞進一行。",
+      "s5t": "填稅率，再看合計",
+      "s5b": "稅是小計的百分比。這裡不徵稅就填 0。下載前，預覽合計必須等於數量×單價再加稅。",
+      "s6t": "下載 PDF 並打開",
+      "s6b": "一頁。看賣方、買方、每一行、稅、合計。數字錯了，改欄位再導。這份檔不是加值稅申報。",
+      "diagram1": "賣方、買方，每樣東西一行。金額是數量×單價。",
+      "diagram2": "稅是小計的百分比。打開 PDF。這不是稅務申報。"
+    },
+    "make-password": {
+      "name": "怎麼生成強密碼",
+      "blurb": "設好長度和字元種類，複製一次，貼進帳號，關掉分頁。不要寄信。",
+      "title": "怎麼生成強密碼",
+      "lead": "一個帳號一把獨特的密碼。在目前分頁設長度和字元種類，複製一次，貼進註冊頁。隨機位元組來自這台裝置。不要復用。",
+      "result": "一把隨機密碼，只貼進一個帳號，除了複製沒有離開過目前分頁，也不會寄信。",
+      "note": "給一個帳號建立或重設時再打開。預設長度 16。排除相似會去掉 0 O I l 1。不上傳。",
+      "s1t": "這個帳號用一把獨特的密碼",
+      "s1b": "復用密碼，一處洩漏就會打開別處。密碼管理器可以存。不要把別的網站用過的句子再拿來。",
+      "s2t": "打開 cv.cm 的密碼產生",
+      "s2b": "產生留在目前分頁。隨機位元組來自這台裝置上的 Web Crypto。",
+      "s3t": "長度設成 16 或更長",
+      "s3b": "預設 16。站點允許就更長。不到 12 只給仍限制長度的站點，不是目標。",
+      "s4t": "除非站點禁止，否則留著字母、數字和符號",
+      "s4b": "排除相似會去掉 0、O、I、l、1，好認。銀行表單不要符號，就只給這個帳號關掉符號。",
+      "s5t": "複製一次，貼進帳號",
+      "s5b": "不要截圖。不要放進郵件或聊天。貼完之後，存進密碼管理器。",
+      "s6t": "關掉分頁",
+      "s6b": "關掉後，這頁上的密碼就沒了。沒存下來，就再產生一把——不要去記隨機字串。",
+      "diagram1": "長度 16+。字母、數字、符號。要手打就排除 0 O I l 1。",
+      "diagram2": "複製一次。貼進一個帳號。不要寄信。關掉分頁。"
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "日期加減",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "週數",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "寬高比",
+    "back": "全部工具",
+    "privacyNote": "都在目前分頁進行。不上傳。",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

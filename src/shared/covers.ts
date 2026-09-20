@@ -142,6 +142,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "mp3-to-wav": "/covers/audio-sweet.jpg?v=2",
   "join-audio": "/covers/audio-joiner-sweet.jpg?v=1",
   "make-favicon": "/covers/favicon-sweet.jpg?v=1",
+  "make-signature": "/covers/signature-sweet.jpg?v=2",
+  "annotate-screenshot": "/covers/screenshot-sweet.jpg?v=1",
+  "make-invoice": "/covers/invoice-sweet.jpg?v=2",
+  "make-password": "/covers/password-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -188,6 +192,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "mp3-to-wav": "/covers/tutorials/mp3-to-wav.svg",
   "join-audio": "/covers/tutorials/join-audio.svg",
   "make-favicon": "/covers/tutorials/make-favicon.svg",
+  "make-signature": "/covers/tutorials/make-signature.svg",
+  "annotate-screenshot": "/covers/tutorials/annotate-screenshot.svg",
+  "make-invoice": "/covers/tutorials/make-invoice.svg",
+  "make-password": "/covers/tutorials/make-password.svg",
 };
 
 export function coverUrl(path: string): string {

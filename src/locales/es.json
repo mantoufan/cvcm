@@ -227,7 +227,21 @@
     "titleJoinAudio": "Cómo unir archivos de audio / fusionar MP3 | cv.cm",
     "descJoinAudio": "Suelte dos o más en orden, descargue un WAV y reprodúzcalo entero. Los siguientes coinciden con la frecuencia del primero. Nada se sube.",
     "titleMakeFavicon": "Cómo hacer un favicon | cv.cm",
-    "descMakeFavicon": "Cuadre la marca, elija Cover o Contain, descargue ICO (16/32/48) y un zip PNG (180/192/512) y mire el de 16 px. Nada se sube."
+    "descMakeFavicon": "Cuadre la marca, elija Cover o Contain, descargue ICO (16/32/48) y un zip PNG (180/192/512) y mire el de 16 px. Nada se sube.",
+    "titleAddDays": "Sumar días a una fecha — calculadora — cv.cm",
+    "descAddDays": "Suma o resta días enteros a una fecha en el navegador. Nada se sube.",
+    "titleWeek": "Número de semana — semana ISO — cv.cm",
+    "descWeek": "Obtén el número de semana ISO de una fecha en el navegador. Nada se sube.",
+    "titleAspect": "Relación de aspecto — 16:9 4:3 — cv.cm",
+    "descAspect": "Simplifica ancho y alto a 16:9 en el navegador. Nada se sube.",
+    "titleMakeSignature": "Cómo dibujar una firma PNG | cv.cm",
+    "descMakeSignature": "Dibuje, descargue un PNG recortado a la tinta con fondo transparente y mírelo al tamaño del formulario. No es e-sign legal. Nada se sube.",
+    "titleAnnotateScreenshot": "Cómo anotar una captura de pantalla | cv.cm",
+    "descAnnotateScreenshot": "Suelte o pegue una captura, añada recuadro, flecha o rótulo corto, descargue PNG y mírela al tamaño de un chat. El original sigue sin marcas. Nada se sube.",
+    "titleMakeInvoice": "Cómo hacer una factura PDF | cv.cm",
+    "descMakeInvoice": "Rellene de y facturar a, añada líneas, impuesto como porcentaje del subtotal, descargue un PDF y lea los números. No es un formulario fiscal. Nada se sube.",
+    "titleMakePassword": "Cómo generar una contraseña fuerte | cv.cm",
+    "descMakePassword": "Longitud 16+, letras dígitos y símbolos, copie una vez en una cuenta, guárdela en un gestor y cierre la pestaña. Los bytes aleatorios se quedan en este dispositivo. Nada se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "Número a palabras",
       "blurb": "Inglés de EE. UU. Nada se sube."
+    },
+    "add-days": {
+      "name": "Sumar días",
+      "blurb": "Suma o resta días. Nada se sube."
+    },
+    "week": {
+      "name": "Número de semana",
+      "blurb": "Semana ISO. Nada se sube."
+    },
+    "aspect": {
+      "name": "Relación de aspecto",
+      "blurb": "1920×1080 → 16:9. Nada se sube."
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "No. Al cerrar la pestaña se pierden.",
         "q5": "¿Puedo dejar el fondo transparente?",
         "a5": "Sí. Quite el fondo blanco. Contain entonces deja bandas sobre transparencia."
+      },
+      "make-signature": {
+        "q1": "¿Puedo dibujar una firma gratis en línea?",
+        "a1": "Sí. Se dibuja en esta pestaña. Nada se sube. No es una firma electrónica legal.",
+        "q2": "¿Es una firma electrónica vinculante?",
+        "a2": "No. Obtiene un PNG de tinta. Bancos y administraciones suelen pedir e-sign cualificada o tinta.",
+        "q3": "¿Sella un PDF?",
+        "a3": "No. Descargue un PNG y péguelo solo donde el formulario pide una imagen.",
+        "q4": "¿Se sube el dibujo?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Por qué el PNG está recortado?",
+        "a5": "Exportar conserva la tinta y tira la almohadilla vacía. El fondo transparente encaja en el formulario."
+      },
+      "annotate-screenshot": {
+        "q1": "¿Puedo anotar una captura gratis en línea?",
+        "a1": "Sí. Se dibuja en esta pestaña. Nada se sube.",
+        "q2": "¿Qué marcas puedo añadir?",
+        "a2": "Un rectángulo, una flecha o un rótulo corto. Deshacer quita la última marca.",
+        "q3": "¿Se sube la captura?",
+        "a3": "No. Al cerrar la pestaña se pierde.",
+        "q4": "¿Cambia el archivo original?",
+        "a4": "No. Descarga un PNG nuevo. La captura del disco sigue sin marcas.",
+        "q5": "¿Puedo pegar del portapapeles?",
+        "a5": "Sí, si la captura es una imagen. Luego marque y descargue PNG."
+      },
+      "make-invoice": {
+        "q1": "¿Puedo hacer una factura PDF gratis en línea?",
+        "a1": "Sí. Se dibuja en esta pestaña y descarga un PDF. Nada se sube.",
+        "q2": "¿Es un formulario fiscal o una factura electrónica legal?",
+        "a2": "No. Es una factura simple de una página. No presenta el IVA ni es una factura electrónica cualificada.",
+        "q3": "¿Cómo se calcula el impuesto?",
+        "a3": "Un porcentaje del subtotal (cantidad × precio de cada línea). Use 0 si aquí no se grava.",
+        "q4": "¿Se suben los campos?",
+        "a4": "No. Al cerrar la pestaña se pierden.",
+        "q5": "¿Qué monedas puedo usar?",
+        "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND e IDR. Elija la que el comprador va a pagar."
+      },
+      "make-password": {
+        "q1": "¿Puedo generar una contraseña fuerte gratis en línea?",
+        "a1": "Sí. cv.cm usa Web Crypto en esta pestaña. Nada se sube.",
+        "q2": "¿De qué longitud?",
+        "a2": "16 o más si el sitio lo permite. Aquí el default es 16. Menos de 12 solo si el sitio aún topea.",
+        "q3": "¿Qué hace excluir similares?",
+        "a3": "Quita 0, O, I, l y 1 para que se lea si tiene que teclearla.",
+        "q4": "¿Se sube la contraseña?",
+        "a4": "No. Al cerrar la pestaña se pierde.",
+        "q5": "¿Debo enviármela por correo?",
+        "a5": "No. Péguela en la cuenta, guárdela en un gestor y cierre la pestaña."
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "La vista de 256 miente. Si el de 16 px es un borrón, simplifique la marca o pase a Contain. Ponga favicon.ico en la raíz y enlace los PNG en el HTML.",
       "diagram1": "Cover llena y puede recortar. Contain deja la marca entera y añade bandas.",
       "diagram2": "El ICO es 16/32/48. El zip PNG añade 180/192/512. Mire el de 16 px."
+    },
+    "make-signature": {
+      "name": "Cómo dibujar una firma PNG",
+      "blurb": "Dibuje en la almohadilla, descargue un PNG recortado y mírelo al tamaño del formulario. No es una firma electrónica legal.",
+      "title": "Cómo dibujar una firma PNG",
+      "lead": "Necesita una imagen de su nombre, no una firma electrónica vinculante. Dibuje aquí, descargue un PNG recortado a la tinta y mírelo al tamaño de la casilla.",
+      "result": "Un PNG recortado a la tinta, legible al tamaño del formulario, que no es una firma electrónica legal.",
+      "note": "Abra firma cuando vaya a dibujar. La almohadilla es crema; el PNG se recorta a la tinta con fondo transparente. No es e-sign legal ni un sello en un PDF. Nada se sube.",
+      "s1t": "Sepa que es una imagen, no una firma electrónica legal",
+      "s1b": "Bancos y administraciones piden e-sign cualificada o tinta. Este PNG es para un formulario que pide pegar una imagen del nombre. No vincula un PDF.",
+      "s2t": "Abra firma en cv.cm",
+      "s2b": "El trazo queda en esta pestaña.",
+      "s3t": "Dibuje con el dedo, un lápiz o el ratón",
+      "s3b": "Un nombre continuo se recorta mejor que iniciales sueltas. Deshaga el último trazo si falló. El ratón es peor que el dedo.",
+      "s4t": "Descargue el PNG",
+      "s4b": "Exportar recorta a la tinta y tira la almohadilla crema. El fondo es transparente. Si la descarga está vacía, no había trazos.",
+      "s5t": "Ábralo al tamaño de la casilla",
+      "s5b": "Si solo se lee a pantalla completa, se correrá en una casilla de 200 px. Si está fino, dibuje más grueso. Conserve el PNG; no fotografíe la almohadilla.",
+      "s6t": "No lo trate como un PDF firmado",
+      "s6b": "Si el destino pide una firma sobre una página PDF, es otro trabajo. Pegue el PNG solo donde el formulario pide una imagen.",
+      "diagram1": "Una imagen del nombre. No es e-sign legal y no vincula un PDF.",
+      "diagram2": "Exportar recorta a la tinta. El fondo del PNG es transparente. Mírelo al tamaño del formulario."
+    },
+    "annotate-screenshot": {
+      "name": "Cómo anotar una captura de pantalla",
+      "blurb": "Suelte una captura, añada un recuadro, una flecha o un rótulo, descargue PNG y mírela al tamaño al que la enviará.",
+      "title": "Cómo anotar una captura de pantalla",
+      "lead": "Un informe de error, un how-to o un chat necesitan una marca en la foto, no un párrafo. Suelte la captura, dibuje un recuadro o una flecha y mire el PNG al tamaño de un mensaje.",
+      "result": "Un PNG con recuadro, flecha o rótulo corto que aún se lee al tamaño de un chat, y el original sin marcas.",
+      "note": "Abra captura con la imagen en el disco o el portapapeles. Recuadro, flecha o texto. La exportación es PNG. El original se queda. Nada se sube.",
+      "s1t": "Decida recuadro, flecha o un rótulo corto",
+      "s1b": "Un recuadro en el control roto. Una flecha en el botón a pulsar. Dos o tres palabras, no un párrafo. Demasiadas marcas pelean con la captura.",
+      "s2t": "Abra captura en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña.",
+      "s3t": "Suelte o pegue la captura",
+      "s3b": "Si acaba de capturar, péguela del portapapeles. Si la vista está en blanco, este navegador no decodifica esa imagen.",
+      "s4t": "Dibuje una o dos marcas",
+      "s4b": "Recuadro en la zona. Flecha en el toque. Texto para un rótulo de dos palabras. Si tapa lo que quería mostrar, deshaga.",
+      "s5t": "Descargue el PNG",
+      "s5b": "Conserve el original sin marcas. Exportar no cambia el archivo del disco.",
+      "s6t": "Ábralo al tamaño de un chat o un ticket",
+      "s6b": "Si la flecha desaparece en pequeño, dibújela más gruesa y cerca. Si el texto se corre, acorte el rótulo. No envíe el original sin marcas por error.",
+      "diagram1": "Recuadre el control roto. Flecha en el toque. Dos palabras, no un párrafo.",
+      "diagram2": "La exportación es PNG. Conserve el original sin marcas. Mírelo al tamaño de un chat."
+    },
+    "make-invoice": {
+      "name": "Cómo hacer una factura PDF",
+      "blurb": "Rellene de/para, añada líneas, revise impuesto y total, descargue un PDF y lea los números una vez. No es un formulario fiscal.",
+      "title": "Cómo hacer una factura PDF",
+      "lead": "Una factura simple: quién es usted, quién paga, qué se vendió, impuesto, vencimiento. Rellene aquí, revise los totales y abra el PDF. No es un formulario fiscal.",
+      "result": "Un PDF de una página cuyos importes e impuesto coinciden con lo que tecleó, abierto una vez antes de enviarlo.",
+      "note": "Abra factura cuando sepa las partes y las líneas. El impuesto es un porcentaje del subtotal. No es una declaración de IVA ni una factura electrónica legal. Nada se sube.",
+      "s1t": "Reúna de, facturar a y las líneas",
+      "s1b": "Nombre y dirección a cada lado. Una fila por lo vendido: descripción, cantidad, precio. Anote la moneda y el porcentaje de impuesto del contrato.",
+      "s2t": "Abra factura en cv.cm",
+      "s2b": "El trabajo queda en esta pestaña.",
+      "s3t": "Rellene las partes, el número, las fechas y la moneda",
+      "s3b": "El vencimiento no puede ser anterior a la fecha. Elija la moneda que el comprador va a pagar de verdad.",
+      "s4t": "Añada cada línea: descripción, cantidad, precio",
+      "s4b": "El importe es cantidad × precio. Sin descripción, el PDF queda sucio. Una línea por ítem, no un párrafo en una fila.",
+      "s5t": "Fije el porcentaje de impuesto y lea los totales",
+      "s5b": "El impuesto es un porcentaje del subtotal. 0 si aquí no se grava. El total de la vista debe coincidir con cantidad × precio más impuesto antes de descargar.",
+      "s6t": "Descargue el PDF y ábralo",
+      "s6b": "Una página. Lea de, facturar a, cada línea, impuesto y total. Si un número falla, corrija el campo y exporte. Este archivo no es una declaración de IVA.",
+      "diagram1": "De, facturar a, y una línea por ítem. El importe es cantidad × precio.",
+      "diagram2": "El impuesto es un porcentaje del subtotal. Abra el PDF. No es una declaración fiscal."
+    },
+    "make-password": {
+      "name": "Cómo generar una contraseña fuerte",
+      "blurb": "Fije longitud y tipos de carácter, copie una vez, péguela en la cuenta y cierre la pestaña. No la envíe por correo.",
+      "title": "Cómo generar una contraseña fuerte",
+      "lead": "Una contraseña única por cuenta. Fije longitud y tipos aquí, copie una vez y péguela en el alta. Los bytes aleatorios salen de este dispositivo. No la reutilice.",
+      "result": "Una contraseña aleatoria pegada en una cuenta, que no salió de esta pestaña salvo al copiar, y que no enviará por correo.",
+      "note": "Abra contraseña al crear o restablecer una cuenta. Longitud por defecto 16. Excluir similares quita 0 O I l 1. Nada se sube.",
+      "s1t": "Use una contraseña única para esta cuenta",
+      "s1b": "Reutilizarla es cómo una filtración abre el resto. Un gestor puede guardarla. No recicle una frase que ya tecleó en otro sitio.",
+      "s2t": "Abra contraseña en cv.cm",
+      "s2b": "La generación queda en esta pestaña. Los bytes aleatorios salen de Web Crypto en este dispositivo.",
+      "s3t": "Fije longitud 16 o más",
+      "s3b": "Por defecto 16. Más largo es más fuerte si el sitio lo permite. Menos de 12 es para sitios que aún topean, no un objetivo.",
+      "s4t": "Conserve letras, dígitos y símbolos salvo que el sitio los prohíba",
+      "s4b": "Excluir similares quita 0, O, I, l y 1 para poder leerla. Si un banco rechaza símbolos, apáguelos solo en esa cuenta.",
+      "s5t": "Copie una vez y péguela en la cuenta",
+      "s5b": "No la capture. No la ponga en correo ni en el chat. Tras pegar, un gestor es el sitio para guardarla.",
+      "s6t": "Cierre la pestaña",
+      "s6b": "Al cerrar, la contraseña desaparece de esta página. Si no la guardó, genere otra: no intente memorizar una cadena aleatoria.",
+      "diagram1": "Longitud 16+. Letras, dígitos, símbolos. Si la va a teclear, excluya 0 O I l 1.",
+      "diagram2": "Copie una vez. Péguela en una cuenta. No la envíe por correo. Cierre la pestaña."
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "Sumar días",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "Número de semana",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "Relación de aspecto",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

@@ -47,6 +47,9 @@ Browser tools plus a tiny cloud clipboard.
 - **Sort lines** / 排序去重. [Open](https://cv.cm/en/sort/)
 - **Find and replace** / 查找替换. [Open](https://cv.cm/en/replace/)
 - **Number to words** / 数字转英文. [Open](https://cv.cm/en/words/)
+- **Add days to a date** / 日期加减. [Open](https://cv.cm/en/add-days/)
+- **Week number** / 周数. [Open](https://cv.cm/en/week/)
+- **Aspect ratio** / 宽高比. [Open](https://cv.cm/en/aspect/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)
@@ -90,7 +93,7 @@ Retro emulator games in the browser, grouped by console and genre. Cheats (金�
 
 ## Lessons
 
-Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, HEIC / WebP / PNG / JPG / AVIF conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, and favicon. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
+Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, image conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, favicon, signature PNG, screenshot marks, invoice PDF, and a strong password. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
 
 - [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
 - [How to make a QR code](https://cv.cm/en/learn/make-qr/)
@@ -114,7 +117,11 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to make a photo collage](https://cv.cm/en/learn/make-collage/)
 - [How to make a meme](https://cv.cm/en/learn/make-meme/)
 - [How to make a favicon](https://cv.cm/en/learn/make-favicon/)
+- [How to draw a signature PNG](https://cv.cm/en/learn/make-signature/)
+- [How to annotate a screenshot](https://cv.cm/en/learn/annotate-screenshot/)
+- [How to make an invoice PDF](https://cv.cm/en/learn/make-invoice/)
 - [How to count words and characters](https://cv.cm/en/learn/count-words/)
+- [How to generate a strong password](https://cv.cm/en/learn/make-password/)
 - [How to trim audio / cut an MP3](https://cv.cm/en/learn/trim-audio/)
 - [How to convert MP3 to WAV](https://cv.cm/en/learn/mp3-to-wav/)
 - [How to join audio files / merge MP3s](https://cv.cm/en/learn/join-audio/)

@@ -227,7 +227,21 @@
     "titleJoinAudio": "Cara gabung audio / gabung MP3 | cv.cm",
     "descJoinAudio": "Letakkan dua atau lebih berurutan, unduh satu WAV, putar sampai akhir. Klip berikutnya mengikuti rate klip pertama. Tidak diunggah.",
     "titleMakeFavicon": "Cara buat favicon | cv.cm",
-    "descMakeFavicon": "Potong persegi, pilih Cover atau Contain, unduh ICO (16/32/48) dan zip PNG (180/192/512), cek 16px. Tidak diunggah."
+    "descMakeFavicon": "Potong persegi, pilih Cover atau Contain, unduh ICO (16/32/48) dan zip PNG (180/192/512), cek 16px. Tidak diunggah.",
+    "titleAddDays": "Tambah hari — kalkulator tanggal — cv.cm",
+    "descAddDays": "Tambah atau kurangi hari di browser. Tidak diunggah.",
+    "titleWeek": "Nomor minggu — ISO week — cv.cm",
+    "descWeek": "Cari nomor minggu ISO di browser. Tidak diunggah.",
+    "titleAspect": "Rasio aspek — 16:9 4:3 — cv.cm",
+    "descAspect": "Sederhanakan lebar dan tinggi ke 16:9 di browser. Tidak diunggah.",
+    "titleMakeSignature": "Cara gambar tanda tangan PNG | cv.cm",
+    "descMakeSignature": "Gambar di pad, unduh PNG terpotong ke tinta berlatar tembus, cek seukuran formulir. Bukan e-sign legal. Tidak diunggah.",
+    "titleAnnotateScreenshot": "Cara anotasi tangkapan layar | cv.cm",
+    "descAnnotateScreenshot": "Letakkan atau tempel tangkapan, tambah kotak, panah, atau label pendek, unduh PNG, cek seukuran chat. Asli tanpa tanda. Tidak diunggah.",
+    "titleMakeInvoice": "Cara buat faktur PDF | cv.cm",
+    "descMakeInvoice": "Isi dari/ke, tambah baris, pajak persen subtotal, unduh PDF, baca angka. Bukan formulir pajak. Tidak diunggah.",
+    "titleMakePassword": "Cara buat kata sandi kuat | cv.cm",
+    "descMakePassword": "Panjang 16+, huruf angka simbol, salin sekali ke satu akun, simpan di pengelola, tutup tab. Byte acak di perangkat ini. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "Angka ke kata",
       "blurb": "Inggris AS. Tidak diunggah."
+    },
+    "add-days": {
+      "name": "Tambah hari",
+      "blurb": "Tambah atau kurangi hari. Tidak diunggah."
+    },
+    "week": {
+      "name": "Nomor minggu",
+      "blurb": "Minggu ISO. Tidak diunggah."
+    },
+    "aspect": {
+      "name": "Rasio aspek",
+      "blurb": "1920×1080 → 16:9. Tidak diunggah."
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "Tidak. Tutup tab, hilang.",
         "q5": "Bisa jaga latar tembus?",
         "a5": "Ya. Matikan latar putih. Contain lalu membuat bar di atas transparansi."
+      },
+      "make-signature": {
+        "q1": "Bisa gambar tanda tangan gratis online?",
+        "a1": "Ya. Menggambar di tab ini. Tidak diunggah. Bukan e-sign legal.",
+        "q2": "Ini e-sign yang mengikat?",
+        "a2": "Tidak. Anda mendapat PNG tinta. Bank dan pemerintah biasanya minta e-sign berkualitas atau basah.",
+        "q3": "Apakah cap di PDF?",
+        "a3": "Tidak. Unduh PNG dan tempel hanya jika formulir minta gambar.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Kenapa PNG terpotong?",
+        "a5": "Ekspor menjaga tinta dan membuang pad kosong. Latar tembus agar duduk di formulir."
+      },
+      "annotate-screenshot": {
+        "q1": "Bisa anotasi tangkapan gratis online?",
+        "a1": "Ya. Menggambar di tab ini. Tidak diunggah.",
+        "q2": "Tanda apa yang bisa ditambah?",
+        "a2": "Persegi, panah, atau label teks pendek. Undo menghapus tanda terakhir.",
+        "q3": "Apakah diunggah?",
+        "a3": "Tidak. Tutup tab, hilang.",
+        "q4": "Apakah file asli berubah?",
+        "a4": "Tidak. Anda mengunduh PNG baru. Tangkapan di disk tetap tanpa tanda.",
+        "q5": "Bisa tempel dari papan klip?",
+        "a5": "Ya jika tangkapan adalah gambar. Lalu tandai dan unduh PNG."
+      },
+      "make-invoice": {
+        "q1": "Bisa buat faktur PDF gratis online?",
+        "a1": "Ya. Menggambar di tab ini dan mengunduh PDF. Tidak diunggah.",
+        "q2": "Ini formulir pajak atau e-faktur legal?",
+        "a2": "Tidak. Ini tagihan satu halaman. Tidak menyetor PPN, bukan e-faktur berkualitas.",
+        "q3": "Pajak dihitung bagaimana?",
+        "a3": "Persen dari subtotal (qty × harga tiap baris). 0 jika tidak kena pajak di sini.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Mata uang apa?",
+        "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. Pilih yang dibayar pembeli."
+      },
+      "make-password": {
+        "q1": "Bisa buat kata sandi kuat gratis online?",
+        "a1": "Ya. cv.cm memakai Web Crypto di tab ini. Tidak diunggah.",
+        "q2": "Panjang berapa?",
+        "a2": "16 atau lebih jika situs izinkan. Default di sini 16. Di bawah 12 hanya untuk situs yang masih membatasi.",
+        "q3": "Kecualikan mirip untuk apa?",
+        "a3": "Membuang 0, O, I, l, 1 agar kebaca jika harus diketik.",
+        "q4": "Apakah diunggah?",
+        "a4": "Tidak. Tutup tab, hilang.",
+        "q5": "Boleh email kata sandi ke diri sendiri?",
+        "a5": "Tidak. Tempel ke akun, simpan di pengelola, tutup tab."
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "Pratinjau 256 berbohong. File 16px buram: sederhanakan tanda atau ganti Contain. Taruh favicon.ico di root situs dan tautkan PNG di HTML.",
       "diagram1": "Cover mengisi, bisa memotong. Contain menjaga seluruh tanda, ada bar.",
       "diagram2": "ICO 16/32/48. Zip PNG menambah 180/192/512. Cek file 16px."
+    },
+    "make-signature": {
+      "name": "Cara gambar tanda tangan PNG",
+      "blurb": "Gambar di pad, unduh PNG terpotong, cek seukuran formulir. Bukan e-sign legal.",
+      "title": "Cara gambar tanda tangan PNG",
+      "lead": "Anda butuh gambar nama, bukan e-sign yang mengikat. Gambar di tab ini, unduh PNG terpotong ke tinta, cek seukuran kotak formulir.",
+      "result": "PNG terpotong ke tinta, kebaca seukuran formulir, bukan e-sign legal.",
+      "note": "Siap menggambar, baru buka tanda tangan. Pad pratinjau krem; PNG terpotong ke tinta, latar tembus. Bukan e-sign legal, bukan cap di PDF. Tidak diunggah.",
+      "s1t": "Ini gambar, bukan e-sign legal",
+      "s1b": "Bank dan pemerintah minta e-sign berkualitas atau basah. PNG ini untuk formulir yang minta tempel gambar nama. Tidak mengikat PDF.",
+      "s2t": "Buka tanda tangan di cv.cm",
+      "s2b": "Gambar di tab ini.",
+      "s3t": "Gambar dengan jari, stylus, atau mouse",
+      "s3b": "Nama nyambung lebih mudah dipotong daripada inisial. Stroke salah: undo. Mouse lebih buruk daripada jari.",
+      "s4t": "Unduh PNG",
+      "s4b": "Ekspor memotong ke tinta dan membuang pad krem. Latar tembus. Kosong: belum menggambar.",
+      "s5t": "Buka seukuran kotak formulir",
+      "s5b": "Hanya kebaca full screen: buram di kotak 200 piksel. Terlalu tipis: gambar lebih tebal. Simpan PNG; jangan foto pad.",
+      "s6t": "Jangan anggap ini PDF tertandatangan",
+      "s6b": "Kalau tujuan minta tanda di halaman PDF, itu kerja lain. Tempel PNG hanya jika formulir minta gambar.",
+      "diagram1": "Gambar nama. Bukan e-sign legal, tidak mengikat PDF.",
+      "diagram2": "Ekspor memotong ke tinta. Latar PNG tembus. Cek seukuran formulir."
+    },
+    "annotate-screenshot": {
+      "name": "Cara anotasi tangkapan layar",
+      "blurb": "Letakkan tangkapan, tambah kotak, panah, atau label, unduh PNG, cek ukuran kirim.",
+      "title": "Cara anotasi tangkapan layar",
+      "lead": "Laporan bug, langkah, chat butuh tanda di gambar, bukan paragraf. Letakkan tangkapan, gambar kotak atau panah, cek PNG seukuran pesan.",
+      "result": "PNG dengan kotak, panah, atau label pendek yang masih kebaca seukuran chat, plus file asli tanpa tanda.",
+      "note": "Tangkapan di disk atau papan klip, baru buka anotasi. Kotak, panah, atau teks. Ekspor PNG. Asli tetap. Tidak diunggah.",
+      "s1t": "Tentukan kotak, panah, atau label pendek",
+      "s1b": "Kontrol rusak: kotak. Tombol yang diketuk: panah. Dua tiga kata, bukan paragraf. Terlalu banyak tanda bertarung dengan tangkapan.",
+      "s2t": "Buka anotasi tangkapan di cv.cm",
+      "s2b": "Proses di tab ini.",
+      "s3t": "Letakkan atau tempel tangkapan",
+      "s3b": "Baru capture: tempel dari papan klip. Pratinjau kosong: peramban ini gagal.",
+      "s4t": "Gambar satu atau dua tanda",
+      "s4b": "Kotak di area. Panah di ketukan. Teks untuk label dua kata. Menutupi yang ingin ditunjukkan: undo.",
+      "s5t": "Unduh PNG",
+      "s5b": "Simpan asli tanpa tanda. Ekspor tidak mengubah file di disk.",
+      "s6t": "Buka seukuran chat atau tiket",
+      "s6b": "Mengecil panah hilang: gambar lebih tebal dan dekat. Teks buram: persingkat label. Jangan kirim asli tanpa tanda.",
+      "diagram1": "Kontrol rusak: kotak. Ketukan: panah. Dua kata, bukan paragraf.",
+      "diagram2": "Ekspor PNG. Simpan asli tanpa tanda. Cek seukuran chat."
+    },
+    "make-invoice": {
+      "name": "Cara buat faktur PDF",
+      "blurb": "Isi dari/ke, tambah baris, cek pajak dan total, unduh PDF, baca angkanya sekali. Bukan formulir pajak.",
+      "title": "Cara buat faktur PDF",
+      "lead": "Tagihan sederhana: siapa Anda, siapa bayar, apa yang dijual, pajak, jatuh tempo. Isi di tab ini, cek total, buka PDF. Bukan formulir pajak pemerintah.",
+      "result": "PDF satu halaman: jumlah baris dan pajak cocok dengan isian, sudah dibuka sekali sebelum kirim.",
+      "note": "Tahu pihak dan baris, baru buka faktur. Pajak adalah persen dari subtotal. Bukan SPT PPN, bukan e-faktur legal. Tidak diunggah.",
+      "s1t": "Siapkan dari, tagih ke, dan baris",
+      "s1b": "Nama dan alamat di tiap sisi. Satu baris per barang: deskripsi, qty, harga. Tulis mata uang dan persen pajak sesuai kontrak.",
+      "s2t": "Buka faktur di cv.cm",
+      "s2b": "Isi di tab ini.",
+      "s3t": "Isi pihak, nomor, tanggal, dan mata uang",
+      "s3b": "Jatuh tempo pada atau setelah tanggal faktur. Pilih mata uang yang benar-benar dibayar pembeli.",
+      "s4t": "Tiap baris: deskripsi, qty, harga",
+      "s4b": "Jumlah = qty × harga. Deskripsi kosong: PDF berantakan. Satu barang satu baris, jangan paragraf dalam satu baris.",
+      "s5t": "Set persen pajak dan baca total",
+      "s5b": "Pajak adalah persen subtotal. 0 jika tidak kena pajak di sini. Total pratinjau harus cocok qty × harga plus pajak sebelum unduh.",
+      "s6t": "Unduh PDF dan buka",
+      "s6b": "Satu halaman. Baca dari, tagih ke, tiap baris, pajak, total. Angka salah: perbaiki kolom, ekspor lagi. File ini bukan SPT PPN.",
+      "diagram1": "Dari, tagih ke, satu baris per barang. Jumlah = qty × harga.",
+      "diagram2": "Pajak adalah persen subtotal. Buka PDF. Bukan SPT pajak."
+    },
+    "make-password": {
+      "name": "Cara buat kata sandi kuat",
+      "blurb": "Set panjang dan jenis karakter, salin sekali, tempel ke akun, tutup tab. Jangan email.",
+      "title": "Cara buat kata sandi kuat",
+      "lead": "Satu akun satu kata sandi unik. Set panjang dan jenis karakter di tab ini, salin sekali, tempel ke daftar. Byte acak dari perangkat ini. Jangan dipakai ulang.",
+      "result": "Kata sandi acak yang ditempel ke satu akun, tidak keluar tab kecuali salin, tidak akan diemail.",
+      "note": "Buat atau reset satu akun, baru buka. Panjang default 16. Kecualikan mirip membuang 0 O I l 1. Tidak diunggah.",
+      "s1t": "Pakai kata sandi unik untuk akun ini",
+      "s1b": "Dipakai ulang: satu bocor membuka yang lain. Pengelola kata sandi boleh menyimpan. Jangan daur ulang frasa yang sudah diketik di situs lain.",
+      "s2t": "Buka kata sandi di cv.cm",
+      "s2b": "Generate di tab ini. Byte acak dari Web Crypto di perangkat ini.",
+      "s3t": "Set panjang 16 atau lebih",
+      "s3b": "Default 16. Lebih panjang lebih kuat jika situs izinkan. Di bawah 12 hanya untuk situs yang masih membatasi, bukan tujuan.",
+      "s4t": "Simpan huruf, angka, dan simbol kecuali situs melarang",
+      "s4b": "Kecualikan mirip membuang 0, O, I, l, 1 agar kebaca. Formulir bank menolak simbol: matikan simbol hanya untuk akun itu.",
+      "s5t": "Salin sekali dan tempel ke akun",
+      "s5b": "Jangan screenshot. Jangan taruh di email atau chat. Setelah tempel, simpan di pengelola kata sandi.",
+      "s6t": "Tutup tab",
+      "s6b": "Tutup, kata sandi di halaman hilang. Belum disimpan: buat baru. Jangan hafalkan string acak.",
+      "diagram1": "Panjang 16+. Huruf, angka, simbol. Akan diketik: kecualikan 0 O I l 1.",
+      "diagram2": "Salin sekali. Tempel satu akun. Jangan email. Tutup tab."
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "Tambah hari",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "Nomor minggu",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "Rasio aspek",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

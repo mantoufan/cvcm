@@ -227,7 +227,21 @@
     "titleJoinAudio": "怎么拼接音频 / 合并 MP3 | cv.cm",
     "descJoinAudio": "按顺序放入两段或更多，下载一份 WAV，从头到尾播一遍。后面的对齐第一段的采样率。不上传。",
     "titleMakeFavicon": "怎么做网站图标 / favicon | cv.cm",
-    "descMakeFavicon": "裁成正方形，选 Cover 或 Contain，下载 ICO（16/32/48）和 PNG 压缩包（180/192/512），再看 16 像素那份。不上传。"
+    "descMakeFavicon": "裁成正方形，选 Cover 或 Contain，下载 ICO（16/32/48）和 PNG 压缩包（180/192/512），再看 16 像素那份。不上传。",
+    "titleAddDays": "日期加减 — 加天数 — cv.cm",
+    "descAddDays": "在浏览器里给日期加上或减去整天。不上传。",
+    "titleWeek": "周数 — ISO 周 — cv.cm",
+    "descWeek": "在浏览器里查某个日期的 ISO 周数。不上传。",
+    "titleAspect": "宽高比计算 — 16:9 4:3 — cv.cm",
+    "descAspect": "在浏览器里把宽高约成 16:9 这样的比例。不上传。",
+    "titleMakeSignature": "怎么手写签名 PNG | cv.cm",
+    "descMakeSignature": "在板上写，下载按墨迹裁好、底透明的 PNG，再按表单那么大看。不是法律电子签。不上传。",
+    "titleAnnotateScreenshot": "怎么给截图做标注 | cv.cm",
+    "descAnnotateScreenshot": "拖入或粘贴截图，加框、箭头或短字，下载 PNG，再按聊天那么大看。原图没标。不上传。",
+    "titleMakeInvoice": "怎么做发票 PDF | cv.cm",
+    "descMakeInvoice": "填买卖双方，加明细，税按小计百分比，下载 PDF，再把数字看一遍。不是税务申报表。不上传。",
+    "titleMakePassword": "怎么生成强密码 | cv.cm",
+    "descMakePassword": "长度 16+，留着字母数字符号，复制一次贴进一个账号，存进管理器，关掉标签页。随机字节留在这台设备。不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "数字转英文",
       "blurb": "美式英文单词。不上传。"
+    },
+    "add-days": {
+      "name": "日期加减",
+      "blurb": "给日期加或减整天。不上传。"
+    },
+    "week": {
+      "name": "周数",
+      "blurb": "ISO 周数。不上传。"
+    },
+    "aspect": {
+      "name": "宽高比",
+      "blurb": "1920×1080 → 16:9。不上传。"
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "不会。关掉标签页就没了。",
         "q5": "能留透明底吗？",
         "a5": "可以。关掉白底。Contain 会在透明底上留边。"
+      },
+      "make-signature": {
+        "q1": "可以免费在线手写签名吗？",
+        "a1": "可以。cv.cm 在当前标签页画，不上传。不是法律电子签。",
+        "q2": "这是有法律效力的电子签吗？",
+        "a2": "不是。你得到的是墨迹 PNG。银行和政府通常要合格电子签或手写原件。",
+        "q3": "会盖到 PDF 上吗？",
+        "a3": "不会。下载 PNG，只有表单要贴图时才贴。",
+        "q4": "会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "为什么 PNG 被裁过？",
+        "a5": "导出只留墨迹，空白底板不要了。底透明，好贴进表单。"
+      },
+      "annotate-screenshot": {
+        "q1": "可以免费在线给截图做标注吗？",
+        "a1": "可以。cv.cm 在当前标签页画，不上传。",
+        "q2": "能加哪些标记？",
+        "a2": "矩形、箭头或短文字。撤销会去掉上一笔。",
+        "q3": "会上传吗？",
+        "a3": "不会。关掉标签页就没了。",
+        "q4": "会改原文件吗？",
+        "a4": "不会。你下载的是新 PNG。磁盘上的截图还没标。",
+        "q5": "能从剪贴板粘贴吗？",
+        "a5": "可以，只要截图是图片。然后标注，下载 PNG。"
+      },
+      "make-invoice": {
+        "q1": "可以免费在线做发票 PDF 吗？",
+        "a1": "可以。cv.cm 在当前标签页画，下载 PDF。不上传。",
+        "q2": "这是税务表或法定电子发票吗？",
+        "a2": "不是。这是一张简单的一页账单。不会申报增值税，也不是合格电子发票。",
+        "q3": "税怎么算？",
+        "a3": "小计的百分比（每行数量×单价之和）。这里不征税就填 0。",
+        "q4": "会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "能用哪些货币？",
+        "a5": "USD、EUR、GBP、CNY、JPY、KRW、VND、IDR。选买方会付的那种。"
+      },
+      "make-password": {
+        "q1": "可以免费在线生成强密码吗？",
+        "a1": "可以。cv.cm 在当前标签页用 Web Crypto，不上传。",
+        "q2": "密码要多长？",
+        "a2": "站点允许就 16 或更长。这里默认 16。不到 12 只给仍限制长度的站点。",
+        "q3": "排除相似是做什么？",
+        "a3": "会去掉 0、O、I、l、1，免得手打时认错。",
+        "q4": "密码会上传吗？",
+        "a4": "不会。关掉标签页就没了。",
+        "q5": "要把密码发到自己邮箱吗？",
+        "a5": "不要。贴进账号，存进密码管理器，关掉标签页。"
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "256 的预览会骗人。16 像素糊了，就简化标志或改 Contain。把 favicon.ico 放到网站根目录，并在 HTML 里链上 PNG。",
       "diagram1": "Cover 铺满，可能裁切。Contain 放下整个标志，会留边。",
       "diagram2": "ICO 是 16/32/48。PNG 压缩包还有 180/192/512。看 16 像素那份。"
+    },
+    "make-signature": {
+      "name": "怎么手写签名 PNG",
+      "blurb": "在板上写，下载裁好的 PNG，再按表单那么大看一眼。这不是法律电子签。",
+      "title": "怎么手写签名 PNG",
+      "lead": "你要的是名字的图，不是有法律效力的电子签。在当前标签页写，下载按墨迹裁好的 PNG，再按表单格子那么大看。",
+      "result": "一份按墨迹裁好的 PNG，表单那么大仍能认，不是法律电子签。",
+      "note": "准备好再打开签名。预览板是米色；下载的 PNG 按墨迹裁切，底是透明的。不是法律电子签，也不会盖到 PDF 上。不上传。",
+      "s1t": "先知道这是一张图，不是法律电子签",
+      "s1b": "银行和政府要的是合格电子签或手写原件。这张 PNG 是给「请贴一张名字图」的表单。它不会给 PDF 赋予效力。",
+      "s2t": "打开 cv.cm 的签名",
+      "s2b": "书写留在当前标签页。",
+      "s3t": "用手指、手写笔或鼠标写",
+      "s3b": "连笔的名字比散开的缩写好裁。一笔写坏了就撤销。鼠标不如手指。",
+      "s4t": "下载 PNG",
+      "s4b": "导出会按墨迹裁切，米色底板不要了。背景是透明的。下载是空的，就是还没写。",
+      "s5t": "按表单格子那么大打开看",
+      "s5b": "只有全屏才看得清，塞进 200 像素的格子就会糊。太细就加粗再写。留着 PNG，不要给写字板拍照。",
+      "s6t": "别把它当成签过的 PDF",
+      "s6b": "对方要的是盖在 PDF 页上的签，那是另一件事。只有表单要贴图时才贴这张 PNG。",
+      "diagram1": "这是名字的图。不是法律电子签，也不会给 PDF 赋予效力。",
+      "diagram2": "导出会按墨迹裁切。PNG 底是透明的。按表单那么大看。"
+    },
+    "annotate-screenshot": {
+      "name": "怎么给截图做标注",
+      "blurb": "拖入截图，加框、箭头或字，下载 PNG，再按要发的大小看一眼。",
+      "title": "怎么给截图做标注",
+      "lead": "报 bug、写步骤、发聊天，要的是图上的标记，不是一段话。拖入截图，画框或箭头，再按消息那么大看 PNG。",
+      "result": "一份带框、箭头或短字的 PNG，聊天那么大仍能认，没标的原图还在。",
+      "note": "截图在磁盘或剪贴板上再打开标注。框、箭头或字。导出是 PNG。原图还在。不上传。",
+      "s1t": "先定是框、箭头还是短字",
+      "s1b": "坏掉的控件套框。要点的按钮画箭头。两三个词，不要一段。标太多会抢截图。",
+      "s2t": "打开 cv.cm 的截图标注",
+      "s2b": "标注留在当前标签页。",
+      "s3t": "拖入或粘贴截图",
+      "s3b": "刚截的就从剪贴板贴。预览空白，就是这款浏览器解不了这张图。",
+      "s4t": "画一两处标记",
+      "s4b": "框住那一块。箭头指要点的地方。两个词的标签用文字。挡住要给看的东西，就撤销上一笔。",
+      "s5t": "下载 PNG",
+      "s5b": "没标的原图留下。导出不会改磁盘上的文件。",
+      "s6t": "按聊天或工单那么大打开看",
+      "s6b": "缩小后箭头没了，就加粗、靠近一点。字糊了，就缩短标签。别误发没标的原图。",
+      "diagram1": "坏掉的控件套框。要点的画箭头。两个词，不要一段。",
+      "diagram2": "导出是 PNG。没标的原图留下。按聊天那么大看。"
+    },
+    "make-invoice": {
+      "name": "怎么做发票 PDF",
+      "blurb": "填买卖双方，加明细，核对税额和合计，下载 PDF，再把数字看一遍。这不是税务申报表。",
+      "title": "怎么做发票 PDF",
+      "lead": "一张简单账单：你是谁、谁付钱、卖了什么、税、到期日。在当前标签页填好，核对合计，打开 PDF。这不是政府税务表。",
+      "result": "一份一页 PDF：明细金额和税对得上你填的数字，发出去之前打开看过。",
+      "note": "买卖双方和明细清楚再打开发票。税是小计的百分比。不是增值税申报，也不是法定电子发票。不上传。",
+      "s1t": "先备齐卖方、买方和明细",
+      "s1b": "两边各有名称和地址。卖的每样东西一行：说明、数量、单价。合同用哪种货币、百分之几的税，写清楚。",
+      "s2t": "打开 cv.cm 的发票",
+      "s2b": "填写留在当前标签页。",
+      "s3t": "填双方、编号、日期和货币",
+      "s3b": "到期日不要早于开票日。货币要选买方真正会付的那种。",
+      "s4t": "每一行写说明、数量、单价",
+      "s4b": "金额是数量×单价。说明空着，PDF 会乱。一件一行，不要把一段话塞进一行。",
+      "s5t": "填税率，再看合计",
+      "s5b": "税是小计的百分比。这里不征税就填 0。下载前，预览合计必须等于数量×单价再加税。",
+      "s6t": "下载 PDF 并打开",
+      "s6b": "一页。看卖方、买方、每一行、税、合计。数字错了，改字段再导。这份文件不是增值税申报。",
+      "diagram1": "卖方、买方，每样东西一行。金额是数量×单价。",
+      "diagram2": "税是小计的百分比。打开 PDF。这不是税务申报。"
+    },
+    "make-password": {
+      "name": "怎么生成强密码",
+      "blurb": "设好长度和字符种类，复制一次，贴进账号，关掉标签页。不要发邮件。",
+      "title": "怎么生成强密码",
+      "lead": "一个账号一把独特的密码。在当前标签页设长度和字符种类，复制一次，贴进注册页。随机字节来自这台设备。不要复用。",
+      "result": "一把随机密码，只贴进一个账号，除了复制没有离开过当前标签页，也不会发邮件。",
+      "note": "给一个账号创建或重置时再打开。默认长度 16。排除相似会去掉 0 O I l 1。不上传。",
+      "s1t": "这个账号用一把独特的密码",
+      "s1b": "复用密码，一处泄漏就会打开别处。密码管理器可以存。不要把别的网站用过的句子再拿来。",
+      "s2t": "打开 cv.cm 的密码生成",
+      "s2b": "生成留在当前标签页。随机字节来自这台设备上的 Web Crypto。",
+      "s3t": "长度设成 16 或更长",
+      "s3b": "默认 16。站点允许就更长。不到 12 只给仍限制长度的站点，不是目标。",
+      "s4t": "除非站点禁止，否则留着字母、数字和符号",
+      "s4b": "排除相似会去掉 0、O、I、l、1，好认。银行表单不要符号，就只给这个账号关掉符号。",
+      "s5t": "复制一次，贴进账号",
+      "s5b": "不要截图。不要放进邮件或聊天。贴完之后，存进密码管理器。",
+      "s6t": "关掉标签页",
+      "s6b": "关掉后，这页上的密码就没了。没存下来，就再生成一把——不要去记随机字符串。",
+      "diagram1": "长度 16+。字母、数字、符号。要手打就排除 0 O I l 1。",
+      "diagram2": "复制一次。贴进一个账号。不要发邮件。关掉标签页。"
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "日期加减",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "周数",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "宽高比",
+    "back": "全部工具",
+    "privacyNote": "都在当前标签页进行。不上传。",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

@@ -227,7 +227,21 @@
     "titleJoinAudio": "Cách ghép audio / gộp MP3 | cv.cm",
     "descJoinAudio": "Thả từ hai đoạn theo thứ tự, tải một WAV, phát hết. Đoạn sau khớp tần số đoạn đầu. Không tải lên.",
     "titleMakeFavicon": "Cách làm favicon | cv.cm",
-    "descMakeFavicon": "Cắt vuông, chọn Cover hay Contain, tải ICO (16/32/48) và zip PNG (180/192/512), xem file 16px. Không tải lên."
+    "descMakeFavicon": "Cắt vuông, chọn Cover hay Contain, tải ICO (16/32/48) và zip PNG (180/192/512), xem file 16px. Không tải lên.",
+    "titleAddDays": "Cộng ngày — máy tính ngày — cv.cm",
+    "descAddDays": "Cộng hoặc trừ số ngày trong trình duyệt. Không tải lên.",
+    "titleWeek": "Số tuần — ISO week — cv.cm",
+    "descWeek": "Xem số tuần ISO của một ngày trong trình duyệt. Không tải lên.",
+    "titleAspect": "Tỉ lệ khung — 16:9 4:3 — cv.cm",
+    "descAspect": "Rút gọn rộng và cao thành 16:9 trong trình duyệt. Không tải lên.",
+    "titleMakeSignature": "Cách vẽ chữ ký PNG | cv.cm",
+    "descMakeSignature": "Vẽ trên bảng, tải PNG cắt theo nét nền trong, xem cỡ form. Không phải chữ ký điện tử pháp lý. Không tải lên.",
+    "titleAnnotateScreenshot": "Cách chú thích ảnh chụp màn hình | cv.cm",
+    "descAnnotateScreenshot": "Thả hoặc dán ảnh chụp, thêm khung, mũi tên hoặc chữ ngắn, tải PNG, xem cỡ chat. Bản gốc chưa đánh. Không tải lên.",
+    "titleMakeInvoice": "Cách làm hóa đơn PDF | cv.cm",
+    "descMakeInvoice": "Điền bên bán/mua, thêm dòng, thuế phần trăm tạm tính, tải PDF, đọc số. Không phải tờ khai thuế. Không tải lên.",
+    "titleMakePassword": "Cách tạo mật khẩu mạnh | cv.cm",
+    "descMakePassword": "Dài 16+, giữ chữ số ký hiệu, copy một lần vào một tài khoản, lưu trình quản lý, đóng tab. Byte ngẫu nhiên ở máy này. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "Số thành chữ",
       "blurb": "Tiếng Anh Mỹ. Không tải lên."
+    },
+    "add-days": {
+      "name": "Cộng ngày",
+      "blurb": "Cộng hoặc trừ ngày. Không tải lên."
+    },
+    "week": {
+      "name": "Số tuần",
+      "blurb": "Tuần ISO. Không tải lên."
+    },
+    "aspect": {
+      "name": "Tỉ lệ khung",
+      "blurb": "1920×1080 → 16:9. Không tải lên."
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "Không. Đóng tab là mất.",
         "q5": "Giữ nền trong được không?",
         "a5": "Được. Tắt nền trắng. Contain sẽ để lề trên nền trong."
+      },
+      "make-signature": {
+        "q1": "Vẽ chữ ký miễn phí online được không?",
+        "a1": "Được. Vẽ trong tab này, không tải lên. Không phải chữ ký điện tử pháp lý.",
+        "q2": "Đây có phải chữ ký điện tử có hiệu lực?",
+        "a2": "Không. Bạn được PNG nét mực. Ngân hàng và chính phủ thường cần chữ ký điện tử đủ điều kiện hoặc chữ ướt.",
+        "q3": "Có đóng lên PDF không?",
+        "a3": "Không. Tải PNG, chỉ dán khi form hỏi ảnh.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Sao PNG bị cắt?",
+        "a5": "Xuất giữ nét, bỏ bảng trống. Nền trong để dán vào form."
+      },
+      "annotate-screenshot": {
+        "q1": "Chú thích ảnh chụp miễn phí online được không?",
+        "a1": "Được. Vẽ trong tab này, không tải lên.",
+        "q2": "Thêm dấu nào được?",
+        "a2": "Hình chữ nhật, mũi tên hoặc chữ ngắn. Hoàn tác bỏ dấu vừa rồi.",
+        "q3": "Có tải lên không?",
+        "a3": "Không. Đóng tab là mất.",
+        "q4": "Có sửa file gốc không?",
+        "a4": "Không. Bạn tải PNG mới. Ảnh trên đĩa chưa đánh.",
+        "q5": "Dán từ clipboard được không?",
+        "a5": "Được nếu ảnh chụp là hình. Rồi đánh dấu, tải PNG."
+      },
+      "make-invoice": {
+        "q1": "Làm hóa đơn PDF miễn phí online được không?",
+        "a1": "Được. Vẽ trong tab này, tải PDF. Không tải lên.",
+        "q2": "Đây có phải tờ khai thuế hoặc hóa đơn điện tử pháp lý?",
+        "a2": "Không. Đây là hóa đơn một trang. Không nộp VAT, không phải hóa đơn điện tử đủ điều kiện.",
+        "q3": "Thuế tính thế nào?",
+        "a3": "Phần trăm trên tạm tính (tổng số lượng × đơn giá). Không thuế thì 0.",
+        "q4": "Có tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Dùng tiền tệ nào?",
+        "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. Chọn loại bên mua trả."
+      },
+      "make-password": {
+        "q1": "Tạo mật khẩu mạnh miễn phí online được không?",
+        "a1": "Được. cv.cm dùng Web Crypto trong tab này, không tải lên.",
+        "q2": "Dài bao nhiêu?",
+        "a2": "Site cho thì 16 trở lên. Ở đây mặc định 16. Dưới 12 chỉ cho site còn giới hạn.",
+        "q3": "Loại giống nhau làm gì?",
+        "a3": "Bỏ 0, O, I, l, 1 để dễ đọc khi phải gõ.",
+        "q4": "Có bị tải lên không?",
+        "a4": "Không. Đóng tab là mất.",
+        "q5": "Có nên email mật khẩu cho mình không?",
+        "a5": "Không. Dán vào tài khoản, lưu trình quản lý, đóng tab."
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "Xem trước 256 nói dối. File 16px mờ thì đơn giản hóa dấu hoặc đổi Contain. Đặt favicon.ico ở gốc site và link PNG trong HTML.",
       "diagram1": "Cover lấp ô, có thể cắt. Contain giữ cả dấu, có lề.",
       "diagram2": "ICO là 16/32/48. Zip PNG thêm 180/192/512. Xem file 16px."
+    },
+    "make-signature": {
+      "name": "Cách vẽ chữ ký PNG",
+      "blurb": "Vẽ trên bảng, tải PNG đã cắt, xem cỡ form. Không phải chữ ký điện tử pháp lý.",
+      "title": "Cách vẽ chữ ký PNG",
+      "lead": "Bạn cần ảnh chữ tên, không phải chữ ký điện tử có hiệu lực. Vẽ trong tab này, tải PNG cắt theo nét, xem cỡ ô trên form.",
+      "result": "PNG cắt theo nét, đọc được cỡ form, không phải chữ ký điện tử pháp lý.",
+      "note": "Sẵn sàng vẽ thì mở chữ ký. Bảng xem trước màu kem; PNG cắt theo nét, nền trong. Không phải chữ ký điện tử pháp lý, cũng không đóng lên PDF. Không tải lên.",
+      "s1t": "Đây là ảnh, không phải chữ ký điện tử pháp lý",
+      "s1b": "Ngân hàng và chính phủ cần chữ ký điện tử đủ điều kiện hoặc chữ ướt. PNG này cho form bảo dán ảnh tên. Nó không ràng PDF.",
+      "s2t": "Mở chữ ký trên cv.cm",
+      "s2b": "Vẽ trong tab này.",
+      "s3t": "Vẽ bằng ngón, bút hoặc chuột",
+      "s3b": "Tên liền nét dễ cắt hơn chữ cái rời. Nét sai thì hoàn tác. Chuột kém hơn ngón.",
+      "s4t": "Tải PNG",
+      "s4b": "Xuất cắt theo nét, bỏ bảng kem. Nền trong. Tải trống thì chưa vẽ.",
+      "s5t": "Mở cỡ ô trên form",
+      "s5b": "Chỉ đọc được full màn hình thì nhét ô 200 pixel sẽ nhòe. Mỏng quá thì vẽ đậm lại. Giữ PNG; đừng chụp bảng.",
+      "s6t": "Đừng coi đây là PDF đã ký",
+      "s6b": "Đích cần chữ trên trang PDF thì là việc khác. Chỉ dán PNG khi form hỏi ảnh.",
+      "diagram1": "Ảnh chữ tên. Không phải chữ ký điện tử pháp lý, không ràng PDF.",
+      "diagram2": "Xuất cắt theo nét. Nền PNG trong. Xem cỡ form."
+    },
+    "annotate-screenshot": {
+      "name": "Cách chú thích ảnh chụp màn hình",
+      "blurb": "Thả ảnh chụp, thêm khung, mũi tên hoặc chữ, tải PNG, xem cỡ sẽ gửi.",
+      "title": "Cách chú thích ảnh chụp màn hình",
+      "lead": "Báo lỗi, hướng dẫn, chat cần dấu trên ảnh, không phải một đoạn. Thả ảnh chụp, vẽ khung hoặc mũi tên, xem PNG cỡ tin nhắn.",
+      "result": "PNG có khung, mũi tên hoặc chữ ngắn, đọc được cỡ chat, ảnh gốc chưa đánh còn.",
+      "note": "Có ảnh chụp trên đĩa hoặc clipboard thì mở chú thích. Khung, mũi tên hoặc chữ. Xuất PNG. Bản gốc còn. Không tải lên.",
+      "s1t": "Quyết khung, mũi tên hay chữ ngắn",
+      "s1b": "Điều khiển hỏng thì khung. Nút cần bấm thì mũi tên. Hai ba từ, đừng một đoạn. Đánh quá nhiều thì tranh ảnh.",
+      "s2t": "Mở chú thích ảnh chụp trên cv.cm",
+      "s2b": "Làm trong tab này.",
+      "s3t": "Thả hoặc dán ảnh chụp",
+      "s3b": "Mới chụp thì dán clipboard. Xem trước trống thì trình duyệt không đọc được.",
+      "s4t": "Vẽ một hoặc hai dấu",
+      "s4b": "Khung quanh vùng. Mũi tên chỗ bấm. Chữ cho nhãn hai từ. Che mất thứ cần chỉ thì hoàn tác.",
+      "s5t": "Tải PNG",
+      "s5b": "Giữ bản gốc chưa đánh. Xuất không sửa file trên đĩa.",
+      "s6t": "Mở cỡ chat hoặc ticket",
+      "s6b": "Thu nhỏ mũi tên mất thì vẽ đậm hơn, gần hơn. Chữ nhòe thì rút nhãn. Đừng gửi nhầm bản gốc chưa đánh.",
+      "diagram1": "Điều khiển hỏng thì khung. Chỗ bấm thì mũi tên. Hai từ, đừng một đoạn.",
+      "diagram2": "Xuất PNG. Giữ bản gốc chưa đánh. Xem cỡ chat."
+    },
+    "make-invoice": {
+      "name": "Cách làm hóa đơn PDF",
+      "blurb": "Điền bên bán/mua, thêm dòng, kiểm thuế và tổng, tải PDF, đọc lại số. Không phải tờ khai thuế.",
+      "title": "Cách làm hóa đơn PDF",
+      "lead": "Một hóa đơn đơn giản: bạn là ai, ai trả, bán gì, thuế, hạn. Điền trong tab này, kiểm tổng, mở PDF. Không phải tờ khai thuế nhà nước.",
+      "result": "PDF một trang: thành tiền và thuế khớp ô bạn điền, đã mở một lần trước khi gửi.",
+      "note": "Biết hai bên và các dòng thì mở hóa đơn. Thuế là phần trăm trên tạm tính. Không phải tờ khai VAT, cũng không phải hóa đơn điện tử pháp lý. Không tải lên.",
+      "s1t": "Chuẩn bị bên bán, bên mua và các dòng",
+      "s1b": "Mỗi bên một tên và địa chỉ. Mỗi món một hàng: mô tả, số lượng, đơn giá. Ghi đúng tiền tệ và phần trăm thuế trong hợp đồng.",
+      "s2t": "Mở hóa đơn trên cv.cm",
+      "s2b": "Điền trong tab này.",
+      "s3t": "Điền hai bên, số, ngày và tiền tệ",
+      "s3b": "Hạn không trước ngày hóa đơn. Chọn đúng tiền bên mua sẽ trả.",
+      "s4t": "Mỗi dòng: mô tả, số lượng, đơn giá",
+      "s4b": "Thành tiền = số lượng × đơn giá. Để trống mô tả thì PDF rối. Mỗi món một hàng, đừng nhét một đoạn vào một hàng.",
+      "s5t": "Đặt phần trăm thuế và đọc tổng",
+      "s5b": "Thuế là phần trăm tạm tính. Không thuế thì 0. Tổng xem trước phải khớp số lượng × đơn giá cộng thuế trước khi tải.",
+      "s6t": "Tải PDF và mở",
+      "s6b": "Một trang. Đọc bên bán, bên mua, từng dòng, thuế, tổng. Sai số thì sửa ô rồi xuất lại. File này không phải tờ khai VAT.",
+      "diagram1": "Bên bán, bên mua, mỗi món một hàng. Thành tiền = số lượng × đơn giá.",
+      "diagram2": "Thuế là phần trăm tạm tính. Mở PDF. Không phải tờ khai thuế."
+    },
+    "make-password": {
+      "name": "Cách tạo mật khẩu mạnh",
+      "blurb": "Đặt độ dài và loại ký tự, copy một lần, dán vào tài khoản, đóng tab. Đừng gửi email.",
+      "title": "Cách tạo mật khẩu mạnh",
+      "lead": "Mỗi tài khoản một mật khẩu riêng. Đặt độ dài và loại ký tự trong tab này, copy một lần, dán vào đăng ký. Byte ngẫu nhiên từ máy này. Đừng dùng lại.",
+      "result": "Mật khẩu ngẫu nhiên đã dán vào một tài khoản, không rời tab trừ copy, sẽ không gửi email.",
+      "note": "Tạo hoặc đặt lại một tài khoản thì mở. Dài mặc định 16. Loại giống nhau bỏ 0 O I l 1. Không tải lên.",
+      "s1t": "Dùng mật khẩu riêng cho tài khoản này",
+      "s1b": "Dùng lại thì một chỗ lộ sẽ mở chỗ khác. Trình quản lý mật khẩu có thể lưu. Đừng tái chế cụm đã gõ ở site khác.",
+      "s2t": "Mở mật khẩu trên cv.cm",
+      "s2b": "Tạo trong tab này. Byte ngẫu nhiên từ Web Crypto trên máy này.",
+      "s3t": "Đặt dài 16 trở lên",
+      "s3b": "Mặc định 16. Dài hơn thì mạnh hơn nếu site cho. Dưới 12 chỉ cho site còn giới hạn, không phải mục tiêu.",
+      "s4t": "Giữ chữ, số và ký hiệu trừ khi site cấm",
+      "s4b": "Loại giống nhau bỏ 0, O, I, l, 1 cho dễ đọc. Form ngân hàng từ chối ký hiệu thì chỉ tắt ký hiệu cho tài khoản đó.",
+      "s5t": "Copy một lần và dán vào tài khoản",
+      "s5b": "Đừng chụp màn hình. Đừng bỏ vào email hay chat. Dán xong thì lưu trình quản lý mật khẩu.",
+      "s6t": "Đóng tab",
+      "s6b": "Đóng thì mật khẩu trên trang mất. Chưa lưu thì tạo mới — đừng cố nhớ chuỗi ngẫu nhiên.",
+      "diagram1": "Dài 16+. Chữ, số, ký hiệu. Sẽ gõ tay thì loại 0 O I l 1.",
+      "diagram2": "Copy một lần. Dán một tài khoản. Đừng email. Đóng tab."
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "Cộng ngày",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "Số tuần",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "Tỉ lệ khung",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

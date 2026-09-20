@@ -227,7 +227,21 @@
     "titleJoinAudio": "音声をつなぐ / MP3を結合する方法 | cv.cm",
     "descJoinAudio": "2本以上を順に入れ、WAVを1つ保存し通しで再生。後続は先頭の周波数に合わせる。アップロードなし。",
     "titleMakeFavicon": "ファビコンの作り方 | cv.cm",
-    "descMakeFavicon": "正方形にしてCoverかContain、ICO（16/32/48）とPNGのZIP（180/192/512）を保存し16pxを見る。アップロードなし。"
+    "descMakeFavicon": "正方形にしてCoverかContain、ICO（16/32/48）とPNGのZIP（180/192/512）を保存し16pxを見る。アップロードなし。",
+    "titleAddDays": "日付に日を足す — 日付計算 — cv.cm",
+    "descAddDays": "ブラウザで日付に日数を足す・引く。アップロードなし。",
+    "titleWeek": "週番号 — ISO週 — cv.cm",
+    "descWeek": "ブラウザで日付のISO週番号。アップロードなし。",
+    "titleAspect": "アスペクト比 — 16:9 4:3 — cv.cm",
+    "descAspect": "ブラウザで幅と高さを16:9などに約分。アップロードなし。",
+    "titleMakeSignature": "署名PNGの描き方 | cv.cm",
+    "descMakeSignature": "パッドに書き、インクに切り透明なPNGを保存し欄の大きさで見る。法的電子署名ではない。アップロードなし。",
+    "titleAnnotateScreenshot": "スクリーンショットに注釈を付ける方法 | cv.cm",
+    "descAnnotateScreenshot": "スクショを入れ枠・矢印・短い文字、PNGを保存しチャットの大きさで見る。原版は無印。アップロードなし。",
+    "titleMakeInvoice": "請求書PDFの作り方 | cv.cm",
+    "descMakeInvoice": "差出人と宛先、明細、税は小計の%、PDFを保存して数字を読む。税務申告ではない。アップロードなし。",
+    "titleMakePassword": "強いパスワードの作り方 | cv.cm",
+    "descMakePassword": "長さ16+、字母・数字・記号、一度コピーして1アカウントに貼り、マネージャーに預けタブを閉じる。乱数はこの端末。アップロードなし。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "数字を英語に",
       "blurb": "米語の単語。アップロードなし。"
+    },
+    "add-days": {
+      "name": "日付に日を足す",
+      "blurb": "日数を足す・引く。アップロードなし。"
+    },
+    "week": {
+      "name": "週番号",
+      "blurb": "ISO週。アップロードなし。"
+    },
+    "aspect": {
+      "name": "アスペクト比",
+      "blurb": "1920×1080 → 16:9。アップロードなし。"
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "しない。タブを閉じると消える。",
         "q5": "透明背景にできる？",
         "a5": "できる。白背景を外す。Containなら透明の余白。"
+      },
+      "make-signature": {
+        "q1": "署名を無料で描ける？",
+        "a1": "できる。このタブで描く。アップロードなし。法的電子署名ではない。",
+        "q2": "法的な電子署名？",
+        "a2": "違う。インクのPNG。銀行や行政は適格電子署名か直筆が多い。",
+        "q3": "PDFに押せる？",
+        "a3": "しない。PNGを保存し、画像を貼れと言われた欄にだけ使う。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "PNGが切れているのはなぜ？",
+        "a5": "書き出しはインクだけ残し空のパッドを捨てる。透明なので欄に載る。"
+      },
+      "annotate-screenshot": {
+        "q1": "スクショに無料で注釈できる？",
+        "a1": "できる。このタブで描く。アップロードなし。",
+        "q2": "どんな印？",
+        "a2": "枠、矢印、短い文字。Undoは最後の印を消す。",
+        "q3": "アップロードされる？",
+        "a3": "しない。タブを閉じると消える。",
+        "q4": "元ファイルは変わる？",
+        "a4": "しない。新しいPNGを保存。元のキャプチャは無印のまま。",
+        "q5": "クリップボードから貼れる？",
+        "a5": "画像なら可。印を付けてPNGを保存。"
+      },
+      "make-invoice": {
+        "q1": "請求書PDFを無料で作れる？",
+        "a1": "できる。このタブで描きPDFを保存。アップロードなし。",
+        "q2": "税務用紙や適格請求書？",
+        "a2": "違う。1ページの簡単な請求。VAT申告でも適格請求書でもない。",
+        "q3": "税の計算は？",
+        "a3": "小計（各行の数量×単価の合計）の%。課税しないなら0。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "通貨は？",
+        "a5": "USD / EUR / GBP / CNY / JPY / KRW / VND / IDR。支払う通貨を選ぶ。"
+      },
+      "make-password": {
+        "q1": "強いパスワードを無料で作れる？",
+        "a1": "できる。このタブのWeb Crypto。アップロードなし。",
+        "q2": "長さは？",
+        "a2": "サイトが許すなら16以上。ここは初期16。12未満は上限があるサイト用。",
+        "q3": "類似除外は？",
+        "a3": "0 O I l 1を落とし、手入力で読みやすくする。",
+        "q4": "アップロードされる？",
+        "a4": "しない。タブを閉じると消える。",
+        "q5": "自分にメールしてよい？",
+        "a5": "しない。アカウントに貼り、マネージャーに預け、タブを閉じる。"
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "256のプレビューは嘘。16pxがボケるならマークを単純にするかContain。favicon.icoをルートに置き、HTMLでPNGをリンク。",
       "diagram1": "Coverは埋めて切ることがある。Containは全体（余白）。",
       "diagram2": "ICOは16/32/48。PNGのZIPに180/192/512。16pxを見る。"
+    },
+    "make-signature": {
+      "name": "署名PNGの描き方",
+      "blurb": "パッドに書き、切り抜いたPNGを保存し、フォームの大きさで見る。法的な電子署名ではない。",
+      "title": "署名PNGの描き方",
+      "lead": "欲しいのは名前の絵であり、法的な電子署名ではない。このタブで書き、インクに合わせて切ったPNGを保存し、欄の大きさで見る。",
+      "result": "インクに合わせて切ったPNG。欄の大きさで読める。法的な電子署名ではない。",
+      "note": "書く準備ができてから開く。プレビューはクリーム。PNGはインクに切り抜き透明。法的電子署名ではなく、PDFに押すスタンプでもない。アップロードなし。",
+      "s1t": "絵であり法的電子署名ではない",
+      "s1b": "銀行や行政は適格電子署名か直筆。このPNGは「名前の画像を貼れ」という欄用。PDFを拘束しない。",
+      "s2t": "cv.cmの署名を開く",
+      "s2b": "このタブで書く。",
+      "s3t": "指、スタイラス、マウスで書く",
+      "s3b": "つながった名前の方が切りやすい。失敗したらUndo。マウスより指。",
+      "s4t": "PNGを保存",
+      "s4b": "書き出しはインクに切り、クリームのパッドは捨てる。背景は透明。空ならまだ書いていない。",
+      "s5t": "欄の大きさで開く",
+      "s5b": "全画面でしか読めないなら200pxの欄で潰れる。細いなら太く描き直す。PNGを残す。パッドを撮らない。",
+      "s6t": "署名済みPDFだと思わない",
+      "s6b": "PDFのページに署名を置け、は別仕事。画像を貼れと言われた欄にだけこのPNGを使う。",
+      "diagram1": "名前の絵。法的電子署名ではなくPDFを拘束しない。",
+      "diagram2": "書き出しはインクに切る。PNGの背景は透明。欄の大きさで見る。"
+    },
+    "annotate-screenshot": {
+      "name": "スクリーンショットの注釈",
+      "blurb": "スクショを入れ、枠・矢印・文字を付け、PNGを保存し、送る大きさで見る。",
+      "title": "スクリーンショットに注釈を付ける方法",
+      "lead": "バグ報告、手順、チャットは絵の上の印であり段落ではない。スクショを入れ、枠か矢印を描き、メッセージの大きさでPNGを見る。",
+      "result": "枠・矢印・短い文字のPNG。チャットの大きさで読める。無印の原版は残る。",
+      "note": "キャプチャが手元かクリップボードにあってから開く。枠・矢印・文字。書き出しはPNG。原版は残る。アップロードなし。",
+      "s1t": "枠、矢印、短い文字のどれか",
+      "s1b": "壊れた操作は枠。押すボタンは矢印。2–3語。段落を書かない。印が多すぎるとスクショと喧嘩する。",
+      "s2t": "cv.cmのスクショ注釈を開く",
+      "s2b": "このタブで処理。",
+      "s3t": "ドロップまたは貼り付け",
+      "s3b": "撮ったばかりならクリップボードから貼る。プレビューが空ならこのブラウザは不可。",
+      "s4t": "印を1–2個描く",
+      "s4b": "範囲は枠。タップは矢印。2語のラベルは文字。見せたいものを隠したらUndo。",
+      "s5t": "PNGを保存",
+      "s5b": "無印の原版は残す。書き出しはディスクのファイルを変えない。",
+      "s6t": "チャットやチケットの大きさで開く",
+      "s6b": "小さくして矢印が消えるなら太く近く。文字が潰れるなら短く。無印の原版を誤送しない。",
+      "diagram1": "壊れた操作は枠。タップは矢印。2語。段落を書かない。",
+      "diagram2": "書き出しはPNG。無印の原版は残す。チャットの大きさで見る。"
+    },
+    "make-invoice": {
+      "name": "請求書PDFの作り方",
+      "blurb": "差出人と宛先、明細、税と合計を見てPDFを保存し、数字をもう一度読む。税務申告書ではない。",
+      "title": "請求書PDFの作り方",
+      "lead": "簡単な請求。自分、支払う人、売ったもの、税、期日。このタブで埋め、合計を見てPDFを開く。行政の税務用紙ではない。",
+      "result": "1ページのPDF。明細と税が入力と一致。送る前に一度開く。",
+      "note": "相手と明細が分かってから開く。税は小計の%。VAT申告でも適格請求書でもない。アップロードなし。",
+      "s1t": "差出人・宛先・明細を揃える",
+      "s1b": "双方に名前と住所。売ったもの1行：説明・数量・単価。契約の通貨と税率を書く。",
+      "s2t": "cv.cmの請求書を開く",
+      "s2b": "このタブで処理。",
+      "s3t": "相手・番号・日付・通貨を入れる",
+      "s3b": "期日は請求日以後。支払う通貨を選ぶ。",
+      "s4t": "各行に説明・数量・単価",
+      "s4b": "金額は数量×単価。説明が空だとPDFが荒れる。1品1行。1行に段落を詰め込まない。",
+      "s5t": "税率を入れ合計を読む",
+      "s5b": "税は小計の%。課税しないなら0。保存前にプレビューの合計が数量×単価+税と一致すること。",
+      "s6t": "PDFを保存して開く",
+      "s6b": "1ページ。差出人・宛先・各行・税・合計を読む。数字が違うなら直して再書き出し。VAT申告ではない。",
+      "diagram1": "差出人・宛先。1品1行。金額は数量×単価。",
+      "diagram2": "税は小計の%。PDFを開く。税務申告ではない。"
+    },
+    "make-password": {
+      "name": "強いパスワードの作り方",
+      "blurb": "長さと文字種を決め、一度コピーしてアカウントに貼り、タブを閉じる。メールしない。",
+      "title": "強いパスワードの作り方",
+      "lead": "1アカウントに1つのユニークなパスワード。このタブで長さと文字種を決め、一度コピーして登録に貼る。乱数はこの端末。使い回さない。",
+      "result": "1アカウントに貼った乱数パスワード。コピー以外このタブから出ていない。メールしない。",
+      "note": "1アカウントを作る・リセットするとき開く。初期長さ16。類似除外は0 O I l 1を落とす。アップロードなし。",
+      "s1t": "このアカウント専用にする",
+      "s1b": "使い回すと1件の漏洩で他も開く。マネージャーに預けてよい。他サイトで打った句を使わない。",
+      "s2t": "cv.cmのパスワードを開く",
+      "s2b": "このタブで生成。乱数はこの端末のWeb Crypto。",
+      "s3t": "長さを16以上にする",
+      "s3b": "初期は16。サイトが許すなら長く。12未満は上限があるサイト用であり目標ではない。",
+      "s4t": "サイトが禁じない限り字母・数字・記号を残す",
+      "s4b": "類似除外は0 O I l 1を落として読みやすくする。銀行が記号不可ならそのアカウントだけ記号を切る。",
+      "s5t": "一度コピーしてアカウントに貼る",
+      "s5b": "スクショしない。メールやチャットに入れない。貼ったらマネージャーに預ける。",
+      "s6t": "タブを閉じる",
+      "s6b": "閉じるとこのページのパスワードは消える。保存していなければ作り直す。乱数を覚えようとしない。",
+      "diagram1": "長さ16+。字母・数字・記号。手入力なら0 O I l 1を除外。",
+      "diagram2": "一度コピー。1アカウントに貼る。メールしない。タブを閉じる。"
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "日付に日を足す",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "週番号",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "アスペクト比",
+    "back": "すべてのツール",
+    "privacyNote": "このタブ内。アップロードなし。",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

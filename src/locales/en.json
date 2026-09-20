@@ -227,7 +227,21 @@
     "titleJoinAudio": "How to join audio files / merge MP3s | cv.cm",
     "descJoinAudio": "Drop two or more clips in order, download one WAV, then play it from start to end. Later clips match the first clip's sample rate. Nothing is uploaded.",
     "titleMakeFavicon": "How to make a favicon | cv.cm",
-    "descMakeFavicon": "Square the mark, pick Cover or Contain, download ICO (16/32/48) and a PNG zip (180/192/512), then check the 16-pixel file. Nothing is uploaded."
+    "descMakeFavicon": "Square the mark, pick Cover or Contain, download ICO (16/32/48) and a PNG zip (180/192/512), then check the 16-pixel file. Nothing is uploaded.",
+    "titleAddDays": "Add days to a date — date calculator — cv.cm",
+    "descAddDays": "Add or subtract whole days from a calendar date in the browser. Nothing is uploaded.",
+    "titleWeek": "Week number — ISO week — cv.cm",
+    "descWeek": "Find the ISO week number for a date in the browser. Nothing is uploaded.",
+    "titleAspect": "Aspect ratio calculator — 16:9 4:3 — cv.cm",
+    "descAspect": "Simplify width and height to a ratio such as 16:9 in the browser. Nothing is uploaded.",
+    "titleMakeSignature": "How to draw a signature PNG | cv.cm",
+    "descMakeSignature": "Draw on the pad, download a PNG cropped to the ink with a clear background, then check it at form size. Not a legal e-sign. Nothing is uploaded.",
+    "titleAnnotateScreenshot": "How to annotate a screenshot | cv.cm",
+    "descAnnotateScreenshot": "Drop or paste a screenshot, add a box, an arrow, or a short label, download PNG, then check at chat size. The original stays unmarked. Nothing is uploaded.",
+    "titleMakeInvoice": "How to make an invoice PDF | cv.cm",
+    "descMakeInvoice": "Fill from and bill-to, add line items, set tax as a percent of the subtotal, download a PDF, then read the numbers. Not a tax form. Nothing is uploaded.",
+    "titleMakePassword": "How to generate a strong password | cv.cm",
+    "descMakePassword": "Set length 16+, keep letters digits and symbols, copy once into one account, store it in a manager, close the tab. Random bytes stay on this device. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -854,6 +868,94 @@
       "s6b": "The 256 preview lies. If the 16px file is a blur, simplify the mark or switch to Contain. Put favicon.ico at the site root and link the PNGs in the HTML.",
       "diagram1": "Cover fills and may crop. Contain keeps the whole mark and letterboxes.",
       "diagram2": "ICO is 16/32/48. PNG zip adds 180/192/512. Check the 16px file."
+    },
+    "make-signature": {
+      "name": "How to draw a signature PNG",
+      "blurb": "Draw on the pad, download a cropped PNG, then check it at the size of the form. Not a legal e-sign.",
+      "title": "How to draw a signature PNG",
+      "lead": "You need a picture of your name, not a legally binding e-sign. You will draw in this tab, download a PNG cropped to the ink, and check it at the size of the box on the form.",
+      "result": "A PNG cropped to the ink, readable at form size, that is not a legal e-sign.",
+      "note": "Open signature when you are ready to draw. The preview pad is cream; the PNG is cropped to the ink with a clear background. Not a legal e-sign and not a stamp on a PDF. Nothing is uploaded.",
+      "s1t": "Know this is a picture, not a legal e-sign",
+      "s1b": "Banks and governments want a qualified e-sign or a wet signature. This PNG is for a form that asks you to paste an image of your name. It does not bind a PDF.",
+      "s2t": "Open signature on cv.cm",
+      "s2b": "Drawing stays in this tab.",
+      "s3t": "Draw with a finger, a stylus, or a mouse",
+      "s3b": "One continuous name is easier to crop than scattered initials. Undo the last stroke if a loop went wrong. A mouse is worse than a finger.",
+      "s4t": "Download the PNG",
+      "s4b": "Export crops to the ink and drops the cream pad. The background is clear. If the download is empty, you had no strokes.",
+      "s5t": "Open it at the size of the form box",
+      "s5b": "A signature that only reads full-screen will smear in a 200-pixel box. If it is too thin, draw again thicker. Keep the PNG; do not photograph the pad.",
+      "s6t": "Do not treat this as a signed PDF",
+      "s6b": "If the destination wants a signature on a PDF page, that is a different job. Paste the PNG only where the form asks for an image.",
+      "diagram1": "This is a picture of a name. It is not a legal e-sign and it does not bind a PDF.",
+      "diagram2": "Export crops to the ink. The PNG background is clear. Check it at form size."
+    },
+    "annotate-screenshot": {
+      "name": "How to annotate a screenshot",
+      "blurb": "Drop a screenshot, add a box, an arrow, or a label, download a PNG, then check it at the size you will send.",
+      "title": "How to annotate a screenshot",
+      "lead": "A bug report, a how-to, or a chat needs a mark on the picture, not a paragraph. You will drop a screenshot, draw a box or an arrow, and check the PNG at the size of a message.",
+      "result": "A PNG with a box, an arrow, or a short label that still reads at chat size, plus the original unmarked file.",
+      "note": "Open screenshot when the capture is on disk or on the clipboard. Rect, arrow, or text. Export is PNG. The original stays. Nothing is uploaded.",
+      "s1t": "Decide box, arrow, or a short label",
+      "s1b": "A box around the broken control. An arrow at the button to tap. Two or three words, not a paragraph. Too many marks fight the screenshot.",
+      "s2t": "Open screenshot on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Drop or paste the capture",
+      "s3b": "Paste from the clipboard if you just captured. If the preview is blank, the file is not an image this browser can decode.",
+      "s4t": "Draw one or two marks",
+      "s4b": "Rect around the area. Arrow at the tap. Text for a two-word label. Undo the last mark if it covers the thing you meant to show.",
+      "s5t": "Download the PNG",
+      "s5b": "Keep the unmarked original. Export does not change the file on disk.",
+      "s6t": "Open it at chat or ticket size",
+      "s6b": "If the arrow vanishes when small, draw it thicker and closer. If type smears, shorten the label. Do not send the unmarked original by mistake.",
+      "diagram1": "Box the broken control. Arrow the tap. Two words, not a paragraph.",
+      "diagram2": "Export is PNG. Keep the unmarked original. Check at chat size."
+    },
+    "make-invoice": {
+      "name": "How to make an invoice PDF",
+      "blurb": "Fill from/to, add line items, check tax and total, download a PDF, then read the numbers once. Not a tax form.",
+      "title": "How to make an invoice PDF",
+      "lead": "A simple bill: who you are, who pays, what was sold, tax, due date. You will fill the fields in this tab, check the totals, and open the PDF. This is not a government tax form.",
+      "result": "A one-page PDF whose line amounts and tax match the fields you typed, opened once before you send it.",
+      "note": "Open invoice when you know the parties and the lines. Tax is a percent on the subtotal. Not a VAT return and not a legal e-invoice. Nothing is uploaded.",
+      "s1t": "Gather from, bill-to, and the lines",
+      "s1b": "A name and address on each side. One row per thing sold: description, quantity, unit price. Write the currency and the tax percent the contract uses.",
+      "s2t": "Open invoice on cv.cm",
+      "s2b": "Work stays in this tab.",
+      "s3t": "Fill the parties, number, dates, and currency",
+      "s3b": "Due should be on or after the invoice date. Pick the currency the buyer will actually pay.",
+      "s4t": "Add each line: description, qty, price",
+      "s4b": "Amount is qty × price. Empty descriptions make a messy PDF. Add a line per item, not a paragraph in one row.",
+      "s5t": "Set tax percent and read the totals",
+      "s5b": "Tax is a percent of the subtotal. 0 if the sale is untaxed here. The preview total must match qty × price plus tax before you download.",
+      "s6t": "Download the PDF and open it",
+      "s6b": "One page. Read from, bill-to, each line, tax, and total. If a number is wrong, fix the field and export again. This file is not a VAT filing.",
+      "diagram1": "From, bill-to, and one line per item. Amount is qty × price.",
+      "diagram2": "Tax is a percent of the subtotal. Open the PDF. This is not a tax return."
+    },
+    "make-password": {
+      "name": "How to generate a strong password",
+      "blurb": "Set length and character types, copy once, paste into the account, then close the tab. Do not email it.",
+      "title": "How to generate a strong password",
+      "lead": "A unique password for one account. You will set length and character types in this tab, copy once, and paste into the signup. Random bytes come from this device. Do not reuse it.",
+      "result": "A random password you pasted into one account, that never left this tab except via copy, and that you will not email.",
+      "note": "Open password when you are creating or resetting one account. Default length 16. Exclude similar drops 0 O I l 1. Nothing is uploaded.",
+      "s1t": "Use a unique password for this account",
+      "s1b": "Reusing a password is how one leak opens the rest. A password manager can store it. Do not recycle a phrase you already typed on another site.",
+      "s2t": "Open password on cv.cm",
+      "s2b": "Generation stays in this tab. Random bytes come from Web Crypto on this device.",
+      "s3t": "Set length 16 or more",
+      "s3b": "Default is 16. Longer is stronger if the site allows it. Below 12 is for the sites that still cap length, not a goal.",
+      "s4t": "Keep letters, digits, and symbols unless the site forbids them",
+      "s4b": "Exclude similar drops 0, O, I, l, and 1 so you can read it. If a bank form rejects symbols, turn symbols off for that account only.",
+      "s5t": "Copy once and paste into the account",
+      "s5b": "Do not screenshot it. Do not put it in email or chat. A password manager is the place to store it after paste.",
+      "s6t": "Close the tab",
+      "s6b": "Closing discards the password from this page. If you did not store it, generate a new one — do not try to remember a random string.",
+      "diagram1": "Length 16+. Letters, digits, symbols. Exclude 0 O I l 1 if you will type it.",
+      "diagram2": "Copy once. Paste into one account. Do not email it. Close the tab."
     }
   },
   "tools": {
@@ -1132,6 +1234,18 @@
     "words": {
       "name": "Number to words",
       "blurb": "US English words. Nothing is uploaded."
+    },
+    "add-days": {
+      "name": "Add days to a date",
+      "blurb": "Add or subtract whole days. Nothing is uploaded."
+    },
+    "week": {
+      "name": "Week number",
+      "blurb": "ISO week for a date. Nothing is uploaded."
+    },
+    "aspect": {
+      "name": "Aspect ratio",
+      "blurb": "Simplify 1920×1080 to 16:9. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1872,6 +1986,54 @@
         "a4": "No. Closing the tab discards them.",
         "q5": "Can I keep a transparent background?",
         "a5": "Yes. Uncheck white background. Contain then letterboxes on transparency."
+      },
+      "make-signature": {
+        "q1": "Can I draw a signature free online?",
+        "a1": "Yes. cv.cm draws in this tab. Nothing is uploaded. It is not a legal e-sign.",
+        "q2": "Is this a legally binding e-signature?",
+        "a2": "No. You get a PNG of ink. Banks and governments usually want a qualified e-sign or a wet signature.",
+        "q3": "Does it stamp a PDF?",
+        "a3": "No. Download a PNG and paste it only where a form asks for an image.",
+        "q4": "Is the drawing uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Why is the PNG cropped?",
+        "a5": "Export keeps the ink and drops empty pad. The background is transparent so it sits on a form."
+      },
+      "annotate-screenshot": {
+        "q1": "Can I annotate a screenshot free online?",
+        "a1": "Yes. cv.cm draws in this tab. Nothing is uploaded.",
+        "q2": "What marks can I add?",
+        "a2": "A rectangle, an arrow, or a short text label. Undo removes the last mark.",
+        "q3": "Is the screenshot uploaded?",
+        "a3": "No. Closing the tab discards it.",
+        "q4": "Does this change the original file?",
+        "a4": "No. You download a new PNG. The capture on disk stays unmarked.",
+        "q5": "Can I paste from the clipboard?",
+        "a5": "Yes, if the capture is an image. Then mark and download PNG."
+      },
+      "make-invoice": {
+        "q1": "Can I make an invoice PDF free online?",
+        "a1": "Yes. cv.cm draws in this tab and downloads a PDF. Nothing is uploaded.",
+        "q2": "Is this a tax form or a legal e-invoice?",
+        "a2": "No. It is a simple one-page bill. It does not file VAT and it is not a qualified e-invoice.",
+        "q3": "How is tax calculated?",
+        "a3": "A percent of the subtotal (qty × price for every line). Use 0 if the sale is untaxed here.",
+        "q4": "Are the fields uploaded?",
+        "a4": "No. Closing the tab discards them.",
+        "q5": "Which currencies can I use?",
+        "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, and IDR. Pick the one the buyer will pay."
+      },
+      "make-password": {
+        "q1": "Can I generate a strong password free online?",
+        "a1": "Yes. cv.cm uses Web Crypto in this tab. Nothing is uploaded.",
+        "q2": "How long should a password be?",
+        "a2": "16 or more if the site allows it. Default here is 16. Below 12 is only for sites that still cap length.",
+        "q3": "What does exclude similar do?",
+        "a3": "It drops 0, O, I, l, and 1 so the string is easier to read if you must type it.",
+        "q4": "Is the password uploaded?",
+        "a4": "No. Closing the tab discards it.",
+        "q5": "Should I email the password to myself?",
+        "a5": "No. Paste into the account, store it in a password manager, close the tab."
       }
     },
     "compress-pdf": {
@@ -2533,6 +2695,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "Add days to a date",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "Week number",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "Aspect ratio",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

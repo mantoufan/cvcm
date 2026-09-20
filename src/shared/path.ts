@@ -15,7 +15,7 @@ export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
   { id: "image", tools: ["watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
-  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words"] },
+  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -90,6 +90,9 @@ export const TOOLS = [
   "sort",
   "replace",
   "words",
+  "add-days",
+  "week",
+  "aspect",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -119,6 +122,10 @@ export const TUTORIALS = [
   "mp3-to-wav",
   "join-audio",
   "make-favicon",
+  "make-signature",
+  "annotate-screenshot",
+  "make-invoice",
+  "make-password",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -141,10 +148,10 @@ export const TUTORIAL_GROUPS: readonly {
   tutorials: readonly TutorialId[];
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
-  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp"] },
-  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme", "make-favicon"] },
+  { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
+  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio"] },
-  { id: "text", tutorials: ["count-words"] },
+  { id: "text", tutorials: ["count-words", "make-password"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

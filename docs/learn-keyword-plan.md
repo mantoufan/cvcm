@@ -103,6 +103,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `mp3-to-wav`
 - `join-audio`
 - `make-favicon`
+- `make-signature`
+- `annotate-screenshot`
+- `make-invoice`
+- `make-password`
 
 ## Fourth batch (ship)
 
@@ -125,6 +129,17 @@ PNG→WebP is the last convert cluster with job volume in this dump. Audio conve
 | How to convert MP3 to WAV | — (not seeded) | `audio` | Tool money page is MP3 to WAV. WAV does not restore MP3 losses. 44.1 vs 48. |
 | How to join audio files / merge MP3s | — (not seeded) | `audio-joiner` | Two or more clips; list order; later clips resample to the first clip's rate; WAV out. |
 | How to make a favicon | — (not seeded) | `favicon` | Cover vs Contain; ICO 16/32/48; PNG zip 180/192/512; check the 16px file. |
+
+## Sixth batch (ship)
+
+Signature, screenshot, invoice, and password were not in the convert seed. They ship as photo / files / text jobs with failure modes the tool pages do not teach.
+
+| Lesson query | Job vol | Tool | Notes |
+|---|---:|---|---|
+| How to draw a signature PNG | 110 how-to (photo); skip e-sign PDF as the title | `signature` | Picture of a name, not a legal e-sign, not a PDF stamp. Export crops to ink with a clear background. |
+| How to annotate a screenshot | — (not seeded) | `screenshot` | Rect / arrow / two-word label. PNG out. Original stays unmarked. Check at chat size. |
+| How to make an invoice PDF | — (not seeded) | `invoice` | Line amount is qty × price. Tax is a percent of the subtotal. Not a VAT return. |
+| How to generate a strong password | — (not seeded) | `password` | Length 16+. Exclude 0 O I l 1. Copy once into one account. Do not email. Close the tab. |
 
 ## Evidence notes
 

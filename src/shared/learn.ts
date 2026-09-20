@@ -166,6 +166,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["favicon", "convert", "crop"],
   },
+  "make-signature": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["signature", "screenshot", "watermark"],
+  },
+  "annotate-screenshot": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["screenshot", "crop", "resize"],
+  },
+  "make-invoice": {
+    minutes: 8,
+    steps: 6,
+    openAt: 2,
+    related: ["invoice", "image-pdf", "merge-pdf"],
+  },
+  "make-password": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["password", "hash", "uuid"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -388,5 +412,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "make-favicon": [
     { step: 1, src: "/covers/tutorials/make-favicon-fit.svg" },
     { step: 5, src: "/covers/tutorials/make-favicon-sizes.svg" },
+  ],
+  "make-signature": [
+    { step: 1, src: "/covers/tutorials/make-signature-legal.svg" },
+    { step: 4, src: "/covers/tutorials/make-signature-crop.svg" },
+  ],
+  "annotate-screenshot": [
+    { step: 1, src: "/covers/tutorials/annotate-screenshot-marks.svg" },
+    { step: 6, src: "/covers/tutorials/annotate-screenshot-png.svg" },
+  ],
+  "make-invoice": [
+    { step: 1, src: "/covers/tutorials/make-invoice-lines.svg" },
+    { step: 5, src: "/covers/tutorials/make-invoice-tax.svg" },
+  ],
+  "make-password": [
+    { step: 1, src: "/covers/tutorials/make-password-rule.svg" },
+    { step: 5, src: "/covers/tutorials/make-password-copy.svg" },
   ],
 };

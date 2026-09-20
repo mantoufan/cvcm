@@ -227,7 +227,21 @@
     "titleJoinAudio": "오디오 이어붙이기 / MP3 합치는 법 | cv.cm",
     "descJoinAudio": "두 개 이상을 순서대로 넣고 WAV 하나를 받은 뒤 처음부터 끝까지 재생하세요. 뒤 클립은 첫 클립의 레이트에 맞춥니다. 업로드 없음.",
     "titleMakeFavicon": "파비콘 만드는 법 | cv.cm",
-    "descMakeFavicon": "정사각으로 맞추고 Cover 또는 Contain을 고른 뒤 ICO(16/32/48)와 PNG zip(180/192/512)을 받고 16픽셀을 보세요. 업로드 없음."
+    "descMakeFavicon": "정사각으로 맞추고 Cover 또는 Contain을 고른 뒤 ICO(16/32/48)와 PNG zip(180/192/512)을 받고 16픽셀을 보세요. 업로드 없음.",
+    "titleAddDays": "날짜에 일 더하기 — 날짜 계산 — cv.cm",
+    "descAddDays": "브라우저에서 날짜에 일을 더하거나 뺍니다. 업로드 없음.",
+    "titleWeek": "주차 — ISO 주 — cv.cm",
+    "descWeek": "브라우저에서 날짜의 ISO 주차. 업로드 없음.",
+    "titleAspect": "화면비 — 16:9 4:3 — cv.cm",
+    "descAspect": "브라우저에서 너비와 높이를 16:9로 약분. 업로드 없음.",
+    "titleMakeSignature": "서명 PNG 그리는 법 | cv.cm",
+    "descMakeSignature": "패드에 쓰고 잉크에 맞춰 자른 투명 PNG를 받은 뒤 서류 크기로 보세요. 법적 전자서명 아님. 업로드 없음.",
+    "titleAnnotateScreenshot": "스크린샷에 주석 다는 법 | cv.cm",
+    "descAnnotateScreenshot": "스크린샷을 넣거나 붙이고 상자, 화살표 또는 짧은 글을 단 뒤 PNG를 받아 채팅 크기로 보세요. 원본은 표시 없음. 업로드 없음.",
+    "titleMakeInvoice": "인보이스 PDF 만드는 법 | cv.cm",
+    "descMakeInvoice": "보내는 사람/받는 사람, 품목, 세금은 소계의 퍼센트, PDF를 받은 뒤 숫자를 읽으세요. 세금 신고서가 아닙니다. 업로드 없음.",
+    "titleMakePassword": "강한 비밀번호 만드는 법 | cv.cm",
+    "descMakePassword": "길이 16+, 글자·숫자·기호를 남기고 한 번 복사해 한 계정에 붙인 뒤 관리자에 저장하고 탭을 닫으세요. 난수는 이 기기에 남습니다. 업로드 없음."
   },
   "brand": "cv.cm",
   "nav": {
@@ -547,6 +561,18 @@
     "words": {
       "name": "숫자를 영어로",
       "blurb": "미국식 영단어. 업로드 없음."
+    },
+    "add-days": {
+      "name": "날짜에 일 더하기",
+      "blurb": "일을 더하거나 빼기. 업로드 없음."
+    },
+    "week": {
+      "name": "주차",
+      "blurb": "ISO 주. 업로드 없음."
+    },
+    "aspect": {
+      "name": "화면비",
+      "blurb": "1920×1080 → 16:9. 업로드 없음."
     }
   },
   "watermark": {
@@ -1287,6 +1313,54 @@
         "a4": "아니요. 탭을 닫으면 사라집니다.",
         "q5": "투명 배경을 남길 수 있나요?",
         "a5": "됩니다. 흰 배경을 끄세요. Contain이면 투명 위에 여백이 생깁니다."
+      },
+      "make-signature": {
+        "q1": "서명을 무료로 그릴 수 있나요?",
+        "a1": "됩니다. 이 탭에서 그립니다. 업로드 없음. 법적 전자서명이 아닙니다.",
+        "q2": "법적 전자서명인가요?",
+        "a2": "아니요. 잉크 PNG입니다. 은행과 정부는 보통 적격 전자서명이나 원본을 원합니다.",
+        "q3": "PDF에 찍히나요?",
+        "a3": "아니요. PNG를 받아 서류가 그림을 붙이라고 할 때만 붙이세요.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "PNG가 잘린 이유는?",
+        "a5": "보내면 잉크만 남기고 빈 패드를 버립니다. 배경이 투명해 서류에 올라갑니다."
+      },
+      "annotate-screenshot": {
+        "q1": "스크린샷에 무료로 주석을 달 수 있나요?",
+        "a1": "됩니다. 이 탭에서 그립니다. 업로드 없음.",
+        "q2": "어떤 표시를 달 수 있나요?",
+        "a2": "사각형, 화살표 또는 짧은 글. 실행 취소는 마지막 표시를 지웁니다.",
+        "q3": "업로드되나요?",
+        "a3": "아니요. 탭을 닫으면 사라집니다.",
+        "q4": "원본이 바뀌나요?",
+        "a4": "아니요. 새 PNG를 받습니다. 디스크의 캡처는 표시가 없습니다.",
+        "q5": "클립보드에서 붙일 수 있나요?",
+        "a5": "이미지면 됩니다. 표시한 뒤 PNG를 받으세요."
+      },
+      "make-invoice": {
+        "q1": "인보이스 PDF를 무료로 만들 수 있나요?",
+        "a1": "됩니다. 이 탭에서 그리고 PDF를 받습니다. 업로드 없음.",
+        "q2": "세금 서식이나 법적 전자세금계산서인가요?",
+        "a2": "아니요. 간단한 한 페이지 청구서입니다. VAT를 신고하지 않고 적격 전자세금계산서도 아닙니다.",
+        "q3": "세금은 어떻게 계산하나요?",
+        "a3": "소계(각 줄 수량×단가의 합)의 퍼센트. 여기서 비과세면 0.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "어떤 통화를 쓸 수 있나요?",
+        "a5": "USD, EUR, GBP, CNY, JPY, KRW, VND, IDR. 구매자가 낼 것을 고르세요."
+      },
+      "make-password": {
+        "q1": "강한 비밀번호를 무료로 만들 수 있나요?",
+        "a1": "됩니다. 이 탭의 Web Crypto를 씁니다. 업로드 없음.",
+        "q2": "길이는?",
+        "a2": "사이트가 허용하면 16 이상. 여기 기본은 16. 12 미만은 길이 제한이 있는 사이트용.",
+        "q3": "비슷한 문자 제외는?",
+        "a3": "0, O, I, l, 1을 빼 직접 칠 때 읽기 쉽게 합니다.",
+        "q4": "업로드되나요?",
+        "a4": "아니요. 탭을 닫으면 사라집니다.",
+        "q5": "비밀번호를 내 메일로 보내도 되나요?",
+        "a5": "아니요. 계정에 붙이고 비밀번호 관리자에 저장한 뒤 탭을 닫으세요."
       }
     },
     "compress-pdf": {
@@ -1948,6 +2022,42 @@
       "a4": "No. Only whole numbers from 0 up.",
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts the words on the clipboard."
+    },
+    "add-days": {
+      "q1": "Can I add days to a date here?",
+      "a1": "Yes. Pick a date and a whole number of days. Negative numbers go backwards.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Do leap days count?",
+      "a3": "Yes. 28 Feb 2024 plus 1 day is 29 Feb 2024.",
+      "q4": "Are times included?",
+      "a4": "No. These are civil calendar dates (YYYY-MM-DD), not clock times.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the new date on the clipboard."
+    },
+    "week": {
+      "q1": "Can I find the week number here?",
+      "a1": "Yes. Pick a date. The tab shows the ISO week, ISO year, and weekday. Monday is day 1.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "US week numbers?",
+      "a3": "No. This is ISO-8601. Week 1 is the week with the year’s first Thursday. A late December date can belong to the next year’s week 1.",
+      "q4": "What about Sunday?",
+      "a4": "Sunday is weekday 7. The ISO week still starts on Monday.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ISO week label and weekday on the clipboard."
+    },
+    "aspect": {
+      "q1": "Can I get an aspect ratio here?",
+      "a1": "Yes. Enter width and height in pixels. The tab simplifies them, like 1920×1080 → 16:9.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "Does it crop a photo?",
+      "a3": "No. It only reduces the two numbers. Use Crop if you need to cut a picture.",
+      "q4": "Decimals?",
+      "a4": "Width and height are rounded to whole pixels before simplifying.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the ratio, such as 16:9, on the clipboard."
     }
   },
   "qr": {
@@ -2686,6 +2796,94 @@
       "s6b": "256 미리보기는 거짓말입니다. 16px가 흐리면 마크를 단순화하거나 Contain으로 바꾸세요. favicon.ico를 사이트 루트에 두고 HTML에서 PNG를 연결하세요.",
       "diagram1": "Cover는 채우며 자를 수 있습니다. Contain은 전체를 넣고 여백이 생깁니다.",
       "diagram2": "ICO는 16/32/48. PNG zip에 180/192/512. 16px 파일을 보세요."
+    },
+    "make-signature": {
+      "name": "서명 PNG 그리는 법",
+      "blurb": "패드에 쓰고 자른 PNG를 받은 뒤 서류 크기로 보세요. 법적 전자서명이 아닙니다.",
+      "title": "서명 PNG 그리는 법",
+      "lead": "필요한 것은 이름의 그림이지 법적 전자서명이 아닙니다. 이 탭에서 쓰고 잉크에 맞춰 자른 PNG를 받은 뒤 서류 칸 크기로 보세요.",
+      "result": "잉크에 맞춰 자른 PNG. 서류 크기에서도 읽힘. 법적 전자서명 아님.",
+      "note": "쓸 준비가 되면 서명을 여세요. 미리보기는 크림색. PNG는 잉크에 맞춰 잘리고 배경이 투명합니다. 법적 전자서명이 아니고 PDF에 찍는 도장도 아닙니다. 업로드 없음.",
+      "s1t": "그림이지 법적 전자서명이 아님",
+      "s1b": "은행과 정부는 적격 전자서명이나 원본 서명을 원합니다. 이 PNG는 이름 그림을 붙이라는 서류용입니다. PDF를 구속하지 않습니다.",
+      "s2t": "cv.cm 서명을 열기",
+      "s2b": "이 탭에서 씁니다.",
+      "s3t": "손가락, 스타일러스 또는 마우스로 쓰기",
+      "s3b": "이어 쓴 이름이 흩어진 이니셜보다 자르기 쉽습니다. 한 획이 틀리면 실행 취소. 마우스보다 손가락.",
+      "s4t": "PNG 받기",
+      "s4b": "보내면 잉크에 맞춰 자르고 크림색 패드는 버립니다. 배경은 투명. 받은 파일이 비면 아직 안 쓴 것입니다.",
+      "s5t": "서류 칸 크기로 열기",
+      "s5b": "전체 화면에서만 읽히면 200픽셀 칸에서 뭉개집니다. 너무 가늘면 굵게 다시 쓰세요. PNG를 남기세요. 패드를 찍지 마세요.",
+      "s6t": "서명된 PDF로 여기지 마세요",
+      "s6b": "PDF 페이지에 서명을 올리라는 건 다른 일입니다. 서류가 그림을 붙이라고 할 때만 이 PNG를 붙이세요.",
+      "diagram1": "이름의 그림. 법적 전자서명이 아니고 PDF를 구속하지 않습니다.",
+      "diagram2": "보내면 잉크에 맞춰 자릅니다. PNG 배경은 투명. 서류 크기로 보세요."
+    },
+    "annotate-screenshot": {
+      "name": "스크린샷 주석 다는 법",
+      "blurb": "스크린샷을 넣고 상자, 화살표 또는 글을 단 뒤 PNG를 받아 보낼 크기로 보세요.",
+      "title": "스크린샷에 주석 다는 법",
+      "lead": "버그 보고, 절차, 채팅은 문단이 아니라 그림 위 표시가 필요합니다. 스크린샷을 넣고 상자나 화살표를 그린 뒤 메시지 크기로 PNG를 보세요.",
+      "result": "상자, 화살표 또는 짧은 글이 있는 PNG. 채팅 크기에서도 읽힘. 표시 없는 원본은 남습니다.",
+      "note": "캡처가 디스크나 클립보드에 있으면 주석을 여세요. 상자, 화살표 또는 글. 보낸 파일은 PNG. 원본은 남습니다. 업로드 없음.",
+      "s1t": "상자, 화살표, 짧은 글 정하기",
+      "s1b": "깨진 컨트롤은 상자. 눌러야 할 버튼은 화살표. 두세 단어, 문단 금지. 표시가 많으면 스크린샷과 싸웁니다.",
+      "s2t": "cv.cm 스크린샷 주석을 열기",
+      "s2b": "이 탭에서 만듭니다.",
+      "s3t": "넣거나 붙여넣기",
+      "s3b": "방금 찍었으면 클립보드에서 붙이세요. 미리보기가 비면 이 브라우저가 못 엽니다.",
+      "s4t": "표시를 한두 개 그리기",
+      "s4b": "영역은 상자. 탭은 화살표. 두 단어 라벨은 글. 보여 줄 것을 가리면 마지막 표시를 실행 취소하세요.",
+      "s5t": "PNG 받기",
+      "s5b": "표시 없는 원본을 남기세요. 보내도 디스크의 파일은 바뀌지 않습니다.",
+      "s6t": "채팅이나 티켓 크기로 열기",
+      "s6b": "작아져서 화살표가 사라지면 더 굵고 가깝게. 글이 뭉개지면 라벨을 줄이세요. 표시 없는 원본을 잘못 보내지 마세요.",
+      "diagram1": "깨진 컨트롤은 상자. 탭은 화살표. 두 단어. 문단 금지.",
+      "diagram2": "보낸 파일은 PNG. 표시 없는 원본을 남기세요. 채팅 크기로 보세요."
+    },
+    "make-invoice": {
+      "name": "인보이스 PDF 만드는 법",
+      "blurb": "보내는 사람/받는 사람, 품목, 세금과 합계를 확인한 뒤 PDF를 받고 숫자를 한 번 더 읽으세요. 세금 신고서가 아닙니다.",
+      "title": "인보이스 PDF 만드는 법",
+      "lead": "간단한 청구서입니다. 나, 지불하는 사람, 판 것, 세금, 만기. 이 탭에서 채우고 합계를 본 뒤 PDF를 여세요. 정부 세금 서식이 아닙니다.",
+      "result": "한 페이지 PDF. 품목 금액과 세금이 입력과 맞음. 보내기 전에 한 번 열기.",
+      "note": "당사자와 품목이 정해지면 인보이스를 여세요. 세금은 소계의 퍼센트. VAT 신고서도 법적 전자세금계산서도 아닙니다. 업로드 없음.",
+      "s1t": "보내는 사람, 받는 사람, 품목을 모으기",
+      "s1b": "양쪽에 이름과 주소. 판 것마다 한 줄: 설명, 수량, 단가. 계약의 통화와 세율을 적으세요.",
+      "s2t": "cv.cm 인보이스를 열기",
+      "s2b": "이 탭에서 작성합니다.",
+      "s3t": "당사자, 번호, 날짜, 통화 넣기",
+      "s3b": "만기는 발행일 이후여야 합니다. 구매자가 실제로 낼 통화를 고르세요.",
+      "s4t": "각 줄에 설명, 수량, 단가",
+      "s4b": "금액은 수량×단가. 설명이 비면 PDF가 지저분해집니다. 품목마다 한 줄. 한 줄에 문단을 넣지 마세요.",
+      "s5t": "세율을 넣고 합계 읽기",
+      "s5b": "세금은 소계의 퍼센트. 여기서 비과세면 0. 받기 전에 미리보기 합계가 수량×단가+세금과 맞아야 합니다.",
+      "s6t": "PDF를 받아 열기",
+      "s6b": "한 페이지. 보내는 사람, 받는 사람, 각 줄, 세금, 합계를 읽으세요. 숫자가 틀리면 칸을 고친 뒤 다시 보내세요. VAT 신고가 아닙니다.",
+      "diagram1": "보내는 사람, 받는 사람, 품목마다 한 줄. 금액은 수량×단가.",
+      "diagram2": "세금은 소계의 퍼센트. PDF를 여세요. 세금 신고서가 아닙니다."
+    },
+    "make-password": {
+      "name": "강한 비밀번호 만드는 법",
+      "blurb": "길이와 문자 종류를 정하고 한 번 복사해 계정에 붙인 뒤 탭을 닫으세요. 이메일로 보내지 마세요.",
+      "title": "강한 비밀번호 만드는 법",
+      "lead": "계정마다 고유한 비밀번호. 이 탭에서 길이와 문자 종류를 정하고 한 번 복사해 가입란에 붙이세요. 난수는 이 기기에서 나옵니다. 재사용하지 마세요.",
+      "result": "한 계정에 붙인 난수 비밀번호. 복사 외에 이 탭을 떠나지 않았고 이메일로 보내지 않습니다.",
+      "note": "한 계정을 만들거나 재설정할 때 여세요. 기본 길이 16. 비슷한 문자 제외는 0 O I l 1을 뺍니다. 업로드 없음.",
+      "s1t": "이 계정만의 비밀번호",
+      "s1b": "재사용하면 한 유출이 나머지를 엽니다. 비밀번호 관리자에 저장해도 됩니다. 다른 사이트에서 친 문구를 다시 쓰지 마세요.",
+      "s2t": "cv.cm 비밀번호를 열기",
+      "s2b": "이 탭에서 만듭니다. 난수는 이 기기의 Web Crypto입니다.",
+      "s3t": "길이를 16 이상으로",
+      "s3b": "기본은 16. 사이트가 허용하면 더 길게. 12 미만은 길이 제한이 있는 사이트용이지 목표가 아닙니다.",
+      "s4t": "사이트가 금지하지 않으면 글자, 숫자, 기호를 남기기",
+      "s4b": "비슷한 문자 제외는 0, O, I, l, 1을 빼 읽기 쉽게 합니다. 은행 서류가 기호를 거부하면 그 계정만 기호를 끄세요.",
+      "s5t": "한 번 복사해 계정에 붙이기",
+      "s5b": "스크린샷하지 마세요. 이메일이나 채팅에 넣지 마세요. 붙인 뒤 비밀번호 관리자에 저장하세요.",
+      "s6t": "탭을 닫기",
+      "s6b": "닫으면 이 페이지의 비밀번호는 사라집니다. 저장하지 않았다면 새로 만드세요. 난수 문자열을 외우려 하지 마세요.",
+      "diagram1": "길이 16+. 글자, 숫자, 기호. 직접 칠 거면 0 O I l 1을 빼세요.",
+      "diagram2": "한 번 복사. 한 계정에 붙이기. 이메일 금지. 탭을 닫기."
     }
   },
   "compressPdf": {
@@ -3734,5 +3932,54 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a whole number from 0 to 999,999,999,999."
+  },
+  "add-days": {
+    "title": "날짜에 일 더하기",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Date",
+    "date": "Start date",
+    "days": "Days (+/−)",
+    "result": "New date",
+    "next": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date and a whole number of days."
+  },
+  "week": {
+    "title": "주차",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Date",
+    "date": "Date",
+    "result": "ISO week",
+    "iso": "ISO week",
+    "year": "ISO year",
+    "weekn": "Week",
+    "weekday": "Weekday",
+    "d1": "Monday",
+    "d2": "Tuesday",
+    "d3": "Wednesday",
+    "d4": "Thursday",
+    "d5": "Friday",
+    "d6": "Saturday",
+    "d7": "Sunday",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a real calendar date."
+  },
+  "aspect": {
+    "title": "화면비",
+    "back": "모든 도구",
+    "privacyNote": "이 탭에서. 업로드 없음.",
+    "options": "Size",
+    "width": "Width",
+    "height": "Height",
+    "result": "Ratio",
+    "ratio": "Ratio",
+    "decimal": "Decimal",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Enter a width and height greater than 0."
   }
 }

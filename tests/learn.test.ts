@@ -88,6 +88,8 @@ describe("learn SEO", () => {
     expect(pageTitle("zh-CN", { learn: true, tutorial: "rotate-photo" })).toMatch(/旋转/);
     expect(pageTitle("en", { learn: true, tutorial: "png-to-webp" })).toMatch(/PNG to WebP/i);
     expect(pageTitle("en", { learn: true, tutorial: "make-favicon" })).toMatch(/favicon/i);
+    expect(pageTitle("en", { learn: true, tutorial: "make-signature" })).toMatch(/signature PNG/i);
+    expect(pageTitle("en", { learn: true, tutorial: "make-password" })).toMatch(/strong password/i);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
       "https://cv.cm/zh-cn/learn/make-qr/",
     );
@@ -107,7 +109,7 @@ describe("learn sitemap", () => {
     const xml = buildSitemapXml("2026-09-16");
     const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
-    expect(FEATURED_TUTORIALS).toHaveLength(25);
+    expect(FEATURED_TUTORIALS).toHaveLength(29);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/heic-to-jpg/");
     expect(xml).not.toContain("https://cv.cm/zh-cn/learn/phone-photos/");

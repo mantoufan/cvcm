@@ -118,6 +118,9 @@ const TITLE: Record<ToolId, string> = {
   sort: "meta.titleSort",
   replace: "meta.titleReplace",
   words: "meta.titleWords",
+  "add-days": "meta.titleAddDays",
+  week: "meta.titleWeek",
+  aspect: "meta.titleAspect",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -190,6 +193,9 @@ const DESC: Record<ToolId, string> = {
   sort: "meta.descSort",
   replace: "meta.descReplace",
   words: "meta.descWords",
+  "add-days": "meta.descAddDays",
+  week: "meta.descWeek",
+  aspect: "meta.descAspect",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -218,6 +224,10 @@ const LEARN_TITLE: Record<TutorialId, string> = {
   "mp3-to-wav": "meta.titleMp3ToWav",
   "join-audio": "meta.titleJoinAudio",
   "make-favicon": "meta.titleMakeFavicon",
+  "make-signature": "meta.titleMakeSignature",
+  "annotate-screenshot": "meta.titleAnnotateScreenshot",
+  "make-invoice": "meta.titleMakeInvoice",
+  "make-password": "meta.titleMakePassword",
   portrait: "meta.titlePortrait",
   algorithms: "meta.titleAlgorithms",
   "phone-photos": "meta.titlePhonePhotos",
@@ -257,6 +267,10 @@ const LEARN_DESC: Record<TutorialId, string> = {
   "mp3-to-wav": "meta.descMp3ToWav",
   "join-audio": "meta.descJoinAudio",
   "make-favicon": "meta.descMakeFavicon",
+  "make-signature": "meta.descMakeSignature",
+  "annotate-screenshot": "meta.descAnnotateScreenshot",
+  "make-invoice": "meta.descMakeInvoice",
+  "make-password": "meta.descMakePassword",
   portrait: "meta.descPortrait",
   algorithms: "meta.descAlgorithms",
   "phone-photos": "meta.descPhonePhotos",
