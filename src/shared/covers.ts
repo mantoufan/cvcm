@@ -72,6 +72,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   sort: "/covers/sort-sweet.jpg?v=1",
   replace: "/covers/replace-sweet.jpg?v=1",
   words: "/covers/words-sweet.jpg?v=1",
+  "add-days": "/covers/add-days-sweet.jpg?v=1",
+  week: "/covers/week-sweet.jpg?v=1",
+  aspect: "/covers/aspect-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {
@@ -93,6 +96,22 @@ export const GAME_COVER: Record<GameId, string> = {
   "minish-cap": "/covers/games/minish-cap.jpg?v=1",
   sonic: "/covers/games/sonic.jpg?v=1",
   "streets-of-rage-2": "/covers/games/streets-of-rage-2.jpg?v=1",
+  "snow-bros": "/covers/games/snow-bros.jpg?v=1",
+  "bubble-bobble": "/covers/games/bubble-bobble.jpg?v=1",
+  jackal: "/covers/games/jackal.jpg?v=1",
+  "kunio-soccer": "/covers/games/kunio-soccer.jpg?v=1",
+  "ninja-turtles": "/covers/games/ninja-turtles.jpg?v=1",
+  "mega-man-2": "/covers/games/mega-man-2.jpg?v=1",
+  "zelda-nes": "/covers/games/zelda-nes.jpg?v=1",
+  "kung-fu": "/covers/games/kung-fu.jpg?v=1",
+  "chrono-trigger": "/covers/games/chrono-trigger.jpg?v=1",
+  "super-mario-kart": "/covers/games/super-mario-kart.jpg?v=1",
+  "super-mario-land": "/covers/games/super-mario-land.jpg?v=1",
+  "pokemon-crystal": "/covers/games/pokemon-crystal.jpg?v=1",
+  "pokemon-fire-red": "/covers/games/pokemon-fire-red.jpg?v=1",
+  "sonic-2": "/covers/games/sonic-2.jpg?v=1",
+  "zooming-secretary": "/covers/games/zooming-secretary.jpg?v=1",
+  "lan-master": "/covers/games/lan-master.jpg?v=1",
   "alter-ego": "/covers/games/alter-ego.jpg?v=1",
   "lawn-mower": "/covers/games/lawn-mower.jpg?v=1",
 };

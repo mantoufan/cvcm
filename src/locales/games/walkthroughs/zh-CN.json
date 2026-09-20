@@ -920,5 +920,398 @@
         "body": "打完所有设计关卡。无 Boss。适合试虚拟手柄。"
       }
     ]
+  },
+  "snow-bros": {
+    "intro": "FC《雪人兄弟》通关：从 1 楼打到最终 Boss。把敌人堆成雪球再踢，踢中其他怪可连锁。每层清完进下一层。",
+    "steps": [
+      {
+        "id": "ctrl",
+        "title": "操作",
+        "body": "左右走，A 跳，B 扔雪。连续打同一只怪会把它堆成球，再踢出去撞别人。被打掉一层雪，打光掉命。",
+        "image": "ctrl"
+      },
+      {
+        "id": "early",
+        "title": "前期楼层",
+        "body": "先学单怪堆球。不要站在球的弹道路径上。道具有加速和更大雪球，优先拿。",
+        "image": "early"
+      },
+      {
+        "id": "mid",
+        "title": "中期",
+        "body": "怪会飞、会开枪。先清会开枪的。双人可一人堆一人踢。"
+      },
+      {
+        "id": "boss",
+        "title": "Boss 与结局",
+        "body": "Boss 要堆很多次。躲弹，找空隙扔。打完最后一层出结局，通关。",
+        "image": "boss"
+      }
+    ]
+  },
+  "bubble-bobble": {
+    "intro": "FC《泡泡龙》通关：100 个房间。单人打完常是假结局；两人同时在场打完 100 关才是真结局（超级结局还要收集）。",
+    "steps": [
+      {
+        "id": "rooms",
+        "title": "房间规则",
+        "body": "把所有怪困进泡并打破才开门。自己也可以踩泡往上。时间久了怪会发狂变红色，尽快清。",
+        "image": "rooms"
+      },
+      {
+        "id": "items",
+        "title": "道具",
+        "body": "闪电、炸弹、药水改变泡的行为。看到闪电优先拿来清屏。字母泡可拼 SUPER。",
+        "image": "items"
+      },
+      {
+        "id": "mid",
+        "title": "中后期",
+        "body": "50 关后布局更绕。先清会走位的怪。即时存档每 10 关一次。"
+      },
+      {
+        "id": "end",
+        "title": "100 关与真结局",
+        "body": "第 100 关 Boss。单人过常看到「假结束」。两人从开局一直打到 100 才出真结局。",
+        "image": "end"
+      }
+    ]
+  },
+  "jackal": {
+    "intro": "FC《赤色要塞》完整通关：各战区救人送到直升机换武器，打关底装甲车辆。全战区打完即通关。",
+    "steps": [
+      {
+        "id": "drive",
+        "title": "驾驶与武器",
+        "body": "吉普可八向移动。机枪清兵，榴弹打碉堡。不要停在敌炮口前。",
+        "image": "drive"
+      },
+      {
+        "id": "pow",
+        "title": "战俘",
+        "body": "靠近俘虏上车，送到地图上的直升机点。救人升级主炮和榴弹。",
+        "image": "pow"
+      },
+      {
+        "id": "zones",
+        "title": "战区",
+        "body": "从草地打到沙漠/机场。每区关底有炮台或 Boss 车，用榴弹。"
+      },
+      {
+        "id": "end",
+        "title": "通关",
+        "body": "最后战区 Boss 后出结局。建议每区结束存档。",
+        "image": "end"
+      }
+    ]
+  },
+  "kunio-soccer": {
+    "intro": "FC《热血足球》完整通关：打完杯赛或联赛夺冠。必杀射门是主要得分手段，一场场赢下去。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "操作",
+        "body": "靠近带球，B 短传或射门。冲撞抢球。蓄力后射出必杀球，门将难防。",
+        "image": "play"
+      },
+      {
+        "id": "match",
+        "title": "比赛",
+        "body": "先抢中场。后场不要乱大脚。体力掉了传给满体队友。",
+        "image": "match"
+      },
+      {
+        "id": "cup",
+        "title": "杯赛到决赛",
+        "body": "一场场赢。决赛对方更猛，用必杀远射。夺冠通关。",
+        "image": "cup"
+      }
+    ]
+  },
+  "ninja-turtles": {
+    "intro": "FC《忍者神龟》通关：多关卡街道/下水道/基地。一只龟没血就换人。打完最后 Boss 通关。",
+    "steps": [
+      {
+        "id": "party",
+        "title": "四人",
+        "body": "暂停换人。别让全员空血。披萨立刻吃。",
+        "image": "party"
+      },
+      {
+        "id": "stages",
+        "title": "关卡",
+        "body": "从街道打到下水道和基地。跳跃关注意掉坑。飞镖兵优先清。",
+        "image": "stages"
+      },
+      {
+        "id": "boss",
+        "title": "Boss 与结局",
+        "body": "关底 Boss 看武器距离。最后一战留满血龟。打完通关。",
+        "image": "boss"
+      }
+    ]
+  },
+  "mega-man-2": {
+    "intro": "FC《洛克人 2》通关：推荐顺序 Air → Quick → Flash → Metal → Wood → Crash → Bubble → Heat，再打伍德城堡。用克制武器。",
+    "steps": [
+      {
+        "id": "order",
+        "title": "推荐顺序",
+        "body": "气人 → 迅人 → 闪人 → 金人 → 木人 → 破人 → 泡人 → 热人。这个顺序能尽早拿到好用的克制。",
+        "image": "order"
+      },
+      {
+        "id": "weak",
+        "title": "弱点",
+        "body": "闪人克气人，金人克迅人，以此类推。BOSS 战只打弱点，省武器槽。",
+        "image": "weak"
+      },
+      {
+        "id": "wily",
+        "title": "伍德城",
+        "body": "八大关后进城堡。几关平台 + 连战。E 罐留到连战。打完外星 Boss 通关。",
+        "image": "wily"
+      }
+    ]
+  },
+  "zelda-nes": {
+    "intro": "FC 初代《塞尔达》通关：迷宫 1→8 拿三角，迷宫 9 银箭打加农。蜡烛烧树丛找隐藏。",
+    "steps": [
+      {
+        "id": "over",
+        "title": "原野",
+        "body": "买蜡烛和盾。烧树丛、炸墙找洞。心容器散落在原野，先凑到 8 心再打后期。",
+        "image": "over"
+      },
+      {
+        "id": "d1",
+        "title": "迷宫 1–4",
+        "body": "1 在森林湖，2 在山，3 在海边，4 在湖中岛（要排箫或绕路）。每座清图拿碎片。",
+        "image": "d1"
+      },
+      {
+        "id": "d2",
+        "title": "迷宫 5–8",
+        "body": "5 死亡山，6 迷宫林，7 用排箫，8 森林隐藏。弓和炸弹必带。"
+      },
+      {
+        "id": "ganon",
+        "title": "迷宫 9 与加农",
+        "body": "死亡山深处。银箭。加农先打到棕色再银箭。打完通关。红匣是第二任务。",
+        "image": "ganon"
+      }
+    ]
+  },
+  "kung-fu": {
+    "intro": "FC《功夫》（Spartan X）完整通关：共五层楼，每层清完小兵再打 Boss，顶层救人即通关。",
+    "steps": [
+      {
+        "id": "moves",
+        "title": "拳踢抓",
+        "body": "近距离出拳，远距离踢。贴身可投。不要对空连踢。",
+        "image": "moves"
+      },
+      {
+        "id": "floors",
+        "title": "1–4 层",
+        "body": "小兵有刀和飞腿。先清投掷再打近战。楼梯口别被夹。每层 Boss 打完上楼。",
+        "image": "floors"
+      },
+      {
+        "id": "top",
+        "title": "顶层与结局",
+        "body": "第五层 Boss 最慢但伤害高。打完救出，通关。",
+        "image": "top"
+      }
+    ]
+  },
+  "chrono-trigger": {
+    "intro": "SFC《时空之轮》主线通关：跟剧情走各时代，集齐队友，进拉沃斯内部打败它。通关后 New Game+ 可刷其他结局。",
+    "steps": [
+      {
+        "id": "era",
+        "title": "时代",
+        "body": "中世纪、未来、史前、神殿。传送点来回拿关键道具（梦石、钥匙）。不要跳主线旗标。",
+        "image": "era"
+      },
+      {
+        "id": "party",
+        "title": "队伍与组合技",
+        "body": "克罗诺+玛尔、克罗诺+罗格等组合技。Boss 战开组合。",
+        "image": "party"
+      },
+      {
+        "id": "lavos",
+        "title": "拉沃斯与结局",
+        "body": "主线在海底神殿后进入拉沃斯。打外壳再打内部。打完主线结局。提前打拉沃斯会出短结局。",
+        "image": "lavos"
+      }
+    ]
+  },
+  "super-mario-kart": {
+    "intro": "SFC《超级马里奥卡丁车》通关：蘑菇/花朵/星星/特殊四杯，150cc 金杯。彩虹容易掉，先存档。",
+    "steps": [
+      {
+        "id": "drive",
+        "title": "驾驶",
+        "body": "跳起转向维持漂。蘑菇用在直道或被打后。香蕉丢弯心。",
+        "image": "drive"
+      },
+      {
+        "id": "cups",
+        "title": "杯子",
+        "body": "先 100cc 熟悉。蘑菇杯 → 花朵 → 星星 → 特殊。特殊要 150cc 成绩解锁（视版本）。",
+        "image": "cups"
+      },
+      {
+        "id": "gold",
+        "title": "150cc 金杯",
+        "body": "对手攻击强。彩虹赛前进存档。四杯金杯通关。",
+        "image": "gold"
+      }
+    ]
+  },
+  "super-mario-land": {
+    "intro": "GB《超级马里奥大陆》通关：世界 1–4，每世界 3 关。花是向前射弹。打完 4-3 通关。",
+    "steps": [
+      {
+        "id": "w1",
+        "title": "世界 1",
+        "body": "草地教学。花后可射击。1-3 是城堡，打关底怪。",
+        "image": "w1"
+      },
+      {
+        "id": "w2",
+        "title": "世界 2",
+        "body": "有射击关，左右移动发射。不要硬撞飞机。",
+        "image": "w2"
+      },
+      {
+        "id": "w3",
+        "title": "世界 3",
+        "body": "水/机关。射弹清前方。"
+      },
+      {
+        "id": "w4",
+        "title": "世界 4 与结局",
+        "body": "最后城堡。打完关底出结局。",
+        "image": "w4"
+      }
+    ]
+  },
+  "pokemon-crystal": {
+    "intro": "GBC《口袋妖怪 水晶》通关：城都 8 馆 + 四天王 + 冠军。神兽是后期。不要跳徽章。",
+    "steps": [
+      {
+        "id": "gyms",
+        "title": "8 馆",
+        "body": "阿笔飞 → 阿菊虫 → 小茜普通 → 阿四幽灵 → 阿杏格斗 → 阿蜜钢 → 柳伯冰 → 阿渡龙。小茜用状态或格斗。",
+        "image": "gyms"
+      },
+      {
+        "id": "story",
+        "title": "水晶剧情",
+        "body": "广播塔、缘朱烧塔、神兽苏醒。跟主线，不要穿墙。",
+        "image": "story"
+      },
+      {
+        "id": "e4",
+        "title": "四天王与通关",
+        "body": "白银山四天王和冠军。殿堂即主线通关。关都和神兽是后期。",
+        "image": "e4"
+      }
+    ]
+  },
+  "pokemon-fire-red": {
+    "intro": "GBA《口袋妖怪 火红》完整通关：关都 8 馆 + 四天王 + 冠军。路线与红版相同，殿堂即通关。",
+    "steps": [
+      {
+        "id": "kanto",
+        "title": "8 馆",
+        "body": "小刚岩 → 小霞水 → 马志士电 → 莉佳草 → 阿桔毒 → 娜姿超 → 夏伯火 → 坂木地。御三家选妙蛙最顺。",
+        "image": "kanto"
+      },
+      {
+        "id": "hm",
+        "title": "HM 与主线",
+        "body": "居合、冲浪、力量按剧情拿。圣安努、火箭队、实验室都跟地图走。",
+        "image": "hm"
+      },
+      {
+        "id": "e4",
+        "title": "四天王与通关",
+        "body": "科拿冰、希巴斗、菊子幽灵、阿渡龙，然后绿。殿堂通关。七岛是后期。",
+        "image": "e4"
+      }
+    ]
+  },
+  "sonic-2": {
+    "intro": "MD《索尼克 2》通关：Emerald Hill → Chemical → Aquatic → Casino → Hill Top → Mystic Cave → Oil Ocean → Metropolis → Sky Chase → Wing Fortress → Death Egg。7 绿宝石是完整结局。",
+    "steps": [
+      {
+        "id": "zones",
+        "title": "前半 Zone",
+        "body": "Emerald Hill 教学冲刺。Chemical 注意传送带。Aquatic 水下记气泡。Casino 弹簧不要乱跳。",
+        "image": "zones"
+      },
+      {
+        "id": "late",
+        "title": "后半 Zone",
+        "body": "Hill Top 岩浆，Mystic 钉，Oil 滑油，Metropolis 最长。Sky Chase 是射击段。",
+        "image": "late"
+      },
+      {
+        "id": "egg",
+        "title": "要塞与死亡蛋",
+        "body": "Wing Fortress 跳飞机。Death Egg 打蛋头机甲。打完通关。绿宝石齐是超级索尼克结局。",
+        "image": "egg"
+      }
+    ]
+  },
+  "zooming-secretary": {
+    "intro": "Shiru《Zooming Secretary》通关：横版过关，打完设计关卡即结束。ROM 已托管。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "开玩",
+        "body": "免费 ROM 在 S3，自动开始。方向移动，A 跳。",
+        "image": "play"
+      },
+      {
+        "id": "stages",
+        "title": "关卡",
+        "body": "往右推进，躲开障碍和敌人。掉坑重来。即时存档。",
+        "image": "stages"
+      },
+      {
+        "id": "end",
+        "title": "通关",
+        "body": "打完全部关卡。无商业 Boss。",
+        "image": "end"
+      }
+    ]
+  },
+  "lan-master": {
+    "intro": "Shiru《Lan Master》通关：每关把网线接到正确端口。全部关卡完成即通关。ROM 已托管。",
+    "steps": [
+      {
+        "id": "rules",
+        "title": "规则",
+        "body": "旋转接头，让每根线连到对应的口。接错会不通。",
+        "image": "rules"
+      },
+      {
+        "id": "rooms",
+        "title": "关卡",
+        "body": "早期教学，后期交叉更多。卡住用模拟器重置本关。",
+        "image": "rooms"
+      },
+      {
+        "id": "end",
+        "title": "通关",
+        "body": "打完所有设计关卡。无 Boss。",
+        "image": "end"
+      }
+    ]
   }
 }

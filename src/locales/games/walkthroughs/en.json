@@ -920,5 +920,398 @@
         "body": "Finish every stage. No boss."
       }
     ]
+  },
+  "snow-bros": {
+    "intro": "Snow Bros NES: floor by floor. Pack enemies into balls and kick. Last boss is the clear.",
+    "steps": [
+      {
+        "id": "ctrl",
+        "title": "Controls",
+        "body": "A jump, B throw. Repeat hits pack a snowball; kick it into others.",
+        "image": "ctrl"
+      },
+      {
+        "id": "early",
+        "title": "Early floors",
+        "body": "Learn one-enemy packs. Do not stand in the bounce path. Grab size-up items.",
+        "image": "early"
+      },
+      {
+        "id": "mid",
+        "title": "Mid game",
+        "body": "Flying and gun enemies. Pack gunners first. Two-player: one packs, one kicks."
+      },
+      {
+        "id": "boss",
+        "title": "Bosses and ending",
+        "body": "Bosses take many packs. Dodge, throw gaps. Last floor is the credits.",
+        "image": "boss"
+      }
+    ]
+  },
+  "bubble-bobble": {
+    "intro": "Bubble Bobble: 100 rooms. Solo often fake-credits. Two players through 100 is the true ending.",
+    "steps": [
+      {
+        "id": "rooms",
+        "title": "Room rules",
+        "body": "Trap every enemy and pop. Ride bubbles. Hurry before they rage-red.",
+        "image": "rooms"
+      },
+      {
+        "id": "items",
+        "title": "Items",
+        "body": "Lightning, bombs, potions. Grab lightning to clear. Letter bubbles spell SUPER.",
+        "image": "items"
+      },
+      {
+        "id": "mid",
+        "title": "Later rooms",
+        "body": "After 50 the layouts tangle. Save-state every 10 rooms."
+      },
+      {
+        "id": "end",
+        "title": "Room 100 and true ending",
+        "body": "Solo often fake-credits. Two players from start to 100 for the true ending.",
+        "image": "end"
+      }
+    ]
+  },
+  "jackal": {
+    "intro": "Jackal NES: rescue POWs for gun upgrades, clear every zone boss.",
+    "steps": [
+      {
+        "id": "drive",
+        "title": "Drive and guns",
+        "body": "Eight-way jeep. Gun for soldiers, grenades for bunkers.",
+        "image": "drive"
+      },
+      {
+        "id": "pow",
+        "title": "POWs",
+        "body": "Pick them up, drop at the helicopter. Rescues upgrade weapons.",
+        "image": "pow"
+      },
+      {
+        "id": "zones",
+        "title": "Zones",
+        "body": "Grass to desert/airfield. Zone bosses take grenades."
+      },
+      {
+        "id": "end",
+        "title": "Clear",
+        "body": "Last zone boss, then credits. Save-state per zone.",
+        "image": "end"
+      }
+    ]
+  },
+  "kunio-soccer": {
+    "intro": "Kunio Soccer: win the cup. Super shots are the scoring plan.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Controls",
+        "body": "Dribble on contact. B pass/shoot. Charge for a super shot.",
+        "image": "play"
+      },
+      {
+        "id": "match",
+        "title": "Matches",
+        "body": "Win midfield. Don't panic-clear. Pass to fresh stamina.",
+        "image": "match"
+      },
+      {
+        "id": "cup",
+        "title": "Cup to final",
+        "body": "Win each tie. Finals need long supers. Trophy is the clear.",
+        "image": "cup"
+      }
+    ]
+  },
+  "ninja-turtles": {
+    "intro": "TMNT NES: swap turtles, eat pizza, clear street/sewer/lair bosses.",
+    "steps": [
+      {
+        "id": "party",
+        "title": "Four turtles",
+        "body": "Pause-swap. Don't wipe the party. Eat pizza immediately.",
+        "image": "party"
+      },
+      {
+        "id": "stages",
+        "title": "Stages",
+        "body": "Streets, sewers, base. Watch pits. Shuriken enemies first.",
+        "image": "stages"
+      },
+      {
+        "id": "boss",
+        "title": "Bosses and ending",
+        "body": "Range your weapon. Keep a full-health turtle for the last fight.",
+        "image": "boss"
+      }
+    ]
+  },
+  "mega-man-2": {
+    "intro": "Mega Man 2: Air → Quick → Flash → Metal → Wood → Crash → Bubble → Heat, then Wily.",
+    "steps": [
+      {
+        "id": "order",
+        "title": "Stage order",
+        "body": "Air, Quick, Flash, Metal, Wood, Crash, Bubble, Heat. Unlocks useful weaknesses early.",
+        "image": "order"
+      },
+      {
+        "id": "weak",
+        "title": "Weaknesses",
+        "body": "Flash beats Air, Metal beats Quick, and so on. Only fire the weakness on bosses.",
+        "image": "weak"
+      },
+      {
+        "id": "wily",
+        "title": "Wily castle",
+        "body": "Platform gauntlet then a boss rush. Save E-tanks. Alien boss is the credits.",
+        "image": "wily"
+      }
+    ]
+  },
+  "zelda-nes": {
+    "intro": "Zelda NES: dungeons 1–8 for Triforce, 9 for silver-arrow Ganon. Burn bushes.",
+    "steps": [
+      {
+        "id": "over",
+        "title": "Overworld",
+        "body": "Buy a candle and shield. Burn bushes, bomb walls. Get hearts before late dungeons.",
+        "image": "over"
+      },
+      {
+        "id": "d1",
+        "title": "Dungeons 1–4",
+        "body": "1 forest lake, 2 mountain, 3 coast, 4 island (flute). Map + Triforce each.",
+        "image": "d1"
+      },
+      {
+        "id": "d2",
+        "title": "Dungeons 5–8",
+        "body": "5 Death Mountain, 6 woods maze, 7 flute, 8 hidden forest. Bow and bombs."
+      },
+      {
+        "id": "ganon",
+        "title": "Dungeon 9 and Ganon",
+        "body": "Death Mountain. Brown Ganon, then silver arrow. Red cart is quest 2.",
+        "image": "ganon"
+      }
+    ]
+  },
+  "kung-fu": {
+    "intro": "Kung Fu NES: five floors, a boss each, rescue at the top.",
+    "steps": [
+      {
+        "id": "moves",
+        "title": "Punch, kick, throw",
+        "body": "Punch close, kick far, throw on grab. Don't kick air.",
+        "image": "moves"
+      },
+      {
+        "id": "floors",
+        "title": "Floors 1–4",
+        "body": "Knives and flying kicks. Clear throwers first. Boss, then stairs.",
+        "image": "floors"
+      },
+      {
+        "id": "top",
+        "title": "Top floor",
+        "body": "Fifth boss hits hard and slow. Rescue is the credits.",
+        "image": "top"
+      }
+    ]
+  },
+  "chrono-trigger": {
+    "intro": "Chrono Trigger main clear: follow era story, beat Lavos inside. NG+ for extra endings.",
+    "steps": [
+      {
+        "id": "era",
+        "title": "Eras",
+        "body": "Middle Ages, future, prehistory, the Kingdom. Gates for key items. Don't skip flags.",
+        "image": "era"
+      },
+      {
+        "id": "party",
+        "title": "Dual techs",
+        "body": "Crono+Marle, Crono+Lucca, etc. Open bosses with duals.",
+        "image": "party"
+      },
+      {
+        "id": "lavos",
+        "title": "Lavos and endings",
+        "body": "Ocean Palace path into Lavos. Shell then interior. Early Lavos fights are short endings.",
+        "image": "lavos"
+      }
+    ]
+  },
+  "super-mario-kart": {
+    "intro": "Super Mario Kart: four cups, 150cc gold. Save-state before Rainbow.",
+    "steps": [
+      {
+        "id": "drive",
+        "title": "Driving",
+        "body": "Hop-steer to drift. Mushrooms on straights. Bananas in apexes.",
+        "image": "drive"
+      },
+      {
+        "id": "cups",
+        "title": "Cups",
+        "body": "100cc first. Mushroom → Flower → Star → Special (150cc unlock on many dumps).",
+        "image": "cups"
+      },
+      {
+        "id": "gold",
+        "title": "150cc gold",
+        "body": "Rivals attack more. Rainbow: save-state. Four golds is the clear.",
+        "image": "gold"
+      }
+    ]
+  },
+  "super-mario-land": {
+    "intro": "Super Mario Land: worlds 1–4, three stages each. Flower is a projectile. 4-3 is the clear.",
+    "steps": [
+      {
+        "id": "w1",
+        "title": "World 1",
+        "body": "Grass tutorial. Shoot after the flower. 1-3 castle.",
+        "image": "w1"
+      },
+      {
+        "id": "w2",
+        "title": "World 2",
+        "body": "Shooter stages. Don't ram planes.",
+        "image": "w2"
+      },
+      {
+        "id": "w3",
+        "title": "World 3",
+        "body": "Water and traps. Shoot forward."
+      },
+      {
+        "id": "w4",
+        "title": "World 4 and ending",
+        "body": "Last castle. Credits after the boss.",
+        "image": "w4"
+      }
+    ]
+  },
+  "pokemon-crystal": {
+    "intro": "Pokémon Crystal: Johto 8 gyms, E4, Champion. Beasts are post-story.",
+    "steps": [
+      {
+        "id": "gyms",
+        "title": "Eight gyms",
+        "body": "Falkner → Bugsy → Whitney → Morty → Chuck → Jasmine → Pryce → Clair. Whitney: status or fighting.",
+        "image": "gyms"
+      },
+      {
+        "id": "story",
+        "title": "Crystal plot",
+        "body": "Radio tower, Burned Tower, beast awakening. No wall hacks.",
+        "image": "story"
+      },
+      {
+        "id": "e4",
+        "title": "E4 and clear",
+        "body": "Mt. Silver. Hall of Fame is the story clear. Kanto/beasts after.",
+        "image": "e4"
+      }
+    ]
+  },
+  "pokemon-fire-red": {
+    "intro": "FireRed: Kanto 8 gyms, E4, Champion. Same route as Red.",
+    "steps": [
+      {
+        "id": "kanto",
+        "title": "Eight gyms",
+        "body": "Brock → Misty → Surge → Erika → Koga → Sabrina → Blaine → Giovanni. Bulbasaur is the easy Brock.",
+        "image": "kanto"
+      },
+      {
+        "id": "hm",
+        "title": "HMs and story",
+        "body": "Cut, Surf, Strength on story flags. SS Anne, Rockets, labs.",
+        "image": "hm"
+      },
+      {
+        "id": "e4",
+        "title": "E4 and clear",
+        "body": "Lorelei, Bruno, Agatha, Lance, Blue. Hall of Fame. Sevii is post-game.",
+        "image": "e4"
+      }
+    ]
+  },
+  "sonic-2": {
+    "intro": "Sonic 2: Emerald Hill through Death Egg. 7 emeralds for the Super ending.",
+    "steps": [
+      {
+        "id": "zones",
+        "title": "Early zones",
+        "body": "Emerald Hill teaches spin dash. Chemical belts. Aquatic bubbles. Casino springs.",
+        "image": "zones"
+      },
+      {
+        "id": "late",
+        "title": "Later zones",
+        "body": "Hill Top lava, Mystic spikes, Oil Ocean, long Metropolis. Sky Chase is a shooter.",
+        "image": "late"
+      },
+      {
+        "id": "egg",
+        "title": "Fortress and Death Egg",
+        "body": "Wing Fortress to the ship. Death Egg Robotnik. Super Sonic if you have 7 emeralds.",
+        "image": "egg"
+      }
+    ]
+  },
+  "zooming-secretary": {
+    "intro": "Zooming Secretary: side-scroll Shiru freeware. Finish the designed stages. ROM is hosted.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Play",
+        "body": "ROM starts from S3. D-pad, A to jump.",
+        "image": "play"
+      },
+      {
+        "id": "stages",
+        "title": "Stages",
+        "body": "Go right, avoid hazards. Save-states if you drop.",
+        "image": "stages"
+      },
+      {
+        "id": "end",
+        "title": "Clear",
+        "body": "Finish every stage. No commercial boss.",
+        "image": "end"
+      }
+    ]
+  },
+  "lan-master": {
+    "intro": "Lan Master: connect every cable. Finish all rooms. ROM is hosted.",
+    "steps": [
+      {
+        "id": "rules",
+        "title": "Rules",
+        "body": "Rotate fittings so each cable hits the right port.",
+        "image": "rules"
+      },
+      {
+        "id": "rooms",
+        "title": "Rooms",
+        "body": "Later rooms cross more. Reset the stage if stuck.",
+        "image": "rooms"
+      },
+      {
+        "id": "end",
+        "title": "Clear",
+        "body": "Finish every room. No boss.",
+        "image": "end"
+      }
+    ]
   }
 }
