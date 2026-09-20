@@ -175,7 +175,7 @@ describe("clip API", () => {
     const s3 = {
       accessKey: "AKID",
       secret: "secret",
-      host: "files.s3.cv.cm",
+      host: "s3.cv.cm",
       bucket: "files",
       region: "us-east-1",
     };
@@ -190,7 +190,7 @@ describe("clip API", () => {
     expect(ok?.status).toBe(200);
     const payload = (await ok!.json()) as { putUrl: string; url: string; kind: string };
     expect(payload.kind).toBe("image");
-    expect(payload.putUrl).toMatch(/https:\/\/files\.s3\.cv\.cm\/clip\/[0-9a-f]{16}\//);
+    expect(payload.putUrl).toMatch(/https:\/\/s3\.cv\.cm\/files\/clip\/[0-9a-f]{16}\//);
     expect(payload.putUrl).toContain("X-Amz-Signature=");
     const bad = await handleClipApi(
       new Request(`${origin}/api/clip/upload`, {

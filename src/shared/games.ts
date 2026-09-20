@@ -554,7 +554,7 @@ export function isGameGenreId(value: string): value is GameGenreId {
 
 export const GAME_EMU_DATA = "/emu/data/";
 export const GAME_ROM_BASE = "/emu/roms/";
-export const GAME_S3_PREFIX = "https://files.s3.cv.cm/games/";
+export const GAME_S3_PREFIX = "https://s3.cv.cm/files/games/";
 
 const ROM_EXT: Record<GameConsoleId, string> = {
   fc: ".nes",

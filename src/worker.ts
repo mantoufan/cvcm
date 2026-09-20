@@ -21,7 +21,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https:",
   "font-src 'self'",
-  "connect-src 'self' https://files.s3.cv.cm https://s3.cv.cm",
+  "connect-src 'self' https://s3.cv.cm",
   "media-src blob: https:",
   "worker-src 'self' blob:",
   "frame-src 'self'",
@@ -60,7 +60,7 @@ function s3Config(env: Env): S3Config | null {
   return {
     accessKey: env.S3_ACCESS_KEY_ID,
     secret: env.S3_SECRET_ACCESS_KEY,
-    host: env.S3_HOST || "files.s3.cv.cm",
+    host: env.S3_HOST || "s3.cv.cm",
     bucket: env.S3_BUCKET || "files",
     region: env.S3_REGION || "us-east-1",
   };
@@ -208,7 +208,7 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
     return new Response("Bad Request", { status: 400 });
   }
   const key = kind === "roms" ? `games/roms/${rest}` : `games/emu/${rest}`;
-  const upstream = await fetch(`https://files.s3.cv.cm/${key}`);
+  const upstream = await fetch(`https://s3.cv.cm/files/${key}`);
   if (!upstream.ok) {
     return new Response("Not Found", {
       status: 404,
@@ -235,7 +235,7 @@ async function proxyCovers(pathname: string, method: string): Promise<Response |
     return new Response("Bad Request", { status: 400 });
   }
   try {
-    const upstream = await fetch(`https://files.s3.cv.cm/covers/${rest}`);
+    const upstream = await fetch(`https://s3.cv.cm/files/covers/${rest}`);
     if (!upstream.ok) return null;
     const headers = new Headers(upstream.headers);
     headers.delete("Access-Control-Allow-Origin");

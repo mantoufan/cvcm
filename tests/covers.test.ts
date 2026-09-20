@@ -22,7 +22,7 @@ it("serves every tool cover as an image instead of a locale redirect", async () 
 it("serves covers from S3 when the object exists", async () => {
   const original = globalThis.fetch;
   globalThis.fetch = async (input) => {
-    expect(String(input)).toBe("https://files.s3.cv.cm/covers/qr-sweet.jpg");
+    expect(String(input)).toBe("https://s3.cv.cm/files/covers/qr-sweet.jpg");
     return new Response("s3-bytes", { status: 200, headers: { "Content-Type": "image/jpeg" } });
   };
   try {

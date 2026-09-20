@@ -179,7 +179,7 @@ describe("games worker", () => {
   it("proxies emulator cores from S3 under data and assets prefixes", async () => {
     const original = globalThis.fetch;
     globalThis.fetch = async (input) => {
-      expect(String(input)).toBe("https://files.s3.cv.cm/games/emu/loader.js");
+      expect(String(input)).toBe("https://s3.cv.cm/files/games/emu/loader.js");
       return new Response("loader", { status: 200, headers: { "Content-Type": "application/javascript" } });
     };
     try {

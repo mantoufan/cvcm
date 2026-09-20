@@ -21,7 +21,7 @@ cv.cm is a vanilla TypeScript SPA of in-page tools plus a tiny clipboard API. Le
 
 This change adds a **standalone learn-by-doing image tool** with a CameraSim-style *interaction* (live viewfinder + right-hand exposure controls) and **cv.cm UI**. Users swap discrete **person / pose / scene** presets, set **P / Av / Tv / M**, ISO, aperture, shutter, focus distance, focal length / lens, tripod, **frame** (3:2 / 4:5 / 16:9), and filters (including a pedagogically honest **UV filter**, not a “UV lens”), then **snap and download** PNG/JPEG in the page.
 
-The live viewfinder **cannot** call Imagine, OpenAI, or any other generation API: Worker CSP `connect-src` is `'self' https://files.s3.cv.cm https://s3.cv.cm` (`src/worker.ts`), and `AGENTS.md` rules 1, 5, and 7 forbid upload APIs, extra third-party hosts, and runtime image generation. The renderer is a **layered 2.5D Canvas2D compositor** over prebaked plates, with **pure camera math** in `src/shared/` so Vitest (Node) can lock EV, CoC/DOF, FOV, handshake, and exposure-mode solving.
+The live viewfinder **cannot** call Imagine, OpenAI, or any other generation API: Worker CSP `connect-src` is `'self' https://s3.cv.cm` (`src/worker.ts`), and `AGENTS.md` rules 1, 5, and 7 forbid upload APIs, extra third-party hosts, and runtime image generation. The renderer is a **layered 2.5D Canvas2D compositor** over prebaked plates, with **pure camera math** in `src/shared/` so Vitest (Node) can lock EV, CoC/DOF, FOV, handshake, and exposure-mode solving.
 
 Owner 「可以进一步，模拟打光」 is a **further** step: v1 is **scene exposure / white balance** on pre-lit plates; v2 is studio 3-point relight. Do not label the v1 control “Light” in a way that promises a moving key.
 

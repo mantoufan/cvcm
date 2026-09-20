@@ -53,6 +53,10 @@ function amzParts(now: Date): { amz: string; stamp: string } {
   return { amz, stamp: amz.slice(0, 8) };
 }
 
+function objectPath(cfg: S3Config, key: string): string {
+  return `/${cfg.bucket}/${key}`;
+}
+
 export async function presignS3Put(
   cfg: S3Config,
   key: string,
@@ -72,7 +76,7 @@ export async function presignS3Put(
     .map(([k, v]) => `${uriEncode(k, true)}=${uriEncode(v, true)}`)
     .sort()
     .join("&");
-  const path = `/${key}`;
+  const path = objectPath(cfg, key);
   const canonical = [
     "PUT",
     uriEncode(path, false),
@@ -95,7 +99,7 @@ export async function presignS3Put(
 
 export async function s3Delete(cfg: S3Config, key: string, now = new Date()): Promise<void> {
   const { amz, stamp } = amzParts(now);
-  const path = `/${key}`;
+  const path = objectPath(cfg, key);
   const payload = "UNSIGNED-PAYLOAD";
   const canonical = [
     "DELETE",
@@ -133,13 +137,19 @@ async function sha256Hex(text: string): Promise<string> {
 }
 
 export function publicS3Url(cfg: S3Config, key: string): string {
-  return `https://${cfg.host}/${key}`;
+  return `https://${cfg.host}${objectPath(cfg, key)}`;
 }
 
-export function s3KeysInBody(body: string, host: string): string[] {
-  const re = new RegExp(`https://${host.replace(/\./g, "\\.")}/(clip/[a-z0-9]+/[^\\s)<>"']+)`, "gi");
+export function s3KeysInBody(body: string, cfg: S3Config): string[] {
+  const patterns = [
+    `https://${cfg.host.replace(/\./g, "\\.")}/${cfg.bucket}/(clip/[a-z0-9]+/[^\\s)<>"']+)`,
+    `https://files\\.s3\\.cv\\.cm/(clip/[a-z0-9]+/[^\\s)<>"']+)`,
+  ];
   const keys = new Set<string>();
-  let match: RegExpExecArray | null;
-  while ((match = re.exec(body))) keys.add(match[1]);
+  for (const pattern of patterns) {
+    const re = new RegExp(pattern, "gi");
+    let match: RegExpExecArray | null;
+    while ((match = re.exec(body))) keys.add(match[1]);
+  }
   return [...keys];
 }

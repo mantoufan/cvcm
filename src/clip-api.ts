@@ -112,7 +112,7 @@ async function sweepFiles(bodies: string[], s3: S3Config | null | undefined): Pr
   if (!s3) return;
   const keys = new Set<string>();
   for (const body of bodies) {
-    for (const key of s3KeysInBody(body, s3.host)) keys.add(key);
+    for (const key of s3KeysInBody(body, s3)) keys.add(key);
   }
   await Promise.all([...keys].map((key) => s3Delete(s3, key).catch(() => undefined)));
 }
