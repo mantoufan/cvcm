@@ -1,4 +1,3 @@
-import { COVER } from "./covers";
 import { h } from "./dom";
 import { t } from "./i18n";
 import { gameTile } from "./games/ui";
@@ -6,7 +5,10 @@ import { marketTile } from "./markets/ui";
 import { learnTile } from "./learn/ui";
 import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
-import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, marketsHref, type ToolId } from "../shared/path";
+import { TOOLS, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, learnHref, marketsHref, type ToolId } from "../shared/path";
+import { DEVICE_CHILD_PAGES } from "../shared/device";
+import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
+import { COVER, DEVICE_COVER } from "./covers";
 import { MARKET_PAGES } from "../shared/markets";
 import { marketHub } from "../shared/markets-i18n";
 
@@ -36,6 +38,15 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
         ...TOOLS.map((id) => tile(locale, id)),
       ),
     ),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, t("nav.device")),
+        h("a", { class: "wall-more", href: deviceHref(locale, "hub"), "data-nav": "device" }, deviceMessages(locale).all),
+      ),
+      h("div", { class: "tiles" },
+        ...DEVICE_CHILD_PAGES.map((id) => deviceTile(locale, id)),
+      ),
+    ),
     ...(learnWall ? [learnWall] : []),
     h("section", { class: "wall" },
       h("div", { class: "wall-h" },
@@ -59,6 +70,19 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       point("local"),
       point("nodb"),
       point("i18n"),
+    ),
+  );
+}
+
+function deviceTile(locale: Locale, id: (typeof DEVICE_CHILD_PAGES)[number]): HTMLElement {
+  const copy = devicePageCopy(locale, id);
+  return h("a", { class: "tile", href: deviceHref(locale, id), "data-nav": `device-${id}` },
+    h("div", { class: "tile-cover" },
+      h("img", { src: DEVICE_COVER, alt: copy.name, width: "640", height: "360" }),
+    ),
+    h("div", { class: "tile-body" },
+      h("h3", null, copy.name),
+      h("p", null, copy.blurb),
     ),
   );
 }

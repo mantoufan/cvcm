@@ -85,6 +85,16 @@ Browser tools plus a tiny cloud clipboard.
 - **UUID generator** / UUID. [Open](https://cv.cm/en/uuid/)
 - **Regex tester** / 正则测试. [Open](https://cv.cm/en/regex/)
 
+## Device
+
+What this browser reports, read in the tab. Screen size, browser, and user agent show immediately. The IP address of the request appears only after a click and is not stored. No city lookup.
+
+- [My device](https://cv.cm/en/device/) / [我的设备](https://cv.cm/zh-cn/device/)
+- [What is my IP address](https://cv.cm/en/device/ip/)
+- [What browser am I using](https://cv.cm/en/device/browser/)
+- [What is my screen resolution](https://cv.cm/en/device/screen-resolution/)
+- [What is my user agent](https://cv.cm/en/device/user-agent/)
+
 ## Games
 
 Retro emulator games in the browser, grouped by console and genre. Cheats (金手指), a short walkthrough, and FAQ on every game page. Play uses [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) cores on S3. Shiru freeware (Alter Ego, Lawn Mower) starts immediately. Commercial dumps are not hosted — load a ROM you already have; it stays in this tab.

@@ -1382,6 +1382,15 @@ body {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+.device-crumb { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; margin: 0.8rem 0 0.2rem; font-size: 0.85rem; }
+.device-crumb a { color: var(--pink-deep); }
+.device-reading { margin: 1rem 0 1.2rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); display: grid; gap: 0.45rem; }
+.device-k { margin: 0; color: var(--pink-deep); font-size: 0.78rem; font-weight: 700; }
+.device-v { margin: 0; font-size: 1.35rem; font-weight: 750; overflow-wrap: anywhere; }
+.device-note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.92rem; }
+.device-explain p, .device-related p { margin: 0.35rem 0 0; }
+.device-related { margin-top: 1rem; }
+.device-related a, .device-related p a { margin-right: 0.75rem; }
 .game-filters { display: grid; gap: 0.55rem; padding: 1.2rem 0 0; }
 .game-filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .game-chip {

@@ -12,7 +12,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + 1 + MARKET_PAGES.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + 1 + MARKET_PAGES.length + 5),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);

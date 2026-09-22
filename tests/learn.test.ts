@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, lessonsForTool, tutorialSteps } from "../src/shared/learn";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { MARKET_PAGES } from "../src/shared/markets";
+import { DEVICE_PAGES } from "../src/shared/device";
 import { LOCALES } from "../src/shared/locale";
 import {
   CONVERT_JOBS,
@@ -140,7 +141,7 @@ describe("learn SEO", () => {
 describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
     const xml = buildSitemapXml("2026-09-16");
-    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + 1 + MARKET_PAGES.length;
+    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + 1 + MARKET_PAGES.length + DEVICE_PAGES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");

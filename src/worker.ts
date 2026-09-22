@@ -1,7 +1,8 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
-import { appHref, gamesHref, isPublishedTutorial, learnHref, marketsHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { isIpAddress } from "./shared/device";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, marketsHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -91,6 +92,7 @@ export default {
     }
 
     const path = url.pathname;
+    if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
     const emu = await proxyEmu(path, request.method);
     if (emu) return withHeaders(emu, path);
     const cover = await proxyCovers(path, request.method);
@@ -117,6 +119,9 @@ export default {
       }
       if (parsed.kind === "bare-markets") {
         return redirectTo(marketsHref(locale, parsed.market), url, 302);
+      }
+      if (parsed.kind === "bare-device") {
+        return redirectTo(deviceHref(locale, parsed.page), url, 302);
       }
       if (parsed.kind === "unknown") {
         return redirectTo(appHref(locale, null), url, 302);
@@ -148,6 +153,12 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
+      if (parsed.kind === "device") {
+        const canonical = deviceHref(parsed.locale, parsed.page);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
     }
 
     let assetResponse = await env.ASSETS.fetch(request);
@@ -173,10 +184,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -188,6 +199,8 @@ export default {
           ? { games: true as const, console: parsed.console, game: parsed.game }
           : parsed.kind === "markets"
             ? { markets: true as const, market: parsed.market }
+            : parsed.kind === "device"
+              ? { devicePage: parsed.page }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
@@ -204,6 +217,20 @@ export default {
     return withHeaders(assetResponse, path);
   },
 };
+
+function deviceIpResponse(request: Request): Response {
+  const raw = request.headers.get("CF-Connecting-IP") ?? "";
+  const ip = isIpAddress(raw) ? raw : "";
+  return new Response(request.method === "HEAD" ? null : JSON.stringify({ ip }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "private, no-store",
+      "CDN-Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex",
+    },
+  });
+}
 
 function redirectTo(path: string, url: URL, status: 301 | 302): Response {
   const next = new URL(path, url.origin);
@@ -291,7 +318,11 @@ function withHeaders(res: Response, pathname: string): Response {
     "camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=()",
   );
   headers.set("Content-Security-Policy", player ? EMU_CSP : CSP);
-  if (res.status !== 200 || emuShell) {
+  if (pathname === "/api/device/ip") {
+    headers.set("Cache-Control", "private, no-store");
+    headers.set("CDN-Cache-Control", "no-store");
+    headers.set("X-Robots-Tag", "noindex");
+  } else if (res.status !== 200 || emuShell) {
     headers.set("Cache-Control", "no-store");
   } else if (pathname.startsWith("/assets/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");

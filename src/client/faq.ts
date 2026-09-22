@@ -16,6 +16,8 @@ import {
 import type { Locale } from "../shared/locale";
 import type { GameId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
+import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
+import type { DevicePageId } from "../shared/device";
 import type { ConvertJobId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
 
 function renderFaq(items: FaqItem[]): HTMLElement {
@@ -65,19 +67,31 @@ export function syncPageJsonLd(
   resizeJob: ResizeJobId | null = null,
   market: MarketId | null = null,
   marketsHub = false,
+  devicePage: DevicePageId | null = null,
 ): void {
-  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub);
+  const faq = devicePage
+    ? deviceFaqJsonLd(locale, devicePage)
+    : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub);
   writeJsonLd("faq-jsonld", faq);
-  writeJsonLd("breadcrumb-jsonld", marketsHub || market ? marketBreadcrumbJsonLd(locale, market) : null);
+  writeJsonLd(
+    "breadcrumb-jsonld",
+    devicePage
+      ? deviceBreadcrumbJsonLd(locale, devicePage)
+      : marketsHub || market
+        ? marketBreadcrumbJsonLd(locale, market)
+        : null,
+  );
   writeJsonLd(
     "howto-jsonld",
-    game
-      ? gameHowToJsonLd(locale, game)
-      : tutorial
-        ? howToJsonLd(locale, tutorial)
-        : tool
-          ? toolHowToJsonLd(locale, tool)
-          : null,
+    devicePage
+      ? null
+      : game
+        ? gameHowToJsonLd(locale, game)
+        : tutorial
+          ? howToJsonLd(locale, tutorial)
+          : tool
+            ? toolHowToJsonLd(locale, tool)
+            : null,
   );
   writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
 }
