@@ -75,8 +75,9 @@ import { guideSection } from "./guide";
 import { mountHome } from "./home";
 import { mountLearn, mountLearnHub } from "./learn/ui";
 import { mountGame, mountGamesHub } from "./games/ui";
+import { mountMarket, mountMarketsHub, unmountMarket } from "./markets/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
-import { COVER, GAME_COVER, LEARN_COVER } from "./covers";
+import { COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
 import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
@@ -86,6 +87,7 @@ import {
   gamesHref,
   isPublishedTutorial,
   learnHref,
+  marketsHref,
   parseAppPath,
   toolJob,
   withSearch,
@@ -95,6 +97,9 @@ import {
   type TutorialId,
 } from "../shared/path";
 import type { GameConsoleId, GameId } from "../shared/games";
+import type { MarketId } from "../shared/markets";
+import { MARKET_PAGES } from "../shared/markets";
+import { marketCopy, marketHub, marketNav } from "../shared/markets-i18n";
 import { GAME_CONSOLES, GAMES } from "../shared/games";
 import { gameCopy } from "../shared/games-i18n";
 import { hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
@@ -107,7 +112,9 @@ function requireApp(): HTMLElement {
   if (!el) throw new Error("#app");
   return el;
 }
-const app = requireApp();
+function appEl(): HTMLElement {
+  return requireApp();
+}
 
 let tool: ToolId | null = null;
 let clipId: string | null = null;
@@ -118,6 +125,8 @@ let learnHub = false;
 let gamesHub = false;
 let gameConsole: GameConsoleId | null = null;
 let gameId: GameId | null = null;
+let marketsHub = false;
+let marketId: MarketId | null = null;
 let unmountPdfJpg = (): void => {};
 let unmountMergePdf = (): void => {};
 let unmountCompressPdf = (): void => {};
@@ -125,11 +134,20 @@ let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
 
-boot();
-window.addEventListener("popstate", () => render());
-document.addEventListener("click", onClick);
+let started = false;
 
-function boot(): void {
+export function start(): void {
+  if (!started) {
+    started = true;
+    window.addEventListener("popstate", () => render());
+    document.addEventListener("click", onClick);
+  }
+  boot();
+}
+
+if (!import.meta.env.VITEST) start();
+
+export function boot(): void {
   const parsed = parseAppPath(location.pathname);
   const stored = readStoredLocale();
   if (parsed.kind === "app") {
@@ -153,6 +171,13 @@ function boot(): void {
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
+  } else if (parsed.kind === "markets") {
+    setLocale(parsed.locale);
+    applyMarkets(parsed.market);
+    const canonical = marketsHref(parsed.locale, parsed.market);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -168,6 +193,11 @@ function boot(): void {
     setLocale(loc);
     applyGames(parsed.console, parsed.game);
     history.replaceState(null, "", withSearch(gamesHref(loc, parsed.console, parsed.game), location.search));
+  } else if (parsed.kind === "bare-markets") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyMarkets(parsed.market);
+    history.replaceState(null, "", withSearch(marketsHref(loc, parsed.market), location.search));
   } else {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
@@ -224,6 +254,8 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   gamesHub = false;
   gameConsole = null;
   gameId = null;
+  marketsHub = false;
+  marketId = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -234,6 +266,8 @@ function applyLearn(next: TutorialId | null): void {
   gamesHub = false;
   gameConsole = null;
   gameId = null;
+  marketsHub = false;
+  marketId = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -244,9 +278,24 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   gamesHub = nextGame === null;
   gameConsole = consoleId;
   gameId = nextGame;
+  marketsHub = false;
+  marketId = null;
+}
+
+function applyMarkets(next: MarketId | null): void {
+  tool = null;
+  clipId = null;
+  tutorial = null;
+  learnHub = false;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
+  marketsHub = next === null;
+  marketId = next;
 }
 
 function unmountTools(): void {
+  unmountMarket();
   unmountWatermark();
   unmountCollage();
   unmountConvert();
@@ -332,11 +381,11 @@ function unmountTools(): void {
   unmountPortraitSim = (): void => {};
 }
 
-function render(): void {
+export function render(): void {
   pageGen += 1;
   unmountTools();
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets"
     ? parsed.locale
     : locale();
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
@@ -354,6 +403,9 @@ function render(): void {
   } else if (parsed.kind === "games") {
     setLocale(parsed.locale);
     applyGames(parsed.console, parsed.game);
+  } else if (parsed.kind === "markets") {
+    setLocale(parsed.locale);
+    applyMarkets(parsed.market);
   } else if (parsed.kind === "clip") {
     applyTool("clip", parsed.id);
   } else if (parsed.kind === "bare-learn") {
@@ -361,6 +413,8 @@ function render(): void {
     applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "bare-games") {
     applyGames(parsed.console, parsed.game);
+  } else if (parsed.kind === "bare-markets") {
+    applyMarkets(parsed.market);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -371,39 +425,45 @@ function render(): void {
     ? { learn: true as const, tutorial }
     : gamesHub || gameId
       ? { games: true as const, console: gameConsole, game: gameId }
-      : { tool, clipId, convertJob, resizeJob };
+      : marketsHub || marketId
+        ? { markets: true as const, market: marketId }
+        : { tool, clipId, convertJob, resizeJob };
   document.title = pageTitle(loc, seo);
-  const desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", pageDescription(loc, seo));
-  const canonical = document.querySelector('link[rel="canonical"]');
-  if (canonical) canonical.setAttribute("href", pageCanonical(loc, seo));
-  const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute("content", pageTitle(loc, seo));
-  const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute("content", pageDescription(loc, seo));
-  const ogUrl = document.querySelector('meta[property="og:url"]');
-  if (ogUrl) ogUrl.setAttribute("content", pageCanonical(loc, seo));
+  upsertMeta("name", "description", pageDescription(loc, seo));
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.append(canonical);
+  }
+  canonical.setAttribute("href", pageCanonical(loc, seo));
+  upsertMeta("property", "og:title", pageTitle(loc, seo));
+  upsertMeta("property", "og:description", pageDescription(loc, seo));
+  upsertMeta("property", "og:url", pageCanonical(loc, seo));
+  upsertMeta("property", "og:type", (tutorial || gameId) ? "article" : "website");
   syncHreflang(seo);
-  const ogImage = document.querySelector('meta[property="og:image"]');
   const image = tutorial
     ? LEARN_COVER[tutorial]
     : gameId
       ? GAME_COVER[gameId]
-      : tool
-        ? COVER[tool]
-        : null;
-  if (ogImage && image) ogImage.setAttribute("content", `https://cv.cm${image.split("?")[0]}`);
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob);
+      : marketId
+        ? MARKET_COVER[marketId]
+        : tool
+          ? COVER[tool]
+          : null;
+  upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub);
 
-  clear(app);
-  app.append(shell(loc));
+  const root = appEl();
+  clear(root);
+  root.append(shell(loc));
 }
 
 function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
   void mountPage(main, loc);
 
-  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId ? " is-tool" : "") + (gameId ? " is-game" : "") },
+  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId ? " is-tool" : "") + (gameId ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
@@ -411,6 +471,7 @@ function shell(loc: Locale): HTMLElement {
       ),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         toolsMenu(loc, tool),
+        marketsMenu(loc, marketId, marketsHub),
         gamesMenu(loc, gameConsole, gameId, gamesHub),
         learnMenu(loc, tutorial, learnHub),
       ),
@@ -522,6 +583,8 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tutorial) mountLearn(main, tutorial);
   else if (gameId) mountGame(main, gameId);
   else if (gamesHub) mountGamesHub(main, gameConsole);
+  else if (marketId) mountMarket(main, marketId);
+  else if (marketsHub) mountMarketsHub(main);
   else mountHome(main, loc);
   if (gen !== pageGen) return;
   if (tool && !(tool === "clip" && clipId)) {
@@ -623,6 +686,48 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
   );
 }
 
+function marketsMenu(loc: Locale, current: MarketId | null, hub: boolean): HTMLElement {
+  const active = hub || Boolean(current);
+  const hubCopy = marketHub(loc);
+  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
+    h("button", {
+      type: "button",
+      class: "menu-btn" + (active ? " on" : ""),
+      "aria-haspopup": "true",
+      onClick: menuToggle,
+    }, marketNav(loc)),
+    h("div", { class: "menu-panel", role: "menu" },
+      h("a", {
+        class: "menu-item" + (hub && !current ? " on" : ""),
+        href: marketsHref(loc, null),
+        role: "menuitem",
+        "data-nav": "markets",
+        "aria-current": hub && !current ? "page" : undefined,
+      },
+        h("div", { class: "menu-copy" },
+          h("strong", null, hubCopy.menu),
+          h("span", null, hubCopy.blurb),
+        ),
+      ),
+      ...MARKET_PAGES.map((id) =>
+        h("a", {
+          class: "menu-item" + (current === id ? " on" : ""),
+          href: marketsHref(loc, id),
+          role: "menuitem",
+          "data-nav": `markets-${id}`,
+          "aria-current": current === id ? "page" : undefined,
+        },
+          h("img", { class: "menu-cover", src: MARKET_COVER[id], alt: "", width: "72", height: "40" }),
+          h("div", { class: "menu-copy" },
+            h("strong", null, marketCopy(loc, id).name),
+            h("span", null, marketCopy(loc, id).blurb),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId | null, hub: boolean): HTMLElement {
   const active = hub || Boolean(current);
   return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
@@ -667,6 +772,21 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
   );
 }
 
+function upsertMeta(attr: "name" | "property", key: string, content: string | null): void {
+  const sel = `meta[${attr}="${key}"]`;
+  let el = document.querySelector(sel);
+  if (!content) {
+    el?.remove();
+    return;
+  }
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.append(el);
+  }
+  el.setAttribute("content", content);
+}
+
 function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
   document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
   for (const alt of hreflangAlternates(seo)) {
@@ -689,7 +809,9 @@ function langSwitch(current: Locale): HTMLElement {
         ? withSearch(learnHref(next, tutorial), location.search)
         : gamesHub || gameId
           ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
-          : withSearch(appHref(next, tool, clipId), location.search);
+          : marketsHub || marketId
+            ? withSearch(marketsHref(next, marketId), location.search)
+            : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
       history.pushState(null, "", href);
       render();
     },

@@ -6,7 +6,9 @@ import ko from "../locales/ko.json";
 import vi from "../locales/vi.json";
 import zhCN from "../locales/zh-CN.json";
 import zhTW from "../locales/zh-TW.json";
-import { GAME_COVER, LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
+import { DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
+import { deviceBreadcrumbJsonLd, deviceFaqJsonLd, devicePageCopy, deviceStaticHtml } from "./device-i18n";
+import type { DevicePageId } from "./device";
 import { gameById, type GameConsoleId, type GameId } from "./games";
 import { gameCopy, gameFaqItems } from "./games-i18n";
 import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
@@ -14,7 +16,9 @@ import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { HREFLANG } from "./sitemap";
-import { appHref, gamesHref, learnHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
+import type { MarketId } from "./markets";
+import { appHref, deviceHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -49,6 +53,9 @@ export type SeoInput = {
   games?: boolean;
   console?: GameConsoleId | null;
   game?: GameId | null;
+  markets?: boolean;
+  market?: MarketId | null;
+  devicePage?: DevicePageId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -358,6 +365,8 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
     if (seo.console) return lookup(locale, `meta.titleGames${consoleMeta(seo.console)}`);
     return lookup(locale, "meta.titleGames");
   }
+  if (seo.markets) return seo.market ? marketCopy(locale, seo.market).title : marketHub(locale).title;
+  if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).title;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
   return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
@@ -373,6 +382,8 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
     if (seo.console) return lookup(locale, `meta.descGames${consoleMeta(seo.console)}`);
     return lookup(locale, "meta.descGames");
   }
+  if (seo.markets) return seo.market ? marketCopy(locale, seo.market).description : marketHub(locale).description;
+  if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).description;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
@@ -399,6 +410,8 @@ export function pageCanonical(
   const seo = normalizeSeo(input, clipId);
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
   if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
+  if (seo.markets) return `https://cv.cm${marketsHref(locale, seo.market ?? null)}`;
+  if (seo.devicePage) return `https://cv.cm${deviceHref(locale, seo.devicePage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
 
@@ -443,6 +456,27 @@ export function gamesHubFaqItems(locale: Locale): FaqItem[] {
   return faqFrom(locale, "faq.games");
 }
 
+export function marketBreadcrumbJsonLd(locale: Locale, id: MarketId | null): Record<string, unknown> {
+  const hub = marketHub(locale);
+  const items = [
+    { name: "cv.cm", url: pageCanonical(locale, { tool: null }) },
+    { name: hub.name, url: pageCanonical(locale, { markets: true }) },
+  ];
+  if (id) {
+    items.push({ name: marketCopy(locale, id).name, url: pageCanonical(locale, { markets: true, market: id }) });
+  }
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
 export function faqJsonLd(
   locale: Locale,
   tool: ToolId | null,
@@ -451,12 +485,18 @@ export function faqJsonLd(
   gamesHub?: boolean,
   convertJob?: ConvertJobId | null,
   resizeJob?: ResizeJobId | null,
+  market?: MarketId | null,
+  marketsHub?: boolean,
 ): Record<string, unknown> | null {
-  const items = game
-    ? gameFaqItems(locale, game)
-    : gamesHub
-      ? gamesHubFaqItems(locale)
-      : tutorial
+  const items = market
+    ? marketFaqItems(locale, market)
+    : marketsHub
+      ? marketHubFaqItems(locale)
+      : game
+        ? gameFaqItems(locale, game)
+        : gamesHub
+          ? gamesHubFaqItems(locale)
+          : tutorial
         ? learnFaqItems(locale, tutorial)
         : tool === "convert" && convertJob
           ? convertJobFaqItems(locale, convertJob)
@@ -540,6 +580,8 @@ export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, 
 function ogImage(seo: SeoInput): string | null {
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
+  if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
+  if (seo.devicePage) return coverUrl(DEVICE_COVER);
   if (seo.tool) return coverUrl(TOOL_COVER[seo.tool]);
   return null;
 }
@@ -580,6 +622,7 @@ export function applyHtmlSeo(
   out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
@@ -598,8 +641,20 @@ export function applyHtmlSeo(
     Boolean(seo.games && !seo.game),
     seo.convertJob,
     seo.resizeJob,
+    seo.market ?? null,
+    Boolean(seo.markets && !seo.market),
   );
-  if (ld) {
+  if (seo.devicePage) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(deviceBreadcrumbJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(deviceFaqJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.markets) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
+  }
+  if (ld && !seo.devicePage) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -618,5 +673,10 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(toolHowToJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  return out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
+  out = out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
+  if (seo.devicePage) {
+    const inner = deviceStaticHtml(locale, seo.devicePage);
+    out = out.replace(/<div id="app">[\s\S]*?<\/div>/, `<div id="app">${inner}</div>`);
+  }
+  return out;
 }

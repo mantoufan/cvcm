@@ -1,4 +1,5 @@
 import { isClipId } from "./clip";
+import { DEVICE_SLUG, devicePageFromSlug, type DeviceChildId, type DevicePageId } from "./device";
 import {
   gameById,
   isGameConsoleId,
@@ -6,6 +7,7 @@ import {
   type GameConsoleId,
   type GameId,
 } from "./games";
+import { isMarketId, type MarketId } from "./markets";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
@@ -236,11 +238,27 @@ export type AppPath =
   | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "bare-learn"; tutorial: TutorialId | null }
   | ({ kind: "bare-games" } & GamesPath)
+  | { kind: "bare-markets"; market: MarketId | null }
+  | { kind: "bare-device"; page: DevicePageId }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
+  | { kind: "markets"; locale: Locale; market: MarketId | null }
+  | { kind: "device"; locale: Locale; page: DevicePageId }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
+
+function parseDevicePage(slug: string | undefined, extra: string[]): DevicePageId | "unknown" {
+  if (extra.length > 0) return "unknown";
+  if (!slug) return "hub";
+  return devicePageFromSlug(slug) ?? "unknown";
+}
+
+function parseMarketsTail(page?: string, extra?: string[]): MarketId | null | "unknown" {
+  if (extra && extra.length > 0) return "unknown";
+  if (!page) return null;
+  return isMarketId(page) ? page : "unknown";
+}
 
 function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: string[]): GamesPath | "unknown" {
   if (extra && extra.length > 0) return "unknown";
@@ -287,6 +305,16 @@ export function parseAppPath(pathname: string): AppPath {
       if (games === "unknown") return { kind: "unknown" };
       return { kind: "games", locale, ...games };
     }
+    if (second === "markets") {
+      const market = parseMarketsTail(third, rest);
+      if (market === "unknown") return { kind: "unknown" };
+      return { kind: "markets", locale, market };
+    }
+    if (second === "device") {
+      const page = parseDevicePage(third, rest);
+      if (page === "unknown") return { kind: "unknown" };
+      return { kind: "device", locale, page };
+    }
     if (rest.length > 0) return { kind: "unknown" };
     if (!isToolId(second)) return { kind: "unknown" };
     if (!third) return { kind: "app", locale, tool: second };
@@ -311,6 +339,17 @@ export function parseAppPath(pathname: string): AppPath {
     const games = parseGamesTail(second, third, rest);
     if (games === "unknown") return { kind: "unknown" };
     return { kind: "bare-games", ...games };
+  }
+  if (first === "device") {
+    const page = parseDevicePage(second, third ? [third, ...rest] : []);
+    if (page === "unknown") return { kind: "unknown" };
+    return { kind: "bare-device", page };
+  }
+  if (first === "markets") {
+    const extra = [third, ...rest].filter((part): part is string => Boolean(part));
+    const market = parseMarketsTail(second, extra);
+    if (market === "unknown") return { kind: "unknown" };
+    return { kind: "bare-markets", market };
   }
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
@@ -343,9 +382,21 @@ export function toolJob(parsed: AppPath): ConvertJobId | ResizeJobId | null {
   return null;
 }
 
+export function deviceHref(locale: Locale, page: DevicePageId = "hub"): string {
+  const base = `/${localePath(locale)}/device`;
+  if (page === "hub") return `${base}/`;
+  const slug: DeviceChildId = page;
+  return `${base}/${DEVICE_SLUG[slug]}/`;
+}
+
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
   const base = `/${localePath(locale)}/learn`;
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
+}
+
+export function marketsHref(locale: Locale, market: MarketId | null = null): string {
+  const base = `/${localePath(locale)}/markets`;
+  return market ? `${base}/${market}/` : `${base}/`;
 }
 
 export function gamesHref(

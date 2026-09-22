@@ -1,6 +1,7 @@
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
-import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { MARKET_PAGES, type MarketId } from "./markets";
+import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -22,7 +23,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "convert-job"; job: ConvertJobId }
   | { locale: Locale; kind: "resize-job"; job: ResizeJobId }
   | { locale: Locale; kind: "learn"; tutorial: TutorialId | null }
-  | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null };
+  | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null }
+  | { locale: Locale; kind: "markets"; market: MarketId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -40,6 +42,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const game of GAMES) {
       pages.push({ locale, kind: "games", console: game.console, game: game.id });
     }
+    pages.push({ locale, kind: "markets", market: null });
+    for (const market of MARKET_PAGES) pages.push({ locale, kind: "markets", market });
   }
   return pages;
 }
@@ -50,6 +54,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(page.locale, "convert", null, page.job)}`;
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(page.locale, "resize", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(page.locale, page.console, page.game)}`;
+  if (page.kind === "markets") return `${SITE_ORIGIN}${marketsHref(page.locale, page.market)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -63,6 +68,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(locale, "convert", null, page.job)}`;
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(locale, "resize", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(locale, page.console, page.game)}`;
+  if (page.kind === "markets") return `${SITE_ORIGIN}${marketsHref(locale, page.market)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 

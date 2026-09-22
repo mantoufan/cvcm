@@ -1,7 +1,7 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
-import { appHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, gamesHref, isPublishedTutorial, learnHref, marketsHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -115,6 +115,9 @@ export default {
       if (parsed.kind === "bare-games") {
         return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
       }
+      if (parsed.kind === "bare-markets") {
+        return redirectTo(marketsHref(locale, parsed.market), url, 302);
+      }
       if (parsed.kind === "unknown") {
         return redirectTo(appHref(locale, null), url, 302);
       }
@@ -135,6 +138,12 @@ export default {
       }
       if (parsed.kind === "games") {
         const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
+      if (parsed.kind === "markets") {
+        const canonical = marketsHref(parsed.locale, parsed.market);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -164,10 +173,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -177,7 +186,9 @@ export default {
         ? { learn: true as const, tutorial: parsed.tutorial }
         : parsed.kind === "games"
           ? { games: true as const, console: parsed.console, game: parsed.game }
-          : parsed.kind === "app"
+          : parsed.kind === "markets"
+            ? { markets: true as const, market: parsed.market }
+            : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
       const headers = new Headers(assetResponse.headers);

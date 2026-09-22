@@ -100,7 +100,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/locales/guides/` — 8-locale how-to copy
 - `public/covers/` — tool/game/learn images; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
 - `src/client/learn/` — minimal, complete illustrated tutorials
+- `src/client/device/` — device column (`/{locale}/device/`, IP via `GET /api/device/ip`, not stored)
 - `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)
+- `src/client/markets/` — gold and silver weight conversion and stock arithmetic (`/{locale}/markets/{gold|silver|stocks}/`). No live quotes. Covers live on S3 at `files/covers/markets/` and are also kept in `public/covers/markets/` for local Vite.
 - `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted. Redistributable homebrew (Shiru freeware and open-source NES/GB/GBC/GBA ROMs) is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/assets/`
 - `src/locales/games/` — per-game SEO copy (cheats, walkthrough, FAQ)
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS`, games (`/{locale}/learn/{id}/`, `/{locale}/games/`; locale paths lowercase: `zh-cn` `zh-tw`)

@@ -2,10 +2,13 @@ import { COVER } from "./covers";
 import { h } from "./dom";
 import { t } from "./i18n";
 import { gameTile } from "./games/ui";
+import { marketTile } from "./markets/ui";
 import { learnTile } from "./learn/ui";
 import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
-import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, type ToolId } from "../shared/path";
+import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, marketsHref, type ToolId } from "../shared/path";
+import { MARKET_PAGES } from "../shared/markets";
+import { marketHub } from "../shared/markets-i18n";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   const learnWall = FEATURED_TUTORIALS.length
@@ -34,6 +37,15 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       ),
     ),
     ...(learnWall ? [learnWall] : []),
+    h("section", { class: "wall" },
+      h("div", { class: "wall-h" },
+        h("h2", null, marketHub(locale).name),
+        h("a", { class: "wall-more", href: marketsHref(locale, null), "data-nav": "markets" }, marketHub(locale).all),
+      ),
+      h("div", { class: "tiles" },
+        ...MARKET_PAGES.map((id) => marketTile(locale, id)),
+      ),
+    ),
     h("section", { class: "wall" },
       h("div", { class: "wall-h" },
         h("h2", null, t("nav.games")),

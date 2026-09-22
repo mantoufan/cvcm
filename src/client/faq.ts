@@ -10,10 +10,12 @@ import {
   gameVideoGameJsonLd,
   howToJsonLd,
   learnFaqItems,
+  marketBreadcrumbJsonLd,
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
 import type { GameId } from "../shared/games";
+import type { MarketId } from "../shared/markets";
 import type { ConvertJobId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
 
 function renderFaq(items: FaqItem[]): HTMLElement {
@@ -61,9 +63,12 @@ export function syncPageJsonLd(
   gamesHub = false,
   convertJob: ConvertJobId | null = null,
   resizeJob: ResizeJobId | null = null,
+  market: MarketId | null = null,
+  marketsHub = false,
 ): void {
-  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob);
+  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub);
   writeJsonLd("faq-jsonld", faq);
+  writeJsonLd("breadcrumb-jsonld", marketsHub || market ? marketBreadcrumbJsonLd(locale, market) : null);
   writeJsonLd(
     "howto-jsonld",
     game

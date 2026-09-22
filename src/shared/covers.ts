@@ -1,5 +1,6 @@
 import type { GameId } from "./games";
 import { localePath, type Locale } from "./locale";
+import type { MarketId } from "./markets";
 import type { ToolId, TutorialId } from "./path";
 
 export const TOOL_COVER: Record<ToolId, string> = {
@@ -81,6 +82,12 @@ export const TOOL_COVER: Record<ToolId, string> = {
   margin: "/covers/margin-sweet.jpg?v=1",
   radix: "/covers/radix-sweet.jpg?v=1",
   duration: "/covers/duration-sweet.jpg?v=1",
+};
+
+export const MARKET_COVER: Record<MarketId, string> = {
+  gold: "/covers/markets/gold-sweet.jpg?v=1",
+  silver: "/covers/markets/silver-sweet.jpg?v=1",
+  stocks: "/covers/markets/stocks-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {
@@ -317,6 +324,8 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "add-duration": "/covers/tutorials/add-duration.svg",
   "calculate-percent": "/covers/tutorials/calculate-percent.svg",
 };
+
+export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";
 
 export function coverUrl(path: string): string {
   return `https://cv.cm${path.split("?")[0]}`;
