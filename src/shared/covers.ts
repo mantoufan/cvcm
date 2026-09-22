@@ -146,6 +146,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "annotate-screenshot": "/covers/screenshot-sweet.jpg?v=1",
   "make-invoice": "/covers/invoice-sweet.jpg?v=2",
   "make-password": "/covers/password-sweet.jpg?v=1",
+  "format-json": "/covers/json-sweet.jpg?v=1",
+  "decode-base64": "/covers/base64-sweet.jpg?v=1",
+  "unix-time": "/covers/timestamp-sweet.jpg?v=1",
+  "read-jwt": "/covers/jwt-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -196,6 +200,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "annotate-screenshot": "/covers/tutorials/annotate-screenshot.svg",
   "make-invoice": "/covers/tutorials/make-invoice.svg",
   "make-password": "/covers/tutorials/make-password.svg",
+  "format-json": "/covers/tutorials/format-json.svg",
+  "decode-base64": "/covers/tutorials/decode-base64.svg",
+  "unix-time": "/covers/tutorials/unix-time.svg",
+  "read-jwt": "/covers/tutorials/read-jwt.svg",
 };
 
 export function coverUrl(path: string): string {

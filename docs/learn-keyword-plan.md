@@ -107,6 +107,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `annotate-screenshot`
 - `make-invoice`
 - `make-password`
+- `format-json`
+- `decode-base64`
+- `unix-time`
+- `read-jwt`
 
 ## Fourth batch (ship)
 
@@ -140,6 +144,17 @@ Signature, screenshot, invoice, and password were not in the convert seed. They 
 | How to annotate a screenshot | — (not seeded) | `screenshot` | Rect / arrow / two-word label. PNG out. Original stays unmarked. Check at chat size. |
 | How to make an invoice PDF | — (not seeded) | `invoice` | Line amount is qty × price. Tax is a percent of the subtotal. Not a VAT return. |
 | How to generate a strong password | — (not seeded) | `password` | Length 16+. Exclude 0 O I l 1. Copy once into one account. Do not email. Close the tab. |
+
+## Seventh batch (ship)
+
+These four were not in the convert-seed dump. They ship because each tool has a failure mode the tool page states in one line and the lesson walks through.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to format JSON | `json` | Pretty is two-space indent. Minify is one line. Comments, trailing commas, and single quotes fail `JSON.parse`. Integers longer than 15 digits belong in quotes. |
+| How to decode Base64 | `base64` | Standard alphabet `+` `/` and `=` padding. URL-safe `-` `_` is refused. Decode is fatal UTF-8, so a PNG or PDF fails on purpose. |
+| How to convert a Unix timestamp | `timestamp` | 10 digits are seconds, 13 are milliseconds, 16 are microseconds divided by 1,000 once. A wild year means the digits were wrong. ISO dates and Now also work. |
+| How to read a JWT | `jwt` | Header and payload only. `alg` is a label. Expired compares `exp` (seconds) with the clock. The signature stays unchecked. |
 
 ## Evidence notes
 

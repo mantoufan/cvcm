@@ -126,6 +126,10 @@ export const TUTORIALS = [
   "annotate-screenshot",
   "make-invoice",
   "make-password",
+  "format-json",
+  "decode-base64",
+  "unix-time",
+  "read-jwt",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -151,7 +155,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
   { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio"] },
-  { id: "text", tutorials: ["count-words", "make-password"] },
+  { id: "text", tutorials: ["count-words", "make-password", "format-json", "decode-base64", "unix-time", "read-jwt"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

@@ -15,6 +15,7 @@ export function tutorialSteps(id: TutorialId): number {
   return TUTORIAL_META[id].steps ?? 5;
 }
 
+
 export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
   "make-qr": {
     minutes: 6,
@@ -189,6 +190,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     steps: 6,
     openAt: 2,
     related: ["password", "hash", "uuid"],
+  },
+  "format-json": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["json", "yaml-json", "data"],
+  },
+  "decode-base64": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["base64", "jwt", "url-encode"],
+  },
+  "unix-time": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["timestamp", "timezone", "days"],
+  },
+  "read-jwt": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["jwt", "base64", "hash"],
   },
   portrait: {
     minutes: 75,
@@ -428,5 +453,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "make-password": [
     { step: 1, src: "/covers/tutorials/make-password-rule.svg" },
     { step: 5, src: "/covers/tutorials/make-password-copy.svg" },
+  ],
+  "format-json": [
+    { step: 1, src: "/covers/tutorials/format-json-parse.svg" },
+    { step: 4, src: "/covers/tutorials/format-json-quotes.svg" },
+  ],
+  "decode-base64": [
+    { step: 1, src: "/covers/tutorials/decode-base64-alpha.svg" },
+    { step: 5, src: "/covers/tutorials/decode-base64-text.svg" },
+  ],
+  "unix-time": [
+    { step: 1, src: "/covers/tutorials/unix-time-digits.svg" },
+    { step: 5, src: "/covers/tutorials/unix-time-year.svg" },
+  ],
+  "read-jwt": [
+    { step: 1, src: "/covers/tutorials/read-jwt-trust.svg" },
+    { step: 5, src: "/covers/tutorials/read-jwt-exp.svg" },
   ],
 };
