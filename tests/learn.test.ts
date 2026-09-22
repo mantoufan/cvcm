@@ -108,6 +108,12 @@ describe("learn SEO", () => {
     expect(pageTitle("en", { learn: true, tutorial: "decode-base64" })).toMatch(/decode Base64/i);
     expect(pageTitle("en", { learn: true, tutorial: "unix-time" })).toMatch(/Unix timestamp/i);
     expect(pageTitle("zh-CN", { learn: true, tutorial: "read-jwt" })).toMatch(/JWT/);
+    expect(pageTitle("en", { learn: true, tutorial: "count-workdays" })).toMatch(/business days/i);
+    expect(pageTitle("en", { learn: true, tutorial: "simplify-fraction" })).toMatch(/fraction/i);
+    expect(pageTitle("en", { learn: true, tutorial: "hourly-pay" })).toMatch(/hourly pay/i);
+    expect(pageTitle("zh-CN", { learn: true, tutorial: "convert-timezone" })).toMatch(/时区/);
+    expect(lessonsForTool("workdays")).toEqual(["count-workdays"]);
+    expect(lessonsForTool("timezone")).toEqual(["convert-timezone"]);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
       "https://cv.cm/zh-cn/learn/make-qr/",
     );
@@ -127,7 +133,7 @@ describe("learn sitemap", () => {
     const xml = buildSitemapXml("2026-09-16");
     const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
-    expect(FEATURED_TUTORIALS).toHaveLength(33);
+    expect(FEATURED_TUTORIALS).toHaveLength(37);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");

@@ -153,6 +153,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "decode-base64": "/covers/base64-sweet.jpg?v=1",
   "unix-time": "/covers/timestamp-sweet.jpg?v=1",
   "read-jwt": "/covers/jwt-sweet.jpg?v=1",
+  "count-workdays": "/covers/workdays-sweet.jpg?v=1",
+  "simplify-fraction": "/covers/fraction-sweet.jpg?v=1",
+  "hourly-pay": "/covers/hourly-sweet.jpg?v=1",
+  "convert-timezone": "/covers/timezone-sweet.jpg?v=2",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -207,6 +211,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "decode-base64": "/covers/tutorials/decode-base64.svg",
   "unix-time": "/covers/tutorials/unix-time.svg",
   "read-jwt": "/covers/tutorials/read-jwt.svg",
+  "count-workdays": "/covers/tutorials/count-workdays.svg",
+  "simplify-fraction": "/covers/tutorials/simplify-fraction.svg",
+  "hourly-pay": "/covers/tutorials/hourly-pay.svg",
+  "convert-timezone": "/covers/tutorials/convert-timezone.svg",
 };
 
 export function coverUrl(path: string): string {

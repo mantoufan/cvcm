@@ -111,6 +111,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `decode-base64`
 - `unix-time`
 - `read-jwt`
+- `count-workdays`
+- `simplify-fraction`
+- `hourly-pay`
+- `convert-timezone`
 
 ## Fourth batch (ship)
 
@@ -155,6 +159,17 @@ These four were not in the convert-seed dump. They ship because each tool has a 
 | How to decode Base64 | `base64` | Standard alphabet `+` `/` and `=` padding. URL-safe `-` `_` is refused. Decode is fatal UTF-8, so a PNG or PDF fails on purpose. |
 | How to convert a Unix timestamp | `timestamp` | 10 digits are seconds, 13 are milliseconds, 16 are microseconds divided by 1,000 once. A wild year means the digits were wrong. ISO dates and Now also work. |
 | How to read a JWT | `jwt` | Header and payload only. `alg` is a label. Expired compares `exp` (seconds) with the clock. The signature stays unchecked. |
+
+## Eighth batch (ship)
+
+Workdays, fraction, and hourly shipped as tools on `44e342e`. Time zone was already live. These lessons teach the traps the tool pages state in one FAQ line.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to count business days | `workdays` | Inclusive Monday–Friday. Holidays stay in the count. End before start makes the business-day number negative; weekend days stay zero or positive. |
+| How to simplify a fraction | `fraction` | 4/6 becomes 2/3. Sign stays on the numerator. Decimals use a continued fraction capped at denominator 10,000. Results stay improper, not mixed numbers. |
+| How to convert hourly pay to a yearly salary | `hourly` | One rate. Default 40 × 52 = 2,080 hours. 20/hour is 41,600.00 gross. Tax and a second overtime rate stay outside. |
+| How to convert a time zone | `timezone` | Source is the zone that owns the given clock. IANA offset follows the date. Copy is the UTC instant. Do not add the offset twice. |
 
 ## Evidence notes
 

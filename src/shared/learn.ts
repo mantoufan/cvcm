@@ -219,6 +219,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["jwt", "base64", "hash"],
   },
+  "count-workdays": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["workdays", "days", "add-days"],
+  },
+  "simplify-fraction": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["fraction", "percent", "aspect"],
+  },
+  "hourly-pay": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["hourly", "vat", "percent"],
+  },
+  "convert-timezone": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["timezone", "timestamp", "days"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -473,5 +497,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "read-jwt": [
     { step: 1, src: "/covers/tutorials/read-jwt-trust.svg" },
     { step: 5, src: "/covers/tutorials/read-jwt-exp.svg" },
+  ],
+  "count-workdays": [
+    { step: 1, src: "/covers/tutorials/count-workdays-ends.svg" },
+    { step: 5, src: "/covers/tutorials/count-workdays-holiday.svg" },
+  ],
+  "simplify-fraction": [
+    { step: 1, src: "/covers/tutorials/simplify-fraction-reduce.svg" },
+    { step: 5, src: "/covers/tutorials/simplify-fraction-decimal.svg" },
+  ],
+  "hourly-pay": [
+    { step: 1, src: "/covers/tutorials/hourly-pay-gross.svg" },
+    { step: 6, src: "/covers/tutorials/hourly-pay-tax.svg" },
+  ],
+  "convert-timezone": [
+    { step: 1, src: "/covers/tutorials/convert-timezone-source.svg" },
+    { step: 4, src: "/covers/tutorials/convert-timezone-offset.svg" },
   ],
 };
