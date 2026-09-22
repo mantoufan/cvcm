@@ -94,6 +94,9 @@ const STEPS = {
   workdays: 3,
   fraction: 3,
   hourly: 3,
+  margin: 3,
+  radix: 3,
+  duration: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1288,6 +1291,49 @@ async function runTool(send, id, fx) {
       if (amount) { amount.value = "25"; amount.dispatchEvent(new Event("input", { bubbles: true })); }
       if (hours) { hours.value = "40"; hours.dispatchEvent(new Event("input", { bubbles: true })); }
       if (weeks) { weeks.value = "52"; weeks.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "margin") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const cost = document.querySelector("[data-field=cost]");
+      const price = document.querySelector("[data-field=price]");
+      if (cost) { cost.value = "50"; cost.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (price) { price.value = "100"; price.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "radix") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const value = document.querySelector("[data-field=value]");
+      const to = document.querySelector("[data-field=to]");
+      if (value) { value.value = "255"; value.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (to) { to.value = "2"; to.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "duration") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const mode = document.querySelector("[data-field=mode]");
+      if (mode) { mode.value = "subtract"; mode.dispatchEvent(new Event("change", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);

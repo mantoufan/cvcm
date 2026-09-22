@@ -240,6 +240,12 @@
     "descFraction": "Rút gọn phân số hoặc đổi số thập phân thành phân số trong trình duyệt. Không tải lên.",
     "titleHourly": "Lương giờ sang năm — trước thuế — cv.cm",
     "descHourly": "Đổi lương theo giờ sang lương tuần và lương năm, hoặc ngược lại, trong trình duyệt. Không trừ thuế. Không tải lên.",
+    "titleMargin": "Tỉ suất lợi nhuận — biên và phụ trội — cv.cm",
+    "descMargin": "Tính lợi nhuận, biên lợi nhuận và phụ trội từ giá vốn và giá bán trong trình duyệt. Không tải lên.",
+    "titleRadix": "Đổi hệ cơ số — nhị phân, thập phân, hex — cv.cm",
+    "descRadix": "Đổi một số nguyên giữa các cơ số từ 2 đến 36 trong trình duyệt. Không tải lên.",
+    "titleDuration": "Cộng trừ thời lượng — giờ và phút — cv.cm",
+    "descDuration": "Cộng hoặc trừ hai khoảng giờ:phút:giây trong trình duyệt. Không tải lên.",
     "titleMakeSignature": "Cách vẽ chữ ký PNG | cv.cm",
     "descMakeSignature": "Vẽ trên bảng, tải PNG cắt theo nét nền trong, xem cỡ form. Không phải chữ ký điện tử pháp lý. Không tải lên.",
     "titleAnnotateScreenshot": "Cách chú thích ảnh chụp màn hình | cv.cm",
@@ -619,6 +625,18 @@
     "hourly": {
       "name": "Lương giờ sang năm",
       "blurb": "Lương gộp theo giờ và số tuần. Không tải lên."
+    },
+    "margin": {
+      "name": "Tỉ suất lợi nhuận",
+      "blurb": "Biên và phụ trội từ giá vốn và giá bán. Không tải lên."
+    },
+    "radix": {
+      "name": "Đổi hệ cơ số",
+      "blurb": "Nhị phân, thập phân, hex. Không tải lên."
+    },
+    "duration": {
+      "name": "Thời lượng",
+      "blurb": "Cộng hoặc trừ giờ và phút. Không tải lên."
     }
   },
   "watermark": {
@@ -2263,6 +2281,42 @@
       "a4": "40 giờ một tuần và 52 tuần một năm, tức 2.080 giờ. Đổi một trong hai nếu năm làm việc ngắn hơn.",
       "q5": "Sao chép kết quả được không?",
       "a5": "Được. Sao chép đưa lương giờ, lương tuần và lương năm vào bộ nhớ tạm."
+    },
+    "margin": {
+      "q1": "Tính biên lợi nhuận ở đây được không?",
+      "a1": "Được. Nhập giá vốn và giá bán. Tab hiện lợi nhuận, biên và phụ trội.",
+      "q2": "Những số này có bị tải lên không?",
+      "a2": "Không. Phép tính ở lại tab này.",
+      "q3": "Biên và phụ trội khác nhau thế nào?",
+      "a3": "Biên là lợi nhuận chia giá bán. Phụ trội là lợi nhuận chia giá vốn. Vốn 50 và giá 80 là lợi nhuận 30, biên 37,50% và phụ trội 60%.",
+      "q4": "Giá bán thấp hơn giá vốn thì sao?",
+      "a4": "Lợi nhuận, biên và phụ trội đều âm. Giá bán bằng 0 thì không có biên. Giá vốn bằng 0 thì không có phụ trội.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa lợi nhuận, biên và phụ trội vào bộ nhớ tạm."
+    },
+    "radix": {
+      "q1": "Đổi nhị phân và hex ở đây được không?",
+      "a1": "Được. Nhập một số nguyên và hai cơ số từ 2 đến 36. 255 ở cơ số 10 là FF ở cơ số 16.",
+      "q2": "Những số này có bị tải lên không?",
+      "a2": "Không. Phép đổi ở lại tab này.",
+      "q3": "Đây có phải công cụ chữ sang nhị phân?",
+      "a3": "Không. Đây đổi một số nguyên. Công cụ nhị phân kia đổi chữ thành nhóm 8 bit.",
+      "q4": "Có dùng tiền tố 0x hoặc số thập phân không?",
+      "a4": "Không. Đừng gõ 0x hay 0b, và đừng gõ dấu thập phân. Chữ số phải có trong cơ số nguồn, nên 2 không phải chữ số nhị phân.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa số nguyên đã đổi vào bộ nhớ tạm. Chữ là chữ hoa."
+    },
+    "duration": {
+      "q1": "Cộng giờ và phút ở đây được không?",
+      "a1": "Được. Nhập hai thời lượng dạng giờ:phút:giây. Cộng chúng, hoặc lấy cái thứ nhất trừ cái thứ hai.",
+      "q2": "Những khoảng này có bị tải lên không?",
+      "a2": "Không. Phép tính ở lại tab này.",
+      "q3": "Định dạng là gì?",
+      "a3": "Dùng giờ:phút:giây, ví dụ 1:30:00. Phút và giây từ 0 đến 59.",
+      "q4": "Nếu khoảng thứ hai dài hơn?",
+      "a4": "Trừ sẽ ra số âm, ví dụ -0:15:00. Đây là độ dài, không phải đồng hồ hay múi giờ.",
+      "q5": "Sao chép kết quả được không?",
+      "a5": "Được. Sao chép đưa thời lượng và tổng giây vào bộ nhớ tạm."
     },
     "convertJobs": {
       "heic-to-jpg": {
@@ -4488,5 +4542,52 @@
     "copy": "Sao chép",
     "copied": "Đã chép",
     "invalid": "Số tiền từ 0 trở lên. Giờ mỗi tuần lớn hơn 0 và tối đa 168. Tuần mỗi năm lớn hơn 0 và tối đa 52."
+  },
+  "margin": {
+    "title": "Tỉ suất lợi nhuận",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Số tiền",
+    "cost": "Giá vốn",
+    "price": "Giá bán",
+    "result": "Biên lợi nhuận",
+    "profit": "Lợi nhuận",
+    "margin": "Biên",
+    "markup": "Phụ trội",
+    "copy": "Sao chép",
+    "copied": "Đã chép",
+    "none": "—",
+    "invalid": "Giá vốn và giá bán từ 0 trở lên, và không được cùng bằng 0."
+  },
+  "radix": {
+    "title": "Đổi hệ cơ số",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Số",
+    "value": "Số nguyên",
+    "from": "Cơ số nguồn",
+    "to": "Cơ số đích",
+    "result": "Kết quả",
+    "out": "Đã đổi",
+    "copy": "Sao chép",
+    "copied": "Đã chép",
+    "invalid": "Cơ số từ 2 đến 36. Chữ số phải thuộc cơ số nguồn. Không tiền tố và không phần thập phân."
+  },
+  "duration": {
+    "title": "Thời lượng",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Ở tab này. Không tải lên.",
+    "options": "Khoảng thời gian",
+    "a": "Thứ nhất (giờ:phút:giây)",
+    "b": "Thứ hai (giờ:phút:giây)",
+    "mode": "Chế độ",
+    "add": "Cộng",
+    "subtract": "Trừ",
+    "result": "Thời lượng",
+    "clock": "Kết quả",
+    "total": "Tổng giây",
+    "copy": "Sao chép",
+    "copied": "Đã chép",
+    "invalid": "Dùng giờ:phút:giây, ví dụ 1:30:00. Phút và giây từ 0 đến 59."
   }
 }

@@ -687,6 +687,33 @@
       "s2b": "Cambia el modo para empezar desde el importe anual. Es sueldo bruto, sin impuestos.",
       "s3t": "Copia los importes",
       "s3b": "Copiar pone el sueldo por hora, semanal y anual en el portapapeles."
+    },
+    "margin": {
+      "lead": "Pasa un coste y un precio a beneficio, margen y recargo en esta pestaña. Nada se sube.",
+      "s1t": "Abre Margen de beneficio",
+      "s1b": "El coste 50 y el precio 80 ya están rellenos. Beneficio, margen y recargo están a la derecha.",
+      "s2t": "Cambia el coste o el precio",
+      "s2b": "El margen es el beneficio dividido por el precio. El recargo es el beneficio dividido por el coste.",
+      "s3t": "Copia el resultado",
+      "s3b": "Copiar pone beneficio, margen y recargo en el portapapeles."
+    },
+    "radix": {
+      "lead": "Convierte un entero entre las bases 2 y 36 en esta pestaña. Nada se sube.",
+      "s1t": "Abre Conversor de bases",
+      "s1b": "255 de base 10 a base 16 ya se muestra como FF.",
+      "s2t": "Cambia el número o las bases",
+      "s2b": "Las bases van del 2 al 36. Los dígitos tienen que caber en la base de origen. Las letras salen en mayúsculas.",
+      "s3t": "Copia el número",
+      "s3b": "Copiar pone el entero convertido en el portapapeles."
+    },
+    "duration": {
+      "lead": "Suma o resta dos duraciones en esta pestaña. Nada se sube.",
+      "s1t": "Abre Duración",
+      "s1b": "1:30:00 más 0:45:00 ya está relleno. La suma es 2:15:00.",
+      "s2t": "Pasa a restar",
+      "s2b": "Restar quita la segunda duración de la primera. Si la segunda es más larga, el resultado es negativo.",
+      "s3t": "Copia la duración",
+      "s3b": "Copiar pone el resultado H:MM:SS y los segundos totales en el portapapeles."
     }
   }
 }

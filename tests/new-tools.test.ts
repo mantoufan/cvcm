@@ -57,6 +57,9 @@ import { aspectOf } from "../src/shared/aspect";
 import { workdaysBetween } from "../src/shared/workdays";
 import { decimalToFraction, simplifyFraction } from "../src/shared/fraction";
 import { payFromAnnual, payFromHourly } from "../src/shared/hourly";
+import { marginOf } from "../src/shared/margin";
+import { convertRadix } from "../src/shared/radix";
+import { durationBetween, parseDuration } from "../src/shared/duration";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -699,6 +702,41 @@ describe("hourly", () => {
   });
 });
 
+describe("margin", () => {
+  it("splits profit into margin and markup", () => {
+    expect(marginOf(50, 80)).toEqual({ profit: 30, marginPct: 37.5, markupPct: 60 });
+    expect(marginOf(80, 50)).toEqual({ profit: -30, marginPct: -60, markupPct: -37.5 });
+    expect(marginOf(0, 10)).toEqual({ profit: 10, marginPct: 100, markupPct: null });
+    expect(marginOf(10, 0)).toEqual({ profit: -10, marginPct: null, markupPct: -100 });
+    expect(marginOf(0, 0)).toBeNull();
+    expect(marginOf(-1, 10)).toBeNull();
+  });
+});
+
+describe("radix", () => {
+  it("converts integers between bases 2 and 36", () => {
+    expect(convertRadix("255", 10, 16)).toBe("FF");
+    expect(convertRadix("ff", 16, 10)).toBe("255");
+    expect(convertRadix("1010", 2, 10)).toBe("10");
+    expect(convertRadix("zz", 36, 10)).toBe("1295");
+    expect(convertRadix("-10", 10, 16)).toBe("-A");
+    expect(convertRadix("0", 10, 2)).toBe("0");
+    expect(convertRadix("2", 2, 10)).toBeNull();
+    expect(convertRadix("255", 1, 10)).toBeNull();
+    expect(convertRadix("", 10, 16)).toBeNull();
+  });
+});
+
+describe("duration", () => {
+  it("adds and subtracts H:MM:SS", () => {
+    expect(parseDuration("1:30:00")).toBe(5400);
+    expect(parseDuration("1:60:00")).toBeNull();
+    expect(durationBetween("1:30:00", "0:45:00", false)).toEqual({ text: "2:15:00", totalSeconds: 8100 });
+    expect(durationBetween("0:30:00", "0:45:00", true)).toEqual({ text: "-0:15:00", totalSeconds: -900 });
+    expect(durationBetween("1:30", "0:10:00", false)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -773,6 +811,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/workdays/")).toEqual({ kind: "app", locale: "en", tool: "workdays" });
     expect(parseAppPath("/en/fraction/")).toEqual({ kind: "app", locale: "en", tool: "fraction" });
     expect(parseAppPath("/en/hourly/")).toEqual({ kind: "app", locale: "en", tool: "hourly" });
+    expect(parseAppPath("/en/margin/")).toEqual({ kind: "app", locale: "en", tool: "margin" });
+    expect(parseAppPath("/en/radix/")).toEqual({ kind: "app", locale: "en", tool: "radix" });
+    expect(parseAppPath("/en/duration/")).toEqual({ kind: "app", locale: "en", tool: "duration" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -822,6 +863,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "workdays")).toBe("/zh-cn/workdays/");
     expect(appHref("zh-CN", "fraction")).toBe("/zh-cn/fraction/");
     expect(appHref("zh-CN", "hourly")).toBe("/zh-cn/hourly/");
+    expect(appHref("zh-CN", "margin")).toBe("/zh-cn/margin/");
+    expect(appHref("zh-CN", "radix")).toBe("/zh-cn/radix/");
+    expect(appHref("zh-CN", "duration")).toBe("/zh-cn/duration/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

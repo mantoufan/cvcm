@@ -97,6 +97,9 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   workdays: 3,
   fraction: 3,
   hourly: 3,
+  margin: 3,
+  radix: 3,
+  duration: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

@@ -126,6 +126,9 @@ const TITLE: Record<ToolId, string> = {
   workdays: "meta.titleWorkdays",
   fraction: "meta.titleFraction",
   hourly: "meta.titleHourly",
+  margin: "meta.titleMargin",
+  radix: "meta.titleRadix",
+  duration: "meta.titleDuration",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -222,6 +225,9 @@ const DESC: Record<ToolId, string> = {
   workdays: "meta.descWorkdays",
   fraction: "meta.descFraction",
   hourly: "meta.descHourly",
+  margin: "meta.descMargin",
+  radix: "meta.descRadix",
+  duration: "meta.descDuration",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

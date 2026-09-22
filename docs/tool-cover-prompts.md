@@ -103,3 +103,15 @@ Same character and room. A round cream cake on a pink plate, one slice pulled ou
 ## Hourly to yearly
 
 Same character and room. A round pink pocket watch with a blank face of heart ticks, and a small cream coin purse with a heart clasp. No numerals. Save `public/covers/hourly-sweet.jpg`, `sips -z 720 1280`.
+
+## Profit margin
+
+Same character and room. A small cream balance scale, one pan with a pink heart and the other with a tiny coin purse. No numerals. Save `public/covers/margin-sweet.jpg`, `sips -z 720 1280`.
+
+## Base converter
+
+Same character and room. Three cream cards fanned, each stamped with a different row of hearts. No digits or letters. Save `public/covers/radix-sweet.jpg`, `sips -z 720 1280`.
+
+## Time duration
+
+Same character and room. Two small pink hourglasses tied with a ribbon. No numerals. Save `public/covers/duration-sweet.jpg`, `sips -z 720 1280`.

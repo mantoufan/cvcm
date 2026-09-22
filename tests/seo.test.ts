@@ -89,6 +89,12 @@ describe("seo helpers", () => {
     expect(pageTitle("zh-CN", "workdays")).toMatch(/工作日/);
     expect(pageTitle("zh-CN", "fraction")).toMatch(/分数/);
     expect(pageTitle("zh-CN", "hourly")).toMatch(/时薪/);
+    expect(pageTitle("en", "margin")).toMatch(/Profit margin/i);
+    expect(pageTitle("en", "radix")).toMatch(/Base converter/i);
+    expect(pageTitle("en", "duration")).toMatch(/Time duration/i);
+    expect(pageTitle("zh-CN", "margin")).toMatch(/利润率/);
+    expect(pageTitle("zh-CN", "radix")).toMatch(/进制/);
+    expect(pageTitle("zh-CN", "duration")).toMatch(/时长/);
     expect(pageTitle("en", "portrait-sim")).toMatch(/Portrait camera simulator/i);
     expect(pageTitle("en", "watermark")).toMatch(/watermark/i);
     expect(pageTitle("en", "watermark")).toMatch(/ID copies/i);
@@ -112,7 +118,7 @@ describe("seo helpers", () => {
 
   it("builds five FAQ items and FAQPage JSON-LD per tool", () => {
     const tools = [
-      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly",
+      "clip", "qr", "barcode", "watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration",
     ] as const;
     for (const tool of tools) {
       const items = faqItems("en", tool);

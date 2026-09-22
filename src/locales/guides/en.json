@@ -687,6 +687,33 @@
       "s2b": "Switch the mode to start from a yearly amount. This is gross pay only, with no tax.",
       "s3t": "Copy the amounts",
       "s3b": "Copy puts hourly, weekly, and yearly gross pay on the clipboard."
+    },
+    "margin": {
+      "lead": "Turn a cost and a selling price into profit, margin, and markup in this tab. Nothing is uploaded.",
+      "s1t": "Open Profit margin",
+      "s1b": "Cost 50 and price 80 are already filled. Profit, margin, and markup sit on the right.",
+      "s2t": "Change the cost or the price",
+      "s2b": "Margin is profit divided by price. Markup is profit divided by cost.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts profit, margin, and markup on the clipboard."
+    },
+    "radix": {
+      "lead": "Convert an integer between bases 2 and 36 in this tab. Nothing is uploaded.",
+      "s1t": "Open Base converter",
+      "s1b": "255 from base 10 to base 16 is already shown as FF.",
+      "s2t": "Change the number or the bases",
+      "s2b": "Bases run from 2 to 36. Digits must fit the source base. Letters come out uppercase.",
+      "s3t": "Copy the number",
+      "s3b": "Copy puts the converted integer on the clipboard."
+    },
+    "duration": {
+      "lead": "Add or subtract two lengths of time in this tab. Nothing is uploaded.",
+      "s1t": "Open Time duration",
+      "s1b": "1:30:00 plus 0:45:00 is already filled. The sum is 2:15:00.",
+      "s2t": "Switch to subtract",
+      "s2b": "Subtract takes the second duration off the first. A longer second time gives a negative result.",
+      "s3t": "Copy the duration",
+      "s3b": "Copy puts the H:MM:SS result and the total seconds on the clipboard."
     }
   }
 }

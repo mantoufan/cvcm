@@ -240,6 +240,12 @@
     "descFraction": "Simplifica una fracción o convierte un decimal en fracción en el navegador. Nada se sube.",
     "titleHourly": "De hora a sueldo anual — bruto — cv.cm",
     "descHourly": "Pasa un sueldo por hora a semanal y anual, o al revés, en el navegador. Sin impuestos. Nada se sube.",
+    "titleMargin": "Margen de beneficio — margen y recargo — cv.cm",
+    "descMargin": "Pasa un coste y un precio de venta a beneficio, margen y recargo en el navegador. Nada se sube.",
+    "titleRadix": "Conversor de bases — binario, decimal, hex — cv.cm",
+    "descRadix": "Convierte un entero entre las bases 2 y 36 en el navegador. Nada se sube.",
+    "titleDuration": "Duración — sumar horas y minutos — cv.cm",
+    "descDuration": "Suma o resta horas, minutos y segundos en el navegador. Nada se sube.",
     "titleMakeSignature": "Cómo dibujar una firma PNG | cv.cm",
     "descMakeSignature": "Dibuje, descargue un PNG recortado a la tinta con fondo transparente y mírelo al tamaño del formulario. No es e-sign legal. Nada se sube.",
     "titleAnnotateScreenshot": "Cómo anotar una captura de pantalla | cv.cm",
@@ -619,6 +625,18 @@
     "hourly": {
       "name": "De hora a anual",
       "blurb": "Sueldo bruto según horas y semanas. Nada se sube."
+    },
+    "margin": {
+      "name": "Margen de beneficio",
+      "blurb": "Margen y recargo desde coste y precio. Nada se sube."
+    },
+    "radix": {
+      "name": "Conversor de bases",
+      "blurb": "Binario, decimal y hexadecimal. Nada se sube."
+    },
+    "duration": {
+      "name": "Duración",
+      "blurb": "Suma o resta horas y minutos. Nada se sube."
     }
   },
   "watermark": {
@@ -2263,6 +2281,42 @@
       "a4": "40 horas por semana y 52 semanas al año, es decir 2.080 horas. Cambia cualquiera si tu año es más corto.",
       "q5": "¿Puedo copiar el resultado?",
       "a5": "Sí. Copiar pone el sueldo por hora, semanal y anual en el portapapeles."
+    },
+    "margin": {
+      "q1": "¿Puedo calcular un margen de beneficio aquí?",
+      "a1": "Sí. Escribe un coste y un precio de venta. La pestaña muestra beneficio, margen y recargo.",
+      "q2": "¿Se suben estos números?",
+      "a2": "No. El cálculo se queda en esta pestaña.",
+      "q3": "¿En qué se distinguen margen y recargo?",
+      "a3": "El margen es el beneficio dividido por el precio. El recargo es el beneficio dividido por el coste. Coste 50 y precio 80 es 30 de beneficio, un margen del 37,50% y un recargo del 60%.",
+      "q4": "¿Y si el precio es menor que el coste?",
+      "a4": "Beneficio, margen y recargo salen negativos. Un precio 0 no tiene porcentaje de margen. Un coste 0 no tiene porcentaje de recargo.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone beneficio, margen y recargo en el portapapeles."
+    },
+    "radix": {
+      "q1": "¿Puedo convertir binario, decimal y hexadecimal aquí?",
+      "a1": "Sí. Escribe un entero y dos bases del 2 al 36. 255 en base 10 es FF en base 16.",
+      "q2": "¿Se suben estos números?",
+      "a2": "No. La conversión se queda en esta pestaña.",
+      "q3": "¿Es la herramienta de texto a binario?",
+      "a3": "No. Aquí se convierte un entero. La otra herramienta pasa letras a grupos de 8 bits.",
+      "q4": "¿Puedo usar el prefijo 0x o un decimal?",
+      "a4": "No. No escribas 0x ni 0b, ni un punto decimal. El dígito tiene que existir en la base de origen, así que 2 no es un dígito binario.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone el entero convertido en el portapapeles. Las letras van en mayúsculas."
+    },
+    "duration": {
+      "q1": "¿Puedo sumar horas y minutos aquí?",
+      "a1": "Sí. Escribe dos duraciones como horas:minutos:segundos. Súmalas, o resta la segunda de la primera.",
+      "q2": "¿Se suben estos tiempos?",
+      "a2": "No. El cálculo se queda en esta pestaña.",
+      "q3": "¿Qué formato usan?",
+      "a3": "Usa H:MM:SS, como 1:30:00. Los minutos y los segundos van de 0 a 59.",
+      "q4": "¿Y si la segunda dura más?",
+      "a4": "Restar da un resultado negativo, como -0:15:00. Es una duración, no un reloj ni una zona horaria.",
+      "q5": "¿Puedo copiar el resultado?",
+      "a5": "Sí. Copiar pone la duración y los segundos totales en el portapapeles."
     },
     "convertJobs": {
       "heic-to-jpg": {
@@ -4488,5 +4542,52 @@
     "copy": "Copiar",
     "copied": "Copiado",
     "invalid": "El importe es 0 o más. Las horas por semana son mayores que 0 y como máximo 168. Las semanas por año son mayores que 0 y como máximo 52."
+  },
+  "margin": {
+    "title": "Margen de beneficio",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Importes",
+    "cost": "Coste",
+    "price": "Precio de venta",
+    "result": "Margen",
+    "profit": "Beneficio",
+    "margin": "Margen",
+    "markup": "Recargo",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "none": "—",
+    "invalid": "El coste y el precio son 0 o más, y no pueden ser 0 los dos."
+  },
+  "radix": {
+    "title": "Conversor de bases",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Número",
+    "value": "Entero",
+    "from": "Base de origen",
+    "to": "Base de destino",
+    "result": "Convertido",
+    "out": "Resultado",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "invalid": "Bases del 2 al 36 y dígitos de la base de origen. Sin prefijo y sin decimales."
+  },
+  "duration": {
+    "title": "Duración",
+    "back": "Todas las herramientas",
+    "privacyNote": "Queda en esta pestaña. Nada se sube.",
+    "options": "Duraciones",
+    "a": "Primera (H:MM:SS)",
+    "b": "Segunda (H:MM:SS)",
+    "mode": "Modo",
+    "add": "Sumar",
+    "subtract": "Restar",
+    "result": "Duración",
+    "clock": "Resultado",
+    "total": "Segundos totales",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "invalid": "Usa horas:minutos:segundos, como 1:30:00. Los minutos y los segundos van de 0 a 59."
   }
 }

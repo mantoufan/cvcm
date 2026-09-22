@@ -240,6 +240,12 @@
     "descFraction": "Sederhanakan pecahan atau ubah desimal menjadi pecahan di browser. Tidak diunggah.",
     "titleHourly": "Upah per jam ke tahunan — kotor — cv.cm",
     "descHourly": "Ubah upah per jam menjadi mingguan dan tahunan, atau sebaliknya, di browser. Tanpa pajak. Tidak diunggah.",
+    "titleMargin": "Margin laba — margin dan markup — cv.cm",
+    "descMargin": "Ubah biaya dan harga jual menjadi laba, margin, dan markup di browser. Tidak diunggah.",
+    "titleRadix": "Konversi basis — biner, desimal, heks — cv.cm",
+    "descRadix": "Ubah bilangan bulat antar basis 2 sampai 36 di browser. Tidak diunggah.",
+    "titleDuration": "Durasi waktu — jumlahkan jam dan menit — cv.cm",
+    "descDuration": "Jumlahkan atau kurangkan jam, menit, dan detik di browser. Tidak diunggah.",
     "titleMakeSignature": "Cara gambar tanda tangan PNG | cv.cm",
     "descMakeSignature": "Gambar di pad, unduh PNG terpotong ke tinta berlatar tembus, cek seukuran formulir. Bukan e-sign legal. Tidak diunggah.",
     "titleAnnotateScreenshot": "Cara anotasi tangkapan layar | cv.cm",
@@ -619,6 +625,18 @@
     "hourly": {
       "name": "Upah jam ke tahunan",
       "blurb": "Upah kotor dari jam dan minggu. Tidak diunggah."
+    },
+    "margin": {
+      "name": "Margin laba",
+      "blurb": "Margin dan markup dari biaya dan harga. Tidak diunggah."
+    },
+    "radix": {
+      "name": "Konversi basis",
+      "blurb": "Biner, desimal, dan heks. Tidak diunggah."
+    },
+    "duration": {
+      "name": "Durasi waktu",
+      "blurb": "Jumlah atau selisih jam dan menit. Tidak diunggah."
     }
   },
   "watermark": {
@@ -2263,6 +2281,42 @@
       "a4": "40 jam seminggu dan 52 minggu setahun, yaitu 2.080 jam. Ubah salah satunya jika tahun kerja lebih pendek.",
       "q5": "Bisakah menyalin hasilnya?",
       "a5": "Ya. Salin menaruh upah per jam, mingguan, dan tahunan di papan klip."
+    },
+    "margin": {
+      "q1": "Bisakah menghitung margin laba di sini?",
+      "a1": "Ya. Masukkan biaya dan harga jual. Tab menampilkan laba, margin, dan markup.",
+      "q2": "Apakah angka ini diunggah?",
+      "a2": "Tidak. Hitungannya tetap di tab ini.",
+      "q3": "Apa beda margin dan markup?",
+      "a3": "Margin adalah laba dibagi harga jual. Markup adalah laba dibagi biaya. Biaya 50 dan harga 80 adalah laba 30, margin 37,50%, dan markup 60%.",
+      "q4": "Jika harga jual di bawah biaya?",
+      "a4": "Laba, margin, dan markup menjadi negatif. Harga 0 tidak punya persen margin. Biaya 0 tidak punya persen markup.",
+      "q5": "Bisakah menyalin hasilnya?",
+      "a5": "Ya. Salin menaruh laba, margin, dan markup di papan klip."
+    },
+    "radix": {
+      "q1": "Bisakah mengubah biner dan heks di sini?",
+      "a1": "Ya. Ketik bilangan bulat dan dua basis dari 2 sampai 36. 255 di basis 10 menjadi FF di basis 16.",
+      "q2": "Apakah angka ini diunggah?",
+      "a2": "Tidak. Konversi tetap di tab ini.",
+      "q3": "Apakah ini alat teks ke biner?",
+      "a3": "Bukan. Ini mengubah satu bilangan bulat. Alat biner mengubah huruf menjadi kelompok 8 bit.",
+      "q4": "Boleh memakai awalan 0x atau pecahan?",
+      "a4": "Tidak. Jangan ketik 0x atau 0b, dan jangan titik desimal. Digit harus ada di basis asal, jadi 2 bukan digit biner.",
+      "q5": "Bisakah menyalin hasilnya?",
+      "a5": "Ya. Salin menaruh bilangan yang sudah diubah di papan klip. Hurufnya kapital."
+    },
+    "duration": {
+      "q1": "Bisakah menjumlahkan jam dan menit di sini?",
+      "a1": "Ya. Masukkan dua durasi sebagai jam:menit:detik. Jumlahkan, atau kurangkan yang kedua dari yang pertama.",
+      "q2": "Apakah waktu ini diunggah?",
+      "a2": "Tidak. Hitungannya tetap di tab ini.",
+      "q3": "Formatnya apa?",
+      "a3": "Pakai jam:menit:detik, misalnya 1:30:00. Menit dan detik dari 0 sampai 59.",
+      "q4": "Jika durasi kedua lebih panjang?",
+      "a4": "Pengurangan memberi hasil negatif, misalnya -0:15:00. Ini panjang waktu, bukan jam dinding atau zona waktu.",
+      "q5": "Bisakah menyalin hasilnya?",
+      "a5": "Ya. Salin menaruh durasi dan total detik di papan klip."
     },
     "convertJobs": {
       "heic-to-jpg": {
@@ -4488,5 +4542,52 @@
     "copy": "Salin",
     "copied": "Tersalin",
     "invalid": "Jumlah 0 atau lebih. Jam per minggu lebih dari 0 dan paling banyak 168. Minggu per tahun lebih dari 0 dan paling banyak 52."
+  },
+  "margin": {
+    "title": "Margin laba",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Jumlah",
+    "cost": "Biaya",
+    "price": "Harga jual",
+    "result": "Margin",
+    "profit": "Laba",
+    "margin": "Margin",
+    "markup": "Markup",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "none": "—",
+    "invalid": "Biaya dan harga jual 0 atau lebih, dan tidak boleh keduanya 0."
+  },
+  "radix": {
+    "title": "Konversi basis",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Angka",
+    "value": "Bilangan bulat",
+    "from": "Basis asal",
+    "to": "Basis tujuan",
+    "result": "Hasil",
+    "out": "Terkonversi",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "invalid": "Basis 2–36 dan digit yang ada di basis asal. Tanpa awalan dan tanpa pecahan."
+  },
+  "duration": {
+    "title": "Durasi waktu",
+    "back": "Semua alat",
+    "privacyNote": "Tetap di tab ini. Tidak diunggah.",
+    "options": "Durasi",
+    "a": "Pertama (jam:menit:detik)",
+    "b": "Kedua (jam:menit:detik)",
+    "mode": "Mode",
+    "add": "Tambah",
+    "subtract": "Kurangi",
+    "result": "Durasi",
+    "clock": "Hasil",
+    "total": "Total detik",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "invalid": "Pakai jam:menit:detik, misalnya 1:30:00. Menit dan detik harus 0–59."
   }
 }

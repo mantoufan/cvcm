@@ -72,6 +72,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/workdays/` — Monday–Friday count between two dates (weekends only, not holidays)
 - `src/client/fraction/` — simplify a fraction or convert a decimal
 - `src/client/hourly/` — hourly wage ↔ yearly gross pay (no tax)
+- `src/client/margin/` — profit margin and markup from cost and price
+- `src/client/radix/` — integer base converter, bases 2–36
+- `src/client/duration/` — add or subtract H:MM:SS durations
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

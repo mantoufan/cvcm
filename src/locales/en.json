@@ -240,6 +240,12 @@
     "descFraction": "Simplify a fraction or turn a decimal into a fraction in the browser. Nothing is uploaded.",
     "titleHourly": "Hourly to yearly salary — gross pay — cv.cm",
     "descHourly": "Turn an hourly wage into weekly and yearly gross pay, or the reverse, in the browser. No tax. Nothing is uploaded.",
+    "titleMargin": "Profit margin calculator — margin and markup — cv.cm",
+    "descMargin": "Turn a cost and a selling price into profit, margin, and markup in the browser. Nothing is uploaded.",
+    "titleRadix": "Base converter — binary, decimal, hex — cv.cm",
+    "descRadix": "Convert an integer between bases 2 through 36 in the browser. Nothing is uploaded.",
+    "titleDuration": "Time duration calculator — add hours and minutes — cv.cm",
+    "descDuration": "Add or subtract hours, minutes, and seconds in the browser. Nothing is uploaded.",
     "titleMakeSignature": "How to draw a signature PNG | cv.cm",
     "descMakeSignature": "Draw on the pad, download a PNG cropped to the ink with a clear background, then check it at form size. Not a legal e-sign. Nothing is uploaded.",
     "titleAnnotateScreenshot": "How to annotate a screenshot | cv.cm",
@@ -1469,6 +1475,18 @@
     "hourly": {
       "name": "Hourly to yearly",
       "blurb": "Gross pay from hours and weeks. Nothing is uploaded."
+    },
+    "margin": {
+      "name": "Profit margin",
+      "blurb": "Margin and markup from cost and price. Nothing is uploaded."
+    },
+    "radix": {
+      "name": "Base converter",
+      "blurb": "Binary, decimal, and hex. Nothing is uploaded."
+    },
+    "duration": {
+      "name": "Time duration",
+      "blurb": "Add or subtract hours and minutes. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -3114,6 +3132,42 @@
       "q5": "Can I copy the result?",
       "a5": "Yes. Copy puts hourly, weekly, and yearly gross pay on the clipboard."
     },
+    "margin": {
+      "q1": "Can I calculate a profit margin here?",
+      "a1": "Yes. Enter a cost and a selling price. The tab shows profit, margin, and markup.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What is the difference between margin and markup?",
+      "a3": "Margin is profit divided by the selling price. Markup is profit divided by the cost. Cost 50 and price 80 is 30 profit, a 37.50% margin, and a 60% markup.",
+      "q4": "What if the price is below the cost?",
+      "a4": "Profit, margin, and markup are negative. A zero price has no margin percent. A zero cost has no markup percent.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts profit, margin, and markup on the clipboard."
+    },
+    "radix": {
+      "q1": "Can I convert binary, decimal, and hex here?",
+      "a1": "Yes. Type a whole number and two bases from 2 to 36. 255 in base 10 becomes FF in base 16.",
+      "q2": "Is this uploaded?",
+      "a2": "No. Conversion stays in this tab.",
+      "q3": "Is this the text-to-binary tool?",
+      "a3": "No. This converts one integer. The binary tool turns letters into groups of 8 bits.",
+      "q4": "Can I use a 0x prefix or a fraction?",
+      "a4": "No. Do not type 0x or 0b, and do not type a decimal point. A digit must exist in the source base, so 2 is not a binary digit.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the converted integer on the clipboard. Letters are uppercase."
+    },
+    "duration": {
+      "q1": "Can I add hours and minutes here?",
+      "a1": "Yes. Enter two durations as hours:minutes:seconds. Add them, or subtract the second from the first.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "What format do the times use?",
+      "a3": "Use H:MM:SS, such as 1:30:00. Minutes and seconds must be from 0 to 59.",
+      "q4": "What if the second time is longer?",
+      "a4": "Subtracting a longer duration gives a negative result, such as -0:15:00. This is a length of time, not a clock or a time zone.",
+      "q5": "Can I copy the result?",
+      "a5": "Yes. Copy puts the duration and the total seconds on the clipboard."
+    },
     "convertJobs": {
       "heic-to-jpg": {
         "q1": "Can I convert HEIC to JPG here?",
@@ -4488,5 +4542,52 @@
     "copy": "Copy",
     "copied": "Copied",
     "invalid": "Enter a pay amount of 0 or more. Hours per week must be greater than 0 and at most 168. Weeks per year must be greater than 0 and at most 52."
+  },
+  "margin": {
+    "title": "Profit margin",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Amounts",
+    "cost": "Cost",
+    "price": "Selling price",
+    "result": "Margin",
+    "profit": "Profit",
+    "margin": "Margin",
+    "markup": "Markup",
+    "copy": "Copy",
+    "copied": "Copied",
+    "none": "—",
+    "invalid": "Enter a cost and a selling price of 0 or more. Both cannot be 0."
+  },
+  "radix": {
+    "title": "Base converter",
+    "back": "All tools",
+    "privacyNote": "Conversion stays in this tab. Nothing is uploaded.",
+    "options": "Number",
+    "value": "Integer",
+    "from": "From base",
+    "to": "To base",
+    "result": "Converted",
+    "out": "Result",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Use bases 2–36 and digits that fit the source base. No prefix and no fraction."
+  },
+  "duration": {
+    "title": "Time duration",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Durations",
+    "a": "First (H:MM:SS)",
+    "b": "Second (H:MM:SS)",
+    "mode": "Mode",
+    "add": "Add",
+    "subtract": "Subtract",
+    "result": "Duration",
+    "clock": "Result",
+    "total": "Total seconds",
+    "copy": "Copy",
+    "copied": "Copied",
+    "invalid": "Use hours:minutes:seconds, such as 1:30:00. Minutes and seconds must be 0–59."
   }
 }
