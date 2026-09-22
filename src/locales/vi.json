@@ -16,13 +16,13 @@
     "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
     "descWatermark": "Đóng dấu ảnh hoặc bản sao giấy tờ trên trình duyệt. Lặp chữ “chỉ dùng cho”. Xuất hàng loạt PNG, JPEG hoặc ZIP. Bỏ EXIF. Không tải lên.",
     "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên.",
-    "titleQr": "Tạo mã QR — cv.cm",
+    "titleQr": "Tạo mã QR miễn phí — cv.cm",
     "descQr": "Tạo mã QR từ URL hoặc chữ trong trình duyệt, tải PNG. Không tải lên.",
     "titlePassword": "Tạo mật khẩu — cv.cm",
     "descPassword": "Tạo mật khẩu ngẫu nhiên trên máy. Chọn độ dài và ký hiệu. Không tải lên.",
     "titleWordCount": "Đếm từ — cv.cm",
     "descWordCount": "Đếm từ, ký tự, câu và thời gian đọc trong trình duyệt. Không tải lên.",
-    "titleResize": "Thu nhỏ và nén ảnh — cv.cm",
+    "titleResize": "Đổi kích thước ảnh — cv.cm",
     "descResize": "Đổi kích thước theo pixel hoặc cạnh dài, nén JPG / WebP trong trình duyệt. Không tải lên.",
     "titleCrop": "Cắt ảnh online — cv.cm",
     "descCrop": "Cắt ảnh trong trình duyệt. Tự do, 1:1, 4:5, 16:9, 9:16. Không tải lên.",
@@ -68,7 +68,7 @@
     "descLorem": "Tạo đoạn lorem ipsum trong trình duyệt. Đoạn, câu hoặc từ. Không tải lên.",
     "titleUnits": "Đổi đơn vị — cm sang inch, kg sang lbs, °C sang °F — cv.cm",
     "descUnits": "Đổi chiều dài, khối lượng, nhiệt độ, thể tích, diện tích và tốc độ trong trình duyệt. cm sang inch. Không tải lên.",
-    "titleBarcode": "Tạo mã vạch — Code 128, Code 39, EAN-13 — cv.cm",
+    "titleBarcode": "Tạo mã vạch miễn phí — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Tạo mã Code 128, Code 39 hoặc EAN-13 trong trình duyệt, tải PNG. Không tải lên.",
     "titleMeme": "Tạo meme — thêm chữ lên ảnh — cv.cm",
     "descMeme": "Làm meme trong trình duyệt. Chữ trên và dưới, viền đậm. Tải PNG. Không tải lên.",
@@ -289,7 +289,9 @@
     "titleAddDuration": "Cách cộng giờ và phút | cv.cm",
     "descAddDuration": "Cộng hoặc trừ hai khoảng H:MM:SS. 1:30:00 cộng 0:45:00 là 2:15:00. Phút và giây phải 0–59. Khoảng thứ hai dài hơn thì có dấu trừ. Không tải lên.",
     "titleCalculatePercent": "Cách tính phần trăm | cv.cm",
-    "descCalculatePercent": "25% của 200 là 50. 25 là 12,5% của 200. 200 cộng 25% là 250. Từ 200 sang 25 là -87,5%. Copy dòng khớp câu hỏi. Không tải lên."
+    "descCalculatePercent": "25% của 200 là 50. 25 là 12,5% của 200. 200 cộng 25% là 250. Từ 200 sang 25 là -87,5%. Copy dòng khớp câu hỏi. Không tải lên.",
+    "titleJobCompressImage": "Nén ảnh — giảm dung lượng — cv.cm",
+    "descJobCompressImage": "Nén ảnh trong trình duyệt. Hạ chất lượng hoặc giới hạn cạnh dài cho đến khi file đủ nhỏ. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -363,7 +365,7 @@
       "blurb": "Định dạng JSON, CSV ↔ JSON, Base64, Markdown. Không tải lên."
     },
     "qr": {
-      "name": "Tạo mã QR",
+      "name": "Tạo mã QR miễn phí",
       "blurb": "URL hoặc chữ thành QR, tải PNG. Không tải lên."
     },
     "password": {
@@ -375,7 +377,7 @@
       "blurb": "Từ, ký tự, câu, thời gian đọc. Không tải lên."
     },
     "resize": {
-      "name": "Thu nhỏ / nén",
+      "name": "Đổi kích thước ảnh",
       "blurb": "Pixel hoặc cạnh dài. Chất lượng JPG / WebP. Không tải lên."
     },
     "crop": {
@@ -419,7 +421,7 @@
       "blurb": "cm sang inch, kg sang lbs, °C sang °F. Dài, nặng, thể tích, diện tích, tốc độ. Trên máy."
     },
     "barcode": {
-      "name": "Tạo mã vạch",
+      "name": "Tạo mã vạch miễn phí",
       "blurb": "Code 128, Code 39, EAN-13. Tải PNG. Không tải lên."
     },
     "meme": {
@@ -2447,10 +2449,24 @@
         "q5": "Đổi nhiều file sang WebP được không?",
         "a5": "Được. Tải một file hoặc một ZIP."
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "Nén ảnh ở đây được không?",
+        "a1": "Được. Thả ảnh, hạ chất lượng, tải JPG hoặc WebP nhỏ hơn. Không tải lên.",
+        "q2": "Làm sao giảm dung lượng ảnh?",
+        "a2": "Hạ chất lượng, hoặc dùng 1920, 1280, 800 khi ảnh quá nhiều điểm ảnh. Xem dung lượng trước khi tải.",
+        "q3": "Ảnh có xấu đi không?",
+        "a3": "Ảnh xem trên màn hình thường vẫn ổn khi hạ một chút. Chữ bị nhòe thì tăng chất lượng.",
+        "q4": "PNG có nhỏ hơn không?",
+        "a4": "PNG không dùng thanh chất lượng. Muốn file nhỏ thì xuất JPG hoặc WebP.",
+        "q5": "File gốc có bị đổi không?",
+        "a5": "Không. Bạn tải một file mới. File trên đĩa giữ nguyên."
+      }
     }
   },
   "qr": {
-    "title": "Tạo mã QR",
+    "title": "Tạo mã QR miễn phí",
     "back": "Tất cả công cụ",
     "privacyNote": "QR vẽ trong tab này. Không tải lên.",
     "input": "Chữ hoặc URL",
@@ -2502,7 +2518,7 @@
     "clear": "Xóa"
   },
   "resize": {
-    "title": "Thu nhỏ và nén ảnh",
+    "title": "Đổi kích thước ảnh",
     "back": "Tất cả công cụ",
     "privacyNote": "Thu nhỏ và nén trong tab này. Không tải lên.",
     "dropTitle": "Thả ảnh vào đây",
@@ -2521,7 +2537,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "Không đọc được ảnh này.",
     "emptyDownload": "Hãy thêm ảnh trước.",
-    "working": "Đang thu nhỏ…"
+    "working": "Đang thu nhỏ…",
+    "jobsLabel": "Kích thước ảnh",
+    "jobs": {
+      "compress-image": {
+        "title": "Nén ảnh",
+        "lede": "Hạ chất lượng JPEG, hoặc giới hạn cạnh dài ở 1920, 1280 hoặc 800. File gốc vẫn nằm trên đĩa. Không tải lên."
+      }
+    }
   },
   "crop": {
     "title": "Cắt ảnh",
@@ -3652,7 +3675,7 @@
     "invalid": "Hãy nhập một số."
   },
   "barcode": {
-    "title": "Tạo mã vạch",
+    "title": "Tạo mã vạch miễn phí",
     "back": "Tất cả công cụ",
     "privacyNote": "Mã vạch được vẽ trong tab này. Không tải lên.",
     "input": "Chữ hoặc số",

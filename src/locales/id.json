@@ -16,13 +16,13 @@
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
     "descWatermark": "Cap foto atau salinan identitas di browser. Ubin teks “hanya untuk”. Ekspor massal PNG, JPEG, atau ZIP. Hapus EXIF. Tanpa unggah.",
     "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
-    "titleQr": "Pembuat kode QR — cv.cm",
+    "titleQr": "Pembuat kode QR gratis — cv.cm",
     "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
     "titlePassword": "Pembuat kata sandi — cv.cm",
     "descPassword": "Buat kata sandi acak di perangkat. Pilih panjang dan simbol. Tanpa unggah.",
     "titleWordCount": "Penghitung kata — cv.cm",
     "descWordCount": "Hitung kata, karakter, kalimat, dan waktu baca di browser. Tanpa unggah.",
-    "titleResize": "Ubah ukuran dan kompres gambar — cv.cm",
+    "titleResize": "Ubah ukuran gambar — cv.cm",
     "descResize": "Ubah ukuran ke piksel pasti atau sisi terpanjang, kompres JPG / WebP di browser. Tanpa unggah.",
     "titleCrop": "Potong gambar online — cv.cm",
     "descCrop": "Potong foto di browser. Bebas, 1:1, 4:5, 16:9, 9:16. Tanpa unggah.",
@@ -68,7 +68,7 @@
     "descLorem": "Buat teks placeholder lorem ipsum di browser. Paragraf, kalimat, atau kata. Tidak diunggah.",
     "titleUnits": "Pengonversi satuan — cm ke inci, kg ke lbs, °C ke °F — cv.cm",
     "descUnits": "Ubah panjang, berat, suhu, volume, luas, dan kecepatan di browser. cm ke inci, kg ke pon. Tidak diunggah.",
-    "titleBarcode": "Pembuat barcode — Code 128, Code 39, EAN-13 — cv.cm",
+    "titleBarcode": "Pembuat barcode gratis — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Buat barcode Code 128, Code 39, atau EAN-13 di browser, unduh PNG. Tidak diunggah.",
     "titleMeme": "Pembuat meme — teks di foto — cv.cm",
     "descMeme": "Buat meme di browser. Teks atas dan bawah, garis tepi. Unduh PNG. Tidak diunggah.",
@@ -289,7 +289,9 @@
     "titleAddDuration": "Cara jumlahkan jam dan menit | cv.cm",
     "descAddDuration": "Tambah atau kurangi dua durasi H:MM:SS. 1:30:00 tambah 0:45:00 adalah 2:15:00. Menit dan detik harus 0–59. Durasi kedua lebih panjang memberi tanda minus. Tidak diunggah.",
     "titleCalculatePercent": "Cara hitung persentase | cv.cm",
-    "descCalculatePercent": "25% dari 200 adalah 50. 25 adalah 12,5% dari 200. 200 ditambah 25% adalah 250. Perubahan dari 200 ke 25 adalah -87,5%. Salin baris yang cocok. Tidak diunggah."
+    "descCalculatePercent": "25% dari 200 adalah 50. 25 adalah 12,5% dari 200. 200 ditambah 25% adalah 250. Perubahan dari 200 ke 25 adalah -87,5%. Salin baris yang cocok. Tidak diunggah.",
+    "titleJobCompressImage": "Kompres gambar — kecilkan ukuran file — cv.cm",
+    "descJobCompressImage": "Kompres foto di browser. Turunkan kualitas atau batasi sisi panjang sampai file cukup kecil. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -363,7 +365,7 @@
       "blurb": "Pemformat JSON, CSV ↔ JSON, Base64, Markdown. Tanpa unggah."
     },
     "qr": {
-      "name": "Pembuat kode QR",
+      "name": "Pembuat kode QR gratis",
       "blurb": "URL atau teks jadi QR, unduh PNG. Tanpa unggah."
     },
     "password": {
@@ -375,7 +377,7 @@
       "blurb": "Kata, karakter, kalimat, waktu baca. Tanpa unggah."
     },
     "resize": {
-      "name": "Ubah ukuran / kompres",
+      "name": "Ubah ukuran gambar",
       "blurb": "Piksel atau sisi terpanjang. Kualitas JPG / WebP. Tanpa unggah."
     },
     "crop": {
@@ -419,7 +421,7 @@
       "blurb": "cm ke inci, kg ke lbs, °C ke °F. Panjang, massa, volume, luas, kecepatan. Di perangkat."
     },
     "barcode": {
-      "name": "Pembuat barcode",
+      "name": "Pembuat barcode gratis",
       "blurb": "Code 128, Code 39, EAN-13. Unduh PNG. Tanpa unggah."
     },
     "meme": {
@@ -2447,10 +2449,24 @@
         "q5": "Bisakah banyak file menjadi WebP?",
         "a5": "Ya. Unduh satu file atau ZIP."
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "Bisakah mengompres gambar di sini?",
+        "a1": "Ya. Letakkan foto, turunkan kualitas, unduh JPG atau WebP yang lebih kecil. Tidak diunggah.",
+        "q2": "Bagaimana mengurangi ukuran file?",
+        "a2": "Turunkan kualitas, atau pakai 1920, 1280, 800 jika pixelnya yang besar. Baca ukuran sebelum mengunduh.",
+        "q3": "Apakah fotonya jadi buruk?",
+        "a3": "Foto untuk layar sering masih baik jika kualitas diturunkan sedikit. Jika teks pecah, naikkan kualitas.",
+        "q4": "Apakah PNG jadi lebih kecil?",
+        "a4": "PNG tidak memakai slider kualitas. Ekspor JPG atau WebP jika file harus lebih kecil.",
+        "q5": "Apakah file asli berubah?",
+        "a5": "Tidak. Anda mengunduh file baru. File di disk tetap seperti semula."
+      }
     }
   },
   "qr": {
-    "title": "Pembuat kode QR",
+    "title": "Pembuat kode QR gratis",
     "back": "Semua alat",
     "privacyNote": "QR digambar di tab ini. Tanpa unggah.",
     "input": "Teks atau URL",
@@ -2502,7 +2518,7 @@
     "clear": "Hapus"
   },
   "resize": {
-    "title": "Ubah ukuran dan kompres gambar",
+    "title": "Ubah ukuran gambar",
     "back": "Semua alat",
     "privacyNote": "Ubah ukuran dan kompresi di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan gambar di sini",
@@ -2521,7 +2537,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "Gambar ini tidak bisa dibaca.",
     "emptyDownload": "Tambah gambar dulu.",
-    "working": "Mengubah ukuran…"
+    "working": "Mengubah ukuran…",
+    "jobsLabel": "Ukuran gambar",
+    "jobs": {
+      "compress-image": {
+        "title": "Kompres gambar",
+        "lede": "Turunkan kualitas JPEG, atau batasi sisi panjang ke 1920, 1280, atau 800. File asli tetap di disk. Tidak diunggah."
+      }
+    }
   },
   "crop": {
     "title": "Potong gambar",
@@ -3652,7 +3675,7 @@
     "invalid": "Masukkan angka."
   },
   "barcode": {
-    "title": "Pembuat barcode",
+    "title": "Pembuat barcode gratis",
     "back": "Semua alat",
     "privacyNote": "Barcode digambar di tab ini. Tidak diunggah.",
     "input": "Teks atau angka",

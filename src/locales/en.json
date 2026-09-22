@@ -16,15 +16,15 @@
     "description": "On-device browser tools. Image and PDF files stay in this tab.",
     "descWatermark": "Watermark photos or ID copies in the browser. Tile a for-use-only mark, batch PNG, JPEG, or ZIP. Export drops EXIF. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
-    "titleQr": "QR code generator — cv.cm",
+    "titleQr": "Free QR code generator — cv.cm",
     "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
     "titlePassword": "Password generator — cv.cm",
     "descPassword": "Generate a strong random password on your device. Choose length and symbols. Nothing is uploaded.",
     "titleWordCount": "Word counter — cv.cm",
     "descWordCount": "Count words, characters, sentences, and reading time in the browser. Nothing is uploaded.",
-    "titleResize": "Resize and compress images — cv.cm",
+    "titleResize": "Resize image — photo resizer — cv.cm",
     "descResize": "Resize photos to exact pixels or a max edge, compress JPG or WebP, in the browser. Nothing is uploaded.",
-    "titleCrop": "Crop images online — cv.cm",
+    "titleCrop": "Crop image online — cv.cm",
     "descCrop": "Crop photos in the browser. Free, 1:1, 4:5, 16:9, 9:16. Nothing is uploaded.",
     "titleColor": "Color picker — hex, RGB, HSL — cv.cm",
     "descColor": "Pick a color, copy hex RGB or HSL, check contrast. Eyedropper when the browser allows. Nothing is uploaded.",
@@ -68,7 +68,7 @@
     "descLorem": "Generate lorem ipsum placeholder text in the browser. Paragraphs, sentences, or words. Nothing is uploaded.",
     "titleUnits": "Unit converter — cm to inches, kg to lbs, °C to °F — cv.cm",
     "descUnits": "Convert length, weight, temperature, volume, area, and speed in the browser. cm to inches, kg to lbs. Nothing is uploaded.",
-    "titleBarcode": "Barcode generator — Code 128, Code 39, EAN-13 — cv.cm",
+    "titleBarcode": "Free barcode generator — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Create a Code 128, Code 39, or EAN-13 barcode in the browser. Download a PNG. Nothing is uploaded.",
     "titleMeme": "Meme generator — add text to photos — cv.cm",
     "descMeme": "Make a meme in the browser. Top and bottom captions, Impact-style outline. Download PNG. Nothing is uploaded.",
@@ -289,7 +289,9 @@
     "titleAddDuration": "How to add hours and minutes | cv.cm",
     "descAddDuration": "Add or subtract two lengths as H:MM:SS. 1:30:00 plus 0:45:00 is 2:15:00. Minutes and seconds must be 0–59. A longer second length gives a minus. Nothing is uploaded.",
     "titleCalculatePercent": "How to calculate a percentage | cv.cm",
-    "descCalculatePercent": "25% of 200 is 50. 25 is 12.5% of 200. 200 plus 25% is 250. The change from 200 to 25 is -87.5%. Copy the line that matches the question. Nothing is uploaded."
+    "descCalculatePercent": "25% of 200 is 50. 25 is 12.5% of 200. 200 plus 25% is 250. The change from 200 to 25 is -87.5%. Copy the line that matches the question. Nothing is uploaded.",
+    "titleJobCompressImage": "Compress image — reduce image size — cv.cm",
+    "descJobCompressImage": "Compress a photo in the browser. Lower the quality or cap the long edge until the file is small enough. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1301,7 +1303,7 @@
       "blurb": "JSON formatter, CSV ↔ JSON, Base64, Markdown. Nothing is uploaded."
     },
     "qr": {
-      "name": "QR code generator",
+      "name": "Free QR code generator",
       "blurb": "Turn a URL or text into a QR code. Download PNG. Nothing is uploaded."
     },
     "password": {
@@ -1313,8 +1315,8 @@
       "blurb": "Words, characters, sentences, reading time. Nothing is uploaded."
     },
     "resize": {
-      "name": "Resize & compress",
-      "blurb": "Exact pixels or a max edge. JPG / WebP quality. Nothing is uploaded."
+      "name": "Resize image",
+      "blurb": "Resize image or compress JPG and WebP. Nothing is uploaded."
     },
     "crop": {
       "name": "Crop image",
@@ -1357,7 +1359,7 @@
       "blurb": "cm to inches, kg to lbs, °C to °F. Length, mass, volume, area, speed. On-device."
     },
     "barcode": {
-      "name": "Barcode generator",
+      "name": "Free barcode generator",
       "blurb": "Code 128, Code 39, EAN-13. Download PNG. Nothing is uploaded."
     },
     "meme": {
@@ -3385,10 +3387,24 @@
         "q5": "Can I convert a batch to WebP?",
         "a5": "Yes. Download one file or a ZIP."
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "Can I compress an image here?",
+        "a1": "Yes. Drop a photo, lower the quality, and download a smaller JPG or WebP. Nothing is uploaded.",
+        "q2": "How do I reduce image size?",
+        "a2": "Use a lower quality, or the 1920, 1280, or 800 preset when the pixel size is the problem. Read the size line before you download.",
+        "q3": "Will the photo look worse?",
+        "a3": "Screen-size photos can take a lower quality and still look fine. If text turns mushy, raise the quality.",
+        "q4": "Does PNG get smaller?",
+        "a4": "PNG does not use the quality slider. Export JPG or WebP when you need a smaller file.",
+        "q5": "Is the original changed?",
+        "a5": "No. You download a new file. The one on disk stays as it was."
+      }
     }
   },
   "qr": {
-    "title": "QR code generator",
+    "title": "Free QR code generator",
     "back": "All tools",
     "privacyNote": "The QR code is drawn in this tab. Nothing is uploaded.",
     "input": "Text or URL",
@@ -3440,7 +3456,7 @@
     "clear": "Clear"
   },
   "resize": {
-    "title": "Resize and compress images",
+    "title": "Resize image",
     "back": "All tools",
     "privacyNote": "Resize and compression stay in this tab. Nothing is uploaded.",
     "dropTitle": "Drop an image here",
@@ -3459,7 +3475,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "Could not read this image in the browser.",
     "emptyDownload": "Add an image first.",
-    "working": "Resizing…"
+    "working": "Resizing…",
+    "jobsLabel": "Image size",
+    "jobs": {
+      "compress-image": {
+        "title": "Compress image",
+        "lede": "Lower the JPEG quality, or cap the long edge at 1920, 1280, or 800. The original stays on disk. Nothing is uploaded."
+      }
+    }
   },
   "crop": {
     "title": "Crop image",
@@ -3652,7 +3675,7 @@
     "invalid": "Enter a number."
   },
   "barcode": {
-    "title": "Barcode generator",
+    "title": "Free barcode generator",
     "back": "All tools",
     "privacyNote": "The barcode is drawn in this tab. Nothing is uploaded.",
     "input": "Text or digits",

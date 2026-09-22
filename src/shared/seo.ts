@@ -14,7 +14,7 @@ import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { HREFLANG } from "./sitemap";
-import { appHref, gamesHref, learnHref, type ConvertJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, gamesHref, learnHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -43,6 +43,7 @@ export type SeoInput = {
   tool?: ToolId | null;
   clipId?: string | null;
   convertJob?: ConvertJobId | null;
+  resizeJob?: ResizeJobId | null;
   tutorial?: TutorialId | null;
   learn?: boolean;
   games?: boolean;
@@ -147,6 +148,13 @@ const CONVERT_JOB_DESC: Record<ConvertJobId, string> = {
   "jpg-to-png": "meta.descJobJpgToPng",
   "avif-to-jpg": "meta.descJobAvifToJpg",
   "png-to-webp": "meta.descJobPngToWebp",
+};
+
+const RESIZE_JOB_TITLE: Record<ResizeJobId, string> = {
+  "compress-image": "meta.titleJobCompressImage",
+};
+const RESIZE_JOB_DESC: Record<ResizeJobId, string> = {
+  "compress-image": "meta.descJobCompressImage",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -351,6 +359,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
     return lookup(locale, "meta.titleGames");
   }
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
+  if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
   return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
 }
 
@@ -365,6 +374,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
     return lookup(locale, "meta.descGames");
   }
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
+  if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
 }
 
@@ -389,7 +399,7 @@ export function pageCanonical(
   const seo = normalizeSeo(input, clipId);
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
   if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
-  return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob)}`;
+  return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
 
 function consoleMeta(id: GameConsoleId): string {
@@ -421,6 +431,10 @@ export function convertJobFaqItems(locale: Locale, job: ConvertJobId): FaqItem[]
   return faqFrom(locale, `faq.convertJobs.${job}`);
 }
 
+export function resizeJobFaqItems(locale: Locale, job: ResizeJobId): FaqItem[] {
+  return faqFrom(locale, `faq.resizeJobs.${job}`);
+}
+
 export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
   return faqFrom(locale, `faq.learn.${tutorial}`);
 }
@@ -436,6 +450,7 @@ export function faqJsonLd(
   game?: GameId | null,
   gamesHub?: boolean,
   convertJob?: ConvertJobId | null,
+  resizeJob?: ResizeJobId | null,
 ): Record<string, unknown> | null {
   const items = game
     ? gameFaqItems(locale, game)
@@ -445,9 +460,11 @@ export function faqJsonLd(
         ? learnFaqItems(locale, tutorial)
         : tool === "convert" && convertJob
           ? convertJobFaqItems(locale, convertJob)
-          : tool
-            ? faqItems(locale, tool)
-            : [];
+          : tool === "resize" && resizeJob
+            ? resizeJobFaqItems(locale, resizeJob)
+            : tool
+              ? faqItems(locale, tool)
+              : [];
   if (items.length === 0) return null;
   return {
     "@context": "https://schema.org",
@@ -580,6 +597,7 @@ export function applyHtmlSeo(
     seo.game ?? null,
     Boolean(seo.games && !seo.game),
     seo.convertJob,
+    seo.resizeJob,
   );
   if (ld) {
     tags.push(

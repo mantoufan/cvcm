@@ -4,6 +4,7 @@ import { toolHowToJsonLd } from "../shared/guide";
 import {
   convertJobFaqItems,
   faqItems,
+  resizeJobFaqItems,
   faqJsonLd,
   gameHowToJsonLd,
   gameVideoGameJsonLd,
@@ -13,7 +14,7 @@ import {
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
 import type { GameId } from "../shared/games";
-import type { ConvertJobId, ToolId, TutorialId } from "../shared/path";
+import type { ConvertJobId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
 
 function renderFaq(items: FaqItem[]): HTMLElement {
   if (items.length === 0) return h("section", { class: "faq", hidden: true });
@@ -28,9 +29,19 @@ function renderFaq(items: FaqItem[]): HTMLElement {
   );
 }
 
-export function faqSection(locale: Locale, tool: ToolId, convertJob?: ConvertJobId | null): HTMLElement {
-  syncPageJsonLd(locale, tool, null, null, false, convertJob);
-  return renderFaq(tool === "convert" && convertJob ? convertJobFaqItems(locale, convertJob) : faqItems(locale, tool));
+export function faqSection(
+  locale: Locale,
+  tool: ToolId,
+  convertJob?: ConvertJobId | null,
+  resizeJob?: ResizeJobId | null,
+): HTMLElement {
+  syncPageJsonLd(locale, tool, null, null, false, convertJob, resizeJob);
+  const items = tool === "convert" && convertJob
+    ? convertJobFaqItems(locale, convertJob)
+    : tool === "resize" && resizeJob
+      ? resizeJobFaqItems(locale, resizeJob)
+      : faqItems(locale, tool);
+  return renderFaq(items);
 }
 
 export function learnFaqSection(locale: Locale, tutorial: TutorialId): HTMLElement {
@@ -49,8 +60,9 @@ export function syncPageJsonLd(
   game: GameId | null = null,
   gamesHub = false,
   convertJob: ConvertJobId | null = null,
+  resizeJob: ResizeJobId | null = null,
 ): void {
-  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob);
+  const faq = faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob);
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "howto-jsonld",

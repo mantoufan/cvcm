@@ -87,8 +87,10 @@ import {
   isPublishedTutorial,
   learnHref,
   parseAppPath,
+  toolJob,
   withSearch,
   type ConvertJobId,
+  type ResizeJobId,
   type ToolId,
   type TutorialId,
 } from "../shared/path";
@@ -110,6 +112,7 @@ const app = requireApp();
 let tool: ToolId | null = null;
 let clipId: string | null = null;
 let convertJob: ConvertJobId | null = null;
+let resizeJob: ResizeJobId | null = null;
 let tutorial: TutorialId | null = null;
 let learnHub = false;
 let gamesHub = false;
@@ -132,7 +135,7 @@ function boot(): void {
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     applyTool(parsed.tool, parsed.clipId ?? null);
-    const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, parsed.convertJob);
+    const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, toolJob(parsed));
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
@@ -169,7 +172,7 @@ function boot(): void {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
     const nextClip = parsed.kind === "bare" ? parsed.clipId ?? null : null;
-    const nextJob = parsed.kind === "bare" ? parsed.convertJob : null;
+    const nextJob = parsed.kind === "bare" ? toolJob(parsed) : null;
     setLocale(loc);
     applyTool(nextTool, nextClip);
     history.replaceState(null, "", withSearch(appHref(loc, nextTool, nextClip, nextJob), location.search));
@@ -337,6 +340,7 @@ function render(): void {
     ? parsed.locale
     : locale();
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
+  resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     applyTool(parsed.tool, parsed.clipId ?? null);
@@ -367,7 +371,7 @@ function render(): void {
     ? { learn: true as const, tutorial }
     : gamesHub || gameId
       ? { games: true as const, console: gameConsole, game: gameId }
-      : { tool, clipId, convertJob };
+      : { tool, clipId, convertJob, resizeJob };
   document.title = pageTitle(loc, seo);
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute("content", pageDescription(loc, seo));
@@ -389,7 +393,7 @@ function render(): void {
         ? COVER[tool]
         : null;
   if (ogImage && image) ogImage.setAttribute("content", `https://cv.cm${image.split("?")[0]}`);
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob);
 
   clear(app);
   app.append(shell(loc));
@@ -522,7 +526,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   if (gen !== pageGen) return;
   if (tool && !(tool === "clip" && clipId)) {
     const lessons = toolLessonsSection(loc, tool);
-    main.append(guideSection(tool), ...(lessons ? [lessons] : []), faqSection(loc, tool, convertJob));
+    main.append(guideSection(tool), ...(lessons ? [lessons] : []), faqSection(loc, tool, convertJob, resizeJob));
   }
 }
 

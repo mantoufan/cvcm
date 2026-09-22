@@ -126,6 +126,14 @@ export const CONVERT_JOB_FORMAT: Record<ConvertJobId, "jpeg" | "png" | "webp"> =
   "png-to-webp": "webp",
 };
 
+/** File-size page for the resizer. Same engine, exact query. */
+export const RESIZE_JOBS = ["compress-image"] as const;
+export type ResizeJobId = (typeof RESIZE_JOBS)[number];
+
+export function isResizeJobId(value: string): value is ResizeJobId {
+  return (RESIZE_JOBS as readonly string[]).includes(value);
+}
+
 export const TUTORIALS = [
   "make-qr",
   "make-barcode",
@@ -225,10 +233,10 @@ export type GamesPath = {
 
 export type AppPath =
   | { kind: "static" }
-  | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId }
+  | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "bare-learn"; tutorial: TutorialId | null }
   | ({ kind: "bare-games" } & GamesPath)
-  | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId }
+  | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
   | { kind: "clip"; id: string }
@@ -288,6 +296,9 @@ export function parseAppPath(pathname: string): AppPath {
     if (second === "convert" && isConvertJobId(third)) {
       return { kind: "app", locale, tool: "convert", convertJob: third };
     }
+    if (second === "resize" && isResizeJobId(third)) {
+      return { kind: "app", locale, tool: "resize", resizeJob: third };
+    }
     return { kind: "unknown" };
   }
 
@@ -305,6 +316,9 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === "convert" && second && !third && isConvertJobId(second)) {
     return { kind: "bare", tool: "convert", convertJob: second };
   }
+  if (first === "resize" && second && !third && isResizeJobId(second)) {
+    return { kind: "bare", tool: "resize", resizeJob: second };
+  }
   if (first === "clip" && second && !third && isClipId(second)) {
     return { kind: "bare", tool: "clip", clipId: second };
   }
@@ -315,12 +329,18 @@ export function appHref(
   locale: Locale,
   tool: ToolId | null,
   clipId?: string | null,
-  convertJob?: ConvertJobId | null,
+  job?: ConvertJobId | ResizeJobId | null,
 ): string {
   const base = `/${localePath(locale)}`;
   if (tool === "clip" && clipId) return `${base}/clip/${clipId.toLowerCase()}/`;
-  if (tool === "convert" && convertJob) return `${base}/convert/${convertJob}/`;
+  if (tool === "convert" && job && isConvertJobId(job)) return `${base}/convert/${job}/`;
+  if (tool === "resize" && job && isResizeJobId(job)) return `${base}/resize/${job}/`;
   return tool ? `${base}/${tool}/` : `${base}/`;
+}
+
+export function toolJob(parsed: AppPath): ConvertJobId | ResizeJobId | null {
+  if (parsed.kind === "app" || parsed.kind === "bare") return parsed.convertJob ?? parsed.resizeJob ?? null;
+  return null;
 }
 
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {

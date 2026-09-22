@@ -3,7 +3,7 @@ import { formatBytes, targetSize } from "../../shared/resize";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { appHref, isResizeJobId, parseAppPath, type ResizeJobId } from "../../shared/path";
 import { debounce } from "../session";
 
 type Item = { file: File; url: string; width: number; height: number; bitmap: ImageBitmap };
@@ -29,11 +29,16 @@ const scheduleSize = debounce(() => {
 }, 280);
 
 export async function mountResize(host: HTMLElement): Promise<void> {
+  const job = currentResizeJob();
+  state.quality = job === "compress-image" ? 0.6 : 0.82;
+  state.format = "jpeg";
+  const loc = locale();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("resize.back")),
-      h("h1", null, t("resize.title")),
-      h("p", { class: "lede" }, t("resize.privacyNote")),
+      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("resize.back")),
+      h("h1", null, job ? t(`resize.jobs.${job}.title`) : t("resize.title")),
+      h("p", { class: "lede" }, job ? t(`resize.jobs.${job}.lede`) : t("resize.privacyNote")),
+      jobNav(loc, job),
     ),
     h("div", { class: "tool" },
       filesRail(),
@@ -43,6 +48,29 @@ export async function mountResize(host: HTMLElement): Promise<void> {
   );
   redraw();
   window.addEventListener("paste", onPaste);
+}
+
+function currentResizeJob(): ResizeJobId | null {
+  const parsed = parseAppPath(location.pathname);
+  if ((parsed.kind === "app" || parsed.kind === "bare") && parsed.resizeJob && isResizeJobId(parsed.resizeJob)) {
+    return parsed.resizeJob;
+  }
+  return null;
+}
+
+function jobNav(loc: ReturnType<typeof locale>, current: ResizeJobId | null): HTMLElement {
+  return h("nav", { class: "job-nav", "aria-label": t("resize.jobsLabel") },
+    h("a", {
+      href: appHref(loc, "resize"),
+      "data-nav": "resize",
+      "aria-current": current ? undefined : "page",
+    }, t("resize.title")),
+    h("a", {
+      href: appHref(loc, "resize", null, "compress-image"),
+      "data-nav": "resize",
+      "aria-current": current === "compress-image" ? "page" : undefined,
+    }, t("resize.jobs.compress-image.title")),
+  );
 }
 
 export function unmountResize(): void {
@@ -183,9 +211,9 @@ function controls(): HTMLElement {
             scheduleSize();
           },
         },
-          h("option", { value: "jpeg", selected: true }, "JPG"),
-          h("option", { value: "webp" }, "WebP"),
-          h("option", { value: "png" }, "PNG"),
+          h("option", { value: "jpeg", selected: state.format === "jpeg" }, "JPG"),
+          h("option", { value: "webp", selected: state.format === "webp" }, "WebP"),
+          h("option", { value: "png", selected: state.format === "png" }, "PNG"),
         ),
       ),
       qualityField,

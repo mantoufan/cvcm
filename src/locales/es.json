@@ -16,15 +16,15 @@
     "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
     "descWatermark": "Marca fotos o copias de identidad en el navegador. Tesela “solo para [org]”. Exporta PNG, JPEG o ZIP. Quita el EXIF. Nada se sube.",
     "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube.",
-    "titleQr": "Generador de códigos QR — cv.cm",
+    "titleQr": "Generador de códigos QR gratis — cv.cm",
     "descQr": "Crea un código QR de una URL o texto en el navegador y descarga PNG. Nada se sube.",
     "titlePassword": "Generador de contraseñas — cv.cm",
     "descPassword": "Genera una contraseña aleatoria en tu dispositivo. Elige longitud y símbolos. Nada se sube.",
     "titleWordCount": "Contador de palabras — cv.cm",
     "descWordCount": "Cuenta palabras, caracteres, frases y tiempo de lectura en el navegador. Nada se sube.",
-    "titleResize": "Redimensionar y comprimir imágenes — cv.cm",
+    "titleResize": "Redimensionar imagen — cv.cm",
     "descResize": "Cambia el tamaño a píxeles exactos o al lado largo, comprime JPG o WebP en el navegador. Nada se sube.",
-    "titleCrop": "Recortar imágenes — cv.cm",
+    "titleCrop": "Recortar imagen online — cv.cm",
     "descCrop": "Recorta fotos en el navegador. Libre, 1:1, 4:5, 16:9, 9:16. Nada se sube.",
     "titleColor": "Selector de color — hex, RGB, HSL — cv.cm",
     "descColor": "Elige un color, copia hex RGB o HSL, mira el contraste. Cuentagotas si el navegador lo permite. Nada se sube.",
@@ -68,7 +68,7 @@
     "descLorem": "Genera texto de relleno lorem ipsum en el navegador. Párrafos, frases o palabras. Nada se sube.",
     "titleUnits": "Conversor de unidades — cm a pulgadas, kg a lb, °C a °F — cv.cm",
     "descUnits": "Convierte longitud, peso, temperatura, volumen, área y velocidad en el navegador. cm a pulgadas, kg a lb. Nada se sube.",
-    "titleBarcode": "Generador de códigos de barras — Code 128, Code 39, EAN-13 — cv.cm",
+    "titleBarcode": "Generador de códigos de barras gratis — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "Crea un Code 128, Code 39 o EAN-13 en el navegador y descarga un PNG. Nada se sube.",
     "titleMeme": "Generador de memes — texto en fotos — cv.cm",
     "descMeme": "Haz un meme en el navegador. Textos arriba y abajo, contorno. Descarga PNG. Nada se sube.",
@@ -289,7 +289,9 @@
     "titleAddDuration": "Cómo sumar horas y minutos | cv.cm",
     "descAddDuration": "Sume o reste dos duraciones H:MM:SS. 1:30:00 más 0:45:00 es 2:15:00. Minutos y segundos deben ser 0–59. Si la segunda es más larga, aparece un menos. Nada se sube.",
     "titleCalculatePercent": "Cómo calcular un porcentaje | cv.cm",
-    "descCalculatePercent": "El 25% de 200 es 50. 25 es el 12,5% de 200. 200 más 25% es 250. El cambio de 200 a 25 es -87,5%. Copie la línea que coincide. Nada se sube."
+    "descCalculatePercent": "El 25% de 200 es 50. 25 es el 12,5% de 200. 200 más 25% es 250. El cambio de 200 a 25 es -87,5%. Copie la línea que coincide. Nada se sube.",
+    "titleJobCompressImage": "Comprimir imagen — reducir tamaño — cv.cm",
+    "descJobCompressImage": "Comprime una foto en el navegador. Baja la calidad o limita el lado largo hasta que el archivo quepa. No se sube nada."
   },
   "brand": "cv.cm",
   "nav": {
@@ -363,7 +365,7 @@
       "blurb": "Formateador JSON, CSV ↔ JSON, Base64, Markdown. Nada se sube."
     },
     "qr": {
-      "name": "Generador de códigos QR",
+      "name": "Generador de códigos QR gratis",
       "blurb": "URL o texto a QR. Descarga PNG. Nada se sube."
     },
     "password": {
@@ -375,7 +377,7 @@
       "blurb": "Palabras, caracteres, frases, tiempo de lectura. Nada se sube."
     },
     "resize": {
-      "name": "Redimensionar / comprimir",
+      "name": "Redimensionar imagen",
       "blurb": "Píxeles o lado largo. Calidad JPG / WebP. Nada se sube."
     },
     "crop": {
@@ -419,7 +421,7 @@
       "blurb": "cm a pulgadas, kg a lb, °C a °F. Longitud, masa, volumen, área, velocidad. En el dispositivo."
     },
     "barcode": {
-      "name": "Código de barras",
+      "name": "Generador de códigos de barras gratis",
       "blurb": "Code 128, Code 39, EAN-13. Descarga PNG. Nada se sube."
     },
     "meme": {
@@ -2447,10 +2449,24 @@
         "q5": "¿Puedo convertir un lote a WebP?",
         "a5": "Sí. Descarga un archivo o un ZIP."
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "¿Puedo comprimir una imagen aquí?",
+        "a1": "Sí. Suelta una foto, baja la calidad y descarga un JPG o WebP más pequeño. No se sube nada.",
+        "q2": "¿Cómo reduzco el tamaño?",
+        "a2": "Baja la calidad, o usa 1920, 1280 u 800 si sobran píxeles. Mira el tamaño antes de descargar.",
+        "q3": "¿Se verá peor?",
+        "a3": "Una foto de pantalla suele aguantar algo menos de calidad. Si el texto se emborrona, súbela.",
+        "q4": "¿El PNG adelgaza?",
+        "a4": "PNG no usa el control de calidad. Exporta JPG o WebP si necesitas un archivo más pequeño.",
+        "q5": "¿Cambia el original?",
+        "a5": "No. Descargas un archivo nuevo. El del disco sigue igual."
+      }
     }
   },
   "qr": {
-    "title": "Generador de códigos QR",
+    "title": "Generador de códigos QR gratis",
     "back": "Todas las herramientas",
     "privacyNote": "El QR se dibuja en esta pestaña. Nada se sube.",
     "input": "Texto o URL",
@@ -2502,7 +2518,7 @@
     "clear": "Borrar"
   },
   "resize": {
-    "title": "Redimensionar y comprimir imágenes",
+    "title": "Redimensionar imagen",
     "back": "Todas las herramientas",
     "privacyNote": "El cambio de tamaño y la compresión quedan en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta una imagen aquí",
@@ -2521,7 +2537,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "No se pudo leer esta imagen.",
     "emptyDownload": "Añade una imagen primero.",
-    "working": "Redimensionando…"
+    "working": "Redimensionando…",
+    "jobsLabel": "Tamaño de imagen",
+    "jobs": {
+      "compress-image": {
+        "title": "Comprimir imagen",
+        "lede": "Baja la calidad JPEG, o limita el lado largo a 1920, 1280 u 800. El original se queda en el disco. No se sube nada."
+      }
+    }
   },
   "crop": {
     "title": "Recortar imagen",
@@ -3652,7 +3675,7 @@
     "invalid": "Escribe un número."
   },
   "barcode": {
-    "title": "Generador de códigos de barras",
+    "title": "Generador de códigos de barras gratis",
     "back": "Todas las herramientas",
     "privacyNote": "El código se dibuja en esta pestaña. Nada se sube.",
     "input": "Texto o dígitos",

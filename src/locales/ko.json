@@ -16,13 +16,13 @@
     "descData": "JSON 정리, CSV ↔ JSON, Base64, URL 인코딩, Markdown을 HTML로. 이 탭에서.",
     "descWatermark": "사진이나 신분증 사본에 워터마크. 용도 한정 문구를 타일로 반복. PNG/JPEG/ZIP 일괄 내보내기. EXIF 제거. 업로드 없음.",
     "descCollage": "브라우저에서 콜라주. 그리드와 인스타그램 크기. 업로드 없음.",
-    "titleQr": "QR 코드 생성기 — cv.cm",
+    "titleQr": "무료 QR 코드 생성기 — cv.cm",
     "descQr": "브라우저에서 URL이나 텍스트로 QR 코드를 만들고 PNG로 저장. 업로드 없음.",
     "titlePassword": "비밀번호 생성기 — cv.cm",
     "descPassword": "기기에서 무작위 비밀번호 생성. 길이와 기호 선택. 업로드 없음.",
     "titleWordCount": "단어 수 세기 — cv.cm",
     "descWordCount": "단어, 문자, 문장, 읽기 시간을 브라우저에서 계산. 업로드 없음.",
-    "titleResize": "이미지 크기 조절·압축 — cv.cm",
+    "titleResize": "이미지 크기 조절 — cv.cm",
     "descResize": "정확한 픽셀 또는 긴 변으로 줄이고 JPG / WebP를 압축. 업로드 없음.",
     "titleCrop": "이미지 자르기 — cv.cm",
     "descCrop": "브라우저에서 사진 자르기. 자유, 1:1, 4:5, 16:9, 9:16. 업로드 없음.",
@@ -68,7 +68,7 @@
     "descLorem": "브라우저에서 lorem ipsum 단락·문장·단어를 만듭니다. 업로드 없음.",
     "titleUnits": "단위 변환 — cm·인치, kg·파운드, °C·°F — cv.cm",
     "descUnits": "브라우저에서 길이, 무게, 온도, 부피, 면적, 속도를 바꿉니다. cm에서 인치, kg에서 파운드. 업로드 없음.",
-    "titleBarcode": "바코드 생성기 — Code 128, Code 39, EAN-13 — cv.cm",
+    "titleBarcode": "무료 바코드 생성기 — Code 128, Code 39, EAN-13 — cv.cm",
     "descBarcode": "브라우저에서 Code 128, Code 39, EAN-13 바코드를 만들고 PNG로 저장합니다. 업로드 없음.",
     "titleMeme": "밈 생성기 — 사진에 글 넣기 — cv.cm",
     "descMeme": "브라우저에서 밈을 만듭니다. 위·아래 자막, 외곽선. PNG 저장. 업로드 없음.",
@@ -289,7 +289,9 @@
     "titleAddDuration": "시간과 분 더하는 법 | cv.cm",
     "descAddDuration": "두 H:MM:SS 길이를 더하거나 뺍니다. 1:30:00 더하기 0:45:00은 2:15:00. 분과 초는 0–59. 둘째가 더 길면 빼기. 업로드 없음.",
     "titleCalculatePercent": "백분율 계산하는 법 | cv.cm",
-    "descCalculatePercent": "200의 25%는 50. 25는 200의 12.5%. 200 더하기 25%는 250. 200에서 25로의 변화는 -87.5%. 질문에 맞는 줄을 복사하세요. 업로드 없음."
+    "descCalculatePercent": "200의 25%는 50. 25는 200의 12.5%. 200 더하기 25%는 250. 200에서 25로의 변화는 -87.5%. 질문에 맞는 줄을 복사하세요. 업로드 없음.",
+    "titleJobCompressImage": "이미지 압축 — 용량 줄이기 — cv.cm",
+    "descJobCompressImage": "브라우저에서 이미지를 압축합니다. 품질을 낮추거나 긴 변을 제한해 파일을 줄입니다. 업로드하지 않습니다."
   },
   "brand": "cv.cm",
   "nav": {
@@ -363,7 +365,7 @@
       "blurb": "JSON 포맷터, CSV ↔ JSON, Base64, Markdown. 업로드 없음."
     },
     "qr": {
-      "name": "QR 코드 생성기",
+      "name": "무료 QR 코드 생성기",
       "blurb": "URL이나 텍스트를 QR로. PNG 저장. 업로드 없음."
     },
     "password": {
@@ -375,7 +377,7 @@
       "blurb": "단어, 문자, 문장, 읽기 시간. 업로드 없음."
     },
     "resize": {
-      "name": "크기 조절 / 압축",
+      "name": "이미지 크기 조절",
       "blurb": "픽셀 또는 긴 변. JPG / WebP 품질. 업로드 없음."
     },
     "crop": {
@@ -419,7 +421,7 @@
       "blurb": "cm·인치, kg·파운드, °C·°F. 길이, 무게, 부피, 면적, 속도. 기기 안."
     },
     "barcode": {
-      "name": "바코드 생성",
+      "name": "무료 바코드 생성기",
       "blurb": "Code 128, Code 39, EAN-13. PNG 저장. 업로드 없음."
     },
     "meme": {
@@ -2447,10 +2449,24 @@
         "q5": "여러 장을 WebP로 바꿀 수 있나요?",
         "a5": "예. 한 장 또는 ZIP으로 받습니다."
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "여기서 이미지를 압축할 수 있나요?",
+        "a1": "예. 사진을 놓고 품질을 낮춘 뒤 더 작은 JPG나 WebP를 받습니다. 업로드하지 않습니다.",
+        "q2": "용량을 어떻게 줄이나요?",
+        "a2": "품질을 낮추거나 1920, 1280, 800 프리셋을 씁니다. 받기 전에 용량을 확인합니다.",
+        "q3": "화질이 나빠지나요?",
+        "a3": "화면용 사진은 품질을 조금 낮춰도 괜찮은 경우가 많습니다. 글자가 뭉개지면 품질을 올립니다.",
+        "q4": "PNG도 작아지나요?",
+        "a4": "PNG는 품질 슬라이더를 쓰지 않습니다. 더 작게 하려면 JPG나 WebP로 보냅니다.",
+        "q5": "원본이 바뀌나요?",
+        "a5": "아닙니다. 새 파일을 받습니다. 디스크의 원본은 그대로입니다."
+      }
     }
   },
   "qr": {
-    "title": "QR 코드 생성기",
+    "title": "무료 QR 코드 생성기",
     "back": "모든 도구",
     "privacyNote": "QR은 이 탭에서 그립니다. 업로드 없음.",
     "input": "텍스트 또는 URL",
@@ -2502,7 +2518,7 @@
     "clear": "지우기"
   },
   "resize": {
-    "title": "이미지 크기 조절과 압축",
+    "title": "이미지 크기 조절",
     "back": "모든 도구",
     "privacyNote": "조절과 압축은 이 탭에서만. 업로드 없음.",
     "dropTitle": "이미지를 놓으세요",
@@ -2521,7 +2537,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "이 이미지를 읽을 수 없습니다.",
     "emptyDownload": "먼저 이미지를 넣으세요.",
-    "working": "조절 중…"
+    "working": "조절 중…",
+    "jobsLabel": "이미지 크기",
+    "jobs": {
+      "compress-image": {
+        "title": "이미지 압축",
+        "lede": "JPEG 품질을 낮추거나 긴 변을 1920, 1280, 800으로 제한합니다. 원본은 디스크에 남습니다. 업로드하지 않습니다."
+      }
+    }
   },
   "crop": {
     "title": "이미지 자르기",
@@ -3652,7 +3675,7 @@
     "invalid": "숫자를 입력하세요."
   },
   "barcode": {
-    "title": "바코드 생성기",
+    "title": "무료 바코드 생성기",
     "back": "모든 도구",
     "privacyNote": "바코드는 이 탭에서 그립니다. 업로드 없음.",
     "input": "텍스트 또는 숫자",

@@ -67,6 +67,12 @@ describe("parseAppPath", () => {
       tool: "convert",
       convertJob: "webp-to-png",
     });
+    expect(parseAppPath("/en/resize/compress-image/")).toEqual({
+      kind: "app",
+      locale: "en",
+      tool: "resize",
+      resizeJob: "compress-image",
+    });
     expect(parseAppPath("/en/convert/nope/")).toEqual({ kind: "unknown" });
     expect(appHref("zh-CN", "convert", null, "avif-to-jpg")).toBe("/zh-cn/convert/avif-to-jpg/");
     expect(parseAppPath("/en/convert/")).toEqual({

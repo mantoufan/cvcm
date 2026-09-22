@@ -33,7 +33,12 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "timezone")).toMatch(/Timezone converter/i);
     expect(pageTitle("en", "lorem")).toMatch(/Lorem ipsum/i);
     expect(pageTitle("en", "units")).toMatch(/Unit converter/i);
-    expect(pageTitle("en", "barcode")).toMatch(/Barcode generator/i);
+    expect(pageTitle("en", "qr")).toMatch(/Free QR code generator/);
+    expect(pageTitle("en", "barcode")).toMatch(/Free barcode generator/i);
+    expect(pageTitle("en", "resize")).toMatch(/Resize image/);
+    expect(pageTitle("en", "crop")).toMatch(/Crop image online/);
+    expect(pageTitle("en", { tool: "resize", resizeJob: "compress-image" })).toBe("Compress image — reduce image size — cv.cm");
+    expect(pageCanonical("en", { tool: "resize", resizeJob: "compress-image" })).toBe("https://cv.cm/en/resize/compress-image/");
     expect(pageTitle("en", "meme")).toMatch(/Meme generator/i);
     expect(pageTitle("en", "text-to-speech")).toMatch(/Text to speech/i);
     expect(pageTitle("en", "invoice")).toMatch(/Invoice generator/i);

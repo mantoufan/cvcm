@@ -16,13 +16,13 @@
     "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 編碼、Markdown 轉 HTML。只在目前分頁。",
     "descWatermark": "在瀏覽器為照片或證件加上文字浮水印。斜鋪「僅供XX使用，他用無效」，批量匯出 PNG、JPEG 或 ZIP。匯出去掉 EXIF。檔案不上傳。",
     "descCollage": "在瀏覽器做照片拼圖。宮格版面與 Instagram 尺寸。檔案不上傳。",
-    "titleQr": "QR 碼產生器 — cv.cm",
+    "titleQr": "免費 QR 碼產生器 — cv.cm",
     "descQr": "在瀏覽器把網址或文字產生 QR 碼，下載 PNG。不上傳。",
     "titlePassword": "密碼產生器 — cv.cm",
     "descPassword": "在本機產生隨機密碼。可調長度和符號。不上傳。",
     "titleWordCount": "字數統計 — cv.cm",
     "descWordCount": "統計字數、字元、句子和閱讀時間。瀏覽器完成本地處理。",
-    "titleResize": "圖片縮放與壓縮 — cv.cm",
+    "titleResize": "調整圖片大小 — cv.cm",
     "descResize": "依像素或最長邊縮放照片，壓縮 JPG / WebP。瀏覽器完成本機處理，不上傳。",
     "titleCrop": "線上裁剪圖片 — cv.cm",
     "descCrop": "在瀏覽器裁剪照片。自由、1:1、4:5、16:9、9:16。檔案不上傳。",
@@ -68,7 +68,7 @@
     "descLorem": "在瀏覽器裡產生 lorem ipsum 佔位段落、句子或單字。不上傳。",
     "titleUnits": "單位換算 — 公分英吋、公斤磅、攝氏華氏 — cv.cm",
     "descUnits": "在瀏覽器裡換算長度、重量、溫度、體積、面積和速度。公分到英吋、公斤到磅。不上傳。",
-    "titleBarcode": "條碼產生器 — Code 128、Code 39、EAN-13 — cv.cm",
+    "titleBarcode": "免費條碼產生器 — Code 128、Code 39、EAN-13 — cv.cm",
     "descBarcode": "在瀏覽器裡產生 Code 128、Code 39 或 EAN-13 條碼，下載 PNG。不上傳。",
     "titleMeme": "迷因產生器 — 給照片加上下文字 — cv.cm",
     "descMeme": "在瀏覽器裡做迷因。上下大字、描邊。下載 PNG。不上傳。",
@@ -289,7 +289,9 @@
     "titleAddDuration": "怎麼把小時和分鐘相加 | cv.cm",
     "descAddDuration": "把兩段 H:MM:SS 相加或相減。1:30:00 加 0:45:00 是 2:15:00。分和秒必須是 0–59。第二段更長就出現減號。不上傳。",
     "titleCalculatePercent": "怎麼算百分比 | cv.cm",
-    "descCalculatePercent": "200 的 25% 是 50。25 是 200 的 12.5%。200 加上 25% 是 250。從 200 到 25 的變化是 -87.5%。複製對上問題的那一行。不上傳。"
+    "descCalculatePercent": "200 的 25% 是 50。25 是 200 的 12.5%。200 加上 25% 是 250。從 200 到 25 的變化是 -87.5%。複製對上問題的那一行。不上傳。",
+    "titleJobCompressImage": "壓縮圖片 — 減小圖片體積 — cv.cm",
+    "descJobCompressImage": "在瀏覽器裡壓縮圖片。降低品質，或限制最長邊，直到檔案夠小。檔案不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -363,7 +365,7 @@
       "blurb": "JSON 格式化、CSV ↔ JSON、Base64、Markdown。不上傳。"
     },
     "qr": {
-      "name": "QR 碼產生器",
+      "name": "免費 QR 碼產生器",
       "blurb": "網址或文字產生 QR 碼，下載 PNG。不上傳。"
     },
     "password": {
@@ -375,7 +377,7 @@
       "blurb": "字數、字元、句子、閱讀時間。不上傳。"
     },
     "resize": {
-      "name": "縮放壓縮",
+      "name": "調整圖片大小",
       "blurb": "精確像素或最長邊。JPG / WebP 品質。不上傳。"
     },
     "crop": {
@@ -419,7 +421,7 @@
       "blurb": "公分英吋、公斤磅、攝氏華氏。長度、重量、體積、面積、速度。本機。"
     },
     "barcode": {
-      "name": "條碼產生",
+      "name": "免費條碼產生器",
       "blurb": "Code 128、Code 39、EAN-13。下載 PNG。不上傳。"
     },
     "meme": {
@@ -2447,10 +2449,24 @@
         "q5": "可以一次轉成 WebP 嗎？",
         "a5": "可以。下載單張，或打包成 ZIP。"
       }
+    },
+    "resizeJobs": {
+      "compress-image": {
+        "q1": "可以在這裡壓縮圖片嗎？",
+        "a1": "可以。放下照片，降低品質，下載更小的 JPG 或 WebP。檔案不上傳。",
+        "q2": "怎麼減小圖片體積？",
+        "a2": "降低品質。像素太大時用 1920、1280 或 800。下載前看一眼體積。",
+        "q3": "畫質會變差嗎？",
+        "a3": "螢幕上的照片，低一點品質通常還行。文字發糊就把品質調高。",
+        "q4": "PNG 會變小嗎？",
+        "a4": "PNG 不用品質滑桿。要更小的檔案就匯出 JPG 或 WebP。",
+        "q5": "原圖會被改掉嗎？",
+        "a5": "不會。下載的是新檔案。磁碟上的原圖還在。"
+      }
     }
   },
   "qr": {
-    "title": "QR 碼產生器",
+    "title": "免費 QR 碼產生器",
     "back": "全部工具",
     "privacyNote": "QR 碼在目前分頁繪製，不會上傳。",
     "input": "文字或網址",
@@ -2502,7 +2518,7 @@
     "clear": "清空"
   },
   "resize": {
-    "title": "圖片縮放與壓縮",
+    "title": "調整圖片大小",
     "back": "全部工具",
     "privacyNote": "縮放和壓縮只在目前分頁，不會上傳。",
     "dropTitle": "把圖片拖到這裡",
@@ -2521,7 +2537,14 @@
     "sizeLabel": "{src} → {out}",
     "errorDecode": "瀏覽器無法讀取這張圖片。",
     "emptyDownload": "請先新增圖片。",
-    "working": "正在縮放…"
+    "working": "正在縮放…",
+    "jobsLabel": "圖片大小",
+    "jobs": {
+      "compress-image": {
+        "title": "壓縮圖片",
+        "lede": "降低 JPEG 品質，或把最長邊限在 1920、1280 或 800。原圖留在磁碟上。檔案不上傳。"
+      }
+    }
   },
   "crop": {
     "title": "裁剪圖片",
@@ -3652,7 +3675,7 @@
     "invalid": "請輸入數字。"
   },
   "barcode": {
-    "title": "條碼產生器",
+    "title": "免費條碼產生器",
     "back": "全部工具",
     "privacyNote": "條碼在目前分頁繪製。不上傳。",
     "input": "文字或數字",
