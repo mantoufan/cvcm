@@ -243,6 +243,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["timezone", "timestamp", "days"],
   },
+  "profit-margin": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["margin", "percent", "discount"],
+  },
+  "convert-base": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["radix", "binary", "text-hex"],
+  },
+  "add-duration": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["duration", "timezone", "timestamp"],
+  },
+  "calculate-percent": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["percent", "margin", "discount"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -513,5 +537,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "convert-timezone": [
     { step: 1, src: "/covers/tutorials/convert-timezone-source.svg" },
     { step: 4, src: "/covers/tutorials/convert-timezone-offset.svg" },
+  ],
+  "profit-margin": [
+    { step: 1, src: "/covers/tutorials/profit-margin-split.svg" },
+    { step: 5, src: "/covers/tutorials/profit-margin-zero.svg" },
+  ],
+  "convert-base": [
+    { step: 1, src: "/covers/tutorials/convert-base-ff.svg" },
+    { step: 6, src: "/covers/tutorials/convert-base-prefix.svg" },
+  ],
+  "add-duration": [
+    { step: 1, src: "/covers/tutorials/add-duration-sum.svg" },
+    { step: 5, src: "/covers/tutorials/add-duration-minus.svg" },
+  ],
+  "calculate-percent": [
+    { step: 1, src: "/covers/tutorials/calculate-percent-lines.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-percent-zero.svg" },
   ],
 };

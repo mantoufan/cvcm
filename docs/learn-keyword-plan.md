@@ -115,6 +115,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `simplify-fraction`
 - `hourly-pay`
 - `convert-timezone`
+- `profit-margin`
+- `convert-base`
+- `add-duration`
+- `calculate-percent`
 
 ## Fourth batch (ship)
 
@@ -170,6 +174,17 @@ Workdays, fraction, and hourly shipped as tools on `44e342e`. Time zone was alre
 | How to simplify a fraction | `fraction` | 4/6 becomes 2/3. Sign stays on the numerator. Decimals use a continued fraction capped at denominator 10,000. Results stay improper, not mixed numbers. |
 | How to convert hourly pay to a yearly salary | `hourly` | One rate. Default 40 × 52 = 2,080 hours. 20/hour is 41,600.00 gross. Tax and a second overtime rate stay outside. |
 | How to convert a time zone | `timezone` | Source is the zone that owns the given clock. IANA offset follows the date. Copy is the UTC instant. Do not add the offset twice. |
+
+## Ninth batch (ship)
+
+Margin, radix, and duration shipped as tools on `6d78aec`. Percentage was already live. These lessons separate the numbers people mix up.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to calculate a profit margin | `margin` | Margin is profit / price. Markup is profit / cost. Cost 50 and price 80 is 37.50% and 60.00%. A zero price drops margin; a zero cost drops markup. |
+| How to convert a number between bases | `radix` | Bases 2–36. 255 decimal is FF hex, uppercase. No 0x, 0b, or decimal point. A digit must exist in the source base. |
+| How to add hours and minutes | `duration` | H:MM:SS. 1:30:00 + 0:45:00 = 2:15:00. Minutes and seconds must be 0–59. A longer second length gives a minus. This is a length, not a clock or a time zone. |
+| How to calculate a percentage | `percent` | The same two numbers produce four lines. 25% of 200 is 50. 25 is 12.5% of 200. 200 + 25% is 250. 200 → 25 is −87.5%. |
 
 ## Evidence notes
 

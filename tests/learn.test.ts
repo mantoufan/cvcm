@@ -115,6 +115,12 @@ describe("learn SEO", () => {
     expect(pageTitle("zh-CN", { learn: true, tutorial: "convert-timezone" })).toMatch(/时区/);
     expect(lessonsForTool("workdays")).toEqual(["count-workdays"]);
     expect(lessonsForTool("timezone")).toEqual(["convert-timezone"]);
+    expect(pageTitle("en", { learn: true, tutorial: "profit-margin" })).toMatch(/profit margin/i);
+    expect(pageTitle("en", { learn: true, tutorial: "convert-base" })).toMatch(/between bases/i);
+    expect(pageTitle("en", { learn: true, tutorial: "add-duration" })).toMatch(/hours and minutes/i);
+    expect(pageTitle("zh-CN", { learn: true, tutorial: "calculate-percent" })).toMatch(/百分比/);
+    expect(lessonsForTool("margin")).toEqual(["profit-margin"]);
+    expect(lessonsForTool("radix")).toEqual(["convert-base"]);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
       "https://cv.cm/zh-cn/learn/make-qr/",
     );
@@ -136,7 +142,7 @@ describe("learn sitemap", () => {
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
     expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
-    expect(FEATURED_TUTORIALS).toHaveLength(37);
+    expect(FEATURED_TUTORIALS).toHaveLength(41);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");
