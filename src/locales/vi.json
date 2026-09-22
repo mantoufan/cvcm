@@ -313,7 +313,7 @@
       "blurb": "Ghép ảnh lưới và cỡ Instagram. Không tải lên."
     },
     "convert": {
-      "name": "Định dạng ảnh",
+      "name": "HEIC sang JPG",
       "blurb": "HEIC→JPG, WebP→PNG, JPG↔PNG, SVG, ICO. Có thu nhỏ. Không tải lên."
     },
     "image-pdf": {
@@ -329,7 +329,7 @@
       "blurb": "Định dạng JSON, CSV ↔ JSON, Base64, Markdown. Không tải lên."
     },
     "qr": {
-      "name": "Mã QR",
+      "name": "Tạo mã QR",
       "blurb": "URL hoặc chữ thành QR, tải PNG. Không tải lên."
     },
     "password": {
@@ -2329,6 +2329,7 @@
     "resultLabel": "Kết quả hôm nay",
     "practiceLabel": "Thẻ luyện tập",
     "related": "Dùng với các công cụ này",
+    "guides": "Hướng dẫn",
     "copy": "Sao chép HTML",
     "copied": "Đã sao chép",
     "groups": {
@@ -2542,7 +2543,7 @@
       "note": "Có file .webp trên đĩa thì mở chuyển đổi. Cần nền trong thì chọn PNG, đừng JPG. Không tải lên.",
       "s1t": "Quyết định vì sao cần PNG",
       "s1b": "Một số form và app cũ từ chối WebP. PNG giữ mép sắc và nền trong. JPG nhỏ hơn nhưng lấp nền trong.",
-      "s2t": "Mở định dạng ảnh trên cv.cm",
+      "s2t": "Mở HEIC sang JPG trên cv.cm",
       "s2b": "Xử lý trong tab này. Đóng là mất.",
       "s3t": "Thả file .webp",
       "s3b": "Một hoặc nhiều. Xem trước trống thì trình duyệt không đọc được — đổi trình duyệt.",
@@ -2740,7 +2741,7 @@
       "note": "Có file .png trên đĩa thì mở chuyển đổi. JPG không có alpha — nền trong thành đặc, thường đen. Không tải lên.",
       "s1t": "Quyết định vì sao cần JPG",
       "s1b": "Email và nhiều form thích JPG. Ảnh sẽ nhẹ. Logo, screenshot, sticker nền trong hãy giữ PNG.",
-      "s2t": "Mở định dạng ảnh trên cv.cm",
+      "s2t": "Mở HEIC sang JPG trên cv.cm",
       "s2b": "Xử lý trong tab này. Đóng là mất.",
       "s3t": "Thả file .png",
       "s3b": "Một hoặc nhiều. Xem trước trống thì trình duyệt không đọc được — đổi file hoặc trình duyệt.",
@@ -2762,7 +2763,7 @@
       "note": "Có file .jpg trên đĩa thì mở chuyển đổi. PNG không xóa nền ảnh. Không tải lên.",
       "s1t": "Quyết định vì sao cần PNG",
       "s1b": "Form hoặc editor có thể bắt PNG. Đừng đổi để 'thêm nền trong' — JPG không có alpha.",
-      "s2t": "Mở định dạng ảnh trên cv.cm",
+      "s2t": "Mở HEIC sang JPG trên cv.cm",
       "s2b": "Xử lý trong tab này. Đóng là mất.",
       "s3t": "Thả file .jpg",
       "s3b": "Một hoặc nhiều. Xem trước trống thì đổi trình duyệt.",
@@ -2828,7 +2829,7 @@
       "note": "Có file .png trên đĩa thì mở chuyển đổi. Cần nền trong thì chọn WebP, đừng JPG. Form cũ vẫn có thể từ chối WebP. Không tải lên.",
       "s1t": "Quyết định vì sao cần WebP",
       "s1b": "Site hoặc chat nhận WebP sẽ nhẹ hơn. Email và nhiều form vẫn cần PNG hoặc JPG. Đích từ chối thì đừng đổi.",
-      "s2t": "Mở định dạng ảnh trên cv.cm",
+      "s2t": "Mở HEIC sang JPG trên cv.cm",
       "s2b": "Xử lý trong tab này. Đóng là mất.",
       "s3t": "Thả file .png",
       "s3b": "Một hoặc nhiều. Xem trước trống thì đổi trình duyệt.",

@@ -91,7 +91,8 @@ import {
 import type { GameConsoleId, GameId } from "../shared/games";
 import { GAME_CONSOLES, GAMES } from "../shared/games";
 import { gameCopy } from "../shared/games-i18n";
-import { pageCanonical, pageDescription, pageTitle } from "../shared/seo";
+import { hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
+import { toolLessonsSection } from "./tool-lessons";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
 
@@ -367,6 +368,7 @@ function render(): void {
   if (ogDesc) ogDesc.setAttribute("content", pageDescription(loc, seo));
   const ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.setAttribute("content", pageCanonical(loc, seo));
+  syncHreflang(seo);
   const ogImage = document.querySelector('meta[property="og:image"]');
   const image = tutorial
     ? LEARN_COVER[tutorial]
@@ -505,7 +507,8 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else mountHome(main, loc);
   if (gen !== pageGen) return;
   if (tool && !(tool === "clip" && clipId)) {
-    main.append(guideSection(tool), faqSection(loc, tool));
+    const lessons = toolLessonsSection(loc, tool);
+    main.append(guideSection(tool), ...(lessons ? [lessons] : []), faqSection(loc, tool));
   }
 }
 
@@ -644,6 +647,17 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
       ]),
     ),
   );
+}
+
+function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+  for (const alt of hreflangAlternates(seo)) {
+    const link = document.createElement("link");
+    link.rel = "alternate";
+    link.hreflang = alt.hreflang;
+    link.href = alt.href;
+    document.head.append(link);
+  }
 }
 
 function langSwitch(current: Locale): HTMLElement {

@@ -1287,6 +1287,20 @@ body {
 .learn-practice p { margin: 0; color: var(--ink-soft); }
 .learn-related-list { display: grid; gap: 0.25rem; }
 .learn-related-list .menu-item { text-decoration: none; }
+.tool-lessons { margin-top: 1.25rem; }
+.tool-lesson-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+.tool-lesson-list a {
+  color: #a13f6c;
+  font-weight: 650;
+  text-decoration: none;
+}
+.tool-lesson-list a:hover { text-decoration: underline; }
 .learn-code {
   margin: 0.7rem 0 0;
   padding: 0.9rem 1rem;

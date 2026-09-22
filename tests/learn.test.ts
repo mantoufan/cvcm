@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, tutorialSteps } from "../src/shared/learn";
+import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, lessonsForTool, tutorialSteps } from "../src/shared/learn";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { LOCALES } from "../src/shared/locale";
 import {
@@ -33,6 +33,20 @@ const html = `<!doctype html>
 </html>`;
 
 describe("learn routes", () => {
+  it("links each published lesson back from its primary tool", () => {
+    expect(lessonsForTool("qr")).toEqual(["make-qr"]);
+    expect(lessonsForTool("convert")).toEqual([
+      "heic-to-jpg",
+      "webp-to-png",
+      "png-to-jpg",
+      "jpg-to-png",
+      "avif-to-jpg",
+      "png-to-webp",
+    ]);
+    expect(lessonsForTool("clip")).toEqual([]);
+    expect(lessonsForTool("password")).toEqual(["make-password"]);
+  });
+
   it("parses the hub, new lessons, and old ids", () => {
     expect(parseAppPath("/en/learn/")).toEqual({ kind: "learn", locale: "en", tutorial: null });
     expect(parseAppPath("/zh-CN/learn/make-qr/")).toEqual({

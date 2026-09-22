@@ -92,6 +92,9 @@ describe("seo helpers", () => {
     expect(pageTitle("zh-CN", "watermark")).toMatch(/证件/);
     expect(pageDescription("en", "watermark")).toMatch(/ID copies/i);
     expect(pageDescription("zh-CN", "watermark")).toMatch(/仅供/);
+    expect(pageTitle("en", "clip")).toMatch(/Pastebin/i);
+    expect(pageTitle("en", "merge-pdf")).toMatch(/combine PDF/i);
+    expect(pageTitle("en", "compress-pdf")).toMatch(/PDF compressor/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
     expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
   });
@@ -128,6 +131,11 @@ describe("seo helpers", () => {
     expect(out).toContain('id="howto-jsonld"');
     expect(out).toContain("HowTo");
     expect(out).toContain('lang="en"');
+    expect(out).toContain('hreflang="zh-CN" href="https://cv.cm/zh-cn/convert/"');
+    expect(out).toContain('hreflang="x-default" href="https://cv.cm/en/convert/"');
+    const again = applyHtmlSeo(out, "en", "qr");
+    expect(again.match(/hreflang="en"/g)).toHaveLength(1);
+    expect(again).toContain('hreflang="en" href="https://cv.cm/en/qr/"');
   });
 });
 

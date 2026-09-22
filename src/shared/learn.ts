@@ -1,4 +1,4 @@
-import type { ToolId, TutorialId } from "./path";
+import { FEATURED_TUTORIALS, type ToolId, type TutorialId } from "./path";
 
 export type TutorialMeta = {
   minutes: number;
@@ -15,6 +15,10 @@ export function tutorialSteps(id: TutorialId): number {
   return TUTORIAL_META[id].steps ?? 5;
 }
 
+/** Published lessons whose first related tool is this one, in hub order. */
+export function lessonsForTool(tool: ToolId): TutorialId[] {
+  return FEATURED_TUTORIALS.filter((id) => TUTORIAL_META[id].related[0] === tool);
+}
 
 export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
   "make-qr": {

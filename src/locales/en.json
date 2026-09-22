@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "cv.cm — clipboard, image, and PDF tools",
-    "titleClip": "Online clipboard — share text without an account — cv.cm",
+    "titleClip": "Pastebin — online clipboard, no account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
     "titleWatermark": "Add a watermark to photos — ID copies stay local — cv.cm",
     "titleCollage": "Photo collage maker — cv.cm",
     "titleConvert": "HEIC to JPG, WebP to PNG, JPG to PNG — cv.cm",
     "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
     "titleImagePdf": "JPG to PDF and PNG to PDF — cv.cm",
-    "descImagePdf": "Turn JPG, PNG, WebP, or HEIC photos into one PDF. A4, Letter, or fit-to-photo. Nothing is uploaded.",
+    "descImagePdf": "Image to PDF. Turn JPG, PNG, WebP, or HEIC photos into one PDF. A4, Letter, or fit-to-photo. Nothing is uploaded.",
     "titleAudio": "MP3 to WAV converter — cv.cm",
     "descAudio": "Convert MP3, M4A, OGG, AAC, and FLAC to WAV in the browser. Choose 44.1 or 48 kHz. Nothing is uploaded.",
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
@@ -30,7 +30,7 @@
     "descColor": "Pick a color, copy hex RGB or HSL, check contrast. Eyedropper when the browser allows. Nothing is uploaded.",
     "titlePdfJpg": "PDF to JPG converter — cv.cm",
     "descPdfJpg": "Turn PDF pages into JPG, PNG, or WebP in the browser. Download one page or a ZIP. Nothing is uploaded.",
-    "titleMergePdf": "Merge PDF files — cv.cm",
+    "titleMergePdf": "Merge PDF — combine PDF files — cv.cm",
     "descMergePdf": "Combine several PDFs into one file in the browser. Reorder pages. Nothing is uploaded.",
     "titleLearn": "How to convert HEIC, merge PDFs, make a QR code | cv.cm",
     "descLearn": "Illustrated how-tos you finish in this tab: HEIC to JPG, merge and compress PDF, QR and barcode, crop a photo. Nothing is uploaded.",
@@ -48,8 +48,8 @@
     "descPoolSafety": "First pool visit: lifeguard, never alone, touch supervision for children. This is not a swimming course.",
     "titleOnePageSite": "A one-page personal site, simply | cv.cm",
     "descOnePageSite": "One HTML file: add your name, introduction and contact link, then publish a public URL.",
-    "titleCompressPdf": "Compress PDF — cv.cm",
-    "descCompressPdf": "Shrink a PDF in the browser by re-encoding pages as JPEG. Nothing is uploaded.",
+    "titleCompressPdf": "PDF compressor — compress PDF online — cv.cm",
+    "descCompressPdf": "PDF compressor. Shrink a PDF in the browser by re-encoding pages as JPEG. Nothing is uploaded.",
     "titleSplitPdf": "Split PDF — cv.cm",
     "descSplitPdf": "Split a PDF into one file per page, or extract a page range, in the browser. Nothing is uploaded.",
     "titleNames": "Name and username generator — cv.cm",
@@ -305,6 +305,7 @@
     "resultLabel": "Today's result",
     "practiceLabel": "Key points",
     "related": "Use with these tools",
+    "guides": "How-to guides",
     "copy": "Copy HTML",
     "copied": "Copied",
     "groups": {
@@ -452,7 +453,7 @@
       "note": "Open the images-to-PDF tool when the photos are on disk. HEIC may fail in Firefox — convert to JPG first. Nothing is uploaded.",
       "s1t": "Put the photos in the order you want pages",
       "s1b": "Cover first, receipt last. Rename if it helps. One photo becomes one page.",
-      "s2t": "Open images to PDF on cv.cm",
+      "s2t": "Open JPG to PDF on cv.cm",
       "s2b": "Drop the files. Work stays in this tab.",
       "s3t": "Reorder if the list is wrong",
       "s3b": "The first row is page 1. Drag until the cover is on top.",
@@ -518,7 +519,7 @@
       "note": "Open convert when the .webp is on disk. Pick PNG, not JPG, if you need a clear background. Nothing is uploaded.",
       "s1t": "Decide why you need PNG",
       "s1b": "Some forms and older apps reject WebP. PNG keeps sharp edges and can keep transparency. JPG is smaller but fills a clear background.",
-      "s2t": "Open image formats on cv.cm",
+      "s2t": "Open HEIC to JPG on cv.cm",
       "s2b": "Work stays in this tab. Closing it discards the file.",
       "s3t": "Drop the .webp file",
       "s3b": "One file or a batch. If the preview is blank, the browser cannot decode that WebP — try another browser.",
@@ -716,7 +717,7 @@
       "note": "Open convert when the .png is on disk. JPG has no alpha — a clear background becomes a solid matte, often black. Nothing is uploaded.",
       "s1t": "Decide why you need JPG",
       "s1b": "Email and many forms prefer JPG. Photos shrink. Logos, screenshots, and stickers with a clear background should stay PNG.",
-      "s2t": "Open image formats on cv.cm",
+      "s2t": "Open HEIC to JPG on cv.cm",
       "s2b": "Work stays in this tab. Closing it discards the file.",
       "s3t": "Drop the .png file",
       "s3b": "One file or a batch. If the preview is blank, the browser cannot decode that PNG — try another file or browser.",
@@ -738,7 +739,7 @@
       "note": "Open convert when the .jpg is on disk. PNG does not remove a photo background. Nothing is uploaded.",
       "s1t": "Decide why you need PNG",
       "s1b": "A form or an editor may insist on PNG. Do not convert to 'add transparency' — a JPG has no alpha to keep.",
-      "s2t": "Open image formats on cv.cm",
+      "s2t": "Open HEIC to JPG on cv.cm",
       "s2b": "Work stays in this tab. Closing it discards the file.",
       "s3t": "Drop the .jpg file",
       "s3b": "One file or a batch. If the preview is blank, try another browser.",
@@ -804,7 +805,7 @@
       "note": "Open convert when the .png is on disk. Pick WebP, not JPG, if you need a clear background. Old forms may still reject WebP. Nothing is uploaded.",
       "s1t": "Decide why you need WebP",
       "s1b": "A site or a chat that accepts WebP will load faster. Email and many school forms still want PNG or JPG. Do not convert if the destination rejects WebP.",
-      "s2t": "Open image formats on cv.cm",
+      "s2t": "Open HEIC to JPG on cv.cm",
       "s2b": "Work stays in this tab. Closing it discards the file.",
       "s3t": "Drop the .png file",
       "s3b": "One file or a batch. If the preview is blank, try another browser.",
@@ -1074,11 +1075,11 @@
       "blurb": "Photo collage maker with grids and Instagram sizes. Nothing is uploaded."
     },
     "convert": {
-      "name": "Image formats",
+      "name": "HEIC to JPG",
       "blurb": "HEIC to JPG, WebP to PNG, JPG ↔ PNG, SVG, ICO. Optional resize. No upload."
     },
     "image-pdf": {
-      "name": "Images to PDF",
+      "name": "JPG to PDF",
       "blurb": "JPG to PDF and PNG to PDF. Several photos, one file. Nothing is uploaded."
     },
     "audio": {
@@ -1090,7 +1091,7 @@
       "blurb": "JSON formatter, CSV ↔ JSON, Base64, Markdown. Nothing is uploaded."
     },
     "qr": {
-      "name": "QR code",
+      "name": "QR code generator",
       "blurb": "Turn a URL or text into a QR code. Download PNG. Nothing is uploaded."
     },
     "password": {
@@ -1123,7 +1124,7 @@
     },
     "compress-pdf": {
       "name": "Compress PDF",
-      "blurb": "Re-encode PDF pages as JPEG. Smaller file, on-device."
+      "blurb": "PDF compressor. Re-encode pages as JPEG. Smaller file, on-device."
     },
     "split-pdf": {
       "name": "Split PDF",
@@ -1790,7 +1791,7 @@
     },
     "merge-pdf": {
       "q1": "Can I merge PDF files?",
-      "a1": "Yes. Add two or more PDFs, reorder them, and download one file.",
+      "a1": "Yes. Combine two or more PDFs, reorder them, and download one file.",
       "q2": "Are files uploaded?",
       "a2": "No. Merging uses pdf-lib in this tab.",
       "q3": "Can I change the order?",
@@ -2200,7 +2201,7 @@
     },
     "compress-pdf": {
       "q1": "Can I compress a PDF here?",
-      "a1": "Yes. Each page is redrawn as JPEG and packed into a new PDF in this tab.",
+      "a1": "Yes. This PDF compressor redraws each page as JPEG and packs a new PDF in this tab.",
       "q2": "Is the file uploaded?",
       "a2": "No. pdf.js renders locally. Closing the tab discards it.",
       "q3": "Will the file always get smaller?",
@@ -3066,7 +3067,7 @@
   "mergePdf": {
     "title": "Merge PDF files",
     "back": "All tools",
-    "privacyNote": "Merging stays in this tab. Nothing is uploaded.",
+    "privacyNote": "Combine PDFs in this tab. Nothing is uploaded.",
     "dropTitle": "Drop PDFs here",
     "dropHint": "or click to choose several files",
     "dropTypes": "PDF",
@@ -3087,7 +3088,7 @@
   "compressPdf": {
     "title": "Compress PDF",
     "back": "All tools",
-    "privacyNote": "Pages are re-encoded in this tab. Nothing is uploaded.",
+    "privacyNote": "PDF compressor. Pages are re-encoded in this tab. Nothing is uploaded.",
     "dropTitle": "Drop a PDF here",
     "dropHint": "or click to choose",
     "dropTypes": "PDF",

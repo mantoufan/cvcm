@@ -12,7 +12,8 @@ import { gameCopy, gameFaqItems } from "./games-i18n";
 import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
-import { type Locale } from "./locale";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
+import { HREFLANG } from "./sitemap";
 import { appHref, gamesHref, learnHref, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
@@ -324,6 +325,19 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
 }
 
+export function hreflangAlternates(
+  input: SeoInput | ToolId | null = {},
+  clipId?: string | null,
+): { hreflang: string; href: string }[] {
+  const seo = normalizeSeo(input, clipId);
+  const links = LOCALES.map((locale) => ({
+    hreflang: HREFLANG[locale],
+    href: pageCanonical(locale, seo),
+  }));
+  links.push({ hreflang: "x-default", href: pageCanonical(DEFAULT_LOCALE, seo) });
+  return links;
+}
+
 export function pageCanonical(
   locale: Locale,
   input: SeoInput | ToolId | null = {},
@@ -494,6 +508,7 @@ export function applyHtmlSeo(
       `$1${escapeHtml(canonical)}$2`,
     );
   }
+  out = out.replace(/<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>\s*/gi, "");
   out = out.replace(/<meta property="og:(title|description|url|type|image)"[^>]*>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
@@ -505,6 +520,9 @@ export function applyHtmlSeo(
     `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game ? "article" : "website"}" />`,
   ];
   if (image) tags.push(`<meta property="og:image" content="${escapeHtml(image)}" />`);
+  for (const alt of hreflangAlternates(seo)) {
+    tags.push(`<link rel="alternate" hreflang="${escapeHtml(alt.hreflang)}" href="${escapeHtml(alt.href)}" />`);
+  }
   const ld = faqJsonLd(
     locale,
     seo.tool ?? null,
