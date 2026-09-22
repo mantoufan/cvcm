@@ -660,6 +660,33 @@
       "s2b": "The numbers are rounded to pixels, then reduced by their greatest common divisor.",
       "s3t": "Copy the ratio",
       "s3b": "Copy puts 16:9 (or your ratio) on the clipboard."
+    },
+    "workdays": {
+      "lead": "Count Monday–Friday days between two dates in this tab. Nothing is uploaded.",
+      "s1t": "Open Business days",
+      "s1b": "A Monday and the Friday of that week are already filled. The count sits on the right.",
+      "s2t": "Change the dates",
+      "s2b": "Both dates count when they are weekdays. Saturdays and Sundays are skipped. Holidays are not.",
+      "s3t": "Copy the count",
+      "s3b": "Copy puts the business-day count and weekend days on the clipboard."
+    },
+    "fraction": {
+      "lead": "Simplify a fraction or turn a decimal into a fraction in this tab. Nothing is uploaded.",
+      "s1t": "Open Fraction calculator",
+      "s1b": "4/6 is already simplified to 2/3.",
+      "s2t": "Switch to a decimal",
+      "s2b": "Choose From decimal and try 0.75. It becomes 3/4, up to a denominator of 10,000.",
+      "s3t": "Copy the fraction",
+      "s3b": "Copy puts the simplified fraction on the clipboard."
+    },
+    "hourly": {
+      "lead": "Turn an hourly wage into yearly gross pay, or the reverse, in this tab. Nothing is uploaded.",
+      "s1t": "Open Hourly to yearly",
+      "s1b": "20 per hour, 40 hours a week, and 52 weeks are already filled.",
+      "s2t": "Change the hours or start from yearly pay",
+      "s2b": "Switch the mode to start from a yearly amount. This is gross pay only, with no tax.",
+      "s3t": "Copy the amounts",
+      "s3b": "Copy puts hourly, weekly, and yearly gross pay on the clipboard."
     }
   }
 }

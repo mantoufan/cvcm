@@ -75,6 +75,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "add-days": "/covers/add-days-sweet.jpg?v=1",
   week: "/covers/week-sweet.jpg?v=1",
   aspect: "/covers/aspect-sweet.jpg?v=1",
+  workdays: "/covers/workdays-sweet.jpg?v=1",
+  fraction: "/covers/fraction-sweet.jpg?v=1",
+  hourly: "/covers/hourly-sweet.jpg?v=1",
 };
 
 export const GAME_COVER: Record<GameId, string> = {

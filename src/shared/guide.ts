@@ -94,6 +94,9 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "add-days": 3,
   week: 3,
   aspect: 3,
+  workdays: 3,
+  fraction: 3,
+  hourly: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

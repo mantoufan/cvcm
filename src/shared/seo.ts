@@ -121,6 +121,9 @@ const TITLE: Record<ToolId, string> = {
   "add-days": "meta.titleAddDays",
   week: "meta.titleWeek",
   aspect: "meta.titleAspect",
+  workdays: "meta.titleWorkdays",
+  fraction: "meta.titleFraction",
+  hourly: "meta.titleHourly",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -196,6 +199,9 @@ const DESC: Record<ToolId, string> = {
   "add-days": "meta.descAddDays",
   week: "meta.descWeek",
   aspect: "meta.descAspect",
+  workdays: "meta.descWorkdays",
+  fraction: "meta.descFraction",
+  hourly: "meta.descHourly",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

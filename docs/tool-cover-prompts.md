@@ -91,3 +91,15 @@ Same character and room. A cream week strip of seven heart stamps. No letters. S
 ## Aspect ratio
 
 Same character and room. A wide cream picture frame with a heart instead of a photo. No numbers. Save `public/covers/aspect-sweet.jpg`, `sips -z 720 1280`.
+
+## Business days
+
+Same character and room. A cream calendar card with five solid pink heart stamps in a row, and two paler hearts set aside with a tiny pink ribbon. No numerals. Save `public/covers/workdays-sweet.jpg`, `sips -z 720 1280`.
+
+## Fraction calculator
+
+Same character and room. A round cream cake on a pink plate, one slice pulled out with a heart on it. No numerals. Save `public/covers/fraction-sweet.jpg`, `sips -z 720 1280`.
+
+## Hourly to yearly
+
+Same character and room. A round pink pocket watch with a blank face of heart ticks, and a small cream coin purse with a heart clasp. No numerals. Save `public/covers/hourly-sweet.jpg`, `sips -z 720 1280`.

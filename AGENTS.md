@@ -69,6 +69,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/add-days/` — add / subtract days from a date
 - `src/client/week/` — ISO week number
 - `src/client/aspect/` — aspect ratio from width and height
+- `src/client/workdays/` — Monday–Friday count between two dates (weekends only, not holidays)
+- `src/client/fraction/` — simplify a fraction or convert a decimal
+- `src/client/hourly/` — hourly wage ↔ yearly gross pay (no tax)
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

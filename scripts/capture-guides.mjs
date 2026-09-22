@@ -91,6 +91,9 @@ const STEPS = {
   "add-days": 3,
   week: 3,
   aspect: 3,
+  workdays: 3,
+  fraction: 3,
+  hourly: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1239,6 +1242,53 @@ async function runTool(send, id, fx) {
       if (nums[0]) { nums[0].value = "1920"; nums[0].dispatchEvent(new Event("input", { bubbles: true })); }
       if (nums[1]) { nums[1].value = "1080"; nums[1].dispatchEvent(new Event("input", { bubbles: true })); }
       return nums.length;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "workdays") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const from = document.querySelector("[data-field=from]");
+      const to = document.querySelector("[data-field=to]");
+      if (from) { from.value = "2026-01-05"; from.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (to) { to.value = "2026-01-11"; to.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "fraction") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const mode = document.querySelector("[data-field=mode]");
+      const dec = document.querySelector("[data-field=decimal]");
+      if (mode) { mode.value = "decimal"; mode.dispatchEvent(new Event("change", { bubbles: true })); }
+      if (dec) { dec.value = "0.75"; dec.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "hourly") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const amount = document.querySelector("[data-field=amount]");
+      const hours = document.querySelector("[data-field=hours]");
+      const weeks = document.querySelector("[data-field=weeks]");
+      if (amount) { amount.value = "25"; amount.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (hours) { hours.value = "40"; hours.dispatchEvent(new Event("input", { bubbles: true })); }
+      if (weeks) { weeks.value = "52"; weeks.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
     })()`);
     await sleep(200);
     await snap(2);

@@ -54,6 +54,9 @@ import { numberToWords } from "../src/shared/words";
 import { addDays } from "../src/shared/add-days";
 import { isoWeek, isoWeekLabel } from "../src/shared/week";
 import { aspectOf } from "../src/shared/aspect";
+import { workdaysBetween } from "../src/shared/workdays";
+import { decimalToFraction, simplifyFraction } from "../src/shared/fraction";
+import { payFromAnnual, payFromHourly } from "../src/shared/hourly";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -654,6 +657,48 @@ describe("aspect", () => {
   });
 });
 
+describe("workdays", () => {
+  it("counts Monday through Friday, inclusive, and skips weekends", () => {
+    expect(workdaysBetween("2026-01-05", "2026-01-09")).toEqual({ business: 5, weekends: 0 });
+    expect(workdaysBetween("2026-01-05", "2026-01-11")).toEqual({ business: 5, weekends: 2 });
+    expect(workdaysBetween("2026-01-03", "2026-01-04")).toEqual({ business: 0, weekends: 2 });
+    expect(workdaysBetween("2026-01-09", "2026-01-12")).toEqual({ business: 2, weekends: 2 });
+    expect(workdaysBetween("2026-01-09", "2026-01-05")).toEqual({ business: -5, weekends: 0 });
+    expect(workdaysBetween("2026-01-05", "2026-01-05")).toEqual({ business: 1, weekends: 0 });
+    expect(workdaysBetween("2026-01-03", "2026-01-03")).toEqual({ business: 0, weekends: 1 });
+    expect(workdaysBetween("2024-02-28", "2024-03-01")).toEqual({ business: 3, weekends: 0 });
+    expect(workdaysBetween("2026-02-30", "2026-03-01")).toBeNull();
+  });
+});
+
+describe("fraction", () => {
+  it("simplifies integers and converts decimals", () => {
+    expect(simplifyFraction(4, 6)).toMatchObject({ n: 2, d: 3, text: "2/3" });
+    expect(simplifyFraction(3, 1)?.text).toBe("3");
+    expect(simplifyFraction(-2, 4)).toMatchObject({ n: -1, d: 2, text: "-1/2" });
+    expect(simplifyFraction(1, -2)?.text).toBe("-1/2");
+    expect(simplifyFraction(1, 0)).toBeNull();
+    expect(simplifyFraction(1.5, 2)).toBeNull();
+    expect(decimalToFraction(0.75)?.text).toBe("3/4");
+    expect(decimalToFraction(0.1)?.text).toBe("1/10");
+    expect(decimalToFraction(-1.5)?.text).toBe("-3/2");
+    expect(decimalToFraction(Math.PI)?.text).toBe("355/113");
+    expect(decimalToFraction(Number.NaN)).toBeNull();
+  });
+});
+
+describe("hourly", () => {
+  it("converts gross hourly and yearly pay", () => {
+    expect(payFromHourly(20, 40, 52)).toMatchObject({ hourly: 20, weekly: 800, annual: 41600 });
+    expect(payFromAnnual(41600, 40, 52)?.hourly).toBeCloseTo(20, 10);
+    expect(payFromHourly(20, 0, 52)).toBeNull();
+    expect(payFromHourly(20, 169, 52)).toBeNull();
+    expect(payFromHourly(20, 40, 53)).toBeNull();
+    expect(payFromHourly(-1, 40, 52)).toBeNull();
+    expect(payFromHourly(15, 37.5, 52)?.annual).toBeCloseTo(15 * 37.5 * 52, 8);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -725,6 +770,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/add-days/")).toEqual({ kind: "app", locale: "en", tool: "add-days" });
     expect(parseAppPath("/en/week/")).toEqual({ kind: "app", locale: "en", tool: "week" });
     expect(parseAppPath("/en/aspect/")).toEqual({ kind: "app", locale: "en", tool: "aspect" });
+    expect(parseAppPath("/en/workdays/")).toEqual({ kind: "app", locale: "en", tool: "workdays" });
+    expect(parseAppPath("/en/fraction/")).toEqual({ kind: "app", locale: "en", tool: "fraction" });
+    expect(parseAppPath("/en/hourly/")).toEqual({ kind: "app", locale: "en", tool: "hourly" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -771,6 +819,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "add-days")).toBe("/zh-cn/add-days/");
     expect(appHref("zh-CN", "week")).toBe("/zh-cn/week/");
     expect(appHref("zh-CN", "aspect")).toBe("/zh-cn/aspect/");
+    expect(appHref("zh-CN", "workdays")).toBe("/zh-cn/workdays/");
+    expect(appHref("zh-CN", "fraction")).toBe("/zh-cn/fraction/");
+    expect(appHref("zh-CN", "hourly")).toBe("/zh-cn/hourly/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

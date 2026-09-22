@@ -660,6 +660,33 @@
       "s2b": "The numbers are rounded to pixels, then reduced by their greatest common divisor.",
       "s3t": "Copy the ratio",
       "s3b": "Copy puts 16:9 (or your ratio) on the clipboard."
+    },
+    "workdays": {
+      "lead": "Cuenta los lunes a viernes entre dos fechas en esta pestaña. Nada se sube.",
+      "s1t": "Abre Días laborables",
+      "s1b": "Un lunes y el viernes de esa semana ya están rellenos. El recuento está a la derecha.",
+      "s2t": "Cambia las fechas",
+      "s2b": "Ambos extremos cuentan si son laborables. Se omiten sábados y domingos. Los festivos no.",
+      "s3t": "Copia el recuento",
+      "s3b": "Copiar pone los días laborables y los de fin de semana en el portapapeles."
+    },
+    "fraction": {
+      "lead": "Simplifica una fracción o convierte un decimal en esta pestaña. Nada se sube.",
+      "s1t": "Abre Fracciones",
+      "s1b": "4/6 ya está simplificado a 2/3.",
+      "s2t": "Pasa a un decimal",
+      "s2b": "Elige Desde decimal y prueba 0,75. Sale 3/4, con denominador de hasta 10.000.",
+      "s3t": "Copia la fracción",
+      "s3b": "Copiar pone la fracción simplificada en el portapapeles."
+    },
+    "hourly": {
+      "lead": "Pasa un sueldo por hora a anual bruto, o al revés, en esta pestaña. Nada se sube.",
+      "s1t": "Abre De hora a anual",
+      "s1b": "20 por hora, 40 horas por semana y 52 semanas ya están rellenos.",
+      "s2t": "Cambia las horas o empieza desde el anual",
+      "s2b": "Cambia el modo para empezar desde el importe anual. Es sueldo bruto, sin impuestos.",
+      "s3t": "Copia los importes",
+      "s3b": "Copiar pone el sueldo por hora, semanal y anual en el portapapeles."
     }
   }
 }
