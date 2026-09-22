@@ -79,9 +79,9 @@ export const TOOL_COVER: Record<ToolId, string> = {
   workdays: "/covers/workdays-sweet.jpg?v=1",
   fraction: "/covers/fraction-sweet.jpg?v=1",
   hourly: "/covers/hourly-sweet.jpg?v=1",
-  margin: "/covers/margin-sweet.jpg?v=1",
-  radix: "/covers/radix-sweet.jpg?v=1",
-  duration: "/covers/duration-sweet.jpg?v=1",
+  margin: "/covers/margin-sweet.jpg?v=2",
+  radix: "/covers/radix-sweet.jpg?v=2",
+  duration: "/covers/duration-sweet.jpg?v=2",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {
@@ -257,9 +257,9 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "simplify-fraction": "/covers/fraction-sweet.jpg?v=1",
   "hourly-pay": "/covers/hourly-sweet.jpg?v=1",
   "convert-timezone": "/covers/timezone-sweet.jpg?v=2",
-  "profit-margin": "/covers/margin-sweet.jpg?v=1",
-  "convert-base": "/covers/radix-sweet.jpg?v=1",
-  "add-duration": "/covers/duration-sweet.jpg?v=1",
+  "profit-margin": "/covers/margin-sweet.jpg?v=2",
+  "convert-base": "/covers/radix-sweet.jpg?v=2",
+  "add-duration": "/covers/duration-sweet.jpg?v=2",
   "calculate-percent": "/covers/percent-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
