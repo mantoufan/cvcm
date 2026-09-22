@@ -20,6 +20,18 @@ import { gameCheatLabels, gameCopy, gameFaqItems } from "../../shared/games-i18n
 import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
 import { gamesHref } from "../../shared/path";
 
+const GAME_SCROLL_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]);
+
+if (typeof window !== "undefined") {
+  window.addEventListener("keydown", (event) => {
+    if (!GAME_SCROLL_KEYS.has(event.key)) return;
+    const active = document.activeElement;
+    if (active instanceof HTMLIFrameElement && active.classList.contains("game-frame")) {
+      event.preventDefault();
+    }
+  });
+}
+
 function currentGenre(): GameGenreId | null {
   const raw = new URLSearchParams(location.search).get("genre") || "";
   return isGameGenreId(raw) ? raw : null;

@@ -49,4 +49,17 @@
   if (window.parent !== window) {
     window.parent.postMessage({ type: "emu-ready" }, location.origin);
   }
+
+  // Arrow keys and Space scroll the parent page once the iframe cannot scroll further.
+  window.addEventListener("keydown", function (event) {
+    if (
+      event.key === "ArrowUp" ||
+      event.key === "ArrowDown" ||
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowRight" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+    }
+  }, true);
 })();

@@ -156,7 +156,9 @@ describe("games worker", () => {
 
   it("boots the emulator from an external script so CSP can block inline JS", () => {
     expect(playerHtml).not.toMatch(/<script>/);
-    expect(playerHtml).toContain('src="/emu/player.js?v=2"');
+    expect(playerHtml).toContain('src="/emu/player.js?v=3"');
+    expect(playerJs).toContain("event.preventDefault()");
+    expect(playerJs).toContain("ArrowLeft");
     expect(playerJs).toContain('EJS_pathtodata = "/emu/assets/"');
   });
 
