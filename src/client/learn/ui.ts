@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
-import { appHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialId } from "../../shared/path";
+import { appHref, isConvertJobId, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
@@ -65,7 +65,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
         )
         : null,
       h("p", { class: "learn-intro" }, t(`learn.${id}.note`)),
-      tool ? toolCta(loc, tool) : null,
+      tool ? toolCta(loc, tool, id) : null,
       h("details", { class: "learn-contents" },
         h("summary", null, t("learn.toc")),
         toc(id, nums),
@@ -76,7 +76,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
             h("h2", null, t(`learn.${id}.s${n}t`)),
             h("p", null, t(`learn.${id}.s${n}b`)),
             stepMedia(id, n, figSrc),
-            n === openAt && tool ? toolCta(loc, tool) : null,
+            n === openAt && tool ? toolCta(loc, tool, id) : null,
             n === 1 && id === "one-page-site" ? siteSnippet() : null,
           ),
         ),
@@ -127,12 +127,14 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
   );
 }
 
-function toolCta(loc: ReturnType<typeof locale>, tool: ToolId): HTMLElement {
+function toolCta(loc: ReturnType<typeof locale>, tool: ToolId, id: TutorialId): HTMLElement {
+  const job = isConvertJobId(id) ? id : null;
+  const name = job ? t(`convert.jobs.${job}.title`) : t(`tools.${tool}.name`);
   return h("a", {
     class: "btn learn-tool-cta",
-    href: appHref(loc, tool),
+    href: job ? appHref(loc, "convert", null, job) : appHref(loc, tool),
     "data-nav": tool,
-  }, t("learn.openTool", { name: t(`tools.${tool}.name`) }));
+  }, t("learn.openTool", { name }));
 }
 
 function groupOf(id: TutorialId): string {

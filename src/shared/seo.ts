@@ -14,7 +14,7 @@ import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { HREFLANG } from "./sitemap";
-import { appHref, gamesHref, learnHref, type ToolId, type TutorialId } from "./path";
+import { appHref, gamesHref, learnHref, type ConvertJobId, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -42,6 +42,7 @@ function lookup(locale: Locale, path: string): string {
 export type SeoInput = {
   tool?: ToolId | null;
   clipId?: string | null;
+  convertJob?: ConvertJobId | null;
   tutorial?: TutorialId | null;
   learn?: boolean;
   games?: boolean;
@@ -125,6 +126,24 @@ const TITLE: Record<ToolId, string> = {
   workdays: "meta.titleWorkdays",
   fraction: "meta.titleFraction",
   hourly: "meta.titleHourly",
+};
+
+const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
+  "heic-to-jpg": "meta.titleJobHeicToJpg",
+  "webp-to-png": "meta.titleJobWebpToPng",
+  "png-to-jpg": "meta.titleJobPngToJpg",
+  "jpg-to-png": "meta.titleJobJpgToPng",
+  "avif-to-jpg": "meta.titleJobAvifToJpg",
+  "png-to-webp": "meta.titleJobPngToWebp",
+};
+
+const CONVERT_JOB_DESC: Record<ConvertJobId, string> = {
+  "heic-to-jpg": "meta.descJobHeicToJpg",
+  "webp-to-png": "meta.descJobWebpToPng",
+  "png-to-jpg": "meta.descJobPngToJpg",
+  "jpg-to-png": "meta.descJobJpgToPng",
+  "avif-to-jpg": "meta.descJobAvifToJpg",
+  "png-to-webp": "meta.descJobPngToWebp",
 };
 
 const DESC: Record<ToolId, string> = {
@@ -317,6 +336,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
     if (seo.console) return lookup(locale, `meta.titleGames${consoleMeta(seo.console)}`);
     return lookup(locale, "meta.titleGames");
   }
+  if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
 }
 
@@ -330,6 +350,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
     if (seo.console) return lookup(locale, `meta.descGames${consoleMeta(seo.console)}`);
     return lookup(locale, "meta.descGames");
   }
+  if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
 }
 
@@ -354,7 +375,7 @@ export function pageCanonical(
   const seo = normalizeSeo(input, clipId);
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
   if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
-  return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId)}`;
+  return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob)}`;
 }
 
 function consoleMeta(id: GameConsoleId): string {
@@ -382,6 +403,10 @@ export function faqItems(locale: Locale, tool: ToolId): FaqItem[] {
   return faqFrom(locale, `faq.${tool}`);
 }
 
+export function convertJobFaqItems(locale: Locale, job: ConvertJobId): FaqItem[] {
+  return faqFrom(locale, `faq.convertJobs.${job}`);
+}
+
 export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
   return faqFrom(locale, `faq.learn.${tutorial}`);
 }
@@ -396,6 +421,7 @@ export function faqJsonLd(
   tutorial?: TutorialId | null,
   game?: GameId | null,
   gamesHub?: boolean,
+  convertJob?: ConvertJobId | null,
 ): Record<string, unknown> | null {
   const items = game
     ? gameFaqItems(locale, game)
@@ -403,9 +429,11 @@ export function faqJsonLd(
       ? gamesHubFaqItems(locale)
       : tutorial
         ? learnFaqItems(locale, tutorial)
-        : tool
-          ? faqItems(locale, tool)
-          : [];
+        : tool === "convert" && convertJob
+          ? convertJobFaqItems(locale, convertJob)
+          : tool
+            ? faqItems(locale, tool)
+            : [];
   if (items.length === 0) return null;
   return {
     "@context": "https://schema.org",
@@ -537,6 +565,7 @@ export function applyHtmlSeo(
     seo.learn ? seo.tutorial : null,
     seo.game ?? null,
     Boolean(seo.games && !seo.game),
+    seo.convertJob,
   );
   if (ld) {
     tags.push(

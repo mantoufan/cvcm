@@ -99,6 +99,30 @@ export const TOOLS = [
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
+/** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
+export const CONVERT_JOBS = [
+  "heic-to-jpg",
+  "webp-to-png",
+  "png-to-jpg",
+  "jpg-to-png",
+  "avif-to-jpg",
+  "png-to-webp",
+] as const;
+export type ConvertJobId = (typeof CONVERT_JOBS)[number];
+
+export function isConvertJobId(value: string): value is ConvertJobId {
+  return (CONVERT_JOBS as readonly string[]).includes(value);
+}
+
+export const CONVERT_JOB_FORMAT: Record<ConvertJobId, "jpeg" | "png" | "webp"> = {
+  "heic-to-jpg": "jpeg",
+  "webp-to-png": "png",
+  "png-to-jpg": "jpeg",
+  "jpg-to-png": "png",
+  "avif-to-jpg": "jpeg",
+  "png-to-webp": "webp",
+};
+
 export const TUTORIALS = [
   "make-qr",
   "make-barcode",
@@ -194,10 +218,10 @@ export type GamesPath = {
 
 export type AppPath =
   | { kind: "static" }
-  | { kind: "bare"; tool: ToolId | null; clipId?: string }
+  | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId }
   | { kind: "bare-learn"; tutorial: TutorialId | null }
   | ({ kind: "bare-games" } & GamesPath)
-  | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string }
+  | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
   | { kind: "clip"; id: string }
@@ -254,6 +278,9 @@ export function parseAppPath(pathname: string): AppPath {
     if (second === "clip" && isClipId(third)) {
       return { kind: "app", locale, tool: "clip", clipId: third };
     }
+    if (second === "convert" && isConvertJobId(third)) {
+      return { kind: "app", locale, tool: "convert", convertJob: third };
+    }
     return { kind: "unknown" };
   }
 
@@ -268,15 +295,24 @@ export function parseAppPath(pathname: string): AppPath {
     return { kind: "bare-games", ...games };
   }
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
+  if (first === "convert" && second && !third && isConvertJobId(second)) {
+    return { kind: "bare", tool: "convert", convertJob: second };
+  }
   if (first === "clip" && second && !third && isClipId(second)) {
     return { kind: "bare", tool: "clip", clipId: second };
   }
   return { kind: "unknown" };
 }
 
-export function appHref(locale: Locale, tool: ToolId | null, clipId?: string | null): string {
+export function appHref(
+  locale: Locale,
+  tool: ToolId | null,
+  clipId?: string | null,
+  convertJob?: ConvertJobId | null,
+): string {
   const base = `/${localePath(locale)}`;
   if (tool === "clip" && clipId) return `${base}/clip/${clipId.toLowerCase()}/`;
+  if (tool === "convert" && convertJob) return `${base}/convert/${convertJob}/`;
   return tool ? `${base}/${tool}/` : `${base}/`;
 }
 

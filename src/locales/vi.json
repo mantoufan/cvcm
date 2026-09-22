@@ -6,7 +6,7 @@
     "titleWatermark": "Thêm watermark vào ảnh — giấy tờ ở tab này — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
     "description": "Công cụ trình duyệt trên máy. Ảnh và PDF ở lại tab này.",
-    "titleConvert": "HEIC sang JPG, WebP sang PNG, JPG sang PNG — cv.cm",
+    "titleConvert": "Chuyển định dạng ảnh — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Đổi HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO trong trình duyệt. Có thể thu nhỏ. Không tải lên.",
     "titleImagePdf": "JPG sang PDF, PNG sang PDF — cv.cm",
     "descImagePdf": "Gộp JPG, PNG, WebP hoặc HEIC thành một PDF. A4, Letter hoặc theo ảnh. Không tải lên.",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "Cách đổi lương giờ sang lương năm | cv.cm",
     "descHourlyPay": "Nhân một lương giờ với giờ mỗi tuần và số tuần mỗi năm. 40 nhân 52 là 2.080 giờ. Kết quả là trước thuế, không phải tiền mang về. Không tải lên.",
     "titleConvertTimezone": "Cách đổi múi giờ | cv.cm",
-    "descConvertTimezone": "Đổi giờ tường giữa hai múi IANA. Giờ mùa hè theo ngày. Bản copy là khoảnh khắc UTC. Đừng cộng độ lệch hai lần. Không tải lên."
+    "descConvertTimezone": "Đổi giờ tường giữa hai múi IANA. Giờ mùa hè theo ngày. Bản copy là khoảnh khắc UTC. Đừng cộng độ lệch hai lần. Không tải lên.",
+    "titleJobHeicToJpg": "HEIC sang JPG — cv.cm",
+    "descJobHeicToJpg": "Đổi ảnh HEIC của iPhone sang JPG trong trình duyệt. Safari và Chrome đọc được. Không tải lên.",
+    "titleJobWebpToPng": "WebP sang PNG — cv.cm",
+    "descJobWebpToPng": "Đổi WebP sang PNG trong trình duyệt. Có thể giữ trong suốt. Không tải lên.",
+    "titleJobPngToJpg": "PNG sang JPG — cv.cm",
+    "descJobPngToJpg": "Đổi PNG sang JPG trong trình duyệt. Ảnh thường nhỏ hơn. PNG trong suốt sẽ thành nền đặc. Không tải lên.",
+    "titleJobJpgToPng": "JPG sang PNG — cv.cm",
+    "descJobJpgToPng": "Đổi JPG sang PNG trong trình duyệt. PNG không tạo thêm trong suốt. File thường lớn hơn. Không tải lên.",
+    "titleJobAvifToJpg": "AVIF sang JPG — cv.cm",
+    "descJobAvifToJpg": "Đổi AVIF sang JPG trong trình duyệt để chương trình và chat cũ mở được. Không tải lên.",
+    "titleJobPngToWebp": "PNG sang WebP — cv.cm",
+    "descJobPngToWebp": "Đổi PNG sang WebP trong trình duyệt. WebP thường nhỏ hơn và giữ được trong suốt. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "Cạnh dài",
     "maxOriginal": "Kích thước gốc",
-    "sizeLabel": "Đầu ra ≈ {size}"
+    "sizeLabel": "Đầu ra ≈ {size}",
+    "jobsLabel": "Chuyển đổi",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC sang JPG",
+        "lede": "Ảnh iPhone thường là HEIC. Xuất JPG tại đây, rồi mở trên máy sẽ gửi đi. Firefox trên Windows có thể để khung xem trống."
+      },
+      "webp-to-png": {
+        "title": "WebP sang PNG",
+        "lede": "Chrome thường lưu WebP. Khi app khác từ chối, xuất PNG. PNG giữ được viền trong suốt. JPG thì không."
+      },
+      "png-to-jpg": {
+        "title": "PNG sang JPG",
+        "lede": "JPG nhỏ hơn PNG ảnh. PNG trong suốt không có bản JPG tương ứng: điểm trong suốt thành nền đặc, thường là đen."
+      },
+      "jpg-to-png": {
+        "title": "JPG sang PNG",
+        "lede": "PNG không bịa ra nền trong suốt. Hình giữ nguyên và file thường lớn hơn, vì PNG không dùng nén JPEG."
+      },
+      "avif-to-jpg": {
+        "title": "AVIF sang JPG",
+        "lede": "Trình duyệt mới lưu AVIF. Nếu người nhận thấy file trống, xuất JPG rồi gửi. Khung xem trống ở đây nghĩa là trình duyệt này không đọc được AVIF."
+      },
+      "png-to-webp": {
+        "title": "PNG sang WebP",
+        "lede": "WebP thường nhỏ hơn PNG và giữ được viền trong suốt. Biểu mẫu cũ vẫn có thể đòi PNG. Mở file tải về bằng app sẽ nhận ảnh."
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG sang PDF",
@@ -2224,6 +2263,80 @@
       "a4": "40 giờ một tuần và 52 tuần một năm, tức 2.080 giờ. Đổi một trong hai nếu năm làm việc ngắn hơn.",
       "q5": "Sao chép kết quả được không?",
       "a5": "Được. Sao chép đưa lương giờ, lương tuần và lương năm vào bộ nhớ tạm."
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "Đổi HEIC sang JPG ở đây được không?",
+        "a1": "Được, trên Safari và Chrome. Thả ảnh và tải JPG. Không tải lên.",
+        "q2": "Vì sao khung xem trống?",
+        "a2": "Trình duyệt này không đọc được HEIC. Dùng Safari hoặc Chrome. Firefox trên Windows thường thất bại.",
+        "q3": "Đổi xong ảnh có nét hơn không?",
+        "a3": "Không. Chỉ đổi định dạng để nhiều chương trình mở được. Còn sửa trên iPhone thì giữ HEIC.",
+        "q4": "Đổi nhiều file HEIC được không?",
+        "a4": "Được. Thả một loạt và tải ZIP các file JPG.",
+        "q5": "JPG giữ được trong suốt không?",
+        "a5": "Không. Vùng trong suốt sẽ thành nền đặc."
+      },
+      "webp-to-png": {
+        "q1": "Đổi WebP sang PNG được không?",
+        "a1": "Được. Thả WebP và tải PNG. Không tải lên.",
+        "q2": "Trong suốt còn không?",
+        "a2": "Còn nếu xuất PNG. JPG tô các điểm trong suốt, thường thành đen.",
+        "q3": "Vì sao phải đổi WebP?",
+        "a3": "Một số biểu mẫu, trình sửa và app cũ mở PNG nhưng từ chối WebP.",
+        "q4": "Đổi nhiều file WebP được không?",
+        "a4": "Được. Tải một file hoặc một ZIP.",
+        "q5": "PNG có nhỏ hơn không?",
+        "a5": "Thường là không. PNG để tương thích. Cần file nhỏ thì dùng WebP hoặc JPG."
+      },
+      "png-to-jpg": {
+        "q1": "Đổi PNG sang JPG được không?",
+        "a1": "Được. Thả PNG và tải JPG. Không tải lên.",
+        "q2": "Vì sao nền thành đen?",
+        "a2": "JPG không lưu trong suốt. Viền phải trong suốt thì giữ PNG.",
+        "q3": "File có chắc nhỏ hơn không?",
+        "a3": "PNG ảnh thường nhỏ lại. Hình phẳng rất nhỏ thì chưa chắc.",
+        "q4": "Đổi nhiều PNG được không?",
+        "a4": "Được. Tải một file hoặc một ZIP.",
+        "q5": "JPG có nét hơn không?",
+        "a5": "Không. JPG là bản nhỏ dễ gửi, không phải bản nét hơn."
+      },
+      "jpg-to-png": {
+        "q1": "Đổi JPG sang PNG được không?",
+        "a1": "Được. Thả JPG và tải PNG. Không tải lên.",
+        "q2": "Nền có thành trong suốt không?",
+        "a2": "Không. JPG không có phần trong suốt để khôi phục. PNG vẫn là hình đặc.",
+        "q3": "Vì sao PNG lớn hơn?",
+        "a3": "PNG không mất dữ liệu. Ảnh từng nén JPEG thường phình ra.",
+        "q4": "Khi nào nên dùng PNG?",
+        "a4": "Khi app tiếp theo từ chối JPG, hoặc bạn còn sửa và không muốn nén JPEG lần nữa.",
+        "q5": "Đổi nhiều JPG được không?",
+        "a5": "Được. Tải một file hoặc một ZIP."
+      },
+      "avif-to-jpg": {
+        "q1": "Đổi AVIF sang JPG được không?",
+        "a1": "Được nếu trình duyệt đọc được AVIF. Tải JPG. Không tải lên.",
+        "q2": "Vì sao xem AVIF bị trống?",
+        "a2": "Trình duyệt này không đọc AVIF. Dùng Chrome, Edge hoặc Safari mới.",
+        "q3": "Ảnh có nét hơn không?",
+        "a3": "Không. Chỉ đổi định dạng. Còn sửa thì giữ AVIF.",
+        "q4": "Đổi nhiều file AVIF được không?",
+        "a4": "Được. Thả một loạt và tải ZIP các file JPG.",
+        "q5": "App chat mở được JPG không?",
+        "a5": "Mail, in và chat cũ mong đợi JPG."
+      },
+      "png-to-webp": {
+        "q1": "Đổi PNG sang WebP được không?",
+        "a1": "Được. Thả PNG và tải WebP. Không tải lên.",
+        "q2": "WebP giữ được trong suốt không?",
+        "a2": "Có. Khác JPG, WebP giữ được viền trong suốt.",
+        "q3": "Khi nào vẫn dùng PNG?",
+        "a3": "Khi biểu mẫu, mail hoặc trình sửa cũ từ chối WebP. Những chỗ đó gửi PNG.",
+        "q4": "WebP có luôn nhỏ hơn không?",
+        "a4": "Ảnh và hình lớn thường nhỏ hơn. So kích thước trước khi thay bản gốc.",
+        "q5": "Đổi nhiều file sang WebP được không?",
+        "a5": "Được. Tải một file hoặc một ZIP."
+      }
     }
   },
   "qr": {

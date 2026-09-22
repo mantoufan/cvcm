@@ -6,7 +6,7 @@
     "titleWatermark": "사진에 워터마크 넣기 — 신분증은 이 탭 — cv.cm",
     "titleCollage": "사진 콜라주 만들기 — cv.cm",
     "description": "기기 안 브라우저 도구. 이미지와 PDF는 이 탭에 남습니다.",
-    "titleConvert": "HEIC를 JPG로, WebP를 PNG로, JPG를 PNG로 — cv.cm",
+    "titleConvert": "이미지 변환 — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO를 브라우저에서 변환. 크기 조절 가능. 업로드 없음.",
     "titleImagePdf": "JPG를 PDF로, PNG를 PDF로 — cv.cm",
     "descImagePdf": "JPG, PNG, WebP, HEIC를 하나의 PDF로. A4, Letter, 사진 비율. 업로드 없음.",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "시급을 연봉으로 바꾸는 법 | cv.cm",
     "descHourlyPay": "시급 하나에 주당 시간과 연간 주를 곱합니다. 40×52는 2,080시간. 결과는 세전이지 실수령이 아닙니다. 업로드 없음.",
     "titleConvertTimezone": "시간대 변환하는 법 | cv.cm",
-    "descConvertTimezone": "두 IANA 시간대 사이의 벽시계를 변환합니다. 일광 절약 시간은 날짜를 따릅니다. 복사는 UTC 순간. 오프셋을 두 번 더하지 마세요. 업로드 없음."
+    "descConvertTimezone": "두 IANA 시간대 사이의 벽시계를 변환합니다. 일광 절약 시간은 날짜를 따릅니다. 복사는 UTC 순간. 오프셋을 두 번 더하지 마세요. 업로드 없음.",
+    "titleJobHeicToJpg": "HEIC를 JPG로 변환 — cv.cm",
+    "descJobHeicToJpg": "iPhone HEIC를 브라우저에서 JPG로 바꿉니다. Safari와 Chrome이 읽습니다. 업로드하지 않습니다.",
+    "titleJobWebpToPng": "WebP를 PNG로 변환 — cv.cm",
+    "descJobWebpToPng": "WebP를 브라우저에서 PNG로 바꿉니다. 투명도를 남길 수 있습니다. 업로드하지 않습니다.",
+    "titleJobPngToJpg": "PNG를 JPG로 변환 — cv.cm",
+    "descJobPngToJpg": "PNG를 브라우저에서 JPG로 바꿉니다. 사진은 보통 작아집니다. 투명 PNG는 배경이 채워집니다. 업로드하지 않습니다.",
+    "titleJobJpgToPng": "JPG를 PNG로 변환 — cv.cm",
+    "descJobJpgToPng": "JPG를 브라우저에서 PNG로 바꿉니다. 투명도는 생기지 않습니다. 파일은 보통 커집니다. 업로드하지 않습니다.",
+    "titleJobAvifToJpg": "AVIF를 JPG로 변환 — cv.cm",
+    "descJobAvifToJpg": "AVIF를 브라우저에서 JPG로 바꿔, 오래된 프로그램과 채팅에서 열리게 합니다. 업로드하지 않습니다.",
+    "titleJobPngToWebp": "PNG를 WebP로 변환 — cv.cm",
+    "descJobPngToWebp": "PNG를 브라우저에서 WebP로 바꿉니다. WebP는 더 작고 투명도도 남길 수 있습니다. 업로드하지 않습니다."
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "긴 변",
     "maxOriginal": "원본 크기",
-    "sizeLabel": "출력 ≈ {size}"
+    "sizeLabel": "출력 ≈ {size}",
+    "jobsLabel": "변환",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC를 JPG로",
+        "lede": "iPhone 사진은 흔히 HEIC입니다. 여기서 JPG로 저장한 뒤, 보낼 컴퓨터에서 엽니다. Windows Firefox에서는 미리보기가 비어 있을 수 있습니다."
+      },
+      "webp-to-png": {
+        "title": "WebP를 PNG로",
+        "lede": "Chrome은 WebP로 저장하는 일이 많습니다. 다른 앱이 거절하면 PNG로 보냅니다. PNG는 투명한 가장자리를 남기고, JPG는 남기지 못합니다."
+      },
+      "png-to-jpg": {
+        "title": "PNG를 JPG로",
+        "lede": "사진 PNG는 JPG가 더 작은 경우가 많습니다. 투명 PNG에 해당하는 JPG는 없습니다. 투명한 칸은 채워지고, 종종 검게 됩니다."
+      },
+      "jpg-to-png": {
+        "title": "JPG를 PNG로",
+        "lede": "PNG는 투명 배경을 만들어 내지 않습니다. 그림은 그대로이고, JPEG 압축을 쓰지 않아 파일은 보통 커집니다."
+      },
+      "avif-to-jpg": {
+        "title": "AVIF를 JPG로",
+        "lede": "새 브라우저는 AVIF로 저장합니다. 상대에게 빈 파일로 보이면 JPG로 보내세요. 여기 미리보기가 비면 이 브라우저는 AVIF를 읽지 못합니다."
+      },
+      "png-to-webp": {
+        "title": "PNG를 WebP로",
+        "lede": "WebP는 PNG보다 작고 투명한 가장자리도 남길 수 있습니다. 오래된 양식은 여전히 PNG를 원합니다. 받을 앱에서 다운로드를 열어 보세요."
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG를 PDF로",
@@ -2224,6 +2263,80 @@
       "a4": "주 40시간, 연 52주로 합계 2080시간입니다. 일하는 해가 더 짧으면 둘 다 바꿀 수 있습니다.",
       "q5": "결과를 복사할 수 있나요?",
       "a5": "예. 시급, 주급, 연봉을 클립보드에 넣습니다."
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "여기서 HEIC를 JPG로 바꿀 수 있나요?",
+        "a1": "예. Safari와 Chrome에서 됩니다. 사진을 놓고 JPG를 받습니다. 업로드하지 않습니다.",
+        "q2": "미리보기가 비어 있는 이유는?",
+        "a2": "이 브라우저는 HEIC를 읽지 못합니다. Safari나 Chrome을 씁니다. Windows Firefox는 자주 실패합니다.",
+        "q3": "변환하면 더 선명해지나요?",
+        "a3": "아닙니다. 형식만 바꿉니다. iPhone에서 계속 편집하면 HEIC를 남기세요.",
+        "q4": "HEIC를 여러 장 바꿀 수 있나요?",
+        "a4": "예. 여러 장을 놓고 JPG ZIP을 받습니다.",
+        "q5": "JPG가 투명도를 지키나요?",
+        "a5": "아닙니다. 투명한 곳은 색이 채워집니다."
+      },
+      "webp-to-png": {
+        "q1": "WebP를 PNG로 바꿀 수 있나요?",
+        "a1": "예. WebP를 놓고 PNG를 받습니다. 업로드하지 않습니다.",
+        "q2": "투명도가 남나요?",
+        "a2": "PNG로 보내면 남습니다. JPG는 투명한 칸을 채우며, 종종 검게 됩니다.",
+        "q3": "왜 WebP를 바꾸나요?",
+        "a3": "양식, 편집기, 오래된 앱은 PNG는 열고 WebP는 거절합니다.",
+        "q4": "WebP를 여러 장 바꿀 수 있나요?",
+        "a4": "예. 한 장 또는 ZIP으로 받습니다.",
+        "q5": "PNG가 더 작아지나요?",
+        "a5": "보통은 아닙니다. PNG는 호환용입니다. 크기가 중요하면 WebP나 JPG를 씁니다."
+      },
+      "png-to-jpg": {
+        "q1": "PNG를 JPG로 바꿀 수 있나요?",
+        "a1": "예. PNG를 놓고 JPG를 받습니다. 업로드하지 않습니다.",
+        "q2": "배경이 검게 된 이유는?",
+        "a2": "JPG는 투명도를 저장하지 못합니다. 가장자리가 투명해야 하면 PNG를 유지합니다.",
+        "q3": "파일이 꼭 작아지나요?",
+        "a3": "사진 PNG는 보통 작아집니다. 작은 도형은 그렇지 않을 수 있습니다.",
+        "q4": "PNG를 여러 장 바꿀 수 있나요?",
+        "a4": "예. 한 장 또는 ZIP으로 받습니다.",
+        "q5": "JPG가 더 선명해지나요?",
+        "a5": "아닙니다. 보내기 쉬운 작은 사본이지, 더 선명한 사본은 아닙니다."
+      },
+      "jpg-to-png": {
+        "q1": "JPG를 PNG로 바꿀 수 있나요?",
+        "a1": "예. JPG를 놓고 PNG를 받습니다. 업로드하지 않습니다.",
+        "q2": "배경이 투명해지나요?",
+        "a2": "아닙니다. JPG에는 되살릴 투명도가 없습니다. PNG도 채워진 그림입니다.",
+        "q3": "PNG가 더 큰 이유는?",
+        "a3": "PNG는 무손실입니다. JPEG였던 사진은 보통 커집니다.",
+        "q4": "언제 PNG가 필요한가요?",
+        "a4": "다음 앱이 JPG를 거절하거나, JPEG로 한 번 더 압축하고 싶지 않을 때입니다.",
+        "q5": "JPG를 여러 장 바꿀 수 있나요?",
+        "a5": "예. 한 장 또는 ZIP으로 받습니다."
+      },
+      "avif-to-jpg": {
+        "q1": "AVIF를 JPG로 바꿀 수 있나요?",
+        "a1": "이 브라우저가 AVIF를 읽으면 됩니다. JPG를 받습니다. 업로드하지 않습니다.",
+        "q2": "AVIF 미리보기가 비어 있는 이유는?",
+        "a2": "이 브라우저는 AVIF를 읽지 못합니다. 최신 Chrome, Edge, Safari를 씁니다.",
+        "q3": "더 선명해지나요?",
+        "a3": "아닙니다. 형식만 바꿉니다. 계속 편집하면 AVIF를 남기세요.",
+        "q4": "AVIF를 여러 장 바꿀 수 있나요?",
+        "a4": "예. 여러 장을 놓고 JPG ZIP을 받습니다.",
+        "q5": "채팅 앱이 JPG를 여나요?",
+        "a5": "오래된 메일, 인쇄, 채팅이 기대하는 형식은 JPG입니다."
+      },
+      "png-to-webp": {
+        "q1": "PNG를 WebP로 바꿀 수 있나요?",
+        "a1": "예. PNG를 놓고 WebP를 받습니다. 업로드하지 않습니다.",
+        "q2": "WebP가 투명도를 남기나요?",
+        "a2": "예. JPG와 달리 WebP는 투명한 가장자리를 남길 수 있습니다.",
+        "q3": "언제 PNG를 유지하나요?",
+        "a3": "오래된 양식, 메일, 편집기가 WebP를 거절할 때입니다. 그곳에는 PNG를 보냅니다.",
+        "q4": "WebP가 항상 더 작은가요?",
+        "a4": "사진과 큰 그림은 보통 더 작습니다. 원본을 바꾸기 전에 크기를 비교하세요.",
+        "q5": "여러 장을 WebP로 바꿀 수 있나요?",
+        "a5": "예. 한 장 또는 ZIP으로 받습니다."
+      }
     }
   },
   "qr": {

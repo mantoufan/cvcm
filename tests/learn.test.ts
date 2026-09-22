@@ -3,6 +3,7 @@ import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, lessonsForTool, tutori
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { LOCALES } from "../src/shared/locale";
 import {
+  CONVERT_JOBS,
   TOOLS,
   TUTORIALS,
   FEATURED_TUTORIALS,
@@ -132,7 +133,9 @@ describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
     const xml = buildSitemapXml("2026-09-16");
     const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length;
-    expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + extra));
+    expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + extra));
+    expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
+    expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
     expect(FEATURED_TUTORIALS).toHaveLength(37);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");

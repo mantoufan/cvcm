@@ -23,7 +23,10 @@ const html = `<!doctype html>
 
 describe("seo helpers", () => {
   it("uses keyword-rich titles and descriptions", () => {
-    expect(pageTitle("en", "convert")).toMatch(/HEIC to JPG/i);
+    expect(pageTitle("en", "convert")).toMatch(/Image converter/i);
+    expect(pageTitle("en", { tool: "convert", convertJob: "heic-to-jpg" })).toBe("HEIC to JPG converter — cv.cm");
+    expect(pageTitle("zh-CN", { tool: "convert", convertJob: "webp-to-png" })).toMatch(/WebP 转 PNG/);
+    expect(pageCanonical("en", { tool: "convert", convertJob: "png-to-jpg" })).toBe("https://cv.cm/en/convert/png-to-jpg/");
     expect(pageTitle("en", "image-pdf")).toMatch(/JPG to PDF/i);
     expect(pageTitle("en", "audio")).toMatch(/MP3 to WAV/i);
     expect(pageTitle("en", "data")).toMatch(/JSON formatter/i);
@@ -124,7 +127,7 @@ describe("seo helpers", () => {
 
   it("rewrites HTML title, canonical, and JSON-LD", () => {
     const out = applyHtmlSeo(html, "en", "convert");
-    expect(out).toContain("<title>HEIC to JPG, WebP to PNG, JPG to PNG — cv.cm</title>");
+    expect(out).toContain("<title>Image converter — HEIC, WebP, PNG, JPG — cv.cm</title>");
     expect(out).toContain('href="https://cv.cm/en/convert/"');
     expect(out).toContain('id="faq-jsonld"');
     expect(out).toContain("FAQPage");
@@ -180,5 +183,25 @@ describe("worker html seo", () => {
     expect(body).toContain("HEIC to JPG");
     expect(body).toContain("FAQPage");
     expect(body).toContain("https://cv.cm/en/convert/");
+  });
+
+  it("serves a convert job URL with its own title and canonical", async () => {
+    const response = await worker.fetch(new Request("https://cv.cm/en/convert/heic-to-jpg/"), {
+      ASSETS: {
+        fetch: async () =>
+          new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } }),
+      },
+    });
+    const body = await response.text();
+    expect(response.status).toBe(200);
+    expect(body).toContain("<title>HEIC to JPG converter — cv.cm</title>");
+    expect(body).toContain('href="https://cv.cm/en/convert/heic-to-jpg/"');
+    expect(body).toContain("Why is the preview blank?");
+    const unknown = await worker.fetch(new Request("https://cv.cm/en/convert/nope/"), {
+      ASSETS: {
+        fetch: async () => new Response("no", { status: 404 }),
+      },
+    });
+    expect(unknown.status).toBe(302);
   });
 });

@@ -56,6 +56,19 @@ describe("parseAppPath", () => {
       locale: "zh-CN",
       tool: "collage",
     });
+    expect(parseAppPath("/en/convert/heic-to-jpg/")).toEqual({
+      kind: "app",
+      locale: "en",
+      tool: "convert",
+      convertJob: "heic-to-jpg",
+    });
+    expect(parseAppPath("/convert/webp-to-png")).toEqual({
+      kind: "bare",
+      tool: "convert",
+      convertJob: "webp-to-png",
+    });
+    expect(parseAppPath("/en/convert/nope/")).toEqual({ kind: "unknown" });
+    expect(appHref("zh-CN", "convert", null, "avif-to-jpg")).toBe("/zh-cn/convert/avif-to-jpg/");
     expect(parseAppPath("/en/convert/")).toEqual({
       kind: "app",
       locale: "en",

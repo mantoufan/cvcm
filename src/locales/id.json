@@ -6,7 +6,7 @@
     "titleWatermark": "Tambah watermark ke foto — salinan KTP di tab ini — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Alat peramban di perangkat. Gambar dan PDF tetap di tab ini.",
-    "titleConvert": "HEIC ke JPG, WebP ke PNG, JPG ke PNG — cv.cm",
+    "titleConvert": "Konverter gambar — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Ubah HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, ICO di browser. Bisa perkecil. Tanpa unggah.",
     "titleImagePdf": "JPG ke PDF dan PNG ke PDF — cv.cm",
     "descImagePdf": "Gabungkan JPG, PNG, WebP, atau HEIC jadi satu PDF. A4, Letter, atau sesuai foto. Tanpa unggah.",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "Cara ubah upah per jam jadi gaji tahunan | cv.cm",
     "descHourlyPay": "Kalikan satu upah per jam dengan jam per minggu dan minggu per tahun. 40 kali 52 adalah 2.080 jam. Hasilnya gaji kotor, bukan dibawa pulang. Tidak diunggah.",
     "titleConvertTimezone": "Cara ubah zona waktu | cv.cm",
-    "descConvertTimezone": "Ubah waktu dinding antara dua zona IANA. Waktu musim panas mengikuti tanggal. Salinan adalah saat UTC. Jangan menambah offset dua kali. Tidak diunggah."
+    "descConvertTimezone": "Ubah waktu dinding antara dua zona IANA. Waktu musim panas mengikuti tanggal. Salinan adalah saat UTC. Jangan menambah offset dua kali. Tidak diunggah.",
+    "titleJobHeicToJpg": "HEIC ke JPG — cv.cm",
+    "descJobHeicToJpg": "Ubah foto HEIC iPhone menjadi JPG di browser. Safari dan Chrome bisa membacanya. Tidak diunggah.",
+    "titleJobWebpToPng": "WebP ke PNG — cv.cm",
+    "descJobWebpToPng": "Ubah WebP menjadi PNG di browser. Transparansi bisa tetap ada. Tidak diunggah.",
+    "titleJobPngToJpg": "PNG ke JPG — cv.cm",
+    "descJobPngToJpg": "Ubah PNG menjadi JPG di browser. Foto biasanya lebih kecil. PNG transparan menjadi latar solid. Tidak diunggah.",
+    "titleJobJpgToPng": "JPG ke PNG — cv.cm",
+    "descJobJpgToPng": "Ubah JPG menjadi PNG di browser. PNG tidak menambah transparansi. File biasanya membesar. Tidak diunggah.",
+    "titleJobAvifToJpg": "AVIF ke JPG — cv.cm",
+    "descJobAvifToJpg": "Ubah AVIF menjadi JPG di browser agar program dan chat lama bisa membukanya. Tidak diunggah.",
+    "titleJobPngToWebp": "PNG ke WebP — cv.cm",
+    "descJobPngToWebp": "Ubah PNG menjadi WebP di browser. WebP biasanya lebih kecil dan bisa menjaga transparansi. Tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "Sisi terpanjang",
     "maxOriginal": "Ukuran asli",
-    "sizeLabel": "Keluaran ≈ {size}"
+    "sizeLabel": "Keluaran ≈ {size}",
+    "jobsLabel": "Konversi",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC ke JPG",
+        "lede": "Foto iPhone sering berupa HEIC. Ekspor JPG di sini, lalu buka di komputer yang akan menerima file. Firefox di Windows bisa membuat pratinjau kosong."
+      },
+      "webp-to-png": {
+        "title": "WebP ke PNG",
+        "lede": "Chrome sering menyimpan WebP. Ekspor PNG jika aplikasi lain menolaknya. PNG bisa menjaga tepi transparan. JPG tidak."
+      },
+      "png-to-jpg": {
+        "title": "PNG ke JPG",
+        "lede": "JPG lebih kecil daripada PNG foto. PNG transparan tidak punya padanan JPG: piksel transparan menjadi latar solid, sering hitam."
+      },
+      "jpg-to-png": {
+        "title": "JPG ke PNG",
+        "lede": "PNG tidak menciptakan latar transparan. Gambar tetap sama dan file biasanya membesar karena PNG tidak memakai kompresi JPEG."
+      },
+      "avif-to-jpg": {
+        "title": "AVIF ke JPG",
+        "lede": "Browser baru menyimpan AVIF. Jika penerima melihat file kosong, ekspor JPG lalu kirim. Pratinjau kosong di sini berarti browser ini tidak bisa membaca AVIF."
+      },
+      "png-to-webp": {
+        "title": "PNG ke WebP",
+        "lede": "WebP biasanya lebih kecil daripada PNG dan bisa menjaga tepi transparan. Formulir lama mungkin masih minta PNG. Buka unduhan di aplikasi yang akan menerimanya."
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG ke PDF",
@@ -2224,6 +2263,80 @@
       "a4": "40 jam seminggu dan 52 minggu setahun, yaitu 2.080 jam. Ubah salah satunya jika tahun kerja lebih pendek.",
       "q5": "Bisakah menyalin hasilnya?",
       "a5": "Ya. Salin menaruh upah per jam, mingguan, dan tahunan di papan klip."
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "Bisakah HEIC diubah ke JPG di sini?",
+        "a1": "Ya, di Safari dan Chrome. Letakkan foto dan unduh JPG. Tidak diunggah.",
+        "q2": "Mengapa pratinjaunya kosong?",
+        "a2": "Browser ini tidak bisa membaca HEIC. Pakai Safari atau Chrome. Firefox di Windows sering gagal.",
+        "q3": "Apakah hasilnya lebih tajam?",
+        "a3": "Tidak. Hanya formatnya yang berubah. Simpan HEIC jika masih disunting di iPhone.",
+        "q4": "Bisakah banyak file HEIC sekaligus?",
+        "a4": "Ya. Letakkan sekaligus dan unduh ZIP berisi JPG.",
+        "q5": "Apakah JPG menyimpan transparansi?",
+        "a5": "Tidak. Bagian transparan menjadi latar solid."
+      },
+      "webp-to-png": {
+        "q1": "Bisakah WebP diubah ke PNG?",
+        "a1": "Ya. Letakkan WebP dan unduh PNG. Tidak diunggah.",
+        "q2": "Apakah transparansi tetap?",
+        "a2": "Ya jika diekspor sebagai PNG. JPG mengisi piksel transparan, sering menjadi hitam.",
+        "q3": "Mengapa WebP perlu diubah?",
+        "a3": "Beberapa formulir, editor, dan aplikasi lama membuka PNG tetapi menolak WebP.",
+        "q4": "Bisakah banyak file WebP sekaligus?",
+        "a4": "Ya. Unduh satu file atau ZIP.",
+        "q5": "Apakah PNG menjadi lebih kecil?",
+        "a5": "Biasanya tidak. PNG untuk kompatibilitas. Jika ukuran yang utama, pakai WebP atau JPG."
+      },
+      "png-to-jpg": {
+        "q1": "Bisakah PNG diubah ke JPG?",
+        "a1": "Ya. Letakkan PNG dan unduh JPG. Tidak diunggah.",
+        "q2": "Mengapa latar menjadi hitam?",
+        "a2": "JPG tidak menyimpan transparansi. Pertahankan PNG jika tepinya harus tetap tembus.",
+        "q3": "Apakah file pasti lebih kecil?",
+        "a3": "PNG foto biasanya menyusut. Grafik datar yang kecil belum tentu.",
+        "q4": "Bisakah banyak PNG sekaligus?",
+        "a4": "Ya. Unduh satu file atau ZIP.",
+        "q5": "Apakah JPG lebih tajam?",
+        "a5": "Tidak. JPG adalah salinan yang lebih kecil, bukan yang lebih tajam."
+      },
+      "jpg-to-png": {
+        "q1": "Bisakah JPG diubah ke PNG?",
+        "a1": "Ya. Letakkan JPG dan unduh PNG. Tidak diunggah.",
+        "q2": "Apakah latar menjadi transparan?",
+        "a2": "Tidak. JPG tidak punya transparansi untuk dipulihkan. PNG tetap gambar solid.",
+        "q3": "Mengapa PNG lebih besar?",
+        "a3": "PNG lossless. Foto yang tadinya JPEG biasanya membesar.",
+        "q4": "Kapan PNG berguna?",
+        "a4": "Saat aplikasi berikutnya menolak JPG, atau Anda masih menyunting dan tidak ingin kompresi JPEG lagi.",
+        "q5": "Bisakah banyak JPG sekaligus?",
+        "a5": "Ya. Unduh satu file atau ZIP."
+      },
+      "avif-to-jpg": {
+        "q1": "Bisakah AVIF diubah ke JPG?",
+        "a1": "Ya, jika browser ini bisa membaca AVIF. Unduh JPG. Tidak diunggah.",
+        "q2": "Mengapa pratinjau AVIF kosong?",
+        "a2": "Browser ini tidak membaca AVIF. Pakai Chrome, Edge, atau Safari yang baru.",
+        "q3": "Apakah hasilnya lebih tajam?",
+        "a3": "Tidak. Hanya formatnya yang berubah. Simpan AVIF jika masih disunting.",
+        "q4": "Bisakah banyak file AVIF sekaligus?",
+        "a4": "Ya. Letakkan sekaligus dan unduh ZIP berisi JPG.",
+        "q5": "Apakah aplikasi chat membuka JPG?",
+        "a5": "JPG adalah format yang diharapkan email, cetak, dan chat lama."
+      },
+      "png-to-webp": {
+        "q1": "Bisakah PNG diubah ke WebP?",
+        "a1": "Ya. Letakkan PNG dan unduh WebP. Tidak diunggah.",
+        "q2": "Apakah WebP menjaga transparansi?",
+        "a2": "Ya. Tidak seperti JPG, WebP bisa menjaga tepi transparan.",
+        "q3": "Kapan tetap memakai PNG?",
+        "a3": "Saat formulir, email, atau editor lama menolak WebP. Ke sana kirim PNG.",
+        "q4": "Apakah WebP selalu lebih kecil?",
+        "a4": "Foto dan gambar besar biasanya lebih kecil. Bandingkan ukuran sebelum mengganti yang asli.",
+        "q5": "Bisakah banyak file menjadi WebP?",
+        "a5": "Ya. Unduh satu file atau ZIP."
+      }
     }
   },
   "qr": {

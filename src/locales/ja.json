@@ -6,7 +6,7 @@
     "titleWatermark": "写真に透かしを入れる — 身分証はこのタブ — cv.cm",
     "titleCollage": "フォトコラージュメーカー — cv.cm",
     "description": "端末内のブラウザツール。画像と PDF はこのタブに留まります。",
-    "titleConvert": "HEIC を JPG に、WebP を PNG に、JPG を PNG に — cv.cm",
+    "titleConvert": "画像変換 — HEIC、WebP、PNG、JPG — cv.cm",
     "descConvert": "HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO をブラウザで変換。リサイズ可。アップロードなし。",
     "titleImagePdf": "JPG を PDF に、PNG を PDF に — cv.cm",
     "descImagePdf": "JPG / PNG / WebP / HEIC を 1 つの PDF に。A4、Letter、写真比率。アップロードなし。",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "時給を年収に換算する方法 | cv.cm",
     "descHourlyPay": "一つの時給に週の時間と年の週数をかける。40×52 は 2,080 時間。結果は税引前であり手取りではない。アップロードなし。",
     "titleConvertTimezone": "タイムゾーンの変換方法 | cv.cm",
-    "descConvertTimezone": "二つの IANA ゾーンの壁時計を変換。夏時間はその日付に従う。コピーは UTC の瞬間。オフセットを二度足さない。アップロードなし。"
+    "descConvertTimezone": "二つの IANA ゾーンの壁時計を変換。夏時間はその日付に従う。コピーは UTC の瞬間。オフセットを二度足さない。アップロードなし。",
+    "titleJobHeicToJpg": "HEIC を JPG に変換 — cv.cm",
+    "descJobHeicToJpg": "iPhone の HEIC をブラウザで JPG にします。Safari と Chrome が読めます。アップロードしません。",
+    "titleJobWebpToPng": "WebP を PNG に変換 — cv.cm",
+    "descJobWebpToPng": "WebP をブラウザで PNG にします。透明は残せます。アップロードしません。",
+    "titleJobPngToJpg": "PNG を JPG に変換 — cv.cm",
+    "descJobPngToJpg": "PNG をブラウザで JPG にします。写真は小さくなることが多いです。透明 PNG は塗りつぶされます。アップロードしません。",
+    "titleJobJpgToPng": "JPG を PNG に変換 — cv.cm",
+    "descJobJpgToPng": "JPG をブラウザで PNG にします。透明は生まれません。ファイルは大きくなりがちです。アップロードしません。",
+    "titleJobAvifToJpg": "AVIF を JPG に変換 — cv.cm",
+    "descJobAvifToJpg": "AVIF をブラウザで JPG にし、古いソフトやチャットで開けるようにします。アップロードしません。",
+    "titleJobPngToWebp": "PNG を WebP に変換 — cv.cm",
+    "descJobPngToWebp": "PNG をブラウザで WebP にします。WebP は小さく、透明も残せます。アップロードしません。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "長辺",
     "maxOriginal": "元のサイズ",
-    "sizeLabel": "出力 ≈ {size}"
+    "sizeLabel": "出力 ≈ {size}",
+    "jobsLabel": "変換",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC を JPG に",
+        "lede": "iPhone の写真は HEIC が多いです。ここで JPG を書き出し、送るパソコンで開きます。Windows の Firefox はプレビューが空になることがあります。"
+      },
+      "webp-to-png": {
+        "title": "WebP を PNG に",
+        "lede": "Chrome は WebP で保存しがちです。相手のアプリが拒むときは PNG にします。PNG は透明な縁を残せます。JPG は残せません。"
+      },
+      "png-to-jpg": {
+        "title": "PNG を JPG に",
+        "lede": "写真の PNG は JPG の方が小さいことが多いです。透明 PNG に対応する JPG はありません。透明な画素は塗りつぶされ、しばしば黒になります。"
+      },
+      "jpg-to-png": {
+        "title": "JPG を PNG に",
+        "lede": "PNG は透明な背景を作り出しません。絵はそのままで、JPEG 圧縮を使わないためファイルは大きくなりがちです。"
+      },
+      "avif-to-jpg": {
+        "title": "AVIF を JPG に",
+        "lede": "新しいブラウザは AVIF で保存します。相手に空白で届くなら JPG にして送ります。ここのプレビューが空なら、このブラウザは AVIF を読めません。"
+      },
+      "png-to-webp": {
+        "title": "PNG を WebP に",
+        "lede": "WebP は PNG より小さく、透明な縁も残せます。古いフォームはまだ PNG を求めることがあります。受け取るアプリでダウンロードを開いて確認します。"
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG を PDF に",
@@ -2224,6 +2263,80 @@
       "a4": "週 40 時間、年 52 週で、合計 2080 時間です。短い年ならどちらも変えられます。",
       "q5": "結果をコピーできますか？",
       "a5": "はい。時給、週給、年収をクリップボードに置きます。"
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "ここで HEIC を JPG にできますか？",
+        "a1": "はい。Safari と Chrome なら読めます。写真を置いて JPG を保存します。アップロードしません。",
+        "q2": "プレビューが空なのはなぜ？",
+        "a2": "このブラウザは HEIC を読めません。Safari か Chrome を使います。Windows の Firefox は失敗しやすいです。",
+        "q3": "変換すると鮮明になりますか？",
+        "a3": "なりません。形式を変えるだけです。iPhone でまだ編集するなら HEIC を残します。",
+        "q4": "HEIC をまとめて変換できますか？",
+        "a4": "はい。まとめて置いて、JPG の ZIP を保存します。",
+        "q5": "JPG は透明を残せますか？",
+        "a5": "残せません。透明な部分は塗りつぶされます。"
+      },
+      "webp-to-png": {
+        "q1": "WebP を PNG にできますか？",
+        "a1": "はい。WebP を置いて PNG を保存します。アップロードしません。",
+        "q2": "透明は残りますか？",
+        "a2": "PNG で書き出せば残ります。JPG は透明を塗りつぶし、黒くなることが多いです。",
+        "q3": "なぜ WebP を変換しますか？",
+        "a3": "フォームや古いアプリは PNG を開き、WebP を拒むことがあります。",
+        "q4": "WebP をまとめて変換できますか？",
+        "a4": "はい。1 枚でも ZIP でも保存できます。",
+        "q5": "PNG は小さくなりますか？",
+        "a5": "通常はなりません。PNG は互換用です。サイズ優先なら WebP か JPG です。"
+      },
+      "png-to-jpg": {
+        "q1": "PNG を JPG にできますか？",
+        "a1": "はい。PNG を置いて JPG を保存します。アップロードしません。",
+        "q2": "背景が黒になったのはなぜ？",
+        "a2": "JPG は透明を保存できません。縁を透明のままにするなら PNG のままです。",
+        "q3": "必ず小さくなりますか？",
+        "a3": "写真の PNG は小さくなることが多いです。小さな図はそうでないことがあります。",
+        "q4": "PNG をまとめて変換できますか？",
+        "a4": "はい。1 枚でも ZIP でも保存できます。",
+        "q5": "JPG は鮮明になりますか？",
+        "a5": "なりません。送りやすい小さい複製であり、より鮮明にはなりません。"
+      },
+      "jpg-to-png": {
+        "q1": "JPG を PNG にできますか？",
+        "a1": "はい。JPG を置いて PNG を保存します。アップロードしません。",
+        "q2": "背景は透明になりますか？",
+        "a2": "なりません。JPG に透明はないので、PNG も塗りつぶされた絵のままです。",
+        "q3": "なぜ PNG は大きいですか？",
+        "a3": "PNG は劣化しません。JPEG だった写真は大きくなりがちです。",
+        "q4": "PNG にする意味は？",
+        "a4": "次のアプリが JPG を拒むとき、または JPEG でもう一度圧縮したくないときに使います。",
+        "q5": "JPG をまとめて変換できますか？",
+        "a5": "はい。1 枚でも ZIP でも保存できます。"
+      },
+      "avif-to-jpg": {
+        "q1": "AVIF を JPG にできますか？",
+        "a1": "このブラウザが AVIF を読めるならできます。JPG を保存します。アップロードしません。",
+        "q2": "AVIF のプレビューが空なのはなぜ？",
+        "a2": "このブラウザは AVIF を読めません。新しい Chrome、Edge、Safari を使います。",
+        "q3": "鮮明になりますか？",
+        "a3": "なりません。形式を変えるだけです。まだ編集するなら AVIF を残します。",
+        "q4": "AVIF をまとめて変換できますか？",
+        "a4": "はい。まとめて置いて、JPG の ZIP を保存します。",
+        "q5": "チャットは JPG を開けますか？",
+        "a5": "古いメール、印刷、チャットが期待するのは JPG です。"
+      },
+      "png-to-webp": {
+        "q1": "PNG を WebP にできますか？",
+        "a1": "はい。PNG を置いて WebP を保存します。アップロードしません。",
+        "q2": "WebP は透明を残せますか？",
+        "a2": "はい。JPG と違い、WebP は透明な縁を残せます。",
+        "q3": "PNG のままにするのはいつ？",
+        "a3": "古いフォームやメール、エディタが WebP を拒むときです。そこには PNG を送ります。",
+        "q4": "WebP は必ず小さいですか？",
+        "a4": "写真や大きい図では小さいことが多いです。元を置き換える前にサイズを比べます。",
+        "q5": "まとめて WebP にできますか？",
+        "a5": "はい。1 枚でも ZIP でも保存できます。"
+      }
     }
   },
   "qr": {

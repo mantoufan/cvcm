@@ -6,7 +6,7 @@
     "titleWatermark": "Añadir marca de agua a fotos — copias de ID en esta pestaña — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
     "description": "Herramientas en el navegador. Las imágenes y los PDF se quedan en esta pestaña.",
-    "titleConvert": "HEIC a JPG, WebP a PNG, JPG a PNG — cv.cm",
+    "titleConvert": "Convertidor de imágenes — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Convierte HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP e ICO en el navegador. Puedes redimensionar. Nada se sube.",
     "titleImagePdf": "JPG a PDF y PNG a PDF — cv.cm",
     "descImagePdf": "Pasa JPG, PNG, WebP o HEIC a un PDF. A4, Letter o a medida de la foto. Nada se sube.",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "Cómo convertir el pago por hora en un sueldo anual | cv.cm",
     "descHourlyPay": "Multiplique una tarifa por hora por horas semanales y semanas al año. 40 por 52 son 2.080 horas. El resultado es el bruto, no lo que se lleva a casa. Nada se sube.",
     "titleConvertTimezone": "Cómo convertir una zona horaria | cv.cm",
-    "descConvertTimezone": "Convierta una hora de pared entre dos zonas IANA. El horario de verano sigue la fecha. Lo copiado es el instante UTC. No sume el desfase dos veces. Nada se sube."
+    "descConvertTimezone": "Convierta una hora de pared entre dos zonas IANA. El horario de verano sigue la fecha. Lo copiado es el instante UTC. No sume el desfase dos veces. Nada se sube.",
+    "titleJobHeicToJpg": "HEIC a JPG — cv.cm",
+    "descJobHeicToJpg": "Convierte fotos HEIC del iPhone a JPG en el navegador. Safari y Chrome las leen. No se sube nada.",
+    "titleJobWebpToPng": "WebP a PNG — cv.cm",
+    "descJobWebpToPng": "Convierte WebP a PNG en el navegador. La transparencia puede quedarse. No se sube nada.",
+    "titleJobPngToJpg": "PNG a JPG — cv.cm",
+    "descJobPngToJpg": "Convierte PNG a JPG en el navegador. El archivo suele adelgazar. Un PNG transparente pasa a fondo sólido. No se sube nada.",
+    "titleJobJpgToPng": "JPG a PNG — cv.cm",
+    "descJobJpgToPng": "Convierte JPG a PNG en el navegador. PNG no inventa transparencia. El archivo suele crecer. No se sube nada.",
+    "titleJobAvifToJpg": "AVIF a JPG — cv.cm",
+    "descJobAvifToJpg": "Convierte AVIF a JPG en el navegador para que programas y chats antiguos lo abran. No se sube nada.",
+    "titleJobPngToWebp": "PNG a WebP — cv.cm",
+    "descJobPngToWebp": "Convierte PNG a WebP en el navegador. WebP puede ser más pequeño y conservar la transparencia. No se sube nada."
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "Lado más largo",
     "maxOriginal": "Tamaño original",
-    "sizeLabel": "Salida ≈ {size}"
+    "sizeLabel": "Salida ≈ {size}",
+    "jobsLabel": "Conversiones",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC a JPG",
+        "lede": "Las fotos del iPhone suelen ser HEIC. Exporta un JPG aquí y ábrelo en el ordenador al que lo enviarás. Firefox en Windows puede dejar la vista previa en blanco."
+      },
+      "webp-to-png": {
+        "title": "WebP a PNG",
+        "lede": "Chrome suele guardar WebP. Exporta PNG si otra app lo rechaza. PNG puede conservar un borde transparente. JPG no."
+      },
+      "png-to-jpg": {
+        "title": "PNG a JPG",
+        "lede": "JPG es más pequeño que un PNG de foto. Un PNG transparente no tiene equivalente JPG: los píxeles claros pasan a un fondo sólido, a menudo negro."
+      },
+      "jpg-to-png": {
+        "title": "JPG a PNG",
+        "lede": "PNG no crea un fondo transparente. La imagen sigue igual y el archivo suele crecer, porque PNG no usa la compresión JPEG."
+      },
+      "avif-to-jpg": {
+        "title": "AVIF a JPG",
+        "lede": "Los navegadores nuevos guardan AVIF. Si la otra persona ve un archivo en blanco, exporta JPG y envía ese. Una vista previa en blanco aquí significa que este navegador no lee AVIF."
+      },
+      "png-to-webp": {
+        "title": "PNG a WebP",
+        "lede": "WebP suele ser más pequeño que PNG y puede conservar un borde transparente. Algunos formularios antiguos siguen pidiendo PNG. Abre la descarga en la app que la recibirá."
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG a PDF",
@@ -2224,6 +2263,80 @@
       "a4": "40 horas por semana y 52 semanas al año, es decir 2.080 horas. Cambia cualquiera si tu año es más corto.",
       "q5": "¿Puedo copiar el resultado?",
       "a5": "Sí. Copiar pone el sueldo por hora, semanal y anual en el portapapeles."
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "¿Puedo convertir HEIC a JPG aquí?",
+        "a1": "Sí, en Safari y Chrome. Suelta la foto y descarga un JPG. No se sube nada.",
+        "q2": "¿Por qué la vista previa está en blanco?",
+        "a2": "Este navegador no lee HEIC. Usa Safari o Chrome. Firefox en Windows suele fallar.",
+        "q3": "¿La conversión hace la foto más nítida?",
+        "a3": "No. Solo cambia el formato. Conserva el HEIC si aún lo editas en el iPhone.",
+        "q4": "¿Puedo convertir varios HEIC?",
+        "a4": "Sí. Suelta un lote y descarga un ZIP de JPG.",
+        "q5": "¿El JPG conserva la transparencia?",
+        "a5": "No. Una zona transparente pasa a ser un fondo sólido."
+      },
+      "webp-to-png": {
+        "q1": "¿Puedo convertir WebP a PNG?",
+        "a1": "Sí. Suelta el WebP y descarga un PNG. No se sube nada.",
+        "q2": "¿Se conserva la transparencia?",
+        "a2": "Sí, si exportas PNG. JPG rellena los píxeles transparentes, a menudo de negro.",
+        "q3": "¿Por qué convertir WebP?",
+        "a3": "Algunos formularios, editores y apps antiguas abren PNG y rechazan WebP.",
+        "q4": "¿Puedo convertir varios WebP?",
+        "a4": "Sí. Descarga un archivo o un ZIP.",
+        "q5": "¿El PNG queda más pequeño?",
+        "a5": "Normalmente no. PNG es la copia compatible. Usa WebP o JPG si importa más el tamaño."
+      },
+      "png-to-jpg": {
+        "q1": "¿Puedo convertir PNG a JPG?",
+        "a1": "Sí. Suelta el PNG y descarga un JPG. No se sube nada.",
+        "q2": "¿Por qué el fondo se volvió negro?",
+        "a2": "JPG no guarda transparencia. Sigue con PNG si el borde debe quedar claro.",
+        "q3": "¿El archivo siempre adelgaza?",
+        "a3": "Los PNG de foto suelen adelgazar. Un gráfico plano y pequeño puede que no.",
+        "q4": "¿Puedo convertir varios PNG?",
+        "a4": "Sí. Descarga un archivo o un ZIP.",
+        "q5": "¿El JPG queda más nítido?",
+        "a5": "No. Es una copia más pequeña, no una más nítida."
+      },
+      "jpg-to-png": {
+        "q1": "¿Puedo convertir JPG a PNG?",
+        "a1": "Sí. Suelta el JPG y descarga un PNG. No se sube nada.",
+        "q2": "¿El fondo se vuelve transparente?",
+        "a2": "No. El JPG no tiene transparencia que recuperar. El PNG sigue siendo una imagen sólida.",
+        "q3": "¿Por qué el PNG es más grande?",
+        "a3": "PNG no pierde datos. Una foto que era JPEG suele crecer.",
+        "q4": "¿Cuándo conviene el PNG?",
+        "a4": "Cuando la siguiente app rechaza JPG, o vas a seguir editando sin otro guardado JPEG.",
+        "q5": "¿Puedo convertir varios JPG?",
+        "a5": "Sí. Descarga un archivo o un ZIP."
+      },
+      "avif-to-jpg": {
+        "q1": "¿Puedo convertir AVIF a JPG?",
+        "a1": "Sí, si este navegador lee AVIF. Descarga un JPG. No se sube nada.",
+        "q2": "¿Por qué la vista previa de AVIF está en blanco?",
+        "a2": "Este navegador no lee AVIF. Usa un Chrome, Edge o Safari actual.",
+        "q3": "¿La foto queda más nítida?",
+        "a3": "No. Solo cambia el formato. Conserva el AVIF si aún lo editas.",
+        "q4": "¿Puedo convertir varios AVIF?",
+        "a4": "Sí. Suelta un lote y descarga un ZIP de JPG.",
+        "q5": "¿Un chat abre el JPG?",
+        "a5": "JPG es el formato que esperan el correo, la impresión y los chats antiguos."
+      },
+      "png-to-webp": {
+        "q1": "¿Puedo convertir PNG a WebP?",
+        "a1": "Sí. Suelta el PNG y descarga un WebP. No se sube nada.",
+        "q2": "¿WebP conserva la transparencia?",
+        "a2": "Sí. A diferencia de JPG, WebP puede conservar un borde transparente.",
+        "q3": "¿Cuándo sigo con PNG?",
+        "a3": "Cuando un formulario, un correo o un editor antiguo rechaza WebP. Ahí envía PNG.",
+        "q4": "¿WebP siempre es más pequeño?",
+        "a4": "En fotos y gráficos grandes, normalmente sí. Compara el tamaño antes de sustituir el original.",
+        "q5": "¿Puedo convertir un lote a WebP?",
+        "a5": "Sí. Descarga un archivo o un ZIP."
+      }
     }
   },
   "qr": {

@@ -1301,6 +1301,19 @@ body {
   text-decoration: none;
 }
 .tool-lesson-list a:hover { text-decoration: underline; }
+.convert-jobs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin: 0.85rem 0 0;
+}
+.convert-jobs a {
+  color: #a13f6c;
+  font-weight: 650;
+  text-decoration: none;
+}
+.convert-jobs a[aria-current="page"] { text-decoration: underline; }
+.convert-jobs a:hover { text-decoration: underline; }
 .learn-code {
   margin: 0.7rem 0 0;
   padding: 0.9rem 1rem;

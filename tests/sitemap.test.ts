@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
-import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref } from "../src/shared/path";
+import { CONVERT_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref } from "../src/shared/path";
 import { buildSitemapXml, HREFLANG, pageUrl, sitemapPages } from "../src/shared/sitemap";
 
 describe("sitemap", () => {
@@ -11,7 +11,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);

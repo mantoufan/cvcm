@@ -1,6 +1,6 @@
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
-import { TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, type ToolId, type TutorialId } from "./path";
+import { CONVERT_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref, type ConvertJobId, type ToolId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -19,6 +19,7 @@ export const HREFLANG: Record<Locale, string> = {
 export type SitemapPage =
   | { locale: Locale; kind: "home" }
   | { locale: Locale; kind: "tool"; tool: ToolId }
+  | { locale: Locale; kind: "convert-job"; job: ConvertJobId }
   | { locale: Locale; kind: "learn"; tutorial: TutorialId | null }
   | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null };
 
@@ -27,6 +28,7 @@ export function sitemapPages(): SitemapPage[] {
   for (const locale of LOCALES) {
     pages.push({ locale, kind: "home" });
     for (const tool of TOOLS) pages.push({ locale, kind: "tool", tool });
+    for (const job of CONVERT_JOBS) pages.push({ locale, kind: "convert-job", job });
     pages.push({ locale, kind: "learn", tutorial: null });
     for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
     pages.push({ locale, kind: "games", console: null, game: null });
@@ -43,6 +45,7 @@ export function sitemapPages(): SitemapPage[] {
 export function pageUrl(page: SitemapPage): string {
   if (page.kind === "learn") return `${SITE_ORIGIN}${learnHref(page.locale, page.tutorial)}`;
   if (page.kind === "tool") return `${SITE_ORIGIN}${appHref(page.locale, page.tool)}`;
+  if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(page.locale, "convert", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(page.locale, page.console, page.game)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
@@ -54,6 +57,7 @@ function xmlAttr(value: string): string {
 function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "learn") return `${SITE_ORIGIN}${learnHref(locale, page.tutorial)}`;
   if (page.kind === "tool") return `${SITE_ORIGIN}${appHref(locale, page.tool)}`;
+  if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(locale, "convert", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(locale, page.console, page.game)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }

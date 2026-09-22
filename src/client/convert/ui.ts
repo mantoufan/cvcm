@@ -4,7 +4,7 @@ import { zipStore } from "../../shared/zip";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { CONVERT_JOB_FORMAT, appHref, parseAppPath, type ConvertJobId } from "../../shared/path";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 
 type Item = {
@@ -62,12 +62,16 @@ export async function mountConvert(host: HTMLElement): Promise<void> {
     markSession();
     hydrated = true;
   }
+  const job = currentJob();
+  if (job) state.format = CONVERT_JOB_FORMAT[job];
   restoring = false;
+  const loc = locale();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("convert.back")),
-      h("h1", null, t("convert.title")),
-      h("p", { class: "lede" }, t("convert.privacyNote")),
+      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("convert.back")),
+      h("h1", null, job ? t(`convert.jobs.${job}.title`) : t("convert.title")),
+      h("p", { class: "lede" }, job ? t(`convert.jobs.${job}.lede`) : t("convert.privacyNote")),
+      jobNav(loc, job),
     ),
     h("div", { class: "tool" },
       filesRail(),
@@ -84,6 +88,24 @@ export async function mountConvert(host: HTMLElement): Promise<void> {
       void persist();
     });
   }
+}
+
+function currentJob(): ConvertJobId | null {
+  const parsed = parseAppPath(location.pathname);
+  return parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
+}
+
+function jobNav(loc: ReturnType<typeof locale>, current: ConvertJobId | null): HTMLElement {
+  const ids = Object.keys(CONVERT_JOB_FORMAT) as ConvertJobId[];
+  return h("nav", { class: "convert-jobs", "aria-label": t("convert.jobsLabel") },
+    ...ids.map((id) =>
+      h("a", {
+        href: appHref(loc, "convert", null, id),
+        "data-nav": "convert",
+        "aria-current": current === id ? "page" : undefined,
+      }, t(`convert.jobs.${id}.title`)),
+    ),
+  );
 }
 
 export function unmountConvert(): void {

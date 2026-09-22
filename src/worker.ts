@@ -107,7 +107,7 @@ export default {
         return redirectTo(appHref(locale, "clip", parsed.id), url, 302);
       }
       if (parsed.kind === "bare") {
-        return redirectTo(appHref(locale, parsed.tool, parsed.clipId), url, 302);
+        return redirectTo(appHref(locale, parsed.tool, parsed.clipId, parsed.convertJob), url, 302);
       }
       if (parsed.kind === "bare-learn") {
         return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
@@ -119,7 +119,7 @@ export default {
         return redirectTo(appHref(locale, null), url, 302);
       }
       if (parsed.kind === "app") {
-        const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId);
+        const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, parsed.convertJob);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -164,7 +164,7 @@ export default {
         : parsed.kind === "games"
           ? { games: true as const, console: parsed.console, game: parsed.game }
           : parsed.kind === "app"
-            ? { tool: parsed.tool, clipId: parsed.clipId }
+            ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob }
             : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");

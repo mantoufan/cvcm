@@ -6,7 +6,7 @@
     "titleWatermark": "幫圖片加浮水印，證件防盜用 — cv.cm",
     "titleCollage": "線上圖片拼圖 — cv.cm",
     "description": "瀏覽器本地工具。圖片和 PDF 留在目前分頁。",
-    "titleConvert": "HEIC 轉 JPG、WebP 轉 PNG、JPG 轉 PNG — cv.cm",
+    "titleConvert": "圖片格式轉換 — HEIC、WebP、PNG、JPG — cv.cm",
     "descConvert": "瀏覽器互轉 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可縮小邊長。檔案不上傳。",
     "titleImagePdf": "JPG 轉 PDF、PNG 轉 PDF — cv.cm",
     "descImagePdf": "把 JPG、PNG、WebP 或 HEIC 合成一份 PDF。A4、Letter 或依照片比例。檔案不上傳。",
@@ -263,7 +263,19 @@
     "titleHourlyPay": "怎麼把時薪換成年薪 | cv.cm",
     "descHourlyPay": "用一個時薪乘每週小時和每年週數。40 乘 52 是 2,080 小時。結果是稅前，不是到手。不上傳。",
     "titleConvertTimezone": "怎麼換算時區 | cv.cm",
-    "descConvertTimezone": "在兩個 IANA 時區之間換算牆鐘時間。日光節約跟著日期走。複製的是 UTC 瞬間。不要把偏移加兩次。不上傳。"
+    "descConvertTimezone": "在兩個 IANA 時區之間換算牆鐘時間。日光節約跟著日期走。複製的是 UTC 瞬間。不要把偏移加兩次。不上傳。",
+    "titleJobHeicToJpg": "HEIC 轉 JPG — cv.cm",
+    "descJobHeicToJpg": "在瀏覽器裡把 iPhone 的 HEIC 轉成 JPG。Safari 和 Chrome 可以解碼。檔案不上傳。",
+    "titleJobWebpToPng": "WebP 轉 PNG — cv.cm",
+    "descJobWebpToPng": "在瀏覽器裡把 WebP 轉成 PNG。透明可以留下來。檔案不上傳。",
+    "titleJobPngToJpg": "PNG 轉 JPG — cv.cm",
+    "descJobPngToJpg": "在瀏覽器裡把 PNG 轉成 JPG。照片通常會變小。透明 PNG 會變成實底。檔案不上傳。",
+    "titleJobJpgToPng": "JPG 轉 PNG — cv.cm",
+    "descJobJpgToPng": "在瀏覽器裡把 JPG 轉成 PNG。PNG 不會憑空變透明。檔案通常變大。檔案不上傳。",
+    "titleJobAvifToJpg": "AVIF 轉 JPG — cv.cm",
+    "descJobAvifToJpg": "在瀏覽器裡把 AVIF 轉成 JPG，讓舊程式和聊天軟體能打開。檔案不上傳。",
+    "titleJobPngToWebp": "PNG 轉 WebP — cv.cm",
+    "descJobPngToWebp": "在瀏覽器裡把 PNG 轉成 WebP。WebP 通常更小，還能留住透明。檔案不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -788,7 +800,34 @@
     "chipIco": "→ ICO",
     "maxEdge": "最長邊",
     "maxOriginal": "原始尺寸",
-    "sizeLabel": "輸出約 {size}"
+    "sizeLabel": "輸出約 {size}",
+    "jobsLabel": "格式轉換",
+    "jobs": {
+      "heic-to-jpg": {
+        "title": "HEIC 轉 JPG",
+        "lede": "iPhone 照片常常是 HEIC。在這裡匯出 JPG，再到要傳送的那台電腦上打開。Windows 上的 Firefox 預覽可能是空的。"
+      },
+      "webp-to-png": {
+        "title": "WebP 轉 PNG",
+        "lede": "Chrome 常常把圖存成 WebP。對方軟體不認時，匯出 PNG。PNG 能留住透明邊，JPG 不行。"
+      },
+      "png-to-jpg": {
+        "title": "PNG 轉 JPG",
+        "lede": "照片 PNG 轉成 JPG 通常更小。透明 PNG 沒有對應的 JPG：透明像素會變成實底，常常是黑的。"
+      },
+      "jpg-to-png": {
+        "title": "JPG 轉 PNG",
+        "lede": "PNG 不會變出透明背景。畫面還是原來的，檔案通常變大，因為 PNG 不用 JPEG 那種壓縮。"
+      },
+      "avif-to-jpg": {
+        "title": "AVIF 轉 JPG",
+        "lede": "較新的瀏覽器會把圖存成 AVIF。對方打開是空白時，匯出 JPG 再傳。這裡預覽也是空白，表示這個瀏覽器解不了 AVIF。"
+      },
+      "png-to-webp": {
+        "title": "PNG 轉 WebP",
+        "lede": "WebP 通常比 PNG 小，也能留住透明邊。有些舊表單仍然要 PNG。用接收這張圖的軟體打開下載檔看一眼。"
+      }
+    }
   },
   "imagePdf": {
     "title": "JPG / PNG 轉 PDF",
@@ -2224,6 +2263,80 @@
       "a4": "每週 40 小時、每年 52 週，一共 2080 小時。你的工作年更短時可以改這兩個數。",
       "q5": "可以複製結果嗎？",
       "a5": "可以。複製會把時薪、週薪和年薪放到剪貼簿。"
+    },
+    "convertJobs": {
+      "heic-to-jpg": {
+        "q1": "可以在這裡把 HEIC 轉成 JPG 嗎？",
+        "a1": "可以。Safari 和 Chrome 能解碼。放下照片，下載 JPG。檔案不上傳。",
+        "q2": "為什麼預覽是空的？",
+        "a2": "這個瀏覽器解不了 HEIC。改用 Safari 或 Chrome。Windows 上的 Firefox 經常失敗。",
+        "q3": "轉換會讓照片更清晰嗎？",
+        "a3": "不會。只是換格式，讓更多程式能打開。還要在 iPhone 上修圖就留著 HEIC。",
+        "q4": "可以一次轉多張 HEIC 嗎？",
+        "a4": "可以。放一批，下載 JPG 的 ZIP。",
+        "q5": "JPG 能保留透明嗎？",
+        "a5": "不能。JPG 沒有透明。透明區域會變成實底。"
+      },
+      "webp-to-png": {
+        "q1": "可以把 WebP 轉成 PNG 嗎？",
+        "a1": "可以。放下 WebP，下載 PNG。檔案不上傳。",
+        "q2": "透明能留下來嗎？",
+        "a2": "匯出 PNG 就可以。JPG 會把透明填實，常常變成黑底。",
+        "q3": "為什麼要轉掉 WebP？",
+        "a3": "有些表單、編輯器和舊軟體只開 PNG，不認 WebP。",
+        "q4": "可以一次轉多張 WebP 嗎？",
+        "a4": "可以。下載單張，或打包成 ZIP。",
+        "q5": "PNG 會更小嗎？",
+        "a5": "通常不會。PNG 是為了相容。更在意體積時用 WebP 或 JPG。"
+      },
+      "png-to-jpg": {
+        "q1": "可以把 PNG 轉成 JPG 嗎？",
+        "a1": "可以。放下 PNG，下載 JPG。檔案不上傳。",
+        "q2": "為什麼背景變黑了？",
+        "a2": "JPG 存不了透明。透明像素會被填上。邊要透明就繼續用 PNG。",
+        "q3": "檔案一定會變小嗎？",
+        "a3": "照片 PNG 通常會變小。很小的色塊圖不一定。",
+        "q4": "可以一次轉多張 PNG 嗎？",
+        "a4": "可以。下載單張，或打包成 ZIP。",
+        "q5": "JPG 會更清晰嗎？",
+        "a5": "不會。JPG 是更小、更好傳送的複本，不是更清晰的複本。"
+      },
+      "jpg-to-png": {
+        "q1": "可以把 JPG 轉成 PNG 嗎？",
+        "a1": "可以。放下 JPG，下載 PNG。檔案不上傳。",
+        "q2": "背景會變成透明嗎？",
+        "a2": "不會。JPG 裡沒有透明可以恢復。轉出來的 PNG 仍是實底。",
+        "q3": "為什麼 PNG 更大？",
+        "a3": "PNG 是無損的。原本用 JPEG 壓過的照片通常會變大。",
+        "q4": "什麼時候值得轉 PNG？",
+        "a4": "下一步的軟體不認 JPG，或者你還要繼續改、不想再壓一次 JPEG。",
+        "q5": "可以一次轉多張 JPG 嗎？",
+        "a5": "可以。下載單張，或打包成 ZIP。"
+      },
+      "avif-to-jpg": {
+        "q1": "可以把 AVIF 轉成 JPG 嗎？",
+        "a1": "可以，只要這個瀏覽器能解碼 AVIF。下載 JPG。檔案不上傳。",
+        "q2": "為什麼 AVIF 預覽是空的？",
+        "a2": "這個瀏覽器讀不了 AVIF。換較新的 Chrome、Edge 或 Safari。",
+        "q3": "轉換會更清晰嗎？",
+        "a3": "不會。只是換格式。還要修圖就留著 AVIF。",
+        "q4": "可以一次轉多張 AVIF 嗎？",
+        "a4": "可以。放一批，下載 JPG 的 ZIP。",
+        "q5": "聊天軟體認 JPG 嗎？",
+        "a5": "舊的郵件、列印和聊天軟體認的就是 JPG。"
+      },
+      "png-to-webp": {
+        "q1": "可以把 PNG 轉成 WebP 嗎？",
+        "a1": "可以。放下 PNG，下載 WebP。檔案不上傳。",
+        "q2": "WebP 能留住透明嗎？",
+        "a2": "可以。和 JPG 不同，WebP 能留住透明邊。",
+        "q3": "什麼時候還是用 PNG？",
+        "a3": "舊表單、郵件或編輯器可能不認 WebP。那些地方傳 PNG。",
+        "q4": "WebP 一定更小嗎？",
+        "a4": "照片和大圖通常更小。換掉原圖前對一下下載體積。",
+        "q5": "可以一次轉成 WebP 嗎？",
+        "a5": "可以。下載單張，或打包成 ZIP。"
+      }
     }
   },
   "qr": {
