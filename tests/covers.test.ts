@@ -19,6 +19,23 @@ it("serves every tool cover as an image instead of a locale redirect", async () 
   }
 });
 
+it("does not cache the app shell when a cover is missing", async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => new Response("missing", { status: 404 });
+  try {
+    const response = await worker.fetch(new Request("https://cv.cm/covers/games/guides/thwaite/play.jpg?v=2"), {
+      ASSETS: {
+        fetch: async () => new Response("<!doctype html>", { headers: { "Content-Type": "text/html; charset=utf-8" } }),
+      },
+    });
+    expect(response.status).toBe(404);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(await response.text()).toBe("Not Found");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
 it("serves covers from S3 when the object exists", async () => {
   const original = globalThis.fetch;
   globalThis.fetch = async (input) => {

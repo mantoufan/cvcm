@@ -41,5 +41,5 @@ export function gameGuideSteps(locale: Locale, id: GameId): WalkthroughStep[] {
 }
 
 export function walkthroughImage(gameId: GameId, slug: string): string {
-  return `/covers/games/guides/${gameId}/${slug}.jpg?v=1`;
+  return `/covers/games/guides/${gameId}/${slug}.jpg?v=2`;
 }
