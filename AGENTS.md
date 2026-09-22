@@ -101,7 +101,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `public/covers/` — tool/game/learn images; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)
-- `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted; Shiru freeware is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/data/`
+- `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted. Redistributable homebrew (Shiru freeware and open-source NES/GB/GBC/GBA ROMs) is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/assets/`
 - `src/locales/games/` — per-game SEO copy (cheats, walkthrough, FAQ)
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS`, games (`/{locale}/learn/{id}/`, `/{locale}/games/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight
