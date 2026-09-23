@@ -3659,5 +3659,97 @@
         "image": "license"
       }
     ]
+  },
+  "mega-mountain": {
+    "intro": "Mega Mountain は再配布できるオープンソースのファミコン自作。ページを開くと ROM が読み込まれる。走って跳んで、ステージの端まで進む。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "遊ぶ",
+        "body": "ROM はサイトから読み込まれる。方向キー、A と B。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "目標",
+        "body": "走って跳んで、ステージの端まで進む。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "GPL-3.0。ソースは https://github.com/pinobatch/MegaMountainNES。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "robotfindskitten": {
+    "intro": "robotfindskitten は再配布できるオープンソースのファミコン自作。ページを開くと ROM が読み込まれる。盤面を解く。詰まったらリセット。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "遊ぶ",
+        "body": "ROM はサイトから読み込まれる。方向キー、A と B。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "目標",
+        "body": "盤面を解く。詰まったらリセット。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "zlib。ソースは https://github.com/pinobatch/rfk-nes。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "space-gb": {
+    "intro": "Space は再配布できるオープンソースのゲームボーイ自作。ページを開くと ROM が読み込まれる。危険を避けてステージをクリアする。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "遊ぶ",
+        "body": "ROM はサイトから読み込まれる。方向キー、A と B。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "目標",
+        "body": "危険を避けてステージをクリアする。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/BotRandomness/SpaceGB。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "keep-up": {
+    "intro": "KeepUp は再配布できるオープンソースのゲームボーイ自作。ページを開くと ROM が読み込まれる。危険を避けてステージをクリアする。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "遊ぶ",
+        "body": "ROM はサイトから読み込まれる。方向キー、A と B。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "目標",
+        "body": "危険を避けてステージをクリアする。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/undergroundmonorail/KeepUp。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
   }
 }
