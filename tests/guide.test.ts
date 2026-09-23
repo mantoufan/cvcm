@@ -46,8 +46,9 @@ describe("tool guides", () => {
       for (let i = 1; i <= count; i++) {
         expect(guideText("en", `tools.${tool}.s${i}t`).length, `${tool} s${i}t`).toBeGreaterThan(2);
         expect(guideText("en", `tools.${tool}.s${i}b`).length, `${tool} s${i}b`).toBeGreaterThan(8);
-        expect(guideImage(tool, i).split("?")[0]).toBe(
-          `/covers/guides/${tool}/${String(i).padStart(2, "0")}.jpg`,
+        const file = String(i).padStart(2, "0");
+        expect(guideImage(tool, i).split("?")[0]).toMatch(
+          new RegExp(`^/covers/guides/${tool}/${file}(\\.v\\d+)?\\.jpg$`),
         );
       }
       expect(guideText("en", `tools.${tool}.s${count + 1}t`)).toBe(`tools.${tool}.s${count + 1}t`);

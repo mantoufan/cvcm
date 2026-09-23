@@ -123,8 +123,11 @@ const GUIDE_VER: Partial<Record<ToolId, string>> = {
 };
 
 export function guideImage(tool: ToolId, step: number): string {
-  const src = `/covers/guides/${tool}/${String(step).padStart(2, "0")}.jpg`;
+  const file = `${String(step).padStart(2, "0")}.jpg`;
+  const src = `/covers/guides/${tool}/${file}`;
   const ver = GUIDE_VER[tool];
+  // Cloudflare caches /covers/ without the query string. A new shot needs a new path.
+  if (ver && tool !== "portrait-sim") return src.replace(".jpg", `.v${ver}.jpg`);
   return ver ? `${src}?v=${ver}` : src;
 }
 
