@@ -3751,5 +3751,95 @@
         "image": "license"
       }
     ]
+  },
+  "detruit-les-ballons": {
+    "intro": "薄い青の画面に赤い風船。JOUER を押してから風船を割ります。 Antoine Boucher が 2010 年に作った風船割り。MIT で再配布できます。ブラウザの Ruffle で開きます。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "JOUER",
+        "body": "タイトル下の青いボタンで始まります。"
+      },
+      {
+        "id": "pop",
+        "title": "風船",
+        "body": "赤い風船をクリック。小さいほど当てにくいです。"
+      },
+      {
+        "id": "scores",
+        "title": "スコア",
+        "body": "メニューの Meilleurs scores がハイスコアです。"
+      },
+      {
+        "id": "mouse",
+        "title": "マウス",
+        "body": "クリックで遊びます。スマホのタップはクリックです。"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。Antoine Boucher、2010 年。https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "tag-chase": {
+    "intro": "JOUER のあと、矢印キーで動き、Space でタッチします。キーボード向きです。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "JOUER",
+        "body": "青いメニューの白いボタンで一回が始まります。"
+      },
+      {
+        "id": "move",
+        "title": "移動",
+        "body": "矢印キーで動きます。鬼ごっこはキーボード向きです。"
+      },
+      {
+        "id": "space",
+        "title": "Space",
+        "body": "開始後のタッチは Space です。"
+      },
+      {
+        "id": "faces",
+        "title": "顔",
+        "body": "メニューに浮かぶ顔が、その回のキャラクターです。"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。Antoine Boucher、2010 年。効果音に flashkit.com のクレジットがあります。https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "ricochet-kill": {
+    "intro": "1 から 15 を選びます。クリックで撃ち、弾を壁に当ててから目標へ跳ねさせます。",
+    "steps": [
+      {
+        "id": "levels",
+        "title": "面を選ぶ",
+        "body": "メニューは 3 行、1 から 15 です。"
+      },
+      {
+        "id": "aim",
+        "title": "狙う",
+        "body": "クリックで撃ちます。弾は壁に当たってから目標へ向かいます。"
+      },
+      {
+        "id": "help",
+        "title": "説明",
+        "body": "メニューの Instruction が操作説明です。"
+      },
+      {
+        "id": "mouse",
+        "title": "マウス",
+        "body": "狙いはクリックです。スマホのタップがそのクリックになります。"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。Antoine Boucher、2010 年。https://github.com/antoinebou12/FlashGames"
+      }
+    ]
   }
 }

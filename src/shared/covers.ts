@@ -239,6 +239,9 @@ export const GAME_COVER: Record<GameId, string> = {
   "robotfindskitten": "/covers/games/robotfindskitten.jpg?v=1",
   "space-gb": "/covers/games/space-gb.jpg?v=1",
   "keep-up": "/covers/games/keep-up.jpg?v=1",
+  "detruit-les-ballons": "/covers/games/detruit-les-ballons.jpg?v=1",
+  "tag-chase": "/covers/games/tag-chase.jpg?v=1",
+  "ricochet-kill": "/covers/games/ricochet-kill.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

@@ -3751,5 +3751,95 @@
         "image": "license"
       }
     ]
+  },
+  "detruit-les-ballons": {
+    "intro": "Red balloons sit on a pale blue screen. Press JOUER, then pop them.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Press JOUER",
+        "body": "The blue button under the title starts the game."
+      },
+      {
+        "id": "pop",
+        "title": "Pop balloons",
+        "body": "Click the red balloons. Smaller ones are harder to hit."
+      },
+      {
+        "id": "scores",
+        "title": "Scores",
+        "body": "Meilleurs scores on the menu is the high-score list."
+      },
+      {
+        "id": "mouse",
+        "title": "Mouse",
+        "body": "This game is played with clicks. A tap on a phone is a click."
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Antoine Boucher, 2010. SWF and credit: https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "tag-chase": {
+    "intro": "The menu says La Tags. Press JOUER, then chase with the arrow keys. Space is the action key.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Press JOUER",
+        "body": "The white button on the blue menu starts the chase."
+      },
+      {
+        "id": "move",
+        "title": "Move",
+        "body": "Arrow keys move you. On a phone, use the touch controls as clicks first; the chase wants a keyboard."
+      },
+      {
+        "id": "space",
+        "title": "Space",
+        "body": "Space is the tag action once the round starts."
+      },
+      {
+        "id": "faces",
+        "title": "Faces",
+        "body": "The menu shows round faces. They are the players in the chase."
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Antoine Boucher, 2010. A sound sting in the SWF credits flashkit.com. Source: https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "ricochet-kill": {
+    "intro": "Pick a level from 1 to 15. The author’s note says you click to bounce a shot off the walls and hit the target.",
+    "steps": [
+      {
+        "id": "levels",
+        "title": "Pick a level",
+        "body": "The menu is three rows, levels 1 through 15."
+      },
+      {
+        "id": "aim",
+        "title": "Aim",
+        "body": "Click to shoot. The shot is meant to bounce off a wall before it hits."
+      },
+      {
+        "id": "help",
+        "title": "Instruction",
+        "body": "The Instruction button on the menu is the in-game help."
+      },
+      {
+        "id": "mouse",
+        "title": "Mouse",
+        "body": "Aiming is a click. A phone tap acts as that click."
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Antoine Boucher, 2010. Source: https://github.com/antoinebou12/FlashGames"
+      }
+    ]
   }
 }

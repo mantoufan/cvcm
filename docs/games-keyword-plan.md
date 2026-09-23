@@ -55,6 +55,8 @@ One URL, not a pile of commercial SWF pages. Title is the query.
 
 Ruffle (MIT or Apache-2.0) runs in `/emu/flash`. The runtime is on S3 at `files/games/emu/ruffle/`, proxied as `/emu/assets/ruffle/`. The player asks for a manual upload when no file is present. Host a SWF only when its license allows redistribution. Single-file SWFs only; multi-file games and sitelocks stay off this page.
 
+Hosted MIT titles from Antoine Boucher, 2010 (`antoinebou12/FlashGames`): `detruit-les-ballons`, `tag-chase`, `ricochet-kill`.
+
 ## Emulator
 
 Most-maintained browser frontend researched 2026-09-18: **EmulatorJS/EmulatorJS** (4.2k stars, commits through 2026-08, used by zaixianwan.app). Cores on S3: fceumm, snes9x, gambatte, mgba, genesis_plus_gx. Player is `/emu/player.html` (iframe; EmulatorJS must not mount in the SPA). Nostalgist.js (986) is a nicer API but needs the same RetroArch WASM; jsnes is NES-only.

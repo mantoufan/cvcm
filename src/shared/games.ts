@@ -1579,6 +1579,36 @@ export const GAMES: readonly Game[] = [
     rom: "keep-up.gb",
     cheats: [],
   },
+  {
+    id: "detruit-les-ballons",
+    console: "flash",
+    genre: "action",
+    year: 2010,
+    core: "ruffle",
+    accept: ".swf",
+    rom: "detruit-les-ballons.swf",
+    cheats: [],
+  },
+  {
+    id: "tag-chase",
+    console: "flash",
+    genre: "action",
+    year: 2010,
+    core: "ruffle",
+    accept: ".swf",
+    rom: "tag-chase.swf",
+    cheats: [],
+  },
+  {
+    id: "ricochet-kill",
+    console: "flash",
+    genre: "puzzle",
+    year: 2010,
+    core: "ruffle",
+    accept: ".swf",
+    rom: "ricochet-kill.swf",
+    cheats: [],
+  },
 ] as const;
 
 export type GameId = (typeof GAMES)[number]["id"];

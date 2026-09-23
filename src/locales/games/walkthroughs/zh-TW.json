@@ -3751,5 +3751,95 @@
         "image": "license"
       }
     ]
+  },
+  "detruit-les-ballons": {
+    "intro": "標題是 Detruit Les Ballons。紅氣球停在淺藍背景上。點 JOUER 再去點氣球。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "點 JOUER",
+        "body": "標題下面的藍色按鈕是開始。"
+      },
+      {
+        "id": "pop",
+        "title": "打氣球",
+        "body": "點中紅氣球。小的更難點中。"
+      },
+      {
+        "id": "scores",
+        "title": "最高分",
+        "body": "選單上的 Meilleurs scores 是最高分列表。"
+      },
+      {
+        "id": "mouse",
+        "title": "滑鼠",
+        "body": "用點擊。手機上的點按就是點擊。"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "MIT。Antoine Boucher，2010 年。SWF：https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "tag-chase": {
+    "intro": "先點 JOUER。方向鍵移動，空白鍵是抓人。鍵盤比觸控合適。 Antoine Boucher 在 2010 年做的抓人遊戲，許可 MIT，已託管。選單是藍底圓臉，按鈕寫著 JOUER。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "點 JOUER",
+        "body": "藍底選單中間的白按鈕開始這一局。"
+      },
+      {
+        "id": "move",
+        "title": "移動",
+        "body": "方向鍵移動。抓人更適合鍵盤。"
+      },
+      {
+        "id": "space",
+        "title": "空白鍵",
+        "body": "開局後用空白鍵抓人。"
+      },
+      {
+        "id": "faces",
+        "title": "圓臉",
+        "body": "選單上漂著的圓臉就是這一局的角色。"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "MIT。Antoine Boucher，2010 年。SWF 裡有一段聲音標明來自 flashkit.com。源：https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "ricochet-kill": {
+    "intro": "從 1 到 15 選一關。作者的說明是用滑鼠點擊，讓子彈打在牆上彈出去打中目標。 Antoine Boucher 在 2010 年做的彈射關卡，許可 MIT，已託管。選單是 1 到 15 關。",
+    "steps": [
+      {
+        "id": "levels",
+        "title": "選關",
+        "body": "選單三行，1 到 15 關。"
+      },
+      {
+        "id": "aim",
+        "title": "瞄準",
+        "body": "點擊射擊。子彈要先打在牆上再彈向目標。"
+      },
+      {
+        "id": "help",
+        "title": "說明",
+        "body": "選單上的 Instruction 是遊戲裡的操作說明。"
+      },
+      {
+        "id": "mouse",
+        "title": "滑鼠",
+        "body": "用點擊瞄準。手機點按等於這次點擊。"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "MIT。Antoine Boucher，2010 年。源：https://github.com/antoinebou12/FlashGames"
+      }
+    ]
   }
 }

@@ -3751,5 +3751,95 @@
         "image": "license"
       }
     ]
+  },
+  "detruit-les-ballons": {
+    "intro": "옅은 파란 화면에 빨간 풍선. JOUER를 누른 뒤 풍선을 터트립니다. Antoine Boucher가 2010년에 만든 풍선 게임. MIT라 재배포할 수 있습니다. 브라우저의 Ruffle로 엽니다.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "JOUER",
+        "body": "제목 아래 파란 버튼이 시작입니다."
+      },
+      {
+        "id": "pop",
+        "title": "풍선",
+        "body": "빨간 풍선을 클릭합니다. 작을수록 맞히기 어렵습니다."
+      },
+      {
+        "id": "scores",
+        "title": "점수",
+        "body": "메뉴의 Meilleurs scores가 최고 점수입니다."
+      },
+      {
+        "id": "mouse",
+        "title": "마우스",
+        "body": "클릭으로 합니다. 휴대폰 탭은 클릭입니다."
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "tag-chase": {
+    "intro": "JOUER 다음 방향키로 움직이고 Space로 잡습니다. 키보드가 편합니다.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "JOUER",
+        "body": "파란 메뉴의 흰 버튼이 한 판을 시작합니다."
+      },
+      {
+        "id": "move",
+        "title": "이동",
+        "body": "방향키로 움직입니다. 술래잡기는 키보드가 편합니다."
+      },
+      {
+        "id": "space",
+        "title": "Space",
+        "body": "시작한 뒤 잡기는 Space입니다."
+      },
+      {
+        "id": "faces",
+        "title": "얼굴",
+        "body": "메뉴에 떠 있는 얼굴이 그 판의 캐릭터입니다."
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. Antoine Boucher, 2010. SWF 안 효과음에 flashkit.com 표기가 있습니다. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "ricochet-kill": {
+    "intro": "1에서 15를 고릅니다. 클릭으로 쏘고, 탄이 벽에 맞은 뒤 목표로 튕기게 합니다.",
+    "steps": [
+      {
+        "id": "levels",
+        "title": "판 고르기",
+        "body": "메뉴는 세 줄, 1부터 15입니다."
+      },
+      {
+        "id": "aim",
+        "title": "조준",
+        "body": "클릭으로 쏩니다. 탄은 벽에 먼저 맞고 목표로 갑니다."
+      },
+      {
+        "id": "help",
+        "title": "설명",
+        "body": "메뉴의 Instruction이 조작 설명입니다."
+      },
+      {
+        "id": "mouse",
+        "title": "마우스",
+        "body": "조준은 클릭입니다. 휴대폰 탭이 그 클릭입니다."
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
   }
 }

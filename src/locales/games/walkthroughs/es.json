@@ -3751,5 +3751,95 @@
         "image": "license"
       }
     ]
+  },
+  "detruit-les-ballons": {
+    "intro": "Globos rojos sobre un fondo azul claro. Pulsa JOUER y luego los globos.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Pulsa JOUER",
+        "body": "El botón azul bajo el título empieza la partida."
+      },
+      {
+        "id": "pop",
+        "title": "Globos",
+        "body": "Haz clic en los globos rojos. Los pequeños cuestan más."
+      },
+      {
+        "id": "scores",
+        "title": "Puntos",
+        "body": "Meilleurs scores en el menú es la lista de récords."
+      },
+      {
+        "id": "mouse",
+        "title": "Ratón",
+        "body": "Se juega con clics. Un toque en el teléfono es un clic."
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "tag-chase": {
+    "intro": "Pulsa JOUER, muévete con las flechas y usa espacio para pillar. El teclado va mejor.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Pulsa JOUER",
+        "body": "El botón blanco del menú azul empieza la ronda."
+      },
+      {
+        "id": "move",
+        "title": "Moverse",
+        "body": "Las flechas mueven. Pillarse va mejor con teclado."
+      },
+      {
+        "id": "space",
+        "title": "Espacio",
+        "body": "Después de empezar, espacio es el toque."
+      },
+      {
+        "id": "faces",
+        "title": "Caras",
+        "body": "Las caras del menú son los jugadores de la ronda."
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Antoine Boucher, 2010. Un sonido del SWF cita flashkit.com. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
+  },
+  "ricochet-kill": {
+    "intro": "Elige del 1 al 15. Un clic dispara para que la bala toque una pared y llegue al blanco.",
+    "steps": [
+      {
+        "id": "levels",
+        "title": "Elige nivel",
+        "body": "El menú tiene tres filas, del 1 al 15."
+      },
+      {
+        "id": "aim",
+        "title": "Apunta",
+        "body": "Clic para disparar. El tiro debe tocar una pared antes del blanco."
+      },
+      {
+        "id": "help",
+        "title": "Instruction",
+        "body": "El botón Instruction del menú es la ayuda del juego."
+      },
+      {
+        "id": "mouse",
+        "title": "Ratón",
+        "body": "Se apunta con un clic. Un toque en el teléfono es ese clic."
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
+      }
+    ]
   }
 }
