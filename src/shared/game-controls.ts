@@ -45,6 +45,14 @@ const MD: ControlRow[] = [
   { action: "start", keys: "Enter" },
 ];
 
+const FLASH: ControlRow[] = [
+  { action: "pointer", keys: "Mouse" },
+  { action: "primary", keys: "Click" },
+  { action: "secondary", keys: "Right click" },
+  { action: "move", keys: "← ↑ ↓ →" },
+  { action: "start", keys: "Enter" },
+];
+
 export const CONSOLE_CONTROLS: Record<GameConsoleId, ControlRow[]> = {
   fc: NES,
   sfc: SNES,
@@ -52,4 +60,5 @@ export const CONSOLE_CONTROLS: Record<GameConsoleId, ControlRow[]> = {
   gbc: GB,
   gba: GBA,
   md: MD,
+  flash: FLASH,
 };

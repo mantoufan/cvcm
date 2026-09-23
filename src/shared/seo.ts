@@ -480,8 +480,43 @@ export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
   return faqFrom(locale, `faq.learn.${tutorial}`);
 }
 
-export function gamesHubFaqItems(locale: Locale): FaqItem[] {
+export function gamesHubFaqItems(locale: Locale, consoleId?: GameConsoleId | null): FaqItem[] {
+  if (consoleId === "flash") {
+    const specific = faqFrom(locale, "faq.gamesFlash");
+    if (specific.length) return specific;
+  }
   return faqFrom(locale, "faq.games");
+}
+
+export function flashHubHowToJsonLd(locale: Locale): Record<string, unknown> {
+  const page = pageCanonical(locale, { games: true, console: "flash" });
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: lookup(locale, "meta.titleGamesFlash"),
+    description: lookup(locale, "games.flash.lead"),
+    step: [1, 2, 3, 4, 5].map((i) => ({
+      "@type": "HowToStep",
+      position: i,
+      name: lookup(locale, `games.flash.s${i}t`),
+      text: lookup(locale, `games.flash.s${i}b`),
+      url: `${page}#flash-s${i}`,
+    })),
+  };
+}
+
+export function flashHubSoftwareJsonLd(locale: Locale): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: lookup(locale, "games.flash.title"),
+    description: lookup(locale, "meta.descGamesFlash"),
+    applicationCategory: "GameApplication",
+    operatingSystem: "Web",
+    browserRequirements: "Requires JavaScript and WebAssembly",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    url: pageCanonical(locale, { games: true, console: "flash" }),
+  };
 }
 
 export function marketBreadcrumbJsonLd(locale: Locale, id: MarketId | null): Record<string, unknown> {
@@ -515,6 +550,7 @@ export function faqJsonLd(
   resizeJob?: ResizeJobId | null,
   market?: MarketId | null,
   marketsHub?: boolean,
+  gamesConsole?: GameConsoleId | null,
 ): Record<string, unknown> | null {
   const items = market
     ? marketFaqItems(locale, market)
@@ -523,7 +559,7 @@ export function faqJsonLd(
       : game
         ? gameFaqItems(locale, game)
         : gamesHub
-          ? gamesHubFaqItems(locale)
+          ? gamesHubFaqItems(locale, gamesConsole)
           : tutorial
         ? learnFaqItems(locale, tutorial)
         : tool === "convert" && convertJob
@@ -651,6 +687,7 @@ export function applyHtmlSeo(
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="software-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
@@ -671,6 +708,7 @@ export function applyHtmlSeo(
     seo.resizeJob,
     seo.market ?? null,
     Boolean(seo.markets && !seo.market),
+    seo.console,
   );
   if (seo.devicePage) {
     tags.push(
@@ -691,6 +729,11 @@ export function applyHtmlSeo(
     tags.push(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(gameHowToJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="game-jsonld">${JSON.stringify(gameVideoGameJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.games && seo.console === "flash") {
+    tags.push(
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(flashHubHowToJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(flashHubSoftwareJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
     );
   } else if (seo.learn && seo.tutorial) {
     tags.push(

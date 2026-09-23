@@ -304,8 +304,13 @@ function withHeaders(res: Response, pathname: string): Response {
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "no-referrer");
   const player =
-    pathname === "/emu/player.html" || pathname === "/emu/player" || pathname === "/emu/player/";
-  const emuShell = player || pathname === "/emu/player.js";
+    pathname === "/emu/player.html" ||
+    pathname === "/emu/player" ||
+    pathname === "/emu/player/" ||
+    pathname === "/emu/flash.html" ||
+    pathname === "/emu/flash" ||
+    pathname === "/emu/flash/";
+  const emuShell = player || pathname === "/emu/player.js" || pathname === "/emu/flash.js";
   if (player) headers.delete("X-Frame-Options");
   else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");

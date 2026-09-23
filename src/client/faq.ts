@@ -6,6 +6,8 @@ import {
   faqItems,
   resizeJobFaqItems,
   faqJsonLd,
+  flashHubHowToJsonLd,
+  flashHubSoftwareJsonLd,
   gameHowToJsonLd,
   gameVideoGameJsonLd,
   howToJsonLd,
@@ -14,7 +16,7 @@ import {
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
-import type { GameId } from "../shared/games";
+import type { GameConsoleId, GameId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import type { DevicePageId } from "../shared/device";
@@ -68,10 +70,12 @@ export function syncPageJsonLd(
   market: MarketId | null = null,
   marketsHub = false,
   devicePage: DevicePageId | null = null,
+  gamesConsole: GameConsoleId | null = null,
 ): void {
+  const flashHub = gamesHub && gamesConsole === "flash";
   const faq = devicePage
     ? deviceFaqJsonLd(locale, devicePage)
-    : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub);
+    : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub, gamesConsole);
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "breadcrumb-jsonld",
@@ -87,13 +91,16 @@ export function syncPageJsonLd(
       ? null
       : game
         ? gameHowToJsonLd(locale, game)
-        : tutorial
-          ? howToJsonLd(locale, tutorial)
-          : tool
-            ? toolHowToJsonLd(locale, tool)
-            : null,
+        : flashHub
+          ? flashHubHowToJsonLd(locale)
+          : tutorial
+            ? howToJsonLd(locale, tutorial)
+            : tool
+              ? toolHowToJsonLd(locale, tool)
+              : null,
   );
   writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
+  writeJsonLd("software-jsonld", flashHub ? flashHubSoftwareJsonLd(locale) : null);
 }
 
 function writeJsonLd(id: string, data: Record<string, unknown> | null): void {

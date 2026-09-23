@@ -103,7 +103,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/device/` — device column (`/{locale}/device/`, IP via `GET /api/device/ip`, not stored)
 - `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)
 - Asset tools are the `assets` group in `CATEGORIES`: `gold`, `silver`, `platinum`, `palladium`, `oil`, `stocks` (`/{locale}/{id}/`). No live quotes. Old `/markets/{gold|silver|stocks}/` URLs 301 to those tools. Covers live on S3 at `files/covers/{id}-sweet.jpg`.
-- `src/shared/games.ts` — console + genre catalog. Commercial ROMs are not hosted. Redistributable homebrew (Shiru freeware and open-source NES/GB/GBC/GBA ROMs) is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/assets/`
+- `src/shared/games.ts` — console + genre catalog, including `flash`. Commercial ROMs and commercial SWFs are not hosted. Redistributable homebrew (Shiru freeware and open-source NES/GB/GBC/GBA ROMs) is on S3 (`files/games/roms`). EmulatorJS cores on S3 (`files/games/emu`), proxied at `/emu/assets/`. Flash uses Ruffle (`/emu/flash`, runtime at `/emu/assets/ruffle/`). A missing ROM or SWF shows an in-player prompt to upload a local file.
 - `src/locales/games/` — per-game SEO copy (cheats, walkthrough, FAQ)
 - `src/shared/path.ts` — `CATEGORIES`, `TOOLS`, `TUTORIALS`, games (`/{locale}/learn/{id}/`, `/{locale}/games/`; locale paths lowercase: `zh-cn` `zh-tw`)
 - `src/shared/md.ts` — markdown/html render + highlight

@@ -180,8 +180,8 @@
     "descCompound": "在浏览器里算复利终值。本金、年利率、年数、复利次数。不上传。",
     "titleVat": "增值税计算 — 销售税 — cv.cm",
     "descVat": "在浏览器里算增值税或销售税。含税或不含税。不上传。",
-    "titleGames": "FC SFC GB GBA 在线玩｜金手指 攻略 — cv.cm",
-    "descGames": "浏览器里玩红白机、超任、GB、GBA。金手指、攻略、开源模拟器。自制游戏即开。商业 ROM 自行载入，不上传。",
+    "titleGames": "FC SFC GB GBA Flash 在线玩｜金手指 攻略 — cv.cm",
+    "descGames": "浏览器里玩红白机、超任、GB、GBA 和 Flash。金手指、攻略、开源模拟器。Flash 用 Ruffle 打开 SWF。自制游戏即开。商业 ROM 自行载入，不上传。",
     "titleGamesFc": "FC 红白机游戏 在线玩｜金手指 攻略 — cv.cm",
     "descGamesFc": "魂斗罗、超级马里奥、坦克大战。金手指和攻略。商业 ROM 自行载入。",
     "titleGamesSfc": "SFC 超任游戏 在线玩｜金手指 攻略 — cv.cm",
@@ -312,6 +312,8 @@
     "descOil": "在浏览器里把石油桶、美制加仑和升互相换算。一桶是 42 美制加仑。不会上传。",
     "titleStocks": "公司市值和市盈率计算 — cv.cm",
     "descStocks": "用你输入的价格和流通在外总股数计算公司市值，用全年每股收益计算市盈率，用全年每股股息计算股息率。没有行情。不会上传。",
+    "titleGamesFlash": "Flash 游戏在线玩｜SWF 播放器 — cv.cm",
+    "descGamesFlash": "在浏览器里玩 Flash 小游戏：用 Ruffle 打开 SWF，不用装插件。没有文件就手动上传，文件不离开这个标签页。",
     "titlePercentOff": "怎么算折扣 | cv.cm",
     "descPercentOff": "100 的 20% 折扣是售价 80.00、节省 20.00。这不是 20% 利润率。120% 折扣可以低于零。负的百分比会抬高价格。不上传。",
     "titleEncodeUrl": "怎么做网址编码 | cv.cm",
@@ -2300,7 +2302,7 @@
     },
     "games": {
       "q1": "能在浏览器玩 FC 吗？",
-      "a1": "能。cv.cm 嵌入 GitHub 上的 EmulatorJS（fceumm、snes9x、gambatte、mGBA、Genesis Plus GX）。核心在 S3。手机有虚拟手柄。",
+      "a1": "能。FC 到 MD 用 GitHub 上的 EmulatorJS（fceumm、snes9x、gambatte、mGBA、Genesis Plus GX），核心在 S3。Flash 用 Ruffle 打开 SWF。手机有虚拟手柄。",
       "q2": "有超级马里奥、魂斗罗 ROM 吗？",
       "a2": "不提供商业 ROM。那些页面有金手指和攻略，请载入你自己的文件。Shiru 的 Alter Ego、Lawn Mower 可直接玩。",
       "q3": "金手指怎么用？",
@@ -2308,7 +2310,7 @@
       "q4": "ROM 会上传吗？",
       "a4": "不会。本地文件只在当前标签页交给模拟器。可合法分发的自制 ROM 从我们的 S3 读取。",
       "q5": "手机能玩哪些机种？",
-      "a5": "FC、GB、GBC，以及多数 GBA / MD。SFC 更吃性能。格斗和赛车建议横屏加手柄。"
+      "a5": "FC、GB、GBC，以及多数 GBA / MD。SFC 更吃性能。Flash 打开你自己的 SWF，触屏当成鼠标。格斗和赛车建议横屏加手柄。"
     },
     "reverse": {
       "q1": "Can I reverse text here?",
@@ -2685,6 +2687,18 @@
       "a4": "留空。除数是 0 时不算。",
       "q5": "这里有股价吗？",
       "a5": "没有。价格由你输入。这是算术，不是买卖建议。"
+    },
+    "gamesFlash": {
+      "q1": "浏览器还能玩 Flash 吗？",
+      "a1": "能。这一页用开源 Ruffle 在浏览器里跑 SWF，不用安装 Adobe Flash Player。",
+      "q2": "没有游戏文件怎么办？",
+      "a2": "画面里会提示需要手动上传。点「选择 SWF」。文件只留在当前标签页，不会发到服务器。",
+      "q3": "为什么有的 SWF 打不开？",
+      "a3": "很多游戏不止一个文件，或者只允许在原来的网站上运行。这一页适合单个、能独立运行的 SWF。较新的 ActionScript 3 游戏可能不完整。",
+      "q4": "手机能玩 Flash 吗？",
+      "a4": "能打开。触屏会被当成鼠标。要悬停或键盘的游戏更适合电脑。",
+      "q5": "这里能下载经典 Flash 游戏吗？",
+      "a5": "不能。请使用你自己拥有的 SWF。只有许可允许再分发的文件才会托管在这里。"
     }
   },
   "qr": {
@@ -4846,8 +4860,8 @@
     "empty": "这个筛选没有游戏。",
     "hub": {
       "kicker": "红白机 · 浏览器 · 手机",
-      "title": "FC、SFC、GB、GBA 在线玩",
-      "lead": "金手指、攻略、开源模拟器。自制游戏即开。商业作载入你自己的 ROM，不上传。",
+      "title": "FC、SFC、GB、GBA、Flash 在线玩",
+      "lead": "金手指、攻略、开源模拟器。自制游戏即开。商业作载入你自己的 ROM，不上传。Flash 用 Ruffle 打开 SWF。",
       "menu": "全部游戏",
       "blurb": "模拟器老游戏，带金手指和攻略。",
       "all": "查看全部"
@@ -4858,7 +4872,8 @@
       "gb": "Game Boy",
       "gbc": "Game Boy Color",
       "gba": "GBA",
-      "md": "世嘉 MD"
+      "md": "世嘉 MD",
+      "flash": "Flash"
     },
     "genres": {
       "platform": "平台",
@@ -4881,7 +4896,34 @@
       "l": "L",
       "r": "R",
       "start": "Start",
-      "select": "Select"
+      "select": "Select",
+      "pointer": "鼠标",
+      "primary": "左键",
+      "secondary": "右键"
+    },
+    "needFile": "没有 ROM",
+    "needFileBody": "需要手动上传。文件只留在这个标签页，不会发到服务器。",
+    "flash": {
+      "kicker": "Flash · SWF · 浏览器",
+      "title": "Flash 游戏在线玩",
+      "lead": "用开源 Ruffle 在浏览器里打开 SWF，不用安装 Flash 插件。画面里没有文件时，手动上传你自己的 SWF，文件只留在这个标签页。",
+      "catalog": "许可允许再分发的 Flash 作品会列在这里。现在请上传你自己的 SWF。",
+      "load": "选择 SWF",
+      "needFile": "没有 SWF",
+      "needFileBody": "需要手动上传。文件只留在这个标签页，不会发到服务器。",
+      "guide": "怎么在浏览器打开 SWF",
+      "emulator": "Ruffle（GitHub 开源）",
+      "mobile": "触屏会被当成鼠标。要键盘的游戏更适合电脑。",
+      "s1t": "选择 SWF",
+      "s1b": "点「选择 SWF」，选一个 .swf。画面是空的时候，会提示需要手动上传。文件只留在这个标签页。",
+      "s2t": "单个文件",
+      "s2b": "这一页适合一个文件就能运行的游戏和动画。还要去加载别的 SWF、XML，或只认原来网站的，会停在加载。",
+      "s3t": "用鼠标",
+      "s3b": "多数 Flash 用鼠标左键。手机上的点按会被当成点击。游戏要键盘时，用方向键。",
+      "s4t": "打开声音",
+      "s4b": "浏览器会拦住自动播放的声音。点一下画面，声音才会出来。",
+      "s5t": "用你自己的文件",
+      "s5b": "这里不托管商业 Flash 游戏。请用你已经拥有的 SWF。只有许可允许再分发的作品才会放进列表。"
     }
   },
   "reverse": {

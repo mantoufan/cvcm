@@ -481,7 +481,7 @@ export function render(): void {
           ? COVER[tool]
           : null;
   upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole);
 
   const root = appEl();
   clear(root);
@@ -492,7 +492,7 @@ function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
   void mountPage(main, loc);
 
-  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage ? " is-tool" : "") + (gameId ? " is-game" : "") },
+  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage ? " is-tool" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),

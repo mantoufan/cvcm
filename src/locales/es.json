@@ -180,8 +180,8 @@
     "descCompound": "Estima un valor futuro en el navegador. Principal, tipo, años, frecuencia. Nada se sube.",
     "titleVat": "Calculadora de IVA — impuesto sobre ventas — cv.cm",
     "descVat": "Suma IVA o separa un precio con impuesto en el navegador. Nada se sube.",
-    "titleGames": "Juega NES, SNES, GB, GBA en el navegador — trucos y guías — cv.cm",
-    "descGames": "Retro games in this tab. Cheats, walkthroughs, and EmulatorJS from GitHub. Homebrew plays instantly. Classic titles load from your ROM. Nothing is uploaded.",
+    "titleGames": "Juega NES, SNES, GB, GBA y Flash en el navegador — trucos y guías — cv.cm",
+    "descGames": "Juegos retro en esta pestaña. Trucos, guías y EmulatorJS. Flash abre SWF con Ruffle. El homebrew empieza solo. Los clásicos cargan tu ROM. Nada se sube.",
     "titleGamesFc": "FC / NES games — cheats and walkthroughs — cv.cm",
     "descGamesFc": "Play NES games in the browser. Contra, Super Mario Bros, Battle City. Cheats and short walkthroughs. Load your own ROM.",
     "titleGamesSfc": "SFC / SNES games — cheats and walkthroughs — cv.cm",
@@ -312,6 +312,8 @@
     "descOil": "Convierte un barril de petróleo, un galón de EE. UU. y un litro en el navegador. Un barril son 42 galones de EE. UU. No se sube nada.",
     "titleStocks": "Capitalización y PER — cv.cm",
     "descStocks": "Calcula la capitalización con un precio y las acciones en circulación, el PER con el beneficio anual por acción y la rentabilidad con el dividendo anual. Sin cotizaciones.",
+    "titleGamesFlash": "Juega Flash en el navegador — reproductor SWF — cv.cm",
+    "descGamesFlash": "Abre un SWF en el navegador con Ruffle. Sin plugin de Flash. Si no hay archivo, súbelo tú. El archivo se queda en esta pestaña.",
     "titlePercentOff": "Cómo calcular un descuento | cv.cm",
     "descPercentOff": "Un 20% sobre 100 es un precio de 80,00 y un ahorro de 20,00. No es un margen del 20%. Un 120% puede bajar de cero. Un porcentaje negativo sube el precio. Nada se sube.",
     "titleEncodeUrl": "Cómo codificar una URL | cv.cm",
@@ -2300,7 +2302,7 @@
     },
     "games": {
       "q1": "Can I play NES games in the browser?",
-      "a1": "Yes. cv.cm embeds EmulatorJS from GitHub (fceumm, snes9x, gambatte, mGBA, Genesis Plus GX). Cores are on S3. Touch controls work on phones.",
+      "a1": "Sí. De NES a Mega Drive se usa EmulatorJS de GitHub. Los núcleos están en S3. Flash abre un SWF con Ruffle. En el teléfono hay controles táctiles.",
       "q2": "Do you host Super Mario or Contra ROMs?",
       "a2": "No commercial dumps. Those pages have cheats and walkthroughs; you load a ROM you own. Shiru freeware (Alter Ego, Lawn Mower) starts without a file.",
       "q3": "How do cheat codes work?",
@@ -2308,7 +2310,7 @@
       "q4": "Does the ROM get uploaded?",
       "a4": "No. A local file is read in this tab and handed to the emulator. Homebrew we may redistribute is fetched from our S3 bucket.",
       "q5": "Which consoles work on a phone?",
-      "a5": "NES, GB, GBC, and most GBA / Mega Drive titles. SNES is heavier. Landscape plus a Bluetooth pad helps fighters and karts."
+      "a5": "NES, GB, GBC y la mayoría de GBA / Mega Drive. SNES pesa más. Flash abre un SWF tuyo y el toque cuenta como ratón. Lucha y karts van mejor en horizontal con un mando."
     },
     "reverse": {
       "q1": "Can I reverse text here?",
@@ -2685,6 +2687,18 @@
       "a4": "La rentabilidad queda en blanco porque el divisor es cero.",
       "q5": "¿Hay un precio de la acción?",
       "a5": "No. Tú escribes el precio. Es aritmética, no una recomendación."
+    },
+    "gamesFlash": {
+      "q1": "¿Se puede jugar a Flash en el navegador?",
+      "a1": "Sí. Esta página ejecuta SWF con Ruffle, un emulador de Flash de código abierto. No hace falta instalar Adobe Flash Player.",
+      "q2": "¿Y si no hay archivo?",
+      "a2": "El reproductor pide subirlo. Elige un SWF. El archivo se queda en esta pestaña y no se envía a un servidor.",
+      "q3": "¿Por qué un SWF no arranca?",
+      "a3": "Muchos juegos son más de un archivo, o solo funcionan en su web original. Esta página es para un SWF que pueda ir solo. Parte de ActionScript 3 sigue incompleta.",
+      "q4": "¿Flash funciona en el teléfono?",
+      "a4": "Se abre. El toque cuenta como el ratón. Los juegos que necesitan pasar el cursor o el teclado van mejor en un ordenador.",
+      "q5": "¿Puedo descargar aquí juegos Flash clásicos?",
+      "a5": "No. Usa un SWF que ya tengas. cv.cm solo alojará un SWF si su licencia permite redistribuirlo."
     }
   },
   "qr": {
@@ -4846,8 +4860,8 @@
     "empty": "No games in this filter.",
     "hub": {
       "kicker": "Retro · Navegador · Móvil",
-      "title": "Juega FC, SFC, GB, GBA en el navegador",
-      "lead": "Cheats, walkthroughs, and an open-source emulator. Homebrew starts here. Classic games load from your ROM. Nothing is uploaded.",
+      "title": "Juega FC, SFC, GB, GBA y Flash en el navegador",
+      "lead": "Trucos, guías y un emulador de código abierto. El homebrew empieza solo. Los clásicos cargan tu ROM. Flash abre un SWF con Ruffle. Nada se sube.",
       "menu": "Todos los juegos",
       "blurb": "Retro emulator games with cheats and guides.",
       "all": "See all"
@@ -4858,7 +4872,8 @@
       "gb": "Game Boy",
       "gbc": "Game Boy Color",
       "gba": "Game Boy Advance",
-      "md": "Mega Drive"
+      "md": "Mega Drive",
+      "flash": "Flash"
     },
     "genres": {
       "platform": "Platform",
@@ -4881,7 +4896,34 @@
       "l": "L",
       "r": "R",
       "start": "Start",
-      "select": "Select"
+      "select": "Select",
+      "pointer": "Ratón",
+      "primary": "Clic",
+      "secondary": "Clic derecho"
+    },
+    "needFile": "No hay ROM",
+    "needFileBody": "Súbela manualmente. El archivo se queda en esta pestaña y no se envía a un servidor.",
+    "flash": {
+      "kicker": "Flash · SWF · Navegador",
+      "title": "Juega Flash en el navegador",
+      "lead": "Abre un SWF en esta pestaña con Ruffle. Sin plugin de Flash. Si el reproductor está vacío, sube el tuyo. El archivo no sale de la pestaña.",
+      "catalog": "Los Flash que se puedan redistribuir aparecerán aquí. Por ahora, sube un SWF que ya tengas.",
+      "load": "Elegir SWF",
+      "needFile": "No hay SWF",
+      "needFileBody": "Súbelo manualmente. El archivo se queda en esta pestaña y no se envía a un servidor.",
+      "guide": "Cómo abrir un SWF en el navegador",
+      "emulator": "Ruffle (código abierto, GitHub)",
+      "mobile": "Un toque cuenta como un clic. Los juegos de teclado van mejor en un ordenador.",
+      "s1t": "Elige un SWF",
+      "s1b": "Pulsa Elegir SWF y selecciona un .swf. Si la pantalla está vacía, pide que lo subas. El archivo se queda en esta pestaña.",
+      "s2t": "Un solo archivo",
+      "s2b": "Esta página ejecuta un SWF que puede arrancar solo. Los juegos que cargan más SWF, XML o su web antigua se quedan en la carga.",
+      "s3t": "Ratón",
+      "s3b": "La mayoría usa el botón izquierdo. Un toque en el teléfono es un clic. Las flechas sirven si el juego pide teclado.",
+      "s4t": "Sonido",
+      "s4b": "El navegador bloquea el audio automático. Haz clic una vez en la imagen y suena.",
+      "s5t": "Tu archivo",
+      "s5b": "Aquí no se alojan juegos Flash comerciales. Usa un SWF que ya tengas. Solo entrarán en la lista los que permitan redistribución."
     }
   },
   "reverse": {

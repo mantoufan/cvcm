@@ -41,6 +41,38 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
   const loc = locale();
   const genre = currentGenre();
   const list = gamesFor(consoleId, genre);
+  const flash = consoleId === "flash";
+  const catalog = list.length
+    ? h("div", { class: "tiles" }, ...list.map((game) => gameTile(loc, game)))
+    : h("p", { class: "learn-empty" }, flash && !genre ? t("games.flash.catalog") : t("games.empty"));
+  if (flash) {
+    host.append(
+      h("header", { class: "tool-head game-head" },
+        h("a", { class: "back", href: gamesHref(loc, null), "data-nav": "games" }, t("games.back")),
+        h("p", { class: "kicker" }, t("games.flash.kicker")),
+        h("h1", null, t("games.flash.title")),
+      ),
+      player({
+        console: "flash",
+        core: "ruffle",
+        accept: ".swf",
+        name: t("games.flash.title"),
+        romUrl: null,
+        cheats: [],
+      }),
+      h("p", { class: "lede game-lead" }, t("games.flash.lead")),
+      filters(loc, consoleId, genre),
+      h("section", { class: "wall" },
+        h("div", { class: "wall-h" },
+          h("h2", null, t("games.consoles.flash")),
+        ),
+        catalog,
+      ),
+      flashGuide(),
+      gamesFaq(loc, consoleId),
+    );
+    return;
+  }
   host.append(
     h("section", { class: "hero-band" },
       h("span", { class: "hero-ornament", "aria-hidden": "true" }, "✦"),
@@ -53,11 +85,22 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
       h("div", { class: "wall-h" },
         h("h2", null, consoleId ? t(`games.consoles.${consoleId}`) : t("nav.games")),
       ),
-      list.length
-        ? h("div", { class: "tiles" }, ...list.map((game) => gameTile(loc, game)))
-        : h("p", { class: "learn-empty" }, t("games.empty")),
+      catalog,
     ),
-    gamesFaq(loc),
+    gamesFaq(loc, consoleId),
+  );
+}
+
+function flashGuide(): HTMLElement {
+  const steps = [1, 2, 3, 4, 5].map((i) =>
+    h("li", { id: `flash-s${i}`, class: "guide-step" },
+      h("h3", null, t(`games.flash.s${i}t`)),
+      h("p", null, t(`games.flash.s${i}b`)),
+    ),
+  );
+  return h("section", { class: "game-section game-guide-section", "aria-labelledby": "flash-guide-title" },
+    h("h2", { id: "flash-guide-title" }, t("games.flash.guide")),
+    h("ol", { class: "game-guide" }, ...steps),
   );
 }
 
@@ -139,7 +182,14 @@ export function mountGame(host: HTMLElement, id: GameId): void {
       h("p", { class: "kicker" }, `${t(`games.consoles.${game.console}`)} · ${t(`games.genres.${game.genre}`)}`),
       h("h1", null, copy.name),
     ),
-    player(game, copy.name),
+    player({
+      console: game.console,
+      core: game.core,
+      accept: game.accept,
+      name: copy.name,
+      romUrl: `${GAME_ROM_BASE}${gameRomFile(game)}`,
+      cheats: emulatorCheats(game),
+    }),
     h("p", { class: "lede game-lead" }, copy.lead),
     h("figure", { class: "game-hero" },
       h("img", {
@@ -211,61 +261,101 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   );
 }
 
-function player(game: Game, name: string): HTMLElement {
+function player(spec: {
+  console: GameConsoleId;
+  core: string;
+  accept: string;
+  name: string;
+  romUrl: string | null;
+  cheats: { name: string; code: string }[];
+}): HTMLElement {
+  const flash = spec.console === "flash";
   const box = h("section", { class: "game-play", "aria-label": t("games.play") });
   const frame = h("iframe", {
     class: "game-frame",
-    title: name,
-    allow: "autoplay; gamepad",
+    title: spec.name,
+    allow: "autoplay; fullscreen; gamepad",
     src: "about:blank",
   }) as HTMLIFrameElement;
   const status = h("p", { class: "game-note" }, t("games.byoNote"));
-  const romUrl = `${GAME_ROM_BASE}${gameRomFile(game)}`;
+  const empty = h("div", {
+    class: "game-empty",
+    role: "status",
+    hidden: spec.romUrl ? true : false,
+  },
+    h("p", { class: "game-empty-title" }, t(flash ? "games.flash.needFile" : "games.needFile")),
+    h("p", null, t(flash ? "games.flash.needFileBody" : "games.needFileBody")),
+    h("button", { class: "btn", type: "button" }, t(flash ? "games.flash.load" : "games.loadRom")),
+  );
+  const showEmpty = (): void => { empty.hidden = false; };
+  const hideEmpty = (): void => { empty.hidden = true; };
 
+  const shellPath = flash ? "/emu/flash" : "/emu/player";
   const boot = (payload: Record<string, unknown>): void => {
+    hideEmpty();
+    const message = { type: "boot", core: spec.core, name: spec.name, ...payload };
+    let ready = false;
+    try {
+      const path = new URL(frame.src, location.origin).pathname.replace(/\/$/, "");
+      ready = path === shellPath && !!frame.contentWindow;
+    } catch {
+      ready = false;
+    }
+    if (ready) {
+      frame.contentWindow?.postMessage(message, location.origin);
+      return;
+    }
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
-    const qs = new URLSearchParams({ core: game.core, name, lang });
+    const qs = new URLSearchParams({ core: spec.core, name: spec.name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
-    frame.src = `/emu/player?v=5&${qs.toString()}`;
-    const send = (): void => {
-      frame.contentWindow?.postMessage({ type: "boot", core: game.core, name, ...payload }, location.origin);
-    };
-    frame.addEventListener("load", send, { once: true });
+    frame.src = `${shellPath}?v=${flash ? "1" : "5"}&${qs.toString()}`;
+    frame.addEventListener("load", () => {
+      frame.contentWindow?.postMessage(message, location.origin);
+    }, { once: true });
   };
 
   const picker = h("input", {
     type: "file",
-    accept: game.accept,
+    accept: spec.accept,
     class: "game-rom-input",
-    "aria-label": t("games.loadRom"),
+    "aria-label": t(flash ? "games.flash.load" : "games.loadRom"),
   }) as HTMLInputElement;
+  const openPicker = (): void => { picker.click(); };
+  empty.querySelector("button")?.addEventListener("click", openPicker);
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
     status.textContent = t("games.loadRomHint");
     const buffer = await file.arrayBuffer();
-    boot({ buffer, cheats: emulatorCheats(game) });
+    boot({ buffer, filename: file.name, cheats: spec.cheats });
   });
 
   box.append(
-    frame,
+    h("div", { class: "game-stage" }, frame, empty),
     h("div", { class: "game-playbar" },
-      h("label", { class: "btn" }, t("games.loadRom"), picker),
+      h("label", { class: "btn" }, t(flash ? "games.flash.load" : "games.loadRom"), picker),
       status,
     ),
-    h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
-    controls(game.console),
+    h("p", { class: "game-note muted" }, t(flash ? "games.flash.emulator" : "games.emulator"), " · ", t(flash ? "games.flash.mobile" : "games.mobile")),
+    controls(spec.console),
   );
 
-  queueMicrotask(() => {
-    void fetch(romUrl, { method: "HEAD" }).then((res) => {
-      if (!res.ok || picker.files?.length) return;
-      status.textContent = t("games.hostedNote");
-      boot({ rom: romUrl, cheats: emulatorCheats(game) });
-    }).catch(() => {
-      /* keep the file picker; a missing hosted ROM is expected */
+  if (spec.romUrl) {
+    const romUrl = spec.romUrl;
+    queueMicrotask(() => {
+      void fetch(romUrl, { method: "HEAD" }).then((res) => {
+        if (picker.files?.length) return;
+        if (!res.ok) {
+          showEmpty();
+          return;
+        }
+        status.textContent = t("games.hostedNote");
+        boot({ rom: romUrl, cheats: spec.cheats });
+      }).catch(() => {
+        if (!picker.files?.length) showEmpty();
+      });
     });
-  });
+  }
   return box;
 }
 
@@ -273,7 +363,7 @@ function controls(consoleId: Game["console"]): HTMLElement {
   const rows = CONSOLE_CONTROLS[consoleId];
   return h("section", { class: "game-controls", "aria-labelledby": "controls-title" },
     h("h2", { id: "controls-title" }, t("games.controls.title")),
-    h("p", { class: "game-note" }, t("games.controls.touch")),
+    h("p", { class: "game-note" }, t(consoleId === "flash" ? "games.flash.mobile" : "games.controls.touch")),
     h("div", { class: "control-table" },
       ...rows.map((row) =>
         h("div", { class: "control-row" },
@@ -292,13 +382,14 @@ function emulatorCheats(game: Game): { name: string; code: string }[] {
     .filter((row) => !/[a-z]{3,}/.test(row.code));
 }
 
-function gamesFaq(loc: ReturnType<typeof locale>): HTMLElement {
+function gamesFaq(loc: ReturnType<typeof locale>, consoleId: GameConsoleId | null = null): HTMLElement {
   void loc;
+  const base = consoleId === "flash" ? "faq.gamesFlash" : "faq.games";
   const items = [];
   for (let i = 1; i <= 5; i++) {
-    const q = t(`faq.games.q${i}`);
-    if (q === `faq.games.q${i}`) break;
-    items.push({ q, a: t(`faq.games.a${i}`) });
+    const q = t(`${base}.q${i}`);
+    if (q === `${base}.q${i}`) break;
+    items.push({ q, a: t(`${base}.a${i}`) });
   }
   if (!items.length) return h("section", { class: "faq", hidden: true });
   return h("section", { class: "faq", "aria-labelledby": "faq-title" },

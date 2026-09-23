@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
+import flashHtml from "../public/emu/flash.html?raw";
+import flashJs from "../public/emu/flash.js?raw";
 import playerHtml from "../public/emu/player.html?raw";
 import playerJs from "../public/emu/player.js?raw";
+import gamesUi from "../src/client/games/ui.ts?raw";
 import { GAME_COVER } from "../src/shared/covers";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
 import {
@@ -51,8 +54,10 @@ describe("games catalog", () => {
 
   it("covers every console and gives every game an S3 ROM filename", () => {
     for (const id of GAME_CONSOLES) {
+      if (id === "flash") continue;
       expect(gamesFor(id).length, id).toBeGreaterThan(0);
     }
+    expect(GAME_CONSOLES).toContain("flash");
     const files = GAMES.map((game) => gameRomFile(game));
     expect(new Set(files).size).toBe(files.length);
     expect(gameRomFile(gameById("contra")!)).toBe("contra.nes");
@@ -115,6 +120,13 @@ describe("games routes", () => {
     expect(isGameId("contra")).toBe(true);
     expect(gameById("contra")?.core).toBe("nes");
     expect(gamesHref("zh-CN", "fc", "contra")).toBe("/zh-cn/games/fc/contra/");
+    expect(parseAppPath("/zh-cn/games/flash/")).toEqual({
+      kind: "games",
+      locale: "zh-CN",
+      console: "flash",
+      game: null,
+    });
+    expect(gamesHref("en", "flash")).toBe("/en/games/flash/");
   });
 });
 
@@ -134,6 +146,24 @@ describe("games seo", () => {
     expect(html).toContain("howto-jsonld");
     expect(html).toContain("game-jsonld");
     expect(html).toContain("VideoGame");
+  });
+
+  it("targets flash and SWF queries on the flash hub", () => {
+    const seo = { games: true as const, console: "flash" as const, game: null };
+    expect(pageTitle("zh-CN", seo)).toMatch(/Flash/);
+    expect(pageTitle("zh-CN", seo)).toMatch(/SWF|在线玩/);
+    expect(pageDescription("zh-CN", seo)).toMatch(/Ruffle/);
+    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh-cn/games/flash/");
+    const html = applyHtmlSeo(
+      `<!doctype html><html><head><title>x</title><meta name="description" content="old" /><link rel="canonical" href="https://cv.cm/" /></head><body></body></html>`,
+      "zh-CN",
+      seo,
+    );
+    expect(html).toContain("faq-jsonld");
+    expect(html).toContain("howto-jsonld");
+    expect(html).toContain("software-jsonld");
+    expect(html).toContain("WebApplication");
+    expect(html).toContain("Ruffle");
   });
 });
 
@@ -160,6 +190,14 @@ describe("games worker", () => {
     expect(playerJs).toContain("event.preventDefault()");
     expect(playerJs).toContain("ArrowLeft");
     expect(playerJs).toContain('EJS_pathtodata = "/emu/assets/"');
+    expect(flashHtml).not.toMatch(/<script>/);
+    expect(flashHtml).toContain('src="/emu/flash.js?v=1"');
+    expect(flashJs).toContain("event.preventDefault()");
+    expect(flashJs).toContain('publicPath: "/emu/assets/ruffle/"');
+    expect(flashJs).toContain('allowNetworking: "none"');
+    expect(gamesUi).toContain("game-empty");
+    expect(gamesUi).toContain("games.needFile");
+    expect(gamesUi).toContain("games.flash.needFile");
   });
 
   it("allows the emulator player to be framed with wasm eval", async () => {
@@ -167,7 +205,7 @@ describe("games worker", () => {
     const playerAssets = {
       fetch: async () => new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } }),
     };
-    for (const path of ["/emu/player", "/emu/player/", "/emu/player.html"]) {
+    for (const path of ["/emu/player", "/emu/player/", "/emu/player.html", "/emu/flash", "/emu/flash/", "/emu/flash.html"]) {
       const response = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: playerAssets });
       expect(response.status, path).toBe(200);
       expect(response.headers.get("Content-Security-Policy"), path).toContain("wasm-unsafe-eval");

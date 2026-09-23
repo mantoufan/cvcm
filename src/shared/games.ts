@@ -1,4 +1,4 @@
-export const GAME_CONSOLES = ["fc", "sfc", "gb", "gbc", "gba", "md"] as const;
+export const GAME_CONSOLES = ["fc", "sfc", "gb", "gbc", "gba", "md", "flash"] as const;
 export type GameConsoleId = (typeof GAME_CONSOLES)[number];
 
 export const GAME_GENRES = [
@@ -22,8 +22,8 @@ export type Game = {
   console: GameConsoleId;
   genre: GameGenreId;
   year: number;
-  /** EmulatorJS `EJS_core` id. */
-  core: "nes" | "snes" | "gb" | "gbc" | "gba" | "segaMD";
+  /** EmulatorJS `EJS_core` id. Flash pages use the Ruffle iframe instead. */
+  core: "nes" | "snes" | "gb" | "gbc" | "gba" | "segaMD" | "ruffle";
   accept: string;
   /** Hosted on S3 only when the ROM is freeware / homebrew we may redistribute. */
   rom?: string;
@@ -1533,6 +1533,7 @@ const ROM_EXT: Record<GameConsoleId, string> = {
   gbc: ".gbc",
   gba: ".gba",
   md: ".md",
+  flash: ".swf",
 };
 
 /** S3 object name under `/emu/roms/`. Hosted when that object exists; every page still accepts a local file. */

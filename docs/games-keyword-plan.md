@@ -45,6 +45,16 @@ Each row is one URL. Title is the query to rank.
 | alter-ego | FC | Alter Ego 在线玩 | Alter Ego NES homebrew |
 | lawn-mower | FC | Lawn Mower NES | Lawn Mower NES homebrew |
 
+## Flash hub (2026-09-23)
+
+One URL, not a pile of commercial SWF pages. Title is the query.
+
+| URL | Primary zh query | Primary en query |
+|---|---|---|
+| `/games/flash/` | Flash 游戏在线玩 / SWF 播放器 / Flash 小游戏 | play Flash games online / SWF player |
+
+Ruffle (MIT or Apache-2.0) runs in `/emu/flash`. The runtime is on S3 at `files/games/emu/ruffle/`, proxied as `/emu/assets/ruffle/`. The player asks for a manual upload when no file is present. Host a SWF only when its license allows redistribution. Single-file SWFs only; multi-file games and sitelocks stay off this page.
+
 ## Emulator
 
 Most-maintained browser frontend researched 2026-09-18: **EmulatorJS/EmulatorJS** (4.2k stars, commits through 2026-08, used by zaixianwan.app). Cores on S3: fceumm, snes9x, gambatte, mgba, genesis_plus_gx. Player is `/emu/player.html` (iframe; EmulatorJS must not mount in the SPA). Nostalgist.js (986) is a nicer API but needs the same RetroArch WASM; jsnes is NES-only.

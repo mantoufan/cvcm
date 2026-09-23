@@ -180,8 +180,8 @@
     "descCompound": "Ước giá trị tương lai trong trình duyệt. Gốc, lãi, năm, lần ghép. Không tải lên.",
     "titleVat": "Tính VAT — thuế bán hàng — cv.cm",
     "descVat": "Cộng VAT hoặc tách giá gồm thuế trong trình duyệt. Không tải lên.",
-    "titleGames": "Play NES, SNES, GB, GBA in the browser — cheats and walkthroughs — cv.cm",
-    "descGames": "Retro games in this tab. Cheats, walkthroughs, and EmulatorJS from GitHub. Homebrew plays instantly. Classic titles load from your ROM. Nothing is uploaded.",
+    "titleGames": "Chơi NES, SNES, GB, GBA và Flash trên trình duyệt — mã và hướng dẫn — cv.cm",
+    "descGames": "Game retro trong tab này. Mã, hướng dẫn và EmulatorJS. Flash mở SWF bằng Ruffle. Game tự làm chạy ngay. ROM thương mại do bạn chọn. Không tải lên.",
     "titleGamesFc": "FC / NES games — cheats and walkthroughs — cv.cm",
     "descGamesFc": "Play NES games in the browser. Contra, Super Mario Bros, Battle City. Cheats and short walkthroughs. Load your own ROM.",
     "titleGamesSfc": "SFC / SNES games — cheats and walkthroughs — cv.cm",
@@ -312,6 +312,8 @@
     "descOil": "Đổi thùng dầu, gallon Mỹ và lít trong trình duyệt. Một thùng là 42 gallon Mỹ. Không tải lên.",
     "titleStocks": "Vốn hóa và P/E — cv.cm",
     "descStocks": "Tính vốn hóa từ giá và số cổ phần lưu hành, P/E từ lợi nhuận năm mỗi cổ phần, suất cổ tức từ cổ tức năm. Không có giá thị trường.",
+    "titleGamesFlash": "Chơi game Flash trên trình duyệt — trình phát SWF — cv.cm",
+    "descGamesFlash": "Mở SWF trong trình duyệt bằng Ruffle. Không cần plugin Flash. Nếu chưa có file, hãy tự tải lên. File chỉ ở trong tab này.",
     "titlePercentOff": "Cách tính giảm giá | cv.cm",
     "descPercentOff": "Giảm 20% trên 100 là giá 80,00 và tiết kiệm 20,00. Không phải biên 20%. Giảm 120% có thể dưới 0. Phần trăm âm làm giá tăng. Không tải lên.",
     "titleEncodeUrl": "Cách mã hóa URL | cv.cm",
@@ -2300,7 +2302,7 @@
     },
     "games": {
       "q1": "Can I play NES games in the browser?",
-      "a1": "Yes. cv.cm embeds EmulatorJS from GitHub (fceumm, snes9x, gambatte, mGBA, Genesis Plus GX). Cores are on S3. Touch controls work on phones.",
+      "a1": "Có. Từ NES đến Mega Drive dùng EmulatorJS trên GitHub. Lõi nằm trên S3. Flash mở SWF bằng Ruffle. Điện thoại có phím ảo.",
       "q2": "Do you host Super Mario or Contra ROMs?",
       "a2": "No commercial dumps. Those pages have cheats and walkthroughs; you load a ROM you own. Shiru freeware (Alter Ego, Lawn Mower) starts without a file.",
       "q3": "How do cheat codes work?",
@@ -2308,7 +2310,7 @@
       "q4": "Does the ROM get uploaded?",
       "a4": "No. A local file is read in this tab and handed to the emulator. Homebrew we may redistribute is fetched from our S3 bucket.",
       "q5": "Which consoles work on a phone?",
-      "a5": "NES, GB, GBC, and most GBA / Mega Drive titles. SNES is heavier. Landscape plus a Bluetooth pad helps fighters and karts."
+      "a5": "NES, GB, GBC và phần lớn GBA / Mega Drive. SNES nặng hơn. Flash mở SWF của bạn, chạm được tính là chuột. Đối kháng và đua xe nên xoay ngang và dùng tay cầm."
     },
     "reverse": {
       "q1": "Can I reverse text here?",
@@ -2685,6 +2687,18 @@
       "a4": "Để trống vì mẫu số bằng 0.",
       "q5": "Trang có giá cổ phiếu không?",
       "a5": "Không. Bạn nhập giá. Đây là phép tính, không phải khuyến nghị."
+    },
+    "gamesFlash": {
+      "q1": "Còn chơi Flash trên trình duyệt được không?",
+      "a1": "Được. Trang này chạy SWF bằng Ruffle, trình giả lập Flash mã nguồn mở. Không cần cài Adobe Flash Player.",
+      "q2": "Không có file game thì sao?",
+      "a2": "Màn hình nhắc bạn tự tải lên. Chọn một SWF. File chỉ ở trong tab này và không được gửi lên máy chủ.",
+      "q3": "Vì sao có SWF không chạy?",
+      "a3": "Nhiều game có hơn một file, hoặc chỉ chạy trên trang gốc. Trang này dành cho một SWF chạy độc lập. Một số game ActionScript 3 vẫn chưa đủ.",
+      "q4": "Điện thoại chơi Flash được không?",
+      "a4": "Mở được. Chạm được tính là chuột. Game cần rê chuột hoặc bàn phím thì dễ hơn trên máy tính.",
+      "q5": "Tải game Flash kinh điển ở đây được không?",
+      "a5": "Không. Hãy dùng SWF bạn đang có. cv.cm chỉ lưu SWF khi giấy phép cho phép phân phối lại."
     }
   },
   "qr": {
@@ -4846,8 +4860,8 @@
     "empty": "No games in this filter.",
     "hub": {
       "kicker": "Retro · Browser · Phone",
-      "title": "Chơi FC, SFC, GB, GBA trên trình duyệt",
-      "lead": "Cheats, walkthroughs, and an open-source emulator. Homebrew starts here. Classic games load from your ROM. Nothing is uploaded.",
+      "title": "Chơi FC, SFC, GB, GBA và Flash trên trình duyệt",
+      "lead": "Mã, hướng dẫn và trình giả lập mã nguồn mở. Game tự làm chạy ngay. Game thương mại dùng ROM của bạn. Flash mở SWF bằng Ruffle. Không tải lên.",
       "menu": "Tất cả game",
       "blurb": "Retro emulator games with cheats and guides.",
       "all": "See all"
@@ -4858,7 +4872,8 @@
       "gb": "Game Boy",
       "gbc": "Game Boy Color",
       "gba": "Game Boy Advance",
-      "md": "Mega Drive"
+      "md": "Mega Drive",
+      "flash": "Flash"
     },
     "genres": {
       "platform": "Platform",
@@ -4881,7 +4896,34 @@
       "l": "L",
       "r": "R",
       "start": "Start",
-      "select": "Select"
+      "select": "Select",
+      "pointer": "Chuột",
+      "primary": "Nhấp",
+      "secondary": "Nhấp phải"
+    },
+    "needFile": "Chưa có ROM",
+    "needFileBody": "Hãy tự tải lên. File chỉ ở trong tab này và không được gửi lên máy chủ.",
+    "flash": {
+      "kicker": "Flash · SWF · Trình duyệt",
+      "title": "Chơi game Flash trên trình duyệt",
+      "lead": "Mở SWF trong tab này bằng Ruffle. Không cần plugin Flash. Khi chưa có file, hãy chọn SWF của bạn. File không rời khỏi tab.",
+      "catalog": "Game Flash được phép phân phối lại sẽ hiện ở đây. Bây giờ hãy chọn SWF bạn đang có.",
+      "load": "Chọn SWF",
+      "needFile": "Chưa có SWF",
+      "needFileBody": "Hãy tự tải lên. File chỉ ở trong tab này và không được gửi lên máy chủ.",
+      "guide": "Cách mở SWF trên trình duyệt",
+      "emulator": "Ruffle (mã nguồn mở, GitHub)",
+      "mobile": "Chạm được tính là nhấp chuột. Game cần bàn phím thì dễ hơn trên máy tính.",
+      "s1t": "Chọn SWF",
+      "s1b": "Bấm Chọn SWF và chọn một file .swf. Nếu màn hình trống, trang sẽ nhắc bạn tự tải lên. File chỉ ở trong tab này.",
+      "s2t": "Một file",
+      "s2b": "Trang này chạy SWF tự khởi động được. Game cần thêm SWF, XML hoặc trang gốc sẽ dừng ở bước tải.",
+      "s3t": "Chuột",
+      "s3b": "Phần lớn game Flash dùng nút trái. Chạm trên điện thoại là một cú nhấp. Phím mũi tên dùng khi game cần bàn phím.",
+      "s4t": "Âm thanh",
+      "s4b": "Trình duyệt chặn tiếng tự phát. Nhấp một lần vào hình thì tiếng mới ra.",
+      "s5t": "File của bạn",
+      "s5b": "Game Flash thương mại không được lưu ở đây. Hãy dùng SWF bạn đang có. Chỉ tác phẩm được phép phân phối lại mới vào danh sách."
     }
   },
   "reverse": {

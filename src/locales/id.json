@@ -180,8 +180,8 @@
     "descCompound": "Perkirakan nilai masa depan di browser. Pokok, bunga, tahun, frekuensi. Tidak diunggah.",
     "titleVat": "Kalkulator PPN — pajak penjualan — cv.cm",
     "descVat": "Tambah PPN atau pecah harga termasuk pajak di browser. Tidak diunggah.",
-    "titleGames": "Play NES, SNES, GB, GBA in the browser — cheats and walkthroughs — cv.cm",
-    "descGames": "Retro games in this tab. Cheats, walkthroughs, and EmulatorJS from GitHub. Homebrew plays instantly. Classic titles load from your ROM. Nothing is uploaded.",
+    "titleGames": "Main NES, SNES, GB, GBA, dan Flash di browser — cheat dan panduan — cv.cm",
+    "descGames": "Game retro di tab ini. Cheat, panduan, dan EmulatorJS. Flash membuka SWF dengan Ruffle. Homebrew langsung main. ROM komersial dari berkas Anda. Tidak ada unggahan.",
     "titleGamesFc": "FC / NES games — cheats and walkthroughs — cv.cm",
     "descGamesFc": "Play NES games in the browser. Contra, Super Mario Bros, Battle City. Cheats and short walkthroughs. Load your own ROM.",
     "titleGamesSfc": "SFC / SNES games — cheats and walkthroughs — cv.cm",
@@ -312,6 +312,8 @@
     "descOil": "Ubah barel minyak, galon AS, dan liter di peramban. Satu barel adalah 42 galon AS. Tidak diunggah.",
     "titleStocks": "Kapitalisasi dan P/E — cv.cm",
     "descStocks": "Hitung kapitalisasi dari harga dan saham beredar, P/E dari laba tahunan per saham, dan imbal dividen dari dividen tahunan. Tidak ada kuotasi.",
+    "titleGamesFlash": "Main game Flash di browser — pemutar SWF — cv.cm",
+    "descGamesFlash": "Buka SWF di browser dengan Ruffle. Tanpa plugin Flash. Jika belum ada berkas, unggah sendiri. Berkas tetap di tab ini.",
     "titlePercentOff": "Cara hitung diskon | cv.cm",
     "descPercentOff": "Diskon 20% dari 100 adalah harga 80,00 dan hemat 20,00. Bukan margin 20%. Diskon 120% bisa di bawah nol. Persen negatif menaikkan harga. Tidak diunggah.",
     "titleEncodeUrl": "Cara enkode URL | cv.cm",
@@ -2300,7 +2302,7 @@
     },
     "games": {
       "q1": "Can I play NES games in the browser?",
-      "a1": "Yes. cv.cm embeds EmulatorJS from GitHub (fceumm, snes9x, gambatte, mGBA, Genesis Plus GX). Cores are on S3. Touch controls work on phones.",
+      "a1": "Ya. NES sampai Mega Drive memakai EmulatorJS dari GitHub. Inti ada di S3. Flash membuka SWF dengan Ruffle. Ponsel punya tombol virtual.",
       "q2": "Do you host Super Mario or Contra ROMs?",
       "a2": "No commercial dumps. Those pages have cheats and walkthroughs; you load a ROM you own. Shiru freeware (Alter Ego, Lawn Mower) starts without a file.",
       "q3": "How do cheat codes work?",
@@ -2308,7 +2310,7 @@
       "q4": "Does the ROM get uploaded?",
       "a4": "No. A local file is read in this tab and handed to the emulator. Homebrew we may redistribute is fetched from our S3 bucket.",
       "q5": "Which consoles work on a phone?",
-      "a5": "NES, GB, GBC, and most GBA / Mega Drive titles. SNES is heavier. Landscape plus a Bluetooth pad helps fighters and karts."
+      "a5": "NES, GB, GBC, dan sebagian besar GBA / Mega Drive. SNES lebih berat. Flash membuka SWF Anda, dan sentuhan dihitung sebagai mouse. Pertarungan dan balapan lebih enak mendatar dengan gamepad."
     },
     "reverse": {
       "q1": "Can I reverse text here?",
@@ -2685,6 +2687,18 @@
       "a4": "Kosong karena pembaginya nol.",
       "q5": "Apakah ada harga saham?",
       "a5": "Tidak. Anda mengetik harga. Ini hitungan, bukan saran."
+    },
+    "gamesFlash": {
+      "q1": "Masih bisa main Flash di browser?",
+      "a1": "Bisa. Halaman ini menjalankan SWF dengan Ruffle, emulator Flash sumber terbuka. Adobe Flash Player tidak perlu dipasang.",
+      "q2": "Kalau tidak ada berkas game?",
+      "a2": "Layar meminta Anda mengunggah sendiri. Pilih SWF. Berkas tetap di tab ini dan tidak dikirim ke server.",
+      "q3": "Mengapa ada SWF yang tidak jalan?",
+      "a3": "Banyak game lebih dari satu berkas, atau hanya jalan di situs asalnya. Halaman ini untuk satu SWF yang mandiri. Sebagian game ActionScript 3 masih belum lengkap.",
+      "q4": "Flash jalan di ponsel?",
+      "a4": "Bisa dibuka. Sentuhan dihitung sebagai mouse. Game yang butuh hover atau keyboard lebih enak di komputer.",
+      "q5": "Bisa mengunduh game Flash klasik di sini?",
+      "a5": "Tidak. Pakai SWF yang sudah Anda punya. cv.cm hanya menyimpan SWF jika lisensinya mengizinkan sebar ulang."
     }
   },
   "qr": {
@@ -4846,8 +4860,8 @@
     "empty": "No games in this filter.",
     "hub": {
       "kicker": "Retro · Browser · Phone",
-      "title": "Main FC, SFC, GB, GBA di browser",
-      "lead": "Cheats, walkthroughs, and an open-source emulator. Homebrew starts here. Classic games load from your ROM. Nothing is uploaded.",
+      "title": "Main FC, SFC, GB, GBA, dan Flash di browser",
+      "lead": "Cheat, panduan, dan emulator sumber terbuka. Homebrew langsung main. Game komersial memakai ROM Anda. Flash membuka SWF dengan Ruffle. Tidak ada unggahan.",
       "menu": "Semua game",
       "blurb": "Retro emulator games with cheats and guides.",
       "all": "See all"
@@ -4858,7 +4872,8 @@
       "gb": "Game Boy",
       "gbc": "Game Boy Color",
       "gba": "Game Boy Advance",
-      "md": "Mega Drive"
+      "md": "Mega Drive",
+      "flash": "Flash"
     },
     "genres": {
       "platform": "Platform",
@@ -4881,7 +4896,34 @@
       "l": "L",
       "r": "R",
       "start": "Start",
-      "select": "Select"
+      "select": "Select",
+      "pointer": "Mouse",
+      "primary": "Klik",
+      "secondary": "Klik kanan"
+    },
+    "needFile": "Tidak ada ROM",
+    "needFileBody": "Unggah sendiri. Berkas tetap di tab ini dan tidak dikirim ke server.",
+    "flash": {
+      "kicker": "Flash · SWF · Browser",
+      "title": "Main game Flash di browser",
+      "lead": "Buka SWF di tab ini dengan Ruffle. Tanpa plugin Flash. Jika pemutar kosong, pilih SWF Anda. Berkas tidak keluar dari tab.",
+      "catalog": "Game Flash yang boleh disebar ulang akan tercantum di sini. Untuk sekarang, pilih SWF yang Anda punya.",
+      "load": "Pilih SWF",
+      "needFile": "Tidak ada SWF",
+      "needFileBody": "Unggah sendiri. Berkas tetap di tab ini dan tidak dikirim ke server.",
+      "guide": "Cara membuka SWF di browser",
+      "emulator": "Ruffle (sumber terbuka, GitHub)",
+      "mobile": "Sentuhan dihitung sebagai klik. Game yang butuh keyboard lebih enak di komputer.",
+      "s1t": "Pilih SWF",
+      "s1b": "Tekan Pilih SWF dan pilih berkas .swf. Jika layar kosong, halaman meminta Anda mengunggah sendiri. Berkas tetap di tab ini.",
+      "s2t": "Satu berkas",
+      "s2b": "Halaman ini untuk SWF yang bisa jalan sendiri. Game yang memuat SWF lain, XML, atau situs asalnya berhenti di pemuatan.",
+      "s3t": "Mouse",
+      "s3b": "Sebagian besar game Flash memakai klik kiri. Sentuhan di ponsel adalah klik. Tombol panah dipakai jika game meminta keyboard.",
+      "s4t": "Suara",
+      "s4b": "Browser menahan suara yang otomatis. Klik gambar sekali, lalu suara keluar.",
+      "s5t": "Berkas Anda",
+      "s5b": "Game Flash komersial tidak disimpan di sini. Pakai SWF yang sudah Anda punya. Hanya karya yang lisensinya mengizinkan sebar ulang yang masuk daftar."
     }
   },
   "reverse": {
