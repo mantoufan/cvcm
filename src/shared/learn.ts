@@ -291,6 +291,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["vat", "discount", "percent"],
   },
+  "percent-off": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["discount", "margin", "percent"],
+  },
+  "encode-url": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["url-encode", "text-hex", "reverse"],
+  },
+  "calculate-age": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["age", "days", "add-days"],
+  },
+  "aspect-ratio": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["aspect", "crop", "resize"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -593,5 +617,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "vat-price": [
     { step: 1, src: "/covers/tutorials/vat-price-add.svg" },
     { step: 5, src: "/covers/tutorials/vat-price-split.svg" },
+  ],
+  "percent-off": [
+    { step: 1, src: "/covers/tutorials/percent-off-sale.svg" },
+    { step: 5, src: "/covers/tutorials/percent-off-over.svg" },
+  ],
+  "encode-url": [
+    { step: 1, src: "/covers/tutorials/encode-url-slash.svg" },
+    { step: 4, src: "/covers/tutorials/encode-url-space.svg" },
+  ],
+  "calculate-age": [
+    { step: 1, src: "/covers/tutorials/calculate-age-before.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-age-day.svg" },
+  ],
+  "aspect-ratio": [
+    { step: 1, src: "/covers/tutorials/aspect-ratio-order.svg" },
+    { step: 5, src: "/covers/tutorials/aspect-ratio-round.svg" },
   ],
 };

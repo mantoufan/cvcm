@@ -278,6 +278,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "shift-date": "/covers/add-days-sweet.jpg?v=1",
   "iso-week": "/covers/week-sweet.jpg?v=1",
   "vat-price": "/covers/vat-sweet.jpg?v=1",
+  "percent-off": "/covers/discount-sweet.jpg?v=1",
+  "encode-url": "/covers/url-encode-sweet.jpg?v=1",
+  "calculate-age": "/covers/age-sweet.jpg?v=1",
+  "aspect-ratio": "/covers/aspect-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -344,6 +348,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "shift-date": "/covers/tutorials/shift-date.svg",
   "iso-week": "/covers/tutorials/iso-week.svg",
   "vat-price": "/covers/tutorials/vat-price.svg",
+  "percent-off": "/covers/tutorials/percent-off.svg",
+  "encode-url": "/covers/tutorials/encode-url.svg",
+  "calculate-age": "/covers/tutorials/calculate-age.svg",
+  "aspect-ratio": "/covers/tutorials/aspect-ratio.svg",
 };
 
 export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";

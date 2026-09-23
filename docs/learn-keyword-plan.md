@@ -123,6 +123,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `shift-date`
 - `iso-week`
 - `vat-price`
+- `percent-off`
+- `encode-url`
+- `calculate-age`
+- `aspect-ratio`
 
 ## Fourth batch (ship)
 
@@ -200,6 +204,17 @@ Day difference, date shift, and ISO week were already live next to business days
 | How to add days to a date | `add-days` | Whole days only. 28 Feb 2024 + 1 is 29 Feb 2024. Friday + 1 is Saturday. |
 | How to find the ISO week number | `week` | Monday is 1, Sunday is 7. Week 1 holds the first Thursday. 1 Jan 2021 is 2020-W53. 30 Dec 2024 is 2025-W01. |
 | How to add VAT to a price | `vat` | Exclusive 100 at 20% is tax 20.00 and gross 120.00. Inclusive 120 at 20% is tax 20.00, not 24.00. The rate is typed, not looked up. |
+
+## Eleventh batch (ship)
+
+Discount, URL encode, age, and aspect ratio were already live. These lessons separate them from margin, from an address you can still open, from a birthday that has not arrived, and from cropping.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to calculate a discount | `discount` | 20% off 100 is sale 80.00 and saving 20.00. That is not a 20% margin. 120% off 100 is −20.00. Minus 10% raises the price to 110.00. |
+| How to encode a URL | `url-encode` | A space encodes as %20, not +. A slash encodes as %2F, so a whole address stops being openable. Decode turns + into a space. A broken % fails. |
+| How to calculate age | `age` | Born 15 March 2000, on 14 March 2026 the age is 25 years, 11 months, and 27 days (9,495 days). The next day is 26 years. Today is the computer's calendar date. A date before birth fails. |
+| How to find an aspect ratio | `aspect` | 1920×1080 is 16:9. Swapped, it is 9:16. Each side rounds to a whole pixel first. The page does not crop the photo. |
 
 ## Evidence notes
 

@@ -175,7 +175,7 @@ function groupOf(id: TutorialId): string {
     return "photo";
   }
   if (id === "trim-audio" || id === "mp3-to-wav" || id === "join-audio") return "audio";
-  if (id === "count-words" || id === "make-password" || id === "format-json" || id === "decode-base64" || id === "unix-time" || id === "read-jwt" || id === "count-workdays" || id === "simplify-fraction" || id === "hourly-pay" || id === "convert-timezone" || id === "profit-margin" || id === "convert-base" || id === "add-duration" || id === "calculate-percent" || id === "days-between" || id === "shift-date" || id === "iso-week" || id === "vat-price") return "text";
+  if (id === "count-words" || id === "make-password" || id === "format-json" || id === "decode-base64" || id === "unix-time" || id === "read-jwt" || id === "count-workdays" || id === "simplify-fraction" || id === "hourly-pay" || id === "convert-timezone" || id === "profit-margin" || id === "convert-base" || id === "add-duration" || id === "calculate-percent" || id === "days-between" || id === "shift-date" || id === "iso-week" || id === "vat-price" || id === "percent-off" || id === "encode-url" || id === "calculate-age" || id === "aspect-ratio") return "text";
   if (id === "algorithms" || id === "one-page-site") return "code";
   if (id.startsWith("badminton-")) return "court";
   if (id === "pool-safety") return "water";
