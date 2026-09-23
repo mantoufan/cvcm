@@ -97,6 +97,12 @@ const STEPS = {
   margin: 3,
   radix: 3,
   duration: 3,
+  gold: 3,
+  silver: 3,
+  platinum: 3,
+  palladium: 3,
+  oil: 3,
+  stocks: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -340,6 +346,88 @@ async function drawSignature(send) {
     button: "left",
     clickCount: 1,
   });
+}
+
+async function pageText(send) {
+  return String(await evalValue(send, `document.querySelector("main")?.innerText || ""`));
+}
+
+function setField(selector, value) {
+  return `(() => {
+    const el = document.querySelector(${JSON.stringify(selector)});
+    if (!el) throw new Error("missing " + ${JSON.stringify(selector)});
+    el.value = ${JSON.stringify(value)};
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+    return el.value;
+  })()`;
+}
+
+async function captureMetal(send, id, snap) {
+  if (id === "gold") {
+    await clickSel(send, "nav .menu .menu-btn");
+    await sleep(150);
+    const menu = String(await evalValue(send, `document.querySelector("nav .menu-panel.wide")?.textContent || ""`));
+    for (const label of ["Assets", "Platinum weight", "Palladium weight", "Oil volume", "Stock arithmetic"]) {
+      if (!menu.includes(label)) throw new Error(`tools menu missing ${label}`);
+    }
+    const hrefs = String(await evalValue(send, `["/en/gold/","/en/platinum/","/en/oil/","/en/stocks/"].filter((href) => !document.querySelector("nav a[href='"+href+"']")).join(",")`));
+    if (hrefs) throw new Error(`tools menu missing links ${hrefs}`);
+    await clickSel(send, "nav .menu .menu-btn");
+  }
+  const opened = await pageText(send);
+  if (!opened.includes("31.1035")) throw new Error(`${id} did not open on 1 troy ounce`);
+  if (opened.includes("Per gram")) throw new Error(`${id} showed a price before one was typed`);
+  await snap(1);
+  await evalValue(send, setField("[data-field=unit]", "hkTael"));
+  await sleep(200);
+  const tael = await pageText(send);
+  if (!tael.includes("37.429")) throw new Error(`${id} Hong Kong tael was not 37.429 g`);
+  await snap(2);
+  const price = await evalValue(send, `document.querySelector("[data-field=usdPerTroyOz]")?.value ?? "missing"`);
+  if (price !== "") throw new Error(`${id} price box was not empty`);
+  await evalValue(send, `document.querySelector("[data-field=usdPerTroyOz]")?.focus()`);
+  await sleep(150);
+  await snap(3);
+}
+
+async function captureOil(send, snap) {
+  const opened = await pageText(send);
+  if (!opened.includes("158.9873") || !opened.includes("42")) {
+    throw new Error("oil did not open on 1 barrel");
+  }
+  await snap(1);
+  await evalValue(send, setField("[data-field=unit]", "l"));
+  await sleep(200);
+  const liter = await pageText(send);
+  if (!liter.includes("0.264172")) throw new Error("1 liter was not 0.264172 US gallons");
+  await snap(2);
+  await evalValue(send, `navigator.clipboard.writeText = async () => {}`);
+  await clickSel(send, ".stage-actions .btn");
+  await sleep(250);
+  const copied = await evalValue(send, `document.querySelector(".stage-actions .btn")?.textContent || ""`);
+  if (copied !== "Copied") throw new Error(`oil copy label was ${copied}`);
+  await snap(3);
+}
+
+async function captureStocks(send, snap) {
+  const opened = await pageText(send);
+  if (!opened.includes("Enter a price")) throw new Error("stocks did not start empty");
+  await snap(1);
+  await evalValue(send, setField("[data-field=price]", "10"));
+  await evalValue(send, setField("[data-field=shares]", "1000"));
+  await sleep(200);
+  const cap = await pageText(send);
+  if (!cap.includes("10000")) throw new Error("market cap was not 10000");
+  if (!cap.includes("—")) throw new Error("blank P/E or yield missing");
+  await snap(2);
+  await evalValue(send, setField("[data-field=eps]", "0"));
+  await evalValue(send, setField("[data-field=dividend]", "2"));
+  await sleep(200);
+  const yieldText = await pageText(send);
+  if (!yieldText.includes("20%")) throw new Error("dividend yield was not 20%");
+  if (!yieldText.includes("—")) throw new Error("P/E was not blank at zero earnings");
+  await snap(3);
 }
 
 async function runTool(send, id, fx) {
@@ -1339,6 +1427,21 @@ async function runTool(send, id, fx) {
     await sleep(200);
     await snap(2);
     await snap(3);
+    return;
+  }
+
+  if (id === "gold" || id === "silver" || id === "platinum" || id === "palladium") {
+    await captureMetal(send, id, snap);
+    return;
+  }
+
+  if (id === "oil") {
+    await captureOil(send, snap);
+    return;
+  }
+
+  if (id === "stocks") {
+    await captureStocks(send, snap);
     return;
   }
 

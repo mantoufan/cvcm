@@ -114,6 +114,12 @@ export function guideSteps(tool: ToolId): number {
 
 const GUIDE_VER: Partial<Record<ToolId, string>> = {
   "portrait-sim": "4",
+  gold: "1",
+  silver: "1",
+  platinum: "1",
+  palladium: "1",
+  oil: "1",
+  stocks: "1",
 };
 
 export function guideImage(tool: ToolId, step: number): string {

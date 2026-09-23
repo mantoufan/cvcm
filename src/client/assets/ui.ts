@@ -46,7 +46,7 @@ export function unmountAssets(): void {
 export function mountMetal(host: HTMLElement, id: MetalTool): void {
   weightEl = h("input", { type: "number", min: "0", step: "any", value: "1", "data-field": "weight", onInput: () => paintMetal(id) });
   unitEl = h("select", { "data-field": "unit", onChange: () => paintMetal(id) },
-    ...WEIGHT_UNITS.map((unit) => h("option", { value: unit }, t(`${id}.${unit}`))),
+    ...WEIGHT_UNITS.map((unit) => h("option", { value: unit, selected: unit === "troyOz" }, t(`${id}.${unit}`))),
   );
   priceEl = h("input", {
     type: "number",
