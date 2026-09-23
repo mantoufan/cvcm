@@ -1,7 +1,7 @@
-export const DEVICE_PAGES = ["hub", "ip", "browser", "screen", "ua"] as const;
+export const DEVICE_PAGES = ["hub", "ip", "browser", "screen", "ua", "language", "zone", "appearance"] as const;
 export type DevicePageId = (typeof DEVICE_PAGES)[number];
 
-export const DEVICE_CHILD_PAGES = ["ip", "browser", "screen", "ua"] as const;
+export const DEVICE_CHILD_PAGES = ["ip", "browser", "screen", "ua", "language", "zone", "appearance"] as const;
 export type DeviceChildId = (typeof DEVICE_CHILD_PAGES)[number];
 
 export const DEVICE_SLUG: Record<DeviceChildId, string> = {
@@ -9,6 +9,9 @@ export const DEVICE_SLUG: Record<DeviceChildId, string> = {
   browser: "browser",
   screen: "screen-resolution",
   ua: "user-agent",
+  language: "language",
+  zone: "time-zone",
+  appearance: "color-scheme",
 };
 
 const SLUG_PAGE: Record<string, DeviceChildId> = {
@@ -16,6 +19,9 @@ const SLUG_PAGE: Record<string, DeviceChildId> = {
   browser: "browser",
   "screen-resolution": "screen",
   "user-agent": "ua",
+  language: "language",
+  "time-zone": "zone",
+  "color-scheme": "appearance",
 };
 
 export function isDevicePageId(value: string): value is DevicePageId {

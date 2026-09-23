@@ -93,7 +93,7 @@ function relatedHtml(locale: Locale, page: DevicePageId): string {
     const copy = devicePageCopy(locale, id);
     links.push(`<a href="${escapeHtml(deviceHref(locale, id))}">${escapeHtml(copy.name)}</a>`);
   }
-  if (page === "hub") {
+  if (page === "hub" || page === "zone") {
     links.push(`<a href="${escapeHtml(appHref(locale, "timezone"))}">${escapeHtml(msg.linkTimezone)}</a>`);
   }
   if (page === "screen") {

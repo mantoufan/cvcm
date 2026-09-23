@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import uiSource from "../src/client/device/ui.ts?raw";
-import { describeClient, estimatedDevicePixels, isIpAddress, parseUserAgent } from "../src/shared/device";
+import { DEVICE_PAGES, describeClient, estimatedDevicePixels, isIpAddress, parseUserAgent } from "../src/shared/device";
 import { deviceFaqItems, deviceFaqJsonLd, devicePageCopy, deviceStaticHtml } from "../src/shared/device-i18n";
 import { LOCALES } from "../src/shared/locale";
 import { deviceHref, parseAppPath } from "../src/shared/path";
@@ -55,7 +55,7 @@ describe("device copy", () => {
 
   it("matches FAQ JSON-LD to visible questions", () => {
     for (const locale of LOCALES) {
-      for (const page of ["hub", "ip", "browser", "screen", "ua"] as const) {
+      for (const page of DEVICE_PAGES) {
         const items = deviceFaqItems(locale, page);
         expect(items).toHaveLength(5);
         const ld = deviceFaqJsonLd(locale, page);
@@ -144,7 +144,7 @@ describe("device sitemap", () => {
   it("points hreflang at the same device page", () => {
     const xml = buildSitemapXml("2026-09-22");
     expect(xml).not.toContain("/api/device/ip");
-    for (const page of ["hub", "ip", "browser", "screen", "ua"] as const) {
+    for (const page of DEVICE_PAGES) {
       const loc = `https://cv.cm${deviceHref("zh-CN", page)}`;
       const block = xml.split("<url>").find((part) => part.includes(`<loc>${loc}</loc>`));
       expect(block, page).toBeTruthy();

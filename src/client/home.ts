@@ -37,8 +37,6 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       h("div", { class: "tiles" },
         ...TOOLS.map((id) => tile(locale, id)),
       ),
-    ),
-    h("section", { class: "wall" },
       h("div", { class: "wall-h" },
         h("h2", null, t("nav.device")),
         h("a", { class: "wall-more", href: deviceHref(locale, "hub"), "data-nav": "device" }, deviceMessages(locale).all),

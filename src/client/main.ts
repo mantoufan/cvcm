@@ -514,10 +514,9 @@ function shell(loc: Locale): HTMLElement {
         h("span", { class: "brand-name" }, t("brand")),
       ),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
-        toolsMenu(loc, tool),
+        toolsMenu(loc, tool, devicePage),
         marketsMenu(loc, marketId, marketsHub),
         gamesMenu(loc, gameConsole, gameId, gamesHub),
-        deviceMenu(loc, devicePage),
         learnMenu(loc, tutorial, learnHub),
       ),
       langSwitch(loc),
@@ -656,11 +655,12 @@ function menuPointerEnter(e: Event): void {
   closeOtherMenus(e.currentTarget as Element);
 }
 
-function toolsMenu(loc: Locale, current: ToolId | null): HTMLElement {
-  return h("div", { class: "menu" + (current ? " current" : ""), onPointerEnter: menuPointerEnter },
+function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | null): HTMLElement {
+  const active = Boolean(current) || device !== null;
+  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
     h("button", {
       type: "button",
-      class: "menu-btn" + (current ? " on" : ""),
+      class: "menu-btn" + (active ? " on" : ""),
       "aria-haspopup": "true",
       "aria-expanded": "false",
       onClick: menuToggle,
@@ -684,6 +684,34 @@ function toolsMenu(loc: Locale, current: ToolId | null): HTMLElement {
           ),
         ),
       ]),
+      h("div", { class: "menu-group" }, t("nav.device")),
+      h("a", {
+        class: "menu-item plain" + (device === "hub" ? " on" : ""),
+        href: deviceHref(loc, "hub"),
+        role: "menuitem",
+        "data-nav": "device",
+        "aria-current": device === "hub" ? "page" : undefined,
+      },
+        h("div", { class: "menu-copy" },
+          h("strong", null, devicePageCopy(loc, "hub").name),
+          h("span", null, deviceMessages(loc).all),
+        ),
+      ),
+      ...DEVICE_CHILD_PAGES.map((id) =>
+        h("a", {
+          class: "menu-item" + (device === id ? " on" : ""),
+          href: deviceHref(loc, id),
+          role: "menuitem",
+          "data-nav": `device-${id}`,
+          "aria-current": device === id ? "page" : undefined,
+        },
+          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40" }),
+          h("div", { class: "menu-copy" },
+            h("strong", null, devicePageCopy(loc, id).name),
+            h("span", null, devicePageCopy(loc, id).blurb),
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -814,48 +842,6 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
           ),
         ),
       ]),
-    ),
-  );
-}
-
-function deviceMenu(loc: Locale, current: DevicePageId | null): HTMLElement {
-  const active = current !== null;
-  const msg = deviceMessages(loc);
-  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
-    h("button", {
-      type: "button",
-      class: "menu-btn" + (active ? " on" : ""),
-      "aria-haspopup": "true",
-      onClick: menuToggle,
-    }, t("nav.device")),
-    h("div", { class: "menu-panel", role: "menu" },
-      h("a", {
-        class: "menu-item plain" + (current === "hub" ? " on" : ""),
-        href: deviceHref(loc, "hub"),
-        role: "menuitem",
-        "data-nav": "device",
-        "aria-current": current === "hub" ? "page" : undefined,
-      },
-        h("div", { class: "menu-copy" },
-          h("strong", null, devicePageCopy(loc, "hub").name),
-          h("span", null, msg.all),
-        ),
-      ),
-      ...DEVICE_CHILD_PAGES.map((id) =>
-        h("a", {
-          class: "menu-item" + (current === id ? " on" : ""),
-          href: deviceHref(loc, id),
-          role: "menuitem",
-          "data-nav": `device-${id}`,
-          "aria-current": current === id ? "page" : undefined,
-        },
-          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40" }),
-          h("div", { class: "menu-copy" },
-            h("strong", null, devicePageCopy(loc, id).name),
-            h("span", null, devicePageCopy(loc, id).blurb),
-          ),
-        ),
-      ),
     ),
   );
 }

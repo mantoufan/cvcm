@@ -94,6 +94,9 @@ What this browser reports, read in the tab. Screen size, browser, and user agent
 - [What browser am I using](https://cv.cm/en/device/browser/)
 - [What is my screen resolution](https://cv.cm/en/device/screen-resolution/)
 - [What is my user agent](https://cv.cm/en/device/user-agent/)
+- [What language is my browser](https://cv.cm/en/device/language/)
+- [What is my time zone](https://cv.cm/en/device/time-zone/)
+- [Is dark mode on](https://cv.cm/en/device/color-scheme/)
 
 ## Games
 

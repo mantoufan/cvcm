@@ -74,7 +74,7 @@ function related(locale: Locale, page: DevicePageId): HTMLElement {
     if (id === page) continue;
     links.push(h("a", { href: deviceHref(locale, id), "data-nav": `device-${id}` }, devicePageCopy(locale, id).name));
   }
-  if (page === "hub") {
+  if (page === "hub" || page === "zone") {
     links.push(h("a", { href: appHref(locale, "timezone"), "data-nav": "timezone" }, msg.linkTimezone));
   }
   if (page === "screen") {
@@ -202,6 +202,41 @@ function clientReading(locale: Locale, hints: ClientHints, mode: "browser" | "ua
   return h("div", { class: "device-reading", "data-nosnippet": "" }, ...nodes);
 }
 
+export function languageReading(locale: Locale): HTMLElement {
+  const msg = deviceMessages(locale);
+  const list = navigator.languages?.length ? [...navigator.languages] : [navigator.language || msg.unknown];
+  return h("div", { class: "device-reading", "data-nosnippet": "" },
+    row(msg.langPrimary, list[0] || msg.unknown, "data-lang"),
+    row(msg.langList, list.join(", "), "data-langs"),
+  );
+}
+
+export function timezoneReading(locale: Locale): HTMLElement {
+  const msg = deviceMessages(locale);
+  const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || msg.unknown;
+  const minutes = -new Date().getTimezoneOffset();
+  const sign = minutes >= 0 ? "+" : "-";
+  const abs = Math.abs(minutes);
+  const hours = String(Math.floor(abs / 60)).padStart(2, "0");
+  const mins = String(abs % 60).padStart(2, "0");
+  return h("div", { class: "device-reading", "data-nosnippet": "" },
+    row(msg.zoneLabel, zone, "data-zone"),
+    row(msg.offsetLabel, `UTC${sign}${hours}:${mins}`, "data-offset"),
+  );
+}
+
+export function appearanceReading(locale: Locale): HTMLElement {
+  const msg = deviceMessages(locale);
+  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const light = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const scheme = dark ? msg.dark : light ? msg.light : msg.noPreference;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return h("div", { class: "device-reading", "data-nosnippet": "" },
+    row(msg.schemeLabel, scheme, "data-scheme"),
+    row(msg.motionLabel, reduce ? msg.motionReduce : msg.motionNo, "data-motion"),
+  );
+}
+
 export function mountDevice(host: HTMLElement, locale: Locale, page: DevicePageId): void {
   const msg = deviceMessages(locale);
   const copy = devicePageCopy(locale, page);
@@ -242,4 +277,7 @@ export function mountDevice(host: HTMLElement, locale: Locale, page: DevicePageI
       slot.replaceChildren(clientReading(locale, hints, mode));
     });
   }
+  if (page === "language" || page === "hub") reading.append(languageReading(locale));
+  if (page === "zone" || page === "hub") reading.append(timezoneReading(locale));
+  if (page === "appearance" || page === "hub") reading.append(appearanceReading(locale));
 }
