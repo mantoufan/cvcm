@@ -267,6 +267,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["percent", "margin", "discount"],
   },
+  "days-between": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["days", "workdays", "add-days"],
+  },
+  "shift-date": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["add-days", "days", "week"],
+  },
+  "iso-week": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["week", "days", "add-days"],
+  },
+  "vat-price": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["vat", "discount", "percent"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -553,5 +577,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "calculate-percent": [
     { step: 1, src: "/covers/tutorials/calculate-percent-lines.svg" },
     { step: 5, src: "/covers/tutorials/calculate-percent-zero.svg" },
+  ],
+  "days-between": [
+    { step: 1, src: "/covers/tutorials/days-between-gap.svg" },
+    { step: 5, src: "/covers/tutorials/days-between-leap.svg" },
+  ],
+  "shift-date": [
+    { step: 1, src: "/covers/tutorials/shift-date-leap.svg" },
+    { step: 6, src: "/covers/tutorials/shift-date-weekend.svg" },
+  ],
+  "iso-week": [
+    { step: 1, src: "/covers/tutorials/iso-week-monday.svg" },
+    { step: 4, src: "/covers/tutorials/iso-week-year.svg" },
+  ],
+  "vat-price": [
+    { step: 1, src: "/covers/tutorials/vat-price-add.svg" },
+    { step: 5, src: "/covers/tutorials/vat-price-split.svg" },
   ],
 };

@@ -268,6 +268,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "convert-base": "/covers/radix-sweet.jpg?v=2",
   "add-duration": "/covers/duration-sweet.jpg?v=2",
   "calculate-percent": "/covers/percent-sweet.jpg?v=1",
+  "days-between": "/covers/days-sweet.jpg?v=1",
+  "shift-date": "/covers/add-days-sweet.jpg?v=1",
+  "iso-week": "/covers/week-sweet.jpg?v=1",
+  "vat-price": "/covers/vat-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -330,6 +334,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "convert-base": "/covers/tutorials/convert-base.svg",
   "add-duration": "/covers/tutorials/add-duration.svg",
   "calculate-percent": "/covers/tutorials/calculate-percent.svg",
+  "days-between": "/covers/tutorials/days-between.svg",
+  "shift-date": "/covers/tutorials/shift-date.svg",
+  "iso-week": "/covers/tutorials/iso-week.svg",
+  "vat-price": "/covers/tutorials/vat-price.svg",
 };
 
 export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";

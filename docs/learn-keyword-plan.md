@@ -119,6 +119,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `convert-base`
 - `add-duration`
 - `calculate-percent`
+- `days-between`
+- `shift-date`
+- `iso-week`
+- `vat-price`
 
 ## Fourth batch (ship)
 
@@ -185,6 +189,17 @@ Margin, radix, and duration shipped as tools on `6d78aec`. Percentage was alread
 | How to convert a number between bases | `radix` | Bases 2–36. 255 decimal is FF hex, uppercase. No 0x, 0b, or decimal point. A digit must exist in the source base. |
 | How to add hours and minutes | `duration` | H:MM:SS. 1:30:00 + 0:45:00 = 2:15:00. Minutes and seconds must be 0–59. A longer second length gives a minus. This is a length, not a clock or a time zone. |
 | How to calculate a percentage | `percent` | The same two numbers produce four lines. 25% of 200 is 50. 25 is 12.5% of 200. 200 + 25% is 250. 200 → 25 is −87.5%. |
+
+## Tenth batch (ship)
+
+Day difference, date shift, and ISO week were already live next to business days. VAT was already live next to percent and margin. The lessons separate counts people mix.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to count days between two dates | `days` | Signed gap, not both ends. Mon 5 Jan 2026 to Fri 9 Jan is 4. Same span is 5 inclusive business days. 28 Feb 2024 to 1 Mar 2024 is 2. Whole weeks drop the leftover. |
+| How to add days to a date | `add-days` | Whole days only. 28 Feb 2024 + 1 is 29 Feb 2024. Friday + 1 is Saturday. |
+| How to find the ISO week number | `week` | Monday is 1, Sunday is 7. Week 1 holds the first Thursday. 1 Jan 2021 is 2020-W53. 30 Dec 2024 is 2025-W01. |
+| How to add VAT to a price | `vat` | Exclusive 100 at 20% is tax 20.00 and gross 120.00. Inclusive 120 at 20% is tax 20.00, not 24.00. The rate is typed, not looked up. |
 
 ## Evidence notes
 

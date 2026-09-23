@@ -112,7 +112,7 @@ Retro emulator games in the browser, grouped by console and genre. Cheats (金�
 
 ## Lessons
 
-Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, image conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, favicon, signature PNG, screenshot marks, invoice PDF, a strong password, JSON formatting, Base64, Unix time, reading a JWT, business days, fractions, hourly pay, time zones, profit margin, number bases, durations, and percentages. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
+Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, image conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, favicon, signature PNG, screenshot marks, invoice PDF, a strong password, JSON formatting, Base64, Unix time, reading a JWT, business days, fractions, hourly pay, time zones, profit margin, number bases, durations, percentages, day counts, date shifts, ISO weeks, and VAT. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
 
 - [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
 - [How to make a QR code](https://cv.cm/en/learn/make-qr/)
@@ -153,6 +153,10 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to convert a number between bases](https://cv.cm/en/learn/convert-base/)
 - [How to add hours and minutes](https://cv.cm/en/learn/add-duration/)
 - [How to calculate a percentage](https://cv.cm/en/learn/calculate-percent/)
+- [How to count days between two dates](https://cv.cm/en/learn/days-between/)
+- [How to add days to a date](https://cv.cm/en/learn/shift-date/)
+- [How to find the ISO week number](https://cv.cm/en/learn/iso-week/)
+- [How to add VAT to a price](https://cv.cm/en/learn/vat-price/)
 - [How to trim audio / cut an MP3](https://cv.cm/en/learn/trim-audio/)
 - [How to convert MP3 to WAV](https://cv.cm/en/learn/mp3-to-wav/)
 - [How to join audio files / merge MP3s](https://cv.cm/en/learn/join-audio/)
