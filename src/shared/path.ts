@@ -193,6 +193,10 @@ export const TUTORIALS = [
   "encode-url",
   "calculate-age",
   "aspect-ratio",
+  "calculate-bmi",
+  "split-tip",
+  "loan-payment",
+  "read-cron",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -218,7 +222,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
   { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio"] },
-  { id: "text", tutorials: ["count-words", "make-password", "format-json", "decode-base64", "unix-time", "read-jwt", "count-workdays", "simplify-fraction", "hourly-pay", "convert-timezone", "profit-margin", "convert-base", "add-duration", "calculate-percent", "days-between", "shift-date", "iso-week", "vat-price", "percent-off", "encode-url", "calculate-age", "aspect-ratio"] },
+  { id: "text", tutorials: ["count-words", "make-password", "format-json", "decode-base64", "unix-time", "read-jwt", "count-workdays", "simplify-fraction", "hourly-pay", "convert-timezone", "profit-margin", "convert-base", "add-duration", "calculate-percent", "days-between", "shift-date", "iso-week", "vat-price", "percent-off", "encode-url", "calculate-age", "aspect-ratio", "calculate-bmi", "split-tip", "loan-payment", "read-cron"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

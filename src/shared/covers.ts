@@ -287,6 +287,10 @@ export const LEARN_COVER: Record<TutorialId, string> = {
   "encode-url": "/covers/url-encode-sweet.jpg?v=1",
   "calculate-age": "/covers/age-sweet.jpg?v=1",
   "aspect-ratio": "/covers/aspect-sweet.jpg?v=1",
+  "calculate-bmi": "/covers/bmi-sweet.jpg?v=1",
+  "split-tip": "/covers/tip-sweet.jpg?v=1",
+  "loan-payment": "/covers/loan-sweet.jpg?v=1",
+  "read-cron": "/covers/cron-sweet.jpg?v=1",
   portrait: "/covers/tutorials/portrait-frames.svg",
   algorithms: "/covers/tutorials/algorithm-map.svg",
   "phone-photos": "/covers/tutorials/phone-focus.svg",
@@ -357,6 +361,10 @@ export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
   "encode-url": "/covers/tutorials/encode-url.svg",
   "calculate-age": "/covers/tutorials/calculate-age.svg",
   "aspect-ratio": "/covers/tutorials/aspect-ratio.svg",
+  "calculate-bmi": "/covers/tutorials/calculate-bmi.svg",
+  "split-tip": "/covers/tutorials/split-tip.svg",
+  "loan-payment": "/covers/tutorials/loan-payment.svg",
+  "read-cron": "/covers/tutorials/read-cron.svg",
 };
 
 export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";

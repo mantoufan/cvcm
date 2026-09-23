@@ -127,6 +127,10 @@ Measure how-to volume and SERP intent before ranking. Tools exist; this pull did
 - `encode-url`
 - `calculate-age`
 - `aspect-ratio`
+- `calculate-bmi`
+- `split-tip`
+- `loan-payment`
+- `read-cron`
 
 ## Fourth batch (ship)
 
@@ -215,6 +219,17 @@ Discount, URL encode, age, and aspect ratio were already live. These lessons sep
 | How to encode a URL | `url-encode` | A space encodes as %20, not +. A slash encodes as %2F, so a whole address stops being openable. Decode turns + into a space. A broken % fails. |
 | How to calculate age | `age` | Born 15 March 2000, on 14 March 2026 the age is 25 years, 11 months, and 27 days (9,495 days). The next day is 26 years. Today is the computer's calendar date. A date before birth fails. |
 | How to find an aspect ratio | `aspect` | 1920×1080 is 16:9. Swapped, it is 9:16. Each side rounds to a whole pixel first. The page does not crop the photo. |
+
+## Twelfth batch (ship)
+
+BMI, tip, loan, and cron were already live. These lessons teach the unit, the split, the monthly rate, and the five fields.
+
+| Lesson query | Tool | Notes |
+|---|---|---|
+| How to calculate BMI | `bmi` | Kilograms and centimetres. 70 kg and 170 cm is 24.2, Normal. 1.70 in the centimetre box is 242214.5. 18.5 is Normal, 25 is Overweight, 30 is Obesity. |
+| How to split a tip | `tip` | 100 at 20% for 4 people is tip 20.00, total 120.00, each 30.00. Each splits the whole bill. 2.9 people counts as 2, so each is 60.00. Fewer than 1 fails. |
+| How to calculate a loan payment | `loan` | 10000 at 12% for 1 year is monthly 888.49, interest 661.85, total 10661.85. A flat 12% would be 1200. 12000 at 0% for 1 year is 1000.00 a month. |
+| How to read a cron expression | `cron` | Five fields. `0 9 * * 1` is 09:00 on Monday. Sunday is 0 and 7. `MON` fails. Six fields and minute 60 fail. The page describes; it does not run the job. |
 
 ## Evidence notes
 

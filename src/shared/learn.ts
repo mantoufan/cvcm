@@ -315,6 +315,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["aspect", "crop", "resize"],
   },
+  "calculate-bmi": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["bmi", "age", "units"],
+  },
+  "split-tip": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["tip", "percent", "discount"],
+  },
+  "loan-payment": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["loan", "compound", "percent"],
+  },
+  "read-cron": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["cron", "timestamp", "slug"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -633,5 +657,21 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "aspect-ratio": [
     { step: 1, src: "/covers/tutorials/aspect-ratio-order.svg" },
     { step: 5, src: "/covers/tutorials/aspect-ratio-round.svg" },
+  ],
+  "calculate-bmi": [
+    { step: 1, src: "/covers/tutorials/calculate-bmi-units.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-bmi-band.svg" },
+  ],
+  "split-tip": [
+    { step: 1, src: "/covers/tutorials/split-tip-total.svg" },
+    { step: 5, src: "/covers/tutorials/split-tip-people.svg" },
+  ],
+  "loan-payment": [
+    { step: 1, src: "/covers/tutorials/loan-payment-simple.svg" },
+    { step: 5, src: "/covers/tutorials/loan-payment-zero.svg" },
+  ],
+  "read-cron": [
+    { step: 1, src: "/covers/tutorials/read-cron-fields.svg" },
+    { step: 4, src: "/covers/tutorials/read-cron-sunday.svg" },
   ],
 };
