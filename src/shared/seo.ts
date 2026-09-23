@@ -137,6 +137,12 @@ const TITLE: Record<ToolId, string> = {
   margin: "meta.titleMargin",
   radix: "meta.titleRadix",
   duration: "meta.titleDuration",
+  gold: "meta.titleGold",
+  silver: "meta.titleSilver",
+  platinum: "meta.titlePlatinum",
+  palladium: "meta.titlePalladium",
+  oil: "meta.titleOil",
+  stocks: "meta.titleStocks",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -243,6 +249,12 @@ const DESC: Record<ToolId, string> = {
   margin: "meta.descMargin",
   radix: "meta.descRadix",
   duration: "meta.descDuration",
+  gold: "meta.descGold",
+  silver: "meta.descSilver",
+  platinum: "meta.descPlatinum",
+  palladium: "meta.descPalladium",
+  oil: "meta.descOil",
+  stocks: "meta.descStocks",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

@@ -714,6 +714,60 @@
       "s2b": "Restar quita la segunda duración de la primera. Si la segunda es más larga, el resultado es negativo.",
       "s3t": "Copia la duración",
       "s3b": "Copiar pone el resultado H:MM:SS y los segundos totales en el portapapeles."
+    },
+    "gold": {
+      "lead": "Convierte un peso de oro en esta pestaña. No se sube nada.",
+      "s1t": "Abrir peso de oro",
+      "s1b": "Hay 1 onza troy escrita. Gramos y taeles aparecen al lado.",
+      "s2t": "Cambiar la unidad",
+      "s2b": "Pasa entre gramos, onzas troy y los tres taeles con nombre completo.",
+      "s3t": "Añade un precio solo si ya lo tienes",
+      "s3b": "Si dejas vacía la casilla de dólares, la página solo convierte peso."
+    },
+    "silver": {
+      "lead": "Convierte un peso de plata en esta pestaña. No se sube nada.",
+      "s1t": "Abrir peso de plata",
+      "s1b": "Hay 1 onza troy escrita. Gramos y taeles aparecen al lado.",
+      "s2t": "Cambiar la unidad",
+      "s2b": "Pasa entre gramos, onzas troy y los tres taeles con nombre completo.",
+      "s3t": "Añade un precio solo si ya lo tienes",
+      "s3b": "Si dejas vacía la casilla de dólares, la página solo convierte peso."
+    },
+    "platinum": {
+      "lead": "Convierte un peso de platino en esta pestaña. No se sube nada.",
+      "s1t": "Abrir peso de platino",
+      "s1b": "Hay 1 onza troy escrita. Gramos y taeles aparecen al lado.",
+      "s2t": "Cambiar la unidad",
+      "s2b": "Pasa entre gramos, onzas troy y los tres taeles con nombre completo.",
+      "s3t": "Añade un precio solo si ya lo tienes",
+      "s3b": "Si dejas vacía la casilla de dólares, la página solo convierte peso."
+    },
+    "palladium": {
+      "lead": "Convierte un peso de paladio en esta pestaña. No se sube nada.",
+      "s1t": "Abrir peso de paladio",
+      "s1b": "Hay 1 onza troy escrita. Gramos y taeles aparecen al lado.",
+      "s2t": "Cambiar la unidad",
+      "s2b": "Pasa entre gramos, onzas troy y los tres taeles con nombre completo.",
+      "s3t": "Añade un precio solo si ya lo tienes",
+      "s3b": "Si dejas vacía la casilla de dólares, la página solo convierte peso."
+    },
+    "oil": {
+      "lead": "Convierte un barril, un galón de EE. UU. y un litro en esta pestaña. No se sube nada.",
+      "s1t": "Abrir volumen de crudo",
+      "s1b": "Hay 1 barril escrito. Las otras unidades aparecen al lado.",
+      "s2t": "Cambiar la unidad",
+      "s2b": "Elige barril, galón de EE. UU. o litro. El volumen sigue siendo el mismo.",
+      "s3t": "Copiar el volumen",
+      "s3b": "Se copian las tres unidades. No hay precio."
+    },
+    "stocks": {
+      "lead": "Escribes el precio y el número de acciones. No se sube nada y no se consulta una cotización.",
+      "s1t": "Abrir aritmética de acciones",
+      "s1b": "Precio, acciones, beneficio y dividendo empiezan vacíos.",
+      "s2t": "Escribe las acciones en circulación",
+      "s2b": "Usa el recuento de la sociedad. La capitalización es precio por ese recuento.",
+      "s3t": "En blanco no hay resultado",
+      "s3b": "El PER queda en blanco si el beneficio es cero. La rentabilidad queda en blanco si el precio es cero."
     }
   }
 }

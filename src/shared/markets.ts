@@ -79,3 +79,29 @@ export function dividendYield(price: number, annualDividend: number): number | n
   const yieldPct = (annualDividend / price) * 100;
   return Number.isFinite(yieldPct) ? yieldPct : null;
 }
+
+/** US petroleum barrel: 42 US gallons. */
+export const BARREL_GAL = 42;
+export const GALLON_L = 3.785411784;
+export const BARREL_L = BARREL_GAL * GALLON_L;
+
+export const OIL_UNITS = ["bbl", "gal", "l"] as const;
+export type OilUnit = (typeof OIL_UNITS)[number];
+
+const OIL_LITERS: Record<OilUnit, number> = {
+  bbl: BARREL_L,
+  gal: GALLON_L,
+  l: 1,
+};
+
+export function convertOil(value: number, from: OilUnit): Record<OilUnit, number> | null {
+  if (!Number.isFinite(value) || value < 0) return null;
+  const liters = value * OIL_LITERS[from];
+  const out = {} as Record<OilUnit, number>;
+  for (const unit of OIL_UNITS) {
+    const next = liters / OIL_LITERS[unit];
+    if (!Number.isFinite(next)) return null;
+    out[unit] = next;
+  }
+  return out;
+}

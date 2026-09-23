@@ -100,6 +100,12 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   margin: 3,
   radix: 3,
   duration: 3,
+  gold: 3,
+  silver: 3,
+  platinum: 3,
+  palladium: 3,
+  oil: 3,
+  stocks: 3,
 };
 
 export function guideSteps(tool: ToolId): number {

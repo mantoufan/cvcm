@@ -714,6 +714,60 @@
       "s2b": "Subtract takes the second duration off the first. A longer second time gives a negative result.",
       "s3t": "Copy the duration",
       "s3b": "Copy puts the H:MM:SS result and the total seconds on the clipboard."
+    },
+    "gold": {
+      "lead": "Convert a gold weight in this tab. Nothing is uploaded.",
+      "s1t": "Open Gold weight",
+      "s1b": "1 troy ounce is filled in. Grams and taels appear beside it.",
+      "s2t": "Change the unit",
+      "s2b": "Switch among grams, troy ounces, and the three named taels.",
+      "s3t": "Add a price only if you have one",
+      "s3b": "Leave the dollar box empty to keep the page as a weight conversion."
+    },
+    "silver": {
+      "lead": "Convert a silver weight in this tab. Nothing is uploaded.",
+      "s1t": "Open Silver weight",
+      "s1b": "1 troy ounce is filled in. Grams and taels appear beside it.",
+      "s2t": "Change the unit",
+      "s2b": "Switch among grams, troy ounces, and the three named taels.",
+      "s3t": "Add a price only if you have one",
+      "s3b": "Leave the dollar box empty to keep the page as a weight conversion."
+    },
+    "platinum": {
+      "lead": "Convert a platinum weight in this tab. Nothing is uploaded.",
+      "s1t": "Open Platinum weight",
+      "s1b": "1 troy ounce is filled in. Grams and taels appear beside it.",
+      "s2t": "Change the unit",
+      "s2b": "Switch among grams, troy ounces, and the three named taels.",
+      "s3t": "Add a price only if you have one",
+      "s3b": "Leave the dollar box empty to keep the page as a weight conversion."
+    },
+    "palladium": {
+      "lead": "Convert a palladium weight in this tab. Nothing is uploaded.",
+      "s1t": "Open Palladium weight",
+      "s1b": "1 troy ounce is filled in. Grams and taels appear beside it.",
+      "s2t": "Change the unit",
+      "s2b": "Switch among grams, troy ounces, and the three named taels.",
+      "s3t": "Add a price only if you have one",
+      "s3b": "Leave the dollar box empty to keep the page as a weight conversion."
+    },
+    "oil": {
+      "lead": "Convert a petroleum barrel, a US gallon, and a liter in this tab. Nothing is uploaded.",
+      "s1t": "Open Oil volume",
+      "s1b": "1 barrel is filled in. The other units update beside it.",
+      "s2t": "Switch the unit",
+      "s2b": "Choose barrel, US gallon, or liter. The same volume stays selected.",
+      "s3t": "Copy the volume",
+      "s3b": "Copy puts all three units on the clipboard. There is no price."
+    },
+    "stocks": {
+      "lead": "Type the price and the share count. Nothing is uploaded, and no quote is fetched.",
+      "s1t": "Open Stock arithmetic",
+      "s1b": "The price, share count, earnings, and dividend boxes start empty.",
+      "s2t": "Type shares outstanding",
+      "s2b": "Use the company's share count. Market cap is price times that count.",
+      "s3t": "Read a blank as no result",
+      "s3b": "P/E is blank when earnings are zero. Yield is blank when the price is zero."
     }
   }
 }

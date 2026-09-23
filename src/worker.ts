@@ -2,7 +2,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, marketsHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -118,7 +118,7 @@ export default {
         return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
       }
       if (parsed.kind === "bare-markets") {
-        return redirectTo(marketsHref(locale, parsed.market), url, 302);
+        return redirectTo(appHref(locale, parsed.market), url, 301);
       }
       if (parsed.kind === "bare-device") {
         return redirectTo(deviceHref(locale, parsed.page), url, 302);
@@ -148,10 +148,7 @@ export default {
         }
       }
       if (parsed.kind === "markets") {
-        const canonical = marketsHref(parsed.locale, parsed.market);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
+        return redirectTo(appHref(parsed.locale, parsed.market), url, 301);
       }
       if (parsed.kind === "device") {
         const canonical = deviceHref(parsed.locale, parsed.page);

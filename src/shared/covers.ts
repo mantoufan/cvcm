@@ -82,6 +82,12 @@ export const TOOL_COVER: Record<ToolId, string> = {
   margin: "/covers/margin-sweet.jpg?v=2",
   radix: "/covers/radix-sweet.jpg?v=2",
   duration: "/covers/duration-sweet.jpg?v=2",
+  gold: "/covers/gold-sweet.jpg?v=1",
+  silver: "/covers/silver-sweet.jpg?v=1",
+  platinum: "/covers/platinum-sweet.jpg?v=1",
+  palladium: "/covers/palladium-sweet.jpg?v=1",
+  oil: "/covers/oil-sweet.jpg?v=1",
+  stocks: "/covers/stocks-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

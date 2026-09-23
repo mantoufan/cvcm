@@ -48,6 +48,7 @@ import { mountHourly, unmountHourly } from "./hourly/ui";
 import { mountMargin, unmountMargin } from "./margin/ui";
 import { mountRadix, unmountRadix } from "./radix/ui";
 import { mountDuration, unmountDuration } from "./duration/ui";
+import { mountMetal, mountOil, mountStocks, unmountAssets } from "./assets/ui";
 import { mountCrop, unmountCrop } from "./crop/ui";
 import { mountRotate, unmountRotate } from "./rotate/ui";
 import { mountExif, unmountExif } from "./exif/ui";
@@ -103,8 +104,6 @@ import type { DevicePageId } from "../shared/device";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
 import type { MarketId } from "../shared/markets";
-import { MARKET_PAGES } from "../shared/markets";
-import { marketCopy, marketHub, marketNav } from "../shared/markets-i18n";
 import { GAME_CONSOLES, GAMES } from "../shared/games";
 import { gameCopy } from "../shared/games-i18n";
 import { hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
@@ -179,11 +178,8 @@ export function boot(): void {
     }
   } else if (parsed.kind === "markets") {
     setLocale(parsed.locale);
-    applyMarkets(parsed.market);
-    const canonical = marketsHref(parsed.locale, parsed.market);
-    if (location.pathname !== canonical) {
-      history.replaceState(null, "", withSearch(canonical, location.search));
-    }
+    applyTool(parsed.market, null);
+    history.replaceState(null, "", withSearch(appHref(parsed.locale, parsed.market), location.search));
   } else if (parsed.kind === "device") {
     setLocale(parsed.locale);
     applyDevice(parsed.page);
@@ -209,8 +205,8 @@ export function boot(): void {
   } else if (parsed.kind === "bare-markets") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
-    applyMarkets(parsed.market);
-    history.replaceState(null, "", withSearch(marketsHref(loc, parsed.market), location.search));
+    applyTool(parsed.market, null);
+    history.replaceState(null, "", withSearch(appHref(loc, parsed.market), location.search));
   } else if (parsed.kind === "bare-device") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -303,19 +299,6 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   devicePage = null;
 }
 
-function applyMarkets(next: MarketId | null): void {
-  tool = null;
-  clipId = null;
-  tutorial = null;
-  learnHub = false;
-  gamesHub = false;
-  gameConsole = null;
-  gameId = null;
-  marketsHub = next === null;
-  marketId = next;
-  devicePage = null;
-}
-
 function applyDevice(page: DevicePageId): void {
   tool = null;
   clipId = null;
@@ -330,6 +313,7 @@ function applyDevice(page: DevicePageId): void {
 }
 
 function unmountTools(): void {
+  unmountAssets();
   unmountMarket();
   unmountWatermark();
   unmountCollage();
@@ -440,7 +424,8 @@ export function render(): void {
     applyGames(parsed.console, parsed.game);
   } else if (parsed.kind === "markets") {
     setLocale(parsed.locale);
-    applyMarkets(parsed.market);
+    applyTool(parsed.market, null);
+    history.replaceState(null, "", withSearch(appHref(parsed.locale, parsed.market), location.search));
   } else if (parsed.kind === "clip") {
     applyTool("clip", parsed.id);
   } else if (parsed.kind === "bare-learn") {
@@ -449,7 +434,7 @@ export function render(): void {
   } else if (parsed.kind === "bare-games") {
     applyGames(parsed.console, parsed.game);
   } else if (parsed.kind === "bare-markets") {
-    applyMarkets(parsed.market);
+    applyTool(parsed.market, null);
   } else if (parsed.kind === "device") {
     setLocale(parsed.locale);
     applyDevice(parsed.page);
@@ -515,7 +500,6 @@ function shell(loc: Locale): HTMLElement {
       ),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         toolsMenu(loc, tool, devicePage),
-        marketsMenu(loc, marketId, marketsHub),
         gamesMenu(loc, gameConsole, gameId, gamesHub),
         learnMenu(loc, tutorial, learnHub),
       ),
@@ -593,6 +577,9 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (tool === "margin") mountMargin(main);
   else if (tool === "radix") mountRadix(main);
   else if (tool === "duration") mountDuration(main);
+  else if (tool === "gold" || tool === "silver" || tool === "platinum" || tool === "palladium") mountMetal(main, tool);
+  else if (tool === "oil") mountOil(main);
+  else if (tool === "stocks") mountStocks(main);
   else if (tool === "resize") await mountResize(main);
   else if (tool === "crop") await mountCrop(main);
   else if (tool === "rotate") await mountRotate(main);
@@ -756,48 +743,6 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
           ),
         ),
       ]),
-    ),
-  );
-}
-
-function marketsMenu(loc: Locale, current: MarketId | null, hub: boolean): HTMLElement {
-  const active = hub || Boolean(current);
-  const hubCopy = marketHub(loc);
-  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
-    h("button", {
-      type: "button",
-      class: "menu-btn" + (active ? " on" : ""),
-      "aria-haspopup": "true",
-      onClick: menuToggle,
-    }, marketNav(loc)),
-    h("div", { class: "menu-panel", role: "menu" },
-      h("a", {
-        class: "menu-item" + (hub && !current ? " on" : ""),
-        href: marketsHref(loc, null),
-        role: "menuitem",
-        "data-nav": "markets",
-        "aria-current": hub && !current ? "page" : undefined,
-      },
-        h("div", { class: "menu-copy" },
-          h("strong", null, hubCopy.menu),
-          h("span", null, hubCopy.blurb),
-        ),
-      ),
-      ...MARKET_PAGES.map((id) =>
-        h("a", {
-          class: "menu-item" + (current === id ? " on" : ""),
-          href: marketsHref(loc, id),
-          role: "menuitem",
-          "data-nav": `markets-${id}`,
-          "aria-current": current === id ? "page" : undefined,
-        },
-          h("img", { class: "menu-cover", src: MARKET_COVER[id], alt: "", width: "72", height: "40" }),
-          h("div", { class: "menu-copy" },
-            h("strong", null, marketCopy(loc, id).name),
-            h("span", null, marketCopy(loc, id).blurb),
-          ),
-        ),
-      ),
     ),
   );
 }

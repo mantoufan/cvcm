@@ -13,8 +13,9 @@ import {
   metalPrices,
   peRatio,
 } from "../src/shared/markets";
-import { marketCopy, marketHub } from "../src/shared/markets-i18n";
-import { STATIC_FILE, marketsHref, parseAppPath } from "../src/shared/path";
+import { marketCopy } from "../src/shared/markets-i18n";
+import { STATIC_FILE, appHref, parseAppPath } from "../src/shared/path";
+import { BARREL_GAL, BARREL_L, convertOil } from "../src/shared/markets";
 import { applyHtmlSeo, hreflangAlternates, pageTitle } from "../src/shared/seo";
 import worker from "../src/worker";
 
@@ -69,6 +70,10 @@ describe("markets routes", () => {
     expect(peRatio(10, 2)).toBe(5);
     expect(dividendYield(0, 1)).toBeNull();
     expect(dividendYield(50, 1)).toBeCloseTo(2, 6);
+    expect(BARREL_GAL).toBe(42);
+    expect(BARREL_L).toBeCloseTo(158.987294928, 8);
+    expect(convertOil(1, "bbl")?.l).toBeCloseTo(158.987294928, 8);
+    expect(convertOil(1, "bbl")?.gal).toBe(42);
   });
 
   it("keeps Chinese copy away from quotes and buy buttons", () => {
@@ -83,29 +88,27 @@ describe("markets routes", () => {
   });
 
   it("points hreflang at the gold page", () => {
-    const links = hreflangAlternates({ markets: true, market: "gold" });
-    expect(links.find((link) => link.hreflang === "x-default")?.href).toBe("https://cv.cm/en/markets/gold/");
-    expect(links.find((link) => link.hreflang === "zh-CN")?.href).toBe("https://cv.cm/zh-cn/markets/gold/");
+    const links = hreflangAlternates("gold");
+    expect(links.find((link) => link.hreflang === "x-default")?.href).toBe("https://cv.cm/en/gold/");
+    expect(links.find((link) => link.hreflang === "zh-CN")?.href).toBe("https://cv.cm/zh-cn/gold/");
     expect(links).toHaveLength(LOCALES.length + 1);
-    expect(pageTitle("en", { markets: true, market: "gold" })).toMatch(/troy ounce/i);
-    expect(pageTitle("en", { markets: true })).not.toBe(pageTitle("en", null));
-    const out = applyHtmlSeo(html, "zh-CN", { markets: true, market: "gold" });
+    expect(pageTitle("en", "gold")).toMatch(/troy ounce/i);
+    expect(pageTitle("en", "oil")).toMatch(/barrel/i);
+    const out = applyHtmlSeo(html, "zh-CN", "gold");
     expect(out).toContain("黄金金衡盎司换算成克");
-    expect(out).toContain("BreadcrumbList");
-    expect(out).not.toContain("https://cv.cm/zh-cn/</a>");
-    expect(marketHub("en").disclaimer.length).toBeGreaterThan(20);
-    expect(marketsHref("zh-TW", "stocks")).toBe("/zh-tw/markets/stocks/");
+    expect(appHref("zh-TW", "stocks")).toBe("/zh-tw/stocks/");
+    expect(appHref("en", "platinum")).toBe("/en/platinum/");
   });
 });
 
 describe("markets worker", () => {
   it("redirects a bare path and serves the gold title", async () => {
     const bare = await worker.fetch(new Request("https://cv.cm/markets/gold/"), { ASSETS: { fetch: async () => new Response("no") } });
-    expect(bare.status).toBe(302);
-    expect(bare.headers.get("Location")).toBe("https://cv.cm/en/markets/gold/");
+    expect(bare.status).toBe(301);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/en/gold/");
 
     const assets = { fetch: async () => new Response(html, { headers: { "Content-Type": "text/html" } }) };
-    const live = await worker.fetch(new Request("https://cv.cm/en/markets/gold/"), { ASSETS: assets });
+    const live = await worker.fetch(new Request("https://cv.cm/en/gold/"), { ASSETS: assets });
     expect(live.status).toBe(200);
     expect(await live.text()).toContain("Gold troy ounce to grams");
   });
