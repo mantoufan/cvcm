@@ -217,6 +217,13 @@ export const GAME_COVER: Record<GameId, string> = {
   "roborun": "/covers/games/roborun.jpg?v=1",
   "sliding-blaster": "/covers/games/sliding-blaster.jpg?v=1",
   "squirrel-domino": "/covers/games/squirrel-domino.jpg?v=1",
+  "geometrix": "/covers/games/geometrix.jpg?v=1",
+  "ucity": "/covers/games/ucity.jpg?v=1",
+  "dawn-will-come": "/covers/games/dawn-will-come.jpg?v=1",
+  "labirinth": "/covers/games/labirinth.jpg?v=1",
+  "europa-rescue": "/covers/games/europa-rescue.jpg?v=1",
+  "gb-snake": "/covers/games/gb-snake.jpg?v=1",
+  "apotris": "/covers/games/apotris.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
