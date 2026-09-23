@@ -230,6 +230,11 @@ export const GAME_COVER: Record<GameId, string> = {
   "europa-rescue": "/covers/games/europa-rescue.jpg?v=1",
   "gb-snake": "/covers/games/gb-snake.jpg?v=1",
   "apotris": "/covers/games/apotris.jpg?v=1",
+  "domination": "/covers/games/domination.jpg?v=1",
+  "conways-life": "/covers/games/conways-life.jpg?v=1",
+  "potion-panic": "/covers/games/potion-panic.jpg?v=1",
+  "k32-super-rocket": "/covers/games/k32-super-rocket.jpg?v=1",
+  "lander-advance": "/covers/games/lander-advance.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
