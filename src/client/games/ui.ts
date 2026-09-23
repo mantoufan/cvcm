@@ -277,7 +277,7 @@ function player(spec: {
     allow: "autoplay; fullscreen; gamepad",
     src: "about:blank",
   }) as HTMLIFrameElement;
-  const status = h("p", { class: "game-note" }, t("games.byoNote"));
+  const status = h("p", { class: "game-note" }, t(flash ? "games.flash.needFileBody" : "games.byoNote"));
   const empty = h("div", {
     class: "game-empty",
     role: "status",
@@ -325,7 +325,7 @@ function player(spec: {
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
-    status.textContent = t("games.loadRomHint");
+    status.textContent = t(flash ? "games.flash.needFileBody" : "games.loadRomHint");
     const buffer = await file.arrayBuffer();
     boot({ buffer, filename: file.name, cheats: spec.cheats });
   });
