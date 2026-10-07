@@ -1,6 +1,6 @@
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
-import { cookieValue, LOCALE_COOKIE, negotiateLocale } from "./shared/locale";
+import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
@@ -124,7 +124,7 @@ export default {
         return redirectTo(deviceHref(locale, parsed.page), url, 302);
       }
       if (parsed.kind === "unknown") {
-        return redirectTo(appHref(locale, null), url, 302);
+        return withHeaders(notFound(locale, request.method), path);
       }
       if (parsed.kind === "app") {
         const canonical = appHref(parsed.locale, parsed.tool, parsed.clipId, toolJob(parsed));
@@ -225,6 +225,18 @@ function deviceIpResponse(request: Request): Response {
       "Cache-Control": "private, no-store",
       "CDN-Cache-Control": "no-store",
       "X-Robots-Tag": "noindex",
+    },
+  });
+}
+
+function notFound(locale: Locale, method: string): Response {
+  const home = appHref(locale, null);
+  const body = `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — cv.cm</title></head><body style="font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1rem"><h1>404</h1><p><a href="${home}">cv.cm</a></p></body></html>`;
+  return new Response(method === "HEAD" ? null : body, {
+    status: 404,
+    headers: {
+      "Cache-Control": "no-store",
+      "Content-Type": "text/html; charset=utf-8",
     },
   });
 }

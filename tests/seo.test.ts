@@ -213,6 +213,24 @@ describe("worker html seo", () => {
         fetch: async () => new Response("no", { status: 404 }),
       },
     });
-    expect(unknown.status).toBe(302);
+    expect(unknown.status).toBe(404);
+    expect(unknown.headers.get("Location")).toBeNull();
+  });
+
+  it("server-renders crawlable body text and internal links", async () => {
+    const assets = {
+      fetch: async () => new Response(
+        '<!doctype html><html lang="en"><head><title>x</title><meta name="description" content="x" /></head><body><div id="app"></div></body></html>',
+        { headers: { "Content-Type": "text/html" } },
+      ),
+    };
+    const tool = await (await worker.fetch(new Request("https://cv.cm/en/convert/heic-to-jpg/"), { ASSETS: assets })).text();
+    expect(tool).toContain("<h1>HEIC to JPG converter</h1>");
+    expect(tool).toContain("<h2>Why is the preview blank?</h2>");
+    expect(tool).toContain('<a href="/en/">');
+    const home = await (await worker.fetch(new Request("https://cv.cm/zh-cn/"), { ASSETS: assets })).text();
+    expect(home).toContain('<a href="/zh-cn/qr/">');
+    expect(home).toContain('<a href="/zh-cn/learn/">');
+    expect(home).not.toContain('<div id="app"></div>');
   });
 });

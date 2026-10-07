@@ -101,8 +101,8 @@ describe("device worker", () => {
     expect(slash.status).toBe(301);
     expect(slash.headers.get("Location")).toBe("https://cv.cm/en/device/ip/");
     const unknown = await worker.fetch(new Request("https://cv.cm/en/device/gpu/"), { ASSETS: assets });
-    expect(unknown.status).toBe(302);
-    expect(unknown.headers.get("Location")).toBe("https://cv.cm/en/");
+    expect(unknown.status).toBe(404);
+    expect(await unknown.text()).toContain('name="robots" content="noindex"');
     const html = await worker.fetch(new Request("https://cv.cm/en/device/ip/", { headers: { "CF-Connecting-IP": "203.0.113.50" } }), { ASSETS: assets });
     const body = await html.text();
     expect(body).not.toContain("203.0.113.50");

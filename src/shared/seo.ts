@@ -18,7 +18,7 @@ import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, deviceHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 const MESSAGES: Record<Locale, typeof en> = {
   en,
@@ -743,19 +743,80 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(flashHubHowToJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(flashHubSoftwareJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
     );
-  } else if (seo.learn && seo.tutorial) {
+  }
+  const howTo = seo.game
+    ? null
+    : seo.learn && seo.tutorial
+      ? howToJsonLd(locale, seo.tutorial)
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && seo.tool
+        ? toolHowToJsonLd(locale, seo.tool)
+        : null;
+  if (howTo) {
     tags.push(
-      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howToJsonLd(locale, seo.tutorial)).replace(/</g, "\\u003c")}</script>`,
-    );
-  } else if (seo.tool) {
-    tags.push(
-      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(toolHowToJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
   out = out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
-  if (seo.devicePage) {
-    const inner = deviceStaticHtml(locale, seo.devicePage);
-    out = out.replace(/<div id="app">[\s\S]*?<\/div>/, `<div id="app">${inner}</div>`);
-  }
+  const inner = seo.devicePage
+    ? deviceStaticHtml(locale, seo.devicePage)
+    : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
+  out = out.replace(/<div id="app">[\s\S]*?<\/div>/, `<div id="app">${inner}</div>`);
   return out;
+}
+
+type LdStep = { name?: string; text?: string };
+type LdQuestion = { name?: string; acceptedAnswer?: { text?: string } };
+
+function linkText(title: string): string {
+  return title.replace(/\s+[—|-]\s+cv\.cm$/i, "");
+}
+
+function linkList(items: { href: string; text: string }[]): string {
+  if (items.length === 0) return "";
+  return `<ul>${items.map((item) => `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.text)}</a></li>`).join("")}</ul>`;
+}
+
+function toolLinks(locale: Locale, tools: readonly ToolId[]): { href: string; text: string }[] {
+  return tools.map((tool) => ({ href: appHref(locale, tool), text: linkText(pageTitle(locale, tool)) }));
+}
+
+/** Crawlable page body: the client clears #app on mount, so this only serves bots and no-JS visitors. */
+function staticPageHtml(
+  locale: Locale,
+  seo: SeoInput,
+  title: string,
+  description: string,
+  faq: Record<string, unknown> | null,
+  howTo: Record<string, unknown> | null,
+): string {
+  const parts = [`<h1>${escapeHtml(linkText(title))}</h1>`, `<p>${escapeHtml(description)}</p>`];
+  const steps = ((howTo?.step as LdStep[] | undefined) ?? []).filter((step) => step.name || step.text);
+  if (steps.length > 0) {
+    parts.push(`<ol>${steps.map((step) => `<li><strong>${escapeHtml(step.name ?? "")}</strong> ${escapeHtml(step.text ?? "")}</li>`).join("")}</ol>`);
+  }
+  const questions = (faq?.mainEntity as LdQuestion[] | undefined) ?? [];
+  if (questions.length > 0) {
+    parts.push(`<section>${questions.map((q) => `<h2>${escapeHtml(q.name ?? "")}</h2><p>${escapeHtml(q.acceptedAnswer?.text ?? "")}</p>`).join("")}</section>`);
+  }
+  const home = { href: appHref(locale, null), text: linkText(pageTitle(locale, null)) };
+  if (seo.learn) {
+    const tutorials = FEATURED_TUTORIALS
+      .filter((id) => id !== seo.tutorial)
+      .map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
+    parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...tutorials] : tutorials));
+  } else if (seo.games || seo.markets) {
+    parts.push(linkList([home]));
+  } else if (seo.tool) {
+    const cat = categoryOf(seo.tool);
+    const siblings = (CATEGORIES.find((c) => c.id === cat)?.tools ?? []).filter((id) => id !== seo.tool) as ToolId[];
+    parts.push(linkList([home, ...toolLinks(locale, siblings)]));
+  } else {
+    for (const cat of CATEGORIES) parts.push(linkList(toolLinks(locale, cat.tools as readonly ToolId[])));
+    parts.push(linkList([
+      { href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) },
+      { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },
+      { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
+    ]));
+  }
+  return `<main>${parts.join("")}</main>`;
 }
