@@ -648,8 +648,9 @@ export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string,
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: brand ? `${brand} · ${name}` : name,
-    ...(brand ? { alternateName: [brand, name] } : {}),
+    // The watermark tool is named after the brand itself; don't print it twice.
+    name: brand && brand !== name ? `${brand} · ${name}` : name,
+    ...(brand && brand !== name ? { alternateName: [brand, name] } : {}),
     description: pageDescription(locale, tool),
     url: pageCanonical(locale, tool),
     image: coverUrl(TOOL_COVER[tool]),
