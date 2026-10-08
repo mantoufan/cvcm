@@ -496,16 +496,23 @@ async function runTool(send, id, fx) {
     await waitFor(send, `!!document.querySelector(".file-list li img")`);
     await sleep(500);
     await snap(2);
-    await evalValue(send, `(() => {
-      const c = document.querySelector("canvas.preview");
-      const r = c.getBoundingClientRect();
-      const f = (t, x, y) => c.dispatchEvent(new PointerEvent(t, { bubbles: true, pointerId: 1, clientX: r.left + r.width * x, clientY: r.top + r.height * y }));
-      document.querySelector('[data-redact="black"]').click();
-      f("pointerdown", 0.15, 0.79); f("pointerup", 0.9, 0.92);
-      document.querySelector('[data-redact="mosaic"]').click();
-      f("pointerdown", 0.67, 0.18); f("pointerup", 0.94, 0.72);
-      return true;
+    const box = await evalValue(send, `(() => {
+      const r = document.querySelector("canvas.preview").getBoundingClientRect();
+      return { x: r.left, y: r.top, w: r.width, h: r.height };
     })()`);
+    const drag = async (x1, y1, x2, y2) => {
+      const at = (fx, fy) => ({ x: box.x + box.w * fx, y: box.y + box.h * fy });
+      const a = at(x1, y1);
+      const b = at(x2, y2);
+      await send("Input.dispatchMouseEvent", { type: "mousePressed", ...a, button: "left", clickCount: 1 });
+      await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...b, button: "left" });
+      await send("Input.dispatchMouseEvent", { type: "mouseReleased", ...b, button: "left", clickCount: 1 });
+    };
+    await clickSel(send, '[data-redact="black"]');
+    await drag(0.15, 0.79, 0.9, 0.92);
+    await clickSel(send, '[data-redact="mosaic"]');
+    await drag(0.67, 0.18, 0.94, 0.72);
+    await waitFor(send, `/^2\\b/.test(document.getElementById("wm-redact-count")?.textContent || "")`);
     await sleep(400);
     await snap(3);
     return;

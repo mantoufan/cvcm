@@ -907,8 +907,12 @@ function onDrawStart(e: PointerEvent): void {
   const p = canvasPoint(e);
   if (!p) return;
   e.preventDefault();
-  preview.setPointerCapture(e.pointerId);
   dragStart = p;
+  try {
+    preview.setPointerCapture(e.pointerId);
+  } catch {
+    // No active pointer to capture (synthetic events); the drag still works inside the canvas.
+  }
 }
 
 function onDrawMove(e: PointerEvent): void {
