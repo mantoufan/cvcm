@@ -120,3 +120,7 @@ Same character and room. Three cream cards fanned, each stamped with a different
 ## Time duration
 
 Same character and room. Two small pink hourglasses tied with a ribbon. No numerals. Save `public/covers/duration-sweet.jpg`, `sips -z 720 1280`.
+
+## Mosaic / redact (2026-10-08)
+
+Codex (`codex exec`, built-in image tool), refs `watermark-sweet.jpg` + `qr-sweet.jpg`. Same character and room. She holds up an instant photo of a plush teddy bear whose face is a pastel pink pixel-mosaic grid, and a small pink heart wand trailing square pixel sparkles. On the desk: a closed pink card with a black rounded bar over one line, and a heart padlock. No words, letters, numbers, logo or watermark. Saved `public/covers/mosaic-sweet.jpg` via `sips -z 720 1280`.
