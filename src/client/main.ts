@@ -139,6 +139,7 @@ let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
 let localeReq = 0;
+let renderedHref: string | null = null;
 
 let started = false;
 
@@ -419,7 +420,10 @@ export function render(): void {
         if (req === localeReq) render();
       },
       () => {
-        if (req === localeReq) reloadOnce();
+        if (req !== localeReq) return;
+        // Online, a full load picks up current chunk names (a tab left open across a deploy).
+        if ((!renderedHref || navigator.onLine) && reloadOnce()) return;
+        restoreRendered();
       },
     );
     return;
@@ -509,19 +513,29 @@ export function render(): void {
   const root = appEl();
   clear(root);
   root.append(shell(loc));
+  renderedHref = location.pathname + location.search + location.hash;
 }
 
 const RELOAD_KEY = "cvcm-locale-reload";
 
 /** A locale pack failed to load (offline, or a tab still on an older deploy's chunk names). Try one full page load per path. */
-function reloadOnce(): void {
+function reloadOnce(): boolean {
   try {
-    if (sessionStorage.getItem(RELOAD_KEY) === location.pathname) return;
+    if (sessionStorage.getItem(RELOAD_KEY) === location.pathname) return false;
     sessionStorage.setItem(RELOAD_KEY, location.pathname);
   } catch {
-    return;
+    return false;
   }
   location.reload();
+  return true;
+}
+
+/** Point the URL and language picker back at the page still on screen. Before the first render that is the server HTML. */
+function restoreRendered(): void {
+  if (!renderedHref) return;
+  history.replaceState(null, "", renderedHref);
+  const select = document.querySelector<HTMLSelectElement>("select.lang");
+  if (select) select.value = locale();
 }
 
 function shell(loc: Locale): HTMLElement {
