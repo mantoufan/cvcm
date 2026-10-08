@@ -139,6 +139,7 @@ let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
 let localeReq = 0;
+let switchReq = 0;
 
 let started = false;
 
@@ -407,6 +408,7 @@ export function render(): void {
     ? parsed.locale
     : locale();
   const req = ++localeReq;
+  switchReq += 1;
   if (!hasMessages(loc)) {
     // Keep the current (or server-rendered) page until this locale's strings arrive.
     loadLocale(loc).then(
@@ -861,13 +863,20 @@ function langSwitch(current: Locale): HTMLElement {
     onChange: (e: Event) => {
       const select = e.target as HTMLSelectElement;
       const next = select.value as Locale;
+      const req = ++switchReq;
       if (hasMessages(next)) {
         switchLocale(next);
         return;
       }
-      loadLocale(next).then(() => switchLocale(next), () => {
-        select.value = locale();
-      });
+      // A later pick or navigation supersedes this one. On failure, a full load fetches current HTML and chunk names.
+      loadLocale(next).then(
+        () => {
+          if (req === switchReq) switchLocale(next);
+        },
+        () => {
+          if (req === switchReq) location.assign(localeHref(next));
+        },
+      );
     },
   });
   for (const code of LOCALES) {
@@ -883,7 +892,12 @@ function langSwitch(current: Locale): HTMLElement {
 
 function switchLocale(next: Locale): void {
   setLocale(next);
-  const href = devicePage
+  history.pushState(null, "", localeHref(next));
+  render();
+}
+
+function localeHref(next: Locale): string {
+  return devicePage
     ? withSearch(deviceHref(next, devicePage), location.search)
     : learnHub || tutorial
       ? withSearch(learnHref(next, tutorial), location.search)
@@ -892,8 +906,6 @@ function switchLocale(next: Locale): void {
         : marketsHub || marketId
           ? withSearch(marketsHref(next, marketId), location.search)
           : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
-  history.pushState(null, "", href);
-  render();
 }
 
 /** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
