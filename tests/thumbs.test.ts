@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import { DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, thumbOriginal, thumbSrc, tileSrcset } from "../src/shared/covers";
 import { readFileSync } from "node:fs";
 import { STATIC_FILE } from "../src/shared/path";
+import worker from "../src/worker";
 import { THUMB_WIDTHS, coverRefs, thumbFile } from "../scripts/thumbs-lib.mjs";
 
 const ALL = [...Object.values(TOOL_COVER), ...Object.values(GAME_COVER), ...Object.values(LEARN_COVER), ...Object.values(MARKET_COVER), DEVICE_COVER];
@@ -41,4 +42,14 @@ it("builds a thumb file for every raster cover at the URL thumbSrc asks for", ()
       if (thumb !== src) expect(built.has(thumb), `${src} @${w}`).toBe(true);
     }
   }
+});
+
+it("redirects a thumb that was not built to the versioned original", async () => {
+  const response = await worker.fetch(new Request("https://cv.cm/thumbs/640/games/contra.jpg.v2.webp"), {
+    ASSETS: {
+      fetch: async () => new Response("<!doctype html>", { headers: { "Content-Type": "text/html" } }),
+    },
+  });
+  expect(response.status).toBe(302);
+  expect(response.headers.get("Location")).toBe("https://cv.cm/covers/games/contra.jpg?v=2");
 });

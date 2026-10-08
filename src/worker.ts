@@ -180,7 +180,8 @@ export default {
     const thumbFallback = thumbOriginal(path);
     if (thumbFallback && !(assetResponse.headers.get("content-type") || "").startsWith("image/")) {
       // No thumbnail was built (the cover has no local copy): send the original.
-      return redirectTo(thumbFallback, url, 302);
+      // Not redirectTo(): that copies the request's (empty) query over the cover's ?v=.
+      return redirect(new URL(thumbFallback, url.origin).toString(), 302);
     }
     if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
       assetResponse = await env.ASSETS.fetch(new URL("/index.html", url.origin).toString());
