@@ -112,6 +112,7 @@ import { gameName } from "../shared/games-i18n";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
+import { trackPageView } from "./analytics";
 import "./styles.css";
 
 function requireApp(): HTMLElement {
@@ -567,6 +568,7 @@ export function render(): void {
   const root = appEl();
   clear(root);
   root.append(shell(loc));
+  trackPageView();
   renderedHref = location.pathname + location.search + location.hash;
 }
 
