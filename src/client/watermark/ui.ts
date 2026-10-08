@@ -940,8 +940,12 @@ function onDrawEnd(e: PointerEvent): void {
   if (!p) return;
   const w = p.x - start.x;
   const hgt = p.y - start.y;
-  // Ignore taps: a box must be at least 1% of the image each way.
-  if (Math.abs(w) >= 0.01 && Math.abs(hgt) >= 0.01) {
+  // Judge taps in on-screen pixels, not image ratios: one text line on a long
+  // screenshot can be well under 1% of the image height and must still count.
+  const rect = preview?.getBoundingClientRect();
+  const dx = Math.abs(w) * (rect?.width ?? 0);
+  const dy = Math.abs(hgt) * (rect?.height ?? 0);
+  if (Math.max(dx, dy) >= 6 && Math.min(dx, dy) >= 2) {
     pushRedaction({
       x: Math.min(start.x, p.x),
       y: Math.min(start.y, p.y),
