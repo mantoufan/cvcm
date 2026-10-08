@@ -139,7 +139,6 @@ let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
 let localeReq = 0;
-let switchReq = 0;
 
 let started = false;
 
@@ -408,7 +407,6 @@ export function render(): void {
     ? parsed.locale
     : locale();
   const req = ++localeReq;
-  switchReq += 1;
   if (!hasMessages(loc)) {
     // Keep the current (or server-rendered) page until this locale's strings arrive.
     loadLocale(loc).then(
@@ -861,22 +859,10 @@ function langSwitch(current: Locale): HTMLElement {
     class: "lang",
     "aria-label": t("lang.label"),
     onChange: (e: Event) => {
-      const select = e.target as HTMLSelectElement;
-      const next = select.value as Locale;
-      const req = ++switchReq;
-      if (hasMessages(next)) {
-        switchLocale(next);
-        return;
-      }
-      // A later pick or navigation supersedes this one. On failure, a full load fetches current HTML and chunk names.
-      loadLocale(next).then(
-        () => {
-          if (req === switchReq) switchLocale(next);
-        },
-        () => {
-          if (req === switchReq) location.assign(localeHref(next));
-        },
-      );
+      const next = (e.target as HTMLSelectElement).value as Locale;
+      // render() sets the locale once its pack is loaded, like any navigation.
+      history.pushState(null, "", localeHref(next));
+      render();
     },
   });
   for (const code of LOCALES) {
@@ -888,12 +874,6 @@ function langSwitch(current: Locale): HTMLElement {
     );
   }
   return sel;
-}
-
-function switchLocale(next: Locale): void {
-  setLocale(next);
-  history.pushState(null, "", localeHref(next));
-  render();
 }
 
 function localeHref(next: Locale): string {

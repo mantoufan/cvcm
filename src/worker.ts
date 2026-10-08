@@ -4,19 +4,10 @@ import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { preloadLocalePack } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
-// Locale -> hashed string-pack chunk, injected by scripts/build-worker.mjs (absent in tests).
-declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
-
-/** Fetch the page locale's strings in parallel with the entry script instead of after it runs. */
-export function preloadLocalePack(html: string, locale: Locale): string {
-  const files = typeof __LOCALE_PACKS__ === "undefined" ? undefined : __LOCALE_PACKS__[locale];
-  if (!files?.length) return html;
-  const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");
-  return html.replace("</head>", `${links}\n  </head>`);
-}
 
 export interface Env {
   ASSETS: { fetch: (request: Request | string) => Promise<Response> };
