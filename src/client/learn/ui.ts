@@ -96,7 +96,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
               href: appHref(loc, tool),
               "data-nav": tool,
             },
-              h("img", { class: "menu-cover", src: thumbSrc(COVER[tool], 160), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+              h("img", { class: "menu-cover", src: thumbSrc(COVER[tool], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
               h("div", { class: "menu-copy" },
                 h("strong", null, t(`tools.${tool}.name`)),
                 h("span", null, t(`tools.${tool}.blurb`)),

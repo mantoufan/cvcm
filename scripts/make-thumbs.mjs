@@ -23,11 +23,16 @@ async function source(path) {
     /* offline build: fall back to the git copy */
   }
   const git = local >= 0 ? { input: file, from: "git" } : null;
-  if (git && (remote < 0 || remote === local)) return git;
-  if (remote < 0) return git;
+  if (remote < 0) {
+    if (git) console.warn(`thumbs: could not check ${path} on S3; using the git copy`);
+    return git;
+  }
+  if (remote === local) return git;
   try {
     const res = await fetch(`${S3}${path}`);
-    if (res.ok) return { input: Buffer.from(await res.arrayBuffer()), from: "s3" };
+    if (res.ok && (res.headers.get("content-type") ?? "").startsWith("image/")) {
+      return { input: Buffer.from(await res.arrayBuffer()), from: "s3" };
+    }
   } catch {
     /* use the git copy below */
   }
@@ -44,12 +49,18 @@ async function worker() {
       counts.skipped.push(ref.path);
       continue;
     }
-    counts[src.from]++;
-    const image = sharp(src.input);
-    for (const width of THUMB_WIDTHS) {
-      const out = resolve(root, "dist", thumbFile(ref.path, ref.v, width).slice(1));
-      mkdirSync(dirname(out), { recursive: true });
-      await image.clone().resize({ width, withoutEnlargement: true }).webp({ quality: width <= 160 ? 70 : 78 }).toFile(out);
+    try {
+      const image = sharp(src.input);
+      for (const width of THUMB_WIDTHS) {
+        const out = resolve(root, "dist", thumbFile(ref.path, ref.v, width).slice(1));
+        mkdirSync(dirname(out), { recursive: true });
+        await image.clone().resize({ width, withoutEnlargement: true }).webp({ quality: width <= 240 ? 70 : 78 }).toFile(out);
+      }
+      counts[src.from]++;
+    } catch (err) {
+      // One unreadable cover should not fail the deploy; its thumb URLs redirect to the original.
+      console.warn(`thumbs: ${ref.path}: ${err instanceof Error ? err.message : err}`);
+      counts.skipped.push(ref.path);
     }
   }
 }

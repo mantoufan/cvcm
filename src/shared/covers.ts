@@ -391,7 +391,9 @@ export function localizedTutorialSrc(src: string, locale: Locale): string {
   return `/covers/tutorials/${localePath(locale)}/${rest}`;
 }
 
-export type ThumbWidth = 160 | 640 | 960;
+/** Built by scripts/make-thumbs.mjs (THUMB_WIDTHS there must match; tests check). 240 = 72px menu covers at 3x. */
+export const THUMB_WIDTHS = [240, 640, 960] as const;
+export type ThumbWidth = (typeof THUMB_WIDTHS)[number];
 
 const RASTER_COVER = /^\/covers\/([A-Za-z0-9._/-]+\.(?:jpe?g|png))(?:\?v=(\d+))?$/;
 
@@ -408,9 +410,11 @@ export function tileSrcset(src: string): string | undefined {
   return `${thumbSrc(src, 640)} 640w, ${thumbSrc(src, 960)} 960w`;
 }
 
+const THUMB_PATH = new RegExp(`^/thumbs/(?:${THUMB_WIDTHS.join("|")})/([A-Za-z0-9._/-]+?\\.(?:jpe?g|png))(?:\\.v(\\d+))?\\.webp$`);
+
 /** Original cover path for a /thumbs/ URL, so a missing thumbnail can fall back to it. */
 export function thumbOriginal(pathname: string): string | null {
-  const m = /^\/thumbs\/(?:160|640|960)\/([A-Za-z0-9._/-]+?\.(?:jpe?g|png))(?:\.v(\d+))?\.webp$/.exec(pathname);
+  const m = THUMB_PATH.exec(pathname);
   if (!m || m[1].includes("..")) return null;
   return `/covers/${m[1]}${m[2] ? `?v=${m[2]}` : ""}`;
 }

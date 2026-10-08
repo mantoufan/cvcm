@@ -148,6 +148,9 @@ export function start(): void {
     started = true;
     window.addEventListener("popstate", () => render());
     document.addEventListener("click", onClick);
+    document.addEventListener("pointerover", prefetchGamePack, { passive: true });
+    document.addEventListener("touchstart", prefetchGamePack, { passive: true });
+    document.addEventListener("focusin", prefetchGamePack);
   }
   boot();
 }
@@ -224,6 +227,14 @@ export function boot(): void {
     history.replaceState(null, "", withSearch(appHref(loc, nextTool, nextClip, nextJob), location.search));
   }
   render();
+}
+
+/** Start the game pack download when a game link is about to be followed, so the page opens without a wait. */
+function prefetchGamePack(e: Event): void {
+  const link = (e.target as Element | null)?.closest?.('a[data-nav^="game-"]');
+  if (!link) return;
+  const loc = locale();
+  if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
 }
 
 function onClick(e: MouseEvent): void {
@@ -715,7 +726,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
             "data-nav": id,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: thumbSrc(COVER[id], 160), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`tools.${id}.name`)),
               h("span", null, t(`tools.${id}.blurb`)),
@@ -744,7 +755,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
           "data-nav": `device-${id}`,
           "aria-current": device === id ? "page" : undefined,
         },
-          h("img", { class: "menu-cover", src: thumbSrc(DEVICE_COVER, 160), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+          h("img", { class: "menu-cover", src: thumbSrc(DEVICE_COVER, 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
           h("div", { class: "menu-copy" },
             h("strong", null, devicePageCopy(loc, id).name),
             h("span", null, devicePageCopy(loc, id).blurb),
@@ -787,7 +798,7 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
             "data-nav": `learn-${id}`,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: thumbSrc(LEARN_COVER[id], 160), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(LEARN_COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`learn.${id}.name`)),
               h("span", null, t(`learn.${id}.blurb`)),
@@ -831,7 +842,7 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
             "data-nav": `game-${game.id}`,
             "aria-current": current === game.id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: thumbSrc(GAME_COVER[game.id], 160), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(GAME_COVER[game.id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, gameName(loc, game.id).name),
               h("span", null, gameName(loc, game.id).blurb),

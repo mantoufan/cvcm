@@ -1,5 +1,5 @@
 // Shared by scripts/make-thumbs.mjs and tests/thumbs.test.ts so the files built match thumbSrc() URLs.
-export const THUMB_WIDTHS = [160, 640, 960];
+export const THUMB_WIDTHS = [240, 640, 960];
 
 const COVER_REF = /"(\/covers\/[A-Za-z0-9._/-]+\.(?:jpe?g|png))(?:\?v=(\d+))?"/g;
 
