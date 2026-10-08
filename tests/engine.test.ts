@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxAtAnchor, boxAtFree, fitExportSize, tilePitch } from "../src/client/watermark/engine";
+import { boxAtAnchor, boxAtFree, fitExportSize, mosaicCell, pixelate, redactionBox, tilePitch } from "../src/client/watermark/engine";
 
 describe("boxAtAnchor", () => {
   it("places a box on the nine-cell grid", () => {
@@ -38,5 +38,34 @@ describe("fitExportSize", () => {
 
   it("leaves small images alone", () => {
     expect(fitExportSize(800, 600)).toEqual({ width: 800, height: 600, scaled: false });
+  });
+});
+
+describe("redactionBox", () => {
+  it("maps ratios to pixels and normalizes a box dragged up-left", () => {
+    expect(redactionBox({ x: 0.5, y: 0.5, w: -0.25, h: -0.25 }, 1000, 800)).toEqual({ x: 250, y: 200, w: 250, h: 200 });
+  });
+
+  it("clamps to the canvas and drops empty boxes", () => {
+    expect(redactionBox({ x: 0.9, y: 0.9, w: 0.5, h: 0.5 }, 100, 100)).toEqual({ x: 90, y: 90, w: 10, h: 10 });
+    expect(redactionBox({ x: 1.2, y: 0, w: 0.1, h: 0.1 }, 100, 100)).toBeNull();
+  });
+});
+
+describe("mosaic", () => {
+  it("never uses a cell smaller than 6 px", () => {
+    expect(mosaicCell(100, 100, 0.01)).toBe(6);
+    expect(mosaicCell(2000, 1000, 0.03)).toBe(30);
+  });
+
+  it("replaces each block with its exact mean", () => {
+    const data = new Uint8ClampedArray([
+      0, 0, 0, 255, 200, 100, 40, 255,
+      100, 50, 20, 255, 100, 50, 20, 255,
+    ]);
+    pixelate(data, 2, 2, 2);
+    for (let i = 0; i < 16; i += 4) {
+      expect([...data.slice(i, i + 4)]).toEqual([100, 50, 20, 255]);
+    }
   });
 });

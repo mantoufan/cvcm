@@ -514,6 +514,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   const gen = pageGen;
   if (tool === "clip") await mountClip(main, clipId);
   else if (tool === "watermark") await mountWatermark(main);
+  else if (tool === "mosaic") await mountWatermark(main, "mosaic");
   else if (tool === "collage") await mountCollage(main);
   else if (tool === "convert") await mountConvert(main);
   else if (tool === "image-pdf") await mountImagePdf(main);

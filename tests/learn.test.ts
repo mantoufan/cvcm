@@ -145,6 +145,10 @@ describe("learn SEO", () => {
     expect(lessonsForTool("tip")).toEqual(["split-tip"]);
     expect(lessonsForTool("loan")).toEqual(["loan-payment"]);
     expect(lessonsForTool("cron")).toEqual(["read-cron"]);
+    expect(lessonsForTool("mosaic")).toEqual(["mosaic-photo"]);
+    expect(lessonsForTool("watermark")).toEqual(["add-watermark", "watermark-id-copy"]);
+    expect(pageTitle("zh-CN", { learn: true, tutorial: "mosaic-photo" })).toMatch(/马赛克/);
+    expect(pageTitle("zh-CN", { learn: true, tutorial: "watermark-id-copy" })).toMatch(/身份证/);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
       "https://cv.cm/zh-cn/learn/make-qr/",
     );
@@ -167,7 +171,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
     expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
-    expect(FEATURED_TUTORIALS).toHaveLength(53);
+    expect(FEATURED_TUTORIALS).toHaveLength(55);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");

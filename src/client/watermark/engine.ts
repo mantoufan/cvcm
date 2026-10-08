@@ -34,7 +34,21 @@ export interface LogoSpec {
   rotate: number;
 }
 
+export type RedactMode = "mosaic" | "black";
+
+/** A redaction box in 0–1 ratios of the image, so it survives preview and export scaling. */
+export interface Redaction {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  mode: RedactMode;
+}
+
 export interface WatermarkSpec {
+  redactions?: Redaction[];
+  /** Mosaic cell as a ratio of the image's shorter side. */
+  mosaicRatio?: number;
   text: TextSpec | null;
   logo: LogoSpec | null;
   position: Position;
@@ -107,11 +121,80 @@ export function renderWatermark(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("canvas");
   ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+  for (const r of spec.redactions ?? []) {
+    redact(ctx, canvas.width, canvas.height, r, spec.mosaicRatio ?? 0.03);
+  }
   if (spec.logo) drawLogo(ctx, canvas.width, canvas.height, spec, spec.logo);
   if (spec.text && spec.text.text.trim()) {
     drawText(ctx, canvas.width, canvas.height, spec, spec.text);
   }
   return canvas;
+}
+
+/** Pixel box for a ratio box, clamped to the canvas. Null when it covers no pixels. */
+export function redactionBox(
+  r: Pick<Redaction, "x" | "y" | "w" | "h">,
+  w: number,
+  h: number,
+): { x: number; y: number; w: number; h: number } | null {
+  const x0 = clamp(Math.floor(Math.min(r.x, r.x + r.w) * w), 0, w);
+  const y0 = clamp(Math.floor(Math.min(r.y, r.y + r.h) * h), 0, h);
+  const x1 = clamp(Math.ceil(Math.max(r.x, r.x + r.w) * w), 0, w);
+  const y1 = clamp(Math.ceil(Math.max(r.y, r.y + r.h) * h), 0, h);
+  if (x1 - x0 < 1 || y1 - y0 < 1) return null;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
+/** Mosaic cell size in pixels. Never below 6 px so text under it stays unreadable. */
+export function mosaicCell(w: number, h: number, ratio: number): number {
+  return Math.max(6, Math.round(minDim(w, h) * clamp(ratio, 0.005, 0.2)));
+}
+
+/** Average every cell×cell block in place. Exact mean, not a resampled guess. */
+export function pixelate(data: Uint8ClampedArray, w: number, h: number, cell: number): void {
+  for (let by = 0; by < h; by += cell) {
+    const bh = Math.min(cell, h - by);
+    for (let bx = 0; bx < w; bx += cell) {
+      const bw = Math.min(cell, w - bx);
+      let r = 0, g = 0, b = 0, a = 0;
+      for (let y = by; y < by + bh; y++) {
+        let i = (y * w + bx) * 4;
+        for (let x = 0; x < bw; x++, i += 4) {
+          r += data[i]; g += data[i + 1]; b += data[i + 2]; a += data[i + 3];
+        }
+      }
+      const n = bw * bh;
+      r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n); a = Math.round(a / n);
+      for (let y = by; y < by + bh; y++) {
+        let i = (y * w + bx) * 4;
+        for (let x = 0; x < bw; x++, i += 4) {
+          data[i] = r; data[i + 1] = g; data[i + 2] = b; data[i + 3] = a;
+        }
+      }
+    }
+  }
+}
+
+function redact(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  r: Redaction,
+  mosaicRatio: number,
+): void {
+  const box = redactionBox(r, w, h);
+  if (!box) return;
+  if (r.mode === "black") {
+    ctx.save();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(box.x, box.y, box.w, box.h);
+    ctx.restore();
+    return;
+  }
+  const img = ctx.getImageData(box.x, box.y, box.w, box.h);
+  pixelate(img.data, box.w, box.h, mosaicCell(w, h, mosaicRatio));
+  ctx.putImageData(img, box.x, box.y);
 }
 
 function minDim(w: number, h: number): number {

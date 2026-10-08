@@ -1523,3 +1523,27 @@ body {
   .cheat-row { grid-template-columns: 1fr; }
   .game-frame { height: calc(100dvh - 10.5rem); min-height: 220px; }
 }
+
+/* SafeMark (watermark + mosaic) */
+.wm-brand { display: flex; align-items: center; gap: 0.45rem; margin: 0.35rem 0 0.15rem; font-size: 0.85rem; color: var(--ink-soft); flex-wrap: wrap; }
+.wm-brand img { width: 28px; height: 28px; border-radius: 8px; }
+.wm-brand strong { color: var(--pink-deep); font-size: 0.95rem; }
+.wm-switch { display: inline-flex; gap: 0.25rem; margin-top: 0.6rem; padding: 0.2rem; border-radius: 999px; background: var(--pink-soft); }
+.wm-switch a { padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.88rem; color: var(--ink-soft); text-decoration: none; }
+.wm-switch a.on { background: var(--white); color: var(--pink-deep); font-weight: 700; box-shadow: 0 1px 3px rgb(161 63 108 / 0.18); }
+.wm-sample { margin: 0.6rem 0 0.2rem; width: 100%; justify-content: center; }
+.stage-frame { position: relative; }
+.wm-empty { display: grid; gap: 0.35rem; place-items: center; text-align: center; padding: 2rem 1rem; cursor: pointer; color: var(--ink-soft); }
+.wm-empty strong { color: var(--ink); font-size: 1.05rem; }
+.wm-empty[hidden], .preview[hidden] { display: none; }
+.preview.drawing { cursor: crosshair; touch-action: none; }
+.wm-draw { width: 100%; justify-content: center; margin-bottom: 0.5rem; }
+.wm-draw.on { background: var(--pink-deep); border-color: var(--pink-deep); color: var(--white); }
+.wm-redact .row { align-items: center; gap: 0.4rem; margin-bottom: 0.35rem; }
+.wm-redact .small { font-size: 0.78rem; padding: 0; margin: 0.2rem 0 0; }
+.wm-collage summary { cursor: pointer; font-size: 0.85rem; color: var(--ink-soft); padding: 0.3rem 0; }
+.wm-collage[open] summary { margin-bottom: 0.5rem; }
+.pad-btn { display: grid; place-items: center; }
+.pad-btn::after { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--line); }
+.pad-btn.on::after { background: var(--white); }
+.stage-actions .btn:disabled { opacity: 0.45; cursor: not-allowed; }

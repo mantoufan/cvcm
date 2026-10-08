@@ -93,6 +93,18 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["watermark", "exif", "resize"],
   },
+  "watermark-id-copy": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["watermark", "mosaic", "exif"],
+  },
+  "mosaic-photo": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["mosaic", "watermark", "exif"],
+  },
   "remove-exif": {
     minutes: 6,
     steps: 6,
@@ -458,6 +470,8 @@ export const TUTORIAL_SOURCES: Partial<Record<TutorialId, { title: string; href:
     { title: "Cloudflare Pages — Direct Upload", href: "https://developers.cloudflare.com/pages/get-started/direct-upload/" },
     { title: "GitHub Pages — Create a site", href: "https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" },
   ],
+  "add-watermark": [{ title: "Photo: Yan Krukau on Pexels", href: "https://www.pexels.com/photo/ceramic-cups-and-plates-6611421/" }],
+  "mosaic-photo": [{ title: "Photo: YoItsCapture on Pexels", href: "https://www.pexels.com/photo/man-posing-by-white-car-16202357/" }],
 };
 
 // Each diagram is placed beside the step it explains. Assets use scalable vectors.
@@ -507,8 +521,16 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
     { step: 4, src: "/covers/tutorials/split-pdf-range.svg" },
   ],
   "add-watermark": [
-    { step: 1, src: "/covers/tutorials/add-watermark-place.svg" },
-    { step: 4, src: "/covers/tutorials/add-watermark-opacity.svg" },
+    { step: 1, src: "/covers/tutorials/photo/watermark-corner-tiled.jpg" },
+    { step: 4, src: "/covers/tutorials/photo/watermark-opacity.jpg" },
+  ],
+  "watermark-id-copy": [
+    { step: 4, src: "/covers/tutorials/watermark-id-copy.jpg" },
+    { step: 5, src: "/covers/tutorials/photo/mosaic-vs-black.jpg" },
+  ],
+  "mosaic-photo": [
+    { step: 4, src: "/covers/tutorials/photo/mosaic-vs-black.jpg" },
+    { step: 5, src: "/covers/tutorials/photo/mosaic-face.jpg" },
   ],
   "remove-exif": [
     { step: 1, src: "/covers/tutorials/remove-exif-gps.svg" },

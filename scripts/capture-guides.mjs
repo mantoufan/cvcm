@@ -23,6 +23,7 @@ const STEPS = {
   qr: 3,
   barcode: 3,
   watermark: 4,
+  mosaic: 3,
   collage: 4,
   "portrait-sim": 4,
   resize: 3,
@@ -475,13 +476,38 @@ async function runTool(send, id, fx) {
   if (id === "watermark") {
     await snap(1);
     await setFiles(send, "#file-input", [fx.photo]);
-    await waitFor(send, `!!document.querySelector("canvas, .file-list li")`);
+    await waitFor(send, `!!document.querySelector(".file-list li img")`);
     await sleep(500);
     await snap(2);
-    await evalValue(send, fillExpr("#wm-text", "cv.cm"));
+    await clickSel(send, '[data-preset="identity"]');
     await sleep(400);
     await snap(3);
+    await evalValue(send, `(() => { document.querySelector("#wm-download")?.scrollIntoView({ block: "center" }); return true; })()`);
+    await sleep(300);
     await snap(4);
+    return;
+  }
+
+  if (id === "mosaic") {
+    await evalValue(send, `(() => { document.querySelector(".rail-h .link")?.click(); const ta = document.querySelector("#wm-text"); if (ta) { ta.value = ""; ta.dispatchEvent(new Event("input", { bubbles: true })); } return true; })()`);
+    await sleep(300);
+    await snap(1);
+    await clickSel(send, ".wm-sample");
+    await waitFor(send, `!!document.querySelector(".file-list li img")`);
+    await sleep(500);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const c = document.querySelector("canvas.preview");
+      const r = c.getBoundingClientRect();
+      const f = (t, x, y) => c.dispatchEvent(new PointerEvent(t, { bubbles: true, pointerId: 1, clientX: r.left + r.width * x, clientY: r.top + r.height * y }));
+      document.querySelector('[data-redact="black"]').click();
+      f("pointerdown", 0.15, 0.79); f("pointerup", 0.9, 0.92);
+      document.querySelector('[data-redact="mosaic"]').click();
+      f("pointerdown", 0.67, 0.18); f("pointerup", 0.94, 0.72);
+      return true;
+    })()`);
+    await sleep(400);
+    await snap(3);
     return;
   }
 

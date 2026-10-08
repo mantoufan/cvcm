@@ -13,7 +13,7 @@ import { gameById, type GameConsoleId, type GameId } from "./games";
 import { gameCopy, gameFaqItems } from "./games-i18n";
 import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { toolHowToJsonLd } from "./guide";
-import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
+import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
@@ -63,6 +63,7 @@ const TITLE: Record<ToolId, string> = {
   qr: "meta.titleQr",
   barcode: "meta.titleBarcode",
   watermark: "meta.titleWatermark",
+  mosaic: "meta.titleMosaic",
   collage: "meta.titleCollage",
   "portrait-sim": "meta.titlePortraitSim",
   resize: "meta.titleResize",
@@ -175,6 +176,7 @@ const DESC: Record<ToolId, string> = {
   qr: "meta.descQr",
   barcode: "meta.descBarcode",
   watermark: "meta.descWatermark",
+  mosaic: "meta.descMosaic",
   collage: "meta.descCollage",
   "portrait-sim": "meta.descPortraitSim",
   resize: "meta.descResize",
@@ -270,6 +272,8 @@ const LEARN_TITLE: Record<TutorialId, string> = {
   "resize-image": "meta.titleResizeImage",
   "split-pdf": "meta.titleLearnSplitPdf",
   "add-watermark": "meta.titleAddWatermark",
+  "watermark-id-copy": "meta.titleWatermarkIdCopy",
+  "mosaic-photo": "meta.titleMosaicPhoto",
   "remove-exif": "meta.titleRemoveExif",
   "make-collage": "meta.titleMakeCollage",
   "make-meme": "meta.titleMakeMeme",
@@ -337,6 +341,8 @@ const LEARN_DESC: Record<TutorialId, string> = {
   "resize-image": "meta.descResizeImage",
   "split-pdf": "meta.descLearnSplitPdf",
   "add-watermark": "meta.descAddWatermark",
+  "watermark-id-copy": "meta.descWatermarkIdCopy",
+  "mosaic-photo": "meta.descMosaicPhoto",
   "remove-exif": "meta.descRemoveExif",
   "make-collage": "meta.descMakeCollage",
   "make-meme": "meta.descMakeMeme",
@@ -649,6 +655,48 @@ export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, 
   };
 }
 
+const IMAGE_TOOLS = new Set<ToolId>(CATEGORIES.find((c) => c.id === "image")!.tools);
+/** Tools sold under their own name (watermark + mosaic share the SafeMark brand). */
+export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
+
+export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
+  const name = lookup(locale, `tools.${tool}.name`);
+  const brand = BRANDED_TOOLS.has(tool) ? lookup(locale, "watermark.brand") : null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: brand ? `${brand} · ${name}` : name,
+    ...(brand ? { alternateName: [brand, name] } : {}),
+    description: pageDescription(locale, tool),
+    url: pageCanonical(locale, tool),
+    image: coverUrl(TOOL_COVER[tool]),
+    inLanguage: HREFLANG[locale],
+    applicationCategory: IMAGE_TOOLS.has(tool) ? "MultimediaApplication" : "UtilitiesApplication",
+    operatingSystem: "Web",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@type": "Organization", name: "cv.cm", url: "https://cv.cm/" },
+  };
+}
+
+export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
+  const items = [
+    { name: "cv.cm", url: pageCanonical(locale, { tool: null }) },
+    { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },
+  ];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
 function ogImage(seo: SeoInput): string | null {
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
@@ -690,7 +738,8 @@ export function applyHtmlSeo(
     );
   }
   out = out.replace(/<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>\s*/gi, "");
-  out = out.replace(/<meta property="og:(title|description|url|type|image)"[^>]*>\s*/gi, "");
+  out = out.replace(/<meta property="og:(title|description|url|type|image|site_name|locale)"[^>]*>\s*/gi, "");
+  out = out.replace(/<meta name="twitter:(card|title|description|image)"[^>]*>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
@@ -701,8 +750,18 @@ export function applyHtmlSeo(
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
     `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game ? "article" : "website"}" />`,
+    `<meta property="og:site_name" content="cv.cm" />`,
+    `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
+    `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
+    `<meta name="twitter:title" content="${escapeHtml(title)}" />`,
+    `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
   ];
-  if (image) tags.push(`<meta property="og:image" content="${escapeHtml(image)}" />`);
+  if (image) {
+    tags.push(
+      `<meta property="og:image" content="${escapeHtml(image)}" />`,
+      `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
+    );
+  }
   for (const alt of hreflangAlternates(seo)) {
     tags.push(`<link rel="alternate" hreflang="${escapeHtml(alt.hreflang)}" href="${escapeHtml(alt.href)}" />`);
   }
@@ -755,6 +814,17 @@ export function applyHtmlSeo(
     tags.push(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
+  }
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && seo.tool && !seo.clipId;
+  if (isToolPage && seo.tool) {
+    tags.push(
+      `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(toolBreadcrumbJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
+    );
+    if (BRANDED_TOOLS.has(seo.tool)) {
+      out = out.replace(/(<link\s+rel="icon"\s+href=")[^"]*("\s+type="image\/svg\+xml")/i, "$1/brand/safemark.svg$2");
+      out = out.replace(/(<link\s+rel="apple-touch-icon"\s+href=")[^"]*(")/i, "$1/brand/safemark-180.png$2");
+    }
   }
   out = out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
   const inner = seo.devicePage
@@ -809,7 +879,8 @@ function staticPageHtml(
   } else if (seo.tool) {
     const cat = categoryOf(seo.tool);
     const siblings = (CATEGORIES.find((c) => c.id === cat)?.tools ?? []).filter((id) => id !== seo.tool) as ToolId[];
-    parts.push(linkList([home, ...toolLinks(locale, siblings)]));
+    const lessons = lessonsForTool(seo.tool).map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
+    parts.push(linkList([home, ...toolLinks(locale, siblings), ...lessons]));
   } else {
     for (const cat of CATEGORIES) parts.push(linkList(toolLinks(locale, cat.tools as readonly ToolId[])));
     parts.push(linkList([

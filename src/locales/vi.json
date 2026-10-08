@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, ảnh và PDF",
     "titleClip": "Clipboard trực tuyến — chia sẻ chữ không cần tài khoản — cv.cm",
     "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
-    "titleWatermark": "Thêm watermark vào ảnh — giấy tờ ở tab này — cv.cm",
+    "titleWatermark": "Đóng dấu bản sao CCCD, ảnh — miễn phí, không tải lên — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
     "description": "Công cụ trình duyệt trên máy. Ảnh và PDF ở lại tab này.",
     "titleConvert": "Chuyển định dạng ảnh — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Đổi MP3, M4A, OGG, AAC, FLAC thành WAV trên trình duyệt. Chọn 44.1 / 48 kHz. Không tải lên.",
     "titleData": "Định dạng JSON, Base64, CSV sang JSON — cv.cm",
     "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
-    "descWatermark": "Đóng dấu ảnh hoặc bản sao giấy tờ trên trình duyệt. Lặp chữ “chỉ dùng cho”. Xuất hàng loạt PNG, JPEG hoặc ZIP. Bỏ EXIF. Không tải lên.",
+    "descWatermark": "Đóng dấu ảnh và bản sao giấy tờ ngay trong trình duyệt. Lặp chéo dòng “Chỉ dùng cho …” kèm ngày, làm mờ số giấy tờ, xuất hàng loạt PNG, JPEG hoặc ZIP. Xóa EXIF. Tệp không rời tab.",
     "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên.",
     "titleQr": "Tạo mã QR miễn phí — cv.cm",
     "descQr": "Tạo mã QR từ URL hoặc chữ trong trình duyệt, tải PNG. Không tải lên.",
@@ -329,7 +329,13 @@
     "titleLoanPayment": "Cách tính khoản trả góp | cv.cm",
     "descLoanPayment": "10000 với 12% một năm là 888,49 mỗi tháng. Lãi là 661,85, không phải 1200. 12000 với 0% một năm là 1000,00 mỗi tháng. Không tải lên.",
     "titleReadCron": "Cách đọc biểu thức cron | cv.cm",
-    "descReadCron": "Năm trường: phút, giờ, ngày, tháng, thứ. 0 9 * * 1 là thứ Hai lúc 09:00. Chủ nhật là 0 và 7. MON và sáu trường thì thất bại. Không tải lên."
+    "descReadCron": "Năm trường: phút, giờ, ngày, tháng, thứ. 0 9 * * 1 là thứ Hai lúc 09:00. Chủ nhật là 0 và 7. MON và sáu trường thì thất bại. Không tải lên.",
+    "titleMosaic": "Làm mờ ảnh online — che số CCCD, khuôn mặt, biển số — cv.cm",
+    "descMosaic": "Làm mờ hoặc che đen một phần ảnh, ảnh chụp màn hình ngay trong trình duyệt. Kéo khung lên số CCCD, số điện thoại, khuôn mặt, biển số, mã QR. Có thể đóng dấu thêm. Không tải lên, không cần đăng ký.",
+    "titleMosaicPhoto": "Cách làm mờ ảnh: che số CCCD, khuôn mặt, biển số | cv.cm",
+    "descMosaicPhoto": "Che đen số, làm mờ khuôn mặt, kiểm tra ở 100% trước khi chia sẻ. Miễn phí trong trình duyệt, không tải lên.",
+    "titleWatermarkIdCopy": "Cách đóng dấu bản sao CCCD (mục đích + ngày) | cv.cm",
+    "descWatermarkIdCopy": "Ghi nơi nhận và mục đích, lặp chéo kèm ngày hôm nay kín thẻ, che đen phần không cần. Trong trình duyệt, không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -711,6 +717,10 @@
     "stocks": {
       "name": "Tính cổ phiếu",
       "blurb": "Vốn hóa, P/E và suất cổ tức. Không tải lên."
+    },
+    "mosaic": {
+      "name": "Làm mờ ảnh (mosaic)",
+      "blurb": "Che số giấy tờ, khuôn mặt, biển số bằng mosaic hoặc ô đen. Không tải lên."
     }
   },
   "watermark": {
@@ -771,7 +781,24 @@
     "hintMark": "Giấy tờ: lặp “chỉ dùng cho”. Ảnh cửa hàng: tên hoặc logo.",
     "errorDecode": "Trình duyệt không đọc được ảnh này.",
     "errorHuge": "Ảnh rất lớn; khi xuất có thể bị thu nhỏ.",
-    "emptyDownload": "Hãy thêm ảnh trước."
+    "emptyDownload": "Hãy thêm ảnh trước.",
+    "brand": "SafeMark",
+    "brandTagline": "Đóng dấu và che thông tin giấy tờ ngay trên máy",
+    "sample": "Thử với giấy tờ mẫu",
+    "switchWatermark": "Đóng dấu",
+    "switchMosaic": "Làm mờ",
+    "redactTitle": "Che thông tin",
+    "redactDraw": "Kéo khung trên ảnh xem trước",
+    "redactMosaic": "Mosaic",
+    "redactBlack": "Ô đen",
+    "redactStrength": "Kích thước ô mosaic",
+    "redactUndo": "Hoàn tác",
+    "redactClear": "Xóa các khung",
+    "redactCount": "{n} khung",
+    "redactNone": "Chưa có khung",
+    "redactOn": "Kéo trên ảnh xem trước để che số, khuôn mặt hoặc biển số.",
+    "redactTip": "Dùng ô đen cho số CCCD, số thẻ và mã QR. Mosaic mịn đôi khi có thể bị đoán lại.",
+    "collageOptional": "Ghép thành một ảnh (tùy chọn)"
   },
   "collage": {
     "title": "Ghép ảnh collage",
@@ -1814,6 +1841,30 @@
         "a4": "Trang này cần đúng năm trường. Không có trường giây. Phút 60 cũng thất bại, vì phút dừng ở 59.",
         "q5": "Biểu thức có bị tải lên không?",
         "a5": "Không. Đóng tab là mất. Trang không chạy lịch."
+      },
+      "mosaic-photo": {
+        "q1": "Làm mờ một phần ảnh mà không cần app?",
+        "a1": "Mở công cụ làm mờ của cv.cm, thả ảnh, kéo khung, tải xuống. Chạy trong trình duyệt, không tải lên.",
+        "q2": "Mosaic có đủ che số CCCD không?",
+        "a2": "Không phải lúc nào cũng đủ. Mosaic mịn có thể để lộ chữ số. Dùng ô đen cho số và mã QR.",
+        "q3": "Người khác có gỡ được mosaic không?",
+        "a3": "Không, với ảnh bạn xuất ra: điểm ảnh bị che đã được thay thế, không phải phủ lên.",
+        "q4": "Có che riêng vài khuôn mặt trong ảnh nhóm?",
+        "a4": "Có. Mỗi khuôn mặt một khung. Mỗi ảnh nhớ khung riêng.",
+        "q5": "Ảnh có bị tải lên không?",
+        "a5": "Không. Đóng tab là mất."
+      },
+      "watermark-id-copy": {
+        "q1": "Nên ghi gì trên dấu bản sao CCCD?",
+        "a1": "Gửi cho ai, để làm gì và ngày, ví dụ “Chỉ dùng mở tài khoản ngân hàng XX, dùng khác không hợp lệ, 2026-10-08”.",
+        "q2": "Dấu có cần đè lên ảnh chân dung?",
+        "a2": "Có. Lặp chéo để chữ đi qua ảnh; dấu ở góc rất dễ bị cắt.",
+        "q3": "Bản sao có dấu còn hợp lệ không?",
+        "a3": "Dấu giúp chống lạm dụng nhưng không phải bảo đảm pháp lý. Một số nơi cần bản không dấu; hãy hỏi trước.",
+        "q4": "CCCD có bị tải lên không?",
+        "a4": "Không. Chỉ ở trong tab này, đóng là mất. Xuất ảnh cũng xóa EXIF.",
+        "q5": "Có che luôn số CCCD được không?",
+        "a5": "Có. Trong Che thông tin, dùng ô đen cho các ô họ không yêu cầu."
       }
     },
     "compress-pdf": {
@@ -2755,6 +2806,18 @@
       "a4": "Mở được. Chạm được tính là chuột. Game cần rê chuột hoặc bàn phím thì dễ hơn trên máy tính.",
       "q5": "Tải game Flash kinh điển ở đây được không?",
       "a5": "Không. Hãy dùng SWF bạn đang có. cv.cm chỉ lưu SWF khi giấy phép cho phép phân phối lại."
+    },
+    "mosaic": {
+      "q1": "Làm mờ có tải ảnh lên không?",
+      "a1": "Không. Ảnh ở lại trong tab này, canvas thay điểm ảnh ngay tại đây. Đóng tab là mất. Khi xuất cũng xóa EXIF.",
+      "q2": "Nên dùng mosaic hay ô đen?",
+      "a2": "Dùng ô đen cho số CCCD, số thẻ và mã QR. Mosaic mịn đôi khi có thể bị đoán lại. Khuôn mặt và nền thì mosaic trông tự nhiên hơn.",
+      "q3": "Có che được ảnh chụp tin nhắn không?",
+      "a3": "Có. Kéo khung lên ảnh đại diện, tên, số điện thoại; Hoàn tác bỏ khung cuối. Nhiều ảnh thì mỗi ảnh nhớ khung riêng và tải được cả ZIP.",
+      "q4": "Che xong có đóng dấu thêm được không?",
+      "a4": "Có. Ngay trang này, thêm dòng “Chỉ dùng cho …”. Che trước, dấu đè sau.",
+      "q5": "Có gỡ được mosaic không?",
+      "a5": "Không. Công cụ chỉ che, không khôi phục phần người khác đã che. Trong ảnh xuất ra, điểm ảnh bị che đã được thay thế."
     }
   },
   "qr": {
@@ -3213,8 +3276,8 @@
       "s5b": "Đăng bán dùng JPEG nhẹ hơn. Dấu có nền trong thì PNG.",
       "s6t": "Mở ở 100%",
       "s6b": "Ảnh rối mà dấu biến thì tăng tương phản hoặc lát. Che hàng thì hạ mờ.",
-      "diagram1": "Một góc so với lát chéo. Ảnh bán hàng thường lát.",
-      "diagram2": "Đủ đọc, đủ thấp để thấy hàng."
+      "diagram1": "Trái: một dấu ở góc, dễ bị cắt. Phải: lặp chéo, khó xóa.",
+      "diagram2": "Độ mờ từ thấp đến cao: trái gần như vô hình, phải che mất sản phẩm. Chọn mức giữa."
     },
     "remove-exif": {
       "name": "Cách gỡ GPS / EXIF khỏi ảnh",
@@ -4117,6 +4180,50 @@
       "s6b": "Dòng đó bằng tiếng Anh: minute, hour, day-of-month, và tên như monday. Khi cả ngày trong tháng và thứ đều bị giới hạn, trang này vẫn gọi tên cả hai. Nó không chọn một trong hai, và không chạy gì.",
       "diagram1": "Năm trường: phút, giờ, ngày, tháng, thứ. 0 9 * * 1 là thứ Hai lúc 09:00.",
       "diagram2": "Chủ nhật là 0 và 7. MON thì thất bại. Sáu trường thì thất bại."
+    },
+    "mosaic-photo": {
+      "name": "Cách làm mờ một phần ảnh",
+      "blurb": "Che đen số giấy tờ, làm mờ khuôn mặt, xem ở 100% rồi mới gửi.",
+      "title": "Cách làm mờ một phần ảnh",
+      "lead": "Ảnh hay ảnh chụp màn hình thường lộ nhiều hơn bạn muốn: số thẻ, khuôn mặt, biển số. Bạn sẽ che chúng ngay trong tab này và kiểm tra bản sao trước khi gửi.",
+      "result": "Một bản sao đã thay phần riêng tư. Ảnh gốc vẫn ở trên máy.",
+      "note": "Công cụ chỉ che trên bản sao của bạn, không gỡ được phần người khác đã che. Không tải lên.",
+      "s1t": "Liệt kê thứ cần che",
+      "s1b": "Số CCCD, số thẻ, mã QR, số điện thoại, địa chỉ, biển số và khuôn mặt người không đồng ý lộ diện.",
+      "s2t": "Mở công cụ làm mờ trên cv.cm",
+      "s2b": "Mọi xử lý ở trong tab này. Nhiều ảnh cũng được; mỗi ảnh nhớ khung riêng.",
+      "s3t": "Thả ảnh hoặc ảnh chụp màn hình",
+      "s3b": "Giữ ảnh gốc. Bạn đang làm bản sao.",
+      "s4t": "Ô đen cho số, mosaic cho khuôn mặt",
+      "s4b": "Mosaic mịn có thể vẫn đọc được chữ số. Thông tin có thể gõ lại thì dùng ô đen, khung rộng hơn chữ một chút.",
+      "s5t": "Kéo khung lên từng mục",
+      "s5b": "Hoàn tác bỏ khung cuối. Nếu là bản sao giấy tờ, thêm cả dấu “Chỉ dùng cho …”.",
+      "s6t": "Tải xuống và xem ở 100%",
+      "s6b": "Phóng to từng khung. Còn đoán được một chữ số thì đổi sang ô đen và xuất lại.",
+      "diagram1": "Trên: mosaic mịn, vẫn đọc được số. Giữa: mosaic thô. Dưới: ô đen, an toàn nhất cho số.",
+      "diagram2": "Trái: ảnh gốc. Phải: khuôn mặt được che bằng mosaic thô."
+    },
+    "watermark-id-copy": {
+      "name": "Cách đóng dấu bản sao CCCD trước khi gửi",
+      "blurb": "Ghi gửi cho ai, để làm gì, ngày nào; lặp chéo kín thẻ và che phần không cần.",
+      "title": "Cách đóng dấu bản sao CCCD trước khi gửi",
+      "lead": "Đôi khi buộc phải gửi ảnh CCCD. Lặp chéo dòng mục đích kèm ngày khiến bản sao bị lộ khó bị lạm dụng hơn nhiều. Bạn làm ngay trong tab này.",
+      "result": "Một bản sao CCCD chỉ có giá trị cho một nơi nhận, một mục đích, một ngày.",
+      "note": "Dấu giúp giảm lạm dụng, không phải bảo đảm pháp lý. Một số nơi vẫn cần bản không dấu, hãy hỏi trước. Không tải lên.",
+      "s1t": "Hỏi họ cần gì",
+      "s1b": "Nếu chỉ cần tên và ảnh, bạn có thể che số và địa chỉ.",
+      "s2t": "Mở công cụ đóng dấu trên cv.cm",
+      "s2b": "Mọi xử lý ở trong tab này. Có thể thả mặt trước và sau cùng lúc.",
+      "s3t": "Thả ảnh CCCD",
+      "s3b": "Chụp phẳng, ánh sáng đều. Giữ ảnh gốc.",
+      "s4t": "Bấm mẫu chỉ dùng cho và ghi mục đích",
+      "s4b": "Thay [TỔ CHỨC] bằng nơi nhận và mục đích, ví dụ “chỉ dùng mở tài khoản ngân hàng”. Giữ ngày hôm nay. Dòng chữ lặp kín cả thẻ, kể cả ảnh chân dung.",
+      "s5t": "Che phần không cần",
+      "s5b": "Mở Che thông tin, chọn Ô đen, kéo lên các ô họ không yêu cầu.",
+      "s6t": "Tải xuống, xem 100%, rồi gửi",
+      "s6b": "Dấu phải đè qua ảnh chân dung và đọc được, tên vẫn rõ. Xuất ảnh sẽ xóa vị trí EXIF.",
+      "diagram1": "Mục đích và ngày lặp kín cả thẻ; số đã bị che đen.",
+      "diagram2": "Mosaic mịn vẫn đọc được số; ô đen thì không."
     }
   },
   "compressPdf": {
@@ -5500,5 +5607,9 @@
     "compound": "Lãi kép",
     "percent": "Phần trăm",
     "privacyNote": "Bạn nhập giá và số cổ phần. Không tải lên và không tra giá."
+  },
+  "mosaic": {
+    "title": "Làm mờ hoặc che đen một phần ảnh",
+    "privacyNote": "Ảnh và ảnh chụp màn hình chỉ ở trong tab này. Xuất ảnh sẽ xóa EXIF. Đóng trang là bỏ."
   }
 }

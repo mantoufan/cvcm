@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, image, and PDF tools",
     "titleClip": "Pastebin — online clipboard, no account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
-    "titleWatermark": "Add a watermark to photos — ID copies stay local — cv.cm",
+    "titleWatermark": "Watermark ID copies and photos — free, no upload — cv.cm",
     "titleCollage": "Photo collage maker — cv.cm",
     "titleConvert": "Image converter — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
@@ -14,7 +14,7 @@
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
     "description": "On-device browser tools. Image and PDF files stay in this tab.",
-    "descWatermark": "Watermark photos or ID copies in the browser. Tile a for-use-only mark, batch PNG, JPEG, or ZIP. Export drops EXIF. Files never leave this tab.",
+    "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "Free QR code generator — cv.cm",
     "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
@@ -329,7 +329,13 @@
     "titleLoanPayment": "How to calculate a loan payment | cv.cm",
     "descLoanPayment": "10000 at 12% for one year is 888.49 a month. Interest is 661.85, not 1200. 12000 at 0% for one year is 1000.00 a month. Nothing is uploaded.",
     "titleReadCron": "How to read a cron expression | cv.cm",
-    "descReadCron": "Five fields: minute, hour, day of month, month, weekday. 0 9 * * 1 is Monday at 09:00. Sunday is 0 and 7. MON and six fields fail. Nothing is uploaded."
+    "descReadCron": "Five fields: minute, hour, day of month, month, weekday. 0 9 * * 1 is Monday at 09:00. Sunday is 0 and 7. MON and six fields fail. Nothing is uploaded.",
+    "titleMosaic": "Pixelate a photo online — hide ID numbers, faces, plates — cv.cm",
+    "descMosaic": "Pixelate or black out parts of a photo or screenshot in the browser. Drag a box over an ID number, phone number, face, plate, or QR code. Add a watermark too. No upload, no sign-up.",
+    "titleMosaicPhoto": "How to pixelate a photo: hide ID numbers, faces, plates | cv.cm",
+    "descMosaicPhoto": "Black out numbers, pixelate faces, check at 100% before you share. Free, in the browser, nothing uploaded.",
+    "titleWatermarkIdCopy": "How to watermark an ID copy (for-use-only + date) | cv.cm",
+    "descWatermarkIdCopy": "Write the receiver and purpose, tile it with today's date across the card, black out unneeded fields. In the browser, nothing uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -671,8 +677,8 @@
       "s5b": "JPEG is smaller for shop listings. PNG if the mark has a clear background.",
       "s6t": "Open at 100%",
       "s6b": "If the mark vanishes on a busy photo, raise contrast or tile it. If it hides the product, lower opacity.",
-      "diagram1": "Corner mark vs tiled diagonal. Shop listings often tile.",
-      "diagram2": "Opacity high enough to read, low enough to see the product."
+      "diagram1": "Left: one corner mark, easy to crop off. Right: tiled diagonal, harder to remove.",
+      "diagram2": "Opacity from low to high: the left vanishes, the right covers the product. Aim for the middle."
     },
     "remove-exif": {
       "name": "How to remove EXIF / location from a photo",
@@ -1575,6 +1581,50 @@
       "s6b": "The line is in English: minute, hour, day-of-month, and names such as monday. When both the day of the month and the weekday are restricted, this page still names both. It does not choose between them, and it does not run anything.",
       "diagram1": "Five fields: minute, hour, day of month, month, weekday. 0 9 * * 1 is Monday at 09:00.",
       "diagram2": "Sunday is 0 and 7. MON fails. Six fields fail."
+    },
+    "mosaic-photo": {
+      "name": "How to pixelate part of a photo",
+      "blurb": "Black out numbers, pixelate faces, check at 100%, then share.",
+      "title": "How to pixelate part of a photo",
+      "lead": "A photo or screenshot often shows more than you meant to share: a card number, a face, a plate. You will cover them in this tab and check the copy before sending it.",
+      "result": "A copy with the private parts replaced. The original stays on disk.",
+      "note": "This covers areas in your own copy. It cannot undo someone else's mosaic. Nothing is uploaded.",
+      "s1t": "List what must go",
+      "s1b": "ID and card numbers, QR codes, phone numbers, addresses, plates, and faces of people who did not agree to be shown.",
+      "s2t": "Open mosaic on cv.cm",
+      "s2b": "Work stays in this tab. Several photos are fine; each keeps its own boxes.",
+      "s3t": "Drop the photo or screenshot",
+      "s3b": "Keep the original. You are making a copy.",
+      "s4t": "Black box for numbers, mosaic for faces",
+      "s4b": "A fine mosaic can leave digits readable. Use a black box for anything someone could type back in, and make each box a little larger than the text.",
+      "s5t": "Drag a box over each item",
+      "s5b": "Undo removes the last box. For an ID copy, add the for-use-only watermark as well.",
+      "s6t": "Download and check at 100%",
+      "s6b": "Zoom in on every box. If you can still guess a digit, black it out and export again.",
+      "diagram1": "Top: fine mosaic, digits still readable. Middle: coarse mosaic. Bottom: black box, the safe choice for numbers.",
+      "diagram2": "Left: original. Right: the face covered with a coarse mosaic."
+    },
+    "watermark-id-copy": {
+      "name": "How to watermark an ID copy before sending it",
+      "blurb": "Write who it is for, tile it with the date, black out what they do not need.",
+      "title": "How to watermark an ID copy before sending it",
+      "lead": "Sending a photo of your ID is sometimes unavoidable. A tiled for-use-only line with a date makes a leaked copy far less useful. You will add it in this tab.",
+      "result": "An ID copy marked for one receiver, one purpose, and one date.",
+      "note": "A watermark lowers misuse; it is not a legal guarantee. Some offices still require an unmarked copy, so ask first. Nothing is uploaded.",
+      "s1t": "Ask what they need",
+      "s1b": "Some only need your name and photo. Then you can black out the number and address.",
+      "s2t": "Open watermark on cv.cm",
+      "s2b": "Work stays in this tab. Front and back can go in together.",
+      "s3t": "Drop the ID photo",
+      "s3b": "Shoot it flat in even light. Keep the original.",
+      "s4t": "Press For-use only and name the purpose",
+      "s4b": "Replace [ORG] with the receiver and purpose, such as “for bank account opening only”. Keep today's date. The line tiles across the whole card, photo included.",
+      "s5t": "Black out what is not needed",
+      "s5b": "Open Redact, choose Black box, and drag over the fields they did not ask for.",
+      "s6t": "Download, check at 100%, send",
+      "s6b": "The mark should cross the portrait and stay readable while the name is still legible. Export removes EXIF location data.",
+      "diagram1": "Purpose and date tiled across the whole card; the number is blacked out.",
+      "diagram2": "Fine mosaic leaves digits readable; a black box does not."
     }
   },
   "tools": {
@@ -1913,6 +1963,10 @@
     "stocks": {
       "name": "Stock arithmetic",
       "blurb": "Market cap, P/E, and dividend yield. Nothing is uploaded."
+    },
+    "mosaic": {
+      "name": "Photo mosaic & redact",
+      "blurb": "Pixelate or black out ID numbers, faces, and plates. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -1973,7 +2027,24 @@
     "hintMark": "Tile a for-use-only line on ID copies, or stamp a name or logo.",
     "errorDecode": "Could not read this image in the browser.",
     "errorHuge": "Image is very large; export may be scaled down.",
-    "emptyDownload": "Add an image first."
+    "emptyDownload": "Add an image first.",
+    "brand": "SafeMark",
+    "brandTagline": "ID-copy watermark & redaction, on your device",
+    "sample": "Try a sample ID",
+    "switchWatermark": "Watermark",
+    "switchMosaic": "Mosaic / redact",
+    "redactTitle": "Redact",
+    "redactDraw": "Draw boxes on the preview",
+    "redactMosaic": "Mosaic",
+    "redactBlack": "Black box",
+    "redactStrength": "Mosaic cell size",
+    "redactUndo": "Undo",
+    "redactClear": "Clear boxes",
+    "redactCount": "{n} boxes",
+    "redactNone": "No boxes yet",
+    "redactOn": "Drag on the preview to cover a number, face, or plate.",
+    "redactTip": "Use a black box for ID numbers and QR codes. Fine mosaic can sometimes be guessed back.",
+    "collageOptional": "Combine into one image (optional)"
   },
   "collage": {
     "title": "Photo collage maker",
@@ -2218,7 +2289,7 @@
       "q2": "Can I watermark many photos at once?",
       "a2": "Yes. Add a batch, then download one file or a ZIP of PNG or JPEG.",
       "q3": "Can I watermark an ID or passport copy?",
-      "a3": "Yes. Use For-use only so a tiled “for [org] use only” line covers the photo. Work stays in this tab. A watermark is a deterrent, not a legal guarantee. Some offices still want an unmarked copy.",
+      "a3": "Yes. Use For-use only so a tiled “for [org] use only” line covers the photo. Open Redact to black out the ID number too. Work stays in this tab. A watermark is a deterrent, not a legal guarantee. Some offices still want an unmarked copy.",
       "q4": "Can I remove a watermark?",
       "a4": "No. This tool only adds a mark. It will not erase watermarks from photos.",
       "q5": "Which formats work?",
@@ -3016,6 +3087,30 @@
         "a4": "This page wants exactly five fields. There is no seconds field. Minute 60 also fails, because minutes stop at 59.",
         "q5": "Is the expression uploaded?",
         "a5": "No. Closing the tab discards it. The page does not run the schedule."
+      },
+      "mosaic-photo": {
+        "q1": "How do I pixelate part of a photo without an app?",
+        "a1": "Open cv.cm mosaic, drop the photo, drag a box, and download. It runs in the browser; nothing is uploaded.",
+        "q2": "Is a mosaic enough to hide an ID number?",
+        "a2": "Not always. Fine cells can leave digits readable. Use a black box for numbers and QR codes.",
+        "q3": "Can someone remove the mosaic later?",
+        "a3": "Not from your export. The covered pixels are replaced, not layered on top.",
+        "q4": "Can I hide faces in a group photo?",
+        "a4": "Yes. Draw one box per face. Each photo keeps its own boxes.",
+        "q5": "Is my photo uploaded?",
+        "a5": "No. Closing the tab discards it."
+      },
+      "watermark-id-copy": {
+        "q1": "What should I write on an ID copy watermark?",
+        "a1": "Who it is for, what for, and the date, such as “For XX bank account opening only. Not valid otherwise. 2026-10-08”.",
+        "q2": "Should the watermark cover the photo?",
+        "a2": "Yes. Tile it so it crosses the portrait; a corner mark is easy to crop off.",
+        "q3": "Is a watermarked ID copy still valid?",
+        "a3": "A watermark deters misuse but is not a legal guarantee. Some counters require an unmarked copy; ask first.",
+        "q4": "Is my ID uploaded?",
+        "a4": "No. It stays in this tab, and closing it discards the file. Export also removes EXIF.",
+        "q5": "Can I hide the ID number too?",
+        "a5": "Yes. Use Redact with a black box on the fields the receiver did not ask for."
       }
     },
     "compress-pdf": {
@@ -3957,6 +4052,18 @@
       "a4": "It opens. Touch is treated as the mouse. Games that need hover or a keyboard are easier on a computer.",
       "q5": "Can I download classic Flash games here?",
       "a5": "No. Use a SWF you already have. cv.cm will only host a SWF when its license allows redistribution."
+    },
+    "mosaic": {
+      "q1": "Does pixelating upload my photo?",
+      "a1": "No. The photo stays in this tab. The canvas replaces the pixels here. Closing the tab discards it. Export also strips EXIF.",
+      "q2": "Mosaic or black box?",
+      "a2": "Use a black box for ID numbers, card numbers, and QR codes. A fine mosaic can sometimes be guessed back. Use mosaic for faces and background clutter.",
+      "q3": "Can I redact a chat screenshot?",
+      "a3": "Yes. Drop the screenshot and drag over avatars, names, and phone numbers. Draw as many boxes as you need; Undo removes the last one. With several photos, each keeps its own boxes and you can download a ZIP.",
+      "q4": "Can I add a watermark after redacting?",
+      "a4": "Yes. On the same page, add a “for [org] use only” mark. Redaction is applied first, then the mark.",
+      "q5": "Can it remove a mosaic?",
+      "a5": "No. This only covers areas. It cannot restore pixels someone else covered. In your export the covered pixels are replaced, not hidden."
     }
   },
   "qr": {
@@ -5500,5 +5607,9 @@
     "compound": "Compound interest",
     "percent": "Percentage",
     "privacyNote": "Type the price and the share count. Nothing is uploaded, and no quote is fetched."
+  },
+  "mosaic": {
+    "title": "Pixelate or black out parts of a photo",
+    "privacyNote": "Photos and screenshots stay in this tab. Export drops EXIF. Closing the page discards them."
   }
 }

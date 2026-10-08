@@ -161,6 +161,8 @@ function groupOf(id: TutorialId): string {
     || id === "rotate-photo"
     || id === "resize-image"
     || id === "add-watermark"
+    || id === "watermark-id-copy"
+    || id === "mosaic-photo"
     || id === "remove-exif"
     || id === "make-collage"
     || id === "make-meme"
