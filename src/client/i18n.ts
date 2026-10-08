@@ -5,7 +5,15 @@ import {
   parseLocale,
   type Locale,
 } from "../shared/locale";
-import { hasMessages, messages, registerMessages, type LocaleMessages } from "../shared/messages";
+import {
+  hasGameMessages,
+  hasMessages,
+  messages,
+  registerGameMessages,
+  registerMessages,
+  type GameMessages,
+  type LocaleMessages,
+} from "../shared/messages";
 
 // One chunk per locale, so a page downloads only the strings it shows.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
@@ -19,11 +27,28 @@ const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
   es: () => import("../locales/packs/es"),
 };
 
-export { hasMessages };
+// Full game copy and walkthroughs, only for game pages.
+const GAME_PACKS: Record<Locale, () => Promise<{ default: GameMessages }>> = {
+  en: () => import("../locales/packs/games-en"),
+  "zh-CN": () => import("../locales/packs/games-zh-CN"),
+  "zh-TW": () => import("../locales/packs/games-zh-TW"),
+  ja: () => import("../locales/packs/games-ja"),
+  ko: () => import("../locales/packs/games-ko"),
+  vi: () => import("../locales/packs/games-vi"),
+  id: () => import("../locales/packs/games-id"),
+  es: () => import("../locales/packs/games-es"),
+};
 
-export async function loadLocale(next: Locale): Promise<void> {
-  if (hasMessages(next)) return;
-  registerMessages(next, (await PACKS[next]()).default);
+/** Whether the strings a page needs are loaded: the locale pack, plus the game pack on a game page. */
+export function hasPageMessages(next: Locale, game: boolean): boolean {
+  return hasMessages(next) && (!game || hasGameMessages(next));
+}
+
+export async function loadPageMessages(next: Locale, game: boolean): Promise<void> {
+  await Promise.all([
+    hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
+    !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
+  ]);
 }
 
 let current: Locale = DEFAULT_LOCALE;

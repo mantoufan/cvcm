@@ -1,4 +1,4 @@
-import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO, localizedTutorialSrc } from "../covers";
+import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO, TILE_SIZES, localizedTutorialSrc, thumbSrc, tileSrcset } from "../covers";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
@@ -96,7 +96,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
               href: appHref(loc, tool),
               "data-nav": tool,
             },
-              h("img", { class: "menu-cover", src: COVER[tool], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+              h("img", { class: "menu-cover", src: thumbSrc(COVER[tool], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
               h("div", { class: "menu-copy" },
                 h("strong", null, t(`tools.${tool}.name`)),
                 h("span", null, t(`tools.${tool}.blurb`)),
@@ -117,7 +117,7 @@ export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLE
     "data-nav": `learn-${id}`,
   },
     h("div", { class: "tile-cover" },
-      h("img", { src: LEARN_COVER[id], alt: t(`learn.${id}.name`), width: "960", height: "540", loading: "lazy" }),
+      h("img", { src: thumbSrc(LEARN_COVER[id], 640), srcset: tileSrcset(LEARN_COVER[id]), sizes: TILE_SIZES, alt: t(`learn.${id}.name`), width: "960", height: "540", loading: "lazy", decoding: "async" }),
     ),
     h("div", { class: "tile-body" },
       h("p", { class: "tile-time" }, t("learn.minutes", { n: TUTORIAL_META[id].minutes })),

@@ -1,6 +1,7 @@
 import * as esbuild from "esbuild";
 import { readFileSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -33,6 +34,16 @@ await esbuild.build({
   legalComments: "none",
   minify: true,
   define: { __LOCALE_PACKS__: JSON.stringify(localePacks) },
+  plugins: [{
+    name: "game-names",
+    setup(build) {
+      build.onResolve({ filter: NAMES_FILTER }, (args) => ({
+        path: resolve(args.resolveDir, namesJsonPath(args.path)),
+        namespace: "game-names",
+      }));
+      build.onLoad({ filter: /.*/, namespace: "game-names" }, (args) => ({ contents: gameNamesSource(args.path), loader: "json" }));
+    },
+  }],
 });
 
 console.log("wrote dist/_worker.js");

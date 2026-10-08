@@ -1,6 +1,6 @@
 import { h } from "../dom";
 import { locale as currentLocale } from "../i18n";
-import { MARKET_COVER } from "../covers";
+import { MARKET_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "../covers";
 import { appHref, marketsHref } from "../../shared/path";
 import {
   WEIGHT_UNITS,
@@ -39,7 +39,9 @@ export function marketTile(loc: Locale, id: MarketId): HTMLElement {
   },
     h("div", { class: "tile-cover" },
       h("img", {
-        src: MARKET_COVER[id],
+        src: thumbSrc(MARKET_COVER[id], 640),
+        srcset: tileSrcset(MARKET_COVER[id]),
+        sizes: TILE_SIZES,
         alt: copy.name,
         width: "640",
         height: "360",

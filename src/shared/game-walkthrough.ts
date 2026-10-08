@@ -1,6 +1,6 @@
 import type { GameId } from "./games";
 import type { Locale } from "./locale";
-import { messages } from "./messages";
+import { gameMessages } from "./messages";
 
 export type WalkthroughStep = {
   id: string;
@@ -15,7 +15,7 @@ export type Walkthrough = {
 };
 
 function table(locale: Locale): Record<string, Walkthrough> {
-  return messages(locale).walkthroughs;
+  return gameMessages(locale).walkthroughs;
 }
 
 export function gameWalkthrough(locale: Locale, id: GameId): Walkthrough {

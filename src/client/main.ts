@@ -78,9 +78,9 @@ import { mountLearn, mountLearnHub } from "./learn/ui";
 import { mountGame, mountGamesHub } from "./games/ui";
 import { mountMarket, mountMarketsHub, unmountMarket } from "./markets/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
-import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
+import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, thumbSrc } from "./covers";
 import { mountDevice } from "./device/ui";
-import { LOCALES, hasMessages, loadLocale, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -105,7 +105,7 @@ import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
 import type { MarketId } from "../shared/markets";
 import { GAME_CONSOLES, GAMES } from "../shared/games";
-import { gameCopy } from "../shared/games-i18n";
+import { gameName } from "../shared/games-i18n";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
@@ -148,6 +148,9 @@ export function start(): void {
     started = true;
     window.addEventListener("popstate", () => render());
     document.addEventListener("click", onClick);
+    document.addEventListener("pointerover", prefetchGamePack, { passive: true });
+    document.addEventListener("touchstart", prefetchGamePack, { passive: true });
+    document.addEventListener("focusin", prefetchGamePack);
   }
   boot();
 }
@@ -224,6 +227,14 @@ export function boot(): void {
     history.replaceState(null, "", withSearch(appHref(loc, nextTool, nextClip, nextJob), location.search));
   }
   render();
+}
+
+/** Start the game pack download when a game link is about to be followed, so the page opens without a wait. */
+function prefetchGamePack(e: Event): void {
+  const link = (e.target as Element | null)?.closest?.('a[data-nav^="game-"]');
+  if (!link) return;
+  const loc = locale();
+  if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
 }
 
 function onClick(e: MouseEvent): void {
@@ -408,9 +419,10 @@ export function render(): void {
     ? parsed.locale
     : locale();
   const req = ++localeReq;
-  if (!hasMessages(loc)) {
-    // Keep the current (or server-rendered) page until this locale's strings arrive.
-    loadLocale(loc).then(
+  const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
+  if (!hasPageMessages(loc, gamePage)) {
+    // Keep the current (or server-rendered) page until this page's strings arrive.
+    loadPageMessages(loc, gamePage).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -714,7 +726,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
             "data-nav": id,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`tools.${id}.name`)),
               h("span", null, t(`tools.${id}.blurb`)),
@@ -743,7 +755,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
           "data-nav": `device-${id}`,
           "aria-current": device === id ? "page" : undefined,
         },
-          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+          h("img", { class: "menu-cover", src: thumbSrc(DEVICE_COVER, 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
           h("div", { class: "menu-copy" },
             h("strong", null, devicePageCopy(loc, id).name),
             h("span", null, devicePageCopy(loc, id).blurb),
@@ -786,7 +798,7 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
             "data-nav": `learn-${id}`,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: LEARN_COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(LEARN_COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`learn.${id}.name`)),
               h("span", null, t(`learn.${id}.blurb`)),
@@ -830,10 +842,10 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
             "data-nav": `game-${game.id}`,
             "aria-current": current === game.id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
+            h("img", { class: "menu-cover", src: thumbSrc(GAME_COVER[game.id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
-              h("strong", null, gameCopy(loc, game.id).name),
-              h("span", null, gameCopy(loc, game.id).blurb),
+              h("strong", null, gameName(loc, game.id).name),
+              h("span", null, gameName(loc, game.id).blurb),
             ),
           ),
         ),

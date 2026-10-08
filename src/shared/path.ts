@@ -11,7 +11,7 @@ import { isMarketId, type MarketId } from "./markets";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
-  /^\/(assets\/|brand\/|covers\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
+  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },

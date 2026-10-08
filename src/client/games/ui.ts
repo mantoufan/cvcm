@@ -1,4 +1,4 @@
-import { GAME_COVER } from "../covers";
+import { GAME_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "../covers";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONSOLE_CONTROLS } from "../../shared/game-controls";
@@ -16,7 +16,7 @@ import {
   type GameGenreId,
   type GameId,
 } from "../../shared/games";
-import { gameCheatLabels, gameCopy, gameFaqItems } from "../../shared/games-i18n";
+import { gameCheatLabels, gameCopy, gameFaqItems, gameName } from "../../shared/games-i18n";
 import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
 import { gamesHref } from "../../shared/path";
 
@@ -137,7 +137,7 @@ function chip(href: string, on: boolean, label: string, nav: string): HTMLElemen
 }
 
 export function gameTile(loc: ReturnType<typeof locale>, game: Game): HTMLElement {
-  const copy = gameCopy(loc, game.id);
+  const copy = gameName(loc, game.id);
   return h("a", {
     class: "tile",
     href: gamesHref(loc, game.console, game.id),
@@ -145,7 +145,9 @@ export function gameTile(loc: ReturnType<typeof locale>, game: Game): HTMLElemen
   },
     h("div", { class: "tile-cover" },
       h("img", {
-        src: GAME_COVER[game.id],
+        src: thumbSrc(GAME_COVER[game.id], 640),
+        srcset: tileSrcset(GAME_COVER[game.id]),
+        sizes: TILE_SIZES,
         alt: copy.name,
         width: "640",
         height: "360",
