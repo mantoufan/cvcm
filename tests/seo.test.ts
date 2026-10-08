@@ -8,6 +8,7 @@ import {
   pageCanonical,
   pageDescription,
   pageTitle,
+  toolSoftwareJsonLd,
 } from "../src/shared/seo";
 import worker from "../src/worker";
 
@@ -232,5 +233,13 @@ describe("worker html seo", () => {
     expect(home).toContain('<a href="/zh-cn/qr/">');
     expect(home).toContain('<a href="/zh-cn/learn/">');
     expect(home).not.toContain('<div id="app"></div>');
+  });
+});
+
+describe("branded tool names", () => {
+  it("does not repeat the brand when the tool is named after it", () => {
+    expect(toolSoftwareJsonLd("zh-CN", "watermark").name).toBe("身份证水印打码");
+    expect(toolSoftwareJsonLd("zh-CN", "watermark").alternateName).toBeUndefined();
+    expect(toolSoftwareJsonLd("zh-CN", "mosaic").name).toBe("身份证水印打码 · 图片打马赛克");
   });
 });
