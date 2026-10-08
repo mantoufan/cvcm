@@ -960,8 +960,14 @@ function onDrawCancel(): void {
 }
 
 function collageSlots() {
-  return state.items.map((item) => {
+  if (state.layout === "single") return [];
+  // Only the photos the layout shows, and never larger than the collage itself.
+  const slots = cellsFor(state.layout).length;
+  const aspect = ASPECTS[state.collageAspect];
+  const maxSide = Math.max(aspect.w, aspect.h);
+  return state.items.slice(0, slots).map((item) => {
     if (!item.bitmap) return null;
+    const scale = Math.min(1, maxSide / Math.max(item.width, item.height));
     const image = item.redactions.length
       ? renderWatermark(item.bitmap, item.width, item.height, {
           redactions: item.redactions,
@@ -971,7 +977,7 @@ function collageSlots() {
           position: { mode: "anchor", anchor: "br" },
           tiled: false,
           tileGapRatio: 0,
-        })
+        }, Math.round(item.width * scale), Math.round(item.height * scale))
       : item.bitmap;
     return { image, naturalWidth: item.width, naturalHeight: item.height };
   });
