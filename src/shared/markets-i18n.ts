@@ -83,7 +83,7 @@ export type MarketUi = {
   toGold: string;
 };
 
-type MarketMessages = {
+export type MarketMessages = {
   nav: string;
   hub: MarketHubCopy;
   ui: MarketUi;
@@ -91,7 +91,7 @@ type MarketMessages = {
 };
 
 function table(locale: Locale): MarketMessages {
-  return messages(locale).markets as MarketMessages;
+  return messages(locale).markets;
 }
 
 export function marketNav(locale: Locale): string {

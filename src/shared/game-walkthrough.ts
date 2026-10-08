@@ -15,7 +15,7 @@ export type Walkthrough = {
 };
 
 function table(locale: Locale): Record<string, Walkthrough> {
-  return messages(locale).walkthroughs as Record<string, Walkthrough>;
+  return messages(locale).walkthroughs;
 }
 
 export function gameWalkthrough(locale: Locale, id: GameId): Walkthrough {

@@ -8,13 +8,14 @@ import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
 // Locale -> hashed string-pack chunk, injected by scripts/build-worker.mjs (absent in tests).
-declare const __LOCALE_PACKS__: Record<string, string> | undefined;
+declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
 
 /** Fetch the page locale's strings in parallel with the entry script instead of after it runs. */
 export function preloadLocalePack(html: string, locale: Locale): string {
-  const href = typeof __LOCALE_PACKS__ === "undefined" ? undefined : __LOCALE_PACKS__[locale];
-  if (!href) return html;
-  return html.replace("</head>", `<link rel="modulepreload" crossorigin href="${href}">\n  </head>`);
+  const files = typeof __LOCALE_PACKS__ === "undefined" ? undefined : __LOCALE_PACKS__[locale];
+  if (!files?.length) return html;
+  const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");
+  return html.replace("</head>", `${links}\n  </head>`);
 }
 
 export interface Env {

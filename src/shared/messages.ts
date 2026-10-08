@@ -1,4 +1,7 @@
+import type { Walkthrough } from "./game-walkthrough";
+import type { GameCopy } from "./games-i18n";
 import type { Locale } from "./locale";
+import type { MarketMessages } from "./markets-i18n";
 
 export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
@@ -7,11 +10,11 @@ export type DeviceMessages = typeof import("../locales/device/en.json");
 /** Every string bundle for one locale. The client loads only the active one. */
 export type LocaleMessages = {
   ui: UiMessages;
-  games: Record<string, unknown>;
-  walkthroughs: Record<string, unknown>;
+  games: Record<string, GameCopy>;
+  walkthroughs: Record<string, Walkthrough>;
   guides: GuideMessages;
   device: DeviceMessages;
-  markets: Record<string, unknown>;
+  markets: MarketMessages;
 };
 
 const loaded: Partial<Record<Locale, LocaleMessages>> = {};

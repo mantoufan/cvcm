@@ -138,6 +138,7 @@ let unmountCompressPdf = (): void => {};
 let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
+let localeReq = 0;
 
 let started = false;
 
@@ -405,14 +406,21 @@ export function render(): void {
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
     ? parsed.locale
     : locale();
+  const req = ++localeReq;
   if (!hasMessages(loc)) {
     // Keep the current (or server-rendered) page until this locale's strings arrive.
-    const gen = ++pageGen;
     loadLocale(loc).then(
       () => {
-        if (gen === pageGen) render();
+        try {
+          sessionStorage.removeItem(RELOAD_KEY);
+        } catch {
+          /* private mode */
+        }
+        if (req === localeReq) render();
       },
-      () => {},
+      () => {
+        if (req === localeReq) reloadOnce();
+      },
     );
     return;
   }
@@ -501,6 +509,19 @@ export function render(): void {
   const root = appEl();
   clear(root);
   root.append(shell(loc));
+}
+
+const RELOAD_KEY = "cvcm-locale-reload";
+
+/** A locale pack failed to load (offline, or a tab still on an older deploy's chunk names). Try one full page load per path. */
+function reloadOnce(): void {
+  try {
+    if (sessionStorage.getItem(RELOAD_KEY) === location.pathname) return;
+    sessionStorage.setItem(RELOAD_KEY, location.pathname);
+  } catch {
+    return;
+  }
+  location.reload();
 }
 
 function shell(loc: Locale): HTMLElement {
@@ -838,19 +859,15 @@ function langSwitch(current: Locale): HTMLElement {
     class: "lang",
     "aria-label": t("lang.label"),
     onChange: (e: Event) => {
-      const next = (e.target as HTMLSelectElement).value as Locale;
-      setLocale(next);
-      const href = devicePage
-        ? withSearch(deviceHref(next, devicePage), location.search)
-        : learnHub || tutorial
-          ? withSearch(learnHref(next, tutorial), location.search)
-          : gamesHub || gameId
-            ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
-            : marketsHub || marketId
-              ? withSearch(marketsHref(next, marketId), location.search)
-              : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
-      history.pushState(null, "", href);
-      render();
+      const select = e.target as HTMLSelectElement;
+      const next = select.value as Locale;
+      if (hasMessages(next)) {
+        switchLocale(next);
+        return;
+      }
+      loadLocale(next).then(() => switchLocale(next), () => {
+        select.value = locale();
+      });
     },
   });
   for (const code of LOCALES) {
@@ -862,6 +879,21 @@ function langSwitch(current: Locale): HTMLElement {
     );
   }
   return sel;
+}
+
+function switchLocale(next: Locale): void {
+  setLocale(next);
+  const href = devicePage
+    ? withSearch(deviceHref(next, devicePage), location.search)
+    : learnHub || tutorial
+      ? withSearch(learnHref(next, tutorial), location.search)
+      : gamesHub || gameId
+        ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
+        : marketsHub || marketId
+          ? withSearch(marketsHref(next, marketId), location.search)
+          : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
+  history.pushState(null, "", href);
+  render();
 }
 
 /** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */

@@ -7,11 +7,17 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 // Map each locale string pack to its hashed chunk so the Worker can preload it.
 const manifestDir = resolve(root, "dist/.vite");
-const manifest = JSON.parse(readFileSync(resolve(manifestDir, "manifest.json"), "utf8"));
+const manifestPath = resolve(manifestDir, "manifest.json");
+let manifest;
+try {
+  manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+} catch {
+  throw new Error(`${manifestPath} missing: run \`npm run build\` (vite build writes it, this script removes it)`);
+}
 const localePacks = {};
 for (const [src, chunk] of Object.entries(manifest)) {
   const m = /^src\/locales\/packs\/(.+)\.ts$/.exec(src);
-  if (m) localePacks[m[1]] = `/${chunk.file}`;
+  if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).map((key) => manifest[key].file)].map((f) => `/${f}`);
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 rmSync(manifestDir, { recursive: true, force: true });

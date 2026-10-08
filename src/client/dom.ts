@@ -10,7 +10,7 @@ export function h<K extends keyof HTMLElementTagNameMap>(
   if (props?.loading) el.setAttribute("loading", String(props.loading));
   if (props) {
     for (const [key, value] of Object.entries(props)) {
-      if (value == null || value === false) continue;
+      if (value == null || value === false || key === "loading") continue;
       if (key === "class" || key === "className") {
         el.className = String(value);
       } else if (key === "style" && typeof value === "object") {

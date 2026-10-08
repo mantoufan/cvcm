@@ -38,7 +38,7 @@ export type GameCopy = {
 };
 
 function table(locale: Locale): Record<string, GameCopy> {
-  return messages(locale).games as Record<string, GameCopy>;
+  return messages(locale).games;
 }
 
 export function gameCopy(locale: Locale, id: GameId): GameCopy {

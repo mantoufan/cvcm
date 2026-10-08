@@ -7,13 +7,9 @@ import ko from "../locales/packs/ko";
 import vi from "../locales/packs/vi";
 import zhCN from "../locales/packs/zh-CN";
 import zhTW from "../locales/packs/zh-TW";
-import { registerMessages } from "./messages";
+import type { Locale } from "./locale";
+import { registerMessages, type LocaleMessages } from "./messages";
 
-registerMessages("en", en);
-registerMessages("zh-CN", zhCN);
-registerMessages("zh-TW", zhTW);
-registerMessages("ja", ja);
-registerMessages("ko", ko);
-registerMessages("vi", vi);
-registerMessages("id", id);
-registerMessages("es", es);
+const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
+
+for (const [locale, pack] of Object.entries(ALL)) registerMessages(locale as Locale, pack);
