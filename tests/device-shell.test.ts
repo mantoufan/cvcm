@@ -77,7 +77,11 @@ describe("device shell", () => {
     window.dispatchEvent(new PopStateEvent("popstate"));
     expect(document.title).toBe(title);
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(canonical);
-    expect(document.getElementById("breadcrumb-jsonld")).toBeNull();
+    // Back on a tool page: the tool's own breadcrumb, not the device one.
+    const crumb = document.getElementById("breadcrumb-jsonld")?.textContent ?? "";
+    expect(crumb).toContain("https://cv.cm/en/qr/");
+    expect(crumb).not.toContain("/device/");
+    expect(document.getElementById("software-jsonld")?.textContent).toContain("WebApplication");
   });
 
   it("changes the pixel estimate with the ratio and keeps the caveat", () => {

@@ -17,6 +17,8 @@ import {
   type Anchor,
   fitExportSize,
   type LogoSpec,
+  type Redaction,
+  type RedactMode,
   renderWatermark,
   type TextSpec,
   type WatermarkSpec,
@@ -38,6 +40,7 @@ type Item = {
   height: number;
   bitmap: ImageBitmap | null;
   error: string | null;
+  redactions: Redaction[];
 };
 
 type Logo = {
@@ -52,6 +55,7 @@ type Logo = {
 type Format = "png" | "jpeg" | "webp";
 type WmLayout = "single" | LayoutId;
 type WmPreset = "identity" | "confidential" | "copyright" | "center";
+export type WmMode = "watermark" | "mosaic";
 
 const ANCHORS: Anchor[] = ["tl", "tc", "tr", "ml", "mc", "mr", "bl", "bc", "br"];
 
@@ -82,6 +86,9 @@ const state = {
   logoRotate: 0,
   format: "png" as Format,
   quality: 0.92,
+  redactMode: "mosaic" as RedactMode,
+  mosaicRatio: 0.03,
+  drawing: false,
   working: false,
 };
 
@@ -91,6 +98,9 @@ let fileList: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let hintEl: HTMLElement | null = null;
 let pagehideBound = false;
+let mode: WmMode = "watermark";
+let lastRender: HTMLCanvasElement | null = null;
+let dragStart: { x: number; y: number } | null = null;
 let restoring = false;
 let hydrated = false;
 
@@ -98,7 +108,9 @@ const scheduleSave = debounce(() => {
   void persistWatermark();
 }, 400);
 
-export async function mountWatermark(host: HTMLElement): Promise<void> {
+export async function mountWatermark(host: HTMLElement, toolMode: WmMode = "watermark"): Promise<void> {
+  mode = toolMode;
+  state.drawing = toolMode === "mosaic";
   restoring = true;
   if (!hydrated) {
     if (sessionLive()) await restoreWatermark();
@@ -111,8 +123,17 @@ export async function mountWatermark(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("watermark.back")),
-      h("h1", null, t("watermark.title")),
-      h("p", { class: "lede" }, t("watermark.privacyNote")),
+      h("p", { class: "wm-brand" },
+        h("img", { src: "/brand/safemark.svg", alt: "", width: "28", height: "28" }),
+        h("strong", null, t("watermark.brand")),
+        h("span", null, t("watermark.brandTagline")),
+      ),
+      h("h1", null, t(mode === "mosaic" ? "mosaic.title" : "watermark.title")),
+      h("p", { class: "lede" }, t(mode === "mosaic" ? "mosaic.privacyNote" : "watermark.privacyNote")),
+      h("nav", { class: "wm-switch", "aria-label": t("watermark.brand") },
+        h("a", { href: appHref(locale(), "watermark"), class: mode === "watermark" ? "on" : "", "aria-current": mode === "watermark" ? "page" : undefined }, t("watermark.switchWatermark")),
+        h("a", { href: appHref(locale(), "mosaic"), class: mode === "mosaic" ? "on" : "", "aria-current": mode === "mosaic" ? "page" : undefined }, t("watermark.switchMosaic")),
+      ),
     ),
     h("div", { class: "tool" },
       filesRail(),
@@ -122,6 +143,7 @@ export async function mountWatermark(host: HTMLElement): Promise<void> {
   );
   refreshList();
   redraw();
+  syncRedact();
   syncLogoOpts();
   syncPresetChips();
   bindGlobal();
@@ -138,6 +160,8 @@ export function unmountWatermark(): void {
   window.removeEventListener("keydown", onKey);
   root = null;
   preview = null;
+  lastRender = null;
+  dragStart = null;
   fileList = null;
   statusEl = null;
   hintEl = null;
@@ -182,33 +206,85 @@ function filesRail(): HTMLElement {
       h("button", { type: "button", class: "link", onClick: () => clearItems() }, t("watermark.clear")),
     ),
     drop,
+    h("button", { type: "button", class: "chip wm-sample", onClick: () => void addSample() }, t("watermark.sample")),
     fileList,
   );
 }
 
 function stagePane(): HTMLElement {
-  preview = h("canvas", { class: "preview", width: 800, height: 600 });
+  preview = h("canvas", {
+    class: "preview",
+    width: 800,
+    height: 600,
+    onPointerdown: onDrawStart,
+    onPointermove: onDrawMove,
+    onPointerup: onDrawEnd,
+    onPointercancel: onDrawCancel,
+  });
   hintEl = h("p", { class: "hint" }, t("watermark.hintMark"));
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   return h("section", { class: "stage" },
-    h("div", { class: "stage-frame" }, preview),
+    h("div", { class: "stage-frame", id: "wm-frame" },
+      preview,
+      h("label", { class: "wm-empty", for: "file-input", id: "wm-empty" },
+        h("strong", null, t("watermark.dropTitle")),
+        h("span", null, t("watermark.dropHint")),
+      ),
+    ),
     hintEl,
     h("div", { class: "stage-actions" },
-      h("button", { type: "button", class: "btn", onClick: () => void downloadOne() }, t("watermark.download")),
+      h("button", { type: "button", class: "btn", id: "wm-download", onClick: () => void downloadOne() }, t("watermark.download")),
       h("button", { type: "button", class: "btn ghost", id: "wm-download-all", onClick: () => void downloadAll() }, t("watermark.downloadAll")),
     ),
     statusEl,
   );
 }
 
-function controlsRail(): HTMLElement {
-  return h("aside", { class: "rail controls" },
-    h("fieldset", null,
-      h("legend", null, t("watermark.collageTitle")),
-      wmLayoutPicker(),
-      collageOptions(),
+function redactFieldset(): HTMLElement {
+  return h("fieldset", { class: "wm-redact" },
+    h("legend", null, t("watermark.redactTitle")),
+    h("button", {
+      type: "button",
+      class: "chip wm-draw",
+      id: "wm-draw",
+      "aria-pressed": String(state.drawing),
+      onClick: () => {
+        state.drawing = !state.drawing;
+        syncRedact();
+      },
+    }, t("watermark.redactDraw")),
+    h("div", { class: "row wrap", role: "radiogroup", "aria-label": t("watermark.redactTitle") },
+      redactChip("mosaic", t("watermark.redactMosaic")),
+      redactChip("black", t("watermark.redactBlack")),
     ),
-    h("fieldset", null,
+    slider("wm-mosaic", t("watermark.redactStrength"), 0.01, 0.08, 0.005, state.mosaicRatio, (v) => { state.mosaicRatio = v; }),
+    h("div", { class: "row wrap" },
+      h("span", { class: "muted", id: "wm-redact-count" }),
+      h("button", { type: "button", class: "link", id: "wm-redact-undo", onClick: () => undoRedaction() }, t("watermark.redactUndo")),
+      h("button", { type: "button", class: "link", id: "wm-redact-clear", onClick: () => clearRedactions() }, t("watermark.redactClear")),
+    ),
+    h("p", { class: "muted small", id: "wm-redact-collage", hidden: true }, t("watermark.redactCollage")),
+    h("p", { class: "muted small" }, t("watermark.redactTip")),
+  );
+}
+
+function redactChip(id: RedactMode, label: string): HTMLElement {
+  return h("button", {
+    type: "button",
+    class: "chip" + (state.redactMode === id ? " on" : ""),
+    role: "radio",
+    "aria-checked": String(state.redactMode === id),
+    "data-redact": id,
+    onClick: () => {
+      state.redactMode = id;
+      state.drawing = true;
+      syncRedact();
+    },
+  }, label);
+}
+
+function controlsRail(): HTMLElement {
+  const presets = h("fieldset", null,
       h("legend", null, t("watermark.presetsTitle")),
       h("div", { class: "row wrap" },
         presetChip("identity", t("watermark.presetIdentity")),
@@ -216,7 +292,9 @@ function controlsRail(): HTMLElement {
         presetChip("copyright", t("watermark.presetCopyright")),
         presetChip("center", t("watermark.presetCenter")),
       ),
-    ),
+    );
+  return h("aside", { class: "rail controls" },
+    ...(mode === "mosaic" ? [redactFieldset(), presets] : [presets, redactFieldset()]),
     h("fieldset", null,
       h("legend", null, t("watermark.textTitle")),
       labeled(t("watermark.textContent"),
@@ -326,6 +404,11 @@ function controlsRail(): HTMLElement {
       ),
       slider("wm-quality", t("watermark.quality"), 0.4, 1, 0.01, state.quality, (v) => { state.quality = v; }),
     ),
+    h("details", { class: "wm-collage", open: state.layout !== "single" },
+      h("summary", null, t("watermark.collageOptional")),
+      wmLayoutPicker(),
+      collageOptions(),
+    ),
   );
 }
 
@@ -351,6 +434,7 @@ function wmLayoutPicker(): HTMLElement {
         const zip = document.getElementById("wm-download-all");
         if (zip) zip.hidden = id !== "single";
         refreshList();
+        syncRedact();
         redraw();
       },
     }, h("span", { class: `mini g-${id}` }, ...marks));
@@ -436,6 +520,7 @@ function positionPad(): HTMLElement {
       role: "radio",
       "aria-checked": String(anchor === state.anchor),
       "aria-label": t(`watermark.pos${cap(anchor)}`),
+      title: t(`watermark.pos${cap(anchor)}`),
       onClick: () => {
         state.anchor = anchor;
         state.tiled = false;
@@ -519,6 +604,7 @@ async function ingestFile(file: File): Promise<void> {
     height: 0,
     bitmap: null,
     error: null,
+    redactions: [],
   };
   state.items.push(item);
   if (!state.selected) state.selected = id;
@@ -534,9 +620,69 @@ async function ingestFile(file: File): Promise<void> {
 
 async function addFiles(list: FileList | File[]): Promise<void> {
   const files = [...list].filter((f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(f.name));
+  if (files.length === 0) return;
+  const first = state.items.length === 0;
+  const before = state.items.length;
   for (const file of files) await ingestFile(file);
+  // Show what was just added, not whatever was selected before.
+  if (state.items[before]) state.selected = state.items[before].id;
+  // First image with no mark yet: start from the for-use-only preset so the preview shows a result.
+  if (first && mode === "watermark" && !state.preset && !state.text.trim() && !state.logo) {
+    applyPreset("identity");
+  }
   refreshList();
+  syncRedact();
   redraw();
+}
+
+/** A clearly fake ID card drawn in the page, so people can try the tool without their own document. */
+async function addSample(): Promise<void> {
+  const c = document.createElement("canvas");
+  c.width = 1200;
+  c.height = 760;
+  const ctx = c.getContext("2d");
+  if (!ctx) return;
+  const g = ctx.createLinearGradient(0, 0, 1200, 760);
+  g.addColorStop(0, "#dfeefa");
+  g.addColorStop(1, "#f6e4ee");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 1200, 760, 48);
+  ctx.fill();
+  ctx.fillStyle = "#c9d6e3";
+  ctx.beginPath();
+  ctx.roundRect(820, 150, 300, 380, 24);
+  ctx.fill();
+  ctx.fillStyle = "#9fb3c8";
+  ctx.beginPath();
+  ctx.arc(970, 285, 80, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(970, 500, 130, 110, 0, Math.PI, 0);
+  ctx.fill();
+  ctx.fillStyle = "#33475b";
+  ctx.font = `700 54px ${FONTS.sans}`;
+  ctx.fillText("SAMPLE ID", 80, 130);
+  ctx.font = `500 36px ${FONTS.sans}`;
+  const rows: [string, string][] = [
+    ["NAME", "ALEX SAMPLE"],
+    ["BORN", "2000-01-01"],
+    ["ADDR", "1 Example Road"],
+  ];
+  rows.forEach(([k, v], i) => {
+    ctx.fillStyle = "#7a8a9a";
+    ctx.fillText(k, 80, 250 + i * 80);
+    ctx.fillStyle = "#1f2d3a";
+    ctx.fillText(v, 240, 250 + i * 80);
+  });
+  ctx.fillStyle = "#7a8a9a";
+  ctx.fillText("No.", 80, 650);
+  ctx.fillStyle = "#1f2d3a";
+  ctx.font = `600 52px ${FONTS.mono}`;
+  ctx.fillText("0000 1111 2222 3333", 200, 652);
+  const blob = await new Promise<Blob | null>((resolve) => c.toBlob(resolve, "image/png"));
+  if (!blob) return;
+  await addFiles([new File([blob], "sample-id.png", { type: "image/png" })]);
 }
 
 function removeItem(id: string): void {
@@ -547,6 +693,7 @@ function removeItem(id: string): void {
   URL.revokeObjectURL(item.url);
   if (state.selected === id) state.selected = state.items[0]?.id ?? null;
   refreshList();
+  syncRedact();
   redraw();
 }
 
@@ -559,6 +706,7 @@ function clearItems(): void {
   state.selected = null;
   void clearDraft("watermark");
   refreshList();
+  syncRedact();
   redraw();
 }
 
@@ -631,6 +779,7 @@ function refreshList(): void {
         onClick: () => {
           state.selected = item.id;
           refreshList();
+          syncRedact();
           redraw();
         },
       },
@@ -645,7 +794,7 @@ function refreshList(): void {
   });
 }
 
-function specFor(): WatermarkSpec {
+function specFor(redactions: Redaction[] = currentRedactions()): WatermarkSpec {
   const family =
     state.font === "custom" && state.customFont.trim()
       ? state.customFont.trim()
@@ -674,6 +823,8 @@ function specFor(): WatermarkSpec {
       }
     : null;
   return {
+    redactions,
+    mosaicRatio: state.mosaicRatio,
     text,
     logo,
     position: { mode: "anchor", anchor: state.anchor },
@@ -686,12 +837,159 @@ function currentItem(): Item | null {
   return state.items.find((it) => it.id === state.selected) ?? state.items[0] ?? null;
 }
 
+/**
+ * Boxes drawn on the selected photo. A collage has none of its own: each photo's boxes
+ * are baked in before layout, so changing the grid can never shift a box off a number.
+ */
+function currentRedactions(): Redaction[] {
+  if (state.layout !== "single") return [];
+  return currentItem()?.redactions ?? [];
+}
+
+function pushRedaction(r: Redaction): void {
+  if (state.layout !== "single") return;
+  currentItem()?.redactions.push(r);
+}
+
+function undoRedaction(): void {
+  currentRedactions().pop();
+  syncRedact();
+  redraw();
+}
+
+function clearRedactions(): void {
+  currentRedactions().length = 0;
+  syncRedact();
+  redraw();
+}
+
+function syncRedact(): void {
+  const collage = state.layout !== "single";
+  const draw = document.getElementById("wm-draw");
+  if (draw instanceof HTMLButtonElement) {
+    draw.disabled = collage;
+    draw.classList.toggle("on", state.drawing && !collage);
+    draw.setAttribute("aria-pressed", String(state.drawing && !collage));
+  }
+  const note = document.getElementById("wm-redact-collage");
+  if (note) note.hidden = !collage;
+  root?.querySelectorAll("[data-redact]").forEach((btn) => {
+    const on = (btn as HTMLElement).dataset.redact === state.redactMode;
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-checked", String(on));
+  });
+  preview?.classList.toggle("drawing", state.drawing && !collage);
+  const n = currentRedactions().length;
+  const count = document.getElementById("wm-redact-count");
+  if (count) count.textContent = n ? t("watermark.redactCount", { n: String(n) }) : t("watermark.redactNone");
+  const undo = document.getElementById("wm-redact-undo");
+  if (undo) undo.hidden = n === 0;
+  const clear = document.getElementById("wm-redact-clear");
+  if (clear) clear.hidden = n === 0;
+  if (hintEl && state.drawing && !collage && composeSource()) {
+    hintEl.hidden = false;
+    hintEl.textContent = t("watermark.redactOn");
+  }
+}
+
+function canvasPoint(e: PointerEvent): { x: number; y: number } | null {
+  if (!preview) return null;
+  const rect = preview.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return null;
+  return {
+    x: Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width)),
+    y: Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height)),
+  };
+}
+
+function onDrawStart(e: PointerEvent): void {
+  if (!state.drawing || state.layout !== "single" || !preview || !composeSource()) return;
+  const p = canvasPoint(e);
+  if (!p) return;
+  e.preventDefault();
+  dragStart = p;
+  try {
+    preview.setPointerCapture(e.pointerId);
+  } catch {
+    // No active pointer to capture (synthetic events); the drag still works inside the canvas.
+  }
+}
+
+function onDrawMove(e: PointerEvent): void {
+  if (!dragStart || !preview || !lastRender) return;
+  const p = canvasPoint(e);
+  if (!p) return;
+  const ctx = preview.getContext("2d");
+  if (!ctx) return;
+  ctx.drawImage(lastRender, 0, 0);
+  const x = Math.min(dragStart.x, p.x) * preview.width;
+  const y = Math.min(dragStart.y, p.y) * preview.height;
+  const w = Math.abs(p.x - dragStart.x) * preview.width;
+  const hgt = Math.abs(p.y - dragStart.y) * preview.height;
+  ctx.save();
+  ctx.fillStyle = state.redactMode === "black" ? "rgba(0,0,0,0.55)" : "rgba(200,63,121,0.18)";
+  ctx.fillRect(x, y, w, hgt);
+  ctx.setLineDash([10, 6]);
+  ctx.lineWidth = Math.max(2, preview.width / 400);
+  ctx.strokeStyle = "#c83f79";
+  ctx.strokeRect(x, y, w, hgt);
+  ctx.restore();
+}
+
+function onDrawEnd(e: PointerEvent): void {
+  if (!dragStart) return;
+  const start = dragStart;
+  dragStart = null;
+  const p = canvasPoint(e);
+  if (!p) return;
+  const w = p.x - start.x;
+  const hgt = p.y - start.y;
+  // Judge taps in on-screen pixels, not image ratios: one text line on a long
+  // screenshot can be well under 1% of the image height and must still count.
+  const rect = preview?.getBoundingClientRect();
+  const dx = Math.abs(w) * (rect?.width ?? 0);
+  const dy = Math.abs(hgt) * (rect?.height ?? 0);
+  if (Math.max(dx, dy) >= 6 && Math.min(dx, dy) >= 2) {
+    pushRedaction({
+      x: Math.min(start.x, p.x),
+      y: Math.min(start.y, p.y),
+      w: Math.abs(w),
+      h: Math.abs(hgt),
+      mode: state.redactMode,
+    });
+  }
+  syncRedact();
+  redraw();
+}
+
+function onDrawCancel(): void {
+  dragStart = null;
+  redraw();
+}
+
 function collageSlots() {
-  return state.items.map((item) =>
-    item.bitmap
-      ? { image: item.bitmap, naturalWidth: item.width, naturalHeight: item.height }
-      : null,
-  );
+  if (state.layout === "single") return [];
+  // Only the photos the layout shows, and never larger than the collage itself.
+  const slots = cellsFor(state.layout).length;
+  const aspect = ASPECTS[state.collageAspect];
+  const maxSide = Math.max(aspect.w, aspect.h);
+  return state.items.slice(0, slots).map((item) => {
+    if (!item.bitmap) return null;
+    // Bound by the short side: a "cover" cell can fill the whole collage with it, so it must not be upscaled.
+    const scale = Math.min(1, maxSide / Math.min(item.width, item.height));
+    const image = item.redactions.length
+      ? renderWatermark(item.bitmap, item.width, item.height, {
+          redactions: item.redactions,
+          mosaicRatio: state.mosaicRatio,
+          text: null,
+          logo: null,
+          position: { mode: "anchor", anchor: "br" },
+          tiled: false,
+          tileGapRatio: 0,
+        }, Math.round(item.width * scale), Math.round(item.height * scale))
+      : item.bitmap;
+    return { image, naturalWidth: item.width, naturalHeight: item.height };
+  });
 }
 
 function composeSource(): { image: CanvasImageSource; width: number; height: number; name: string } | null {
@@ -719,15 +1017,21 @@ function redraw(): void {
   if (!preview) return;
   const zip = document.getElementById("wm-download-all");
   if (zip) zip.hidden = state.layout !== "single";
-  const hasMark = Boolean(state.text.trim() || state.logo);
-  if (hintEl) hintEl.hidden = hasMark;
+  const hasMark = Boolean(state.text.trim() || state.logo || currentRedactions().length);
   const source = composeSource();
+  if (hintEl) {
+    hintEl.textContent = t(state.drawing && state.layout === "single" ? "watermark.redactOn" : "watermark.hintMark");
+    hintEl.hidden = !source || (hasMark && !state.drawing);
+  }
+  const empty = document.getElementById("wm-empty");
+  if (empty) empty.hidden = Boolean(source);
+  preview.hidden = !source;
+  for (const id of ["wm-download", "wm-download-all"]) {
+    const btn = document.getElementById(id);
+    if (btn instanceof HTMLButtonElement) btn.disabled = !source;
+  }
   if (!source) {
-    const ctx = preview.getContext("2d");
-    if (!ctx) return;
-    preview.width = 800;
-    preview.height = 560;
-    ctx.clearRect(0, 0, preview.width, preview.height);
+    lastRender = null;
     return;
   }
   const max = 1400;
@@ -741,6 +1045,7 @@ function redraw(): void {
   if (!ctx) return;
   ctx.clearRect(0, 0, w, h);
   ctx.drawImage(rendered, 0, 0);
+  lastRender = rendered;
   if (source.width * source.height > 25_000_000) setStatus(t("watermark.errorHuge"));
 }
 
@@ -792,6 +1097,13 @@ function applyPreset(kind: WmPreset): void {
   syncPad();
   syncPresetChips();
   redraw();
+  if (kind === "identity" && ta instanceof HTMLTextAreaElement && matchMedia("(pointer: fine)").matches) {
+    const at = ta.value.search(/XX|\[ORG\]/);
+    if (at >= 0) {
+      ta.focus({ preventScroll: true });
+      ta.setSelectionRange(at, at + (ta.value.startsWith("[ORG]", at) ? 5 : 2));
+    }
+  }
 }
 
 function syncPresetChips(): void {
@@ -820,13 +1132,16 @@ function setStatus(msg: string): void {
   if (statusEl) statusEl.textContent = msg;
 }
 
-async function blobForSource(source: { image: CanvasImageSource; width: number; height: number }): Promise<Blob> {
+async function blobForSource(
+  source: { image: CanvasImageSource; width: number; height: number },
+  redactions: Redaction[] = currentRedactions(),
+): Promise<Blob> {
   const fit = fitExportSize(source.width, source.height);
   const canvas = renderWatermark(
     source.image,
     source.width,
     source.height,
-    specFor(),
+    specFor(redactions),
     fit.width,
     fit.height,
   );
@@ -838,7 +1153,7 @@ async function blobForSource(source: { image: CanvasImageSource; width: number; 
 
 async function blobFor(item: Item): Promise<Blob> {
   if (!item.bitmap) throw new Error("decode");
-  return blobForSource({ image: item.bitmap, width: item.width, height: item.height });
+  return blobForSource({ image: item.bitmap, width: item.width, height: item.height }, item.redactions);
 }
 
 async function downloadOne(): Promise<void> {
@@ -930,8 +1245,10 @@ type WmDraft = {
     format: Format;
     quality: number;
     preset: WmPreset | null;
+    redactMode?: RedactMode;
+    mosaicRatio?: number;
   };
-  files: { name: string; type: string; blob: Blob }[];
+  files: { name: string; type: string; blob: Blob; redactions?: Redaction[] }[];
   logo: { name: string; type: string; blob: Blob } | null;
 };
 
@@ -963,8 +1280,10 @@ async function persistWatermark(): Promise<void> {
       format: state.format,
       quality: state.quality,
       preset: state.preset,
+      redactMode: state.redactMode,
+      mosaicRatio: state.mosaicRatio,
     },
-    files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file })),
+    files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file, redactions: it.redactions })),
     logo: state.logo
       ? { name: state.logo.file.name, type: state.logo.file.type || "image/png", blob: state.logo.file }
       : null,
@@ -982,7 +1301,11 @@ async function restoreWatermark(): Promise<void> {
   for (const rec of draft.files || []) {
     const file = new File([rec.blob], rec.name, { type: rec.type || "image/png" });
     await ingestFile(file);
+    const item = state.items[state.items.length - 1];
+    if (item && Array.isArray(rec.redactions)) item.redactions = rec.redactions;
   }
+  // Drafts from before collage boxes were dropped may still carry them; ignore.
+  delete (state as Record<string, unknown>).collageRedactions;
   if (state.items[selected]) state.selected = state.items[selected].id;
   if (draft.logo) {
     const file = new File([draft.logo.blob], draft.logo.name, { type: draft.logo.type || "image/png" });

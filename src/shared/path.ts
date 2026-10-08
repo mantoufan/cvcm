@@ -11,11 +11,11 @@ import { isMarketId, type MarketId } from "./markets";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
-  /^\/(assets\/|covers\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
+  /^\/(assets\/|brand\/|covers\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
-  { id: "image", tools: ["watermark", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
+  { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
   { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
@@ -28,6 +28,7 @@ export const TOOLS = [
   "qr",
   "barcode",
   "watermark",
+  "mosaic",
   "collage",
   "portrait-sim",
   "resize",
@@ -156,6 +157,8 @@ export const TUTORIALS = [
   "resize-image",
   "split-pdf",
   "add-watermark",
+  "watermark-id-copy",
+  "mosaic-photo",
   "remove-exif",
   "make-collage",
   "make-meme",
@@ -220,7 +223,7 @@ export const TUTORIAL_GROUPS: readonly {
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
-  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
+  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio"] },
   { id: "text", tutorials: ["count-words", "make-password", "format-json", "decode-base64", "unix-time", "read-jwt", "count-workdays", "simplify-fraction", "hourly-pay", "convert-timezone", "profit-margin", "convert-base", "add-duration", "calculate-percent", "days-between", "shift-date", "iso-week", "vat-price", "percent-off", "encode-url", "calculate-age", "aspect-ratio", "calculate-bmi", "split-tip", "loan-payment", "read-cron"] },
 ];

@@ -3,7 +3,7 @@
     "title": "cv.cm — portapapeles, imagen y PDF",
     "titleClip": "Portapapeles en línea — comparte texto sin cuenta — cv.cm",
     "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
-    "titleWatermark": "Añadir marca de agua a fotos — copias de ID en esta pestaña — cv.cm",
+    "titleWatermark": "Marca de agua para copia de DNI y fotos — gratis, sin subir — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
     "description": "Herramientas en el navegador. Las imágenes y los PDF se quedan en esta pestaña.",
     "titleConvert": "Convertidor de imágenes — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Pasa MP3, M4A, OGG, AAC y FLAC a WAV en el navegador. Elige 44,1 o 48 kHz. Nada se sube.",
     "titleData": "Formateador JSON, Base64, CSV a JSON — cv.cm",
     "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
-    "descWatermark": "Marca fotos o copias de identidad en el navegador. Tesela “solo para [org]”. Exporta PNG, JPEG o ZIP. Quita el EXIF. Nada se sube.",
+    "descWatermark": "Pon marca de agua a fotos y copias de DNI en el navegador. Repite en diagonal “Solo para …” con la fecha, pixela el número y exporta PNG, JPEG o ZIP. Sin EXIF. Los archivos no salen de la pestaña.",
     "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube.",
     "titleQr": "Generador de códigos QR gratis — cv.cm",
     "descQr": "Crea un código QR de una URL o texto en el navegador y descarga PNG. Nada se sube.",
@@ -329,7 +329,13 @@
     "titleLoanPayment": "Cómo calcular la cuota de un préstamo | cv.cm",
     "descLoanPayment": "10000 al 12% durante un año es 888,49 al mes. El interés es 661,85, no 1200. 12000 al 0% durante un año es 1000,00 al mes. Nada se sube.",
     "titleReadCron": "Cómo leer una expresión cron | cv.cm",
-    "descReadCron": "Cinco campos: minuto, hora, día del mes, mes, día de la semana. 0 9 * * 1 es el lunes a las 09:00. El domingo es 0 y 7. MON y seis campos fallan. Nada se sube."
+    "descReadCron": "Cinco campos: minuto, hora, día del mes, mes, día de la semana. 0 9 * * 1 es el lunes a las 09:00. El domingo es 0 y 7. MON y seis campos fallan. Nada se sube.",
+    "titleMosaic": "Pixelar foto online — oculta DNI, caras y matrículas — cv.cm",
+    "descMosaic": "Pixela o tapa en negro partes de una foto o captura en el navegador. Arrastra una caja sobre un DNI, teléfono, cara, matrícula o código QR. También añade marca de agua. Sin subir, sin registro.",
+    "titleMosaicPhoto": "Cómo pixelar una foto: oculta DNI, caras y matrículas | cv.cm",
+    "descMosaicPhoto": "Tapa números en negro, pixela caras y revisa al 100% antes de compartir. Gratis en el navegador, sin subir nada.",
+    "titleWatermarkIdCopy": "Cómo poner marca de agua a una copia del DNI (uso + fecha) | cv.cm",
+    "descWatermarkIdCopy": "Escribe destinatario y fin, repítelo en diagonal con la fecha de hoy y tapa en negro lo innecesario. En el navegador, sin subir nada."
   },
   "brand": "cv.cm",
   "nav": {
@@ -711,6 +717,10 @@
     "stocks": {
       "name": "Aritmética de acciones",
       "blurb": "Capitalización, PER y dividendo. No se sube nada."
+    },
+    "mosaic": {
+      "name": "Pixelar foto",
+      "blurb": "Pixela o tapa en negro números de DNI, caras y matrículas. Sin subir nada."
     }
   },
   "watermark": {
@@ -771,7 +781,25 @@
     "hintMark": "En un DNI, tesela “solo para [org]”. En una foto de tienda, un nombre o logo.",
     "errorDecode": "El navegador no pudo leer esta imagen.",
     "errorHuge": "La imagen es muy grande; al exportar puede reducirse.",
-    "emptyDownload": "Añade una imagen primero."
+    "emptyDownload": "Añade una imagen primero.",
+    "brand": "SafeMark",
+    "brandTagline": "Marca de agua y censura de copias de DNI en tu dispositivo",
+    "sample": "Probar con un DNI de ejemplo",
+    "switchWatermark": "Marca de agua",
+    "switchMosaic": "Pixelar",
+    "redactTitle": "Censurar",
+    "redactDraw": "Dibuja cajas en la vista previa",
+    "redactMosaic": "Pixelado",
+    "redactBlack": "Caja negra",
+    "redactStrength": "Tamaño del pixelado",
+    "redactUndo": "Deshacer",
+    "redactClear": "Borrar cajas",
+    "redactCount": "{n} cajas",
+    "redactNone": "Sin cajas",
+    "redactOn": "Arrastra en la vista previa para tapar un número, una cara o una matrícula.",
+    "redactTip": "Usa caja negra para números de DNI, tarjetas y códigos QR. Un pixelado fino a veces se puede adivinar.",
+    "collageOptional": "Unir en una imagen (opcional)",
+    "redactCollage": "En modo collage no se dibujan cajas. Vuelve a Una foto para censurar cada imagen; la censura pasa al collage."
   },
   "collage": {
     "title": "Creador de collages de fotos",
@@ -1814,6 +1842,30 @@
         "a4": "Esta página quiere exactamente cinco campos. No hay un campo de segundos. El minuto 60 también falla, porque los minutos terminan en 59.",
         "q5": "¿Se sube la expresión?",
         "a5": "No. Al cerrar la pestaña se pierde. La página no ejecuta el horario."
+      },
+      "mosaic-photo": {
+        "q1": "¿Cómo pixelo parte de una foto sin una app?",
+        "a1": "Abre Pixelar en cv.cm, suelta la foto, arrastra una caja y descarga. Funciona en el navegador; no se sube nada.",
+        "q2": "¿Basta un pixelado para ocultar un DNI?",
+        "a2": "No siempre. Un pixelado fino puede dejar dígitos legibles. Usa caja negra para números y códigos QR.",
+        "q3": "¿Alguien puede quitar el pixelado?",
+        "a3": "No en tu exportación: los píxeles tapados se reemplazan, no se superponen.",
+        "q4": "¿Puedo ocultar caras en una foto de grupo?",
+        "a4": "Sí. Una caja por cara. Cada foto guarda sus cajas.",
+        "q5": "¿Se sube mi foto?",
+        "a5": "No. Al cerrar la pestaña se descarta."
+      },
+      "watermark-id-copy": {
+        "q1": "¿Qué escribo en la marca de agua de una copia del DNI?",
+        "a1": "Para quién, para qué y la fecha, por ejemplo “Solo para abrir cuenta en el Banco XX. No válido para otro uso. 2026-10-08”.",
+        "q2": "¿La marca debe cubrir la foto?",
+        "a2": "Sí. Repítela en diagonal para que cruce la foto; una marca en la esquina se recorta fácil.",
+        "q3": "¿Sigue siendo válida una copia con marca?",
+        "a3": "La marca disuade el mal uso, pero no es una garantía legal. Algunas ventanillas exigen copia sin marca; pregunta antes.",
+        "q4": "¿Se sube mi DNI?",
+        "a4": "No. Se queda en esta pestaña y se descarta al cerrarla. La exportación también quita el EXIF.",
+        "q5": "¿Puedo ocultar también el número?",
+        "a5": "Sí. En Censurar, usa caja negra en los campos que no te pidieron."
       }
     },
     "compress-pdf": {
@@ -2755,6 +2807,18 @@
       "a4": "Se abre. El toque cuenta como el ratón. Los juegos que necesitan pasar el cursor o el teclado van mejor en un ordenador.",
       "q5": "¿Puedo descargar aquí juegos Flash clásicos?",
       "a5": "No. Usa un SWF que ya tengas. cv.cm solo alojará un SWF si su licencia permite redistribuirlo."
+    },
+    "mosaic": {
+      "q1": "¿Pixelar sube mi foto?",
+      "a1": "No. La foto se queda en esta pestaña y el lienzo reemplaza los píxeles aquí. Al cerrar se descarta. La exportación también quita el EXIF.",
+      "q2": "¿Pixelado o caja negra?",
+      "a2": "Caja negra para números de DNI, tarjetas y códigos QR: un pixelado fino a veces se puede adivinar. Para caras y fondos, el pixelado se ve más natural.",
+      "q3": "¿Puedo censurar una captura de chat?",
+      "a3": "Sí. Arrastra sobre avatares, nombres y teléfonos; Deshacer quita la última caja. Con varias fotos, cada una guarda sus cajas y puedes bajar un ZIP.",
+      "q4": "¿Puedo añadir marca de agua después?",
+      "a4": "Sí. En la misma página añade “Solo para …”. Primero se censura y luego va la marca encima.",
+      "q5": "¿Puede quitar un pixelado?",
+      "a5": "No. Solo tapa; no recupera lo que otra persona censuró. En tu exportación los píxeles tapados quedan reemplazados."
     }
   },
   "qr": {
@@ -3213,8 +3277,8 @@
       "s5b": "JPEG pesa menos para anuncios. PNG si la marca tiene fondo transparente.",
       "s6t": "Ábralo al 100%",
       "s6b": "Si desaparece en una foto ocupada, suba el contraste o tesélela. Si tapa el producto, baje la opacidad.",
-      "diagram1": "Una esquina frente a un mosaico en diagonal. Los anuncios suelen teselar.",
-      "diagram2": "Opacidad bastante para leerse, bastante baja para ver el producto."
+      "diagram1": "Izquierda: una marca en la esquina, fácil de recortar. Derecha: diagonal repetida, difícil de quitar.",
+      "diagram2": "Opacidad de baja a alta: la izquierda desaparece, la derecha tapa el producto. Busca el punto medio."
     },
     "remove-exif": {
       "name": "Cómo quitar EXIF y la ubicación de una foto",
@@ -4117,6 +4181,50 @@
       "s6b": "La línea está en inglés: minute, hour, day-of-month y nombres como monday. Cuando el día del mes y el día de la semana están ambos limitados, esta página sigue nombrando los dos. No elige entre ellos y no ejecuta nada.",
       "diagram1": "Cinco campos: minuto, hora, día del mes, mes, día de la semana. 0 9 * * 1 es el lunes a las 09:00.",
       "diagram2": "El domingo es 0 y 7. MON falla. Seis campos fallan."
+    },
+    "mosaic-photo": {
+      "name": "Cómo pixelar parte de una foto",
+      "blurb": "Tapa en negro los números, pixela caras, revisa al 100% y luego comparte.",
+      "title": "Cómo pixelar parte de una foto",
+      "lead": "Una foto o captura suele mostrar más de lo que querías: un número de tarjeta, una cara, una matrícula. Los taparás en esta pestaña y revisarás la copia antes de enviarla.",
+      "result": "Una copia con las partes privadas reemplazadas. El original sigue en el disco.",
+      "note": "Esto tapa zonas de tu propia copia; no deshace el pixelado de otra persona. No se sube nada.",
+      "s1t": "Haz la lista de lo que debe desaparecer",
+      "s1b": "Números de DNI y tarjetas, códigos QR, teléfonos, direcciones, matrículas y caras de quien no aceptó salir.",
+      "s2t": "Abre Pixelar en cv.cm",
+      "s2b": "Todo ocurre en esta pestaña. Puedes usar varias fotos; cada una guarda sus cajas.",
+      "s3t": "Suelta la foto o la captura",
+      "s3b": "Conserva el original. Estás haciendo una copia.",
+      "s4t": "Caja negra para números, pixelado para caras",
+      "s4b": "Un pixelado fino puede dejar dígitos legibles. Usa caja negra para todo lo que alguien pueda volver a teclear, un poco más grande que el texto.",
+      "s5t": "Arrastra una caja sobre cada cosa",
+      "s5b": "Deshacer quita la última caja. Si es una copia de DNI, añade también la marca “Solo para …”.",
+      "s6t": "Descarga y revisa al 100%",
+      "s6b": "Amplía cada caja. Si aún se adivina un dígito, cámbialo a caja negra y exporta de nuevo.",
+      "diagram1": "Arriba: pixelado fino, los dígitos se leen. En medio: pixelado grueso. Abajo: caja negra, lo más seguro para números.",
+      "diagram2": "Izquierda: original. Derecha: la cara tapada con pixelado grueso."
+    },
+    "watermark-id-copy": {
+      "name": "Cómo poner marca de agua a una copia del DNI antes de enviarla",
+      "blurb": "Escribe para quién, para qué y la fecha; repítelo en diagonal y tapa lo que no necesitan.",
+      "title": "Cómo poner marca de agua a una copia del DNI antes de enviarla",
+      "lead": "A veces no queda otra que enviar una foto del DNI. Una línea de uso repetida en diagonal con la fecha hace que una copia filtrada sirva de muy poco. La añadirás en esta pestaña.",
+      "result": "Una copia del DNI válida para un destinatario, un fin y una fecha.",
+      "note": "La marca reduce el mal uso; no es una garantía legal. Algunas oficinas exigen una copia sin marca, así que pregunta antes. No se sube nada.",
+      "s1t": "Pregunta qué necesitan",
+      "s1b": "Si solo necesitan nombre y foto, puedes tapar el número y la dirección.",
+      "s2t": "Abre Marca de agua en cv.cm",
+      "s2b": "Todo ocurre en esta pestaña. Anverso y reverso pueden ir juntos.",
+      "s3t": "Suelta la foto del DNI",
+      "s3b": "Fotografíalo plano y con luz uniforme. Conserva el original.",
+      "s4t": "Pulsa el preset Solo para y escribe el fin",
+      "s4b": "Cambia [ORG] por el destinatario y el fin, por ejemplo “solo para abrir cuenta bancaria”. Mantén la fecha de hoy. La línea se repite por toda la tarjeta, foto incluida.",
+      "s5t": "Tapa lo que no necesitan",
+      "s5b": "Abre Censurar, elige Caja negra y arrastra sobre los campos que no pidieron.",
+      "s6t": "Descarga, revisa al 100% y envía",
+      "s6b": "La marca debe cruzar la foto y leerse, y el nombre seguir legible. La exportación quita la ubicación EXIF.",
+      "diagram1": "Fin y fecha repetidos en toda la tarjeta; el número, tapado en negro.",
+      "diagram2": "El pixelado fino deja leer los dígitos; la caja negra no."
     }
   },
   "compressPdf": {
@@ -5500,5 +5608,9 @@
     "compound": "Interés compuesto",
     "percent": "Porcentaje",
     "privacyNote": "Escribes el precio y el número de acciones. No se sube nada y no se consulta una cotización."
+  },
+  "mosaic": {
+    "title": "Pixela o tapa en negro partes de una foto",
+    "privacyNote": "Fotos y capturas se quedan en esta pestaña. La exportación quita el EXIF. Al cerrar la página se descartan."
   }
 }

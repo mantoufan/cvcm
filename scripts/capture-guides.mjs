@@ -23,6 +23,7 @@ const STEPS = {
   qr: 3,
   barcode: 3,
   watermark: 4,
+  mosaic: 3,
   collage: 4,
   "portrait-sim": 4,
   resize: 3,
@@ -475,13 +476,45 @@ async function runTool(send, id, fx) {
   if (id === "watermark") {
     await snap(1);
     await setFiles(send, "#file-input", [fx.photo]);
-    await waitFor(send, `!!document.querySelector("canvas, .file-list li")`);
+    await waitFor(send, `!!document.querySelector(".file-list li img")`);
     await sleep(500);
     await snap(2);
-    await evalValue(send, fillExpr("#wm-text", "cv.cm"));
+    await clickSel(send, '[data-preset="identity"]');
     await sleep(400);
     await snap(3);
+    await evalValue(send, `(() => { document.querySelector("#wm-download")?.scrollIntoView({ block: "center" }); return true; })()`);
+    await sleep(300);
     await snap(4);
+    return;
+  }
+
+  if (id === "mosaic") {
+    await evalValue(send, `(() => { document.querySelector(".rail-h .link")?.click(); const ta = document.querySelector("#wm-text"); if (ta) { ta.value = ""; ta.dispatchEvent(new Event("input", { bubbles: true })); } return true; })()`);
+    await sleep(300);
+    await snap(1);
+    await clickSel(send, ".wm-sample");
+    await waitFor(send, `!!document.querySelector(".file-list li img")`);
+    await sleep(500);
+    await snap(2);
+    const box = await evalValue(send, `(() => {
+      const r = document.querySelector("canvas.preview").getBoundingClientRect();
+      return { x: r.left, y: r.top, w: r.width, h: r.height };
+    })()`);
+    const drag = async (x1, y1, x2, y2) => {
+      const at = (fx, fy) => ({ x: box.x + box.w * fx, y: box.y + box.h * fy });
+      const a = at(x1, y1);
+      const b = at(x2, y2);
+      await send("Input.dispatchMouseEvent", { type: "mousePressed", ...a, button: "left", clickCount: 1 });
+      await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...b, button: "left" });
+      await send("Input.dispatchMouseEvent", { type: "mouseReleased", ...b, button: "left", clickCount: 1 });
+    };
+    await clickSel(send, '[data-redact="black"]');
+    await drag(0.15, 0.79, 0.9, 0.92);
+    await clickSel(send, '[data-redact="mosaic"]');
+    await drag(0.67, 0.18, 0.94, 0.72);
+    await waitFor(send, `/^2\\b/.test(document.getElementById("wm-redact-count")?.textContent || "")`);
+    await sleep(400);
+    await snap(3);
     return;
   }
 

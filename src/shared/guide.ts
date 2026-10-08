@@ -26,6 +26,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   qr: 3,
   barcode: 3,
   watermark: 4,
+  mosaic: 3,
   collage: 4,
   "portrait-sim": 4,
   resize: 3,

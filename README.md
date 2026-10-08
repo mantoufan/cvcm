@@ -7,7 +7,8 @@ Browser tools plus a tiny cloud clipboard.
 ## Tools
 
 - **Cloud clipboard** / 云剪切板 — text, images, video, files. Markdown / HTML / code. Gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
-- **Image watermark** / 图片水印 — text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/)
+- **SafeMark watermark** / 安心水印 — tile a for-use-only line with the date on ID copies, text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/) · [中文](https://cv.cm/zh-cn/watermark/)
+- **SafeMark mosaic** / 图片打马赛克 — drag boxes to pixelate faces or black out ID numbers, plates, QR codes. [Open](https://cv.cm/en/mosaic/) · [中文](https://cv.cm/zh-cn/mosaic/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)
@@ -132,6 +133,8 @@ Illustrated how-tos that finish in the browser: QR and barcode, merge / compress
 - [How to rotate or flip a photo](https://cv.cm/en/learn/rotate-photo/)
 - [How to resize or compress an image](https://cv.cm/en/learn/resize-image/)
 - [How to add a watermark](https://cv.cm/en/learn/add-watermark/)
+- [How to watermark an ID copy](https://cv.cm/en/learn/watermark-id-copy/)
+- [How to pixelate part of a photo](https://cv.cm/en/learn/mosaic-photo/)
 - [How to remove EXIF / location](https://cv.cm/en/learn/remove-exif/)
 - [How to make a photo collage](https://cv.cm/en/learn/make-collage/)
 - [How to make a meme](https://cv.cm/en/learn/make-meme/)

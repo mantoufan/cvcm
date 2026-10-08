@@ -3,7 +3,7 @@
     "title": "cv.cm — papan klip, gambar, dan PDF",
     "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
-    "titleWatermark": "Tambah watermark ke foto — salinan KTP di tab ini — cv.cm",
+    "titleWatermark": "Watermark fotokopi KTP & foto — gratis, tanpa unggah — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Alat peramban di perangkat. Gambar dan PDF tetap di tab ini.",
     "titleConvert": "Konverter gambar — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Ubah MP3, M4A, OGG, AAC, FLAC ke WAV di browser. Pilih 44,1 / 48 kHz. Tanpa unggah.",
     "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
-    "descWatermark": "Cap foto atau salinan identitas di browser. Ubin teks “hanya untuk”. Ekspor massal PNG, JPEG, atau ZIP. Hapus EXIF. Tanpa unggah.",
+    "descWatermark": "Beri watermark foto dan fotokopi KTP di browser. Ulangi miring “Hanya untuk …” beserta tanggal, sensor NIK, ekspor PNG, JPEG, atau ZIP sekaligus. EXIF dihapus. File tidak keluar dari tab.",
     "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
     "titleQr": "Pembuat kode QR gratis — cv.cm",
     "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
@@ -329,7 +329,13 @@
     "titleLoanPayment": "Cara hitung cicilan | cv.cm",
     "descLoanPayment": "10000 pada 12% selama satu tahun adalah 888,49 sebulan. Bunga 661,85, bukan 1200. 12000 pada 0% selama satu tahun adalah 1000,00 sebulan. Tidak diunggah.",
     "titleReadCron": "Cara baca ekspresi cron | cv.cm",
-    "descReadCron": "Lima ruas: menit, jam, hari, bulan, hari dalam pekan. 0 9 * * 1 adalah Senin pukul 09:00. Minggu adalah 0 dan 7. MON dan enam ruas gagal. Tidak diunggah."
+    "descReadCron": "Lima ruas: menit, jam, hari, bulan, hari dalam pekan. 0 9 * * 1 adalah Senin pukul 09:00. Minggu adalah 0 dan 7. MON dan enam ruas gagal. Tidak diunggah.",
+    "titleMosaic": "Mosaik foto online — sensor NIK, wajah, pelat — cv.cm",
+    "descMosaic": "Mosaik atau tutup hitam bagian foto dan tangkapan layar di browser. Tarik kotak di atas NIK, nomor HP, wajah, pelat, atau kode QR. Bisa tambah watermark. Tanpa unggah, tanpa daftar.",
+    "titleMosaicPhoto": "Cara mosaik foto: sensor NIK, wajah, pelat | cv.cm",
+    "descMosaicPhoto": "Tutup hitam nomor, mosaik wajah, cek di 100% sebelum dibagikan. Gratis di browser, tanpa unggah.",
+    "titleWatermarkIdCopy": "Cara watermark fotokopi KTP (tujuan + tanggal) | cv.cm",
+    "descWatermarkIdCopy": "Tulis penerima dan tujuan, ulangi miring dengan tanggal hari ini di seluruh kartu, tutup hitam kolom yang tidak perlu. Di browser, tanpa unggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -711,6 +717,10 @@
     "stocks": {
       "name": "Hitungan saham",
       "blurb": "Kapitalisasi, P/E, dan imbal dividen. Tidak diunggah."
+    },
+    "mosaic": {
+      "name": "Mosaik foto",
+      "blurb": "Sensor nomor KTP, wajah, dan pelat dengan mosaik atau kotak hitam. Tanpa unggah."
     }
   },
   "watermark": {
@@ -771,7 +781,25 @@
     "hintMark": "Identitas: ubin “hanya untuk”. Foto toko: nama atau logo.",
     "errorDecode": "Browser tidak bisa membaca gambar ini.",
     "errorHuge": "Gambar sangat besar; ekspor mungkin diperkecil.",
-    "emptyDownload": "Tambah gambar dulu."
+    "emptyDownload": "Tambah gambar dulu.",
+    "brand": "SafeMark",
+    "brandTagline": "Watermark & sensor fotokopi KTP di perangkat Anda",
+    "sample": "Coba KTP contoh",
+    "switchWatermark": "Watermark",
+    "switchMosaic": "Mosaik",
+    "redactTitle": "Sensor",
+    "redactDraw": "Tarik kotak di pratinjau",
+    "redactMosaic": "Mosaik",
+    "redactBlack": "Kotak hitam",
+    "redactStrength": "Ukuran kotak mosaik",
+    "redactUndo": "Urungkan",
+    "redactClear": "Hapus kotak",
+    "redactCount": "{n} kotak",
+    "redactNone": "Belum ada kotak",
+    "redactOn": "Tarik di pratinjau untuk menutup nomor, wajah, atau pelat.",
+    "redactTip": "Pakai kotak hitam untuk NIK, nomor kartu, dan kode QR. Mosaik halus kadang bisa ditebak.",
+    "collageOptional": "Gabung jadi satu gambar (opsional)",
+    "redactCollage": "Mode kolase tidak bisa menggambar kotak. Kembali ke Satu foto untuk menyensor tiap foto; sensornya ikut ke kolase."
   },
   "collage": {
     "title": "Pembuat kolase foto",
@@ -1814,6 +1842,30 @@
         "a4": "Halaman ini meminta tepat lima ruas. Tidak ada ruas detik. Menit 60 juga gagal, karena menit berhenti di 59.",
         "q5": "Apakah ekspresinya diunggah?",
         "a5": "Tidak. Tutup tab, hilang. Halaman tidak menjalankan jadwal."
+      },
+      "mosaic-photo": {
+        "q1": "Bagaimana memberi mosaik foto tanpa aplikasi?",
+        "a1": "Buka mosaik cv.cm, masukkan foto, tarik kotak, unduh. Berjalan di browser, tanpa unggah.",
+        "q2": "Apakah mosaik cukup untuk menutup NIK?",
+        "a2": "Tidak selalu. Mosaik halus bisa meninggalkan angka terbaca. Pakai kotak hitam untuk nomor dan kode QR.",
+        "q3": "Bisakah mosaik dibuka orang lain?",
+        "a3": "Tidak dari hasil ekspor Anda: piksel yang ditutup sudah diganti, bukan ditumpuk.",
+        "q4": "Bisa menutup beberapa wajah di foto grup?",
+        "a4": "Bisa. Satu kotak per wajah. Tiap foto menyimpan kotaknya.",
+        "q5": "Apakah foto diunggah?",
+        "a5": "Tidak. Menutup tab membuangnya."
+      },
+      "watermark-id-copy": {
+        "q1": "Apa yang ditulis di watermark fotokopi KTP?",
+        "a1": "Untuk siapa, untuk apa, dan tanggal, misalnya “Hanya untuk buka rekening Bank XX, tidak berlaku untuk hal lain, 2026-10-08”.",
+        "q2": "Apakah watermark harus menutupi pasfoto?",
+        "a2": "Ya. Ulangi miring agar melintasi pasfoto; tanda di pojok mudah dipotong.",
+        "q3": "Apakah fotokopi ber-watermark masih sah?",
+        "a3": "Watermark mencegah penyalahgunaan tetapi bukan jaminan hukum. Beberapa loket minta salinan tanpa watermark; tanyakan dulu.",
+        "q4": "Apakah KTP saya diunggah?",
+        "a4": "Tidak. Tetap di tab ini dan hilang saat ditutup. Ekspor juga menghapus EXIF.",
+        "q5": "Bisa sekalian menutup NIK?",
+        "a5": "Bisa. Di Sensor, pakai kotak hitam pada kolom yang tidak diminta."
       }
     },
     "compress-pdf": {
@@ -2755,6 +2807,18 @@
       "a4": "Bisa dibuka. Sentuhan dihitung sebagai mouse. Game yang butuh hover atau keyboard lebih enak di komputer.",
       "q5": "Bisa mengunduh game Flash klasik di sini?",
       "a5": "Tidak. Pakai SWF yang sudah Anda punya. cv.cm hanya menyimpan SWF jika lisensinya mengizinkan sebar ulang."
+    },
+    "mosaic": {
+      "q1": "Apakah mosaik mengunggah foto?",
+      "a1": "Tidak. Foto tetap di tab ini; kanvas mengganti piksel di sini. Tutup tab, file hilang. Ekspor juga menghapus EXIF.",
+      "q2": "Mosaik atau kotak hitam?",
+      "a2": "Kotak hitam untuk NIK, nomor kartu, dan kode QR. Mosaik halus kadang bisa ditebak. Untuk wajah dan latar, mosaik lebih natural.",
+      "q3": "Bisa sensor tangkapan layar chat?",
+      "a3": "Bisa. Tarik kotak di atas foto profil, nama, dan nomor HP; Urungkan menghapus kotak terakhir. Banyak foto? Tiap foto menyimpan kotaknya dan bisa diunduh ZIP.",
+      "q4": "Bisa tambah watermark setelah sensor?",
+      "a4": "Bisa. Di halaman yang sama, tambah “Hanya untuk …”. Sensor dulu, lalu watermark di atasnya.",
+      "q5": "Bisa menghapus mosaik?",
+      "a5": "Tidak. Alat ini hanya menutup, tidak memulihkan sensor orang lain. Di hasil ekspor, piksel yang ditutup sudah diganti."
     }
   },
   "qr": {
@@ -3213,8 +3277,8 @@
       "s5b": "Listing: JPEG lebih kecil. Tanda berlatar tembus: PNG.",
       "s6t": "Buka di 100%",
       "s6b": "Hilang di foto ramai: naikkan kontras atau ubin. Menutupi barang: turunkan opacity.",
-      "diagram1": "Satu sudut vs ubin diagonal. Listing toko sering ubin.",
-      "diagram2": "Cukup terbaca, cukup rendah agar barang kelihatan."
+      "diagram1": "Kiri: satu tanda di pojok, mudah dipotong. Kanan: miring berulang, sulit dihapus.",
+      "diagram2": "Opasitas rendah ke tinggi: kiri nyaris hilang, kanan menutupi produk. Pilih tengah."
     },
     "remove-exif": {
       "name": "Cara hapus EXIF / lokasi dari foto",
@@ -4117,6 +4181,50 @@
       "s6b": "Baris itu dalam bahasa Inggris: minute, hour, day-of-month, dan nama seperti monday. Saat hari dalam bulan dan hari dalam pekan sama-sama dibatasi, halaman ini tetap menamai keduanya. Tidak memilih salah satu, dan tidak menjalankan apa pun.",
       "diagram1": "Lima ruas: menit, jam, hari, bulan, hari dalam pekan. 0 9 * * 1 adalah Senin pukul 09:00.",
       "diagram2": "Minggu adalah 0 dan 7. MON gagal. Enam ruas gagal."
+    },
+    "mosaic-photo": {
+      "name": "Cara memberi mosaik pada sebagian foto",
+      "blurb": "Tutup hitam nomor, mosaik wajah, cek di 100%, baru bagikan.",
+      "title": "Cara memberi mosaik pada sebagian foto",
+      "lead": "Foto atau tangkapan layar sering menampilkan lebih dari yang ingin Anda bagikan: nomor kartu, wajah, pelat. Anda akan menutupinya di tab ini dan mengecek salinannya sebelum dikirim.",
+      "result": "Salinan dengan bagian pribadi yang sudah diganti. Foto asli tetap di disk.",
+      "note": "Ini menutup area di salinan Anda sendiri, tidak bisa membuka mosaik orang lain. Tanpa unggah.",
+      "s1t": "Catat yang harus ditutup",
+      "s1b": "NIK dan nomor kartu, kode QR, nomor HP, alamat, pelat, dan wajah orang yang tidak setuju ditampilkan.",
+      "s2t": "Buka mosaik di cv.cm",
+      "s2b": "Semua proses di tab ini. Boleh banyak foto; tiap foto menyimpan kotaknya sendiri.",
+      "s3t": "Masukkan foto atau tangkapan layar",
+      "s3b": "Simpan aslinya. Anda membuat salinan.",
+      "s4t": "Kotak hitam untuk nomor, mosaik untuk wajah",
+      "s4b": "Mosaik halus bisa meninggalkan angka yang terbaca. Pakai kotak hitam untuk apa pun yang bisa diketik ulang, sedikit lebih besar dari teksnya.",
+      "s5t": "Tarik kotak di tiap bagian",
+      "s5b": "Urungkan menghapus kotak terakhir. Untuk fotokopi KTP, tambahkan juga watermark “Hanya untuk …”.",
+      "s6t": "Unduh dan cek di 100%",
+      "s6b": "Perbesar tiap kotak. Kalau satu angka masih bisa ditebak, ganti jadi kotak hitam dan ekspor ulang.",
+      "diagram1": "Atas: mosaik halus, angka masih terbaca. Tengah: mosaik kasar. Bawah: kotak hitam, paling aman untuk nomor.",
+      "diagram2": "Kiri: asli. Kanan: wajah ditutup mosaik kasar."
+    },
+    "watermark-id-copy": {
+      "name": "Cara memberi watermark fotokopi KTP sebelum dikirim",
+      "blurb": "Tulis untuk siapa, untuk apa, tanggal berapa; ulangi miring dan tutup yang tidak perlu.",
+      "title": "Cara memberi watermark fotokopi KTP sebelum dikirim",
+      "lead": "Kadang mengirim foto KTP tak terhindarkan. Baris tujuan berulang miring dengan tanggal membuat salinan yang bocor jauh lebih sulit disalahgunakan. Anda menambahkannya di tab ini.",
+      "result": "Salinan KTP yang hanya berlaku untuk satu penerima, satu tujuan, satu tanggal.",
+      "note": "Watermark mengurangi penyalahgunaan, bukan jaminan hukum. Beberapa loket tetap minta salinan tanpa watermark, jadi tanyakan dulu. Tanpa unggah.",
+      "s1t": "Tanyakan apa yang mereka perlukan",
+      "s1b": "Jika hanya perlu nama dan foto, Anda bisa menutup NIK dan alamat.",
+      "s2t": "Buka watermark di cv.cm",
+      "s2b": "Semua proses di tab ini. Depan dan belakang bisa sekaligus.",
+      "s3t": "Masukkan foto KTP",
+      "s3b": "Foto rata dengan cahaya merata. Simpan aslinya.",
+      "s4t": "Tekan preset Hanya untuk dan tulis tujuannya",
+      "s4b": "Ganti [ORG] dengan penerima dan tujuan, misalnya “hanya untuk buka rekening bank”. Pertahankan tanggal hari ini. Baris itu berulang di seluruh kartu, termasuk pasfoto.",
+      "s5t": "Tutup yang tidak diperlukan",
+      "s5b": "Buka Sensor, pilih Kotak hitam, tarik di kolom yang tidak diminta.",
+      "s6t": "Unduh, cek di 100%, kirim",
+      "s6b": "Watermark harus melintasi pasfoto dan terbaca, nama tetap jelas. Ekspor menghapus lokasi EXIF.",
+      "diagram1": "Tujuan dan tanggal berulang di seluruh kartu; nomor ditutup hitam.",
+      "diagram2": "Mosaik halus masih menampakkan angka; kotak hitam tidak."
     }
   },
   "compressPdf": {
@@ -5500,5 +5608,9 @@
     "compound": "Bunga majemuk",
     "percent": "Persen",
     "privacyNote": "Anda mengetik harga dan jumlah saham. Tidak diunggah dan tidak mencari kuotasi."
+  },
+  "mosaic": {
+    "title": "Mosaik atau tutup hitam bagian foto",
+    "privacyNote": "Foto dan tangkapan layar tetap di tab ini. Ekspor menghapus EXIF. Menutup halaman membuangnya."
   }
 }
