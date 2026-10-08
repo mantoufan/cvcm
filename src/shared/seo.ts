@@ -656,7 +656,7 @@ export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, 
 }
 
 const IMAGE_TOOLS = new Set<ToolId>(CATEGORIES.find((c) => c.id === "image")!.tools);
-/** Tools sold under their own name (watermark + mosaic share the SafeMark brand). */
+/** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
 
 export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
