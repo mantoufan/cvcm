@@ -410,6 +410,7 @@ export function tileSrcset(src: string): string | undefined {
 
 /** Original cover path for a /thumbs/ URL, so a missing thumbnail can fall back to it. */
 export function thumbOriginal(pathname: string): string | null {
-  const m = /^\/thumbs\/(?:160|640|960)\/([A-Za-z0-9._/-]+?\.(?:jpe?g|png))(?:\.v\d+)?\.webp$/.exec(pathname);
-  return m && !m[1].includes("..") ? `/covers/${m[1]}` : null;
+  const m = /^\/thumbs\/(?:160|640|960)\/([A-Za-z0-9._/-]+?\.(?:jpe?g|png))(?:\.v(\d+))?\.webp$/.exec(pathname);
+  if (!m || m[1].includes("..")) return null;
+  return `/covers/${m[1]}${m[2] ? `?v=${m[2]}` : ""}`;
 }

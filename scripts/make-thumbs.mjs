@@ -1,33 +1,53 @@
 // Writes small WebP copies of the covers listed in src/shared/covers.ts to dist/thumbs/,
 // at the URLs thumbSrc() builds. Menus and tiles show these instead of the 1280×720 originals.
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+// Production serves /covers/ from S3 first, so S3 is the source of truth: the git copy is used
+// when it matches S3's size, otherwise (missing or out of date locally) the S3 file is fetched.
+import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { THUMB_WIDTHS, coverRefs, thumbFile } from "./thumbs-lib.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const WIDTHS = [160, 640, 960];
-const COVER = /"(\/covers\/[A-Za-z0-9._/-]+\.(?:jpe?g|png))(?:\?v=(\d+))?"/g;
+const S3 = "https://s3.cv.cm/files";
+const refs = coverRefs(readFileSync(resolve(root, "src/shared/covers.ts"), "utf8"));
 
-const source = readFileSync(resolve(root, "src/shared/covers.ts"), "utf8");
-const covers = new Map();
-for (const [, path, v] of source.matchAll(COVER)) covers.set(`${path}?v=${v ?? ""}`, { path, v });
-
-let made = 0;
-let missing = 0;
-await Promise.all([...covers.values()].map(async ({ path, v }) => {
+async function source(path) {
   const file = resolve(root, "public", path.slice(1));
-  // Covers that live only on S3 have no local copy; the Worker sends those thumb URLs to the original.
-  if (!existsSync(file)) {
-    missing++;
-    return;
+  const local = existsSync(file) ? statSync(file).size : -1;
+  let remote = -1;
+  try {
+    const head = await fetch(`${S3}${path}`, { method: "HEAD" });
+    if (head.ok) remote = Number(head.headers.get("content-length") ?? -1);
+  } catch {
+    /* offline build: fall back to the git copy */
   }
-  const rest = path.slice("/covers/".length);
-  for (const width of WIDTHS) {
-    const out = resolve(root, "dist/thumbs", String(width), `${rest}${v ? `.v${v}` : ""}.webp`);
-    mkdirSync(dirname(out), { recursive: true });
-    await sharp(file).resize({ width, withoutEnlargement: true }).webp({ quality: width <= 160 ? 70 : 78 }).toFile(out);
-    made++;
+  if (local >= 0 && (remote < 0 || remote === local)) return { input: file, from: "git" };
+  if (remote < 0) return null;
+  const res = await fetch(`${S3}${path}`);
+  if (!res.ok) return null;
+  return { input: Buffer.from(await res.arrayBuffer()), from: "s3" };
+}
+
+const counts = { git: 0, s3: 0, skipped: [] };
+const queue = [...refs];
+async function worker() {
+  for (let ref = queue.shift(); ref; ref = queue.shift()) {
+    const src = await source(ref.path);
+    if (!src) {
+      counts.skipped.push(ref.path);
+      continue;
+    }
+    counts[src.from]++;
+    const image = sharp(src.input);
+    for (const width of THUMB_WIDTHS) {
+      const out = resolve(root, "dist", thumbFile(ref.path, ref.v, width).slice(1));
+      mkdirSync(dirname(out), { recursive: true });
+      await image.clone().resize({ width, withoutEnlargement: true }).webp({ quality: width <= 160 ? 70 : 78 }).toFile(out);
+    }
   }
-}));
-console.log(`wrote ${made} thumbs for ${covers.size - missing} covers (${missing} without a local copy)`);
+}
+await Promise.all(Array.from({ length: 12 }, worker));
+console.log(`thumbs: ${refs.length} covers (${counts.git} from git, ${counts.s3} from S3)`);
+// The Worker redirects these thumb URLs to the original cover.
+if (counts.skipped.length) console.warn(`thumbs: no source for ${counts.skipped.join(", ")}`);

@@ -3,6 +3,12 @@
 import { readFileSync } from "node:fs";
 
 export const NAMES_SUFFIX = ".json?names";
+export const NAMES_FILTER = /\.json\?names$/;
+
+/** JSON file behind a `…/<locale>.json?names` specifier. */
+export function namesJsonPath(specifier) {
+  return specifier.slice(0, -"?names".length);
+}
 
 export function gameNamesSource(jsonFile) {
   const names = {};
