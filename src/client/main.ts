@@ -106,7 +106,7 @@ import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
 import type { MarketId } from "../shared/markets";
 import { GAME_CONSOLES, GAMES } from "../shared/games";
 import { gameCopy } from "../shared/games-i18n";
-import { hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
+import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
 import "./styles.css";
@@ -481,6 +481,10 @@ export function render(): void {
           ? COVER[tool]
           : null;
   upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
+  upsertMeta("name", "twitter:title", pageTitle(loc, seo));
+  upsertMeta("name", "twitter:description", pageDescription(loc, seo));
+  upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
+  syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
   syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole);
 
   const root = appEl();
@@ -847,4 +851,12 @@ function langSwitch(current: Locale): HTMLElement {
     );
   }
   return sel;
+}
+
+/** SafeMark pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
+function syncBrandIcon(branded: boolean): void {
+  const icon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+  icon?.setAttribute("href", branded ? "/brand/safemark.svg" : "/favicon.svg?v=2");
+  const touch = document.querySelector('link[rel="apple-touch-icon"]');
+  touch?.setAttribute("href", branded ? "/brand/safemark-180.png" : "/favicon.svg?v=2");
 }

@@ -975,7 +975,8 @@ function collageSlots() {
   const maxSide = Math.max(aspect.w, aspect.h);
   return state.items.slice(0, slots).map((item) => {
     if (!item.bitmap) return null;
-    const scale = Math.min(1, maxSide / Math.max(item.width, item.height));
+    // Bound by the short side: a "cover" cell can fill the whole collage with it, so it must not be upscaled.
+    const scale = Math.min(1, maxSide / Math.min(item.width, item.height));
     const image = item.redactions.length
       ? renderWatermark(item.bitmap, item.width, item.height, {
           redactions: item.redactions,
