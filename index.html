@@ -16,9 +16,9 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href="https://cv.cm/" />
     <style>
-      /* #app > main is the Worker's crawler copy; the app replaces it with .page. Keep it from flashing
+      /* Everything in #app but .page is the Worker's crawler copy; the app replaces it with .page. Keep it from flashing
          unstyled while the app loads, but reveal it if the app has not rendered (no JS, failed load). */
-      #app > main { visibility: hidden; animation: seo-reveal 0s 4s forwards; }
+      #app > :not(.page) { visibility: hidden; animation: seo-reveal 0s 4s forwards; }
       @keyframes seo-reveal { to { visibility: visible; } }
     </style>
   </head>
