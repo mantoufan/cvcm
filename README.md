@@ -7,8 +7,8 @@ Browser tools plus a tiny cloud clipboard.
 ## Tools
 
 - **Cloud clipboard** / 云剪切板 — text, images, video, files. Markdown / HTML / code. Gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
-- **SafeMark watermark** / 安心水印 — tile a for-use-only line with the date on ID copies, text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/) · [中文](https://cv.cm/zh-cn/watermark/)
-- **SafeMark mosaic** / 图片打马赛克 — drag boxes to pixelate faces or black out ID numbers, plates, QR codes. [Open](https://cv.cm/en/mosaic/) · [中文](https://cv.cm/zh-cn/mosaic/)
+- **ID Watermark & Redact** / 身份证水印打码 — tile a for-use-only line with the date on ID copies, text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/) · [中文](https://cv.cm/zh-cn/watermark/)
+- **ID Watermark & Redact: mosaic** / 图片打马赛克 — drag boxes to pixelate faces or black out ID numbers, plates, QR codes. [Open](https://cv.cm/en/mosaic/) · [中文](https://cv.cm/zh-cn/mosaic/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)

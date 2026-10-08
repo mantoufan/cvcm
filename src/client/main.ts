@@ -853,7 +853,7 @@ function langSwitch(current: Locale): HTMLElement {
   return sel;
 }
 
-/** SafeMark pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
+/** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */
 function syncBrandIcon(branded: boolean): void {
   const icon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
   icon?.setAttribute("href", branded ? "/brand/safemark.svg" : "/favicon.svg?v=2");

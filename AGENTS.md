@@ -19,7 +19,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `migrations/` — D1 schema
 - `src/client/` — SPA
 - `src/client/clip/` — cloud clipboard
-- `src/client/watermark/` — SafeMark: image watermark + drag-to-redact (mosaic / black box). `/mosaic/` mounts the same UI in redact mode. Brand icon `public/brand/safemark.svg`; Zhihu kit `docs/zhihu-ai-works/safemark/`
+- `src/client/watermark/` — ID Watermark & Redact (身份证水印打码): image watermark + drag-to-redact (mosaic / black box). `/mosaic/` mounts the same UI in redact mode. Brand icon `public/brand/safemark.svg`; Zhihu kit `docs/zhihu-ai-works/id-watermark/`
 - `src/client/collage/` — photo collage
 - `src/client/portrait-sim/` — portrait camera simulator
 - `src/client/convert/` — image formats (PNG / JPG / WebP / AVIF / GIF / BMP / ICO)

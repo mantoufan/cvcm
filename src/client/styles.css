@@ -1524,7 +1524,7 @@ body {
   .game-frame { height: calc(100dvh - 10.5rem); min-height: 220px; }
 }
 
-/* SafeMark (watermark + mosaic) */
+/* ID Watermark & Redact (watermark + mosaic) */
 .wm-brand { display: flex; align-items: center; gap: 0.45rem; margin: 0.35rem 0 0.15rem; font-size: 0.85rem; color: var(--ink-soft); flex-wrap: wrap; }
 .wm-brand img { width: 28px; height: 28px; border-radius: 8px; }
 .wm-brand strong { color: var(--pink-deep); font-size: 0.95rem; }
