@@ -1,6 +1,6 @@
 import type { GameId } from "./games";
 import type { Locale } from "./locale";
-import { messages } from "./messages";
+import { gameMessages, messages, type GameName } from "./messages";
 
 export type GameCopy = {
   name: string;
@@ -38,9 +38,15 @@ export type GameCopy = {
 };
 
 function table(locale: Locale): Record<string, GameCopy> {
-  return messages(locale).games;
+  return gameMessages(locale).games;
 }
 
+/** Name and blurb, available on every page (menus, tiles). */
+export function gameName(locale: Locale, id: GameId): GameName {
+  return messages(locale).gameNames[id] ?? messages("en").gameNames[id];
+}
+
+/** Full copy; on the client only after the game pack is loaded (game pages). */
 export function gameCopy(locale: Locale, id: GameId): GameCopy {
   return table(locale)[id] ?? table("en")[id];
 }

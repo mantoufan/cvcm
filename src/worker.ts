@@ -4,6 +4,7 @@ import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
@@ -176,6 +177,11 @@ export default {
         });
       }
     }
+    const thumbFallback = thumbOriginal(path);
+    if (thumbFallback && !(assetResponse.headers.get("content-type") || "").startsWith("image/")) {
+      // No thumbnail was built (the cover has no local copy): send the original.
+      return redirectTo(thumbFallback, url, 302);
+    }
     if (assetResponse.status === 404 && !STATIC_FILE.test(path)) {
       assetResponse = await env.ASSETS.fetch(new URL("/index.html", url.origin).toString());
     }
@@ -207,7 +213,7 @@ export default {
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
       return withHeaders(
-        new Response(preloadLocalePack(applyHtmlSeo(html, locale, seo), locale), {
+        new Response(preloadLocalePack(applyHtmlSeo(html, locale, seo), locale, parsed.kind === "games" && Boolean(parsed.game)), {
           status: assetResponse.status,
           headers,
         }),

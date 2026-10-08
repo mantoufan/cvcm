@@ -390,3 +390,26 @@ export function localizedTutorialSrc(src: string, locale: Locale): string {
   if (rest.includes("/")) return src;
   return `/covers/tutorials/${localePath(locale)}/${rest}`;
 }
+
+export type ThumbWidth = 160 | 640 | 960;
+
+const RASTER_COVER = /^\/covers\/([A-Za-z0-9._/-]+\.(?:jpe?g|png))(?:\?v=(\d+))?$/;
+
+/** WebP copy of a cover from scripts/make-thumbs.mjs. The Worker redirects to the original when there is none. */
+export function thumbSrc(src: string, width: ThumbWidth): string {
+  const m = RASTER_COVER.exec(src);
+  if (!m) return src;
+  return `/thumbs/${width}/${m[1]}${m[2] ? `.v${m[2]}` : ""}.webp`;
+}
+
+/** srcset for a tile-sized cover, or undefined when the cover has no thumbnails (SVG). */
+export function tileSrcset(src: string): string | undefined {
+  if (!RASTER_COVER.test(src)) return undefined;
+  return `${thumbSrc(src, 640)} 640w, ${thumbSrc(src, 960)} 960w`;
+}
+
+/** Original cover path for a /thumbs/ URL, so a missing thumbnail can fall back to it. */
+export function thumbOriginal(pathname: string): string | null {
+  const m = /^\/thumbs\/(?:160|640|960)\/([A-Za-z0-9._/-]+?\.(?:jpe?g|png))(?:\.v\d+)?\.webp$/.exec(pathname);
+  return m && !m[1].includes("..") ? `/covers/${m[1]}` : null;
+}

@@ -7,7 +7,7 @@ import { GAMES } from "../shared/games";
 import { TOOLS, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, learnHref, type ToolId } from "../shared/path";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
-import { COVER, DEVICE_COVER } from "./covers";
+import { COVER, DEVICE_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "./covers";
 
 export function mountHome(host: HTMLElement, locale: Locale): void {
   const learnWall = FEATURED_TUTORIALS.length
@@ -64,7 +64,7 @@ function deviceTile(locale: Locale, id: (typeof DEVICE_CHILD_PAGES)[number]): HT
   const copy = devicePageCopy(locale, id);
   return h("a", { class: "tile", href: deviceHref(locale, id), "data-nav": `device-${id}` },
     h("div", { class: "tile-cover" },
-      h("img", { src: DEVICE_COVER, alt: copy.name, width: "640", height: "360", loading: "lazy", decoding: "async" }),
+      h("img", { src: thumbSrc(DEVICE_COVER, 640), srcset: tileSrcset(DEVICE_COVER), sizes: TILE_SIZES, alt: copy.name, width: "640", height: "360", loading: "lazy", decoding: "async" }),
     ),
     h("div", { class: "tile-body" },
       h("h3", null, copy.name),
@@ -84,7 +84,9 @@ function tile(locale: Locale, id: ToolId, eager: boolean): HTMLElement {
   },
     h("div", { class: "tile-cover" },
       h("img", {
-        src: COVER[id],
+        src: thumbSrc(COVER[id], 640),
+        srcset: tileSrcset(COVER[id]),
+        sizes: TILE_SIZES,
         alt: t(`tools.${id}.name`),
         width: "640",
         height: "360",
