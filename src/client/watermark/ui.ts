@@ -88,7 +88,6 @@ const state = {
   quality: 0.92,
   redactMode: "mosaic" as RedactMode,
   mosaicRatio: 0.03,
-  collageRedactions: [] as Redaction[],
   drawing: false,
   working: false,
 };
@@ -264,6 +263,7 @@ function redactFieldset(): HTMLElement {
       h("button", { type: "button", class: "link", id: "wm-redact-undo", onClick: () => undoRedaction() }, t("watermark.redactUndo")),
       h("button", { type: "button", class: "link", id: "wm-redact-clear", onClick: () => clearRedactions() }, t("watermark.redactClear")),
     ),
+    h("p", { class: "muted small", id: "wm-redact-collage", hidden: true }, t("watermark.redactCollage")),
     h("p", { class: "muted small" }, t("watermark.redactTip")),
   );
 }
@@ -704,7 +704,6 @@ function clearItems(): void {
   }
   state.items = [];
   state.selected = null;
-  state.collageRedactions = [];
   void clearDraft("watermark");
   refreshList();
   syncRedact();
@@ -838,15 +837,18 @@ function currentItem(): Item | null {
   return state.items.find((it) => it.id === state.selected) ?? state.items[0] ?? null;
 }
 
-/** Boxes for what the preview shows: the selected photo, or the whole collage. */
+/**
+ * Boxes drawn on the selected photo. A collage has none of its own: each photo's boxes
+ * are baked in before layout, so changing the grid can never shift a box off a number.
+ */
 function currentRedactions(): Redaction[] {
-  if (state.layout !== "single") return state.collageRedactions;
+  if (state.layout !== "single") return [];
   return currentItem()?.redactions ?? [];
 }
 
 function pushRedaction(r: Redaction): void {
-  if (state.layout !== "single") state.collageRedactions.push(r);
-  else currentItem()?.redactions.push(r);
+  if (state.layout !== "single") return;
+  currentItem()?.redactions.push(r);
 }
 
 function undoRedaction(): void {
@@ -862,17 +864,21 @@ function clearRedactions(): void {
 }
 
 function syncRedact(): void {
+  const collage = state.layout !== "single";
   const draw = document.getElementById("wm-draw");
-  if (draw) {
-    draw.classList.toggle("on", state.drawing);
-    draw.setAttribute("aria-pressed", String(state.drawing));
+  if (draw instanceof HTMLButtonElement) {
+    draw.disabled = collage;
+    draw.classList.toggle("on", state.drawing && !collage);
+    draw.setAttribute("aria-pressed", String(state.drawing && !collage));
   }
+  const note = document.getElementById("wm-redact-collage");
+  if (note) note.hidden = !collage;
   root?.querySelectorAll("[data-redact]").forEach((btn) => {
     const on = (btn as HTMLElement).dataset.redact === state.redactMode;
     btn.classList.toggle("on", on);
     btn.setAttribute("aria-checked", String(on));
   });
-  preview?.classList.toggle("drawing", state.drawing);
+  preview?.classList.toggle("drawing", state.drawing && !collage);
   const n = currentRedactions().length;
   const count = document.getElementById("wm-redact-count");
   if (count) count.textContent = n ? t("watermark.redactCount", { n: String(n) }) : t("watermark.redactNone");
@@ -880,7 +886,7 @@ function syncRedact(): void {
   if (undo) undo.hidden = n === 0;
   const clear = document.getElementById("wm-redact-clear");
   if (clear) clear.hidden = n === 0;
-  if (hintEl && state.drawing && composeSource()) {
+  if (hintEl && state.drawing && !collage && composeSource()) {
     hintEl.hidden = false;
     hintEl.textContent = t("watermark.redactOn");
   }
@@ -897,7 +903,7 @@ function canvasPoint(e: PointerEvent): { x: number; y: number } | null {
 }
 
 function onDrawStart(e: PointerEvent): void {
-  if (!state.drawing || !preview || !composeSource()) return;
+  if (!state.drawing || state.layout !== "single" || !preview || !composeSource()) return;
   const p = canvasPoint(e);
   if (!p) return;
   e.preventDefault();
@@ -954,11 +960,21 @@ function onDrawCancel(): void {
 }
 
 function collageSlots() {
-  return state.items.map((item) =>
-    item.bitmap
-      ? { image: item.bitmap, naturalWidth: item.width, naturalHeight: item.height }
-      : null,
-  );
+  return state.items.map((item) => {
+    if (!item.bitmap) return null;
+    const image = item.redactions.length
+      ? renderWatermark(item.bitmap, item.width, item.height, {
+          redactions: item.redactions,
+          mosaicRatio: state.mosaicRatio,
+          text: null,
+          logo: null,
+          position: { mode: "anchor", anchor: "br" },
+          tiled: false,
+          tileGapRatio: 0,
+        })
+      : item.bitmap;
+    return { image, naturalWidth: item.width, naturalHeight: item.height };
+  });
 }
 
 function composeSource(): { image: CanvasImageSource; width: number; height: number; name: string } | null {
@@ -989,7 +1005,7 @@ function redraw(): void {
   const hasMark = Boolean(state.text.trim() || state.logo || currentRedactions().length);
   const source = composeSource();
   if (hintEl) {
-    hintEl.textContent = t(state.drawing ? "watermark.redactOn" : "watermark.hintMark");
+    hintEl.textContent = t(state.drawing && state.layout === "single" ? "watermark.redactOn" : "watermark.hintMark");
     hintEl.hidden = !source || (hasMark && !state.drawing);
   }
   const empty = document.getElementById("wm-empty");
@@ -1216,7 +1232,6 @@ type WmDraft = {
     preset: WmPreset | null;
     redactMode?: RedactMode;
     mosaicRatio?: number;
-    collageRedactions?: Redaction[];
   };
   files: { name: string; type: string; blob: Blob; redactions?: Redaction[] }[];
   logo: { name: string; type: string; blob: Blob } | null;
@@ -1252,7 +1267,6 @@ async function persistWatermark(): Promise<void> {
       preset: state.preset,
       redactMode: state.redactMode,
       mosaicRatio: state.mosaicRatio,
-      collageRedactions: state.collageRedactions,
     },
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file, redactions: it.redactions })),
     logo: state.logo
@@ -1275,7 +1289,8 @@ async function restoreWatermark(): Promise<void> {
     const item = state.items[state.items.length - 1];
     if (item && Array.isArray(rec.redactions)) item.redactions = rec.redactions;
   }
-  if (!Array.isArray(state.collageRedactions)) state.collageRedactions = [];
+  // Drafts from before collage boxes were dropped may still carry them; ignore.
+  delete (state as Record<string, unknown>).collageRedactions;
   if (state.items[selected]) state.selected = state.items[selected].id;
   if (draft.logo) {
     const file = new File([draft.logo.blob], draft.logo.name, { type: draft.logo.type || "image/png" });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxAtAnchor, boxAtFree, fitExportSize, mosaicCell, pixelate, redactionBox, tilePitch } from "../src/client/watermark/engine";
+import { boxAtAnchor, boxAtFree, fitExportSize, mosaicCell, pixelate, previewCell, redactionBox, tilePitch } from "../src/client/watermark/engine";
 
 describe("boxAtAnchor", () => {
   it("places a box on the nine-cell grid", () => {
@@ -56,6 +56,13 @@ describe("mosaic", () => {
   it("never uses a cell smaller than 6 px", () => {
     expect(mosaicCell(100, 100, 0.01)).toBe(6);
     expect(mosaicCell(2000, 1000, 0.03)).toBe(30);
+  });
+
+  it("scales the export cell down for a smaller preview", () => {
+    // 4000×1000 export at the finest ratio: 6 px cells; a 1400 px preview shows 2 px cells, not 6.
+    expect(previewCell(4000, 1000, 4000, 0.005)).toBe(6);
+    expect(previewCell(4000, 1000, 1400, 0.005)).toBe(2);
+    expect(previewCell(2000, 1000, 1000, 0.03)).toBe(15);
   });
 
   it("replaces each block with its exact mean", () => {

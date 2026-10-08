@@ -122,7 +122,7 @@ export function renderWatermark(
   if (!ctx) throw new Error("canvas");
   ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
   for (const r of spec.redactions ?? []) {
-    redact(ctx, canvas.width, canvas.height, r, spec.mosaicRatio ?? 0.03);
+    redact(ctx, canvas.width, canvas.height, r, previewCell(sourceW, sourceH, canvas.width, spec.mosaicRatio ?? 0.03));
   }
   if (spec.logo) drawLogo(ctx, canvas.width, canvas.height, spec, spec.logo);
   if (spec.text && spec.text.text.trim()) {
@@ -148,6 +148,15 @@ export function redactionBox(
 /** Mosaic cell size in pixels. Never below 6 px so text under it stays unreadable. */
 export function mosaicCell(w: number, h: number, ratio: number): number {
   return Math.max(6, Math.round(minDim(w, h) * clamp(ratio, 0.005, 0.2)));
+}
+
+/**
+ * Cell size on the canvas being drawn. Sized on the source image, then scaled,
+ * so a shrunk preview shows the same coarseness the full-size export gets.
+ */
+export function previewCell(sourceW: number, sourceH: number, targetW: number, ratio: number): number {
+  const scale = targetW / Math.max(1, sourceW);
+  return Math.max(1, Math.round(mosaicCell(sourceW, sourceH, ratio) * scale));
 }
 
 /** Average every cell×cell block in place. Exact mean, not a resampled guess. */
@@ -180,7 +189,7 @@ function redact(
   w: number,
   h: number,
   r: Redaction,
-  mosaicRatio: number,
+  cell: number,
 ): void {
   const box = redactionBox(r, w, h);
   if (!box) return;
@@ -193,7 +202,7 @@ function redact(
     return;
   }
   const img = ctx.getImageData(box.x, box.y, box.w, box.h);
-  pixelate(img.data, box.w, box.h, mosaicCell(w, h, mosaicRatio));
+  pixelate(img.data, box.w, box.h, cell);
   ctx.putImageData(img, box.x, box.y);
 }
 

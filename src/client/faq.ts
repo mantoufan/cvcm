@@ -13,6 +13,8 @@ import {
   howToJsonLd,
   learnFaqItems,
   marketBreadcrumbJsonLd,
+  toolBreadcrumbJsonLd,
+  toolSoftwareJsonLd,
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
@@ -73,6 +75,8 @@ export function syncPageJsonLd(
   gamesConsole: GameConsoleId | null = null,
 ): void {
   const flashHub = gamesHub && gamesConsole === "flash";
+  // Mirror applyHtmlSeo: plain tool pages carry WebApplication + BreadcrumbList.
+  const toolPage = Boolean(tool) && !tutorial && !game && !gamesHub && !market && !marketsHub && !devicePage;
   const faq = devicePage
     ? deviceFaqJsonLd(locale, devicePage)
     : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub, gamesConsole);
@@ -83,7 +87,9 @@ export function syncPageJsonLd(
       ? deviceBreadcrumbJsonLd(locale, devicePage)
       : marketsHub || market
         ? marketBreadcrumbJsonLd(locale, market)
-        : null,
+        : toolPage && tool
+          ? toolBreadcrumbJsonLd(locale, tool)
+          : null,
   );
   writeJsonLd(
     "howto-jsonld",
@@ -100,7 +106,10 @@ export function syncPageJsonLd(
               : null,
   );
   writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
-  writeJsonLd("software-jsonld", flashHub ? flashHubSoftwareJsonLd(locale) : null);
+  writeJsonLd(
+    "software-jsonld",
+    flashHub ? flashHubSoftwareJsonLd(locale) : toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
+  );
 }
 
 function writeJsonLd(id: string, data: Record<string, unknown> | null): void {
