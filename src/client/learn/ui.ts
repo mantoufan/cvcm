@@ -96,7 +96,7 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
               href: appHref(loc, tool),
               "data-nav": tool,
             },
-              h("img", { class: "menu-cover", src: COVER[tool], alt: "", width: "72", height: "40" }),
+              h("img", { class: "menu-cover", src: COVER[tool], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
               h("div", { class: "menu-copy" },
                 h("strong", null, t(`tools.${tool}.name`)),
                 h("span", null, t(`tools.${tool}.blurb`)),
@@ -238,6 +238,8 @@ function figure(id: TutorialId, src: string, n?: number): HTMLElement {
     alt: caption,
     width: "1280",
     height: "720",
+    loading: "lazy",
+    decoding: "async",
   });
   if (kind === "thirds") {
     return h("figure", { class: "learn-fig" },

@@ -1,13 +1,6 @@
-import en from "../locales/device/en.json";
-import es from "../locales/device/es.json";
-import id from "../locales/device/id.json";
-import ja from "../locales/device/ja.json";
-import ko from "../locales/device/ko.json";
-import vi from "../locales/device/vi.json";
-import zhCN from "../locales/device/zh-CN.json";
-import zhTW from "../locales/device/zh-TW.json";
 import { DEVICE_CHILD_PAGES, type BrowserId, type DevicePageId, type PlatformId } from "./device";
 import type { Locale } from "./locale";
+import { messages, type DeviceMessages } from "./messages";
 import { appHref, deviceHref } from "./path";
 
 export type DevicePageCopy = {
@@ -31,25 +24,14 @@ export type DevicePageCopy = {
   a5: string;
 };
 
-export type DeviceMessages = typeof en;
-
-const MESSAGES: Record<Locale, DeviceMessages> = {
-  en,
-  "zh-CN": zhCN,
-  "zh-TW": zhTW,
-  ja,
-  ko,
-  vi,
-  id,
-  es,
-};
+export type { DeviceMessages };
 
 export function deviceMessages(locale: Locale): DeviceMessages {
-  return MESSAGES[locale];
+  return messages(locale).device;
 }
 
 export function devicePageCopy(locale: Locale, page: DevicePageId): DevicePageCopy {
-  return MESSAGES[locale].pages[page];
+  return messages(locale).device.pages[page];
 }
 
 export function deviceFaqItems(locale: Locale, page: DevicePageId): { q: string; a: string }[] {
@@ -61,8 +43,8 @@ export function deviceFaqItems(locale: Locale, page: DevicePageId): { q: string;
 }
 
 export function deviceLabel(locale: Locale, kind: "browsers" | "platforms", id: BrowserId | PlatformId): string {
-  const table = MESSAGES[locale][kind] as Record<string, string>;
-  return table[id] ?? MESSAGES[locale].unknown;
+  const table = messages(locale).device[kind] as Record<string, string>;
+  return table[id] ?? messages(locale).device.unknown;
 }
 
 export function escapeHtml(value: string): string {

@@ -1,25 +1,8 @@
-import en from "../locales/guides/en.json";
-import es from "../locales/guides/es.json";
-import id from "../locales/guides/id.json";
-import ja from "../locales/guides/ja.json";
-import ko from "../locales/guides/ko.json";
-import vi from "../locales/guides/vi.json";
-import zhCN from "../locales/guides/zh-CN.json";
-import zhTW from "../locales/guides/zh-TW.json";
 import { coverUrl } from "./covers";
 import type { Locale } from "./locale";
+import { messages } from "./messages";
 import { appHref, TOOLS, type ToolId } from "./path";
 
-export const GUIDE_MESSAGES: Record<Locale, typeof en> = {
-  en,
-  "zh-CN": zhCN,
-  "zh-TW": zhTW,
-  ja,
-  ko,
-  vi,
-  id,
-  es,
-};
 
 export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   clip: 3,
@@ -134,7 +117,7 @@ export function guideImage(tool: ToolId, step: number): string {
 
 export function guideText(locale: Locale, path: string): string {
   const parts = path.split(".");
-  let node: unknown = GUIDE_MESSAGES[locale];
+  let node: unknown = messages(locale).guides;
   for (const part of parts) {
     if (typeof node !== "object" || node === null || !(part in node)) return path;
     node = (node as Record<string, unknown>)[part];

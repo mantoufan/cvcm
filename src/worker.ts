@@ -1,10 +1,13 @@
+import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { preloadLocalePack } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
+
 
 export interface Env {
   ASSETS: { fetch: (request: Request | string) => Promise<Response> };
@@ -204,7 +207,7 @@ export default {
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
       return withHeaders(
-        new Response(applyHtmlSeo(html, locale, seo), {
+        new Response(preloadLocalePack(applyHtmlSeo(html, locale, seo), locale), {
           status: assetResponse.status,
           headers,
         }),

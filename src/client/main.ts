@@ -80,7 +80,7 @@ import { mountMarket, mountMarketsHub, unmountMarket } from "./markets/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
 import { mountDevice } from "./device/ui";
-import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasMessages, loadLocale, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -138,6 +138,8 @@ let unmountCompressPdf = (): void => {};
 let unmountSplitPdf = (): void => {};
 let unmountPortraitSim = (): void => {};
 let pageGen = 0;
+let localeReq = 0;
+let renderedHref: string | null = null;
 
 let started = false;
 
@@ -401,12 +403,33 @@ function unmountTools(): void {
 }
 
 export function render(): void {
-  pageGen += 1;
-  unmountTools();
   const parsed = parseAppPath(location.pathname);
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
     ? parsed.locale
     : locale();
+  const req = ++localeReq;
+  if (!hasMessages(loc)) {
+    // Keep the current (or server-rendered) page until this locale's strings arrive.
+    loadLocale(loc).then(
+      () => {
+        try {
+          sessionStorage.removeItem(RELOAD_KEY);
+        } catch {
+          /* private mode */
+        }
+        if (req === localeReq) render();
+      },
+      () => {
+        if (req !== localeReq) return;
+        // Online, a full load picks up current chunk names (a tab left open across a deploy).
+        if ((!renderedHref || navigator.onLine) && reloadOnce()) return;
+        restoreRendered();
+      },
+    );
+    return;
+  }
+  pageGen += 1;
+  unmountTools();
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
   resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
@@ -490,6 +513,29 @@ export function render(): void {
   const root = appEl();
   clear(root);
   root.append(shell(loc));
+  renderedHref = location.pathname + location.search + location.hash;
+}
+
+const RELOAD_KEY = "cvcm-locale-reload";
+
+/** A locale pack failed to load (offline, or a tab still on an older deploy's chunk names). Try one full page load per path. */
+function reloadOnce(): boolean {
+  try {
+    if (sessionStorage.getItem(RELOAD_KEY) === location.pathname) return false;
+    sessionStorage.setItem(RELOAD_KEY, location.pathname);
+  } catch {
+    return false;
+  }
+  location.reload();
+  return true;
+}
+
+/** Point the URL and language picker back at the page still on screen. Before the first render that is the server HTML. */
+function restoreRendered(): void {
+  if (!renderedHref) return;
+  history.replaceState(null, "", renderedHref);
+  const select = document.querySelector<HTMLSelectElement>("select.lang");
+  if (select) select.value = locale();
 }
 
 function shell(loc: Locale): HTMLElement {
@@ -668,7 +714,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
             "data-nav": id,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`tools.${id}.name`)),
               h("span", null, t(`tools.${id}.blurb`)),
@@ -697,7 +743,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
           "data-nav": `device-${id}`,
           "aria-current": device === id ? "page" : undefined,
         },
-          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40" }),
+          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
           h("div", { class: "menu-copy" },
             h("strong", null, devicePageCopy(loc, id).name),
             h("span", null, devicePageCopy(loc, id).blurb),
@@ -740,7 +786,7 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
             "data-nav": `learn-${id}`,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: LEARN_COVER[id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: LEARN_COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`learn.${id}.name`)),
               h("span", null, t(`learn.${id}.blurb`)),
@@ -784,7 +830,7 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
             "data-nav": `game-${game.id}`,
             "aria-current": current === game.id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, gameCopy(loc, game.id).name),
               h("span", null, gameCopy(loc, game.id).blurb),
@@ -828,17 +874,8 @@ function langSwitch(current: Locale): HTMLElement {
     "aria-label": t("lang.label"),
     onChange: (e: Event) => {
       const next = (e.target as HTMLSelectElement).value as Locale;
-      setLocale(next);
-      const href = devicePage
-        ? withSearch(deviceHref(next, devicePage), location.search)
-        : learnHub || tutorial
-          ? withSearch(learnHref(next, tutorial), location.search)
-          : gamesHub || gameId
-            ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
-            : marketsHub || marketId
-              ? withSearch(marketsHref(next, marketId), location.search)
-              : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
-      history.pushState(null, "", href);
+      // render() sets the locale once its pack is loaded, like any navigation.
+      history.pushState(null, "", localeHref(next));
       render();
     },
   });
@@ -851,6 +888,18 @@ function langSwitch(current: Locale): HTMLElement {
     );
   }
   return sel;
+}
+
+function localeHref(next: Locale): string {
+  return devicePage
+    ? withSearch(deviceHref(next, devicePage), location.search)
+    : learnHub || tutorial
+      ? withSearch(learnHref(next, tutorial), location.search)
+      : gamesHub || gameId
+        ? withSearch(gamesHref(next, gameConsole, gameId), location.search)
+        : marketsHub || marketId
+          ? withSearch(marketsHref(next, marketId), location.search)
+          : withSearch(appHref(next, tool, clipId, convertJob ?? resizeJob), location.search);
 }
 
 /** ID Watermark & Redact pages (watermark + mosaic) wear their own tab icon; every other page keeps cv.cm's. */

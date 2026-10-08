@@ -1,13 +1,6 @@
-import en from "../locales/games/en.json";
-import es from "../locales/games/es.json";
-import id from "../locales/games/id.json";
-import ja from "../locales/games/ja.json";
-import ko from "../locales/games/ko.json";
-import vi from "../locales/games/vi.json";
-import zhCN from "../locales/games/zh-CN.json";
-import zhTW from "../locales/games/zh-TW.json";
 import type { GameId } from "./games";
 import type { Locale } from "./locale";
+import { messages } from "./messages";
 
 export type GameCopy = {
   name: string;
@@ -44,19 +37,12 @@ export type GameCopy = {
   a5: string;
 };
 
-const MESSAGES: Record<Locale, Record<string, GameCopy>> = {
-  en: en as Record<string, GameCopy>,
-  "zh-CN": zhCN as Record<string, GameCopy>,
-  "zh-TW": zhTW as Record<string, GameCopy>,
-  ja: ja as Record<string, GameCopy>,
-  ko: ko as Record<string, GameCopy>,
-  vi: vi as Record<string, GameCopy>,
-  id: id as Record<string, GameCopy>,
-  es: es as Record<string, GameCopy>,
-};
+function table(locale: Locale): Record<string, GameCopy> {
+  return messages(locale).games;
+}
 
 export function gameCopy(locale: Locale, id: GameId): GameCopy {
-  return MESSAGES[locale][id] ?? MESSAGES.en[id];
+  return table(locale)[id] ?? table("en")[id];
 }
 
 function field(copy: GameCopy, key: keyof GameCopy): string | undefined {
