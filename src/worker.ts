@@ -4,6 +4,7 @@ import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { preloadLocalePack } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
@@ -19,22 +20,28 @@ export interface Env {
   S3_REGION?: string;
 }
 
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' blob: data: https:",
-  "font-src 'self'",
-  "connect-src 'self' https://s3.cv.cm",
-  "media-src blob: https:",
-  "worker-src 'self' blob:",
-  "frame-src 'self'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'none'",
-  "frame-ancestors 'none'",
-  "upgrade-insecure-requests",
-].join("; ");
+function siteCsp(analytics: boolean): string {
+  return [
+    "default-src 'self'",
+    analytics ? `script-src 'self' ${GA_SCRIPT_HOST}` : "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' blob: data: https:",
+    "font-src 'self'",
+    analytics ? `connect-src 'self' https://s3.cv.cm ${GA_CONNECT_HOSTS.join(" ")}` : "connect-src 'self' https://s3.cv.cm",
+    "media-src blob: https:",
+    "worker-src 'self' blob:",
+    "frame-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+
+// File tools and clip notes get a CSP without the analytics hosts (AGENTS.md rule 1).
+const CSP = siteCsp(false);
+const CSP_ANALYTICS = siteCsp(true);
 
 const EMU_CSP = [
   "default-src 'self'",
@@ -334,7 +341,7 @@ function withHeaders(res: Response, pathname: string): Response {
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=()",
   );
-  headers.set("Content-Security-Policy", player ? EMU_CSP : CSP);
+  headers.set("Content-Security-Policy", player ? EMU_CSP : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
   if (pathname === "/api/device/ip") {
     headers.set("Cache-Control", "private, no-store");
     headers.set("CDN-Cache-Control", "no-store");
