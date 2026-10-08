@@ -178,7 +178,9 @@ export default {
       }
     }
     const thumbFallback = thumbOriginal(path);
-    if (thumbFallback && !(assetResponse.headers.get("content-type") || "").startsWith("image/")) {
+    // Missing files come back as the SPA's index.html (or a 404); a 304 revalidation is passed through.
+    const thumbMissing = assetResponse.status === 404 || (assetResponse.headers.get("content-type") || "").includes("text/html");
+    if (thumbFallback && thumbMissing) {
       // No thumbnail was built (the cover has no local copy): send the original.
       // Not redirectTo(): that copies the request's (empty) query over the cover's ?v=.
       return redirect(new URL(thumbFallback, url.origin).toString(), 302);

@@ -22,11 +22,17 @@ async function source(path) {
   } catch {
     /* offline build: fall back to the git copy */
   }
-  if (local >= 0 && (remote < 0 || remote === local)) return { input: file, from: "git" };
-  if (remote < 0) return null;
-  const res = await fetch(`${S3}${path}`);
-  if (!res.ok) return null;
-  return { input: Buffer.from(await res.arrayBuffer()), from: "s3" };
+  const git = local >= 0 ? { input: file, from: "git" } : null;
+  if (git && (remote < 0 || remote === local)) return git;
+  if (remote < 0) return git;
+  try {
+    const res = await fetch(`${S3}${path}`);
+    if (res.ok) return { input: Buffer.from(await res.arrayBuffer()), from: "s3" };
+  } catch {
+    /* use the git copy below */
+  }
+  if (git) console.warn(`thumbs: ${path} differs from S3 but the download failed; using the git copy`);
+  return git;
 }
 
 const counts = { git: 0, s3: 0, skipped: [] };

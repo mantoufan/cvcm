@@ -53,3 +53,10 @@ it("redirects a thumb that was not built to the versioned original", async () =>
   expect(response.status).toBe(302);
   expect(response.headers.get("Location")).toBe("https://cv.cm/covers/games/contra.jpg?v=2");
 });
+
+it("passes a thumb revalidation through instead of redirecting", async () => {
+  const response = await worker.fetch(new Request("https://cv.cm/thumbs/160/clip-sweet.jpg.v2.webp"), {
+    ASSETS: { fetch: async () => new Response(null, { status: 304 }) },
+  });
+  expect(response.status).toBe(304);
+});
