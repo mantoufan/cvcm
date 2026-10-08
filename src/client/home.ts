@@ -32,7 +32,7 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
         h("h2", null, t("nav.tools")),
       ),
       h("div", { class: "tiles" },
-        ...TOOLS.map((id) => tile(locale, id)),
+        ...TOOLS.map((id, i) => tile(locale, id, i < EAGER_TILES)),
       ),
       h("div", { class: "wall-h" },
         h("h2", null, t("nav.device")),
@@ -64,7 +64,7 @@ function deviceTile(locale: Locale, id: (typeof DEVICE_CHILD_PAGES)[number]): HT
   const copy = devicePageCopy(locale, id);
   return h("a", { class: "tile", href: deviceHref(locale, id), "data-nav": `device-${id}` },
     h("div", { class: "tile-cover" },
-      h("img", { src: DEVICE_COVER, alt: copy.name, width: "640", height: "360" }),
+      h("img", { src: DEVICE_COVER, alt: copy.name, width: "640", height: "360", loading: "lazy", decoding: "async" }),
     ),
     h("div", { class: "tile-body" },
       h("h3", null, copy.name),
@@ -73,7 +73,10 @@ function deviceTile(locale: Locale, id: (typeof DEVICE_CHILD_PAGES)[number]): HT
   );
 }
 
-function tile(locale: Locale, id: ToolId): HTMLElement {
+// Above-the-fold tiles load at once; the rest wait until scrolled near.
+const EAGER_TILES = 4;
+
+function tile(locale: Locale, id: ToolId, eager: boolean): HTMLElement {
   return h("a", {
     class: "tile",
     href: appHref(locale, id),
@@ -85,6 +88,8 @@ function tile(locale: Locale, id: ToolId): HTMLElement {
         alt: t(`tools.${id}.name`),
         width: "640",
         height: "360",
+        loading: eager ? undefined : "lazy",
+        decoding: "async",
       }),
     ),
     h("div", { class: "tile-body" },

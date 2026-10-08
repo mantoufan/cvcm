@@ -8,6 +8,8 @@ export default defineConfig({
     sourcemap: false,
     modulePreload: { polyfill: false },
     assetsInlineLimit: 0,
+    // Read by scripts/build-worker.mjs to preload the page locale's string pack.
+    manifest: true,
   },
   server: {
     port: 5173,
@@ -20,5 +22,6 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/**/*.test.ts"],
+    setupFiles: ["tests/setup.ts"],
   },
 });

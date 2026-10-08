@@ -80,7 +80,7 @@ import { mountMarket, mountMarketsHub, unmountMarket } from "./markets/ui";
 import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
 import { mountDevice } from "./device/ui";
-import { LOCALES, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasMessages, loadLocale, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -401,12 +401,23 @@ function unmountTools(): void {
 }
 
 export function render(): void {
-  pageGen += 1;
-  unmountTools();
   const parsed = parseAppPath(location.pathname);
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
     ? parsed.locale
     : locale();
+  if (!hasMessages(loc)) {
+    // Keep the current (or server-rendered) page until this locale's strings arrive.
+    const gen = ++pageGen;
+    loadLocale(loc).then(
+      () => {
+        if (gen === pageGen) render();
+      },
+      () => {},
+    );
+    return;
+  }
+  pageGen += 1;
+  unmountTools();
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
   resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
@@ -668,7 +679,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
             "data-nav": id,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`tools.${id}.name`)),
               h("span", null, t(`tools.${id}.blurb`)),
@@ -697,7 +708,7 @@ function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | n
           "data-nav": `device-${id}`,
           "aria-current": device === id ? "page" : undefined,
         },
-          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40" }),
+          h("img", { class: "menu-cover", src: DEVICE_COVER, alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
           h("div", { class: "menu-copy" },
             h("strong", null, devicePageCopy(loc, id).name),
             h("span", null, devicePageCopy(loc, id).blurb),
@@ -740,7 +751,7 @@ function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLE
             "data-nav": `learn-${id}`,
             "aria-current": current === id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: LEARN_COVER[id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: LEARN_COVER[id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, t(`learn.${id}.name`)),
               h("span", null, t(`learn.${id}.blurb`)),
@@ -784,7 +795,7 @@ function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId
             "data-nav": `game-${game.id}`,
             "aria-current": current === game.id ? "page" : undefined,
           },
-            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40" }),
+            h("img", { class: "menu-cover", src: GAME_COVER[game.id], alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
             h("div", { class: "menu-copy" },
               h("strong", null, gameCopy(loc, game.id).name),
               h("span", null, gameCopy(loc, game.id).blurb),

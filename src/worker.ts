@@ -1,3 +1,4 @@
+import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
@@ -5,6 +6,16 @@ import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
+
+// Locale -> hashed string-pack chunk, injected by scripts/build-worker.mjs (absent in tests).
+declare const __LOCALE_PACKS__: Record<string, string> | undefined;
+
+/** Fetch the page locale's strings in parallel with the entry script instead of after it runs. */
+export function preloadLocalePack(html: string, locale: Locale): string {
+  const href = typeof __LOCALE_PACKS__ === "undefined" ? undefined : __LOCALE_PACKS__[locale];
+  if (!href) return html;
+  return html.replace("</head>", `<link rel="modulepreload" crossorigin href="${href}">\n  </head>`);
+}
 
 export interface Env {
   ASSETS: { fetch: (request: Request | string) => Promise<Response> };
@@ -204,7 +215,7 @@ export default {
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
       return withHeaders(
-        new Response(applyHtmlSeo(html, locale, seo), {
+        new Response(preloadLocalePack(applyHtmlSeo(html, locale, seo), locale), {
           status: assetResponse.status,
           headers,
         }),

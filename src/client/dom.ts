@@ -6,6 +6,8 @@ export function h<K extends keyof HTMLElementTagNameMap>(
   ...kids: Array<Node | string | number | null | undefined | false>
 ): HTMLElementTagNameMap[K] {
   const el = document.createElement(tag);
+  // Set before src so the browser defers the fetch instead of starting it eagerly.
+  if (props?.loading) el.setAttribute("loading", String(props.loading));
   if (props) {
     for (const [key, value] of Object.entries(props)) {
       if (value == null || value === false) continue;

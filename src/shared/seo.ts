@@ -1,11 +1,3 @@
-import en from "../locales/en.json";
-import es from "../locales/es.json";
-import id from "../locales/id.json";
-import ja from "../locales/ja.json";
-import ko from "../locales/ko.json";
-import vi from "../locales/vi.json";
-import zhCN from "../locales/zh-CN.json";
-import zhTW from "../locales/zh-TW.json";
 import { DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd, devicePageCopy, deviceStaticHtml } from "./device-i18n";
 import type { DevicePageId } from "./device";
@@ -15,27 +7,18 @@ import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { toolHowToJsonLd } from "./guide";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
+import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
-const MESSAGES: Record<Locale, typeof en> = {
-  en,
-  "zh-CN": zhCN,
-  "zh-TW": zhTW,
-  ja,
-  ko,
-  vi,
-  id,
-  es,
-};
 
 export type FaqItem = { q: string; a: string };
 
 function lookup(locale: Locale, path: string): string {
   const parts = path.split(".");
-  let node: unknown = MESSAGES[locale];
+  let node: unknown = messages(locale).ui;
   for (const part of parts) {
     if (typeof node !== "object" || node === null || !(part in node)) return path;
     node = (node as Record<string, unknown>)[part];

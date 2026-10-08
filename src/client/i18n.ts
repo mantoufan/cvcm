@@ -1,11 +1,3 @@
-import en from "../locales/en.json";
-import es from "../locales/es.json";
-import id from "../locales/id.json";
-import ja from "../locales/ja.json";
-import ko from "../locales/ko.json";
-import vi from "../locales/vi.json";
-import zhCN from "../locales/zh-CN.json";
-import zhTW from "../locales/zh-TW.json";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE,
@@ -13,17 +5,26 @@ import {
   parseLocale,
   type Locale,
 } from "../shared/locale";
+import { hasMessages, messages, registerMessages, type LocaleMessages } from "../shared/messages";
 
-export const MESSAGES: Record<Locale, typeof en> = {
-  en,
-  "zh-CN": zhCN,
-  "zh-TW": zhTW,
-  ja,
-  ko,
-  vi,
-  id,
-  es,
+// One chunk per locale, so a page downloads only the strings it shows.
+const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
+  en: () => import("../locales/packs/en"),
+  "zh-CN": () => import("../locales/packs/zh-CN"),
+  "zh-TW": () => import("../locales/packs/zh-TW"),
+  ja: () => import("../locales/packs/ja"),
+  ko: () => import("../locales/packs/ko"),
+  vi: () => import("../locales/packs/vi"),
+  id: () => import("../locales/packs/id"),
+  es: () => import("../locales/packs/es"),
 };
+
+export { hasMessages };
+
+export async function loadLocale(next: Locale): Promise<void> {
+  if (hasMessages(next)) return;
+  registerMessages(next, (await PACKS[next]()).default);
+}
 
 let current: Locale = DEFAULT_LOCALE;
 
@@ -55,7 +56,7 @@ export function readStoredLocale(): Locale | null {
 
 export function t(path: string, vars?: Record<string, string | number>): string {
   const parts = path.split(".");
-  let node: unknown = MESSAGES[current];
+  let node: unknown = messages(current).ui;
   for (const part of parts) {
     if (typeof node !== "object" || node === null || !(part in node)) {
       node = undefined;

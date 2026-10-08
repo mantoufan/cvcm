@@ -1,13 +1,6 @@
-import en from "../locales/markets/en.json";
-import es from "../locales/markets/es.json";
-import id from "../locales/markets/id.json";
-import ja from "../locales/markets/ja.json";
-import ko from "../locales/markets/ko.json";
-import vi from "../locales/markets/vi.json";
-import zhCN from "../locales/markets/zh-CN.json";
-import zhTW from "../locales/markets/zh-TW.json";
 import type { MarketId } from "./markets";
 import type { Locale } from "./locale";
+import { messages } from "./messages";
 
 export type MarketFaq = { q: string; a: string };
 
@@ -97,31 +90,24 @@ type MarketMessages = {
   pages: Record<MarketId, MarketPageCopy>;
 };
 
-const MESSAGES: Record<Locale, MarketMessages> = {
-  en,
-  "zh-CN": zhCN,
-  "zh-TW": zhTW,
-  ja,
-  ko,
-  vi,
-  id,
-  es,
-};
+function table(locale: Locale): MarketMessages {
+  return messages(locale).markets as MarketMessages;
+}
 
 export function marketNav(locale: Locale): string {
-  return MESSAGES[locale].nav;
+  return table(locale).nav;
 }
 
 export function marketHub(locale: Locale): MarketHubCopy {
-  return MESSAGES[locale].hub;
+  return table(locale).hub;
 }
 
 export function marketUi(locale: Locale): MarketUi {
-  return MESSAGES[locale].ui;
+  return table(locale).ui;
 }
 
 export function marketCopy(locale: Locale, id: MarketId): MarketPageCopy {
-  return MESSAGES[locale].pages[id];
+  return table(locale).pages[id];
 }
 
 function five(copy: { q1: string; a1: string; q2: string; a2: string; q3: string; a3: string; q4: string; a4: string; q5: string; a5: string }): MarketFaq[] {
