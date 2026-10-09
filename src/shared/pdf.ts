@@ -13,7 +13,13 @@ function concat(parts: Uint8Array[]): Uint8Array {
   return out;
 }
 
-export type PdfJpegPage = { jpeg: Uint8Array; width: number; height: number };
+export type PdfJpegPage = {
+  jpeg: Uint8Array;
+  width: number;
+  height: number;
+  /** Page size in points. When set, the image fills the page edge to edge and `mode` is ignored. */
+  page?: { w: number; h: number };
+};
 export type PdfPageMode = "a4" | "letter" | "fit";
 
 export const PDF_PAGE = {
@@ -24,6 +30,7 @@ export const PDF_PAGE = {
 const MARGIN = 24;
 
 export function mediaBox(page: PdfJpegPage, mode: PdfPageMode): { w: number; h: number } {
+  if (page.page) return page.page;
   if (mode !== "fit") return PDF_PAGE[mode];
   const long = PDF_PAGE.a4.h;
   const max = Math.max(page.width, page.height) || 1;
@@ -43,7 +50,9 @@ export function pdfFromJpegs(pages: PdfJpegPage[], mode: PdfPageMode = "a4"): Ui
 
   pages.forEach((page, i) => {
     const media = mediaBox(page, mode);
-    const box = fit(page.width, page.height, Math.max(1, media.w - MARGIN * 2), Math.max(1, media.h - MARGIN * 2));
+    const box = page.page
+      ? media
+      : fit(page.width, page.height, Math.max(1, media.w - MARGIN * 2), Math.max(1, media.h - MARGIN * 2));
     const x = (media.w - box.w) / 2;
     const y = (media.h - box.h) / 2;
     const stream = u(`q ${box.w.toFixed(2)} 0 0 ${box.h.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)} cm /Im${i} Do Q`);
