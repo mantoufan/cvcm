@@ -94,7 +94,7 @@ describe("games locale parity", () => {
 
 describe("games routes", () => {
   it("parses hub, console, and game paths", () => {
-    expect(parseAppPath("/zh-cn/games/")).toEqual({
+    expect(parseAppPath("/zh/games/")).toEqual({
       kind: "games",
       locale: "zh-CN",
       console: null,
@@ -106,7 +106,7 @@ describe("games routes", () => {
       console: "fc",
       game: null,
     });
-    expect(parseAppPath("/zh-cn/games/fc/contra/")).toEqual({
+    expect(parseAppPath("/zh/games/fc/contra/")).toEqual({
       kind: "games",
       locale: "zh-CN",
       console: "fc",
@@ -119,8 +119,8 @@ describe("games routes", () => {
     });
     expect(isGameId("contra")).toBe(true);
     expect(gameById("contra")?.core).toBe("nes");
-    expect(gamesHref("zh-CN", "fc", "contra")).toBe("/zh-cn/games/fc/contra/");
-    expect(parseAppPath("/zh-cn/games/flash/")).toEqual({
+    expect(gamesHref("zh-CN", "fc", "contra")).toBe("/zh/games/fc/contra/");
+    expect(parseAppPath("/zh/games/flash/")).toEqual({
       kind: "games",
       locale: "zh-CN",
       console: "flash",
@@ -136,7 +136,7 @@ describe("games seo", () => {
     expect(pageTitle("zh-CN", seo)).toMatch(/魂斗罗/);
     expect(pageTitle("zh-CN", seo)).toMatch(/金手指/);
     expect(pageDescription("zh-CN", seo)).toMatch(/攻略/);
-    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh-cn/games/fc/contra/");
+    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh/games/fc/contra/");
     const html = applyHtmlSeo(
       `<!doctype html><html><head><title>x</title><meta name="description" content="old" /><link rel="canonical" href="https://cv.cm/" /></head><body></body></html>`,
       "zh-CN",
@@ -153,7 +153,7 @@ describe("games seo", () => {
     expect(pageTitle("zh-CN", seo)).toMatch(/Flash/);
     expect(pageTitle("zh-CN", seo)).toMatch(/SWF|在线玩/);
     expect(pageDescription("zh-CN", seo)).toMatch(/Ruffle/);
-    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh-cn/games/flash/");
+    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh/games/flash/");
     const html = applyHtmlSeo(
       `<!doctype html><html><head><title>x</title><meta name="description" content="old" /><link rel="canonical" href="https://cv.cm/" /></head><body></body></html>`,
       "zh-CN",
@@ -177,7 +177,7 @@ describe("games worker", () => {
     expect(bare.status).toBe(302);
     expect(bare.headers.get("Location")).toMatch(/\/games\/$/);
 
-    const html = await worker.fetch(new Request("https://cv.cm/zh-cn/games/fc/contra/"), { ASSETS: assets });
+    const html = await worker.fetch(new Request("https://cv.cm/zh/games/fc/contra/"), { ASSETS: assets });
     expect(html.status).toBe(200);
     const body = await html.text();
     expect(body).toContain("魂斗罗");

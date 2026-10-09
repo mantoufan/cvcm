@@ -7,18 +7,22 @@ export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
 }
 
-/** Map a URL/cookie/storage value onto a locale. Paths are lowercase (`zh-cn`). */
+/** Simplified Chinese is served at `/zh/`; the old `/zh-cn/` prefix still parses so it can 301. */
+const LOCALE_PATHS: Partial<Record<Locale, string>> = { "zh-CN": "zh" };
+
+/** Map a URL/cookie/storage value onto a locale. Paths are lowercase (`zh`, `zh-tw`). */
 export function parseLocale(value: string | null | undefined): Locale | null {
   if (!value) return null;
   const lower = value.trim().toLowerCase();
   for (const locale of LOCALES) {
+    if (localePath(locale) === lower) return locale;
     if (locale.toLowerCase() === lower) return locale;
   }
   return null;
 }
 
 export function localePath(locale: Locale): string {
-  return locale.toLowerCase();
+  return LOCALE_PATHS[locale] ?? locale.toLowerCase();
 }
 
 export function mapLanguageTag(tag: string): Locale | null {

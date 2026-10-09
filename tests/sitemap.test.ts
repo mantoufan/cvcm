@@ -31,7 +31,7 @@ describe("sitemap", () => {
     }
     expect(xml).toContain('hreflang="x-default"');
     expect(xml).toContain('href="https://cv.cm/en/"');
-    expect(xml).toContain("https://cv.cm/zh-cn/");
+    expect(xml).toContain("https://cv.cm/zh/");
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");

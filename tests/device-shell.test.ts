@@ -61,7 +61,7 @@ describe("device shell", () => {
     const select = document.querySelector<HTMLSelectElement>("select.lang");
     select!.value = "zh-CN";
     select!.dispatchEvent(new Event("change"));
-    expect(window.location.pathname).toBe("/zh-cn/device/screen-resolution/");
+    expect(window.location.pathname).toBe("/zh/device/screen-resolution/");
     expect(document.querySelector("h1")?.textContent).toBe("我的屏幕分辨率");
   });
 

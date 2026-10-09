@@ -34,10 +34,10 @@ const CRIOS = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKi
 describe("device routes", () => {
   it("parses locale, bare, and unknown slugs", () => {
     expect(parseAppPath("/en/device/")).toEqual({ kind: "device", locale: "en", page: "hub" });
-    expect(parseAppPath("/zh-cn/device/ip/")).toEqual({ kind: "device", locale: "zh-CN", page: "ip" });
+    expect(parseAppPath("/zh/device/ip/")).toEqual({ kind: "device", locale: "zh-CN", page: "ip" });
     expect(parseAppPath("/device/ip")).toEqual({ kind: "bare-device", page: "ip" });
     expect(parseAppPath("/en/device/gpu/")).toEqual({ kind: "unknown" });
-    expect(deviceHref("zh-CN", "screen")).toBe("/zh-cn/device/screen-resolution/");
+    expect(deviceHref("zh-CN", "screen")).toBe("/zh/device/screen-resolution/");
   });
 });
 
@@ -148,10 +148,10 @@ describe("device sitemap", () => {
       const loc = `https://cv.cm${deviceHref("zh-CN", page)}`;
       const block = xml.split("<url>").find((part) => part.includes(`<loc>${loc}</loc>`));
       expect(block, page).toBeTruthy();
-      expect(block).toContain(`hreflang="zh-CN" href="${loc}"`);
+      expect(block).toContain(`hreflang="zh" href="${loc}"`);
       expect(block).toContain(`hreflang="en" href="https://cv.cm${deviceHref("en", page)}"`);
       expect(block).toContain(`hreflang="x-default" href="https://cv.cm${deviceHref("en", page)}"`);
-      expect(block).not.toContain('hreflang="zh-CN" href="https://cv.cm/zh-cn/"');
+      expect(block).not.toContain('hreflang="zh" href="https://cv.cm/zh/"');
     }
   });
 });

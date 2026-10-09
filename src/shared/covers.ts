@@ -1,5 +1,5 @@
 import type { GameId } from "./games";
-import { localePath, type Locale } from "./locale";
+import type { Locale } from "./locale";
 import type { MarketId } from "./markets";
 import type { ToolId, TutorialId } from "./path";
 
@@ -383,12 +383,12 @@ export function coverUrl(path: string): string {
   return `https://cv.cm${path.split("?")[0]}`;
 }
 
-/** English diagrams live in /covers/tutorials/. Other locales use /covers/tutorials/{locale}/. */
+/** English diagrams live in /covers/tutorials/. Other locales use /covers/tutorials/{lowercase locale}/ (`zh-cn`, not the `/zh/` page path). */
 export function localizedTutorialSrc(src: string, locale: Locale): string {
   if (locale === "en" || !src.startsWith("/covers/tutorials/")) return src;
   const rest = src.slice("/covers/tutorials/".length);
   if (rest.includes("/")) return src;
-  return `/covers/tutorials/${localePath(locale)}/${rest}`;
+  return `/covers/tutorials/${locale.toLowerCase()}/${rest}`;
 }
 
 /** Built by scripts/make-thumbs.mjs (THUMB_WIDTHS there must match; tests check). 240 = 72px menu covers at 3x. */

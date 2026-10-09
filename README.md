@@ -7,8 +7,8 @@ Browser tools plus a tiny cloud clipboard.
 ## Tools
 
 - **Cloud clipboard** / 云剪切板 — text, images, video, files. Markdown / HTML / code. Gone after 10 views or 1 day. [Open](https://cv.cm/en/clip/)
-- **ID Watermark & Redact** / 身份证水印打码 — tile a for-use-only line with the date on ID copies, text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/) · [中文](https://cv.cm/zh-cn/watermark/)
-- **ID Watermark & Redact: mosaic** / 图片打马赛克 — drag boxes to pixelate faces or black out ID numbers, plates, QR codes. [Open](https://cv.cm/en/mosaic/) · [中文](https://cv.cm/zh-cn/mosaic/)
+- **ID Watermark & Redact** / 身份证水印打码 — tile a for-use-only line with the date on ID copies, text or logo, batch export, ZIP. [Open](https://cv.cm/en/watermark/) · [中文](https://cv.cm/zh/watermark/)
+- **ID Watermark & Redact: mosaic** / 图片打马赛克 — drag boxes to pixelate faces or black out ID numbers, plates, QR codes. [Open](https://cv.cm/en/mosaic/) · [中文](https://cv.cm/zh/mosaic/)
 - **Photo collage** / 图片拼图 — combine photos with layouts. [Open](https://cv.cm/en/collage/)
 - **Portrait camera sim** / 人像相机模拟 — aperture, shutter, ISO, lenses and filters on photoreal adult sitters. [Open](https://cv.cm/en/portrait-sim/)
 - **Image formats** / 图片格式 — PNG, JPG, WebP, AVIF, GIF, BMP, ICO. [Open](https://cv.cm/en/convert/)
@@ -90,7 +90,7 @@ Browser tools plus a tiny cloud clipboard.
 
 What this browser reports, read in the tab. Screen size, browser, and user agent show immediately. The IP address of the request appears only after a click and is not stored. No city lookup.
 
-- [My device](https://cv.cm/en/device/) / [我的设备](https://cv.cm/zh-cn/device/)
+- [My device](https://cv.cm/en/device/) / [我的设备](https://cv.cm/zh/device/)
 - [What is my IP address](https://cv.cm/en/device/ip/)
 - [What browser am I using](https://cv.cm/en/device/browser/)
 - [What is my screen resolution](https://cv.cm/en/device/screen-resolution/)
@@ -103,19 +103,19 @@ What this browser reports, read in the tab. Screen size, browser, and user agent
 
 Retro emulator games in the browser, grouped by console and genre. Cheats (金手指), a short walkthrough, and FAQ on every game page. Play uses [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) cores on S3. Shiru freeware (Alter Ego, Lawn Mower) starts immediately. Commercial dumps are not hosted — load a ROM you already have; it stays in this tab.
 
-- [All games](https://cv.cm/en/games/) / [全部游戏](https://cv.cm/zh-cn/games/)
-- [FC / NES](https://cv.cm/zh-cn/games/fc/) — Contra, Super Mario Bros, Battle City
-- [SFC / SNES](https://cv.cm/zh-cn/games/sfc/)
-- [Game Boy](https://cv.cm/zh-cn/games/gb/)
-- [GBA](https://cv.cm/zh-cn/games/gba/)
-- [Mega Drive](https://cv.cm/zh-cn/games/md/)
+- [All games](https://cv.cm/en/games/) / [全部游戏](https://cv.cm/zh/games/)
+- [FC / NES](https://cv.cm/zh/games/fc/) — Contra, Super Mario Bros, Battle City
+- [SFC / SNES](https://cv.cm/zh/games/sfc/)
+- [Game Boy](https://cv.cm/zh/games/gb/)
+- [GBA](https://cv.cm/zh/games/gba/)
+- [Mega Drive](https://cv.cm/zh/games/md/)
 - [Alter Ego (freeware)](https://cv.cm/en/games/fc/alter-ego/)
 
 ## Lessons
 
 Illustrated how-tos that finish in the browser: QR and barcode, merge / compress / split PDF, image conversion, crop, rotate, resize, watermark, strip EXIF, MP3 to WAV, join audio, favicon, signature PNG, screenshot marks, invoice PDF, a strong password, JSON formatting, Base64, Unix time, reading a JWT, business days, fractions, hourly pay, time zones, profit margin, number bases, durations, percentages, day counts, date shifts, ISO weeks, and VAT. Each lesson is a complete job with diagrams, a tool link when the file work starts, and a check at the end. Copy ships in all eight locales.
 
-- [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh-cn/learn/)
+- [All tutorials](https://cv.cm/en/learn/) / [全部教程](https://cv.cm/zh/learn/)
 - [How to make a QR code](https://cv.cm/en/learn/make-qr/)
 - [How to make a barcode](https://cv.cm/en/learn/make-barcode/)
 - [How to merge PDF files](https://cv.cm/en/learn/merge-pdf/)

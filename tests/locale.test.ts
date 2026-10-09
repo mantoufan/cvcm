@@ -74,7 +74,7 @@ describe("parseAppPath", () => {
       resizeJob: "compress-image",
     });
     expect(parseAppPath("/en/convert/nope/")).toEqual({ kind: "unknown" });
-    expect(appHref("zh-CN", "convert", null, "avif-to-jpg")).toBe("/zh-cn/convert/avif-to-jpg/");
+    expect(appHref("zh-CN", "convert", null, "avif-to-jpg")).toBe("/zh/convert/avif-to-jpg/");
     expect(parseAppPath("/en/convert/")).toEqual({
       kind: "app",
       locale: "en",
@@ -107,16 +107,18 @@ describe("parseAppPath", () => {
     expect(appHref("ko", null)).toBe("/ko/");
     expect(appHref("ja", "watermark")).toBe("/ja/watermark/");
     expect(appHref("en", "clip")).toBe("/en/clip/");
-    expect(appHref("zh-CN", null)).toBe("/zh-cn/");
+    expect(appHref("zh-CN", null)).toBe("/zh/");
     expect(appHref("zh-TW", "watermark")).toBe("/zh-tw/watermark/");
-    expect(learnHref("zh-CN", "portrait")).toBe("/zh-cn/learn/portrait/");
+    expect(learnHref("zh-CN", "portrait")).toBe("/zh/learn/portrait/");
   });
 
   it("accepts mixed-case locale and tool segments", () => {
     expect(parseLocale("zh-cn")).toBe("zh-CN");
     expect(parseLocale("ZH-TW")).toBe("zh-TW");
-    expect(localePath("zh-CN")).toBe("zh-cn");
-    expect(parseAppPath("/zh-cn/")).toEqual({ kind: "app", locale: "zh-CN", tool: null });
+    expect(parseLocale("zh")).toBe("zh-CN");
+    expect(localePath("zh-CN")).toBe("zh");
+    expect(localePath("zh-TW")).toBe("zh-tw");
+    expect(parseAppPath("/zh/")).toEqual({ kind: "app", locale: "zh-CN", tool: null });
     expect(parseAppPath("/ZH-CN/QR/")).toEqual({ kind: "app", locale: "zh-CN", tool: "qr" });
     expect(parseAppPath("/zh-TW/Learn/Portrait/")).toEqual({
       kind: "learn",
@@ -146,7 +148,7 @@ describe("lowercase locale redirects", () => {
   it("301s mixed-case Chinese paths onto lowercase canonical URLs", async () => {
     const home = await worker.fetch(new Request("https://cv.cm/zh-CN/"), { ASSETS: assets });
     expect(home.status).toBe(301);
-    expect(home.headers.get("Location")).toBe("https://cv.cm/zh-cn/");
+    expect(home.headers.get("Location")).toBe("https://cv.cm/zh/");
 
     const tool = await worker.fetch(new Request("https://cv.cm/zh-TW/watermark/"), { ASSETS: assets });
     expect(tool.status).toBe(301);
@@ -157,11 +159,27 @@ describe("lowercase locale redirects", () => {
     expect(mixed.headers.get("Location")).toBe("https://cv.cm/en/qr/");
   });
 
+  it("301s legacy /zh-cn/ URLs onto /zh/ and keeps the query", async () => {
+    const cases: [string, string][] = [
+      ["https://cv.cm/zh-cn/", "https://cv.cm/zh/"],
+      ["https://cv.cm/zh-cn/watermark/?ref=x", "https://cv.cm/zh/watermark/?ref=x"],
+      ["https://cv.cm/zh-cn/convert/avif-to-jpg/", "https://cv.cm/zh/convert/avif-to-jpg/"],
+      ["https://cv.cm/zh-cn/learn/make-qr/", "https://cv.cm/zh/learn/make-qr/"],
+      ["https://cv.cm/zh-cn/games/fc/", "https://cv.cm/zh/games/fc/"],
+      ["https://cv.cm/zh-cn/device/", "https://cv.cm/zh/device/"],
+    ];
+    for (const [from, to] of cases) {
+      const res = await worker.fetch(new Request(from), { ASSETS: assets });
+      expect(res.status, from).toBe(301);
+      expect(res.headers.get("Location"), from).toBe(to);
+    }
+  });
+
   it("serves the lowercase canonical path", async () => {
-    const res = await worker.fetch(new Request("https://cv.cm/zh-cn/"), { ASSETS: assets });
+    const res = await worker.fetch(new Request("https://cv.cm/zh/"), { ASSETS: assets });
     const body = await res.text();
     expect(res.status).toBe(200);
     expect(body).toContain('lang="zh-CN"');
-    expect(body).toContain('content="https://cv.cm/zh-cn/"');
+    expect(body).toContain('content="https://cv.cm/zh/"');
   });
 });

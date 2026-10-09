@@ -111,7 +111,7 @@ describe("seo helpers", () => {
     expect(pageTitle("en", "merge-pdf")).toMatch(/combine PDF/i);
     expect(pageTitle("en", "compress-pdf")).toMatch(/PDF compressor/i);
     expect(pageDescription("en", "clip")).toMatch(/Pastebin/i);
-    expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh-cn/watermark/");
+    expect(pageCanonical("zh-CN", "watermark")).toBe("https://cv.cm/zh/watermark/");
   });
 
   it("lays out identity-privacy keywords on the watermark FAQ", () => {
@@ -146,10 +146,13 @@ describe("seo helpers", () => {
     expect(out).toContain('id="howto-jsonld"');
     expect(out).toContain("HowTo");
     expect(out).toContain('lang="en"');
-    expect(out).toContain('hreflang="zh-CN" href="https://cv.cm/zh-cn/convert/"');
+    expect(out).toContain('hreflang="zh" href="https://cv.cm/zh/convert/"');
+    expect(out).toContain('hreflang="zh-HK" href="https://cv.cm/zh-tw/convert/"');
+    expect(applyHtmlSeo(html, "zh-CN", "convert")).toContain('lang="zh-CN"');
     expect(out).toContain('hreflang="x-default" href="https://cv.cm/en/convert/"');
     const again = applyHtmlSeo(out, "en", "qr");
     expect(again.match(/hreflang="en"/g)).toHaveLength(1);
+    expect(again.match(/hreflang="zh-HK"/g)).toHaveLength(1);
     expect(again).toContain('hreflang="en" href="https://cv.cm/en/qr/"');
   });
 });
@@ -229,9 +232,9 @@ describe("worker html seo", () => {
     expect(tool).toContain("<h1>HEIC to JPG converter</h1>");
     expect(tool).toContain("<h2>Why is the preview blank?</h2>");
     expect(tool).toContain('<a href="/en/">');
-    const home = await (await worker.fetch(new Request("https://cv.cm/zh-cn/"), { ASSETS: assets })).text();
-    expect(home).toContain('<a href="/zh-cn/qr/">');
-    expect(home).toContain('<a href="/zh-cn/learn/">');
+    const home = await (await worker.fetch(new Request("https://cv.cm/zh/"), { ASSETS: assets })).text();
+    expect(home).toContain('<a href="/zh/qr/">');
+    expect(home).toContain('<a href="/zh/learn/">');
     expect(home).not.toContain('<div id="app"></div>');
   });
 });

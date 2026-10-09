@@ -151,7 +151,7 @@ describe("learn SEO", () => {
     expect(pageTitle("zh-CN", { learn: true, tutorial: "mosaic-photo" })).toMatch(/马赛克/);
     expect(pageTitle("zh-CN", { learn: true, tutorial: "watermark-id-copy" })).toMatch(/身份证/);
     expect(pageCanonical("zh-CN", { learn: true, tutorial: "make-qr" })).toBe(
-      "https://cv.cm/zh-cn/learn/make-qr/",
+      "https://cv.cm/zh/learn/make-qr/",
     );
     const out = applyHtmlSeo(html, "en", { learn: true, tutorial: "merge-pdf" });
     expect(out).toContain("How to merge PDF");
@@ -171,13 +171,13 @@ describe("learn sitemap", () => {
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
-    expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
+    expect(xml).toContain("https://cv.cm/zh/convert/png-to-webp/");
     expect(FEATURED_TUTORIALS).toHaveLength(55);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
-    expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");
-    expect(xml).toContain("https://cv.cm/zh-cn/learn/heic-to-jpg/");
-    expect(xml).not.toContain("https://cv.cm/zh-cn/learn/phone-photos/");
+    expect(xml).toContain("https://cv.cm/zh/learn/read-jwt/");
+    expect(xml).toContain("https://cv.cm/zh/learn/heic-to-jpg/");
+    expect(xml).not.toContain("https://cv.cm/zh/learn/phone-photos/");
     expect(xml).not.toContain("https://cv.cm/en/learn/algorithms/");
     expect(TUTORIALS).toContain("phone-photos");
   });

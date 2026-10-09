@@ -20,7 +20,7 @@ function shape(value: unknown): unknown {
 describe("legal pages", () => {
   it("parses locale and bare paths", () => {
     expect(parseAppPath("/en/privacy/")).toEqual({ kind: "legal", locale: "en", page: "privacy" });
-    expect(parseAppPath("/zh-cn/terms")).toEqual({ kind: "legal", locale: "zh-CN", page: "terms" });
+    expect(parseAppPath("/zh/terms")).toEqual({ kind: "legal", locale: "zh-CN", page: "terms" });
     expect(parseAppPath("/privacy/")).toEqual({ kind: "bare-legal", page: "privacy" });
     expect(parseAppPath("/terms")).toEqual({ kind: "bare-legal", page: "terms" });
     expect(parseAppPath("/en/privacy/x/")).toEqual({ kind: "unknown" });
@@ -50,7 +50,7 @@ describe("legal pages", () => {
     const html = applyHtmlSeo(SHELL, "ja", { legalPage: "privacy" });
     expect(html).toContain(`<title>${pageTitle("ja", { legalPage: "privacy" })}</title>`);
     expect(html).toContain('<link rel="canonical" href="https://cv.cm/ja/privacy/"');
-    expect(html).toContain('hreflang="zh-CN" href="https://cv.cm/zh-cn/privacy/"');
+    expect(html).toContain('hreflang="zh" href="https://cv.cm/zh/privacy/"');
     expect(html).toContain('id="breadcrumb-jsonld"');
     expect(html).not.toContain('id="faq-jsonld"');
     expect(html).not.toContain('id="howto-jsonld"');

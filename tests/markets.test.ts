@@ -36,7 +36,7 @@ const BANNED = ["立即购买", "交易所", "钱包", "开户", "实时金价",
 describe("markets routes", () => {
   it("parses the hub and the three tools", () => {
     expect(parseAppPath("/en/markets/")).toEqual({ kind: "markets", locale: "en", market: null });
-    expect(parseAppPath("/zh-cn/markets/gold/")).toEqual({ kind: "markets", locale: "zh-CN", market: "gold" });
+    expect(parseAppPath("/zh/markets/gold/")).toEqual({ kind: "markets", locale: "zh-CN", market: "gold" });
     expect(parseAppPath("/markets/silver")).toEqual({ kind: "bare-markets", market: "silver" });
     expect(parseAppPath("/en/markets/btc/").kind).toBe("unknown");
     expect(parseAppPath("/en/markets/oil/").kind).toBe("unknown");
@@ -90,8 +90,8 @@ describe("markets routes", () => {
   it("points hreflang at the gold page", () => {
     const links = hreflangAlternates("gold");
     expect(links.find((link) => link.hreflang === "x-default")?.href).toBe("https://cv.cm/en/gold/");
-    expect(links.find((link) => link.hreflang === "zh-CN")?.href).toBe("https://cv.cm/zh-cn/gold/");
-    expect(links).toHaveLength(LOCALES.length + 1);
+    expect(links.find((link) => link.hreflang === "zh")?.href).toBe("https://cv.cm/zh/gold/");
+    expect(links).toHaveLength(LOCALES.length + 2);
     expect(pageTitle("en", "gold")).toMatch(/troy ounce/i);
     expect(pageTitle("en", "oil")).toMatch(/barrel/i);
     const out = applyHtmlSeo(html, "zh-CN", "gold");

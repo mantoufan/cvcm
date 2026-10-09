@@ -5,10 +5,13 @@ import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appH
 
 export const SITE_ORIGIN = "https://cv.cm";
 
-/** hreflang stays BCP 47 (`zh-CN`); public URL paths are lowercase (`/zh-cn/`). */
+/**
+ * hreflang per locale. Simplified Chinese is plain `zh` so it serves Chinese searchers in every
+ * region except Taiwan/Hong Kong, which get the Traditional pages (see EXTRA_HREFLANG).
+ */
 export const HREFLANG: Record<Locale, string> = {
   en: "en",
-  "zh-CN": "zh-CN",
+  "zh-CN": "zh",
   "zh-TW": "zh-TW",
   ja: "ja",
   ko: "ko",
@@ -16,6 +19,11 @@ export const HREFLANG: Record<Locale, string> = {
   id: "id",
   es: "es",
 };
+
+/** Extra hreflang tags that point at an existing locale's page. */
+export const EXTRA_HREFLANG: { hreflang: string; locale: Locale }[] = [
+  { hreflang: "zh-HK", locale: "zh-TW" },
+];
 
 export type SitemapPage =
   | { locale: Locale; kind: "home" }
@@ -80,6 +88,9 @@ function alternateLinks(page: SitemapPage): string {
     const href = xmlAttr(pathFor(locale, page));
     return `    <xhtml:link rel="alternate" hreflang="${HREFLANG[locale]}" href="${href}"/>`;
   });
+  for (const extra of EXTRA_HREFLANG) {
+    links.push(`    <xhtml:link rel="alternate" hreflang="${extra.hreflang}" href="${xmlAttr(pathFor(extra.locale, page))}"/>`);
+  }
   const fallback = xmlAttr(pathFor(DEFAULT_LOCALE, page));
   links.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${fallback}"/>`);
   return links.join("\n");

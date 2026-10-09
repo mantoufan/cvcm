@@ -9,7 +9,7 @@ import { legalBreadcrumbJsonLd, legalPageCopy, legalStaticHtml } from "./legal";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
-import { HREFLANG } from "./sitemap";
+import { EXTRA_HREFLANG, HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, legalHref, marketsHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
@@ -427,6 +427,9 @@ export function hreflangAlternates(
     hreflang: HREFLANG[locale],
     href: pageCanonical(locale, seo),
   }));
+  for (const extra of EXTRA_HREFLANG) {
+    links.push({ hreflang: extra.hreflang, href: pageCanonical(extra.locale, seo) });
+  }
   links.push({ hreflang: "x-default", href: pageCanonical(DEFAULT_LOCALE, seo) });
   return links;
 }
@@ -659,7 +662,7 @@ export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string,
     description: pageDescription(locale, tool),
     url: pageCanonical(locale, tool),
     image: coverUrl(TOOL_COVER[tool]),
-    inLanguage: HREFLANG[locale],
+    inLanguage: locale,
     applicationCategory: IMAGE_TOOLS.has(tool) ? "MultimediaApplication" : "UtilitiesApplication",
     operatingSystem: "Web",
     browserRequirements: "Requires JavaScript",
