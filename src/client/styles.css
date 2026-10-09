@@ -1547,3 +1547,19 @@ body {
 .pad-btn::after { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--line); }
 .pad-btn.on::after { background: var(--white); }
 .stage-actions .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Privacy policy and terms */
+.legal { max-width: 46rem; margin: 0 auto; }
+.legal h1 { margin: 0.6rem 0 0.2rem; }
+.legal-date { margin: 0 0 0.8rem; color: var(--ink-soft); font-size: 0.86rem; }
+.legal section { margin-top: 1.4rem; }
+.legal h2 { font-size: 1.05rem; margin: 0 0 0.4rem; }
+.legal p, .legal li { line-height: 1.7; overflow-wrap: anywhere; }
+.legal p { margin: 0.4rem 0 0; }
+.legal ul { margin: 0.4rem 0 0; padding-left: 1.3rem; }
+.legal a { color: var(--pink-deep); }
+.legal-other { margin-top: 1.8rem; }
+.foot p { margin: 0; }
+.foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1rem; margin-top: 0.4rem; }
+.foot-links a { color: var(--ink-soft); }
+.foot-links a:hover { color: var(--pink-deep); }

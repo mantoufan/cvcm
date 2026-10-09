@@ -1,0 +1,186 @@
+{
+  "privacy": "Chính sách quyền riêng tư",
+  "terms": "Điều khoản dịch vụ",
+  "crumbHome": "Trang chủ",
+  "updated": "Cập nhật lần cuối",
+  "pages": {
+    "privacy": {
+      "name": "Chính sách quyền riêng tư",
+      "title": "Chính sách quyền riêng tư | cv.cm",
+      "description": "cv.cm lưu trữ những gì, trong bao lâu, và những gì không bao giờ rời khỏi trình duyệt của bạn. Không tài khoản, không quảng cáo, không trình theo dõi phân tích.",
+      "h1": "Chính sách quyền riêng tư",
+      "lede": "cv.cm là bộ công cụ trình duyệt miễn phí kèm một bộ nhớ tạm đám mây tồn tại trong thời gian ngắn. Trang này giải thích trang web xử lý những dữ liệu nào, dữ liệu đi đâu và được giữ trong bao lâu.",
+      "sections": [
+        {
+          "h": "Ai vận hành cv.cm",
+          "p": [
+            "cv.cm (https://cv.cm) do đội ngũ cv.cm vận hành. Hãy gửi email đến m@cv.cm cho mọi câu hỏi hoặc yêu cầu về quyền riêng tư. Mã nguồn được công khai tại github.com/mantoufan/cvcm theo Giấy phép MIT, vì vậy bạn có thể tự kiểm tra cách trang web xử lý dữ liệu."
+          ]
+        },
+        {
+          "h": "Các công cụ chạy trong trình duyệt của bạn",
+          "p": [
+            "Các công cụ hình ảnh, PDF, âm thanh, văn bản, dữ liệu và máy tính xử lý dữ liệu đầu vào ngay trong trang bằng Web API. Tệp và văn bản bạn mở trong các công cụ này không được tải lên máy chủ của chúng tôi. Khi bạn đóng tab, chúng sẽ bị loại bỏ.",
+            "Điều này cũng áp dụng cho các tệp ROM trò chơi hoặc SWF mà bạn tải từ thiết bị của mình vào trình chơi game."
+          ]
+        },
+        {
+          "h": "Bộ nhớ tạm đám mây",
+          "p": [
+            "Bộ nhớ tạm là tính năng duy nhất lưu nội dung của bạn ở phía chúng tôi. Văn bản ghi chú được lưu trong cơ sở dữ liệu của chúng tôi trên Cloudflare D1. Tệp đính kèm được tải lên kho lưu trữ đối tượng của chúng tôi tại s3.cv.cm."
+          ],
+          "li": [
+            "Một ghi chú sẽ bị xóa sau 10 lượt xem hoặc 24 giờ, tùy điều kiện nào đến trước. Các tệp của ghi chú sẽ bị xóa trong lần dọn dẹp tiếp theo.",
+            "Bất kỳ ai có liên kết hoặc mã ngắn đều có thể mở ghi chú. Không có tài khoản, mật khẩu hay danh sách ghi chú công khai.",
+            "Văn bản giới hạn 64 KB và mỗi tệp giới hạn 32 MB.",
+            "Chúng tôi không đọc ghi chú, trừ khi phải xem xét nội dung bị báo cáo lạm dụng hoặc phản hồi yêu cầu pháp lý.",
+            "Không đưa mật khẩu, số giấy tờ tùy thân hoặc dữ liệu cá nhân nhạy cảm khác vào ghi chú."
+          ]
+        },
+        {
+          "h": "Địa chỉ IP và giới hạn chống lạm dụng",
+          "p": [
+            "Để giới hạn tần suất sử dụng bộ nhớ tạm, máy chủ lưu một giá trị băm SHA-256 của địa chỉ IP của bạn cùng với bộ đếm yêu cầu. Máy chủ không lưu chính địa chỉ đó, và bộ đếm sẽ bị xóa trong khoảng hai giờ.",
+            "Trang địa chỉ IP trong mục Thiết bị chỉ hiển thị IP công khai cho chính bạn. Địa chỉ này chỉ được đọc để trả về phản hồi đó và không được lưu lại."
+          ]
+        },
+        {
+          "h": "Lưu trữ và nhật ký máy chủ",
+          "p": [
+            "cv.cm được phân phối qua Cloudflare. Để cung cấp và bảo vệ trang web, Cloudflare xử lý dữ liệu yêu cầu như địa chỉ IP, user agent của trình duyệt và URL được yêu cầu theo chính sách quyền riêng tư riêng của Cloudflare. Máy chủ lưu trữ của chúng tôi tại s3.cv.cm giữ nhật ký máy chủ web tiêu chuẩn (địa chỉ IP, thời gian, đường dẫn được yêu cầu) phục vụ bảo mật và khắc phục sự cố. Chúng tôi không dùng các nhật ký này để lập hồ sơ người dùng."
+          ]
+        },
+        {
+          "h": "Cookie và bộ nhớ cục bộ",
+          "p": [
+            "cv.cm đặt một cookie duy nhất, cvcm_locale, để ghi nhớ ngôn ngữ của bạn trong một năm. Lựa chọn này cùng một vài cài đặt công cụ (ví dụ: các thiết lập sẵn của trình mô phỏng chụp chân dung) được lưu trong bộ nhớ cục bộ của trình duyệt. Bạn có thể xóa chúng trong phần cài đặt trình duyệt bất cứ lúc nào."
+          ],
+          "li": [
+            "Không có cookie quảng cáo.",
+            "Không có tập lệnh phân tích hay trình theo dõi của bên thứ ba.",
+            "Không có pixel mạng xã hội."
+          ]
+        },
+        {
+          "h": "Những điều chúng tôi không làm",
+          "p": [
+            "Chúng tôi không bán hoặc cho thuê dữ liệu cá nhân, không chia sẻ dữ liệu cho mục đích quảng cáo và không dùng nội dung của bạn để huấn luyện mô hình AI. Chúng tôi chỉ chia sẻ dữ liệu khi pháp luật yêu cầu."
+          ]
+        },
+        {
+          "h": "Trẻ em",
+          "p": [
+            "cv.cm là trang web dành cho công chúng nói chung và không hướng đến trẻ em dưới 13 tuổi. Chúng tôi không cố ý thu thập dữ liệu cá nhân của trẻ em. Nếu bạn cho rằng một trẻ em đã đăng dữ liệu cá nhân trong một ghi chú, hãy gửi email cho chúng tôi và chúng tôi sẽ xóa dữ liệu đó."
+          ]
+        },
+        {
+          "h": "Quyền của bạn",
+          "p": [
+            "Tùy theo nơi bạn sinh sống, các luật như GDPR, CCPA hoặc Luật Bảo vệ thông tin cá nhân của Trung Quốc (PIPL) có thể trao cho bạn quyền truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân của mình. Vì cv.cm không có tài khoản, chúng tôi thường không thể liên kết dữ liệu đã lưu với một cá nhân cụ thể. Nếu bạn muốn xóa một ghi chú trước khi nó hết hạn, hãy gửi cho chúng tôi liên kết của ghi chú đó. Với các yêu cầu khác, hãy gửi email đến m@cv.cm và chúng tôi sẽ phản hồi trong vòng 30 ngày."
+          ]
+        },
+        {
+          "h": "Thay đổi chính sách này",
+          "p": [
+            "Nếu chúng tôi thay đổi cách cv.cm xử lý dữ liệu, chúng tôi sẽ cập nhật trang này và ngày ở đầu trang. Các thay đổi quan trọng có hiệu lực kể từ khi được đăng."
+          ]
+        },
+        {
+          "h": "Liên hệ",
+          "p": [
+            "Câu hỏi và yêu cầu về quyền riêng tư: m@cv.cm."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "name": "Điều khoản dịch vụ",
+      "title": "Điều khoản dịch vụ | cv.cm",
+      "description": "Quy định sử dụng cv.cm: công cụ trình duyệt miễn phí, bộ nhớ tạm đám mây tự xóa ghi chú sau 10 lượt xem hoặc 24 giờ, và trình chơi game homebrew.",
+      "h1": "Điều khoản dịch vụ",
+      "lede": "Các điều khoản này áp dụng cho việc bạn sử dụng cv.cm. Khi sử dụng trang web, bạn đồng ý với các điều khoản này. Nếu không đồng ý, vui lòng không sử dụng cv.cm.",
+      "sections": [
+        {
+          "h": "Dịch vụ",
+          "p": [
+            "cv.cm cung cấp các công cụ trình duyệt miễn phí, bộ nhớ tạm đám mây tạm thời, hướng dẫn và trình chơi các trò chơi được phép phân phối lại. Không cần tài khoản. Chúng tôi có thể thay đổi, tạm dừng hoặc chấm dứt bất kỳ phần nào của dịch vụ vào bất cứ lúc nào, có hoặc không có thông báo."
+          ]
+        },
+        {
+          "h": "Nội dung của bạn",
+          "p": [
+            "Bạn giữ mọi quyền đối với văn bản và tệp bạn đưa vào cv.cm, và bạn chịu trách nhiệm về chúng. Khi tạo một ghi chú trong bộ nhớ tạm, bạn cho phép chúng tôi lưu trữ và hiển thị ghi chú đó cho bất kỳ ai có liên kết cho đến khi nó hết hạn. Nội dung chỉ được xử lý trong trình duyệt của bạn sẽ không bao giờ đến được chỗ chúng tôi."
+          ]
+        },
+        {
+          "h": "Sử dụng được chấp nhận",
+          "p": [
+            "Không sử dụng cv.cm để:"
+          ],
+          "li": [
+            "chia sẻ nội dung bất hợp pháp, bao gồm mọi nội dung bóc lột tình dục trẻ vị thành niên;",
+            "phát tán phần mềm độc hại, trang lừa đảo đánh cắp thông tin (phishing) hoặc các trò lừa đảo;",
+            "chia sẻ nội dung vi phạm bản quyền, nhãn hiệu hoặc quyền riêng tư của người khác;",
+            "chia sẻ dữ liệu cá nhân của người khác khi chưa có sự đồng ý của họ, hoặc quấy rối bất kỳ ai;",
+            "gửi thư rác, hoặc dùng bộ nhớ tạm làm nơi lưu trữ tệp lâu dài;",
+            "tấn công, gây quá tải, thu thập dữ liệu với khối lượng lớn hoặc vượt qua các giới hạn của trang web."
+          ]
+        },
+        {
+          "h": "Thực thi",
+          "p": [
+            "Chúng tôi có thể xóa bất kỳ ghi chú nào và chặn truy cập từ bất kỳ mạng nào vi phạm các điều khoản này. Khi pháp luật yêu cầu, chúng tôi có thể báo cáo nội dung bất hợp pháp cho cơ quan chức năng."
+          ]
+        },
+        {
+          "h": "Trò chơi và tài liệu của bên thứ ba",
+          "p": [
+            "Chúng tôi chỉ lưu trữ các trò chơi homebrew, phần mềm miễn phí (freeware) và mã nguồn mở mà tác giả cho phép chia sẻ, theo giấy phép riêng của từng trò chơi. Chúng tôi không lưu trữ ROM hoặc tệp SWF thương mại. Chỉ tải những tệp mà bạn có quyền sử dụng. Nhãn hiệu và tên trò chơi thuộc về chủ sở hữu tương ứng."
+          ]
+        },
+        {
+          "h": "Kết quả chỉ mang tính tham khảo",
+          "p": [
+            "Các công cụ tính toán, chuyển đổi, công cụ tài sản và hướng dẫn chỉ cung cấp thông tin chung. Chúng không phải là tư vấn tài chính, thuế, y tế hay pháp lý, và các công cụ tài sản không hiển thị giá thị trường theo thời gian thực. Công cụ chữ ký tạo ra một hình ảnh, không phải chữ ký điện tử có giá trị pháp lý ràng buộc. Hãy kiểm tra lại mọi kết quả quan trọng trước khi dựa vào đó."
+          ]
+        },
+        {
+          "h": "Khiếu nại bản quyền",
+          "p": [
+            "Nếu bạn cho rằng nội dung trên cv.cm vi phạm quyền của mình, hãy gửi email đến m@cv.cm kèm liên kết, mô tả tác phẩm và thông tin liên hệ của bạn. Chúng tôi sẽ xem xét và nhanh chóng gỡ bỏ nội dung vi phạm."
+          ]
+        },
+        {
+          "h": "Mã nguồn mở",
+          "p": [
+            "Mã nguồn của cv.cm được cung cấp theo Giấy phép MIT. Giấy phép đó áp dụng cho mã nguồn. Các điều khoản này áp dụng cho dịch vụ được vận hành tại cv.cm."
+          ]
+        },
+        {
+          "h": "Không bảo đảm",
+          "p": [
+            "cv.cm được cung cấp \"nguyên trạng\" và \"tùy theo khả năng sẵn có\", không kèm bất kỳ bảo đảm nào, trong phạm vi pháp luật cho phép. Ghi chú bị xóa theo lịch và có thể bị mất sớm hơn do lỗi hoặc sự cố gián đoạn. Hãy tự lưu bản sao cho mọi nội dung quan trọng."
+          ]
+        },
+        {
+          "h": "Giới hạn trách nhiệm",
+          "p": [
+            "Trong phạm vi pháp luật cho phép, cv.cm không chịu trách nhiệm đối với bất kỳ thiệt hại gián tiếp, ngẫu nhiên, đặc biệt hoặc hệ quả nào, hay việc mất dữ liệu hoặc lợi nhuận, phát sinh từ việc bạn sử dụng trang web. Tổng trách nhiệm của chúng tôi đối với bất kỳ khiếu nại nào được giới hạn ở mức USD 50. Không điều nào trong các điều khoản này giới hạn những quyền mà luật bảo vệ người tiêu dùng tại quốc gia của bạn không cho phép giới hạn."
+          ]
+        },
+        {
+          "h": "Thay đổi các điều khoản này",
+          "p": [
+            "Chúng tôi có thể cập nhật các điều khoản này. Ngày ở đầu trang cho biết phiên bản mới nhất. Nếu bạn tiếp tục sử dụng cv.cm sau khi có thay đổi, bạn chấp nhận các điều khoản đã cập nhật."
+          ]
+        },
+        {
+          "h": "Liên hệ",
+          "p": [
+            "Câu hỏi về các điều khoản này: m@cv.cm."
+          ]
+        }
+      ]
+    }
+  }
+}

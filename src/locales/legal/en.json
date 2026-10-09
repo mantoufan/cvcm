@@ -1,0 +1,186 @@
+{
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "crumbHome": "Home",
+  "updated": "Last updated",
+  "pages": {
+    "privacy": {
+      "name": "Privacy Policy",
+      "title": "Privacy Policy | cv.cm",
+      "description": "What cv.cm stores, for how long, and what never leaves your browser. No accounts, no ads, no analytics trackers.",
+      "h1": "Privacy Policy",
+      "lede": "cv.cm is a free set of browser tools and a short-lived cloud clipboard. This page explains what data the site handles, where it goes, and how long it stays.",
+      "sections": [
+        {
+          "h": "Who runs cv.cm",
+          "p": [
+            "cv.cm (https://cv.cm) is run by the cv.cm team. Email m@cv.cm for any privacy question or request. The source code is public at github.com/mantoufan/cvcm under the MIT License, so you can check how the site handles data."
+          ]
+        },
+        {
+          "h": "Tools that run in your browser",
+          "p": [
+            "Image, PDF, audio, text, data, and calculator tools process your input in the page with Web APIs. The files and text you open in them are not uploaded to our servers. Closing the tab discards them.",
+            "The same applies to game ROM or SWF files you load from your own device in the games player."
+          ]
+        },
+        {
+          "h": "Cloud clipboard",
+          "p": [
+            "The clipboard is the one feature that stores your content on our side. Note text is kept in our database on Cloudflare D1. Attached files are uploaded to our object storage at s3.cv.cm."
+          ],
+          "li": [
+            "A note is deleted after 10 views or 24 hours, whichever comes first. Its files are removed in the next cleanup run.",
+            "Anyone who has the link or the short code can open the note. There is no account, password, or public list of notes.",
+            "Text is limited to 64 KB and each file to 32 MB.",
+            "We do not read notes, except when we must review content reported for abuse or respond to a legal request.",
+            "Do not put passwords, ID numbers, or other sensitive personal data in a note."
+          ]
+        },
+        {
+          "h": "IP addresses and abuse limits",
+          "p": [
+            "To rate-limit the clipboard, the server stores a SHA-256 hash of your IP address with a request counter. It does not store the address itself, and the counter is deleted within about two hours.",
+            "The IP address page under Device shows your public IP to you only. It is read for that response and not stored."
+          ]
+        },
+        {
+          "h": "Hosting and server logs",
+          "p": [
+            "cv.cm is served by Cloudflare. To deliver and protect the site, Cloudflare processes request data such as IP address, browser user agent, and requested URL under its own privacy policy. Our storage server at s3.cv.cm keeps standard web server logs (IP address, time, requested path) for security and troubleshooting. We do not use these logs to build profiles."
+          ]
+        },
+        {
+          "h": "Cookies and local storage",
+          "p": [
+            "cv.cm sets one cookie, cvcm_locale, which remembers your language for one year. The same choice and a few tool settings (for example, portrait simulator presets) are kept in your browser's local storage. You can clear them in your browser settings at any time."
+          ],
+          "li": [
+            "No advertising cookies.",
+            "No analytics scripts or third-party trackers.",
+            "No social media pixels."
+          ]
+        },
+        {
+          "h": "What we do not do",
+          "p": [
+            "We do not sell or rent personal data, do not share it for advertising, and do not use your content to train AI models. We share data only when the law requires it."
+          ]
+        },
+        {
+          "h": "Children",
+          "p": [
+            "cv.cm is a general audience site and is not directed at children under 13. We do not knowingly collect personal data from children. If you believe a child has posted personal data in a note, email us and we will delete it."
+          ]
+        },
+        {
+          "h": "Your rights",
+          "p": [
+            "Depending on where you live, laws such as the GDPR, the CCPA, or China's PIPL may give you rights to access, correct, or delete your personal data. Because cv.cm has no accounts, we usually cannot link stored data to a person. If you want a note removed before it expires, send us its link. For other requests, email m@cv.cm and we will reply within 30 days."
+          ]
+        },
+        {
+          "h": "Changes to this policy",
+          "p": [
+            "If we change how cv.cm handles data, we will update this page and the date at the top. Material changes take effect when posted."
+          ]
+        },
+        {
+          "h": "Contact",
+          "p": [
+            "Privacy questions and requests: m@cv.cm."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "name": "Terms of Service",
+      "title": "Terms of Service | cv.cm",
+      "description": "Rules for using cv.cm: free browser tools, a cloud clipboard that deletes notes after 10 views or 24 hours, and a homebrew game player.",
+      "h1": "Terms of Service",
+      "lede": "These terms cover your use of cv.cm. By using the site, you agree to them. If you do not agree, please do not use cv.cm.",
+      "sections": [
+        {
+          "h": "The service",
+          "p": [
+            "cv.cm offers free browser tools, a temporary cloud clipboard, tutorials, and a player for redistributable games. No account is needed. We may change, pause, or end any part of the service at any time, with or without notice."
+          ]
+        },
+        {
+          "h": "Your content",
+          "p": [
+            "You keep all rights to the text and files you put into cv.cm, and you are responsible for them. When you create a clipboard note, you let us store it and show it to anyone with its link until it expires. Content processed only in your browser never reaches us."
+          ]
+        },
+        {
+          "h": "Acceptable use",
+          "p": [
+            "Do not use cv.cm to:"
+          ],
+          "li": [
+            "share illegal content, including any content that sexually exploits minors;",
+            "spread malware, phishing pages, or scams;",
+            "share content that infringes someone else's copyright, trademark, or privacy;",
+            "share personal data of other people without their consent, or harass anyone;",
+            "send spam, or use the clipboard as permanent file hosting;",
+            "attack, overload, scrape at high volume, or bypass the limits of the site."
+          ]
+        },
+        {
+          "h": "Enforcement",
+          "p": [
+            "We may delete any note and block access from any network that breaks these terms. Where the law requires it, we may report illegal content to the authorities."
+          ]
+        },
+        {
+          "h": "Games and third-party material",
+          "p": [
+            "We host only homebrew, freeware, and open-source games that their authors allow to be shared, under their own licenses. We do not host commercial ROMs or SWF files. Load only files you have the right to use. Trademarks and game names belong to their owners."
+          ]
+        },
+        {
+          "h": "Results are for information",
+          "p": [
+            "Calculators, converters, asset tools, and tutorials give general information only. They are not financial, tax, medical, or legal advice, and the asset tools do not show live market quotes. The signature tool makes an image, not a legally binding electronic signature. Check any result that matters before you rely on it."
+          ]
+        },
+        {
+          "h": "Copyright complaints",
+          "p": [
+            "If you believe content on cv.cm infringes your rights, email m@cv.cm with the link, a description of the work, and your contact details. We will review it and remove infringing content quickly."
+          ]
+        },
+        {
+          "h": "Open source",
+          "p": [
+            "The cv.cm source code is available under the MIT License. That license covers the code. These terms cover the hosted service at cv.cm."
+          ]
+        },
+        {
+          "h": "No warranty",
+          "p": [
+            "cv.cm is provided \"as is\" and \"as available\", without warranties of any kind, to the extent the law allows. Notes are deleted on schedule and can be lost earlier because of errors or outages. Keep your own copy of anything important."
+          ]
+        },
+        {
+          "h": "Limitation of liability",
+          "p": [
+            "To the extent the law allows, cv.cm is not liable for any indirect, incidental, special, or consequential damages, or for lost data or profits, arising from your use of the site. Our total liability for any claim is limited to USD 50. Nothing in these terms limits rights that consumer law in your country does not allow to be limited."
+          ]
+        },
+        {
+          "h": "Changes to these terms",
+          "p": [
+            "We may update these terms. The date at the top shows the latest version. If you keep using cv.cm after a change, you accept the updated terms."
+          ]
+        },
+        {
+          "h": "Contact",
+          "p": [
+            "Questions about these terms: m@cv.cm."
+          ]
+        }
+      ]
+    }
+  }
+}

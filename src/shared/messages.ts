@@ -7,6 +7,7 @@ export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
 export type DeviceMessages = typeof import("../locales/device/en.json");
 export type GameName = { name: string; blurb: string };
+export type LegalMessages = typeof import("../locales/legal/en.json");
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
@@ -25,6 +26,7 @@ export type GameMessages = {
 
 const loaded: Partial<Record<Locale, LocaleMessages>> = {};
 const loadedGames: Partial<Record<Locale, GameMessages>> = {};
+const loadedLegal: Partial<Record<Locale, LegalMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -54,4 +56,17 @@ export function hasGameMessages(locale: Locale): boolean {
 
 export function gameMessages(locale: Locale): GameMessages {
   return pick(loadedGames, locale, "game messages");
+}
+
+export function registerLegalMessages(locale: Locale, pack: LegalMessages): void {
+  loadedLegal[locale] = pack;
+}
+
+export function hasLegalMessages(locale: Locale): boolean {
+  return Boolean(loadedLegal[locale]);
+}
+
+/** Privacy policy and terms; on the client only after the legal pack is loaded (legal pages). */
+export function legalMessages(locale: Locale): LegalMessages {
+  return pick(loadedLegal, locale, "legal messages");
 }

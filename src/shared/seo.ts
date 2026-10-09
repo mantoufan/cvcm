@@ -5,13 +5,14 @@ import { gameById, type GameConsoleId, type GameId } from "./games";
 import { gameCopy, gameFaqItems } from "./games-i18n";
 import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { toolHowToJsonLd } from "./guide";
+import { legalBreadcrumbJsonLd, legalPageCopy, legalStaticHtml } from "./legal";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, marketsHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, legalHref, marketsHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -39,6 +40,7 @@ export type SeoInput = {
   markets?: boolean;
   market?: MarketId | null;
   devicePage?: DevicePageId | null;
+  legalPage?: LegalPageId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -392,6 +394,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).title : marketHub(locale).title;
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).title;
+  if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).title;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
   return lookup(locale, seo.tool ? TITLE[seo.tool] : "meta.title");
@@ -409,6 +412,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).description : marketHub(locale).description;
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).description;
+  if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).description;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
   return lookup(locale, seo.tool ? DESC[seo.tool] : "meta.description");
@@ -437,6 +441,7 @@ export function pageCanonical(
   if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
   if (seo.markets) return `https://cv.cm${marketsHref(locale, seo.market ?? null)}`;
   if (seo.devicePage) return `https://cv.cm${deviceHref(locale, seo.devicePage)}`;
+  if (seo.legalPage) return `https://cv.cm${legalHref(locale, seo.legalPage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
 
@@ -766,12 +771,16 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(deviceBreadcrumbJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(deviceFaqJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.legalPage) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(legalBreadcrumbJsonLd(locale, seo.legalPage)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.markets) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage) {
+  if (ld && !seo.devicePage && !seo.legalPage) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -791,7 +800,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -799,7 +808,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -813,6 +822,8 @@ export function applyHtmlSeo(
   out = out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
   const inner = seo.devicePage
     ? deviceStaticHtml(locale, seo.devicePage)
+    : seo.legalPage
+    ? legalStaticHtml(locale, seo.legalPage)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, `<div id="app">${inner}</div>`);
   return out;
@@ -871,6 +882,8 @@ function staticPageHtml(
       { href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) },
       { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },
       { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
+      { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
+      { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));
   }
   return `<main>${parts.join("")}</main>`;

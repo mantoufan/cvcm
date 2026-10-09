@@ -1,0 +1,186 @@
+{
+  "privacy": "Política de privacidad",
+  "terms": "Términos del servicio",
+  "crumbHome": "Inicio",
+  "updated": "Última actualización",
+  "pages": {
+    "privacy": {
+      "name": "Política de privacidad",
+      "title": "Política de privacidad | cv.cm",
+      "description": "Qué guarda cv.cm, durante cuánto tiempo y qué nunca sale de su navegador. Sin cuentas, sin anuncios, sin rastreadores de analítica.",
+      "h1": "Política de privacidad",
+      "lede": "cv.cm es un conjunto gratuito de herramientas para el navegador y un portapapeles en la nube de corta duración. Esta página explica qué datos maneja el sitio, adónde van y durante cuánto tiempo se conservan.",
+      "sections": [
+        {
+          "h": "Quién gestiona cv.cm",
+          "p": [
+            "cv.cm (https://cv.cm) lo gestiona el equipo de cv.cm. Escriba a m@cv.cm para cualquier pregunta o solicitud sobre privacidad. El código fuente es público en github.com/mantoufan/cvcm bajo la Licencia MIT, por lo que puede comprobar cómo trata los datos el sitio."
+          ]
+        },
+        {
+          "h": "Herramientas que funcionan en su navegador",
+          "p": [
+            "Las herramientas de imagen, PDF, audio, texto, datos y calculadoras procesan su información dentro de la página mediante Web APIs. Los archivos y textos que abre en ellas no se suben a nuestros servidores. Al cerrar la pestaña, se descartan.",
+            "Lo mismo se aplica a los archivos ROM de juegos o SWF que cargue desde su propio dispositivo en el reproductor de juegos."
+          ]
+        },
+        {
+          "h": "Portapapeles en la nube",
+          "p": [
+            "El portapapeles es la única función que guarda su contenido en nuestros sistemas. El texto de las notas se conserva en nuestra base de datos en Cloudflare D1. Los archivos adjuntos se suben a nuestro almacenamiento de objetos en s3.cv.cm."
+          ],
+          "li": [
+            "Una nota se elimina tras 10 visualizaciones o 24 horas, lo que ocurra primero. Sus archivos se eliminan en la siguiente limpieza.",
+            "Cualquier persona que tenga el enlace o el código corto puede abrir la nota. No hay cuentas, contraseñas ni una lista pública de notas.",
+            "El texto está limitado a 64 KB y cada archivo a 32 MB.",
+            "No leemos las notas, salvo cuando debemos revisar contenido denunciado por abuso o responder a un requerimiento legal.",
+            "No incluya contraseñas, números de identificación ni otros datos personales sensibles en una nota."
+          ]
+        },
+        {
+          "h": "Direcciones IP y límites contra el abuso",
+          "p": [
+            "Para limitar la frecuencia de uso del portapapeles, el servidor guarda un hash SHA-256 de su dirección IP junto con un contador de solicitudes. No guarda la dirección en sí, y el contador se elimina en un plazo aproximado de dos horas.",
+            "La página de dirección IP, en la sección Dispositivo, le muestra su IP pública solo a usted. Se lee para esa respuesta y no se guarda."
+          ]
+        },
+        {
+          "h": "Alojamiento y registros del servidor",
+          "p": [
+            "cv.cm se sirve a través de Cloudflare. Para entregar y proteger el sitio, Cloudflare procesa datos de las solicitudes, como la dirección IP, el agente de usuario del navegador y la URL solicitada, conforme a su propia política de privacidad. Nuestro servidor de almacenamiento en s3.cv.cm conserva registros estándar de servidor web (dirección IP, hora y ruta solicitada) por motivos de seguridad y resolución de problemas. No usamos estos registros para elaborar perfiles."
+          ]
+        },
+        {
+          "h": "Cookies y almacenamiento local",
+          "p": [
+            "cv.cm establece una sola cookie, cvcm_locale, que recuerda su idioma durante un año. Esa misma elección y algunos ajustes de las herramientas (por ejemplo, los ajustes predefinidos del simulador de cámara de retrato) se guardan en el almacenamiento local de su navegador. Puede borrarlos en la configuración del navegador en cualquier momento."
+          ],
+          "li": [
+            "Sin cookies publicitarias.",
+            "Sin scripts de analítica ni rastreadores de terceros.",
+            "Sin píxeles de redes sociales."
+          ]
+        },
+        {
+          "h": "Lo que no hacemos",
+          "p": [
+            "No vendemos ni alquilamos datos personales, no los compartimos con fines publicitarios y no usamos su contenido para entrenar modelos de IA. Solo compartimos datos cuando la ley lo exige."
+          ]
+        },
+        {
+          "h": "Menores",
+          "p": [
+            "cv.cm es un sitio para público general y no está dirigido a menores de 13 años. No recopilamos a sabiendas datos personales de menores. Si cree que un menor ha publicado datos personales en una nota, escríbanos y los eliminaremos."
+          ]
+        },
+        {
+          "h": "Sus derechos",
+          "p": [
+            "Según el lugar donde resida, leyes como el GDPR, la CCPA o la Ley de Protección de Información Personal de China (PIPL) pueden otorgarle derechos para acceder a sus datos personales, corregirlos o eliminarlos. Como cv.cm no tiene cuentas, normalmente no podemos vincular los datos almacenados con una persona. Si desea que se elimine una nota antes de que caduque, envíenos su enlace. Para otras solicitudes, escriba a m@cv.cm y le responderemos en un plazo de 30 días."
+          ]
+        },
+        {
+          "h": "Cambios en esta política",
+          "p": [
+            "Si cambiamos la forma en que cv.cm trata los datos, actualizaremos esta página y la fecha que aparece al principio. Los cambios sustanciales entran en vigor en el momento de su publicación."
+          ]
+        },
+        {
+          "h": "Contacto",
+          "p": [
+            "Preguntas y solicitudes sobre privacidad: m@cv.cm."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "name": "Términos del servicio",
+      "title": "Términos del servicio | cv.cm",
+      "description": "Normas de uso de cv.cm: herramientas gratuitas para el navegador, un portapapeles en la nube que elimina las notas tras 10 visualizaciones o 24 horas y un reproductor de juegos homebrew.",
+      "h1": "Términos del servicio",
+      "lede": "Estos términos regulan su uso de cv.cm. Al usar el sitio, usted los acepta. Si no está de acuerdo, le rogamos que no use cv.cm.",
+      "sections": [
+        {
+          "h": "El servicio",
+          "p": [
+            "cv.cm ofrece herramientas gratuitas para el navegador, un portapapeles temporal en la nube, tutoriales y un reproductor de juegos redistribuibles. No se necesita cuenta. Podemos modificar, pausar o finalizar cualquier parte del servicio en cualquier momento, con o sin previo aviso."
+          ]
+        },
+        {
+          "h": "Su contenido",
+          "p": [
+            "Usted conserva todos los derechos sobre los textos y archivos que introduce en cv.cm, y es responsable de ellos. Al crear una nota en el portapapeles, nos permite guardarla y mostrarla a cualquier persona que tenga su enlace hasta que caduque. El contenido que solo se procesa en su navegador nunca nos llega."
+          ]
+        },
+        {
+          "h": "Uso aceptable",
+          "p": [
+            "No use cv.cm para:"
+          ],
+          "li": [
+            "compartir contenido ilegal, incluido cualquier contenido que explote sexualmente a menores;",
+            "difundir malware, páginas de phishing o estafas;",
+            "compartir contenido que infrinja los derechos de autor, las marcas o la privacidad de otras personas;",
+            "compartir datos personales de otras personas sin su consentimiento, o acosar a cualquier persona;",
+            "enviar spam, o usar el portapapeles como alojamiento permanente de archivos;",
+            "atacar o sobrecargar el sitio, extraer datos de forma masiva (scraping) o eludir sus límites."
+          ]
+        },
+        {
+          "h": "Cumplimiento",
+          "p": [
+            "Podemos eliminar cualquier nota y bloquear el acceso desde cualquier red que incumpla estos términos. Cuando la ley lo exija, podemos denunciar contenido ilegal ante las autoridades."
+          ]
+        },
+        {
+          "h": "Juegos y material de terceros",
+          "p": [
+            "Solo alojamos juegos homebrew, freeware y de código abierto que sus autores permiten compartir, bajo sus propias licencias. No alojamos ROM ni archivos SWF comerciales. Cargue únicamente archivos que tenga derecho a usar. Las marcas y los nombres de los juegos pertenecen a sus respectivos propietarios."
+          ]
+        },
+        {
+          "h": "Los resultados son solo informativos",
+          "p": [
+            "Las calculadoras, los conversores, las herramientas de activos y los tutoriales ofrecen solo información general. No constituyen asesoramiento financiero, fiscal, médico ni legal, y las herramientas de activos no muestran cotizaciones de mercado en tiempo real. La herramienta de firma genera una imagen, no una firma electrónica jurídicamente vinculante. Verifique cualquier resultado importante antes de basarse en él."
+          ]
+        },
+        {
+          "h": "Reclamaciones de derechos de autor",
+          "p": [
+            "Si cree que algún contenido de cv.cm infringe sus derechos, escriba a m@cv.cm con el enlace, una descripción de la obra y sus datos de contacto. Lo revisaremos y retiraremos con rapidez el contenido infractor."
+          ]
+        },
+        {
+          "h": "Código abierto",
+          "p": [
+            "El código fuente de cv.cm está disponible bajo la Licencia MIT. Esa licencia cubre el código. Estos términos cubren el servicio alojado en cv.cm."
+          ]
+        },
+        {
+          "h": "Sin garantía",
+          "p": [
+            "cv.cm se ofrece \"tal cual\" y \"según disponibilidad\", sin garantías de ningún tipo, en la medida en que la ley lo permita. Las notas se eliminan según lo previsto y pueden perderse antes por errores o interrupciones del servicio. Guarde su propia copia de todo lo que sea importante."
+          ]
+        },
+        {
+          "h": "Limitación de responsabilidad",
+          "p": [
+            "En la medida en que la ley lo permita, cv.cm no será responsable de ningún daño indirecto, incidental, especial o consecuente, ni de la pérdida de datos o beneficios, derivados de su uso del sitio. Nuestra responsabilidad total por cualquier reclamación se limita a USD 50. Nada de lo dispuesto en estos términos limita los derechos que la legislación de protección al consumidor de su país no permite limitar."
+          ]
+        },
+        {
+          "h": "Cambios en estos términos",
+          "p": [
+            "Podemos actualizar estos términos. La fecha que aparece al principio indica la versión más reciente. Si sigue usando cv.cm después de un cambio, acepta los términos actualizados."
+          ]
+        },
+        {
+          "h": "Contacto",
+          "p": [
+            "Preguntas sobre estos términos: m@cv.cm."
+          ]
+        }
+      ]
+    }
+  }
+}

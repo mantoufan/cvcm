@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
@@ -127,6 +127,9 @@ export default {
       if (parsed.kind === "bare-device") {
         return redirectTo(deviceHref(locale, parsed.page), url, 302);
       }
+      if (parsed.kind === "bare-legal") {
+        return redirectTo(legalHref(locale, parsed.page), url, 302);
+      }
       if (parsed.kind === "unknown") {
         return withHeaders(notFound(locale, request.method), path);
       }
@@ -156,6 +159,12 @@ export default {
       }
       if (parsed.kind === "device") {
         const canonical = deviceHref(parsed.locale, parsed.page);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
+      if (parsed.kind === "legal") {
+        const canonical = legalHref(parsed.locale, parsed.page);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -193,10 +202,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -210,6 +219,8 @@ export default {
             ? { markets: true as const, market: parsed.market }
             : parsed.kind === "device"
               ? { devicePage: parsed.page }
+            : parsed.kind === "legal"
+              ? { legalPage: parsed.page }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };

@@ -89,18 +89,21 @@ import {
   gamesHref,
   isPublishedTutorial,
   learnHref,
+  legalHref,
   deviceHref,
   marketsHref,
   parseAppPath,
   toolJob,
   withSearch,
   type ConvertJobId,
+  type LegalPageId,
   type ResizeJobId,
   type ToolId,
   type TutorialId,
 } from "../shared/path";
 import type { GameConsoleId, GameId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
+import { legalStaticHtml } from "../shared/legal";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
 import type { MarketId } from "../shared/markets";
@@ -132,6 +135,7 @@ let gameId: GameId | null = null;
 let marketsHub = false;
 let marketId: MarketId | null = null;
 let devicePage: DevicePageId | null = null;
+let legalPage: LegalPageId | null = null;
 let unmountPdfJpg = (): void => {};
 let unmountMergePdf = (): void => {};
 let unmountCompressPdf = (): void => {};
@@ -192,6 +196,13 @@ export function boot(): void {
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
+  } else if (parsed.kind === "legal") {
+    setLocale(parsed.locale);
+    applyLegal(parsed.page);
+    const canonical = legalHref(parsed.locale, parsed.page);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -217,6 +228,11 @@ export function boot(): void {
     setLocale(loc);
     applyDevice(parsed.page);
     history.replaceState(null, "", withSearch(deviceHref(loc, parsed.page), location.search));
+  } else if (parsed.kind === "bare-legal") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyLegal(parsed.page);
+    history.replaceState(null, "", withSearch(legalHref(loc, parsed.page), location.search));
   } else {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     const nextTool = parsed.kind === "bare" ? parsed.tool : null;
@@ -284,6 +300,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   marketsHub = false;
   marketId = null;
   devicePage = null;
+  legalPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -297,6 +314,7 @@ function applyLearn(next: TutorialId | null): void {
   marketsHub = false;
   marketId = null;
   devicePage = null;
+  legalPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -310,6 +328,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   marketsHub = false;
   marketId = null;
   devicePage = null;
+  legalPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -323,6 +342,21 @@ function applyDevice(page: DevicePageId): void {
   marketsHub = false;
   marketId = null;
   devicePage = page;
+  legalPage = null;
+}
+
+function applyLegal(page: LegalPageId): void {
+  tool = null;
+  clipId = null;
+  tutorial = null;
+  learnHub = false;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
+  marketsHub = false;
+  marketId = null;
+  devicePage = null;
+  legalPage = page;
 }
 
 function unmountTools(): void {
@@ -415,14 +449,15 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
   const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
-  if (!hasPageMessages(loc, gamePage)) {
+  const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
+  if (!hasPageMessages(loc, gamePage, legal)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage).then(
+    loadPageMessages(loc, gamePage, legal).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -475,6 +510,11 @@ export function render(): void {
     applyDevice(parsed.page);
   } else if (parsed.kind === "bare-device") {
     applyDevice(parsed.page);
+  } else if (parsed.kind === "legal") {
+    setLocale(parsed.locale);
+    applyLegal(parsed.page);
+  } else if (parsed.kind === "bare-legal") {
+    applyLegal(parsed.page);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -487,6 +527,8 @@ export function render(): void {
       ? { games: true as const, console: gameConsole, game: gameId }
       : devicePage
         ? { devicePage }
+        : legalPage
+        ? { legalPage }
         : marketsHub || marketId
           ? { markets: true as const, market: marketId }
           : { tool, clipId, convertJob, resizeJob };
@@ -520,7 +562,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage);
 
   const root = appEl();
   clear(root);
@@ -554,7 +596,7 @@ function shell(loc: Locale): HTMLElement {
   const main = h("main", { id: "main" });
   void mountPage(main, loc);
 
-  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage ? " is-tool" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
+  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage ? " is-tool" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
         h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
@@ -568,7 +610,13 @@ function shell(loc: Locale): HTMLElement {
       langSwitch(loc),
     ),
     main,
-    h("footer", { class: "foot" }, t("footer.privacy")),
+    h("footer", { class: "foot" },
+      h("p", null, t("footer.privacy")),
+      h("nav", { class: "foot-links", "aria-label": t("footer.legal") },
+        h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
+        h("a", { href: legalHref(loc, "terms"), "data-nav": "terms" }, t("footer.termsLink")),
+      ),
+    ),
   );
 }
 
@@ -678,6 +726,7 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   else if (gameId) mountGame(main, gameId);
   else if (gamesHub) mountGamesHub(main, gameConsole);
   else if (devicePage) mountDevice(main, loc, devicePage);
+  else if (legalPage) main.innerHTML = legalStaticHtml(loc, legalPage);
   else if (marketId) mountMarket(main, marketId);
   else if (marketsHub) mountMarketsHub(main);
   else mountHome(main, loc);
@@ -905,6 +954,8 @@ function langSwitch(current: Locale): HTMLElement {
 function localeHref(next: Locale): string {
   return devicePage
     ? withSearch(deviceHref(next, devicePage), location.search)
+    : legalPage
+    ? withSearch(legalHref(next, legalPage), location.search)
     : learnHub || tutorial
       ? withSearch(learnHref(next, tutorial), location.search)
       : gamesHub || gameId

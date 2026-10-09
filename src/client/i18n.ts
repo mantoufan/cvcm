@@ -7,11 +7,14 @@ import {
 } from "../shared/locale";
 import {
   hasGameMessages,
+  hasLegalMessages,
   hasMessages,
   messages,
   registerGameMessages,
+  registerLegalMessages,
   registerMessages,
   type GameMessages,
+  type LegalMessages,
   type LocaleMessages,
 } from "../shared/messages";
 
@@ -39,15 +42,28 @@ const GAME_PACKS: Record<Locale, () => Promise<{ default: GameMessages }>> = {
   es: () => import("../locales/packs/games-es"),
 };
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game pack on a game page. */
-export function hasPageMessages(next: Locale, game: boolean): boolean {
-  return hasMessages(next) && (!game || hasGameMessages(next));
+// Privacy policy and terms, only for those two pages.
+const LEGAL_PACKS: Record<Locale, () => Promise<{ default: LegalMessages }>> = {
+  en: () => import("../locales/legal/en.json"),
+  "zh-CN": () => import("../locales/legal/zh-CN.json"),
+  "zh-TW": () => import("../locales/legal/zh-TW.json"),
+  ja: () => import("../locales/legal/ja.json"),
+  ko: () => import("../locales/legal/ko.json"),
+  vi: () => import("../locales/legal/vi.json"),
+  id: () => import("../locales/legal/id.json"),
+  es: () => import("../locales/legal/es.json"),
+};
+
+/** Whether the strings a page needs are loaded: the locale pack, plus the game or legal pack on those pages. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false): boolean {
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false): Promise<void> {
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
+    !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
   ]);
 }
 
