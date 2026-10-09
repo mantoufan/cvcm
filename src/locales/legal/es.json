@@ -30,7 +30,7 @@
             "El portapapeles es la única función que guarda su contenido en nuestros sistemas. El texto de las notas se conserva en nuestra base de datos en Cloudflare D1. Los archivos adjuntos se suben a nuestro almacenamiento de objetos en s3.cv.cm."
           ],
           "li": [
-            "Una nota se elimina tras 10 visualizaciones o 24 horas, lo que ocurra primero. Sus archivos se eliminan en la siguiente limpieza.",
+            "Una nota deja de poder abrirse tras 10 visualizaciones o 24 horas, lo que ocurra primero. Las notas caducadas y sus archivos se eliminan después en una limpieza posterior.",
             "Cualquier persona que tenga el enlace o el código corto puede abrir la nota. No hay cuentas, contraseñas ni una lista pública de notas.",
             "El texto está limitado a 64 KB y cada archivo a 32 MB.",
             "No leemos las notas, salvo cuando debemos revisar contenido denunciado por abuso o responder a un requerimiento legal.",
@@ -40,7 +40,7 @@
         {
           "h": "Direcciones IP y límites contra el abuso",
           "p": [
-            "Para limitar la frecuencia de uso del portapapeles, el servidor guarda un hash SHA-256 de su dirección IP junto con un contador de solicitudes. No guarda la dirección en sí, y el contador se elimina en un plazo aproximado de dos horas.",
+            "Para limitar el uso del portapapeles, el servidor guarda un hash SHA-256 de su dirección IP junto con un contador de solicitudes. No guarda la dirección en sí, pero aun así tratamos el hash como dato personal. Solo se usa para limitar el uso y se elimina en una limpieza posterior, normalmente en pocas horas.",
             "La página de dirección IP, en la sección Dispositivo, le muestra su IP pública solo a usted. Se lee para esa respuesta y no se guarda."
           ]
         },

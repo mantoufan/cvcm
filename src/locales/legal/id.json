@@ -30,7 +30,7 @@
             "Papan klip adalah satu-satunya fitur yang menyimpan konten Anda di pihak kami. Teks catatan disimpan di basis data kami di Cloudflare D1. File lampiran diunggah ke penyimpanan objek kami di s3.cv.cm."
           ],
           "li": [
-            "Catatan dihapus setelah 10 kali dilihat atau 24 jam, mana saja yang lebih dahulu. File-filenya dihapus pada proses pembersihan berikutnya.",
+            "Catatan tidak dapat dibuka lagi setelah 10 kali dilihat atau 24 jam, mana yang lebih dulu. Catatan yang kedaluwarsa beserta filenya kemudian dihapus dalam pembersihan berikutnya.",
             "Siapa pun yang memiliki tautan atau kode pendek dapat membuka catatan. Tidak ada akun, kata sandi, atau daftar catatan publik.",
             "Teks dibatasi 64 KB dan setiap file 32 MB.",
             "Kami tidak membaca catatan, kecuali jika kami harus meninjau konten yang dilaporkan sebagai penyalahgunaan atau menanggapi permintaan hukum.",
@@ -40,7 +40,7 @@
         {
           "h": "Alamat IP dan batas penyalahgunaan",
           "p": [
-            "Untuk membatasi laju penggunaan papan klip, server menyimpan hash SHA-256 dari alamat IP Anda beserta penghitung permintaan. Server tidak menyimpan alamat IP itu sendiri, dan penghitung dihapus dalam waktu sekitar dua jam.",
+            "Untuk membatasi frekuensi penggunaan clipboard, server menyimpan hash SHA-256 dari alamat IP Anda beserta penghitung permintaan. Server tidak menyimpan alamat IP itu sendiri, tetapi kami tetap memperlakukan hash tersebut sebagai data pribadi. Hash hanya digunakan untuk pembatasan frekuensi dan dihapus dalam pembersihan berikutnya, biasanya dalam beberapa jam.",
             "Halaman alamat IP di bagian Perangkat hanya menampilkan IP publik Anda kepada Anda sendiri. Alamat tersebut dibaca untuk respons itu saja dan tidak disimpan."
           ]
         },

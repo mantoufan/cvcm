@@ -30,7 +30,7 @@
             "The clipboard is the one feature that stores your content on our side. Note text is kept in our database on Cloudflare D1. Attached files are uploaded to our object storage at s3.cv.cm."
           ],
           "li": [
-            "A note is deleted after 10 views or 24 hours, whichever comes first. Its files are removed in the next cleanup run.",
+            "A note can no longer be opened after 10 views or 24 hours, whichever comes first. Expired notes and their files are then deleted in a later cleanup.",
             "Anyone who has the link or the short code can open the note. There is no account, password, or public list of notes.",
             "Text is limited to 64 KB and each file to 32 MB.",
             "We do not read notes, except when we must review content reported for abuse or respond to a legal request.",
@@ -40,7 +40,7 @@
         {
           "h": "IP addresses and abuse limits",
           "p": [
-            "To rate-limit the clipboard, the server stores a SHA-256 hash of your IP address with a request counter. It does not store the address itself, and the counter is deleted within about two hours.",
+            "To rate-limit the clipboard, the server stores a SHA-256 hash of your IP address with a request counter. It does not store the address itself, but we still treat the hash as personal data. It is used only for rate limiting and is deleted in a later cleanup, usually within a few hours.",
             "The IP address page under Device shows your public IP to you only. It is read for that response and not stored."
           ]
         },

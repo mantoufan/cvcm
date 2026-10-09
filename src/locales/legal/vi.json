@@ -30,7 +30,7 @@
             "Bộ nhớ tạm là tính năng duy nhất lưu nội dung của bạn ở phía chúng tôi. Văn bản ghi chú được lưu trong cơ sở dữ liệu của chúng tôi trên Cloudflare D1. Tệp đính kèm được tải lên kho lưu trữ đối tượng của chúng tôi tại s3.cv.cm."
           ],
           "li": [
-            "Một ghi chú sẽ bị xóa sau 10 lượt xem hoặc 24 giờ, tùy điều kiện nào đến trước. Các tệp của ghi chú sẽ bị xóa trong lần dọn dẹp tiếp theo.",
+            "Ghi chú không thể mở được nữa sau 10 lượt xem hoặc 24 giờ, tùy điều kiện nào đến trước. Ghi chú hết hạn và tệp đính kèm sau đó sẽ bị xóa trong một lần dọn dẹp tiếp theo.",
             "Bất kỳ ai có liên kết hoặc mã ngắn đều có thể mở ghi chú. Không có tài khoản, mật khẩu hay danh sách ghi chú công khai.",
             "Văn bản giới hạn 64 KB và mỗi tệp giới hạn 32 MB.",
             "Chúng tôi không đọc ghi chú, trừ khi phải xem xét nội dung bị báo cáo lạm dụng hoặc phản hồi yêu cầu pháp lý.",
@@ -40,7 +40,7 @@
         {
           "h": "Địa chỉ IP và giới hạn chống lạm dụng",
           "p": [
-            "Để giới hạn tần suất sử dụng bộ nhớ tạm, máy chủ lưu một giá trị băm SHA-256 của địa chỉ IP của bạn cùng với bộ đếm yêu cầu. Máy chủ không lưu chính địa chỉ đó, và bộ đếm sẽ bị xóa trong khoảng hai giờ.",
+            "Để giới hạn tần suất sử dụng bộ nhớ tạm, máy chủ lưu mã băm SHA-256 của địa chỉ IP cùng một bộ đếm yêu cầu. Máy chủ không lưu chính địa chỉ IP, nhưng chúng tôi vẫn coi mã băm này là dữ liệu cá nhân. Mã băm chỉ dùng để giới hạn tần suất và bị xóa trong một lần dọn dẹp tiếp theo, thường trong vòng vài giờ.",
             "Trang địa chỉ IP trong mục Thiết bị chỉ hiển thị IP công khai cho chính bạn. Địa chỉ này chỉ được đọc để trả về phản hồi đó và không được lưu lại."
           ]
         },
