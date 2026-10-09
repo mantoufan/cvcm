@@ -195,12 +195,14 @@ async function download(): Promise<void> {
   try {
     const pages = [];
     for (let i = 1; i <= state.item.pages; i++) {
+      const { width: w, height: h } = (await state.item.doc.getPage(i)).getViewport({ scale: 1 });
       const canvas = await renderPdfPage(state.item.doc, i, state.scale);
       const blob = await canvasToBlob(canvas, "image/jpeg", state.quality);
       pages.push({
         jpeg: new Uint8Array(await blob.arrayBuffer()),
         width: canvas.width,
         height: canvas.height,
+        page: { w, h },
       });
     }
     const pdf = pdfFromJpegs(pages, "fit");

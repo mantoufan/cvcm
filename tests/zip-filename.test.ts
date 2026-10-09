@@ -25,6 +25,15 @@ describe("pdfFromJpegs", () => {
   it("rejects an empty page list", () => {
     expect(() => pdfFromJpegs([])).toThrow();
   });
+
+  it("keeps an explicit page size and draws the image edge to edge", () => {
+    const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]);
+    const pdf = new TextDecoder().decode(
+      pdfFromJpegs([{ jpeg, width: 918, height: 1188, page: { w: 612, h: 792 } }], "fit"),
+    );
+    expect(pdf).toContain("/MediaBox [0 0 612.00 792.00]");
+    expect(pdf).toContain("q 612.00 0 0 792.00 0.00 0.00 cm");
+  });
 });
 
 describe("outputFilename", () => {
