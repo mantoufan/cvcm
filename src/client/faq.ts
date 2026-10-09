@@ -22,7 +22,8 @@ import type { GameConsoleId, GameId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import type { DevicePageId } from "../shared/device";
-import type { ConvertJobId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
+import { legalBreadcrumbJsonLd } from "../shared/legal";
+import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
 
 function renderFaq(items: FaqItem[]): HTMLElement {
   if (items.length === 0) return h("section", { class: "faq", hidden: true });
@@ -73,7 +74,13 @@ export function syncPageJsonLd(
   marketsHub = false,
   devicePage: DevicePageId | null = null,
   gamesConsole: GameConsoleId | null = null,
+  legalPage: LegalPageId | null = null,
 ): void {
+  if (legalPage) {
+    for (const id of ["faq-jsonld", "howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(id, null);
+    writeJsonLd("breadcrumb-jsonld", legalBreadcrumbJsonLd(locale, legalPage));
+    return;
+  }
   const flashHub = gamesHub && gamesConsole === "flash";
   // Mirror applyHtmlSeo: plain tool pages carry WebApplication + BreadcrumbList.
   const toolPage = Boolean(tool) && !tutorial && !game && !gamesHub && !market && !marketsHub && !devicePage;

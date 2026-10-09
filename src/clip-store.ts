@@ -75,13 +75,8 @@ export function d1Store(db: D1Database): ClipStore {
         )
         .bind(id, CLIP_MAX_VIEWS, now)
         .first<SqlClip>();
-      if (!row) {
-        await db
-          .prepare("DELETE FROM clips WHERE id = ? AND (views >= ? OR expires_at <= ?)")
-          .bind(id, CLIP_MAX_VIEWS, now)
-          .run();
-        return null;
-      }
+      // Leave dead rows to drainDead, which also deletes their S3 files.
+      if (!row) return null;
       if (row.views >= CLIP_MAX_VIEWS) {
         await db.prepare("DELETE FROM clips WHERE id = ?").bind(id).run();
       }
@@ -137,10 +132,7 @@ export function memoryStore(): ClipStore {
     async consume(id, now) {
       const row = clips.get(id);
       if (!row) return null;
-      if (row.expiresAt <= now || row.views >= CLIP_MAX_VIEWS) {
-        clips.delete(id);
-        return null;
-      }
+      if (row.expiresAt <= now || row.views >= CLIP_MAX_VIEWS) return null;
       row.views += 1;
       const out = { ...row };
       if (row.views >= CLIP_MAX_VIEWS) clips.delete(id);

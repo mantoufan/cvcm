@@ -111,6 +111,14 @@ describe("clip API", () => {
     expect(expired?.status).toBe(404);
   });
 
+  it("leaves an expired note for drainDead so its files get swept", async () => {
+    const store = memoryStore();
+    const body = "[f](https://s3.cv.cm/files/clip/0123456789abcdef/a.png)";
+    await store.insert({ id: "x1y", body, createdAt: 1, expiresAt: 1 + CLIP_TTL_MS, views: 0 });
+    expect(await store.consume("x1y", 2 + CLIP_TTL_MS)).toBeNull();
+    expect(await store.drainDead(2 + CLIP_TTL_MS)).toEqual([body]);
+  });
+
   it("rejects empty and oversized notes", async () => {
     const store = memoryStore();
     expect((await post(store, { body: "   " }))?.status).toBe(400);

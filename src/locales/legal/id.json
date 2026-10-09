@@ -1,0 +1,186 @@
+{
+  "privacy": "Kebijakan Privasi",
+  "terms": "Ketentuan Layanan",
+  "crumbHome": "Beranda",
+  "updated": "Terakhir diperbarui",
+  "pages": {
+    "privacy": {
+      "name": "Kebijakan Privasi",
+      "title": "Kebijakan Privasi | cv.cm",
+      "description": "Apa yang disimpan cv.cm, berapa lama, dan apa yang tidak pernah keluar dari browser Anda. Tanpa akun, tanpa iklan, tanpa pelacak analitik.",
+      "h1": "Kebijakan Privasi",
+      "lede": "cv.cm adalah kumpulan alat browser gratis dan papan klip cloud berumur pendek. Halaman ini menjelaskan data apa yang ditangani situs, ke mana data itu dikirim, dan berapa lama data disimpan.",
+      "sections": [
+        {
+          "h": "Siapa yang mengelola cv.cm",
+          "p": [
+            "cv.cm (https://cv.cm) dikelola oleh tim cv.cm. Kirim email ke m@cv.cm untuk pertanyaan atau permintaan apa pun terkait privasi. Kode sumbernya terbuka untuk publik di github.com/mantoufan/cvcm di bawah Lisensi MIT, sehingga Anda dapat memeriksa cara situs ini menangani data."
+          ]
+        },
+        {
+          "h": "Alat yang berjalan di browser Anda",
+          "p": [
+            "Alat gambar, PDF, audio, teks, data, dan kalkulator memproses input Anda di dalam halaman menggunakan Web API. File dan teks yang Anda buka di alat tersebut tidak diunggah ke server kami. Menutup tab akan menghapusnya.",
+            "Hal yang sama berlaku untuk file ROM game atau SWF yang Anda muat dari perangkat Anda sendiri di pemutar game."
+          ]
+        },
+        {
+          "h": "Papan klip cloud",
+          "p": [
+            "Papan klip adalah satu-satunya fitur yang menyimpan konten Anda di pihak kami. Teks catatan disimpan di basis data kami di Cloudflare D1. File lampiran diunggah ke penyimpanan objek kami di s3.cv.cm."
+          ],
+          "li": [
+            "Catatan tidak dapat dibuka lagi setelah 10 kali dilihat atau 24 jam, mana yang lebih dulu. Catatan yang kedaluwarsa beserta filenya kemudian dihapus dalam pembersihan berikutnya.",
+            "Siapa pun yang memiliki tautan atau kode pendek dapat membuka catatan. Tidak ada akun, kata sandi, atau daftar catatan publik.",
+            "Teks dibatasi 64 KB dan setiap file 32 MB.",
+            "Kami tidak membaca catatan, kecuali jika kami harus meninjau konten yang dilaporkan sebagai penyalahgunaan atau menanggapi permintaan hukum.",
+            "Jangan memasukkan kata sandi, nomor identitas, atau data pribadi sensitif lainnya ke dalam catatan."
+          ]
+        },
+        {
+          "h": "Alamat IP dan batas penyalahgunaan",
+          "p": [
+            "Untuk membatasi frekuensi penggunaan clipboard, server menyimpan hash SHA-256 dari alamat IP Anda beserta penghitung permintaan. Server tidak menyimpan alamat IP itu sendiri, tetapi kami tetap memperlakukan hash tersebut sebagai data pribadi. Hash hanya digunakan untuk pembatasan frekuensi dan dihapus dalam pembersihan berikutnya, biasanya dalam beberapa jam.",
+            "Halaman alamat IP di bagian Perangkat hanya menampilkan IP publik Anda kepada Anda sendiri. Alamat tersebut dibaca untuk respons itu saja dan tidak disimpan."
+          ]
+        },
+        {
+          "h": "Hosting dan log server",
+          "p": [
+            "cv.cm dilayani oleh Cloudflare. Untuk menyajikan dan melindungi situs, Cloudflare memproses data permintaan seperti alamat IP, user agent browser, dan URL yang diminta berdasarkan kebijakan privasinya sendiri. Server penyimpanan kami di s3.cv.cm menyimpan log server web standar (alamat IP, waktu, jalur yang diminta) untuk keamanan dan pemecahan masalah. Kami tidak menggunakan log ini untuk membuat profil."
+          ]
+        },
+        {
+          "h": "Cookie dan penyimpanan lokal",
+          "p": [
+            "cv.cm menetapkan satu cookie, cvcm_locale, yang mengingat bahasa Anda selama satu tahun. Pilihan yang sama dan beberapa pengaturan alat (misalnya, preset simulator kamera potret) disimpan di penyimpanan lokal browser Anda. Anda dapat menghapusnya melalui pengaturan browser kapan saja."
+          ],
+          "li": [
+            "Tidak ada cookie iklan.",
+            "Tidak ada skrip analitik atau pelacak pihak ketiga.",
+            "Tidak ada piksel media sosial."
+          ]
+        },
+        {
+          "h": "Yang tidak kami lakukan",
+          "p": [
+            "Kami tidak menjual atau menyewakan data pribadi, tidak membagikannya untuk iklan, dan tidak menggunakan konten Anda untuk melatih model AI. Kami hanya membagikan data jika diwajibkan oleh hukum."
+          ]
+        },
+        {
+          "h": "Anak-anak",
+          "p": [
+            "cv.cm adalah situs untuk khalayak umum dan tidak ditujukan untuk anak-anak di bawah 13 tahun. Kami tidak dengan sengaja mengumpulkan data pribadi dari anak-anak. Jika Anda yakin seorang anak telah memasukkan data pribadi ke dalam catatan, kirimkan email kepada kami dan kami akan menghapusnya."
+          ]
+        },
+        {
+          "h": "Hak Anda",
+          "p": [
+            "Tergantung tempat tinggal Anda, undang-undang seperti GDPR, CCPA, atau Undang-Undang Perlindungan Informasi Pribadi Tiongkok (PIPL) dapat memberi Anda hak untuk mengakses, memperbaiki, atau menghapus data pribadi Anda. Karena cv.cm tidak memiliki akun, kami biasanya tidak dapat mengaitkan data yang tersimpan dengan seseorang. Jika Anda ingin catatan dihapus sebelum kedaluwarsa, kirimkan tautannya kepada kami. Untuk permintaan lainnya, kirim email ke m@cv.cm dan kami akan membalas dalam 30 hari."
+          ]
+        },
+        {
+          "h": "Perubahan kebijakan ini",
+          "p": [
+            "Jika kami mengubah cara cv.cm menangani data, kami akan memperbarui halaman ini dan tanggal di bagian atas. Perubahan material berlaku sejak dipublikasikan."
+          ]
+        },
+        {
+          "h": "Kontak",
+          "p": [
+            "Pertanyaan dan permintaan terkait privasi: m@cv.cm."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "name": "Ketentuan Layanan",
+      "title": "Ketentuan Layanan | cv.cm",
+      "description": "Aturan penggunaan cv.cm: alat browser gratis, papan klip cloud yang menghapus catatan setelah 10 kali dilihat atau 24 jam, dan pemutar game homebrew.",
+      "h1": "Ketentuan Layanan",
+      "lede": "Ketentuan ini mengatur penggunaan cv.cm oleh Anda. Dengan menggunakan situs ini, Anda menyetujuinya. Jika Anda tidak setuju, mohon jangan menggunakan cv.cm.",
+      "sections": [
+        {
+          "h": "Layanan",
+          "p": [
+            "cv.cm menyediakan alat browser gratis, papan klip cloud sementara, tutorial, dan pemutar untuk game yang boleh didistribusikan ulang. Tidak perlu akun. Kami dapat mengubah, menghentikan sementara, atau mengakhiri bagian mana pun dari layanan kapan saja, dengan atau tanpa pemberitahuan."
+          ]
+        },
+        {
+          "h": "Konten Anda",
+          "p": [
+            "Anda tetap memegang semua hak atas teks dan file yang Anda masukkan ke cv.cm, dan Anda bertanggung jawab atasnya. Saat membuat catatan papan klip, Anda mengizinkan kami menyimpannya dan menampilkannya kepada siapa pun yang memiliki tautannya hingga catatan itu kedaluwarsa. Konten yang hanya diproses di browser Anda tidak pernah sampai ke kami."
+          ]
+        },
+        {
+          "h": "Penggunaan yang diperbolehkan",
+          "p": [
+            "Jangan menggunakan cv.cm untuk:"
+          ],
+          "li": [
+            "membagikan konten ilegal, termasuk konten apa pun yang mengeksploitasi anak di bawah umur secara seksual;",
+            "menyebarkan malware, halaman phishing, atau penipuan;",
+            "membagikan konten yang melanggar hak cipta, merek dagang, atau privasi orang lain;",
+            "membagikan data pribadi orang lain tanpa persetujuan mereka, atau melecehkan siapa pun;",
+            "mengirim spam, atau menggunakan papan klip sebagai hosting file permanen;",
+            "menyerang, membebani secara berlebihan, melakukan scraping dalam volume tinggi, atau menembus batasan situs."
+          ]
+        },
+        {
+          "h": "Penegakan",
+          "p": [
+            "Kami dapat menghapus catatan mana pun dan memblokir akses dari jaringan mana pun yang melanggar ketentuan ini. Jika diwajibkan oleh hukum, kami dapat melaporkan konten ilegal kepada pihak berwenang."
+          ]
+        },
+        {
+          "h": "Game dan materi pihak ketiga",
+          "p": [
+            "Kami hanya menghosting game homebrew, freeware, dan sumber terbuka yang diizinkan oleh pembuatnya untuk dibagikan, di bawah lisensi masing-masing. Kami tidak menghosting ROM atau file SWF komersial. Muat hanya file yang berhak Anda gunakan. Merek dagang dan nama game adalah milik pemiliknya masing-masing."
+          ]
+        },
+        {
+          "h": "Hasil hanya untuk informasi",
+          "p": [
+            "Kalkulator, konverter, alat aset, dan tutorial hanya memberikan informasi umum. Semua itu bukan nasihat keuangan, pajak, medis, atau hukum, dan alat aset tidak menampilkan harga pasar secara langsung. Alat tanda tangan menghasilkan gambar, bukan tanda tangan elektronik yang mengikat secara hukum. Periksa setiap hasil yang penting sebelum Anda mengandalkannya."
+          ]
+        },
+        {
+          "h": "Keluhan hak cipta",
+          "p": [
+            "Jika Anda yakin konten di cv.cm melanggar hak Anda, kirim email ke m@cv.cm dengan menyertakan tautan, deskripsi karya, dan detail kontak Anda. Kami akan meninjaunya dan segera menghapus konten yang melanggar."
+          ]
+        },
+        {
+          "h": "Sumber terbuka",
+          "p": [
+            "Kode sumber cv.cm tersedia di bawah Lisensi MIT. Lisensi tersebut mencakup kodenya. Ketentuan ini mencakup layanan yang dihosting di cv.cm."
+          ]
+        },
+        {
+          "h": "Tanpa jaminan",
+          "p": [
+            "cv.cm disediakan \"sebagaimana adanya\" dan \"sebagaimana tersedia\", tanpa jaminan dalam bentuk apa pun, sejauh diizinkan oleh hukum. Catatan dihapus sesuai jadwal dan dapat hilang lebih awal karena kesalahan atau gangguan layanan. Simpan salinan Anda sendiri untuk apa pun yang penting."
+          ]
+        },
+        {
+          "h": "Batasan tanggung jawab",
+          "p": [
+            "Sejauh diizinkan oleh hukum, cv.cm tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, atau konsekuensial apa pun, maupun atas hilangnya data atau keuntungan, yang timbul dari penggunaan situs oleh Anda. Total tanggung jawab kami atas klaim apa pun dibatasi hingga USD 50. Tidak ada satu pun dalam ketentuan ini yang membatasi hak-hak yang menurut hukum perlindungan konsumen di negara Anda tidak boleh dibatasi."
+          ]
+        },
+        {
+          "h": "Perubahan ketentuan ini",
+          "p": [
+            "Kami dapat memperbarui ketentuan ini. Tanggal di bagian atas menunjukkan versi terbaru. Jika Anda terus menggunakan cv.cm setelah ada perubahan, Anda menerima ketentuan yang telah diperbarui."
+          ]
+        },
+        {
+          "h": "Kontak",
+          "p": [
+            "Pertanyaan tentang ketentuan ini: m@cv.cm."
+          ]
+        }
+      ]
+    }
+  }
+}

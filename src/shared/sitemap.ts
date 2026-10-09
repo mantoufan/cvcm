@@ -1,7 +1,7 @@
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
-import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, learnHref, type ConvertJobId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, learnHref, legalHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -24,7 +24,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "resize-job"; job: ResizeJobId }
   | { locale: Locale; kind: "learn"; tutorial: TutorialId | null }
   | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null }
-  | { locale: Locale; kind: "device"; page: DevicePageId };
+  | { locale: Locale; kind: "device"; page: DevicePageId }
+  | { locale: Locale; kind: "legal"; page: LegalPageId };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -43,6 +44,7 @@ export function sitemapPages(): SitemapPage[] {
       pages.push({ locale, kind: "games", console: game.console, game: game.id });
     }
     for (const page of DEVICE_PAGES) pages.push({ locale, kind: "device", page });
+    for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
 }
@@ -54,6 +56,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(page.locale, "resize", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(page.locale, page.console, page.game)}`;
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(page.locale, page.page)}`;
+  if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(page.locale, page.page)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -68,6 +71,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(locale, "resize", null, page.job)}`;
   if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(locale, page.console, page.game)}`;
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(locale, page.page)}`;
+  if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(locale, page.page)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 

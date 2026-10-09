@@ -250,6 +250,13 @@ export function isTutorialId(value: string): value is TutorialId {
   return (TUTORIALS as readonly string[]).includes(value);
 }
 
+export const LEGAL_PAGES = ["privacy", "terms"] as const;
+export type LegalPageId = (typeof LEGAL_PAGES)[number];
+
+export function isLegalPageId(value: string): value is LegalPageId {
+  return (LEGAL_PAGES as readonly string[]).includes(value);
+}
+
 export type GamesPath = {
   console: GameConsoleId | null;
   game: GameId | null;
@@ -262,11 +269,13 @@ export type AppPath =
   | ({ kind: "bare-games" } & GamesPath)
   | { kind: "bare-markets"; market: MarketId | null }
   | { kind: "bare-device"; page: DevicePageId }
+  | { kind: "bare-legal"; page: LegalPageId }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
   | { kind: "markets"; locale: Locale; market: MarketId | null }
   | { kind: "device"; locale: Locale; page: DevicePageId }
+  | { kind: "legal"; locale: Locale; page: LegalPageId }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -337,6 +346,10 @@ export function parseAppPath(pathname: string): AppPath {
       if (page === "unknown") return { kind: "unknown" };
       return { kind: "device", locale, page };
     }
+    if (isLegalPageId(second)) {
+      if (third || rest.length > 0) return { kind: "unknown" };
+      return { kind: "legal", locale, page: second };
+    }
     if (rest.length > 0) return { kind: "unknown" };
     if (!isToolId(second)) return { kind: "unknown" };
     if (!third) return { kind: "app", locale, tool: second };
@@ -373,6 +386,7 @@ export function parseAppPath(pathname: string): AppPath {
     if (market === "unknown") return { kind: "unknown" };
     return { kind: "bare-markets", market };
   }
+  if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
     return { kind: "bare", tool: "convert", convertJob: second };
@@ -409,6 +423,10 @@ export function deviceHref(locale: Locale, page: DevicePageId = "hub"): string {
   if (page === "hub") return `${base}/`;
   const slug: DeviceChildId = page;
   return `${base}/${DEVICE_SLUG[slug]}/`;
+}
+
+export function legalHref(locale: Locale, page: LegalPageId): string {
+  return `/${localePath(locale)}/${page}/`;
 }
 
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
