@@ -33,6 +33,9 @@ let uploadSeq = 0;
 let busy = false;
 /** Only write the draft back when the user changed something since the last save/share. */
 let draftDirty = false;
+/** Bumped on every edit, so a share that resolves later knows whether the note changed meanwhile. */
+let editGen = 0;
+const activeXhrs = new Set<XMLHttpRequest>();
 let statusTimer = 0;
 let draftTimer = 0;
 
@@ -66,12 +69,18 @@ export function mountClipCompose(host: HTMLElement, opts: { rules?: boolean } = 
   document.addEventListener("selectionchange", rememberRange);
 }
 
+function abortUploads(): void {
+  uploadGen++;
+  for (const xhr of activeXhrs) xhr.abort();
+  activeXhrs.clear();
+}
+
 export function unmountClip(): void {
   window.removeEventListener("paste", onWindowPaste);
   document.removeEventListener("selectionchange", rememberRange);
   window.clearTimeout(statusTimer);
   flushDraft();
-  uploadGen++;
+  abortUploads();
   editor = null;
   mdArea = null;
   statusEl = null;
@@ -141,12 +150,13 @@ function showCompose(page: HTMLElement, withRules: boolean): void {
       onDragover: (e: Event) => { e.preventDefault(); (e.currentTarget as HTMLElement).classList.add("over"); },
       onDragleave: (e: Event) => { (e.currentTarget as HTMLElement).classList.remove("over"); },
       onDrop: (e: Event) => {
-        const files = [...((e as DragEvent).dataTransfer?.files || [])];
+        const dt = (e as DragEvent).dataTransfer;
+        const files = [...(dt?.files || [])];
         (e.currentTarget as HTMLElement).classList.remove("over");
-        if (!files.length) return;
+        if (!files.length && mode === "md") return;
         e.preventDefault();
         const at = caretAtPoint(e as DragEvent);
-        void uploadFiles(files, at);
+        if (dt) incoming(dt, at);
       },
     },
       toolbar(filePick),
@@ -302,6 +312,19 @@ function mdEscape(text: string): string {
     .replace(/^(\s*\d+)([.)])(\s)/gm, "$1\\$2$3");
 }
 
+function mdUrl(url: string): string {
+  return url.replace(/[()\s]/g, (c) => encodeURIComponent(c).replace("(", "%28").replace(")", "%29"));
+}
+
+function tableToMd(table: Element, walk: (n: Node) => string): string {
+  const rows = [...table.querySelectorAll("tr")].map((tr) =>
+    [...tr.children].map((cell) => walk(cell).replace(/\n+/g, " ").trim()));
+  if (!rows.length) return "";
+  const width = Math.max(...rows.map((r) => r.length));
+  const line = (r: string[]) => `| ${Array.from({ length: width }, (_, i) => r[i] ?? "").join(" | ")} |`;
+  return [line(rows[0]), `|${" --- |".repeat(width)}`, ...rows.slice(1).map(line)].join("\n");
+}
+
 /** Text of a <pre>, keeping <br> and block children as line breaks. */
 function preText(node: Node): string {
   let out = "";
@@ -340,10 +363,13 @@ function domToMarkdown(root: Node): string {
       case "ul": return `\n${[...node.children].map((li) => `- ${walk(li).trim()}`).join("\n")}\n\n`;
       case "ol": return `\n${[...node.children].map((li, i) => `${i + 1}. ${walk(li).trim()}`).join("\n")}\n\n`;
       case "li": return inner();
-      case "a": return `[${inner()}](${node.getAttribute("href") || ""})`;
-      case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${node.getAttribute("src")})\n` : "";
-      case "video": return node.getAttribute("src") ? `![video](${node.getAttribute("src")})\n` : "";
-      case "p": case "div": return `${inner()}\n\n`;
+      case "a": return `[${inner()}](${mdUrl(node.getAttribute("href") || "")})`;
+      case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
+      case "video": return node.getAttribute("src") ? `![video](${mdUrl(node.getAttribute("src") || "")})\n` : "";
+      // contenteditable puts each new line in a <div>: one line break, not a paragraph.
+      case "div": return `\n${inner()}\n`;
+      case "p": return `\n${inner()}\n\n`;
+      case "table": return `\n${tableToMd(node, walk)}\n\n`;
       default: return inner();
     }
   };
@@ -356,7 +382,7 @@ function richIsEmpty(): boolean {
 }
 
 function currentBody(): string {
-  if (mode === "md") return mdArea?.value || "";
+  if (mode === "md") return (mdArea?.value || "").replace(/⟦⏳u\d+⟧/g, "");
   if (!editor || richIsEmpty()) return "";
   const copy = editor.cloneNode(true) as HTMLElement;
   copy.querySelectorAll("[data-up]").forEach((el) => el.remove());
@@ -370,6 +396,7 @@ function pendingUploads(): boolean {
 
 function changed(): void {
   draftDirty = true;
+  editGen++;
   refreshState();
   window.clearTimeout(draftTimer);
   draftTimer = window.setTimeout(() => {
@@ -406,7 +433,9 @@ function flushDraft(): void {
   if (!draftDirty || !editor || !mdArea) return;
   draftDirty = false;
   try {
-    const body = mode === "rich" ? currentBody().replace(/^<div>|<\/div>$/g, "") : mdArea.value;
+    const body = mode === "rich"
+      ? currentBody().replace(/^<div>|<\/div>$/g, "")
+      : mdArea.value.replace(/⟦⏳u\d+⟧/g, "");
     if (body.trim()) localStorage.setItem(DRAFT_KEY, JSON.stringify({ mode, body }));
     else localStorage.removeItem(DRAFT_KEY);
   } catch {
@@ -425,7 +454,8 @@ function clearDraft(): void {
 }
 
 function clearAll(): void {
-  uploadGen++;
+  abortUploads();
+  editGen++;
   if (editor) editor.innerHTML = "";
   if (mdArea) mdArea.value = "";
   uploads = [];
@@ -551,35 +581,47 @@ function looksLikeMarkdown(text: string): boolean {
 }
 
 function onEditorPaste(e: ClipboardEvent): void {
-  const files = [...(e.clipboardData?.files || [])];
-  const html = e.clipboardData?.getData("text/html") || "";
-  const text = e.clipboardData?.getData("text/plain") || "";
   e.preventDefault();
+  if (e.clipboardData) incoming(e.clipboardData, null);
+}
+
+/** Shared by paste and drop in rich mode. */
+function incoming(dt: DataTransfer, at: Range | null): void {
+  const files = [...(dt.files || [])];
+  const html = dt.getData("text/html") || "";
+  const text = dt.getData("text/plain") || "";
   if (html) {
     const clean = cleanPastedHtml(html);
     const keptMedia = /<(img|video)\b/i.test(clean);
     const hasText = Boolean(clean.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim());
     // Office / Feishu / screenshot tools send the image as a file plus HTML with a local src.
     if (files.length && !keptMedia) {
-      if (hasText) insertRich(clean);
-      void uploadFiles(files);
-    } else insertRich(clean);
+      if (hasText) insertRich(clean, at);
+      void uploadFiles(files, hasText ? null : at);
+    } else insertRich(clean, at);
   } else if (files.length) {
-    void uploadFiles(files);
+    void uploadFiles(files, at);
     return;
   } else if (text) {
     // Plain-text Markdown or HTML source renders, as it did in the old textarea.
-    if (/^\s*</.test(text) && /<\/?[a-zA-Z]/.test(text)) insertRich(cleanPastedHtml(text));
-    else if (looksLikeMarkdown(text)) insertRich(renderClip(text));
-    else document.execCommand("insertText", false, text);
+    if (/^\s*</.test(text) && /<\/?[a-zA-Z]/.test(text)) insertRich(cleanPastedHtml(text), at);
+    else if (looksLikeMarkdown(text)) insertRich(renderClip(text), at);
+    else {
+      selectInsertPoint(at);
+      document.execCommand("insertText", false, text);
+    }
   }
   changed();
 }
 
 function onMdPaste(e: ClipboardEvent): void {
   const files = [...(e.clipboardData?.files || [])];
-  if (!files.length || (e.clipboardData?.getData("text/plain") || "").trim()) return;
+  if (!files.length) return;
   e.preventDefault();
+  // Finder puts the file name in text/plain; only keep text that is more than the names.
+  const text = (e.clipboardData?.getData("text/plain") || "").trim();
+  const names = new Set(files.map((f) => f.name));
+  if (text && !text.split(/\r?\n/).every((l) => names.has(l.trim()))) insertMd(text + "\n");
   void uploadFiles(files);
 }
 
@@ -619,13 +661,19 @@ function renderPills(): void {
 function putWithProgress(url: string, file: File, onPct: (pct: number) => void): Promise<boolean> {
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
+    activeXhrs.add(xhr);
+    const done = (ok: boolean) => {
+      activeXhrs.delete(xhr);
+      resolve(ok);
+    };
     xhr.open("PUT", url);
     xhr.setRequestHeader("content-type", file.type || "application/octet-stream");
     xhr.upload.onprogress = (ev) => {
       if (ev.lengthComputable) onPct(Math.min(99, Math.round((ev.loaded / ev.total) * 100)));
     };
-    xhr.onload = () => resolve(xhr.status >= 200 && xhr.status < 300);
-    xhr.onerror = () => resolve(false);
+    xhr.onload = () => done(xhr.status >= 200 && xhr.status < 300);
+    xhr.onerror = () => done(false);
+    xhr.onabort = () => done(false);
     xhr.send(file);
   });
 }
@@ -744,6 +792,7 @@ async function createNote(): Promise<void> {
     return;
   }
   busy = true;
+  const sentGen = editGen;
   refreshState();
   setStatus(t("clip.generating"));
   const request = fetch("/api/clip", {
@@ -763,7 +812,7 @@ async function createNote(): Promise<void> {
     const copied = (await early) || (await writeClipboard(created.url));
     setStatus(copied ? t("clip.linkCopied") : t("clip.created"), copied ? 3000 : 0);
     renderCreated(created, !copied);
-    clearDraft();
+    if (editGen === sentGen) clearDraft();
   } catch (err) {
     setStatus(errorMessage(err instanceof Error ? err.message : undefined));
   } finally {

@@ -73,4 +73,37 @@ describe("renderClip", () => {
   it("decodes entities before checking urls", () => {
     expect(renderClip('<p><a href="javascript&#58;alert(1)">x</a></p>')).not.toContain("javascript");
   });
+
+  it("keeps loose lists together", () => {
+    expect(renderClip("- a\n\n- b")).toBe("<ul><li>a</li><li>b</li></ul>");
+    expect(renderClip("1. a\n\n2. b")).toBe("<ol><li>a</li><li>b</li></ol>");
+  });
+
+  it("renders pipe tables", () => {
+    const html = renderClip("| A | B |\n| --- | --- |\n| 1 | **2** |");
+    expect(html).toBe("<table><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>1</td><td><strong>2</strong></td></tr></tbody></table>");
+  });
+
+  it("leaves private-use glyphs alone", () => {
+    expect(renderClip("a \ue0b0 b")).toContain("\ue0b0");
+  });
+
+  it("does not mangle text or urls that contain on…=", () => {
+    const html = renderClip('<div><p>WHERE month=3</p><a href="https://x.test/?month=3">m</a></div>');
+    expect(html).toContain("WHERE month=3");
+    expect(html).toContain('href="https://x.test/?month=3"');
+  });
+
+  it("drops handlers in malformed or nested tags", () => {
+    for (const src of [
+      '<div><img/src="https://s3.cv.cm/a.png"/onerror=alert(1)></div>',
+      '<div><b<img src=x onerror=alert(1)>x</b></div>',
+      '<div><a href="https://x.test" title="</a><img onerror=alert(1)>">t</a></div>',
+      '<div><svg onload=alert(1)><circle/></svg></div>',
+    ]) {
+      const html = renderClip(src);
+      expect(html, src).not.toMatch(/<[^>]*\son[a-z]+\s*=/i);
+      expect(html, src).not.toContain("<svg");
+    }
+  });
 });

@@ -116,9 +116,14 @@ function inline(text: string): string {
     .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
 }
 
-// Backslash escapes (\* \# \< …) become private-use tokens so no rule below treats them as syntax.
+// Backslash escapes (\* \# \< …) become NUL-delimited tokens so no rule below treats them as syntax.
 const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
-const ESC_BASE = 0xe000;
+
+function tableRow(line: string): string[] | null {
+  const m = line.trim().match(/^\|(.*)\|$/);
+  if (!m) return null;
+  return m[1].split("|").map((c) => c.trim());
+}
 
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
@@ -126,7 +131,7 @@ function renderMarkdown(src: string): string {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
     return `\n%%FENCE${i}%%\n`;
-  }).replace(ESC_RE, (_m, ch: string) => String.fromCharCode(ESC_BASE + ch.charCodeAt(0)));
+  }).replace(/\u0000/g, "").replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
   const lines = protectedSrc.replace(/\r\n/g, "\n").split("\n");
   const html: string[] = [];
   let para: string[] = [];
@@ -140,13 +145,30 @@ function renderMarkdown(src: string): string {
     }
     group = null;
   };
+  let table: { head: string[]; rows: string[][]; sep: boolean } | null = null;
+  const flushTable = () => {
+    if (!table) return;
+    const t = table;
+    table = null;
+    if (!t.sep) {
+      // Not a real table (no |---| line): keep the lines as a paragraph.
+      para.push([t.head, ...t.rows].map((r) => `|${r.join("|")}|`).join("\n"));
+      return;
+    }
+    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c))}</${tag}>`;
+    html.push(`<table><thead><tr>${t.head.map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
+      t.rows.map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
+  };
   const flush = () => {
+    flushTable();
     flushGroup();
     if (!para.length) return;
     const text = para.join("\n");
     para = [];
     html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"))}</p>`);
   };
+  // Read through a function: TS narrows the closure-assigned `group` to null inside the loop.
+  const openList = () => group !== null && group.kind !== "quote";
   const addItem = (kind: "ul" | "ol" | "quote", text: string, start = 1) => {
     if (para.length) flush();
     if (group && group.kind !== kind) flushGroup();
@@ -161,9 +183,21 @@ function renderMarkdown(src: string): string {
       continue;
     }
     if (/^\s*$/.test(line)) {
+      // A blank line between list items keeps one (loose) list; it still ends quotes and paragraphs.
+      if (openList() && !para.length) continue;
       flush();
       continue;
     }
+    const cells = tableRow(line);
+    if (cells) {
+      if (!table) {
+        flush();
+        table = { head: cells, rows: [], sep: false };
+      } else if (!table.sep && cells.every((c) => /^:?-{1,}:?$/.test(c))) table.sep = true;
+      else table.rows.push(cells);
+      continue;
+    }
+    flushTable();
     const heading = line.match(/^(#{1,4})\s+(.+)$/);
     if (heading) {
       flush();
@@ -190,7 +224,7 @@ function renderMarkdown(src: string): string {
     para.push(line);
   }
   flush();
-  return html.join("").replace(/[\ue000-\ue0ff]/g, (c) => escapeHtml(String.fromCharCode(c.charCodeAt(0) - ESC_BASE)));
+  return html.join("").replace(/\u0000(\d+)\u0000/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
 }
 
 function decodeEntities(value: string): string {
@@ -240,7 +274,7 @@ export function sanitizeHtml(src: string): string {
     if (tag === "a") out += ' rel="noreferrer"';
     out += selfClose && tag !== "video" ? " />" : ">";
     return out;
-  }).replace(/on[a-z]+\s*=/gi, "");
+  });
 }
 
 function looksLikeHtml(src: string): boolean {
