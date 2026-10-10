@@ -186,4 +186,28 @@ describe("renderClip", () => {
     expect(renderClip("``a`b``")).toBe("<p><code>a`b</code></p>");
     expect(renderClip("`` `x` ``")).toBe("<p><code>`x`</code></p>");
   });
+
+  it("renders code blocks, lists and paragraphs inside quotes", () => {
+    const html = renderClip("> intro\n>\n> ```js\n> const a = 1;\n> ```\n>\n> - x\n> - y");
+    expect(html.startsWith("<blockquote><p>intro</p><pre><code class=\"lang-js\">")).toBe(true);
+    expect(html).toContain("<ul><li>x</li><li>y</li></ul></blockquote>");
+  });
+
+  it("does not read > inside fenced code as a quote", () => {
+    expect(renderClip("```\n> not a quote\n```")).toBe('<pre><code class="lang-">&gt; not a quote</code></pre>');
+  });
+
+  it("nests lists by indentation", () => {
+    expect(renderClip("- a\n    - b\n        1. c\n        2. d\n- e")).toBe(
+      "<ul><li>a<ul><li>b<ol><li>c</li><li>d</li></ol></li></ul></li><li>e</li></ul>");
+  });
+
+  it("caps nesting depth on hostile input", () => {
+    const t0 = Date.now();
+    const quotes = renderClip(">".repeat(64000) + " x");
+    const lists = renderClip(Array.from({ length: 4000 }, (_, i) => `${" ".repeat(i)}- x`).join("\n"));
+    expect(quotes.split("<blockquote>").length - 1).toBeLessThanOrEqual(8);
+    expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(4000);
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
 });

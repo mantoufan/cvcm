@@ -413,13 +413,10 @@ function domToMarkdown(root: Node): string {
       case "h2": return `\n## ${oneLine(inner())}\n\n`;
       case "h3": return `\n### ${oneLine(inner())}\n\n`;
       case "h4": return `\n#### ${oneLine(inner())}\n\n`;
-      case "blockquote": return `\n${lineBreaks(inner()).split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
-      case "ul": return `\n${items(node).map((li) => `- ${li}`).join("\n")}\n\n`;
-      case "ol": {
-        const n = parseInt(node.getAttribute("start") || "", 10);
-        const start = Number.isFinite(n) ? n : 1;
-        return `\n${items(node).map((li, i) => `${start + i}. ${li}`).join("\n")}\n\n`;
-      }
+      // Finish the inside first (code blocks included), then prefix every line, so a code block
+      // or list inside the quote stays inside it. Empty lines become ">" to keep the quote going.
+      case "blockquote": return `\n${finish(inner()).trim().split("\n").map((l) => (l ? `> ${l}` : ">")).join("\n")}\n\n`;
+      case "ul": case "ol": return `\n${listLines(node, 0).join("\n")}\n\n`;
       case "li": return inner();
       case "a": return node.getAttribute("href") ? `[${inner()}](${mdUrl(node.getAttribute("href") || "")})` : inner();
       case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
@@ -431,18 +428,38 @@ function domToMarkdown(root: Node): string {
       default: return inner();
     }
   };
-  // Skip empty items (Chrome leaves one after the last Enter); keep each item on one line.
-  const items = (list: Element) => [...list.children]
-    .map((li) => oneLine(walk(li)))
-    .filter(Boolean);
+  const isList = (n: Node): boolean => n instanceof Element && /^(UL|OL)$/.test(n.tagName);
+  /**
+   * One line per item, nested lists indented 4 spaces per level. Chrome's indent button puts a
+   * nested list straight inside the parent list (not inside an <li>); both shapes nest the same.
+   * Empty items (Chrome leaves one after the last Enter) are skipped.
+   */
+  const listLines = (list: Element, depth: number): string[] => {
+    const pad = "    ".repeat(depth);
+    const ordered = list.tagName === "OL";
+    const first = parseInt(list.getAttribute("start") || "", 10);
+    let n = Number.isFinite(first) ? first : 1;
+    const out: string[] = [];
+    for (const child of list.children) {
+      if (isList(child)) {
+        out.push(...listLines(child as Element, depth + 1));
+        continue;
+      }
+      const text = oneLine([...child.childNodes].filter((c) => !isList(c)).map(walk).join(""));
+      if (text) out.push(`${pad}${ordered ? `${n++}.` : "-"} ${text}`);
+      for (const sub of [...child.children].filter(isList)) out.push(...listLines(sub as Element, depth + 1));
+    }
+    return out;
+  };
   const mark = (m: string, text: string) => (text.trim() ? `${m}${text}${m}` : text);
-  return lineBreaks(walk(root))
+  const finish = (md: string) => lineBreaks(md)
     .replace(/\n{3,}/g, "\n\n")
     .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => {
       const code = blocks[Number(i)];
       const fence = "`".repeat(Math.max(3, longestRun(code, "`") + 1));
       return `${fence}\n${code}\n${fence}`;
     });
+  return finish(walk(root));
 }
 
 function richIsEmpty(): boolean {

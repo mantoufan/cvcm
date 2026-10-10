@@ -137,14 +137,99 @@ function tableRow(line: string): string[] | null {
   return m[1].split("|").map((c) => c.trim());
 }
 
-function renderMarkdown(src: string): string {
+const MAX_DEPTH = 8;
+const FENCE_OPEN = /^(`{3,})(\w*)\s*$/;
+
+/** Index of the line that closes the fence opened at `i` (same or longer backtick run), or -1. */
+function fenceEnd(lines: string[], i: number): number {
+  const run = (lines[i].match(FENCE_OPEN)?.[1] ?? "").length;
+  for (let j = i + 1; j < lines.length; j++) {
+    const close = lines[j].match(/^(`{3,})\s*$/);
+    if (close && close[1].length >= run) return j;
+  }
+  return -1;
+}
+
+/**
+ * Split into quote blocks (runs of lines starting with ">") and everything else. A quote's
+ * inside is rendered again, so it can hold code blocks, lists and paragraphs. Fenced code is
+ * never read as a quote. Nesting stops at MAX_DEPTH so hostile input cannot exhaust the stack.
+ */
+function renderMarkdown(src: string, depth = 0): string {
+  const lines = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n");
+  const out: string[] = [];
+  let buf: string[] = [];
+  const flushBuf = () => {
+    if (buf.length) out.push(renderBlocks(buf));
+    buf = [];
+  };
+  for (let i = 0; i < lines.length; i++) {
+    const end = FENCE_OPEN.test(lines[i]) ? fenceEnd(lines, i) : -1;
+    if (end > 0) {
+      buf.push(...lines.slice(i, end + 1));
+      i = end;
+      continue;
+    }
+    if (depth < MAX_DEPTH && lines[i].startsWith(">")) {
+      flushBuf();
+      const quoted: string[] = [];
+      while (i < lines.length && lines[i].startsWith(">")) quoted.push(lines[i++].replace(/^> ?/, ""));
+      i--;
+      const inner = renderMarkdown(quoted.join("\n"), depth + 1);
+      // A one-paragraph quote stays compact: <blockquote>a<br>b</blockquote>.
+      const single = inner.match(/^<p>((?:(?!<\/?p>)[\s\S])*)<\/p>$/);
+      out.push(`<blockquote>${single ? single[1] : inner}</blockquote>`);
+      continue;
+    }
+    buf.push(lines[i]);
+  }
+  flushBuf();
+  return out.join("");
+}
+
+type ListItem = { indent: number; kind: "ul" | "ol"; start: number; text: string };
+
+/** Build nested <ul>/<ol> from items by indentation; a deeper item nests in the previous one. */
+function renderList(items: ListItem[], codes: string[]): string {
+  let i = 0;
+  const build = (indent: number, depth: number): string => {
+    const { kind, start } = items[i];
+    const lis: string[] = [];
+    while (i < items.length && items[i].indent >= indent) {
+      const it = items[i];
+      if (it.indent > indent && depth < MAX_DEPTH) {
+        const sub = build(it.indent, depth + 1);
+        if (lis.length) lis[lis.length - 1] += sub;
+        else lis.push(sub);
+        continue;
+      }
+      if (it.kind !== kind) break;
+      lis.push(inline(escapeHtml(it.text), codes));
+      i++;
+    }
+    const attr = kind === "ol" && start !== 1 ? ` start="${start}"` : "";
+    return `<${kind}${attr}>${lis.map((li) => `<li>${li}</li>`).join("")}</${kind}>`;
+  };
+  let html = "";
+  while (i < items.length) html += build(items[i].indent, 0);
+  return html;
+}
+
+function renderBlocks(src: string[]): string {
   const fences: string[] = [];
   const codes: string[] = [];
-  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/(`{3,})(\w*)\n([\s\S]*?)\1(?!`)/g, (_m, _ticks, lang, code) => {
-    const i = fences.length;
-    fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
-    return `\n\u0001f${i}\u0002\n`;
-  })
+  const kept: string[] = [];
+  for (let i = 0; i < src.length; i++) {
+    const open = src[i].match(FENCE_OPEN);
+    const end = open ? fenceEnd(src, i) : -1;
+    if (open && end > 0) {
+      const code = src.slice(i + 1, end).join("\n");
+      const n = fences.push(`<pre><code class="lang-${escapeHtml(open[2])}">${highlight(code)}</code></pre>`) - 1;
+      kept.push(`\u0001f${n}\u0002`);
+      i = end;
+    } else kept.push(src[i]);
+  }
+  const protectedSrc = kept.join("\n")
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
     .replace(/(?<![\\`])(`+)(?!`)([^\n]*?[^`\n])\1(?!`)/g, (_m, _ticks, code: string) =>
@@ -153,15 +238,10 @@ function renderMarkdown(src: string): string {
   const lines = protectedSrc.split("\n");
   const html: string[] = [];
   let para: string[] = [];
-  let group: { kind: "ul" | "ol" | "quote"; items: string[]; start: number } | null = null;
-  const flushGroup = () => {
-    if (!group) return;
-    if (group.kind === "quote") html.push(`<blockquote>${group.items.join("<br>")}</blockquote>`);
-    else {
-      const start = group.kind === "ol" && group.start !== 1 ? ` start="${group.start}"` : "";
-      html.push(`<${group.kind}${start}>${group.items.map((li) => `<li>${li}</li>`).join("")}</${group.kind}>`);
-    }
-    group = null;
+  let list: ListItem[] = [];
+  const flushList = () => {
+    if (list.length) html.push(renderList(list, codes));
+    list = [];
   };
   let table: { head: string[]; rows: string[][]; sep: boolean; raw: string[] } | null = null;
   const flushTable = () => {
@@ -179,19 +259,11 @@ function renderMarkdown(src: string): string {
   };
   const flush = () => {
     flushTable();
-    flushGroup();
+    flushList();
     if (!para.length) return;
     const text = para.join("\n");
     para = [];
     html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"), codes)}</p>`);
-  };
-  // Read through a function: TS narrows the closure-assigned `group` to null inside the loop.
-  const openList = () => group !== null && group.kind !== "quote";
-  const addItem = (kind: "ul" | "ol" | "quote", text: string, start = 1) => {
-    if (para.length) flush();
-    if (group && group.kind !== kind) flushGroup();
-    if (!group) group = { kind, items: [], start };
-    group.items.push(inline(escapeHtml(text), codes));
   };
   for (const line of lines) {
     const fence = line.trim().match(/^\u0001f(\d+)\u0002$/);
@@ -201,8 +273,8 @@ function renderMarkdown(src: string): string {
       continue;
     }
     if (/^\s*$/.test(line)) {
-      // A blank line between list items keeps one (loose) list; it still ends quotes and paragraphs.
-      if (openList() && !para.length) continue;
+      // A blank line between list items keeps one (loose) list; it still ends paragraphs.
+      if (list.length && !para.length) continue;
       flush();
       continue;
     }
@@ -224,22 +296,18 @@ function renderMarkdown(src: string): string {
       html.push(`<h${n}>${inline(escapeHtml(heading[2]), codes)}</h${n}>`);
       continue;
     }
-    const bullet = line.match(/^[-*]\s+(.*)$/);
-    if (bullet) {
-      addItem("ul", bullet[1]);
+    const item = line.match(/^([ \t]*)(?:([-*])|(\d+)[.)])\s+(.*)$/);
+    if (item) {
+      if (para.length) flush();
+      list.push({
+        indent: item[1].replace(/\t/g, "    ").length,
+        kind: item[2] ? "ul" : "ol",
+        start: item[3] ? Number(item[3]) : 1,
+        text: item[4],
+      });
       continue;
     }
-    const ordered = line.match(/^(\d+)[.)]\s+(.*)$/);
-    if (ordered) {
-      addItem("ol", ordered[2], Number(ordered[1]));
-      continue;
-    }
-    const quote = line.match(/^>\s?(.*)$/);
-    if (quote) {
-      addItem("quote", quote[1]);
-      continue;
-    }
-    flushGroup();
+    flushList();
     para.push(line);
   }
   flush();
