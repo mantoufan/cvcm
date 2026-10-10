@@ -762,10 +762,10 @@ function resolvePlaceholder(u: Upload, embed: { rich: string; md: string } | nul
       } else el.remove();
     }
   }
-  if (mdArea && mdArea.value.includes(mdToken(u.id))) {
-    const md = embed ? embed.md : "";
-    mdArea.value = mdArea.value.replace(mdToken(u.id), () => md);
-  }
+  const tok = mdToken(u.id);
+  const at = mdArea ? mdArea.value.indexOf(tok) : -1;
+  // setRangeText keeps the caret where the user is typing (assigning .value would jump to the end).
+  if (mdArea && at >= 0) mdArea.setRangeText(embed ? embed.md : "", at, at + tok.length, "preserve");
 }
 
 async function uploadFiles(files: File[], at?: Range | null): Promise<void> {

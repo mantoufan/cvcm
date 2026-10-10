@@ -145,7 +145,7 @@ function renderMarkdown(src: string): string {
   })
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
-    .replace(/(?<!\\)`([^`\n]+?)(?<!\\)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
+    .replace(/(?<!\\)`([^`\n]+?)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
     .replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
   const lines = protectedSrc.split("\n");
   const html: string[] = [];

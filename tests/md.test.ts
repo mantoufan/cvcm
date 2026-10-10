@@ -166,4 +166,8 @@ describe("renderClip", () => {
     renderClip("[a](".repeat(16000));
     expect(Date.now() - t0).toBeLessThan(800);
   });
+
+  it("keeps a trailing backslash in inline code", () => {
+    expect(renderClip("path `C:\\` here")).toBe("<p>path <code>C:\\</code> here</p>");
+  });
 });
