@@ -429,6 +429,7 @@ function domToMarkdown(root: Node): string {
     }
   };
   const isList = (n: Node): boolean => n instanceof Element && /^(UL|OL)$/.test(n.tagName);
+  const isBlock = (n: Node): boolean => n instanceof Element && /^(PRE|BLOCKQUOTE|TABLE)$/.test(n.tagName);
   /**
    * One line per item, nested lists indented 4 spaces per level. Chrome's indent button puts a
    * nested list straight inside the parent list (not inside an <li>); both shapes nest the same.
@@ -445,9 +446,17 @@ function domToMarkdown(root: Node): string {
         out.push(...listLines(child as Element, depth + 1));
         continue;
       }
-      const text = oneLine([...child.childNodes].filter((c) => !isList(c)).map(walk).join(""));
-      if (text) out.push(`${pad}${ordered ? `${n++}.` : "-"} ${text}`);
-      for (const sub of [...child.children].filter(isList)) out.push(...listLines(sub as Element, depth + 1));
+      const kids = [...child.childNodes];
+      const text = oneLine(kids.filter((c) => !isList(c) && !isBlock(c)).map(walk).join(""));
+      const subs = kids.filter((c) => isList(c) || isBlock(c));
+      // Chrome leaves an empty item after the last Enter: drop it unless it holds something.
+      if (!text && !subs.length) continue;
+      out.push(`${pad}${ordered ? `${n++}.` : "-"} ${text}`.trimEnd() + (text ? "" : " "));
+      for (const sub of subs) {
+        if (isList(sub)) out.push(...listLines(sub as Element, depth + 1));
+        // Code blocks, quotes and tables sit in the item, indented one level under its marker.
+        else out.push(...finish(walk(sub)).trim().split("\n").map((l) => (l ? `${pad}    ${l}` : "")));
+      }
     }
     return out;
   };

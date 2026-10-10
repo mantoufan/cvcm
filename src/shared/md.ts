@@ -138,182 +138,201 @@ function tableRow(line: string): string[] | null {
 }
 
 const MAX_DEPTH = 8;
-const FENCE_OPEN = /^(`{3,})(\w*)\s*$/;
+const FENCE_OPEN = /^([ \t]*)(`{3,})(\w*)\s*$/;
+const QUOTE_LINE = /^ {0,3}>/;
+const LIST_ITEM = /^([ \t]*)(?:([-*])|(\d+)[.)])(?:\s+(.*))?$/;
+const HEADING = /^(#{1,4})\s+(.+)$/;
 
-/** Index of the line that closes the fence opened at `i` (same or longer backtick run), or -1. */
-function fenceEnd(lines: string[], i: number): number {
-  const run = (lines[i].match(FENCE_OPEN)?.[1] ?? "").length;
-  for (let j = i + 1; j < lines.length; j++) {
-    const close = lines[j].match(/^(`{3,})\s*$/);
-    if (close && close[1].length >= run) return j;
-  }
-  return -1;
+/** A list marker line. "-" or "*" may stand alone (an empty item); "1." needs a space after it. */
+function listItem(line: string): RegExpMatchArray | null {
+  const m = line.match(LIST_ITEM);
+  return m && (m[2] || m[4] !== undefined) ? m : null;
 }
 
-/**
- * Split into quote blocks (runs of lines starting with ">") and everything else. A quote's
- * inside is rendered again, so it can hold code blocks, lists and paragraphs. Fenced code is
- * never read as a quote. Nesting stops at MAX_DEPTH so hostile input cannot exhaust the stack.
- */
-function renderMarkdown(src: string, depth = 0): string {
-  const lines = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n");
-  const out: string[] = [];
-  let buf: string[] = [];
-  const flushBuf = () => {
-    if (buf.length) out.push(renderBlocks(buf));
-    buf = [];
-  };
-  for (let i = 0; i < lines.length; i++) {
-    const end = FENCE_OPEN.test(lines[i]) ? fenceEnd(lines, i) : -1;
-    if (end > 0) {
-      buf.push(...lines.slice(i, end + 1));
-      i = end;
-      continue;
-    }
-    if (depth < MAX_DEPTH && lines[i].startsWith(">")) {
-      flushBuf();
-      const quoted: string[] = [];
-      while (i < lines.length && lines[i].startsWith(">")) quoted.push(lines[i++].replace(/^> ?/, ""));
-      i--;
-      const inner = renderMarkdown(quoted.join("\n"), depth + 1);
-      // A one-paragraph quote stays compact: <blockquote>a<br>b</blockquote>.
-      const single = inner.match(/^<p>((?:(?!<\/?p>)[\s\S])*)<\/p>$/);
-      out.push(`<blockquote>${single ? single[1] : inner}</blockquote>`);
-      continue;
-    }
-    buf.push(lines[i]);
-  }
-  flushBuf();
-  return out.join("");
+function indentOf(line: string): number {
+  return (line.match(/^[ \t]*/)?.[0] ?? "").replace(/\t/g, "    ").length;
 }
 
-type ListItem = { indent: number; kind: "ul" | "ol"; start: number; text: string };
-
-/** Build nested <ul>/<ol> from items by indentation; a deeper item nests in the previous one. */
-function renderList(items: ListItem[], codes: string[]): string {
+function dedent(line: string, n: number): string {
   let i = 0;
-  const build = (indent: number, depth: number): string => {
-    const { kind, start } = items[i];
-    const lis: string[] = [];
-    while (i < items.length && items[i].indent >= indent) {
-      const it = items[i];
-      if (it.indent > indent && depth < MAX_DEPTH) {
-        const sub = build(it.indent, depth + 1);
-        if (lis.length) lis[lis.length - 1] += sub;
-        else lis.push(sub);
-        continue;
-      }
-      if (it.kind !== kind) break;
-      lis.push(inline(escapeHtml(it.text), codes));
-      i++;
-    }
-    const attr = kind === "ol" && start !== 1 ? ` start="${start}"` : "";
-    return `<${kind}${attr}>${lis.map((li) => `<li>${li}</li>`).join("")}</${kind}>`;
-  };
-  let html = "";
-  while (i < items.length) html += build(items[i].indent, 0);
-  return html;
+  let col = 0;
+  while (i < line.length && col < n && (line[i] === " " || line[i] === "\t")) {
+    col += line[i] === "\t" ? 4 : 1;
+    i++;
+  }
+  return line.slice(i);
 }
 
-function renderBlocks(src: string[]): string {
-  const fences: string[] = [];
+/** Inline formatting for one leaf (paragraph, heading, cell, item text). Tokens never leave it. */
+function inlineText(text: string): string {
   const codes: string[] = [];
-  const kept: string[] = [];
-  for (let i = 0; i < src.length; i++) {
-    const open = src[i].match(FENCE_OPEN);
-    const end = open ? fenceEnd(src, i) : -1;
-    if (open && end > 0) {
-      const code = src.slice(i + 1, end).join("\n");
-      const n = fences.push(`<pre><code class="lang-${escapeHtml(open[2])}">${highlight(code)}</code></pre>`) - 1;
-      kept.push(`\u0001f${n}\u0002`);
-      i = end;
-    } else kept.push(src[i]);
-  }
-  const protectedSrc = kept.join("\n")
+  const held = text
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
     .replace(/(?<![\\`])(`+)(?!`)([^\n]*?[^`\n])\1(?!`)/g, (_m, _ticks, code: string) =>
       `\u0001c${codes.push(/^ .* $/.test(code) ? code.slice(1, -1) : code) - 1}\u0002`)
     .replace(ESC_RE, (_m, ch: string) => `\u0001e${ch.charCodeAt(0)}\u0002`);
-  const lines = protectedSrc.split("\n");
-  const html: string[] = [];
-  let para: string[] = [];
-  let list: ListItem[] = [];
-  const flushList = () => {
-    if (list.length) html.push(renderList(list, codes));
-    list = [];
-  };
-  let table: { head: string[]; rows: string[][]; sep: boolean; raw: string[] } | null = null;
-  const flushTable = () => {
-    if (!table) return;
-    const t = table;
-    table = null;
-    if (!t.sep) {
-      // Not a real table (no |---| line): keep the lines as a paragraph.
-      para.push(...t.raw);
-      return;
-    }
-    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c), codes)}</${tag}>`;
-    html.push(`<table><thead><tr>${t.head.map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
-      t.rows.map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
-  };
-  const flush = () => {
-    flushTable();
-    flushList();
-    if (!para.length) return;
-    const text = para.join("\n");
-    para = [];
-    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"), codes)}</p>`);
-  };
-  for (const line of lines) {
-    const fence = line.trim().match(/^\u0001f(\d+)\u0002$/);
-    if (fence) {
-      flush();
-      html.push(fences[Number(fence[1])]);
-      continue;
-    }
-    if (/^\s*$/.test(line)) {
-      // A blank line between list items keeps one (loose) list; it still ends paragraphs.
-      if (list.length && !para.length) continue;
-      flush();
-      continue;
-    }
-    const cells = tableRow(line);
-    if (cells) {
-      if (table) table.raw.push(line);
-      if (!table) {
-        flush();
-        table = { head: cells, rows: [], sep: false, raw: [line] };
-      } else if (!table.sep && cells.every((c) => /^:?-{1,}:?$/.test(c))) table.sep = true;
-      else table.rows.push(cells);
-      continue;
-    }
-    flushTable();
-    const heading = line.match(/^(#{1,4})\s+(.+)$/);
-    if (heading) {
-      flush();
-      const n = heading[1].length;
-      html.push(`<h${n}>${inline(escapeHtml(heading[2]), codes)}</h${n}>`);
-      continue;
-    }
-    const item = line.match(/^([ \t]*)(?:([-*])|(\d+)[.)])\s+(.*)$/);
-    if (item) {
-      if (para.length) flush();
-      list.push({
-        indent: item[1].replace(/\t/g, "    ").length,
-        kind: item[2] ? "ul" : "ol",
-        start: item[3] ? Number(item[3]) : 1,
-        text: item[4],
-      });
-      continue;
-    }
-    flushList();
-    para.push(line);
-  }
-  flush();
-  return html.join("")
+  return inline(escapeHtml(held).replace(/\n/g, "<br>"), codes)
     .replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)] ?? "")}</code>`)
     .replace(/\u0001e(\d+)\u0002/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
+}
+
+/**
+ * Fence closers for a block of lines, computed once. A closer is a line ending in a backtick
+ * run: bare ("```") or after code ("x = 1```", as the old renderer allowed). `suffixMax` lets
+ * an unclosed opener be rejected in O(1), so many unclosed fences stay linear.
+ */
+function fenceCloser(lines: string[]): (i: number) => { end: number; tail: string } | null {
+  const run = lines.map((l) => {
+    const m = l.match(/(`{3,})\s*$/);
+    return m && (m.index === 0 || l[m.index! - 1] !== "`") ? m[1].length : 0;
+  });
+  const suffixMax = new Array<number>(lines.length + 1).fill(0);
+  for (let j = lines.length - 1; j >= 0; j--) suffixMax[j] = Math.max(run[j], suffixMax[j + 1]);
+  return (i) => {
+    const need = (lines[i].match(FENCE_OPEN)?.[2] ?? "").length;
+    if (!need || suffixMax[i + 1] < need) return null;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (run[j] >= need) return { end: j, tail: lines[j].replace(/\s*`{3,}\s*$/, "") };
+    }
+    return null;
+  };
+}
+
+function isBlockStart(line: string): boolean {
+  return FENCE_OPEN.test(line) || QUOTE_LINE.test(line) || Boolean(listItem(line)) || HEADING.test(line) || Boolean(tableRow(line));
+}
+
+function renderMarkdown(src: string): string {
+  return renderBlocks(src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n"), 0);
+}
+
+/**
+ * Block structure on raw lines. Quotes and list items cut out their own lines and are rendered
+ * recursively, so either can hold code blocks, quotes, lists and paragraphs. Nesting stops at
+ * MAX_DEPTH (deeper markers read as text), so hostile input cannot exhaust the stack.
+ */
+function renderBlocks(lines: string[], depth: number): string {
+  const html: string[] = [];
+  const closer = fenceCloser(lines);
+  const nested = depth < MAX_DEPTH;
+  const fenceAt = (i: number) => (FENCE_OPEN.test(lines[i]) ? closer(i) : null);
+  const startsBlock = (i: number): boolean => {
+    const line = lines[i];
+    if (fenceAt(i) || HEADING.test(line) || tableRow(line)) return true;
+    if (nested && QUOTE_LINE.test(line)) return true;
+    // Only "-", "*" or "1." may interrupt a paragraph, so "  2024. was great" stays text.
+    const item = nested ? listItem(line) : null;
+    return Boolean(item && indentOf(line) < 4 && item[4] && (item[2] || item[3] === "1"));
+  };
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^\s*$/.test(line)) {
+      i++;
+      continue;
+    }
+    const fence = fenceAt(i);
+    if (fence) {
+      const open = line.match(FENCE_OPEN)!;
+      const pad = indentOf(open[1]);
+      const body = lines.slice(i + 1, fence.end).map((l) => dedent(l, pad));
+      if (fence.tail.trim()) body.push(dedent(fence.tail, pad));
+      html.push(`<pre><code class="lang-${escapeHtml(open[3])}">${highlight(body.join("\n"))}</code></pre>`);
+      i = fence.end + 1;
+      continue;
+    }
+    if (nested && QUOTE_LINE.test(line)) {
+      const quoted: string[] = [];
+      while (i < lines.length && QUOTE_LINE.test(lines[i])) quoted.push(lines[i++].replace(/^ {0,3}> ?/, ""));
+      const inner = renderBlocks(quoted, depth + 1);
+      // A one-paragraph quote stays compact: <blockquote>a<br>b</blockquote>.
+      const single = inner.match(/^<p>((?:(?!<\/?p>)[\s\S])*)<\/p>$/);
+      html.push(`<blockquote>${single ? single[1] : inner}</blockquote>`);
+      continue;
+    }
+    if (tableRow(line)) {
+      const rows: string[] = [];
+      while (i < lines.length && tableRow(lines[i])) rows.push(lines[i++]);
+      const cells = rows.map((r) => tableRow(r)!);
+      if (rows.length >= 2 && cells[1].every((c) => /^:?-{1,}:?$/.test(c))) {
+        const cell = (tag: string, c: string) => `<${tag}>${inlineText(c)}</${tag}>`;
+        html.push(`<table><thead><tr>${cells[0].map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
+          cells.slice(2).map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
+      } else {
+        // Not a real table (no |---| line): keep the lines verbatim as a paragraph.
+        html.push(`<p>${inlineText(rows.join("\n"))}</p>`);
+      }
+      continue;
+    }
+    const heading = line.match(HEADING);
+    if (heading) {
+      const n = heading[1].length;
+      html.push(`<h${n}>${inlineText(heading[2])}</h${n}>`);
+      i++;
+      continue;
+    }
+    if (nested && listItem(line)) {
+      i = renderList(lines, i, depth, html);
+      continue;
+    }
+    const para: string[] = [line];
+    i++;
+    while (i < lines.length && !/^\s*$/.test(lines[i]) && !startsBlock(i)) para.push(lines[i++]);
+    html.push(`<p>${inlineText(para.join("\n"))}</p>`);
+  }
+  return html.join("");
+}
+
+/**
+ * One list starting at line `i`; returns the index after it. Lines indented past the item's
+ * marker (and blank lines followed by such lines) belong to that item and are rendered as its
+ * body. A later marker at the same or a smaller indent is the next sibling if it is the same
+ * kind of list; a different kind ends the list.
+ */
+function renderList(lines: string[], i: number, depth: number, html: string[]): number {
+  const first = listItem(lines[i])!;
+  const kind = first[2] ? "ul" : "ol";
+  const start = first[3] ? Number(first[3]) : 1;
+  const base = indentOf(lines[i]);
+  const lis: string[] = [];
+  while (i < lines.length) {
+    const m = listItem(lines[i]);
+    if (!m || indentOf(lines[i]) > base || (m[2] ? "ul" : "ol") !== kind) break;
+    const own = indentOf(lines[i]);
+    const contentCol = own + (m[2] ?? `${m[3]}.`).length + 1;
+    const body: string[] = [];
+    let j = i + 1;
+    while (j < lines.length) {
+      if (/^\s*$/.test(lines[j])) {
+        let k = j;
+        while (k < lines.length && /^\s*$/.test(lines[k])) k++;
+        if (k < lines.length && indentOf(lines[k]) > own) {
+          body.push(...lines.slice(j, k).map(() => ""));
+          j = k;
+          continue;
+        }
+        break;
+      }
+      if (indentOf(lines[j]) <= own) break;
+      body.push(dedent(lines[j], Math.min(contentCol, indentOf(lines[j]))));
+      j++;
+    }
+    // Plain lines right under the item continue its text ("- a\n  more" is one item, two lines).
+    const text = m[4] ? [m[4]] : [];
+    while (text.length && body.length && body[0].trim() && !isBlockStart(body[0])) text.push(body.shift()!);
+    lis.push(`<li>${text.length ? inlineText(text.join("\n")) : ""}${body.length ? renderBlocks(body, depth + 1) : ""}</li>`);
+    i = j;
+    // A blank line between siblings keeps one (loose) list.
+    let k = i;
+    while (k < lines.length && /^\s*$/.test(lines[k])) k++;
+    const next = k < lines.length ? listItem(lines[k]) : null;
+    if (next && indentOf(lines[k]) <= base && (next[2] ? "ul" : "ol") === kind) i = k;
+    else break;
+  }
+  const attr = kind === "ol" && start !== 1 ? ` start="${start}"` : "";
+  html.push(`<${kind}${attr}>${lis.join("")}</${kind}>`);
+  return i;
 }
 
 function decodeEntities(value: string): string {

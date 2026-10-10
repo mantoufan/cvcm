@@ -210,4 +210,39 @@ describe("renderClip", () => {
     expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(4000);
     expect(Date.now() - t0).toBeLessThan(1500);
   });
+
+  it("keeps indented fences, also under list items", () => {
+    expect(renderClip("1. Install\n   ```bash\n   npm i\n   ```\n2. Run")).toBe(
+      '<ol><li>Install<pre><code class="lang-bash">npm i</code></pre></li><li>Run</li></ol>');
+    expect(renderClip("  ```js\n  const a = 1;\n  ```")).toBe(
+      '<pre><code class="lang-js"><span class="k">const</span> a = 1;</code></pre>');
+  });
+
+  it("accepts a fence closed at the end of the last code line", () => {
+    expect(renderClip("```js\nconst a = 1;```")).toBe('<pre><code class="lang-js"><span class="k">const</span> a = 1;</code></pre>');
+  });
+
+  it("stays linear on many unclosed fences", () => {
+    const t0 = Date.now();
+    renderClip("```a\n".repeat(13000));
+    renderClip("> ```a\n".repeat(9000));
+    expect(Date.now() - t0).toBeLessThan(800);
+  });
+
+  it("only lets -, * or 1. interrupt a paragraph", () => {
+    expect(renderClip("Text\n  2024. was great")).toBe("<p>Text<br>  2024. was great</p>");
+  });
+
+  it("treats a dedent to a middle indent as a sibling", () => {
+    expect(renderClip("- a\n        - b\n    - c\n- d")).toBe("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>");
+  });
+
+  it("puts quotes and continuation lines inside list items", () => {
+    expect(renderClip("- a\n  more\n    > q\n- b")).toBe("<ul><li>a<br>more<blockquote>q</blockquote></li><li>b</li></ul>");
+  });
+
+  it("reads a bare number line as text but a bare dash as an empty item", () => {
+    expect(renderClip("2024.")).toBe("<p>2024.</p>");
+    expect(renderClip("-\n    - b")).toBe("<ul><li><ul><li>b</li></ul></li></ul>");
+  });
 });
