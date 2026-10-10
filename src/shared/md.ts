@@ -94,26 +94,32 @@ export function highlight(code: string): string {
   return out;
 }
 
+function unescapeHtml(text: string): string {
+  return text.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+}
+
+/** `text` is already HTML-escaped. Generated tags are held as tokens so later rules never rewrite them. */
 function inline(text: string): string {
+  const held: string[] = [];
+  const hold = (html: string) => `\u0000h${held.push(html) - 1}\u0000`;
   return text
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, href) => {
-      const url = safeUrl(href);
-      if (!url) return escapeHtml(alt);
-      if (isVideo(url)) {
-        return `<video controls src="${escapeHtml(url)}"></video>`;
-      }
-      return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}">`;
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt: string, href: string) => {
+      const url = safeUrl(unescapeHtml(href));
+      if (!url) return alt;
+      if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
+      return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, href) => {
-      const url = safeUrl(href);
-      if (!url) return escapeHtml(label);
-      return `<a href="${escapeHtml(url)}" rel="noreferrer">${escapeHtml(label)}</a>`;
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label: string, href: string) => {
+      const url = safeUrl(unescapeHtml(href));
+      if (!url) return label;
+      return `${hold(`<a href="${escapeHtml(url)}" rel="noreferrer">`)}${label}${hold("</a>")}`;
     })
-    .replace(/`([^`]+)`/g, (_m, code) => `<code>${escapeHtml(code)}</code>`)
+    .replace(/`([^`]+)`/g, (_m, code: string) => hold(`<code>${code}</code>`))
     .replace(/\+\+([^+]+)\+\+/g, (_m, s) => `<u>${s}</u>`)
     .replace(/~~([^~]+)~~/g, (_m, s) => `<s>${s}</s>`)
     .replace(/\*\*([^*]+)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
-    .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
+    .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`)
+    .replace(/\u0000h(\d+)\u0000/g, (_m, i: string) => held[Number(i)]);
 }
 
 // Backslash escapes (\* \# \< …) become NUL-delimited tokens so no rule below treats them as syntax.
@@ -127,11 +133,15 @@ function tableRow(line: string): string[] | null {
 
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
-  const protectedSrc = src.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+  const codes: string[] = [];
+  const protectedSrc = src.replace(/\u0000/g, "").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
     return `\n%%FENCE${i}%%\n`;
-  }).replace(/\u0000/g, "").replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
+  })
+    // Inline code keeps its backslashes: hold it before escapes are read.
+    .replace(/`([^`\n]+)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
+    .replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
   const lines = protectedSrc.replace(/\r\n/g, "\n").split("\n");
   const html: string[] = [];
   let para: string[] = [];
@@ -145,14 +155,14 @@ function renderMarkdown(src: string): string {
     }
     group = null;
   };
-  let table: { head: string[]; rows: string[][]; sep: boolean } | null = null;
+  let table: { head: string[]; rows: string[][]; sep: boolean; raw: string[] } | null = null;
   const flushTable = () => {
     if (!table) return;
     const t = table;
     table = null;
     if (!t.sep) {
       // Not a real table (no |---| line): keep the lines as a paragraph.
-      para.push([t.head, ...t.rows].map((r) => `|${r.join("|")}|`).join("\n"));
+      para.push(...t.raw);
       return;
     }
     const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c))}</${tag}>`;
@@ -190,9 +200,10 @@ function renderMarkdown(src: string): string {
     }
     const cells = tableRow(line);
     if (cells) {
+      if (table) table.raw.push(line);
       if (!table) {
         flush();
-        table = { head: cells, rows: [], sep: false };
+        table = { head: cells, rows: [], sep: false, raw: [line] };
       } else if (!table.sep && cells.every((c) => /^:?-{1,}:?$/.test(c))) table.sep = true;
       else table.rows.push(cells);
       continue;
@@ -224,7 +235,9 @@ function renderMarkdown(src: string): string {
     para.push(line);
   }
   flush();
-  return html.join("").replace(/\u0000(\d+)\u0000/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
+  return html.join("")
+    .replace(/\u0000c(\d+)\u0000/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)])}</code>`)
+    .replace(/\u0000(\d+)\u0000/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
 }
 
 function decodeEntities(value: string): string {
@@ -241,8 +254,12 @@ function decodeEntities(value: string): string {
 }
 
 export function sanitizeHtml(src: string): string {
-  return src.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)\/?>/g, (raw, name: string, attrs: string) => {
-    const tag = name.toLowerCase();
+  // One pass over tags *and* stray angle brackets: a stray "<" is escaped, so dropping a
+  // disallowed tag can never glue the text around it into a new tag (e.g. "<<x>img onerror=…>").
+  return src.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^<>]*)\/?>|[<>]/g, (raw: string, name: string | undefined, attrs: string) => {
+    if (raw === "<") return "&lt;";
+    if (raw === ">") return "&gt;";
+    const tag = (name || "").toLowerCase();
     const close = raw.startsWith("</");
     if (!ALLOWED.has(tag)) return "";
     if (close) return `</${tag}>`;

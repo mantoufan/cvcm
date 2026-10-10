@@ -106,4 +106,33 @@ describe("renderClip", () => {
       expect(html, src).not.toContain("<svg");
     }
   });
+
+  it("cannot glue a tag together by dropping a disallowed one", () => {
+    for (const src of [
+      "<div><<x>img src=x onerror=alert(1)></div>",
+      '<div><<x>a href=https://evil.test style="position:fixed">t</a></div>',
+      "<div><scr<x>ipt>alert(1)</script></div>",
+    ]) {
+      const html = renderClip(src);
+      expect(html, src).not.toMatch(/<img[^>]*onerror|<a[^>]*style|<script/i);
+      expect(renderClip(html), src).toBe(html);
+    }
+  });
+
+  it("keeps & in markdown links and alt text single-escaped", () => {
+    const html = renderClip("[a & b](https://x.test/?a=1&b=2)");
+    expect(html).toBe('<p><a href="https://x.test/?a=1&amp;b=2" rel="noreferrer">a &amp; b</a></p>');
+  });
+
+  it("keeps backslashes inside inline code", () => {
+    expect(renderClip("`\\d+\\.\\d+` and `a\\*b`")).toBe("<p><code>\\d+\\.\\d+</code> and <code>a\\*b</code></p>");
+  });
+
+  it("does not apply emphasis inside urls", () => {
+    expect(renderClip("[x](https://a.test/*foo*)")).toContain('href="https://a.test/*foo*"');
+  });
+
+  it("keeps pipe lines verbatim when they are not a table", () => {
+    expect(renderClip("|  a  |")).toBe("<p>|  a  |</p>");
+  });
 });
