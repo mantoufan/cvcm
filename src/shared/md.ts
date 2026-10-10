@@ -1,7 +1,7 @@
 const ALLOWED = new Set([
   "p", "br", "h1", "h2", "h3", "h4", "pre", "code", "ul", "ol", "li",
   "a", "img", "video", "source", "blockquote", "strong", "em", "b", "i",
-  "u", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
+  "u", "s", "strike", "del", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
 ]);
 
 const ATTRS: Record<string, Set<string>> = {
@@ -110,6 +110,7 @@ function inline(text: string): string {
     })
     .replace(/`([^`]+)`/g, (_m, code) => `<code>${escapeHtml(code)}</code>`)
     .replace(/\+\+([^+]+)\+\+/g, (_m, s) => `<u>${s}</u>`)
+    .replace(/~~([^~]+)~~/g, (_m, s) => `<s>${s}</s>`)
     .replace(/\*\*([^*]+)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
     .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
 }
@@ -157,13 +158,23 @@ function renderMarkdown(src: string): string {
       html.push(`<ul><li>${inline(escapeHtml(line.replace(/^[-*]\s+/, "")))}</li></ul>`);
       continue;
     }
+    if (/^\d+[.)]\s+/.test(line)) {
+      flush();
+      html.push(`<ol><li>${inline(escapeHtml(line.replace(/^\d+[.)]\s+/, "")))}</li></ol>`);
+      continue;
+    }
+    if (/^>\s?/.test(line)) {
+      flush();
+      html.push(`<blockquote>${inline(escapeHtml(line.replace(/^>\s?/, "")))}</blockquote>`);
+      continue;
+    }
     para.push(line);
   }
   flush();
-  return html.join("").replace(/<\/ul><ul>/g, "");
+  return html.join("").replace(/<\/ul><ul>/g, "").replace(/<\/ol><ol>/g, "").replace(/<\/blockquote><blockquote>/g, "<br>");
 }
 
-function sanitizeHtml(src: string): string {
+export function sanitizeHtml(src: string): string {
   return src.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)\/?>/g, (raw, name: string, attrs: string) => {
     const tag = name.toLowerCase();
     const close = raw.startsWith("</");

@@ -36,4 +36,16 @@ describe("renderClip", () => {
     expect(html).toContain("<p>");
     expect(html).toContain("https://s3.cv.cm/files/clip/abcdefgh/a.png");
   });
+
+  it("renders strike, numbered lists and quotes", () => {
+    const html = renderClip("~~gone~~\n\n1. one\n2. two\n\n> quoted\n> more");
+    expect(html).toContain("<s>gone</s>");
+    expect(html).toContain("<ol><li>one</li><li>two</li></ol>");
+    expect(html).toContain("<blockquote>quoted<br>more</blockquote>");
+  });
+
+  it("keeps rich-text editor markup", () => {
+    const html = renderClip("<div><h1>T</h1><b>b</b><strike>s</strike><ol><li>x</li></ol><blockquote>q</blockquote><pre>code</pre></div>");
+    for (const tag of ["<h1>", "<b>", "<strike>", "<ol>", "<blockquote>", "<pre>"]) expect(html).toContain(tag);
+  });
 });

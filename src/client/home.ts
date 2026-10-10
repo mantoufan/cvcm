@@ -22,21 +22,22 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       ),
     )
     : null;
-  const clipCard = h("div", { class: "home-clip" },
-    h("div", { class: "home-clip-h" },
-      h("h2", null,
-        h("a", { href: appHref(locale, "clip"), "data-nav": "clip" }, t("clip.title")),
-      ),
-      h("p", { class: "muted" }, t("clip.privacyNote")),
-    ),
-  );
+  const clipCard = h("div", { class: "home-clip" });
   mountClipCompose(clipCard);
   host.append(
-    h("section", { class: "hero-band" },
-      h("p", { class: "kicker" }, t("home.kicker")),
-      h("h1", null, t("home.title")),
-      h("p", { class: "lede" }, t("home.lead")),
+    h("section", { class: "hero-band clip-hero" },
+      h("h1", null, t("tools.clip.name")),
+      h("p", { class: "lede" }, t("clip.tagline")),
+      h("div", { class: "clip-feats" },
+        h("span", { class: "clip-feat sky" }, t("clip.featRich")),
+        h("span", { class: "clip-feat pink" }, t("clip.featLink")),
+        h("span", { class: "clip-feat lilac" }, t("clip.featFiles")),
+      ),
       clipCard,
+      h("p", { class: "muted home-clip-note" },
+        t("clip.privacyNote"), " ",
+        h("a", { href: appHref(locale, "clip"), "data-nav": "clip" }, t("clip.more")),
+      ),
     ),
     h("section", { class: "wall" },
       h("div", { class: "wall-h" },
