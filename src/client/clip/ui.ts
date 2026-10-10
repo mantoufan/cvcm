@@ -380,6 +380,14 @@ function preText(node: Node): string {
 }
 
 /** Serialize the rich editor back to Markdown for the MD tab. */
+/**
+ * Chrome puts each typed line in a <div> (blank lines are <div><br></div>). walk() marks div edges with
+ * \u0001d\u0002; a run of marks is one line break, or a paragraph break if it holds a newline (an empty line).
+ */
+function lineBreaks(md: string): string {
+  return md.replace(/\n*(?:\u0001d\u0002\n*)+/g, (m) => (m.includes("\n") ? "\n\n" : "\n"));
+}
+
 function domToMarkdown(root: Node): string {
   const blocks: string[] = [];
   const walk = (node: Node): string => {
@@ -389,10 +397,10 @@ function domToMarkdown(root: Node): string {
     const inner = () => [...node.childNodes].map(walk).join("");
     switch (tag) {
       case "br": return "\n";
-      case "b": case "strong": return `**${inner()}**`;
-      case "i": case "em": return `*${inner()}*`;
-      case "u": return `++${inner()}++`;
-      case "s": case "strike": case "del": return `~~${inner()}~~`;
+      case "b": case "strong": return mark("**", inner());
+      case "i": case "em": return mark("*", inner());
+      case "u": return mark("++", inner());
+      case "s": case "strike": case "del": return mark("~~", inner());
       case "code": return node.closest("pre") ? preText(node) : codeSpan(node.textContent || "");
       // Held as a token so the blank-line cleanup below never touches code.
       case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
@@ -400,12 +408,12 @@ function domToMarkdown(root: Node): string {
       case "h2": return `\n## ${inner()}\n\n`;
       case "h3": return `\n### ${inner()}\n\n`;
       case "h4": return `\n#### ${inner()}\n\n`;
-      case "blockquote": return `\n${inner().split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
-      case "ul": return `\n${[...node.children].map((li) => `- ${walk(li).trim()}`).join("\n")}\n\n`;
+      case "blockquote": return `\n${lineBreaks(inner()).split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
+      case "ul": return `\n${items(node).map((li) => `- ${li}`).join("\n")}\n\n`;
       case "ol": {
         const n = parseInt(node.getAttribute("start") || "", 10);
         const start = Number.isFinite(n) ? n : 1;
-        return `\n${[...node.children].map((li, i) => `${start + i}. ${walk(li).trim()}`).join("\n")}\n\n`;
+        return `\n${items(node).map((li, i) => `${start + i}. ${li}`).join("\n")}\n\n`;
       }
       case "li": return inner();
       case "a": return node.getAttribute("href") ? `[${inner()}](${mdUrl(node.getAttribute("href") || "")})` : inner();
@@ -418,9 +426,12 @@ function domToMarkdown(root: Node): string {
       default: return inner();
     }
   };
-  return walk(root)
-    // Neighbouring line <div>s share one break: "a<div>b</div><div>c</div>" is three lines.
-    .replace(/\n*(?:\u0001d\u0002\n*)+/g, (m) => (m.includes("\n\n") ? "\n\n" : "\n"))
+  // Skip empty items (Chrome leaves one after the last Enter); keep each item on one line.
+  const items = (list: Element) => [...list.children]
+    .map((li) => lineBreaks(walk(li)).trim().replace(/\n+/g, " "))
+    .filter(Boolean);
+  const mark = (m: string, text: string) => (text.trim() ? `${m}${text}${m}` : text);
+  return lineBreaks(walk(root))
     .replace(/\n{3,}/g, "\n\n")
     .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => {
       const code = blocks[Number(i)];
@@ -888,7 +899,9 @@ async function createNote(): Promise<void> {
   });
   // Start the clipboard write inside the click (Safari drops user activation after an await);
   // the promise-valued ClipboardItem resolves once the link exists.
-  const early = startClipboardWrite(request.then((c) => c.url));
+  const url = request.then((c) => c.url);
+  url.catch(() => undefined); // the failure is reported via `await request` below
+  const early = startClipboardWrite(url);
   try {
     const created = await request;
     const copied = (await early) || (await writeClipboard(created.url));
