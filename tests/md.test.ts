@@ -245,4 +245,45 @@ describe("renderClip", () => {
     expect(renderClip("2024.")).toBe("<p>2024.</p>");
     expect(renderClip("-\n    - b")).toBe("<ul><li><ul><li>b</li></ul></li></ul>");
   });
+
+  it("does not split table cells on escaped pipes or pipes in code", () => {
+    expect(renderClip("| a | b |\n|---|---|\n| x \\| y | `p|q` |")).toBe(
+      "<table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>x | y</td><td><code>p|q</code></td></tr></tbody></table>");
+  });
+
+  it("keeps a lone dash as text", () => {
+    expect(renderClip("notes\n\n-\n\nmore")).toBe("<p>notes</p><p>-</p><p>more</p>");
+  });
+
+  it("keeps continuation text in an item", () => {
+    expect(renderClip("- Our year\n  2024. was great")).toBe("<ul><li>Our year<br>2024. was great</li></ul>");
+  });
+
+  it("lets an item's fence close at a smaller indent", () => {
+    expect(renderClip("1. Install:\n   ```\n   npm i\n```\n2. Next")).toBe(
+      '<ol><li>Install:<pre><code class="lang-">npm i</code></pre></li><li>Next</li></ol>');
+  });
+
+  it("reads a fence opened at the end of a text line", () => {
+    expect(renderClip("Text ```\ncode\n```")).toBe('<p>Text</p><pre><code class="lang-">code</code></pre>');
+  });
+
+  it("stays fast on long continuation runs and backtick lines", () => {
+    const t0 = Date.now();
+    renderClip("- a\n" + "  b\n".repeat(100000));
+    renderClip(("`".repeat(2000) + "x\n").repeat(50));
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
+
+  it("plays audio links and keeps audio tags", () => {
+    expect(renderClip("![a](https://s3.cv.cm/files/clip/abcdefabcdefabcd/a.mp3)")).toBe(
+      '<p><audio controls src="https://s3.cv.cm/files/clip/abcdefabcdefabcd/a.mp3"></audio></p>');
+    expect(renderClip('<div><audio controls src="https://s3.cv.cm/a.mp3" onplay="x()"></audio></div>')).toBe(
+      '<div><audio controls src="https://s3.cv.cm/a.mp3"></audio></div>');
+  });
+
+  it("nests a deeper ordered list that does not start at 1", () => {
+    expect(renderClip("- a\n    - b\n        3. c\n        4. d\n- e")).toBe(
+      '<ul><li>a<ul><li>b<ol start="3"><li>c</li><li>d</li></ol></li></ul></li><li>e</li></ul>');
+  });
 });

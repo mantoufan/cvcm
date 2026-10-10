@@ -81,39 +81,54 @@ export function safeFileName(name: string): string {
 
 const IMAGE_EXT = new Set(["jpg", "jpeg", "png", "gif", "webp"]);
 const VIDEO_EXT = new Set(["mp4", "webm", "mov", "m4v"]);
-const ALLOWED_MIME = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-  "video/mp4",
-  "video/webm",
-  "video/quicktime",
+const AUDIO_MIME: Record<string, string> = {
+  mp3: "audio/mpeg",
+  m4a: "audio/mp4",
+  aac: "audio/aac",
+  wav: "audio/wav",
+  ogg: "audio/ogg",
+  oga: "audio/ogg",
+  opus: "audio/ogg",
+  flac: "audio/flac",
+  weba: "audio/webm",
+};
+// Types s3.cv.cm could render as a page or script. Rejected by type *and* by extension, so an
+// empty or wrong browser type cannot slip one through.
+const BLOCKED_MIME = new Set(["text/html", "application/xhtml+xml", "image/svg+xml", "text/javascript", "application/javascript", "text/xml", "application/xml"]);
+const BLOCKED_EXT = new Set(["html", "htm", "xhtml", "shtml", "svg", "svgz", "js", "mjs", "xml", "xsl", "xslt"]);
+const KEEP_MIME = new Set([
   "application/pdf",
   "application/zip",
   "application/x-zip-compressed",
   "text/plain",
+  "text/csv",
+  "text/markdown",
   "application/json",
-  "application/octet-stream",
 ]);
 
+/**
+ * Stored Content-Type for an upload, or null when it is refused. Images, video and audio keep a
+ * media type so they play inline; a few plain document types are kept; anything else (Word,
+ * Excel, archives, …) is stored as application/octet-stream, i.e. a download.
+ */
 export function mimeForFile(name: string, type: string): string | null {
   const given = type.toLowerCase().split(";")[0].trim();
-  if (given === "text/html" || given === "image/svg+xml" || given === "text/javascript") return null;
   const ext = (name.split(".").pop() || "").toLowerCase();
+  if (BLOCKED_MIME.has(given) || BLOCKED_EXT.has(ext)) return null;
   if (IMAGE_EXT.has(ext)) return ext === "jpg" ? "image/jpeg" : `image/${ext === "jpeg" ? "jpeg" : ext}`;
   if (ext === "mov") return "video/quicktime";
   if (VIDEO_EXT.has(ext)) return ext === "m4v" ? "video/mp4" : `video/${ext}`;
+  if (AUDIO_MIME[ext]) return AUDIO_MIME[ext];
   if (ext === "pdf") return "application/pdf";
   if (ext === "zip") return "application/zip";
-  if (given && ALLOWED_MIME.has(given)) return given;
-  if (!given || given === "application/octet-stream") return "application/octet-stream";
-  return ALLOWED_MIME.has(given) ? given : null;
+  if (KEEP_MIME.has(given)) return given;
+  return "application/octet-stream";
 }
 
-export function fileKind(mime: string): "image" | "video" | "file" {
+export function fileKind(mime: string): "image" | "video" | "audio" | "file" {
   if (mime.startsWith("image/")) return "image";
   if (mime.startsWith("video/")) return "video";
+  if (mime.startsWith("audio/")) return "audio";
   return "file";
 }
 

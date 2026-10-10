@@ -1,6 +1,6 @@
 const ALLOWED = new Set([
   "p", "br", "h1", "h2", "h3", "h4", "pre", "code", "ul", "ol", "li",
-  "a", "img", "video", "source", "blockquote", "strong", "em", "b", "i",
+  "a", "img", "video", "audio", "source", "blockquote", "strong", "em", "b", "i",
   "u", "s", "strike", "del", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
 ]);
 
@@ -8,6 +8,7 @@ const ATTRS: Record<string, Set<string>> = {
   a: new Set(["href", "title"]),
   img: new Set(["src", "alt"]),
   video: new Set(["src", "controls", "poster"]),
+  audio: new Set(["src", "controls"]),
   source: new Set(["src", "type"]),
   code: new Set(["class"]),
   ol: new Set(["start"]),
@@ -42,6 +43,10 @@ function safeUrl(raw: string): string | null {
     return url;
   }
   return null;
+}
+
+function isAudio(url: string): boolean {
+  return /\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|weba)(\?|$)/i.test(url);
 }
 
 function isVideo(url: string): boolean {
@@ -111,6 +116,7 @@ function inline(text: string, codes: string[] = []): string {
       const url = safeUrl(unescapeHtml(plain(href)));
       if (!url) return alt;
       if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
+      if (isAudio(url)) return hold(`<audio controls src="${escapeHtml(url)}"></audio>`);
       return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
     .replace(/\[([^\]\n]{1,500})\]\(([^)\s]{1,2048})\)/g, (_m, label: string, href: string) => {
@@ -131,10 +137,37 @@ function inline(text: string, codes: string[] = []): string {
 // Backslash escapes (\* \# \< …) become tokens so no rule below treats them as syntax.
 const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
 
+/** Cells of a "| a | b |" line. An escaped "\|" or a "|" inside `code` does not split a cell. */
 function tableRow(line: string): string[] | null {
-  const m = line.trim().match(/^\|(.*)\|$/);
-  if (!m) return null;
-  return m[1].split("|").map((c) => c.trim());
+  const t = line.trim();
+  if (t.length < 2 || t[0] !== "|" || t[t.length - 1] !== "|" || t[t.length - 2] === "\\") return null;
+  const cells: string[] = [];
+  let cell = "";
+  let tick = 0; // length of the open code span's backtick run, 0 when outside code
+  for (let i = 1; i < t.length - 1; i++) {
+    const ch = t[i];
+    if (ch === "\\" && !tick && i + 1 < t.length - 1) {
+      cell += ch + t[++i];
+      continue;
+    }
+    if (ch === "`") {
+      let run = 1;
+      while (t[i + run] === "`") run++;
+      if (!tick) tick = run;
+      else if (run === tick) tick = 0;
+      cell += t.slice(i, i + run);
+      i += run - 1;
+      continue;
+    }
+    if (ch === "|" && !tick) {
+      cells.push(cell.trim());
+      cell = "";
+      continue;
+    }
+    cell += ch;
+  }
+  cells.push(cell.trim());
+  return cells;
 }
 
 const MAX_DEPTH = 8;
@@ -142,12 +175,6 @@ const FENCE_OPEN = /^([ \t]*)(`{3,})(\w*)\s*$/;
 const QUOTE_LINE = /^ {0,3}>/;
 const LIST_ITEM = /^([ \t]*)(?:([-*])|(\d+)[.)])(?:\s+(.*))?$/;
 const HEADING = /^(#{1,4})\s+(.+)$/;
-
-/** A list marker line. "-" or "*" may stand alone (an empty item); "1." needs a space after it. */
-function listItem(line: string): RegExpMatchArray | null {
-  const m = line.match(LIST_ITEM);
-  return m && (m[2] || m[4] !== undefined) ? m : null;
-}
 
 function indentOf(line: string): number {
   return (line.match(/^[ \t]*/)?.[0] ?? "").replace(/\t/g, "    ").length;
@@ -161,6 +188,19 @@ function dedent(line: string, n: number): string {
     i++;
   }
   return line.slice(i);
+}
+
+/**
+ * A list marker at line `i`. "1." needs a space after it. A bare "-" or "*" (no space, no text)
+ * is an empty item only when an indented line follows, so a lone "-" stays text.
+ */
+function listItemAt(lines: string[], i: number): RegExpMatchArray | null {
+  const m = lines[i].match(LIST_ITEM);
+  if (!m) return null;
+  if (m[4] !== undefined) return m;
+  if (!m[2]) return null;
+  const next = lines[i + 1];
+  return next !== undefined && next.trim() && indentOf(next) > indentOf(lines[i]) ? m : null;
 }
 
 /** Inline formatting for one leaf (paragraph, heading, cell, item text). Tokens never leave it. */
@@ -177,16 +217,27 @@ function inlineText(text: string): string {
     .replace(/\u0001e(\d+)\u0002/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
 }
 
+/** Length of the backtick run that ends `line` (ignoring trailing spaces), or 0 if under 3. */
+function closingRun(line: string): number {
+  let j = line.length - 1;
+  while (j >= 0 && (line[j] === " " || line[j] === "\t")) j--;
+  let run = 0;
+  while (j >= 0 && line[j] === "`") {
+    run++;
+    j--;
+  }
+  return run >= 3 ? run : 0;
+}
+
+type Closer = (i: number) => { end: number; tail: string } | null;
+
 /**
  * Fence closers for a block of lines, computed once. A closer is a line ending in a backtick
  * run: bare ("```") or after code ("x = 1```", as the old renderer allowed). `suffixMax` lets
  * an unclosed opener be rejected in O(1), so many unclosed fences stay linear.
  */
-function fenceCloser(lines: string[]): (i: number) => { end: number; tail: string } | null {
-  const run = lines.map((l) => {
-    const m = l.match(/(`{3,})\s*$/);
-    return m && (m.index === 0 || l[m.index! - 1] !== "`") ? m[1].length : 0;
-  });
+function fenceCloser(lines: string[]): Closer {
+  const run = lines.map(closingRun);
   const suffixMax = new Array<number>(lines.length + 1).fill(0);
   for (let j = lines.length - 1; j >= 0; j--) suffixMax[j] = Math.max(run[j], suffixMax[j + 1]);
   return (i) => {
@@ -199,12 +250,34 @@ function fenceCloser(lines: string[]): (i: number) => { end: number; tail: strin
   };
 }
 
-function isBlockStart(line: string): boolean {
-  return FENCE_OPEN.test(line) || QUOTE_LINE.test(line) || Boolean(listItem(line)) || HEADING.test(line) || Boolean(tableRow(line));
+/** Can line `i` start a new block, i.e. interrupt a paragraph or an item's text? */
+function startsBlock(lines: string[], i: number, closer: Closer, nested: boolean): boolean {
+  const line = lines[i];
+  if ((FENCE_OPEN.test(line) && closer(i)) || HEADING.test(line) || tableRow(line)) return true;
+  if (nested && QUOTE_LINE.test(line)) return true;
+  // Only "-", "*" or "1." may interrupt, so "  2024. was great" stays text.
+  const item = nested ? listItemAt(lines, i) : null;
+  return Boolean(item && item[4] && (item[2] || item[3] === "1"));
+}
+
+/** "Text ```" + later "```": the fence opened at the end of a text line, as the old renderer read it. */
+function splitTrailingFences(lines: string[]): string[] {
+  const run = lines.map(closingRun);
+  const suffixMax = new Array<number>(lines.length + 1).fill(0);
+  for (let j = lines.length - 1; j >= 0; j--) suffixMax[j] = Math.max(run[j], suffixMax[j + 1]);
+  const out: string[] = [];
+  lines.forEach((line, i) => {
+    const m = line.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);
+    // Quote and list lines are not split: "> ```js" opens a fence inside the quote.
+    if (m && !FENCE_OPEN.test(line) && !QUOTE_LINE.test(line) && !LIST_ITEM.test(line) && suffixMax[i + 1] >= m[2].match(/^`+/)![0].length) out.push(m[1], m[2]);
+    else out.push(line);
+  });
+  return out;
 }
 
 function renderMarkdown(src: string): string {
-  return renderBlocks(src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n"), 0);
+  const lines = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n");
+  return renderBlocks(splitTrailingFences(lines), 0);
 }
 
 /**
@@ -216,15 +289,6 @@ function renderBlocks(lines: string[], depth: number): string {
   const html: string[] = [];
   const closer = fenceCloser(lines);
   const nested = depth < MAX_DEPTH;
-  const fenceAt = (i: number) => (FENCE_OPEN.test(lines[i]) ? closer(i) : null);
-  const startsBlock = (i: number): boolean => {
-    const line = lines[i];
-    if (fenceAt(i) || HEADING.test(line) || tableRow(line)) return true;
-    if (nested && QUOTE_LINE.test(line)) return true;
-    // Only "-", "*" or "1." may interrupt a paragraph, so "  2024. was great" stays text.
-    const item = nested ? listItem(line) : null;
-    return Boolean(item && indentOf(line) < 4 && item[4] && (item[2] || item[3] === "1"));
-  };
   let i = 0;
   while (i < lines.length) {
     const line = lines[i];
@@ -232,7 +296,7 @@ function renderBlocks(lines: string[], depth: number): string {
       i++;
       continue;
     }
-    const fence = fenceAt(i);
+    const fence = FENCE_OPEN.test(line) ? closer(i) : null;
     if (fence) {
       const open = line.match(FENCE_OPEN)!;
       const pad = indentOf(open[1]);
@@ -272,14 +336,13 @@ function renderBlocks(lines: string[], depth: number): string {
       i++;
       continue;
     }
-    if (nested && listItem(line)) {
-      i = renderList(lines, i, depth, html);
+    if (nested && listItemAt(lines, i)) {
+      i = renderList(lines, i, depth, closer, html);
       continue;
     }
-    const para: string[] = [line];
-    i++;
-    while (i < lines.length && !/^\s*$/.test(lines[i]) && !startsBlock(i)) para.push(lines[i++]);
-    html.push(`<p>${inlineText(para.join("\n"))}</p>`);
+    const start = i++;
+    while (i < lines.length && !/^\s*$/.test(lines[i]) && !startsBlock(lines, i, closer, nested)) i++;
+    html.push(`<p>${inlineText(lines.slice(start, i).join("\n"))}</p>`);
   }
   return html.join("");
 }
@@ -287,20 +350,22 @@ function renderBlocks(lines: string[], depth: number): string {
 /**
  * One list starting at line `i`; returns the index after it. Lines indented past the item's
  * marker (and blank lines followed by such lines) belong to that item and are rendered as its
- * body. A later marker at the same or a smaller indent is the next sibling if it is the same
- * kind of list; a different kind ends the list.
+ * body; a fenced block opened in the body runs to its closer even if that closer is outdented.
+ * A later marker at the same or a smaller indent is the next sibling if it is the same kind of
+ * list; a different kind ends the list.
  */
-function renderList(lines: string[], i: number, depth: number, html: string[]): number {
-  const first = listItem(lines[i])!;
+function renderList(lines: string[], i: number, depth: number, closer: Closer, html: string[]): number {
+  const first = listItemAt(lines, i)!;
   const kind = first[2] ? "ul" : "ol";
   const start = first[3] ? Number(first[3]) : 1;
   const base = indentOf(lines[i]);
   const lis: string[] = [];
   while (i < lines.length) {
-    const m = listItem(lines[i]);
+    const m = listItemAt(lines, i);
     if (!m || indentOf(lines[i]) > base || (m[2] ? "ul" : "ol") !== kind) break;
     const own = indentOf(lines[i]);
     const contentCol = own + (m[2] ?? `${m[3]}.`).length + 1;
+    const take = (l: string) => dedent(l, Math.min(contentCol, indentOf(l)));
     const body: string[] = [];
     let j = i + 1;
     while (j < lines.length) {
@@ -308,25 +373,39 @@ function renderList(lines: string[], i: number, depth: number, html: string[]): 
         let k = j;
         while (k < lines.length && /^\s*$/.test(lines[k])) k++;
         if (k < lines.length && indentOf(lines[k]) > own) {
-          body.push(...lines.slice(j, k).map(() => ""));
-          j = k;
+          for (; j < k; j++) body.push("");
           continue;
         }
         break;
       }
       if (indentOf(lines[j]) <= own) break;
-      body.push(dedent(lines[j], Math.min(contentCol, indentOf(lines[j]))));
+      const fence = FENCE_OPEN.test(lines[j]) ? closer(j) : null;
+      if (fence) {
+        for (let f = j; f <= fence.end; f++) body.push(take(lines[f]));
+        j = fence.end + 1;
+        continue;
+      }
+      body.push(take(lines[j]));
       j++;
     }
     // Plain lines right under the item continue its text ("- a\n  more" is one item, two lines).
-    const text = m[4] ? [m[4]] : [];
-    while (text.length && body.length && body[0].trim() && !isBlockStart(body[0])) text.push(body.shift()!);
-    lis.push(`<li>${text.length ? inlineText(text.join("\n")) : ""}${body.length ? renderBlocks(body, depth + 1) : ""}</li>`);
+    const bodyCloser = fenceCloser(body);
+    let cut = 0;
+    // A marker indented past the item's text is a nested list whatever its number; one level
+    // with the text follows the paragraph rule ("- Our year\n  2024. was great" stays text).
+    const nestedList = (k: number) => indentOf(body[k]) > 0 && Boolean(listItemAt(body, k));
+    if (m[4]) {
+      while (cut < body.length && body[cut].trim() && !nestedList(cut)
+        && !startsBlock(body, cut, bodyCloser, depth + 1 < MAX_DEPTH)) cut++;
+    }
+    const text = m[4] ? [m[4], ...body.slice(0, cut)].join("\n") : "";
+    const rest = body.slice(cut);
+    lis.push(`<li>${text ? inlineText(text) : ""}${rest.length ? renderBlocks(rest, depth + 1) : ""}</li>`);
     i = j;
     // A blank line between siblings keeps one (loose) list.
     let k = i;
     while (k < lines.length && /^\s*$/.test(lines[k])) k++;
-    const next = k < lines.length ? listItem(lines[k]) : null;
+    const next = k < lines.length ? listItemAt(lines, k) : null;
     if (next && indentOf(lines[k]) <= base && (next[2] ? "ul" : "ol") === kind) i = k;
     else break;
   }
@@ -386,7 +465,7 @@ export function sanitizeHtml(src: string): string {
       }
     }
     if (tag === "a") out += ' rel="noreferrer"';
-    out += selfClose && tag !== "video" ? " />" : ">";
+    out += selfClose && tag !== "video" && tag !== "audio" ? " />" : ">";
     return out;
   });
 }

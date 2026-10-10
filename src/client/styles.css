@@ -1066,6 +1066,7 @@ input[type="color"] {
 }
 .clip-md h1, .clip-md h2, .clip-md h3, .clip-md h4 { margin: 0.6rem 0 0.35rem; }
 .clip-md p { margin: 0 0 0.7rem; }
+.clip-md audio { display: block; width: 100%; max-width: 480px; margin: 0.4rem 0; }
 .clip-md img, .clip-md video { max-width: 100%; height: auto; border-radius: 12px; display: block; margin: 0.4rem 0; }
 .clip-md a { color: var(--pink-deep); }
 .clip-md pre {

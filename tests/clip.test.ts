@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { handleClipApi } from "../src/clip-api";
 import { memoryStore } from "../src/clip-store";
 import {
+  fileKind,
+  mimeForFile,
   CLIP_ID_LENGTH,
   CLIP_MAX_BYTES,
   CLIP_MAX_VIEWS,
@@ -262,3 +264,27 @@ describe("clip worker", () => {
     expect(res.status).toBe(503);
   });
 });
+
+describe("upload types", () => {
+  it("keeps media types so they play inline", () => {
+    expect(mimeForFile("a.mp3", "")).toBe("audio/mpeg");
+    expect(mimeForFile("b.m4a", "audio/x-m4a")).toBe("audio/mp4");
+    expect(fileKind("audio/mpeg")).toBe("audio");
+    expect(mimeForFile("c.mp4", "")).toBe("video/mp4");
+    expect(mimeForFile("d.png", "")).toBe("image/png");
+  });
+
+  it("stores other files as downloads", () => {
+    expect(mimeForFile("r.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")).toBe("application/octet-stream");
+    expect(mimeForFile("s.xlsx", "")).toBe("application/octet-stream");
+    expect(mimeForFile("t.csv", "text/csv")).toBe("text/csv");
+  });
+
+  it("refuses pages and scripts by type or by extension", () => {
+    expect(mimeForFile("x.html", "")).toBeNull();
+    expect(mimeForFile("x.txt", "text/html")).toBeNull();
+    expect(mimeForFile("x.svg", "image/svg+xml")).toBeNull();
+    expect(mimeForFile("x.js", "application/octet-stream")).toBeNull();
+  });
+});
+
