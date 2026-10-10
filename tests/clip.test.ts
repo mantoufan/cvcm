@@ -288,3 +288,19 @@ describe("upload types", () => {
   });
 });
 
+describe("upload signing", () => {
+  it("does not read Object.prototype keys as audio types", () => {
+    expect(mimeForFile("x.constructor", "")).toBe("application/octet-stream");
+    expect(mimeForFile("x.__proto__", "")).toBe("application/octet-stream");
+  });
+
+  it("signs the approved Content-Type into the PUT URL", async () => {
+    const { presignS3Put } = await import("../src/s3-sign");
+    const cfg = { accessKey: "AK", secret: "SK", region: "us-east-1", host: "s3.cv.cm", bucket: "files" };
+    const url = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0), 600, "audio/mpeg"));
+    expect(url.searchParams.get("X-Amz-SignedHeaders")).toBe("content-type;host");
+    const legacy = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0)));
+    expect(legacy.searchParams.get("X-Amz-SignedHeaders")).toBe("host");
+  });
+});
+

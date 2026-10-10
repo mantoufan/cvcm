@@ -171,7 +171,7 @@ async function createUpload(
   if (!(await bumpRate(store, ipHash, now, CLIP_UPLOAD_MAX))) return error(429, "rate");
 
   const key = `clip/${newFilePrefix()}/${name}`;
-  const putUrl = await presignS3Put(s3, key, new Date(now));
+  const putUrl = await presignS3Put(s3, key, new Date(now), 600, mime);
   return json(200, {
     key,
     putUrl,

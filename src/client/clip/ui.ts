@@ -409,14 +409,14 @@ function domToMarkdown(root: Node): string {
       case "code": return node.closest("pre") ? preText(node) : codeSpan(node.textContent || "");
       // Held as a token so the blank-line cleanup below never touches code.
       case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
-      case "h1": return `\n# ${oneLine(inner())}\n\n`;
-      case "h2": return `\n## ${oneLine(inner())}\n\n`;
-      case "h3": return `\n### ${oneLine(inner())}\n\n`;
-      case "h4": return `\n#### ${oneLine(inner())}\n\n`;
+      case "h1": return `\n# ${oneLine(codeInline(inner()))}\n\n`;
+      case "h2": return `\n## ${oneLine(codeInline(inner()))}\n\n`;
+      case "h3": return `\n### ${oneLine(codeInline(inner()))}\n\n`;
+      case "h4": return `\n#### ${oneLine(codeInline(inner()))}\n\n`;
       // Finish the inside first (code blocks included), then prefix every line, so a code block
       // or list inside the quote stays inside it. Empty lines become ">" to keep the quote going.
       case "blockquote": return `\n${tidy(inner()).trim().split("\n").map((l) => (l ? `> ${l}` : ">")).join("\n")}\n\n`;
-      case "ul": case "ol": return `\n${listLines(node, 0).join("\n")}\n\n`;
+      case "ul": case "ol": return `\n${listLines(node, "").join("\n")}\n\n`;
       case "li": return inner();
       case "a": return node.getAttribute("href") ? `[${inner()}](${mdUrl(node.getAttribute("href") || "")})` : inner();
       case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
@@ -425,7 +425,7 @@ function domToMarkdown(root: Node): string {
       // contenteditable puts each new line in a <div>: one line break, not a paragraph.
       case "div": return `\u0001d\u0002${inner()}\u0001d\u0002`;
       case "p": return `\n${inner()}\n\n`;
-      case "table": return `\n${tableToMd(node, walk)}\n\n`;
+      case "table": return `\n${tableToMd(node, (n) => codeInline(walk(n)))}\n\n`;
       default: return inner();
     }
   };
@@ -436,15 +436,17 @@ function domToMarkdown(root: Node): string {
    * nested list straight inside the parent list (not inside an <li>); both shapes nest the same.
    * Empty items (Chrome leaves one after the last Enter) are skipped.
    */
-  const listLines = (list: Element, depth: number): string[] => {
-    const pad = "    ".repeat(depth);
+  const listLines = (list: Element, pad: string): string[] => {
     const ordered = list.tagName === "OL";
     const first = parseInt(list.getAttribute("start") || "", 10);
     let n = Number.isFinite(first) ? first : 1;
     const out: string[] = [];
     for (const child of list.children) {
+      const marker = ordered ? `${n}.` : "-";
+      // Children sit past the marker's text column ("99. " is 4 wide), at least 4 spaces in.
+      const inner = pad + " ".repeat(Math.max(4, marker.length + 2));
       if (isList(child)) {
-        out.push(...listLines(child as Element, depth + 1));
+        out.push(...listLines(child as Element, inner));
         continue;
       }
       // In document order: the first run of text goes on the marker line; lists, code blocks,
@@ -456,30 +458,35 @@ function domToMarkdown(root: Node): string {
         const t = oneLine(text);
         text = "";
         if (head === null) head = t;
-        else if (t) body.push(`${pad}    ${t}`);
+        else if (t) body.push(`${inner}${t}`);
       };
       for (const kid of flatKids(child)) {
         if (isList(kid)) {
           flushText();
-          body.push(...listLines(kid as Element, depth + 1));
+          body.push(...listLines(kid as Element, inner));
         } else if (isBlock(kid)) {
           flushText();
-          body.push(...tidy(walk(kid)).trim().split("\n").map((l) => (l ? `${pad}    ${l}` : "")));
+          body.push(...tidy(walk(kid)).trim().split("\n").map((l) => (l ? `${inner}${l}` : "")));
         } else text += walk(kid);
       }
       flushText();
       // Chrome leaves an empty item after the last Enter: drop it unless it holds something.
       if (!head && !body.length) continue;
-      out.push(head ? `${pad}${ordered ? `${n++}.` : "-"} ${head}` : `${pad}${ordered ? `${n++}.` : "-"} `);
+      out.push(`${pad}${marker} ${head ?? ""}`);
+      if (ordered) n++;
       out.push(...body);
     }
     return out;
   };
-  // Wrappers (<div>, <p>) that hold block content are see-through inside list items.
+  // Any wrapper (<div>, <p>, <span>, <b>…) that holds block content is see-through inside list
+  // items, so the block is found and placed in the item's body.
   const flatKids = (el: Element): Node[] => [...el.childNodes].flatMap((c) =>
-    c instanceof Element && /^(DIV|P)$/.test(c.tagName) && c.querySelector("pre, blockquote, table, ul, ol")
+    c instanceof Element && !isList(c) && !isBlock(c) && c.querySelector("pre, blockquote, table, ul, ol")
       ? flatKids(c)
       : [c]);
+  // Headings and table cells are one line: a code block inside one becomes inline code.
+  const codeInline = (md: string) => md.replace(/\u0001p(\d+)\u0002/g, (_m, i: string) =>
+    codeSpan((blocks[Number(i)] ?? "").replace(/\s*\n\s*/g, " ").trim()));
   const mark = (m: string, text: string) => (text.trim() ? `${m}${text}${m}` : text);
   /** Line breaks and blank-line cleanup. Code stays a token here, so its blank lines survive. */
   const tidy = (md: string) => lineBreaks(md).replace(/\n{3,}/g, "\n\n");
@@ -487,12 +494,19 @@ function domToMarkdown(root: Node): string {
    * Expand code tokens last. Whatever sits before a token on its line (list indent, "> ") is
    * repeated on every line of the code block, so code inside lists and quotes stays inside them.
    */
-  const finish = (md: string) => tidy(md).replace(/^(.*?)\u0001p(\d+)\u0002[ \t]*$/gm, (_m, prefix: string, i: string) => {
+  const fenced = (i: string) => {
     const code = blocks[Number(i)] ?? "";
     const fence = "`".repeat(Math.max(3, longestRun(code, "`") + 1));
-    const blank = prefix.replace(/\s+$/, "");
-    return [fence, ...code.split("\n"), fence].map((l) => (l ? prefix + l : blank)).join("\n");
-  });
+    return [fence, ...code.split("\n"), fence];
+  };
+  const finish = (md: string) => tidy(md)
+    // Only an indent / "> " prefix is repeated; text before a token (a heading, a table cell)
+    // is not, and the block simply breaks out onto its own lines as before.
+    .replace(/^([ \t>]*)\u0001p(\d+)\u0002[ \t]*$/gm, (_m, prefix: string, i: string) => {
+      const blank = prefix.replace(/\s+$/, "");
+      return fenced(i).map((l) => (l ? prefix + l : blank)).join("\n");
+    })
+    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => `\n${fenced(i).join("\n")}\n`);
   return finish(walk(root));
 }
 

@@ -286,4 +286,25 @@ describe("renderClip", () => {
     expect(renderClip("- a\n    - b\n        3. c\n        4. d\n- e")).toBe(
       '<ul><li>a<ul><li>b<ol start="3"><li>c</li><li>d</li></ol></li></ul></li><li>e</li></ul>');
   });
+
+  it("opens a fence at the end of a list or quote line", () => {
+    expect(renderClip("- a ```\n  b\n  ```")).toBe('<ul><li>a<pre><code class="lang-">b</code></pre></li></ul>');
+    expect(renderClip("> a ```\n> b\n> ```")).toBe('<blockquote><p>a</p><pre><code class="lang-">b</code></pre></blockquote>');
+  });
+
+  it("keeps indented notes and YAML as text", () => {
+    expect(renderClip("text\n    - not a list")).toBe("<p>text<br>    - not a list</p>");
+    expect(renderClip("steps:\n  - run: a")).toBe("<p>steps:<br>  - run: a</p>");
+  });
+
+  it("does not let an unclosed fence in an item swallow what follows", () => {
+    const html = renderClip("- step\n  ```\n  run x\n- next step\n\nSome text\n\n```js\ncode\n```");
+    expect(html).toContain("<li>next step</li>");
+    expect(html).toContain("<p>Some text</p>");
+    expect(html).toContain('<pre><code class="lang-js">code</code></pre>');
+  });
+
+  it("nests under wide ordered markers", () => {
+    expect(renderClip("99. a\n     3. x\n     4. y")).toBe('<ol start="99"><li>a<ol start="3"><li>x</li><li>y</li></ol></li></ol>');
+  });
 });

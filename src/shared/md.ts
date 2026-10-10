@@ -255,8 +255,9 @@ function startsBlock(lines: string[], i: number, closer: Closer, nested: boolean
   const line = lines[i];
   if ((FENCE_OPEN.test(line) && closer(i)) || HEADING.test(line) || tableRow(line)) return true;
   if (nested && QUOTE_LINE.test(line)) return true;
-  // Only "-", "*" or "1." may interrupt, so "  2024. was great" stays text.
-  const item = nested ? listItemAt(lines, i) : null;
+  // Only an unindented "-", "*" or "1." may interrupt, so "  2024. was great" and indented
+  // notes or YAML ("steps:\n  - run: a") stay text.
+  const item = nested && indentOf(line) === 0 ? listItemAt(lines, i) : null;
   return Boolean(item && item[4] && (item[2] || item[3] === "1"));
 }
 
@@ -276,8 +277,7 @@ function splitTrailingFences(lines: string[]): string[] {
 }
 
 function renderMarkdown(src: string): string {
-  const lines = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n");
-  return renderBlocks(splitTrailingFences(lines), 0);
+  return renderBlocks(src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n"), 0);
 }
 
 /**
@@ -285,7 +285,9 @@ function renderMarkdown(src: string): string {
  * recursively, so either can hold code blocks, quotes, lists and paragraphs. Nesting stops at
  * MAX_DEPTH (deeper markers read as text), so hostile input cannot exhaust the stack.
  */
-function renderBlocks(lines: string[], depth: number): string {
+function renderBlocks(raw: string[], depth: number): string {
+  // Per level, so "a ```" inside a quote or an item's body opens a fence there too.
+  const lines = splitTrailingFences(raw);
   const html: string[] = [];
   const closer = fenceCloser(lines);
   const nested = depth < MAX_DEPTH;
@@ -336,8 +338,10 @@ function renderBlocks(lines: string[], depth: number): string {
       i++;
       continue;
     }
-    if (nested && listItemAt(lines, i)) {
-      i = renderList(lines, i, depth, closer, html);
+    // At the top level a marker indented 4+ is not a list start (indented notes, CLI output);
+    // inside a quote or an item's body any indent nests.
+    if (nested && (depth > 0 || indentOf(line) < 4) && listItemAt(lines, i)) {
+      i = renderList(lines, i, depth, html);
       continue;
     }
     const start = i++;
@@ -354,7 +358,31 @@ function renderBlocks(lines: string[], depth: number): string {
  * A later marker at the same or a smaller indent is the next sibling if it is the same kind of
  * list; a different kind ends the list.
  */
-function renderList(lines: string[], i: number, depth: number, closer: Closer, html: string[]): number {
+/**
+ * Closer for a fence opened at line `j` inside an item whose marker is at indent `own`: the
+ * first line ending in a long enough backtick run, unless a non-blank line at or left of the
+ * marker comes first (the item ended, so the fence is unclosed). `noCloserBefore` remembers a
+ * scan that met no closer at all, so many unclosed fences in one item stay linear.
+ */
+function itemFenceEnd(lines: string[], j: number, own: number, memo: { noCloserBefore: number }): number {
+  const need = (lines[j].match(FENCE_OPEN)?.[2] ?? "").length;
+  if (j < memo.noCloserBefore) return -1;
+  let sawRun = false;
+  for (let k = j + 1; k < lines.length; k++) {
+    const run = closingRun(lines[k]);
+    if (run >= need) return k;
+    if (run) sawRun = true;
+    if (lines[k].trim() && indentOf(lines[k]) <= own) {
+      if (!sawRun) memo.noCloserBefore = k;
+      return -1;
+    }
+  }
+  if (!sawRun) memo.noCloserBefore = lines.length;
+  return -1;
+}
+
+function renderList(lines: string[], i: number, depth: number, html: string[]): number {
+  const memo = { noCloserBefore: -1 };
   const first = listItemAt(lines, i)!;
   const kind = first[2] ? "ul" : "ol";
   const start = first[3] ? Number(first[3]) : 1;
@@ -379,14 +407,21 @@ function renderList(lines: string[], i: number, depth: number, closer: Closer, h
         break;
       }
       if (indentOf(lines[j]) <= own) break;
-      const fence = FENCE_OPEN.test(lines[j]) ? closer(j) : null;
-      if (fence) {
-        for (let f = j; f <= fence.end; f++) body.push(take(lines[f]));
-        j = fence.end + 1;
+      const fenceEnd = FENCE_OPEN.test(lines[j]) ? itemFenceEnd(lines, j, own, memo) : -1;
+      if (fenceEnd > 0) {
+        for (let f = j; f <= fenceEnd; f++) body.push(take(lines[f]));
+        j = fenceEnd + 1;
         continue;
       }
       body.push(take(lines[j]));
       j++;
+    }
+    // "- a ```" + an indented body: the fence opened at the end of the marker line.
+    let first = m[4];
+    const trailing = first?.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);
+    if (trailing && fenceCloser([trailing[2], ...body])(0)) {
+      first = trailing[1];
+      body.unshift(trailing[2]);
     }
     // Plain lines right under the item continue its text ("- a\n  more" is one item, two lines).
     const bodyCloser = fenceCloser(body);
@@ -394,11 +429,11 @@ function renderList(lines: string[], i: number, depth: number, closer: Closer, h
     // A marker indented past the item's text is a nested list whatever its number; one level
     // with the text follows the paragraph rule ("- Our year\n  2024. was great" stays text).
     const nestedList = (k: number) => indentOf(body[k]) > 0 && Boolean(listItemAt(body, k));
-    if (m[4]) {
+    if (first) {
       while (cut < body.length && body[cut].trim() && !nestedList(cut)
         && !startsBlock(body, cut, bodyCloser, depth + 1 < MAX_DEPTH)) cut++;
     }
-    const text = m[4] ? [m[4], ...body.slice(0, cut)].join("\n") : "";
+    const text = first ? [first, ...body.slice(0, cut)].join("\n") : "";
     const rest = body.slice(cut);
     lis.push(`<li>${text ? inlineText(text) : ""}${rest.length ? renderBlocks(rest, depth + 1) : ""}</li>`);
     i = j;

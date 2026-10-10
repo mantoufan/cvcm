@@ -57,12 +57,20 @@ function objectPath(cfg: S3Config, key: string): string {
   return `/${cfg.bucket}/${key}`;
 }
 
+/**
+ * Presigned PUT URL. With `contentType`, the Content-Type header is signed too: s3.cv.cm stores
+ * and serves whatever type the PUT sends, so an unsigned type would let anyone upload text/html
+ * through a URL that the API approved for something else.
+ */
 export async function presignS3Put(
   cfg: S3Config,
   key: string,
   now = new Date(),
   expiresSec = 600,
+  contentType?: string,
 ): Promise<string> {
+  const signed = contentType ? "content-type;host" : "host";
+  const canonHeaders = contentType ? `content-type:${contentType.trim()}\nhost:${cfg.host}` : `host:${cfg.host}`;
   const { amz, stamp } = amzParts(now);
   const credential = `${cfg.accessKey}/${stamp}/${cfg.region}/s3/aws4_request`;
   const qs: Array<[string, string]> = [
@@ -70,7 +78,7 @@ export async function presignS3Put(
     ["X-Amz-Credential", credential],
     ["X-Amz-Date", amz],
     ["X-Amz-Expires", String(expiresSec)],
-    ["X-Amz-SignedHeaders", "host"],
+    ["X-Amz-SignedHeaders", signed],
   ];
   const canonicalQs = qs
     .map(([k, v]) => `${uriEncode(k, true)}=${uriEncode(v, true)}`)
@@ -81,9 +89,9 @@ export async function presignS3Put(
     "PUT",
     uriEncode(path, false),
     canonicalQs,
-    `host:${cfg.host}`,
+    canonHeaders,
     "",
-    "host",
+    signed,
     "UNSIGNED-PAYLOAD",
   ].join("\n");
   const scope = `${stamp}/${cfg.region}/s3/aws4_request`;
