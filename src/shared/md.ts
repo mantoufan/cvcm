@@ -1,7 +1,7 @@
 const ALLOWED = new Set([
   "p", "br", "h1", "h2", "h3", "h4", "pre", "code", "ul", "ol", "li",
   "a", "img", "video", "source", "blockquote", "strong", "em", "b", "i",
-  "u", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
+  "u", "s", "strike", "del", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
 ]);
 
 const ATTRS: Record<string, Set<string>> = {
@@ -10,6 +10,7 @@ const ATTRS: Record<string, Set<string>> = {
   video: new Set(["src", "controls", "poster"]),
   source: new Set(["src", "type"]),
   code: new Set(["class"]),
+  ol: new Set(["start"]),
   span: new Set(["class"]),
   pre: new Set(["class"]),
 };
@@ -93,79 +94,182 @@ export function highlight(code: string): string {
   return out;
 }
 
-function inline(text: string): string {
+function unescapeHtml(text: string): string {
+  return text.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+}
+
+/** `text` is already HTML-escaped. Generated tags are held as tokens so later rules never rewrite them. */
+function inline(text: string, codes: string[] = []): string {
+  const held: string[] = [];
+  // Code-span tokens inside an attribute become plain text, not <code> markup.
+  const plain = (v: string) => v.replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => escapeHtml(codes[Number(i)] ?? ""));
+  const hold = (html: string) => `\u0001h${held.push(html) - 1}\u0002`;
   return text
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, href) => {
-      const url = safeUrl(href);
-      if (!url) return escapeHtml(alt);
-      if (isVideo(url)) {
-        return `<video controls src="${escapeHtml(url)}"></video>`;
-      }
-      return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}">`;
+    // Bounded lengths keep a run of unmatched "[" from going quadratic.
+    .replace(/!\[([^\]\n]{0,500})\]\(([^)\s]{1,2048})\)/g, (_m, rawAlt: string, href: string) => {
+      const alt = plain(rawAlt);
+      const url = safeUrl(unescapeHtml(plain(href)));
+      if (!url) return alt;
+      if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
+      return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, href) => {
-      const url = safeUrl(href);
-      if (!url) return escapeHtml(label);
-      return `<a href="${escapeHtml(url)}" rel="noreferrer">${escapeHtml(label)}</a>`;
+    .replace(/\[([^\]\n]{1,500})\]\(([^)\s]{1,2048})\)/g, (_m, label: string, href: string) => {
+      const url = safeUrl(unescapeHtml(plain(href)));
+      if (!url) return label;
+      return `${hold(`<a href="${escapeHtml(url)}" rel="noreferrer">`)}${label}${hold("</a>")}`;
     })
-    .replace(/`([^`]+)`/g, (_m, code) => `<code>${escapeHtml(code)}</code>`)
+    .replace(/`([^`]+)`/g, (_m, code: string) => hold(`<code>${code}</code>`))
     .replace(/\+\+([^+]+)\+\+/g, (_m, s) => `<u>${s}</u>`)
-    .replace(/\*\*([^*]+)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
-    .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
+    .replace(/~~([^~]+)~~/g, (_m, s) => `<s>${s}</s>`)
+    .replace(/\*\*([^\n]+?)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
+    .replace(/\*([^*\n]+)\*/g, (_m, s) => `<em>${s}</em>`)
+    .replace(/\u0001h(\d+)\u0002/g, (_m, i: string) => held[Number(i)] ?? "");
+}
+
+// Internal tokens are \u0001<kind><n>\u0002. Open and close differ, so two adjacent tokens can never
+// read as a third one; both characters are stripped from the input first.
+// Backslash escapes (\* \# \< …) become tokens so no rule below treats them as syntax.
+const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
+
+function tableRow(line: string): string[] | null {
+  const m = line.trim().match(/^\|(.*)\|$/);
+  if (!m) return null;
+  return m[1].split("|").map((c) => c.trim());
 }
 
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
-  const protectedSrc = src.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+  const codes: string[] = [];
+  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/(`{3,})(\w*)\n([\s\S]*?)\1(?!`)/g, (_m, _ticks, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
-    return `\n%%FENCE${i}%%\n`;
-  });
-  const lines = protectedSrc.replace(/\r\n/g, "\n").split("\n");
+    return `\n\u0001f${i}\u0002\n`;
+  })
+    // Inline code keeps its backslashes: hold it before escapes are read.
+    // An escaped backtick (\`) is literal, not a code-span delimiter.
+    .replace(/(?<![\\`])(`+)(?!`)([^\n]*?[^`\n])\1(?!`)/g, (_m, _ticks, code: string) =>
+      `\u0001c${codes.push(/^ .* $/.test(code) ? code.slice(1, -1) : code) - 1}\u0002`)
+    .replace(ESC_RE, (_m, ch: string) => `\u0001e${ch.charCodeAt(0)}\u0002`);
+  const lines = protectedSrc.split("\n");
   const html: string[] = [];
   let para: string[] = [];
+  let group: { kind: "ul" | "ol" | "quote"; items: string[]; start: number } | null = null;
+  const flushGroup = () => {
+    if (!group) return;
+    if (group.kind === "quote") html.push(`<blockquote>${group.items.join("<br>")}</blockquote>`);
+    else {
+      const start = group.kind === "ol" && group.start !== 1 ? ` start="${group.start}"` : "";
+      html.push(`<${group.kind}${start}>${group.items.map((li) => `<li>${li}</li>`).join("")}</${group.kind}>`);
+    }
+    group = null;
+  };
+  let table: { head: string[]; rows: string[][]; sep: boolean; raw: string[] } | null = null;
+  const flushTable = () => {
+    if (!table) return;
+    const t = table;
+    table = null;
+    if (!t.sep) {
+      // Not a real table (no |---| line): keep the lines as a paragraph.
+      para.push(...t.raw);
+      return;
+    }
+    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c), codes)}</${tag}>`;
+    html.push(`<table><thead><tr>${t.head.map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
+      t.rows.map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
+  };
   const flush = () => {
+    flushTable();
+    flushGroup();
     if (!para.length) return;
     const text = para.join("\n");
     para = [];
-    if (/^%%FENCE\d+%%$/.test(text.trim())) {
-      html.push(text.trim());
-      return;
-    }
-    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"))}</p>`);
+    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"), codes)}</p>`);
+  };
+  // Read through a function: TS narrows the closure-assigned `group` to null inside the loop.
+  const openList = () => group !== null && group.kind !== "quote";
+  const addItem = (kind: "ul" | "ol" | "quote", text: string, start = 1) => {
+    if (para.length) flush();
+    if (group && group.kind !== kind) flushGroup();
+    if (!group) group = { kind, items: [], start };
+    group.items.push(inline(escapeHtml(text), codes));
   };
   for (const line of lines) {
-    const fence = line.trim().match(/^%%FENCE(\d+)%%$/);
+    const fence = line.trim().match(/^\u0001f(\d+)\u0002$/);
     if (fence) {
       flush();
       html.push(fences[Number(fence[1])]);
       continue;
     }
     if (/^\s*$/.test(line)) {
+      // A blank line between list items keeps one (loose) list; it still ends quotes and paragraphs.
+      if (openList() && !para.length) continue;
       flush();
       continue;
     }
+    const cells = tableRow(line);
+    if (cells) {
+      if (table) table.raw.push(line);
+      if (!table) {
+        flush();
+        table = { head: cells, rows: [], sep: false, raw: [line] };
+      } else if (!table.sep && cells.every((c) => /^:?-{1,}:?$/.test(c))) table.sep = true;
+      else table.rows.push(cells);
+      continue;
+    }
+    flushTable();
     const heading = line.match(/^(#{1,4})\s+(.+)$/);
     if (heading) {
       flush();
       const n = heading[1].length;
-      html.push(`<h${n}>${inline(escapeHtml(heading[2]))}</h${n}>`);
+      html.push(`<h${n}>${inline(escapeHtml(heading[2]), codes)}</h${n}>`);
       continue;
     }
-    if (/^[-*]\s+/.test(line)) {
-      flush();
-      html.push(`<ul><li>${inline(escapeHtml(line.replace(/^[-*]\s+/, "")))}</li></ul>`);
+    const bullet = line.match(/^[-*]\s+(.*)$/);
+    if (bullet) {
+      addItem("ul", bullet[1]);
       continue;
     }
+    const ordered = line.match(/^(\d+)[.)]\s+(.*)$/);
+    if (ordered) {
+      addItem("ol", ordered[2], Number(ordered[1]));
+      continue;
+    }
+    const quote = line.match(/^>\s?(.*)$/);
+    if (quote) {
+      addItem("quote", quote[1]);
+      continue;
+    }
+    flushGroup();
     para.push(line);
   }
   flush();
-  return html.join("").replace(/<\/ul><ul>/g, "");
+  return html.join("")
+    .replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)] ?? "")}</code>`)
+    .replace(/\u0001e(\d+)\u0002/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
 }
 
-function sanitizeHtml(src: string): string {
-  return src.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)\/?>/g, (raw, name: string, attrs: string) => {
-    const tag = name.toLowerCase();
+function decodeEntities(value: string): string {
+  return value.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|#39);/gi, (_m, ent: string) => {
+    const e = ent.toLowerCase();
+    if (e === "amp") return "&";
+    if (e === "lt") return "<";
+    if (e === "gt") return ">";
+    if (e === "quot") return '"';
+    if (e === "apos" || e === "#39") return "'";
+    const code = e.startsWith("#x") ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+    return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : "";
+  });
+}
+
+export function sanitizeHtml(src: string): string {
+  // One pass over tags *and* stray angle brackets: a stray "<" is escaped, so dropping a
+  // disallowed tag can never glue the text around it into a new tag (e.g. "<<x>img onerror=…>").
+  return src
+    .replace(/<(style|title|noscript|template|iframe|object|xmp)\b[\s\S]*?<\/\1\s*>/gi, "")
+    .replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^<>]*)\/?>|[<>]/g, (raw: string, name: string | undefined, attrs: string) => {
+    if (raw === "<") return "&lt;";
+    if (raw === ">") return "&gt;";
+    const tag = (name || "").toLowerCase();
     const close = raw.startsWith("</");
     if (!ALLOWED.has(tag)) return "";
     if (close) return `</${tag}>`;
@@ -173,18 +277,22 @@ function sanitizeHtml(src: string): string {
     let out = `<${tag}`;
     const allowed = ATTRS[tag];
     if (allowed) {
-      const re = /([a-zA-Z:-]+)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/g;
+      const re = /([a-zA-Z:-]+)(?:\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+)))?/g;
       let m: RegExpExecArray | null;
       while ((m = re.exec(attrs))) {
         const attr = m[1].toLowerCase();
         if (!allowed.has(attr)) continue;
-        const value = m[3] ?? m[4] ?? m[5] ?? "";
+        if (m[2] === undefined && attr !== "controls") continue;
+        const value = decodeEntities(m[3] ?? m[4] ?? m[5] ?? "");
         if (attr === "href" || attr === "src" || attr === "poster") {
           const url = safeUrl(value);
           if (!url) continue;
           out += ` ${attr}="${escapeHtml(url)}"`;
         } else if (attr === "controls") {
           out += " controls";
+        } else if (attr === "start") {
+          const n = parseInt(value, 10);
+          if (Number.isFinite(n)) out += ` start="${n}"`;
         } else {
           out += ` ${attr}="${escapeHtml(value)}"`;
         }
@@ -193,7 +301,7 @@ function sanitizeHtml(src: string): string {
     if (tag === "a") out += ' rel="noreferrer"';
     out += selfClose && tag !== "video" ? " />" : ">";
     return out;
-  }).replace(/on[a-z]+\s*=/gi, "");
+  });
 }
 
 function looksLikeHtml(src: string): boolean {

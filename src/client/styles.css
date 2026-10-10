@@ -223,21 +223,82 @@ h1 {
   margin: 0 auto 1.15rem;
   max-width: 38rem;
 }
-.home-clip {
-  margin: 1.6rem auto 0;
-  max-width: 1080px;
-  text-align: left;
+.clip-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0 0 1.4rem; }
+.clip-feat {
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
-.home-clip-h {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.3rem 0.9rem;
-  margin-bottom: 0.7rem;
+.clip-feat.sky { background: #e6f5fd; color: #2a7fae; border-color: #c4e6f8; }
+.clip-feat.pink { background: #fde8f1; color: #c0477c; border-color: #f8cadf; }
+.clip-feat.lilac { background: #f1eafd; color: #7a52c4; border-color: #ddd0f7; }
+.home-clip { max-width: 900px; margin: 0 auto; text-align: left; }
+.home-clip-note { max-width: 900px; margin: 0.8rem auto 0; text-align: center; }
+.home-clip-note a { color: var(--pink-deep); }
+.clip.solo { grid-template-columns: minmax(0, 1fr); }
+.clip-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-right: 0.25rem; }
+.clip-seg .seg {
+  border: 0;
+  background: transparent;
+  padding: 0.3rem 0.75rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
 }
-.home-clip-h h2 { margin: 0; font-size: 1.15rem; }
-.home-clip-h h2 a { color: inherit; text-decoration: none; }
-.home-clip-h p { margin: 0; font-size: 0.9rem; }
+.clip-seg .seg.on { background: var(--pink-soft); color: var(--ink); }
+.clip-biu.s { text-decoration: line-through; font-weight: 600; }
+.clip-attach { margin-left: auto; }
+.clip-sheet { display: grid; }
+.clip-rich {
+  min-height: 16rem;
+  max-height: 70vh;
+  overflow: auto;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  outline: none;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.clip-rich:focus { border-color: var(--pink-deep); }
+.clip-rich.is-empty::before {
+  content: attr(data-placeholder);
+  color: var(--ink-soft);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.clip-rich blockquote, .clip-md blockquote {
+  margin: 0.4rem 0;
+  padding: 0.2rem 0.9rem;
+  border-left: 3px solid var(--pink-deep);
+  color: var(--ink-soft);
+}
+.clip-compose.over .clip-rich, .clip-compose.over .clip-input { border-color: var(--pink-deep); background: var(--pink-soft); }
+.clip-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.clip-pills:empty { display: none; }
+.clip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 0.8rem;
+}
+.clip-pill.done { opacity: 0.6; }
+.clip-pill.fail { border-color: #e88; color: #b33; }
+.clip-pill-name { max-width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clip-pill-meta { color: var(--ink-soft); }
+.clip-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.clip-actions .clip-bytes { margin-left: auto; }
+.clip-link { color: var(--pink-deep); font-weight: 700; word-break: break-all; }
 
 .wall { padding: 2.2rem 0 0.4rem; }
 .wall-h {
@@ -1578,3 +1639,27 @@ body {
 .foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1rem; margin-top: 0.4rem; }
 .foot-links a { color: var(--ink-soft); }
 .foot-links a:hover { color: var(--pink-deep); }
+
+/* Home clipboard hero (July 2026 look): centered gradient title over the editor. */
+.hero-band.clip-hero { padding: 1.8rem 1.6rem 1.6rem; text-align: center; }
+.hero-band.clip-hero h1 {
+  max-width: none;
+  margin: 0 auto 0.4rem;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #6fc0ec, #b394f0 50%, #f08ab4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-band.clip-hero .lede { margin: 0 auto 0.9rem; text-align: center; font-size: 1rem; }
+.clip-md b, .clip-md strong {
+  font-family: "PingFang SC", "Hiragino Sans", "Microsoft YaHei", system-ui, sans-serif;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .hero-band.clip-hero { padding: 1.2rem 0.8rem 1rem; }
+}
+.clip-up { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--pink-soft); color: var(--ink-soft); font-size: 0.85rem; }
