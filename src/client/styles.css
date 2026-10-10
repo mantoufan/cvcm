@@ -223,6 +223,21 @@ h1 {
   margin: 0 auto 1.15rem;
   max-width: 38rem;
 }
+.home-clip {
+  margin: 1.6rem auto 0;
+  max-width: 1080px;
+  text-align: left;
+}
+.home-clip-h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.9rem;
+  margin-bottom: 0.7rem;
+}
+.home-clip-h h2 { margin: 0; font-size: 1.15rem; }
+.home-clip-h h2 a { color: inherit; text-decoration: none; }
+.home-clip-h p { margin: 0; font-size: 0.9rem; }
 
 .wall { padding: 2.2rem 0 0.4rem; }
 .wall-h {

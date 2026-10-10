@@ -1,4 +1,5 @@
 import { h } from "./dom";
+import { mountClipCompose } from "./clip/ui";
 import { t } from "./i18n";
 import { gameTile } from "./games/ui";
 import { learnTile } from "./learn/ui";
@@ -21,11 +22,21 @@ export function mountHome(host: HTMLElement, locale: Locale): void {
       ),
     )
     : null;
+  const clipCard = h("div", { class: "home-clip" },
+    h("div", { class: "home-clip-h" },
+      h("h2", null,
+        h("a", { href: appHref(locale, "clip"), "data-nav": "clip" }, t("clip.title")),
+      ),
+      h("p", { class: "muted" }, t("clip.privacyNote")),
+    ),
+  );
+  mountClipCompose(clipCard);
   host.append(
     h("section", { class: "hero-band" },
       h("p", { class: "kicker" }, t("home.kicker")),
       h("h1", null, t("home.title")),
       h("p", { class: "lede" }, t("home.lead")),
+      clipCard,
     ),
     h("section", { class: "wall" },
       h("div", { class: "wall-h" },

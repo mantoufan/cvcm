@@ -30,13 +30,21 @@ export async function mountClip(host: HTMLElement, clipId: string | null): Promi
       h("p", { class: "lede" }, t("clip.privacyNote")),
     ),
   );
+  if (clipId) {
+    const page = h("div", { class: "clip" });
+    host.append(page);
+    await showView(page, clipId);
+  } else mountClipCompose(host);
+}
+
+/** Compose box only (no tool header). Used on /clip/ and on the home page. */
+export function mountClipCompose(host: HTMLElement): void {
+  busy = false;
+  previewing = false;
   const page = h("div", { class: "clip" });
   host.append(page);
-  if (clipId) await showView(page, clipId);
-  else {
-    showCompose(page);
-    window.addEventListener("paste", onPaste);
-  }
+  showCompose(page);
+  window.addEventListener("paste", onPaste);
 }
 
 export function unmountClip(): void {
