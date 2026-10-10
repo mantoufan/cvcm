@@ -177,4 +177,13 @@ describe("renderClip", () => {
     expect(renderClip("[l](https://a.test) \\*h0\\*")).toBe('<p><a href="https://a.test" rel="noreferrer">l</a> *h0*</p>');
     expect(renderClip("\\*h5\\*")).toBe("<p>*h5*</p>");
   });
+
+  it("supports longer fences and code spans", () => {
+    const fenced = renderClip("````\na\n```\nb\n````");
+    expect(fenced.startsWith("<pre>")).toBe(true);
+    expect(fenced.endsWith("</code></pre>")).toBe(true);
+    expect(fenced).not.toContain("<p>");
+    expect(renderClip("``a`b``")).toBe("<p><code>a`b</code></p>");
+    expect(renderClip("`` `x` ``")).toBe("<p><code>`x`</code></p>");
+  });
 });

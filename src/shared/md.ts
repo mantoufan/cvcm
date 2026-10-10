@@ -140,14 +140,15 @@ function tableRow(line: string): string[] | null {
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
   const codes: string[] = [];
-  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/(`{3,})(\w*)\n([\s\S]*?)\1(?!`)/g, (_m, _ticks, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
     return `\n\u0001f${i}\u0002\n`;
   })
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
-    .replace(/(?<!\\)`([^`\n]+?)`/g, (_m, code: string) => `\u0001c${codes.push(code) - 1}\u0002`)
+    .replace(/(?<![\\`])(`+)(?!`)([^\n]*?[^`\n])\1(?!`)/g, (_m, _ticks, code: string) =>
+      `\u0001c${codes.push(/^ .* $/.test(code) ? code.slice(1, -1) : code) - 1}\u0002`)
     .replace(ESC_RE, (_m, ch: string) => `\u0001e${ch.charCodeAt(0)}\u0002`);
   const lines = protectedSrc.split("\n");
   const html: string[] = [];

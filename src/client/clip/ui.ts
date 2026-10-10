@@ -334,6 +334,23 @@ function mdEscape(text: string): string {
     .replace(/^(\s*\d+)([.)])(\s)/gm, "$1\\$2$3");
 }
 
+function longestRun(text: string, ch: string): number {
+  let best = 0;
+  let run = 0;
+  for (const c of text) {
+    run = c === ch ? run + 1 : 0;
+    best = Math.max(best, run);
+  }
+  return best;
+}
+
+/** Inline code with a backtick run longer than any inside it (CommonMark style). */
+function codeSpan(text: string): string {
+  const ticks = "`".repeat(longestRun(text, "`") + 1);
+  const pad = text.startsWith("`") || text.endsWith("`") ? " " : "";
+  return `${ticks}${pad}${text}${pad}${ticks}`;
+}
+
 function mdUrl(url: string): string {
   return url.replace(/[()\s]/g, (c) => encodeURIComponent(c).replace("(", "%28").replace(")", "%29"));
 }
@@ -376,7 +393,7 @@ function domToMarkdown(root: Node): string {
       case "i": case "em": return `*${inner()}*`;
       case "u": return `++${inner()}++`;
       case "s": case "strike": case "del": return `~~${inner()}~~`;
-      case "code": return node.closest("pre") ? preText(node) : `\`${node.textContent || ""}\``;
+      case "code": return node.closest("pre") ? preText(node) : codeSpan(node.textContent || "");
       // Held as a token so the blank-line cleanup below never touches code.
       case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
       case "h1": return `\n# ${inner()}\n\n`;
@@ -395,15 +412,21 @@ function domToMarkdown(root: Node): string {
       case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
       case "video": return node.getAttribute("src") ? `![video](${mdUrl(node.getAttribute("src") || "")})\n` : "";
       // contenteditable puts each new line in a <div>: one line break, not a paragraph.
-      case "div": return `\n${inner()}\n`;
+      case "div": return `\u0001d\u0002${inner()}\u0001d\u0002`;
       case "p": return `\n${inner()}\n\n`;
       case "table": return `\n${tableToMd(node, walk)}\n\n`;
       default: return inner();
     }
   };
   return walk(root)
+    // Neighbouring line <div>s share one break: "a<div>b</div><div>c</div>" is three lines.
+    .replace(/\n*(?:\u0001d\u0002\n*)+/g, (m) => (m.includes("\n\n") ? "\n\n" : "\n"))
     .replace(/\n{3,}/g, "\n\n")
-    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => `\`\`\`\n${blocks[Number(i)]}\n\`\`\``);
+    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => {
+      const code = blocks[Number(i)];
+      const fence = "`".repeat(Math.max(3, longestRun(code, "`") + 1));
+      return `${fence}\n${code}\n${fence}`;
+    });
 }
 
 function richIsEmpty(): boolean {
