@@ -99,26 +99,30 @@ function unescapeHtml(text: string): string {
 }
 
 /** `text` is already HTML-escaped. Generated tags are held as tokens so later rules never rewrite them. */
-function inline(text: string): string {
+function inline(text: string, codes: string[] = []): string {
   const held: string[] = [];
+  // Code-span tokens inside an attribute become plain text, not <code> markup.
+  const plain = (v: string) => v.replace(/\u0000c(\d+)\u0000/g, (_m, i: string) => escapeHtml(codes[Number(i)] ?? ""));
   const hold = (html: string) => `\u0000h${held.push(html) - 1}\u0000`;
   return text
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt: string, href: string) => {
-      const url = safeUrl(unescapeHtml(href));
+    // Bounded lengths keep a run of unmatched "[" from going quadratic.
+    .replace(/!\[([^\]\n]{0,500})\]\(([^)\s]{1,2048})\)/g, (_m, rawAlt: string, href: string) => {
+      const alt = plain(rawAlt);
+      const url = safeUrl(unescapeHtml(plain(href)));
       if (!url) return alt;
       if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
       return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label: string, href: string) => {
-      const url = safeUrl(unescapeHtml(href));
+    .replace(/\[([^\]\n]{1,500})\]\(([^)\s]{1,2048})\)/g, (_m, label: string, href: string) => {
+      const url = safeUrl(unescapeHtml(plain(href)));
       if (!url) return label;
       return `${hold(`<a href="${escapeHtml(url)}" rel="noreferrer">`)}${label}${hold("</a>")}`;
     })
     .replace(/`([^`]+)`/g, (_m, code: string) => hold(`<code>${code}</code>`))
     .replace(/\+\+([^+]+)\+\+/g, (_m, s) => `<u>${s}</u>`)
     .replace(/~~([^~]+)~~/g, (_m, s) => `<s>${s}</s>`)
-    .replace(/\*\*([^*]+)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
-    .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`)
+    .replace(/\*\*([^\n]+?)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
+    .replace(/\*([^*\n]+)\*/g, (_m, s) => `<em>${s}</em>`)
     .replace(/\u0000h(\d+)\u0000/g, (_m, i: string) => held[Number(i)]);
 }
 
@@ -134,15 +138,16 @@ function tableRow(line: string): string[] | null {
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
   const codes: string[] = [];
-  const protectedSrc = src.replace(/\u0000/g, "").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+  const protectedSrc = src.replace(/\u0000/g, "").replace(/\r\n?/g, "\n").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
-    return `\n%%FENCE${i}%%\n`;
+    return `\n\u0000f${i}\u0000\n`;
   })
     // Inline code keeps its backslashes: hold it before escapes are read.
-    .replace(/`([^`\n]+)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
+    // An escaped backtick (\`) is literal, not a code-span delimiter.
+    .replace(/(?<!\\)`([^`\n]+?)(?<!\\)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
     .replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
-  const lines = protectedSrc.replace(/\r\n/g, "\n").split("\n");
+  const lines = protectedSrc.split("\n");
   const html: string[] = [];
   let para: string[] = [];
   let group: { kind: "ul" | "ol" | "quote"; items: string[]; start: number } | null = null;
@@ -165,7 +170,7 @@ function renderMarkdown(src: string): string {
       para.push(...t.raw);
       return;
     }
-    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c))}</${tag}>`;
+    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c), codes)}</${tag}>`;
     html.push(`<table><thead><tr>${t.head.map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
       t.rows.map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
   };
@@ -175,7 +180,7 @@ function renderMarkdown(src: string): string {
     if (!para.length) return;
     const text = para.join("\n");
     para = [];
-    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"))}</p>`);
+    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"), codes)}</p>`);
   };
   // Read through a function: TS narrows the closure-assigned `group` to null inside the loop.
   const openList = () => group !== null && group.kind !== "quote";
@@ -183,10 +188,10 @@ function renderMarkdown(src: string): string {
     if (para.length) flush();
     if (group && group.kind !== kind) flushGroup();
     if (!group) group = { kind, items: [], start };
-    group.items.push(inline(escapeHtml(text)));
+    group.items.push(inline(escapeHtml(text), codes));
   };
   for (const line of lines) {
-    const fence = line.trim().match(/^%%FENCE(\d+)%%$/);
+    const fence = line.trim().match(/^\u0000f(\d+)\u0000$/);
     if (fence) {
       flush();
       html.push(fences[Number(fence[1])]);
@@ -213,7 +218,7 @@ function renderMarkdown(src: string): string {
     if (heading) {
       flush();
       const n = heading[1].length;
-      html.push(`<h${n}>${inline(escapeHtml(heading[2]))}</h${n}>`);
+      html.push(`<h${n}>${inline(escapeHtml(heading[2]), codes)}</h${n}>`);
       continue;
     }
     const bullet = line.match(/^[-*]\s+(.*)$/);
@@ -256,7 +261,9 @@ function decodeEntities(value: string): string {
 export function sanitizeHtml(src: string): string {
   // One pass over tags *and* stray angle brackets: a stray "<" is escaped, so dropping a
   // disallowed tag can never glue the text around it into a new tag (e.g. "<<x>img onerror=…>").
-  return src.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^<>]*)\/?>|[<>]/g, (raw: string, name: string | undefined, attrs: string) => {
+  return src
+    .replace(/<(style|title|noscript|template|iframe|object|xmp)\b[\s\S]*?<\/\1\s*>/gi, "")
+    .replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^<>]*)\/?>|[<>]/g, (raw: string, name: string | undefined, attrs: string) => {
     if (raw === "<") return "&lt;";
     if (raw === ">") return "&gt;";
     const tag = (name || "").toLowerCase();

@@ -364,6 +364,7 @@ function preText(node: Node): string {
 
 /** Serialize the rich editor back to Markdown for the MD tab. */
 function domToMarkdown(root: Node): string {
+  const blocks: string[] = [];
   const walk = (node: Node): string => {
     if (node.nodeType === Node.TEXT_NODE) return mdEscape((node.textContent || "").replace(/ /g, " "));
     if (!(node instanceof Element)) return "";
@@ -376,7 +377,8 @@ function domToMarkdown(root: Node): string {
       case "u": return `++${inner()}++`;
       case "s": case "strike": case "del": return `~~${inner()}~~`;
       case "code": return node.closest("pre") ? preText(node) : `\`${node.textContent || ""}\``;
-      case "pre": return `\n\`\`\`\n${preText(node).replace(/\n$/, "")}\n\`\`\`\n\n`;
+      // Held as a token so the blank-line cleanup below never touches code.
+      case "pre": return `\n\u0000p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0000\n\n`;
       case "h1": return `\n# ${inner()}\n\n`;
       case "h2": return `\n## ${inner()}\n\n`;
       case "h3": return `\n### ${inner()}\n\n`;
@@ -384,7 +386,8 @@ function domToMarkdown(root: Node): string {
       case "blockquote": return `\n${inner().split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
       case "ul": return `\n${[...node.children].map((li) => `- ${walk(li).trim()}`).join("\n")}\n\n`;
       case "ol": {
-        const start = Number(node.getAttribute("start")) || 1;
+        const n = parseInt(node.getAttribute("start") || "", 10);
+        const start = Number.isFinite(n) ? n : 1;
         return `\n${[...node.children].map((li, i) => `${start + i}. ${walk(li).trim()}`).join("\n")}\n\n`;
       }
       case "li": return inner();
@@ -398,7 +401,9 @@ function domToMarkdown(root: Node): string {
       default: return inner();
     }
   };
-  return walk(root).replace(/\n{3,}/g, "\n\n");
+  return walk(root)
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\u0000p(\d+)\u0000/g, (_m, i: string) => `\`\`\`\n${blocks[Number(i)]}\n\`\`\``);
 }
 
 function richIsEmpty(): boolean {
@@ -592,7 +597,29 @@ function insertMd(snippet: string): void {
 
 /** Sanitize pasted HTML and drop media whose src did not survive (file:, data:, blob:). */
 function cleanPastedHtml(html: string): string {
-  const safe = sanitizeHtml(html.replace(/<!--[\s\S]*?-->/g, "").replace(/<(style|script)[\s\S]*?<\/\1>/gi, ""));
+  // Map inline-style formatting (Google Docs, Notion…) to tags before styles are stripped.
+  const raw = document.createElement("template");
+  raw.innerHTML = html.replace(/<!--[\s\S]*?-->/g, "");
+  raw.content.querySelectorAll("script, style").forEach((el) => el.remove());
+  raw.content.querySelectorAll<HTMLElement>("[style]").forEach((el) => {
+    const st = el.style;
+    const weight = st.fontWeight;
+    if (/^(b|strong)$/i.test(el.tagName) && (weight === "normal" || weight === "400")) {
+      el.replaceWith(...el.childNodes);
+      return;
+    }
+    let inner: HTMLElement = el;
+    const wrap = (tag: string) => {
+      const w = document.createElement(tag);
+      w.append(...inner.childNodes);
+      inner.append(w);
+      inner = w;
+    };
+    if (weight === "bold" || Number(weight) >= 600) wrap("b");
+    if (st.fontStyle === "italic") wrap("i");
+    if (st.textDecorationLine?.includes("line-through") || st.textDecoration?.includes("line-through")) wrap("s");
+  });
+  const safe = sanitizeHtml(raw.innerHTML);
   const tpl = document.createElement("template");
   tpl.innerHTML = safe;
   tpl.content.querySelectorAll("img:not([src]), video:not([src])").forEach((el) => el.remove());
@@ -736,7 +763,8 @@ function resolvePlaceholder(u: Upload, embed: { rich: string; md: string } | nul
     }
   }
   if (mdArea && mdArea.value.includes(mdToken(u.id))) {
-    mdArea.value = mdArea.value.replace(mdToken(u.id), embed ? embed.md : "");
+    const md = embed ? embed.md : "";
+    mdArea.value = mdArea.value.replace(mdToken(u.id), () => md);
   }
 }
 

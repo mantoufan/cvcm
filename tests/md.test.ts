@@ -135,4 +135,35 @@ describe("renderClip", () => {
   it("keeps pipe lines verbatim when they are not a table", () => {
     expect(renderClip("|  a  |")).toBe("<p>|  a  |</p>");
   });
+
+  it("treats an escaped backtick as text", () => {
+    expect(renderClip("run \\`npm i\\` now")).toBe("<p>run `npm i` now</p>");
+  });
+
+  it("renders emphasis nested in bold", () => {
+    expect(renderClip("**a *b* c**")).toBe("<p><strong>a <em>b</em> c</strong></p>");
+  });
+
+  it("finds fences in CRLF text", () => {
+    expect(renderClip("```js\r\nconst a = 1;\r\n```")).toContain('<pre><code class="lang-js">');
+  });
+
+  it("does not treat typed fence markers as tokens", () => {
+    expect(renderClip("%%FENCE0%%")).toBe("<p>%%FENCE0%%</p>");
+  });
+
+  it("keeps code markup out of attributes", () => {
+    expect(renderClip("![`x`](https://a.test/b.png)")).toBe('<p><img src="https://a.test/b.png" alt="x"></p>');
+  });
+
+  it("drops style bodies from html notes", () => {
+    expect(renderClip("<p>a</p><style>.x{color:red}</style>")).toBe("<p>a</p>");
+  });
+
+  it("stays fast on unmatched brackets", () => {
+    const t0 = Date.now();
+    renderClip("[".repeat(64000));
+    renderClip("[a](".repeat(16000));
+    expect(Date.now() - t0).toBeLessThan(800);
+  });
 });
