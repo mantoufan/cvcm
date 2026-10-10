@@ -102,8 +102,8 @@ function unescapeHtml(text: string): string {
 function inline(text: string, codes: string[] = []): string {
   const held: string[] = [];
   // Code-span tokens inside an attribute become plain text, not <code> markup.
-  const plain = (v: string) => v.replace(/\u0000c(\d+)\u0000/g, (_m, i: string) => escapeHtml(codes[Number(i)] ?? ""));
-  const hold = (html: string) => `\u0000h${held.push(html) - 1}\u0000`;
+  const plain = (v: string) => v.replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => escapeHtml(codes[Number(i)] ?? ""));
+  const hold = (html: string) => `\u0001h${held.push(html) - 1}\u0002`;
   return text
     // Bounded lengths keep a run of unmatched "[" from going quadratic.
     .replace(/!\[([^\]\n]{0,500})\]\(([^)\s]{1,2048})\)/g, (_m, rawAlt: string, href: string) => {
@@ -123,10 +123,12 @@ function inline(text: string, codes: string[] = []): string {
     .replace(/~~([^~]+)~~/g, (_m, s) => `<s>${s}</s>`)
     .replace(/\*\*([^\n]+?)\*\*/g, (_m, s) => `<strong>${s}</strong>`)
     .replace(/\*([^*\n]+)\*/g, (_m, s) => `<em>${s}</em>`)
-    .replace(/\u0000h(\d+)\u0000/g, (_m, i: string) => held[Number(i)]);
+    .replace(/\u0001h(\d+)\u0002/g, (_m, i: string) => held[Number(i)] ?? "");
 }
 
-// Backslash escapes (\* \# \< …) become NUL-delimited tokens so no rule below treats them as syntax.
+// Internal tokens are \u0001<kind><n>\u0002. Open and close differ, so two adjacent tokens can never
+// read as a third one; both characters are stripped from the input first.
+// Backslash escapes (\* \# \< …) become tokens so no rule below treats them as syntax.
 const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
 
 function tableRow(line: string): string[] | null {
@@ -138,15 +140,15 @@ function tableRow(line: string): string[] | null {
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
   const codes: string[] = [];
-  const protectedSrc = src.replace(/\u0000/g, "").replace(/\r\n?/g, "\n").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
-    return `\n\u0000f${i}\u0000\n`;
+    return `\n\u0001f${i}\u0002\n`;
   })
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
-    .replace(/(?<!\\)`([^`\n]+?)`/g, (_m, code: string) => `\u0000c${codes.push(code) - 1}\u0000`)
-    .replace(ESC_RE, (_m, ch: string) => `\u0000${ch.charCodeAt(0)}\u0000`);
+    .replace(/(?<!\\)`([^`\n]+?)`/g, (_m, code: string) => `\u0001c${codes.push(code) - 1}\u0002`)
+    .replace(ESC_RE, (_m, ch: string) => `\u0001e${ch.charCodeAt(0)}\u0002`);
   const lines = protectedSrc.split("\n");
   const html: string[] = [];
   let para: string[] = [];
@@ -191,7 +193,7 @@ function renderMarkdown(src: string): string {
     group.items.push(inline(escapeHtml(text), codes));
   };
   for (const line of lines) {
-    const fence = line.trim().match(/^\u0000f(\d+)\u0000$/);
+    const fence = line.trim().match(/^\u0001f(\d+)\u0002$/);
     if (fence) {
       flush();
       html.push(fences[Number(fence[1])]);
@@ -241,8 +243,8 @@ function renderMarkdown(src: string): string {
   }
   flush();
   return html.join("")
-    .replace(/\u0000c(\d+)\u0000/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)])}</code>`)
-    .replace(/\u0000(\d+)\u0000/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
+    .replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)] ?? "")}</code>`)
+    .replace(/\u0001e(\d+)\u0002/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
 }
 
 function decodeEntities(value: string): string {

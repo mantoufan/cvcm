@@ -378,7 +378,7 @@ function domToMarkdown(root: Node): string {
       case "s": case "strike": case "del": return `~~${inner()}~~`;
       case "code": return node.closest("pre") ? preText(node) : `\`${node.textContent || ""}\``;
       // Held as a token so the blank-line cleanup below never touches code.
-      case "pre": return `\n\u0000p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0000\n\n`;
+      case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
       case "h1": return `\n# ${inner()}\n\n`;
       case "h2": return `\n## ${inner()}\n\n`;
       case "h3": return `\n### ${inner()}\n\n`;
@@ -403,7 +403,7 @@ function domToMarkdown(root: Node): string {
   };
   return walk(root)
     .replace(/\n{3,}/g, "\n\n")
-    .replace(/\u0000p(\d+)\u0000/g, (_m, i: string) => `\`\`\`\n${blocks[Number(i)]}\n\`\`\``);
+    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => `\`\`\`\n${blocks[Number(i)]}\n\`\`\``);
 }
 
 function richIsEmpty(): boolean {

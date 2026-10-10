@@ -170,4 +170,11 @@ describe("renderClip", () => {
   it("keeps a trailing backslash in inline code", () => {
     expect(renderClip("path `C:\\` here")).toBe("<p>path <code>C:\\</code> here</p>");
   });
+
+  it("never reads two adjacent tokens as a third", () => {
+    expect(renderClip("\\[c1\\] only")).toBe("<p>[c1] only</p>");
+    expect(renderClip("`x` `y` \\[c1\\]")).toBe("<p><code>x</code> <code>y</code> [c1]</p>");
+    expect(renderClip("[l](https://a.test) \\*h0\\*")).toBe('<p><a href="https://a.test" rel="noreferrer">l</a> *h0*</p>');
+    expect(renderClip("\\*h5\\*")).toBe("<p>*h5*</p>");
+  });
 });
