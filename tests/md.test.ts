@@ -48,4 +48,29 @@ describe("renderClip", () => {
     const html = renderClip("<div><h1>T</h1><b>b</b><strike>s</strike><ol><li>x</li></ol><blockquote>q</blockquote><pre>code</pre></div>");
     for (const tag of ["<h1>", "<b>", "<strike>", "<ol>", "<blockquote>", "<pre>"]) expect(html).toContain(tag);
   });
+
+  it("keeps separated quotes apart and honors list start", () => {
+    const html = renderClip("> A\n\n> B\n\n3. third\n4. fourth");
+    expect(html).toContain("<blockquote>A</blockquote><blockquote>B</blockquote>");
+    expect(html).toContain('<ol start="3"><li>third</li><li>fourth</li></ol>');
+  });
+
+  it("treats backslash escapes as literal text", () => {
+    const html = renderClip("\\*not em\\* \\<tag\\> \\# x\n\\- item");
+    expect(html).toContain("*not em* &lt;tag&gt; # x");
+    expect(html).not.toContain("<em>");
+    expect(html).not.toContain("<ul>");
+  });
+
+  it("is stable when sanitizing twice", () => {
+    const once = renderClip('<div><video controls src="https://s3.cv.cm/files/clip/abcdefgh/a.mp4"></video><a href="https://x.test/?a=1&amp;b=2">l</a></div>');
+    const twice = renderClip(once);
+    expect(twice).toContain("<video controls src=\"https://s3.cv.cm/files/clip/abcdefgh/a.mp4\">");
+    expect(twice).toContain('href="https://x.test/?a=1&amp;b=2"');
+    expect(twice).toBe(once);
+  });
+
+  it("decodes entities before checking urls", () => {
+    expect(renderClip('<p><a href="javascript&#58;alert(1)">x</a></p>')).not.toContain("javascript");
+  });
 });

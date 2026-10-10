@@ -12,7 +12,7 @@ import { appHref } from "../../shared/path";
 
 type Created = { id: string; url: string; expiresAt: number };
 type Mode = "rich" | "md";
-type Upload = { name: string; type: string; size: number; pct: number; state: "up" | "done" | "fail" };
+type Upload = { id: string; name: string; type: string; size: number; pct: number; state: "up" | "done" | "fail" };
 
 const DRAFT_KEY = "cvcm.clip.draft";
 
@@ -27,7 +27,12 @@ let shareBtn: HTMLButtonElement | null = null;
 let modeBtns: HTMLButtonElement[] = [];
 let savedRange: Range | null = null;
 let uploads: Upload[] = [];
+/** Bumped by Clear and unmount so in-flight uploads from an old note are dropped. */
+let uploadGen = 0;
+let uploadSeq = 0;
 let busy = false;
+/** Only write the draft back when the user changed something since the last save/share. */
+let draftDirty = false;
 let statusTimer = 0;
 let draftTimer = 0;
 
@@ -51,7 +56,9 @@ export async function mountClip(host: HTMLElement, clipId: string | null): Promi
 export function mountClipCompose(host: HTMLElement, opts: { rules?: boolean } = {}): void {
   busy = false;
   uploads = [];
+  uploadGen++;
   savedRange = null;
+  draftDirty = false;
   const page = h("div", { class: "clip" + (opts.rules ? "" : " solo") });
   host.append(page);
   showCompose(page, Boolean(opts.rules));
@@ -64,6 +71,7 @@ export function unmountClip(): void {
   document.removeEventListener("selectionchange", rememberRange);
   window.clearTimeout(statusTimer);
   flushDraft();
+  uploadGen++;
   editor = null;
   mdArea = null;
   statusEl = null;
@@ -100,6 +108,13 @@ function showCompose(page: HTMLElement, withRules: boolean): void {
     "aria-label": t("clip.bodyLabel"),
     onInput: () => changed(),
     onPaste: (e: Event) => onMdPaste(e as ClipboardEvent),
+    onKeydown: (e: Event) => {
+      const k = e as KeyboardEvent;
+      if ((k.metaKey || k.ctrlKey) && k.key === "Enter") {
+        k.preventDefault();
+        void createNote();
+      }
+    },
   });
   if (draft?.body) {
     if (mode === "rich") editor.innerHTML = sanitizeHtml(draft.body);
@@ -130,8 +145,8 @@ function showCompose(page: HTMLElement, withRules: boolean): void {
         (e.currentTarget as HTMLElement).classList.remove("over");
         if (!files.length) return;
         e.preventDefault();
-        placeCaretAtPoint(e as DragEvent);
-        void uploadFiles(files);
+        const at = caretAtPoint(e as DragEvent);
+        void uploadFiles(files, at);
       },
     },
       toolbar(filePick),
@@ -149,6 +164,7 @@ function showCompose(page: HTMLElement, withRules: boolean): void {
   );
   applyMode();
   refreshState();
+  refreshBytes();
 }
 
 function toolbar(filePick: HTMLInputElement): HTMLElement {
@@ -258,6 +274,11 @@ function onEditorKey(e: KeyboardEvent): void {
 
 function switchMode(next: Mode): void {
   if (next === mode || !editor || !mdArea) return;
+  // Placeholders for in-flight uploads live in the current editor; finish those first.
+  if (pendingUploads()) {
+    setStatus(t("clip.uploading"));
+    return;
+  }
   if (next === "md") mdArea.value = domToMarkdown(editor).trim();
   else editor.innerHTML = mdArea.value.trim() ? renderClip(mdArea.value) : "";
   mode = next;
@@ -273,10 +294,33 @@ function applyMode(): void {
   (mode === "rich" ? editor : mdArea).focus();
 }
 
+/** Escape text so the Markdown renderer shows it literally. */
+function mdEscape(text: string): string {
+  return text
+    .replace(/([\\`*_~[\]<>#+|!])/g, "\\$1")
+    .replace(/^(\s*)([-])(\s)/gm, "$1\\$2$3")
+    .replace(/^(\s*\d+)([.)])(\s)/gm, "$1\\$2$3");
+}
+
+/** Text of a <pre>, keeping <br> and block children as line breaks. */
+function preText(node: Node): string {
+  let out = "";
+  for (const child of node.childNodes) {
+    if (child.nodeType === Node.TEXT_NODE) out += child.textContent || "";
+    else if (child instanceof Element) {
+      const tag = child.tagName.toLowerCase();
+      if (tag === "br") out += "\n";
+      else if (tag === "div" || tag === "p") out += `${out && !out.endsWith("\n") ? "\n" : ""}${preText(child)}\n`;
+      else out += preText(child);
+    }
+  }
+  return out;
+}
+
 /** Serialize the rich editor back to Markdown for the MD tab. */
 function domToMarkdown(root: Node): string {
   const walk = (node: Node): string => {
-    if (node.nodeType === Node.TEXT_NODE) return (node.textContent || "").replace(/ /g, " ");
+    if (node.nodeType === Node.TEXT_NODE) return mdEscape((node.textContent || "").replace(/ /g, " "));
     if (!(node instanceof Element)) return "";
     const tag = node.tagName.toLowerCase();
     const inner = () => [...node.childNodes].map(walk).join("");
@@ -286,8 +330,8 @@ function domToMarkdown(root: Node): string {
       case "i": case "em": return `*${inner()}*`;
       case "u": return `++${inner()}++`;
       case "s": case "strike": case "del": return `~~${inner()}~~`;
-      case "code": return node.closest("pre") ? inner() : `\`${inner()}\``;
-      case "pre": return `\n\`\`\`\n${node.textContent || ""}\n\`\`\`\n\n`;
+      case "code": return node.closest("pre") ? preText(node) : `\`${node.textContent || ""}\``;
+      case "pre": return `\n\`\`\`\n${preText(node).replace(/\n$/, "")}\n\`\`\`\n\n`;
       case "h1": return `\n# ${inner()}\n\n`;
       case "h2": return `\n## ${inner()}\n\n`;
       case "h3": return `\n### ${inner()}\n\n`;
@@ -297,7 +341,7 @@ function domToMarkdown(root: Node): string {
       case "ol": return `\n${[...node.children].map((li, i) => `${i + 1}. ${walk(li).trim()}`).join("\n")}\n\n`;
       case "li": return inner();
       case "a": return `[${inner()}](${node.getAttribute("href") || ""})`;
-      case "img": return node.getAttribute("src") ? `![${node.getAttribute("alt") || ""}](${node.getAttribute("src")})\n` : "";
+      case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${node.getAttribute("src")})\n` : "";
       case "video": return node.getAttribute("src") ? `![video](${node.getAttribute("src")})\n` : "";
       case "p": case "div": return `${inner()}\n\n`;
       default: return inner();
@@ -306,26 +350,43 @@ function domToMarkdown(root: Node): string {
   return walk(root).replace(/\n{3,}/g, "\n\n");
 }
 
+function richIsEmpty(): boolean {
+  if (!editor) return true;
+  return !editor.querySelector("img, video, [data-up]") && !(editor.textContent || "").trim();
+}
+
 function currentBody(): string {
   if (mode === "md") return mdArea?.value || "";
-  if (!editor) return "";
-  const hasMedia = editor.querySelector("img, video");
-  if (!hasMedia && !(editor.textContent || "").trim()) return "";
+  if (!editor || richIsEmpty()) return "";
+  const copy = editor.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll("[data-up]").forEach((el) => el.remove());
   // Wrap so the viewer always treats it as HTML.
-  return `<div>${sanitizeHtml(editor.innerHTML)}</div>`;
+  return `<div>${sanitizeHtml(copy.innerHTML)}</div>`;
+}
+
+function pendingUploads(): boolean {
+  return uploads.some((u) => u.state === "up");
 }
 
 function changed(): void {
+  draftDirty = true;
   refreshState();
   window.clearTimeout(draftTimer);
-  draftTimer = window.setTimeout(flushDraft, 400);
+  draftTimer = window.setTimeout(() => {
+    flushDraft();
+    refreshBytes();
+  }, 400);
 }
 
+/** Cheap per-keystroke state; the byte count is debounced in changed(). */
 function refreshState(): void {
-  const body = currentBody();
-  editor?.classList.toggle("is-empty", mode === "rich" && !body);
-  if (bytesEl) bytesEl.textContent = t("clip.bytes", { used: formatUsed(utf8Bytes(body)) });
-  if (shareBtn) shareBtn.disabled = busy || !body.trim() || uploads.some((u) => u.state === "up");
+  const empty = mode === "rich" ? richIsEmpty() : !(mdArea?.value || "").trim();
+  editor?.classList.toggle("is-empty", mode === "rich" && empty);
+  if (shareBtn) shareBtn.disabled = busy || empty || pendingUploads();
+}
+
+function refreshBytes(): void {
+  if (bytesEl) bytesEl.textContent = t("clip.bytes", { used: formatUsed(utf8Bytes(currentBody())) });
 }
 
 function readDraft(): { mode: Mode; body: string } | null {
@@ -342,9 +403,10 @@ function readDraft(): { mode: Mode; body: string } | null {
 
 function flushDraft(): void {
   window.clearTimeout(draftTimer);
-  if (!editor || !mdArea) return;
+  if (!draftDirty || !editor || !mdArea) return;
+  draftDirty = false;
   try {
-    const body = mode === "rich" ? editor.innerHTML : mdArea.value;
+    const body = mode === "rich" ? currentBody().replace(/^<div>|<\/div>$/g, "") : mdArea.value;
     if (body.trim()) localStorage.setItem(DRAFT_KEY, JSON.stringify({ mode, body }));
     else localStorage.removeItem(DRAFT_KEY);
   } catch {
@@ -354,6 +416,7 @@ function flushDraft(): void {
 
 function clearDraft(): void {
   window.clearTimeout(draftTimer);
+  draftDirty = false;
   try {
     localStorage.removeItem(DRAFT_KEY);
   } catch {
@@ -362,6 +425,7 @@ function clearDraft(): void {
 }
 
 function clearAll(): void {
+  uploadGen++;
   if (editor) editor.innerHTML = "";
   if (mdArea) mdArea.value = "";
   uploads = [];
@@ -370,6 +434,7 @@ function clearAll(): void {
   setStatus("");
   clearDraft();
   refreshState();
+  refreshBytes();
   (mode === "rich" ? editor : mdArea)?.focus();
 }
 
@@ -404,8 +469,8 @@ function restoreRange(): void {
   sel.addRange(savedRange);
 }
 
-function placeCaretAtPoint(e: DragEvent): void {
-  if (mode !== "rich" || !editor) return;
+function caretAtPoint(e: DragEvent): Range | null {
+  if (mode !== "rich" || !editor) return null;
   const doc = document as Document & {
     caretRangeFromPoint?: (x: number, y: number) => Range | null;
     caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null;
@@ -419,14 +484,18 @@ function placeCaretAtPoint(e: DragEvent): void {
       range.setStart(pos.offsetNode, pos.offset);
     }
   }
-  if (range && editor.contains(range.startContainer)) savedRange = range;
+  return range && editor.contains(range.startContainer) ? range : null;
 }
 
-function insertRich(html: string): void {
-  if (!editor) return;
+/** Put the selection at `at` (e.g. a drop point), else the caret, else the end of the editor. */
+function selectInsertPoint(at?: Range | null): Selection | null {
+  if (!editor) return null;
   editor.focus();
-  restoreRange();
   const sel = window.getSelection();
+  if (at) {
+    sel?.removeAllRanges();
+    sel?.addRange(at);
+  } else restoreRange();
   if (!sel || !sel.rangeCount || !editor.contains(sel.getRangeAt(0).commonAncestorContainer)) {
     const end = document.createRange();
     end.selectNodeContents(editor);
@@ -434,7 +503,26 @@ function insertRich(html: string): void {
     sel?.removeAllRanges();
     sel?.addRange(end);
   }
+  return sel;
+}
+
+function insertRich(html: string, at?: Range | null): void {
+  if (!selectInsertPoint(at)) return;
   document.execCommand("insertHTML", false, html);
+  rememberRange();
+}
+
+/** Insert a node with DOM ranges (insertHTML drops non-editable spans) and move the caret after it. */
+function insertNodeRich(node: Node, at?: Range | null): void {
+  const sel = selectInsertPoint(at);
+  if (!sel || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+  sel.removeAllRanges();
+  sel.addRange(range);
   rememberRange();
 }
 
@@ -447,29 +535,50 @@ function insertMd(snippet: string): void {
 
 // ---- paste --------------------------------------------------------------
 
+/** Sanitize pasted HTML and drop media whose src did not survive (file:, data:, blob:). */
+function cleanPastedHtml(html: string): string {
+  const safe = sanitizeHtml(html.replace(/<!--[\s\S]*?-->/g, "").replace(/<(style|script)[\s\S]*?<\/\1>/gi, ""));
+  const tpl = document.createElement("template");
+  tpl.innerHTML = safe;
+  tpl.content.querySelectorAll("img:not([src]), video:not([src])").forEach((el) => el.remove());
+  return tpl.innerHTML;
+}
+
+function looksLikeMarkdown(text: string): boolean {
+  if (/^```/m.test(text)) return true;
+  const signals = [/^#{1,4}\s+\S/m, /^[-*]\s+\S/m, /^\d+[.)]\s+\S/m, /^>\s?\S/m, /\*\*[^*\n]+\*\*/, /\[[^\]\n]+\]\(https?:\/\/[^)\s]+\)/];
+  return signals.filter((re) => re.test(text)).length >= 2;
+}
+
 function onEditorPaste(e: ClipboardEvent): void {
   const files = [...(e.clipboardData?.files || [])];
   const html = e.clipboardData?.getData("text/html") || "";
+  const text = e.clipboardData?.getData("text/plain") || "";
   e.preventDefault();
-  if (files.length && !html) {
+  if (html) {
+    const clean = cleanPastedHtml(html);
+    const keptMedia = /<(img|video)\b/i.test(clean);
+    const hasText = Boolean(clean.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim());
+    // Office / Feishu / screenshot tools send the image as a file plus HTML with a local src.
+    if (files.length && !keptMedia) {
+      if (hasText) insertRich(clean);
+      void uploadFiles(files);
+    } else insertRich(clean);
+  } else if (files.length) {
     void uploadFiles(files);
     return;
-  }
-  if (html) {
-    // Media whose src was unsafe comes back as a bare <img>/<video>; drop those.
-    const clean = sanitizeHtml(html.replace(/<!--[\s\S]*?-->/g, "").replace(/<(style|script)[\s\S]*?<\/\1>/gi, ""))
-      .replace(/<img\s*\/?>|<video>\s*<\/video>/gi, "");
-    insertRich(clean);
-  } else {
-    const text = e.clipboardData?.getData("text/plain") || "";
-    if (text) document.execCommand("insertText", false, text);
+  } else if (text) {
+    // Plain-text Markdown or HTML source renders, as it did in the old textarea.
+    if (/^\s*</.test(text) && /<\/?[a-zA-Z]/.test(text)) insertRich(cleanPastedHtml(text));
+    else if (looksLikeMarkdown(text)) insertRich(renderClip(text));
+    else document.execCommand("insertText", false, text);
   }
   changed();
 }
 
 function onMdPaste(e: ClipboardEvent): void {
   const files = [...(e.clipboardData?.files || [])];
-  if (!files.length) return;
+  if (!files.length || (e.clipboardData?.getData("text/plain") || "").trim()) return;
   e.preventDefault();
   void uploadFiles(files);
 }
@@ -524,22 +633,55 @@ function putWithProgress(url: string, file: File, onPct: (pct: number) => void):
 function embedFor(kind: string, name: string, url: string): { rich: string; md: string } {
   const safeName = escapeHtml(name);
   const safeUrl = escapeHtml(url);
-  if (kind === "image") return { rich: `<img src="${safeUrl}" alt="${safeName}"><br>`, md: `![${name}](${url})\n` };
-  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video><br>`, md: `![${name}](${url})\n` };
-  return { rich: `<a href="${safeUrl}">📎 ${safeName}</a><br>`, md: `[${name}](${url})\n` };
+  const mdName = mdEscape(name);
+  if (kind === "image") return { rich: `<img src="${safeUrl}" alt="${safeName}">`, md: `![${mdName}](${url})\n` };
+  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video>`, md: `![${mdName}](${url})\n` };
+  return { rich: `<a href="${safeUrl}">📎 ${safeName}</a>`, md: `[${mdName}](${url})\n` };
 }
 
-async function uploadFiles(files: File[]): Promise<void> {
+function mdToken(id: string): string {
+  return `⟦⏳${id}⟧`;
+}
+
+/** Drop a placeholder where the file goes now, so the final embed lands there even if the caret moves. */
+function placeholder(u: Upload, at?: Range | null): void {
+  if (mode === "rich") {
+    insertNodeRich(h("span", { class: "clip-up", "data-up": u.id, contenteditable: "false" }, `⏳ ${u.name}`), at);
+  } else insertMd(mdToken(u.id));
+}
+
+function resolvePlaceholder(u: Upload, embed: { rich: string; md: string } | null): void {
+  if (editor) {
+    const el = editor.querySelector(`[data-up="${u.id}"]`);
+    if (el) {
+      if (embed) {
+        const tpl = document.createElement("template");
+        tpl.innerHTML = `${embed.rich}<br>`;
+        el.replaceWith(tpl.content);
+      } else el.remove();
+    }
+  }
+  if (mdArea && mdArea.value.includes(mdToken(u.id))) {
+    mdArea.value = mdArea.value.replace(mdToken(u.id), embed ? embed.md : "");
+  }
+}
+
+async function uploadFiles(files: File[], at?: Range | null): Promise<void> {
   if (!files.length) return;
+  const gen = uploadGen;
   resultEl?.replaceChildren();
   const batch = files.map((file) => {
-    const u: Upload = { name: file.name || "file", type: file.type, size: file.size, pct: 0, state: "up" };
+    const u: Upload = { id: `u${++uploadSeq}`, name: file.name || "file", type: file.type, size: file.size, pct: 0, state: "up" };
     uploads.push(u);
     return { file, u };
   });
+  // Placeholders in file order; later ones go after earlier ones at the same point.
+  for (const { u } of batch) placeholder(u, at && batch[0].u === u ? at : null);
   renderPills();
-  refreshState();
+  changed();
   for (const { file, u } of batch) {
+    if (gen !== uploadGen) return;
+    let embed: { rich: string; md: string } | null = null;
     try {
       if (file.size > CLIP_MAX_FILE_BYTES) {
         u.state = "fail";
@@ -552,28 +694,34 @@ async function uploadFiles(files: File[]): Promise<void> {
         body: JSON.stringify({ name: file.name, type: file.type, size: file.size }),
       });
       const data = (await res.json()) as { putUrl?: string; url?: string; kind?: string; error?: string };
+      if (gen !== uploadGen) return;
       if (!res.ok || !data.putUrl || !data.url) {
         u.state = "fail";
         setStatus(errorMessage(data.error));
         continue;
       }
-      const ok = await putWithProgress(data.putUrl, file, (pct) => { u.pct = pct; renderPills(); });
+      const ok = await putWithProgress(data.putUrl, file, (pct) => {
+        if (gen !== uploadGen) return;
+        u.pct = pct;
+        renderPills();
+      });
+      if (gen !== uploadGen) return;
       if (!ok) {
         u.state = "fail";
         setStatus(t("clip.unavailable"));
         continue;
       }
       u.state = "done";
-      if (!editor) return;
-      const embed = embedFor(data.kind || "file", file.name || "file", data.url);
-      if (mode === "rich") insertRich(embed.rich);
-      else insertMd(embed.md);
+      embed = embedFor(data.kind || "file", file.name || "file", data.url);
     } catch {
       u.state = "fail";
       setStatus(t("clip.unavailable"));
     } finally {
-      renderPills();
-      changed();
+      if (gen === uploadGen) {
+        resolvePlaceholder(u, embed);
+        renderPills();
+        changed();
+      }
     }
   }
 }
@@ -582,7 +730,7 @@ async function uploadFiles(files: File[]): Promise<void> {
 
 async function createNote(): Promise<void> {
   if (busy) return;
-  if (uploads.some((u) => u.state === "up")) {
+  if (pendingUploads()) {
     setStatus(t("clip.uploading"));
     return;
   }
@@ -598,45 +746,60 @@ async function createNote(): Promise<void> {
   busy = true;
   refreshState();
   setStatus(t("clip.generating"));
-  try {
-    const res = await fetch("/api/clip", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ body }),
-    });
+  const request = fetch("/api/clip", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ body }),
+  }).then(async (res) => {
     const data = (await res.json()) as { id?: string; url?: string; expiresAt?: number; error?: string };
-    if (!res.ok || !data.id || !data.url || !data.expiresAt) {
-      setStatus(errorMessage(data.error));
-      return;
-    }
-    const copied = await writeClipboard(data.url);
-    setStatus(copied ? t("clip.linkCopied") : "", 3000);
-    renderCreated({ id: data.id, url: data.url, expiresAt: data.expiresAt });
+    if (!res.ok || !data.id || !data.url || !data.expiresAt) throw new Error(data.error || "unavailable");
+    return data as Created;
+  });
+  // Start the clipboard write inside the click (Safari drops user activation after an await);
+  // the promise-valued ClipboardItem resolves once the link exists.
+  const early = startClipboardWrite(request.then((c) => c.url));
+  try {
+    const created = await request;
+    const copied = (await early) || (await writeClipboard(created.url));
+    setStatus(copied ? t("clip.linkCopied") : t("clip.created"), copied ? 3000 : 0);
+    renderCreated(created, !copied);
     clearDraft();
-  } catch {
-    setStatus(t("clip.unavailable"));
+  } catch (err) {
+    setStatus(errorMessage(err instanceof Error ? err.message : undefined));
   } finally {
     busy = false;
     refreshState();
   }
 }
 
-function renderCreated(created: Created): void {
+function startClipboardWrite(text: Promise<string>): Promise<boolean> {
+  try {
+    if (typeof ClipboardItem === "undefined" || !navigator.clipboard?.write) return Promise.resolve(false);
+    const item = new ClipboardItem({ "text/plain": text.then((s) => new Blob([s], { type: "text/plain" })) });
+    return navigator.clipboard.write([item]).then(() => true, () => false);
+  } catch {
+    return Promise.resolve(false);
+  }
+}
+
+function renderCreated(created: Created, focusCopy: boolean): void {
   if (!resultEl) return;
+  const copyBtn = h("button", {
+    type: "button",
+    class: "btn ghost",
+    onClick: (e: Event) => void copyText(created.url, e.currentTarget as HTMLButtonElement, t("clip.copyLink")),
+  }, t("clip.copyLink"));
   resultEl.replaceChildren(
     h("div", { class: "clip-url-row" },
       h("a", { class: "clip-link", href: created.url, target: "_blank", rel: "noopener" }, created.url.replace(/^https?:\/\//, "")),
-      h("button", {
-        type: "button",
-        class: "btn ghost",
-        onClick: (e: Event) => void copyText(created.url, e.currentTarget as HTMLButtonElement, t("clip.copyLink")),
-      }, t("clip.copyLink")),
+      copyBtn,
     ),
     h("div", { class: "clip-meta" },
       h("span", { class: "pill" }, t("clip.viewsLeft", { n: CLIP_MAX_VIEWS })),
       h("span", { class: "pill" }, expireLabel(created.expiresAt)),
     ),
   );
+  if (focusCopy) copyBtn.focus();
 }
 
 // ---- view ---------------------------------------------------------------

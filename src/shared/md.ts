@@ -10,6 +10,7 @@ const ATTRS: Record<string, Set<string>> = {
   video: new Set(["src", "controls", "poster"]),
   source: new Set(["src", "type"]),
   code: new Set(["class"]),
+  ol: new Set(["start"]),
   span: new Set(["class"]),
   pre: new Set(["class"]),
 };
@@ -115,25 +116,42 @@ function inline(text: string): string {
     .replace(/\*([^*]+)\*/g, (_m, s) => `<em>${s}</em>`);
 }
 
+// Backslash escapes (\* \# \< …) become private-use tokens so no rule below treats them as syntax.
+const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
+const ESC_BASE = 0xe000;
+
 function renderMarkdown(src: string): string {
   const fences: string[] = [];
   const protectedSrc = src.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
     const i = fences.length;
     fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
     return `\n%%FENCE${i}%%\n`;
-  });
+  }).replace(ESC_RE, (_m, ch: string) => String.fromCharCode(ESC_BASE + ch.charCodeAt(0)));
   const lines = protectedSrc.replace(/\r\n/g, "\n").split("\n");
   const html: string[] = [];
   let para: string[] = [];
+  let group: { kind: "ul" | "ol" | "quote"; items: string[]; start: number } | null = null;
+  const flushGroup = () => {
+    if (!group) return;
+    if (group.kind === "quote") html.push(`<blockquote>${group.items.join("<br>")}</blockquote>`);
+    else {
+      const start = group.kind === "ol" && group.start !== 1 ? ` start="${group.start}"` : "";
+      html.push(`<${group.kind}${start}>${group.items.map((li) => `<li>${li}</li>`).join("")}</${group.kind}>`);
+    }
+    group = null;
+  };
   const flush = () => {
+    flushGroup();
     if (!para.length) return;
     const text = para.join("\n");
     para = [];
-    if (/^%%FENCE\d+%%$/.test(text.trim())) {
-      html.push(text.trim());
-      return;
-    }
     html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"))}</p>`);
+  };
+  const addItem = (kind: "ul" | "ol" | "quote", text: string, start = 1) => {
+    if (para.length) flush();
+    if (group && group.kind !== kind) flushGroup();
+    if (!group) group = { kind, items: [], start };
+    group.items.push(inline(escapeHtml(text)));
   };
   for (const line of lines) {
     const fence = line.trim().match(/^%%FENCE(\d+)%%$/);
@@ -153,25 +171,39 @@ function renderMarkdown(src: string): string {
       html.push(`<h${n}>${inline(escapeHtml(heading[2]))}</h${n}>`);
       continue;
     }
-    if (/^[-*]\s+/.test(line)) {
-      flush();
-      html.push(`<ul><li>${inline(escapeHtml(line.replace(/^[-*]\s+/, "")))}</li></ul>`);
+    const bullet = line.match(/^[-*]\s+(.*)$/);
+    if (bullet) {
+      addItem("ul", bullet[1]);
       continue;
     }
-    if (/^\d+[.)]\s+/.test(line)) {
-      flush();
-      html.push(`<ol><li>${inline(escapeHtml(line.replace(/^\d+[.)]\s+/, "")))}</li></ol>`);
+    const ordered = line.match(/^(\d+)[.)]\s+(.*)$/);
+    if (ordered) {
+      addItem("ol", ordered[2], Number(ordered[1]));
       continue;
     }
-    if (/^>\s?/.test(line)) {
-      flush();
-      html.push(`<blockquote>${inline(escapeHtml(line.replace(/^>\s?/, "")))}</blockquote>`);
+    const quote = line.match(/^>\s?(.*)$/);
+    if (quote) {
+      addItem("quote", quote[1]);
       continue;
     }
+    flushGroup();
     para.push(line);
   }
   flush();
-  return html.join("").replace(/<\/ul><ul>/g, "").replace(/<\/ol><ol>/g, "").replace(/<\/blockquote><blockquote>/g, "<br>");
+  return html.join("").replace(/[\ue000-\ue0ff]/g, (c) => escapeHtml(String.fromCharCode(c.charCodeAt(0) - ESC_BASE)));
+}
+
+function decodeEntities(value: string): string {
+  return value.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|#39);/gi, (_m, ent: string) => {
+    const e = ent.toLowerCase();
+    if (e === "amp") return "&";
+    if (e === "lt") return "<";
+    if (e === "gt") return ">";
+    if (e === "quot") return '"';
+    if (e === "apos" || e === "#39") return "'";
+    const code = e.startsWith("#x") ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+    return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : "";
+  });
 }
 
 export function sanitizeHtml(src: string): string {
@@ -184,18 +216,22 @@ export function sanitizeHtml(src: string): string {
     let out = `<${tag}`;
     const allowed = ATTRS[tag];
     if (allowed) {
-      const re = /([a-zA-Z:-]+)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/g;
+      const re = /([a-zA-Z:-]+)(?:\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+)))?/g;
       let m: RegExpExecArray | null;
       while ((m = re.exec(attrs))) {
         const attr = m[1].toLowerCase();
         if (!allowed.has(attr)) continue;
-        const value = m[3] ?? m[4] ?? m[5] ?? "";
+        if (m[2] === undefined && attr !== "controls") continue;
+        const value = decodeEntities(m[3] ?? m[4] ?? m[5] ?? "");
         if (attr === "href" || attr === "src" || attr === "poster") {
           const url = safeUrl(value);
           if (!url) continue;
           out += ` ${attr}="${escapeHtml(url)}"`;
         } else if (attr === "controls") {
           out += " controls";
+        } else if (attr === "start") {
+          const n = parseInt(value, 10);
+          if (Number.isFinite(n)) out += ` start="${n}"`;
         } else {
           out += ` ${attr}="${escapeHtml(value)}"`;
         }
