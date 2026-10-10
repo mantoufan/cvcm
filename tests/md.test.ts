@@ -325,4 +325,9 @@ describe("renderClip", () => {
     renderClip("- a\n" + "  ````a\n  ```\n".repeat(8000));
     expect(Date.now() - t0).toBeLessThan(1500);
   });
+
+  it("uses the audio/video alt hint before the extension", () => {
+    expect(renderClip("![audio](https://s3.cv.cm/files/clip/a/memo.webm)")).toBe('<p><audio controls src="https://s3.cv.cm/files/clip/a/memo.webm"></audio></p>');
+    expect(renderClip("![video](https://s3.cv.cm/files/clip/a/v)")).toBe('<p><video controls src="https://s3.cv.cm/files/clip/a/v"></video></p>');
+  });
 });

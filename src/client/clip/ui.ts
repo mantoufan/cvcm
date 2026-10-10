@@ -841,8 +841,8 @@ function embedFor(kind: string, name: string, url: string): { rich: string; md: 
   const safeUrl = escapeHtml(url);
   const mdName = mdEscape(name);
   if (kind === "image") return { rich: `<img src="${safeUrl}" alt="${safeName}">`, md: `![${mdName}](${url})\n` };
-  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video>`, md: `![${mdName}](${url})\n` };
-  if (kind === "audio") return { rich: `<audio controls src="${safeUrl}"></audio>`, md: `![${mdName}](${url})\n` };
+  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video>`, md: `![video](${url})\n` };
+  if (kind === "audio") return { rich: `<audio controls src="${safeUrl}"></audio>`, md: `![audio](${url})\n` };
   return { rich: `<a href="${safeUrl}">📎 ${safeName}</a>`, md: `[${mdName}](${url})\n` };
 }
 

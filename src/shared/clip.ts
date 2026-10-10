@@ -75,8 +75,12 @@ export function clientIp(request: Request): string {
 
 export function safeFileName(name: string): string {
   const base = name.split(/[/\\]/).pop() || "file";
-  const cleaned = base.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^\.+/, "").slice(0, 80);
-  return cleaned || "file";
+  const cleaned = base.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^\.+/, "");
+  if (cleaned.length <= 80) return cleaned || "file";
+  // Shorten the stem, not the extension: the type (and the inline player) depends on it.
+  const dot = cleaned.lastIndexOf(".");
+  const ext = dot > 0 && cleaned.length - dot <= 10 ? cleaned.slice(dot) : "";
+  return cleaned.slice(0, 80 - ext.length) + ext;
 }
 
 const IMAGE_EXT = new Set(["jpg", "jpeg", "png", "gif", "webp"]);

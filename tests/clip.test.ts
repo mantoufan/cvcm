@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { handleClipApi } from "../src/clip-api";
 import { memoryStore } from "../src/clip-store";
 import {
+  safeFileName,
   fileKind,
   mimeForFile,
   CLIP_ID_LENGTH,
@@ -279,6 +280,13 @@ describe("upload types", () => {
     expect(mimeForFile("voice", "audio/mpeg")).toBe("audio/mpeg");
     expect(mimeForFile("rec.webm", "audio/webm")).toBe("audio/webm");
     expect(mimeForFile("clip.webm", "video/webm")).toBe("video/webm");
+  });
+
+  it("keeps the extension when shortening a long name", () => {
+    const name = safeFileName("Lecture 12 - Introduction to Distributed Systems and Consensus Algorithms (full).mp3");
+    expect(name.length).toBeLessThanOrEqual(80);
+    expect(name.endsWith(".mp3")).toBe(true);
+    expect(mimeForFile(name, "audio/mpeg")).toBe("audio/mpeg");
   });
 
   it("stores other files as downloads", () => {

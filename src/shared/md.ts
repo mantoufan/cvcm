@@ -115,8 +115,10 @@ function inline(text: string, codes: string[] = []): string {
       const alt = plain(rawAlt);
       const url = safeUrl(unescapeHtml(plain(href)));
       if (!url) return alt;
-      if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
-      if (isAudio(url)) return hold(`<audio controls src="${escapeHtml(url)}"></audio>`);
+      // Alt text "audio" / "video" names the player outright (a .webm can be either);
+      // otherwise the extension decides.
+      if (alt === "audio" || (alt !== "video" && isAudio(url))) return hold(`<audio controls src="${escapeHtml(url)}"></audio>`);
+      if (alt === "video" || isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
       return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
     .replace(/\[([^\]\n]{1,500})\]\(([^)\s]{1,2048})\)/g, (_m, label: string, href: string) => {
