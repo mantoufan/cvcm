@@ -186,4 +186,148 @@ describe("renderClip", () => {
     expect(renderClip("``a`b``")).toBe("<p><code>a`b</code></p>");
     expect(renderClip("`` `x` ``")).toBe("<p><code>`x`</code></p>");
   });
+
+  it("renders code blocks, lists and paragraphs inside quotes", () => {
+    const html = renderClip("> intro\n>\n> ```js\n> const a = 1;\n> ```\n>\n> - x\n> - y");
+    expect(html.startsWith("<blockquote><p>intro</p><pre><code class=\"lang-js\">")).toBe(true);
+    expect(html).toContain("<ul><li>x</li><li>y</li></ul></blockquote>");
+  });
+
+  it("does not read > inside fenced code as a quote", () => {
+    expect(renderClip("```\n> not a quote\n```")).toBe('<pre><code class="lang-">&gt; not a quote</code></pre>');
+  });
+
+  it("nests lists by indentation", () => {
+    expect(renderClip("- a\n    - b\n        1. c\n        2. d\n- e")).toBe(
+      "<ul><li>a<ul><li>b<ol><li>c</li><li>d</li></ol></li></ul></li><li>e</li></ul>");
+  });
+
+  it("caps nesting depth on hostile input", () => {
+    const t0 = Date.now();
+    const quotes = renderClip(">".repeat(64000) + " x");
+    const lists = renderClip(Array.from({ length: 4000 }, (_, i) => `${" ".repeat(i)}- x`).join("\n"));
+    expect(quotes.split("<blockquote>").length - 1).toBeLessThanOrEqual(8);
+    expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(4000);
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
+
+  it("keeps indented fences, also under list items", () => {
+    expect(renderClip("1. Install\n   ```bash\n   npm i\n   ```\n2. Run")).toBe(
+      '<ol><li>Install<pre><code class="lang-bash">npm i</code></pre></li><li>Run</li></ol>');
+    expect(renderClip("  ```js\n  const a = 1;\n  ```")).toBe(
+      '<pre><code class="lang-js"><span class="k">const</span> a = 1;</code></pre>');
+  });
+
+  it("accepts a fence closed at the end of the last code line", () => {
+    expect(renderClip("```js\nconst a = 1;```")).toBe('<pre><code class="lang-js"><span class="k">const</span> a = 1;</code></pre>');
+  });
+
+  it("stays linear on many unclosed fences", () => {
+    const t0 = Date.now();
+    renderClip("```a\n".repeat(13000));
+    renderClip("> ```a\n".repeat(9000));
+    expect(Date.now() - t0).toBeLessThan(800);
+  });
+
+  it("only lets -, * or 1. interrupt a paragraph", () => {
+    expect(renderClip("Text\n  2024. was great")).toBe("<p>Text<br>  2024. was great</p>");
+  });
+
+  it("treats a dedent to a middle indent as a sibling", () => {
+    expect(renderClip("- a\n        - b\n    - c\n- d")).toBe("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>");
+  });
+
+  it("puts quotes and continuation lines inside list items", () => {
+    expect(renderClip("- a\n  more\n    > q\n- b")).toBe("<ul><li>a<br>more<blockquote>q</blockquote></li><li>b</li></ul>");
+  });
+
+  it("reads a bare number line as text but a bare dash as an empty item", () => {
+    expect(renderClip("2024.")).toBe("<p>2024.</p>");
+    expect(renderClip("-\n    - b")).toBe("<ul><li><ul><li>b</li></ul></li></ul>");
+  });
+
+  it("does not split table cells on escaped pipes or pipes in code", () => {
+    expect(renderClip("| a | b |\n|---|---|\n| x \\| y | `p|q` |")).toBe(
+      "<table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>x | y</td><td><code>p|q</code></td></tr></tbody></table>");
+  });
+
+  it("keeps a lone dash as text", () => {
+    expect(renderClip("notes\n\n-\n\nmore")).toBe("<p>notes</p><p>-</p><p>more</p>");
+  });
+
+  it("keeps continuation text in an item", () => {
+    expect(renderClip("- Our year\n  2024. was great")).toBe("<ul><li>Our year<br>2024. was great</li></ul>");
+  });
+
+  it("lets an item's fence close at a smaller indent", () => {
+    expect(renderClip("1. Install:\n   ```\n   npm i\n```\n2. Next")).toBe(
+      '<ol><li>Install:<pre><code class="lang-">npm i</code></pre></li><li>Next</li></ol>');
+  });
+
+  it("reads a fence opened at the end of a text line", () => {
+    expect(renderClip("Text ```\ncode\n```")).toBe('<p>Text</p><pre><code class="lang-">code</code></pre>');
+  });
+
+  it("stays fast on long continuation runs and backtick lines", () => {
+    const t0 = Date.now();
+    renderClip("- a\n" + "  b\n".repeat(100000));
+    renderClip(("`".repeat(2000) + "x\n").repeat(50));
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
+
+  it("plays audio links and keeps audio tags", () => {
+    expect(renderClip("![a](https://s3.cv.cm/files/clip/abcdefabcdefabcd/a.mp3)")).toBe(
+      '<p><audio controls src="https://s3.cv.cm/files/clip/abcdefabcdefabcd/a.mp3"></audio></p>');
+    expect(renderClip('<div><audio controls src="https://s3.cv.cm/a.mp3" onplay="x()"></audio></div>')).toBe(
+      '<div><audio controls src="https://s3.cv.cm/a.mp3"></audio></div>');
+  });
+
+  it("nests a deeper ordered list that does not start at 1", () => {
+    expect(renderClip("- a\n    - b\n        3. c\n        4. d\n- e")).toBe(
+      '<ul><li>a<ul><li>b<ol start="3"><li>c</li><li>d</li></ol></li></ul></li><li>e</li></ul>');
+  });
+
+  it("opens a fence at the end of a list or quote line", () => {
+    expect(renderClip("- a ```\n  b\n  ```")).toBe('<ul><li>a<pre><code class="lang-">b</code></pre></li></ul>');
+    expect(renderClip("> a ```\n> b\n> ```")).toBe('<blockquote><p>a</p><pre><code class="lang-">b</code></pre></blockquote>');
+  });
+
+  it("keeps indented notes and YAML as text", () => {
+    expect(renderClip("text\n    - not a list")).toBe("<p>text<br>    - not a list</p>");
+    expect(renderClip("steps:\n  - run: a")).toBe("<p>steps:<br>  - run: a</p>");
+  });
+
+  it("does not let an unclosed fence in an item swallow what follows", () => {
+    const html = renderClip("- step\n  ```\n  run x\n- next step\n\nSome text\n\n```js\ncode\n```");
+    expect(html).toContain("<li>next step</li>");
+    expect(html).toContain("<p>Some text</p>");
+    expect(html).toContain('<pre><code class="lang-js">code</code></pre>');
+  });
+
+  it("nests under wide ordered markers", () => {
+    expect(renderClip("99. a\n     3. x\n     4. y")).toBe('<ol start="99"><li>a<ol start="3"><li>x</li><li>y</li></ol></li></ol>');
+  });
+
+  it("keeps a fence with unindented code inside its item", () => {
+    expect(renderClip("1. Run:\n   ```\nnpm i\n   ```\n2. Next")).toBe(
+      '<ol><li>Run:<pre><code class="lang-">npm i</code></pre></li><li>Next</li></ol>');
+  });
+
+  it("keeps a code block inside a quote inside an item", () => {
+    expect(renderClip("- a\n    > ```\n    > q code\n    > ```")).toBe(
+      '<ul><li>a<blockquote><pre><code class="lang-">q code</code></pre></blockquote></li></ul>');
+    expect(renderClip("1. a\n   b ```\n   x\n   ```\n2. c")).toBe(
+      '<ol><li>a<br>b<pre><code class="lang-">x</code></pre></li><li>c</li></ol>');
+  });
+
+  it("stays linear on unclosed fences between short closers in an item", () => {
+    const t0 = Date.now();
+    renderClip("- a\n" + "  ````a\n  ```\n".repeat(8000));
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
+
+  it("uses the audio/video alt hint before the extension", () => {
+    expect(renderClip("![audio](https://s3.cv.cm/files/clip/a/memo.webm)")).toBe('<p><audio controls src="https://s3.cv.cm/files/clip/a/memo.webm"></audio></p>');
+    expect(renderClip("![video](https://s3.cv.cm/files/clip/a/v)")).toBe('<p><video controls src="https://s3.cv.cm/files/clip/a/v"></video></p>');
+  });
 });

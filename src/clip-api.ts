@@ -162,7 +162,7 @@ async function createUpload(
   const size = typeof data.size === "number" ? data.size : Number(data.size);
   const mime = mimeForFile(name, typeof data.type === "string" ? data.type : "");
   if (!mime) return error(400, "file_type");
-  if (!Number.isFinite(size) || size <= 0) return error(400, "bad_request");
+  if (!Number.isInteger(size) || size <= 0) return error(400, "bad_request");
   if (size > CLIP_MAX_FILE_BYTES) return error(400, "file_too_large");
 
   const dead = await store.drainDead(now);
@@ -171,7 +171,7 @@ async function createUpload(
   if (!(await bumpRate(store, ipHash, now, CLIP_UPLOAD_MAX))) return error(429, "rate");
 
   const key = `clip/${newFilePrefix()}/${name}`;
-  const putUrl = await presignS3Put(s3, key, new Date(now));
+  const putUrl = await presignS3Put(s3, key, new Date(now), 600, mime, size);
   return json(200, {
     key,
     putUrl,

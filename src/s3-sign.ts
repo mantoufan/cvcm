@@ -57,12 +57,26 @@ function objectPath(cfg: S3Config, key: string): string {
   return `/${cfg.bucket}/${key}`;
 }
 
+/**
+ * Presigned PUT URL. `contentType` and `contentLength` are signed when given: s3.cv.cm stores and
+ * serves whatever type the PUT sends and accepts any body size, so unsigned they would let anyone
+ * upload text/html, or a body far over the limit, through a URL approved for something else.
+ * (Browsers set Content-Length from the body themselves, so the declared size must be exact.)
+ */
 export async function presignS3Put(
   cfg: S3Config,
   key: string,
   now = new Date(),
   expiresSec = 600,
+  contentType?: string,
+  contentLength?: number,
 ): Promise<string> {
+  const headers: Array<[string, string]> = [];
+  if (contentLength !== undefined) headers.push(["content-length", String(contentLength)]);
+  if (contentType) headers.push(["content-type", contentType.trim()]);
+  headers.push(["host", cfg.host]);
+  const signed = headers.map(([k]) => k).join(";");
+  const canonHeaders = headers.map(([k, v]) => `${k}:${v}`).join("\n");
   const { amz, stamp } = amzParts(now);
   const credential = `${cfg.accessKey}/${stamp}/${cfg.region}/s3/aws4_request`;
   const qs: Array<[string, string]> = [
@@ -70,7 +84,7 @@ export async function presignS3Put(
     ["X-Amz-Credential", credential],
     ["X-Amz-Date", amz],
     ["X-Amz-Expires", String(expiresSec)],
-    ["X-Amz-SignedHeaders", "host"],
+    ["X-Amz-SignedHeaders", signed],
   ];
   const canonicalQs = qs
     .map(([k, v]) => `${uriEncode(k, true)}=${uriEncode(v, true)}`)
@@ -81,9 +95,9 @@ export async function presignS3Put(
     "PUT",
     uriEncode(path, false),
     canonicalQs,
-    `host:${cfg.host}`,
+    canonHeaders,
     "",
-    "host",
+    signed,
     "UNSIGNED-PAYLOAD",
   ].join("\n");
   const scope = `${stamp}/${cfg.region}/s3/aws4_request`;

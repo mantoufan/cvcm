@@ -75,45 +75,74 @@ export function clientIp(request: Request): string {
 
 export function safeFileName(name: string): string {
   const base = name.split(/[/\\]/).pop() || "file";
-  const cleaned = base.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^\.+/, "").slice(0, 80);
-  return cleaned || "file";
+  const cleaned = base.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^\.+/, "");
+  if (cleaned.length <= 80) return cleaned || "file";
+  // Shorten the stem, not the extension: the type (and the inline player) depends on it.
+  const dot = cleaned.lastIndexOf(".");
+  const ext = dot > 0 && cleaned.length - dot <= 10 ? cleaned.slice(dot) : "";
+  return cleaned.slice(0, 80 - ext.length) + ext;
 }
 
 const IMAGE_EXT = new Set(["jpg", "jpeg", "png", "gif", "webp"]);
 const VIDEO_EXT = new Set(["mp4", "webm", "mov", "m4v"]);
-const ALLOWED_MIME = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-  "video/mp4",
-  "video/webm",
-  "video/quicktime",
+const AUDIO_MIME = new Map<string, string>([
+  ["mp3", "audio/mpeg"],
+  ["m4a", "audio/mp4"],
+  ["aac", "audio/aac"],
+  ["wav", "audio/wav"],
+  ["ogg", "audio/ogg"],
+  ["oga", "audio/ogg"],
+  ["opus", "audio/ogg"],
+  ["flac", "audio/flac"],
+  ["weba", "audio/webm"],
+]);
+// Types s3.cv.cm could render as a page or script. Rejected by type *and* by extension, so an
+// empty or wrong browser type cannot slip one through.
+const BLOCKED_MIME = new Set(["text/html", "application/xhtml+xml", "image/svg+xml", "text/javascript", "application/javascript", "text/xml", "application/xml"]);
+const BLOCKED_EXT = new Set(["html", "htm", "xhtml", "shtml", "svg", "svgz", "js", "mjs", "xml", "xsl", "xslt"]);
+// Media types trusted from the browser when the name has no known extension (none, or cut off
+// by safeFileName's length limit).
+const MEDIA_MIME = new Set([
+  "image/png", "image/jpeg", "image/gif", "image/webp",
+  "video/mp4", "video/webm", "video/quicktime",
+  "audio/mpeg", "audio/mp4", "audio/aac", "audio/wav", "audio/ogg", "audio/flac", "audio/webm",
+]);
+const KEEP_MIME = new Set([
   "application/pdf",
   "application/zip",
   "application/x-zip-compressed",
   "text/plain",
+  "text/csv",
+  "text/markdown",
   "application/json",
-  "application/octet-stream",
 ]);
 
+/**
+ * Stored Content-Type for an upload, or null when it is refused. Images, video and audio keep a
+ * media type so they play inline; a few plain document types are kept; anything else (Word,
+ * Excel, archives, …) is stored as application/octet-stream, i.e. a download.
+ */
 export function mimeForFile(name: string, type: string): string | null {
   const given = type.toLowerCase().split(";")[0].trim();
-  if (given === "text/html" || given === "image/svg+xml" || given === "text/javascript") return null;
   const ext = (name.split(".").pop() || "").toLowerCase();
+  if (BLOCKED_MIME.has(given) || BLOCKED_EXT.has(ext)) return null;
+  // A .webm the browser calls audio (a voice recording) plays in the audio player.
+  if (ext === "webm" && given.startsWith("audio/")) return "audio/webm";
   if (IMAGE_EXT.has(ext)) return ext === "jpg" ? "image/jpeg" : `image/${ext === "jpeg" ? "jpeg" : ext}`;
   if (ext === "mov") return "video/quicktime";
   if (VIDEO_EXT.has(ext)) return ext === "m4v" ? "video/mp4" : `video/${ext}`;
+  const audio = AUDIO_MIME.get(ext);
+  if (audio) return audio;
   if (ext === "pdf") return "application/pdf";
   if (ext === "zip") return "application/zip";
-  if (given && ALLOWED_MIME.has(given)) return given;
-  if (!given || given === "application/octet-stream") return "application/octet-stream";
-  return ALLOWED_MIME.has(given) ? given : null;
+  if (MEDIA_MIME.has(given) || KEEP_MIME.has(given)) return given;
+  return "application/octet-stream";
 }
 
-export function fileKind(mime: string): "image" | "video" | "file" {
+export function fileKind(mime: string): "image" | "video" | "audio" | "file" {
   if (mime.startsWith("image/")) return "image";
   if (mime.startsWith("video/")) return "video";
+  if (mime.startsWith("audio/")) return "audio";
   return "file";
 }
 

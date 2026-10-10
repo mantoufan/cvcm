@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import { handleClipApi } from "../src/clip-api";
 import { memoryStore } from "../src/clip-store";
 import {
+  safeFileName,
+  fileKind,
+  mimeForFile,
   CLIP_ID_LENGTH,
   CLIP_MAX_BYTES,
   CLIP_MAX_VIEWS,
@@ -262,3 +265,57 @@ describe("clip worker", () => {
     expect(res.status).toBe(503);
   });
 });
+
+describe("upload types", () => {
+  it("keeps media types so they play inline", () => {
+    expect(mimeForFile("a.mp3", "")).toBe("audio/mpeg");
+    expect(mimeForFile("b.m4a", "audio/x-m4a")).toBe("audio/mp4");
+    expect(fileKind("audio/mpeg")).toBe("audio");
+    expect(mimeForFile("c.mp4", "")).toBe("video/mp4");
+    expect(mimeForFile("d.png", "")).toBe("image/png");
+  });
+
+  it("trusts a browser media type when the extension is missing or cut off", () => {
+    expect(mimeForFile("image", "image/png")).toBe("image/png");
+    expect(mimeForFile("voice", "audio/mpeg")).toBe("audio/mpeg");
+    expect(mimeForFile("rec.webm", "audio/webm")).toBe("audio/webm");
+    expect(mimeForFile("clip.webm", "video/webm")).toBe("video/webm");
+  });
+
+  it("keeps the extension when shortening a long name", () => {
+    const name = safeFileName("Lecture 12 - Introduction to Distributed Systems and Consensus Algorithms (full).mp3");
+    expect(name.length).toBeLessThanOrEqual(80);
+    expect(name.endsWith(".mp3")).toBe(true);
+    expect(mimeForFile(name, "audio/mpeg")).toBe("audio/mpeg");
+  });
+
+  it("stores other files as downloads", () => {
+    expect(mimeForFile("r.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")).toBe("application/octet-stream");
+    expect(mimeForFile("s.xlsx", "")).toBe("application/octet-stream");
+    expect(mimeForFile("t.csv", "text/csv")).toBe("text/csv");
+  });
+
+  it("refuses pages and scripts by type or by extension", () => {
+    expect(mimeForFile("x.html", "")).toBeNull();
+    expect(mimeForFile("x.txt", "text/html")).toBeNull();
+    expect(mimeForFile("x.svg", "image/svg+xml")).toBeNull();
+    expect(mimeForFile("x.js", "application/octet-stream")).toBeNull();
+  });
+});
+
+describe("upload signing", () => {
+  it("does not read Object.prototype keys as audio types", () => {
+    expect(mimeForFile("x.constructor", "")).toBe("application/octet-stream");
+    expect(mimeForFile("x.__proto__", "")).toBe("application/octet-stream");
+  });
+
+  it("signs the approved Content-Type into the PUT URL", async () => {
+    const { presignS3Put } = await import("../src/s3-sign");
+    const cfg = { accessKey: "AK", secret: "SK", region: "us-east-1", host: "s3.cv.cm", bucket: "files" };
+    const url = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0), 600, "audio/mpeg", 1234));
+    expect(url.searchParams.get("X-Amz-SignedHeaders")).toBe("content-length;content-type;host");
+    const legacy = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0)));
+    expect(legacy.searchParams.get("X-Amz-SignedHeaders")).toBe("host");
+  });
+});
+

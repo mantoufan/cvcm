@@ -409,45 +409,110 @@ function domToMarkdown(root: Node): string {
       case "code": return node.closest("pre") ? preText(node) : codeSpan(node.textContent || "");
       // Held as a token so the blank-line cleanup below never touches code.
       case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
-      case "h1": return `\n# ${oneLine(inner())}\n\n`;
-      case "h2": return `\n## ${oneLine(inner())}\n\n`;
-      case "h3": return `\n### ${oneLine(inner())}\n\n`;
-      case "h4": return `\n#### ${oneLine(inner())}\n\n`;
-      case "blockquote": return `\n${lineBreaks(inner()).split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
-      case "ul": return `\n${items(node).map((li) => `- ${li}`).join("\n")}\n\n`;
-      case "ol": {
-        const n = parseInt(node.getAttribute("start") || "", 10);
-        const start = Number.isFinite(n) ? n : 1;
-        return `\n${items(node).map((li, i) => `${start + i}. ${li}`).join("\n")}\n\n`;
-      }
+      case "h1": return `\n# ${oneLine(codeInline(inner()))}\n\n`;
+      case "h2": return `\n## ${oneLine(codeInline(inner()))}\n\n`;
+      case "h3": return `\n### ${oneLine(codeInline(inner()))}\n\n`;
+      case "h4": return `\n#### ${oneLine(codeInline(inner()))}\n\n`;
+      // Finish the inside first (code blocks included), then prefix every line, so a code block
+      // or list inside the quote stays inside it. Empty lines become ">" to keep the quote going.
+      case "blockquote": return `\n${tidy(inner()).trim().split("\n").map((l) => (l ? `> ${l}` : ">")).join("\n")}\n\n`;
+      case "ul": case "ol": return `\n${listLines(node, "").join("\n")}\n\n`;
       case "li": return inner();
       case "a": return node.getAttribute("href") ? `[${inner()}](${mdUrl(node.getAttribute("href") || "")})` : inner();
       case "img": return node.getAttribute("src") ? `![${mdEscape(node.getAttribute("alt") || "")}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
-      case "video": return node.getAttribute("src") ? `![video](${mdUrl(node.getAttribute("src") || "")})\n` : "";
+      case "video": case "audio":
+        return node.getAttribute("src") ? `![${tag}](${mdUrl(node.getAttribute("src") || "")})\n` : "";
       // contenteditable puts each new line in a <div>: one line break, not a paragraph.
       case "div": return `\u0001d\u0002${inner()}\u0001d\u0002`;
       case "p": return `\n${inner()}\n\n`;
-      case "table": return `\n${tableToMd(node, walk)}\n\n`;
+      case "table": return `\n${tableToMd(node, (n) => codeInline(walk(n)))}\n\n`;
       default: return inner();
     }
   };
-  // Skip empty items (Chrome leaves one after the last Enter); keep each item on one line.
-  const items = (list: Element) => [...list.children]
-    .map((li) => oneLine(walk(li)))
-    .filter(Boolean);
+  const isList = (n: Node): boolean => n instanceof Element && /^(UL|OL)$/.test(n.tagName);
+  const isBlock = (n: Node): boolean => n instanceof Element && /^(PRE|BLOCKQUOTE|TABLE)$/.test(n.tagName);
+  /**
+   * One line per item, nested lists indented 4 spaces per level. Chrome's indent button puts a
+   * nested list straight inside the parent list (not inside an <li>); both shapes nest the same.
+   * Empty items (Chrome leaves one after the last Enter) are skipped.
+   */
+  const listLines = (list: Element, pad: string): string[] => {
+    const ordered = list.tagName === "OL";
+    const first = parseInt(list.getAttribute("start") || "", 10);
+    let n = Number.isFinite(first) ? first : 1;
+    const out: string[] = [];
+    for (const child of list.children) {
+      const marker = ordered ? `${n}.` : "-";
+      // Children sit past the marker's text column ("99. " is 4 wide), at least 4 spaces in.
+      const inner = pad + " ".repeat(Math.max(4, marker.length + 2));
+      if (isList(child)) {
+        out.push(...listLines(child as Element, inner));
+        continue;
+      }
+      // In document order: the first run of text goes on the marker line; lists, code blocks,
+      // quotes and tables, and any text after them, go in the item's body one level deeper.
+      let head: string | null = null;
+      let text = "";
+      const body: string[] = [];
+      const flushText = () => {
+        const t = oneLine(text);
+        text = "";
+        if (head === null) head = t;
+        else if (t) body.push(`${inner}${t}`);
+      };
+      for (const kid of flatKids(child)) {
+        if (isList(kid)) {
+          flushText();
+          body.push(...listLines(kid as Element, inner));
+        } else if (isBlock(kid)) {
+          flushText();
+          body.push(...tidy(walk(kid)).trim().split("\n").map((l) => (l ? `${inner}${l}` : "")));
+        } else text += walk(kid);
+      }
+      flushText();
+      // Chrome leaves an empty item after the last Enter: drop it unless it holds something.
+      if (!head && !body.length) continue;
+      out.push(`${pad}${marker} ${head ?? ""}`);
+      if (ordered) n++;
+      out.push(...body);
+    }
+    return out;
+  };
+  // Any wrapper (<div>, <p>, <span>, <b>…) that holds block content is see-through inside list
+  // items, so the block is found and placed in the item's body.
+  const flatKids = (el: Element): Node[] => [...el.childNodes].flatMap((c) =>
+    c instanceof Element && !isList(c) && !isBlock(c) && c.querySelector("pre, blockquote, table, ul, ol")
+      ? flatKids(c)
+      : [c]);
+  // Headings and table cells are one line: a code block inside one becomes inline code.
+  const codeInline = (md: string) => md.replace(/\u0001p(\d+)\u0002/g, (_m, i: string) =>
+    codeSpan((blocks[Number(i)] ?? "").replace(/\s*\n\s*/g, " ").trim()));
   const mark = (m: string, text: string) => (text.trim() ? `${m}${text}${m}` : text);
-  return lineBreaks(walk(root))
-    .replace(/\n{3,}/g, "\n\n")
-    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => {
-      const code = blocks[Number(i)];
-      const fence = "`".repeat(Math.max(3, longestRun(code, "`") + 1));
-      return `${fence}\n${code}\n${fence}`;
-    });
+  /** Line breaks and blank-line cleanup. Code stays a token here, so its blank lines survive. */
+  const tidy = (md: string) => lineBreaks(md).replace(/\n{3,}/g, "\n\n");
+  /**
+   * Expand code tokens last. Whatever sits before a token on its line (list indent, "> ") is
+   * repeated on every line of the code block, so code inside lists and quotes stays inside them.
+   */
+  const fenced = (i: string) => {
+    const code = blocks[Number(i)] ?? "";
+    const fence = "`".repeat(Math.max(3, longestRun(code, "`") + 1));
+    return [fence, ...code.split("\n"), fence];
+  };
+  const finish = (md: string) => tidy(md)
+    // Only an indent / "> " prefix is repeated; text before a token (a heading, a table cell)
+    // is not, and the block simply breaks out onto its own lines as before.
+    .replace(/^([ \t>]*)\u0001p(\d+)\u0002[ \t]*$/gm, (_m, prefix: string, i: string) => {
+      const blank = prefix.replace(/\s+$/, "");
+      return fenced(i).map((l) => (l ? prefix + l : blank)).join("\n");
+    })
+    .replace(/\u0001p(\d+)\u0002/g, (_m, i: string) => `\n${fenced(i).join("\n")}\n`);
+  return finish(walk(root));
 }
 
 function richIsEmpty(): boolean {
   if (!editor) return true;
-  return !editor.querySelector("img, video, [data-up]") && !(editor.textContent || "").trim();
+  return !editor.querySelector("img, video, audio, [data-up]") && !(editor.textContent || "").trim();
 }
 
 function currentBody(): string {
@@ -661,7 +726,7 @@ function cleanPastedHtml(html: string): string {
   const safe = sanitizeHtml(raw.innerHTML);
   const tpl = document.createElement("template");
   tpl.innerHTML = safe;
-  tpl.content.querySelectorAll("img:not([src]), video:not([src])").forEach((el) => el.remove());
+  tpl.content.querySelectorAll("img:not([src]), video:not([src]), audio:not([src])").forEach((el) => el.remove());
   return tpl.innerHTML;
 }
 
@@ -683,7 +748,7 @@ function incoming(dt: DataTransfer, at: Range | null): void {
   const text = dt.getData("text/plain") || "";
   if (html) {
     const clean = cleanPastedHtml(html);
-    const keptMedia = /<(img|video)\b/i.test(clean);
+    const keptMedia = /<(img|video|audio)\b/i.test(clean);
     const hasText = Boolean(clean.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim());
     // Office / Feishu / screenshot tools send the image as a file plus HTML with a local src.
     if (files.length && !keptMedia) {
@@ -750,7 +815,8 @@ function renderPills(): void {
   ));
 }
 
-function putWithProgress(url: string, file: File, onPct: (pct: number) => void): Promise<boolean> {
+/** PUT with the server-chosen type, so S3 stores what the API approved, not the browser's guess. */
+function putWithProgress(url: string, file: File, mime: string, onPct: (pct: number) => void): Promise<boolean> {
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
     activeXhrs.add(xhr);
@@ -759,7 +825,7 @@ function putWithProgress(url: string, file: File, onPct: (pct: number) => void):
       resolve(ok);
     };
     xhr.open("PUT", url);
-    xhr.setRequestHeader("content-type", file.type || "application/octet-stream");
+    xhr.setRequestHeader("content-type", mime);
     xhr.upload.onprogress = (ev) => {
       if (ev.lengthComputable) onPct(Math.min(99, Math.round((ev.loaded / ev.total) * 100)));
     };
@@ -775,7 +841,8 @@ function embedFor(kind: string, name: string, url: string): { rich: string; md: 
   const safeUrl = escapeHtml(url);
   const mdName = mdEscape(name);
   if (kind === "image") return { rich: `<img src="${safeUrl}" alt="${safeName}">`, md: `![${mdName}](${url})\n` };
-  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video>`, md: `![${mdName}](${url})\n` };
+  if (kind === "video") return { rich: `<video controls src="${safeUrl}"></video>`, md: `![video](${url})\n` };
+  if (kind === "audio") return { rich: `<audio controls src="${safeUrl}"></audio>`, md: `![audio](${url})\n` };
   return { rich: `<a href="${safeUrl}">📎 ${safeName}</a>`, md: `[${mdName}](${url})\n` };
 }
 
@@ -834,14 +901,14 @@ async function uploadFiles(files: File[], at?: Range | null): Promise<void> {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name: file.name, type: file.type, size: file.size }),
       });
-      const data = (await res.json()) as { putUrl?: string; url?: string; kind?: string; error?: string };
+      const data = (await res.json()) as { putUrl?: string; url?: string; kind?: string; mime?: string; error?: string };
       if (gen !== uploadGen) return;
       if (!res.ok || !data.putUrl || !data.url) {
         u.state = "fail";
         setStatus(errorMessage(data.error));
         return;
       }
-      const ok = await putWithProgress(data.putUrl, file, (pct) => {
+      const ok = await putWithProgress(data.putUrl, file, data.mime || "application/octet-stream", (pct) => {
         if (gen !== uploadGen) return;
         u.pct = pct;
         renderPills();

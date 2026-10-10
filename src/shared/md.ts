@@ -1,6 +1,6 @@
 const ALLOWED = new Set([
   "p", "br", "h1", "h2", "h3", "h4", "pre", "code", "ul", "ol", "li",
-  "a", "img", "video", "source", "blockquote", "strong", "em", "b", "i",
+  "a", "img", "video", "audio", "source", "blockquote", "strong", "em", "b", "i",
   "u", "s", "strike", "del", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
 ]);
 
@@ -8,6 +8,7 @@ const ATTRS: Record<string, Set<string>> = {
   a: new Set(["href", "title"]),
   img: new Set(["src", "alt"]),
   video: new Set(["src", "controls", "poster"]),
+  audio: new Set(["src", "controls"]),
   source: new Set(["src", "type"]),
   code: new Set(["class"]),
   ol: new Set(["start"]),
@@ -42,6 +43,10 @@ function safeUrl(raw: string): string | null {
     return url;
   }
   return null;
+}
+
+function isAudio(url: string): boolean {
+  return /\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|weba)(\?|$)/i.test(url);
 }
 
 function isVideo(url: string): boolean {
@@ -110,7 +115,10 @@ function inline(text: string, codes: string[] = []): string {
       const alt = plain(rawAlt);
       const url = safeUrl(unescapeHtml(plain(href)));
       if (!url) return alt;
-      if (isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
+      // Alt text "audio" / "video" names the player outright (a .webm can be either);
+      // otherwise the extension decides.
+      if (alt === "audio" || (alt !== "video" && isAudio(url))) return hold(`<audio controls src="${escapeHtml(url)}"></audio>`);
+      if (alt === "video" || isVideo(url)) return hold(`<video controls src="${escapeHtml(url)}"></video>`);
       return hold(`<img src="${escapeHtml(url)}" alt="${alt}">`);
     })
     .replace(/\[([^\]\n]{1,500})\]\(([^)\s]{1,2048})\)/g, (_m, label: string, href: string) => {
@@ -131,121 +139,328 @@ function inline(text: string, codes: string[] = []): string {
 // Backslash escapes (\* \# \< …) become tokens so no rule below treats them as syntax.
 const ESC_RE = /\\([\\`*_~\[\]()#+\-.!<>|])/g;
 
+/** Cells of a "| a | b |" line. An escaped "\|" or a "|" inside `code` does not split a cell. */
 function tableRow(line: string): string[] | null {
-  const m = line.trim().match(/^\|(.*)\|$/);
-  if (!m) return null;
-  return m[1].split("|").map((c) => c.trim());
+  const t = line.trim();
+  if (t.length < 2 || t[0] !== "|" || t[t.length - 1] !== "|" || t[t.length - 2] === "\\") return null;
+  const cells: string[] = [];
+  let cell = "";
+  let tick = 0; // length of the open code span's backtick run, 0 when outside code
+  for (let i = 1; i < t.length - 1; i++) {
+    const ch = t[i];
+    if (ch === "\\" && !tick && i + 1 < t.length - 1) {
+      cell += ch + t[++i];
+      continue;
+    }
+    if (ch === "`") {
+      let run = 1;
+      while (t[i + run] === "`") run++;
+      if (!tick) tick = run;
+      else if (run === tick) tick = 0;
+      cell += t.slice(i, i + run);
+      i += run - 1;
+      continue;
+    }
+    if (ch === "|" && !tick) {
+      cells.push(cell.trim());
+      cell = "";
+      continue;
+    }
+    cell += ch;
+  }
+  cells.push(cell.trim());
+  return cells;
 }
 
-function renderMarkdown(src: string): string {
-  const fences: string[] = [];
+const MAX_DEPTH = 8;
+const FENCE_OPEN = /^([ \t]*)(`{3,})(\w*)\s*$/;
+const QUOTE_LINE = /^ {0,3}>/;
+const LIST_ITEM = /^([ \t]*)(?:([-*])|(\d+)[.)])(?:\s+(.*))?$/;
+const HEADING = /^(#{1,4})\s+(.+)$/;
+
+function indentOf(line: string): number {
+  return (line.match(/^[ \t]*/)?.[0] ?? "").replace(/\t/g, "    ").length;
+}
+
+function dedent(line: string, n: number): string {
+  let i = 0;
+  let col = 0;
+  while (i < line.length && col < n && (line[i] === " " || line[i] === "\t")) {
+    col += line[i] === "\t" ? 4 : 1;
+    i++;
+  }
+  return line.slice(i);
+}
+
+/**
+ * A list marker at line `i`. "1." needs a space after it. A bare "-" or "*" (no space, no text)
+ * is an empty item only when an indented line follows, so a lone "-" stays text.
+ */
+function listItemAt(lines: string[], i: number): RegExpMatchArray | null {
+  const m = lines[i].match(LIST_ITEM);
+  if (!m) return null;
+  if (m[4] !== undefined) return m;
+  if (!m[2]) return null;
+  const next = lines[i + 1];
+  return next !== undefined && next.trim() && indentOf(next) > indentOf(lines[i]) ? m : null;
+}
+
+/** Inline formatting for one leaf (paragraph, heading, cell, item text). Tokens never leave it. */
+function inlineText(text: string): string {
   const codes: string[] = [];
-  const protectedSrc = src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").replace(/(`{3,})(\w*)\n([\s\S]*?)\1(?!`)/g, (_m, _ticks, lang, code) => {
-    const i = fences.length;
-    fences.push(`<pre><code class="lang-${escapeHtml(lang)}">${highlight(code.replace(/\n$/, ""))}</code></pre>`);
-    return `\n\u0001f${i}\u0002\n`;
-  })
+  const held = text
     // Inline code keeps its backslashes: hold it before escapes are read.
     // An escaped backtick (\`) is literal, not a code-span delimiter.
     .replace(/(?<![\\`])(`+)(?!`)([^\n]*?[^`\n])\1(?!`)/g, (_m, _ticks, code: string) =>
       `\u0001c${codes.push(/^ .* $/.test(code) ? code.slice(1, -1) : code) - 1}\u0002`)
     .replace(ESC_RE, (_m, ch: string) => `\u0001e${ch.charCodeAt(0)}\u0002`);
-  const lines = protectedSrc.split("\n");
-  const html: string[] = [];
-  let para: string[] = [];
-  let group: { kind: "ul" | "ol" | "quote"; items: string[]; start: number } | null = null;
-  const flushGroup = () => {
-    if (!group) return;
-    if (group.kind === "quote") html.push(`<blockquote>${group.items.join("<br>")}</blockquote>`);
-    else {
-      const start = group.kind === "ol" && group.start !== 1 ? ` start="${group.start}"` : "";
-      html.push(`<${group.kind}${start}>${group.items.map((li) => `<li>${li}</li>`).join("")}</${group.kind}>`);
-    }
-    group = null;
-  };
-  let table: { head: string[]; rows: string[][]; sep: boolean; raw: string[] } | null = null;
-  const flushTable = () => {
-    if (!table) return;
-    const t = table;
-    table = null;
-    if (!t.sep) {
-      // Not a real table (no |---| line): keep the lines as a paragraph.
-      para.push(...t.raw);
-      return;
-    }
-    const cell = (tag: string, c: string) => `<${tag}>${inline(escapeHtml(c), codes)}</${tag}>`;
-    html.push(`<table><thead><tr>${t.head.map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
-      t.rows.map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
-  };
-  const flush = () => {
-    flushTable();
-    flushGroup();
-    if (!para.length) return;
-    const text = para.join("\n");
-    para = [];
-    html.push(`<p>${inline(escapeHtml(text).replace(/\n/g, "<br>"), codes)}</p>`);
-  };
-  // Read through a function: TS narrows the closure-assigned `group` to null inside the loop.
-  const openList = () => group !== null && group.kind !== "quote";
-  const addItem = (kind: "ul" | "ol" | "quote", text: string, start = 1) => {
-    if (para.length) flush();
-    if (group && group.kind !== kind) flushGroup();
-    if (!group) group = { kind, items: [], start };
-    group.items.push(inline(escapeHtml(text), codes));
-  };
-  for (const line of lines) {
-    const fence = line.trim().match(/^\u0001f(\d+)\u0002$/);
-    if (fence) {
-      flush();
-      html.push(fences[Number(fence[1])]);
-      continue;
-    }
-    if (/^\s*$/.test(line)) {
-      // A blank line between list items keeps one (loose) list; it still ends quotes and paragraphs.
-      if (openList() && !para.length) continue;
-      flush();
-      continue;
-    }
-    const cells = tableRow(line);
-    if (cells) {
-      if (table) table.raw.push(line);
-      if (!table) {
-        flush();
-        table = { head: cells, rows: [], sep: false, raw: [line] };
-      } else if (!table.sep && cells.every((c) => /^:?-{1,}:?$/.test(c))) table.sep = true;
-      else table.rows.push(cells);
-      continue;
-    }
-    flushTable();
-    const heading = line.match(/^(#{1,4})\s+(.+)$/);
-    if (heading) {
-      flush();
-      const n = heading[1].length;
-      html.push(`<h${n}>${inline(escapeHtml(heading[2]), codes)}</h${n}>`);
-      continue;
-    }
-    const bullet = line.match(/^[-*]\s+(.*)$/);
-    if (bullet) {
-      addItem("ul", bullet[1]);
-      continue;
-    }
-    const ordered = line.match(/^(\d+)[.)]\s+(.*)$/);
-    if (ordered) {
-      addItem("ol", ordered[2], Number(ordered[1]));
-      continue;
-    }
-    const quote = line.match(/^>\s?(.*)$/);
-    if (quote) {
-      addItem("quote", quote[1]);
-      continue;
-    }
-    flushGroup();
-    para.push(line);
-  }
-  flush();
-  return html.join("")
+  return inline(escapeHtml(held).replace(/\n/g, "<br>"), codes)
     .replace(/\u0001c(\d+)\u0002/g, (_m, i: string) => `<code>${escapeHtml(codes[Number(i)] ?? "")}</code>`)
     .replace(/\u0001e(\d+)\u0002/g, (_m, code: string) => escapeHtml(String.fromCharCode(Number(code))));
+}
+
+/** Length of the backtick run that ends `line` (ignoring trailing spaces), or 0 if under 3. */
+function closingRun(line: string): number {
+  let j = line.length - 1;
+  while (j >= 0 && (line[j] === " " || line[j] === "\t")) j--;
+  let run = 0;
+  while (j >= 0 && line[j] === "`") {
+    run++;
+    j--;
+  }
+  return run >= 3 ? run : 0;
+}
+
+type Closer = (i: number) => { end: number; tail: string } | null;
+
+/**
+ * Fence closers for a block of lines, computed once. A closer is a line ending in a backtick
+ * run: bare ("```") or after code ("x = 1```", as the old renderer allowed). `suffixMax` lets
+ * an unclosed opener be rejected in O(1), so many unclosed fences stay linear.
+ */
+function fenceCloser(lines: string[]): Closer {
+  const run = lines.map(closingRun);
+  const suffixMax = new Array<number>(lines.length + 1).fill(0);
+  for (let j = lines.length - 1; j >= 0; j--) suffixMax[j] = Math.max(run[j], suffixMax[j + 1]);
+  return (i) => {
+    const need = (lines[i].match(FENCE_OPEN)?.[2] ?? "").length;
+    if (!need || suffixMax[i + 1] < need) return null;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (run[j] >= need) return { end: j, tail: lines[j].replace(/\s*`{3,}\s*$/, "") };
+    }
+    return null;
+  };
+}
+
+/** Can line `i` start a new block, i.e. interrupt a paragraph or an item's text? */
+function startsBlock(lines: string[], i: number, closer: Closer, nested: boolean): boolean {
+  const line = lines[i];
+  if ((FENCE_OPEN.test(line) && closer(i)) || HEADING.test(line) || tableRow(line)) return true;
+  if (nested && QUOTE_LINE.test(line)) return true;
+  // Only an unindented "-", "*" or "1." may interrupt, so "  2024. was great" and indented
+  // notes or YAML ("steps:\n  - run: a") stay text.
+  const item = nested && indentOf(line) === 0 ? listItemAt(lines, i) : null;
+  return Boolean(item && item[4] && (item[2] || item[3] === "1"));
+}
+
+/** "Text ```" + later "```": the fence opened at the end of a text line, as the old renderer read it. */
+function splitTrailingFences(lines: string[]): string[] {
+  const run = lines.map(closingRun);
+  const suffixMax = new Array<number>(lines.length + 1).fill(0);
+  for (let j = lines.length - 1; j >= 0; j--) suffixMax[j] = Math.max(run[j], suffixMax[j + 1]);
+  const out: string[] = [];
+  lines.forEach((line, i) => {
+    const m = line.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);
+    // Only unindented, non-quote, non-list lines: indented lines belong to an item or quote and
+    // are split at their own level after dedenting; "> ```js" opens a fence inside the quote.
+    if (m && indentOf(line) === 0 && !FENCE_OPEN.test(line) && !QUOTE_LINE.test(line) && !LIST_ITEM.test(line) && suffixMax[i + 1] >= m[2].match(/^`+/)![0].length) out.push(m[1], m[2]);
+    else out.push(line);
+  });
+  return out;
+}
+
+function renderMarkdown(src: string): string {
+  return renderBlocks(src.replace(/[\u0001\u0002]/g, "").replace(/\r\n?/g, "\n").split("\n"), 0);
+}
+
+/**
+ * Block structure on raw lines. Quotes and list items cut out their own lines and are rendered
+ * recursively, so either can hold code blocks, quotes, lists and paragraphs. Nesting stops at
+ * MAX_DEPTH (deeper markers read as text), so hostile input cannot exhaust the stack.
+ */
+function renderBlocks(raw: string[], depth: number): string {
+  // Per level, so "a ```" inside a quote or an item's body opens a fence there too.
+  const lines = splitTrailingFences(raw);
+  const html: string[] = [];
+  const closer = fenceCloser(lines);
+  const nested = depth < MAX_DEPTH;
+  let itemFenceCache: ItemFences | null = null;
+  const itemFenceIndex = () => (itemFenceCache ??= itemFences(lines));
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^\s*$/.test(line)) {
+      i++;
+      continue;
+    }
+    const fence = FENCE_OPEN.test(line) ? closer(i) : null;
+    if (fence) {
+      const open = line.match(FENCE_OPEN)!;
+      const pad = indentOf(open[1]);
+      const body = lines.slice(i + 1, fence.end).map((l) => dedent(l, pad));
+      if (fence.tail.trim()) body.push(dedent(fence.tail, pad));
+      html.push(`<pre><code class="lang-${escapeHtml(open[3])}">${highlight(body.join("\n"))}</code></pre>`);
+      i = fence.end + 1;
+      continue;
+    }
+    if (nested && QUOTE_LINE.test(line)) {
+      const quoted: string[] = [];
+      while (i < lines.length && QUOTE_LINE.test(lines[i])) quoted.push(lines[i++].replace(/^ {0,3}> ?/, ""));
+      const inner = renderBlocks(quoted, depth + 1);
+      // A one-paragraph quote stays compact: <blockquote>a<br>b</blockquote>.
+      const single = inner.match(/^<p>((?:(?!<\/?p>)[\s\S])*)<\/p>$/);
+      html.push(`<blockquote>${single ? single[1] : inner}</blockquote>`);
+      continue;
+    }
+    if (tableRow(line)) {
+      const rows: string[] = [];
+      while (i < lines.length && tableRow(lines[i])) rows.push(lines[i++]);
+      const cells = rows.map((r) => tableRow(r)!);
+      if (rows.length >= 2 && cells[1].every((c) => /^:?-{1,}:?$/.test(c))) {
+        const cell = (tag: string, c: string) => `<${tag}>${inlineText(c)}</${tag}>`;
+        html.push(`<table><thead><tr>${cells[0].map((c) => cell("th", c)).join("")}</tr></thead><tbody>${
+          cells.slice(2).map((r) => `<tr>${r.map((c) => cell("td", c)).join("")}</tr>`).join("")}</tbody></table>`);
+      } else {
+        // Not a real table (no |---| line): keep the lines verbatim as a paragraph.
+        html.push(`<p>${inlineText(rows.join("\n"))}</p>`);
+      }
+      continue;
+    }
+    const heading = line.match(HEADING);
+    if (heading) {
+      const n = heading[1].length;
+      html.push(`<h${n}>${inlineText(heading[2])}</h${n}>`);
+      i++;
+      continue;
+    }
+    // At the top level a marker indented 4+ is not a list start (indented notes, CLI output);
+    // inside a quote or an item's body any indent nests.
+    if (nested && (depth > 0 || indentOf(line) < 4) && listItemAt(lines, i)) {
+      i = renderList(lines, i, depth, itemFenceIndex(), html);
+      continue;
+    }
+    const start = i++;
+    while (i < lines.length && !/^\s*$/.test(lines[i]) && !startsBlock(lines, i, closer, nested)) i++;
+    html.push(`<p>${inlineText(lines.slice(start, i).join("\n"))}</p>`);
+  }
+  return html.join("");
+}
+
+/**
+ * One list starting at line `i`; returns the index after it. Lines indented past the item's
+ * marker (and blank lines followed by such lines) belong to that item and are rendered as its
+ * body; a fenced block opened in the body runs to its closer even if that closer is outdented.
+ * A later marker at the same or a smaller indent is the next sibling if it is the same kind of
+ * list; a different kind ends the list.
+ */
+/**
+ * Per-block lookups for fences inside list items, built once and shared by every list in the
+ * block, so each lookup is O(1). A fence opened in an item closes at the next line ending in a
+ * long enough backtick run, unless a list marker at or left of the item's marker comes first
+ * (the item ended, the fence is unclosed). Unindented code lines do not end it.
+ */
+type ItemFences = (j: number, own: number) => number;
+
+function itemFences(lines: string[]): ItemFences {
+  const runs = lines.map(closingRun);
+  const closers = new Map<number, Int32Array>();
+  const markers = new Map<number, Int32Array>();
+  const nextIndex = (memo: Map<number, Int32Array>, key: number, hit: (k: number) => boolean) => {
+    let arr = memo.get(key);
+    if (!arr) {
+      arr = new Int32Array(lines.length + 1).fill(-1);
+      for (let k = lines.length - 1; k >= 0; k--) arr[k] = hit(k) ? k : arr[k + 1];
+      memo.set(key, arr);
+    }
+    return arr;
+  };
+  return (j, own) => {
+    // Keys are capped so a crafted mix of fence lengths or indents cannot build many tables.
+    const need = Math.min(64, (lines[j].match(FENCE_OPEN)?.[2] ?? "").length);
+    const lim = Math.min(64, own);
+    const close = nextIndex(closers, need, (k) => runs[k] >= need)[j + 1];
+    const stop = nextIndex(markers, lim, (k) => indentOf(lines[k]) <= lim && Boolean(listItemAt(lines, k)))[j + 1];
+    return close >= 0 && (stop < 0 || close < stop) ? close : -1;
+  };
+}
+
+function renderList(lines: string[], i: number, depth: number, fences: ItemFences, html: string[]): number {
+  const first = listItemAt(lines, i)!;
+  const kind = first[2] ? "ul" : "ol";
+  const start = first[3] ? Number(first[3]) : 1;
+  const base = indentOf(lines[i]);
+  const lis: string[] = [];
+  while (i < lines.length) {
+    const m = listItemAt(lines, i);
+    if (!m || indentOf(lines[i]) > base || (m[2] ? "ul" : "ol") !== kind) break;
+    const own = indentOf(lines[i]);
+    const contentCol = own + (m[2] ?? `${m[3]}.`).length + 1;
+    const take = (l: string) => dedent(l, Math.min(contentCol, indentOf(l)));
+    const body: string[] = [];
+    let j = i + 1;
+    while (j < lines.length) {
+      if (/^\s*$/.test(lines[j])) {
+        let k = j;
+        while (k < lines.length && /^\s*$/.test(lines[k])) k++;
+        if (k < lines.length && indentOf(lines[k]) > own) {
+          for (; j < k; j++) body.push("");
+          continue;
+        }
+        break;
+      }
+      if (indentOf(lines[j]) <= own) break;
+      const fenceEnd = FENCE_OPEN.test(lines[j]) ? fences(j, own) : -1;
+      if (fenceEnd > 0) {
+        for (let f = j; f <= fenceEnd; f++) body.push(take(lines[f]));
+        j = fenceEnd + 1;
+        continue;
+      }
+      body.push(take(lines[j]));
+      j++;
+    }
+    // The body is its own level: split "b ```" there before continuation lines are merged.
+    body.splice(0, body.length, ...splitTrailingFences(body));
+    // "- a ```" + an indented body: the fence opened at the end of the marker line.
+    let first = m[4];
+    const trailing = first?.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);
+    if (trailing && fenceCloser([trailing[2], ...body])(0)) {
+      first = trailing[1];
+      body.unshift(trailing[2]);
+    }
+    // Plain lines right under the item continue its text ("- a\n  more" is one item, two lines).
+    const bodyCloser = fenceCloser(body);
+    let cut = 0;
+    // A marker indented past the item's text is a nested list whatever its number; one level
+    // with the text follows the paragraph rule ("- Our year\n  2024. was great" stays text).
+    const nestedList = (k: number) => indentOf(body[k]) > 0 && Boolean(listItemAt(body, k));
+    if (first) {
+      while (cut < body.length && body[cut].trim() && !nestedList(cut)
+        && !startsBlock(body, cut, bodyCloser, depth + 1 < MAX_DEPTH)) cut++;
+    }
+    const text = first ? [first, ...body.slice(0, cut)].join("\n") : "";
+    const rest = body.slice(cut);
+    lis.push(`<li>${text ? inlineText(text) : ""}${rest.length ? renderBlocks(rest, depth + 1) : ""}</li>`);
+    i = j;
+    // A blank line between siblings keeps one (loose) list.
+    let k = i;
+    while (k < lines.length && /^\s*$/.test(lines[k])) k++;
+    const next = k < lines.length ? listItemAt(lines, k) : null;
+    if (next && indentOf(lines[k]) <= base && (next[2] ? "ul" : "ol") === kind) i = k;
+    else break;
+  }
+  const attr = kind === "ol" && start !== 1 ? ` start="${start}"` : "";
+  html.push(`<${kind}${attr}>${lis.join("")}</${kind}>`);
+  return i;
 }
 
 function decodeEntities(value: string): string {
@@ -299,7 +514,7 @@ export function sanitizeHtml(src: string): string {
       }
     }
     if (tag === "a") out += ' rel="noreferrer"';
-    out += selfClose && tag !== "video" ? " />" : ">";
+    out += selfClose && tag !== "video" && tag !== "audio" ? " />" : ">";
     return out;
   });
 }
