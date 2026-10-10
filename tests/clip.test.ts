@@ -274,6 +274,13 @@ describe("upload types", () => {
     expect(mimeForFile("d.png", "")).toBe("image/png");
   });
 
+  it("trusts a browser media type when the extension is missing or cut off", () => {
+    expect(mimeForFile("image", "image/png")).toBe("image/png");
+    expect(mimeForFile("voice", "audio/mpeg")).toBe("audio/mpeg");
+    expect(mimeForFile("rec.webm", "audio/webm")).toBe("audio/webm");
+    expect(mimeForFile("clip.webm", "video/webm")).toBe("video/webm");
+  });
+
   it("stores other files as downloads", () => {
     expect(mimeForFile("r.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")).toBe("application/octet-stream");
     expect(mimeForFile("s.xlsx", "")).toBe("application/octet-stream");
@@ -297,8 +304,8 @@ describe("upload signing", () => {
   it("signs the approved Content-Type into the PUT URL", async () => {
     const { presignS3Put } = await import("../src/s3-sign");
     const cfg = { accessKey: "AK", secret: "SK", region: "us-east-1", host: "s3.cv.cm", bucket: "files" };
-    const url = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0), 600, "audio/mpeg"));
-    expect(url.searchParams.get("X-Amz-SignedHeaders")).toBe("content-type;host");
+    const url = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0), 600, "audio/mpeg", 1234));
+    expect(url.searchParams.get("X-Amz-SignedHeaders")).toBe("content-length;content-type;host");
     const legacy = new URL(await presignS3Put(cfg, "clip/abc/a.mp3", new Date(0)));
     expect(legacy.searchParams.get("X-Amz-SignedHeaders")).toBe("host");
   });

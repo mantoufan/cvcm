@@ -269,8 +269,9 @@ function splitTrailingFences(lines: string[]): string[] {
   const out: string[] = [];
   lines.forEach((line, i) => {
     const m = line.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);
-    // Quote and list lines are not split: "> ```js" opens a fence inside the quote.
-    if (m && !FENCE_OPEN.test(line) && !QUOTE_LINE.test(line) && !LIST_ITEM.test(line) && suffixMax[i + 1] >= m[2].match(/^`+/)![0].length) out.push(m[1], m[2]);
+    // Only unindented, non-quote, non-list lines: indented lines belong to an item or quote and
+    // are split at their own level after dedenting; "> ```js" opens a fence inside the quote.
+    if (m && indentOf(line) === 0 && !FENCE_OPEN.test(line) && !QUOTE_LINE.test(line) && !LIST_ITEM.test(line) && suffixMax[i + 1] >= m[2].match(/^`+/)![0].length) out.push(m[1], m[2]);
     else out.push(line);
   });
   return out;
@@ -291,6 +292,8 @@ function renderBlocks(raw: string[], depth: number): string {
   const html: string[] = [];
   const closer = fenceCloser(lines);
   const nested = depth < MAX_DEPTH;
+  let itemFenceCache: ItemFences | null = null;
+  const itemFenceIndex = () => (itemFenceCache ??= itemFences(lines));
   let i = 0;
   while (i < lines.length) {
     const line = lines[i];
@@ -341,7 +344,7 @@ function renderBlocks(raw: string[], depth: number): string {
     // At the top level a marker indented 4+ is not a list start (indented notes, CLI output);
     // inside a quote or an item's body any indent nests.
     if (nested && (depth > 0 || indentOf(line) < 4) && listItemAt(lines, i)) {
-      i = renderList(lines, i, depth, html);
+      i = renderList(lines, i, depth, itemFenceIndex(), html);
       continue;
     }
     const start = i++;
@@ -359,30 +362,37 @@ function renderBlocks(raw: string[], depth: number): string {
  * list; a different kind ends the list.
  */
 /**
- * Closer for a fence opened at line `j` inside an item whose marker is at indent `own`: the
- * first line ending in a long enough backtick run, unless a non-blank line at or left of the
- * marker comes first (the item ended, so the fence is unclosed). `noCloserBefore` remembers a
- * scan that met no closer at all, so many unclosed fences in one item stay linear.
+ * Per-block lookups for fences inside list items, built once and shared by every list in the
+ * block, so each lookup is O(1). A fence opened in an item closes at the next line ending in a
+ * long enough backtick run, unless a list marker at or left of the item's marker comes first
+ * (the item ended, the fence is unclosed). Unindented code lines do not end it.
  */
-function itemFenceEnd(lines: string[], j: number, own: number, memo: { noCloserBefore: number }): number {
-  const need = (lines[j].match(FENCE_OPEN)?.[2] ?? "").length;
-  if (j < memo.noCloserBefore) return -1;
-  let sawRun = false;
-  for (let k = j + 1; k < lines.length; k++) {
-    const run = closingRun(lines[k]);
-    if (run >= need) return k;
-    if (run) sawRun = true;
-    if (lines[k].trim() && indentOf(lines[k]) <= own) {
-      if (!sawRun) memo.noCloserBefore = k;
-      return -1;
+type ItemFences = (j: number, own: number) => number;
+
+function itemFences(lines: string[]): ItemFences {
+  const runs = lines.map(closingRun);
+  const closers = new Map<number, Int32Array>();
+  const markers = new Map<number, Int32Array>();
+  const nextIndex = (memo: Map<number, Int32Array>, key: number, hit: (k: number) => boolean) => {
+    let arr = memo.get(key);
+    if (!arr) {
+      arr = new Int32Array(lines.length + 1).fill(-1);
+      for (let k = lines.length - 1; k >= 0; k--) arr[k] = hit(k) ? k : arr[k + 1];
+      memo.set(key, arr);
     }
-  }
-  if (!sawRun) memo.noCloserBefore = lines.length;
-  return -1;
+    return arr;
+  };
+  return (j, own) => {
+    // Keys are capped so a crafted mix of fence lengths or indents cannot build many tables.
+    const need = Math.min(64, (lines[j].match(FENCE_OPEN)?.[2] ?? "").length);
+    const lim = Math.min(64, own);
+    const close = nextIndex(closers, need, (k) => runs[k] >= need)[j + 1];
+    const stop = nextIndex(markers, lim, (k) => indentOf(lines[k]) <= lim && Boolean(listItemAt(lines, k)))[j + 1];
+    return close >= 0 && (stop < 0 || close < stop) ? close : -1;
+  };
 }
 
-function renderList(lines: string[], i: number, depth: number, html: string[]): number {
-  const memo = { noCloserBefore: -1 };
+function renderList(lines: string[], i: number, depth: number, fences: ItemFences, html: string[]): number {
   const first = listItemAt(lines, i)!;
   const kind = first[2] ? "ul" : "ol";
   const start = first[3] ? Number(first[3]) : 1;
@@ -407,7 +417,7 @@ function renderList(lines: string[], i: number, depth: number, html: string[]): 
         break;
       }
       if (indentOf(lines[j]) <= own) break;
-      const fenceEnd = FENCE_OPEN.test(lines[j]) ? itemFenceEnd(lines, j, own, memo) : -1;
+      const fenceEnd = FENCE_OPEN.test(lines[j]) ? fences(j, own) : -1;
       if (fenceEnd > 0) {
         for (let f = j; f <= fenceEnd; f++) body.push(take(lines[f]));
         j = fenceEnd + 1;
@@ -416,6 +426,8 @@ function renderList(lines: string[], i: number, depth: number, html: string[]): 
       body.push(take(lines[j]));
       j++;
     }
+    // The body is its own level: split "b ```" there before continuation lines are merged.
+    body.splice(0, body.length, ...splitTrailingFences(body));
     // "- a ```" + an indented body: the fence opened at the end of the marker line.
     let first = m[4];
     const trailing = first?.match(/^([^`]*\S)[ \t]*(`{3,}\w*)[ \t]*$/);

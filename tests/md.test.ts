@@ -307,4 +307,22 @@ describe("renderClip", () => {
   it("nests under wide ordered markers", () => {
     expect(renderClip("99. a\n     3. x\n     4. y")).toBe('<ol start="99"><li>a<ol start="3"><li>x</li><li>y</li></ol></li></ol>');
   });
+
+  it("keeps a fence with unindented code inside its item", () => {
+    expect(renderClip("1. Run:\n   ```\nnpm i\n   ```\n2. Next")).toBe(
+      '<ol><li>Run:<pre><code class="lang-">npm i</code></pre></li><li>Next</li></ol>');
+  });
+
+  it("keeps a code block inside a quote inside an item", () => {
+    expect(renderClip("- a\n    > ```\n    > q code\n    > ```")).toBe(
+      '<ul><li>a<blockquote><pre><code class="lang-">q code</code></pre></blockquote></li></ul>');
+    expect(renderClip("1. a\n   b ```\n   x\n   ```\n2. c")).toBe(
+      '<ol><li>a<br>b<pre><code class="lang-">x</code></pre></li><li>c</li></ol>');
+  });
+
+  it("stays linear on unclosed fences between short closers in an item", () => {
+    const t0 = Date.now();
+    renderClip("- a\n" + "  ````a\n  ```\n".repeat(8000));
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
 });

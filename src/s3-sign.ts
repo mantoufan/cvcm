@@ -58,9 +58,10 @@ function objectPath(cfg: S3Config, key: string): string {
 }
 
 /**
- * Presigned PUT URL. With `contentType`, the Content-Type header is signed too: s3.cv.cm stores
- * and serves whatever type the PUT sends, so an unsigned type would let anyone upload text/html
- * through a URL that the API approved for something else.
+ * Presigned PUT URL. `contentType` and `contentLength` are signed when given: s3.cv.cm stores and
+ * serves whatever type the PUT sends and accepts any body size, so unsigned they would let anyone
+ * upload text/html, or a body far over the limit, through a URL approved for something else.
+ * (Browsers set Content-Length from the body themselves, so the declared size must be exact.)
  */
 export async function presignS3Put(
   cfg: S3Config,
@@ -68,9 +69,14 @@ export async function presignS3Put(
   now = new Date(),
   expiresSec = 600,
   contentType?: string,
+  contentLength?: number,
 ): Promise<string> {
-  const signed = contentType ? "content-type;host" : "host";
-  const canonHeaders = contentType ? `content-type:${contentType.trim()}\nhost:${cfg.host}` : `host:${cfg.host}`;
+  const headers: Array<[string, string]> = [];
+  if (contentLength !== undefined) headers.push(["content-length", String(contentLength)]);
+  if (contentType) headers.push(["content-type", contentType.trim()]);
+  headers.push(["host", cfg.host]);
+  const signed = headers.map(([k]) => k).join(";");
+  const canonHeaders = headers.map(([k, v]) => `${k}:${v}`).join("\n");
   const { amz, stamp } = amzParts(now);
   const credential = `${cfg.accessKey}/${stamp}/${cfg.region}/s3/aws4_request`;
   const qs: Array<[string, string]> = [
