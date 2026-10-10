@@ -357,7 +357,7 @@ function mdUrl(url: string): string {
 
 function tableToMd(table: Element, walk: (n: Node) => string): string {
   const rows = [...table.querySelectorAll("tr")].map((tr) =>
-    [...tr.children].map((cell) => walk(cell).replace(/\n+/g, " ").trim()));
+    [...tr.children].map((cell) => oneLine(walk(cell))));
   if (!rows.length) return "";
   const width = Math.max(...rows.map((r) => r.length));
   const line = (r: string[]) => `| ${Array.from({ length: width }, (_, i) => r[i] ?? "").join(" | ")} |`;
@@ -388,6 +388,11 @@ function lineBreaks(md: string): string {
   return md.replace(/\n*(?:\u0001d\u0002\n*)+/g, (m) => (m.includes("\n") ? "\n\n" : "\n"));
 }
 
+/** Headings, table cells and list items must stay on one Markdown line. */
+function oneLine(md: string): string {
+  return lineBreaks(md).trim().replace(/\s*\n+\s*/g, " ");
+}
+
 function domToMarkdown(root: Node): string {
   const blocks: string[] = [];
   const walk = (node: Node): string => {
@@ -404,10 +409,10 @@ function domToMarkdown(root: Node): string {
       case "code": return node.closest("pre") ? preText(node) : codeSpan(node.textContent || "");
       // Held as a token so the blank-line cleanup below never touches code.
       case "pre": return `\n\u0001p${blocks.push(preText(node).replace(/\n$/, "")) - 1}\u0002\n\n`;
-      case "h1": return `\n# ${inner()}\n\n`;
-      case "h2": return `\n## ${inner()}\n\n`;
-      case "h3": return `\n### ${inner()}\n\n`;
-      case "h4": return `\n#### ${inner()}\n\n`;
+      case "h1": return `\n# ${oneLine(inner())}\n\n`;
+      case "h2": return `\n## ${oneLine(inner())}\n\n`;
+      case "h3": return `\n### ${oneLine(inner())}\n\n`;
+      case "h4": return `\n#### ${oneLine(inner())}\n\n`;
       case "blockquote": return `\n${lineBreaks(inner()).split("\n").filter(Boolean).map((l) => `> ${l}`).join("\n")}\n\n`;
       case "ul": return `\n${items(node).map((li) => `- ${li}`).join("\n")}\n\n`;
       case "ol": {
@@ -428,7 +433,7 @@ function domToMarkdown(root: Node): string {
   };
   // Skip empty items (Chrome leaves one after the last Enter); keep each item on one line.
   const items = (list: Element) => [...list.children]
-    .map((li) => lineBreaks(walk(li)).trim().replace(/\n+/g, " "))
+    .map((li) => oneLine(walk(li)))
     .filter(Boolean);
   const mark = (m: string, text: string) => (text.trim() ? `${m}${text}${m}` : text);
   return lineBreaks(walk(root))
