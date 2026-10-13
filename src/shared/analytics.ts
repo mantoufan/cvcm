@@ -14,11 +14,11 @@ export const GA_CONNECT_HOSTS = [
   "https://www.google.com",
 ];
 
-/** AGENTS.md rule 1: tools that handle the visitor's own files send no analytics. */
+/** AGENTS.md rule 1: tools that handle the visitor's own files (image, PDF, audio) send no analytics. */
 export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate",
   "exif", "meme", "signature", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf",
-  "split-pdf", "invoice",
+  "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner",
 ]);
 
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */

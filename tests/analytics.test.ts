@@ -6,7 +6,7 @@ it("tracks content pages but not file tools or clip notes", () => {
   for (const path of ["/en/", "/zh-cn/json/", "/en/games/", "/en/learn/watermark-id-copy/", "/en/device/ip/", "/en/clip/", "/en/gold/"]) {
     expect(isTrackedPath(path), path).toBe(true);
   }
-  for (const path of ["/en/watermark/", "/zh-cn/mosaic/", "/en/merge-pdf/", "/en/invoice/", "/ja/exif/", "/en/convert/", "/en/clip/abc/", "/clip/x7k/", "/en/clip/abc123/"]) {
+  for (const path of ["/en/watermark/", "/zh-cn/mosaic/", "/en/merge-pdf/", "/en/invoice/", "/ja/exif/", "/en/convert/", "/en/audio-cutter/", "/en/clip/abc/", "/clip/x7k/", "/en/clip/abc123/"]) {
     expect(isTrackedPath(path), path).toBe(false);
   }
 });
