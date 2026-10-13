@@ -41,7 +41,8 @@ export function screenReading(locale: Locale, input: ScreenInput): HTMLElement {
 function row(label: string, value: string, attr: string): HTMLElement {
   return h("div", { class: "device-row" },
     h("p", { class: "device-k" }, label),
-    h("p", { class: "device-v", [attr]: "" }, value),
+    // Read from this visitor's browser: the build's prerender shows a placeholder instead.
+    h("p", { class: "device-v", [attr]: "", "data-volatile": "" }, value),
   );
 }
 
@@ -192,7 +193,7 @@ function clientReading(locale: Locale, hints: ClientHints, mode: "browser" | "ua
       nodes.push(h("p", { class: "device-note" }, msg.macNote));
     }
     if (info.mobile != null) {
-      nodes.push(h("p", { class: "device-v", "data-form": "" }, info.mobile ? msg.phone : msg.desktop));
+      nodes.push(h("p", { class: "device-v", "data-form": "", "data-volatile": "" }, info.mobile ? msg.phone : msg.desktop));
     }
   }
   if (mode !== "browser") {

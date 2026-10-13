@@ -71,10 +71,12 @@ for (const page of sitemapPages()) {
     failed.push(path);
     continue;
   }
-  // Generated output (passwords, UUIDs, random numbers) must not be baked into public HTML.
+  // Per-visitor output (passwords, UUIDs, the clock, this browser's details) must not be baked into public HTML.
+  // Text keeps a placeholder so the line keeps its height until the app fills it in.
   app.querySelectorAll<HTMLElement>("[data-volatile]").forEach((el) => {
     if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.value = "";
-    else el.replaceChildren();
+    else if (el instanceof HTMLOListElement || el instanceof HTMLUListElement) el.replaceChildren();
+    else el.textContent = "…";
   });
   // Form state lives in DOM properties; copy it to attributes so the markup shows what the tool shows.
   app.querySelectorAll("textarea").forEach((el) => { el.textContent = el.value; });

@@ -29,7 +29,7 @@ export function mountTimezone(host: HTMLElement): void {
   });
   fromEl.addEventListener("change", () => paint());
   toEl.addEventListener("change", () => paint());
-  outEl = h("p", { class: "timezone-out" });
+  outEl = h("p", { class: "timezone-out", "data-volatile": "" });
   isoEl = h("p", { class: "muted" });
   host.append(
     h("header", { class: "tool-head" },

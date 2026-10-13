@@ -86,3 +86,18 @@ it("does not serve prerendered bodies on their own", async () => {
   });
   expect(res.status).toBe(404);
 });
+
+it("never answers a page revalidation with index.html's validators", async () => {
+  let sawConditional = false;
+  const res = await worker.fetch(new Request("https://cv.cm/en/tip/", { headers: { "If-None-Match": '"abc"' } }), {
+    ASSETS: {
+      fetch: async (input: Request | string) => {
+        if (typeof input !== "string" && input.headers.get("If-None-Match")) sawConditional = true;
+        return new Response(shell, { headers: { "Content-Type": "text/html; charset=utf-8", ETag: '"abc"' } });
+      },
+    },
+  });
+  expect(sawConditional).toBe(false);
+  expect(res.status).toBe(200);
+  expect(res.headers.get("ETag")).toBeNull();
+});

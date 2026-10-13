@@ -36,12 +36,13 @@ const pageModules = {
   device: "src/client/device/ui.ts",
   markets: "src/client/markets/ui.ts",
 };
+const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");
 for (const m of toolsSrc.matchAll(/^ {2}"([a-z0-9-]+)": async[^\n]*\n\s*const m = await import\("\.\/([^"]+)"\);/gm)) {
   pageModules[m[1]] = `src/client/${m[2]}.ts`;
 }
-const loaderCount = (toolsSrc.match(/async \(host, ctx\) =>/g) ?? []).length;
-const matched = Object.keys(pageModules).length - 5;
+const loaderCount = (toolsSrc.match(/^ {2}"[a-z0-9-]+": /gm) ?? []).length;
+const matched = Object.keys(pageModules).length - hubs;
 if (matched !== loaderCount) throw new Error(`build-worker: read ${matched} of ${loaderCount} tool loaders in src/client/tools.ts; keep each as "id": async (host, ctx) => { const m = await import("./x/ui"); ... }`);
 const pageChunks = {};
 for (const [page, src] of Object.entries(pageModules)) {

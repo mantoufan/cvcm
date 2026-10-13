@@ -182,7 +182,9 @@ export default {
 
     // Fetch the page's prerendered body alongside the page itself.
     const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path, request)) : Promise.resolve(null);
-    let assetResponse = await env.ASSETS.fetch(request);
+    // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
+    // drop the conditional headers on page routes and the validators from the page response below.
+    let assetResponse = await env.ASSETS.fetch(STATIC_FILE.test(path) ? request : unconditional(request));
     if (COVER_PROXY.test(path)) {
       const type = assetResponse.headers.get("content-type") || "";
       const image = type.startsWith("image/") || type.includes("octet-stream");
@@ -237,6 +239,8 @@ export default {
             : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
+      headers.delete("ETag");
+      headers.delete("Last-Modified");
       const body = await ssr;
       const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
         : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
@@ -259,6 +263,13 @@ export default {
 
 const SSR_PREFIX = "/_ssr/";
 const SSR_MARKER = "<!--ssr-->";
+
+function unconditional(request: Request): Request {
+  const headers = new Headers(request.headers);
+  headers.delete("If-None-Match");
+  headers.delete("If-Modified-Since");
+  return new Request(request.url, { method: request.method, headers });
+}
 
 /** Which prerendered page a request shows: its own path, the home page for "/", none for clip notes and files. */
 function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string, request: Request): string | null {

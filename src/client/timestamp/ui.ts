@@ -20,7 +20,7 @@ export function mountTimestamp(host: HTMLElement): void {
     placeholder: t("timestamp.placeholder"),
     onInput: () => paint(),
   });
-  nowEl = h("p", { class: "muted" });
+  nowEl = h("p", { class: "muted", "data-volatile": "" });
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
