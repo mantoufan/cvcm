@@ -208,7 +208,8 @@ describe("renderClip", () => {
     const lists = renderClip(Array.from({ length: 4000 }, (_, i) => `${" ".repeat(i)}- x`).join("\n"));
     expect(quotes.split("<blockquote>").length - 1).toBeLessThanOrEqual(8);
     expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(4000);
-    expect(Date.now() - t0).toBeLessThan(1500);
+    // Guards against runaway (exponential) parsing, not speed: ~0.4s locally, ~1.8s on CI runners.
+    expect(Date.now() - t0).toBeLessThan(5000);
   });
 
   it("keeps indented fences, also under list items", () => {
