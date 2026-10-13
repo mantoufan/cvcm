@@ -14,6 +14,7 @@ import {
   deviceHref,
   marketsHref,
   parseAppPath,
+  quizHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -26,6 +27,7 @@ import type { GameConsoleId, GameId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
+import { QUIZZES, type QuizId } from "../shared/quiz";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -55,6 +57,8 @@ let marketsHub = false;
 let marketId: MarketId | null = null;
 let devicePage: DevicePageId | null = null;
 let legalPage: LegalPageId | null = null;
+/** A test page: "hub" for /tests/, else the test id. */
+let quizPage: QuizId | "hub" | null = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -134,6 +138,18 @@ export function boot(): void {
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
+  } else if (parsed.kind === "quiz") {
+    setLocale(parsed.locale);
+    applyQuiz(parsed.quiz);
+    const canonical = quizHref(parsed.locale, parsed.quiz);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-quiz") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyQuiz(parsed.quiz);
+    history.replaceState(null, "", withSearch(quizHref(loc, parsed.quiz), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -213,6 +229,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   marketId = null;
   devicePage = null;
   legalPage = null;
+  quizPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -227,6 +244,7 @@ function applyLearn(next: TutorialId | null): void {
   marketId = null;
   devicePage = null;
   legalPage = null;
+  quizPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -241,6 +259,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   marketId = null;
   devicePage = null;
   legalPage = null;
+  quizPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -255,6 +274,7 @@ function applyDevice(page: DevicePageId): void {
   marketId = null;
   devicePage = page;
   legalPage = null;
+  quizPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -269,6 +289,22 @@ function applyLegal(page: LegalPageId): void {
   marketId = null;
   devicePage = null;
   legalPage = page;
+  quizPage = null;
+}
+
+function applyQuiz(id: QuizId | null): void {
+  tool = null;
+  clipId = null;
+  tutorial = null;
+  learnHub = false;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
+  marketsHub = false;
+  marketId = null;
+  devicePage = null;
+  legalPage = null;
+  quizPage = id ?? "hub";
 }
 
 function unmountTools(): void {
@@ -279,15 +315,16 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
   const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
-  if (!hasPageMessages(loc, gamePage, legal)) {
+  const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
+  if (!hasPageMessages(loc, gamePage, legal, quiz)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal).then(
+    loadPageMessages(loc, gamePage, legal, quiz).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -345,6 +382,11 @@ export function render(): void {
     applyLegal(parsed.page);
   } else if (parsed.kind === "bare-legal") {
     applyLegal(parsed.page);
+  } else if (parsed.kind === "quiz") {
+    setLocale(parsed.locale);
+    applyQuiz(parsed.quiz);
+  } else if (parsed.kind === "bare-quiz") {
+    applyQuiz(parsed.quiz);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -357,6 +399,8 @@ export function render(): void {
       ? { games: true as const, console: gameConsole, game: gameId }
       : devicePage
         ? { devicePage }
+        : quizPage
+        ? { quiz: true as const, quizId: quizPage === "hub" ? null : quizPage }
         : legalPage
         ? { legalPage }
         : marketsHub || marketId
@@ -392,7 +436,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -525,15 +569,17 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial);
+  const testsOn = Boolean(quizPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         navLink(`${appHref(loc, null)}#tools`, t("nav.tools"), toolsOn, "tools"),
+        navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -566,6 +612,14 @@ function toolDirectory(loc: Locale): HTMLElement {
           ...cat.tools.map((id) =>
             h("a", { href: appHref(loc, id), "data-nav": id, "aria-current": tool === id ? "page" : undefined }, t(`tools.${id}.name`)),
           ),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: quizHref(loc), "data-nav": "tests" }, t("nav.tests"))),
+      h("p", null,
+        ...QUIZZES.map((id) =>
+          h("a", { href: quizHref(loc, id), "data-nav": `test-${id}`, "aria-current": quizPage === id ? "page" : undefined }, t(`quiz.${id}.name`)),
         ),
       ),
     ),
@@ -605,6 +659,11 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./device/ui");
     if (!alive()) return;
     m.mountDevice(main, loc, devicePage);
+  } else if (quizPage) {
+    const m = await import("./quiz/ui");
+    if (!alive()) return;
+    if (quizPage === "hub") m.mountQuizHub(main, loc);
+    else m.mountQuiz(main, loc, quizPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -671,6 +730,8 @@ function langSwitch(current: Locale): HTMLElement {
 function localeHref(next: Locale): string {
   return devicePage
     ? withSearch(deviceHref(next, devicePage), location.search)
+    : quizPage
+    ? withSearch(quizHref(next, quizPage === "hub" ? null : quizPage), location.search)
     : legalPage
     ? withSearch(legalHref(next, legalPage), location.search)
     : learnHub || tutorial

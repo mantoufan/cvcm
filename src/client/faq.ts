@@ -21,6 +21,8 @@ import type { Locale } from "../shared/locale";
 import type { GameConsoleId, GameId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
+import { quizBreadcrumbJsonLd, quizFaqJsonLd } from "../shared/quiz-i18n";
+import type { QuizId } from "../shared/quiz";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -75,7 +77,15 @@ export function syncPageJsonLd(
   devicePage: DevicePageId | null = null,
   gamesConsole: GameConsoleId | null = null,
   legalPage: LegalPageId | null = null,
+  quizPage: QuizId | "hub" | null = null,
 ): void {
+  if (quizPage) {
+    const id = quizPage === "hub" ? null : quizPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", quizFaqJsonLd(locale, id));
+    writeJsonLd("breadcrumb-jsonld", quizBreadcrumbJsonLd(locale, id));
+    return;
+  }
   if (legalPage) {
     for (const id of ["faq-jsonld", "howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(id, null);
     writeJsonLd("breadcrumb-jsonld", legalBreadcrumbJsonLd(locale, legalPage));

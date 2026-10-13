@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -139,6 +139,9 @@ export default {
       if (parsed.kind === "bare-legal") {
         return redirectTo(legalHref(locale, parsed.page), url, 302);
       }
+      if (parsed.kind === "bare-quiz") {
+        return redirectTo(quizHref(locale, parsed.quiz), url, 302);
+      }
       if (parsed.kind === "unknown") {
         return withHeaders(notFound(locale, request.method), path);
       }
@@ -174,6 +177,12 @@ export default {
       }
       if (parsed.kind === "legal") {
         const canonical = legalHref(parsed.locale, parsed.page);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
+      if (parsed.kind === "quiz") {
+        const canonical = quizHref(parsed.locale, parsed.quiz);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -215,10 +224,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -234,6 +243,8 @@ export default {
               ? { devicePage: parsed.page }
             : parsed.kind === "legal"
               ? { legalPage: parsed.page }
+            : parsed.kind === "quiz"
+              ? { quiz: true as const, quizId: parsed.quiz }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
@@ -244,10 +255,11 @@ export default {
       const body = await ssr;
       const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
         : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
+        : parsed.kind === "quiz" ? "quiz"
         : parsed.kind === "legal" ? null
         : "home";
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game));
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz");
       out = preloadPageChunk(out, chunk);
       return withHeaders(
         new Response(out, {
@@ -275,7 +287,7 @@ function unconditional(request: Request): Request {
 function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string | null {
   if (STATIC_FILE.test(path)) return null;
   if (parsed.kind === "app") return parsed.clipId ? null : path;
-  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal") return path;
+  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz") return path;
   return null;
 }
 

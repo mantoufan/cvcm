@@ -23,14 +23,24 @@ import koLegal from "../locales/legal/ko.json";
 import viLegal from "../locales/legal/vi.json";
 import zhCNLegal from "../locales/legal/zh-CN.json";
 import zhTWLegal from "../locales/legal/zh-TW.json";
+import enQuiz from "../locales/packs/quiz-en";
+import esQuiz from "../locales/packs/quiz-es";
+import idQuiz from "../locales/packs/quiz-id";
+import jaQuiz from "../locales/packs/quiz-ja";
+import koQuiz from "../locales/packs/quiz-ko";
+import viQuiz from "../locales/packs/quiz-vi";
+import zhCNQuiz from "../locales/packs/quiz-zh-CN";
+import zhTWQuiz from "../locales/packs/quiz-zh-TW";
 import type { Locale } from "./locale";
 import {
   registerGameMessages,
   registerLegalMessages,
   registerMessages,
+  registerQuizMessages,
   type GameMessages,
   type LegalMessages,
   type LocaleMessages,
+  type QuizMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -56,6 +66,18 @@ const LEGAL: Record<Locale, LegalMessages> = {
   es: esLegal,
 };
 
+const QUIZ: Record<Locale, QuizMessages> = {
+  en: enQuiz,
+  "zh-CN": zhCNQuiz,
+  "zh-TW": zhTWQuiz,
+  ja: jaQuiz,
+  ko: koQuiz,
+  vi: viQuiz,
+  id: idQuiz,
+  es: esQuiz,
+};
+
 for (const [locale, pack] of Object.entries(ALL)) registerMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(GAMES)) registerGameMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(LEGAL)) registerLegalMessages(locale as Locale, pack);
+for (const [locale, pack] of Object.entries(QUIZ)) registerQuizMessages(locale as Locale, pack);

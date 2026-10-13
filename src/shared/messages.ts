@@ -8,6 +8,7 @@ export type GuideMessages = typeof import("../locales/guides/en.json");
 export type DeviceMessages = typeof import("../locales/device/en.json");
 export type GameName = { name: string; blurb: string };
 export type LegalMessages = typeof import("../locales/legal/en.json");
+export type QuizMessages = typeof import("../locales/quiz/en.json");
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
@@ -27,6 +28,7 @@ export type GameMessages = {
 const loaded: Partial<Record<Locale, LocaleMessages>> = {};
 const loadedGames: Partial<Record<Locale, GameMessages>> = {};
 const loadedLegal: Partial<Record<Locale, LegalMessages>> = {};
+const loadedQuiz: Partial<Record<Locale, QuizMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -69,4 +71,17 @@ export function hasLegalMessages(locale: Locale): boolean {
 /** Privacy policy and terms; on the client only after the legal pack is loaded (legal pages). */
 export function legalMessages(locale: Locale): LegalMessages {
   return pick(loadedLegal, locale, "legal messages");
+}
+
+export function registerQuizMessages(locale: Locale, pack: QuizMessages): void {
+  loadedQuiz[locale] = pack;
+}
+
+export function hasQuizMessages(locale: Locale): boolean {
+  return Boolean(loadedQuiz[locale]);
+}
+
+/** Personality test copy; on the client only after the quiz pack is loaded (test pages). */
+export function quizMessages(locale: Locale): QuizMessages {
+  return pick(loadedQuiz, locale, "quiz messages");
 }
