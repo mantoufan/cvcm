@@ -1,121 +1,60 @@
 import { h } from "./dom";
-import { mountClipCompose } from "./clip/ui";
+import { mountClipCompose, unmountClip } from "./clip/ui";
 import { t } from "./i18n";
-import { gameTile } from "./games/ui";
-import { learnTile } from "./learn/ui";
+import { linkList } from "./links";
 import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
-import { TOOLS, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, learnHref, type ToolId } from "../shared/path";
+import { gameName } from "../shared/games-i18n";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, learnHref } from "../shared/path";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
-import { COVER, DEVICE_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "./covers";
 
-export function mountHome(host: HTMLElement, locale: Locale): void {
-  const learnWall = FEATURED_TUTORIALS.length
-    ? h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.learn")),
-        h("a", { class: "wall-more", href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all")),
-      ),
-      h("div", { class: "tiles" },
-        ...FEATURED_TUTORIALS.map((id) => learnTile(locale, id)),
-      ),
-    )
-    : null;
+/** Home: the clipboard, then every tool as a text link. Returns the clipboard's unmount. */
+export function mountHome(host: HTMLElement, locale: Locale): () => void {
   const clipCard = h("div", { class: "home-clip" });
   mountClipCompose(clipCard);
   host.append(
-    h("section", { class: "hero-band clip-hero" },
+    h("section", { class: "home-hero" },
       h("h1", null, t("tools.clip.name")),
-      h("p", { class: "lede" }, t("clip.tagline")),
-      h("div", { class: "clip-feats" },
-        h("span", { class: "clip-feat sky" }, t("clip.featRich")),
-        h("span", { class: "clip-feat pink" }, t("clip.featLink")),
-        h("span", { class: "clip-feat lilac" }, t("clip.featFiles")),
-      ),
+      h("p", { class: "lede" }, `${t("clip.tagline")} · ${[t("clip.featRich"), t("clip.featLink"), t("clip.featFiles")].join(" · ")}`),
       clipCard,
-      h("p", { class: "muted home-clip-note" },
+      h("p", { class: "muted" },
         t("clip.privacyNote"), " ",
         h("a", { href: appHref(locale, "clip"), "data-nav": "clip" }, t("clip.more")),
       ),
     ),
+    h("section", { class: "wall", id: "tools", "aria-labelledby": "tools-title" },
+      h("h2", { id: "tools-title", class: "sr-only" }, t("nav.tools")),
+      ...CATEGORIES.map((cat) =>
+        h("div", { class: "group" },
+          h("h3", null, t(`nav.${cat.id}`)),
+          linkList(cat.tools.map((id) => ({ href: appHref(locale, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
+        ),
+      ),
+      h("div", { class: "group" },
+        h("h3", null, h("a", { href: deviceHref(locale, "hub"), "data-nav": "device" }, t("nav.device"))),
+        linkList(DEVICE_CHILD_PAGES.map((id) => {
+          const copy = devicePageCopy(locale, id);
+          return { href: deviceHref(locale, id), name: copy.name, blurb: copy.blurb, nav: `device-${id}` };
+        })),
+        h("p", { class: "more" }, h("a", { href: deviceHref(locale, "hub"), "data-nav": "device" }, deviceMessages(locale).all)),
+      ),
+    ),
+    ...(FEATURED_TUTORIALS.length
+      ? [h("section", { class: "wall" },
+        h("h2", null, t("nav.learn")),
+        linkList(FEATURED_TUTORIALS.map((id) => ({ href: learnHref(locale, id), name: t(`learn.${id}.name`), blurb: t(`learn.${id}.blurb`), nav: `learn-${id}` }))),
+        h("p", { class: "more" }, h("a", { href: learnHref(locale, null), "data-nav": "learn" }, t("learn.hub.all"))),
+      )]
+      : []),
     h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.tools")),
-      ),
-      h("div", { class: "tiles" },
-        ...TOOLS.map((id, i) => tile(locale, id, i < EAGER_TILES)),
-      ),
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.device")),
-        h("a", { class: "wall-more", href: deviceHref(locale, "hub"), "data-nav": "device" }, deviceMessages(locale).all),
-      ),
-      h("div", { class: "tiles" },
-        ...DEVICE_CHILD_PAGES.map((id) => deviceTile(locale, id)),
-      ),
-    ),
-    ...(learnWall ? [learnWall] : []),
-    h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, t("nav.games")),
-        h("a", { class: "wall-more", href: gamesHref(locale, null), "data-nav": "games" }, t("games.hub.all")),
-      ),
-      h("div", { class: "tiles" },
-        ...GAMES.slice(0, 8).map((game) => gameTile(locale, game)),
-      ),
-    ),
-    h("section", { class: "points" },
-      point("local"),
-      point("nodb"),
-      point("i18n"),
+      h("h2", null, t("nav.games")),
+      linkList(GAMES.slice(0, 8).map((game) => {
+        const copy = gameName(locale, game.id);
+        return { href: gamesHref(locale, game.console, game.id), name: copy.name, blurb: copy.blurb, nav: `game-${game.id}` };
+      })),
+      h("p", { class: "more" }, h("a", { href: gamesHref(locale, null), "data-nav": "games" }, t("games.hub.all"))),
     ),
   );
-}
-
-function deviceTile(locale: Locale, id: (typeof DEVICE_CHILD_PAGES)[number]): HTMLElement {
-  const copy = devicePageCopy(locale, id);
-  return h("a", { class: "tile", href: deviceHref(locale, id), "data-nav": `device-${id}` },
-    h("div", { class: "tile-cover" },
-      h("img", { src: thumbSrc(DEVICE_COVER, 640), srcset: tileSrcset(DEVICE_COVER), sizes: TILE_SIZES, alt: copy.name, width: "640", height: "360", loading: "lazy", decoding: "async" }),
-    ),
-    h("div", { class: "tile-body" },
-      h("h3", null, copy.name),
-      h("p", null, copy.blurb),
-    ),
-  );
-}
-
-// Above-the-fold tiles load at once; the rest wait until scrolled near.
-const EAGER_TILES = 4;
-
-function tile(locale: Locale, id: ToolId, eager: boolean): HTMLElement {
-  return h("a", {
-    class: "tile",
-    href: appHref(locale, id),
-    "data-nav": id,
-  },
-    h("div", { class: "tile-cover" },
-      h("img", {
-        src: thumbSrc(COVER[id], 640),
-        srcset: tileSrcset(COVER[id]),
-        sizes: TILE_SIZES,
-        alt: t(`tools.${id}.name`),
-        width: "640",
-        height: "360",
-        loading: eager ? undefined : "lazy",
-        decoding: "async",
-      }),
-    ),
-    h("div", { class: "tile-body" },
-      h("h3", null, t(`tools.${id}.name`)),
-      h("p", null, t(`tools.${id}.blurb`)),
-    ),
-  );
-}
-
-function point(id: "local" | "nodb" | "i18n"): HTMLElement {
-  return h("article", { class: "point" },
-    h("h2", null, t(`home.points.${id}.title`)),
-    h("p", null, t(`home.points.${id}.body`)),
-  );
+  return unmountClip;
 }

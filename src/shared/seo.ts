@@ -703,11 +703,13 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
+/** Head tags for the page, and its body: the prerendered markup when given, else a plain text copy. */
 export function applyHtmlSeo(
   html: string,
   locale: Locale,
   toolOrSeo: SeoInput | ToolId | null,
   clipId?: string | null,
+  body?: string | null,
 ): string {
   const seo = normalizeSeo(toolOrSeo, clipId);
   const title = pageTitle(locale, seo);
@@ -819,13 +821,14 @@ export function applyHtmlSeo(
       out = out.replace(/(<link\s+rel="apple-touch-icon"\s+href=")[^"]*(")/i, "$1/brand/safemark-180.png$2");
     }
   }
-  out = out.replace("</head>", `${tags.join("\n    ")}\n  </head>`);
-  const inner = seo.devicePage
+  out = out.replace("</head>", () => `${tags.join("\n    ")}\n  </head>`);
+  const inner = body ? body : seo.devicePage
     ? deviceStaticHtml(locale, seo.devicePage)
     : seo.legalPage
     ? legalStaticHtml(locale, seo.legalPage)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
-  out = out.replace(/<div id="app">[\s\S]*?<\/div>/, `<div id="app">${inner}</div>`);
+  // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
+  out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
   return out;
 }
 
@@ -845,7 +848,7 @@ function toolLinks(locale: Locale, tools: readonly ToolId[]): { href: string; te
   return tools.map((tool) => ({ href: appHref(locale, tool), text: linkText(pageTitle(locale, tool)) }));
 }
 
-/** Crawlable page body: the client clears #app on mount, so this only serves bots and no-JS visitors. */
+/** Text-only page body for pages without prerendered markup (clip notes, a page the prerender skipped). */
 function staticPageHtml(
   locale: Locale,
   seo: SeoInput,
@@ -886,5 +889,5 @@ function staticPageHtml(
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));
   }
-  return `<main>${parts.join("")}</main>`;
+  return `<div class="page"><header class="top"><a class="brand" href="${escapeHtml(appHref(locale, null))}">cv.cm</a></header><main id="main" class="tool-head">${parts.join("")}</main></div>`;
 }

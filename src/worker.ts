@@ -1,12 +1,12 @@
 import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
-import { cookieValue, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
+import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
-import { preloadLocalePack } from "./shared/locale-preload";
+import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -103,6 +103,8 @@ export default {
     }
 
     const path = url.pathname;
+    // Prerendered page bodies are read through ASSETS below, never served on their own.
+    if (path.startsWith(SSR_PREFIX)) return withHeaders(notFound(DEFAULT_LOCALE, request.method), path);
     if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
     const emu = await proxyEmu(path, request.method);
     if (emu) return withHeaders(emu, path);
@@ -233,8 +235,19 @@ export default {
             : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
+      const pagePath = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal"
+        ? path
+        : appHref(locale, null);
+      const body = await prerendered(env, url.origin, pagePath);
+      const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
+        : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
+        : parsed.kind === "legal" ? null
+        : "home";
+      let out = applyHtmlSeo(html, locale, seo, undefined, body);
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game));
+      out = preloadPageChunk(out, chunk);
       return withHeaders(
-        new Response(preloadLocalePack(applyHtmlSeo(html, locale, seo), locale, parsed.kind === "games" && Boolean(parsed.game)), {
+        new Response(out, {
           status: assetResponse.status,
           headers,
         }),
@@ -244,6 +257,23 @@ export default {
     return withHeaders(assetResponse, path);
   },
 };
+
+const SSR_PREFIX = "/_ssr/";
+const SSR_MARKER = "<!--ssr-->";
+
+/** The page body scripts/prerender.ts rendered for this path, or null (clip notes, a page the prerender skipped). */
+async function prerendered(env: Env, origin: string, pagePath: string): Promise<string | null> {
+  if (!pagePath.startsWith("/") || !pagePath.endsWith("/") || pagePath.includes("..")) return null;
+  try {
+    const res = await env.ASSETS.fetch(`${origin}${SSR_PREFIX.slice(0, -1)}${pagePath}`);
+    if (!res.ok) return null;
+    const text = await res.text();
+    // A missing file comes back as the SPA's index.html, which has no marker.
+    return text.startsWith(SSR_MARKER) ? text.slice(SSR_MARKER.length) : null;
+  } catch {
+    return null;
+  }
+}
 
 function deviceIpResponse(request: Request): Response {
   const raw = request.headers.get("CF-Connecting-IP") ?? "";

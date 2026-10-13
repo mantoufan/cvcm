@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, start } from "../src/client/app-shell";
+import { render, start, whenRendered } from "../src/client/app-shell";
 import { screenReading } from "../src/client/device/ui";
 
 function reset(url: string): void {
@@ -22,6 +22,7 @@ describe("device shell", () => {
     vi.stubGlobal("fetch", fetchMock);
     reset("/en/device/ip/");
     start();
+    await whenRendered();
     expect(window.location.pathname).toBe("/en/device/ip/");
     expect(fetchMock).not.toHaveBeenCalled();
     document.querySelector<HTMLButtonElement>(".device-show-ip")?.click();
@@ -33,11 +34,13 @@ describe("device shell", () => {
     expect(document.getElementById("faq-jsonld")?.textContent).not.toContain("203.0.113.50");
   });
 
-  it("updates head and JSON-LD from a tool to a device page and back home", () => {
+  it("updates head and JSON-LD from a tool to a device page and back home", async () => {
     reset("/en/qr/");
     start();
+    await whenRendered();
     window.history.pushState(null, "", "/en/device/ip/");
     render();
+    await whenRendered();
     expect(document.querySelector("h1")?.textContent).toBe("What is my IP address");
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe("https://cv.cm/en/device/ip/");
     const faq = [...document.querySelectorAll(".faq summary")];
@@ -51,30 +54,36 @@ describe("device shell", () => {
     expect(document.getElementById("game-jsonld")).toBeNull();
     window.history.pushState(null, "", "/en/");
     render();
+    await whenRendered();
     expect(document.getElementById("breadcrumb-jsonld")).toBeNull();
     expect(document.querySelector('meta[property="og:type"]')?.getAttribute("content")).not.toBe("article");
   });
 
-  it("switches language without leaving the device page", () => {
+  it("switches language without leaving the device page", async () => {
     reset("/en/device/screen-resolution/");
     start();
+    await whenRendered();
     const select = document.querySelector<HTMLSelectElement>("select.lang");
     select!.value = "zh-CN";
     select!.dispatchEvent(new Event("change"));
+    await whenRendered();
     expect(window.location.pathname).toBe("/zh-cn/device/screen-resolution/");
     expect(document.querySelector("h1")?.textContent).toBe("我的屏幕分辨率");
   });
 
-  it("restores the previous page on back", () => {
+  it("restores the previous page on back", async () => {
     reset("/en/qr/");
     start();
+    await whenRendered();
     const title = document.title;
     const canonical = document.querySelector('link[rel="canonical"]')?.getAttribute("href");
     window.history.pushState(null, "", "/en/device/browser/");
     render();
+    await whenRendered();
     expect(document.getElementById("breadcrumb-jsonld")).toBeTruthy();
     window.history.pushState(null, "", "/en/qr/");
     window.dispatchEvent(new PopStateEvent("popstate"));
+    await whenRendered();
     expect(document.title).toBe(title);
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(canonical);
     // Back on a tool page: the tool's own breadcrumb, not the device one.

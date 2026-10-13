@@ -8,16 +8,19 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
-5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, and an entry in `src/shared/path.ts` `TOOLS`.
+5. New local tools process data with Web APIs in the page. Add a locale path, strings in `src/locales/*`, an entry in `src/shared/path.ts` `TOOLS`, and a lazy loader in `src/client/tools.ts` `TOOL_LOADERS` (never a static import in `main.ts`: each tool is its own chunk).
 6. Tutorials must be minimal, complete, and illustrated (owner correction, 2026-09-13). Explain the whole task from preparation through completion with concise steps and meaningful instructional diagrams. Use captions to explain each image. Present tutorials, not exercise cards, assignments, submission requirements, or grading criteria. Keep photography first. JK/Lolita/Hanfu fashion examples use adults.
-7. Tool covers (`public/covers/*-sweet.jpg`, 1280×720 JPEG): generate with **Codex** using existing covers as style references (same pink twin-tail chibi, lace bonnet, cream-pink room). Do not use Grok `image_gen` for new tool covers. See `docs/tool-cover-prompts.md`.
+7. Design is plain pink and white, built for speed and search (owner, 2026-10-13): no decorative images, gradients, shadows or ornaments; lists are text links (`src/client/links.ts`). Covers appear only as `og:image`, never in the page. Instructional figures (tutorial diagrams, walkthrough shots) stay, lazy-loaded.
+8. Every sitemap page is prerendered at build (`scripts/prerender.mjs` runs the real client in happy-dom → `dist/_ssr/<path>/index.html`). The Worker puts that markup in `#app`, so the first paint needs no JS; the client then mounts the same page off-screen and swaps it in (`render()` in `main.ts`). Keep mounts deterministic and free of network calls at mount, or the page falls back to the Worker's text copy (the prerender logs skipped pages).
+9. Tool covers for `og:image` (`public/covers/*-sweet.jpg`, 1280×720 JPEG): generate with **Codex** using existing covers as style references (same pink twin-tail chibi, lace bonnet, cream-pink room). Do not use Grok `image_gen` for new tool covers. See `docs/tool-cover-prompts.md`.
 
 ## Layout
 
 - `src/worker.ts` — edge Worker
 - `src/clip-api.ts` / `src/clip-store.ts` — clipboard API + D1
 - `migrations/` — D1 schema
-- `src/client/` — SPA
+- `src/client/` — SPA (`main.ts` shell + router, `tools.ts` lazy tool loaders, `links.ts` text link lists)
+- `scripts/prerender.mjs` / `scripts/prerender.ts` — build-time page bodies for the Worker
 - `src/client/clip/` — cloud clipboard
 - `src/client/watermark/` — ID Watermark & Redact (身份证水印打码): image watermark + drag-to-redact (mosaic / black box). `/mosaic/` mounts the same UI in redact mode. Brand icon `public/brand/safemark.svg`; Zhihu kit `docs/zhihu-ai-works/id-watermark/`
 - `src/client/collage/` — photo collage
@@ -96,9 +99,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/diff/` — text diff checker
 - `src/client/uuid/` — UUID v4 generator
 - `src/client/regex/` — regex tester
-- `src/client/guide.ts` — illustrated how-to above FAQ (test screenshots)
+- `src/client/guide.ts` — text how-to above FAQ
 - `src/locales/guides/` — 8-locale how-to copy
-- `public/covers/` — tool/game/learn images; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
+- `public/covers/` — tool/game/learn images (`og:image`, tutorial diagrams); `/thumbs/` URLs from older builds redirect to the originals; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)
 - `src/client/learn/` — minimal, complete illustrated tutorials
 - `src/client/device/` — device column (`/{locale}/device/`, IP via `GET /api/device/ip`, not stored)
 - `src/client/games/` — retro emulator games (`/{locale}/games/{console}/{id}/`)

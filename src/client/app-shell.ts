@@ -1,1 +1,1 @@
-export { boot, render, start } from "./main";
+export { boot, render, start, whenRendered } from "./main";

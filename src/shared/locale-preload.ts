@@ -12,3 +12,16 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");
   return html.replace("</head>", `${links}\n  </head>`);
 }
+
+// Page key (tool id, or home / learn / games / device / markets) -> the lazy chunk that page mounts, from the same manifest.
+declare const __PAGE_CHUNKS__: Record<string, string[]> | undefined;
+
+const PAGE_CHUNKS: Record<string, string[]> = typeof __PAGE_CHUNKS__ === "undefined" ? {} : __PAGE_CHUNKS__;
+
+/** Fetch the page's own chunk (its tool, or the hub module) alongside the entry script. */
+export function preloadPageChunk(html: string, key: string | null, chunks: Record<string, string[]> = PAGE_CHUNKS): string {
+  const files = key ? chunks[key] ?? [] : [];
+  if (!files.length) return html;
+  const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");
+  return html.replace("</head>", `${links}\n  </head>`);
+}

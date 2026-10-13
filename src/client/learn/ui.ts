@@ -1,4 +1,5 @@
-import { COVER, LEARN_COVER, LEARN_FIG, LEARN_HERO, TILE_SIZES, localizedTutorialSrc, thumbSrc, tileSrcset } from "../covers";
+import { LEARN_FIG, localizedTutorialSrc } from "../covers";
+import { linkList, type LinkItem } from "../links";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
@@ -8,21 +9,15 @@ import { appHref, isConvertJobId, learnHref, TUTORIAL_GROUPS, type ToolId, type 
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
   host.append(
-    h("section", { class: "hero-band" },
-      h("span", { class: "hero-ornament", "aria-hidden": "true" }, "୨୧"),
-      h("p", { class: "kicker" }, t("learn.hub.kicker")),
+    h("header", { class: "tool-head" },
       h("h1", null, t("learn.hub.title")),
       h("p", { class: "lede" }, t("learn.hub.lead")),
       TUTORIAL_GROUPS.length === 0 ? h("p", { class: "learn-empty" }, t("learn.hub.empty")) : null,
     ),
     ...TUTORIAL_GROUPS.map((group) =>
       h("section", { class: "wall" },
-        h("div", { class: "wall-h" },
-          h("h2", null, t(`learn.groups.${group.id}`)),
-        ),
-        h("div", { class: "tiles" },
-          ...group.tutorials.map((id) => learnTile(loc, id)),
-        ),
+        h("h2", null, t(`learn.groups.${group.id}`)),
+        linkList(group.tutorials.map((id) => learnLink(loc, id))),
       ),
     ),
   );
@@ -32,7 +27,6 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
   const loc = locale();
   const meta = TUTORIAL_META[id];
   const figSrc = LEARN_FIG[id];
-  const heroSrc = LEARN_HERO[id];
   const count = tutorialSteps(id);
   const course = meta.kind === "course";
   const nums = Array.from({ length: count }, (_, i) => i + 1);
@@ -54,16 +48,6 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
           t(`learn.${id}.result`),
         ),
       ),
-      heroSrc
-        ? h("figure", { class: "learn-hero" },
-          h("img", {
-            src: localizedTutorialSrc(heroSrc, loc),
-            alt: t(`learn.${id}.title`),
-            width: "1280",
-            height: "720",
-          }),
-        )
-        : null,
       h("p", { class: "learn-intro" }, t(`learn.${id}.note`)),
       tool ? toolCta(loc, tool, id) : null,
       h("details", { class: "learn-contents" },
@@ -89,42 +73,21 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
       ) : null,
       meta.related.length ? h("section", { class: "learn-related" },
         h("h2", null, t("learn.related")),
-        h("div", { class: "learn-related-list" },
-          ...meta.related.map((tool) =>
-            h("a", {
-              class: "menu-item",
-              href: appHref(loc, tool),
-              "data-nav": tool,
-            },
-              h("img", { class: "menu-cover", src: thumbSrc(COVER[tool], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
-              h("div", { class: "menu-copy" },
-                h("strong", null, t(`tools.${tool}.name`)),
-                h("span", null, t(`tools.${tool}.blurb`)),
-              ),
-            ),
-          ),
-        ),
+        linkList(meta.related.map((tool) => ({ href: appHref(loc, tool), name: t(`tools.${tool}.name`), blurb: t(`tools.${tool}.blurb`), nav: tool }))),
       ) : null,
     ),
     learnFaqSection(loc, id),
   );
 }
 
-export function learnTile(loc: ReturnType<typeof locale>, id: TutorialId): HTMLElement {
-  return h("a", {
-    class: "tile",
+export function learnLink(loc: ReturnType<typeof locale>, id: TutorialId): LinkItem {
+  return {
     href: learnHref(loc, id),
-    "data-nav": `learn-${id}`,
-  },
-    h("div", { class: "tile-cover" },
-      h("img", { src: thumbSrc(LEARN_COVER[id], 640), srcset: tileSrcset(LEARN_COVER[id]), sizes: TILE_SIZES, alt: t(`learn.${id}.name`), width: "960", height: "540", loading: "lazy", decoding: "async" }),
-    ),
-    h("div", { class: "tile-body" },
-      h("p", { class: "tile-time" }, t("learn.minutes", { n: TUTORIAL_META[id].minutes })),
-      h("h3", null, t(`learn.${id}.name`)),
-      h("p", null, t(`learn.${id}.blurb`)),
-    ),
-  );
+    name: t(`learn.${id}.name`),
+    blurb: t(`learn.${id}.blurb`),
+    meta: t("learn.minutes", { n: TUTORIAL_META[id].minutes }),
+    nav: `learn-${id}`,
+  };
 }
 
 function toolCta(loc: ReturnType<typeof locale>, tool: ToolId, id: TutorialId): HTMLElement {
