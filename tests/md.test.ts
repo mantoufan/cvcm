@@ -205,9 +205,9 @@ describe("renderClip", () => {
   it("caps nesting depth on hostile input", () => {
     const t0 = Date.now();
     const quotes = renderClip(">".repeat(64000) + " x");
-    const lists = renderClip(Array.from({ length: 4000 }, (_, i) => `${" ".repeat(i)}- x`).join("\n"));
+    const lists = renderClip(Array.from({ length: 1000 }, (_, i) => `${" ".repeat(i)}- x`).join("\n"));
     expect(quotes.split("<blockquote>").length - 1).toBeLessThanOrEqual(8);
-    expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(4000);
+    expect(lists.split("<ul>").length - 1).toBeLessThanOrEqual(8);
     expect(Date.now() - t0).toBeLessThan(1500);
   });
 
