@@ -24,8 +24,9 @@ const win = new Window({
   },
 });
 populateGlobal(globalThis, win as unknown as Window & typeof globalThis, { bindFunctions: true });
-// Nothing may leave the build machine: no clip, IP or quote lookups.
-const offline = (): Promise<Response> => Promise.reject(new Error("offline prerender"));
+// Nothing may leave the build machine: no clip, IP, ROM or quote lookups. A request never settles, so a tool stays
+// in its loading state instead of baking an error message ("No ROM", "Retry") into the page.
+const offline = (): Promise<Response> => new Promise<Response>(() => {});
 (globalThis as { fetch: unknown }).fetch = offline;
 (win as unknown as { fetch: unknown }).fetch = offline;
 // No IndexedDB here: draft saves and restores fail the way they do in a private window.
@@ -64,7 +65,13 @@ for (const page of sitemapPages()) {
   history.replaceState(null, "", path);
   app.replaceChildren();
   render();
-  await whenRendered();
+  // A mount that waits on the network never finishes here: skip that page.
+  const done = await Promise.race([whenRendered().then(() => true), new Promise<boolean>((r) => setTimeout(() => r(false), 3000))]);
+  if (!done) {
+    failed.push(path);
+    errors.push(`${path}: mount did not finish`);
+    continue;
+  }
   // Let microtask-driven mounts settle (a tool that awaits a resolved promise before painting).
   await new Promise((r) => setTimeout(r, 0));
   if (pageErrors > 0 || !app.querySelector("main#main")?.childElementCount) {
@@ -75,9 +82,13 @@ for (const page of sitemapPages()) {
   // Text keeps a placeholder so the line keeps its height until the app fills it in.
   app.querySelectorAll<HTMLElement>("[data-volatile]").forEach((el) => {
     if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.value = "";
-    else if (el instanceof HTMLOListElement || el instanceof HTMLUListElement) el.replaceChildren();
+    else if (el instanceof HTMLOListElement || el instanceof HTMLUListElement || el instanceof HTMLSelectElement) el.replaceChildren();
     else el.textContent = "…";
   });
+  // Frames (the game player) start loading from the server HTML; leave them empty so only the mounted page loads one.
+  app.querySelectorAll("iframe").forEach((el) => el.removeAttribute("src"));
+  // Date and time fields default to "now": leave them empty rather than showing the build date.
+  app.querySelectorAll<HTMLInputElement>('input[type="date"], input[type="datetime-local"], input[type="time"]').forEach((el) => { el.value = ""; });
   // Form state lives in DOM properties; copy it to attributes so the markup shows what the tool shows.
   app.querySelectorAll("textarea").forEach((el) => { el.textContent = el.value; });
   app.querySelectorAll("input").forEach((el) => {
@@ -87,6 +98,8 @@ for (const page of sitemapPages()) {
   app.querySelectorAll("select").forEach((sel) => {
     for (const opt of Array.from(sel.options)) opt.toggleAttribute("selected", opt.selected);
   });
+  // Controls without a handler yet: CSS keeps buttons and file pickers from taking clicks until the app swaps in.
+  app.querySelector(".page")?.classList.add("ssr");
   const html = MARKER + app.innerHTML;
   const file = resolve(outDir, `.${path}`, "index.html");
   mkdirSync(dirname(file), { recursive: true });

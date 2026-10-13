@@ -13,6 +13,7 @@ let lastText = "";
 export function mountTimestamp(host: HTMLElement): void {
   inputEl = h("input", {
     class: "regex-pattern",
+    "data-volatile": "",
     spellcheck: "false",
     autocapitalize: "off",
     autocomplete: "off",
@@ -21,7 +22,7 @@ export function mountTimestamp(host: HTMLElement): void {
     onInput: () => paint(),
   });
   nowEl = h("p", { class: "muted", "data-volatile": "" });
-  outEl = h("dl", { class: "stats-grid timestamp-out" });
+  outEl = h("dl", { class: "stats-grid timestamp-out", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("timestamp.back")),

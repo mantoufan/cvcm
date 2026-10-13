@@ -30,6 +30,8 @@ img { max-width: 100%; }
 #app { position: relative; }
 /* The next page mounts here, hidden, and replaces the visible one when ready (see render()). */
 .pending { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; pointer-events: none; }
+/* Server HTML before the app takes over: links and text fields work, controls that need a handler wait. */
+.page.ssr :is(button, select, input[type="file"], input[type="range"], input[type="color"], .drop, .chip) { pointer-events: none; }
 .page { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding-bottom: env(safe-area-inset-bottom); }
 .top { display: flex; align-items: center; gap: 0.75rem; padding: calc(0.75rem + env(safe-area-inset-top)) 0 0.75rem; border-bottom: 1px solid var(--line); }
 .brand { color: var(--pink-deep); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-decoration: none; white-space: nowrap; }

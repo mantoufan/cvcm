@@ -96,7 +96,7 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
 
 function eyedropperBtn(): HTMLElement {
   const Ctor = (window as unknown as { EyeDropper?: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper;
-  if (!Ctor) return h("span", { class: "muted" }, t("color.noDropper"));
+  if (!Ctor) return h("span", { class: "muted", "data-volatile": "" }, t("color.noDropper"));
   return h("button", {
     type: "button",
     class: "btn ghost",

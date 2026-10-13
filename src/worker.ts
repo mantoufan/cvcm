@@ -181,7 +181,7 @@ export default {
     }
 
     // Fetch the page's prerendered body alongside the page itself.
-    const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path, request)) : Promise.resolve(null);
+    const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path)) : Promise.resolve(null);
     // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
     // drop the conditional headers on page routes and the validators from the page response below.
     let assetResponse = await env.ASSETS.fetch(STATIC_FILE.test(path) ? request : unconditional(request));
@@ -271,15 +271,11 @@ function unconditional(request: Request): Request {
   return new Request(request.url, { method: request.method, headers });
 }
 
-/** Which prerendered page a request shows: its own path, the home page for "/", none for clip notes and files. */
-function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string, request: Request): string | null {
+/** Which prerendered page a request shows: its own path; none for clip notes and files ("/" redirects earlier). */
+function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string | null {
   if (STATIC_FILE.test(path)) return null;
   if (parsed.kind === "app") return parsed.clipId ? null : path;
   if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal") return path;
-  if (path === "/" || path === "/index.html") {
-    const locale = negotiateLocale(request.headers.get("Accept-Language"), cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE));
-    return appHref(locale, null);
-  }
   return null;
 }
 

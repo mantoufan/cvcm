@@ -416,9 +416,10 @@ export function render(): void {
     // The server HTML is complete, so on first load wait for the real mount; later pages swap in after a short cap.
     rendered = (hydrating ? ready : Promise.race([ready, wait(SWAP_WAIT_MS)])).then(() => {
       if (gen !== pageGen) return;
-      if (hydrating) carryInput(old, page);
+      const focus = hydrating ? carryInput(old, page) : null;
       for (const el of old) el.remove();
       page.classList.remove("pending");
+      focus?.();
       const anchor = location.hash ? document.getElementById(hashId(location.hash)) : null;
       if (anchor) anchor.scrollIntoView();
       else if (scroll) window.scrollTo(0, 0);
@@ -428,41 +429,34 @@ export function render(): void {
   renderedHref = location.pathname + location.search + location.hash;
 }
 
-const CARRIED = "textarea, select, input:not([type=file]):not([type=hidden]):not([type=password])";
-type Field = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+// Text fields only: their value is what the visitor typed. Other controls hold defaults the browser may normalize.
+const CARRIED = 'textarea, input:not([type]), input[type="text"], input[type="search"], input[type="email"], input[type="url"]';
+type TextField = HTMLInputElement | HTMLTextAreaElement;
 
-/** Edits made in the server HTML before the app took over: copy them, and focus, to the same field of the mounted page. */
-function carryInput(old: Element[], page: HTMLElement): void {
-  const before = old.flatMap((el) => Array.from(el.querySelectorAll<Field>(CARRIED)));
-  const after = Array.from(page.querySelectorAll<Field>(CARRIED));
+/**
+ * Text typed into the server HTML before the app took over: copy it into the same field of the mounted page.
+ * Returns a callback that moves focus and caret there, to run once the page is visible (hidden fields cannot focus).
+ */
+function carryInput(old: Element[], page: HTMLElement): (() => void) | null {
+  const before = old.flatMap((el) => Array.from(el.querySelectorAll<TextField>(CARRIED)));
+  const after = Array.from(page.querySelectorAll<TextField>(CARRIED));
   // Fields pair up by position; give up if the two pages do not have the same fields.
-  if (before.length !== after.length) return;
-  const sameShape = before.every((field, i) => field.tagName === after[i].tagName && field.getAttribute("type") === after[i].getAttribute("type"));
-  if (!sameShape) return;
-  const active = document.activeElement;
+  if (before.length !== after.length || before.some((field, i) => field.tagName !== after[i].tagName)) return null;
+  let focus: (() => void) | null = null;
   before.forEach((field, i) => {
     const next = after[i];
-    if (field === active) {
-      next.focus();
-      if (!(next instanceof HTMLSelectElement) && field instanceof HTMLTextAreaElement) next.setSelectionRange(field.selectionStart, field.selectionEnd);
-    }
-    if (field instanceof HTMLSelectElement) {
-      const changed = Array.from(field.options).some((opt) => opt.selected !== opt.defaultSelected);
-      if (!changed) return;
-      next.value = field.value;
-      next.dispatchEvent(new Event("change", { bubbles: true }));
-      return;
-    }
-    if (field instanceof HTMLInputElement && (field.type === "checkbox" || field.type === "radio")) {
-      if (field.checked === field.defaultChecked || !(next instanceof HTMLInputElement)) return;
-      next.checked = field.checked;
-      next.dispatchEvent(new Event("change", { bubbles: true }));
-      return;
+    if (field === document.activeElement) {
+      const { selectionStart, selectionEnd } = field;
+      focus = () => {
+        next.focus();
+        if (selectionStart !== null && selectionEnd !== null) next.setSelectionRange(selectionStart, selectionEnd);
+      };
     }
     if (field.readOnly || field.value === field.defaultValue) return;
     next.value = field.value;
     next.dispatchEvent(new Event("input", { bubbles: true }));
   });
+  return focus;
 }
 
 function hashId(hash: string): string {

@@ -22,6 +22,7 @@ export function mountTts(host: HTMLElement): void {
     placeholder: t("tts.placeholder"),
   }, t("tts.sample"));
   voiceEl = h("select", {
+    "data-volatile": "",
     onChange: (e: Event) => {
       preferredName = (e.target as HTMLSelectElement).value;
     },
