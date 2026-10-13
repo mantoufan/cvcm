@@ -18,6 +18,17 @@ function enabled(): boolean {
   return import.meta.env.PROD && location.hostname === "cv.cm" && bootTracked;
 }
 
+/** Whether gtag may be running in this page (it can watch history changes on its own). */
+export function analyticsActive(): boolean {
+  return queued;
+}
+
+/** Turn hits off or on for a URL the browser is already showing (Back/Forward), before gtag reacts to it. */
+export function gateAnalytics(pathname: string): void {
+  if (!queued) return;
+  (window as unknown as GaWindow)[`ga-disable-${GA_ID}`] = !isTrackedPath(pathname);
+}
+
 /** Report one SPA page view. File tools and clip notes report nothing and switch an already loaded gtag off. */
 export function trackPageView(): void {
   if (!enabled()) return;
