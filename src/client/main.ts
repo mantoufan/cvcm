@@ -112,6 +112,8 @@ import { gameName } from "../shared/games-i18n";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { mountWatermark, unmountWatermark } from "./watermark/ui";
+import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
+import { isTrackedPath } from "../shared/analytics";
 import "./styles.css";
 
 function requireApp(): HTMLElement {
@@ -150,7 +152,11 @@ let started = false;
 export function start(): void {
   if (!started) {
     started = true;
-    window.addEventListener("popstate", () => render());
+    // Registered before gtag loads, so this runs before gtag's own history listener.
+    window.addEventListener("popstate", () => {
+      gateAnalytics(location.pathname);
+      render();
+    });
     document.addEventListener("click", onClick);
     document.addEventListener("pointerover", prefetchGamePack, { passive: true });
     document.addEventListener("touchstart", prefetchGamePack, { passive: true });
@@ -258,6 +264,12 @@ function onClick(e: MouseEvent): void {
   const a = target?.closest("a");
   if (a && a.target !== "_blank" && a.origin === location.origin) {
     const parsed = parseAppPath(a.pathname);
+    // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
+    // and gtag's automatic history tracking never sees the URL.
+    if (analyticsActive() && !isTrackedPath(a.pathname)) {
+      closeMenus();
+      return;
+    }
     if (parsed.kind !== "static") {
       e.preventDefault();
       closeMenus();
@@ -567,6 +579,7 @@ export function render(): void {
   const root = appEl();
   clear(root);
   root.append(shell(loc));
+  trackPageView();
   renderedHref = location.pathname + location.search + location.hash;
 }
 
