@@ -74,6 +74,11 @@ export function start(): void {
     started = true;
     // Registered before gtag loads, so this runs before gtag's own history listener.
     window.addEventListener("popstate", () => {
+      // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
+      if (renderedHref && renderedHref.split("#")[0] === location.pathname + location.search) {
+        renderedHref = location.pathname + location.search + location.hash;
+        return;
+      }
       gateAnalytics(location.pathname);
       render();
     });
@@ -443,6 +448,17 @@ function carryInput(old: Element[], page: HTMLElement): (() => void) | null {
   // Fields pair up by position; give up if the two pages do not have the same fields.
   if (before.length !== after.length || before.some((field, i) => field.tagName !== after[i].tagName)) return null;
   let focus: (() => void) | null = null;
+  // The clipboard's rich editor: carry what was typed as plain text (never markup from the old DOM).
+  const oldEditors = old.flatMap((el) => Array.from(el.querySelectorAll<HTMLElement>('[contenteditable="true"]')));
+  const newEditors = Array.from(page.querySelectorAll<HTMLElement>('[contenteditable="true"]'));
+  oldEditors.forEach((editor, i) => {
+    const next = newEditors[i];
+    const text = editor.innerText.trim();
+    if (!next || !text) return;
+    next.innerText = editor.innerText;
+    next.dispatchEvent(new Event("input", { bubbles: true }));
+    if (editor === document.activeElement) focus = () => next.focus();
+  });
   before.forEach((field, i) => {
     const next = after[i];
     if (field === document.activeElement) {
