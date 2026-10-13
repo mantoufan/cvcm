@@ -348,7 +348,8 @@
     "text": "Text",
     "games": "Games",
     "device": "Device",
-    "assets": "Assets"
+    "assets": "Assets",
+    "tests": "Tests"
   },
   "lang": {
     "label": "Language",
@@ -5635,5 +5636,61 @@
   "mosaic": {
     "title": "Pixelate or black out parts of a photo",
     "privacyNote": "Photos and screenshots stay in this tab. Export drops EXIF. Closing the page discards them."
+  },
+  "quiz": {
+    "all": "All tests",
+    "questions": "{n} questions",
+    "mbti": {
+      "name": "16 personality types test (MBTI-style)",
+      "blurb": "Get your four-letter type and how strongly you lean on each pair. 32 questions."
+    },
+    "big-five": {
+      "name": "Big Five personality test",
+      "blurb": "The public-domain IPIP 50: openness, conscientiousness, extraversion, agreeableness, neuroticism."
+    },
+    "enneagram": {
+      "name": "Enneagram test",
+      "blurb": "Find which of the nine types drives you, with scores for all nine."
+    },
+    "love-language": {
+      "name": "Love language test",
+      "blurb": "Words, time, gifts, service or touch: how you most like to receive love."
+    },
+    "attachment": {
+      "name": "Attachment style test",
+      "blurb": "Secure, anxious, avoidant or fearful-avoidant in close relationships."
+    },
+    "marriage": {
+      "name": "Marriage readiness test",
+      "blurb": "Communication, conflict, money, family and the future, scored area by area."
+    },
+    "career": {
+      "name": "Career interest test (Holland code)",
+      "blurb": "Rate 36 activities for your RIASEC code and careers that fit it."
+    },
+    "money": {
+      "name": "Money personality test",
+      "blurb": "Saver, spender, investor, avoider or giver, with one tip for your type."
+    },
+    "anime": {
+      "name": "Anime character archetype quiz",
+      "blurb": "Tsundere, kuudere, genki or chuunibyou? 12 questions, just for fun."
+    },
+    "face-shape": {
+      "name": "Face shape test",
+      "blurb": "Six mirror questions to find your face shape, with hair and glasses tips."
+    },
+    "self-esteem": {
+      "name": "Self-esteem test (Rosenberg)",
+      "blurb": "The 10-item Rosenberg scale, scored out of 30."
+    },
+    "anxiety": {
+      "name": "Anxiety test (GAD-7)",
+      "blurb": "The 7-question anxiety screening doctors use, scored 0 to 21."
+    },
+    "depression": {
+      "name": "Depression test (PHQ-9)",
+      "blurb": "The 9-question depression screening, scored 0 to 27."
+    }
   }
 }

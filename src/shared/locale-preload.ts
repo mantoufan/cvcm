@@ -5,15 +5,19 @@ declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
 
 const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "undefined" ? {} : __LOCALE_PACKS__;
 
-/** Fetch the page's strings (plus the game pack on a game page) in parallel with the entry script instead of after it runs. */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS): string {
-  const files = [...new Set([...(packs[locale] ?? []), ...(game ? packs[`games-${locale}`] ?? [] : [])])];
+/** Fetch the page's strings (plus the game or quiz pack on those pages) in parallel with the entry script instead of after it runs. */
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false): string {
+  const files = [...new Set([
+    ...(packs[locale] ?? []),
+    ...(game ? packs[`games-${locale}`] ?? [] : []),
+    ...(quiz ? packs[`quiz-${locale}`] ?? [] : []),
+  ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");
   return html.replace("</head>", `${links}\n  </head>`);
 }
 
-// Page key (tool id, or home / learn / games / device / markets) -> the lazy chunk that page mounts, from the same manifest.
+// Page key (tool id, or home / learn / games / device / markets / quiz) -> the lazy chunk that page mounts, from the same manifest.
 declare const __PAGE_CHUNKS__: Record<string, string[]> | undefined;
 
 const PAGE_CHUNKS: Record<string, string[]> = typeof __PAGE_CHUNKS__ === "undefined" ? {} : __PAGE_CHUNKS__;

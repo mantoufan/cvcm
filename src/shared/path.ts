@@ -8,10 +8,14 @@ import {
   type GameId,
 } from "./games";
 import { isMarketId, type MarketId } from "./markets";
+import { isQuizId, type QuizId } from "./quiz";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
   /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$)/;
+
+/** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
+export const QUIZ_SEGMENT = "tests";
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
@@ -270,12 +274,14 @@ export type AppPath =
   | { kind: "bare-markets"; market: MarketId | null }
   | { kind: "bare-device"; page: DevicePageId }
   | { kind: "bare-legal"; page: LegalPageId }
+  | { kind: "bare-quiz"; quiz: QuizId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
   | { kind: "markets"; locale: Locale; market: MarketId | null }
   | { kind: "device"; locale: Locale; page: DevicePageId }
   | { kind: "legal"; locale: Locale; page: LegalPageId }
+  | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -346,6 +352,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (page === "unknown") return { kind: "unknown" };
       return { kind: "device", locale, page };
     }
+    if (second === QUIZ_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "quiz", locale, quiz: null };
+      if (isQuizId(third)) return { kind: "quiz", locale, quiz: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -386,6 +398,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (market === "unknown") return { kind: "unknown" };
     return { kind: "bare-markets", market };
   }
+  if (first === QUIZ_SEGMENT) {
+    if (!second) return { kind: "bare-quiz", quiz: null };
+    if (isQuizId(second) && !third) return { kind: "bare-quiz", quiz: second };
+    return { kind: "unknown" };
+  }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "convert" && second && !third && isConvertJobId(second)) {
@@ -423,6 +440,11 @@ export function deviceHref(locale: Locale, page: DevicePageId = "hub"): string {
   if (page === "hub") return `${base}/`;
   const slug: DeviceChildId = page;
   return `${base}/${DEVICE_SLUG[slug]}/`;
+}
+
+export function quizHref(locale: Locale, quiz: QuizId | null = null): string {
+  const base = `/${localePath(locale)}/${QUIZ_SEGMENT}`;
+  return quiz ? `${base}/${quiz}/` : `${base}/`;
 }
 
 export function legalHref(locale: Locale, page: LegalPageId): string {

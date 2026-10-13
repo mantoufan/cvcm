@@ -35,6 +35,7 @@ const pageModules = {
   games: "src/client/games/ui.ts",
   device: "src/client/device/ui.ts",
   markets: "src/client/markets/ui.ts",
+  quiz: "src/client/quiz/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

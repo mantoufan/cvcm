@@ -1,0 +1,781 @@
+{
+  "crumbHome": "Beranda",
+  "ui": {
+    "kicker": "Gratis · {n} pertanyaan · sekitar {m} menit · tanpa daftar",
+    "scaleHint": {
+      "agree5": "Seberapa tepat setiap pernyataan menggambarkan dirimu? Jawablah sesuai dirimu yang biasanya, bukan yang kamu inginkan.",
+      "agree4": "Seberapa setuju kamu dengan setiap pernyataan tentang dirimu?",
+      "freq4": "Dalam 2 minggu terakhir, seberapa sering kamu terganggu oleh hal-hal berikut?"
+    },
+    "choiceHint": "Pilih jawaban yang paling mendekati dirimu. Tidak ada jawaban yang salah.",
+    "scale": {
+      "agree5": ["Sangat tidak setuju", "Tidak setuju", "Netral", "Setuju", "Sangat setuju"],
+      "agree4": ["Sangat tidak setuju", "Tidak setuju", "Setuju", "Sangat setuju"],
+      "freq4": ["Tidak sama sekali", "Beberapa hari", "Lebih dari separuh hari", "Hampir setiap hari"]
+    },
+    "progress": "{n} dari {total} terjawab",
+    "submit": "Lihat hasil saya",
+    "missing": "Tersisa {n}. Jawab semua pertanyaan untuk melihat hasilmu.",
+    "result": "Hasilmu",
+    "retake": "Ulangi dari awal",
+    "copy": "Salin hasil",
+    "copied": "Tersalin",
+    "about": "Tentang tes ini",
+    "faq": "Tanya jawab",
+    "more": "Tes lainnya",
+    "all": "Semua tes",
+    "privacy": "Jawabanmu dinilai di tab ini. Tidak ada yang diunggah, disimpan, atau dikirim ke mana pun.",
+    "notDiagnosis": "Ini adalah pemeriksaan mandiri, bukan diagnosis. Hanya tenaga profesional yang berwenang yang dapat mendiagnosis gangguan kesehatan mental.",
+    "levels": { "low": "Rendah", "mid": "Sedang", "high": "Tinggi" },
+    "score": "Skor",
+    "top3": "Tiga teratasmu",
+    "runnerUp": "Juga menonjol",
+    "focus": "Area yang perlu diperkuat",
+    "crisisTitle": "Jika kamu berpikir untuk menyakiti diri sendiri",
+    "crisisBody": "Kamu layak mendapat dukungan sekarang juga. Jika kamu mungkin bertindak berdasarkan pikiran ini, hubungi nomor darurat setempat atau pergi ke IGD terdekat. Kamu juga bisa menghubungi layanan krisis gratis dan rahasia: findahelpline.com mencantumkan layanan di setiap negara.",
+    "crisisLines": "Indonesia: layanan SEJIWA 119 ekstensi 8; dalam keadaan darurat hubungi 112."
+  },
+  "hub": {
+    "title": "Tes kepribadian gratis: MBTI, Big Five, cinta & karier — cv.cm",
+    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, Enneagram, bahasa cinta, minat bakat, bentuk wajah, kecemasan, dan depresi. Tanpa daftar.",
+    "h1": "Tes kepribadian dan psikologi",
+    "lede": "Tiga belas tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
+    "groups": {
+      "personality": "Kepribadian",
+      "love": "Cinta dan hubungan",
+      "career": "Karier dan keuangan",
+      "fun": "Seru-seruan",
+      "wellbeing": "Cek kesehatan mental"
+    },
+    "about": [
+      "Setiap tes menampilkan semua pertanyaannya dalam satu halaman. Jawab semuanya, tekan tombol, dan hasilnya muncul di bawah pertanyaan beserta penjelasan singkat dan grafik skormu.",
+      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis."
+    ],
+    "faq": [
+      { "q": "Apakah tes ini gratis?", "a": "Ya. Semua tes gratis, tanpa daftar, tanpa email, dan tanpa bayar untuk melihat hasil." },
+      { "q": "Apakah jawabanku disimpan?", "a": "Tidak. Penilaian berjalan di tab browser kamu. Jawaban tidak diunggah atau disimpan, dan akan hilang saat tab ditutup." },
+      { "q": "Seberapa akurat tes kepribadian online?", "a": "Tes laporan diri yang singkat menggambarkan cara kamu melihat dirimu saat ini. Anggap hasilnya sebagai cermin untuk refleksi, dan ulangi setelah beberapa waktu: hasil yang tetap sama adalah yang paling bisa dipercaya." },
+      { "q": "Tes mana yang sebaiknya kucoba dulu?", "a": "Untuk tipe yang cepat, ambil tes 16 kepribadian. Untuk model yang paling banyak dipakai psikolog, ambil Big Five. Untuk urusan hubungan, coba tes bahasa cinta atau gaya keterikatan." }
+    ]
+  },
+  "tests": {
+    "mbti": {
+      "title": "Tes MBTI gratis: 16 tipe kepribadian dalam 32 soal — cv.cm",
+      "description": "Ikuti tes kepribadian MBTI gratis. Jawab 32 pernyataan dan dapatkan tipe empat hurufmu (seperti INFJ atau ESTP) beserta kekuatan tiap preferensi. Tanpa daftar.",
+      "h1": "Tes 16 tipe kepribadian (gaya MBTI)",
+      "lede": "Temukan tipe empat hurufmu: dari mana kamu mendapat energi (E/I), cara kamu menyerap informasi (S/N), cara kamu memutuskan (T/F), dan cara kamu mengatur hidup (J/P).",
+      "about": [
+        "Ke-16 tipe berasal dari teori tipe psikologis Carl Jung, yang kemudian dikembangkan oleh Katharine Briggs dan Isabel Myers. Setiap huruf adalah salah satu sisi dari sepasang preferensi, dan persentasenya menunjukkan seberapa kuat kamu condong ke sisi itu. Hasil mendekati 50% berarti kamu memakai kedua sisi.",
+        "Ini adalah tes independen bergaya MBTI yang disusun untuk cv.cm. Tes ini bukan asesmen resmi Myers-Briggs Type Indicator® dan tidak berafiliasi dengan The Myers-Briggs Company."
+      ],
+      "faq": [
+        { "q": "Apakah ini tes MBTI resmi?", "a": "Bukan. Asesmen MBTI® resmi dijual melalui praktisi bersertifikat. Tes gratis ini memakai empat pasangan preferensi yang sama dengan pertanyaannya sendiri." },
+        { "q": "Apa arti keempat huruf itu?", "a": "E atau I: Ekstraversi atau Introversi. S atau N: Penginderaan atau Intuisi. T atau F: Pemikiran atau Perasaan. J atau P: Penilaian atau Persepsi." },
+        { "q": "Kenapa tipeku berbeda dari tes sebelumnya?", "a": "Jika satu pasangan mendekati 50%, sedikit perubahan jawaban bisa membalik hurufnya. Lihat persentasenya: preferensi yang kuat adalah bagian tipemu yang stabil." },
+        { "q": "Bisakah tipeku berubah?", "a": "Preferensi inti cenderung cukup stabil di usia dewasa, tetapi stres, pekerjaan baru, atau fase hidup baru bisa mengubah cara kamu menjawab." }
+      ],
+      "items": [
+        "Saya merasa bersemangat setelah menghabiskan waktu bersama sekelompok orang.",
+        "Saya lebih fokus pada fakta dan detail daripada kemungkinan.",
+        "Saat mengambil keputusan, logika lebih penting bagi saya daripada perasaan.",
+        "Saya suka merencanakan sesuatu jauh-jauh hari.",
+        "Saya sering berpikir sambil bicara, membahas ide dengan orang lain.",
+        "Saya lebih percaya pada pengalaman daripada teori.",
+        "Saya lebih memilih jujur daripada menjaga perasaan.",
+        "Saya merasa lebih tenang setelah keputusan diambil.",
+        "Saya mudah memulai percakapan dengan orang asing.",
+        "Saya lebih suka instruksi yang jelas dan bertahap.",
+        "Saya menganalisis masalah secara objektif, bahkan saat orang-orang sedang kesal.",
+        "Saya menjaga ruang dan jadwal saya tetap teratur.",
+        "Saya lebih suka punya banyak kenalan daripada sedikit teman dekat.",
+        "Saya memperhatikan detail praktis yang terlewat oleh orang lain.",
+        "Saya lebih menghargai aturan yang adil dan konsisten daripada pengecualian.",
+        "Saya suka menyelesaikan satu tugas sebelum memulai tugas lain.",
+        "Setelah hari yang penuh interaksi sosial, saya butuh waktu sendiri untuk mengisi ulang energi.",
+        "Saya sering membayangkan bagaimana segala sesuatu bisa sama sekali berbeda.",
+        "Saya mempertimbangkan bagaimana sebuah keputusan akan memengaruhi perasaan orang.",
+        "Saya lebih suka membiarkan pilihan tetap terbuka daripada berkomitmen terlalu dini.",
+        "Saya lebih suka memikirkan sesuatu matang-matang sebelum berbicara.",
+        "Saya senang membahas ide dan teori yang abstrak.",
+        "Keharmonisan dalam kelompok sangat penting bagi saya.",
+        "Saya bekerja paling baik saat tenggat sudah dekat.",
+        "Saya menikmati malam yang tenang sendirian.",
+        "Saya cenderung mencari makna dan pola yang tersembunyi.",
+        "Saya mudah menempatkan diri di posisi orang lain.",
+        "Saya senang bersikap spontan dan mengikuti arus.",
+        "Dalam rapat, saya biasanya lebih banyak mendengar daripada bicara.",
+        "Rutinitas membuat saya bosan, dan saya suka mencoba cara-cara baru.",
+        "Saya sering membuat pilihan berdasarkan nilai-nilai pribadi saya.",
+        "Rencana yang kaku membuat saya merasa terkekang."
+      ],
+      "letters": {
+        "E": "Ekstraversi", "I": "Introversi",
+        "S": "Penginderaan", "N": "Intuisi",
+        "T": "Pemikiran", "F": "Perasaan",
+        "J": "Penilaian", "P": "Persepsi"
+      },
+      "results": {
+        "ESTJ": { "name": "ESTJ · Sang Pengawas", "body": "Praktis, teratur, dan lugas. Kamu suka aturan yang jelas, menyelesaikan tugas tepat waktu, dan secara alami memimpin orang serta proyek. Hati-hati jangan sampai mengabaikan suara yang lebih pelan; menanyakan perasaan orang membuat rencanamu lebih mudah diterima." },
+        "ESTP": { "name": "ESTP · Sang Pelaku", "body": "Energik, berani, dan suka turun langsung. Kamu cepat membaca situasi, menikmati risiko, dan menyelesaikan masalah saat itu juga. Rencana jangka panjang dan urusan administrasi rutin membuatmu bosan; daftar periksa sederhana menjaga momentummu tanpa meninggalkan pekerjaan yang terbengkalai." },
+        "ESFJ": { "name": "ESFJ · Sang Pengasuh", "body": "Hangat, setia, dan supel. Kamu peka terhadap kebutuhan orang, menjaga tradisi, dan merekatkan kelompok. Kamu mungkin mudah memasukkan kritik ke hati; ingatlah bahwa sesekali berkata tidak juga merupakan bentuk kepedulian." },
+        "ESFP": { "name": "ESFP · Sang Penghibur", "body": "Ceria, spontan, dan murah hati. Kamu membawa energi ke ruangan mana pun dan menikmati momen saat ini bersama orang lain. Merencanakan ke depan terasa membosankan, tetapi sedikit struktur justru memberimu lebih banyak kebebasan nanti." },
+        "ENTJ": { "name": "ENTJ · Sang Komandan", "body": "Strategis, tegas, dan ambisius. Kamu tahu bagaimana sesuatu seharusnya berjalan, menetapkan tujuan besar, dan mengorganisasi orang untuk mencapainya. Kesabaran terhadap proses yang lebih lambat dan terhadap perasaan akan menjadikanmu pemimpin yang lebih kuat." },
+        "ENTP": { "name": "ENTP · Sang Pendebat", "body": "Cerdas, ingin tahu, dan inventif. Kamu menyukai ide, perdebatan, dan kemungkinan baru, serta senang menantang asumsi. Menyelesaikan proyek adalah bagian tersulit; berpasanganlah dengan orang yang suka detail." },
+        "ENFJ": { "name": "ENFJ · Sang Mentor", "body": "Karismatik, empatik, dan menginspirasi. Kamu mengeluarkan potensi terbaik orang dan menyatukan mereka dalam nilai bersama. Kamu bisa terlalu larut memenuhi kebutuhan orang lain; sisihkan waktu untuk dirimu sendiri." },
+        "ENFP": { "name": "ENFP · Sang Juru Kampanye", "body": "Antusias, imajinatif, dan hangat. Kamu melihat potensi di mana-mana, mudah terhubung dengan orang, dan mengejar hal yang terasa bermakna. Terlalu banyak proyek terbuka bisa memecah energimu; pilih beberapa dan tuntaskan." },
+        "ISTJ": { "name": "ISTJ · Sang Pemeriksa", "body": "Bertanggung jawab, teliti, dan dapat diandalkan. Kamu menepati janji, menghargai fakta dan metode yang terbukti, dan menuntaskan apa yang kamu mulai. Perubahan bisa terasa meresahkan; mencoba eksperimen kecil membantumu beradaptasi dengan caramu sendiri." },
+        "ISTP": { "name": "ISTP · Sang Perajin", "body": "Tenang, logis, dan praktis. Kamu suka memahami cara kerja sesuatu dan memecahkan masalah dengan tangan atau analisis yang jernih. Kamu menghargai kemandirian; memberi tahu orang apa yang kamu pikirkan membantu mereka memercayaimu." },
+        "ISFJ": { "name": "ISFJ · Sang Pelindung", "body": "Baik hati, dapat diandalkan, dan jeli. Kamu mengingat detail tentang orang lain dan diam-diam merawat mereka. Kamu sering mendahulukan orang lain; kebutuhanmu sendiri juga layak mendapat perhatian yang sama." },
+        "ISFP": { "name": "ISFP · Sang Seniman", "body": "Lembut, peka, dan kreatif. Kamu hidup sesuai nilai-nilaimu, menikmati keindahan saat ini, dan mengekspresikan diri lewat apa yang kamu buat atau lakukan. Konflik menguras energimu; menyampaikan pendapat sejak awal menjaga masalah kecil tetap kecil." },
+        "INTJ": { "name": "INTJ · Sang Arsitek", "body": "Mandiri, analitis, dan visioner. Kamu menyusun rencana jangka panjang, mempertanyakan segala hal, dan menetapkan standar tinggi untuk dirimu. Orang lain mungkin sulit membacamu; menjelaskan alasanmu membuat mereka ikut sejalan." },
+        "INTP": { "name": "INTP · Sang Pemikir", "body": "Ingin tahu, cermat, dan inventif. Kamu menyukai teori, sistem, dan teka-teki, dan butuh waktu sendiri untuk memikirkannya. Ide bisa tertahan di kepala; membagikan versi kasarnya lebih awal mengubahnya menjadi sesuatu yang nyata." },
+        "INFJ": { "name": "INFJ · Sang Konselor", "body": "Penuh wawasan, berprinsip, dan welas asih. Kamu merasakan apa yang dirasakan orang lain, mencari makna yang lebih dalam, dan diam-diam berusaha membuat dunia lebih baik. Kamu bisa kelelahan karena terlalu peduli; jaga waktu istirahatmu." },
+        "INFP": { "name": "INFP · Sang Idealis", "body": "Penuh pertimbangan, idealis, dan setia pada nilai-nilaimu. Kamu memiliki dunia batin yang kaya dan ingin hidup serta pekerjaanmu bermakna. Kritik diri bisa menghambatmu; kemajuan lebih baik daripada kesempurnaan." }
+      }
+    },
+    "big-five": {
+      "title": "Tes kepribadian Big Five gratis (IPIP 50 soal) — cv.cm",
+      "description": "Tes kepribadian Big Five (OCEAN) gratis dengan kuesioner IPIP 50 butir. Lihat skor keterbukaan, kehati-hatian, ekstraversi, keramahan, dan neurotisisme.",
+      "h1": "Tes kepribadian Big Five (OCEAN)",
+      "lede": "Ukur lima sifat yang paling banyak dipakai psikolog: Keterbukaan, Kehati-hatian, Ekstraversi, Keramahan, dan Neurotisisme. 50 pernyataan singkat, hasil berupa lima skor dari 100.",
+      "about": [
+        "Big Five (disebut juga Model Lima Faktor atau OCEAN) adalah model kepribadian yang paling banyak diteliti. Alih-alih memasukkanmu ke dalam satu kotak, model ini menempatkanmu pada lima skala yang saling independen, sehingga setiap orang mendapat profil yang unik.",
+        "Tes ini memakai 50 butir Big-Five Factor Markers dari International Personality Item Pool (IPIP), yang dikembangkan oleh Lewis Goldberg dan berstatus domain publik. Skor di sini dibandingkan dengan rentang skala, bukan dengan sampel populasi, jadi 50 berarti titik tengah skala."
+      ],
+      "faq": [
+        { "q": "OCEAN itu singkatan dari apa?", "a": "Openness (keterbukaan terhadap pengalaman), Conscientiousness (kehati-hatian), Extraversion (ekstraversi), Agreeableness (keramahan), dan Neuroticism (neurotisisme), lima sifat besar dalam model ini." },
+        { "q": "Apakah skor tinggi lebih baik?", "a": "Tidak. Setiap ujung sifat punya kelebihannya. Ekstraversi rendah sejalan dengan fokus dan ketenangan; keramahan rendah dengan keterusterangan dan kemandirian." },
+        { "q": "Apakah Big Five lebih ilmiah daripada MBTI?", "a": "Sebagian besar peneliti kepribadian lebih memilih Big Five: sifat-sifatnya diukur sebagai skor kontinu dan dalam banyak studi dapat memprediksi hal seperti kinerja kerja dan kesejahteraan." },
+        { "q": "Dari mana asal pertanyaannya?", "a": "Dari IPIP 50-item Big-Five Factor Markers karya Lewis Goldberg, kuesioner domain publik yang banyak dipakai dalam penelitian." }
+      ],
+      "items": [
+        "Saya adalah pusat perhatian di pesta.",
+        "Saya kurang peduli pada orang lain.",
+        "Saya selalu siap sedia.",
+        "Saya mudah merasa stres.",
+        "Saya memiliki kosakata yang kaya.",
+        "Saya tidak banyak bicara.",
+        "Saya tertarik pada orang lain.",
+        "Saya meninggalkan barang-barang saya berserakan.",
+        "Saya merasa santai hampir sepanjang waktu.",
+        "Saya kesulitan memahami ide-ide abstrak.",
+        "Saya merasa nyaman berada di sekitar orang lain.",
+        "Saya menghina orang lain.",
+        "Saya memperhatikan detail.",
+        "Saya mengkhawatirkan banyak hal.",
+        "Saya memiliki imajinasi yang hidup.",
+        "Saya lebih suka berada di belakang layar.",
+        "Saya bersimpati pada perasaan orang lain.",
+        "Saya membuat segala sesuatu jadi berantakan.",
+        "Saya jarang merasa sedih.",
+        "Saya tidak tertarik pada ide-ide abstrak.",
+        "Saya memulai percakapan.",
+        "Saya tidak tertarik pada masalah orang lain.",
+        "Saya segera menyelesaikan pekerjaan rumah.",
+        "Saya mudah terganggu.",
+        "Saya memiliki ide-ide yang hebat.",
+        "Saya hanya punya sedikit hal untuk dikatakan.",
+        "Saya berhati lembut.",
+        "Saya sering lupa mengembalikan barang ke tempatnya.",
+        "Saya mudah merasa kesal.",
+        "Saya tidak memiliki imajinasi yang baik.",
+        "Saya berbicara dengan banyak orang berbeda di pesta.",
+        "Saya tidak terlalu tertarik pada orang lain.",
+        "Saya menyukai keteraturan.",
+        "Suasana hati saya sering berubah.",
+        "Saya cepat memahami sesuatu.",
+        "Saya tidak suka menarik perhatian pada diri sendiri.",
+        "Saya meluangkan waktu untuk orang lain.",
+        "Saya melalaikan kewajiban saya.",
+        "Suasana hati saya sering naik turun.",
+        "Saya menggunakan kata-kata yang sulit.",
+        "Saya tidak keberatan menjadi pusat perhatian.",
+        "Saya ikut merasakan emosi orang lain.",
+        "Saya mengikuti jadwal.",
+        "Saya mudah merasa jengkel.",
+        "Saya meluangkan waktu untuk merenungkan berbagai hal.",
+        "Saya pendiam di depan orang asing.",
+        "Saya membuat orang lain merasa nyaman.",
+        "Saya sangat teliti dalam pekerjaan saya.",
+        "Saya sering merasa sedih.",
+        "Saya penuh dengan ide."
+      ],
+      "dims": {
+        "O": "Keterbukaan",
+        "C": "Kehati-hatian",
+        "E": "Ekstraversi",
+        "A": "Keramahan",
+        "N": "Neurotisisme"
+      },
+      "levels": {
+        "O": {
+          "low": "Kamu lebih menyukai hal yang akrab dan praktis. Kamu suka cara yang sudah terbukti dan fakta konkret daripada spekulasi abstrak.",
+          "mid": "Kamu menyeimbangkan rasa ingin tahu dengan sisi praktis: terbuka pada ide baru saat berguna, nyaman dengan rutinitas saat berjalan baik.",
+          "high": "Kamu penuh rasa ingin tahu, imajinatif, dan tertarik pada ide, seni, serta pengalaman baru. Kamu menikmati pemikiran abstrak dan variasi."
+        },
+        "C": {
+          "low": "Kamu fleksibel dan spontan, serta tidak suka rencana yang kaku. Tenggat waktu dan kerapian mungkin butuh usaha sadar.",
+          "mid": "Kamu teratur saat diperlukan dan santai saat tidak. Kamu bisa merencanakan, tetapi tidak perlu semuanya terjadwal.",
+          "high": "Kamu teratur, dapat diandalkan, dan berorientasi pada tujuan. Kamu merencanakan ke depan, memperhatikan detail, dan menuntaskan pekerjaan."
+        },
+        "E": {
+          "low": "Kamu pendiam dan mengisi ulang energi sendirian atau bersama segelintir orang dekat. Kamu berpikir sebelum bicara dan menikmati fokus yang tenang.",
+          "mid": "Kamu seorang ambivert: supel di situasi yang tepat, tetapi juga menghargai waktu untuk diri sendiri.",
+          "high": "Kamu ramah, banyak bicara, dan bersemangat saat bersama orang lain. Kamu menikmati perhatian, kelompok, dan suasana yang ramai."
+        },
+        "A": {
+          "low": "Kamu terus terang, skeptis, dan kompetitif. Kamu mengatakan apa yang kamu pikirkan dan tidak keberatan dengan perbedaan pendapat.",
+          "mid": "Kamu umumnya kooperatif, tetapi bisa mempertahankan pendirian. Kamu menimbang kebutuhan orang lain dengan kebutuhanmu sendiri.",
+          "high": "Kamu hangat, mudah percaya, dan suka menolong. Kamu peduli pada keharmonisan dan perasaan orang lain."
+        },
+        "N": {
+          "low": "Emosimu stabil dan kamu tetap tenang di bawah tekanan. Kemunduran jarang mengguncangmu lama.",
+          "mid": "Kamu merasakan stres dan kekhawatiran pada tingkat yang wajar dan biasanya pulih dalam waktu yang masuk akal.",
+          "high": "Kamu merasakan emosi dengan intens dan bisa rentan terhadap kekhawatiran, stres, atau suasana hati yang murung. Istirahat teratur, olahraga, dan bercerita kepada orang lain bisa membantu."
+        }
+      }
+    },
+    "enneagram": {
+      "title": "Tes Enneagram gratis: temukan tipemu dalam 36 soal — cv.cm",
+      "description": "Tes Enneagram gratis. Nilai 36 pernyataan untuk melihat tipe Enneagram yang paling cocok denganmu, lengkap dengan skor kesembilan tipe. Tanpa daftar.",
+      "h1": "Tes kepribadian Enneagram",
+      "lede": "Temukan tipe Enneagram mana yang menggerakkanmu: apa yang paling kamu inginkan, apa yang kamu takutkan, dan bagaimana kamu bertindak saat tertekan.",
+      "about": [
+        "Enneagram menggambarkan sembilan tipe kepribadian, masing-masing berpusat pada satu motivasi inti. Kebanyakan orang melihat sedikit dirinya dalam beberapa tipe; tipe utamamu adalah tipe yang motivasinya paling terasa seperti rumah.",
+        "Tes singkat ini disusun untuk cv.cm. Baca deskripsi dua atau tiga tipe teratasmu lalu putuskan mana yang paling cocok: mengenali diri sendiri adalah cara Enneagram seharusnya digunakan."
+      ],
+      "faq": [
+        { "q": "Apa saja sembilan tipe Enneagram?", "a": "1 Sang Pembaharu, 2 Sang Penolong, 3 Sang Peraih, 4 Sang Individualis, 5 Sang Penyelidik, 6 Sang Loyalis, 7 Sang Antusias, 8 Sang Penantang, 9 Sang Pendamai." },
+        { "q": "Apa itu sayap (wing)?", "a": "Sayapmu adalah salah satu dari dua tipe yang bersebelahan dengan tipe utamamu di lingkaran Enneagram (tipe 4 bisa bersayap 3 atau 5). Skor tertinggi keduamu bisa jadi petunjuk jika letaknya bersebelahan dengan tipe utamamu." },
+        { "q": "Skor teratasku berdekatan. Mana tipeku?", "a": "Baca setiap deskripsi dan tanyakan ketakutan serta keinginan inti mana yang paling benar sepanjang hidupmu, bukan hanya belakangan ini." },
+        { "q": "Apakah Enneagram ilmiah?", "a": "Dukungan penelitiannya terbatas dibandingkan Big Five. Meski begitu, banyak orang merasa Enneagram berguna sebagai bahasa untuk memahami motivasi dan pertumbuhan diri." }
+      ],
+      "items": [
+        "Saya menetapkan standar tinggi untuk diri sendiri dan cepat menyadari kesalahan.",
+        "Saya merasa paling bahagia saat seseorang membutuhkan bantuan saya.",
+        "Sukses dan dikagumi sangat penting bagi saya.",
+        "Saya sering merasa berbeda dari orang lain.",
+        "Saya butuh banyak waktu sendiri untuk berpikir dan mengisi ulang energi.",
+        "Saya cenderung membayangkan apa yang bisa salah dan bersiap menghadapinya.",
+        "Saya selalu mencari hal seru berikutnya untuk dilakukan.",
+        "Saya mengatakan apa yang saya pikirkan, meskipun bisa memicu konflik.",
+        "Saya mengikuti kemauan orang lain demi menjaga kedamaian.",
+        "Saya merasa tidak nyaman jika sesuatu tidak dikerjakan dengan benar.",
+        "Saya pandai merasakan apa yang dibutuhkan orang lain, kadang sebelum mereka sendiri menyadarinya.",
+        "Saya menyesuaikan citra diri dengan apa yang membuat orang terkesan.",
+        "Emosi yang mendalam, bahkan yang sedih, terasa bermakna bagi saya.",
+        "Saya lebih suka memahami suatu topik sepenuhnya sebelum bertindak.",
+        "Kesetiaan dan rasa aman sangat penting bagi saya.",
+        "Saya tidak suka dibatasi atau terikat.",
+        "Saya suka memegang kendali dan benci merasa lemah.",
+        "Saya menghindari konflik, bahkan saat ada sesuatu yang mengganggu saya.",
+        "Saya sulit bersantai sebelum pekerjaan saya sempurna.",
+        "Kadang saya memberi begitu banyak sampai mengabaikan kebutuhan sendiri.",
+        "Saya sangat berorientasi pada tujuan dan produktif.",
+        "Saya ingin benar-benar unik dan autentik.",
+        "Saya menjaga privasi dan energi saya.",
+        "Saya lambat memercayai orang dan menguji keandalan mereka.",
+        "Saya membiarkan banyak pilihan tetap terbuka agar tidak ketinggalan apa pun.",
+        "Saya melindungi orang-orang yang saya sayangi dengan sepenuh hati.",
+        "Saya menunda keputusan dan membiarkan segala sesuatu beres dengan sendirinya.",
+        "Saya punya suara hati yang kuat tentang benar dan salah.",
+        "Saya ingin dicintai dan dihargai atas apa yang saya berikan.",
+        "Saya benci gagal dan terus menyibukkan diri agar tetap unggul.",
+        "Saya tertarik pada keindahan, seni, dan ekspresi diri.",
+        "Pengetahuan dan kompetensi membuat saya merasa aman.",
+        "Saya mencari bimbingan dari aturan atau orang yang saya percayai.",
+        "Saya cepat mengubah situasi buruk menjadi sesuatu yang positif.",
+        "Saya segera mengambil alih saat tidak ada orang lain yang melakukannya.",
+        "Saya santai dan bisa akur dengan hampir siapa saja."
+      ],
+      "dims": {
+        "1": "Tipe 1 · Pembaharu", "2": "Tipe 2 · Penolong", "3": "Tipe 3 · Peraih",
+        "4": "Tipe 4 · Individualis", "5": "Tipe 5 · Penyelidik", "6": "Tipe 6 · Loyalis",
+        "7": "Tipe 7 · Antusias", "8": "Tipe 8 · Penantang", "9": "Tipe 9 · Pendamai"
+      },
+      "results": {
+        "1": { "name": "Tipe 1 · Sang Pembaharu", "body": "Berprinsip, punya tujuan, dan pandai mengendalikan diri. Kamu ingin menjadi baik dan melakukan segala sesuatu dengan benar, dan kamu takut menjadi buruk atau keliru. Pertumbuhan datang dari menerima bahwa yang tidak sempurna sering kali sudah cukup baik, bagi dirimu dan orang lain." },
+        "2": { "name": "Tipe 2 · Sang Penolong", "body": "Peduli, murah hati, dan suka menyenangkan orang. Kamu ingin dicintai dan dibutuhkan, dan kamu takut tidak diinginkan. Pertumbuhan datang dari menyadari kebutuhanmu sendiri dan meminta bantuan secara langsung." },
+        "3": { "name": "Tipe 3 · Sang Peraih", "body": "Penuh dorongan, mudah beradaptasi, dan sadar citra. Kamu ingin merasa berharga dan sukses, dan kamu takut tidak bernilai. Pertumbuhan datang dari menghargai siapa dirimu, bukan hanya apa yang kamu capai." },
+        "4": { "name": "Tipe 4 · Sang Individualis", "body": "Ekspresif, peka, dan introspektif. Kamu ingin menemukan identitas sejati dan makna dirimu, dan kamu takut tidak memilikinya. Pertumbuhan datang dari menghargai kehidupan sehari-hari dan apa yang sudah kamu miliki." },
+        "5": { "name": "Tipe 5 · Sang Penyelidik", "body": "Ingin tahu, penuh wawasan, dan tertutup. Kamu ingin mampu dan kompeten, dan kamu takut kewalahan atau tidak berguna. Pertumbuhan datang dari terlibat dengan dunia sebelum kamu merasa benar-benar siap." },
+        "6": { "name": "Tipe 6 · Sang Loyalis", "body": "Berkomitmen, bertanggung jawab, dan mengutamakan rasa aman. Kamu menginginkan dukungan dan bimbingan, dan kamu takut kehilangannya. Pertumbuhan datang dari memercayai penilaianmu sendiri." },
+        "7": { "name": "Tipe 7 · Sang Antusias", "body": "Spontan, serba bisa, dan optimis. Kamu ingin merasa puas dan bebas, dan kamu takut pada rasa sakit dan ketinggalan. Pertumbuhan datang dari bertahan pada satu hal, termasuk perasaan yang sulit." },
+        "8": { "name": "Tipe 8 · Sang Penantang", "body": "Percaya diri, tegas, dan protektif. Kamu ingin mengendalikan hidupmu sendiri, dan kamu takut disakiti atau dikendalikan. Pertumbuhan datang dari membiarkan orang yang kamu percayai melihat sisi lembutmu." },
+        "9": { "name": "Tipe 9 · Sang Pendamai", "body": "Santai, mudah menerima, dan menenangkan. Kamu menginginkan kedamaian batin dan lahir, dan kamu takut pada konflik dan perpisahan. Pertumbuhan datang dari menyuarakan prioritasmu sendiri dan bertindak atasnya." }
+      }
+    },
+    "love-language": {
+      "title": "Tes bahasa cinta gratis: apa bahasa cintamu? — cv.cm",
+      "description": "Tes bahasa cinta gratis. Nilai 25 pernyataan untuk tahu cara kamu paling suka dicintai: afirmasi, waktu berkualitas, hadiah, pelayanan, atau sentuhan.",
+      "h1": "Tes bahasa cinta",
+      "lede": "Dari lima bahasa cinta, mana yang paling menyentuh hatimu? Nilai 25 pernyataan dan lihat peringkat kelimanya.",
+      "about": [
+        "Gagasan lima bahasa cinta dipopulerkan oleh konselor Gary Chapman pada 1992: orang cenderung merasa dicintai lewat kata-kata afirmasi, waktu berkualitas, menerima hadiah, tindakan melayani, atau sentuhan fisik, dan pasangan sering kali berbicara dengan bahasa yang berbeda.",
+        "Kuis independen ini disusun untuk cv.cm. Bagikan peringkatmu kepada pasangan atau teman dan ajak mereka mengikutinya juga: mengetahui bahasa cinta utama satu sama lain adalah bagian yang paling berguna."
+      ],
+      "faq": [
+        { "q": "Apa saja lima bahasa cinta?", "a": "Kata-kata afirmasi, waktu berkualitas, menerima hadiah, tindakan melayani, dan sentuhan fisik." },
+        { "q": "Bisakah aku punya lebih dari satu bahasa cinta?", "a": "Bisa. Kebanyakan orang punya satu atau dua yang paling penting dan yang lain sedikit kurang penting. Grafiknya menampilkan kelimanya." },
+        { "q": "Apakah konsep bahasa cinta didukung penelitian?", "a": "Dukungan dari studi beragam: pasangan yang menunjukkan cinta dengan berbagai cara cenderung lebih bahagia secara keseluruhan. Konsep ini paling cocok sebagai pembuka obrolan, bukan aturan." },
+        { "q": "Apakah ini kuis resmi?", "a": "Bukan. Ini kuis independen dengan lima kategori yang sama, tidak berafiliasi dengan Gary Chapman atau penerbitnya." }
+      ],
+      "items": [
+        "Mendengar \"Aku bangga sama kamu\" sangat berarti bagi saya.",
+        "Saya merasa paling dekat dengan seseorang saat kami menghabiskan waktu bersama tanpa gangguan.",
+        "Hadiah kecil yang penuh perhatian bisa membuat seharian saya menyenangkan.",
+        "Saat seseorang membantu pekerjaan rumah saya, saya merasa diperhatikan.",
+        "Pelukan saat saya pulang membuat saya merasa dicintai.",
+        "Saya menyimpan pesan-pesan baik dan membacanya lagi nanti.",
+        "Saya merasa sakit hati saat seseorang sibuk dengan ponselnya ketika kami mengobrol.",
+        "Saya ingat siapa yang memberi setiap hadiah yang berarti.",
+        "Saya merasa dicintai saat seseorang mengambil alih tugas saya tanpa diminta.",
+        "Bergandengan tangan membuat saya merasa terhubung.",
+        "Pujian adalah cara termudah untuk memperbaiki suasana hati saya.",
+        "Jalan-jalan panjang atau obrolan mendalam adalah cara favorit saya untuk menjadi akrab.",
+        "Saya merasa dilupakan jika momen spesial berlalu tanpa hadiah sama sekali.",
+        "Bagi saya, tindakan berbicara lebih keras daripada kata-kata.",
+        "Saya suka duduk berdekatan dengan orang-orang yang saya sayangi.",
+        "Kata-kata kasar menyakiti saya untuk waktu yang lama.",
+        "Kegiatan bersama, bahkan yang sederhana, sangat berarti bagi saya.",
+        "Oleh-oleh yang dibawakan seseorang untuk saya terasa seperti cinta.",
+        "Saat seseorang memasak untuk saya atau memperbaiki sesuatu, saya merasa dihargai.",
+        "Tepukan di punggung atau sentuhan di lengan menenangkan saya.",
+        "Saya perlu mendengar bahwa saya dihargai.",
+        "Rencana yang dibatalkan membuat saya lebih kesal daripada kebanyakan hal lain.",
+        "Saya suka hadiah yang menunjukkan bahwa seseorang memikirkan saya.",
+        "Saya merasa didukung saat seseorang membantu saya menyelesaikan pekerjaan besar.",
+        "Kasih sayang fisik penting bagi saya dalam hubungan yang dekat."
+      ],
+      "dims": {
+        "words": "Kata-kata afirmasi",
+        "time": "Waktu berkualitas",
+        "gifts": "Menerima hadiah",
+        "service": "Tindakan melayani",
+        "touch": "Sentuhan fisik"
+      },
+      "results": {
+        "words": { "name": "Kata-kata afirmasi", "body": "Kamu merasa dicintai lewat kata-kata lisan dan tulisan: pujian, semangat, ucapan terima kasih, dan \"Aku sayang kamu.\" Kritik sangat memukulmu. Beri tahu orang-orang terdekatmu bahwa pesan singkat yang baik lebih berarti bagimu daripada yang mereka kira." },
+        "time": { "name": "Waktu berkualitas", "body": "Kamu merasa dicintai lewat perhatian penuh: obrolan yang sungguh-sungguh, kegiatan bersama, dan ponsel yang disingkirkan. Gangguan dan rencana yang batal menyakitkan. Mintalah waktu bersama secara rutin yang dijaga oleh kalian berdua." },
+        "gifts": { "name": "Menerima hadiah", "body": "Kamu merasa dicintai lewat hadiah yang penuh perhatian, besar maupun kecil. Ini bukan soal harga, tetapi bukti bahwa seseorang memikirkanmu. Beri tahu orang lain bahwa kejutan kecil sangat berarti bagimu." },
+        "service": { "name": "Tindakan melayani", "body": "Kamu merasa dicintai saat orang membuat hidupmu lebih mudah: memasak, memperbaiki sesuatu, menjalankan tugas, mengambil alih pekerjaan rumah. Janji yang diingkari terasa menyakitkan. Sampaikan bantuan spesifik mana yang paling berarti bagimu." },
+        "touch": { "name": "Sentuhan fisik", "body": "Kamu merasa dicintai lewat sentuhan yang pantas: pelukan, bergandengan tangan, duduk berdekatan. Jarak fisik bisa terasa seperti jarak emosional. Beri tahu pasanganmu betapa pentingnya sentuhan kecil sepanjang hari." }
+      }
+    },
+    "attachment": {
+      "title": "Tes attachment style gratis: secure, anxious, avoidant? — cv.cm",
+      "description": "Tes attachment style gratis untuk dewasa. Jawab 16 pernyataan tentang hubungan dekat: apakah kamu secure, anxious, avoidant, atau fearful-avoidant?",
+      "h1": "Tes gaya keterikatan (attachment style)",
+      "lede": "Bagaimana sikapmu dalam hubungan dekat? Kuis ini mengukur kecemasan dan penghindaran dalam keterikatan lalu menempatkanmu dalam salah satu dari empat gaya.",
+      "about": [
+        "Teori keterikatan berawal dari studi John Bowlby dan Mary Ainsworth tentang anak-anak, lalu diperluas ke hubungan romantis orang dewasa oleh Hazan dan Shaver. Penelitian modern mengukur dua dimensi: kecemasan (takut ditolak) dan penghindaran (tidak nyaman dengan kedekatan).",
+        "Gayamu ditentukan oleh posisimu di kedua dimensi: rendah di keduanya berarti secure (aman). Kuis singkat ini disusun untuk cv.cm berdasarkan model dua dimensi tersebut. Gaya keterikatan bisa berubah seiring waktu dan lewat hubungan yang suportif."
+      ],
+      "faq": [
+        { "q": "Apa saja empat gaya keterikatan?", "a": "Secure/aman (kecemasan rendah, penghindaran rendah), anxious/cemas (kecemasan tinggi), avoidant/menghindar (penghindaran tinggi), dan fearful-avoidant/takut-menghindar (tinggi di keduanya)." },
+        { "q": "Bisakah gaya keterikatanku berubah?", "a": "Bisa. Hubungan yang panjang dan stabil, terapi, serta latihan yang disadari dapat menggeser orang ke arah rasa aman, yang oleh peneliti disebut earned security." },
+        { "q": "Haruskah aku menjawab berdasarkan pasanganku saat ini?", "a": "Jawablah berdasarkan perasaanmu secara umum dalam hubungan dekat, bukan hanya terhadap satu orang." },
+        { "q": "Gaya mana yang terbaik?", "a": "Keterikatan yang aman paling terkait dengan kepuasan hubungan, tetapi setiap gaya masuk akal sebagai respons terhadap pengalaman masa lalu, dan setiap gaya bisa bertumbuh." }
+      ],
+      "items": [
+        "Saya khawatir orang yang saya cintai tidak akan peduli pada saya sebesar saya peduli pada mereka.",
+        "Saya lebih suka tidak menunjukkan perasaan terdalam saya kepada orang lain.",
+        "Saya butuh banyak kepastian bahwa saya dicintai.",
+        "Saya merasa tidak nyaman saat pasangan ingin sangat dekat.",
+        "Saat orang yang saya cintai sedang jauh, saya khawatir mereka akan kehilangan minat pada saya.",
+        "Saya merasa mudah bergantung pada orang-orang yang dekat dengan saya.",
+        "Saya kesal saat pasangan saya tidak membalas pesan untuk beberapa waktu.",
+        "Saya lebih menghargai kemandirian daripada kedekatan.",
+        "Saya takut ditinggalkan.",
+        "Saya merasa nyaman berbagi pikiran pribadi dengan pasangan saya.",
+        "Saya jarang khawatir akan ditinggalkan.",
+        "Saya menarik diri saat hubungan mulai serius.",
+        "Saya sering berharap perasaan pasangan kepada saya sekuat perasaan saya kepadanya.",
+        "Saya sulit membiarkan diri bergantung pada orang lain.",
+        "Saya terlalu memikirkan perubahan kecil pada suasana hati pasangan saya.",
+        "Mencari kenyamanan dari orang-orang yang saya cintai membantu saya."
+      ],
+      "dims": {
+        "anx": "Kecemasan keterikatan",
+        "avo": "Penghindaran keterikatan"
+      },
+      "results": {
+        "secure": { "name": "Secure (aman)", "body": "Kamu nyaman dengan kedekatan maupun kemandirian. Kamu memercayai pasangan, menyampaikan kebutuhanmu, dan menghadapi konflik tanpa panik. Pertahankan: ketenanganmu membantu orang di sekitarmu ikut merasa aman." },
+        "anxious": { "name": "Anxious (cemas)", "body": "Kamu menginginkan kedekatan dan khawatir kehilangannya, sehingga mungkin sering mencari kepastian atau terlalu memaknai sinyal kecil. Menyampaikan kebutuhanmu secara langsung, dan menenangkan diri sebelum bereaksi, membuat hubungan terasa lebih tenang." },
+        "avoidant": { "name": "Avoidant (menghindar)", "body": "Kamu menghargai kemandirian dan merasa tidak nyaman saat orang lain terlalu dekat atau bergantung padamu. Kamu mungkin menarik diri saat hubungan mulai serius. Berlatih terbuka sedikit demi sedikit membuat orang bisa mendukungmu tanpa merenggut kebebasanmu." },
+        "fearful": { "name": "Fearful-avoidant (takut-menghindar)", "body": "Kamu menginginkan kedekatan tetapi juga takut padanya, sehingga mungkin berayun antara mendekat dan menjauh. Ini sering berasal dari pengalaman menyakitkan. Kesabaran, pasangan yang stabil, dan dukungan terapis bisa sangat membantu." }
+      }
+    },
+    "marriage": {
+      "title": "Tes kesiapan menikah gratis untuk pasangan — cv.cm",
+      "description": "Siap menikah? Kuis gratis 20 soal tentang komunikasi, konflik, keuangan, keluarga, dan tujuan bersama, dengan skor tiap area dan tips untuk yang terlemah.",
+      "h1": "Tes kesiapan menikah",
+      "lede": "Cek seberapa siap hubunganmu untuk menikah di lima area yang menjadi fokus konselor: komunikasi, konflik, keuangan, keluarga, dan masa depan yang kalian inginkan.",
+      "about": [
+        "Program pranikah seperti PREPARE/ENRICH dan penelitian John Gottman menunjuk area yang sama: cara pasangan berbicara, bertengkar, mengelola uang, menghadapi keluarga, dan menyepakati masa depan. Kuis ini disusun untuk cv.cm berdasarkan kelima area tersebut.",
+        "Kerjakan secara terpisah dengan pasanganmu lalu bandingkan. Area dengan selisih skor terbesar adalah topik terbaik untuk obrolan panjang kalian berikutnya."
+      ],
+      "faq": [
+        { "q": "Bisakah kuis memberi tahu apakah aku sebaiknya menikah?", "a": "Tidak. Kuis ini menyoroti area yang layak dibicarakan. Keputusannya bergantung pada banyak hal yang tidak bisa dilihat oleh kuis." },
+        { "q": "Apakah pasanganku juga perlu mengerjakannya?", "a": "Ya. Jawab secara terpisah, lalu bandingkan skor tiap area. Perbedaannya lebih berguna daripada skor total." },
+        { "q": "Bagaimana jika skor kami rendah?", "a": "Skor rendah adalah daftar topik, bukan vonis. Banyak pasangan menyelesaikannya lewat obrolan jujur atau konseling pranikah." },
+        { "q": "Bisakah pasangan yang sudah menikah memakainya?", "a": "Bisa. Kelima area yang sama penting di setiap tahap hubungan." }
+      ],
+      "items": [
+        "Kami bisa membicarakan hampir apa saja secara terbuka.",
+        "Saat bertengkar, kami tetap saling menghormati.",
+        "Kami sudah membicarakan utang, penghasilan, dan pengeluaran kami dengan jujur.",
+        "Saya cukup akur dengan keluarga pasangan saya.",
+        "Kami sepakat soal apakah dan kapan ingin punya anak.",
+        "Saya merasa didengarkan saat membagikan sesuatu yang penting.",
+        "Pertengkaran kami sering berakhir dengan salah satu dari kami menutup diri.",
+        "Kami sepakat tentang cara membagi uang dan tagihan.",
+        "Kami punya batasan yang jelas dengan keluarga masing-masing.",
+        "Kami menginginkan gaya hidup yang mirip dalam lima tahun ke depan.",
+        "Saya menahan perasaan agar tidak membuat pasangan kesal.",
+        "Kami bisa saling meminta maaf dan berbaikan setelah bertengkar.",
+        "Kami punya kebiasaan menabung dan berbelanja yang mirip.",
+        "Keluarga kami sering memicu ketegangan di antara kami.",
+        "Kami sudah membicarakan di mana kami ingin tinggal.",
+        "Kami rutin saling bertanya tentang bagaimana hubungan kami berjalan.",
+        "Kami memecahkan masalah sebagai tim, bukan saling menyalahkan.",
+        "Uang adalah topik yang kami hindari.",
+        "Kami sepakat tentang berapa banyak waktu yang dihabiskan bersama kerabat.",
+        "Kami saling mendukung karier dan tujuan pribadi masing-masing."
+      ],
+      "dims": {
+        "talk": "Komunikasi",
+        "conflict": "Konflik",
+        "money": "Keuangan",
+        "family": "Keluarga",
+        "future": "Masa depan bersama"
+      },
+      "results": {
+        "ready": { "name": "Fondasi yang kuat", "body": "Kalian berkomunikasi dengan baik, menghadapi konflik dan keuangan sebagai tim, dan menginginkan masa depan yang serupa. Terus pelihara kebiasaan yang membawa kalian sejauh ini, seperti saling bertanya kabar hubungan secara rutin." },
+        "close": { "name": "Hampir siap", "body": "Hubungan kalian punya dasar yang kokoh dengan satu atau dua area yang perlu diperkuat. Bahas area terendah di bawah ini sebelum melangkah ke tahap besar berikutnya." },
+        "work": { "name": "Masih ada yang perlu dikerjakan", "body": "Beberapa topik penting masih belum terselesaikan. Itu hal yang umum. Luangkan waktu untuk membahas tiap area, dan pertimbangkan kursus pranikah atau konselor." },
+        "early": { "name": "Masih tahap awal", "body": "Banyak area kunci belum dibahas tuntas. Luangkan waktu untuk memahami pandangan satu sama lain tentang hal-hal dasar sebelum merencanakan pernikahan." }
+      },
+      "tips": {
+        "talk": "Coba obrolan mingguan 20 menit: masing-masing berbagi satu hal menyenangkan, satu hal berat, dan satu harapan, sementara yang lain hanya mendengarkan.",
+        "conflict": "Sepakati aturan jeda: siapa pun boleh meminta istirahat 20 menit saat pertengkaran memanas, lalu kalian kembali untuk menyelesaikannya.",
+        "money": "Duduklah bersama dengan angka yang sebenarnya: penghasilan, utang, dan tabungan. Lalu sepakati satu tujuan bersama dan cara membagi biaya.",
+        "family": "Bahas tradisi dan kunjungan keluarga mana yang paling penting bagi masing-masing, dan tunjukkan sikap yang kompak di depan kerabat.",
+        "future": "Tulis masing-masing di mana kalian ingin berada dalam lima tahun (rumah, anak, karier), lalu bandingkan dan temukan titik temunya."
+      }
+    },
+    "career": {
+      "title": "Tes minat bakat Holland (RIASEC) gratis — cv.cm",
+      "description": "Tes minat bakat gratis berdasarkan model RIASEC Holland. Nilai 36 aktivitas untuk mendapat kode Holland tiga hurufmu dan karier yang sesuai minatmu. Tanpa daftar.",
+      "h1": "Tes minat karier (kode Holland)",
+      "lede": "Temukan karier yang sesuai minatmu. Nilai 36 aktivitas dan dapatkan kode Holland tiga hurufmu dari Realistis, Investigatif, Artistik, Sosial, Enterprising, dan Konvensional.",
+      "about": [
+        "Psikolog John Holland menemukan bahwa orang dan lingkungan kerja dapat digambarkan dengan enam tipe minat, yang dikenal sebagai RIASEC. Orang cenderung lebih puas di pekerjaan yang cocok dengan tipe teratas mereka.",
+        "Kode Holland-mu adalah tiga huruf teratasmu secara berurutan. Gunakan untuk menjelajahi karier: misalnya, basis data O*NET di Amerika Serikat mengelompokkan pekerjaan berdasarkan kode Holland. Tes ini disusun untuk cv.cm dan mengukur minat, bukan kemampuan."
+      ],
+      "faq": [
+        { "q": "Apa itu kode Holland?", "a": "Tiga tipe minat terkuatmu secara berurutan, seperti SAE atau RIC. Kode ini dipakai konselor karier untuk menyarankan pekerjaan dan jurusan yang cocok." },
+        { "q": "Haruskah aku menilai aktivitas yang belum pernah kucoba?", "a": "Ya. Bayangkan kamu melakukan aktivitas itu dan nilai seberapa kamu akan menikmatinya, bukan seberapa mahir kamu nanti." },
+        { "q": "Apakah tes ini mengukur bakat?", "a": "Tidak. Tes ini mengukur minat. Keterampilan bisa dipelajari; minat memprediksi pekerjaan mana yang akan kamu nikmati cukup lama hingga kamu mahir." },
+        { "q": "Skorku hampir sama semua. Lalu bagaimana?", "a": "Profil yang datar berarti minatmu luas. Lihat karier yang menggabungkan tipe teratasmu, dan coba proyek-proyek singkat untuk melihat apa yang kamu nikmati." }
+      ],
+      "items": [
+        "Membuat atau memperbaiki furnitur",
+        "Melakukan eksperimen di laboratorium",
+        "Menulis cerita atau lirik lagu",
+        "Mengajari seseorang keterampilan baru",
+        "Memulai usaha sendiri",
+        "Membuat catatan dan spreadsheet yang akurat",
+        "Bekerja di luar ruangan dengan tanaman atau hewan",
+        "Memecahkan soal matematika atau logika yang sulit",
+        "Mendesain poster, situs web, atau ruangan",
+        "Membantu orang dengan masalah pribadi mereka",
+        "Meyakinkan orang untuk menerima ide atau membeli produk",
+        "Mengikuti prosedur yang jelas agar tugas tepat sempurna",
+        "Menggunakan perkakas atau mesin",
+        "Meneliti cara kerja sesuatu",
+        "Berakting, bernyanyi, menari, atau bermain musik",
+        "Merawat orang sakit atau lansia",
+        "Memimpin tim menuju suatu tujuan",
+        "Memeriksa dokumen dari kesalahan",
+        "Memasang atau memperbaiki perangkat elektronik",
+        "Menganalisis data untuk menemukan pola",
+        "Memotret atau membuat video",
+        "Menjadi relawan untuk kegiatan masyarakat",
+        "Menegosiasikan kesepakatan",
+        "Mengatur berkas, jadwal, atau inventaris",
+        "Mengemudi atau mengoperasikan kendaraan atau alat berat",
+        "Membaca artikel ilmiah",
+        "Mencetuskan ide-ide orisinal",
+        "Melatih atau membimbing orang lain",
+        "Mengelola anggaran atau proyek",
+        "Memproses pembayaran atau faktur",
+        "Melakukan pekerjaan fisik dengan tangan",
+        "Menulis kode untuk memecahkan masalah",
+        "Mengekspresikan diri tanpa aturan yang ketat",
+        "Bekerja dalam tim yang membantu orang",
+        "Mengambil risiko demi imbalan besar",
+        "Bekerja di kantor yang terstruktur dan bisa diprediksi"
+      ],
+      "dims": {
+        "R": "Realistis (pelaku)",
+        "I": "Investigatif (pemikir)",
+        "A": "Artistik (pencipta)",
+        "S": "Sosial (penolong)",
+        "E": "Enterprising (pemengaruh)",
+        "C": "Konvensional (pengatur)"
+      },
+      "codeTitle": "Kode Holland-mu",
+      "results": {
+        "R": { "name": "Realistis (pelaku)", "body": "Kamu suka pekerjaan praktis dan langsung dengan perkakas, mesin, tanaman, atau hewan, serta hasil yang terlihat. Karier untuk dijelajahi: teknisi listrik, mekanik, insinyur, koki, tukang kayu, petani, pilot, fisioterapis." },
+        "I": { "name": "Investigatif (pemikir)", "body": "Kamu suka mengamati, menganalisis, dan memecahkan masalah yang rumit. Karier untuk dijelajahi: ilmuwan, pengembang perangkat lunak, analis data, dokter, apoteker, peneliti, ekonom." },
+        "A": { "name": "Artistik (pencipta)", "body": "Kamu suka berkarya dan mengekspresikan diri di lingkungan yang tidak kaku. Karier untuk dijelajahi: desainer, penulis, musisi, fotografer, arsitek, editor video, art director." },
+        "S": { "name": "Sosial (penolong)", "body": "Kamu suka membantu, mengajar, dan merawat orang. Karier untuk dijelajahi: guru, perawat, konselor, pekerja sosial, staf HR, pelatih, terapis." },
+        "E": { "name": "Enterprising (pemengaruh)", "body": "Kamu suka memimpin, meyakinkan orang, dan mengambil risiko untuk mencapai tujuan. Karier untuk dijelajahi: wirausahawan, manajer penjualan, pemasar, pengacara, agen properti, product manager." },
+        "C": { "name": "Konvensional (pengatur)", "body": "Kamu suka keteraturan, ketelitian, dan prosedur yang jelas dalam mengolah data. Karier untuk dijelajahi: akuntan, auditor, staf administrasi, koordinator logistik, pegawai bank, administrator basis data." }
+      }
+    },
+    "money": {
+      "title": "Tes kepribadian keuangan gratis: apa tipe uangmu? — cv.cm",
+      "description": "Kuis kepribadian keuangan gratis. Nilai 20 pernyataan: kamu penabung, pembelanja, investor, penghindar, atau pemberi? Plus kelebihan, titik buta, dan tips.",
+      "h1": "Tes kepribadian keuangan",
+      "lede": "Kebiasaanmu dengan uang lebih menentukan masa depan finansialmu daripada keberuntungan. Temukan tipe keuanganmu dan satu kebiasaan yang paling membantunya.",
+      "about": [
+        "Psikolog keuangan seperti Brad Klontz menjelaskan keyakinan tentang uang yang kita serap sejak kecil, yang diam-diam mengarahkan cara kita menabung, berbelanja, dan berinvestasi. Kuis yang disusun untuk cv.cm ini mengelompokkan kebiasaan umum ke dalam lima kepribadian keuangan.",
+        "Tidak ada tipe yang baik atau buruk. Masing-masing punya kekuatan untuk dimanfaatkan dan titik buta untuk dikelola. Kuis ini tidak bisa meramal kekayaanmu: ia menggambarkan kebiasaan, dan kebiasaan bisa berubah."
+      ],
+      "faq": [
+        { "q": "Bisakah tes ini memprediksi seberapa kaya aku nanti?", "a": "Tidak. Tidak ada tes yang bisa meramal kekayaan. Tes ini menunjukkan kebiasaan yang cenderung membantu atau merugikan keuanganmu seiring waktu, dan kebiasaan itu bisa kamu ubah." },
+        { "q": "Apa saja lima tipe keuangan di sini?", "a": "Penabung, pembelanja, investor (pengambil risiko), penghindar, dan pemberi." },
+        { "q": "Bisakah aku lebih dari satu tipe?", "a": "Bisa. Grafiknya menampilkan kelimanya. Banyak orang, misalnya, adalah penabung dengan sisi pemberi yang kuat." },
+        { "q": "Apa yang sebaiknya dilakukan pasangan dengan hasilnya?", "a": "Bandingkan tipe kalian. Penabung dan pembelanja bisa saling menyeimbangkan jika sepakat pada anggaran bersama." }
+      ],
+      "items": [
+        "Saya merasa tidak tenang jika tidak punya tabungan.",
+        "Membeli barang baru benar-benar membuat saya senang.",
+        "Saya nyaman mengambil risiko untuk mengembangkan uang saya.",
+        "Saya jarang mengecek saldo rekening.",
+        "Saya senang mengeluarkan uang untuk orang lain.",
+        "Saya membandingkan harga dengan cermat sebelum membeli apa pun.",
+        "Saya sering membeli barang yang sebenarnya tidak saya butuhkan.",
+        "Saya membaca tentang investasi, saham, atau usaha sampingan.",
+        "Memikirkan uang membuat saya stres, jadi saya menundanya.",
+        "Saya sulit menolak saat teman atau keluarga butuh uang.",
+        "Saya mencatat pengeluaran saya secara rutin.",
+        "Saya lebih suka menikmati uang sekarang daripada mengkhawatirkan nanti.",
+        "Saya melihat peluang menghasilkan uang yang terlewat oleh orang lain.",
+        "Saya tidak terlalu tahu ke mana uang saya pergi setiap bulan.",
+        "Saya berdonasi untuk kegiatan atau orang lain, bahkan saat keuangan sedang sulit.",
+        "Membelanjakan uang untuk barang mewah membuat saya merasa bersalah.",
+        "Kadang saya belanja untuk menghibur diri.",
+        "Saya akan berinvestasi pada ide baru jika potensi untungnya terlihat besar.",
+        "Saya mengabaikan tagihan sampai detik terakhir.",
+        "Bersikap murah hati lebih penting bagi saya daripada menjadi kaya."
+      ],
+      "dims": {
+        "saver": "Penabung",
+        "spender": "Pembelanja",
+        "investor": "Investor",
+        "avoider": "Penghindar",
+        "giver": "Pemberi"
+      },
+      "results": {
+        "saver": { "name": "Si Penabung", "body": "Kekuatan: disiplin, tabungan, dan dana cadangan. Titik buta: kamu mungkin menahan diri dari pengeluaran yang benar-benar bisa memperbaiki hidupmu, atau menyimpan uang tunai yang sebenarnya bisa berkembang. Tips: tetapkan anggaran bersenang-senang tanpa rasa bersalah setiap bulan, dan simpan tabungan jangka panjang di reksa dana yang sederhana dan terdiversifikasi." },
+        "spender": { "name": "Si Pembelanja", "body": "Kekuatan: kamu menikmati hidup dan murah hati dalam berbagi pengalaman. Titik buta: belanja impulsif dan sedikit yang tersisa untuk masa depan. Tips: pindahkan jumlah tetap ke tabungan secara otomatis saat gajian, dan tunggu 48 jam sebelum membeli barang yang tidak penting." },
+        "investor": { "name": "Si Investor", "body": "Kekuatan: kamu jeli melihat peluang dan membiarkan uang bekerja untukmu. Titik buta: mengejar keuntungan besar bisa berarti terlalu banyak risiko di satu tempat. Tips: siapkan dana darurat lebih dulu, dan jangan pernah menaruh lebih banyak di satu taruhan daripada yang sanggup kamu relakan hilang." },
+        "avoider": { "name": "Si Penghindar", "body": "Kekuatan: uang tidak mengendalikan hidupmu. Titik buta: tagihan yang tak dibuka, denda keterlambatan, dan peluang yang terlewat karena melihatnya terasa membuat stres. Tips: jadwalkan \"kencan keuangan\" 15 menit setiap minggu untuk mengecek saldo dan membayar tagihan; ini cepat terasa lebih mudah." },
+        "giver": { "name": "Si Pemberi", "body": "Kekuatan: kemurahan hati dan hubungan yang erat. Titik buta: memberikan apa yang kamu butuhkan untuk keamananmu sendiri. Tips: tentukan anggaran berbagi sejak awal, agar kamu bisa murah hati tanpa membahayakan masa depanmu sendiri." }
+      }
+    },
+    "anime": {
+      "title": "Kamu tipe karakter anime apa? Kuis kepribadian anime — cv.cm",
+      "description": "Kuis kepribadian anime gratis: kamu Tsundere, Kuudere, Dandere, Deredere, Genki, Chuunibyou, Himedere, atau Senpai yang bisa diandalkan? Jawab 12 soal.",
+      "h1": "Kamu arketipe karakter anime yang mana?",
+      "lede": "Tsundere atau Kuudere? Genki atau Chuunibyou? Jawab 12 pertanyaan sehari-hari dan temukan arketipe anime yang cocok dengan kepribadianmu.",
+      "about": [
+        "Anime dan manga memakai arketipe karakter yang sudah dikenal luas, sering dinamai dengan slang Jepang berakhiran -dere (dari deredere, mabuk cinta). Setiap tipe memadukan sikap luar dengan sisi lembut yang tersembunyi.",
+        "Kuis ini disusun untuk cv.cm sekadar untuk seru-seruan. Kuis ini melihat reaksimu terhadap pujian, teman, kepemimpinan, dan stres, lalu mencocokkanmu dengan yang paling mirip dari delapan arketipe populer."
+      ],
+      "faq": [
+        { "q": "Apa arti Tsundere?", "a": "Karakter yang bersikap dingin atau ketus (tsun-tsun) tetapi sebenarnya hangat dan perhatian di dalam (dere-dere)." },
+        { "q": "Apa bedanya Kuudere dan Dandere?", "a": "Kuudere tenang dan cool karena pilihannya sendiri dan jarang menunjukkan emosi. Dandere pendiam karena pemalu dan akan terbuka setelah merasa nyaman." },
+        { "q": "Apa itu Chuunibyou?", "a": "Secara harfiah \"sindrom kelas 2 SMP\": karakter yang percaya pada, atau berlagak punya, kekuatan rahasia dan takdir yang dramatis." },
+        { "q": "Apakah kuis ini serius?", "a": "Tidak. Ini kuis kepribadian untuk seru-seruan. Untuk profil berbasis penelitian, ikuti tes Big Five." }
+      ],
+      "items": [
+        { "q": "Teman memberimu hadiah buatan tangan. Kamu…", "options": ["Bilang \"B-bukan berarti aku pengin ini, ya…\" lalu menyimpannya selamanya", "Mengangguk, bilang \"Terima kasih,\" dan diam-diam menyayanginya", "Langsung memeluknya dan heboh memujinya", "Menerimanya dengan anggun. Tentu saja mereka membawakan upeti untukmu"] },
+        { "q": "Kelas atau timmu butuh pemimpin. Kamu…", "options": ["Maju: harus ada yang menjaga semua orang tetap di jalur", "Berharap tidak ada yang memilihmu dan diam tak bergerak", "Mengajukan diri dengan lantang sebelum orang lain sempat", "Mengumumkan bahwa sang terpilih akhirnya telah bangkit"] },
+        { "q": "Akhir pekan idealmu:", "options": ["Membaca atau main game sendirian, ponsel dalam mode senyap", "Jalan-jalan dadakan bareng teman sebanyak mungkin", "Memasak untuk teman-teman dan memastikan semua baik-baik saja", "Menulis lore untuk dunia yang hanya kamu yang benar-benar paham"] },
+        { "q": "Seseorang memujimu di depan semua orang. Kamu…", "options": ["Wajah memerah lalu membentak \"J-jangan ngomong yang aneh-aneh!\"", "Bilang \"Aku tahu.\"", "Membeku, lalu berbisik \"m-makasih\"", "Balas memuji mereka, dua kali lebih heboh"] },
+        { "q": "Temanmu sedang mengalami hari yang buruk. Kamu…", "options": ["Memberi saran praktis dan rencana", "Menyeret mereka keluar untuk makan dan karaoke", "Menggerutu \"dasar payah\", lalu menemaninya semalaman", "Duduk di sampingnya dan mendengarkan tanpa sepatah kata"] },
+        { "q": "Pilih satu kekuatan:", "options": ["Sihir es", "Kekuatan terlarang yang tersegel di lengan kirimu", "Penyembuhan", "Titah kerajaan: orang lain langsung patuh"] },
+        { "q": "Gaya chat-mu:", "options": ["Banyak tanda seru dan stiker!!!", "Singkat. Titik.", "Ketik, hapus, ketik lagi, lalu kirim \"ok\"", "Menggoda, lalu buru-buru \"bukan berarti aku peduli\""] },
+        { "q": "Proyek kelompok berantakan. Kamu…", "options": ["Dengan tenang membereskannya sebelum ada yang sadar", "Mengumumkan bahwa takdir sedang menguji kita", "Tidak menyalahkan siapa pun dan menyemangati semua orang", "Menegaskan bahwa ini tak akan terjadi kalau mereka mendengarkanmu"] },
+        { "q": "Gaya berpakaianmu:", "options": ["Elegan dan agak berlebihan: kamu terlahir untuk dilihat", "Mantel hitam, mungkin dengan penutup mata atau perban", "Hoodie nyaman yang bisa dipakai untuk bersembunyi", "Warna cerah dan sneakers yang enak buat lari"] },
+        { "q": "Bagaimana caramu menunjukkan bahwa kamu suka seseorang?", "options": ["Bersikap dingin, lalu melakukan hal yang sangat baik saat tak ada yang melihat", "Terang-terangan dan setiap saat. Kenapa harus disembunyikan?", "Dengan menjaganya seperti kakak yang bisa diandalkan", "Kamu berharap merekalah yang menyadarinya duluan"] },
+        { "q": "Orang biasanya menggambarkanmu sebagai…", "options": ["Tenang dan sulit ditebak", "Penuh energi", "Pemalu, tapi manis setelah kenal", "Bisa diandalkan"] },
+        { "q": "Kalimat andalanmu mungkin…", "options": ["\"Hmph!\"", "\"Ohohoho!\"", "\"Ayo gaaas!\"", "\"…Kegelapan memanggilku.\""] }
+      ],
+      "dims": {
+        "tsundere": "Tsundere",
+        "kuudere": "Kuudere",
+        "dandere": "Dandere",
+        "deredere": "Deredere",
+        "genki": "Genki",
+        "chuuni": "Chuunibyou",
+        "himedere": "Himedere",
+        "senpai": "Senpai yang bisa diandalkan"
+      },
+      "results": {
+        "tsundere": { "name": "Tsundere", "body": "Ketus di luar, lembut di dalam. Kamu menyembunyikan rasa sayang di balik ejekan dan penyangkalan, tetapi kesetiaanmu luar biasa dan kebaikanmu terlihat lewat tindakan. Orang-orang yang paling mengenalmu menganggapnya menggemaskan." },
+        "kuudere": { "name": "Kuudere", "body": "Cool, tenang, dan terkendali. Kamu jarang menunjukkan emosi dan berpikir sebelum bertindak, sehingga kamu menjadi sosok yang paling stabil saat krisis. Saat kamu akhirnya tersenyum, orang akan mengingatnya." },
+        "dandere": { "name": "Dandere", "body": "Pendiam dan pemalu di depan orang baru, hangat dan lucu begitu merasa aman. Kamu memperhatikan segalanya dan sangat peduli, meski butuh waktu sampai orang lain menyadarinya." },
+        "deredere": { "name": "Deredere", "body": "Manis, ceria, dan terang-terangan penuh kasih sayang. Kamu mencintai dengan tulus, menyemangati orang lain, dan mencerahkan setiap ruangan. Kebaikanmu adalah kekuatan supermu." },
+        "genki": { "name": "Genki", "body": "Energik, ceria, dan selalu siap untuk petualangan berikutnya. Kamu menarik teman-teman keluar dari zona nyaman dan membuat hari biasa jadi seru." },
+        "chuuni": { "name": "Chuunibyou", "body": "Dramatis, imajinatif, dan penuh narasi besar. Dunia batinmu epik, dan kamu mengubah kehidupan sehari-hari menjadi cerita yang layak diceritakan. Jangan pernah kehilangan kreativitas itu." },
+        "himedere": { "name": "Himedere", "body": "Percaya diri, elegan, dan terbiasa diperlakukan bak bangsawan. Kamu menetapkan standar tinggi dan membawa diri dengan gaya, dan di balik itu kamu setia pada orang-orang yang berhasil mendapat kepercayaanmu." },
+        "senpai": { "name": "Senpai yang bisa diandalkan", "body": "Bisa diandalkan, dewasa, dan protektif. Kamu memberi nasihat yang baik, menjaga kelompok tetap solid, dan memperhatikan semua orang, seperti senpai yang dibutuhkan setiap protagonis." }
+      }
+    },
+    "face-shape": {
+      "title": "Tes bentuk wajah gratis: apa bentuk wajahku? — cv.cm",
+      "description": "Tes bentuk wajah gratis. Jawab 6 soal sambil bercermin: oval, bulat, kotak, hati, lonjong, berlian, atau segitiga? Plus tips gaya rambut dan kacamata.",
+      "h1": "Tes bentuk wajah",
+      "lede": "Temukan bentuk wajahmu dengan cermin dan 6 pertanyaan singkat, lalu dapatkan tips gaya rambut, kacamata, dan perawatan yang cocok. Tanpa foto, tidak ada yang diunggah.",
+      "about": [
+        "Cara melihatnya: ikat rambutmu ke belakang, berdiri di depan cermin (atau ambil swafoto dari depan), dan bandingkan empat hal: panjang wajah, lebar dahi, lebar tulang pipi, dan lebar rahang. Pita ukur kain atau seutas tali akan memudahkan.",
+        "Kebanyakan wajah adalah perpaduan dua bentuk, jadi kuis ini juga menunjukkan seberapa dekat kamu dengan setiap bentuk. Bentuk wajah adalah soal proporsi, bukan kecantikan: setiap bentuk punya gaya yang membuatnya tampak menawan."
+      ],
+      "faq": [
+        { "q": "Bagaimana cara mengukur bentuk wajah?", "a": "Ukur lebar dahi di garis rambut, lebar tulang pipi di titik terlebar, lebar rahang dari sudut di bawah masing-masing telinga ke dagu, dan panjang dari garis rambut ke dagu. Lalu jawab pertanyaannya." },
+        { "q": "Bentuk wajah apa yang paling umum?", "a": "Oval dan bulat sering disebut paling umum, tetapi banyak orang merupakan perpaduan dua bentuk." },
+        { "q": "Apakah tes ini memakai fotoku?", "a": "Tidak. Kamu menjawab berdasarkan cermin atau fotomu sendiri; tidak ada yang diunggah atau dianalisis." },
+        { "q": "Bisakah makeup atau jenggot mengubah bentuk wajah?", "a": "Keduanya mengubah tampilannya. Contouring, gaya rambut, dan bentuk jenggot bisa menambah atau melembutkan sudut untuk menyeimbangkan proporsi." }
+      ],
+      "items": [
+        { "q": "Bandingkan panjang wajahmu (garis rambut ke dagu) dengan lebarnya di tulang pipi:", "options": ["Jauh lebih panjang: sekitar 1,5 kali lebarnya atau lebih", "Agak lebih panjang: sekitar 1,3 sampai 1,5 kali", "Panjang dan lebarnya kurang lebih sama"] },
+        { "q": "Bagian wajahmu mana yang paling lebar?", "options": ["Dahi", "Tulang pipi", "Rahang", "Semuanya kurang lebih sama"] },
+        { "q": "Bagaimana kamu menggambarkan garis rahangmu?", "options": ["Tegas dan bersudut, dengan sudut yang jelas", "Lembut dan membulat", "Menyempit ke dagu yang lancip", "Melengkung lembut dan meruncing"] },
+        { "q": "Bandingkan dahimu dengan rahangmu:", "options": ["Dahi jelas lebih lebar", "Rahang jelas lebih lebar", "Lebarnya kurang lebih sama", "Keduanya jelas lebih sempit dari tulang pipi"] },
+        { "q": "Seperti apa dagumu?", "options": ["Lancip atau sempit", "Membulat", "Lebar dan agak kotak"] },
+        { "q": "Seperti apa tulang pipimu?", "options": ["Tinggi, tegas, dan paling menonjol", "Berisi, dengan pipi yang bulat lembut", "Seimbang, sedikit lebih lebar dari rahang", "Tidak jauh lebih lebar dari dahi atau rahang"] }
+      ],
+      "dims": {
+        "oval": "Oval",
+        "round": "Bulat",
+        "square": "Kotak",
+        "heart": "Hati",
+        "oblong": "Lonjong (panjang)",
+        "diamond": "Berlian",
+        "triangle": "Segitiga (pir)"
+      },
+      "results": {
+        "oval": { "name": "Wajah oval", "body": "Proporsi seimbang: sedikit lebih panjang daripada lebar, dengan rahang sedikit lebih sempit dari dahi. Hampir semua gaya rambut dan bentuk bingkai cocok. Coba kacamata yang tegas atau geometris, serta potongan pendek maupun panjang." },
+        "round": { "name": "Wajah bulat", "body": "Panjang dan lebar mirip, dengan pipi berisi dan rahang lembut. Tambahkan tinggi dan sudut: potongan layer dengan volume di atas, belahan samping, serta kacamata persegi panjang atau bersudut. Hindari bob rata sepanjang dagu dan bingkai bulat." },
+        "square": { "name": "Wajah kotak", "body": "Rahang tegas dan bersudut dengan dahi, pipi, dan rahang yang lebarnya mirip. Lembutkan sudutnya: layer lembut, poni samping, dan rambut bergelombang; kacamata bulat atau oval. Jenggot pendek yang membulatkan dagu cocok untukmu." },
+        "heart": { "name": "Wajah hati", "body": "Dahi dan tulang pipi lebih lebar, menyempit ke dagu yang lancip. Seimbangkan wajah bagian bawah: bob sepanjang dagu, poni samping, dan volume di dekat rahang; kacamata dengan bagian bawah tegas atau tanpa bingkai. Jenggot yang lebih tebal menambah lebar di dagu." },
+        "oblong": { "name": "Wajah lonjong", "body": "Jelas lebih panjang daripada lebar, dengan dahi, pipi, dan rahang yang lebarnya mirip. Tambahkan lebar: poni, gelombang, dan volume di sisi; bingkai besar atau tinggi. Hindari rambut lurus yang sangat panjang dan tatanan yang menjulang di atas." },
+        "diamond": { "name": "Wajah berlian", "body": "Tulang pipi lebar dan tinggi dengan dahi serta rahang yang lebih sempit. Tonjolkan tulang pipimu: poni samping, gaya rambut diselipkan ke belakang telinga, dan potongan sepanjang dagu; kacamata oval atau cat-eye." },
+        "triangle": { "name": "Wajah segitiga (pir)", "body": "Rahang lebih lebar dari dahi. Tambahkan lebar di atas: volume di ubun-ubun dan pelipis, potongan layer, poni samping; bingkai yang tegas di bagian atas, seperti kacamata browline. Jaga jenggot tetap pendek di sisi." }
+      }
+    },
+    "self-esteem": {
+      "title": "Tes harga diri gratis (Skala Harga Diri Rosenberg) — cv.cm",
+      "description": "Ikuti tes Skala Harga Diri Rosenberg online gratis. 10 pernyataan, skor instan dari 30 beserta artinya. Tanpa daftar, jawaban tetap di browser kamu.",
+      "h1": "Tes harga diri (skala Rosenberg)",
+      "lede": "Skala Harga Diri Rosenberg adalah alat ukur harga diri yang paling banyak digunakan. Nilai 10 pernyataan dan dapatkan skor dari 30.",
+      "about": [
+        "Sosiolog Morris Rosenberg menerbitkan skala ini pada 1965, dan sejak itu skala ini telah digunakan dalam ribuan penelitian. Lima pernyataan bersifat positif dan lima negatif; pernyataan negatif dinilai terbalik.",
+        "Skor 15 sampai 25 berada dalam rentang umum. Skor di bawah 15 menunjukkan harga diri yang rendah. Harga diri berubah seiring peristiwa hidup, dan bisa dibangun lewat latihan serta dukungan."
+      ],
+      "faq": [
+        { "q": "Bagaimana skala Rosenberg dinilai?", "a": "Setiap jawaban bernilai 0 sampai 3, dengan butir 2, 5, 6, 8, dan 9 dinilai terbalik. Total berkisar dari 0 sampai 30; makin tinggi berarti harga diri makin tinggi." },
+        { "q": "Berapa skor yang normal?", "a": "Kebanyakan orang mendapat skor antara 15 dan 25. Di bawah 15 menunjukkan harga diri yang rendah." },
+        { "q": "Bagaimana cara meningkatkan harga diri?", "a": "Sadari dan tantang suara batin yang kejam, tepati janji-janji kecil pada diri sendiri, habiskan waktu bersama orang yang mendukung, dan bicaralah dengan konselor jika rasa tidak berharga mengganggu kehidupan sehari-hari." },
+        { "q": "Apakah skor tinggi selalu baik?", "a": "Harga diri yang sehat bersifat realistis. Skor yang sangat tinggi biasanya tidak masalah, tetapi harga diri yang bergantung pada selalu lebih baik dari orang lain itu rapuh." }
+      ],
+      "items": [
+        "Secara keseluruhan, saya puas dengan diri saya.",
+        "Kadang-kadang saya merasa diri saya sama sekali tidak baik.",
+        "Saya merasa bahwa saya memiliki sejumlah kualitas yang baik.",
+        "Saya mampu melakukan sesuatu sebaik kebanyakan orang lain.",
+        "Saya merasa tidak banyak yang bisa saya banggakan.",
+        "Kadang-kadang saya benar-benar merasa tidak berguna.",
+        "Saya merasa bahwa saya adalah orang yang berharga, setidaknya setara dengan orang lain.",
+        "Saya berharap bisa lebih menghargai diri saya sendiri.",
+        "Secara keseluruhan, saya cenderung merasa bahwa saya adalah orang yang gagal.",
+        "Saya bersikap positif terhadap diri saya sendiri."
+      ],
+      "results": {
+        "low": { "name": "Harga diri lebih rendah", "body": "Skormu menunjukkan bahwa kamu sering keras pada dirimu sendiri. Itu menyakitkan, dan itu umum terjadi. Coba tuliskan tiga hal yang kamu lakukan dengan baik setiap hari, sadari saat suara batinmu lebih keras daripada sikapmu kepada seorang teman, dan pertimbangkan untuk berbicara dengan konselor." },
+        "normal": { "name": "Harga diri wajar", "body": "Skormu berada dalam rentang umum: kamu umumnya menerima dirimu sambil menyadari masih ada ruang untuk bertumbuh. Pertahankan kebiasaan yang mendukungmu, seperti waktu bersama orang yang menghargaimu dan tujuan yang bisa kamu capai." },
+        "high": { "name": "Harga diri tinggi", "body": "Kamu punya pandangan yang kuat dan positif tentang dirimu. Harga diri yang sehat membantumu menghadapi kemunduran dan menetapkan batasan. Jaga agar tetap membumi dengan tetap terbuka pada masukan." }
+      }
+    },
+    "anxiety": {
+      "title": "Tes kecemasan GAD-7 gratis: cek tingkat kecemasanmu — cv.cm",
+      "description": "Tes kecemasan GAD-7 online gratis. Jawab 7 pertanyaan tentang dua minggu terakhir, dapatkan skor 0–21 dan tingkat keparahannya. Data tetap di browser.",
+      "h1": "Tes kecemasan (GAD-7)",
+      "lede": "GAD-7 adalah alat skrining 7 pertanyaan yang dipakai dokter untuk memeriksa gangguan kecemasan umum. Hanya sekitar satu menit, dengan skor 0 sampai 21.",
+      "about": [
+        "Generalized Anxiety Disorder 7-item scale (GAD-7) dikembangkan oleh Spitzer, Kroenke, Williams, dan Löwe pada 2006. Skala ini gratis digunakan dan banyak dipakai di layanan kesehatan primer. Skor 5, 10, dan 15 menandai kecemasan ringan, sedang, dan berat.",
+        "Skor 10 atau lebih adalah alasan untuk berbicara dengan dokter atau tenaga profesional kesehatan mental. Pemeriksaan ini adalah alat skrining, bukan diagnosis."
+      ],
+      "faq": [
+        { "q": "Apa arti skor GAD-7-ku?", "a": "0–4 minimal, 5–9 ringan, 10–14 sedang, dan 15–21 gejala kecemasan berat selama dua minggu terakhir." },
+        { "q": "Bisakah GAD-7 mendiagnosis gangguan kecemasan?", "a": "Tidak. GAD-7 menyaring gejala. Diagnosis memerlukan asesmen oleh tenaga profesional yang berwenang." },
+        { "q": "Kapan aku perlu mencari bantuan?", "a": "Jika skormu 10 atau lebih, atau jika kecemasan mengganggu pekerjaan, sekolah, tidur, atau hubunganmu, bicaralah dengan dokter atau konselor." },
+        { "q": "Apa yang membantu mengatasi kecemasan?", "a": "Tidur teratur, olahraga, mengurangi kafein, bernapas perlahan, dan bercerita kepada orang yang kamu percayai membantu banyak orang. Terapi (seperti CBT) dan obat-obatan adalah penanganan yang efektif." }
+      ],
+      "items": [
+        "Merasa gugup, cemas, atau gelisah",
+        "Tidak mampu menghentikan atau mengendalikan rasa khawatir",
+        "Terlalu mengkhawatirkan berbagai hal",
+        "Sulit untuk bersantai",
+        "Sangat gelisah sehingga sulit untuk duduk diam",
+        "Menjadi mudah jengkel atau mudah tersinggung",
+        "Merasa takut seolah-olah sesuatu yang mengerikan akan terjadi"
+      ],
+      "results": {
+        "minimal": { "name": "Kecemasan minimal (0–4)", "body": "Jawabanmu menunjukkan sedikit atau tidak ada gejala kecemasan selama dua minggu terakhir. Pertahankan kebiasaan yang membantumu tetap seimbang." },
+        "mild": { "name": "Kecemasan ringan (5–9)", "body": "Kamu mengalami beberapa gejala kecemasan. Perhatikan perkembangannya, dan coba kebiasaan yang mengurangi stres seperti tidur teratur, olahraga, dan membatasi kafein. Ulangi tes ini dalam beberapa minggu." },
+        "moderate": { "name": "Kecemasan sedang (10–14)", "body": "Gejalamu berada pada tingkat yang disarankan untuk berbicara dengan dokter atau tenaga profesional kesehatan mental. Kecemasan sangat bisa ditangani." },
+        "severe": { "name": "Kecemasan berat (15–21)", "body": "Jawabanmu menunjukkan gejala kecemasan yang berat. Segera hubungi dokter atau tenaga profesional kesehatan mental. Kamu tidak harus menghadapinya sendirian, dan bantuan yang efektif itu ada." }
+      }
+    },
+    "depression": {
+      "title": "Tes depresi PHQ-9 gratis: skrining depresi online — cv.cm",
+      "description": "Tes depresi PHQ-9 online gratis. Jawab 9 pertanyaan tentang dua minggu terakhir, dapatkan skor 0–27 dan tingkat keparahannya. Data tetap di browser.",
+      "h1": "Tes depresi (PHQ-9)",
+      "lede": "PHQ-9 adalah skrining depresi 9 pertanyaan yang dipakai dokter di seluruh dunia. Hanya sekitar dua menit, dengan skor 0 sampai 27.",
+      "about": [
+        "Patient Health Questionnaire (PHQ-9) dikembangkan oleh Kroenke, Spitzer, dan Williams dan gratis digunakan. Skor 5, 10, 15, dan 20 menandai gejala depresi ringan, sedang, cukup berat, dan berat.",
+        "Skor 10 atau lebih adalah alasan untuk menemui dokter atau tenaga profesional kesehatan mental. Jika kamu punya pikiran untuk menyakiti diri sendiri, segera cari bantuan sekarang, berapa pun skor totalmu."
+      ],
+      "faq": [
+        { "q": "Apa arti skor PHQ-9-ku?", "a": "0–4 minimal, 5–9 ringan, 10–14 sedang, 15–19 cukup berat, dan 20–27 gejala depresi berat." },
+        { "q": "Bisakah PHQ-9 mendiagnosis depresi?", "a": "Tidak. PHQ-9 adalah alat skrining. Dokter atau tenaga profesional kesehatan mental menegakkan diagnosis setelah asesmen menyeluruh." },
+        { "q": "Kenapa pertanyaan nomor 9 begitu penting?", "a": "Pertanyaan itu menanyakan pikiran tentang kematian atau menyakiti diri. Jawaban apa pun selain \"tidak sama sekali\" layak dibicarakan dengan tenaga profesional, meskipun skor totalnya rendah." },
+        { "q": "Apakah depresi bisa diobati?", "a": "Bisa. Terapi, obat-obatan, olahraga, dan dukungan sosial semuanya membantu, dan kebanyakan orang membaik dengan penanganan." }
+      ],
+      "items": [
+        "Kurang tertarik atau bergairah dalam melakukan apa pun",
+        "Merasa murung, muram, atau putus asa",
+        "Sulit tidur atau mudah terbangun, atau terlalu banyak tidur",
+        "Merasa lelah atau kurang bertenaga",
+        "Kurang nafsu makan atau terlalu banyak makan",
+        "Kurang percaya diri, atau merasa bahwa kamu adalah orang yang gagal atau telah mengecewakan diri sendiri atau keluarga",
+        "Sulit berkonsentrasi pada sesuatu, misalnya membaca koran atau menonton televisi",
+        "Bergerak atau berbicara sangat lambat sehingga orang lain memperhatikannya, atau sebaliknya: merasa resah atau gelisah sehingga kamu lebih sering bergerak dari biasanya",
+        "Merasa lebih baik mati atau ingin melukai diri sendiri dengan cara apa pun"
+      ],
+      "results": {
+        "minimal": { "name": "Depresi minimal (0–4)", "body": "Jawabanmu menunjukkan sedikit atau tidak ada gejala depresi selama dua minggu terakhir." },
+        "mild": { "name": "Depresi ringan (5–9)", "body": "Kamu mengalami beberapa gejala. Perhatikan perasaanmu, jaga tidur, aktivitas fisik, dan interaksi sosial, lalu ulangi tes ini dalam beberapa minggu. Jika tidak membaik, bicaralah dengan dokter." },
+        "moderate": { "name": "Depresi sedang (10–14)", "body": "Gejalamu berada pada tingkat yang disarankan untuk menemui dokter atau tenaga profesional kesehatan mental. Depresi itu umum dan bisa diobati." },
+        "modsevere": { "name": "Depresi cukup berat (15–19)", "body": "Jawabanmu menunjukkan gejala yang signifikan. Segera hubungi dokter atau tenaga profesional kesehatan mental. Penanganan seperti terapi dan obat-obatan membantu kebanyakan orang." },
+        "severe": { "name": "Depresi berat (20–27)", "body": "Jawabanmu menunjukkan gejala yang berat. Segera hubungi dokter atau tenaga profesional kesehatan mental secepat mungkin, dan beri tahu orang yang kamu percayai tentang apa yang kamu rasakan." }
+      }
+    }
+  }
+}

@@ -1,0 +1,781 @@
+{
+  "crumbHome": "Trang chủ",
+  "ui": {
+    "kicker": "Miễn phí · {n} câu hỏi · khoảng {m} phút · không cần đăng ký",
+    "scaleHint": {
+      "agree5": "Mỗi câu mô tả đúng về bạn đến mức nào? Hãy trả lời theo con người bạn thường ngày, không phải người bạn muốn trở thành.",
+      "agree4": "Bạn đồng ý với mỗi nhận định về bản thân ở mức nào?",
+      "freq4": "Trong 2 tuần qua, bạn có thường bị phiền muộn bởi những vấn đề sau đây không?"
+    },
+    "choiceHint": "Chọn đáp án gần với bạn nhất. Không có câu trả lời nào là sai.",
+    "scale": {
+      "agree5": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"],
+      "agree4": ["Hoàn toàn không đồng ý", "Không đồng ý", "Đồng ý", "Hoàn toàn đồng ý"],
+      "freq4": ["Không ngày nào", "Vài ngày", "Hơn một nửa số ngày", "Gần như mỗi ngày"]
+    },
+    "progress": "Đã trả lời {n}/{total}",
+    "submit": "Xem kết quả",
+    "missing": "Còn {n} câu. Hãy trả lời tất cả để xem kết quả.",
+    "result": "Kết quả của bạn",
+    "retake": "Làm lại",
+    "copy": "Sao chép kết quả",
+    "copied": "Đã sao chép",
+    "about": "Về bài trắc nghiệm này",
+    "faq": "Câu hỏi thường gặp",
+    "more": "Bài trắc nghiệm khác",
+    "all": "Tất cả bài trắc nghiệm",
+    "privacy": "Câu trả lời được chấm điểm ngay trong tab này. Không có gì được tải lên, lưu lại hay gửi đi.",
+    "notDiagnosis": "Đây là bài tự đánh giá, không phải chẩn đoán. Chỉ chuyên gia có chuyên môn mới có thể chẩn đoán tình trạng sức khỏe tâm thần.",
+    "levels": { "low": "Thấp", "mid": "Trung bình", "high": "Cao" },
+    "score": "Điểm",
+    "top3": "Ba nhóm cao nhất của bạn",
+    "runnerUp": "Cũng nổi bật",
+    "focus": "Khía cạnh cần cải thiện",
+    "crisisTitle": "Nếu bạn đang nghĩ đến việc làm hại bản thân",
+    "crisisBody": "Bạn xứng đáng được hỗ trợ ngay lúc này. Nếu bạn có thể hành động theo những suy nghĩ đó, hãy gọi số cấp cứu tại địa phương hoặc đến phòng cấp cứu gần nhất. Bạn cũng có thể liên hệ đường dây hỗ trợ khủng hoảng miễn phí và bảo mật: findahelpline.com liệt kê các đường dây ở mọi quốc gia.",
+    "crisisLines": "Việt Nam: gọi cấp cứu 115 khi khẩn cấp. Tìm đường dây hỗ trợ miễn phí tại findahelpline.com."
+  },
+  "hub": {
+    "title": "Trắc nghiệm tính cách miễn phí: MBTI, Big Five, tình yêu — cv.cm",
+    "description": "Trắc nghiệm tính cách và tâm lý miễn phí: MBTI 16 nhóm, Big Five, Enneagram, ngôn ngữ tình yêu, hướng nghiệp Holland, test lo âu, trầm cảm. Không cần đăng ký.",
+    "h1": "Trắc nghiệm tính cách và tâm lý",
+    "lede": "Mười ba bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
+    "groups": {
+      "personality": "Tính cách",
+      "love": "Tình yêu và các mối quan hệ",
+      "career": "Nghề nghiệp và tiền bạc",
+      "fun": "Cho vui",
+      "wellbeing": "Tự kiểm tra sức khỏe tinh thần"
+    },
+    "about": [
+      "Mỗi bài trắc nghiệm hiển thị toàn bộ câu hỏi trên một trang. Trả lời xong, nhấn nút, kết quả sẽ hiện ngay bên dưới kèm lời giải thích ngắn và biểu đồ điểm số.",
+      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết."
+    ],
+    "faq": [
+      { "q": "Các bài trắc nghiệm này có miễn phí không?", "a": "Có. Mọi bài đều miễn phí, không cần đăng ký, không cần email và không phải trả tiền để xem kết quả." },
+      { "q": "Câu trả lời của tôi có được lưu lại không?", "a": "Không. Việc chấm điểm diễn ra trong tab trình duyệt của bạn. Câu trả lời không được tải lên hay lưu trữ, và sẽ mất khi bạn đóng tab." },
+      { "q": "Trắc nghiệm tính cách online chính xác đến đâu?", "a": "Một bài tự đánh giá ngắn mô tả cách bạn nhìn nhận bản thân lúc này. Hãy xem kết quả như một tấm gương để suy ngẫm và làm lại sau một thời gian: những kết quả không đổi là phần đáng tin." },
+      { "q": "Tôi nên bắt đầu với bài nào?", "a": "Muốn biết nhanh nhóm tính cách, hãy làm bài 16 nhóm tính cách. Muốn dùng mô hình được các nhà tâm lý học dùng nhiều nhất, hãy làm Big Five. Về các mối quan hệ, hãy thử bài ngôn ngữ tình yêu hoặc kiểu gắn bó." }
+    ]
+  },
+  "tests": {
+    "mbti": {
+      "title": "Trắc nghiệm MBTI miễn phí: 16 nhóm tính cách, 32 câu — cv.cm",
+      "description": "Làm trắc nghiệm MBTI miễn phí. Trả lời 32 câu để biết nhóm tính cách 4 chữ cái của bạn (như INFJ, ESTP) cùng mức độ của từng xu hướng. Không cần đăng ký.",
+      "h1": "Trắc nghiệm 16 nhóm tính cách (kiểu MBTI)",
+      "lede": "Tìm nhóm tính cách 4 chữ cái của bạn: bạn lấy năng lượng từ đâu (E/I), tiếp nhận thông tin ra sao (S/N), ra quyết định thế nào (T/F) và sắp xếp cuộc sống theo cách nào (J/P).",
+      "about": [
+        "16 nhóm tính cách bắt nguồn từ lý thuyết các kiểu tâm lý của Carl Jung, sau đó được Katharine Briggs và Isabel Myers phát triển. Mỗi chữ cái là một phía của một cặp, và tỷ lệ phần trăm cho thấy bạn nghiêng về phía đó mạnh đến mức nào. Kết quả gần 50% nghĩa là bạn dùng cả hai phía.",
+        "Đây là bài trắc nghiệm kiểu MBTI độc lập do cv.cm biên soạn. Đây không phải bài đánh giá Myers-Briggs Type Indicator® chính thức và không liên kết với The Myers-Briggs Company."
+      ],
+      "faq": [
+        { "q": "Đây có phải bài test MBTI chính thức không?", "a": "Không. Bài đánh giá MBTI® chính thức được cung cấp qua các chuyên viên được chứng nhận. Bài test miễn phí này dùng cùng bốn cặp xu hướng với bộ câu hỏi riêng." },
+        { "q": "Bốn chữ cái có nghĩa là gì?", "a": "E hoặc I: Hướng ngoại hoặc Hướng nội. S hoặc N: Giác quan hoặc Trực giác. T hoặc F: Lý trí hoặc Cảm xúc. J hoặc P: Nguyên tắc hoặc Linh hoạt." },
+        { "q": "Sao lần trước tôi ra nhóm khác?", "a": "Nếu một cặp gần 50%, chỉ cần thay đổi nhỏ trong câu trả lời là chữ cái sẽ đổi. Hãy xem tỷ lệ phần trăm: những xu hướng mạnh mới là phần ổn định trong nhóm tính cách của bạn." },
+        { "q": "Nhóm tính cách của tôi có thể thay đổi không?", "a": "Những xu hướng cốt lõi thường khá ổn định khi trưởng thành, nhưng căng thẳng, công việc mới hay giai đoạn mới trong cuộc sống có thể làm thay đổi cách bạn trả lời." }
+      ],
+      "items": [
+        "Tôi thấy tràn đầy năng lượng sau khi dành thời gian với một nhóm người.",
+        "Tôi chú trọng vào sự thật và chi tiết hơn là các khả năng.",
+        "Khi ra quyết định, logic quan trọng với tôi hơn cảm xúc.",
+        "Tôi thích lên kế hoạch từ sớm.",
+        "Tôi thường suy nghĩ thành tiếng bằng cách bàn ý tưởng với người khác.",
+        "Tôi tin vào kinh nghiệm hơn lý thuyết.",
+        "Tôi thà thẳng thắn còn hơn khéo léo.",
+        "Tôi thấy nhẹ nhõm hơn khi một quyết định đã được chốt.",
+        "Tôi dễ dàng bắt chuyện với người lạ.",
+        "Tôi thích những hướng dẫn rõ ràng, từng bước một.",
+        "Tôi phân tích vấn đề một cách khách quan, kể cả khi mọi người đang buồn bực.",
+        "Tôi giữ không gian và lịch trình của mình ngăn nắp.",
+        "Tôi thích có nhiều người quen hơn là có vài người bạn thân.",
+        "Tôi để ý những chi tiết thực tế mà người khác bỏ qua.",
+        "Tôi coi trọng những quy tắc công bằng, nhất quán hơn là các ngoại lệ.",
+        "Tôi thích làm xong một việc rồi mới bắt đầu việc khác.",
+        "Sau một ngày giao tiếp nhiều, tôi cần thời gian ở một mình để nạp lại năng lượng.",
+        "Tôi thường tưởng tượng mọi thứ có thể khác hoàn toàn như thế nào.",
+        "Tôi cân nhắc quyết định của mình sẽ ảnh hưởng đến cảm xúc của mọi người ra sao.",
+        "Tôi thích để ngỏ các lựa chọn hơn là cam kết sớm.",
+        "Tôi thích suy nghĩ kỹ trước khi nói.",
+        "Tôi thích thảo luận về các ý tưởng và lý thuyết trừu tượng.",
+        "Sự hòa thuận trong nhóm rất quan trọng với tôi.",
+        "Tôi làm việc hiệu quả nhất khi sát hạn chót.",
+        "Tôi thích một buổi tối yên tĩnh một mình.",
+        "Tôi hay tìm kiếm những ý nghĩa và quy luật ẩn giấu.",
+        "Tôi dễ dàng đặt mình vào vị trí của người khác.",
+        "Tôi thích sự ngẫu hứng và để mọi thứ tự nhiên.",
+        "Trong các cuộc họp, tôi thường nghe nhiều hơn nói.",
+        "Sự lặp lại khiến tôi chán, và tôi thích thử những cách làm mới.",
+        "Tôi thường đưa ra lựa chọn dựa trên giá trị cá nhân.",
+        "Những kế hoạch cứng nhắc khiến tôi thấy gò bó."
+      ],
+      "letters": {
+        "E": "Hướng ngoại", "I": "Hướng nội",
+        "S": "Giác quan", "N": "Trực giác",
+        "T": "Lý trí", "F": "Cảm xúc",
+        "J": "Nguyên tắc", "P": "Linh hoạt"
+      },
+      "results": {
+        "ESTJ": { "name": "ESTJ · Nhà quản lý", "body": "Thực tế, ngăn nắp và thẳng thắn. Bạn thích quy tắc rõ ràng, hoàn thành việc đúng hạn và tự nhiên đứng ra dẫn dắt con người lẫn dự án. Hãy cẩn thận kẻo lấn át những tiếng nói trầm lặng hơn; hỏi han cảm xúc của mọi người sẽ giúp kế hoạch của bạn suôn sẻ hơn." },
+        "ESTP": { "name": "ESTP · Người hành động", "body": "Năng động, táo bạo và thích bắt tay vào việc. Bạn nắm bắt tình huống nhanh, thích mạo hiểm và giải quyết vấn đề ngay tại chỗ. Kế hoạch dài hạn và giấy tờ lặp lại khiến bạn chán; một danh sách việc cần làm đơn giản giúp đà hăng hái của bạn không để lại việc dang dở." },
+        "ESFJ": { "name": "ESFJ · Người chăm sóc", "body": "Ấm áp, trung thành và hòa đồng. Bạn nhận ra người khác cần gì, gìn giữ truyền thống và gắn kết tập thể. Bạn có thể để tâm quá nhiều đến lời chỉ trích; hãy nhớ rằng đôi khi nói không cũng là một cách quan tâm." },
+        "ESFP": { "name": "ESFP · Người trình diễn", "body": "Vui vẻ, ngẫu hứng và hào phóng. Bạn mang năng lượng đến mọi nơi và tận hưởng khoảnh khắc hiện tại cùng mọi người. Lên kế hoạch trước nghe có vẻ nhàm chán, nhưng một chút cấu trúc sẽ cho bạn nhiều tự do hơn về sau." },
+        "ENTJ": { "name": "ENTJ · Nhà chỉ huy", "body": "Có tầm chiến lược, quyết đoán và tham vọng. Bạn thấy rõ mọi thứ nên vận hành thế nào, đặt mục tiêu lớn và tổ chức mọi người cùng đạt được. Kiên nhẫn hơn với những quy trình chậm và với cảm xúc sẽ giúp bạn trở thành nhà lãnh đạo mạnh mẽ hơn nữa." },
+        "ENTP": { "name": "ENTP · Nhà tranh luận", "body": "Nhanh trí, tò mò và sáng tạo. Bạn mê ý tưởng, tranh luận và những khả năng mới, và thích thách thức các giả định cho vui. Hoàn thành dự án mới là phần khó; hãy bắt cặp với người yêu thích chi tiết." },
+        "ENFJ": { "name": "ENFJ · Người cố vấn", "body": "Lôi cuốn, đồng cảm và truyền cảm hứng. Bạn khơi dậy điều tốt nhất ở mọi người và quy tụ họ quanh những giá trị chung. Bạn có thể ôm đồm quá nhiều nhu cầu của người khác; hãy dành thời gian cho chính mình." },
+        "ENFP": { "name": "ENFP · Người truyền lửa", "body": "Nhiệt huyết, giàu trí tưởng tượng và ấm áp. Bạn thấy tiềm năng ở khắp nơi, dễ kết nối với mọi người và theo đuổi những gì có ý nghĩa. Quá nhiều dự án dang dở có thể làm phân tán năng lượng; hãy chọn vài việc và làm đến cùng." },
+        "ISTJ": { "name": "ISTJ · Người kiểm soát", "body": "Có trách nhiệm, chu đáo và đáng tin cậy. Bạn giữ lời, coi trọng sự thật và phương pháp đã được kiểm chứng, và làm đến nơi đến chốn. Thay đổi có thể khiến bạn bất an; thử nghiệm từng bước nhỏ giúp bạn thích nghi theo cách của mình." },
+        "ISTP": { "name": "ISTP · Người thợ khéo", "body": "Điềm tĩnh, logic và thực tế. Bạn thích hiểu cách mọi thứ vận hành và giải quyết vấn đề bằng đôi tay hoặc bằng phân tích rõ ràng. Bạn coi trọng sự độc lập; cho mọi người biết bạn nghĩ gì sẽ giúp họ tin tưởng bạn hơn." },
+        "ISFJ": { "name": "ISFJ · Người bảo vệ", "body": "Tốt bụng, đáng tin và tinh ý. Bạn nhớ những chi tiết nhỏ về mọi người và lặng lẽ chăm lo cho họ. Bạn thường đặt người khác lên trước; nhu cầu của bạn cũng xứng đáng được quan tâm như vậy." },
+        "ISFP": { "name": "ISFP · Người nghệ sĩ", "body": "Dịu dàng, nhạy cảm và sáng tạo. Bạn sống theo giá trị của mình, tận hưởng vẻ đẹp của khoảnh khắc và thể hiện bản thân qua những gì bạn làm ra. Xung đột làm bạn kiệt sức; lên tiếng sớm giúp chuyện nhỏ không thành chuyện lớn." },
+        "INTJ": { "name": "INTJ · Nhà kiến trúc", "body": "Độc lập, giỏi phân tích và có tầm nhìn. Bạn xây dựng kế hoạch dài hạn, đặt câu hỏi với mọi thứ và đặt tiêu chuẩn cao cho bản thân. Người khác có thể thấy bạn khó đoán; giải thích lập luận của mình giúp bạn có thêm người đồng hành." },
+        "INTP": { "name": "INTP · Nhà tư duy", "body": "Tò mò, chính xác và sáng tạo. Bạn yêu lý thuyết, hệ thống và câu đố, và cần thời gian một mình để suy ngẫm. Ý tưởng có thể chỉ nằm trong đầu; chia sẻ sớm một bản nháp sẽ biến chúng thành hiện thực." },
+        "INFJ": { "name": "INFJ · Người che chở", "body": "Sâu sắc, có nguyên tắc và giàu lòng trắc ẩn. Bạn cảm nhận được cảm xúc của người khác, tìm kiếm ý nghĩa sâu xa và lặng lẽ hướng tới một thế giới tốt đẹp hơn. Bạn có thể kiệt sức vì quan tâm quá nhiều; hãy giữ gìn thời gian nghỉ ngơi." },
+        "INFP": { "name": "INFP · Người lý tưởng hóa", "body": "Chu đáo, lý tưởng và trung thành với giá trị của mình. Bạn có thế giới nội tâm phong phú và muốn cuộc sống, công việc của mình có ý nghĩa. Sự tự phê bình có thể kìm hãm bạn; tiến bộ quan trọng hơn hoàn hảo." }
+      }
+    },
+    "big-five": {
+      "title": "Trắc nghiệm tính cách Big Five miễn phí (IPIP 50 câu) — cv.cm",
+      "description": "Trắc nghiệm tính cách Big Five (OCEAN) miễn phí với bảng hỏi IPIP 50 câu. Xem điểm Cởi mở, Tận tâm, Hướng ngoại, Dễ chịu và Bất ổn cảm xúc. Không cần đăng ký.",
+      "h1": "Trắc nghiệm tính cách Big Five (OCEAN)",
+      "lede": "Đo năm đặc điểm được các nhà tâm lý học dùng nhiều nhất: Cởi mở, Tận tâm, Hướng ngoại, Dễ chịu và Bất ổn cảm xúc. 50 câu ngắn, kết quả là năm điểm số trên thang 100.",
+      "about": [
+        "Big Five (còn gọi là mô hình Năm yếu tố hay OCEAN) là mô hình tính cách được nghiên cứu kỹ nhất. Thay vì xếp bạn vào một khuôn, mô hình đặt bạn trên năm thang đo độc lập, nên mỗi người có một hồ sơ riêng.",
+        "Bài trắc nghiệm này dùng bộ 50 câu Big-Five Factor Markers từ Kho câu hỏi tính cách quốc tế (IPIP), do Lewis Goldberg phát triển và công bố vào phạm vi công cộng. Điểm ở đây được so với khoảng thang đo, không so với mẫu dân số, nên 50 nghĩa là điểm giữa thang."
+      ],
+      "faq": [
+        { "q": "OCEAN là viết tắt của gì?", "a": "Openness (Cởi mở với trải nghiệm), Conscientiousness (Tận tâm), Extraversion (Hướng ngoại), Agreeableness (Dễ chịu) và Neuroticism (Bất ổn cảm xúc), năm đặc điểm lớn của mô hình." },
+        { "q": "Điểm cao có tốt hơn không?", "a": "Không. Mỗi đầu của một đặc điểm đều có điểm mạnh. Hướng ngoại thấp đi kèm sự tập trung và điềm tĩnh; Dễ chịu thấp đi kèm sự thẳng thắn và độc lập." },
+        { "q": "Big Five có khoa học hơn MBTI không?", "a": "Phần lớn các nhà nghiên cứu tính cách ưu tiên Big Five: các đặc điểm được đo bằng điểm số liên tục và dự đoán được hiệu quả công việc, mức độ hạnh phúc trong nhiều nghiên cứu." },
+        { "q": "Các câu hỏi lấy từ đâu?", "a": "Từ bộ 50 câu IPIP Big-Five Factor Markers của Lewis Goldberg, một bảng hỏi thuộc phạm vi công cộng được dùng rộng rãi trong nghiên cứu." }
+      ],
+      "items": [
+        "Tôi là tâm điểm của các bữa tiệc.",
+        "Tôi ít quan tâm đến người khác.",
+        "Tôi luôn chuẩn bị sẵn sàng.",
+        "Tôi dễ bị căng thẳng.",
+        "Tôi có vốn từ vựng phong phú.",
+        "Tôi không nói nhiều.",
+        "Tôi quan tâm đến mọi người.",
+        "Tôi để đồ đạc bừa bãi.",
+        "Tôi thoải mái thư giãn phần lớn thời gian.",
+        "Tôi gặp khó khăn khi hiểu các ý tưởng trừu tượng.",
+        "Tôi cảm thấy thoải mái khi ở gần mọi người.",
+        "Tôi hay xúc phạm người khác.",
+        "Tôi chú ý đến chi tiết.",
+        "Tôi hay lo lắng về mọi thứ.",
+        "Tôi có trí tưởng tượng phong phú.",
+        "Tôi thích đứng ở phía sau.",
+        "Tôi đồng cảm với cảm xúc của người khác.",
+        "Tôi hay làm rối tung mọi việc.",
+        "Tôi hiếm khi cảm thấy buồn bã.",
+        "Tôi không hứng thú với các ý tưởng trừu tượng.",
+        "Tôi là người mở lời bắt chuyện.",
+        "Tôi không quan tâm đến chuyện của người khác.",
+        "Tôi làm việc nhà ngay lập tức.",
+        "Tôi dễ bị xáo trộn.",
+        "Tôi có những ý tưởng xuất sắc.",
+        "Tôi ít có điều gì để nói.",
+        "Tôi có trái tim mềm yếu.",
+        "Tôi thường quên cất đồ về đúng chỗ.",
+        "Tôi dễ bực bội.",
+        "Tôi không có trí tưởng tượng tốt.",
+        "Tôi trò chuyện với nhiều người khác nhau trong các bữa tiệc.",
+        "Tôi không thực sự quan tâm đến người khác.",
+        "Tôi thích sự ngăn nắp.",
+        "Tâm trạng của tôi thay đổi nhiều.",
+        "Tôi hiểu vấn đề nhanh.",
+        "Tôi không thích thu hút sự chú ý về mình.",
+        "Tôi dành thời gian cho người khác.",
+        "Tôi trốn tránh trách nhiệm.",
+        "Tâm trạng của tôi thường xuyên thất thường.",
+        "Tôi dùng những từ ngữ khó.",
+        "Tôi không ngại trở thành trung tâm của sự chú ý.",
+        "Tôi cảm nhận được cảm xúc của người khác.",
+        "Tôi làm việc theo lịch trình.",
+        "Tôi dễ cáu kỉnh.",
+        "Tôi dành thời gian suy ngẫm về mọi việc.",
+        "Tôi ít nói khi ở cạnh người lạ.",
+        "Tôi khiến mọi người cảm thấy thoải mái.",
+        "Tôi khắt khe trong công việc.",
+        "Tôi thường cảm thấy buồn bã.",
+        "Tôi có rất nhiều ý tưởng."
+      ],
+      "dims": {
+        "O": "Cởi mở",
+        "C": "Tận tâm",
+        "E": "Hướng ngoại",
+        "A": "Dễ chịu",
+        "N": "Bất ổn cảm xúc"
+      },
+      "levels": {
+        "O": {
+          "low": "Bạn ưa những gì quen thuộc và thực tế. Bạn thích cách làm đã được kiểm chứng và sự thật cụ thể hơn là suy đoán trừu tượng.",
+          "mid": "Bạn cân bằng giữa tò mò và thực tế: cởi mở với ý tưởng mới khi chúng hữu ích, thoải mái với nếp quen khi nó hiệu quả.",
+          "high": "Bạn tò mò, giàu trí tưởng tượng và bị cuốn hút bởi ý tưởng, nghệ thuật và trải nghiệm mới. Bạn thích tư duy trừu tượng và sự đa dạng."
+        },
+        "C": {
+          "low": "Bạn linh hoạt, ngẫu hứng và không thích kế hoạch cứng nhắc. Hạn chót và sự gọn gàng có thể đòi hỏi bạn phải cố gắng.",
+          "mid": "Bạn ngăn nắp khi cần và thoải mái khi không cần. Bạn biết lên kế hoạch nhưng không cần mọi thứ đều có lịch.",
+          "high": "Bạn ngăn nắp, đáng tin cậy và hướng đến mục tiêu. Bạn lên kế hoạch trước, chú ý chi tiết và làm đến cùng."
+        },
+        "E": {
+          "low": "Bạn kín đáo và nạp năng lượng khi ở một mình hoặc với vài người thân thiết. Bạn suy nghĩ trước khi nói và thích sự tập trung yên tĩnh.",
+          "mid": "Bạn là người hướng trung: hòa đồng trong bối cảnh phù hợp nhưng cũng coi trọng thời gian riêng.",
+          "high": "Bạn cởi mở, nói nhiều và có thêm năng lượng khi ở cạnh mọi người. Bạn thích được chú ý, thích đám đông và nhịp sống sôi động."
+        },
+        "A": {
+          "low": "Bạn thẳng thắn, hoài nghi và thích cạnh tranh. Bạn nói điều mình nghĩ và không ngại bất đồng.",
+          "mid": "Bạn thường hợp tác nhưng vẫn giữ được lập trường. Bạn cân nhắc nhu cầu của người khác với nhu cầu của mình.",
+          "high": "Bạn ấm áp, tin người và sẵn lòng giúp đỡ. Bạn quan tâm đến sự hòa thuận và cảm xúc của người khác."
+        },
+        "N": {
+          "low": "Bạn ổn định về cảm xúc và điềm tĩnh trước áp lực. Thất bại hiếm khi làm bạn chao đảo lâu.",
+          "mid": "Bạn cảm thấy căng thẳng và lo lắng ở mức bình thường và thường hồi phục trong thời gian hợp lý.",
+          "high": "Bạn cảm nhận cảm xúc rất mạnh và có thể dễ lo âu, căng thẳng hoặc tâm trạng đi xuống. Nghỉ ngơi đều đặn, vận động và tâm sự với người khác sẽ giúp ích."
+        }
+      }
+    },
+    "enneagram": {
+      "title": "Trắc nghiệm Enneagram miễn phí: tìm nhóm của bạn — cv.cm",
+      "description": "Trắc nghiệm Enneagram miễn phí. Đánh giá 36 câu để biết bạn thuộc nhóm nào trong 9 nhóm tính cách Enneagram, kèm điểm của cả chín nhóm. Không cần đăng ký.",
+      "h1": "Trắc nghiệm tính cách Enneagram",
+      "lede": "Khám phá nhóm nào trong chín nhóm Enneagram đang chi phối bạn: điều bạn mong muốn nhất, điều bạn sợ hãi và cách bạn hành xử khi căng thẳng.",
+      "about": [
+        "Enneagram mô tả chín nhóm tính cách, mỗi nhóm xoay quanh một động lực cốt lõi. Hầu hết mọi người thấy mình một chút trong nhiều nhóm; nhóm chính của bạn là nhóm có động lực khiến bạn thấy quen thuộc nhất.",
+        "Bài trắc nghiệm ngắn này do cv.cm biên soạn. Hãy đọc mô tả của hai hoặc ba nhóm cao nhất và tự quyết định nhóm nào hợp nhất: tự nhận diện chính là cách dùng Enneagram đúng nghĩa."
+      ],
+      "faq": [
+        { "q": "Chín nhóm Enneagram là gì?", "a": "1 Người cải cách, 2 Người giúp đỡ, 3 Người thành đạt, 4 Người cá tính, 5 Người khám phá, 6 Người trung thành, 7 Người nhiệt tình, 8 Người thách thức, 9 Người hòa giải." },
+        { "q": "Cánh (wing) là gì?", "a": "Cánh là một trong hai nhóm nằm cạnh nhóm chính của bạn trên vòng tròn Enneagram (nhóm 4 có thể có cánh 3 hoặc 5). Điểm cao thứ hai là gợi ý nếu nó nằm cạnh nhóm chính." },
+        { "q": "Các điểm cao nhất của tôi sát nhau. Tôi thuộc nhóm nào?", "a": "Hãy đọc từng mô tả và tự hỏi nỗi sợ và mong muốn cốt lõi nào đúng nhất với bạn trong suốt cuộc đời, không chỉ gần đây." },
+        { "q": "Enneagram có khoa học không?", "a": "Bằng chứng nghiên cứu còn hạn chế so với Big Five. Dù vậy, nhiều người vẫn thấy đây là ngôn ngữ hữu ích để nói về động lực và sự phát triển." }
+      ],
+      "items": [
+        "Tôi đặt tiêu chuẩn cao cho bản thân và nhanh chóng nhận ra lỗi sai.",
+        "Tôi thấy hạnh phúc nhất khi có ai đó cần tôi giúp.",
+        "Thành công và được ngưỡng mộ rất quan trọng với tôi.",
+        "Tôi thường cảm thấy mình khác biệt với người khác.",
+        "Tôi cần nhiều thời gian ở một mình để suy nghĩ và nạp lại năng lượng.",
+        "Tôi hay tưởng tượng điều gì có thể sai và chuẩn bị trước.",
+        "Tôi luôn tìm kiếm điều thú vị tiếp theo để làm.",
+        "Tôi nói điều mình nghĩ, kể cả khi điều đó gây xung đột.",
+        "Tôi chiều theo người khác để giữ hòa khí.",
+        "Tôi thấy khó chịu khi mọi việc không được làm đúng cách.",
+        "Tôi giỏi nhận ra người khác cần gì, đôi khi trước cả họ.",
+        "Tôi điều chỉnh hình ảnh của mình để gây ấn tượng với mọi người.",
+        "Những cảm xúc sâu sắc, kể cả nỗi buồn, đều có ý nghĩa với tôi.",
+        "Tôi thích hiểu thấu một vấn đề trước khi hành động.",
+        "Lòng trung thành và sự an toàn rất quan trọng với tôi.",
+        "Tôi không thích bị giới hạn hay ràng buộc.",
+        "Tôi thích nắm quyền kiểm soát và ghét cảm giác yếu đuối.",
+        "Tôi tránh xung đột, kể cả khi có điều làm tôi phiền lòng.",
+        "Tôi khó thư giãn cho đến khi công việc hoàn hảo.",
+        "Đôi khi tôi cho đi nhiều đến mức bỏ quên nhu cầu của chính mình.",
+        "Tôi rất hướng đến mục tiêu và làm việc hiệu quả.",
+        "Tôi muốn mình thật sự độc đáo và chân thật.",
+        "Tôi bảo vệ sự riêng tư và năng lượng của mình.",
+        "Tôi tin người chậm và thử thách độ tin cậy của họ.",
+        "Tôi để ngỏ nhiều lựa chọn để không bao giờ bỏ lỡ điều gì.",
+        "Tôi bảo vệ quyết liệt những người tôi yêu quý.",
+        "Tôi trì hoãn quyết định và để mọi việc tự êm xuôi.",
+        "Tôi có một tiếng nói nội tâm mạnh mẽ về đúng và sai.",
+        "Tôi muốn được yêu thương và trân trọng vì những gì mình cho đi.",
+        "Tôi ghét thất bại và luôn bận rộn để đi trước.",
+        "Tôi bị thu hút bởi cái đẹp, nghệ thuật và sự thể hiện bản thân.",
+        "Kiến thức và năng lực khiến tôi cảm thấy an toàn.",
+        "Tôi tìm đến quy tắc hoặc người đáng tin để được định hướng.",
+        "Tôi nhanh chóng biến tình huống xấu thành điều tích cực.",
+        "Tôi nhanh chóng đứng ra nắm quyền khi không ai làm.",
+        "Tôi dễ tính và hợp với gần như bất kỳ ai."
+      ],
+      "dims": {
+        "1": "Nhóm 1 · Người cải cách", "2": "Nhóm 2 · Người giúp đỡ", "3": "Nhóm 3 · Người thành đạt",
+        "4": "Nhóm 4 · Người cá tính", "5": "Nhóm 5 · Người khám phá", "6": "Nhóm 6 · Người trung thành",
+        "7": "Nhóm 7 · Người nhiệt tình", "8": "Nhóm 8 · Người thách thức", "9": "Nhóm 9 · Người hòa giải"
+      },
+      "results": {
+        "1": { "name": "Nhóm 1 · Người cải cách", "body": "Có nguyên tắc, có mục đích và kỷ luật. Bạn muốn sống tốt và làm đúng, và sợ trở nên sai trái hay hư hỏng. Bạn trưởng thành khi chấp nhận rằng chưa hoàn hảo thường cũng đủ tốt, với bản thân và với người khác." },
+        "2": { "name": "Nhóm 2 · Người giúp đỡ", "body": "Chu đáo, hào phóng và muốn làm hài lòng người khác. Bạn muốn được yêu thương và được cần đến, và sợ bị ruồng bỏ. Bạn trưởng thành khi nhận ra nhu cầu của chính mình và mạnh dạn nhờ giúp đỡ." },
+        "3": { "name": "Nhóm 3 · Người thành đạt", "body": "Đầy động lực, dễ thích nghi và chú trọng hình ảnh. Bạn muốn cảm thấy mình có giá trị và thành công, và sợ trở nên vô giá trị. Bạn trưởng thành khi trân trọng con người mình, không chỉ những gì mình đạt được." },
+        "4": { "name": "Nhóm 4 · Người cá tính", "body": "Giàu cảm xúc, nhạy cảm và hướng nội. Bạn muốn tìm ra bản sắc thật và ý nghĩa của mình, và sợ không có điều đó. Bạn trưởng thành khi trân trọng cuộc sống bình thường và những gì mình đang có." },
+        "5": { "name": "Nhóm 5 · Người khám phá", "body": "Tò mò, sâu sắc và kín đáo. Bạn muốn mình có năng lực và giỏi giang, và sợ bị choáng ngợp hoặc vô dụng. Bạn trưởng thành khi dấn thân vào thế giới trước cả khi cảm thấy hoàn toàn sẵn sàng." },
+        "6": { "name": "Nhóm 6 · Người trung thành", "body": "Tận tụy, có trách nhiệm và coi trọng sự an toàn. Bạn muốn có chỗ dựa và sự định hướng, và sợ thiếu chúng. Bạn trưởng thành khi tin vào phán đoán của chính mình." },
+        "7": { "name": "Nhóm 7 · Người nhiệt tình", "body": "Ngẫu hứng, đa năng và lạc quan. Bạn muốn được thỏa mãn và tự do, và sợ đau khổ cũng như bỏ lỡ. Bạn trưởng thành khi ở lại với một điều, kể cả những cảm xúc khó khăn." },
+        "8": { "name": "Nhóm 8 · Người thách thức", "body": "Tự tin, quyết đoán và che chở. Bạn muốn làm chủ cuộc sống của mình, và sợ bị tổn thương hay bị kiểm soát. Bạn trưởng thành khi để những người đáng tin thấy được mặt mềm mỏng của mình." },
+        "9": { "name": "Nhóm 9 · Người hòa giải", "body": "Dễ tính, cởi mở và khiến người khác yên tâm. Bạn muốn bình yên trong lòng và bên ngoài, và sợ xung đột, chia ly. Bạn trưởng thành khi nói ra những ưu tiên của mình và hành động vì chúng." }
+      }
+    },
+    "love-language": {
+      "title": "Trắc nghiệm ngôn ngữ tình yêu miễn phí — cv.cm",
+      "description": "Trắc nghiệm ngôn ngữ tình yêu miễn phí. Đánh giá 25 câu để biết bạn cảm nhận tình yêu qua lời nói, thời gian, quà tặng, hành động hay đụng chạm.",
+      "h1": "Trắc nghiệm ngôn ngữ tình yêu",
+      "lede": "Ngôn ngữ nào trong năm ngôn ngữ tình yêu chạm đến bạn nhiều nhất? Đánh giá 25 câu và xem thứ hạng cả năm ngôn ngữ.",
+      "about": [
+        "Khái niệm năm ngôn ngữ tình yêu được chuyên gia tư vấn Gary Chapman phổ biến năm 1992: mọi người thường cảm nhận tình yêu qua lời nói khẳng định, thời gian chất lượng, nhận quà, hành động giúp đỡ hoặc đụng chạm thể xác, và các cặp đôi thường nói những ngôn ngữ khác nhau.",
+        "Bài trắc nghiệm độc lập này do cv.cm biên soạn. Hãy chia sẻ thứ hạng của bạn với người yêu hoặc bạn bè và rủ họ làm cùng: biết ngôn ngữ chính của nhau mới là phần hữu ích."
+      ],
+      "faq": [
+        { "q": "Năm ngôn ngữ tình yêu là gì?", "a": "Lời nói khẳng định, thời gian chất lượng, nhận quà, hành động giúp đỡ và đụng chạm thể xác." },
+        { "q": "Tôi có thể có nhiều hơn một ngôn ngữ tình yêu không?", "a": "Có. Hầu hết mọi người có một hoặc hai ngôn ngữ quan trọng nhất và những ngôn ngữ khác ít quan trọng hơn. Biểu đồ hiển thị cả năm." },
+        { "q": "Ngôn ngữ tình yêu có cơ sở khoa học không?", "a": "Các nghiên cứu cho kết quả trái chiều: những cặp đôi thể hiện tình yêu bằng nhiều cách thường hạnh phúc hơn. Khái niệm này hữu ích nhất khi là chủ đề trò chuyện, không phải quy tắc." },
+        { "q": "Đây có phải bài trắc nghiệm chính thức không?", "a": "Không. Đây là bài trắc nghiệm độc lập dựa trên cùng năm nhóm, không liên kết với Gary Chapman hay nhà xuất bản của ông." }
+      ],
+      "items": [
+        "Nghe câu “Mình tự hào về bạn” có ý nghĩa rất lớn với tôi.",
+        "Tôi thấy gần gũi nhất với ai đó khi chúng tôi dành thời gian bên nhau không bị gián đoạn.",
+        "Một món quà nhỏ, chu đáo có thể làm tôi vui cả ngày.",
+        "Khi ai đó giúp tôi làm việc nhà, tôi thấy mình được quan tâm.",
+        "Một cái ôm khi về nhà khiến tôi thấy được yêu thương.",
+        "Tôi giữ lại những tin nhắn tử tế và đọc lại sau này.",
+        "Tôi thấy tổn thương khi ai đó dùng điện thoại lúc chúng tôi đang nói chuyện.",
+        "Tôi nhớ ai đã tặng mình từng món quà ý nghĩa.",
+        "Tôi thấy được yêu thương khi ai đó chủ động gánh bớt việc cho tôi mà không cần nhờ.",
+        "Nắm tay khiến tôi cảm thấy gắn kết.",
+        "Lời khen là cách dễ nhất để làm tôi vui lên.",
+        "Một buổi đi dạo dài hay trò chuyện sâu là cách gắn kết tôi thích nhất.",
+        "Tôi thấy bị lãng quên nếu một dịp đặc biệt trôi qua mà không có món quà nào.",
+        "Với tôi, hành động có sức nặng hơn lời nói.",
+        "Tôi thích ngồi sát bên những người tôi yêu quý.",
+        "Những lời nói nặng nề làm tôi tổn thương rất lâu.",
+        "Những hoạt động làm cùng nhau, dù đơn giản, cũng rất ý nghĩa với tôi.",
+        "Một món quà lưu niệm ai đó mang về cho tôi là tình yêu.",
+        "Khi ai đó nấu ăn cho tôi hay sửa giúp một thứ gì đó, tôi thấy mình được trân trọng.",
+        "Một cái vỗ vai hay chạm nhẹ vào tay giúp tôi yên lòng.",
+        "Tôi cần được nghe rằng mình được trân trọng.",
+        "Kế hoạch bị hủy làm tôi buồn hơn hầu hết mọi chuyện.",
+        "Tôi thích những món quà cho thấy ai đó đã nghĩ đến tôi.",
+        "Tôi thấy được hỗ trợ khi ai đó giúp tôi hoàn thành một việc lớn.",
+        "Sự âu yếm thể xác rất quan trọng với tôi trong một mối quan hệ thân thiết."
+      ],
+      "dims": {
+        "words": "Lời nói khẳng định",
+        "time": "Thời gian chất lượng",
+        "gifts": "Nhận quà",
+        "service": "Hành động giúp đỡ",
+        "touch": "Đụng chạm thể xác"
+      },
+      "results": {
+        "words": { "name": "Lời nói khẳng định", "body": "Bạn cảm nhận tình yêu qua lời nói và chữ viết: lời khen, lời động viên, lời cảm ơn và câu “Mình yêu bạn”. Lời chỉ trích khiến bạn tổn thương nặng. Hãy cho những người thân biết rằng một tin nhắn tử tế ngắn có ý nghĩa với bạn hơn họ nghĩ." },
+        "time": { "name": "Thời gian chất lượng", "body": "Bạn cảm nhận tình yêu qua sự chú ý trọn vẹn: những cuộc trò chuyện thật lòng, hoạt động chung và điện thoại cất đi. Sự xao nhãng và kế hoạch bị hủy khiến bạn buồn. Hãy đề nghị có khoảng thời gian bên nhau đều đặn mà cả hai cùng giữ gìn." },
+        "gifts": { "name": "Nhận quà", "body": "Bạn cảm nhận tình yêu qua những món quà chu đáo, dù lớn hay nhỏ. Điều quan trọng không phải giá tiền mà là bằng chứng rằng ai đó đã nghĩ đến bạn. Hãy cho mọi người biết một bất ngờ nhỏ có ý nghĩa rất lớn." },
+        "service": { "name": "Hành động giúp đỡ", "body": "Bạn cảm nhận tình yêu khi người khác giúp cuộc sống của bạn dễ dàng hơn: nấu ăn, sửa đồ, chạy việc vặt, làm thay một việc nhà. Lời hứa không giữ khiến bạn đau lòng. Hãy nói rõ sự giúp đỡ cụ thể nào có ý nghĩa nhất với bạn." },
+        "touch": { "name": "Đụng chạm thể xác", "body": "Bạn cảm nhận tình yêu qua những đụng chạm phù hợp: ôm, nắm tay, ngồi gần nhau. Khoảng cách thể xác có thể khiến bạn thấy xa cách về cảm xúc. Hãy cho người ấy biết những cái chạm nhỏ trong ngày quan trọng thế nào với bạn." }
+      }
+    },
+    "attachment": {
+      "title": "Trắc nghiệm kiểu gắn bó: an toàn, lo âu hay né tránh? — cv.cm",
+      "description": "Trắc nghiệm kiểu gắn bó miễn phí cho người trưởng thành. 16 câu về quan hệ thân thiết để biết bạn gắn bó kiểu an toàn, lo âu, né tránh hay sợ hãi-né tránh.",
+      "h1": "Trắc nghiệm kiểu gắn bó",
+      "lede": "Bạn hành xử thế nào trong các mối quan hệ thân thiết? Bài trắc nghiệm này đo mức lo âu và né tránh trong gắn bó, rồi xếp bạn vào một trong bốn kiểu.",
+      "about": [
+        "Lý thuyết gắn bó bắt đầu từ nghiên cứu về trẻ em của John Bowlby và Mary Ainsworth, sau đó được Hazan và Shaver mở rộng sang quan hệ tình cảm ở người trưởng thành. Nghiên cứu hiện đại đo hai chiều: lo âu (sợ bị từ chối) và né tránh (không thoải mái với sự gần gũi).",
+        "Kiểu gắn bó của bạn phụ thuộc vào vị trí trên cả hai chiều: thấp ở cả hai là kiểu an toàn. Bài trắc nghiệm ngắn này do cv.cm biên soạn dựa trên mô hình hai chiều đó. Kiểu gắn bó có thể thay đổi theo thời gian và nhờ những mối quan hệ nâng đỡ."
+      ],
+      "faq": [
+        { "q": "Bốn kiểu gắn bó là gì?", "a": "An toàn (lo âu thấp, né tránh thấp), lo âu (lo âu cao), né tránh (né tránh cao) và sợ hãi-né tránh (cao ở cả hai)." },
+        { "q": "Kiểu gắn bó của tôi có thể thay đổi không?", "a": "Có. Một mối quan hệ lâu dài, ổn định, trị liệu tâm lý và luyện tập có ý thức có thể giúp bạn tiến tới sự an toàn, điều các nhà nghiên cứu gọi là an toàn có được (earned security)." },
+        { "q": "Tôi có nên trả lời về người yêu hiện tại không?", "a": "Hãy trả lời theo cảm nhận chung của bạn trong các mối quan hệ thân thiết, không chỉ về một người." },
+        { "q": "Kiểu nào là tốt nhất?", "a": "Gắn bó an toàn đi kèm mức hài lòng cao nhất trong quan hệ, nhưng kiểu nào cũng là phản ứng hợp lý với trải nghiệm trong quá khứ, và kiểu nào cũng có thể phát triển." }
+      ],
+      "items": [
+        "Tôi lo rằng những người tôi yêu sẽ không quan tâm tôi nhiều như tôi quan tâm họ.",
+        "Tôi không muốn cho người khác thấy cảm xúc sâu kín của mình.",
+        "Tôi cần được trấn an nhiều lần rằng mình được yêu.",
+        "Tôi thấy không thoải mái khi người yêu muốn quá gần gũi.",
+        "Khi người tôi yêu đi xa, tôi lo họ sẽ hết quan tâm đến tôi.",
+        "Tôi dễ dàng dựa dẫm vào những người thân thiết.",
+        "Tôi thấy bực bội khi người yêu không trả lời tin nhắn một lúc lâu.",
+        "Tôi coi trọng sự độc lập hơn sự gần gũi.",
+        "Tôi sợ bị bỏ rơi.",
+        "Tôi thấy thoải mái khi chia sẻ suy nghĩ riêng tư với người yêu.",
+        "Tôi hiếm khi lo bị bỏ rơi.",
+        "Tôi rút lui khi một mối quan hệ bắt đầu nghiêm túc.",
+        "Tôi thường ước tình cảm của người yêu dành cho tôi cũng mạnh như của tôi.",
+        "Tôi khó cho phép mình dựa vào người khác.",
+        "Tôi suy nghĩ quá nhiều về những thay đổi nhỏ trong tâm trạng của người yêu.",
+        "Tìm đến người mình yêu để được an ủi giúp ích cho tôi."
+      ],
+      "dims": {
+        "anx": "Lo âu trong gắn bó",
+        "avo": "Né tránh trong gắn bó"
+      },
+      "results": {
+        "secure": { "name": "An toàn", "body": "Bạn thoải mái với cả sự gần gũi lẫn sự độc lập. Bạn tin tưởng người yêu, nói ra điều mình cần và xử lý mâu thuẫn mà không hoảng loạn. Hãy tiếp tục như vậy: sự vững vàng của bạn cũng giúp những người xung quanh cảm thấy an toàn." },
+        "anxious": { "name": "Lo âu (bận tâm)", "body": "Bạn muốn sự gần gũi và lo sợ mất nó, nên bạn có thể tìm kiếm sự trấn an hoặc suy diễn nhiều từ những tín hiệu nhỏ. Nói thẳng nhu cầu của mình và tự trấn tĩnh trước khi phản ứng sẽ giúp các mối quan hệ êm đềm hơn." },
+        "avoidant": { "name": "Né tránh (xa cách)", "body": "Bạn coi trọng sự độc lập và thấy không yên khi người khác đến quá gần hoặc dựa dẫm vào bạn. Bạn có thể rút lui khi mọi chuyện trở nên nghiêm túc. Tập cởi mở từng bước nhỏ giúp người khác hỗ trợ bạn mà không lấy đi tự do của bạn." },
+        "fearful": { "name": "Sợ hãi-né tránh (hỗn loạn)", "body": "Bạn muốn sự gần gũi nhưng cũng sợ nó, nên bạn có thể dao động giữa tiến lại gần và rút lui. Điều này thường bắt nguồn từ những trải nghiệm đau buồn. Sự kiên nhẫn, một người bạn đời vững vàng và sự hỗ trợ từ nhà trị liệu có thể giúp ích rất nhiều." }
+      }
+    },
+    "marriage": {
+      "title": "Trắc nghiệm sẵn sàng kết hôn miễn phí cho các cặp đôi — cv.cm",
+      "description": "Bạn đã sẵn sàng kết hôn chưa? Trắc nghiệm 20 câu miễn phí về giao tiếp, mâu thuẫn, tiền bạc, gia đình và mục tiêu chung, kèm điểm từng mặt và lời khuyên.",
+      "h1": "Trắc nghiệm mức độ sẵn sàng kết hôn",
+      "lede": "Kiểm tra mức độ sẵn sàng kết hôn của mối quan hệ qua năm khía cạnh mà các chuyên gia tư vấn chú trọng: giao tiếp, mâu thuẫn, tiền bạc, gia đình và tương lai bạn mong muốn.",
+      "about": [
+        "Các chương trình tiền hôn nhân như PREPARE/ENRICH và nghiên cứu của John Gottman đều chỉ ra cùng những khía cạnh: cách cặp đôi trò chuyện, cãi nhau, quản lý tiền bạc, ứng xử với gia đình và thống nhất về tương lai. Bài trắc nghiệm này do cv.cm biên soạn quanh năm khía cạnh đó.",
+        "Hãy làm riêng với người ấy rồi so sánh. Khía cạnh có điểm chênh lệch nhiều nhất là chủ đề tốt nhất cho cuộc trò chuyện dài tiếp theo của hai bạn."
+      ],
+      "faq": [
+        { "q": "Một bài trắc nghiệm có cho tôi biết có nên kết hôn không?", "a": "Không. Nó chỉ làm nổi bật những khía cạnh đáng để trao đổi. Quyết định phụ thuộc vào nhiều điều mà bài trắc nghiệm không thấy được." },
+        { "q": "Người ấy có nên làm cùng không?", "a": "Có. Hãy trả lời riêng, sau đó so sánh điểm từng khía cạnh. Sự khác biệt hữu ích hơn tổng điểm." },
+        { "q": "Nếu chúng tôi được điểm thấp thì sao?", "a": "Điểm thấp là danh sách chủ đề cần bàn, không phải phán quyết. Nhiều cặp đôi giải quyết chúng qua những cuộc trò chuyện thẳng thắn hoặc tư vấn tiền hôn nhân." },
+        { "q": "Các cặp đã kết hôn có dùng được không?", "a": "Có. Năm khía cạnh này quan trọng ở mọi giai đoạn của mối quan hệ." }
+      ],
+      "items": [
+        "Chúng tôi có thể nói chuyện cởi mở về gần như mọi thứ.",
+        "Khi cãi nhau, chúng tôi vẫn tôn trọng nhau.",
+        "Chúng tôi đã nói chuyện thẳng thắn về nợ nần, thu nhập và chi tiêu.",
+        "Tôi khá hòa hợp với gia đình của người ấy.",
+        "Chúng tôi thống nhất về việc có con hay không và khi nào.",
+        "Tôi cảm thấy được lắng nghe khi chia sẻ điều quan trọng.",
+        "Các cuộc cãi vã của chúng tôi thường kết thúc bằng việc một người im lặng đóng cửa lòng.",
+        "Chúng tôi thống nhất cách chia tiền và các hóa đơn.",
+        "Chúng tôi có ranh giới rõ ràng với gia đình hai bên.",
+        "Chúng tôi muốn một lối sống tương tự nhau trong năm năm tới.",
+        "Tôi kìm nén cảm xúc để tránh làm người ấy buồn.",
+        "Chúng tôi biết xin lỗi và hàn gắn sau khi cãi nhau.",
+        "Chúng tôi có thói quen tiết kiệm và chi tiêu giống nhau.",
+        "Gia đình hai bên thường gây căng thẳng giữa chúng tôi.",
+        "Chúng tôi đã nói về nơi mình muốn sống.",
+        "Chúng tôi thường xuyên hỏi han nhau về tình hình mối quan hệ.",
+        "Chúng tôi giải quyết vấn đề như một đội thay vì đổ lỗi cho nhau.",
+        "Tiền bạc là chủ đề chúng tôi né tránh.",
+        "Chúng tôi thống nhất nên dành bao nhiêu thời gian cho họ hàng.",
+        "Chúng tôi ủng hộ sự nghiệp và mục tiêu cá nhân của nhau."
+      ],
+      "dims": {
+        "talk": "Giao tiếp",
+        "conflict": "Mâu thuẫn",
+        "money": "Tiền bạc",
+        "family": "Gia đình",
+        "future": "Tương lai chung"
+      },
+      "results": {
+        "ready": { "name": "Nền tảng vững chắc", "body": "Hai bạn giao tiếp tốt, cùng nhau xử lý mâu thuẫn và tiền bạc, và mong muốn một tương lai tương đồng. Hãy tiếp tục vun đắp những thói quen đã giúp hai bạn đến được đây, như thường xuyên hỏi han nhau." },
+        "close": { "name": "Gần sẵn sàng", "body": "Mối quan hệ có nền tảng vững chắc với một hoặc hai khía cạnh cần củng cố. Hãy bàn bạc về khía cạnh thấp nhất bên dưới trước khi tiến thêm bước lớn tiếp theo." },
+        "work": { "name": "Còn vài việc cần làm", "body": "Một số chủ đề quan trọng vẫn chưa được giải quyết. Điều đó khá phổ biến. Hãy dành thời gian bàn từng khía cạnh và cân nhắc tham gia khóa học tiền hôn nhân hoặc gặp chuyên gia tư vấn." },
+        "early": { "name": "Mới bắt đầu", "body": "Nhiều khía cạnh then chốt chưa được cùng nhau giải quyết. Hãy dành thời gian hiểu quan điểm của nhau về những điều cơ bản trước khi lên kế hoạch đám cưới." }
+      },
+      "tips": {
+        "talk": "Thử trò chuyện 20 phút mỗi tuần: mỗi người chia sẻ một điều vui, một điều buồn và một mong muốn, người kia chỉ lắng nghe.",
+        "conflict": "Thống nhất quy tắc tạm dừng: khi tranh cãi căng thẳng, bất kỳ ai cũng có thể xin nghỉ 20 phút, rồi hai bạn quay lại nói cho xong.",
+        "money": "Cùng ngồi xem các con số thật: thu nhập, nợ và tiền tiết kiệm. Sau đó thống nhất một mục tiêu chung và cách chia chi phí.",
+        "family": "Bàn xem những truyền thống và chuyến thăm gia đình nào quan trọng nhất với mỗi người, và thể hiện sự đồng lòng trước họ hàng.",
+        "future": "Mỗi người viết ra mình muốn ở đâu sau năm năm (nhà cửa, con cái, sự nghiệp), rồi so sánh và tìm điểm chung."
+      }
+    },
+    "career": {
+      "title": "Trắc nghiệm hướng nghiệp Holland (RIASEC) miễn phí — cv.cm",
+      "description": "Trắc nghiệm hướng nghiệp Holland miễn phí theo mô hình RIASEC. Đánh giá 36 hoạt động để nhận mã Holland 3 chữ cái và gợi ý nghề phù hợp. Không cần đăng ký.",
+      "h1": "Trắc nghiệm sở thích nghề nghiệp (mã Holland)",
+      "lede": "Tìm nghề phù hợp với sở thích của bạn. Đánh giá 36 hoạt động để nhận mã Holland 3 chữ cái từ các nhóm Kỹ thuật, Nghiên cứu, Nghệ thuật, Xã hội, Quản lý và Nghiệp vụ.",
+      "about": [
+        "Nhà tâm lý học John Holland nhận thấy con người và môi trường làm việc có thể được mô tả bằng sáu nhóm sở thích, gọi là RIASEC. Mọi người thường hài lòng hơn với công việc phù hợp với các nhóm cao nhất của mình.",
+        "Mã Holland là ba chữ cái cao nhất của bạn theo thứ tự. Hãy dùng nó để khám phá nghề nghiệp: ví dụ, cơ sở dữ liệu O*NET của Mỹ liệt kê các nghề theo mã Holland. Bài trắc nghiệm này do cv.cm biên soạn và đo sở thích, không đo năng lực."
+      ],
+      "faq": [
+        { "q": "Mã Holland là gì?", "a": "Là ba nhóm sở thích mạnh nhất của bạn theo thứ tự, như SAE hay RIC. Các chuyên gia hướng nghiệp dùng mã này để gợi ý công việc và ngành học phù hợp." },
+        { "q": "Tôi có nên đánh giá những hoạt động chưa từng thử không?", "a": "Có. Hãy tưởng tượng mình làm hoạt động đó và đánh giá bạn sẽ thích nó đến mức nào, không phải bạn sẽ làm giỏi đến đâu." },
+        { "q": "Bài trắc nghiệm này có đo năng khiếu không?", "a": "Không. Nó đo sở thích. Kỹ năng có thể học được; sở thích dự đoán công việc nào bạn sẽ đủ yêu thích để theo đuổi lâu dài và trở nên giỏi." },
+        { "q": "Các điểm của tôi gần bằng nhau. Giờ sao?", "a": "Hồ sơ đều nhau nghĩa là bạn có sở thích rộng. Hãy xem những nghề kết hợp các nhóm cao nhất của bạn và thử các dự án ngắn để biết mình thích gì." }
+      ],
+      "items": [
+        "Đóng hoặc sửa đồ nội thất",
+        "Làm thí nghiệm trong phòng thí nghiệm",
+        "Viết truyện hoặc lời bài hát",
+        "Dạy ai đó một kỹ năng mới",
+        "Tự khởi nghiệp kinh doanh",
+        "Ghi chép sổ sách và bảng tính chính xác",
+        "Làm việc ngoài trời với cây cối hoặc động vật",
+        "Giải một bài toán khó hoặc câu đố logic",
+        "Thiết kế áp phích, trang web hoặc căn phòng",
+        "Giúp mọi người giải quyết vấn đề cá nhân",
+        "Thuyết phục người khác chấp nhận một ý tưởng hoặc mua sản phẩm",
+        "Làm theo quy trình rõ ràng để hoàn thành công việc thật chính xác",
+        "Sử dụng dụng cụ hoặc máy móc",
+        "Tìm hiểu cách một thứ gì đó vận hành",
+        "Diễn xuất, hát, nhảy hoặc chơi nhạc",
+        "Chăm sóc người ốm hoặc người cao tuổi",
+        "Dẫn dắt một nhóm đạt mục tiêu",
+        "Kiểm tra lỗi trong tài liệu",
+        "Lắp đặt hoặc sửa chữa thiết bị điện tử",
+        "Phân tích dữ liệu để tìm quy luật",
+        "Chụp ảnh hoặc làm video",
+        "Tình nguyện vì cộng đồng",
+        "Đàm phán một thương vụ",
+        "Sắp xếp hồ sơ, lịch trình hoặc hàng tồn kho",
+        "Lái hoặc vận hành xe cộ, thiết bị",
+        "Đọc các bài báo khoa học",
+        "Nghĩ ra những ý tưởng độc đáo",
+        "Huấn luyện hoặc kèm cặp người khác",
+        "Quản lý ngân sách hoặc dự án",
+        "Xử lý thanh toán hoặc hóa đơn",
+        "Làm công việc chân tay",
+        "Viết code để giải quyết vấn đề",
+        "Thể hiện bản thân không theo khuôn khổ",
+        "Làm việc trong nhóm giúp đỡ mọi người",
+        "Chấp nhận rủi ro để nhận phần thưởng lớn",
+        "Làm việc trong văn phòng có tổ chức, dễ đoán trước"
+      ],
+      "dims": {
+        "R": "Kỹ thuật (người làm)",
+        "I": "Nghiên cứu (người tư duy)",
+        "A": "Nghệ thuật (người sáng tạo)",
+        "S": "Xã hội (người giúp đỡ)",
+        "E": "Quản lý (người thuyết phục)",
+        "C": "Nghiệp vụ (người tổ chức)"
+      },
+      "codeTitle": "Mã Holland của bạn",
+      "results": {
+        "R": { "name": "Kỹ thuật (người làm)", "body": "Bạn thích công việc thực tế, bắt tay vào làm với dụng cụ, máy móc, cây cối hay động vật, và thấy được kết quả rõ ràng. Nghề nên khám phá: thợ điện, thợ cơ khí, kỹ sư, đầu bếp, thợ mộc, nông dân, phi công, chuyên viên vật lý trị liệu." },
+        "I": { "name": "Nghiên cứu (người tư duy)", "body": "Bạn thích quan sát, phân tích và giải quyết vấn đề phức tạp. Nghề nên khám phá: nhà khoa học, lập trình viên, chuyên viên phân tích dữ liệu, bác sĩ, dược sĩ, nhà nghiên cứu, nhà kinh tế học." },
+        "A": { "name": "Nghệ thuật (người sáng tạo)", "body": "Bạn thích sáng tạo và thể hiện bản thân trong môi trường không gò bó. Nghề nên khám phá: nhà thiết kế, nhà văn, nhạc sĩ, nhiếp ảnh gia, kiến trúc sư, biên tập viên video, giám đốc nghệ thuật." },
+        "S": { "name": "Xã hội (người giúp đỡ)", "body": "Bạn thích giúp đỡ, giảng dạy và chăm sóc mọi người. Nghề nên khám phá: giáo viên, điều dưỡng, chuyên viên tư vấn, nhân viên công tác xã hội, chuyên viên nhân sự, huấn luyện viên, nhà trị liệu." },
+        "E": { "name": "Quản lý (người thuyết phục)", "body": "Bạn thích lãnh đạo, thuyết phục và chấp nhận rủi ro để đạt mục tiêu. Nghề nên khám phá: doanh nhân, quản lý bán hàng, chuyên viên marketing, luật sư, môi giới bất động sản, quản lý sản phẩm." },
+        "C": { "name": "Nghiệp vụ (người tổ chức)", "body": "Bạn thích sự trật tự, chính xác và quy trình rõ ràng với dữ liệu. Nghề nên khám phá: kế toán, kiểm toán viên, nhân viên hành chính, điều phối viên logistics, nhân viên ngân hàng, quản trị cơ sở dữ liệu." }
+      }
+    },
+    "money": {
+      "title": "Trắc nghiệm tính cách tài chính: bạn thuộc kiểu nào? — cv.cm",
+      "description": "Trắc nghiệm tính cách tài chính miễn phí. Đánh giá 20 câu để biết bạn là người tiết kiệm, chi tiêu, đầu tư, né tránh hay cho đi, kèm điểm mạnh và lời khuyên.",
+      "h1": "Trắc nghiệm tính cách tài chính",
+      "lede": "Thói quen dùng tiền nói lên tương lai tài chính của bạn nhiều hơn vận may. Hãy tìm kiểu tính cách tài chính của bạn và một thói quen giúp ích nhiều nhất.",
+      "about": [
+        "Các nhà tâm lý học tài chính như Brad Klontz mô tả những niềm tin về tiền mà chúng ta hấp thụ khi lớn lên, âm thầm chi phối cách ta tiết kiệm, chi tiêu và đầu tư. Bài trắc nghiệm này do cv.cm biên soạn, xếp các thói quen phổ biến vào năm kiểu tính cách tài chính.",
+        "Không có kiểu nào tốt hay xấu. Mỗi kiểu có một điểm mạnh để phát huy và một điểm mù cần kiểm soát. Bài trắc nghiệm không thể đoán vận may của bạn: nó mô tả thói quen, và thói quen có thể thay đổi."
+      ],
+      "faq": [
+        { "q": "Bài này có đoán được tôi sẽ giàu đến đâu không?", "a": "Không. Không bài trắc nghiệm nào đoán được vận may. Nó cho thấy những thói quen có xu hướng giúp ích hoặc gây hại cho tài chính của bạn theo thời gian, và bạn có thể thay đổi chúng." },
+        { "q": "Năm kiểu tài chính ở đây là gì?", "a": "Người tiết kiệm, người chi tiêu, nhà đầu tư (chấp nhận rủi ro), người né tránh và người cho đi." },
+        { "q": "Tôi có thể thuộc nhiều kiểu không?", "a": "Có. Biểu đồ hiển thị cả năm kiểu. Ví dụ, nhiều người là người tiết kiệm nhưng cũng rất hay cho đi." },
+        { "q": "Các cặp đôi nên làm gì với kết quả?", "a": "So sánh kiểu của nhau. Một người tiết kiệm và một người chi tiêu có thể cân bằng cho nhau nếu thống nhất một ngân sách chung." }
+      ],
+      "items": [
+        "Tôi thấy bất an nếu không có khoản tiết kiệm dự phòng.",
+        "Mua đồ mới khiến tôi thật sự phấn chấn.",
+        "Tôi thoải mái chấp nhận rủi ro để tiền sinh lời.",
+        "Tôi hiếm khi kiểm tra số dư tài khoản.",
+        "Tôi thích tiêu tiền cho người khác.",
+        "Tôi so sánh giá kỹ trước khi mua bất cứ thứ gì.",
+        "Tôi thường mua những thứ không thực sự cần.",
+        "Tôi tìm đọc về đầu tư, chứng khoán hoặc kinh doanh phụ.",
+        "Nghĩ về tiền khiến tôi căng thẳng, nên tôi cứ trì hoãn.",
+        "Tôi khó từ chối khi bạn bè hoặc người thân cần tiền.",
+        "Tôi theo dõi chi tiêu thường xuyên.",
+        "Tôi thà tận hưởng tiền bây giờ còn hơn lo cho sau này.",
+        "Tôi thấy những cơ hội kiếm tiền mà người khác bỏ lỡ.",
+        "Tôi không thực sự biết tiền của mình đi đâu mỗi tháng.",
+        "Tôi vẫn cho đi hoặc quyên góp kể cả khi eo hẹp.",
+        "Chi tiền cho đồ xa xỉ khiến tôi thấy có lỗi.",
+        "Đôi khi tôi mua sắm để làm mình vui lên.",
+        "Tôi sẽ đầu tư vào một ý tưởng mới nếu tiềm năng sinh lời có vẻ lớn.",
+        "Tôi phớt lờ hóa đơn đến phút chót.",
+        "Hào phóng quan trọng với tôi hơn giàu có."
+      ],
+      "dims": {
+        "saver": "Người tiết kiệm",
+        "spender": "Người chi tiêu",
+        "investor": "Nhà đầu tư",
+        "avoider": "Người né tránh",
+        "giver": "Người cho đi"
+      },
+      "results": {
+        "saver": { "name": "Người tiết kiệm", "body": "Điểm mạnh: kỷ luật, có tiền tiết kiệm và lưới an toàn. Điểm mù: bạn có thể ngần ngại chi cho những thứ thật sự cải thiện cuộc sống, hoặc giữ tiền mặt lẽ ra có thể sinh lời. Lời khuyên: đặt một khoản tiêu vui mỗi tháng không cần áy náy, và đưa tiền tiết kiệm dài hạn vào một quỹ đa dạng hóa đơn giản." },
+        "spender": { "name": "Người chi tiêu", "body": "Điểm mạnh: bạn biết tận hưởng cuộc sống và hào phóng với trải nghiệm. Điểm mù: mua sắm bốc đồng và ít để dành cho tương lai. Lời khuyên: tự động chuyển một khoản cố định vào tiết kiệm ngay ngày nhận lương, và chờ 48 giờ trước mọi khoản mua không thiết yếu." },
+        "investor": { "name": "Nhà đầu tư", "body": "Điểm mạnh: bạn nhìn ra cơ hội và để tiền làm việc cho mình. Điểm mù: chạy theo thắng lớn có thể dồn quá nhiều rủi ro vào một chỗ. Lời khuyên: lập quỹ khẩn cấp trước, và đừng bao giờ dồn vào một canh bạc nhiều hơn số tiền bạn chấp nhận mất." },
+        "avoider": { "name": "Người né tránh", "body": "Điểm mạnh: tiền không chi phối cuộc sống của bạn. Điểm mù: hóa đơn chưa mở, phí trả chậm và cơ hội bị bỏ lỡ vì nhìn vào khiến bạn căng thẳng. Lời khuyên: hẹn một buổi 15 phút với tiền bạc mỗi tuần để kiểm tra số dư và thanh toán hóa đơn; mọi thứ sẽ dễ dần rất nhanh." },
+        "giver": { "name": "Người cho đi", "body": "Điểm mạnh: sự hào phóng và các mối quan hệ bền chặt. Điểm mù: cho đi cả những gì bạn cần cho sự an toàn của chính mình. Lời khuyên: định trước một ngân sách cho đi, để bạn có thể hào phóng mà không đặt tương lai của mình vào rủi ro." }
+      }
+    },
+    "anime": {
+      "title": "Bạn là kiểu nhân vật anime nào? Trắc nghiệm vui — cv.cm",
+      "description": "Trắc nghiệm tính cách anime miễn phí: bạn là Tsundere, Kuudere, Dandere, Deredere, Genki, Chuunibyou, Himedere hay Senpai đáng tin cậy? Trả lời 12 câu.",
+      "h1": "Bạn là kiểu nhân vật anime nào?",
+      "lede": "Tsundere hay Kuudere? Genki hay Chuunibyou? Trả lời 12 câu hỏi đời thường để tìm kiểu nhân vật anime hợp với tính cách của bạn.",
+      "about": [
+        "Anime và manga dùng những kiểu nhân vật quen thuộc, thường được đặt tên bằng tiếng lóng Nhật có đuôi -dere (từ deredere, say đắm). Mỗi kiểu kết hợp một thái độ bề ngoài với một mặt mềm mỏng ẩn giấu.",
+        "Bài trắc nghiệm này do cv.cm biên soạn cho vui. Nó xem cách bạn phản ứng với lời khen, bạn bè, vai trò lãnh đạo và áp lực, rồi ghép bạn với kiểu gần nhất trong tám kiểu nhân vật phổ biến."
+      ],
+      "faq": [
+        { "q": "Tsundere nghĩa là gì?", "a": "Nhân vật tỏ ra lạnh lùng hoặc gai góc (tsun-tsun) nhưng bên trong lại ấm áp, quan tâm (dere-dere)." },
+        { "q": "Kuudere và Dandere khác nhau thế nào?", "a": "Kuudere điềm tĩnh, lạnh lùng một cách chủ động và hiếm khi bộc lộ cảm xúc. Dandere ít nói vì nhút nhát và sẽ cởi mở khi đã thấy thoải mái." },
+        { "q": "Chuunibyou là gì?", "a": "Nghĩa đen là “hội chứng học sinh lớp 8”: nhân vật tin vào, hoặc diễn như mình có sức mạnh bí ẩn và định mệnh kịch tính." },
+        { "q": "Bài trắc nghiệm này có nghiêm túc không?", "a": "Không. Đây là bài trắc nghiệm vui. Để có hồ sơ tính cách dựa trên nghiên cứu, hãy làm bài Big Five." }
+      ],
+      "items": [
+        { "q": "Bạn thân tặng bạn một món quà tự làm. Bạn…", "options": ["Nói “Đâu phải mình muốn cái này đâu…” rồi giữ nó mãi mãi", "Gật đầu, nói “Cảm ơn” và lặng lẽ trân trọng nó", "Ôm chầm lấy họ ngay và khen lấy khen để", "Nhận một cách thanh lịch. Đương nhiên là phải dâng lễ vật cho ta rồi"] },
+        { "q": "Lớp hoặc nhóm cần một người dẫn dắt. Bạn…", "options": ["Bước lên: phải có ai đó giữ cho mọi người đi đúng hướng", "Cầu mong không ai chọn mình và ngồi im thin thít", "Giơ tay xung phong thật to trước khi ai kịp lên tiếng", "Tuyên bố rằng người được chọn cuối cùng đã thức tỉnh"] },
+        { "q": "Cuối tuần lý tưởng của bạn:", "options": ["Đọc sách hoặc chơi game một mình, điện thoại để im lặng", "Một chuyến đi ngẫu hứng với càng nhiều bạn càng tốt", "Nấu ăn cho bạn bè và đảm bảo ai cũng ổn", "Viết thế giới quan cho một vũ trụ chỉ mình bạn hiểu hết"] },
+        { "q": "Có người khen bạn trước mặt mọi người. Bạn…", "options": ["Đỏ mặt và gắt lên “Đ-đừng nói mấy câu kỳ cục thế!”", "Nói “Tôi biết.”", "Đứng hình, rồi lí nhí “c-cảm ơn”", "Khen lại họ ngay, gấp đôi nhiệt tình"] },
+        { "q": "Bạn bè đang có một ngày tồi tệ. Bạn…", "options": ["Đưa ra lời khuyên thực tế và một kế hoạch", "Lôi họ đi ăn và hát karaoke", "Càu nhàu “đúng là hết thuốc chữa”, rồi ở bên họ cả đêm", "Ngồi cạnh và lắng nghe không nói một lời"] },
+        { "q": "Chọn một siêu năng lực:", "options": ["Phép thuật băng giá", "Sức mạnh cấm kỵ bị phong ấn trong cánh tay trái", "Chữa lành", "Mệnh lệnh hoàng gia: người khác chỉ việc tuân theo"] },
+        { "q": "Phong cách nhắn tin của bạn:", "options": ["Nhiều dấu chấm than và sticker!!!", "Ngắn. Chấm hết.", "Gõ, xóa, gõ lại, rồi gửi “ok”", "Trêu chọc, rồi thêm nhanh câu “mà mình cũng chẳng quan tâm đâu”"] },
+        { "q": "Dự án nhóm gặp trục trặc. Bạn…", "options": ["Bình tĩnh sửa xong trước khi ai kịp nhận ra", "Tuyên bố rằng định mệnh đang thử thách chúng ta", "Không đổ lỗi cho ai và cổ vũ mọi người", "Chỉ ra rằng chuyện này đã không xảy ra nếu họ chịu nghe bạn"] },
+        { "q": "Phong cách thời trang của bạn:", "options": ["Thanh lịch và hơi lồng lộn: bạn sinh ra là để được chú ý", "Áo khoác đen, có thể thêm bịt mắt hoặc băng quấn tay", "Một chiếc hoodie êm ái để trốn vào trong", "Màu sắc rực rỡ và giày sneaker để chạy nhảy"] },
+        { "q": "Bạn thể hiện thích ai đó bằng cách nào?", "options": ["Tỏ ra lạnh lùng, rồi làm điều gì đó rất tử tế khi không ai thấy", "Công khai và lúc nào cũng thể hiện. Giấu làm gì?", "Chăm lo cho họ như một người anh chị đáng tin cậy", "Bạn chờ họ nhận ra trước"] },
+        { "q": "Mọi người thường mô tả bạn là…", "options": ["Điềm tĩnh và khó đoán", "Tràn đầy năng lượng", "Nhút nhát, nhưng rất dễ thương khi đã thân", "Đáng tin cậy"] },
+        { "q": "Câu cửa miệng của bạn có thể là…", "options": ["“Hừm!”", "“Ohohoho!”", "“Quẩy thôiii!”", "“…Bóng tối đang gọi tên ta.”"] }
+      ],
+      "dims": {
+        "tsundere": "Tsundere",
+        "kuudere": "Kuudere",
+        "dandere": "Dandere",
+        "deredere": "Deredere",
+        "genki": "Genki",
+        "chuuni": "Chuunibyou",
+        "himedere": "Himedere",
+        "senpai": "Senpai đáng tin cậy"
+      },
+      "results": {
+        "tsundere": { "name": "Tsundere", "body": "Ngoài gai góc, trong mềm mỏng. Bạn giấu tình cảm sau những lời trêu chọc và chối bỏ, nhưng lòng trung thành của bạn rất mãnh liệt và sự tử tế thể hiện qua hành động. Những người hiểu bạn nhất thấy điều đó thật đáng yêu." },
+        "kuudere": { "name": "Kuudere", "body": "Lạnh lùng, điềm tĩnh và chừng mực. Bạn hiếm khi bộc lộ cảm xúc và suy nghĩ trước khi hành động, nên bạn là chỗ dựa vững vàng khi có khủng hoảng. Khi bạn mỉm cười, mọi người sẽ nhớ mãi." },
+        "dandere": { "name": "Dandere", "body": "Ít nói và nhút nhát với người mới, nhưng ấm áp và hài hước khi đã thấy an toàn. Bạn để ý mọi thứ và quan tâm sâu sắc, dù người khác cần thời gian mới nhận ra." },
+        "deredere": { "name": "Deredere", "body": "Ngọt ngào, vui vẻ và thể hiện tình cảm công khai. Bạn yêu thương hết mình, cổ vũ mọi người và làm bừng sáng mọi căn phòng. Sự tử tế chính là siêu năng lực của bạn." },
+        "genki": { "name": "Genki", "body": "Tràn đầy năng lượng, lạc quan và luôn sẵn sàng cho cuộc phiêu lưu tiếp theo. Bạn kéo bạn bè ra khỏi vùng an toàn và biến những ngày bình thường thành thú vị." },
+        "chuuni": { "name": "Chuunibyou", "body": "Kịch tính, giàu trí tưởng tượng và đầy những câu chuyện hoành tráng. Thế giới nội tâm của bạn là một sử thi, và bạn biến cuộc sống thường ngày thành câu chuyện đáng kể lại. Đừng bao giờ đánh mất sự sáng tạo đó." },
+        "himedere": { "name": "Himedere", "body": "Tự tin, thanh lịch và quen được đối xử như hoàng tộc. Bạn đặt tiêu chuẩn cao và luôn có phong thái, nhưng bên trong bạn rất trung thành với những ai đã giành được lòng tin của mình." },
+        "senpai": { "name": "Senpai đáng tin cậy", "body": "Đáng tin, chín chắn và biết che chở. Bạn cho lời khuyên tốt, giữ cả nhóm gắn kết và để mắt đến mọi người, đúng kiểu senpai mà nhân vật chính nào cũng cần." }
+      }
+    },
+    "face-shape": {
+      "title": "Trắc nghiệm khuôn mặt: mặt tôi thuộc dáng nào? — cv.cm",
+      "description": "Trắc nghiệm khuôn mặt miễn phí. Soi gương trả lời 6 câu để biết mặt bạn trái xoan, tròn, vuông, trái tim, dài, kim cương hay tam giác, kèm gợi ý tóc, kính.",
+      "h1": "Trắc nghiệm khuôn mặt",
+      "lede": "Xác định dáng mặt với một chiếc gương và 6 câu hỏi nhanh, rồi nhận gợi ý kiểu tóc, gọng kính và cách chăm chút phù hợp. Không cần ảnh, không tải gì lên.",
+      "about": [
+        "Cách quan sát: vén tóc ra sau, đứng trước gương (hoặc chụp một tấm selfie chính diện) và so sánh bốn điều: chiều dài khuôn mặt, độ rộng trán, độ rộng gò má và độ rộng hàm. Dùng thước dây mềm hoặc một sợi dây sẽ dễ hơn.",
+        "Hầu hết khuôn mặt là sự pha trộn của hai dáng, nên bài trắc nghiệm cũng cho biết bạn gần với từng dáng đến mức nào. Dáng mặt là về tỷ lệ, không phải về cái đẹp: dáng nào cũng có kiểu tôn lên."
+      ],
+      "faq": [
+        { "q": "Làm sao đo dáng mặt?", "a": "Đo độ rộng trán ở chân tóc, độ rộng gò má ở điểm rộng nhất, độ rộng hàm từ góc hàm dưới tai đến cằm, và chiều dài từ chân tóc đến cằm. Sau đó trả lời các câu hỏi." },
+        { "q": "Dáng mặt nào phổ biến nhất?", "a": "Mặt trái xoan và mặt tròn thường được cho là phổ biến nhất, nhưng nhiều người là sự pha trộn của hai dáng." },
+        { "q": "Bài trắc nghiệm có dùng ảnh của tôi không?", "a": "Không. Bạn trả lời dựa trên gương hoặc ảnh của chính mình; không có gì được tải lên hay phân tích." },
+        { "q": "Trang điểm hay để râu có thay đổi được dáng mặt không?", "a": "Chúng thay đổi cách khuôn mặt trông như thế nào. Tạo khối, kiểu tóc và kiểu râu giúp thêm hoặc làm mềm góc cạnh để cân bằng tỷ lệ." }
+      ],
+      "items": [
+        { "q": "So sánh chiều dài khuôn mặt (từ chân tóc đến cằm) với chiều rộng ngang gò má:", "options": ["Dài hơn nhiều: khoảng 1,5 lần chiều rộng trở lên", "Dài hơn một chút: khoảng 1,3 đến 1,5 lần", "Dài gần bằng rộng"] },
+        { "q": "Phần nào trên khuôn mặt bạn rộng nhất?", "options": ["Trán", "Gò má", "Hàm", "Gần như bằng nhau"] },
+        { "q": "Đường viền hàm của bạn thế nào?", "options": ["Sắc nét và góc cạnh, có góc hàm rõ", "Mềm mại và tròn", "Thon dần về chiếc cằm nhọn", "Cong nhẹ và thon gọn"] },
+        { "q": "So sánh trán với hàm của bạn:", "options": ["Trán rộng hơn rõ rệt", "Hàm rộng hơn rõ rệt", "Rộng gần bằng nhau", "Cả hai đều hẹp hơn rõ so với gò má"] },
+        { "q": "Cằm của bạn thế nào?", "options": ["Nhọn hoặc thon", "Tròn", "Rộng và hơi vuông"] },
+        { "q": "Gò má của bạn thế nào?", "options": ["Cao, sắc nét và là điểm nổi bật nhất", "Đầy đặn, má tròn mềm mại", "Cân đối, rộng hơn hàm một chút", "Không rộng hơn trán hay hàm là bao"] }
+      ],
+      "dims": {
+        "oval": "Trái xoan",
+        "round": "Tròn",
+        "square": "Vuông",
+        "heart": "Trái tim",
+        "oblong": "Dài",
+        "diamond": "Kim cương",
+        "triangle": "Tam giác (quả lê)"
+      },
+      "results": {
+        "oval": { "name": "Mặt trái xoan", "body": "Tỷ lệ cân đối: dài hơn rộng một chút, hàm hơi hẹp hơn trán. Gần như kiểu tóc và dáng gọng kính nào cũng hợp. Hãy thử kính bản to hoặc dáng hình học, cả tóc ngắn lẫn tóc dài." },
+        "round": { "name": "Mặt tròn", "body": "Chiều dài và chiều rộng tương đương, má đầy đặn, hàm mềm. Hãy thêm chiều cao và góc cạnh: tóc tỉa tầng phồng ở đỉnh, rẽ ngôi lệch, kính dáng chữ nhật hoặc góc cạnh. Tránh tóc bob ngang cằm cắt bằng và gọng tròn." },
+        "square": { "name": "Mặt vuông", "body": "Hàm mạnh, góc cạnh, trán, gò má và hàm rộng tương đương. Làm mềm các góc: tóc tỉa tầng mềm, mái lệch, tóc gợn sóng; kính tròn hoặc oval. Râu ngắn bo tròn cằm rất hợp." },
+        "heart": { "name": "Mặt trái tim", "body": "Trán và gò má rộng hơn, thon dần về cằm nhọn. Cân bằng nửa dưới khuôn mặt: tóc bob ngang cằm, mái lệch, độ phồng gần hàm; kính đậm phần dưới hoặc không viền. Râu dày hơn giúp thêm độ rộng ở cằm." },
+        "oblong": { "name": "Mặt dài", "body": "Dài hơn rộng rõ rệt, trán, gò má và hàm rộng tương đương. Thêm chiều rộng: để mái, tóc gợn sóng và phồng hai bên; gọng kính to hoặc bản cao. Tránh tóc thẳng quá dài và kiểu tóc dựng cao trên đỉnh." },
+        "diamond": { "name": "Mặt kim cương", "body": "Gò má cao, rộng, trán và hàm hẹp hơn. Hãy khoe gò má: mái lệch, kiểu vén tóc sau tai và tóc ngang cằm; kính oval hoặc mắt mèo." },
+        "triangle": { "name": "Mặt tam giác (quả lê)", "body": "Hàm rộng hơn trán. Thêm chiều rộng phía trên: phồng ở đỉnh đầu và thái dương, tóc tỉa tầng, mái lệch; gọng đậm phần trên như kính browline. Giữ râu hai bên ngắn." }
+      }
+    },
+    "self-esteem": {
+      "title": "Trắc nghiệm lòng tự trọng (thang đo Rosenberg) miễn phí — cv.cm",
+      "description": "Làm thang đo lòng tự trọng Rosenberg online miễn phí. 10 câu, có ngay điểm trên thang 30 và ý nghĩa. Không cần đăng ký, dữ liệu chỉ ở trong trình duyệt.",
+      "h1": "Trắc nghiệm lòng tự trọng (thang đo Rosenberg)",
+      "lede": "Thang đo lòng tự trọng Rosenberg là công cụ đo giá trị bản thân được dùng rộng rãi nhất. Đánh giá 10 câu và nhận điểm trên thang 30.",
+      "about": [
+        "Nhà xã hội học Morris Rosenberg công bố thang đo này năm 1965, và từ đó nó đã được dùng trong hàng nghìn nghiên cứu. Năm câu mang nghĩa tích cực và năm câu mang nghĩa tiêu cực; các câu tiêu cực được tính điểm ngược.",
+        "Điểm từ 15 đến 25 nằm trong khoảng thông thường. Điểm dưới 15 cho thấy lòng tự trọng thấp. Lòng tự trọng thay đổi theo các biến cố cuộc sống và có thể được xây dựng qua luyện tập và sự hỗ trợ."
+      ],
+      "faq": [
+        { "q": "Thang đo Rosenberg được tính điểm thế nào?", "a": "Mỗi câu trả lời được 0 đến 3 điểm, các câu 2, 5, 6, 8 và 9 tính ngược. Tổng điểm từ 0 đến 30; càng cao nghĩa là lòng tự trọng càng cao." },
+        { "q": "Điểm bình thường là bao nhiêu?", "a": "Hầu hết mọi người đạt từ 15 đến 25. Dưới 15 cho thấy lòng tự trọng thấp." },
+        { "q": "Làm sao để cải thiện lòng tự trọng?", "a": "Nhận ra và phản bác những lời tự trách khắc nghiệt, giữ những lời hứa nhỏ với bản thân, dành thời gian với những người nâng đỡ bạn, và tìm chuyên gia tư vấn nếu cảm giác thiếu giá trị ảnh hưởng đến cuộc sống hằng ngày." },
+        { "q": "Điểm cao có luôn tốt không?", "a": "Lòng tự trọng lành mạnh là lòng tự trọng thực tế. Điểm rất cao thường không sao, nhưng giá trị bản thân dựa vào việc lúc nào cũng phải hơn người khác thì rất mong manh." }
+      ],
+      "items": [
+        "Nhìn chung, tôi hài lòng với bản thân.",
+        "Đôi khi tôi nghĩ mình chẳng ra gì.",
+        "Tôi cảm thấy mình có một số phẩm chất tốt.",
+        "Tôi có thể làm mọi việc tốt như hầu hết mọi người.",
+        "Tôi cảm thấy mình không có nhiều điều để tự hào.",
+        "Chắc chắn có những lúc tôi cảm thấy mình vô dụng.",
+        "Tôi cảm thấy mình là người có giá trị, ít nhất là ngang bằng với người khác.",
+        "Tôi ước mình có thể tôn trọng bản thân hơn.",
+        "Nhìn chung, tôi có xu hướng cảm thấy mình là người thất bại.",
+        "Tôi có thái độ tích cực với bản thân."
+      ],
+      "results": {
+        "low": { "name": "Lòng tự trọng thấp", "body": "Điểm của bạn cho thấy bạn thường khắt khe với bản thân. Điều đó thật khó chịu, và cũng rất phổ biến. Hãy thử mỗi ngày ghi lại ba việc bạn đã làm tốt, để ý khi tiếng nói bên trong khắc nghiệt hơn cách bạn nói với một người bạn, và cân nhắc trò chuyện với chuyên gia tư vấn." },
+        "normal": { "name": "Lòng tự trọng ở mức thông thường", "body": "Điểm của bạn nằm trong khoảng thông thường: nhìn chung bạn chấp nhận bản thân và vẫn thấy chỗ để phát triển. Hãy duy trì những thói quen nâng đỡ bạn, như dành thời gian với những người trân trọng bạn và đặt mục tiêu vừa sức." },
+        "high": { "name": "Lòng tự trọng cao", "body": "Bạn có cái nhìn tích cực, vững vàng về bản thân. Lòng tự trọng lành mạnh giúp bạn vượt qua thất bại và đặt ranh giới. Hãy giữ nó thực tế bằng cách luôn cởi mở đón nhận góp ý." }
+      }
+    },
+    "anxiety": {
+      "title": "Bài test lo âu GAD-7 miễn phí: kiểm tra mức độ lo âu — cv.cm",
+      "description": "Bài test lo âu GAD-7 online miễn phí. Trả lời 7 câu về 2 tuần qua để nhận điểm từ 0 đến 21 kèm mức độ chuẩn. Riêng tư: không có gì rời khỏi trình duyệt của bạn.",
+      "h1": "Bài test lo âu (GAD-7)",
+      "lede": "GAD-7 là công cụ sàng lọc 7 câu hỏi mà bác sĩ dùng để kiểm tra rối loạn lo âu lan tỏa. Chỉ mất khoảng một phút, điểm từ 0 đến 21.",
+      "about": [
+        "Thang đo Rối loạn lo âu lan tỏa 7 mục (GAD-7) được Spitzer, Kroenke, Williams và Löwe phát triển năm 2006. Thang đo miễn phí và được dùng rộng rãi trong chăm sóc sức khỏe ban đầu. Các mốc 5, 10 và 15 điểm tương ứng lo âu nhẹ, vừa và nặng.",
+        "Điểm từ 10 trở lên là lý do để bạn trao đổi với bác sĩ hoặc chuyên gia sức khỏe tâm thần. Đây là công cụ sàng lọc, không phải chẩn đoán."
+      ],
+      "faq": [
+        { "q": "Điểm GAD-7 của tôi có nghĩa là gì?", "a": "0–4 rất ít, 5–9 nhẹ, 10–14 vừa và 15–21 nặng, xét theo triệu chứng lo âu trong 2 tuần qua." },
+        { "q": "GAD-7 có chẩn đoán được rối loạn lo âu không?", "a": "Không. Nó sàng lọc triệu chứng. Chẩn đoán cần được chuyên gia có chuyên môn đánh giá." },
+        { "q": "Khi nào tôi nên tìm sự giúp đỡ?", "a": "Nếu điểm từ 10 trở lên, hoặc lo âu ảnh hưởng đến công việc, học tập, giấc ngủ hay các mối quan hệ, hãy nói chuyện với bác sĩ hoặc chuyên gia tư vấn." },
+        { "q": "Điều gì giúp giảm lo âu?", "a": "Ngủ đều đặn, vận động, giảm caffeine, thở chậm và tâm sự với người bạn tin tưởng giúp ích cho nhiều người. Trị liệu tâm lý (như CBT) và thuốc là những phương pháp điều trị hiệu quả." }
+      ],
+      "items": [
+        "Cảm thấy bồn chồn, lo lắng hoặc bất an",
+        "Không thể ngừng hoặc kiểm soát được sự lo lắng",
+        "Lo lắng quá nhiều về nhiều điều khác nhau",
+        "Khó thư giãn",
+        "Bồn chồn đến mức khó ngồi yên",
+        "Dễ bực mình hoặc cáu kỉnh",
+        "Cảm thấy sợ hãi như thể sắp có điều gì khủng khiếp xảy ra"
+      ],
+      "results": {
+        "minimal": { "name": "Lo âu rất ít (0–4)", "body": "Câu trả lời cho thấy bạn có rất ít hoặc không có triệu chứng lo âu trong 2 tuần qua. Hãy duy trì những thói quen giúp bạn giữ cân bằng." },
+        "mild": { "name": "Lo âu nhẹ (5–9)", "body": "Bạn có một số triệu chứng lo âu. Hãy theo dõi diễn biến và thử các thói quen giảm căng thẳng như ngủ đều đặn, vận động và hạn chế caffeine. Làm lại bài test sau vài tuần." },
+        "moderate": { "name": "Lo âu vừa (10–14)", "body": "Triệu chứng của bạn ở mức nên trao đổi với bác sĩ hoặc chuyên gia sức khỏe tâm thần. Lo âu hoàn toàn có thể điều trị hiệu quả." },
+        "severe": { "name": "Lo âu nặng (15–21)", "body": "Câu trả lời cho thấy triệu chứng lo âu nặng. Hãy sớm liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần. Bạn không phải một mình đối mặt với điều này, và luôn có sự giúp đỡ hiệu quả." }
+      }
+    },
+    "depression": {
+      "title": "Bài test trầm cảm PHQ-9 miễn phí: sàng lọc trầm cảm — cv.cm",
+      "description": "Bài test trầm cảm PHQ-9 online miễn phí. Trả lời 9 câu về 2 tuần qua để nhận điểm từ 0 đến 27 kèm mức độ chuẩn. Riêng tư: dữ liệu không rời khỏi trình duyệt.",
+      "h1": "Bài test trầm cảm (PHQ-9)",
+      "lede": "PHQ-9 là bảng hỏi sàng lọc trầm cảm 9 câu được bác sĩ trên toàn thế giới sử dụng. Chỉ mất khoảng hai phút, điểm từ 0 đến 27.",
+      "about": [
+        "Bảng câu hỏi sức khỏe bệnh nhân (PHQ-9) được Kroenke, Spitzer và Williams phát triển và được sử dụng miễn phí. Các mốc 5, 10, 15 và 20 điểm tương ứng triệu chứng trầm cảm nhẹ, vừa, khá nặng và nặng.",
+        "Điểm từ 10 trở lên là lý do để bạn đi khám bác sĩ hoặc gặp chuyên gia sức khỏe tâm thần. Nếu bạn có bất kỳ ý nghĩ tự làm hại bản thân nào, hãy tìm sự giúp đỡ ngay, dù tổng điểm là bao nhiêu."
+      ],
+      "faq": [
+        { "q": "Điểm PHQ-9 của tôi có nghĩa là gì?", "a": "0–4 rất ít, 5–9 nhẹ, 10–14 vừa, 15–19 khá nặng và 20–27 nặng, xét theo triệu chứng trầm cảm." },
+        { "q": "PHQ-9 có chẩn đoán được trầm cảm không?", "a": "Không. Đây là công cụ sàng lọc. Bác sĩ hoặc chuyên gia sức khỏe tâm thần sẽ chẩn đoán sau khi đánh giá đầy đủ." },
+        { "q": "Vì sao câu 9 lại quan trọng đến vậy?", "a": "Câu này hỏi về ý nghĩ về cái chết hoặc tự làm hại bản thân. Bất kỳ câu trả lời nào khác “Không ngày nào” đều cần được trao đổi với chuyên gia, kể cả khi tổng điểm thấp." },
+        { "q": "Trầm cảm có chữa được không?", "a": "Có. Trị liệu tâm lý, thuốc, vận động và sự hỗ trợ từ xã hội đều giúp ích, và hầu hết mọi người cải thiện khi được điều trị." }
+      ],
+      "items": [
+        "Ít hứng thú hoặc không có niềm vui khi làm việc gì",
+        "Cảm thấy buồn chán, trầm uất hoặc tuyệt vọng",
+        "Khó ngủ, ngủ không yên giấc hoặc ngủ quá nhiều",
+        "Cảm thấy mệt mỏi hoặc thiếu năng lượng",
+        "Ăn không ngon miệng hoặc ăn quá nhiều",
+        "Cảm thấy tồi tệ về bản thân, hoặc thấy mình là người thất bại, hoặc đã làm bản thân hay gia đình thất vọng",
+        "Khó tập trung vào việc gì đó, như đọc sách báo hoặc xem tivi",
+        "Cử động hoặc nói chậm đến mức người khác có thể nhận thấy, hoặc ngược lại: bồn chồn, đứng ngồi không yên đến mức đi lại nhiều hơn bình thường",
+        "Nghĩ rằng mình chết đi thì tốt hơn, hoặc nghĩ đến việc tự làm hại bản thân theo cách nào đó"
+      ],
+      "results": {
+        "minimal": { "name": "Trầm cảm rất ít (0–4)", "body": "Câu trả lời cho thấy bạn có rất ít hoặc không có triệu chứng trầm cảm trong 2 tuần qua." },
+        "mild": { "name": "Trầm cảm nhẹ (5–9)", "body": "Bạn có một số triệu chứng. Hãy để ý cảm xúc của mình, chăm lo giấc ngủ, vận động và giao tiếp xã hội, và làm lại bài test sau vài tuần. Nếu không cải thiện, hãy nói chuyện với bác sĩ." },
+        "moderate": { "name": "Trầm cảm vừa (10–14)", "body": "Triệu chứng của bạn ở mức nên đi khám bác sĩ hoặc gặp chuyên gia sức khỏe tâm thần. Trầm cảm rất phổ biến và có thể điều trị được." },
+        "modsevere": { "name": "Trầm cảm khá nặng (15–19)", "body": "Câu trả lời cho thấy triệu chứng đáng kể. Hãy sớm liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần. Các phương pháp như trị liệu tâm lý và thuốc giúp ích cho hầu hết mọi người." },
+        "severe": { "name": "Trầm cảm nặng (20–27)", "body": "Câu trả lời cho thấy triệu chứng nặng. Hãy liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần càng sớm càng tốt, và cho một người bạn tin tưởng biết bạn đang cảm thấy thế nào." }
+      }
+    }
+  }
+}

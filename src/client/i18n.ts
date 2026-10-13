@@ -9,13 +9,16 @@ import {
   hasGameMessages,
   hasLegalMessages,
   hasMessages,
+  hasQuizMessages,
   messages,
   registerGameMessages,
   registerLegalMessages,
   registerMessages,
+  registerQuizMessages,
   type GameMessages,
   type LegalMessages,
   type LocaleMessages,
+  type QuizMessages,
 } from "../shared/messages";
 
 // One chunk per locale, so a page downloads only the strings it shows.
@@ -54,16 +57,29 @@ const LEGAL_PACKS: Record<Locale, () => Promise<{ default: LegalMessages }>> = {
   es: () => import("../locales/legal/es.json"),
 };
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game or legal pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false): boolean {
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next));
+// Personality test copy, only for /tests/ pages.
+const QUIZ_PACKS: Record<Locale, () => Promise<{ default: QuizMessages }>> = {
+  en: () => import("../locales/packs/quiz-en"),
+  "zh-CN": () => import("../locales/packs/quiz-zh-CN"),
+  "zh-TW": () => import("../locales/packs/quiz-zh-TW"),
+  ja: () => import("../locales/packs/quiz-ja"),
+  ko: () => import("../locales/packs/quiz-ko"),
+  vi: () => import("../locales/packs/quiz-vi"),
+  id: () => import("../locales/packs/quiz-id"),
+  es: () => import("../locales/packs/quiz-es"),
+};
+
+/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal or quiz pack on those pages. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false): boolean {
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false): Promise<void> {
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
     !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
+    !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),
   ]);
 }
 

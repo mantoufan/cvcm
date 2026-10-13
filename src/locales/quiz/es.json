@@ -1,0 +1,781 @@
+{
+  "crumbHome": "Inicio",
+  "ui": {
+    "kicker": "Gratis · {n} preguntas · unos {m} min · sin registro",
+    "scaleHint": {
+      "agree5": "¿Hasta qué punto te describe cada afirmación? Responde según cómo eres normalmente, no cómo te gustaría ser.",
+      "agree4": "¿Cuánto estás de acuerdo con cada afirmación sobre ti?",
+      "freq4": "Durante las últimas 2 semanas, ¿con qué frecuencia te han molestado los siguientes problemas?"
+    },
+    "choiceHint": "Elige la respuesta que más se parezca a ti. No hay respuestas incorrectas.",
+    "scale": {
+      "agree5": ["Muy en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Muy de acuerdo"],
+      "agree4": ["Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"],
+      "freq4": ["Nunca", "Varios días", "Más de la mitad de los días", "Casi todos los días"]
+    },
+    "progress": "{n} de {total} respondidas",
+    "submit": "Ver mi resultado",
+    "missing": "Faltan {n}. Responde todas las preguntas para ver tu resultado.",
+    "result": "Tu resultado",
+    "retake": "Empezar de nuevo",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "about": "Sobre este test",
+    "faq": "Preguntas frecuentes",
+    "more": "Más tests",
+    "all": "Todos los tests",
+    "privacy": "Tus respuestas se puntúan en esta pestaña. No se sube, guarda ni envía nada.",
+    "notDiagnosis": "Esto es una autoevaluación, no un diagnóstico. Solo un profesional cualificado puede diagnosticar un trastorno de salud mental.",
+    "levels": { "low": "Bajo", "mid": "Medio", "high": "Alto" },
+    "score": "Puntuación",
+    "top3": "Tus tres principales",
+    "runnerUp": "También destaca",
+    "focus": "Área para trabajar",
+    "crisisTitle": "Si estás pensando en hacerte daño",
+    "crisisBody": "Mereces apoyo ahora mismo. Si crees que podrías actuar según estos pensamientos, llama al número de emergencias local o acude al servicio de urgencias más cercano. También puedes contactar con una línea de crisis gratuita y confidencial: findahelpline.com recoge líneas de todos los países.",
+    "crisisLines": "España: Línea 024 (atención a la conducta suicida, 24 h). México: Línea de la Vida 800 911 2000. En una emergencia, llama al 112 o al 911."
+  },
+  "hub": {
+    "title": "Tests de personalidad gratis: MBTI, Big Five, amor — cv.cm",
+    "description": "Tests de personalidad gratis: MBTI, Big Five, eneagrama, lenguajes del amor, apego, vocacional, autoestima, ansiedad y depresión. Sin registro ni subir datos.",
+    "h1": "Tests de personalidad y psicología",
+    "lede": "Trece tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "groups": {
+      "personality": "Personalidad",
+      "love": "Amor y relaciones",
+      "career": "Carrera y dinero",
+      "fun": "Por diversión",
+      "wellbeing": "Autoevaluaciones de bienestar"
+    },
+    "about": [
+      "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
+      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five usa el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto."
+    ],
+    "faq": [
+      { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
+      { "q": "¿Se guardan mis respuestas?", "a": "No. La puntuación se calcula en la pestaña de tu navegador. Las respuestas no se suben ni se almacenan, y al cerrar la pestaña se borran." },
+      { "q": "¿Qué tan fiables son los tests de personalidad online?", "a": "Un test breve de autoinforme describe cómo te ves hoy. Toma el resultado como un espejo para reflexionar y repítelo pasado un tiempo: los resultados que se mantienen son los más fiables." },
+      { "q": "¿Con qué test empiezo?", "a": "Para un tipo rápido, haz el test de las 16 personalidades. Para el modelo que más usan los psicólogos, el Big Five. Para tus relaciones, prueba el test de lenguajes del amor o el de estilo de apego." }
+    ]
+  },
+  "tests": {
+    "mbti": {
+      "title": "Test MBTI gratis: 16 tipos de personalidad — cv.cm",
+      "description": "Test MBTI gratis: responde 32 afirmaciones y descubre tu tipo de cuatro letras (como INFJ o ESTP) y la intensidad de cada preferencia. Sin registro.",
+      "h1": "Test de los 16 tipos de personalidad (estilo MBTI)",
+      "lede": "Descubre tu tipo de cuatro letras: de dónde sacas energía (E/I), cómo captas la información (S/N), cómo decides (T/F) y cómo organizas tu vida (J/P).",
+      "about": [
+        "Los 16 tipos proceden de la teoría de los tipos psicológicos de Carl Jung, desarrollada después por Katharine Briggs e Isabel Myers. Cada letra es un lado de un par, y los porcentajes indican cuánto te inclinas hacia él. Un resultado cercano al 50 % significa que usas ambos lados.",
+        "Este es un test independiente de estilo MBTI escrito para cv.cm. No es la evaluación oficial Myers-Briggs Type Indicator® ni está afiliado a The Myers-Briggs Company."
+      ],
+      "faq": [
+        { "q": "¿Es este el test MBTI oficial?", "a": "No. La evaluación oficial MBTI® se ofrece a través de profesionales certificados. Este test gratuito usa los mismos cuatro pares de preferencias con preguntas propias." },
+        { "q": "¿Qué significan las cuatro letras?", "a": "E o I: Extraversión o Introversión. S o N: Sensación o Intuición. T o F: Pensamiento o Sentimiento. J o P: Juicio o Percepción." },
+        { "q": "¿Por qué me salió otro tipo la última vez?", "a": "Si un par está cerca del 50 %, un pequeño cambio en tus respuestas invierte la letra. Fíjate en los porcentajes: las preferencias marcadas son la parte estable de tu tipo." },
+        { "q": "¿Puede cambiar mi tipo?", "a": "Tus preferencias básicas suelen mantenerse bastante estables en la edad adulta, pero el estrés, un nuevo trabajo o una nueva etapa vital pueden cambiar cómo respondes." }
+      ],
+      "items": [
+        "Me siento con energía después de pasar tiempo con un grupo de personas.",
+        "Me fijo más en los hechos y los detalles que en las posibilidades.",
+        "Cuando tomo una decisión, la lógica me importa más que los sentimientos.",
+        "Me gusta planificar las cosas con mucha antelación.",
+        "A menudo pienso en voz alta, comentando mis ideas con otras personas.",
+        "Confío más en la experiencia que en las teorías.",
+        "Prefiero ser sincero antes que diplomático.",
+        "Me siento mejor una vez que la decisión está tomada.",
+        "Empiezo conversaciones con desconocidos con facilidad.",
+        "Prefiero instrucciones claras, paso a paso.",
+        "Analizo los problemas de forma objetiva, aunque la gente esté alterada.",
+        "Mantengo mi espacio y mi agenda en orden.",
+        "Prefiero tener muchos conocidos a tener pocos amigos íntimos.",
+        "Noto detalles prácticos que a otros se les escapan.",
+        "Valoro más las normas justas y coherentes que las excepciones.",
+        "Me gusta terminar una tarea antes de empezar otra.",
+        "Después de un día social intenso, necesito tiempo a solas para recargarme.",
+        "A menudo imagino cómo podrían ser las cosas de forma totalmente distinta.",
+        "Tengo en cuenta cómo una decisión afectará a los sentimientos de los demás.",
+        "Prefiero dejar mis opciones abiertas en lugar de comprometerme pronto.",
+        "Prefiero pensar bien las cosas antes de hablar.",
+        "Disfruto hablando de ideas y teorías abstractas.",
+        "La armonía en un grupo es muy importante para mí.",
+        "Trabajo mejor cuando se acerca la fecha límite.",
+        "Disfruto pasando una tarde tranquila a solas.",
+        "Tiendo a buscar significados y patrones ocultos.",
+        "Me resulta fácil ponerme en el lugar de otra persona.",
+        "Me gusta ser espontáneo y dejarme llevar.",
+        "En las reuniones suelo escuchar más que hablar.",
+        "La rutina me aburre y me gusta probar enfoques nuevos.",
+        "A menudo tomo decisiones basándome en mis valores personales.",
+        "Los planes rígidos me limitan."
+      ],
+      "letters": {
+        "E": "Extraversión", "I": "Introversión",
+        "S": "Sensación", "N": "Intuición",
+        "T": "Pensamiento", "F": "Sentimiento",
+        "J": "Juicio", "P": "Percepción"
+      },
+      "results": {
+        "ESTJ": { "name": "ESTJ · El Supervisor", "body": "Práctico, organizado y directo. Te gustan las normas claras, cumples los plazos y asumes de forma natural el mando de personas y proyectos. Cuidado con pasar por encima de las voces más calladas; preguntar cómo se sienten los demás hace que tus planes funcionen mejor." },
+        "ESTP": { "name": "ESTP · El Emprendedor", "body": "Enérgico, audaz y práctico. Lees las situaciones rápido, disfrutas del riesgo y resuelves los problemas sobre la marcha. Los planes a largo plazo y el papeleo rutinario te aburren; una lista sencilla de tareas evita que tu impulso deje cabos sueltos." },
+        "ESFJ": { "name": "ESFJ · El Cuidador", "body": "Cálido, leal y sociable. Notas lo que necesita la gente, mantienes vivas las tradiciones y cohesionas a los grupos. Puede que te tomes las críticas muy a pecho; recuerda que decir que no a veces también es una forma de cuidar." },
+        "ESFP": { "name": "ESFP · El Animador", "body": "Divertido, espontáneo y generoso. Llenas de energía cualquier lugar y disfrutas del momento con los demás. Planificar te parece aburrido, pero un poco de estructura te da más libertad después." },
+        "ENTJ": { "name": "ENTJ · El Comandante", "body": "Estratégico, decidido y ambicioso. Ves cómo deberían funcionar las cosas, te fijas grandes metas y organizas a la gente para alcanzarlas. Tener paciencia con los procesos lentos y con los sentimientos te hará un líder aún más fuerte." },
+        "ENTP": { "name": "ENTP · El Innovador", "body": "Ingenioso, curioso e inventivo. Te encantan las ideas, los debates y las nuevas posibilidades, y cuestionas lo establecido por diversión. Terminar los proyectos es lo difícil; únete a alguien a quien le encanten los detalles." },
+        "ENFJ": { "name": "ENFJ · El Mentor", "body": "Carismático, empático e inspirador. Sacas lo mejor de las personas y las unes en torno a valores compartidos. Puedes volcarte demasiado en las necesidades ajenas; reserva tiempo para las tuyas." },
+        "ENFP": { "name": "ENFP · El Activista", "body": "Entusiasta, imaginativo y cálido. Ves potencial en todas partes, conectas con facilidad con la gente y persigues lo que te parece significativo. Demasiados proyectos abiertos pueden dispersar tu energía; elige unos pocos y llévalos hasta el final." },
+        "ISTJ": { "name": "ISTJ · El Inspector", "body": "Responsable, minucioso y fiable. Cumples tu palabra, valoras los hechos y los métodos probados, y terminas lo que empiezas. Los cambios pueden inquietarte; probar pequeños experimentos te ayuda a adaptarte a tu manera." },
+        "ISTP": { "name": "ISTP · El Artesano", "body": "Tranquilo, lógico y práctico. Te gusta entender cómo funcionan las cosas y resolver problemas con las manos o con un análisis claro. Valoras tu independencia; contar a los demás lo que piensas les ayuda a confiar en ti." },
+        "ISFJ": { "name": "ISFJ · El Protector", "body": "Amable, fiable y observador. Recuerdas detalles de las personas y las cuidas en silencio. Sueles poner a los demás primero; tus propias necesidades merecen la misma atención." },
+        "ISFP": { "name": "ISFP · El Artista", "body": "Sereno, sensible y creativo. Vives según tus valores, disfrutas de la belleza del momento y te expresas a través de lo que creas o haces. Los conflictos te agotan; hablar pronto evita que los problemas pequeños crezcan." },
+        "INTJ": { "name": "INTJ · El Arquitecto", "body": "Independiente, analítico y visionario. Construyes planes a largo plazo, lo cuestionas todo y te exiges mucho. A los demás puede costarles entenderte; explicar tu razonamiento hace que te sigan." },
+        "INTP": { "name": "INTP · El Pensador", "body": "Curioso, preciso e inventivo. Te encantan las teorías, los sistemas y los acertijos, y necesitas tiempo a solas para pensarlos a fondo. Las ideas pueden quedarse en tu cabeza; compartir pronto una versión preliminar las convierte en algo real." },
+        "INFJ": { "name": "INFJ · El Consejero", "body": "Perspicaz, íntegro y compasivo. Percibes lo que sienten los demás, buscas un sentido más profundo y trabajas en silencio por un mundo mejor. Puedes agotarte por preocuparte demasiado; protege tu descanso." },
+        "INFP": { "name": "INFP · El Idealista", "body": "Reflexivo, idealista y fiel a tus valores. Tienes un rico mundo interior y quieres que tu vida y tu trabajo signifiquen algo. La autocrítica puede frenarte; avanzar es mejor que buscar la perfección." }
+      }
+    },
+    "big-five": {
+      "title": "Test de personalidad Big Five gratis (IPIP 50) — cv.cm",
+      "description": "Test de personalidad Big Five (OCEAN) gratis con los 50 ítems IPIP de dominio público. Mide apertura, responsabilidad, extraversión, amabilidad y neuroticismo.",
+      "h1": "Test de personalidad Big Five (OCEAN)",
+      "lede": "Mide los cinco rasgos que más usan los psicólogos: Apertura, Responsabilidad, Extraversión, Amabilidad y Neuroticismo. 50 afirmaciones breves y cinco puntuaciones sobre 100.",
+      "about": [
+        "El Big Five (también llamado modelo de los cinco factores u OCEAN) es el modelo de personalidad más investigado. En lugar de meterte en una caja, te sitúa en cinco escalas independientes, así que cada persona obtiene un perfil único.",
+        "Este test usa los 50 ítems de los marcadores de los cinco grandes factores del International Personality Item Pool (IPIP), desarrollados por Lewis Goldberg y de dominio público. Las puntuaciones se comparan con el rango de la escala, no con una muestra de población, así que 50 es el punto medio."
+      ],
+      "faq": [
+        { "q": "¿Qué significa OCEAN?", "a": "Son las iniciales en inglés de Apertura a la experiencia, Responsabilidad, Extraversión, Amabilidad y Neuroticismo, los cinco grandes rasgos del modelo." },
+        { "q": "¿Es mejor una puntuación alta?", "a": "No. Cada extremo de un rasgo tiene sus fortalezas. La extraversión baja va unida a la concentración y la calma; la amabilidad baja, a la franqueza y la independencia." },
+        { "q": "¿Es el Big Five más científico que el MBTI?", "a": "La mayoría de investigadores de la personalidad prefiere el Big Five: sus rasgos se miden como puntuaciones continuas y predicen aspectos como el rendimiento laboral y el bienestar en numerosos estudios." },
+        { "q": "¿De dónde salen las preguntas?", "a": "De los 50 ítems IPIP de marcadores de los cinco grandes factores de Lewis Goldberg, un cuestionario de dominio público muy usado en investigación." }
+      ],
+      "items": [
+        "Soy el alma de la fiesta.",
+        "Me preocupo poco por los demás.",
+        "Siempre lo tengo todo preparado.",
+        "Me estreso con facilidad.",
+        "Tengo un vocabulario rico.",
+        "No hablo mucho.",
+        "Me interesa la gente.",
+        "Dejo mis cosas por cualquier parte.",
+        "Me siento en calma la mayor parte del tiempo.",
+        "Me cuesta entender las ideas abstractas.",
+        "Me siento a gusto con la gente.",
+        "Insulto a la gente.",
+        "Presto atención a los detalles.",
+        "Me preocupo por las cosas.",
+        "Tengo una imaginación muy viva.",
+        "Me mantengo en segundo plano.",
+        "Comparto los sentimientos de los demás.",
+        "Lo desordeno todo.",
+        "Rara vez me siento triste.",
+        "No me interesan las ideas abstractas.",
+        "Inicio conversaciones.",
+        "No me interesan los problemas de los demás.",
+        "Hago las tareas enseguida.",
+        "Me altero con facilidad.",
+        "Tengo ideas excelentes.",
+        "Tengo poco que decir.",
+        "Tengo un corazón blando.",
+        "A menudo olvido devolver las cosas a su sitio.",
+        "Me disgusto con facilidad.",
+        "No tengo mucha imaginación.",
+        "En las fiestas hablo con mucha gente distinta.",
+        "En realidad no me interesan los demás.",
+        "Me gusta el orden.",
+        "Cambio mucho de humor.",
+        "Entiendo las cosas rápidamente.",
+        "No me gusta llamar la atención.",
+        "Dedico tiempo a los demás.",
+        "Eludo mis obligaciones.",
+        "Tengo cambios de humor frecuentes.",
+        "Uso palabras difíciles.",
+        "No me importa ser el centro de atención.",
+        "Siento las emociones de los demás.",
+        "Sigo un horario.",
+        "Me irrito con facilidad.",
+        "Dedico tiempo a reflexionar sobre las cosas.",
+        "Hablo poco con desconocidos.",
+        "Hago que la gente se sienta cómoda.",
+        "Soy exigente en mi trabajo.",
+        "A menudo me siento triste.",
+        "Siempre se me ocurren ideas."
+      ],
+      "dims": {
+        "O": "Apertura",
+        "C": "Responsabilidad",
+        "E": "Extraversión",
+        "A": "Amabilidad",
+        "N": "Neuroticismo"
+      },
+      "levels": {
+        "O": {
+          "low": "Prefieres lo conocido y lo práctico. Te gustan las formas probadas de hacer las cosas y los hechos concretos más que la especulación abstracta.",
+          "mid": "Equilibras curiosidad y sentido práctico: te abres a ideas nuevas cuando son útiles y te sientes a gusto con la rutina cuando funciona.",
+          "high": "Tienes curiosidad e imaginación, y te atraen las ideas, el arte y las experiencias nuevas. Disfrutas del pensamiento abstracto y de la variedad."
+        },
+        "C": {
+          "low": "Eres flexible y espontáneo, y no te gustan los planes rígidos. Los plazos y el orden pueden requerirte un esfuerzo consciente.",
+          "mid": "Te organizas cuando importa y te relajas cuando no. Sabes planificar, pero no necesitas tenerlo todo programado.",
+          "high": "Eres una persona organizada, fiable y orientada a objetivos. Planificas con antelación, cuidas los detalles y cumples lo que te propones."
+        },
+        "E": {
+          "low": "Eres reservado y recargas energía a solas o con unas pocas personas cercanas. Piensas antes de hablar y disfrutas de la concentración tranquila.",
+          "mid": "Tienes un perfil ambivertido: eres sociable en el ambiente adecuado, pero también valoras tu tiempo para ti.",
+          "high": "Eres extravertido, hablador y la gente te da energía. Disfrutas de la atención, de los grupos y de un ritmo animado."
+        },
+        "A": {
+          "low": "Eres franco, escéptico y competitivo. Dices lo que piensas y no te importa discrepar.",
+          "mid": "Sueles cooperar, pero sabes mantenerte firme. Sopesas las necesidades de los demás frente a las tuyas.",
+          "high": "Eres una persona cálida, confiada y servicial. Te importan la armonía y los sentimientos de los demás."
+        },
+        "N": {
+          "low": "Tienes estabilidad emocional y mantienes la calma bajo presión. Los contratiempos rara vez te afectan por mucho tiempo.",
+          "mid": "Sientes estrés y preocupación en niveles normales y sueles recuperarte en un tiempo razonable.",
+          "high": "Vives las emociones con intensidad y puedes tender a la preocupación, el estrés o el bajo estado de ánimo. Descansar, hacer ejercicio y hablar las cosas ayuda."
+        }
+      }
+    },
+    "enneagram": {
+      "title": "Test de eneagrama gratis: descubre tu eneatipo — cv.cm",
+      "description": "Test de eneagrama gratis: valora 36 afirmaciones y descubre cuál de los nueve eneatipos encaja mejor contigo, con la puntuación de los nueve. Sin registro.",
+      "h1": "Test de eneagrama de la personalidad",
+      "lede": "Descubre cuál de los nueve eneatipos te mueve: lo que más deseas, lo que temes y cómo actúas bajo estrés.",
+      "about": [
+        "El eneagrama describe nueve tipos de personalidad, cada uno organizado en torno a una motivación central. La mayoría de la gente se reconoce un poco en varios tipos; tu tipo principal es aquel cuya motivación sientes más propia.",
+        "Este test breve se escribió para cv.cm. Lee las descripciones de tus dos o tres tipos más altos y decide cuál encaja mejor: el autorreconocimiento es la forma en que se usa el eneagrama."
+      ],
+      "faq": [
+        { "q": "¿Cuáles son los nueve eneatipos?", "a": "1 Reformador, 2 Ayudador, 3 Triunfador, 4 Individualista, 5 Investigador, 6 Leal, 7 Entusiasta, 8 Desafiador, 9 Pacificador." },
+        { "q": "¿Qué es un ala?", "a": "Tu ala es uno de los dos tipos vecinos de tu tipo principal en el círculo del eneagrama (un 4 puede tener ala 3 o ala 5). Tu segunda puntuación más alta es una pista si está junto a tu tipo principal." },
+        { "q": "Mis puntuaciones más altas están muy igualadas. ¿Cuál es mi tipo?", "a": "Lee cada descripción y pregúntate qué miedo y qué deseo centrales sientes más verdaderos a lo largo de toda tu vida, no solo últimamente." },
+        { "q": "¿Es científico el eneagrama?", "a": "Tiene menos respaldo científico que el Big Five. Aun así, a mucha gente le resulta un lenguaje útil para hablar de motivación y crecimiento." }
+      ],
+      "items": [
+        "Me exijo mucho y detecto los errores enseguida.",
+        "Soy más feliz cuando alguien necesita mi ayuda.",
+        "Tener éxito y ser admirado me importa mucho.",
+        "A menudo me siento diferente de los demás.",
+        "Necesito mucho tiempo a solas para pensar y recargarme.",
+        "Tiendo a imaginar lo que podría salir mal y a prepararme para ello.",
+        "Siempre busco la próxima cosa divertida que hacer.",
+        "Digo lo que pienso, aunque provoque un conflicto.",
+        "Le sigo la corriente a los demás para mantener la paz.",
+        "Me incomoda que las cosas no se hagan como es debido.",
+        "Sé percibir lo que necesitan los demás, a veces antes que ellos mismos.",
+        "Adapto mi imagen a lo que impresiona a la gente.",
+        "Las emociones profundas, incluso las tristes, tienen sentido para mí.",
+        "Prefiero entender un tema a fondo antes de actuar.",
+        "La lealtad y la seguridad son muy importantes para mí.",
+        "No soporto que me limiten o me aten.",
+        "Me gusta tener el control y odio sentirme débil.",
+        "Evito los conflictos, incluso cuando algo me molesta.",
+        "Me cuesta relajarme hasta que mi trabajo está perfecto.",
+        "A veces doy tanto que descuido mis propias necesidades.",
+        "Estoy muy orientado a metas y soy productivo.",
+        "Quiero ser verdaderamente único y auténtico.",
+        "Protejo mi privacidad y mi energía.",
+        "Confío en la gente poco a poco y pongo a prueba su fiabilidad.",
+        "Mantengo muchas opciones abiertas para no perderme nada.",
+        "Protejo con fiereza a las personas que quiero.",
+        "Aplazo las decisiones y dejo que las cosas se resuelvan solas.",
+        "Tengo una voz interior muy clara sobre el bien y el mal.",
+        "Quiero que me quieran y me valoren por lo que doy.",
+        "Odio fracasar y me mantengo ocupado para ir por delante.",
+        "Me atraen la belleza, el arte y la expresión personal.",
+        "El conocimiento y la competencia me dan seguridad.",
+        "Busco orientación en las normas o en personas de confianza.",
+        "Convierto rápidamente las malas situaciones en algo positivo.",
+        "Tomo el mando enseguida cuando nadie más lo hace.",
+        "Soy de trato fácil y me llevo bien con casi todo el mundo."
+      ],
+      "dims": {
+        "1": "Tipo 1 · Reformador", "2": "Tipo 2 · Ayudador", "3": "Tipo 3 · Triunfador",
+        "4": "Tipo 4 · Individualista", "5": "Tipo 5 · Investigador", "6": "Tipo 6 · Leal",
+        "7": "Tipo 7 · Entusiasta", "8": "Tipo 8 · Desafiador", "9": "Tipo 9 · Pacificador"
+      },
+      "results": {
+        "1": { "name": "Tipo 1 · El Reformador", "body": "Íntegro, con propósito y autocontrolado. Quieres ser bueno y hacer las cosas bien, y temes ser corrupto o equivocarte. Creces al aceptar que lo imperfecto a menudo es suficiente, para ti y para los demás." },
+        "2": { "name": "Tipo 2 · El Ayudador", "body": "Atento, generoso y complaciente. Quieres que te quieran y te necesiten, y temes no ser deseado. Creces al reconocer tus propias necesidades y pedir ayuda directamente." },
+        "3": { "name": "Tipo 3 · El Triunfador", "body": "Ambicioso, adaptable y pendiente de su imagen. Quieres sentirte valioso y exitoso, y temes no valer nada. Creces al valorar quién eres, no solo lo que logras." },
+        "4": { "name": "Tipo 4 · El Individualista", "body": "Expresivo, sensible e introspectivo. Quieres encontrar tu verdadera identidad y tu significado, y temes no tenerlos. Creces al apreciar la vida cotidiana y lo que ya tienes." },
+        "5": { "name": "Tipo 5 · El Investigador", "body": "Curioso, perspicaz y reservado. Quieres ser capaz y competente, y temes verte desbordado o ser inútil. Creces al implicarte con el mundo antes de sentirte del todo preparado." },
+        "6": { "name": "Tipo 6 · El Leal", "body": "Comprometido, responsable y centrado en la seguridad. Quieres apoyo y orientación, y temes quedarte sin ellos. Creces al confiar en tu propio criterio." },
+        "7": { "name": "Tipo 7 · El Entusiasta", "body": "Espontáneo, versátil y optimista. Quieres sentirte satisfecho y libre, y temes el dolor y perderte cosas. Creces al quedarte con una sola cosa, incluidos los sentimientos difíciles." },
+        "8": { "name": "Tipo 8 · El Desafiador", "body": "Seguro de sí, decidido y protector. Quieres controlar tu propia vida, y temes que te hagan daño o te controlen. Creces al dejar que las personas de confianza vean tu lado más tierno." },
+        "9": { "name": "Tipo 9 · El Pacificador", "body": "Tranquilo, receptivo y tranquilizador. Quieres paz interior y exterior, y temes el conflicto y la separación. Creces al expresar tus propias prioridades y actuar en consecuencia." }
+      }
+    },
+    "love-language": {
+      "title": "Test de lenguajes del amor gratis: descubre el tuyo — cv.cm",
+      "description": "Test de lenguajes del amor gratis: valora 25 afirmaciones y descubre cómo prefieres recibir amor: palabras, tiempo, regalos, actos de servicio o contacto físico.",
+      "h1": "Test de los lenguajes del amor",
+      "lede": "¿Cuál de los cinco lenguajes del amor te llega más? Valora 25 afirmaciones y mira los cinco ordenados.",
+      "about": [
+        "La idea de los cinco lenguajes del amor la popularizó el consejero Gary Chapman en 1992: las personas tienden a sentirse queridas a través de palabras de afirmación, tiempo de calidad, regalos, actos de servicio o contacto físico, y las parejas a menudo hablan lenguajes distintos.",
+        "Este test independiente se escribió para cv.cm. Comparte tu clasificación con tu pareja o con una amistad y pídele que lo haga también: lo útil es conocer el lenguaje principal de cada quien."
+      ],
+      "faq": [
+        { "q": "¿Cuáles son los cinco lenguajes del amor?", "a": "Palabras de afirmación, tiempo de calidad, recibir regalos, actos de servicio y contacto físico." },
+        { "q": "¿Puedo tener más de un lenguaje del amor?", "a": "Sí. La mayoría de la gente tiene uno o dos que pesan más y otros que importan un poco. El gráfico muestra los cinco." },
+        { "q": "¿Tiene respaldo científico la idea de los lenguajes del amor?", "a": "Los estudios ofrecen un apoyo desigual: las parejas que muestran amor de muchas formas suelen ser más felices en general. Funciona mejor como punto de partida para hablar, no como regla." },
+        { "q": "¿Es este el test oficial?", "a": "No. Es un test independiente basado en las mismas cinco categorías, sin relación con Gary Chapman ni con su editorial." }
+      ],
+      "items": [
+        "Oír «Estoy orgulloso de ti» significa mucho para mí.",
+        "Me siento más cerca de alguien cuando pasamos tiempo juntos sin interrupciones.",
+        "Un regalo pequeño y pensado puede alegrarme el día entero.",
+        "Cuando alguien me ayuda con las tareas de casa, me siento cuidado.",
+        "Un abrazo al llegar a casa me hace sentir querido.",
+        "Guardo los mensajes bonitos y los vuelvo a leer después.",
+        "Me duele que alguien mire el móvil mientras hablamos.",
+        "Recuerdo quién me dio cada regalo importante.",
+        "Me siento querido cuando alguien se encarga de una tarea por mí sin que se lo pida.",
+        "Darme la mano con alguien me hace sentir conectado.",
+        "Los cumplidos son la forma más fácil de levantarme el ánimo.",
+        "Un largo paseo o una conversación profunda es mi forma favorita de crear vínculos.",
+        "Me siento olvidado si pasa una fecha especial sin ningún regalo.",
+        "Para mí, los hechos dicen más que las palabras.",
+        "Me gusta sentarme cerca de las personas que quiero.",
+        "Las palabras duras me hieren durante mucho tiempo.",
+        "Las actividades compartidas, aunque sean sencillas, significan mucho para mí.",
+        "Un recuerdo que alguien me trae de un viaje me parece amor.",
+        "Cuando alguien cocina para mí o me arregla algo, me siento valorado.",
+        "Una palmada en la espalda o un toque en el brazo me tranquiliza.",
+        "Necesito oír que me valoran.",
+        "Que se cancelen planes me molesta más que casi cualquier otra cosa.",
+        "Me gustan los regalos que demuestran que alguien pensó en mí.",
+        "Me siento apoyado cuando alguien me ayuda a terminar un trabajo grande.",
+        "El afecto físico es importante para mí en una relación cercana."
+      ],
+      "dims": {
+        "words": "Palabras de afirmación",
+        "time": "Tiempo de calidad",
+        "gifts": "Recibir regalos",
+        "service": "Actos de servicio",
+        "touch": "Contacto físico"
+      },
+      "results": {
+        "words": { "name": "Palabras de afirmación", "body": "Te sientes querido a través de las palabras habladas y escritas: cumplidos, ánimos, agradecimientos y «te quiero». Las críticas te afectan mucho. Di a tus personas cercanas que un mensaje cariñoso breve significa para ti más de lo que creen." },
+        "time": { "name": "Tiempo de calidad", "body": "Te sientes querido a través de la atención plena: conversaciones de verdad, actividades compartidas y el móvil guardado. Las distracciones y los planes cancelados duelen. Pide tiempo regular juntos que ambas partes protejan." },
+        "gifts": { "name": "Recibir regalos", "body": "Te sientes querido a través de regalos pensados, grandes o pequeños. No se trata del precio, sino de la prueba de que alguien pensó en ti. Haz saber a la gente que una pequeña sorpresa significa mucho." },
+        "service": { "name": "Actos de servicio", "body": "Te sientes querido cuando la gente te facilita la vida: cocinar, arreglar algo, hacer un recado, encargarse de una tarea. Las promesas incumplidas duelen. Di qué ayuda concreta significaría más para ti." },
+        "touch": { "name": "Contacto físico", "body": "Te sientes querido a través del contacto apropiado: abrazos, ir de la mano, sentarse cerca. La distancia física puede sentirse como distancia emocional. Cuéntale a tu pareja cuánto importan los pequeños gestos de contacto durante el día." }
+      }
+    },
+    "attachment": {
+      "title": "Test de estilo de apego: ¿seguro, ansioso o evitativo? — cv.cm",
+      "description": "Test de estilo de apego para adultos gratis: responde 16 afirmaciones sobre tus relaciones y descubre si tu apego es seguro, ansioso, evitativo o temeroso.",
+      "h1": "Test de estilo de apego",
+      "lede": "¿Cómo te comportas en las relaciones cercanas? Este test mide la ansiedad y la evitación del apego y te sitúa en uno de cuatro estilos.",
+      "about": [
+        "La teoría del apego nació con los estudios de John Bowlby y Mary Ainsworth sobre la infancia, y Hazan y Shaver la ampliaron a las relaciones de pareja adultas. La investigación actual mide dos dimensiones: la ansiedad (miedo al rechazo) y la evitación (incomodidad con la cercanía).",
+        "Tu estilo depende de dónde te sitúas en ambas: bajo en las dos es apego seguro. Este test breve se escribió para cv.cm y se basa en ese modelo de dos dimensiones. Los estilos pueden cambiar con el tiempo y con relaciones que te apoyen."
+      ],
+      "faq": [
+        { "q": "¿Cuáles son los cuatro estilos de apego?", "a": "Seguro (ansiedad baja, evitación baja), ansioso (ansiedad alta), evitativo (evitación alta) y temeroso-evitativo (alto en ambas)." },
+        { "q": "¿Puede cambiar mi estilo de apego?", "a": "Sí. Una relación larga y estable, la terapia y la práctica consciente pueden acercar a las personas a la seguridad, lo que los investigadores llaman seguridad adquirida." },
+        { "q": "¿Debo responder pensando en mi pareja actual?", "a": "Responde según cómo te sientes en general en las relaciones cercanas, no solo con una persona." },
+        { "q": "¿Qué estilo es el mejor?", "a": "El apego seguro se asocia con la mayor satisfacción en pareja, pero cada estilo tiene sentido como respuesta a experiencias pasadas, y todos pueden evolucionar." }
+      ],
+      "items": [
+        "Me preocupa que las personas que quiero no se preocupen por mí tanto como yo por ellas.",
+        "Prefiero no mostrar a los demás lo que siento en el fondo.",
+        "Necesito que me confirmen a menudo que me quieren.",
+        "Me incomoda que mi pareja quiera estar muy cerca de mí.",
+        "Cuando alguien a quien quiero está lejos, me preocupa que pierda el interés en mí.",
+        "Me resulta fácil apoyarme en las personas cercanas.",
+        "Me altera que mi pareja tarde en responder.",
+        "Valoro más mi independencia que la cercanía.",
+        "Tengo miedo al abandono.",
+        "Me siento a gusto compartiendo pensamientos íntimos con mi pareja.",
+        "Rara vez me preocupa que me dejen.",
+        "Me alejo cuando una relación empieza a ponerse seria.",
+        "A menudo desearía que los sentimientos de mi pareja hacia mí fueran tan fuertes como los míos.",
+        "Me cuesta permitirme depender de otros.",
+        "Le doy demasiadas vueltas a pequeños cambios en el humor de mi pareja.",
+        "Buscar consuelo en las personas que quiero me ayuda."
+      ],
+      "dims": {
+        "anx": "Ansiedad de apego",
+        "avo": "Evitación de apego"
+      },
+      "results": {
+        "secure": { "name": "Seguro", "body": "Te sientes a gusto tanto con la cercanía como con la independencia. Confías en tu pareja, dices lo que necesitas y afrontas los conflictos sin entrar en pánico. Sigue así: tu estabilidad también ayuda a quienes te rodean a sentirse a salvo." },
+        "anxious": { "name": "Ansioso (preocupado)", "body": "Buscas la cercanía y te preocupa perderla, así que puedes pedir confirmación o dar mucha importancia a pequeñas señales. Expresar tus necesidades directamente y calmarte antes de reaccionar hace que las relaciones se vivan con más tranquilidad." },
+        "avoidant": { "name": "Evitativo (desapegado)", "body": "Valoras la independencia y te incomoda que otros se acerquen demasiado o dependan de ti. Puedes retirarte cuando las cosas se ponen serias. Practicar pequeños pasos de apertura permite que te apoyen sin quitarte libertad." },
+        "fearful": { "name": "Temeroso-evitativo (desorganizado)", "body": "Deseas la cercanía, pero también la temes, así que puedes oscilar entre buscar a los demás y alejarte. Esto suele venir de experiencias dolorosas. La paciencia, una pareja estable y el apoyo de un terapeuta pueden ayudar mucho." }
+      }
+    },
+    "marriage": {
+      "title": "Test de preparación para el matrimonio en pareja — cv.cm",
+      "description": "¿Su relación está lista para el matrimonio? Test gratis de 20 preguntas sobre comunicación, conflictos, dinero, familia y metas, con consejos para mejorar.",
+      "h1": "Test de preparación para el matrimonio",
+      "lede": "Comprueba qué tan preparada está tu relación para el matrimonio en las cinco áreas en que se centran los terapeutas: comunicación, conflictos, dinero, familia y el futuro que quieren.",
+      "about": [
+        "Los programas prematrimoniales como PREPARE/ENRICH y la investigación de John Gottman señalan las mismas áreas: cómo habla la pareja, cómo discute, cómo maneja el dinero, cómo trata con las familias y si coincide en el futuro. Este test se escribió para cv.cm en torno a esas cinco áreas.",
+        "Háganlo por separado y comparen. El área en la que más difieren sus puntuaciones es el mejor tema para su próxima conversación larga."
+      ],
+      "faq": [
+        { "q": "¿Puede un test decirme si debo casarme?", "a": "No. Señala áreas de las que vale la pena hablar. La decisión depende de muchas cosas que un test no puede ver." },
+        { "q": "¿Debería hacerlo también mi pareja?", "a": "Sí. Respondan por separado y luego comparen las puntuaciones por área. Las diferencias son más útiles que el total." },
+        { "q": "¿Y si sacamos una puntuación baja?", "a": "Una puntuación baja es una lista de temas, no un veredicto. Muchas parejas los trabajan con conversaciones sinceras o con orientación prematrimonial." },
+        { "q": "¿Pueden usarlo parejas ya casadas?", "a": "Sí. Las mismas cinco áreas importan en cualquier etapa de una relación." }
+      ],
+      "items": [
+        "Podemos hablar abiertamente de casi cualquier cosa.",
+        "Cuando discutimos, nos tratamos con respeto.",
+        "Hemos hablado con sinceridad de nuestras deudas, ingresos y gastos.",
+        "Me llevo razonablemente bien con la familia de mi pareja.",
+        "Estamos de acuerdo en si queremos tener hijos y cuándo.",
+        "Siento que me escucha cuando comparto algo importante.",
+        "Nuestras discusiones suelen acabar con uno de los dos cerrándose en banda.",
+        "Estamos de acuerdo en cómo repartir el dinero y las facturas.",
+        "Tenemos límites claros con nuestras familias.",
+        "Queremos un estilo de vida parecido dentro de cinco años.",
+        "Me guardo lo que siento para no disgustar a mi pareja.",
+        "Sabemos pedir perdón y reconciliarnos después de una pelea.",
+        "Tenemos hábitos de ahorro y gasto parecidos.",
+        "Nuestras familias suelen causar tensiones entre nosotros.",
+        "Hemos hablado de dónde queremos vivir.",
+        "Hablamos con regularidad de cómo va la relación.",
+        "Resolvemos los problemas en equipo en lugar de culparnos.",
+        "El dinero es un tema que evitamos.",
+        "Estamos de acuerdo en cuánto tiempo pasar con los familiares.",
+        "Nos apoyamos en nuestras metas profesionales y personales."
+      ],
+      "dims": {
+        "talk": "Comunicación",
+        "conflict": "Conflictos",
+        "money": "Dinero",
+        "family": "Familia",
+        "future": "Futuro en común"
+      },
+      "results": {
+        "ready": { "name": "Base sólida", "body": "Se comunican bien, gestionan los conflictos y el dinero en equipo y quieren un futuro parecido. Sigan invirtiendo en los hábitos que los han traído hasta aquí, como hablar de la relación con regularidad." },
+        "close": { "name": "Casi a punto", "body": "Su relación tiene una base sólida con una o dos áreas por reforzar. Hablen del área más baja antes de dar el siguiente gran paso." },
+        "work": { "name": "Hay trabajo por hacer", "body": "Varios temas importantes siguen sin resolverse. Es algo habitual. Reserven tiempo para hablar de cada área y consideren un curso prematrimonial o un terapeuta." },
+        "early": { "name": "Primeros pasos", "body": "Muchas áreas clave aún no se han trabajado. Tómense tiempo para entender lo que piensa cada quien sobre lo básico antes de planear una boda." }
+      },
+      "tips": {
+        "talk": "Prueben una charla semanal de 20 minutos: cada quien comparte un buen momento, uno malo y un deseo, mientras la otra persona solo escucha.",
+        "conflict": "Acuerden una regla de pausa: cualquiera puede pedir 20 minutos de descanso en una discusión acalorada, y después vuelven para terminarla.",
+        "money": "Siéntense con sus cifras reales: ingresos, deudas y ahorros. Después acuerden una meta común y cómo van a repartir los gastos.",
+        "family": "Hablen de qué tradiciones y visitas familiares importan más a cada quien, y presenten un frente unido ante los familiares.",
+        "future": "Escriban por separado dónde quieren estar dentro de cinco años (casa, hijos, carreras) y luego comparen para encontrar los puntos en común."
+      }
+    },
+    "career": {
+      "title": "Test vocacional Holland (RIASEC) gratis — cv.cm",
+      "description": "Test vocacional gratis basado en el modelo RIASEC de Holland. Valora 36 actividades, obtén tu código Holland de tres letras y profesiones afines. Sin registro.",
+      "h1": "Test vocacional de intereses (código Holland)",
+      "lede": "Encuentra profesiones que encajen con tus intereses. Valora 36 actividades y obtén tu código Holland de tres letras: Realista, Investigador, Artístico, Social, Emprendedor y Convencional.",
+      "about": [
+        "El psicólogo John Holland descubrió que las personas y los entornos laborales pueden describirse con seis tipos de intereses, conocidos como RIASEC. La gente suele sentirse más satisfecha en trabajos que coinciden con sus tipos principales.",
+        "Tu código Holland son tus tres letras más altas en orden. Úsalo para explorar profesiones: la base de datos estadounidense O*NET, por ejemplo, clasifica las ocupaciones por código Holland. Este test se escribió para cv.cm y mide intereses, no aptitudes."
+      ],
+      "faq": [
+        { "q": "¿Qué es un código Holland?", "a": "Tus tres tipos de interés más fuertes, en orden, como SAE o RIC. Los orientadores profesionales lo usan para sugerir trabajos y estudios adecuados." },
+        { "q": "¿Debo valorar actividades que nunca he probado?", "a": "Sí. Imagina que haces la actividad y valora cuánto la disfrutarías, no lo bien que se te daría." },
+        { "q": "¿Mide este test el talento?", "a": "No. Mide intereses. Las habilidades se aprenden; el interés predice qué trabajo disfrutarás lo suficiente como para llegar a dominarlo." },
+        { "q": "Mis puntuaciones son casi iguales. ¿Y ahora qué?", "a": "Un perfil plano indica intereses amplios. Busca profesiones que combinen tus tipos principales y prueba proyectos cortos para ver qué disfrutas." }
+      ],
+      "items": [
+        "Construir o reparar muebles",
+        "Hacer experimentos de laboratorio",
+        "Escribir relatos o letras de canciones",
+        "Enseñar a alguien una habilidad nueva",
+        "Montar tu propio negocio",
+        "Llevar registros y hojas de cálculo precisos",
+        "Trabajar al aire libre con plantas o animales",
+        "Resolver un problema difícil de matemáticas o lógica",
+        "Diseñar un póster, una web o una habitación",
+        "Ayudar a la gente con sus problemas personales",
+        "Convencer a la gente de que compre una idea o un producto",
+        "Seguir procedimientos claros para hacer una tarea a la perfección",
+        "Usar herramientas o máquinas",
+        "Investigar cómo funciona algo",
+        "Actuar, cantar, bailar o tocar música",
+        "Cuidar de personas enfermas o mayores",
+        "Dirigir un equipo hacia un objetivo",
+        "Revisar documentos en busca de errores",
+        "Instalar o reparar aparatos electrónicos",
+        "Analizar datos para encontrar patrones",
+        "Hacer fotos o grabar vídeos",
+        "Hacer voluntariado por una causa de tu comunidad",
+        "Negociar un acuerdo",
+        "Organizar archivos, agendas o inventarios",
+        "Conducir u operar vehículos o maquinaria",
+        "Leer artículos científicos",
+        "Proponer ideas originales",
+        "Entrenar o guiar a otras personas",
+        "Gestionar un presupuesto o un proyecto",
+        "Tramitar pagos o facturas",
+        "Hacer trabajo físico con las manos",
+        "Programar para resolver un problema",
+        "Expresarte sin reglas estrictas",
+        "Trabajar en un equipo que ayuda a la gente",
+        "Asumir riesgos a cambio de una gran recompensa",
+        "Trabajar en una oficina estructurada y predecible"
+      ],
+      "dims": {
+        "R": "Realista (hacedores)",
+        "I": "Investigador (pensadores)",
+        "A": "Artístico (creadores)",
+        "S": "Social (ayudadores)",
+        "E": "Emprendedor (persuasores)",
+        "C": "Convencional (organizadores)"
+      },
+      "codeTitle": "Tu código Holland",
+      "results": {
+        "R": { "name": "Realista (hacedor)", "body": "Te gusta el trabajo práctico y manual con herramientas, máquinas, plantas o animales, y ver resultados tangibles. Profesiones para explorar: electricista, mecánico, ingeniero, cocinero, carpintero, agricultor, piloto, fisioterapeuta." },
+        "I": { "name": "Investigador (pensador)", "body": "Te gusta observar, analizar y resolver problemas complejos. Profesiones para explorar: científico, desarrollador de software, analista de datos, médico, farmacéutico, investigador, economista." },
+        "A": { "name": "Artístico (creador)", "body": "Te gusta crear y expresarte en entornos poco estructurados. Profesiones para explorar: diseñador, escritor, músico, fotógrafo, arquitecto, editor de vídeo, director de arte." },
+        "S": { "name": "Social (ayudador)", "body": "Te gusta ayudar, enseñar y cuidar de las personas. Profesiones para explorar: docente, enfermero, orientador, trabajador social, especialista en recursos humanos, coach, terapeuta." },
+        "E": { "name": "Emprendedor (persuasor)", "body": "Te gusta liderar, persuadir y asumir riesgos para alcanzar metas. Profesiones para explorar: emprendedor, director comercial, especialista en marketing, abogado, agente inmobiliario, product manager." },
+        "C": { "name": "Convencional (organizador)", "body": "Te gustan el orden, la precisión y los procedimientos claros con datos. Profesiones para explorar: contable, auditor, administrativo, coordinador de logística, empleado de banca, administrador de bases de datos." }
+      }
+    },
+    "money": {
+      "title": "Test de personalidad financiera: ¿qué tipo eres? — cv.cm",
+      "description": "Test de personalidad financiera gratis: valora 20 afirmaciones y descubre si eres ahorrador, gastador, inversor, evitador o generoso, con fortalezas y un consejo.",
+      "h1": "Test de personalidad financiera",
+      "lede": "Tus hábitos con el dinero dicen más de tu futuro financiero que la suerte. Descubre tu tipo de personalidad financiera y el hábito que más le ayudaría.",
+      "about": [
+        "Psicólogos financieros como Brad Klontz describen creencias sobre el dinero que absorbemos al crecer y que guían en silencio cómo ahorramos, gastamos e invertimos. Este test, escrito para cv.cm, agrupa los hábitos habituales en cinco personalidades financieras.",
+        "Ningún tipo es bueno ni malo. Cada uno tiene una fortaleza que aprovechar y un punto ciego que gestionar. Este test no puede predecir tu fortuna: describe hábitos, y los hábitos pueden cambiar."
+      ],
+      "faq": [
+        { "q": "¿Puede este test predecir cuánto dinero tendré?", "a": "No. Ningún test puede predecir la fortuna. Muestra hábitos que tienden a ayudar o perjudicar tus finanzas con el tiempo, y que puedes cambiar." },
+        { "q": "¿Cuáles son los cinco tipos de este test?", "a": "Ahorrador, gastador, inversor (amante del riesgo), evitador y generoso." },
+        { "q": "¿Puedo ser de más de un tipo?", "a": "Sí. El gráfico muestra los cinco. Mucha gente es, por ejemplo, ahorradora con un fuerte lado generoso." },
+        { "q": "¿Qué deberían hacer las parejas con sus resultados?", "a": "Comparar tipos. Una persona ahorradora y otra gastadora pueden equilibrarse si acuerdan un presupuesto común." }
+      ],
+      "items": [
+        "Me inquieta no tener ahorros guardados.",
+        "Comprar algo nuevo me da un verdadero subidón.",
+        "Me siento a gusto asumiendo riesgos para hacer crecer mi dinero.",
+        "Rara vez miro el saldo de mi cuenta.",
+        "Disfruto gastando dinero en otras personas.",
+        "Comparo precios con cuidado antes de comprar cualquier cosa.",
+        "A menudo compro cosas que en realidad no necesito.",
+        "Leo sobre inversiones, bolsa o negocios paralelos.",
+        "Pensar en el dinero me estresa, así que lo dejo para después.",
+        "Me cuesta decir que no cuando amigos o familiares necesitan dinero.",
+        "Controlo mis gastos con regularidad.",
+        "Prefiero disfrutar del dinero ahora que preocuparme por el futuro.",
+        "Veo oportunidades de ganar dinero que a otros se les escapan.",
+        "No sé muy bien en qué se me va el dinero cada mes.",
+        "Doy a causas o a personas incluso cuando voy justo de dinero.",
+        "Gastar en caprichos me hace sentir culpable.",
+        "A veces compro para animarme.",
+        "Invertiría en una idea nueva si el potencial de ganancia pareciera grande.",
+        "Ignoro las facturas hasta el último momento.",
+        "Ser generoso me importa más que ser rico."
+      ],
+      "dims": {
+        "saver": "Ahorrador",
+        "spender": "Gastador",
+        "investor": "Inversor",
+        "avoider": "Evitador",
+        "giver": "Generoso"
+      },
+      "results": {
+        "saver": { "name": "El Ahorrador", "body": "Fortaleza: disciplina, ahorro y un colchón de seguridad. Punto ciego: puedes privarte de gastar en cosas que mejorarían de verdad tu vida, o guardar efectivo que podría estar creciendo. Consejo: fija cada mes un presupuesto para darte gustos sin culpa, y pon el ahorro a largo plazo en un fondo diversificado sencillo." },
+        "spender": { "name": "El Gastador", "body": "Fortaleza: disfrutas de la vida y eres generoso con las experiencias. Punto ciego: compras impulsivas y poco guardado para el futuro. Consejo: transfiere automáticamente una cantidad fija al ahorro el día de cobro, y espera 48 horas antes de cualquier compra no esencial." },
+        "investor": { "name": "El Inversor", "body": "Fortaleza: detectas oportunidades y haces que el dinero trabaje para ti. Punto ciego: perseguir grandes ganancias puede suponer demasiado riesgo en un solo sitio. Consejo: ten primero un fondo de emergencia, y nunca apuestes a una sola carta más de lo que puedas permitirte perder." },
+        "avoider": { "name": "El Evitador", "body": "Fortaleza: el dinero no gobierna tu vida. Punto ciego: facturas sin abrir, recargos por demora y oportunidades perdidas porque mirar te estresa. Consejo: reserva cada semana una cita de 15 minutos con tu dinero para revisar el saldo y pagar facturas; se vuelve fácil enseguida." },
+        "giver": { "name": "El Generoso", "body": "Fortaleza: generosidad y relaciones sólidas. Punto ciego: regalar lo que necesitas para tu propia seguridad. Consejo: decide de antemano un presupuesto para dar, así podrás ser generoso sin poner en riesgo tu futuro." }
+      }
+    },
+    "anime": {
+      "title": "¿Qué arquetipo de anime eres? Test de personalidad — cv.cm",
+      "description": "Test de personalidad anime gratis: ¿eres tsundere, kuudere, dandere, deredere, genki, chuunibyou, himedere o senpai confiable? 12 preguntas. Sin registro.",
+      "h1": "¿Qué arquetipo de personaje de anime eres?",
+      "lede": "¿Tsundere o kuudere? ¿Genki o chuunibyou? Responde 12 preguntas cotidianas y descubre el arquetipo de anime que encaja con tu personalidad.",
+      "about": [
+        "El anime y el manga usan arquetipos de personajes muy conocidos, a menudo con nombres de jerga japonesa terminados en -dere (de deredere, perdidamente enamorado). Cada tipo mezcla una actitud superficial con un lado tierno oculto.",
+        "Este test se escribió para cv.cm solo por diversión. Analiza cómo reaccionas ante los cumplidos, las amistades, el liderazgo y el estrés, y te asigna el más cercano de ocho arquetipos populares."
+      ],
+      "faq": [
+        { "q": "¿Qué significa tsundere?", "a": "Un personaje que se muestra frío o arisco (tsun-tsun) pero que en el fondo es cálido y cariñoso (dere-dere)." },
+        { "q": "¿Qué diferencia hay entre kuudere y dandere?", "a": "Un kuudere es tranquilo y frío por elección y rara vez muestra emociones. Un dandere es callado por timidez y se abre cuando se siente en confianza." },
+        { "q": "¿Qué es el chuunibyou?", "a": "Literalmente «síndrome de segundo de secundaria»: un personaje que cree tener, o finge tener, poderes secretos y destinos épicos." },
+        { "q": "¿Es un test serio?", "a": "No. Es un test de personalidad para divertirse. Para un perfil basado en la investigación, haz el test Big Five." }
+      ],
+      "items": [
+        { "q": "Alguien te regala algo hecho a mano. Tú…", "options": ["Dices «No es que lo quisiera ni nada…» y lo guardas para siempre", "Asientes, dices «Gracias» y lo atesoras en silencio", "Le das un abrazo enseguida y no paras de alabarlo", "Lo aceptas con elegancia. Claro, te han traído tributo"] },
+        { "q": "Tu clase o tu equipo necesita un líder. Tú…", "options": ["Das un paso al frente: alguien tiene que mantener a todos en marcha", "Rezas para que no te elijan y no mueves ni un músculo", "Te ofreces a gritos antes que nadie", "Proclamas que el elegido por fin ha despertado"] },
+        { "q": "Tu fin de semana ideal:", "options": ["Leer o jugar a solas, con el móvil en silencio", "Un viaje improvisado con el mayor número de amigos posible", "Cocinar para tus amigos y asegurarte de que todos están bien", "Escribir el lore de un mundo que solo tú entiendes del todo"] },
+        { "q": "Alguien te elogia delante de todo el mundo. Tú…", "options": ["Te pones rojo y sueltas «¡N-no digas cosas raras!»", "Dices «Lo sé.»", "Te quedas de piedra y susurras «g-gracias»", "Le devuelves el cumplido, el doble de fuerte"] },
+        { "q": "Alguien cercano está teniendo un mal día. Tú…", "options": ["Le das consejos prácticos y un plan", "Te lo llevas a comer y a hacer karaoke", "Refunfuñas «no tienes remedio» y luego te quedas toda la noche a su lado", "Te sientas a su lado y escuchas sin decir palabra"] },
+        { "q": "Elige un poder:", "options": ["Magia de hielo", "Un poder prohibido sellado en tu brazo izquierdo", "Curación", "Orden real: los demás simplemente obedecen"] },
+        { "q": "Tu forma de escribir mensajes:", "options": ["¡¡¡Muchos signos de exclamación y stickers!!!", "Corta. Punto.", "Escribes, borras, vuelves a escribir y mandas «ok»", "Pullitas y luego un rápido «tampoco es que me importe»"] },
+        { "q": "Un proyecto en grupo sale mal. Tú…", "options": ["Lo arreglas con calma antes de que nadie se dé cuenta", "Anuncias que el destino nos está poniendo a prueba", "No culpas a nadie y animas a todo el mundo", "Señalas que esto nunca habría pasado si te hubieran hecho caso"] },
+        { "q": "Tu estilo de ropa:", "options": ["Elegante y un poco excesivo: naciste para que te vean", "Abrigo negro, quizá un parche en el ojo o vendas", "Una sudadera cómoda en la que esconderte", "Colores vivos y zapatillas con las que puedas correr"] },
+        { "q": "¿Cómo demuestras que alguien te gusta?", "options": ["Te haces el frío y luego haces algo muy tierno cuando nadie mira", "Abiertamente y todo el tiempo. ¿Para qué esconderlo?", "Cuidándolo como un hermano mayor de confianza", "Esperas que se dé cuenta primero"] },
+        { "q": "La gente suele describirte como…", "options": ["Tranquilo y difícil de descifrar", "Lleno de energía", "Tímido, pero un encanto cuando te conocen", "De fiar"] },
+        { "q": "Tu frase típica podría ser…", "options": ["«¡Hmph!»", "«¡Ohohoho!»", "«¡Vamooos!»", "«…La oscuridad me llama.»"] }
+      ],
+      "dims": {
+        "tsundere": "Tsundere",
+        "kuudere": "Kuudere",
+        "dandere": "Dandere",
+        "deredere": "Deredere",
+        "genki": "Genki",
+        "chuuni": "Chuunibyou",
+        "himedere": "Himedere",
+        "senpai": "Senpai confiable"
+      },
+      "results": {
+        "tsundere": { "name": "Tsundere", "body": "Arisco por fuera, tierno por dentro. Escondes el cariño tras las pullas y las negativas, pero tu lealtad es feroz y tu amabilidad se nota en tus actos. A quienes mejor te conocen les parece adorable." },
+        "kuudere": { "name": "Kuudere", "body": "Frío, tranquilo y sereno. Rara vez muestras emociones y piensas antes de actuar, lo que te convierte en el pilar en una crisis. Cuando sonríes, la gente no lo olvida." },
+        "dandere": { "name": "Dandere", "body": "Callado y tímido con gente nueva, cálido y divertido cuando te sientes en confianza. Te fijas en todo y te importa mucho, aunque a los demás les cueste un tiempo verlo." },
+        "deredere": { "name": "Deredere", "body": "Dulce, alegre y abiertamente cariñoso. Quieres sin reservas, animas a los demás e iluminas cualquier lugar. Tu amabilidad es tu superpoder." },
+        "genki": { "name": "Genki", "body": "Enérgico, positivo y siempre listo para la próxima aventura. Sacas a tus amigos de su zona de confort y haces que los días normales sean emocionantes." },
+        "chuuni": { "name": "Chuunibyou", "body": "Teatral, imaginativo y lleno de grandes relatos. Tu mundo interior es épico, y conviertes la vida cotidiana en una historia digna de contarse. No pierdas nunca esa creatividad." },
+        "himedere": { "name": "Himedere", "body": "Segura, elegante y acostumbrada a que te traten como a la realeza. Pones el listón alto y tienes estilo, y en el fondo eres leal a quienes se ganan tu confianza." },
+        "senpai": { "name": "Senpai confiable", "body": "Fiable, maduro y protector. Das buenos consejos, mantienes unido al grupo y cuidas de todos, como el senpai que todo protagonista necesita." }
+      }
+    },
+    "face-shape": {
+      "title": "Test de forma de cara: ¿qué tipo de rostro tengo? — cv.cm",
+      "description": "Test de forma de cara gratis: 6 preguntas frente al espejo para saber si tu rostro es ovalado, redondo, cuadrado, corazón, alargado, diamante o triangular.",
+      "h1": "Test de forma de cara",
+      "lede": "Descubre la forma de tu cara con un espejo y 6 preguntas rápidas, y recibe consejos de peinado, gafas y arreglo personal que te favorecen. Sin foto, no se sube nada.",
+      "about": [
+        "Cómo mirarte: recógete el pelo, ponte frente a un espejo (o hazte un selfi de frente) y compara cuatro cosas: el largo de la cara, el ancho de la frente, el de los pómulos y el de la mandíbula. Una cinta métrica flexible o un trozo de cuerda lo facilitan.",
+        "La mayoría de las caras mezclan dos formas, así que el test también muestra cuánto te acercas a cada una. La forma de la cara es cuestión de proporciones, no de belleza: cada forma tiene estilos que la favorecen."
+      ],
+      "faq": [
+        { "q": "¿Cómo mido la forma de mi cara?", "a": "Mide el ancho de la frente en el nacimiento del pelo, el de los pómulos en su punto más ancho, el de la mandíbula desde el ángulo bajo cada oreja hasta la barbilla, y el largo desde el nacimiento del pelo hasta la barbilla. Luego responde las preguntas." },
+        { "q": "¿Cuál es la forma de cara más común?", "a": "Se suele decir que la ovalada y la redonda son las más comunes, pero mucha gente es una mezcla de dos formas." },
+        { "q": "¿El test usa mi foto?", "a": "No. Respondes mirándote al espejo o en tu propia foto; no se sube ni se analiza nada." },
+        { "q": "¿Pueden el maquillaje o la barba cambiar la forma de mi cara?", "a": "Cambian cómo se ve. El contouring, los peinados y la forma de la barba añaden o suavizan ángulos para equilibrar las proporciones." }
+      ],
+      "items": [
+        { "q": "Compara el largo de tu cara (del nacimiento del pelo a la barbilla) con su ancho a la altura de los pómulos:", "options": ["Mucho más larga: unas 1,5 veces el ancho o más", "Algo más larga: entre 1,3 y 1,5 veces", "Más o menos igual de larga que de ancha"] },
+        { "q": "¿Qué parte de tu cara es la más ancha?", "options": ["La frente", "Los pómulos", "La mandíbula", "Todas son más o menos iguales"] },
+        { "q": "¿Cómo describirías tu mandíbula?", "options": ["Marcada y angulosa, con esquinas definidas", "Suave y redondeada", "Se estrecha hasta una barbilla puntiaguda", "Ligeramente curva y afinada"] },
+        { "q": "Compara tu frente con tu mandíbula:", "options": ["La frente es claramente más ancha", "La mandíbula es claramente más ancha", "Más o menos el mismo ancho", "Ambas son claramente más estrechas que mis pómulos"] },
+        { "q": "¿Cómo es tu barbilla?", "options": ["Puntiaguda o estrecha", "Redondeada", "Ancha y algo cuadrada"] },
+        { "q": "¿Cómo son tus pómulos?", "options": ["Altos, marcados y el rasgo más prominente", "Llenos, con mejillas suaves y redondas", "Equilibrados, un poco más anchos que la mandíbula", "No mucho más anchos que mi frente o mi mandíbula"] }
+      ],
+      "dims": {
+        "oval": "Ovalada",
+        "round": "Redonda",
+        "square": "Cuadrada",
+        "heart": "Corazón",
+        "oblong": "Alargada (oblonga)",
+        "diamond": "Diamante",
+        "triangle": "Triangular (pera)"
+      },
+      "results": {
+        "oval": { "name": "Cara ovalada", "body": "Proporciones equilibradas: algo más larga que ancha, con la mandíbula un poco más estrecha que la frente. Le sienta bien casi cualquier peinado y montura. Prueba gafas atrevidas o geométricas, y cortes tanto cortos como largos." },
+        "round": { "name": "Cara redonda", "body": "Largo y ancho similares, con mejillas llenas y mandíbula suave. Añade altura y ángulos: cortes en capas con volumen arriba, raya al lado y gafas rectangulares o angulosas. Evita los bobs rectos a la altura de la barbilla y las monturas redondas." },
+        "square": { "name": "Cara cuadrada", "body": "Mandíbula fuerte y angulosa, con frente, pómulos y mandíbula de ancho similar. Suaviza las esquinas: capas suaves, flequillo de lado y ondas; gafas redondas u ovaladas. Las barbas cortas que redondean la barbilla quedan bien." },
+        "heart": { "name": "Cara de corazón", "body": "Frente y pómulos más anchos que se estrechan hacia una barbilla puntiaguda. Equilibra la parte inferior: bobs a la altura de la barbilla, flequillo de lado y volumen cerca de la mandíbula; gafas con más peso abajo o sin montura. Una barba más poblada añade anchura en la barbilla." },
+        "oblong": { "name": "Cara alargada", "body": "Claramente más larga que ancha, con frente, pómulos y mandíbula de ancho similar. Añade anchura: flequillo, ondas y volumen a los lados; monturas grandes o altas. Evita el pelo muy largo y liso y los peinados con mucha altura arriba." },
+        "diamond": { "name": "Cara de diamante", "body": "Pómulos anchos y altos, con la frente y la mandíbula más estrechas. Luce los pómulos: flequillos de lado, peinados con el pelo detrás de la oreja y cortes a la altura de la barbilla; gafas ovaladas o de ojo de gato." },
+        "triangle": { "name": "Cara triangular (pera)", "body": "Mandíbula más ancha que la frente. Añade anchura arriba: volumen en la coronilla y las sienes, cortes en capas, flequillo de lado; monturas marcadas en la parte superior, como las browline. Mantén la barba corta en los laterales." }
+      }
+    },
+    "self-esteem": {
+      "title": "Test de autoestima gratis (Escala de Rosenberg) — cv.cm",
+      "description": "Haz gratis la Escala de Autoestima de Rosenberg online: 10 afirmaciones, puntuación inmediata sobre 30 y qué significa. Sin registro; todo queda en tu navegador.",
+      "h1": "Test de autoestima (Escala de Rosenberg)",
+      "lede": "La Escala de Autoestima de Rosenberg es la medida de la autoestima más utilizada. Valora 10 afirmaciones y obtén una puntuación sobre 30.",
+      "about": [
+        "El sociólogo Morris Rosenberg publicó la escala en 1965 y desde entonces se ha usado en miles de estudios. Cinco afirmaciones son positivas y cinco negativas; las negativas se puntúan a la inversa.",
+        "Las puntuaciones de 15 a 25 están en el rango habitual. Una puntuación inferior a 15 sugiere una autoestima baja. La autoestima cambia con lo que vivimos, y puede fortalecerse con práctica y apoyo."
+      ],
+      "faq": [
+        { "q": "¿Cómo se puntúa la escala de Rosenberg?", "a": "Cada respuesta vale de 0 a 3, con los ítems 2, 5, 6, 8 y 9 invertidos. El total va de 0 a 30; cuanto más alto, mayor autoestima." },
+        { "q": "¿Qué puntuación es normal?", "a": "La mayoría de la gente puntúa entre 15 y 25. Por debajo de 15 sugiere una autoestima baja." },
+        { "q": "¿Cómo puedo mejorar mi autoestima?", "a": "Detecta y cuestiona tu diálogo interno más duro, cumple pequeñas promesas contigo, pasa tiempo con personas que te apoyen y habla con un profesional si la baja autoestima afecta a tu día a día." },
+        { "q": "¿Una puntuación alta siempre es buena?", "a": "La autoestima sana es realista. Una puntuación muy alta suele estar bien, pero la valía personal que depende de ser siempre mejor que los demás es frágil." }
+      ],
+      "items": [
+        "En general, estoy a gusto conmigo.",
+        "A veces pienso que no sirvo para nada.",
+        "Tengo la sensación de que poseo algunas buenas cualidades.",
+        "Soy capaz de hacer las cosas tan bien como la mayoría de las personas.",
+        "Siento que no tengo mucho de lo que enorgullecerme.",
+        "A veces me siento realmente inútil.",
+        "Tengo la sensación de que soy una persona valiosa, al menos tanto como las demás.",
+        "Ojalá pudiera tenerme más respeto.",
+        "En definitiva, tiendo a pensar que soy un fracaso.",
+        "Tengo una actitud positiva hacia mi persona."
+      ],
+      "results": {
+        "low": { "name": "Autoestima baja", "body": "Tu puntuación sugiere que a menudo eres duro contigo. Es doloroso, y es frecuente. Prueba a anotar cada día tres cosas que hayas hecho bien, fíjate en cuándo tu voz interior es más dura de lo que serías con una amistad y plantéate hablar con un profesional." },
+        "normal": { "name": "Autoestima en el rango habitual", "body": "Tu puntuación está en el rango habitual: en general te aceptas y reconoces que tienes margen para crecer. Mantén los hábitos que te sostienen, como pasar tiempo con quien te valora y fijarte metas alcanzables." },
+        "high": { "name": "Autoestima alta", "body": "Tienes una visión sólida y positiva de ti. Una autoestima sana te ayuda a afrontar los contratiempos y a poner límites. Mantenla con los pies en la tierra estando abierto a las opiniones de los demás." }
+      }
+    },
+    "anxiety": {
+      "title": "Test de ansiedad GAD-7 gratis: mide tu ansiedad — cv.cm",
+      "description": "Test de ansiedad GAD-7 online gratis: 7 preguntas sobre las últimas dos semanas, puntuación de 0 a 21 y nivel de gravedad estándar. Nada sale de tu navegador.",
+      "h1": "Test de ansiedad (GAD-7)",
+      "lede": "El GAD-7 es una herramienta de cribado de 7 preguntas que usan los médicos para detectar la ansiedad generalizada. Se tarda un minuto y puntúa de 0 a 21.",
+      "about": [
+        "La escala de 7 ítems para el Trastorno de Ansiedad Generalizada (GAD-7) la desarrollaron Spitzer, Kroenke, Williams y Löwe en 2006. Es de uso libre y se usa mucho en atención primaria. Las puntuaciones de 5, 10 y 15 marcan ansiedad leve, moderada y grave.",
+        "Una puntuación de 10 o más es motivo para hablar con un médico o un profesional de la salud mental. Esta prueba es una herramienta de cribado, no un diagnóstico."
+      ],
+      "faq": [
+        { "q": "¿Qué significa mi puntuación del GAD-7?", "a": "0–4 mínima, 5–9 leve, 10–14 moderada y 15–21 grave: síntomas de ansiedad durante las últimas dos semanas." },
+        { "q": "¿Puede el GAD-7 diagnosticar un trastorno de ansiedad?", "a": "No. Detecta síntomas. Un diagnóstico requiere la evaluación de un profesional cualificado." },
+        { "q": "¿Cuándo debo buscar ayuda?", "a": "Si tu puntuación es de 10 o más, o si la ansiedad interfiere en el trabajo, los estudios, el sueño o tus relaciones, habla con un médico o un profesional." },
+        { "q": "¿Qué ayuda con la ansiedad?", "a": "Dormir con regularidad, hacer ejercicio, tomar menos cafeína, respirar despacio y hablar con alguien de confianza ayuda a mucha gente. La terapia (como la TCC) y la medicación son tratamientos eficaces." }
+      ],
+      "items": [
+        "Sentir nervios, ansiedad o tener los nervios de punta",
+        "No poder dejar de preocuparte o no poder controlar la preocupación",
+        "Preocuparte demasiado por diferentes cosas",
+        "Dificultad para relajarte",
+        "Sentir tanta inquietud que te cuesta quedarte quieto en un sitio",
+        "Molestarte o irritarte con facilidad",
+        "Sentir miedo, como si algo terrible pudiera pasar"
+      ],
+      "results": {
+        "minimal": { "name": "Ansiedad mínima (0–4)", "body": "Tus respuestas sugieren pocos o ningún síntoma de ansiedad en las últimas dos semanas. Mantén los hábitos que te ayudan a estar en equilibrio." },
+        "mild": { "name": "Ansiedad leve (5–9)", "body": "Tienes algunos síntomas de ansiedad. Observa cómo evolucionan y prueba hábitos que reducen el estrés, como dormir con regularidad, hacer ejercicio y limitar la cafeína. Repite el test dentro de unas semanas." },
+        "moderate": { "name": "Ansiedad moderada (10–14)", "body": "Tus síntomas están en un nivel en el que se recomienda hablar con un médico o un profesional de la salud mental. La ansiedad tiene muy buen tratamiento." },
+        "severe": { "name": "Ansiedad grave (15–21)", "body": "Tus respuestas sugieren síntomas de ansiedad graves. Por favor, contacta pronto con un médico o un profesional de la salud mental. No tienes que afrontarlo a solas, y existe ayuda eficaz." }
+      }
+    },
+    "depression": {
+      "title": "Test de depresión PHQ-9 gratis: cribado online — cv.cm",
+      "description": "Test de depresión PHQ-9 online gratis: 9 preguntas sobre las últimas dos semanas, puntuación de 0 a 27 y nivel de gravedad estándar. Nada sale de tu navegador.",
+      "h1": "Test de depresión (PHQ-9)",
+      "lede": "El PHQ-9 es el cuestionario de cribado de depresión de 9 preguntas que usan los médicos en todo el mundo. Se tarda unos dos minutos y puntúa de 0 a 27.",
+      "about": [
+        "El Cuestionario sobre la Salud del Paciente (PHQ-9) lo desarrollaron Kroenke, Spitzer y Williams, y es de uso libre. Las puntuaciones de 5, 10, 15 y 20 marcan síntomas depresivos leves, moderados, moderadamente graves y graves.",
+        "Una puntuación de 10 o más es motivo para acudir a un médico o a un profesional de la salud mental. Si tienes cualquier pensamiento de hacerte daño, pide ayuda ahora, sea cual sea tu puntuación total."
+      ],
+      "faq": [
+        { "q": "¿Qué significa mi puntuación del PHQ-9?", "a": "0–4 mínima, 5–9 leve, 10–14 moderada, 15–19 moderadamente grave y 20–27 grave: síntomas de depresión." },
+        { "q": "¿Puede el PHQ-9 diagnosticar la depresión?", "a": "No. Es una herramienta de cribado. Un médico o un profesional de la salud mental establece el diagnóstico tras una evaluación completa." },
+        { "q": "¿Por qué es tan importante la pregunta 9?", "a": "Pregunta por pensamientos de muerte o de hacerse daño. Cualquier respuesta distinta de «Nunca» merece hablarlo con un profesional, aunque la puntuación total sea baja." },
+        { "q": "¿La depresión tiene tratamiento?", "a": "Sí. La terapia, la medicación, el ejercicio y el apoyo social ayudan, y la mayoría de las personas mejora con tratamiento." }
+      ],
+      "items": [
+        "Poco interés o placer en hacer cosas",
+        "Sentirte con el ánimo bajo, con depresión o sin esperanza",
+        "Dificultad para quedarte dormido o para seguir durmiendo, o dormir demasiado",
+        "Sentirte con cansancio o con poca energía",
+        "Poco apetito o comer en exceso",
+        "Sentirte mal contigo mismo, o sentir que eres un fracaso o que has quedado mal contigo o con tu familia",
+        "Dificultad para concentrarte en cosas como leer el periódico o ver la televisión",
+        "Moverte o hablar tan despacio que otras personas podrían haberlo notado, o lo contrario: sentir tanta inquietud o agitación que te has estado moviendo mucho más de lo normal",
+        "Pensamientos de que estarías mejor muerto o de hacerte daño de alguna manera"
+      ],
+      "results": {
+        "minimal": { "name": "Depresión mínima (0–4)", "body": "Tus respuestas sugieren pocos o ningún síntoma de depresión en las últimas dos semanas." },
+        "mild": { "name": "Depresión leve (5–9)", "body": "Tienes algunos síntomas. Presta atención a cómo te sientes, cuida el sueño, la actividad física y el contacto social, y repite el test dentro de unas semanas. Si no mejora, habla con un médico." },
+        "moderate": { "name": "Depresión moderada (10–14)", "body": "Tus síntomas están en un nivel en el que se recomienda acudir a un médico o a un profesional de la salud mental. La depresión es frecuente y tiene tratamiento." },
+        "modsevere": { "name": "Depresión moderadamente grave (15–19)", "body": "Tus respuestas sugieren síntomas importantes. Por favor, contacta pronto con un médico o un profesional de la salud mental. Tratamientos como la terapia y la medicación ayudan a la mayoría de las personas." },
+        "severe": { "name": "Depresión grave (20–27)", "body": "Tus respuestas sugieren síntomas graves. Por favor, contacta cuanto antes con un médico o un profesional de la salud mental, y cuéntale a alguien de confianza cómo te sientes." }
+      }
+    }
+  }
+}

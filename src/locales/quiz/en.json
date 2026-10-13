@@ -1,0 +1,781 @@
+{
+  "crumbHome": "Home",
+  "ui": {
+    "kicker": "Free · {n} questions · about {m} min · no sign-up",
+    "scaleHint": {
+      "agree5": "How well does each statement describe you? Answer as you usually are, not as you would like to be.",
+      "agree4": "How much do you agree with each statement about yourself?",
+      "freq4": "Over the last 2 weeks, how often have you been bothered by each of the following?"
+    },
+    "choiceHint": "Pick the answer closest to you. There are no wrong answers.",
+    "scale": {
+      "agree5": ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"],
+      "agree4": ["Strongly disagree", "Disagree", "Agree", "Strongly agree"],
+      "freq4": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+    },
+    "progress": "{n} of {total} answered",
+    "submit": "See my result",
+    "missing": "{n} left. Answer every question to see your result.",
+    "result": "Your result",
+    "retake": "Start over",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "about": "About this test",
+    "faq": "FAQ",
+    "more": "More tests",
+    "all": "All tests",
+    "privacy": "Your answers are scored in this tab. Nothing is uploaded, saved, or sent anywhere.",
+    "notDiagnosis": "This is a self-check, not a diagnosis. Only a qualified professional can diagnose a mental health condition.",
+    "levels": { "low": "Low", "mid": "Average", "high": "High" },
+    "score": "Score",
+    "top3": "Your top three",
+    "runnerUp": "Also strong",
+    "focus": "Area to work on",
+    "crisisTitle": "If you are thinking about hurting yourself",
+    "crisisBody": "You deserve support right now. If you might act on these thoughts, call your local emergency number or go to the nearest emergency room. You can also reach a free, confidential crisis line: findahelpline.com lists lines in every country.",
+    "crisisLines": "United States: call or text 988. United Kingdom and Ireland: Samaritans 116 123."
+  },
+  "hub": {
+    "title": "Free personality tests: MBTI, Big Five, love and career — cv.cm",
+    "description": "Free online personality and psychology tests: 16 types (MBTI-style), Big Five, Enneagram, love language, attachment style, career interests, money personality, anime archetype, face shape, self-esteem, anxiety and depression checks. No sign-up; answers stay in your browser.",
+    "h1": "Personality and psychology tests",
+    "lede": "Thirteen free tests, from 16 personality types and the Big Five to love languages, career interests and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "groups": {
+      "personality": "Personality",
+      "love": "Love and relationships",
+      "career": "Career and money",
+      "fun": "Just for fun",
+      "wellbeing": "Wellbeing self-checks"
+    },
+    "about": [
+      "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
+      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five uses the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict."
+    ],
+    "faq": [
+      { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
+      { "q": "Are my answers saved?", "a": "No. Scoring runs in your browser tab. The answers are not uploaded or stored, and closing the tab clears them." },
+      { "q": "How accurate are online personality tests?", "a": "A short self-report test describes how you see yourself today. Treat the result as a mirror for reflection, and retake it after a while: results that stay the same are the ones to trust." },
+      { "q": "Which test should I start with?", "a": "For a quick type, take the 16 personalities test. For the model psychologists use most, take the Big Five. For relationships, try the love language or attachment style test." }
+    ]
+  },
+  "tests": {
+    "mbti": {
+      "title": "Free MBTI test: 16 personality types in 32 questions — cv.cm",
+      "description": "Take a free MBTI-style personality test. Answer 32 statements and get your four-letter type (like INFJ or ESTP) with the strength of each preference. No sign-up.",
+      "h1": "16 personality types test (MBTI-style)",
+      "lede": "Find your four-letter type: where you get energy (E/I), how you take in information (S/N), how you decide (T/F), and how you organize your life (J/P).",
+      "about": [
+        "The 16 types come from Carl Jung's theory of psychological types, later developed by Katharine Briggs and Isabel Myers. Each letter is one side of a pair, and the percentages show how strongly you lean that way. A result near 50% means you use both sides.",
+        "This is an independent, MBTI-style test written for cv.cm. It is not the official Myers-Briggs Type Indicator® assessment and is not affiliated with The Myers-Briggs Company."
+      ],
+      "faq": [
+        { "q": "Is this the official MBTI test?", "a": "No. The official MBTI® assessment is sold through certified practitioners. This free test uses the same four preference pairs with its own questions." },
+        { "q": "What do the four letters mean?", "a": "E or I: Extraversion or Introversion. S or N: Sensing or Intuition. T or F: Thinking or Feeling. J or P: Judging or Perceiving." },
+        { "q": "Why did I get a different type last time?", "a": "If one pair is close to 50%, a small change in your answers flips the letter. Look at the percentages: the strong preferences are the stable part of your type." },
+        { "q": "Can my type change?", "a": "Your core preferences tend to stay fairly stable in adulthood, but stress, a new job, or a new stage of life can shift how you answer." }
+      ],
+      "items": [
+        "I feel energized after spending time with a group of people.",
+        "I focus on facts and details more than on possibilities.",
+        "When I make a decision, logic matters more to me than feelings.",
+        "I like to plan things well in advance.",
+        "I often think out loud by talking ideas through with others.",
+        "I trust experience more than theories.",
+        "I would rather be honest than tactful.",
+        "I feel better once a decision is made.",
+        "I easily start conversations with strangers.",
+        "I prefer clear, step-by-step instructions.",
+        "I analyze problems objectively, even when people are upset.",
+        "I keep my space and my schedule organized.",
+        "I prefer having many acquaintances to having a few close friends.",
+        "I notice practical details that others miss.",
+        "I value fair, consistent rules more than exceptions.",
+        "I like to finish one task before starting another.",
+        "After a busy social day, I need time alone to recharge.",
+        "I often imagine how things could be completely different.",
+        "I consider how a decision will affect people's feelings.",
+        "I prefer to keep my options open rather than commit early.",
+        "I prefer to think things through before I speak.",
+        "I enjoy discussing abstract ideas and theories.",
+        "Harmony in a group is very important to me.",
+        "I work best close to a deadline.",
+        "I enjoy spending a quiet evening on my own.",
+        "I tend to look for hidden meanings and patterns.",
+        "I find it easy to put myself in someone else's shoes.",
+        "I enjoy being spontaneous and going with the flow.",
+        "In meetings, I usually listen more than I talk.",
+        "Routine bores me, and I like to try new approaches.",
+        "I often make choices based on my personal values.",
+        "Rigid plans make me feel restricted."
+      ],
+      "letters": {
+        "E": "Extraversion", "I": "Introversion",
+        "S": "Sensing", "N": "Intuition",
+        "T": "Thinking", "F": "Feeling",
+        "J": "Judging", "P": "Perceiving"
+      },
+      "results": {
+        "ESTJ": { "name": "ESTJ · The Supervisor", "body": "Practical, organized and direct. You like clear rules, get things done on time, and naturally take charge of people and projects. Watch out for steamrolling quieter voices; asking how people feel makes your plans land better." },
+        "ESTP": { "name": "ESTP · The Doer", "body": "Energetic, bold and hands-on. You read situations fast, enjoy risk, and solve problems in the moment. Long-term plans and routine paperwork bore you; a simple checklist keeps your momentum from leaving loose ends." },
+        "ESFJ": { "name": "ESFJ · The Caregiver", "body": "Warm, loyal and sociable. You notice what people need, keep traditions alive, and hold groups together. You may take criticism to heart; remember that saying no sometimes is also a way of caring." },
+        "ESFP": { "name": "ESFP · The Performer", "body": "Fun-loving, spontaneous and generous. You bring energy into any room and enjoy the present moment with others. Planning ahead feels dull, but a little structure gives you more freedom later." },
+        "ENTJ": { "name": "ENTJ · The Commander", "body": "Strategic, decisive and ambitious. You see how things should work, set big goals, and organize people to reach them. Patience with slower processes and with feelings will make you an even stronger leader." },
+        "ENTP": { "name": "ENTP · The Debater", "body": "Quick-witted, curious and inventive. You love ideas, arguments and new possibilities, and you challenge assumptions for fun. Finishing projects is the hard part; pair up with someone who loves the details." },
+        "ENFJ": { "name": "ENFJ · The Mentor", "body": "Charismatic, empathetic and inspiring. You bring out the best in people and rally them around shared values. You can overcommit to others' needs; set aside time for your own." },
+        "ENFP": { "name": "ENFP · The Champion", "body": "Enthusiastic, imaginative and warm. You see potential everywhere, connect easily with people, and chase what feels meaningful. Too many open projects can scatter your energy; pick a few and see them through." },
+        "ISTJ": { "name": "ISTJ · The Inspector", "body": "Responsible, thorough and reliable. You keep your word, value facts and proven methods, and finish what you start. Change can feel unsettling; trying small experiments helps you adapt on your own terms." },
+        "ISTP": { "name": "ISTP · The Craftsperson", "body": "Calm, logical and practical. You like to understand how things work and fix problems with your hands or with clear analysis. You value your independence; letting people know what you think helps them trust you." },
+        "ISFJ": { "name": "ISFJ · The Protector", "body": "Kind, dependable and observant. You remember details about people and quietly take care of them. You often put others first; your own needs deserve the same attention." },
+        "ISFP": { "name": "ISFP · The Artist", "body": "Gentle, sensitive and creative. You live by your values, enjoy beauty in the moment, and express yourself through what you make or do. Conflict drains you; speaking up early keeps small issues small." },
+        "INTJ": { "name": "INTJ · The Architect", "body": "Independent, analytical and visionary. You build long-range plans, question everything, and hold yourself to high standards. Others may find you hard to read; explaining your reasoning brings people along." },
+        "INTP": { "name": "INTP · The Thinker", "body": "Curious, precise and inventive. You love theories, systems and puzzles, and you need time alone to think them through. Ideas can stay in your head; sharing a rough version early turns them into something real." },
+        "INFJ": { "name": "INFJ · The Counselor", "body": "Insightful, principled and compassionate. You sense what others feel, look for deeper meaning, and work quietly toward a better world. You may burn out from caring too much; protect your rest." },
+        "INFP": { "name": "INFP · The Idealist", "body": "Thoughtful, idealistic and loyal to your values. You have a rich inner world and want your life and work to mean something. Self-criticism can hold you back; progress beats perfection." }
+      }
+    },
+    "big-five": {
+      "title": "Free Big Five personality test (IPIP 50 questions) — cv.cm",
+      "description": "Take the free Big Five (OCEAN) personality test with the public-domain IPIP 50-item questionnaire. See your openness, conscientiousness, extraversion, agreeableness and neuroticism scores. No sign-up.",
+      "h1": "Big Five personality test (OCEAN)",
+      "lede": "Measure the five traits psychologists use most: Openness, Conscientiousness, Extraversion, Agreeableness and Neuroticism. 50 short statements, results as five scores out of 100.",
+      "about": [
+        "The Big Five (also called the Five-Factor Model or OCEAN) is the best-researched model of personality. Instead of putting you in a box, it places you on five independent scales, so everyone gets a unique profile.",
+        "This test uses the 50-item Big-Five Factor Markers from the International Personality Item Pool (IPIP), developed by Lewis Goldberg and placed in the public domain. Scores here are compared to the scale range, not to a population sample, so 50 means the middle of the scale."
+      ],
+      "faq": [
+        { "q": "What does OCEAN stand for?", "a": "Openness to experience, Conscientiousness, Extraversion, Agreeableness and Neuroticism, the five broad traits in the model." },
+        { "q": "Is a high score better?", "a": "No. Each end of a trait has strengths. Low extraversion goes with focus and calm; low agreeableness with candor and independence." },
+        { "q": "Is the Big Five more scientific than MBTI?", "a": "Most personality researchers prefer the Big Five: its traits are measured as continuous scores and predict outcomes like job performance and wellbeing in many studies." },
+        { "q": "Where do the questions come from?", "a": "From the IPIP 50-item Big-Five Factor Markers by Lewis Goldberg, a public-domain questionnaire used widely in research." }
+      ],
+      "items": [
+        "Am the life of the party.",
+        "Feel little concern for others.",
+        "Am always prepared.",
+        "Get stressed out easily.",
+        "Have a rich vocabulary.",
+        "Don't talk a lot.",
+        "Am interested in people.",
+        "Leave my belongings around.",
+        "Am relaxed most of the time.",
+        "Have difficulty understanding abstract ideas.",
+        "Feel comfortable around people.",
+        "Insult people.",
+        "Pay attention to details.",
+        "Worry about things.",
+        "Have a vivid imagination.",
+        "Keep in the background.",
+        "Sympathize with others' feelings.",
+        "Make a mess of things.",
+        "Seldom feel blue.",
+        "Am not interested in abstract ideas.",
+        "Start conversations.",
+        "Am not interested in other people's problems.",
+        "Get chores done right away.",
+        "Am easily disturbed.",
+        "Have excellent ideas.",
+        "Have little to say.",
+        "Have a soft heart.",
+        "Often forget to put things back in their proper place.",
+        "Get upset easily.",
+        "Do not have a good imagination.",
+        "Talk to a lot of different people at parties.",
+        "Am not really interested in others.",
+        "Like order.",
+        "Change my mood a lot.",
+        "Am quick to understand things.",
+        "Don't like to draw attention to myself.",
+        "Take time out for others.",
+        "Shirk my duties.",
+        "Have frequent mood swings.",
+        "Use difficult words.",
+        "Don't mind being the center of attention.",
+        "Feel others' emotions.",
+        "Follow a schedule.",
+        "Get irritated easily.",
+        "Spend time reflecting on things.",
+        "Am quiet around strangers.",
+        "Make people feel at ease.",
+        "Am exacting in my work.",
+        "Often feel blue.",
+        "Am full of ideas."
+      ],
+      "dims": {
+        "O": "Openness",
+        "C": "Conscientiousness",
+        "E": "Extraversion",
+        "A": "Agreeableness",
+        "N": "Neuroticism"
+      },
+      "levels": {
+        "O": {
+          "low": "You prefer the familiar and the practical. You like proven ways of doing things and concrete facts over abstract speculation.",
+          "mid": "You balance curiosity with practicality: open to new ideas when they are useful, comfortable with routine when it works.",
+          "high": "You are curious, imaginative and drawn to ideas, art and new experiences. You enjoy abstract thinking and variety."
+        },
+        "C": {
+          "low": "You are flexible and spontaneous, and you dislike rigid plans. Deadlines and tidiness may take conscious effort.",
+          "mid": "You are organized when it matters and relaxed when it doesn't. You can plan, but you don't need everything scheduled.",
+          "high": "You are organized, dependable and goal-driven. You plan ahead, pay attention to details, and follow through."
+        },
+        "E": {
+          "low": "You are reserved and recharge alone or with a few close people. You think before you speak and enjoy quiet focus.",
+          "mid": "You are an ambivert: sociable in the right setting, but you also value time to yourself.",
+          "high": "You are outgoing, talkative and energized by people. You enjoy attention, groups and a lively pace."
+        },
+        "A": {
+          "low": "You are frank, skeptical and competitive. You say what you think and don't mind disagreement.",
+          "mid": "You are generally cooperative but can stand your ground. You weigh others' needs against your own.",
+          "high": "You are warm, trusting and helpful. You care about harmony and other people's feelings."
+        },
+        "N": {
+          "low": "You are emotionally steady and calm under pressure. Setbacks rarely shake you for long.",
+          "mid": "You feel stress and worry at normal levels and usually recover from them in a reasonable time.",
+          "high": "You feel emotions intensely and can be prone to worry, stress or low moods. Regular rest, exercise and talking things through help."
+        }
+      }
+    },
+    "enneagram": {
+      "title": "Free Enneagram test: find your type in 36 questions — cv.cm",
+      "description": "Free Enneagram personality test. Rate 36 statements to see which of the nine Enneagram types fits you best, with scores for all nine. No sign-up.",
+      "h1": "Enneagram personality test",
+      "lede": "Discover which of the nine Enneagram types drives you: what you want most, what you fear, and how you act under stress.",
+      "about": [
+        "The Enneagram describes nine personality types, each organized around a core motivation. Most people see a little of themselves in several types; your main type is the one whose motivation feels most like home.",
+        "This short test was written for cv.cm. Read the descriptions of your top two or three types and decide which fits best: self-recognition is how the Enneagram is meant to be used."
+      ],
+      "faq": [
+        { "q": "What are the nine Enneagram types?", "a": "1 Reformer, 2 Helper, 3 Achiever, 4 Individualist, 5 Investigator, 6 Loyalist, 7 Enthusiast, 8 Challenger, 9 Peacemaker." },
+        { "q": "What is a wing?", "a": "Your wing is one of the two types next to your main type on the Enneagram circle (a 4 can have a 3 or 5 wing). Your second-highest score is a hint if it sits next to your main type." },
+        { "q": "My top scores are close. Which is my type?", "a": "Read each description and ask which core fear and desire feels most true over your whole life, not just lately." },
+        { "q": "Is the Enneagram scientific?", "a": "Research support is limited compared with the Big Five. Many people still find it a useful language for motivation and growth." }
+      ],
+      "items": [
+        "I hold myself to high standards and notice mistakes quickly.",
+        "I feel happiest when someone needs my help.",
+        "Being successful and admired matters a lot to me.",
+        "I often feel different from other people.",
+        "I need plenty of time alone to think and recharge.",
+        "I tend to imagine what could go wrong and prepare for it.",
+        "I'm always looking for the next fun thing to do.",
+        "I say what I think, even if it causes conflict.",
+        "I go along with others to keep the peace.",
+        "I feel uneasy when things are not done the right way.",
+        "I'm good at sensing what others need, sometimes before they do.",
+        "I adapt my image to fit what impresses people.",
+        "Deep emotions, even sad ones, feel meaningful to me.",
+        "I prefer to understand a topic fully before I act.",
+        "Loyalty and security are very important to me.",
+        "I dislike being limited or tied down.",
+        "I like being in control and hate feeling weak.",
+        "I avoid conflict, even when something bothers me.",
+        "I find it hard to relax until my work is perfect.",
+        "I sometimes give so much that I neglect my own needs.",
+        "I'm very goal-oriented and productive.",
+        "I want to be truly unique and authentic.",
+        "I guard my privacy and my energy.",
+        "I trust people slowly and test their reliability.",
+        "I keep many options open so I never miss out.",
+        "I protect the people I care about fiercely.",
+        "I put off decisions and let things sort themselves out.",
+        "I have a strong inner voice about right and wrong.",
+        "I want to be loved and appreciated for what I give.",
+        "I hate failing and keep busy to stay ahead.",
+        "I'm drawn to beauty, art and self-expression.",
+        "Knowledge and competence make me feel safe.",
+        "I look to rules or trusted people for guidance.",
+        "I turn bad situations into something positive quickly.",
+        "I take charge quickly when no one else does.",
+        "I'm easygoing and get along with almost anyone."
+      ],
+      "dims": {
+        "1": "Type 1 · Reformer", "2": "Type 2 · Helper", "3": "Type 3 · Achiever",
+        "4": "Type 4 · Individualist", "5": "Type 5 · Investigator", "6": "Type 6 · Loyalist",
+        "7": "Type 7 · Enthusiast", "8": "Type 8 · Challenger", "9": "Type 9 · Peacemaker"
+      },
+      "results": {
+        "1": { "name": "Type 1 · The Reformer", "body": "Principled, purposeful and self-controlled. You want to be good and do things right, and you fear being corrupt or wrong. Growth comes from accepting that imperfect is often good enough, for yourself and for others." },
+        "2": { "name": "Type 2 · The Helper", "body": "Caring, generous and people-pleasing. You want to be loved and needed, and you fear being unwanted. Growth comes from noticing your own needs and asking for help directly." },
+        "3": { "name": "Type 3 · The Achiever", "body": "Driven, adaptable and image-conscious. You want to feel valuable and successful, and you fear being worthless. Growth comes from valuing who you are, not only what you achieve." },
+        "4": { "name": "Type 4 · The Individualist", "body": "Expressive, sensitive and introspective. You want to find your true identity and significance, and you fear having none. Growth comes from appreciating ordinary life and what you already have." },
+        "5": { "name": "Type 5 · The Investigator", "body": "Curious, insightful and private. You want to be capable and competent, and you fear being overwhelmed or useless. Growth comes from engaging with the world before you feel fully ready." },
+        "6": { "name": "Type 6 · The Loyalist", "body": "Committed, responsible and security-minded. You want support and guidance, and you fear being without them. Growth comes from trusting your own judgment." },
+        "7": { "name": "Type 7 · The Enthusiast", "body": "Spontaneous, versatile and optimistic. You want to be satisfied and free, and you fear pain and missing out. Growth comes from staying with one thing, including difficult feelings." },
+        "8": { "name": "Type 8 · The Challenger", "body": "Self-confident, decisive and protective. You want to control your own life, and you fear being harmed or controlled. Growth comes from letting trusted people see your softer side." },
+        "9": { "name": "Type 9 · The Peacemaker", "body": "Easygoing, receptive and reassuring. You want inner and outer peace, and you fear conflict and separation. Growth comes from voicing your own priorities and acting on them." }
+      }
+    },
+    "love-language": {
+      "title": "Free love language test: find your love language — cv.cm",
+      "description": "Free love language quiz. Rate 25 statements to see how you most like to receive love: words of affirmation, quality time, gifts, acts of service or physical touch. No sign-up.",
+      "h1": "Love language test",
+      "lede": "Which of the five love languages speaks to you most? Rate 25 statements and see all five ranked.",
+      "about": [
+        "The idea of five love languages was popularized by counselor Gary Chapman in 1992: people tend to feel loved through words of affirmation, quality time, receiving gifts, acts of service or physical touch, and partners often speak different ones.",
+        "This independent quiz was written for cv.cm. Share your ranking with a partner or friend and ask them to take it too: knowing each other's top language is the useful part."
+      ],
+      "faq": [
+        { "q": "What are the five love languages?", "a": "Words of affirmation, quality time, receiving gifts, acts of service, and physical touch." },
+        { "q": "Can I have more than one love language?", "a": "Yes. Most people have one or two that matter most and others that matter a little. The chart shows all five." },
+        { "q": "Is the love language idea backed by research?", "a": "Studies give it mixed support: partners who show love in many ways tend to be happier overall. It works best as a conversation starter, not a rule." },
+        { "q": "Is this the official quiz?", "a": "No. It is an independent quiz built on the same five categories, not affiliated with Gary Chapman or his publisher." }
+      ],
+      "items": [
+        "Hearing \"I'm proud of you\" means a lot to me.",
+        "I feel closest to someone when we spend uninterrupted time together.",
+        "A small, thoughtful gift can make my whole day.",
+        "When someone helps with my chores, I feel cared for.",
+        "A hug when I get home makes me feel loved.",
+        "I keep kind messages and read them again later.",
+        "I feel hurt when someone is on their phone while we talk.",
+        "I remember who gave me each meaningful present.",
+        "I feel loved when someone takes a task off my plate without being asked.",
+        "Holding hands makes me feel connected.",
+        "Compliments are the easiest way to brighten my mood.",
+        "A long walk or deep talk is my favorite way to bond.",
+        "I feel forgotten if a special occasion passes with no gift at all.",
+        "Actions speak louder than words for me.",
+        "I like sitting close to people I care about.",
+        "Harsh words hurt me for a long time.",
+        "Shared activities, even simple ones, mean a lot to me.",
+        "A souvenir someone brought back for me feels like love.",
+        "When someone cooks for me or fixes something, I feel valued.",
+        "A pat on the back or a touch on the arm reassures me.",
+        "I need to hear that I'm appreciated.",
+        "Cancelled plans upset me more than most things.",
+        "I like gifts that show someone was thinking of me.",
+        "I feel supported when someone helps me finish a big job.",
+        "Physical affection is important to me in a close relationship."
+      ],
+      "dims": {
+        "words": "Words of affirmation",
+        "time": "Quality time",
+        "gifts": "Receiving gifts",
+        "service": "Acts of service",
+        "touch": "Physical touch"
+      },
+      "results": {
+        "words": { "name": "Words of affirmation", "body": "You feel loved through spoken and written words: compliments, encouragement, thank-yous and \"I love you.\" Criticism hits you hard. Tell the people close to you that a short kind message matters more to you than they might think." },
+        "time": { "name": "Quality time", "body": "You feel loved through undivided attention: real conversations, shared activities, and phones put away. Distraction and cancelled plans hurt. Ask for regular time together that both of you protect." },
+        "gifts": { "name": "Receiving gifts", "body": "You feel loved through thoughtful gifts, big or small. It is not about price: it is about the proof that someone thought of you. Let people know that a small surprise means a lot." },
+        "service": { "name": "Acts of service", "body": "You feel loved when people make your life easier: cooking, fixing, running an errand, taking over a chore. Broken promises sting. Say which specific help would mean the most to you." },
+        "touch": { "name": "Physical touch", "body": "You feel loved through appropriate touch: hugs, holding hands, sitting close. Physical distance can feel like emotional distance. Tell your partner how much small touches during the day matter." }
+      }
+    },
+    "attachment": {
+      "title": "Free attachment style test: secure, anxious or avoidant? — cv.cm",
+      "description": "Free attachment style quiz for adults. Answer 16 statements about close relationships to see whether your style is secure, anxious, avoidant or fearful-avoidant. No sign-up.",
+      "h1": "Attachment style test",
+      "lede": "How do you act in close relationships? This quiz measures attachment anxiety and avoidance and places you in one of four styles.",
+      "about": [
+        "Attachment theory began with John Bowlby and Mary Ainsworth's studies of children and was extended to adult romantic relationships by Hazan and Shaver. Modern research measures two dimensions: anxiety (fear of rejection) and avoidance (discomfort with closeness).",
+        "Your style comes from where you fall on both: low on both is secure. This short quiz was written for cv.cm and is based on that two-dimension model. Styles can change with time and with supportive relationships."
+      ],
+      "faq": [
+        { "q": "What are the four attachment styles?", "a": "Secure (low anxiety, low avoidance), anxious (high anxiety), avoidant (high avoidance), and fearful-avoidant (high on both)." },
+        { "q": "Can my attachment style change?", "a": "Yes. A long, stable relationship, therapy, and conscious practice can move people toward security, which researchers call earned security." },
+        { "q": "Should I answer about my current partner?", "a": "Answer about how you generally feel in close relationships, not only about one person." },
+        { "q": "Which style is best?", "a": "Secure attachment is linked with the most relationship satisfaction, but every style makes sense as a response to past experience, and each can grow." }
+      ],
+      "items": [
+        "I worry that the people I love won't care about me as much as I care about them.",
+        "I prefer not to show others how I feel deep down.",
+        "I need a lot of reassurance that I'm loved.",
+        "I get uncomfortable when a partner wants to be very close.",
+        "When someone I love is away, I worry they'll lose interest in me.",
+        "I find it easy to depend on people I'm close to.",
+        "I get upset when my partner doesn't reply for a while.",
+        "I value my independence more than closeness.",
+        "I fear being abandoned.",
+        "I feel comfortable sharing private thoughts with my partner.",
+        "I rarely worry about being left.",
+        "I pull away when a relationship starts getting serious.",
+        "I often wish my partner's feelings for me were as strong as mine.",
+        "I find it hard to let myself rely on others.",
+        "I overthink small changes in my partner's mood.",
+        "Turning to people I love for comfort helps me."
+      ],
+      "dims": {
+        "anx": "Attachment anxiety",
+        "avo": "Attachment avoidance"
+      },
+      "results": {
+        "secure": { "name": "Secure", "body": "You are comfortable with closeness and with independence. You trust partners, say what you need, and handle conflict without panicking. Keep it up: your steadiness helps the people around you feel safe too." },
+        "anxious": { "name": "Anxious (preoccupied)", "body": "You want closeness and worry about losing it, so you may seek reassurance or read a lot into small signals. Naming your needs directly, and soothing yourself before reacting, makes relationships feel calmer." },
+        "avoidant": { "name": "Avoidant (dismissive)", "body": "You value independence and feel uneasy when others get too close or depend on you. You may pull back when things get serious. Practising small steps of openness lets people support you without taking your freedom." },
+        "fearful": { "name": "Fearful-avoidant (disorganized)", "body": "You want closeness but also fear it, so you may swing between reaching out and pulling away. This often comes from painful experiences. Patience, a steady partner, and support from a therapist can help a lot." }
+      }
+    },
+    "marriage": {
+      "title": "Free marriage readiness test for couples — cv.cm",
+      "description": "Are you ready for marriage? Free 20-question quiz on communication, conflict, money, family and shared goals, with a score for each area and a tip for the weakest. No sign-up.",
+      "h1": "Marriage readiness test",
+      "lede": "Check how ready your relationship is for marriage across five areas counselors focus on: communication, conflict, money, family, and the future you want.",
+      "about": [
+        "Premarital programs like PREPARE/ENRICH and the research of John Gottman point to the same areas: how couples talk, fight, handle money, deal with families, and agree on the future. This quiz was written for cv.cm around those five areas.",
+        "Take it separately with your partner and compare. The area where your scores differ most is the best topic for your next long conversation."
+      ],
+      "faq": [
+        { "q": "Can a quiz tell me if I should get married?", "a": "No. It highlights areas worth talking about. The decision depends on many things a quiz cannot see." },
+        { "q": "Should my partner take it too?", "a": "Yes. Answer separately, then compare your area scores. Differences are more useful than the total." },
+        { "q": "What if we score low?", "a": "A low score is a list of topics, not a verdict. Many couples work through them with honest talks or premarital counseling." },
+        { "q": "Can married couples use it?", "a": "Yes. The same five areas matter at every stage of a relationship." }
+      ],
+      "items": [
+        "We can talk openly about almost anything.",
+        "When we argue, we stay respectful.",
+        "We have talked honestly about our debts, income and spending.",
+        "I get along reasonably well with my partner's family.",
+        "We agree on whether and when to have children.",
+        "I feel listened to when I share something important.",
+        "Our arguments often end with one of us shutting down.",
+        "We agree on how to split money and bills.",
+        "We have clear boundaries with our families.",
+        "We want a similar lifestyle in five years.",
+        "I hold back my feelings to avoid upsetting my partner.",
+        "We can apologize and repair after a fight.",
+        "We have similar saving and spending habits.",
+        "Our families often cause tension between us.",
+        "We have talked about where we want to live.",
+        "We regularly check in about how the relationship is going.",
+        "We solve problems as a team instead of blaming each other.",
+        "Money is a topic we avoid.",
+        "We agree on how much time to spend with relatives.",
+        "We support each other's career and personal goals."
+      ],
+      "dims": {
+        "talk": "Communication",
+        "conflict": "Conflict",
+        "money": "Money",
+        "family": "Family",
+        "future": "Shared future"
+      },
+      "results": {
+        "ready": { "name": "Strong foundation", "body": "You communicate well, handle conflict and money as a team, and want a similar future. Keep investing in the habits that got you here, like regular check-ins." },
+        "close": { "name": "Nearly there", "body": "Your relationship has a solid base with one or two areas to strengthen. Talk through the lowest area below before you take the next big step." },
+        "work": { "name": "Some work to do", "body": "Several important topics are still unresolved. That is common. Set aside time to discuss each area, and consider a premarital course or counselor." },
+        "early": { "name": "Early days", "body": "Many key areas haven't been worked through yet. Take time to understand each other's views on the basics before planning a wedding." }
+      },
+      "tips": {
+        "talk": "Try a weekly 20-minute check-in: each of you shares one high, one low and one wish, while the other only listens.",
+        "conflict": "Agree on a pause rule: either of you can call a 20-minute break in a heated argument, and you come back to finish it.",
+        "money": "Sit down with your real numbers: income, debts and savings. Then agree on one shared goal and how you will split costs.",
+        "family": "Discuss which family traditions and visits matter most to each of you, and present a united front to relatives.",
+        "future": "Each write down where you want to be in five years (home, children, careers), then compare and find the overlap."
+      }
+    },
+    "career": {
+      "title": "Free career test: Holland code (RIASEC) interest test — cv.cm",
+      "description": "Free career aptitude test based on Holland's RIASEC model. Rate 36 activities to get your three-letter Holland code and careers that fit your interests. No sign-up.",
+      "h1": "Career interest test (Holland code)",
+      "lede": "Find careers that fit your interests. Rate 36 activities and get your three-letter Holland code, from Realistic, Investigative, Artistic, Social, Enterprising and Conventional.",
+      "about": [
+        "Psychologist John Holland found that people and work environments can be described by six interest types, known as RIASEC. People tend to be more satisfied in jobs that match their top types.",
+        "Your Holland code is your top three letters in order. Use it to explore careers: the U.S. O*NET database, for example, lists occupations by Holland code. This test was written for cv.cm and measures interests, not ability."
+      ],
+      "faq": [
+        { "q": "What is a Holland code?", "a": "Your three strongest interest types, in order, such as SAE or RIC. It is used by career counselors to suggest fitting jobs and fields of study." },
+        { "q": "Should I rate activities I have never tried?", "a": "Yes. Imagine doing the activity and rate how much you would enjoy it, not how good you would be at it." },
+        { "q": "Does this test measure talent?", "a": "No. It measures interest. Skills can be learned; interest predicts which work you will enjoy long enough to get good at." },
+        { "q": "My scores are almost equal. What now?", "a": "A flat profile means broad interests. Look at careers that combine your top types, and try short projects to see what you enjoy." }
+      ],
+      "items": [
+        "Build or repair furniture",
+        "Do lab experiments",
+        "Write stories or song lyrics",
+        "Teach someone a new skill",
+        "Start your own business",
+        "Keep accurate records and spreadsheets",
+        "Work outdoors with plants or animals",
+        "Solve a hard math or logic problem",
+        "Design a poster, website or room",
+        "Help people with personal problems",
+        "Persuade people to buy an idea or product",
+        "Follow clear procedures to get a task exactly right",
+        "Use tools or machines",
+        "Research how something works",
+        "Act, sing, dance or play music",
+        "Care for sick or elderly people",
+        "Lead a team toward a goal",
+        "Check documents for errors",
+        "Install or fix electronics",
+        "Analyze data to find patterns",
+        "Take photos or make videos",
+        "Volunteer for a community cause",
+        "Negotiate a deal",
+        "Organize files, schedules or inventory",
+        "Drive or operate vehicles or equipment",
+        "Read scientific articles",
+        "Come up with original ideas",
+        "Coach or mentor others",
+        "Manage a budget or a project",
+        "Process payments or invoices",
+        "Do physical work with your hands",
+        "Write code to solve a problem",
+        "Express yourself without strict rules",
+        "Work in a team that helps people",
+        "Take risks for a big reward",
+        "Work in a structured, predictable office"
+      ],
+      "dims": {
+        "R": "Realistic (doers)",
+        "I": "Investigative (thinkers)",
+        "A": "Artistic (creators)",
+        "S": "Social (helpers)",
+        "E": "Enterprising (persuaders)",
+        "C": "Conventional (organizers)"
+      },
+      "codeTitle": "Your Holland code",
+      "results": {
+        "R": { "name": "Realistic (doer)", "body": "You like practical, hands-on work with tools, machines, plants or animals, and visible results. Careers to explore: electrician, mechanic, engineer, chef, carpenter, farmer, pilot, physiotherapist." },
+        "I": { "name": "Investigative (thinker)", "body": "You like to observe, analyze and solve complex problems. Careers to explore: scientist, software developer, data analyst, doctor, pharmacist, researcher, economist." },
+        "A": { "name": "Artistic (creator)", "body": "You like to create and express yourself in unstructured settings. Careers to explore: designer, writer, musician, photographer, architect, video editor, art director." },
+        "S": { "name": "Social (helper)", "body": "You like to help, teach and care for people. Careers to explore: teacher, nurse, counselor, social worker, HR specialist, coach, therapist." },
+        "E": { "name": "Enterprising (persuader)", "body": "You like to lead, persuade and take risks to reach goals. Careers to explore: entrepreneur, sales manager, marketer, lawyer, real estate agent, product manager." },
+        "C": { "name": "Conventional (organizer)", "body": "You like order, accuracy and clear procedures with data. Careers to explore: accountant, auditor, administrator, logistics coordinator, bank officer, database administrator." }
+      }
+    },
+    "money": {
+      "title": "Free money personality test: what's your money type? — cv.cm",
+      "description": "Free money personality quiz. Rate 20 statements to learn whether you are a saver, spender, investor, avoider or giver, with strengths, blind spots and a tip. No sign-up.",
+      "h1": "Money personality test",
+      "lede": "Your habits with money say more about your financial future than luck does. Find your money type and the one habit that would help it most.",
+      "about": [
+        "Financial psychologists such as Brad Klontz describe money beliefs we absorb growing up, which quietly drive how we save, spend and invest. This quiz, written for cv.cm, sorts common habits into five money personalities.",
+        "No type is good or bad. Each has a strength to use and a blind spot to manage. This quiz cannot predict your fortune: it describes habits, and habits can change."
+      ],
+      "faq": [
+        { "q": "Can this test predict how rich I will be?", "a": "No. No test can predict fortune. It shows habits that tend to help or hurt your finances over time, which you can change." },
+        { "q": "What are the five money types here?", "a": "Saver, spender, investor (risk-taker), avoider, and giver." },
+        { "q": "Can I be more than one type?", "a": "Yes. The chart shows all five. Many people are, for example, a saver with a strong giver side." },
+        { "q": "What should couples do with their results?", "a": "Compare types. A saver and a spender together can balance each other if they agree on a shared budget." }
+      ],
+      "items": [
+        "I feel uneasy unless I have savings set aside.",
+        "Buying something new gives me a real lift.",
+        "I'm comfortable taking risks to grow my money.",
+        "I rarely check my bank balance.",
+        "I enjoy spending money on other people.",
+        "I compare prices carefully before buying anything.",
+        "I often buy things I don't really need.",
+        "I read about investing, stocks or side businesses.",
+        "Thinking about money stresses me, so I put it off.",
+        "I find it hard to say no when friends or family need money.",
+        "I track my spending regularly.",
+        "I'd rather enjoy money now than worry about later.",
+        "I see opportunities to make money that others miss.",
+        "I don't really know where my money goes each month.",
+        "I give to causes or people even when money is tight.",
+        "Spending on luxuries makes me feel guilty.",
+        "I sometimes shop to cheer myself up.",
+        "I'd invest in a new idea if the upside looked big.",
+        "I ignore bills until the last moment.",
+        "Being generous matters more to me than being rich."
+      ],
+      "dims": {
+        "saver": "Saver",
+        "spender": "Spender",
+        "investor": "Investor",
+        "avoider": "Avoider",
+        "giver": "Giver"
+      },
+      "results": {
+        "saver": { "name": "The Saver", "body": "Strength: discipline, savings and a safety net. Blind spot: you may hold back from spending on things that would really improve your life, or keep cash that could be growing. Tip: set a guilt-free fun budget each month, and put long-term savings into a simple diversified fund." },
+        "spender": { "name": "The Spender", "body": "Strength: you enjoy life and are generous with experiences. Blind spot: impulse buys and little left for the future. Tip: move a fixed amount to savings automatically on payday, and wait 48 hours before any non-essential purchase." },
+        "investor": { "name": "The Investor", "body": "Strength: you spot opportunities and let money work for you. Blind spot: chasing big wins can mean too much risk in one place. Tip: keep an emergency fund first, and never put more into one bet than you can afford to lose." },
+        "avoider": { "name": "The Avoider", "body": "Strength: money doesn't run your life. Blind spot: unopened bills, late fees and missed chances because looking feels stressful. Tip: book a 15-minute money date each week to check your balance and pay bills; it gets easier fast." },
+        "giver": { "name": "The Giver", "body": "Strength: generosity and strong relationships. Blind spot: giving away what you need for your own security. Tip: decide on a giving budget in advance, so you can be generous without putting your own future at risk." }
+      }
+    },
+    "anime": {
+      "title": "Which anime character type are you? Free anime personality quiz — cv.cm",
+      "description": "Free anime personality quiz: are you a tsundere, kuudere, dandere, deredere, genki, chuunibyou, himedere or reliable senpai? Answer 12 questions to find your archetype. No sign-up.",
+      "h1": "Which anime character archetype are you?",
+      "lede": "Tsundere or kuudere? Genki or chuunibyou? Answer 12 everyday questions and find the anime archetype that matches your personality.",
+      "about": [
+        "Anime and manga use well-known character archetypes, often named with Japanese slang ending in -dere (from deredere, lovestruck). Each type mixes a surface attitude with a hidden soft side.",
+        "This quiz was written for cv.cm just for fun. It looks at how you react to compliments, friends, leadership and stress, and matches you to the closest of eight popular archetypes."
+      ],
+      "faq": [
+        { "q": "What does tsundere mean?", "a": "A character who acts cold or prickly (tsun-tsun) but is warm and caring underneath (dere-dere)." },
+        { "q": "What is the difference between kuudere and dandere?", "a": "A kuudere is calm and cool by choice and rarely shows emotion. A dandere is quiet because of shyness and opens up once comfortable." },
+        { "q": "What is chuunibyou?", "a": "Literally \"eighth-grader syndrome\": a character who believes in, or acts out, secret powers and dramatic destinies." },
+        { "q": "Is this quiz serious?", "a": "No. It is a fun personality quiz. For a research-based profile, take the Big Five test." }
+      ],
+      "items": [
+        { "q": "A friend gives you a handmade gift. You…", "options": ["Say \"It's not like I wanted this…\" and keep it forever", "Nod, say \"Thank you,\" and quietly treasure it", "Hug them right away and gush about it", "Accept it graciously. Of course they brought you tribute"] },
+        { "q": "Your class or team needs a leader. You…", "options": ["Step forward: someone has to keep everyone on track", "Hope nobody picks you and stay very still", "Volunteer loudly before anyone else can", "Declare that the chosen one has finally awakened"] },
+        { "q": "Your ideal weekend:", "options": ["Reading or gaming alone, phone on silent", "A spontaneous trip with as many friends as possible", "Cooking for friends and making sure everyone is okay", "Writing lore for a world only you fully understand"] },
+        { "q": "Someone compliments you in front of everyone. You…", "options": ["Turn red and snap \"D-don't say weird things!\"", "Say \"I know.\"", "Freeze, then whisper \"th-thanks\"", "Compliment them right back, twice as hard"] },
+        { "q": "A friend is having a bad day. You…", "options": ["Give practical advice and a plan", "Drag them out for food and karaoke", "Grumble \"you're hopeless\", then stay with them all night", "Sit beside them and listen without a word"] },
+        { "q": "Pick a power:", "options": ["Ice magic", "A forbidden power sealed in your left arm", "Healing", "Royal command: others simply obey"] },
+        { "q": "Your texting style:", "options": ["Lots of exclamation marks and stickers!!!", "Short. Period.", "Type, delete, type again, send \"ok\"", "Teasing, then a quick \"not that I care\""] },
+        { "q": "A group project goes wrong. You…", "options": ["Calmly fix it before anyone notices", "Announce that destiny is testing us", "Blame no one and cheer everyone up", "Point out this would never happen if they had listened to you"] },
+        { "q": "Your fashion style:", "options": ["Elegant and a little extra: you were born to be seen", "Black coat, maybe an eye patch or bandages", "A comfy hoodie you can hide in", "Bright colors and sneakers you can run in"] },
+        { "q": "How do you show you like someone?", "options": ["Act cold, then do something very kind when no one is looking", "Openly and all the time. Why hide it?", "By looking out for them like a reliable older sibling", "You expect them to notice first"] },
+        { "q": "People usually describe you as…", "options": ["Calm and hard to read", "Full of energy", "Shy, but sweet once they know you", "Dependable"] },
+        { "q": "Your catchphrase could be…", "options": ["\"Hmph!\"", "\"Ohohoho!\"", "\"Let's gooo!\"", "\"…The darkness calls to me.\""] }
+      ],
+      "dims": {
+        "tsundere": "Tsundere",
+        "kuudere": "Kuudere",
+        "dandere": "Dandere",
+        "deredere": "Deredere",
+        "genki": "Genki",
+        "chuuni": "Chuunibyou",
+        "himedere": "Himedere",
+        "senpai": "Reliable senpai"
+      },
+      "results": {
+        "tsundere": { "name": "Tsundere", "body": "Prickly on the outside, soft on the inside. You hide affection behind teasing and denial, but your loyalty is fierce and your kindness shows in actions. The people who know you best find it adorable." },
+        "kuudere": { "name": "Kuudere", "body": "Cool, calm and composed. You rarely show emotion and think before you act, which makes you the steady one in a crisis. When you do smile, people remember it." },
+        "dandere": { "name": "Dandere", "body": "Quiet and shy around new people, warm and funny once you feel safe. You notice everything and care deeply, even if it takes a while for others to see it." },
+        "deredere": { "name": "Deredere", "body": "Sweet, cheerful and openly affectionate. You love freely, cheer people on and brighten every room. Your kindness is your superpower." },
+        "genki": { "name": "Genki", "body": "Energetic, upbeat and always ready for the next adventure. You pull friends out of their comfort zones and make ordinary days exciting." },
+        "chuuni": { "name": "Chuunibyou", "body": "Dramatic, imaginative and full of grand narratives. Your inner world is epic, and you turn everyday life into a story worth telling. Never lose that creativity." },
+        "himedere": { "name": "Himedere", "body": "Confident, elegant and used to being treated like royalty. You set high standards and carry yourself with style, and underneath you're loyal to the people who earn your trust." },
+        "senpai": { "name": "Reliable senpai", "body": "Dependable, mature and protective. You give good advice, keep the group together and look out for everyone, like the senpai every protagonist needs." }
+      }
+    },
+    "face-shape": {
+      "title": "Face shape test: what is my face shape? Free quiz — cv.cm",
+      "description": "Free face shape test. Answer 6 questions with a mirror to find whether your face is oval, round, square, heart, oblong, diamond or triangle, with hairstyle and glasses tips. No photo upload.",
+      "h1": "Face shape test",
+      "lede": "Find your face shape with a mirror and 6 quick questions, then get hairstyle, glasses and grooming tips that suit it. No photo needed, nothing uploaded.",
+      "about": [
+        "How to look: pull your hair back, stand in front of a mirror (or take a straight-on selfie), and compare four things: face length, forehead width, cheekbone width and jaw width. A soft tape measure or a piece of string makes it easier.",
+        "Most faces are a mix of two shapes, so the quiz also shows how close you are to each. Face shape is about proportions, not beauty: every shape has styles that flatter it."
+      ],
+      "faq": [
+        { "q": "How do I measure my face shape?", "a": "Measure forehead width at the hairline, cheekbone width at the widest point, jaw width from the corner under each ear to the chin, and length from hairline to chin. Then answer the questions." },
+        { "q": "What is the most common face shape?", "a": "Oval and round are often cited as the most common, but many people are a blend of two shapes." },
+        { "q": "Does the test use my photo?", "a": "No. You answer from a mirror or your own photo; nothing is uploaded or analyzed." },
+        { "q": "Can makeup or a beard change my face shape?", "a": "They change how it looks. Contouring, hairstyles and beard shape add or soften angles to balance proportions." }
+      ],
+      "items": [
+        { "q": "Compare the length of your face (hairline to chin) with its width across the cheekbones:", "options": ["Much longer: about 1.5 times the width or more", "Somewhat longer: about 1.3 to 1.5 times", "About as long as it is wide"] },
+        { "q": "Which part of your face is the widest?", "options": ["Forehead", "Cheekbones", "Jaw", "They are all about the same"] },
+        { "q": "How would you describe your jawline?", "options": ["Sharp and angular, with clear corners", "Soft and rounded", "Narrows to a pointed chin", "Gently curved and tapered"] },
+        { "q": "Compare your forehead with your jaw:", "options": ["Forehead is clearly wider", "Jaw is clearly wider", "About the same width", "Both are clearly narrower than my cheekbones"] },
+        { "q": "What is your chin like?", "options": ["Pointed or narrow", "Rounded", "Broad and squarish"] },
+        { "q": "What are your cheekbones like?", "options": ["High, sharp and the most prominent feature", "Full, with soft round cheeks", "Balanced, a little wider than the jaw", "Not much wider than my forehead or jaw"] }
+      ],
+      "dims": {
+        "oval": "Oval",
+        "round": "Round",
+        "square": "Square",
+        "heart": "Heart",
+        "oblong": "Oblong (long)",
+        "diamond": "Diamond",
+        "triangle": "Triangle (pear)"
+      },
+      "results": {
+        "oval": { "name": "Oval face", "body": "Balanced proportions: a little longer than wide, with a jaw slightly narrower than the forehead. Almost any hairstyle and frame shape works. Try bold or geometric glasses, and both short and long cuts." },
+        "round": { "name": "Round face", "body": "Similar length and width, with full cheeks and a soft jaw. Add height and angles: layered cuts with volume on top, side parts, and rectangular or angular glasses. Avoid blunt chin-length bobs and round frames." },
+        "square": { "name": "Square face", "body": "Strong, angular jaw with forehead, cheeks and jaw of similar width. Soften the corners: soft layers, side-swept bangs and waves; round or oval glasses. Short beards that round the chin work well." },
+        "heart": { "name": "Heart face", "body": "Wider forehead and cheekbones narrowing to a pointed chin. Balance the lower face: chin-length bobs, side bangs and volume near the jaw; bottom-heavy or rimless glasses. A fuller beard adds width at the chin." },
+        "oblong": { "name": "Oblong face", "body": "Clearly longer than wide, with forehead, cheeks and jaw of similar width. Add width: bangs, waves and volume at the sides; oversized or deep frames. Avoid very long straight hair and tall styling on top." },
+        "diamond": { "name": "Diamond face", "body": "Wide, high cheekbones with a narrower forehead and jaw. Show off the cheekbones: side-swept fringes, tucked-behind-the-ear styles and chin-length cuts; oval or cat-eye glasses." },
+        "triangle": { "name": "Triangle (pear) face", "body": "Jaw wider than the forehead. Add width up top: volume at the crown and temples, layered cuts, side bangs; frames that are bold on top, like browline glasses. Keep beards short at the sides." }
+      }
+    },
+    "self-esteem": {
+      "title": "Free self-esteem test (Rosenberg Self-Esteem Scale) — cv.cm",
+      "description": "Take the Rosenberg Self-Esteem Scale online for free. 10 statements, an instant score out of 30 and what it means. No sign-up, answers stay in your browser.",
+      "h1": "Self-esteem test (Rosenberg scale)",
+      "lede": "The Rosenberg Self-Esteem Scale is the most widely used measure of self-worth. Rate 10 statements and get a score out of 30.",
+      "about": [
+        "Sociologist Morris Rosenberg published the scale in 1965, and it has been used in thousands of studies since. Five statements are positive and five are negative; the negative ones are reverse-scored.",
+        "Scores from 15 to 25 are in the typical range. A score below 15 suggests low self-esteem. Self-esteem changes with life events, and it can be built with practice and support."
+      ],
+      "faq": [
+        { "q": "How is the Rosenberg scale scored?", "a": "Each answer scores 0 to 3, with items 2, 5, 6, 8 and 9 reversed. The total runs from 0 to 30; higher means higher self-esteem." },
+        { "q": "What is a normal score?", "a": "Most people score between 15 and 25. Below 15 suggests low self-esteem." },
+        { "q": "How can I improve my self-esteem?", "a": "Notice and challenge harsh self-talk, keep small promises to yourself, spend time with supportive people, and talk to a counselor if low self-worth affects daily life." },
+        { "q": "Is a high score always good?", "a": "Healthy self-esteem is realistic. A very high score is usually fine, but self-worth that depends on always being better than others is fragile." }
+      ],
+      "items": [
+        "On the whole, I am satisfied with myself.",
+        "At times I think I am no good at all.",
+        "I feel that I have a number of good qualities.",
+        "I am able to do things as well as most other people.",
+        "I feel I do not have much to be proud of.",
+        "I certainly feel useless at times.",
+        "I feel that I'm a person of worth, at least on an equal plane with others.",
+        "I wish I could have more respect for myself.",
+        "All in all, I am inclined to feel that I am a failure.",
+        "I take a positive attitude toward myself."
+      ],
+      "results": {
+        "low": { "name": "Lower self-esteem", "body": "Your score suggests you are often hard on yourself. That is painful, and it is common. Try writing down three things you did well each day, notice when your inner voice is harsher than you would be to a friend, and consider talking with a counselor." },
+        "normal": { "name": "Typical self-esteem", "body": "Your score is in the typical range: you generally accept yourself while recognizing room to grow. Keep up habits that support you, like time with people who value you and goals you can reach." },
+        "high": { "name": "High self-esteem", "body": "You have a strong, positive view of yourself. Healthy self-esteem helps you handle setbacks and set boundaries. Keep it grounded by staying open to feedback." }
+      }
+    },
+    "anxiety": {
+      "title": "Free anxiety test (GAD-7): check your anxiety level — cv.cm",
+      "description": "Free GAD-7 anxiety test online. Answer 7 questions about the last two weeks and get your score from 0 to 21 with the standard severity level. Private: nothing leaves your browser.",
+      "h1": "Anxiety test (GAD-7)",
+      "lede": "The GAD-7 is a 7-question screening tool doctors use to check for generalized anxiety. It takes about a minute and scores from 0 to 21.",
+      "about": [
+        "The Generalized Anxiety Disorder 7-item scale (GAD-7) was developed by Spitzer, Kroenke, Williams and Löwe in 2006. It is free to use and is widely used in primary care. Scores of 5, 10 and 15 mark mild, moderate and severe anxiety.",
+        "A score of 10 or more is a reason to talk to a doctor or mental health professional. This check is a screening tool, not a diagnosis."
+      ],
+      "faq": [
+        { "q": "What does my GAD-7 score mean?", "a": "0–4 minimal, 5–9 mild, 10–14 moderate and 15–21 severe anxiety symptoms over the last two weeks." },
+        { "q": "Can the GAD-7 diagnose anxiety disorder?", "a": "No. It screens for symptoms. A diagnosis needs an assessment by a qualified professional." },
+        { "q": "When should I seek help?", "a": "If your score is 10 or more, or if anxiety gets in the way of work, school, sleep or relationships, talk to a doctor or counselor." },
+        { "q": "What helps with anxiety?", "a": "Regular sleep, exercise, less caffeine, slow breathing and talking to someone you trust help many people. Therapy (such as CBT) and medication are effective treatments." }
+      ],
+      "items": [
+        "Feeling nervous, anxious, or on edge",
+        "Not being able to stop or control worrying",
+        "Worrying too much about different things",
+        "Trouble relaxing",
+        "Being so restless that it is hard to sit still",
+        "Becoming easily annoyed or irritable",
+        "Feeling afraid as if something awful might happen"
+      ],
+      "results": {
+        "minimal": { "name": "Minimal anxiety (0–4)", "body": "Your answers suggest few or no anxiety symptoms over the last two weeks. Keep up the habits that help you stay balanced." },
+        "mild": { "name": "Mild anxiety (5–9)", "body": "You have some anxiety symptoms. Watch how they develop, and try stress-reducing habits like regular sleep, exercise and limiting caffeine. Retake the test in a few weeks." },
+        "moderate": { "name": "Moderate anxiety (10–14)", "body": "Your symptoms are at a level where talking to a doctor or mental health professional is recommended. Anxiety is very treatable." },
+        "severe": { "name": "Severe anxiety (15–21)", "body": "Your answers suggest severe anxiety symptoms. Please reach out to a doctor or mental health professional soon. You don't have to handle this alone, and effective help exists." }
+      }
+    },
+    "depression": {
+      "title": "Free depression test (PHQ-9): depression screening — cv.cm",
+      "description": "Free PHQ-9 depression test online. Answer 9 questions about the last two weeks for a score from 0 to 27 and the standard severity level. Private: nothing leaves your browser.",
+      "h1": "Depression test (PHQ-9)",
+      "lede": "The PHQ-9 is the 9-question depression screening used by doctors worldwide. It takes about two minutes and scores from 0 to 27.",
+      "about": [
+        "The Patient Health Questionnaire (PHQ-9) was developed by Kroenke, Spitzer and Williams and is free to use. Scores of 5, 10, 15 and 20 mark mild, moderate, moderately severe and severe depression symptoms.",
+        "A score of 10 or more is a reason to see a doctor or mental health professional. If you have any thoughts of hurting yourself, reach out for help now, whatever your total score."
+      ],
+      "faq": [
+        { "q": "What does my PHQ-9 score mean?", "a": "0–4 minimal, 5–9 mild, 10–14 moderate, 15–19 moderately severe and 20–27 severe depression symptoms." },
+        { "q": "Can the PHQ-9 diagnose depression?", "a": "No. It is a screening tool. A doctor or mental health professional makes a diagnosis after a full assessment." },
+        { "q": "Why does question 9 matter so much?", "a": "It asks about thoughts of death or self-harm. Any answer other than \"not at all\" deserves a conversation with a professional, even if the total score is low." },
+        { "q": "Is depression treatable?", "a": "Yes. Therapy, medication, exercise and social support all help, and most people improve with treatment." }
+      ],
+      "items": [
+        "Little interest or pleasure in doing things",
+        "Feeling down, depressed, or hopeless",
+        "Trouble falling or staying asleep, or sleeping too much",
+        "Feeling tired or having little energy",
+        "Poor appetite or overeating",
+        "Feeling bad about yourself, or that you are a failure or have let yourself or your family down",
+        "Trouble concentrating on things, such as reading or watching television",
+        "Moving or speaking so slowly that other people could have noticed, or the opposite: being so fidgety or restless that you have been moving around a lot more than usual",
+        "Thoughts that you would be better off dead, or of hurting yourself in some way"
+      ],
+      "results": {
+        "minimal": { "name": "Minimal depression (0–4)", "body": "Your answers suggest few or no symptoms of depression over the last two weeks." },
+        "mild": { "name": "Mild depression (5–9)", "body": "You have some symptoms. Keep an eye on how you feel, look after sleep, movement and social contact, and retake the test in a few weeks. If it doesn't improve, talk to a doctor." },
+        "moderate": { "name": "Moderate depression (10–14)", "body": "Your symptoms are at a level where seeing a doctor or mental health professional is recommended. Depression is common and treatable." },
+        "modsevere": { "name": "Moderately severe depression (15–19)", "body": "Your answers suggest significant symptoms. Please contact a doctor or mental health professional soon. Treatment such as therapy and medication helps most people." },
+        "severe": { "name": "Severe depression (20–27)", "body": "Your answers suggest severe symptoms. Please reach out to a doctor or mental health professional as soon as possible, and let someone you trust know how you are feeling." }
+      }
+    }
+  }
+}
