@@ -40,6 +40,9 @@ const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");
 for (const m of toolsSrc.matchAll(/^ {2}"([a-z0-9-]+)": async[^\n]*\n\s*const m = await import\("\.\/([^"]+)"\);/gm)) {
   pageModules[m[1]] = `src/client/${m[2]}.ts`;
 }
+const loaderCount = (toolsSrc.match(/async \(host, ctx\) =>/g) ?? []).length;
+const matched = Object.keys(pageModules).length - 5;
+if (matched !== loaderCount) throw new Error(`build-worker: read ${matched} of ${loaderCount} tool loaders in src/client/tools.ts; keep each as "id": async (host, ctx) => { const m = await import("./x/ui"); ... }`);
 const pageChunks = {};
 for (const [page, src] of Object.entries(pageModules)) {
   const files = chunkFiles(src);

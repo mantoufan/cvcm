@@ -71,6 +71,11 @@ for (const page of sitemapPages()) {
     failed.push(path);
     continue;
   }
+  // Generated output (passwords, UUIDs, random numbers) must not be baked into public HTML.
+  app.querySelectorAll<HTMLElement>("[data-volatile]").forEach((el) => {
+    if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.value = "";
+    else el.replaceChildren();
+  });
   // Form state lives in DOM properties; copy it to attributes so the markup shows what the tool shows.
   app.querySelectorAll("textarea").forEach((el) => { el.textContent = el.value; });
   app.querySelectorAll("input").forEach((el) => {

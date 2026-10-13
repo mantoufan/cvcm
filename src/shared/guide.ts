@@ -1,4 +1,3 @@
-import { coverUrl } from "./covers";
 import type { Locale } from "./locale";
 import { messages } from "./messages";
 import { appHref, TOOLS, type ToolId } from "./path";
@@ -96,25 +95,6 @@ export function guideSteps(tool: ToolId): number {
   return GUIDE_STEP_COUNT[tool];
 }
 
-const GUIDE_VER: Partial<Record<ToolId, string>> = {
-  "portrait-sim": "4",
-  gold: "1",
-  silver: "1",
-  platinum: "1",
-  palladium: "1",
-  oil: "1",
-  stocks: "1",
-};
-
-export function guideImage(tool: ToolId, step: number): string {
-  const file = `${String(step).padStart(2, "0")}.jpg`;
-  const src = `/covers/guides/${tool}/${file}`;
-  const ver = GUIDE_VER[tool];
-  // Cloudflare caches /covers/ without the query string. A new shot needs a new path.
-  if (ver && tool !== "portrait-sim") return src.replace(".jpg", `.v${ver}.jpg`);
-  return ver ? `${src}?v=${ver}` : src;
-}
-
 export function guideText(locale: Locale, path: string): string {
   const parts = path.split(".");
   let node: unknown = messages(locale).guides;
@@ -134,7 +114,6 @@ export function toolHowToJsonLd(locale: Locale, tool: ToolId): Record<string, un
       position: i,
       name: guideText(locale, `tools.${tool}.s${i}t`),
       text: guideText(locale, `tools.${tool}.s${i}b`),
-      image: coverUrl(guideImage(tool, i)),
       url: `https://cv.cm${appHref(locale, tool)}#guide-step-${i}`,
     });
   }

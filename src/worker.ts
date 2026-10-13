@@ -180,6 +180,8 @@ export default {
       }
     }
 
+    // Fetch the page's prerendered body alongside the page itself.
+    const ssr = request.method === "GET" ? prerendered(env, url.origin, ssrPath(parseAppPath(path), path, request)) : Promise.resolve(null);
     let assetResponse = await env.ASSETS.fetch(request);
     if (COVER_PROXY.test(path)) {
       const type = assetResponse.headers.get("content-type") || "";
@@ -235,10 +237,7 @@ export default {
             : { tool: null };
       const headers = new Headers(assetResponse.headers);
       headers.set("Content-Type", "text/html; charset=utf-8");
-      const pagePath = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal"
-        ? path
-        : appHref(locale, null);
-      const body = await prerendered(env, url.origin, pagePath);
+      const body = await ssr;
       const chunk = parsed.kind === "app" ? parsed.tool ?? "home"
         : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
         : parsed.kind === "legal" ? null
@@ -261,9 +260,21 @@ export default {
 const SSR_PREFIX = "/_ssr/";
 const SSR_MARKER = "<!--ssr-->";
 
+/** Which prerendered page a request shows: its own path, the home page for "/", none for clip notes and files. */
+function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string, request: Request): string | null {
+  if (STATIC_FILE.test(path)) return null;
+  if (parsed.kind === "app") return parsed.clipId ? null : path;
+  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal") return path;
+  if (path === "/" || path === "/index.html") {
+    const locale = negotiateLocale(request.headers.get("Accept-Language"), cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE));
+    return appHref(locale, null);
+  }
+  return null;
+}
+
 /** The page body scripts/prerender.ts rendered for this path, or null (clip notes, a page the prerender skipped). */
-async function prerendered(env: Env, origin: string, pagePath: string): Promise<string | null> {
-  if (!pagePath.startsWith("/") || !pagePath.endsWith("/") || pagePath.includes("..")) return null;
+async function prerendered(env: Env, origin: string, pagePath: string | null): Promise<string | null> {
+  if (!pagePath || !pagePath.startsWith("/") || !pagePath.endsWith("/") || pagePath.includes("..")) return null;
   try {
     const res = await env.ASSETS.fetch(`${origin}${SSR_PREFIX.slice(0, -1)}${pagePath}`);
     if (!res.ok) return null;

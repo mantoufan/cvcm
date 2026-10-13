@@ -58,6 +58,12 @@ export function trackPageView(): void {
   if (!injected && !SEARCH_PARAMS.some((key) => params.has(key))) {
     injected = true;
     afterLoad(() => {
+      // The URL may have changed while waiting; try again on a later page view if it now looks like a search.
+      const now = new URLSearchParams(location.search);
+      if (SEARCH_PARAMS.some((key) => now.has(key))) {
+        injected = false;
+        return;
+      }
       const script = document.createElement("script");
       script.async = true;
       script.src = `${GA_SCRIPT_HOST}/gtag/js?id=${GA_ID}`;

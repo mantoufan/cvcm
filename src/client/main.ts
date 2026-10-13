@@ -398,9 +398,12 @@ export function render(): void {
     // Keep what is on screen (the server HTML or the last page) until the new page has mounted, then swap in one
     // step, so nothing flashes empty while a tool chunk loads. The new page goes first in the DOM and the old one
     // loses its ids, so a tool that looks itself up by id or class while mounting finds its own elements.
+    // The old page's tool is already unmounted, so its controls go inert until the swap.
+    const hydrating = renderedHref === null;
     for (const el of old) {
       el.removeAttribute("id");
       el.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+      if (el instanceof HTMLElement) el.inert = true;
     }
     page.classList.add("pending");
     root.prepend(page);
@@ -408,14 +411,36 @@ export function render(): void {
     scrollOnSwap = false;
     rendered = Promise.race([ready, wait(SWAP_WAIT_MS)]).then(() => {
       if (gen !== pageGen) return;
+      if (hydrating) carryInput(old, page);
       for (const el of old) el.remove();
       page.classList.remove("pending");
-      if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
+      const anchor = location.hash ? document.getElementById(hashId(location.hash)) : null;
+      if (anchor) anchor.scrollIntoView();
       else if (scroll) window.scrollTo(0, 0);
     });
   }
   trackPageView();
   renderedHref = location.pathname + location.search + location.hash;
+}
+
+/** Text typed into the server HTML before the app took over: copy it into the same field of the mounted page. */
+function carryInput(old: Element[], page: HTMLElement): void {
+  const before = old.flatMap((el) => Array.from(el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("textarea, input:not([type])")));
+  const after = Array.from(page.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("textarea, input:not([type])"));
+  before.forEach((field, i) => {
+    const next = after[i];
+    if (!next || next.tagName !== field.tagName || field.readOnly || field.value === field.defaultValue) return;
+    next.value = field.value;
+    next.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+}
+
+function hashId(hash: string): string {
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
 }
 
 /** A tool that takes longer than this to mount (a clip note still loading) is swapped in as it is. */
@@ -508,8 +533,14 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   const gen = pageGen;
   const alive = (): boolean => gen === pageGen;
   if (tool) {
-    const unmount = await TOOL_LOADERS[tool](main, { clipId, alive });
-    if (!alive()) return;
+    const mounted = tool;
+    const unmount = await TOOL_LOADERS[mounted](main, { clipId, alive });
+    if (!alive()) {
+      // The user left while this tool was mounting: release its window listeners. Skip it when the new page is the
+      // same tool, whose fresh mount shares the module state this unmount would clear.
+      if (tool !== mounted) unmount?.();
+      return;
+    }
     unmountCurrent = unmount ?? noop;
     if (!(tool === "clip" && clipId)) {
       const lessons = toolLessonsSection(loc, tool);

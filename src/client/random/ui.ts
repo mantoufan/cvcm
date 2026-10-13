@@ -13,7 +13,7 @@ export function mountRandom(host: HTMLElement): void {
   minEl = h("input", { type: "number", step: "1", value: "1" });
   maxEl = h("input", { type: "number", step: "1", value: "100" });
   countEl = h("input", { type: "number", min: "1", max: "200", step: "1", value: "1" });
-  outEl = h("textarea", { class: "clip-input", readonly: true, spellcheck: "false", "aria-label": t("random.result") });
+  outEl = h("textarea", { class: "clip-input", readonly: true, "data-volatile": "", spellcheck: "false", "aria-label": t("random.result") });
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("random.back")),
