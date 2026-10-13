@@ -101,3 +101,11 @@ it("never answers a page revalidation with index.html's validators", async () =>
   expect(res.status).toBe(200);
   expect(res.headers.get("ETag")).toBeNull();
 });
+
+it("serves the IndexNow key file as a static file", async () => {
+  const response = await worker.fetch(new Request("https://cv.cm/4972981e4cdf3fdd13b674ad85304c11.txt"), {
+    ASSETS: { fetch: async () => new Response("4972981e4cdf3fdd13b674ad85304c11", { headers: { "Content-Type": "text/plain" } }) },
+  });
+  expect(response.status).toBe(200);
+  expect(await response.text()).toBe("4972981e4cdf3fdd13b674ad85304c11");
+});
