@@ -454,7 +454,10 @@ function carryInput(old: Element[], page: HTMLElement): (() => void) | null {
   oldEditors.forEach((editor, i) => {
     const next = newEditors[i];
     const text = editor.innerText.trim();
-    if (!next || !text) return;
+    // Only into an editor that is showing (not hidden behind Markdown mode) and empty (no restored draft to clobber).
+    const showing = next ? next.getClientRects().length > 0 : false;
+    const empty = next ? !next.innerText.trim() && !next.querySelector("img, video, audio, [data-up]") : false;
+    if (!next || !text || !showing || !empty) return;
     next.innerText = editor.innerText;
     next.dispatchEvent(new Event("input", { bubbles: true }));
     if (editor === document.activeElement) focus = () => next.focus();
