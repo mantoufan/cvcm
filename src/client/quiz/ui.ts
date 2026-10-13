@@ -107,6 +107,8 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
             answers[i] = value;
             li.classList.add("done");
             li.classList.remove("need");
+            // The selected option's look comes from a class, not :has(), for older in-app browsers.
+            group.querySelectorAll(".quiz-opt").forEach((opt, j) => opt.classList.toggle("on", j === value));
             update();
           },
         }),
@@ -125,7 +127,10 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
     const n = answered();
     progressText.textContent = fill(ui.progress, { n, total });
     meter.style.width = `${Math.round((n / total) * 100)}%`;
-    if (n === total) note.textContent = "";
+    // After a failed submit the note counts what is left; keep it current.
+    if (note.textContent) note.textContent = n === total ? "" : fill(ui.missing, { n: total - n });
+    // A result on screen follows the answers (an edited PHQ-9 item 9 must show the help box at once).
+    if (!resultBox.hidden && isComplete(id, answers)) showResult(scoreQuiz(id, answers as number[]), false);
   }
 
   function submit(e: Event): void {
@@ -139,21 +144,22 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
       first.querySelector("input")?.focus({ preventScroll: true });
       return;
     }
-    const result = scoreQuiz(id, answers as number[]);
-    showResult(result);
+    showResult(scoreQuiz(id, answers as number[]), true);
   }
 
   function reset(): void {
     form.reset();
     answers.fill(null);
     questions.forEach((q) => q.classList.remove("done", "need"));
+    form.querySelectorAll(".quiz-opt.on").forEach((opt) => opt.classList.remove("on"));
+    note.textContent = "";
     resultBox.hidden = true;
     resultBox.replaceChildren();
     update();
     form.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function showResult(result: QuizResult): void {
+  function showResult(result: QuizResult, reveal: boolean): void {
     const view = resultView(locale, id, copy, result);
     const copyBtn = h("button", { type: "button", class: "btn ghost" }, ui.copy);
     copyBtn.addEventListener("click", () => {
@@ -172,6 +178,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
       ),
     );
     resultBox.hidden = false;
+    if (!reveal) return;
     resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
     resultBox.focus({ preventScroll: true });
   }
@@ -324,7 +331,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
         bar(ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
       ];
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
-      if (result.safety || (id === "depression" && result.key === "severe")) nodes.unshift(crisisBox(locale));
+      if (result.safety) nodes.unshift(crisisBox(locale));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${result.total} / ${max}` };
     }
   }

@@ -17,6 +17,7 @@ import {
 import { quizCopy, quizStaticHtml } from "../src/shared/quiz-i18n";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
+import { isTrackedPath } from "../src/shared/analytics";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 
@@ -154,6 +155,8 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("mbti", lean("mbti", ["EI", "TF"])).key).toBe("ENTP");
     const neutral = scoreQuiz("mbti", all("mbti", 2));
     expect(neutral.scores.every((s) => s.pct === 50)).toBe(true);
+    // Ties go to I, N, F, P, as in MBTI scoring.
+    expect(neutral.key).toBe("INFP");
     expect(resultKeys("mbti")).toHaveLength(16);
   });
 
@@ -204,7 +207,17 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("depression", all("depression", 3)).key).toBe("severe");
   });
 
-  it("flags PHQ-9 item 9 whatever the total", () => {
+  it("keeps mental health self-checks out of analytics", () => {
+    expect(isTrackedPath("/en/tests/depression/")).toBe(false);
+    expect(isTrackedPath("/zh-cn/tests/anxiety/")).toBe(false);
+    expect(isTrackedPath("/tests/self-esteem/")).toBe(false);
+    expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
+    expect(isTrackedPath("/en/tests/")).toBe(true);
+  });
+
+  it("flags PHQ-9 item 9 whatever the total, and the severe band", () => {
+    expect(scoreQuiz("depression", all("depression", 3)).safety).toBe(true);
+    expect(scoreQuiz("anxiety", all("anxiety", 3)).safety).toBe(false);
     const answers = all("depression", 0);
     expect(scoreQuiz("depression", answers).safety).toBe(false);
     answers[8] = 1;

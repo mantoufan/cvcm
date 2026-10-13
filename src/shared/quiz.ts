@@ -208,8 +208,13 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   },
 };
 
-/** PHQ-9 item 9 (thoughts of self-harm): any answer above "not at all" shows the help box, whatever the total. */
-export const SAFETY_ITEM: Partial<Record<QuizId, number>> = { depression: 8 };
+/**
+ * When a result shows the crisis-line box: PHQ-9 item 9 (thoughts of self-harm) above "not at all", whatever the
+ * total, and the severe PHQ-9 band.
+ */
+export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly string[] }>> = {
+  depression: { item: 8, bands: ["severe"] },
+};
 
 export function questionCount(id: QuizId): number {
   return QUIZ_DEFS[id].items.length;
@@ -235,7 +240,7 @@ export type QuizResult = {
   weakest?: string;
   /** Overall percentage (areas and profile). */
   overall: number;
-  /** A PHQ-9 item 9 answer above zero. */
+  /** Show the crisis-line box (see `SAFETY`). */
   safety: boolean;
 };
 
@@ -300,38 +305,44 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
-  const safetyIndex = SAFETY_ITEM[id];
-  const safety = safetyIndex !== undefined && (answers[safetyIndex] ?? 0) > 0;
-  const base = { scores, total, ranked, overall, safety };
-
   const rule = def.result;
+  const key = resultKey(rule, scores, ranked, total, overall);
+  const watch = SAFETY[id];
+  const safety = Boolean(watch && ((answers[watch.item] ?? 0) > 0 || watch.bands.includes(key)));
+  const weakest = rule.kind === "areas" ? lowest(scores).dim : undefined;
+  return { key, scores, total, ranked, overall, safety, ...(weakest ? { weakest } : {}) };
+}
+
+function lowest(scores: DimScore[]): DimScore {
+  return [...scores].sort((a, b) => a.pct - b.pct)[0];
+}
+
+function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], total: number, overall: number): string {
+  const byDim = new Map(scores.map((s) => [s.dim, s]));
   switch (rule.kind) {
     case "profile":
-      return { ...base, key: "profile" };
-    case "types": {
-      // Each pair leans to its first letter at 50% or more ("EI" 50 → E). A dead heat goes to the first letter.
-      const key = scores.map((s) => (s.pct >= 50 ? s.dim[0] : s.dim[1])).join("");
-      return { ...base, key };
-    }
+      return "profile";
+    case "types":
+      // Each pair leans to its first letter above 50%. A tie goes to the second letter (I, N, F, P), as in MBTI scoring.
+      return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
-      return { ...base, key: ranked[0].dim };
+      return ranked[0].dim;
     case "code":
-      return { ...base, key: ranked.slice(0, 3).map((s) => s.dim).join("") };
+      return ranked.slice(0, 3).map((s) => s.dim).join("");
     case "quadrant": {
       const high = (dim: string): boolean => (byDim.get(dim)?.pct ?? 0) > 50;
       const x = high(rule.x);
       const y = high(rule.y);
-      const key = x ? (y ? rule.results.highHigh : rule.results.highLow) : y ? rule.results.lowHigh : rule.results.lowLow;
-      return { ...base, key };
+      return x ? (y ? rule.results.highHigh : rule.results.highLow) : y ? rule.results.lowHigh : rule.results.lowLow;
     }
     case "areas": {
-      const low = [...scores].sort((a, b) => a.pct - b.pct)[0];
+      const low = lowest(scores);
       const band = rule.bands.find((b) => overall >= b.min && low.pct >= (b.floor ?? 0)) ?? rule.bands[rule.bands.length - 1];
-      return { ...base, key: band.key, weakest: low.dim };
+      return band.key;
     }
     case "band": {
       const band = rule.bands.find((b) => total <= b.max) ?? rule.bands[rule.bands.length - 1];
-      return { ...base, key: band.key };
+      return band.key;
     }
   }
 }

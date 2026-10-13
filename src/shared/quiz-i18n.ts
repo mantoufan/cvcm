@@ -1,4 +1,5 @@
 import type { Locale } from "./locale";
+import { escapeHtml } from "./device-i18n";
 import { messages, quizMessages, type QuizMessages } from "./messages";
 import { appHref, quizHref } from "./path";
 import { QUIZ_DEFS, QUIZ_GROUPS, questionCount, type QuizId } from "./quiz";
@@ -93,14 +94,6 @@ export function quizFaqJsonLd(locale: Locale, id: QuizId | null): Record<string,
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 }
 
 function faqHtml(locale: Locale, id: QuizId | null): string {

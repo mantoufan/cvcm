@@ -45,6 +45,29 @@ describe("test page UI", () => {
     expect(result.textContent).toContain("1 / 27");
   });
 
+  it("updates a shown result when an answer changes", () => {
+    const main = mount("depression");
+    answer(main, () => 0);
+    submit(main);
+    expect(main.querySelector(".quiz-crisis")).toBeNull();
+    const item9 = main.querySelectorAll(".quiz-q")[8].querySelectorAll<HTMLInputElement>("input")[2];
+    item9.checked = true;
+    item9.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(main.querySelector(".quiz-crisis")).not.toBeNull();
+    expect(main.querySelector("#result")!.textContent).toContain("2 / 27");
+    expect(main.querySelectorAll(".quiz-q")[8].querySelectorAll(".quiz-opt.on")).toHaveLength(1);
+  });
+
+  it("keeps the left count current after a failed submit", () => {
+    const main = mount("anxiety");
+    submit(main);
+    expect(main.querySelector(".quiz-note")!.textContent).toContain("7 left");
+    const first = main.querySelector<HTMLInputElement>(".quiz-q input")!;
+    first.checked = true;
+    first.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(main.querySelector(".quiz-note")!.textContent).toContain("6 left");
+  });
+
   it("shows no help box for a low PHQ-9 without item 9", () => {
     const main = mount("depression");
     answer(main, () => 0);

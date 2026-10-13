@@ -1,4 +1,5 @@
 import { parseAppPath, type ToolId } from "./path";
+import type { QuizId } from "./quiz";
 
 /** GA4 property 538063843 (cv.cm). */
 export const GA_ID = "G-5X2J6QT5KK";
@@ -21,12 +22,16 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner",
 ]);
 
+/** Mental health self-checks: a visit is health information, so these pages send nothing to GA (or its ad links). */
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["self-esteem", "anxiety", "depression"]);
+
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {
   // Any /clip/<id> path, valid id or not, stays out (a mistyped id is still someone's key).
   if (/\/clip\/[^/]+/i.test(pathname)) return false;
   const parsed = parseAppPath(pathname);
   if (parsed.kind === "clip") return false;
+  if ((parsed.kind === "quiz" || parsed.kind === "bare-quiz") && parsed.quiz && UNTRACKED_QUIZZES.has(parsed.quiz)) return false;
   if (parsed.kind === "app" || parsed.kind === "bare") {
     if (parsed.tool && UNTRACKED_TOOLS.has(parsed.tool)) return false;
     if (parsed.tool === "clip" && parsed.clipId) return false;
