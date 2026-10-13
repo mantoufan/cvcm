@@ -320,63 +320,6 @@ export const LEARN_FIG: Partial<Record<TutorialId, string>> = {
   "crop-compose": "/covers/learn-fig-crop-compose.jpg?v=1",
 };
 
-/** Instructional overview SVG shown at the top of a published lesson. */
-export const LEARN_HERO: Partial<Record<TutorialId, string>> = {
-  "make-qr": "/covers/tutorials/make-qr.svg",
-  "make-barcode": "/covers/tutorials/make-barcode.svg",
-  "merge-pdf": "/covers/tutorials/merge-pdf.svg",
-  "compress-pdf": "/covers/tutorials/compress-pdf.svg",
-  "heic-to-jpg": "/covers/tutorials/heic-to-jpg.svg",
-  "jpg-to-pdf": "/covers/tutorials/jpg-to-pdf.svg",
-  "pdf-to-jpg": "/covers/tutorials/pdf-to-jpg.svg",
-  "crop-photo": "/covers/tutorials/crop-photo.svg",
-  "webp-to-png": "/covers/tutorials/webp-to-png.svg",
-  "resize-image": "/covers/tutorials/resize-image.svg",
-  "split-pdf": "/covers/tutorials/split-pdf.svg",
-  "add-watermark": "/covers/tutorials/photo/watermark-tiled.jpg",
-  "remove-exif": "/covers/tutorials/remove-exif.svg",
-  "make-collage": "/covers/tutorials/make-collage.svg",
-  "make-meme": "/covers/tutorials/make-meme.svg",
-  "count-words": "/covers/tutorials/count-words.svg",
-  "trim-audio": "/covers/tutorials/trim-audio.svg",
-  "png-to-jpg": "/covers/tutorials/png-to-jpg.svg",
-  "jpg-to-png": "/covers/tutorials/jpg-to-png.svg",
-  "avif-to-jpg": "/covers/tutorials/avif-to-jpg.svg",
-  "rotate-photo": "/covers/tutorials/rotate-photo.svg",
-  "png-to-webp": "/covers/tutorials/png-to-webp.svg",
-  "mp3-to-wav": "/covers/tutorials/mp3-to-wav.svg",
-  "join-audio": "/covers/tutorials/join-audio.svg",
-  "make-favicon": "/covers/tutorials/make-favicon.svg",
-  "make-signature": "/covers/tutorials/make-signature.svg",
-  "annotate-screenshot": "/covers/tutorials/annotate-screenshot.svg",
-  "make-invoice": "/covers/tutorials/make-invoice.svg",
-  "make-password": "/covers/tutorials/make-password.svg",
-  "format-json": "/covers/tutorials/format-json.svg",
-  "decode-base64": "/covers/tutorials/decode-base64.svg",
-  "unix-time": "/covers/tutorials/unix-time.svg",
-  "read-jwt": "/covers/tutorials/read-jwt.svg",
-  "count-workdays": "/covers/tutorials/count-workdays.svg",
-  "simplify-fraction": "/covers/tutorials/simplify-fraction.svg",
-  "hourly-pay": "/covers/tutorials/hourly-pay.svg",
-  "convert-timezone": "/covers/tutorials/convert-timezone.svg",
-  "profit-margin": "/covers/tutorials/profit-margin.svg",
-  "convert-base": "/covers/tutorials/convert-base.svg",
-  "add-duration": "/covers/tutorials/add-duration.svg",
-  "calculate-percent": "/covers/tutorials/calculate-percent.svg",
-  "days-between": "/covers/tutorials/days-between.svg",
-  "shift-date": "/covers/tutorials/shift-date.svg",
-  "iso-week": "/covers/tutorials/iso-week.svg",
-  "vat-price": "/covers/tutorials/vat-price.svg",
-  "percent-off": "/covers/tutorials/percent-off.svg",
-  "encode-url": "/covers/tutorials/encode-url.svg",
-  "calculate-age": "/covers/tutorials/calculate-age.svg",
-  "aspect-ratio": "/covers/tutorials/aspect-ratio.svg",
-  "calculate-bmi": "/covers/tutorials/calculate-bmi.svg",
-  "split-tip": "/covers/tutorials/split-tip.svg",
-  "loan-payment": "/covers/tutorials/loan-payment.svg",
-  "read-cron": "/covers/tutorials/read-cron.svg",
-};
-
 export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";
 
 export function coverUrl(path: string): string {
@@ -391,28 +334,12 @@ export function localizedTutorialSrc(src: string, locale: Locale): string {
   return `/covers/tutorials/${localePath(locale)}/${rest}`;
 }
 
-/** Built by scripts/make-thumbs.mjs (THUMB_WIDTHS there must match; tests check). 240 = 72px menu covers at 3x. */
+/** Widths of the WebP cover thumbnails earlier builds served at /thumbs/{width}/. None are built now. */
 export const THUMB_WIDTHS = [240, 640, 960] as const;
-export type ThumbWidth = (typeof THUMB_WIDTHS)[number];
-
-const RASTER_COVER = /^\/covers\/([A-Za-z0-9._/-]+\.(?:jpe?g|png))(?:\?v=(\d+))?$/;
-
-/** WebP copy of a cover from scripts/make-thumbs.mjs. The Worker redirects to the original when there is none. */
-export function thumbSrc(src: string, width: ThumbWidth): string {
-  const m = RASTER_COVER.exec(src);
-  if (!m) return src;
-  return `/thumbs/${width}/${m[1]}${m[2] ? `.v${m[2]}` : ""}.webp`;
-}
-
-/** srcset for a tile-sized cover, or undefined when the cover has no thumbnails (SVG). */
-export function tileSrcset(src: string): string | undefined {
-  if (!RASTER_COVER.test(src)) return undefined;
-  return `${thumbSrc(src, 640)} 640w, ${thumbSrc(src, 960)} 960w`;
-}
 
 const THUMB_PATH = new RegExp(`^/thumbs/(?:${THUMB_WIDTHS.join("|")})/([A-Za-z0-9._/-]+?\\.(?:jpe?g|png))(?:\\.v(\\d+))?\\.webp$`);
 
-/** Original cover path for a /thumbs/ URL, so a missing thumbnail can fall back to it. */
+/** Original cover path for a legacy /thumbs/ URL; the Worker redirects there. */
 export function thumbOriginal(pathname: string): string | null {
   const m = THUMB_PATH.exec(pathname);
   if (!m || m[1].includes("..")) return null;

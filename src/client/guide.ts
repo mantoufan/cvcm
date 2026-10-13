@@ -1,6 +1,6 @@
 import { h } from "./dom";
 import { locale } from "./i18n";
-import { guideImage, guideSteps, guideText } from "../shared/guide";
+import { guideSteps, guideText } from "../shared/guide";
 import type { ToolId } from "../shared/path";
 
 export function guideSection(tool: ToolId): HTMLElement {
@@ -15,15 +15,6 @@ export function guideSection(tool: ToolId): HTMLElement {
         h("li", { id: `guide-step-${n}`, class: "learn-step" },
           h("h3", null, guideText(loc, `tools.${tool}.s${n}t`)),
           h("p", null, guideText(loc, `tools.${tool}.s${n}b`)),
-          h("figure", { class: "learn-fig learn-diagram" },
-            h("img", {
-              src: guideImage(tool, n),
-              alt: guideText(loc, `tools.${tool}.s${n}t`),
-              width: "1180",
-              height: "720",
-              loading: "lazy",
-            }),
-          ),
         ),
       ),
     ),

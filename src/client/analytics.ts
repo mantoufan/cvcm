@@ -57,11 +57,29 @@ export function trackPageView(): void {
   const params = new URLSearchParams(location.search);
   if (!injected && !SEARCH_PARAMS.some((key) => params.has(key))) {
     injected = true;
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `${GA_SCRIPT_HOST}/gtag/js?id=${GA_ID}`;
-    document.head.append(script);
+    afterLoad(() => {
+      // The URL may have changed while waiting; try again on a later page view if it now looks like a search.
+      const now = new URLSearchParams(location.search);
+      if (SEARCH_PARAMS.some((key) => now.has(key))) {
+        injected = false;
+        return;
+      }
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `${GA_SCRIPT_HOST}/gtag/js?id=${GA_ID}`;
+      document.head.append(script);
+    });
   }
+}
+
+/** gtag.js is ~150 KB; fetch it once the page has loaded and gone idle, so it never competes with the page itself. */
+function afterLoad(fn: () => void): void {
+  const idle = (): void => {
+    if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(fn, { timeout: 4000 });
+    else setTimeout(fn, 1500);
+  };
+  if (document.readyState === "complete") idle();
+  else window.addEventListener("load", idle, { once: true });
 }
 
 /** Path plus campaign parameters only: other queries and fragments can carry user data. */

@@ -20,6 +20,8 @@ export function mountPassword(host: HTMLElement): void {
   outputEl = h("input", {
     class: "password-out",
     readonly: true,
+    // Random per visitor: the build's prerender leaves it empty.
+    "data-volatile": "",
     spellcheck: "false",
     "aria-label": t("password.output"),
   });

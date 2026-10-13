@@ -1,90 +1,11 @@
-import { mountAudio, unmountAudio } from "./audio/ui";
-import { mountAudioCutter, unmountAudioCutter } from "./audio-cutter/ui";
-import { mountAudioJoiner, unmountAudioJoiner } from "./audio-joiner/ui";
-import { mountClip, unmountClip } from "./clip/ui";
-import { unmountCollage, mountCollage } from "./collage/ui";
-import { mountConvert, unmountConvert } from "./convert/ui";
-import { mountData, unmountData } from "./data/ui";
-import { mountColor, unmountColor } from "./color/ui";
-import { mountHexRgb, unmountHexRgb } from "./hex-rgb/ui";
-import { mountXmlJson, unmountXmlJson } from "./xml-json/ui";
-import { mountHash, unmountHash } from "./hash/ui";
-import { mountYamlJson, unmountYamlJson } from "./yaml-json/ui";
-import { mountCase, unmountCase } from "./case/ui";
-import { mountJwt, unmountJwt } from "./jwt/ui";
-import { mountScreenshot, unmountScreenshot } from "./screenshot/ui";
-import { mountPercent, unmountPercent } from "./percent/ui";
-import { mountRandom, unmountRandom } from "./random/ui";
-import { mountHtml, unmountHtml } from "./html/ui";
-import { mountCron, unmountCron } from "./cron/ui";
-import { mountSlug, unmountSlug } from "./slug/ui";
-import { mountAge, unmountAge } from "./age/ui";
-import { mountBmi, unmountBmi } from "./bmi/ui";
-import { mountBinary, unmountBinary } from "./binary/ui";
-import { mountTip, unmountTip } from "./tip/ui";
-import { mountMorse, unmountMorse } from "./morse/ui";
-import { mountRoman, unmountRoman } from "./roman/ui";
-import { mountDiscount, unmountDiscount } from "./discount/ui";
-import { mountCountdown, unmountCountdown } from "./countdown/ui";
-import { mountLoan, unmountLoan } from "./loan/ui";
-import { mountStopwatch, unmountStopwatch } from "./stopwatch/ui";
-import { mountCompound, unmountCompound } from "./compound/ui";
-import { mountVat, unmountVat } from "./vat/ui";
-import { mountReverse, unmountReverse } from "./reverse/ui";
-import { mountUrlEncode, unmountUrlEncode } from "./url-encode/ui";
-import { mountTextHex, unmountTextHex } from "./text-hex/ui";
-import { mountJson, unmountJson } from "./json/ui";
-import { mountBase64, unmountBase64 } from "./base64/ui";
-import { mountDays, unmountDays } from "./days/ui";
-import { mountSort, unmountSort } from "./sort/ui";
-import { mountReplace, unmountReplace } from "./replace/ui";
-import { mountWords, unmountWords } from "./words/ui";
-import { mountAddDays, unmountAddDays } from "./add-days/ui";
-import { mountWeek, unmountWeek } from "./week/ui";
-import { mountAspect, unmountAspect } from "./aspect/ui";
-import { mountWorkdays, unmountWorkdays } from "./workdays/ui";
-import { mountFraction, unmountFraction } from "./fraction/ui";
-import { mountHourly, unmountHourly } from "./hourly/ui";
-import { mountMargin, unmountMargin } from "./margin/ui";
-import { mountRadix, unmountRadix } from "./radix/ui";
-import { mountDuration, unmountDuration } from "./duration/ui";
-import { mountMetal, mountOil, mountStocks, unmountAssets } from "./assets/ui";
-import { mountCrop, unmountCrop } from "./crop/ui";
-import { mountRotate, unmountRotate } from "./rotate/ui";
-import { mountExif, unmountExif } from "./exif/ui";
-import { mountMeme, unmountMeme } from "./meme/ui";
-import { mountLorem, unmountLorem } from "./lorem/ui";
-import { mountNames, unmountNames } from "./names/ui";
-import { mountTimezone, unmountTimezone } from "./timezone/ui";
-import { mountTimestamp, unmountTimestamp } from "./timestamp/ui";
-import { mountUnits, unmountUnits } from "./units/ui";
-import { mountPassword, unmountPassword } from "./password/ui";
-import { mountQr, unmountQr } from "./qr/ui";
-import { mountBarcode, unmountBarcode } from "./barcode/ui";
-import { mountResize, unmountResize } from "./resize/ui";
-import { mountWordCount, unmountWordCount } from "./word-count/ui";
-import { mountTts, unmountTts } from "./tts/ui";
-import { mountDiff, unmountDiff } from "./diff/ui";
-import { mountUuid, unmountUuid } from "./uuid/ui";
-import { mountRegex, unmountRegex } from "./regex/ui";
-import { mountInvoice, unmountInvoice } from "./invoice/ui";
-import { mountSignature, unmountSignature } from "./signature/ui";
-import { mountFavicon, unmountFavicon } from "./favicon/ui";
-import { clear, h } from "./dom";
+import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
-import { mountHome } from "./home";
-import { mountLearn, mountLearnHub } from "./learn/ui";
-import { mountGame, mountGamesHub } from "./games/ui";
-import { mountMarket, mountMarketsHub, unmountMarket } from "./markets/ui";
-import { mountImagePdf, unmountImagePdf } from "./image-pdf/ui";
-import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, thumbSrc } from "./covers";
-import { mountDevice } from "./device/ui";
+import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
 import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
-  TUTORIAL_GROUPS,
   appHref,
   gamesHref,
   isPublishedTutorial,
@@ -104,14 +25,10 @@ import {
 import type { GameConsoleId, GameId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
-import { DEVICE_CHILD_PAGES } from "../shared/device";
-import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
 import type { MarketId } from "../shared/markets";
-import { GAME_CONSOLES, GAMES } from "../shared/games";
-import { gameName } from "../shared/games-i18n";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
-import { mountWatermark, unmountWatermark } from "./watermark/ui";
+import { TOOL_LOADERS } from "./tools";
 import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
 import { isTrackedPath } from "../shared/analytics";
 import "./styles.css";
@@ -138,11 +55,14 @@ let marketsHub = false;
 let marketId: MarketId | null = null;
 let devicePage: DevicePageId | null = null;
 let legalPage: LegalPageId | null = null;
-let unmountPdfJpg = (): void => {};
-let unmountMergePdf = (): void => {};
-let unmountCompressPdf = (): void => {};
-let unmountSplitPdf = (): void => {};
-let unmountPortraitSim = (): void => {};
+const noop = (): void => {};
+let unmountCurrent: () => void = noop;
+/** Settles once the page from the latest render() has mounted and is on screen. */
+let rendered: Promise<void> = Promise.resolve();
+/** Settles when the latest page's mount finishes (no timeout, unlike `rendered`). */
+let mountedPage: Promise<void> = Promise.resolve();
+/** Scroll to the top when the next page swaps in (a link click, not Back/Forward or the first load). */
+let scrollOnSwap = false;
 let pageGen = 0;
 let localeReq = 0;
 let renderedHref: string | null = null;
@@ -154,6 +74,11 @@ export function start(): void {
     started = true;
     // Registered before gtag loads, so this runs before gtag's own history listener.
     window.addEventListener("popstate", () => {
+      // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
+      if (renderedHref && renderedHref.split("#")[0] === location.pathname + location.search) {
+        renderedHref = location.pathname + location.search + location.hash;
+        return;
+      }
       gateAnalytics(location.pathname);
       render();
     });
@@ -260,45 +185,20 @@ function prefetchGamePack(e: Event): void {
 }
 
 function onClick(e: MouseEvent): void {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const target = e.target as HTMLElement | null;
   const a = target?.closest("a");
-  if (a && a.target !== "_blank" && a.origin === location.origin) {
-    const parsed = parseAppPath(a.pathname);
-    // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
-    // and gtag's automatic history tracking never sees the URL.
-    if (analyticsActive() && !isTrackedPath(a.pathname)) {
-      closeMenus();
-      return;
-    }
-    if (parsed.kind !== "static") {
-      e.preventDefault();
-      closeMenus();
-      history.pushState(null, "", a.href);
-      render();
-      return;
-    }
-  }
-  if (!target?.closest(".menu")) closeMenus();
-}
-
-function blurInside(el: Element): void {
-  const active = document.activeElement;
-  if (active instanceof HTMLElement && el.contains(active)) active.blur();
-}
-
-function closeMenus(): void {
-  document.querySelectorAll(".menu").forEach((el) => {
-    el.classList.remove("open");
-    blurInside(el);
-  });
-}
-
-function closeOtherMenus(keep: Element | null): void {
-  document.querySelectorAll(".menu").forEach((el) => {
-    if (el === keep) return;
-    el.classList.remove("open");
-    blurInside(el);
-  });
+  if (!a || a.target === "_blank" || a.hasAttribute("download") || a.origin !== location.origin) return;
+  // An in-page anchor (#tools) is the browser's job.
+  if (a.hash && a.pathname === location.pathname && a.search === location.search) return;
+  // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
+  // and gtag's automatic history tracking never sees the URL.
+  if (analyticsActive() && !isTrackedPath(a.pathname)) return;
+  if (parseAppPath(a.pathname).kind === "static") return;
+  e.preventDefault();
+  history.pushState(null, "", a.href);
+  scrollOnSwap = true;
+  render();
 }
 
 function applyTool(next: ToolId | null, nextClip: string | null): void {
@@ -372,91 +272,9 @@ function applyLegal(page: LegalPageId): void {
 }
 
 function unmountTools(): void {
-  unmountAssets();
-  unmountMarket();
-  unmountWatermark();
-  unmountCollage();
-  unmountConvert();
-  unmountImagePdf();
-  unmountClip();
-  unmountAudio();
-  unmountAudioCutter();
-  unmountAudioJoiner();
-  unmountData();
-  unmountQr();
-  unmountBarcode();
-  unmountPassword();
-  unmountWordCount();
-  unmountNames();
-  unmountTimezone();
-  unmountTimestamp();
-  unmountLorem();
-  unmountUnits();
-  unmountTts();
-  unmountDiff();
-  unmountUuid();
-  unmountRegex();
-  unmountColor();
-  unmountHexRgb();
-  unmountXmlJson();
-  unmountHash();
-  unmountYamlJson();
-  unmountCase();
-  unmountJwt();
-  unmountScreenshot();
-  unmountPercent();
-  unmountRandom();
-  unmountHtml();
-  unmountCron();
-  unmountSlug();
-  unmountAge();
-  unmountBmi();
-  unmountBinary();
-  unmountTip();
-  unmountMorse();
-  unmountRoman();
-  unmountDiscount();
-  unmountCountdown();
-  unmountLoan();
-  unmountStopwatch();
-  unmountCompound();
-  unmountVat();
-  unmountReverse();
-  unmountUrlEncode();
-  unmountTextHex();
-  unmountJson();
-  unmountBase64();
-  unmountDays();
-  unmountSort();
-  unmountReplace();
-  unmountWords();
-  unmountAddDays();
-  unmountWeek();
-  unmountAspect();
-  unmountWorkdays();
-  unmountFraction();
-  unmountHourly();
-  unmountMargin();
-  unmountRadix();
-  unmountDuration();
-  unmountResize();
-  unmountCrop();
-  unmountRotate();
-  unmountExif();
-  unmountMeme();
-  unmountInvoice();
-  unmountSignature();
-  unmountFavicon();
-  unmountPdfJpg();
-  unmountMergePdf();
-  unmountCompressPdf();
-  unmountSplitPdf();
-  unmountPortraitSim();
-  unmountPdfJpg = (): void => {};
-  unmountMergePdf = (): void => {};
-  unmountCompressPdf = (): void => {};
-  unmountSplitPdf = (): void => {};
-  unmountPortraitSim = (): void => {};
+  const unmount = unmountCurrent;
+  unmountCurrent = noop;
+  unmount();
 }
 
 export function render(): void {
@@ -577,10 +395,107 @@ export function render(): void {
   syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage);
 
   const root = appEl();
-  clear(root);
-  root.append(shell(loc));
+  const gen = pageGen;
+  const { page, ready } = shell(loc);
+  mountedPage = ready;
+  const old = Array.from(root.children);
+  if (old.length === 0) {
+    root.append(page);
+    rendered = ready;
+  } else {
+    // Keep what is on screen (the server HTML or the last page) until the new page has mounted, then swap in one
+    // step, so nothing flashes empty while a tool chunk loads. The new page goes first in the DOM and the old one
+    // loses its ids, so a tool that looks itself up by id or class while mounting finds its own elements.
+    // First load: the old page is the server HTML (no handlers, plain links), kept usable until the swap.
+    // Later: the old page's tool is already unmounted, so its controls go inert.
+    const hydrating = renderedHref === null;
+    for (const el of old) {
+      el.removeAttribute("id");
+      el.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+      if (!hydrating && el instanceof HTMLElement) el.inert = true;
+    }
+    page.classList.add("pending");
+    root.prepend(page);
+    const scroll = scrollOnSwap;
+    scrollOnSwap = false;
+    // The server HTML is complete, so on first load wait for the real mount; later pages swap in after a short cap.
+    rendered = (hydrating ? ready : Promise.race([ready, wait(SWAP_WAIT_MS)])).then(() => {
+      if (gen !== pageGen) return;
+      const focus = hydrating ? carryInput(old, page) : null;
+      for (const el of old) el.remove();
+      page.classList.remove("pending");
+      focus?.();
+      const anchor = location.hash ? document.getElementById(hashId(location.hash)) : null;
+      if (anchor) anchor.scrollIntoView();
+      else if (scroll) window.scrollTo(0, 0);
+    });
+  }
   trackPageView();
   renderedHref = location.pathname + location.search + location.hash;
+}
+
+// Text fields only: their value is what the visitor typed. Other controls hold defaults the browser may normalize.
+const CARRIED = 'textarea, input:not([type]), input[type="text"], input[type="search"], input[type="email"], input[type="url"]';
+type TextField = HTMLInputElement | HTMLTextAreaElement;
+
+/**
+ * Text typed into the server HTML before the app took over: copy it into the same field of the mounted page.
+ * Returns a callback that moves focus and caret there, to run once the page is visible (hidden fields cannot focus).
+ */
+function carryInput(old: Element[], page: HTMLElement): (() => void) | null {
+  const before = old.flatMap((el) => Array.from(el.querySelectorAll<TextField>(CARRIED)));
+  const after = Array.from(page.querySelectorAll<TextField>(CARRIED));
+  // Fields pair up by position; give up if the two pages do not have the same fields.
+  if (before.length !== after.length || before.some((field, i) => field.tagName !== after[i].tagName)) return null;
+  let focus: (() => void) | null = null;
+  // The clipboard's rich editor: carry what was typed as plain text (never markup from the old DOM).
+  const oldEditors = old.flatMap((el) => Array.from(el.querySelectorAll<HTMLElement>('[contenteditable="true"]')));
+  const newEditors = Array.from(page.querySelectorAll<HTMLElement>('[contenteditable="true"]'));
+  oldEditors.forEach((editor, i) => {
+    const next = newEditors[i];
+    const text = editor.innerText.trim();
+    // Only into an editor that is showing (not hidden behind Markdown mode) and empty (no restored draft to clobber).
+    const showing = next ? next.getClientRects().length > 0 : false;
+    const empty = next ? !next.innerText.trim() && !next.querySelector("img, video, audio, [data-up]") : false;
+    if (!next || !text || !showing || !empty) return;
+    next.innerText = editor.innerText;
+    next.dispatchEvent(new Event("input", { bubbles: true }));
+    if (editor === document.activeElement) focus = () => next.focus();
+  });
+  before.forEach((field, i) => {
+    const next = after[i];
+    if (field === document.activeElement) {
+      const { selectionStart, selectionEnd } = field;
+      focus = () => {
+        next.focus();
+        if (selectionStart !== null && selectionEnd !== null) next.setSelectionRange(selectionStart, selectionEnd);
+      };
+    }
+    if (field.readOnly || field.value === field.defaultValue) return;
+    next.value = field.value;
+    next.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  return focus;
+}
+
+function hashId(hash: string): string {
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
+}
+
+/** A tool that takes longer than this to mount (a clip note still loading) is swapped in as it is. */
+const SWAP_WAIT_MS = 1200;
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+/** Settles when the page from the latest render() is mounted and on screen. Used by the build's prerender. */
+export function whenRendered(): Promise<void> {
+  return rendered;
 }
 
 const RELOAD_KEY = "cvcm-locale-reload";
@@ -605,25 +520,28 @@ function restoreRendered(): void {
   if (select) select.value = locale();
 }
 
-function shell(loc: Locale): HTMLElement {
+function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const main = h("main", { id: "main" });
-  void mountPage(main, loc);
-
-  return h("div", { class: "page" + (tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage ? " is-tool" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
+  const ready = mountPage(main, loc).catch((err: unknown) => {
+    console.error(err);
+  });
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage);
+  const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
+  const gamesOn = gamesHub || Boolean(gameId);
+  const learnOn = learnHub || Boolean(tutorial);
+  const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
-      h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home" },
-        h("span", { class: "mark", "aria-hidden": "true" }, "cv"),
-        h("span", { class: "brand-name" }, t("brand")),
-      ),
+      h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
-        toolsMenu(loc, tool, devicePage),
-        gamesMenu(loc, gameConsole, gameId, gamesHub),
-        learnMenu(loc, tutorial, learnHub),
+        navLink(`${appHref(loc, null)}#tools`, t("nav.tools"), toolsOn, "tools"),
+        navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
+        navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
       langSwitch(loc),
     ),
     main,
     h("footer", { class: "foot" },
+      home ? null : toolDirectory(loc),
       h("p", null, t("footer.privacy")),
       h("nav", { class: "foot-links", "aria-label": t("footer.legal") },
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
@@ -631,289 +549,75 @@ function shell(loc: Locale): HTMLElement {
       ),
     ),
   );
+  return { page, ready };
+}
+
+function navLink(href: string, label: string, on: boolean, nav: string): HTMLElement {
+  return h("a", { class: on ? "on" : null, href, "data-nav": nav, "aria-current": on ? "page" : undefined }, label);
+}
+
+/** Every tool as a plain link, grouped like the home page, so any page is one click from any tool. */
+function toolDirectory(loc: Locale): HTMLElement {
+  return h("nav", { class: "dir", "aria-label": t("nav.tools") },
+    ...CATEGORIES.map((cat) =>
+      h("div", { class: "dir-group" },
+        h("h2", null, t(`nav.${cat.id}`)),
+        h("p", null,
+          ...cat.tools.map((id) =>
+            h("a", { href: appHref(loc, id), "data-nav": id, "aria-current": tool === id ? "page" : undefined }, t(`tools.${id}.name`)),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   const gen = pageGen;
-  if (tool === "clip") await mountClip(main, clipId);
-  else if (tool === "watermark") await mountWatermark(main);
-  else if (tool === "mosaic") await mountWatermark(main, "mosaic");
-  else if (tool === "collage") await mountCollage(main);
-  else if (tool === "convert") await mountConvert(main);
-  else if (tool === "image-pdf") await mountImagePdf(main);
-  else if (tool === "audio") await mountAudio(main);
-  else if (tool === "audio-cutter") await mountAudioCutter(main);
-  else if (tool === "audio-joiner") await mountAudioJoiner(main);
-  else if (tool === "data") mountData(main);
-  else if (tool === "qr") mountQr(main);
-  else if (tool === "barcode") mountBarcode(main);
-  else if (tool === "password") mountPassword(main);
-  else if (tool === "word-count") mountWordCount(main);
-  else if (tool === "names") mountNames(main);
-  else if (tool === "timezone") mountTimezone(main);
-  else if (tool === "timestamp") mountTimestamp(main);
-  else if (tool === "lorem") mountLorem(main);
-  else if (tool === "units") mountUnits(main);
-  else if (tool === "text-to-speech") mountTts(main);
-  else if (tool === "diff") mountDiff(main);
-  else if (tool === "uuid") mountUuid(main);
-  else if (tool === "regex") mountRegex(main);
-  else if (tool === "color") mountColor(main);
-  else if (tool === "hex-rgb") mountHexRgb(main);
-  else if (tool === "xml-json") mountXmlJson(main);
-  else if (tool === "hash") mountHash(main);
-  else if (tool === "yaml-json") mountYamlJson(main);
-  else if (tool === "case") mountCase(main);
-  else if (tool === "jwt") mountJwt(main);
-  else if (tool === "screenshot") await mountScreenshot(main);
-  else if (tool === "percent") mountPercent(main);
-  else if (tool === "random") mountRandom(main);
-  else if (tool === "html") mountHtml(main);
-  else if (tool === "cron") mountCron(main);
-  else if (tool === "slug") mountSlug(main);
-  else if (tool === "age") mountAge(main);
-  else if (tool === "bmi") mountBmi(main);
-  else if (tool === "binary") mountBinary(main);
-  else if (tool === "tip") mountTip(main);
-  else if (tool === "morse") mountMorse(main);
-  else if (tool === "roman") mountRoman(main);
-  else if (tool === "discount") mountDiscount(main);
-  else if (tool === "countdown") mountCountdown(main);
-  else if (tool === "loan") mountLoan(main);
-  else if (tool === "stopwatch") mountStopwatch(main);
-  else if (tool === "compound") mountCompound(main);
-  else if (tool === "vat") mountVat(main);
-  else if (tool === "reverse") mountReverse(main);
-  else if (tool === "url-encode") mountUrlEncode(main);
-  else if (tool === "text-hex") mountTextHex(main);
-  else if (tool === "json") mountJson(main);
-  else if (tool === "base64") mountBase64(main);
-  else if (tool === "days") mountDays(main);
-  else if (tool === "sort") mountSort(main);
-  else if (tool === "replace") mountReplace(main);
-  else if (tool === "words") mountWords(main);
-  else if (tool === "add-days") mountAddDays(main);
-  else if (tool === "week") mountWeek(main);
-  else if (tool === "aspect") mountAspect(main);
-  else if (tool === "workdays") mountWorkdays(main);
-  else if (tool === "fraction") mountFraction(main);
-  else if (tool === "hourly") mountHourly(main);
-  else if (tool === "margin") mountMargin(main);
-  else if (tool === "radix") mountRadix(main);
-  else if (tool === "duration") mountDuration(main);
-  else if (tool === "gold" || tool === "silver" || tool === "platinum" || tool === "palladium") mountMetal(main, tool);
-  else if (tool === "oil") mountOil(main);
-  else if (tool === "stocks") mountStocks(main);
-  else if (tool === "resize") await mountResize(main);
-  else if (tool === "crop") await mountCrop(main);
-  else if (tool === "rotate") await mountRotate(main);
-  else if (tool === "exif") await mountExif(main);
-  else if (tool === "meme") await mountMeme(main);
-  else if (tool === "invoice") mountInvoice(main);
-  else if (tool === "signature") mountSignature(main);
-  else if (tool === "favicon") await mountFavicon(main);
-  else if (tool === "pdf-jpg") {
-    const mod = await import("./pdf-jpg/ui");
-    unmountPdfJpg = mod.unmountPdfJpg;
-    await mod.mountPdfJpg(main);
-  } else if (tool === "merge-pdf") {
-    const mod = await import("./merge-pdf/ui");
-    unmountMergePdf = mod.unmountMergePdf;
-    await mod.mountMergePdf(main);
-  } else if (tool === "compress-pdf") {
-    const mod = await import("./compress-pdf/ui");
-    unmountCompressPdf = mod.unmountCompressPdf;
-    await mod.mountCompressPdf(main);
-  } else if (tool === "split-pdf") {
-    const mod = await import("./split-pdf/ui");
-    if (gen !== pageGen) return;
-    unmountSplitPdf = mod.unmountSplitPdf;
-    await mod.mountSplitPdf(main);
-  } else if (tool === "portrait-sim") {
-    const mod = await import("./portrait-sim/ui");
-    if (gen !== pageGen) return;
-    unmountPortraitSim = mod.unmountPortraitSim;
-    await mod.mountPortraitSim(main);
-  } else if (learnHub) mountLearnHub(main);
-  else if (tutorial) mountLearn(main, tutorial);
-  else if (gameId) mountGame(main, gameId);
-  else if (gamesHub) mountGamesHub(main, gameConsole);
-  else if (devicePage) mountDevice(main, loc, devicePage);
-  else if (legalPage) main.innerHTML = legalStaticHtml(loc, legalPage);
-  else if (marketId) mountMarket(main, marketId);
-  else if (marketsHub) mountMarketsHub(main);
-  else mountHome(main, loc);
-  if (gen !== pageGen) return;
-  if (tool && !(tool === "clip" && clipId)) {
-    const lessons = toolLessonsSection(loc, tool);
-    main.append(guideSection(tool), ...(lessons ? [lessons] : []), faqSection(loc, tool, convertJob, resizeJob));
+  const alive = (): boolean => gen === pageGen;
+  if (tool) {
+    const mounted = tool;
+    const unmount = await TOOL_LOADERS[mounted](main, { clipId, alive });
+    if (!alive()) {
+      // The user left while this tool was mounting: release its window listeners once the newer page has mounted,
+      // unless that page uses the same module (watermark/mosaic, the asset tools), whose state this would clear.
+      if (unmount) void mountedPage.then(() => {
+        if (unmountCurrent !== unmount) unmount();
+      });
+      return;
+    }
+    unmountCurrent = unmount ?? noop;
+    if (!(tool === "clip" && clipId)) {
+      const lessons = toolLessonsSection(loc, tool);
+      main.append(guideSection(tool), ...(lessons ? [lessons] : []), faqSection(loc, tool, convertJob, resizeJob));
+    }
+  } else if (learnHub || tutorial) {
+    const m = await import("./learn/ui");
+    if (!alive()) return;
+    if (tutorial) m.mountLearn(main, tutorial);
+    else m.mountLearnHub(main);
+  } else if (gameId || gamesHub) {
+    const m = await import("./games/ui");
+    if (!alive()) return;
+    if (gameId) m.mountGame(main, gameId);
+    else m.mountGamesHub(main, gameConsole);
+  } else if (devicePage) {
+    const m = await import("./device/ui");
+    if (!alive()) return;
+    m.mountDevice(main, loc, devicePage);
+  } else if (legalPage) {
+    main.innerHTML = legalStaticHtml(loc, legalPage);
+  } else if (marketId || marketsHub) {
+    const m = await import("./markets/ui");
+    if (!alive()) return;
+    if (marketId) m.mountMarket(main, marketId);
+    else m.mountMarketsHub(main);
+    unmountCurrent = m.unmountMarket;
+  } else {
+    const m = await import("./home");
+    if (!alive()) return;
+    unmountCurrent = m.mountHome(main, loc);
   }
-}
-
-function menuToggle(e: Event): void {
-  e.stopPropagation();
-  const btn = e.currentTarget as HTMLElement;
-  const menu = btn.closest(".menu");
-  const willOpen = Boolean(menu && !menu.classList.contains("open"));
-  closeOtherMenus(willOpen ? menu : null);
-  if (willOpen) menu?.classList.add("open");
-  else {
-    menu?.classList.remove("open");
-    btn.blur();
-  }
-}
-
-function menuPointerEnter(e: Event): void {
-  closeOtherMenus(e.currentTarget as Element);
-}
-
-function toolsMenu(loc: Locale, current: ToolId | null, device: DevicePageId | null): HTMLElement {
-  const active = Boolean(current) || device !== null;
-  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
-    h("button", {
-      type: "button",
-      class: "menu-btn" + (active ? " on" : ""),
-      "aria-haspopup": "true",
-      "aria-expanded": "false",
-      onClick: menuToggle,
-    }, t("nav.tools")),
-    h("div", { class: "menu-panel wide", role: "menu" },
-      ...CATEGORIES.flatMap((cat) => [
-        h("div", { class: "menu-group" }, t(`nav.${cat.id}`)),
-        ...cat.tools.map((id) =>
-          h("a", {
-            class: "menu-item" + (current === id ? " on" : ""),
-            href: appHref(loc, id),
-            role: "menuitem",
-            "data-nav": id,
-            "aria-current": current === id ? "page" : undefined,
-          },
-            h("img", { class: "menu-cover", src: thumbSrc(COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
-            h("div", { class: "menu-copy" },
-              h("strong", null, t(`tools.${id}.name`)),
-              h("span", null, t(`tools.${id}.blurb`)),
-            ),
-          ),
-        ),
-      ]),
-      h("div", { class: "menu-group" }, t("nav.device")),
-      h("a", {
-        class: "menu-item plain" + (device === "hub" ? " on" : ""),
-        href: deviceHref(loc, "hub"),
-        role: "menuitem",
-        "data-nav": "device",
-        "aria-current": device === "hub" ? "page" : undefined,
-      },
-        h("div", { class: "menu-copy" },
-          h("strong", null, devicePageCopy(loc, "hub").name),
-          h("span", null, deviceMessages(loc).all),
-        ),
-      ),
-      ...DEVICE_CHILD_PAGES.map((id) =>
-        h("a", {
-          class: "menu-item" + (device === id ? " on" : ""),
-          href: deviceHref(loc, id),
-          role: "menuitem",
-          "data-nav": `device-${id}`,
-          "aria-current": device === id ? "page" : undefined,
-        },
-          h("img", { class: "menu-cover", src: thumbSrc(DEVICE_COVER, 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
-          h("div", { class: "menu-copy" },
-            h("strong", null, devicePageCopy(loc, id).name),
-            h("span", null, devicePageCopy(loc, id).blurb),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-function learnMenu(loc: Locale, current: TutorialId | null, hub: boolean): HTMLElement {
-  const active = hub || Boolean(current);
-  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
-    h("button", {
-      type: "button",
-      class: "menu-btn" + (active ? " on" : ""),
-      "aria-haspopup": "true",
-      onClick: menuToggle,
-    }, t("nav.learn")),
-    h("div", { class: "menu-panel", role: "menu" },
-      h("a", {
-        class: "menu-item plain" + (hub ? " on" : ""),
-        href: learnHref(loc, null),
-        role: "menuitem",
-        "data-nav": "learn",
-        "aria-current": hub ? "page" : undefined,
-      },
-        h("div", { class: "menu-copy" },
-          h("strong", null, t("learn.hub.menu")),
-          h("span", null, t("learn.hub.blurb")),
-        ),
-      ),
-      ...TUTORIAL_GROUPS.flatMap((group) => [
-        h("div", { class: "menu-group" }, t(`learn.groups.${group.id}`)),
-        ...group.tutorials.map((id) =>
-          h("a", {
-            class: "menu-item" + (current === id ? " on" : ""),
-            href: learnHref(loc, id),
-            role: "menuitem",
-            "data-nav": `learn-${id}`,
-            "aria-current": current === id ? "page" : undefined,
-          },
-            h("img", { class: "menu-cover", src: thumbSrc(LEARN_COVER[id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
-            h("div", { class: "menu-copy" },
-              h("strong", null, t(`learn.${id}.name`)),
-              h("span", null, t(`learn.${id}.blurb`)),
-            ),
-          ),
-        ),
-      ]),
-    ),
-  );
-}
-
-function gamesMenu(loc: Locale, consoleId: GameConsoleId | null, current: GameId | null, hub: boolean): HTMLElement {
-  const active = hub || Boolean(current);
-  return h("div", { class: "menu" + (active ? " current" : ""), onPointerEnter: menuPointerEnter },
-    h("button", {
-      type: "button",
-      class: "menu-btn" + (active ? " on" : ""),
-      "aria-haspopup": "true",
-      onClick: menuToggle,
-    }, t("nav.games")),
-    h("div", { class: "menu-panel wide", role: "menu" },
-      h("a", {
-        class: "menu-item plain" + (hub && !consoleId ? " on" : ""),
-        href: gamesHref(loc, null),
-        role: "menuitem",
-        "data-nav": "games",
-        "aria-current": hub && !consoleId ? "page" : undefined,
-      },
-        h("div", { class: "menu-copy" },
-          h("strong", null, t("games.hub.menu")),
-          h("span", null, t("games.hub.blurb")),
-        ),
-      ),
-      ...GAME_CONSOLES.flatMap((id) => [
-        h("div", { class: "menu-group" }, t(`games.consoles.${id}`)),
-        ...GAMES.filter((game) => game.console === id).map((game) =>
-          h("a", {
-            class: "menu-item" + (current === game.id ? " on" : ""),
-            href: gamesHref(loc, game.console, game.id),
-            role: "menuitem",
-            "data-nav": `game-${game.id}`,
-            "aria-current": current === game.id ? "page" : undefined,
-          },
-            h("img", { class: "menu-cover", src: thumbSrc(GAME_COVER[game.id], 240), alt: "", width: "72", height: "40", loading: "lazy", decoding: "async" }),
-            h("div", { class: "menu-copy" },
-              h("strong", null, gameName(loc, game.id).name),
-              h("span", null, gameName(loc, game.id).blurb),
-            ),
-          ),
-        ),
-      ]),
-    ),
-  );
 }
 
 function upsertMeta(attr: "name" | "property", key: string, content: string | null): void {

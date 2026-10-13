@@ -1,6 +1,6 @@
 import { h } from "../dom";
 import { locale as currentLocale } from "../i18n";
-import { MARKET_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "../covers";
+import { linkList } from "../links";
 import { appHref, marketsHref } from "../../shared/path";
 import {
   WEIGHT_UNITS,
@@ -20,7 +20,6 @@ import {
   marketUi,
   type MarketFaq,
 } from "../../shared/markets-i18n";
-import type { Locale } from "../../shared/locale";
 
 let weightEl: HTMLInputElement | null = null;
 let unitEl: HTMLSelectElement | null = null;
@@ -29,31 +28,6 @@ let stockEls: HTMLInputElement[] = [];
 let outEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
-
-export function marketTile(loc: Locale, id: MarketId): HTMLElement {
-  const copy = marketCopy(loc, id);
-  return h("a", {
-    class: "tile",
-    href: marketsHref(loc, id),
-    "data-nav": `markets-${id}`,
-  },
-    h("div", { class: "tile-cover" },
-      h("img", {
-        src: thumbSrc(MARKET_COVER[id], 640),
-        srcset: tileSrcset(MARKET_COVER[id]),
-        sizes: TILE_SIZES,
-        alt: copy.name,
-        width: "640",
-        height: "360",
-        loading: "lazy",
-      }),
-    ),
-    h("div", { class: "tile-body" },
-      h("h3", null, copy.name),
-      h("p", null, copy.blurb),
-    ),
-  );
-}
 
 export function mountMarketsHub(host: HTMLElement): void {
   const loc = currentLocale();
@@ -64,9 +38,10 @@ export function mountMarketsHub(host: HTMLElement): void {
       h("h1", null, hub.h1),
       h("p", { class: "lede" }, hub.lead),
     ),
-    h("div", { class: "tiles" },
-      ...(["gold", "silver", "stocks"] as const).map((id) => marketTile(loc, id)),
-    ),
+    linkList((["gold", "silver", "stocks"] as const).map((id) => {
+      const copy = marketCopy(loc, id);
+      return { href: marketsHref(loc, id), name: copy.name, blurb: copy.blurb, nav: `markets-${id}` };
+    })),
     h("p", { class: "muted" }, hub.disclaimer),
     faqBlock(marketHubFaqItems(loc)),
   );

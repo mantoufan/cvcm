@@ -1,5 +1,5 @@
-import { GAME_COVER, TILE_SIZES, thumbSrc, tileSrcset } from "../covers";
 import { h } from "../dom";
+import { linkList, type LinkItem } from "../links";
 import { locale, t } from "../i18n";
 import { CONSOLE_CONTROLS } from "../../shared/game-controls";
 import {
@@ -43,7 +43,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
   const list = gamesFor(consoleId, genre);
   const flash = consoleId === "flash";
   const catalog = list.length
-    ? h("div", { class: "tiles" }, ...list.map((game) => gameTile(loc, game)))
+    ? linkList(list.map((game) => gameLink(loc, game)))
     : h("p", { class: "learn-empty" }, flash && !genre ? t("games.flash.catalog") : t("games.empty"));
   if (flash) {
     host.append(
@@ -63,9 +63,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
       h("p", { class: "lede game-lead" }, t("games.flash.lead")),
       filters(loc, consoleId, genre),
       h("section", { class: "wall" },
-        h("div", { class: "wall-h" },
-          h("h2", null, t("games.consoles.flash")),
-        ),
+        h("h2", null, t("games.consoles.flash")),
         catalog,
       ),
       flashGuide(),
@@ -74,17 +72,13 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
     return;
   }
   host.append(
-    h("section", { class: "hero-band" },
-      h("span", { class: "hero-ornament", "aria-hidden": "true" }, "✦"),
-      h("p", { class: "kicker" }, t("games.hub.kicker")),
+    h("header", { class: "tool-head" },
       h("h1", null, consoleId ? t(`games.consoles.${consoleId}`) : t("games.hub.title")),
       h("p", { class: "lede" }, t("games.hub.lead")),
     ),
     filters(loc, consoleId, genre),
     h("section", { class: "wall" },
-      h("div", { class: "wall-h" },
-        h("h2", null, consoleId ? t(`games.consoles.${consoleId}`) : t("nav.games")),
-      ),
+      h("h2", { class: "sr-only" }, consoleId ? t(`games.consoles.${consoleId}`) : t("nav.games")),
       catalog,
     ),
     gamesFaq(loc, consoleId),
@@ -136,34 +130,15 @@ function chip(href: string, on: boolean, label: string, nav: string): HTMLElemen
   }, label);
 }
 
-export function gameTile(loc: ReturnType<typeof locale>, game: Game): HTMLElement {
+export function gameLink(loc: ReturnType<typeof locale>, game: Game): LinkItem {
   const copy = gameName(loc, game.id);
-  return h("a", {
-    class: "tile",
+  return {
     href: gamesHref(loc, game.console, game.id),
-    "data-nav": `game-${game.id}`,
-  },
-    h("div", { class: "tile-cover" },
-      h("img", {
-        src: thumbSrc(GAME_COVER[game.id], 640),
-        srcset: tileSrcset(GAME_COVER[game.id]),
-        sizes: TILE_SIZES,
-        alt: copy.name,
-        width: "640",
-        height: "360",
-        loading: "lazy",
-      }),
-    ),
-    h("div", { class: "tile-body" },
-      h("p", { class: "game-meta" },
-        t(`games.consoles.${game.console}`),
-        " · ",
-        t(`games.genres.${game.genre}`),
-      ),
-      h("h3", null, copy.name),
-      h("p", null, copy.blurb),
-    ),
-  );
+    name: copy.name,
+    blurb: copy.blurb,
+    meta: `${t(`games.consoles.${game.console}`)} · ${t(`games.genres.${game.genre}`)}`,
+    nav: `game-${game.id}`,
+  };
 }
 
 export function mountGame(host: HTMLElement, id: GameId): void {
@@ -193,15 +168,6 @@ export function mountGame(host: HTMLElement, id: GameId): void {
       cheats: emulatorCheats(game),
     }),
     h("p", { class: "lede game-lead" }, copy.lead),
-    h("figure", { class: "game-hero" },
-      h("img", {
-        src: GAME_COVER[id],
-        alt: copy.name,
-        width: "1280",
-        height: "720",
-        loading: "lazy",
-      }),
-    ),
     ...(cheats.length
       ? [h("section", { class: "game-section", "aria-labelledby": "cheats-title" },
         h("h2", { id: "cheats-title" }, t("games.cheats")),
@@ -256,7 +222,7 @@ export function mountGame(host: HTMLElement, id: GameId): void {
     ...(related.length
       ? [h("section", { class: "learn-related" },
         h("h2", null, t("games.related")),
-        h("div", { class: "tiles" }, ...related.map((item) => gameTile(loc, item))),
+        linkList(related.map((item) => gameLink(loc, item))),
       )]
       : []),
     h("p", { class: "game-legal" }, t("games.legal")),

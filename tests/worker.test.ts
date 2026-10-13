@@ -49,3 +49,55 @@ it("allows same-origin workers for in-tab PDF rendering", async () => {
   });
   expect(response.headers.get("Content-Security-Policy")).toContain("worker-src 'self' blob:");
 });
+
+const shell = '<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /></head><body><div id="app"></div></body></html>';
+
+function ssrAssets(fragments: Record<string, string>) {
+  return {
+    fetch: async (input: Request | string) => {
+      const path = new URL(typeof input === "string" ? input : input.url).pathname;
+      const body = fragments[path] ?? shell;
+      return new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    },
+  };
+}
+
+it("serves the prerendered body of a page inside its HTML", async () => {
+  const res = await worker.fetch(new Request("https://cv.cm/en/tip/"), {
+    ASSETS: ssrAssets({ "/_ssr/en/tip/": '<!--ssr--><div class="page"><h1>Tip $&amp; split $1</h1></div>' }),
+  });
+  expect(res.status).toBe(200);
+  const html = await res.text();
+  // A "$&" in page text must not be expanded by String.replace.
+  expect(html).toContain('<div id="app"><div class="page"><h1>Tip $&amp; split $1</h1></div></div>');
+  expect(html).not.toContain("<!--ssr-->");
+});
+
+it("falls back to the text copy when a page was not prerendered", async () => {
+  const res = await worker.fetch(new Request("https://cv.cm/en/tip/"), { ASSETS: ssrAssets({}) });
+  const html = await res.text();
+  expect(html).toMatch(/<div id="app"><div class="page"><header class="top">/);
+  expect(html).toContain("<h1>");
+});
+
+it("does not serve prerendered bodies on their own", async () => {
+  const res = await worker.fetch(new Request("https://cv.cm/_ssr/en/tip/"), {
+    ASSETS: ssrAssets({ "/_ssr/en/tip/": "<!--ssr--><div></div>" }),
+  });
+  expect(res.status).toBe(404);
+});
+
+it("never answers a page revalidation with index.html's validators", async () => {
+  let sawConditional = false;
+  const res = await worker.fetch(new Request("https://cv.cm/en/tip/", { headers: { "If-None-Match": '"abc"' } }), {
+    ASSETS: {
+      fetch: async (input: Request | string) => {
+        if (typeof input !== "string" && input.headers.get("If-None-Match")) sawConditional = true;
+        return new Response(shell, { headers: { "Content-Type": "text/html; charset=utf-8", ETag: '"abc"' } });
+      },
+    },
+  });
+  expect(sawConditional).toBe(false);
+  expect(res.status).toBe(200);
+  expect(res.headers.get("ETag")).toBeNull();
+});

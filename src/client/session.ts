@@ -41,8 +41,14 @@ export async function saveDraft(key: string, value: unknown): Promise<void> {
   db.close();
 }
 
+/** Null when there is no draft or IndexedDB is unavailable (some private modes): a tool must still open. */
 export async function loadDraft<T>(key: string): Promise<T | null> {
-  const db = await openDb();
+  let db: IDBDatabase;
+  try {
+    db = await openDb();
+  } catch {
+    return null;
+  }
   const value = await new Promise<T | null>((resolve, reject) => {
     const tx = db.transaction(STORE, "readonly");
     const req = tx.objectStore(STORE).get(key);
@@ -54,7 +60,12 @@ export async function loadDraft<T>(key: string): Promise<T | null> {
 }
 
 export async function clearDraft(key: string): Promise<void> {
-  const db = await openDb();
+  let db: IDBDatabase;
+  try {
+    db = await openDb();
+  } catch {
+    return;
+  }
   await new Promise<void>((resolve, reject) => {
     const tx = db.transaction(STORE, "readwrite");
     tx.oncomplete = () => resolve();

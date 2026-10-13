@@ -7,7 +7,7 @@ import ko from "../src/locales/guides/ko.json";
 import vi from "../src/locales/guides/vi.json";
 import zhCN from "../src/locales/guides/zh-CN.json";
 import zhTW from "../src/locales/guides/zh-TW.json";
-import { GUIDE_STEP_COUNT, guideImage, guideText, toolHowToJsonLd } from "../src/shared/guide";
+import { GUIDE_STEP_COUNT, guideText, toolHowToJsonLd } from "../src/shared/guide";
 import { TOOLS } from "../src/shared/path";
 
 function keys(value: unknown, prefix = ""): string[] {
@@ -40,27 +40,23 @@ describe("tool guides", () => {
     }
   });
 
-  it("names a screenshot path for every tested step", () => {
+  it("has text for every step", () => {
     for (const tool of TOOLS) {
       const count = GUIDE_STEP_COUNT[tool];
       for (let i = 1; i <= count; i++) {
         expect(guideText("en", `tools.${tool}.s${i}t`).length, `${tool} s${i}t`).toBeGreaterThan(2);
         expect(guideText("en", `tools.${tool}.s${i}b`).length, `${tool} s${i}b`).toBeGreaterThan(8);
-        const file = String(i).padStart(2, "0");
-        expect(guideImage(tool, i).split("?")[0]).toMatch(
-          new RegExp(`^/covers/guides/${tool}/${file}(\\.v\\d+)?\\.jpg$`),
-        );
       }
       expect(guideText("en", `tools.${tool}.s${count + 1}t`)).toBe(`tools.${tool}.s${count + 1}t`);
     }
   });
 
-  it("emits HowTo JSON-LD with images", () => {
+  it("emits HowTo JSON-LD matching the text-only guide", () => {
     const ld = toolHowToJsonLd("en", "password");
     expect(ld["@type"]).toBe("HowTo");
     const steps = ld.step as Array<Record<string, unknown>>;
     expect(steps).toHaveLength(GUIDE_STEP_COUNT.password);
-    expect(String(steps[0].image)).toContain("/covers/guides/password/01.jpg");
+    expect(steps[0].image).toBeUndefined();
     expect(String(steps[0].url)).toContain("/en/password/#guide-step-1");
   });
 });

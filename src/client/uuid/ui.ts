@@ -14,7 +14,7 @@ let listEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 
 export function mountUuid(host: HTMLElement): void {
-  listEl = h("ol", { class: "name-list uuid-list" });
+  listEl = h("ol", { class: "name-list uuid-list", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("uuid.back")),

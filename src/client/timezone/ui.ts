@@ -21,6 +21,8 @@ let copyBtn: HTMLButtonElement | null = null;
 export function mountTimezone(host: HTMLElement): void {
   const local = guessTimeZone();
   fromEl = zoneSelect(local);
+  // The visitor's own zone: the build's prerender must not preselect the build machine's.
+  fromEl.dataset.volatile = "";
   toEl = zoneSelect("UTC");
   whenEl = h("input", {
     type: "datetime-local",
@@ -29,8 +31,8 @@ export function mountTimezone(host: HTMLElement): void {
   });
   fromEl.addEventListener("change", () => paint());
   toEl.addEventListener("change", () => paint());
-  outEl = h("p", { class: "timezone-out" });
-  isoEl = h("p", { class: "muted" });
+  outEl = h("p", { class: "timezone-out", "data-volatile": "" });
+  isoEl = h("p", { class: "muted", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("timezone.back")),
