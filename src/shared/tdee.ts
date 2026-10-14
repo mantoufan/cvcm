@@ -16,10 +16,16 @@ export const ACTIVITIES = Object.keys(ACTIVITY_FACTOR) as Activity[];
 export const CUT_KCAL = 500;
 export const BULK_KCAL = 300;
 
+/** Common lower limits for an unsupervised diet (kcal/day). */
+export const CUT_FLOOR: Record<Sex, number> = { female: 1200, male: 1500 };
+
 export type TdeeResult = {
   bmr: number;
   tdee: number;
+  /** TDEE − 500, but never below max(BMR, CUT_FLOOR[sex]) and never above TDEE. */
   cut: number;
+  /** The floor that limited the cut, or null when the full 500 kcal deficit fits. */
+  cutFloor: number | null;
   bulk: number;
 };
 
@@ -45,5 +51,8 @@ export function tdeeFrom(sex: Sex, kg: number, cm: number, age: number, activity
   const bmr = bmrMifflin(sex, kg, cm, age);
   if (bmr == null || bmr <= 0) return null;
   const tdee = bmr * ACTIVITY_FACTOR[activity];
-  return { bmr, tdee, cut: tdee - CUT_KCAL, bulk: tdee + BULK_KCAL };
+  const floor = Math.max(bmr, CUT_FLOOR[sex]);
+  const raw = tdee - CUT_KCAL;
+  const cut = raw >= floor ? raw : Math.min(tdee, floor);
+  return { bmr, tdee, cut, cutFloor: raw >= floor ? null : floor, bulk: tdee + BULK_KCAL };
 }

@@ -337,6 +337,9 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .perm-grid th[scope="row"] { text-align: left; color: var(--ink-soft); font-weight: 600; }
 .perm-grid input { width: 1.15rem; height: 1.15rem; accent-color: var(--pink-deep); }
 .chmod-out { min-height: 0; }
+.stats-grid > .hint { grid-column: 1 / -1; margin-top: 0.3rem; }
+.copy-failed { color: var(--pink-deep); }
+.btn.copy-failed { color: var(--white); background: var(--pink-dark); }
 .typing-stage { display: grid; gap: 0.7rem; }
 .typing-text { margin: 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font-size: 1.15rem; line-height: 1.9; white-space: pre-wrap; word-break: break-word; user-select: none; }
 .typing-text .tc-todo { color: var(--ink-soft); }

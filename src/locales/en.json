@@ -3942,7 +3942,7 @@
       "q2": "Which formula does this use?",
       "a2": "Mifflin–St Jeor: 10 × kg + 6.25 × cm − 5 × age, plus 5 for men or minus 161 for women. It is the equation most dietitians reach for first, but any formula is an estimate.",
       "q3": "Where do the cut and bulk numbers come from?",
-      "a3": "Cut is TDEE minus 500 kcal a day, which is roughly 0.5 kg (1 lb) a week. Bulk is TDEE plus 300 kcal for a slow gain. Watch the scale for two or three weeks and adjust.",
+      "a3": "Cut is TDEE minus 500 kcal a day, which is roughly 0.5 kg (1 lb) a week. Bulk is TDEE plus 300 kcal for a slow gain. Watch the scale for two or three weeks and adjust. It never goes below your BMR or 1,200 kcal (women) / 1,500 kcal (men); the page says when that limit applies.",
       "q4": "Is this medical advice?",
       "a4": "No. It is an estimate for healthy adults. If you are pregnant, under 18, have a medical condition or want to lose weight fast, talk to a doctor or dietitian.",
       "q5": "Is my data uploaded?",
@@ -5594,9 +5594,11 @@
     "kcalDay": "{n} kcal/day",
     "formula": "BMR uses the Mifflin–St Jeor equation; TDEE is BMR × activity factor (1.2–1.9).",
     "disclaimer": "An estimate for healthy adults, not medical advice. Ask a doctor or dietitian before a big change in diet.",
+    "cutClamped": "The cut is held at {n} kcal: not below your BMR or 1,200 kcal (women) / 1,500 kcal (men) a day without medical supervision.",
     "invalid": "Enter an age from 15 to 100 and a weight and height above zero.",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
   },
   "cidr": {
     "title": "Subnet calculator",
@@ -5620,7 +5622,8 @@
     "invalid": "Type an IPv4 address with a prefix from /0 to /32, or with a valid netmask.",
     "rangeInvalid": "Type two IPv4 addresses, the first not higher than the last.",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
   },
   "chmod": {
     "title": "Chmod calculator",
@@ -5642,11 +5645,15 @@
     "symbolic": "Symbolic (e.g. rwxr-xr-x)",
     "command": "Command",
     "file": "File or folder",
+    "directory": "Folder",
     "recursive": "Recursive (-R)",
+    "dirHint": "For a folder (or -R) without special bits the command uses 00755: GNU chmod keeps a folder's setuid/setgid unless the number has that extra leading 0; macOS reads it as 0755.",
+    "quoteHint": "A leading ~/ and * ? [ ] stay unquoted so your shell expands them; spaces, quotes, $ ; & and the like are quoted. A name starting with - gets -- first.",
     "badOctal": "Octal needs 3 or 4 digits from 0 to 7.",
     "badSymbolic": "Use 9 characters such as rwxr-xr-x (s, S, t or T for special bits).",
     "copy": "Copy command",
-    "copied": "Copied"
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
   },
   "typing": {
     "title": "Typing speed test",
@@ -5686,6 +5693,7 @@
     "copyAll": "Copy all HEX",
     "copyOne": "Click to copy HEX",
     "copied": "Copied",
+    "copyFailed": "Copy failed",
     "done": "Main colors, most common first. Click one to copy it.",
     "empty": "This image has no opaque pixels.",
     "errorDecode": "Could not read that image."

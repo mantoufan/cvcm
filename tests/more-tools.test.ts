@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { bmrMifflin, feetInchesToCm, lbToKg, tdeeFrom } from "../src/shared/tdee";
 import { maskToPrefix, parseCidr, parseIpv4, rangeToCidrs, subnetOf } from "../src/shared/cidr";
-import { chmodCommand, parseOctal, parseSymbolic, toOctal, toSymbolic } from "../src/shared/chmod";
-import { TYPING_METRIC, addStrokes, markPassage, scoreTyping } from "../src/shared/typing";
+import { chmodCommand, commandMode, parseOctal, parseSymbolic, shellQuote, toOctal, toSymbolic } from "../src/shared/chmod";
+import { SETTLE_DISTANCE, TYPING_METRIC, addStrokes, emptyStrokes, markPassage, scoreTyping, type Strokes } from "../src/shared/typing";
 import { TYPING_PASSAGES } from "../src/shared/typing-passages";
 import { extractPalette, rgbToHex, sampleSize } from "../src/shared/image-colors";
 import { LOCALES } from "../src/shared/locale";
@@ -17,10 +17,30 @@ describe("tdee", () => {
     const r = tdeeFrom("male", 70, 175, 30, "moderate")!;
     expect(r.tdee).toBeCloseTo(1648.75 * 1.55, 6);
     expect(r.cut).toBeCloseTo(r.tdee - 500, 6);
+    expect(r.cutFloor).toBeNull();
     expect(r.bulk).toBeCloseTo(r.tdee + 300, 6);
     expect(tdeeFrom("male", 0, 175, 30, "light")).toBeNull();
     expect(tdeeFrom("male", 70, 175, 12, "light")).toBeNull();
     expect(lbToKg(154)).toBeCloseTo(69.85, 2);
+  });
+
+  it("never cuts below BMR or the sex-specific floor", () => {
+    // Sedentary woman: BMR 1189, TDEE 1426.8 → TDEE−500 would be 926.8.
+    const small = tdeeFrom("female", 55, 160, 40, "sedentary")!;
+    expect(small.bmr).toBeCloseTo(1189, 6);
+    expect(small.cutFloor).toBe(1200);
+    expect(small.cut).toBe(1200);
+    // TDEE below the floor: no "cut" above maintenance.
+    const tiny = tdeeFrom("female", 45, 150, 60, "sedentary")!;
+    expect(tiny.tdee).toBeLessThan(1200);
+    expect(tiny.cut).toBeCloseTo(tiny.tdee, 6);
+    // Men: 1500 floor, or BMR when that is higher.
+    const man = tdeeFrom("male", 60, 165, 60, "sedentary")!;
+    expect(man.cutFloor).toBe(1500);
+    expect(man.cut).toBe(1500);
+    const big = tdeeFrom("male", 100, 190, 30, "sedentary")!;
+    expect(big.cutFloor).toBeCloseTo(2042.5, 6);
+    expect(big.cut).toBeCloseTo(big.bmr, 6);
     expect(feetInchesToCm(5, 9)).toBeCloseTo(175.26, 2);
   });
 });
@@ -85,9 +105,29 @@ describe("chmod", () => {
     expect(toOctal(0o755)).toBe("755");
     expect(toOctal(0o4755)).toBe("4755");
     expect(toOctal(0o7)).toBe("007");
+    expect(parseSymbolic("-rw-r--r--@")).toBe(0o644);
+    expect(parseSymbolic("drwxr-xr-x+")).toBe(0o755);
+    expect(parseSymbolic("-rw-r--r--.")).toBe(0o644);
+    expect(parseSymbolic("rwxr-xr-x@")).toBe(0o755);
+    expect(parseSymbolic("-rw-r--r--!")).toBeNull();
+  });
+
+  it("builds a safe chmod command", () => {
     expect(chmodCommand(0o755, "deploy.sh")).toBe("chmod 755 deploy.sh");
-    expect(chmodCommand(0o644, "my file.txt", true)).toBe("chmod -R 644 'my file.txt'");
+    expect(chmodCommand(0o644, "my file.txt", { recursive: true })).toBe("chmod -R 00644 'my file.txt'");
     expect(chmodCommand(0o600, "")).toBe("chmod 600 file");
+    expect(chmodCommand(0o644, "-rf.txt")).toBe("chmod 644 -- -rf.txt");
+    expect(chmodCommand(0o755, "~/bin/*.sh")).toBe("chmod 755 ~/bin/*.sh");
+    expect(shellQuote("~/My Docs/*.txt")).toBe("~/'My Docs/'*.txt");
+    expect(shellQuote("log[1].txt")).toBe("log[1].txt");
+    expect(shellQuote("a$b;c")).toBe("'a$b;c'");
+    expect(shellQuote("it's")).toBe("'it'\\''s'");
+    expect(shellQuote("=x")).toBe("'=x'");
+    expect(commandMode(0o4755)).toBe("4755");
+    expect(commandMode(0o4755, { directory: true })).toBe("4755");
+    expect(commandMode(0o755, { directory: true })).toBe("00755");
+    expect(commandMode(0o755, { clearSpecial: true })).toBe("0755");
+    expect(commandMode(0o755)).toBe("755");
   });
 });
 
@@ -107,18 +147,43 @@ describe("typing", () => {
     expect(markPassage("abc", "ax").map((c) => c.state)).toEqual(["ok", "bad", "cur"]);
   });
 
-  it("keeps fixed mistakes in accuracy", () => {
-    let k = { typed: 0, wrong: 0 };
-    k = addStrokes("abcd", "", "ab", k);
-    k = addStrokes("abcd", "ab", "abx", k); // wrong
-    k = addStrokes("abcd", "abx", "ab", k); // backspace adds nothing
-    k = addStrokes("abcd", "ab", "abcd", k);
-    expect(k).toEqual({ typed: 5, wrong: 1 });
-    const s = scoreTyping("abcd", "abcd", 60_000, "wpm", k);
-    expect(s).toMatchObject({ correct: 4, errors: 1, accuracy: 80 });
-    expect(s.speed).toBeCloseTo(0.8, 6);
-    // An edit in the middle of the text is not counted as new typing.
-    expect(addStrokes("abcd", "abc", "xbc", { typed: 3, wrong: 0 })).toEqual({ typed: 3, wrong: 0 });
+  const run = (target: string, steps: string[]): Strokes => {
+    let k = emptyStrokes();
+    let prev = "";
+    for (const next of steps) {
+      k = addStrokes(target, prev, next, k);
+      prev = next;
+    }
+    return k;
+  };
+
+  it("does not count Telex / VNI rewrites as mistakes", () => {
+    // Unikey: "a", backspace, "á" — no composition events.
+    const k = run("cá", ["c", "ca", "c", "cá"]);
+    expect(k.wrong + k.pending.length).toBe(0);
+    expect(scoreTyping("cá", "cá", 60_000, "wpm", k).errors).toBe(0);
+    // Cluster rewrite: "uo" then both replaced by "ươ" in one edit, then the tone.
+    const k2 = run("người ", ["n", "ng", "ngu", "nguo", "ngươ", "ngươi", "người", "người "]);
+    expect(k2.wrong + k2.pending.length).toBe(0);
+    // VNI: "e", "ê" (still wrong), "ế".
+    expect(run("ế", ["e", "ê", "ế"]).pending).toEqual([]);
+  });
+
+  it("counts a mistake once the user moves on, even if fixed later", () => {
+    // Typo carried past a space, then fixed by backspacing over the space.
+    const k = run("ab cd", ["a", "ax", "ax ", "ax", "a", "ab", "ab ", "ab c", "ab cd"]);
+    expect(k.wrong).toBe(1);
+    expect(k.pending).toEqual([]);
+    const s = scoreTyping("ab cd", "ab cd", 60_000, "wpm", k);
+    expect(s.errors).toBe(1);
+    expect(s.correct).toBe(5);
+    // A wrong character left far behind settles even without spaces (CJK).
+    const far = run("一二三四五六七八九十", ["x", "x二三四五六七八九"]);
+    expect(far.wrong).toBe(1);
+    expect(SETTLE_DISTANCE).toBe(8);
+    // A wrong character still on screen counts right away.
+    const live = run("abc", ["a", "ax"]);
+    expect(scoreTyping("abc", "ax", 1000, "wpm", live).errors).toBe(1);
   });
 
   it("has passages and an honest metric for every locale", () => {

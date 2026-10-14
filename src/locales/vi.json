@@ -2696,7 +2696,7 @@
       "q2": "Công cụ dùng công thức nào?",
       "a2": "Công thức Mifflin–St Jeor: 10 × cân nặng (kg) + 6,25 × chiều cao (cm) − 5 × tuổi, cộng 5 với nam hoặc trừ 161 với nữ. Đây là công thức chuyên gia dinh dưỡng hay dùng nhất, nhưng công thức nào cũng chỉ là ước tính.",
       "q3": "Số calo giảm cân và tăng cân lấy từ đâu?",
-      "a3": "Giảm cân là TDEE trừ 500 kcal mỗi ngày, khoảng 0,5 kg mỗi tuần. Tăng cân là TDEE cộng 300 kcal để tăng chậm. Theo dõi cân nặng hai, ba tuần rồi điều chỉnh.",
+      "a3": "Giảm cân là TDEE trừ 500 kcal mỗi ngày, khoảng 0,5 kg mỗi tuần. Tăng cân là TDEE cộng 300 kcal để tăng chậm. Theo dõi cân nặng hai, ba tuần rồi điều chỉnh. Mức giảm cân không bao giờ thấp hơn BMR hoặc 1.200 kcal (nữ) / 1.500 kcal (nam); trang sẽ báo khi chạm mức sàn này.",
       "q4": "Đây có phải lời khuyên y tế không?",
       "a4": "Không. Đây chỉ là ước tính cho người trưởng thành khỏe mạnh. Nếu bạn đang mang thai, dưới 18 tuổi, có bệnh lý hoặc muốn giảm cân nhanh, hãy hỏi bác sĩ hoặc chuyên gia dinh dưỡng.",
       "q5": "Dữ liệu của tôi có bị tải lên không?",
@@ -5594,9 +5594,11 @@
     "kcalDay": "{n} kcal/ngày",
     "formula": "BMR theo công thức Mifflin–St Jeor; TDEE = BMR × hệ số vận động (1,2–1,9).",
     "disclaimer": "Chỉ là ước tính cho người trưởng thành khỏe mạnh, không phải lời khuyên y tế. Hãy hỏi bác sĩ hoặc chuyên gia dinh dưỡng trước khi thay đổi chế độ ăn nhiều.",
+    "cutClamped": "Mức giảm cân được giữ ở {n} kcal: không nên thấp hơn BMR hoặc 1.200 kcal (nữ) / 1.500 kcal (nam) mỗi ngày nếu không có bác sĩ theo dõi.",
     "invalid": "Nhập tuổi từ 15 đến 100, cân nặng và chiều cao lớn hơn 0.",
     "copy": "Sao chép",
-    "copied": "Đã sao chép"
+    "copied": "Đã sao chép",
+    "copyFailed": "Sao chép thất bại"
   },
   "cidr": {
     "title": "Tính subnet",
@@ -5620,7 +5622,8 @@
     "invalid": "Nhập địa chỉ IPv4 kèm prefix từ /0 đến /32, hoặc kèm một subnet mask hợp lệ.",
     "rangeInvalid": "Nhập hai địa chỉ IPv4, địa chỉ đầu không lớn hơn địa chỉ cuối.",
     "copy": "Sao chép",
-    "copied": "Đã sao chép"
+    "copied": "Đã sao chép",
+    "copyFailed": "Sao chép thất bại"
   },
   "chmod": {
     "title": "Tính chmod",
@@ -5642,11 +5645,15 @@
     "symbolic": "Dạng chữ (vd. rwxr-xr-x)",
     "command": "Lệnh",
     "file": "File hoặc thư mục",
+    "directory": "Thư mục",
     "recursive": "Đệ quy (-R)",
+    "dirHint": "Với thư mục (hoặc -R) không có bit đặc biệt, lệnh dùng 00755: GNU chmod chỉ xóa setuid/setgid của thư mục khi có thêm số 0 ở đầu; macOS hiểu là 0755.",
+    "quoteHint": "~/ ở đầu và * ? [ ] được để nguyên để shell tự mở rộng; dấu cách, dấu nháy, $ ; & và các ký tự tương tự được đặt trong nháy. Tên bắt đầu bằng - sẽ có -- phía trước.",
     "badOctal": "Dạng số cần 3 hoặc 4 chữ số từ 0 đến 7.",
     "badSymbolic": "Nhập 9 ký tự như rwxr-xr-x (s, S, t hoặc T cho bit đặc biệt).",
     "copy": "Sao chép lệnh",
-    "copied": "Đã sao chép"
+    "copied": "Đã sao chép",
+    "copyFailed": "Sao chép thất bại"
   },
   "typing": {
     "title": "Kiểm tra tốc độ gõ phím",
@@ -5686,6 +5693,7 @@
     "copyAll": "Sao chép tất cả HEX",
     "copyOne": "Bấm để sao chép HEX",
     "copied": "Đã sao chép",
+    "copyFailed": "Sao chép thất bại",
     "done": "Các màu chính, nhiều nhất xếp trước. Bấm vào màu để sao chép.",
     "empty": "Ảnh này không có điểm ảnh nào không trong suốt.",
     "errorDecode": "Không đọc được ảnh này."

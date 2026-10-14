@@ -2696,7 +2696,7 @@
       "q2": "Rumus apa yang dipakai?",
       "a2": "Mifflin–St Jeor: 10 × berat (kg) + 6,25 × tinggi (cm) − 5 × usia, ditambah 5 untuk pria atau dikurangi 161 untuk wanita. Ini rumus yang paling sering dipakai ahli gizi, tetapi rumus apa pun tetap perkiraan.",
       "q3": "Dari mana angka turun dan naik berat badan?",
-      "a3": "Turun berat adalah TDEE dikurangi 500 kkal per hari, sekitar 0,5 kg per minggu. Naik berat adalah TDEE ditambah 300 kkal agar naik perlahan. Pantau timbangan dua atau tiga minggu lalu sesuaikan.",
+      "a3": "Turun berat adalah TDEE dikurangi 500 kkal per hari, sekitar 0,5 kg per minggu. Naik berat adalah TDEE ditambah 300 kkal agar naik perlahan. Pantau timbangan dua atau tiga minggu lalu sesuaikan. Angkanya tidak pernah di bawah BMR atau 1.200 kkal (wanita) / 1.500 kkal (pria); halaman memberi tahu jika batas itu berlaku.",
       "q4": "Apakah ini saran medis?",
       "a4": "Bukan. Ini perkiraan untuk orang dewasa yang sehat. Jika Anda hamil, di bawah 18 tahun, punya kondisi medis, atau ingin turun berat dengan cepat, konsultasikan dengan dokter atau ahli gizi.",
       "q5": "Apakah data saya diunggah?",
@@ -5594,9 +5594,11 @@
     "kcalDay": "{n} kkal/hari",
     "formula": "BMR memakai rumus Mifflin–St Jeor; TDEE = BMR × faktor aktivitas (1,2–1,9).",
     "disclaimer": "Perkiraan untuk orang dewasa sehat, bukan saran medis. Tanyakan dokter atau ahli gizi sebelum mengubah pola makan secara besar.",
+    "cutClamped": "Kalori turun berat ditahan di {n} kkal: jangan di bawah BMR atau 1.200 kkal (wanita) / 1.500 kkal (pria) sehari tanpa pengawasan medis.",
     "invalid": "Masukkan usia 15 sampai 100 serta berat dan tinggi di atas nol.",
     "copy": "Salin",
-    "copied": "Tersalin"
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin"
   },
   "cidr": {
     "title": "Kalkulator subnet",
@@ -5620,7 +5622,8 @@
     "invalid": "Ketik alamat IPv4 dengan prefix /0 sampai /32, atau dengan netmask yang valid.",
     "rangeInvalid": "Ketik dua alamat IPv4, yang pertama tidak lebih besar dari yang terakhir.",
     "copy": "Salin",
-    "copied": "Tersalin"
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin"
   },
   "chmod": {
     "title": "Kalkulator chmod",
@@ -5642,11 +5645,15 @@
     "symbolic": "Simbolik (mis. rwxr-xr-x)",
     "command": "Perintah",
     "file": "File atau folder",
+    "directory": "Folder",
     "recursive": "Rekursif (-R)",
+    "dirHint": "Untuk folder (atau -R) tanpa bit khusus, perintahnya memakai 00755: GNU chmod hanya menghapus setuid/setgid folder jika ada 0 tambahan di depan; macOS membacanya sebagai 0755.",
+    "quoteHint": "~/ di depan serta * ? [ ] dibiarkan tanpa kutip agar shell mengembangkannya; spasi, tanda kutip, $ ; & dan sejenisnya dikutip. Nama yang diawali - diberi -- lebih dulu.",
     "badOctal": "Oktal perlu 3 atau 4 digit dari 0 sampai 7.",
     "badSymbolic": "Pakai 9 karakter seperti rwxr-xr-x (s, S, t, atau T untuk bit khusus).",
     "copy": "Salin perintah",
-    "copied": "Tersalin"
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin"
   },
   "typing": {
     "title": "Tes kecepatan mengetik",
@@ -5686,6 +5693,7 @@
     "copyAll": "Salin semua HEX",
     "copyOne": "Klik untuk menyalin HEX",
     "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
     "done": "Warna utama, dari yang paling banyak. Klik untuk menyalin.",
     "empty": "Gambar ini tidak punya piksel buram.",
     "errorDecode": "Gambar itu tidak bisa dibaca."

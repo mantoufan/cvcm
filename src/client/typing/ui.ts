@@ -5,6 +5,7 @@ import {
   TYPING_DURATIONS,
   TYPING_METRIC,
   addStrokes,
+  emptyStrokes,
   isFinished,
   markPassage,
   scoreTyping,
@@ -24,7 +25,7 @@ const state = {
   composing: false,
   /** Box text at the last scored edit, to count newly typed characters. */
   lastText: "",
-  strokes: { typed: 0, wrong: 0 } as Strokes,
+  strokes: emptyStrokes() as Strokes,
 };
 
 let timer: number | undefined;
@@ -47,7 +48,7 @@ export function mountTyping(host: HTMLElement): void {
   state.startedAt = state.endedAt = 0;
   state.composing = false;
   state.lastText = "";
-  state.strokes = { typed: 0, wrong: 0 };
+  state.strokes = emptyStrokes();
   const count = (TYPING_PASSAGES[locale()] ?? TYPING_PASSAGES.en).length;
   durationEl = h("select", { "data-field": "duration", onChange: () => restart() },
     ...TYPING_DURATIONS.map((s) => h("option", { value: String(s), selected: s === state.duration }, t("typing.seconds", { n: s }))),
@@ -124,7 +125,7 @@ function restart(): void {
   state.startedAt = state.endedAt = 0;
   state.composing = false;
   state.lastText = "";
-  state.strokes = { typed: 0, wrong: 0 };
+  state.strokes = emptyStrokes();
   if (inputEl) {
     inputEl.value = "";
     inputEl.readOnly = false;

@@ -29,7 +29,7 @@ export type TypingScore = {
   accuracy: number;
   typed: number;
   correct: number;
-  /** Mistakes made (including fixed ones when keystrokes are tracked). */
+  /** Mistakes: settled ones (even if fixed later) plus wrong characters not yet settled, when keystrokes are tracked. */
   errors: number;
 };
 
@@ -38,26 +38,49 @@ export function chars(text: string): string[] {
   return Array.from(text.normalize("NFC"));
 }
 
-/** Characters typed so far and how many of them were wrong when typed (fixed mistakes still count). */
-export type Strokes = { typed: number; wrong: number };
-
 /**
- * Counts the characters added by one edit of the typing box. Only text appended at the end counts
- * (a deletion or an edit in the middle adds nothing), so backspacing and retyping is counted again.
+ * Keystroke bookkeeping for accuracy.
+ * - typed: characters entered (backspace + retype counts again).
+ * - wrong: settled mistakes. They stay counted after the user goes back and fixes them.
+ * - pending: positions holding a wrong character that is not settled yet.
+ *
+ * A wrong character settles once the user has moved on: a space was typed after it, or the cursor is
+ * SETTLE_DISTANCE characters further. Until then a fix in place is free. That is how Vietnamese Telex/VNI
+ * input methods (Unikey, EVKey) work without composition events: they insert "a", delete it, then insert "á",
+ * and the same goes for clusters such as "uo" → "ươ". Counting the bare letter would make every diacritic a mistake.
  */
+export type Strokes = { typed: number; wrong: number; pending: number[] };
+
+export const SETTLE_DISTANCE = 8;
+
+export function emptyStrokes(): Strokes {
+  return { typed: 0, wrong: 0, pending: [] };
+}
+
+/** Updates the bookkeeping for one edit of the typing box (prev → next). */
 export function addStrokes(target: string, prev: string, next: string, strokes: Strokes): Strokes {
   const want = chars(target);
   const before = chars(prev);
   const after = chars(next);
   let same = 0;
   while (same < before.length && same < after.length && before[same] === after[same]) same += 1;
-  if (same < before.length) return strokes;
   let { typed, wrong } = strokes;
+  // A pending position that was deleted or now holds the right character is forgiven.
+  const pending = new Set(strokes.pending.filter((p) => p < after.length && after[p] !== want[p]));
   for (let i = same; i < after.length; i++) {
     typed += 1;
-    if (after[i] !== want[i]) wrong += 1;
+    if (after[i] !== want[i]) pending.add(i);
   }
-  return { typed, wrong };
+  const end = after.length - 1;
+  for (const p of [...pending]) {
+    let movedOn = end - p >= SETTLE_DISTANCE;
+    for (let q = p + 1; !movedOn && q <= end; q++) if (/\s/.test(after[q])) movedOn = true;
+    if (movedOn) {
+      wrong += 1;
+      pending.delete(p);
+    }
+  }
+  return { typed, wrong, pending: [...pending].sort((a, b) => a - b) };
 }
 
 export function scoreTyping(target: string, typed: string, elapsedMs: number, metric: TypingMetric, strokes?: Strokes): TypingScore {
@@ -73,10 +96,11 @@ export function scoreTyping(target: string, typed: string, elapsedMs: number, me
   }
   const minutes = elapsedMs / 60000;
   const units = metric === "wpm" ? correct / 5 : correctNonSpace;
-  // With keystrokes, accuracy counts every mistake made, even ones fixed later; without, it reads the final text.
+  // With keystrokes: settled mistakes (even if fixed later) plus wrong characters still on screen.
+  // Without: just the final text.
   const useStrokes = strokes != null && strokes.typed > 0;
   const total = useStrokes ? strokes.typed : got.length;
-  const errors = useStrokes ? strokes.wrong : got.length - correct;
+  const errors = useStrokes ? Math.min(total, strokes.wrong + strokes.pending.length) : got.length - correct;
   return {
     speed: minutes > 0 ? units / minutes : 0,
     accuracy: total ? ((total - errors) / total) * 100 : 100,

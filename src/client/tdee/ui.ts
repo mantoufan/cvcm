@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -161,17 +162,12 @@ function paint(): void {
     [t("tdee.cut", { n: fmt.format(CUT_KCAL) }), kcal(result.cut)],
     [t("tdee.bulk", { n: fmt.format(BULK_KCAL) }), kcal(result.bulk)],
   ];
-  last = rows.map(([k, v]) => `${k}: ${v}`).join("\n");
+  const note = result.cutFloor == null ? "" : t("tdee.cutClamped", { n: fmt.format(Math.round(result.cutFloor)) });
+  last = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + (note ? `\n${note}` : "");
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));
+  if (note) outEl.append(h("p", { class: "hint tdee-floor" }, note));
 }
 
 async function copyOut(): Promise<void> {
-  if (!last) return;
-  try {
-    await navigator.clipboard.writeText(last);
-    if (copyBtn) copyBtn.textContent = t("tdee.copied");
-    window.setTimeout(() => {
-      if (copyBtn) copyBtn.textContent = t("tdee.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyBtn, last, { done: t("tdee.copied"), failed: t("tdee.copyFailed") });
 }

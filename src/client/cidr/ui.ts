@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -15,7 +16,8 @@ let lastRange = "";
 
 export function mountCidr(host: HTMLElement): void {
   const text = (field: string, value: string, onInput: () => void) =>
-    h("input", { type: "text", spellcheck: "false", autocapitalize: "off", autocomplete: "off", inputmode: "decimal", "data-field": field, value, onInput });
+    // Plain text keyboard: a decimal pad has no "/" or space, and shows "," in some locales.
+    h("input", { type: "text", spellcheck: "false", autocapitalize: "off", autocorrect: "off", autocomplete: "off", "data-field": field, value, onInput });
   cidrEl = text("cidr", "192.168.1.10/24", paintSubnet);
   startEl = text("start", "10.0.0.5", paintRange);
   endEl = text("end", "10.0.0.20", paintRange);
@@ -108,12 +110,5 @@ function paintRange(): void {
 }
 
 async function copy(text: string, btn: HTMLButtonElement | null): Promise<void> {
-  if (!text) return;
-  try {
-    await navigator.clipboard.writeText(text);
-    if (btn) btn.textContent = t("cidr.copied");
-    window.setTimeout(() => {
-      if (btn) btn.textContent = t("cidr.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(btn, text, { done: t("cidr.copied"), failed: t("cidr.copyFailed") });
 }

@@ -2696,7 +2696,7 @@
       "q2": "¿Qué fórmula usa?",
       "a2": "Mifflin–St Jeor: 10 × kg + 6,25 × cm − 5 × edad, más 5 en hombres o menos 161 en mujeres. Es la ecuación que más usan los nutricionistas, pero cualquier fórmula es una estimación.",
       "q3": "¿De dónde salen las cifras para perder y ganar peso?",
-      "a3": "Perder peso es el TDEE menos 500 kcal al día, más o menos 0,5 kg por semana. Ganar peso es el TDEE más 300 kcal, para subir despacio. Vigila la báscula dos o tres semanas y ajusta.",
+      "a3": "Perder peso es el TDEE menos 500 kcal al día, más o menos 0,5 kg por semana. Ganar peso es el TDEE más 300 kcal, para subir despacio. Vigila la báscula dos o tres semanas y ajusta. Nunca baja de tu metabolismo basal ni de 1200 kcal (mujeres) / 1500 kcal (hombres); la página avisa cuando se aplica ese límite.",
       "q4": "¿Es un consejo médico?",
       "a4": "No. Es una estimación para adultos sanos. Si estás embarazada, eres menor de 18 años, tienes alguna enfermedad o quieres adelgazar rápido, consulta a un médico o nutricionista.",
       "q5": "¿Se suben mis datos?",
@@ -5594,9 +5594,11 @@
     "kcalDay": "{n} kcal/día",
     "formula": "El metabolismo basal usa la ecuación de Mifflin–St Jeor; TDEE = BMR × factor de actividad (1,2–1,9).",
     "disclaimer": "Es una estimación para adultos sanos, no un consejo médico. Consulta a un médico o nutricionista antes de cambiar mucho tu dieta.",
+    "cutClamped": "La cifra para perder peso se queda en {n} kcal: sin supervisión médica no bajes de tu metabolismo basal ni de 1200 kcal (mujeres) / 1500 kcal (hombres) al día.",
     "invalid": "Introduce una edad de 15 a 100 años y un peso y una altura mayores que cero.",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
   },
   "cidr": {
     "title": "Calculadora de subredes",
@@ -5620,7 +5622,8 @@
     "invalid": "Escribe una dirección IPv4 con un prefijo de /0 a /32, o con una máscara válida.",
     "rangeInvalid": "Escribe dos direcciones IPv4; la primera no puede ser mayor que la última.",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
   },
   "chmod": {
     "title": "Calculadora chmod",
@@ -5642,11 +5645,15 @@
     "symbolic": "Simbólica (p. ej. rwxr-xr-x)",
     "command": "Comando",
     "file": "Archivo o carpeta",
+    "directory": "Carpeta",
     "recursive": "Recursivo (-R)",
+    "dirHint": "Para una carpeta (o -R) sin bits especiales el comando usa 00755: GNU chmod conserva el setuid/setgid de una carpeta salvo que el número lleve ese 0 extra delante; macOS lo lee como 0755.",
+    "quoteHint": "El ~/ inicial y * ? [ ] van sin comillas para que tu shell los expanda; los espacios, comillas, $ ; & y similares se entrecomillan. Un nombre que empieza por - lleva -- delante.",
     "badOctal": "El octal lleva 3 o 4 dígitos del 0 al 7.",
     "badSymbolic": "Usa 9 caracteres como rwxr-xr-x (s, S, t o T para los bits especiales).",
     "copy": "Copiar comando",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
   },
   "typing": {
     "title": "Test de velocidad de escritura",
@@ -5686,6 +5693,7 @@
     "copyAll": "Copiar todos los HEX",
     "copyOne": "Clic para copiar el HEX",
     "copied": "Copiado",
+    "copyFailed": "No se pudo copiar",
     "done": "Colores principales, del más frecuente al menos. Haz clic en uno para copiarlo.",
     "empty": "Esta imagen no tiene píxeles opacos.",
     "errorDecode": "No se pudo leer esa imagen."

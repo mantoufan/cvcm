@@ -35,9 +35,13 @@ export function toSymbolic(mode: number): string {
   return out;
 }
 
-/** Reads rwxr-xr-x (or a 10-character ls string with a type letter such as -rwxr-xr-x or drwxr-xr-x). */
+/**
+ * Reads rwxr-xr-x, or the ls -l column with a type letter (-rwxr-xr-x, drwxr-xr-x) and an optional trailing
+ * ACL / SELinux / extended-attribute marker (+, . or @), e.g. -rw-r--r--@.
+ */
 export function parseSymbolic(raw: string): number | null {
   let text = raw.trim();
+  if ((text.length === 10 || text.length === 11) && /[+.@]$/.test(text)) text = text.slice(0, -1);
   if (text.length === 10 && /^[-dlcbps]/.test(text)) text = text.slice(1);
   if (text.length !== 9) return null;
   let mode = 0;
@@ -57,13 +61,57 @@ export function parseSymbolic(raw: string): number | null {
   return mode;
 }
 
-/** Quotes a file name for a POSIX shell only when it needs it. */
+const SAFE = /^[A-Za-z0-9._\/@%+=:,~-]+$/;
+const GLOB = /([*?[\]])/;
+
+/**
+ * Quotes a file name for a POSIX shell, leaving a leading ~ or ~/ and the glob characters * ? [ ] unquoted so the
+ * shell still expands them. Every other piece that holds a space, quote, $, ;, & or similar is single-quoted.
+ */
 export function shellQuote(name: string): string {
-  if (/^[A-Za-z0-9._\/-]+$/.test(name)) return name;
-  return `'${name.replace(/'/g, `'\\''`)}'`;
+  let rest = name;
+  let head = "";
+  const tilde = /^~(\/|$)/.exec(rest);
+  if (tilde) {
+    head = tilde[0];
+    rest = rest.slice(head.length);
+  }
+  const body = rest
+    .split(GLOB)
+    .map((part) => {
+      // zsh expands a word that starts with = (=cmd), so quote that too.
+      if (!part || GLOB.test(part) || (SAFE.test(part) && !part.startsWith("="))) return part;
+      return `'${part.replace(/'/g, `'\\''`)}'`;
+    })
+    .join("");
+  return head + body;
 }
 
-export function chmodCommand(mode: number, file: string, recursive = false): string {
+export type ChmodOptions = {
+  recursive?: boolean;
+  /** The target is a folder (GNU chmod keeps a folder's setuid/setgid unless the mode has an extra leading 0). */
+  directory?: boolean;
+  /** The user just turned special bits off, so the mode should say so explicitly with a leading 0. */
+  clearSpecial?: boolean;
+};
+
+/**
+ * Mode digits for the command: special bits set → 4 digits (4755); folder (or -R) without special bits → 00755,
+ * because GNU chmod only clears a folder's setuid/setgid with that extra 0 (BSD/macOS read it as 0755);
+ * a file whose special bits were just cleared → 0755; otherwise 755.
+ */
+export function commandMode(mode: number, opts: ChmodOptions = {}): string {
+  const m = mode & MAX_MODE;
+  if (m > 0o777) return toOctal(m);
+  const base = toOctal(m);
+  if (opts.directory || opts.recursive) return `00${base}`;
+  if (opts.clearSpecial) return `0${base}`;
+  return base;
+}
+
+export function chmodCommand(mode: number, file: string, opts: ChmodOptions = {}): string {
   const target = file.trim() || "file";
-  return `chmod ${recursive ? "-R " : ""}${toOctal(mode)} ${shellQuote(target)}`;
+  // "--" stops chmod reading a name such as -rf.txt as options.
+  const dashes = target.startsWith("-") ? "-- " : "";
+  return `chmod ${opts.recursive ? "-R " : ""}${commandMode(mode, opts)} ${dashes}${shellQuote(target)}`;
 }

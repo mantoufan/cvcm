@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { decodeImage } from "../decode";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
@@ -6,9 +7,22 @@ import { MAX_COLORS, MIN_COLORS, extractPalette, sampleSize, type PaletteColor }
 
 const state = {
   bitmap: null as ImageBitmap | null,
+  /** Downscaled RGBA of the current bitmap, so moving the slider only reruns extractPalette. */
+  pixels: null as Uint8ClampedArray | null,
   count: 6,
   palette: [] as PaletteColor[],
+  /** Bumped on every new file and on mount/unmount; a decode that finishes for an older value is dropped. */
+  gen: 0,
 };
+
+function resetState(): void {
+  state.gen += 1;
+  state.bitmap?.close();
+  state.bitmap = null;
+  state.pixels = null;
+  state.palette = [];
+  state.count = 6;
+}
 
 let preview: HTMLCanvasElement | null = null;
 let listEl: HTMLElement | null = null;
@@ -18,8 +32,7 @@ let countOut: HTMLElement | null = null;
 let copyAllBtn: HTMLButtonElement | null = null;
 
 export function mountImageColors(host: HTMLElement): void {
-  state.count = 6;
-  state.palette = [];
+  resetState();
   host.append(
     h("header", { class: "tool-head" },
       h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("image-colors.back")),
@@ -38,9 +51,7 @@ export function mountImageColors(host: HTMLElement): void {
 
 export function unmountImageColors(): void {
   window.removeEventListener("paste", onPaste);
-  state.bitmap?.close();
-  state.bitmap = null;
-  state.palette = [];
+  resetState();
   preview = listEl = statusEl = countOut = null;
   countEl = null;
   copyAllBtn = null;
@@ -105,7 +116,7 @@ function controls(): HTMLElement {
     onInput: (e: Event) => {
       state.count = Number((e.target as HTMLInputElement).value);
       if (countOut) countOut.textContent = String(state.count);
-      analyse();
+      paintPalette();
     },
   });
   listEl = h("ul", { class: "palette-list" });
@@ -134,15 +145,24 @@ function onPaste(e: ClipboardEvent): void {
 }
 
 async function setFile(file: File): Promise<void> {
+  const gen = ++state.gen;
+  let bitmap: ImageBitmap;
   try {
-    const decoded = await decodeImage(file);
-    state.bitmap?.close();
-    state.bitmap = decoded.bitmap;
-    drawPreview();
-    analyse();
+    ({ bitmap } = await decodeImage(file));
   } catch {
-    if (statusEl) statusEl.textContent = t("image-colors.errorDecode");
+    if (gen === state.gen && statusEl) statusEl.textContent = t("image-colors.errorDecode");
+    return;
   }
+  // A newer file, or leaving the page, won the race: drop this bitmap instead of keeping it.
+  if (gen !== state.gen) {
+    bitmap.close();
+    return;
+  }
+  state.bitmap?.close();
+  state.bitmap = bitmap;
+  state.pixels = samplePixels(bitmap);
+  drawPreview();
+  paintPalette();
 }
 
 function drawPreview(): void {
@@ -157,18 +177,20 @@ function drawPreview(): void {
   ctx?.drawImage(bmp, 0, 0, preview.width, preview.height);
 }
 
-function analyse(): void {
-  const bmp = state.bitmap;
-  if (!bmp) return;
+function samplePixels(bmp: ImageBitmap): Uint8ClampedArray | null {
   const size = sampleSize(bmp.width, bmp.height);
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
   canvas.height = size.height;
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
-  if (!ctx) return;
+  if (!ctx) return null;
   ctx.drawImage(bmp, 0, 0, size.width, size.height);
-  const data = ctx.getImageData(0, 0, size.width, size.height).data;
-  state.palette = extractPalette(data, state.count);
+  return ctx.getImageData(0, 0, size.width, size.height).data;
+}
+
+function paintPalette(): void {
+  if (!state.pixels) return;
+  state.palette = extractPalette(state.pixels, state.count);
   if (statusEl) statusEl.textContent = state.palette.length ? t("image-colors.done") : t("image-colors.empty");
   paintList();
 }
@@ -181,38 +203,24 @@ function paintList(): void {
     return;
   }
   for (const color of state.palette) {
+    const code = h("code", null, color.hex);
     const btn = h("button", {
       type: "button",
       class: "palette-item",
       title: t("image-colors.copyOne"),
-      onClick: () => void copy(color.hex, btn, color.hex),
+      onClick: () => void copyWithFlash(code, color.hex, { done: t("image-colors.copied"), failed: t("image-colors.copyFailed") }),
     },
       h("span", { class: "palette-chip", style: { background: color.hex } }),
-      h("code", null, color.hex),
+      code,
       h("small", null, `${(color.share * 100).toFixed(1)}%`),
     );
     listEl.append(h("li", null, btn));
   }
 }
 
-async function copy(text: string, btn: HTMLElement | null, label: string): Promise<void> {
-  try {
-    await navigator.clipboard.writeText(text);
-    const code = btn?.querySelector("code");
-    if (code) code.textContent = t("image-colors.copied");
-    window.setTimeout(() => {
-      if (code) code.textContent = label;
-    }, 1000);
-  } catch { /* ignore */ }
-}
-
 async function copyAll(): Promise<void> {
-  if (!state.palette.length) return;
-  try {
-    await navigator.clipboard.writeText(state.palette.map((c) => c.hex).join("\n"));
-    if (copyAllBtn) copyAllBtn.textContent = t("image-colors.copied");
-    window.setTimeout(() => {
-      if (copyAllBtn) copyAllBtn.textContent = t("image-colors.copyAll");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyAllBtn, state.palette.map((c) => c.hex).join("\n"), {
+    done: t("image-colors.copied"),
+    failed: t("image-colors.copyFailed"),
+  });
 }

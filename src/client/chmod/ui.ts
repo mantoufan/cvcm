@@ -1,3 +1,4 @@
+import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -13,12 +14,16 @@ let octalEl: HTMLInputElement | null = null;
 let symbolicEl: HTMLInputElement | null = null;
 let fileEl: HTMLInputElement | null = null;
 let recursiveEl: HTMLInputElement | null = null;
+let directoryEl: HTMLInputElement | null = null;
+/** Special bits were on earlier in this session; once they go off, the command spells the 0 out to clear them. */
+let hadSpecial = false;
 let cmdEl: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 
 export function mountChmod(host: HTMLElement): void {
   mode = 0o755;
+  hadSpecial = false;
   boxes = [];
   const box = (bit: number, label: string) => {
     const el = h("input", { type: "checkbox", "aria-label": label, "data-bit": bit.toString(8), onChange: () => fromBoxes() });
@@ -48,6 +53,7 @@ export function mountChmod(host: HTMLElement): void {
   symbolicEl = text("symbolic", fromSymbolic);
   fileEl = h("input", { type: "text", spellcheck: "false", autocapitalize: "off", "data-field": "file", value: "script.sh", onInput: () => paintCommand() });
   recursiveEl = h("input", { type: "checkbox", onChange: () => paintCommand() });
+  directoryEl = h("input", { type: "checkbox", onChange: () => paintCommand() });
   cmdEl = h("code", { class: "chmod-cmd" });
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
@@ -72,8 +78,13 @@ export function mountChmod(host: HTMLElement): void {
           h("fieldset", null,
             h("legend", null, t("chmod.command")),
             labeled(t("chmod.file"), fileEl),
-            h("label", { class: "check" }, recursiveEl, t("chmod.recursive")),
+            h("div", { class: "regex-flags" },
+              h("label", { class: "check" }, directoryEl, t("chmod.directory")),
+              h("label", { class: "check" }, recursiveEl, t("chmod.recursive")),
+            ),
             h("pre", { class: "regex-out chmod-out" }, cmdEl),
+            h("p", { class: "hint" }, t("chmod.dirHint")),
+            h("p", { class: "hint" }, t("chmod.quoteHint")),
           ),
           h("div", { class: "stage-actions" },
             copyBtn = h("button", { type: "button", class: "btn", onClick: () => void copyOut() }, t("chmod.copy")),
@@ -87,7 +98,8 @@ export function mountChmod(host: HTMLElement): void {
 
 export function unmountChmod(): void {
   boxes = [];
-  octalEl = symbolicEl = fileEl = recursiveEl = null;
+  octalEl = symbolicEl = fileEl = recursiveEl = directoryEl = null;
+  hadSpecial = false;
   cmdEl = statusEl = null;
   copyBtn = null;
 }
@@ -98,6 +110,7 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
 
 /** Paint every view from `mode`, except the field the user is typing in. */
 function sync(skip?: HTMLInputElement): void {
+  if (mode > 0o777) hadSpecial = true;
   for (const { el, bit } of boxes) el.checked = (mode & bit) !== 0;
   if (octalEl && skip !== octalEl) octalEl.value = toOctal(mode);
   if (symbolicEl && skip !== symbolicEl) symbolicEl.value = toSymbolic(mode);
@@ -134,17 +147,13 @@ function fromSymbolic(): void {
 
 function paintCommand(): void {
   if (!cmdEl) return;
-  cmdEl.textContent = chmodCommand(mode, fileEl?.value ?? "", recursiveEl?.checked ?? false);
+  cmdEl.textContent = chmodCommand(mode, fileEl?.value ?? "", {
+    recursive: recursiveEl?.checked ?? false,
+    directory: directoryEl?.checked ?? false,
+    clearSpecial: hadSpecial && mode <= 0o777,
+  });
 }
 
 async function copyOut(): Promise<void> {
-  const text = cmdEl?.textContent ?? "";
-  if (!text) return;
-  try {
-    await navigator.clipboard.writeText(text);
-    if (copyBtn) copyBtn.textContent = t("chmod.copied");
-    window.setTimeout(() => {
-      if (copyBtn) copyBtn.textContent = t("chmod.copy");
-    }, 1200);
-  } catch { /* ignore */ }
+  await copyWithFlash(copyBtn, cmdEl?.textContent ?? "", { done: t("chmod.copied"), failed: t("chmod.copyFailed") });
 }
