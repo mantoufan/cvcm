@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { chmodCommand, parseOctal, parseSymbolic, toOctal, toSymbolic } from "../../shared/chmod";
+import { chmodCommand, parseOctal, parseSymbolic, safeRecursiveCommand, toOctal, toSymbolic } from "../../shared/chmod";
 
 const WHO = ["owner", "group", "others"] as const;
 const PERMS = [["read", 4], ["write", 2], ["exec", 1]] as const;
@@ -20,6 +20,9 @@ let hadSpecial = false;
 let cmdEl: HTMLElement | null = null;
 let statusEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
+let safeBox: HTMLElement | null = null;
+let safeEl: HTMLElement | null = null;
+let safeBtn: HTMLButtonElement | null = null;
 
 export function mountChmod(host: HTMLElement): void {
   mode = 0o755;
@@ -55,6 +58,14 @@ export function mountChmod(host: HTMLElement): void {
   recursiveEl = h("input", { type: "checkbox", onChange: () => paintCommand() });
   directoryEl = h("input", { type: "checkbox", onChange: () => paintCommand() });
   cmdEl = h("code", { class: "chmod-cmd" });
+  safeEl = h("code", { class: "chmod-safe" });
+  safeBox = h("div", { class: "chmod-safe-box", hidden: true },
+    h("p", { class: "status" }, t("chmod.recursiveWarn")),
+    h("pre", { class: "regex-out chmod-out" }, safeEl),
+    h("div", { class: "stage-actions" },
+      safeBtn = h("button", { type: "button", class: "btn ghost", onClick: () => void copyWithFlash(safeBtn, safeEl?.textContent ?? "", { done: t("chmod.copied"), failed: t("chmod.copyFailed") }) }, t("chmod.copySafe")),
+    ),
+  );
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
@@ -83,6 +94,7 @@ export function mountChmod(host: HTMLElement): void {
               h("label", { class: "check" }, recursiveEl, t("chmod.recursive")),
             ),
             h("pre", { class: "regex-out chmod-out" }, cmdEl),
+            safeBox,
             h("p", { class: "hint" }, t("chmod.dirHint")),
             h("p", { class: "hint" }, t("chmod.quoteHint")),
           ),
@@ -100,7 +112,8 @@ export function unmountChmod(): void {
   boxes = [];
   octalEl = symbolicEl = fileEl = recursiveEl = directoryEl = null;
   hadSpecial = false;
-  cmdEl = statusEl = null;
+  cmdEl = statusEl = safeBox = safeEl = null;
+  safeBtn = null;
   copyBtn = null;
 }
 
@@ -152,6 +165,9 @@ function paintCommand(): void {
     directory: directoryEl?.checked ?? false,
     clearSpecial: hadSpecial && mode <= 0o777,
   });
+  const recursive = recursiveEl?.checked ?? false;
+  if (safeBox) safeBox.hidden = !recursive;
+  if (safeEl) safeEl.textContent = recursive ? safeRecursiveCommand(mode, fileEl?.value ?? "") : "";
 }
 
 async function copyOut(): Promise<void> {

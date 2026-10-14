@@ -2,10 +2,10 @@
 
 export const MAX_MODE = 0o7777;
 
-/** "755", "0755", "4755". Null for anything that is not 3–4 octal digits. */
+/** "755", "0755", "4755", or the 5-digit "00755" this tool prints for folders. Null otherwise. */
 export function parseOctal(raw: string): number | null {
   const text = raw.trim();
-  if (!/^[0-7]{3,4}$/.test(text)) return null;
+  if (!/^(?:[0-7]{3}|0?[0-7]{4})$/.test(text)) return null;
   return parseInt(text, 8);
 }
 
@@ -61,30 +61,19 @@ export function parseSymbolic(raw: string): number | null {
   return mode;
 }
 
-const SAFE = /^[A-Za-z0-9._\/@%+=:,~-]+$/;
-const GLOB = /([*?[\]])/;
+/** Characters a POSIX shell (and zsh) leaves alone in a word. ~ and = are only safe after the first character. */
+const SAFE = /^[A-Za-z0-9._\/@%+:,-][A-Za-z0-9._\/@%+=:,~-]*$/;
 
 /**
- * Quotes a file name for a POSIX shell, leaving a leading ~ or ~/ and the glob characters * ? [ ] unquoted so the
- * shell still expands them. Every other piece that holds a space, quote, $, ;, & or similar is single-quoted.
+ * Quotes a file name for a POSIX shell so it is taken literally: brackets, *, ?, spaces and quotes in real names
+ * such as "Movie [1080p].mkv" must not be read as globs or split. Only a leading ~/ stays unquoted, so the shell
+ * still expands it to the home folder.
  */
 export function shellQuote(name: string): string {
-  let rest = name;
-  let head = "";
-  const tilde = /^~(\/|$)/.exec(rest);
-  if (tilde) {
-    head = tilde[0];
-    rest = rest.slice(head.length);
-  }
-  const body = rest
-    .split(GLOB)
-    .map((part) => {
-      // zsh expands a word that starts with = (=cmd), so quote that too.
-      if (!part || GLOB.test(part) || (SAFE.test(part) && !part.startsWith("="))) return part;
-      return `'${part.replace(/'/g, `'\\''`)}'`;
-    })
-    .join("");
-  return head + body;
+  const head = name.startsWith("~/") ? "~/" : "";
+  const rest = name.slice(head.length);
+  if (!rest || SAFE.test(rest)) return head + rest;
+  return `${head}'${rest.replace(/'/g, `'\\''`)}'`;
 }
 
 export type ChmodOptions = {
@@ -109,9 +98,34 @@ export function commandMode(mode: number, opts: ChmodOptions = {}): string {
   return base;
 }
 
-export function chmodCommand(mode: number, file: string, opts: ChmodOptions = {}): string {
+function targetArg(file: string): string {
   const target = file.trim() || "file";
   // "--" stops chmod reading a name such as -rf.txt as options.
-  const dashes = target.startsWith("-") ? "-- " : "";
-  return `chmod ${opts.recursive ? "-R " : ""}${commandMode(mode, opts)} ${dashes}${shellQuote(target)}`;
+  return (target.startsWith("-") ? "-- " : "") + shellQuote(target);
+}
+
+export function chmodCommand(mode: number, file: string, opts: ChmodOptions = {}): string {
+  return `chmod ${opts.recursive ? "-R " : ""}${commandMode(mode, opts)} ${targetArg(file)}`;
+}
+
+/**
+ * Symbolic mode for a safe recursive chmod: X (capital) instead of x, and X for every class that can read, so
+ * folders stay enterable and files only keep execute if they already had it. 644 → u=rwX,g=rX,o=rX.
+ * Special bits are appended (u+s, g+s, +t).
+ */
+export function recursiveSymbolic(mode: number): string {
+  const m = mode & MAX_MODE;
+  const parts = ["u", "g", "o"].map((who, i) => {
+    const bits = (m >> (6 - i * 3)) & 7;
+    return `${who}=${bits & 4 ? "r" : ""}${bits & 2 ? "w" : ""}${bits & 5 ? "X" : ""}`;
+  });
+  if (m & 0o4000) parts.push("u+s");
+  if (m & 0o2000) parts.push("g+s");
+  if (m & 0o1000) parts.push("+t");
+  return parts.join(",");
+}
+
+/** The recursive command that does not strip x from folders or make every file executable. */
+export function safeRecursiveCommand(mode: number, file: string): string {
+  return `chmod -R ${recursiveSymbolic(mode)} ${targetArg(file)}`;
 }

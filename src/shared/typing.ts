@@ -40,7 +40,8 @@ export function chars(text: string): string[] {
 
 /**
  * Keystroke bookkeeping for accuracy.
- * - typed: characters entered (backspace + retype counts again).
+ * - typed: positions reached (the furthest the cursor has been). An IME that rewrites "uo" into "ươ", or
+ *   backspace + retype, adds nothing; only moving the cursor forward does.
  * - wrong: settled mistakes. They stay counted after the user goes back and fixes them.
  * - pending: positions holding a wrong character that is not settled yet.
  *
@@ -67,10 +68,8 @@ export function addStrokes(target: string, prev: string, next: string, strokes: 
   let { typed, wrong } = strokes;
   // A pending position that was deleted or now holds the right character is forgiven.
   const pending = new Set(strokes.pending.filter((p) => p < after.length && after[p] !== want[p]));
-  for (let i = same; i < after.length; i++) {
-    typed += 1;
-    if (after[i] !== want[i]) pending.add(i);
-  }
+  for (let i = same; i < after.length; i++) if (after[i] !== want[i]) pending.add(i);
+  typed = Math.max(typed, after.length);
   const end = after.length - 1;
   for (const p of [...pending]) {
     let movedOn = end - p >= SETTLE_DISTANCE;

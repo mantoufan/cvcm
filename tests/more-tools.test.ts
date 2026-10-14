@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { bmrMifflin, feetInchesToCm, lbToKg, tdeeFrom } from "../src/shared/tdee";
 import { maskToPrefix, parseCidr, parseIpv4, rangeToCidrs, subnetOf } from "../src/shared/cidr";
-import { chmodCommand, commandMode, parseOctal, parseSymbolic, shellQuote, toOctal, toSymbolic } from "../src/shared/chmod";
+import { chmodCommand, commandMode, parseOctal, parseSymbolic, recursiveSymbolic, safeRecursiveCommand, shellQuote, toOctal, toSymbolic } from "../src/shared/chmod";
 import { SETTLE_DISTANCE, TYPING_METRIC, addStrokes, emptyStrokes, markPassage, scoreTyping, type Strokes } from "../src/shared/typing";
 import { TYPING_PASSAGES } from "../src/shared/typing-passages";
 import { extractPalette, rgbToHex, sampleSize } from "../src/shared/image-colors";
@@ -30,10 +30,13 @@ describe("tdee", () => {
     expect(small.bmr).toBeCloseTo(1189, 6);
     expect(small.cutFloor).toBe(1200);
     expect(small.cut).toBe(1200);
+    // When clamped, the note's number is the number shown.
+    expect(small.cut).toBe(small.cutFloor);
     // TDEE below the floor: no "cut" above maintenance.
     const tiny = tdeeFrom("female", 45, 150, 60, "sedentary")!;
     expect(tiny.tdee).toBeLessThan(1200);
-    expect(tiny.cut).toBeCloseTo(tiny.tdee, 6);
+    expect(tiny.cut).toBeNull();
+    expect(tiny.cutFloor).toBe(1200);
     // Men: 1500 floor, or BMR when that is higher.
     const man = tdeeFrom("male", 60, 165, 60, "sedentary")!;
     expect(man.cutFloor).toBe(1500);
@@ -102,6 +105,10 @@ describe("chmod", () => {
     expect(parseOctal("755")).toBe(0o755);
     expect(parseOctal("0644")).toBe(0o644);
     expect(parseOctal("788")).toBeNull();
+    expect(parseOctal("00755")).toBe(0o755);
+    expect(parseOctal("04755")).toBe(0o4755);
+    expect(parseOctal("10755")).toBeNull();
+    expect(parseOctal("000755")).toBeNull();
     expect(toOctal(0o755)).toBe("755");
     expect(toOctal(0o4755)).toBe("4755");
     expect(toOctal(0o7)).toBe("007");
@@ -114,12 +121,24 @@ describe("chmod", () => {
 
   it("builds a safe chmod command", () => {
     expect(chmodCommand(0o755, "deploy.sh")).toBe("chmod 755 deploy.sh");
-    expect(chmodCommand(0o644, "my file.txt", { recursive: true })).toBe("chmod -R 00644 'my file.txt'");
+    // -R with a plain number hits files and folders alike; the safe line uses capital X.
+    expect(chmodCommand(0o644, "my dir", { recursive: true })).toBe("chmod -R 00644 'my dir'");
+    expect(safeRecursiveCommand(0o644, "my dir")).toBe("chmod -R u=rwX,g=rX,o=rX 'my dir'");
+    expect(recursiveSymbolic(0o755)).toBe("u=rwX,g=rX,o=rX");
+    expect(recursiveSymbolic(0o750)).toBe("u=rwX,g=rX,o=");
+    expect(recursiveSymbolic(0o600)).toBe("u=rwX,g=,o=");
+    expect(recursiveSymbolic(0o2770)).toBe("u=rwX,g=rwX,o=,g+s");
+    expect(recursiveSymbolic(0o1777)).toBe("u=rwX,g=rwX,o=rwX,+t");
     expect(chmodCommand(0o600, "")).toBe("chmod 600 file");
     expect(chmodCommand(0o644, "-rf.txt")).toBe("chmod 644 -- -rf.txt");
-    expect(chmodCommand(0o755, "~/bin/*.sh")).toBe("chmod 755 ~/bin/*.sh");
-    expect(shellQuote("~/My Docs/*.txt")).toBe("~/'My Docs/'*.txt");
-    expect(shellQuote("log[1].txt")).toBe("log[1].txt");
+    // Names are literal: globs and brackets are quoted, only a leading ~/ stays bare.
+    expect(chmodCommand(0o644, "Movie [1080p].mkv")).toBe("chmod 644 'Movie [1080p].mkv'");
+    expect(chmodCommand(0o755, "~/bin/run.sh")).toBe("chmod 755 ~/bin/run.sh");
+    expect(shellQuote("~/My Docs/*.txt")).toBe("~/'My Docs/*.txt'");
+    expect(shellQuote("log?.txt")).toBe("'log?.txt'");
+    expect(shellQuote("~bob/x")).toBe("'~bob/x'");
+    expect(shellQuote("~")).toBe("'~'");
+    expect(shellQuote("a~b.txt")).toBe("a~b.txt");
     expect(shellQuote("a$b;c")).toBe("'a$b;c'");
     expect(shellQuote("it's")).toBe("'it'\\''s'");
     expect(shellQuote("=x")).toBe("'=x'");
@@ -162,9 +181,13 @@ describe("typing", () => {
     const k = run("cá", ["c", "ca", "c", "cá"]);
     expect(k.wrong + k.pending.length).toBe(0);
     expect(scoreTyping("cá", "cá", 60_000, "wpm", k).errors).toBe(0);
+    expect(k.typed).toBe(2);
     // Cluster rewrite: "uo" then both replaced by "ươ" in one edit, then the tone.
-    const k2 = run("người ", ["n", "ng", "ngu", "nguo", "ngươ", "ngươi", "người", "người "]);
+    const steps = ["n", "ng", "ngu", "nguo", "ngươ", "ngươi", "người", "người "];
+    const k2 = run("người ", steps);
     expect(k2.wrong + k2.pending.length).toBe(0);
+    // Rewrites do not inflate the keystroke count: typed is the visible length.
+    expect(k2.typed).toBe(Array.from("người ").length);
     // VNI: "e", "ê" (still wrong), "ế".
     expect(run("ế", ["e", "ê", "ế"]).pending).toEqual([]);
   });

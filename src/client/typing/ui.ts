@@ -35,6 +35,10 @@ let statsEl: HTMLElement | null = null;
 let resultEl: HTMLElement | null = null;
 let durationEl: HTMLSelectElement | null = null;
 let passageEl: HTMLSelectElement | null = null;
+/** One span per passage character, built once per passage; typing only flips the classes that changed. */
+let spans: HTMLSpanElement[] = [];
+let spanStates: string[] = [];
+let spansFor = "";
 
 function passage(): string {
   const list = TYPING_PASSAGES[locale()] ?? TYPING_PASSAGES.en;
@@ -57,6 +61,9 @@ export function mountTyping(host: HTMLElement): void {
     ...Array.from({ length: count }, (_, i) => h("option", { value: String(i), selected: i === 0 }, t("typing.passageN", { n: i + 1 }))),
   );
   textEl = h("p", { class: "typing-text", lang: locale(), "aria-hidden": "true" });
+  spans = [];
+  spanStates = [];
+  spansFor = "";
   inputEl = h("textarea", {
     class: "typing-input",
     rows: 4,
@@ -103,6 +110,9 @@ export function mountTyping(host: HTMLElement): void {
 
 export function unmountTyping(): void {
   stopTimer();
+  spans = [];
+  spanStates = [];
+  spansFor = "";
   textEl = inputEl = null;
   statsEl = resultEl = null;
   durationEl = passageEl = null;
@@ -188,8 +198,20 @@ function unitLabel(): string {
 
 function paint(): void {
   if (textEl) {
+    const text = passage();
     const typed = state.composing ? state.lastText : inputEl?.value ?? "";
-    textEl.replaceChildren(...markPassage(passage(), typed).map(({ ch, state: s }) => h("span", { class: `tc-${s}` }, ch)));
+    const marks = markPassage(text, typed);
+    if (spansFor !== text || spans.length !== marks.length) {
+      spans = marks.map(({ ch }) => h("span", null, ch));
+      spanStates = marks.map(() => "");
+      spansFor = text;
+      textEl.replaceChildren(...spans);
+    }
+    for (let i = 0; i < marks.length; i++) {
+      if (spanStates[i] === marks[i].state) continue;
+      spanStates[i] = marks[i].state;
+      spans[i].className = `tc-${marks[i].state}`;
+    }
   }
   paintStats();
 }

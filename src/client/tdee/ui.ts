@@ -114,20 +114,25 @@ function switchUnits(): void {
   if (units() === "imperial") {
     const kg = Number(kgEl.value);
     const cm = Number(cmEl.value);
-    if (kg > 0) lbEl.value = round1(kg * LB_PER_KG);
-    if (cm > 0) {
+    // An empty or invalid source clears the target, so the result stays invalid instead of using a stale value.
+    lbEl.value = kgEl.value.trim() !== "" && kg > 0 ? round1(kg * LB_PER_KG) : "";
+    if (cmEl.value.trim() !== "" && cm > 0) {
       const totalIn = cm / CM_PER_IN;
       let ft = Math.floor(totalIn / 12);
       let inch = Math.round((totalIn - ft * 12) * 10) / 10;
       if (inch >= 12) { ft += 1; inch = 0; }
       ftEl.value = String(ft);
       inEl.value = String(inch);
+    } else {
+      ftEl.value = "";
+      inEl.value = "";
     }
   } else {
     const lb = Number(lbEl.value);
+    const noHeight = ftEl.value.trim() === "" && inEl.value.trim() === "";
     const cm = feetInchesToCm(Number(ftEl.value) || 0, Number(inEl.value) || 0);
-    if (lb > 0) kgEl.value = round1(lbToKg(lb));
-    if (cm > 0) cmEl.value = round1(cm);
+    kgEl.value = lbEl.value.trim() !== "" && lb > 0 ? round1(lbToKg(lb)) : "";
+    cmEl.value = !noHeight && cm > 0 ? round1(cm) : "";
   }
   metricBox.hidden = units() !== "metric";
   imperialBox.hidden = units() !== "imperial";
@@ -159,10 +164,14 @@ function paint(): void {
   const rows: Array<[string, string]> = [
     [t("tdee.bmr"), kcal(result.bmr)],
     [t("tdee.maintain"), kcal(result.tdee)],
-    [t("tdee.cut", { n: fmt.format(CUT_KCAL) }), kcal(result.cut)],
+    [t("tdee.cut", { n: fmt.format(CUT_KCAL) }), result.cut == null ? "—" : kcal(result.cut)],
     [t("tdee.bulk", { n: fmt.format(BULK_KCAL) }), kcal(result.bulk)],
   ];
-  const note = result.cutFloor == null ? "" : t("tdee.cutClamped", { n: fmt.format(Math.round(result.cutFloor)) });
+  const note = result.cutFloor == null
+    ? ""
+    : result.cut == null
+      ? t("tdee.noCut", { n: fmt.format(Math.round(result.cutFloor)) })
+      : t("tdee.cutClamped", { n: fmt.format(Math.round(result.cut)) });
   last = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + (note ? `\n${note}` : "");
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));
   if (note) outEl.append(h("p", { class: "hint tdee-floor" }, note));

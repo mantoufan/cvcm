@@ -1,5 +1,5 @@
 import { copyWithFlash } from "../copy";
-import { decodeImage } from "../decode";
+import { decodeImage, drawToCanvas } from "../decode";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -150,7 +150,10 @@ async function setFile(file: File): Promise<void> {
   try {
     ({ bitmap } = await decodeImage(file));
   } catch {
-    if (gen === state.gen && statusEl) statusEl.textContent = t("image-colors.errorDecode");
+    if (gen !== state.gen) return;
+    // Do not leave the previous image's palette next to an error about this one.
+    clearImage();
+    if (statusEl) statusEl.textContent = t("image-colors.errorDecode");
     return;
   }
   // A newer file, or leaving the page, won the race: drop this bitmap instead of keeping it.
@@ -163,6 +166,19 @@ async function setFile(file: File): Promise<void> {
   state.pixels = samplePixels(bitmap);
   drawPreview();
   paintPalette();
+}
+
+function clearImage(): void {
+  state.bitmap?.close();
+  state.bitmap = null;
+  state.pixels = null;
+  state.palette = [];
+  if (preview) {
+    preview.width = 800;
+    preview.height = 560;
+    preview.getContext("2d")?.clearRect(0, 0, preview.width, preview.height);
+  }
+  paintList();
 }
 
 function drawPreview(): void {
@@ -179,23 +195,23 @@ function drawPreview(): void {
 
 function samplePixels(bmp: ImageBitmap): Uint8ClampedArray | null {
   const size = sampleSize(bmp.width, bmp.height);
-  const canvas = document.createElement("canvas");
-  canvas.width = size.width;
-  canvas.height = size.height;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
-  if (!ctx) return null;
-  ctx.drawImage(bmp, 0, 0, size.width, size.height);
-  return ctx.getImageData(0, 0, size.width, size.height).data;
+  try {
+    const canvas = drawToCanvas(bmp, size.width, size.height);
+    return canvas.getContext("2d")?.getImageData(0, 0, canvas.width, canvas.height).data ?? null;
+  } catch {
+    return null;
+  }
 }
 
 function paintPalette(): void {
-  if (!state.pixels) return;
-  state.palette = extractPalette(state.pixels, state.count);
+  if (!state.bitmap) return;
+  state.palette = state.pixels ? extractPalette(state.pixels, state.count) : [];
   if (statusEl) statusEl.textContent = state.palette.length ? t("image-colors.done") : t("image-colors.empty");
   paintList();
 }
 
 function paintList(): void {
+  if (copyAllBtn) copyAllBtn.disabled = !state.palette.length;
   if (!listEl) return;
   listEl.replaceChildren();
   if (!state.palette.length) {

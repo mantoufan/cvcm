@@ -22,9 +22,12 @@ export const CUT_FLOOR: Record<Sex, number> = { female: 1200, male: 1500 };
 export type TdeeResult = {
   bmr: number;
   tdee: number;
-  /** TDEE − 500, but never below max(BMR, CUT_FLOOR[sex]) and never above TDEE. */
-  cut: number;
-  /** The floor that limited the cut, or null when the full 500 kcal deficit fits. */
+  /**
+   * TDEE − 500, raised to max(BMR, CUT_FLOOR[sex]) when it would fall below that.
+   * Null when TDEE itself is at or below that floor: no deficit is recommended at these numbers.
+   */
+  cut: number | null;
+  /** The floor that limited the cut (equal to `cut` when clamped), or null when the full deficit fits. */
   cutFloor: number | null;
   bulk: number;
 };
@@ -53,6 +56,8 @@ export function tdeeFrom(sex: Sex, kg: number, cm: number, age: number, activity
   const tdee = bmr * ACTIVITY_FACTOR[activity];
   const floor = Math.max(bmr, CUT_FLOOR[sex]);
   const raw = tdee - CUT_KCAL;
-  const cut = raw >= floor ? raw : Math.min(tdee, floor);
-  return { bmr, tdee, cut, cutFloor: raw >= floor ? null : floor, bulk: tdee + BULK_KCAL };
+  const bulk = tdee + BULK_KCAL;
+  if (raw >= floor) return { bmr, tdee, cut: raw, cutFloor: null, bulk };
+  if (tdee <= floor) return { bmr, tdee, cut: null, cutFloor: floor, bulk };
+  return { bmr, tdee, cut: floor, cutFloor: floor, bulk };
 }
