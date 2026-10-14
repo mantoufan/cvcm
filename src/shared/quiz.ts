@@ -3,10 +3,10 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "enneagram"] },
-  { id: "love", quizzes: ["love-language", "attachment", "marriage"] },
-  { id: "career", quizzes: ["career", "money"] },
-  { id: "fun", quizzes: ["anime", "face-shape"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram"] },
+  { id: "love", quizzes: ["love-language", "attachment", "marriage", "conflict-style"] },
+  { id: "career", quizzes: ["career", "work-style", "money"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "anime", "face-shape"] },
   { id: "wellbeing", quizzes: ["self-esteem", "anxiety", "depression"] },
 ] as const;
 
@@ -106,6 +106,27 @@ const MONEY = likert(`
   saver+ spender+ investor+ avoider+ giver+  saver+ spender+ investor+ avoider+ giver+
 `);
 
+/**
+ * Extraversion scale of the IPIP 100-item Big-Five Factor Markers (Goldberg, public domain): ten positively and ten
+ * negatively keyed items, alternated. Total 0–80; the bands split the scale range at 40% and 60%, like `traitLevel`.
+ */
+const EXTRAVERSION = likert(`
+  ext+ ext- ext+ ext- ext+ ext- ext+ ext- ext+ ext-
+  ext+ ext- ext+ ext- ext+ ext- ext+ ext- ext+ ext-
+`);
+
+/** Five conflict-handling styles, four original statements each. */
+const CONFLICT = likert(`
+  compete+ collab+ compromise+ avoid+ accommodate+  compete+ collab+ compromise+ avoid+ accommodate+
+  compete+ collab+ compromise+ avoid+ accommodate+  compete+ collab+ compromise+ avoid+ accommodate+
+`);
+
+/** Work preferences: place (home over office), people, structure and variety; five statements each, two reversed. */
+const WORK = likert(`
+  remote+ team+ structure+ variety+  remote- team- structure- variety-  remote+ team+ structure+ variety+
+  remote- team- structure- variety-  remote+ team+ structure+ variety+
+`);
+
 /** Rosenberg Self-Esteem Scale: items 2, 5, 6, 8 and 9 are reverse-scored. Total 0–30. */
 const ROSENBERG = likert("se+ se- se+ se+ se- se- se+ se- se- se+");
 
@@ -142,9 +163,84 @@ const FACE: ChoiceItem[] = [
   { options: [{ diamond: 3, heart: 1 }, { round: 3 }, { oval: 2 }, { square: 1, oblong: 2 }] },
 ];
 
+// Most items: earliest answer = lark 2, then lark 1 + in-between 1, in-between 1 + owl 1, owl 2.
+const EARLY = { lark: 2 };
+const EARLYISH = { lark: 1, between: 1 };
+const LATEISH = { between: 1, owl: 1 };
+const LATE = { owl: 2 };
+const CHRONOTYPE: ChoiceItem[] = [
+  // Natural wake time with no alarm.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Sleepy on a free evening.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // First half hour after waking.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Best hours for focused work: afternoon is the in-between answer.
+  { options: [EARLY, EARLYISH, { between: 2 }, LATE] },
+  // A 7 a.m. run.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Something starting at 11 p.m.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // How much later you wake on free days.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Slot for an exam or interview.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Breakfast appetite.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Lights out at 10 p.m.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Energy dip: after lunch is the in-between answer.
+  { options: [EARLY, { between: 2 }, LATEISH, LATE] },
+  // When ideas come.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // Ideal working hours.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+  // How you see yourself.
+  { options: [EARLY, EARLYISH, LATEISH, LATE] },
+];
+
+const PET: ChoiceItem[] = [
+  // Daily time for care and company.
+  { options: [{ fish: 2, reptile: 1 }, { cat: 2, hamster: 2, reptile: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2, bird: 2 }] },
+  // Living space.
+  { options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, reptile: 1, bird: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2 }] },
+  // Hours away from home.
+  { options: [{ fish: 2, reptile: 2 }, { cat: 2, hamster: 1, fish: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
+  // Travel.
+  { options: [{ reptile: 2, fish: 1 }, { cat: 2, hamster: 1, rabbit: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
+  // Allergies.
+  { options: [{ dog: 1, cat: 1, rabbit: 1, bird: 1, hamster: 1 }, { fish: 2, reptile: 2 }, { fish: 1, reptile: 1 }] },
+  // Monthly budget.
+  { options: [{ fish: 2, hamster: 2 }, { cat: 2, rabbit: 1, bird: 1, reptile: 1 }, { dog: 2, rabbit: 1, bird: 1, reptile: 1 }] },
+  // How you want to interact.
+  { options: [{ fish: 2, reptile: 1 }, { cat: 2 }, { dog: 2, bird: 2 }, { hamster: 2, rabbit: 1, reptile: 1 }] },
+  // Noise.
+  { options: [{ fish: 2, reptile: 2, rabbit: 1 }, { cat: 2, hamster: 1 }, { dog: 2, bird: 2 }] },
+  // Years of commitment.
+  { options: [{ hamster: 2, fish: 1 }, { rabbit: 2, dog: 1, fish: 1 }, { cat: 2, dog: 1, bird: 1, reptile: 1 }, { bird: 2, reptile: 2 }] },
+  // Least bad chore.
+  { options: [{ dog: 2 }, { cat: 2, rabbit: 1 }, { fish: 2 }, { hamster: 2, rabbit: 1, bird: 1 }, { reptile: 2 }] },
+  // Who lives with you.
+  { options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }] },
+  // Rental or building rules.
+  { options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }] },
+  // A pet that follows you everywhere.
+  { options: [{ dog: 2, bird: 1 }, { cat: 2, rabbit: 1 }, { fish: 2, reptile: 2, hamster: 1 }] },
+  // A perfect evening together.
+  { options: [{ hamster: 2 }, { rabbit: 2, bird: 2 }, { reptile: 2, fish: 1 }, { dog: 2, cat: 1 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
+  introvert: {
+    id: "introvert",
+    type: "likert",
+    scale: "agree5",
+    dims: ["ext"],
+    items: EXTRAVERSION,
+    result: { kind: "band", bands: [{ max: 31, key: "introvert" }, { max: 48, key: "ambivert" }, { max: 80, key: "extrovert" }] },
+  },
   enneagram: { id: "enneagram", type: "likert", scale: "agree5", dims: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], items: ENNEAGRAM, result: { kind: "top" } },
   "love-language": { id: "love-language", type: "likert", scale: "agree5", dims: ["words", "time", "gifts", "service", "touch"], items: LOVE, result: { kind: "top" } },
   attachment: {
@@ -163,8 +259,25 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: MARRIAGE,
     result: { kind: "areas", bands: [{ min: 80, key: "ready", floor: 60 }, { min: 65, key: "close" }, { min: 45, key: "work" }, { min: 0, key: "early" }] },
   },
+  "conflict-style": {
+    id: "conflict-style",
+    type: "likert",
+    scale: "agree5",
+    dims: ["compete", "collab", "compromise", "avoid", "accommodate"],
+    items: CONFLICT,
+    result: { kind: "top" },
+  },
   career: { id: "career", type: "likert", scale: "agree5", dims: ["R", "I", "A", "S", "E", "C"], items: RIASEC, result: { kind: "code" } },
+  "work-style": { id: "work-style", type: "likert", scale: "agree5", dims: ["remote", "team", "structure", "variety"], items: WORK, result: { kind: "profile" } },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
+  chronotype: { id: "chronotype", type: "choice", dims: ["lark", "between", "owl"], items: CHRONOTYPE, result: { kind: "top" } },
+  pet: {
+    id: "pet",
+    type: "choice",
+    dims: ["cat", "dog", "rabbit", "fish", "bird", "hamster", "reptile"],
+    items: PET,
+    result: { kind: "top" },
+  },
   anime: {
     id: "anime",
     type: "choice",

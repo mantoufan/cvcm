@@ -37,9 +37,9 @@
   },
   "hub": {
     "title": "Free personality tests: MBTI, Big Five, love and career — cv.cm",
-    "description": "Free online personality and psychology tests: 16 types (MBTI-style), Big Five, Enneagram, love language, attachment style, career interests, money personality, anime archetype, face shape, self-esteem, anxiety and depression checks. No sign-up; answers stay in your browser.",
+    "description": "Free online personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, love language, attachment, conflict style, career, work style, chronotype, pet match and wellbeing self-checks. No sign-up.",
     "h1": "Personality and psychology tests",
-    "lede": "Thirteen free tests, from 16 personality types and the Big Five to love languages, career interests and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Eighteen free tests, from 16 personality types and the Big Five to love languages, career interests, your work style and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
@@ -49,7 +49,7 @@
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five uses the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict."
+      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -232,6 +232,71 @@
           "low": "You are emotionally steady and calm under pressure. Setbacks rarely shake you for long.",
           "mid": "You feel stress and worry at normal levels and usually recover from them in a reasonable time.",
           "high": "You feel emotions intensely and can be prone to worry, stress or low moods. Regular rest, exercise and talking things through help."
+        }
+      }
+    },
+    "introvert": {
+      "title": "Free introvert or extrovert test (IPIP, 20 questions) — cv.cm",
+      "description": "Are you an introvert, an ambivert or an extrovert? Rate 20 public-domain IPIP statements and get a score out of 80 with practical tips. Free, no sign-up.",
+      "h1": "Introvert or extrovert test",
+      "lede": "Find out where you sit between introversion and extroversion. 20 short statements from a research questionnaire, a score out of 80, and what it means for your energy, work and friendships.",
+      "about": [
+        "Extraversion is one of the Big Five traits. People high in it gain energy from company, talk easily and enjoy being seen. People low in it, introverts, prefer smaller groups and quiet time, and think before they speak. Most people land somewhere in the middle: ambiverts.",
+        "The 20 statements are the extraversion scale of the 100-item Big-Five Factor Markers from the International Personality Item Pool (IPIP), developed by Lewis Goldberg and placed in the public domain. Half are reverse-scored. The bands split the scale range into thirds (below 40%, 40–60%, above 60%); they are not population norms.",
+        "Introversion is not shyness. Shyness is worry about being judged; introversion is about where your energy comes from. An introvert can be confident and socially skilled, and an extrovert can be shy."
+      ],
+      "faq": [
+        {
+          "q": "What is an ambivert?",
+          "a": "Someone in the middle of the scale: outgoing in some settings, happy alone in others. Most people are ambiverts."
+        },
+        {
+          "q": "Is it better to be an extrovert?",
+          "a": "No. Extroverts often find networking and group work easier; introverts often do well at deep, focused work and one-to-one listening. Both can learn the skills of the other."
+        },
+        {
+          "q": "Where do the questions come from?",
+          "a": "From the IPIP 100-item Big-Five Factor Markers by Lewis Goldberg, a public-domain item pool used widely in research. This test uses its 20 extraversion items."
+        },
+        {
+          "q": "Can my result change?",
+          "a": "Your basic level of extraversion is fairly stable in adulthood, but it shifts a little with age, role and mood. Retake the test in a few months and compare."
+        }
+      ],
+      "items": [
+        "Am the life of the party.",
+        "Don't talk a lot.",
+        "Feel comfortable around people.",
+        "Keep in the background.",
+        "Start conversations.",
+        "Have little to say.",
+        "Talk to a lot of different people at parties.",
+        "Don't like to draw attention to myself.",
+        "Don't mind being the center of attention.",
+        "Am quiet around strangers.",
+        "Make friends easily.",
+        "Find it difficult to approach others.",
+        "Take charge.",
+        "Often feel uncomfortable around others.",
+        "Know how to captivate people.",
+        "Bottle up my feelings.",
+        "Feel at ease with people.",
+        "Am a very private person.",
+        "Am skilled in handling social situations.",
+        "Wait for others to lead the way."
+      ],
+      "results": {
+        "introvert": {
+          "name": "Introvert",
+          "body": "You recharge alone or with one or two close people, and long social stretches drain you. Strengths: focus, careful listening and thinking before you speak. Tips: plan quiet time after busy days instead of feeling guilty about it; at events, set a goal (two real conversations) and leave when it's done; offer to share ideas in writing or one-to-one, where you shine."
+        },
+        "ambivert": {
+          "name": "Ambivert",
+          "body": "You sit in the middle: sociable when the setting is right, happy alone when it isn't. That flexibility is a strength: you can read a room and switch modes. Tip: notice which situations energize you and which drain you, and plan your week so neither kind piles up for too long."
+        },
+        "extrovert": {
+          "name": "Extrovert",
+          "body": "You gain energy from people, talk ideas through out loud and enjoy a lively pace. Strengths: building networks, starting conversations and lifting a group. Tips: in meetings, leave room for quieter people to speak; when you need deep focus, book short sessions with a friend or coworker nearby; check in with yourself before saying yes to every invitation."
         }
       }
     },
@@ -464,6 +529,85 @@
         "future": "Each write down where you want to be in five years (home, children, careers), then compare and find the overlap."
       }
     },
+    "conflict-style": {
+      "title": "Free conflict style test: how do you handle disagreements? — cv.cm",
+      "description": "Free conflict style quiz. Rate 20 statements to see whether you lean toward competing, collaborating, compromising, avoiding or accommodating, and when each style helps or hurts.",
+      "h1": "Conflict style test",
+      "lede": "Everyone has a default move when a disagreement starts. Find yours among the five classic conflict styles, see how strongly you use the others, and learn when to switch.",
+      "about": [
+        "Researchers describe five ways of handling conflict along two questions: how hard you push for your own needs (assertiveness) and how much you care about the other person's (cooperativeness). Competing is high on the first, accommodating high on the second, collaborating high on both, avoiding low on both, and compromising sits in the middle.",
+        "The statements on this page were written for cv.cm; they are not taken from any commercial instrument. Every style is useful in the right moment. The aim is not to find the \"right\" style but to notice your habit and choose on purpose."
+      ],
+      "faq": [
+        {
+          "q": "What are the five conflict styles?",
+          "a": "Competing (stand your ground), collaborating (solve it together so both win), compromising (meet in the middle), avoiding (step away) and accommodating (give the other person what they want)."
+        },
+        {
+          "q": "Which conflict style is best?",
+          "a": "None in every case. Collaborating suits important issues with time to talk; competing suits emergencies; compromising suits deadlocks; avoiding suits trivial or heated moments; accommodating suits issues that matter more to the other side."
+        },
+        {
+          "q": "Is this the Thomas-Kilmann instrument?",
+          "a": "No. It uses the same widely taught five-style model, but the questions and results are original to cv.cm, and the scores are not comparable to any commercial test."
+        },
+        {
+          "q": "Can I use it with my partner or team?",
+          "a": "Yes. Take it separately, compare charts, and talk about which styles you each fall back on under stress. Knowing the other person's default makes it easier not to take it personally."
+        }
+      ],
+      "items": [
+        "In a disagreement, I argue my position firmly until the other person sees it my way.",
+        "I try to get everyone's concerns on the table before we decide anything.",
+        "I'm happy to meet halfway so we can move on.",
+        "I'd rather drop a touchy subject than risk an argument.",
+        "I usually give in if the issue matters more to the other person than to me.",
+        "When I'm sure I'm right, I don't back down just to keep the peace.",
+        "I look for a solution that fully works for both of us, even if it takes longer.",
+        "A fair trade, where each side gives something up, feels like a good outcome to me.",
+        "When a conflict starts, I often change the subject or leave the room.",
+        "Keeping the relationship smooth matters more to me than winning the point.",
+        "I treat a debate as something to win.",
+        "I ask a lot of questions to understand what the other person really needs.",
+        "When we're stuck, I suggest splitting the difference.",
+        "I put off difficult conversations, hoping things will settle on their own.",
+        "I often put other people's wishes ahead of my own so I don't upset them.",
+        "If a decision matters to me, I push hard for it, even if it causes some tension.",
+        "I'd rather work through a disagreement together than settle it quickly.",
+        "I'll give up part of what I want if the other person does the same.",
+        "Many disagreements aren't worth the energy, so I let them go.",
+        "I find it easy to say \"Fine, let's do it your way.\""
+      ],
+      "dims": {
+        "compete": "Competing",
+        "collab": "Collaborating",
+        "compromise": "Compromising",
+        "avoid": "Avoiding",
+        "accommodate": "Accommodating"
+      },
+      "results": {
+        "compete": {
+          "name": "Competing",
+          "body": "You stand up for your position and don't fold under pressure. Helps: emergencies, unpopular but necessary calls, protecting yourself from being taken advantage of. Hurts: when it becomes your only move, people stop telling you things and quietly resent decisions. Try: before arguing, ask one genuine question about what the other person needs, and save full force for issues that truly matter."
+        },
+        "collab": {
+          "name": "Collaborating",
+          "body": "You want a solution that fully works for both sides, and you dig into the real interests behind each position. Helps: important decisions, long-term relationships, problems with room for creative answers. Hurts: it takes time and energy, and not every small issue deserves a workshop. Try: decide up front whether a topic is worth the full process; for minor ones, a quick compromise is fine."
+        },
+        "compromise": {
+          "name": "Compromising",
+          "body": "You look for a fair middle so everyone can move on. Helps: deadlocks, equal power on both sides, time pressure. Hurts: splitting the difference too fast can leave both people half-satisfied and miss a better answer. Try: before offering the middle, ask \"What matters most to you here?\"; you may find a trade where each side gets what it cares about most."
+        },
+        "avoid": {
+          "name": "Avoiding",
+          "body": "You step back from conflict, and you're good at not escalating small things. Helps: trivial issues, heated moments that need a cool-down, fights you can't win or don't need to. Hurts: important problems grow while they wait, and others may read silence as agreement. Try: when you avoid, set a time to return (\"Can we talk tomorrow evening?\"), and write down the one point you need to make."
+        },
+        "accommodate": {
+          "name": "Accommodating",
+          "body": "You protect the relationship and let others have their way. Helps: issues that matter more to them, when you realize you're wrong, building goodwill. Hurts: if it's your default, your own needs disappear and frustration builds up. Try: before saying yes, rate how much the issue matters to you from 1 to 10; above 6, say what you want, kindly and clearly."
+        }
+      }
+    },
     "career": {
       "title": "Free career test: Holland code (RIASEC) interest test — cv.cm",
       "description": "Free career aptitude test based on Holland's RIASEC model. Rate 36 activities to get your three-letter Holland code and careers that fit your interests. No sign-up.",
@@ -535,6 +679,84 @@
         "C": { "name": "Conventional (organizer)", "body": "You like order, accuracy and clear procedures with data. Careers to explore: accountant, auditor, administrator, logistics coordinator, bank officer, database administrator." }
       }
     },
+    "work-style": {
+      "title": "Free work style test: remote, hybrid or office? Solo or team? — cv.cm",
+      "description": "Free work style quiz. Rate 20 statements to see whether remote, hybrid or office work suits you, how much teamwork, structure and variety you need, with practical tips.",
+      "h1": "Work style test",
+      "lede": "Where and how do you do your best work? Score four preferences, home or office, solo or team, structure or freedom, focus or variety, and get a tip for each.",
+      "about": [
+        "Job satisfaction depends not only on what you do but on how the work is set up. This test, written for cv.cm, measures four everyday preferences: where you like to work, how much you like to work with others, how much structure you want, and whether you prefer variety or long stretches of focus.",
+        "Each score runs from 0 to 100. Below 40 leans one way, above 60 the other, and the middle is a mix. Use the result to ask better questions in job interviews (\"How many days are in the office?\", \"How are priorities set?\") and to shape the job you have."
+      ],
+      "faq": [
+        {
+          "q": "Does this tell me which career to choose?",
+          "a": "No. It describes working conditions, not fields. For career fields, take the Holland code career test, then use this one to choose between similar jobs."
+        },
+        {
+          "q": "My remote score is in the middle. What does that mean?",
+          "a": "You'll probably be happiest in a hybrid setup: office days for meetings and people, home days for focused work."
+        },
+        {
+          "q": "What if my job doesn't match my result?",
+          "a": "Small changes help: block focus time on your calendar, ask for one remote day, agree on clearer priorities with your manager, or swap tasks with a teammate who likes the work you don't."
+        },
+        {
+          "q": "Is one work style better than another?",
+          "a": "No. Teams need both people who like structure and people who like freedom, both soloists and connectors. What matters is fit."
+        }
+      ],
+      "items": [
+        "I get more done at home than in an office.",
+        "I do my best work when I can bounce ideas off other people.",
+        "I like knowing exactly what is expected of me and by when.",
+        "A day full of different tasks energizes me more than one long task.",
+        "I need the buzz of an office to stay motivated.",
+        "I'd rather own a piece of work from start to finish on my own.",
+        "I work best when I decide how and when to do things myself.",
+        "I'm happiest staying on one task for hours without switching.",
+        "Commuting feels like wasted time to me.",
+        "Regular meetings and check-ins help me more than they slow me down.",
+        "Clear processes and routines make work less stressful for me.",
+        "I enjoy a fast pace with new problems every day.",
+        "I learn a lot just by being near colleagues and hearing how they work.",
+        "Constant group chats and meetings drain me.",
+        "Rigid rules and fixed schedules make me restless.",
+        "Frequent interruptions ruin my best work.",
+        "I can keep a steady routine at home without anyone checking on me.",
+        "Shared wins mean more to me than personal ones.",
+        "I like having a manager who sets clear priorities for me.",
+        "I get bored quickly once a job becomes routine."
+      ],
+      "dims": {
+        "remote": "Working from home",
+        "team": "Teamwork",
+        "structure": "Structure",
+        "variety": "Variety"
+      },
+      "levels": {
+        "remote": {
+          "low": "Office: you get energy, focus and learning from being around colleagues. Look for roles with a real office culture, and if you work remotely, use a coworking space or a regular office day so you don't become isolated.",
+          "mid": "Hybrid: office days for meetings and people, home days for focused work. Ask employers how hybrid works in practice, and plan which tasks go on which days.",
+          "high": "Remote: you work well on your own schedule and don't miss the commute. Look for remote-first teams with good written communication, and protect a start and end time so work doesn't fill the whole day."
+        },
+        "team": {
+          "low": "Solo: you prefer owning work end to end. Roles like specialist, analyst, writer or developer with clear ownership suit you. Agree on a few fixed check-ins so you stay in the loop without constant meetings.",
+          "mid": "Mixed: you like time alone to do the work and time together to plan and review it. Batch meetings into one part of the day and keep the rest for focus.",
+          "high": "Team: you think best out loud and enjoy shared goals. Look for collaborative roles such as project work, sales, teaching or product teams, and on solo tasks, pair up or hold short check-ins to stay motivated."
+        },
+        "structure": {
+          "low": "Freedom: you want to decide how and when to work. Startups, freelancing and roles judged on results suit you. Set your own deadlines and share them, so freedom doesn't turn into last-minute stress.",
+          "mid": "Balanced: you like clear goals but some say in how to reach them. Ask managers for the \"what\" and \"by when\", and propose the \"how\" yourself.",
+          "high": "Structure: clear expectations, processes and priorities calm you and help you do excellent work. Larger organizations and process-driven roles suit you; when things are vague, ask early for a checklist or definition of done."
+        },
+        "variety": {
+          "low": "Deep focus: you do your best work in long, uninterrupted blocks. Book two- or three-hour focus blocks, turn off notifications, and look for roles that value depth such as research, engineering or editing.",
+          "mid": "Balanced: some variety keeps you fresh, but too much switching wears you down. Group similar tasks together and give each day one main focus.",
+          "high": "Variety: new problems and a fast pace energize you, and routine bores you. Roles in operations, client work, events or startups fit; keep a simple list so many threads don't slip."
+        }
+      }
+    },
     "money": {
       "title": "Free money personality test: what's your money type? — cv.cm",
       "description": "Free money personality quiz. Rate 20 statements to learn whether you are a saver, spender, investor, avoider or giver, with strengths, blind spots and a tip. No sign-up.",
@@ -585,6 +807,369 @@
         "investor": { "name": "The Investor", "body": "Strength: you spot opportunities and let money work for you. Blind spot: chasing big wins can mean too much risk in one place. Tip: keep an emergency fund first, and never put more into one bet than you can afford to lose." },
         "avoider": { "name": "The Avoider", "body": "Strength: money doesn't run your life. Blind spot: unopened bills, late fees and missed chances because looking feels stressful. Tip: book a 15-minute money date each week to check your balance and pay bills; it gets easier fast." },
         "giver": { "name": "The Giver", "body": "Strength: generosity and strong relationships. Blind spot: giving away what you need for your own security. Tip: decide on a giving budget in advance, so you can be generous without putting your own future at risk." }
+      }
+    },
+    "chronotype": {
+      "title": "Free chronotype test: are you a morning lark or a night owl? — cv.cm",
+      "description": "Free chronotype quiz. Answer 14 questions about your natural sleep and energy rhythm to see if you are a morning lark, a night owl or in between, with practical schedule tips.",
+      "h1": "Chronotype test: morning lark or night owl?",
+      "lede": "Your chronotype is your body clock's natural timing: when you feel sleepy, when you wake, and when you think best. Answer 14 questions about how you live when nobody sets the alarm.",
+      "about": [
+        "Chronotype is partly genetic and changes with age: teenagers and young adults tend to run late, and most people shift earlier after their mid-twenties. Larks feel sharpest in the morning; owls hit their stride in the evening; most people are somewhere in between.",
+        "The questions here were written for cv.cm and are not a clinical questionnaire. The result is a self-reflection, not a diagnosis. If you often can't fall asleep, wake up exhausted after a full night, or feel very sleepy during the day, talk to a doctor: those can be signs of a sleep problem that has nothing to do with being an owl."
+      ],
+      "faq": [
+        {
+          "q": "Can a night owl become a morning person?",
+          "a": "Partly. Your underlying tendency stays, but you can shift your schedule earlier with steady habits: bright light soon after waking, dim light in the evening, and the same wake time every day, moved 15 minutes at a time."
+        },
+        {
+          "q": "Is one chronotype healthier?",
+          "a": "No chronotype is unhealthy by itself. Problems come from a mismatch: an owl forced into early starts builds up sleep debt. Matching your schedule to your clock where you can, and keeping it regular, matters most."
+        },
+        {
+          "q": "Why do you ask about weekends?",
+          "a": "Sleeping much later on free days than on workdays, sometimes called social jet lag, is a common sign that your natural clock runs later than your schedule."
+        },
+        {
+          "q": "Is this a sleep disorder test?",
+          "a": "No. It describes your natural timing. It cannot detect insomnia, sleep apnea or other conditions; see a doctor if sleep problems affect your daily life."
+        }
+      ],
+      "items": [
+        {
+          "q": "With no alarm and no plans, when would you naturally wake up?",
+          "options": [
+            "Before 6:30",
+            "6:30 to 8:00",
+            "8:00 to 9:30",
+            "After 9:30"
+          ]
+        },
+        {
+          "q": "On a free evening with nothing on the next day, when do you start feeling sleepy?",
+          "options": [
+            "Before 10 p.m.",
+            "10 to 11:30 p.m.",
+            "11:30 p.m. to 1 a.m.",
+            "After 1 a.m."
+          ]
+        },
+        {
+          "q": "How do you feel in the first half hour after waking?",
+          "options": [
+            "Alert and ready to go",
+            "Fine after a few minutes",
+            "Groggy for a good while",
+            "Like a zombie until late morning"
+          ]
+        },
+        {
+          "q": "When do you do your best focused work?",
+          "options": [
+            "Early morning",
+            "Late morning",
+            "Afternoon",
+            "Evening or night"
+          ]
+        },
+        {
+          "q": "A friend asks you to go for a run at 7 a.m. You think…",
+          "options": [
+            "Great, my favorite time",
+            "Fine, if I go to bed early",
+            "I'll go, but it'll be hard",
+            "Absolutely not"
+          ]
+        },
+        {
+          "q": "A game night or party starts at 11 p.m. You…",
+          "options": [
+            "Would be fading already",
+            "Could manage an hour or so",
+            "Would be fine",
+            "Would just be warming up"
+          ]
+        },
+        {
+          "q": "How much later do you wake on free days than on workdays?",
+          "options": [
+            "About the same time",
+            "Less than an hour later",
+            "One to two hours later",
+            "More than two hours later"
+          ]
+        },
+        {
+          "q": "You can choose the time of an important exam or interview. You pick…",
+          "options": [
+            "8 a.m.",
+            "11 a.m.",
+            "3 p.m.",
+            "7 p.m."
+          ]
+        },
+        {
+          "q": "How hungry are you for breakfast?",
+          "options": [
+            "Hungry as soon as I wake",
+            "Hungry within an hour",
+            "Not until mid-morning",
+            "I usually skip it"
+          ]
+        },
+        {
+          "q": "If you had to turn off the lights at 10 p.m. tonight, you would…",
+          "options": [
+            "Fall asleep easily",
+            "Fall asleep after a while",
+            "Lie awake for an hour or more",
+            "Find it nearly impossible"
+          ]
+        },
+        {
+          "q": "When is your energy usually lowest during a normal day?",
+          "options": [
+            "Early evening",
+            "Just after lunch",
+            "Late morning",
+            "First thing in the morning"
+          ]
+        },
+        {
+          "q": "When do your best ideas tend to show up?",
+          "options": [
+            "In the morning",
+            "Around midday",
+            "In the evening",
+            "After midnight"
+          ]
+        },
+        {
+          "q": "If your working hours were entirely up to you, you would work…",
+          "options": [
+            "6 a.m. to 2 p.m.",
+            "8 a.m. to 4 p.m.",
+            "10 a.m. to 6 p.m.",
+            "1 p.m. to 9 p.m. or later"
+          ]
+        },
+        {
+          "q": "Which describes you best?",
+          "options": [
+            "Clearly a morning person",
+            "More morning than evening",
+            "More evening than morning",
+            "Clearly a night person"
+          ]
+        }
+      ],
+      "dims": {
+        "lark": "Morning lark",
+        "between": "In between",
+        "owl": "Night owl"
+      },
+      "results": {
+        "lark": {
+          "name": "Morning lark",
+          "body": "Your body clock runs early: you wake easily and think best before lunch. Tips: put your hardest work between about 8 a.m. and noon and keep afternoons for meetings and routine tasks; protect your bedtime on nights out, or plan a short afternoon nap instead of a late lie-in; dim screens an hour before bed so you don't wake at 4 a.m. Larks often find late-evening social life tiring: it's fine to suggest brunch instead of drinks."
+        },
+        "between": {
+          "name": "In between",
+          "body": "Your clock sits in the middle, like most people's, so you adapt fairly easily to normal schedules. Tips: keep the same wake time every day, weekends included, within about an hour; get daylight in the morning; and notice your own peak, usually late morning, for demanding tasks. A steady routine matters more than which hour you choose."
+        },
+        "owl": {
+          "name": "Night owl",
+          "body": "Your body clock runs late: mornings are hard and you come alive in the evening. Tips: get bright light, outdoors if possible, within an hour of waking, and keep evening light dim and warm; keep wake time within an hour on weekends to limit social jet lag; stop caffeine about eight hours before bed; to shift earlier, move bedtime and wake time by 15 minutes every few days. Ask for later meetings where you can, and put demanding work in the late afternoon."
+        }
+      }
+    },
+    "pet": {
+      "title": "Which pet is right for me? Free pet match quiz — cv.cm",
+      "description": "Free pet quiz. Answer 14 questions about your time, home, budget, allergies and lifestyle to see whether a cat, dog, rabbit, fish, bird, hamster or reptile suits you best.",
+      "h1": "Which pet suits you?",
+      "lede": "A good match makes life better for you and the animal. Answer 14 honest questions about your time, space, money and habits, and see which pet fits your life right now.",
+      "about": [
+        "This quiz, written for cv.cm, weighs the practical things that decide whether an animal will thrive with you: daily time, home size, hours away, travel, allergies, budget, noise, lifespan and the chores you can live with. It is a starting point, not a guarantee: individual animals and breeds vary a lot.",
+        "Before you bring any animal home: research the species' needs, count the full cost including vet care, check your lease and local rules, and think about who will care for it when you travel. Consider adopting from a shelter or rescue, and fostering first if you're unsure. A pet is a commitment for its whole life, which can mean decades."
+      ],
+      "faq": [
+        {
+          "q": "What is the easiest pet for a beginner?",
+          "a": "There is no zero-effort pet. For busy people, a cat or a properly set-up aquarium usually fits best; for families with time and space, a dog. Small animals like hamsters and rabbits need more specialized care than people expect."
+        },
+        {
+          "q": "I'm allergic. Can I still have a pet?",
+          "a": "Fish and reptiles don't shed fur or dander, so they are the safest choices. No cat or dog is truly hypoallergenic; if you want one, spend time with that animal before adopting and ask a doctor."
+        },
+        {
+          "q": "How much does a pet cost?",
+          "a": "It depends on the species and where you live. Beyond food, plan for the setup (cage, tank, lamps), vaccinations, neutering, and an emergency vet fund. Reptile and aquarium setups cost more up front than many people expect."
+        },
+        {
+          "q": "Should I get a pet for my child?",
+          "a": "Only if an adult is ready to be the real caregiver. Children can help, but hamsters and rabbits are fragile and often don't like being held, so supervise every interaction."
+        }
+      ],
+      "items": [
+        {
+          "q": "How much time can you spend on a pet each day, including care and play?",
+          "options": [
+            "Under 15 minutes",
+            "15 to 45 minutes",
+            "One to two hours",
+            "Two hours or more, including walks"
+          ]
+        },
+        {
+          "q": "Where do you live?",
+          "options": [
+            "A small room, studio or dorm",
+            "An average apartment",
+            "A roomy apartment or house",
+            "A house with a yard"
+          ]
+        },
+        {
+          "q": "On a typical day, how long is nobody home?",
+          "options": [
+            "Ten hours or more",
+            "A normal workday, eight or nine hours",
+            "Someone is home most of the day"
+          ]
+        },
+        {
+          "q": "How often are you away for several days?",
+          "options": [
+            "Often, for work or travel",
+            "A few times a year, and someone can pet-sit",
+            "Rarely"
+          ]
+        },
+        {
+          "q": "Allergies in your home?",
+          "options": [
+            "None that I know of",
+            "Yes, to fur or animal dander",
+            "Not sure"
+          ]
+        },
+        {
+          "q": "How much can you spend each month on food, supplies and a vet fund?",
+          "options": [
+            "As little as possible",
+            "A moderate amount",
+            "Enough for vet bills and good food"
+          ]
+        },
+        {
+          "q": "How do you want to enjoy your pet?",
+          "options": [
+            "Watching it; I find that calming",
+            "Cuddles now and then from an independent companion",
+            "Playing, training and doing things together every day",
+            "Quiet company and gentle handling in the evening"
+          ]
+        },
+        {
+          "q": "How do you feel about noise?",
+          "options": [
+            "I need a quiet home",
+            "A bit of noise at night is fine",
+            "Barking or chattering doesn't bother me"
+          ]
+        },
+        {
+          "q": "How many years are you ready to commit?",
+          "options": [
+            "Two or three years",
+            "About ten years",
+            "Fifteen years or more",
+            "Decades, even longer than 30 years"
+          ]
+        },
+        {
+          "q": "Which chore sounds least bad?",
+          "options": [
+            "Walks in all weather",
+            "Scooping a litter box",
+            "Weekly water changes and testing",
+            "Cleaning a cage and changing bedding",
+            "Managing heat lamps and live or frozen food"
+          ]
+        },
+        {
+          "q": "Who lives with you?",
+          "options": [
+            "Just me",
+            "A partner or adult roommates",
+            "Young children"
+          ]
+        },
+        {
+          "q": "What do your lease or building rules allow?",
+          "options": [
+            "Only small caged or tank animals",
+            "Cats and small animals, no dogs",
+            "Any pet, or I own my home"
+          ]
+        },
+        {
+          "q": "How would you feel about a pet that follows you everywhere and wants your attention?",
+          "options": [
+            "I'd love it",
+            "Nice in small doses",
+            "I'd prefer a pet that's content on its own"
+          ]
+        },
+        {
+          "q": "Which evening with a pet sounds best?",
+          "options": [
+            "Watching a tiny, busy animal dig and run its wheel",
+            "Free-roam time with a rabbit zooming around or a bird chatting with me",
+            "Watching a lizard bask under its lamp or fish drift by",
+            "A walk together, then curling up on the sofa"
+          ]
+        }
+      ],
+      "dims": {
+        "cat": "Cat",
+        "dog": "Dog",
+        "rabbit": "Rabbit",
+        "fish": "Fish",
+        "bird": "Bird",
+        "hamster": "Hamster",
+        "reptile": "Reptile"
+      },
+      "results": {
+        "cat": {
+          "name": "Cat",
+          "body": "A cat fits a busy life with moderate space: independent but affectionate, fine alone during a workday, no walks needed. Plan for: 15 or more years, a clean litter box (one per cat plus one), scratching posts, play every day, yearly vet checks, and neutering. Indoor cats live longer; a catio or window perch keeps them entertained."
+        },
+        "dog": {
+          "name": "Dog",
+          "body": "You have the time, space and energy a dog needs, and you want a companion who shares your days. Plan for: 10 to 15 years, walks and play every day, training from day one, someone home or a dog walker on long days, and a bigger budget for food, grooming and vets. Choose energy level and size to match your life, and look at shelters and breed rescues first."
+        },
+        "rabbit": {
+          "name": "Rabbit",
+          "body": "A rabbit suits a calm home with floor space and someone around much of the day. Rabbits are social, so most are happiest in a bonded pair, and they need hours of free-roam time in a rabbit-proofed room, not a small hutch. Plan for: 8 to 12 years, unlimited hay, a vet who knows rabbits, and neutering. They rarely enjoy being picked up; enjoy them on their level."
+        },
+        "fish": {
+          "name": "Fish",
+          "body": "An aquarium fits small spaces, tight schedules and allergies, and it's genuinely calming to watch. Skip the bowl: start with a filtered, heated tank of at least 40 liters (about 10 gallons), and cycle it for several weeks before adding fish. Plan for: weekly partial water changes, testing kits, and choosing species that suit the tank size and each other."
+        },
+        "bird": {
+          "name": "Bird",
+          "body": "A bird fits someone home a lot who enjoys interaction and doesn't mind noise. Parrots, even small ones, are smart, social and need hours of time outside the cage, toys to chew and training. Plan for: a long life (budgies 5 to 10 years, larger parrots 30 or more), an avian vet, and a fresh diet beyond seed. If you're away all day, a pair of small birds may be better than one."
+        },
+        "hamster": {
+          "name": "Hamster",
+          "body": "A hamster fits a small space, a modest budget and a quiet evening routine. They are solitary and nocturnal, so they'll be awake when you're winding down, and their wheel may squeak at night. Plan for: a big enclosure (at least 100 × 50 cm floor), deep bedding to burrow, a solid wheel of the right size, and a 2- to 3-year life. Handle gently; they're not ideal for young children."
+        },
+        "reptile": {
+          "name": "Reptile",
+          "body": "A reptile fits someone who is curious, patient, allergic to fur, or away often. Many species are quiet and fine alone for a day or two once their setup runs well. Plan for: a proper enclosure with heat and UVB lighting on timers, live or frozen food for many species, an exotic-animal vet, and a long life (leopard geckos 15 to 20 years, tortoises much longer). Choose captive-bred animals and research the species first."
+        }
       }
     },
     "anime": {

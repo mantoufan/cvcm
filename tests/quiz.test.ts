@@ -226,12 +226,80 @@ describe("test pages: scoring", () => {
     expect(result.safety).toBe(true);
   });
 
+  it("bands the IPIP extraversion score into introvert, ambivert and extrovert", () => {
+    const def = QUIZ_DEFS.introvert;
+    if (def.type !== "likert") throw new Error();
+    expect(def.items).toHaveLength(20);
+    expect(def.items.filter((i) => i.rev)).toHaveLength(10);
+    expect(maxTotal("introvert")).toBe(80);
+    expect(scoreQuiz("introvert", lean("introvert", [])).key).toBe("introvert");
+    expect(scoreQuiz("introvert", lean("introvert", ["ext"])).total).toBe(80);
+    expect(scoreQuiz("introvert", lean("introvert", ["ext"])).key).toBe("extrovert");
+    // Neutral to everything is the middle of the scale.
+    expect(scoreQuiz("introvert", all("introvert", 2))).toMatchObject({ total: 40, key: "ambivert" });
+    // "Strongly agree" to everything cancels out: the reverse-keyed half scores 0.
+    expect(scoreQuiz("introvert", all("introvert", 4))).toMatchObject({ total: 40, key: "ambivert" });
+    // Cut-offs at 40% and 60% of the range: 31 / 32 and 48 / 49.
+    const at = (total: number): string => {
+      const answers: number[] = def.items.map((item) => (item.rev ? 4 : 0));
+      let left = total;
+      def.items.forEach((item, i) => {
+        const points = Math.min(4, left);
+        left -= points;
+        answers[i] = item.rev ? 4 - points : points;
+      });
+      const result = scoreQuiz("introvert", answers);
+      expect(result.total).toBe(total);
+      return result.key;
+    };
+    expect([at(31), at(32), at(48), at(49)]).toEqual(["introvert", "ambivert", "ambivert", "extrovert"]);
+  });
+
+  it("lets every conflict style win and scores work style as a profile", () => {
+    const conflict = QUIZ_DEFS["conflict-style"];
+    if (conflict.type !== "likert") throw new Error();
+    for (const dim of conflict.dims) {
+      expect(conflict.items.filter((i) => i.dim === dim), dim).toHaveLength(4);
+      expect(scoreQuiz("conflict-style", lean("conflict-style", [dim])).key).toBe(dim);
+    }
+    const work = QUIZ_DEFS["work-style"];
+    if (work.type !== "likert") throw new Error();
+    for (const dim of work.dims) {
+      expect(work.items.filter((i) => i.dim === dim), dim).toHaveLength(5);
+      expect(work.items.filter((i) => i.dim === dim && i.rev), dim).toHaveLength(2);
+    }
+    const result = scoreQuiz("work-style", lean("work-style", ["remote", "team"]));
+    expect(result.key).toBe("profile");
+    expect(result.scores.map((s) => s.pct)).toEqual([100, 100, 0, 0]);
+    expect(scoreQuiz("work-style", all("work-style", 2)).scores.every((s) => s.pct === 50)).toBe(true);
+  });
+
+  it("scores chronotype answers from early to late", () => {
+    expect(scoreQuiz("chronotype", all("chronotype", 0)).key).toBe("lark");
+    expect(scoreQuiz("chronotype", all("chronotype", 3)).key).toBe("owl");
+    expect(scoreQuiz("chronotype", all("chronotype", 1)).key).toBe("between");
+    expect(scoreQuiz("chronotype", all("chronotype", 2)).key).toBe("between");
+    // Mostly late answers with a couple of middle ones still read as an owl.
+    const owlish = all("chronotype", 3);
+    owlish[0] = 2;
+    owlish[5] = 2;
+    expect(scoreQuiz("chronotype", owlish).key).toBe("owl");
+  });
+
+  it("points fur allergies and tiny homes away from furry pets", () => {
+    // Under 15 minutes a day, a studio, out 10+ hours, often away, fur allergy, low budget, quiet...
+    const result = scoreQuiz("pet", [0, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0, 2, 2]);
+    expect(["fish", "reptile"]).toContain(result.key);
+    // Lots of time, a yard, someone home, rarely away, no allergy, comfortable budget, active play.
+    expect(scoreQuiz("pet", [3, 3, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 0, 3]).key).toBe("dog");
+  });
+
   it("scores choice quizzes by weight and lets every result win", () => {
     const def = QUIZ_DEFS["face-shape"];
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime"] as const) {
+    for (const id of ["face-shape", "anime", "chronotype", "pet"] as const) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
