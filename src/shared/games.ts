@@ -1644,6 +1644,7 @@ export const GAMES: readonly Game[] = [
     console: "gbc",
     genre: "puzzle",
     year: 2001,
+    // EmulatorJS "gbc" loads cores/gbc-legacy-wasm.data, which is not on S3 (404); "gb" uses gambatte, which runs GBC ROMs.
     core: "gb",
     accept: ".gbc,.gb,.zip",
     rom: "pelmanism.gbc",
