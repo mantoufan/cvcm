@@ -31,6 +31,8 @@ const state = {
   detected: "",
   segments: [] as Segment[],
   running: false,
+  /** New audio arrived during a run: transcribe it when that run ends. */
+  again: false,
   recording: null as MediaRecorder | null,
 };
 
@@ -247,9 +249,13 @@ async function setFile(file: File | Blob | undefined, name?: string): Promise<vo
 }
 
 async function transcribe(): Promise<void> {
-  if (!client || !status || state.running) return;
+  if (!client || !status) return;
   if (!state.audio) {
     status.error(t("stt.empty"));
+    return;
+  }
+  if (state.running) {
+    state.again = true;
     return;
   }
   state.running = true;
@@ -277,12 +283,13 @@ async function transcribe(): Promise<void> {
       {
         onText: (text) => {
           live += text;
-          if (output) {
+          if (output && state.audio === audio) {
             output.value = live;
             output.scrollTop = output.scrollHeight;
           }
         },
         onLanguage: (code) => {
+          if (state.audio !== audio) return;
           state.detected = code;
           if (metaEl) metaEl.textContent = `${state.name} · ${shortClock(state.duration)} · ${languageName(code)}`;
         },
@@ -299,6 +306,10 @@ async function transcribe(): Promise<void> {
     status.error(t("ai.errorRun"));
   } finally {
     state.running = false;
+    if (state.again && alive) {
+      state.again = false;
+      void transcribe();
+    }
   }
 }
 

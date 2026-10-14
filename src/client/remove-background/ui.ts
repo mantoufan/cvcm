@@ -339,7 +339,8 @@ function removeItem(i: number): void {
   item.state = "error";
   item.bitmap.close();
   URL.revokeObjectURL(item.thumb);
-  if (state.active >= state.items.length) state.active = state.items.length - 1;
+  // Keep the same photo selected when one before it goes.
+  if (i < state.active || state.active >= state.items.length) state.active -= 1;
   renderList();
   redraw();
 }

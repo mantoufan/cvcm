@@ -396,7 +396,8 @@ async function proxyAi(pathname: string, method: string): Promise<Response | nul
   }
   // Every URL names a pinned revision, so the edge keeps it for a year and s3.cv.cm serves each file about once per PoP.
   const upstream = await fetch(`https://s3.cv.cm/files/ai/${match[1]}/${rest}`, {
-    cf: { cacheEverything: true, cacheTtl: 31_536_000 },
+    // Only successes are kept: a 404 cached before an upload finished would break the tool at that PoP for a year.
+    cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 31_536_000, "300-599": 0 } },
   } as RequestInit);
   if (!upstream.ok) {
     // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.

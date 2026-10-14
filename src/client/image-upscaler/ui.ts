@@ -23,6 +23,8 @@ const state = {
   /** Show output pixels 1:1 (the frame scrolls) instead of fitting the frame. */
   actual: false,
   running: false,
+  /** A new image or setting arrived during a run: run again when it ends. */
+  again: false,
 };
 
 let client: AiClient | null = null;
@@ -253,8 +255,12 @@ function updateHint(): void {
 
 async function run(): Promise<void> {
   const src = state.source;
-  if (!src || !client || !status || state.running) {
+  if (!src || !client || !status) {
     if (!src) status?.error(t("upscaler.empty"));
+    return;
+  }
+  if (state.running) {
+    state.again = true;
     return;
   }
   state.running = true;
@@ -296,6 +302,10 @@ async function run(): Promise<void> {
     status.error(t("ai.errorRun"));
   } finally {
     state.running = false;
+    if (state.again && alive) {
+      state.again = false;
+      void run();
+    }
   }
 }
 

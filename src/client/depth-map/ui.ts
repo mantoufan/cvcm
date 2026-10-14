@@ -20,6 +20,7 @@ const state = {
   invert: false,
   side: false,
   running: false,
+  again: false,
 };
 
 let client: AiClient | null = null;
@@ -145,7 +146,7 @@ function onPaste(e: ClipboardEvent): void {
 }
 
 async function setFile(file: File | undefined): Promise<void> {
-  if (!file || !client || !status || state.running) return;
+  if (!file || !status) return;
   let decoded;
   try {
     decoded = await decodeImage(file);
@@ -160,9 +161,19 @@ async function setFile(file: File | undefined): Promise<void> {
   state.bitmap?.close();
   Object.assign(state, { file, depth: null, ...decoded });
   redraw();
+  void run();
+}
+
+async function run(): Promise<void> {
+  const source = state.bitmap;
+  if (!source || !client || !status) return;
+  if (state.running) {
+    // A new photo arrived mid-run: estimate it when the current run ends.
+    state.again = true;
+    return;
+  }
   state.running = true;
   try {
-    const source = decoded.bitmap;
     const { result, backend, seconds } = await runJob<Extract<AiResponse, { type: "mask" }>>(
       client,
       status,
@@ -181,6 +192,10 @@ async function setFile(file: File | undefined): Promise<void> {
     status.error(t("ai.errorRun"));
   } finally {
     state.running = false;
+    if (state.again && alive) {
+      state.again = false;
+      void run();
+    }
   }
 }
 
