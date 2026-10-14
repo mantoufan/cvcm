@@ -1,0 +1,180 @@
+{
+  "title": "APR vs APY: the difference, formula and worked examples — cv.cm",
+  "description": "APR is a yearly rate without compounding; APY includes it. Formula APY = (1 + APR/n)^n − 1, why 5% APR monthly is 5.116% APY, and how loan APR adds fees.",
+  "h1": "APR vs APY: what is the difference?",
+  "answer": "APR (annual percentage rate) is a yearly rate that does not include compounding. APY (annual percentage yield) is the rate you actually earn or pay in a year once interest is added to the balance and starts earning interest itself. The conversion is `APY = (1 + APR/n)^n − 1`, where `n` is compounding periods per year, so 5% APR compounded monthly equals about 5.116% APY.",
+  "sections": [
+    {
+      "h": "The two rates side by side",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "APR",
+              "APY"
+            ],
+            "rows": [
+              [
+                "Stands for",
+                "Annual percentage rate",
+                "Annual percentage yield (also called effective annual rate)"
+              ],
+              [
+                "Includes compounding",
+                "No",
+                "Yes"
+              ],
+              [
+                "Usually quoted for",
+                "Loans, mortgages, credit cards",
+                "Savings accounts, CDs, deposits"
+              ],
+              [
+                "Includes fees",
+                "For loans, it includes certain lender fees",
+                "No; it reflects interest only"
+              ],
+              [
+                "Relation",
+                "Lower or equal",
+                "Equal when interest compounds once a year, higher otherwise"
+              ]
+            ]
+          }
+        },
+        "Lenders tend to quote the lower-looking APR and banks the higher-looking APY. Neither is misleading on its own, but comparing an APR with an APY is comparing different measurements."
+      ]
+    },
+    {
+      "h": "The formula and a worked example",
+      "body": [
+        "With `n` compounding periods per year, each period earns `APR/n`. After a year, every unit of money has grown by `(1 + APR/n)^n`. Subtract 1 to get the yield:",
+        {
+          "ol": [
+            "Write the APR as a decimal: 5% is `0.05`.",
+            "Divide by the number of periods: monthly is `0.05 / 12 = 0.0041667`.",
+            "Add 1 and raise to the power of the periods: `1.0041667^12 = 1.0511619`.",
+            "Subtract 1: `0.0511619`, or 5.116% APY."
+          ]
+        },
+        "On a $10,000 deposit, that is $511.62 of interest in a year instead of the $500 a simple 5% would give. To go the other way, `APR = n × ((1 + APY)^(1/n) − 1)`: a 5% APY compounded monthly corresponds to about 4.889% APR."
+      ]
+    },
+    {
+      "h": "How compounding frequency changes the yield",
+      "body": [
+        "The more often interest compounds, the higher the APY, but the gains shrink quickly:",
+        {
+          "table": {
+            "head": [
+              "APR",
+              "Compounding",
+              "`n`",
+              "APY"
+            ],
+            "rows": [
+              [
+                "5%",
+                "Annually",
+                "1",
+                "5.000%"
+              ],
+              [
+                "5%",
+                "Semi-annually",
+                "2",
+                "5.063%"
+              ],
+              [
+                "5%",
+                "Quarterly",
+                "4",
+                "5.095%"
+              ],
+              [
+                "5%",
+                "Monthly",
+                "12",
+                "5.116%"
+              ],
+              [
+                "5%",
+                "Daily",
+                "365",
+                "5.127%"
+              ],
+              [
+                "5%",
+                "Continuously",
+                "∞",
+                "5.127% (`e^0.05 − 1`)"
+              ],
+              [
+                "12%",
+                "Monthly",
+                "12",
+                "12.683%"
+              ],
+              [
+                "24%",
+                "Monthly",
+                "12",
+                "26.824%"
+              ]
+            ]
+          }
+        },
+        "At savings-account rates the difference between monthly and daily compounding is about a hundredth of a percent. At credit-card rates it is large: a 24% APR card that compounds monthly costs nearly 27% a year on a balance that is never paid down."
+      ]
+    },
+    {
+      "h": "Loan APR also includes fees",
+      "body": [
+        "For loans, APR is broader than the interest rate. The US Consumer Financial Protection Bureau describes the APR as the interest rate plus other costs of the loan, such as broker fees, discount points and some closing costs, expressed as a yearly percentage. Under the US Truth in Lending Act, lenders must disclose it so borrowers can compare offers.",
+        {
+          "ul": [
+            "A mortgage at 6.5% interest with $6,000 of points and fees will show an APR above 6.5%.",
+            "Two loans with the same interest rate can have different APRs because their fees differ.",
+            "Which fees are included is set by regulation, and some costs, such as appraisal or title fees on many mortgages, are left out."
+          ]
+        },
+        "Credit-card APR works differently: it is the yearly interest rate, typically applied as a daily rate (APR divided by 365) to your balance, and it does not include annual or late fees."
+      ]
+    },
+    {
+      "h": "Comparing offers fairly",
+      "body": [
+        {
+          "ul": [
+            "Compare APR with APR, or APY with APY. Convert one into the other with the formula above if two offers quote different measures.",
+            "Check the compounding frequency; it is part of the terms and changes the effective rate.",
+            "For loans, also compare the total amount repaid and the term. A longer term can lower the monthly payment while raising the total interest.",
+            "Introductory and variable rates can change. The quoted APR or APY applies only for as long as the rate stays the same."
+          ]
+        },
+        {
+          "note": "This page explains how the rates are calculated. It is not financial advice; read the official disclosures for any product and consider asking a qualified adviser before deciding."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is a higher APY better?",
+      "a": "For money you deposit, yes: a higher APY means more interest earned per year, as long as the rate is not introductory and the account has no offsetting fees. For a debt, the equivalent yearly cost should be as low as possible."
+    },
+    {
+      "q": "Can APR and APY be the same?",
+      "a": "Yes, when interest compounds once a year and, for loans, there are no extra fees. With more frequent compounding, APY is always higher than APR."
+    },
+    {
+      "q": "Why do banks advertise APY and lenders advertise APR?",
+      "a": "US rules require deposit accounts to disclose APY and loans to disclose APR. It also happens to make savings look higher and borrowing look cheaper."
+    },
+    {
+      "q": "What is the monthly rate for a 24% APR?",
+      "a": "The periodic rate is `24% / 12 = 2%` per month. Compounded over twelve months that is `1.02^12 − 1`, about 26.8% a year."
+    }
+  ]
+}

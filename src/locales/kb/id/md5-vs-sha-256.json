@@ -1,0 +1,170 @@
+{
+  "title": "MD5 vs SHA-256: perbedaan, collision, dan mana yang dipakai — cv.cm",
+  "description": "MD5 menghasilkan hash 128-bit yang collision-nya mudah dibuat; SHA-256 hash 256-bit yang belum jebol. Kapan masing-masing aman, dan mengapa keduanya bukan untuk sandi.",
+  "h1": "MD5 vs SHA-256: apa bedanya?",
+  "answer": "MD5 dan SHA-256 adalah fungsi hash yang mengubah input apa pun menjadi sidik jari berpanjang tetap: 128 bit untuk MD5, 256 bit untuk SHA-256. MD5 sudah tidak aman untuk keperluan keamanan karena penyerang bisa membuat dua file berbeda dengan hash yang sama. SHA-256 belum punya serangan praktis yang diketahui dan menjadi pilihan default untuk tanda tangan digital dan pemeriksaan integritas. MD5 masih layak untuk mendeteksi kerusakan yang tidak disengaja, dan keduanya tidak boleh dipakai langsung untuk menyimpan kata sandi.",
+  "sections": [
+    {
+      "h": "Apa yang dilakukan fungsi hash",
+      "body": [
+        "Hash kriptografis menerima input berukuran berapa pun dan menghasilkan digest berukuran tetap. Input yang sama selalu menghasilkan digest yang sama, perubahan satu karakter menghasilkan digest yang sama sekali berbeda, dan digest tidak bisa dikembalikan menjadi input.",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "MD5",
+              "SHA-256"
+            ],
+            "rows": [
+              [
+                "`abc`",
+                "`900150983cd24fb0d6963f7d28e17f72`",
+                "`ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`"
+              ],
+              [
+                "String kosong",
+                "`d41d8cd98f00b204e9800998ecf8427e`",
+                "`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`"
+              ]
+            ]
+          }
+        },
+        "Hash yang aman harus tahan terhadap tiga serangan: menemukan input untuk digest tertentu (preimage), menemukan input kedua dengan digest yang sama seperti input tertentu (second preimage), dan menemukan dua input apa pun dengan digest yang sama (collision). Collision adalah yang paling mudah; untuk hash n-bit yang ideal, dibutuhkan sekitar 2^(n/2) percobaan karena paradoks ulang tahun."
+      ]
+    },
+    {
+      "h": "Perbandingan MD5, SHA-1, SHA-256, dan SHA-3",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Ukuran digest",
+              "Panjang hex",
+              "Status"
+            ],
+            "rows": [
+              [
+                "MD5 (1992)",
+                "128 bit",
+                "32",
+                "Collision praktis sejak 2004; tidak aman untuk keamanan"
+              ],
+              [
+                "SHA-1 (1995)",
+                "160 bit",
+                "40",
+                "Collision publik pertama 2017; NIST berencana menghentikannya paling lambat 2030"
+              ],
+              [
+                "SHA-256 (SHA-2, 2001)",
+                "256 bit",
+                "64",
+                "Aman; distandarkan dalam FIPS 180-4"
+              ],
+              [
+                "SHA-512 (SHA-2)",
+                "512 bit",
+                "128",
+                "Aman; sering lebih cepat daripada SHA-256 di CPU 64-bit"
+              ],
+              [
+                "SHA3-256 (2015)",
+                "256 bit",
+                "64",
+                "Aman; desain internal berbeda, distandarkan dalam FIPS 202"
+              ]
+            ]
+          }
+        },
+        "SHA-256 adalah salah satu anggota keluarga SHA-2. \"SHA-2\" dan \"SHA-256\" sering dipakai bergantian, tetapi SHA-224, SHA-384, dan SHA-512 juga termasuk fungsi SHA-2."
+      ]
+    },
+    {
+      "h": "Bagaimana MD5 dan SHA-1 jebol",
+      "body": [
+        "Pada tahun 2004, Xiaoyun Wang dan rekan-rekannya memublikasikan collision MD5 yang ditemukan dalam hitungan jam. Riset berikutnya menghasilkan chosen-prefix collision, di mana penyerang memulai dari dua file bermakna yang berbeda lalu menambahkan data sampai hash-nya cocok. Pada tahun 2008 para peneliti memakai teknik ini untuk membuat sertifikat certificate authority palsu, dan malware Flame yang ditemukan pada tahun 2012 memakai collision MD5 untuk memalsukan sertifikat code signing Microsoft. RFC 6151 menyatakan MD5 tidak boleh dipakai di tempat yang membutuhkan ketahanan terhadap collision, seperti tanda tangan digital.",
+        "SHA-1 menyusul. Pada tahun 2017, proyek SHAttered dari Google dan CWI Amsterdam memublikasikan dua file PDF berbeda dengan hash SHA-1 yang sama, dan chosen-prefix collision SHA-1 didemonstrasikan pada tahun 2020. Git, sertifikat TLS, dan code signing sejak itu sudah atau sedang beralih ke SHA-256.",
+        "Serangan preimage terhadap MD5 masih tidak praktis. Jebol di sini berarti penyerang bisa membuat pasangan file yang collision, bukan berarti MD5 yang sudah ada bisa dibalik."
+      ]
+    },
+    {
+      "h": "Kapan MD5 masih boleh, dan kapan tidak",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Penggunaan",
+              "MD5 boleh?",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Mendeteksi kerusakan tak disengaja pada unduhan atau salinan",
+                "Ya",
+                "Kesalahan bit acak tidak menghasilkan collision"
+              ],
+              [
+                "Deduplikasi atau cache key di dalam sistem Anda sendiri",
+                "Umumnya ya",
+                "Aman selama penyerang tidak mengendalikan input"
+              ],
+              [
+                "Memverifikasi unduhan dari mirror yang berbahaya",
+                "Tidak",
+                "Penyerang bisa menyiapkan file yang collision; gunakan SHA-256"
+              ],
+              [
+                "Tanda tangan digital dan sertifikat",
+                "Tidak",
+                "Serangan collision bisa memalsukan tanda tangan"
+              ],
+              [
+                "Menyimpan kata sandi",
+                "Tidak",
+                "Terlalu cepat dihitung; hal yang sama berlaku untuk SHA-256"
+              ]
+            ]
+          }
+        },
+        "Jika bisa memilih, pilih SHA-256. Algoritma ini didukung di mana-mana, diakselerasi perangkat keras di CPU modern, dan Anda tak perlu memperdebatkan apakah suatu penggunaan sensitif terhadap collision."
+      ]
+    },
+    {
+      "h": "Kata sandi butuh hash yang lambat dan diberi salt",
+      "body": [
+        "Hash serbaguna dirancang agar cepat. Satu GPU modern bisa menghitung miliaran hash MD5 atau SHA-256 per detik, sehingga tabel hash kata sandi SHA-256 tanpa salt yang bocor bisa diserang dengan daftar kata yang sangat besar, dan kata sandi yang sama akan tampak sebagai hash yang sama.",
+        "Fungsi hash kata sandi mengatasi kedua masalah itu. Fungsi ini menambahkan salt acak yang unik untuk setiap pengguna sehingga kata sandi yang sama menghasilkan hash berbeda, dan sengaja dibuat lambat serta, pada desain yang lebih baru, memory-hard sehingga GPU tidak banyak membantu:",
+        {
+          "ul": [
+            "Argon2id: pemenang Password Hashing Competition 2015 dan pilihan utama yang umum untuk sistem baru.",
+            "scrypt: memory-hard, tersedia luas.",
+            "bcrypt: dipakai selama puluhan tahun; perlu diingat bahwa bcrypt hanya membaca 72 byte pertama kata sandi.",
+            "PBKDF2 dengan jumlah iterasi tinggi: dapat diterima jika diwajibkan algoritma yang tervalidasi FIPS."
+          ]
+        },
+        {
+          "note": "SHA-256 biasa juga tidak cocok sebagai message authentication code: `SHA-256(secret + message)` rentan terhadap serangan length-extension. Gunakan HMAC-SHA-256 jika hash harus membuktikan bahwa pesan berasal dari pihak yang memegang kunci."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah hash MD5 didekripsi?",
+      "a": "Tidak. Hash bukan enkripsi dan tidak punya kunci untuk membaliknya. \"MD5 decrypter\" online mencari hash tersebut di tabel berisi string umum yang sudah pernah di-hash, itulah sebabnya input yang pendek atau umum cepat ditemukan."
+    },
+    {
+      "q": "Apakah SHA-256 masih aman di tahun 2026?",
+      "a": "Ya. Belum ada serangan collision atau preimage praktis terhadap SHA-256 yang diketahui, dan NIST terus menyetujuinya. Ketahanan collision-nya sebesar 2^128 jauh melampaui kemampuan komputasi saat ini."
+    },
+    {
+      "q": "Mengapa situs web masih memublikasikan checksum MD5?",
+      "a": "Checksum itu bisa menangkap unduhan yang tidak lengkap atau rusak, yang merupakan masalah paling umum. Terhadap file yang sengaja dimanipulasi, checksum hanya membantu jika berasal dari sumber tepercaya dan memakai SHA-256 atau yang lebih kuat."
+    },
+    {
+      "q": "Apakah SHA-256 bagus untuk hash kata sandi?",
+      "a": "Tidak jika dipakai sendirian. SHA-256 cepat dan secara default tanpa salt, sehingga hash yang bocor bisa dibobol dengan miliaran tebakan per detik. Gunakan Argon2id, scrypt, atau bcrypt."
+    }
+  ]
+}

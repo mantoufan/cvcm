@@ -1,0 +1,180 @@
+{
+  "title": "APR và APY là gì? Khác biệt, công thức và ví dụ tính lãi — cv.cm",
+  "description": "APR là lãi suất năm chưa tính lãi kép; APY đã tính lãi kép. Công thức APY = (1 + APR/n)^n − 1, vì sao 5% APR ghép lãi hằng tháng bằng 5,116% APY và APR khoản vay gồm phí gì.",
+  "h1": "APR và APY khác nhau thế nào?",
+  "answer": "APR (annual percentage rate, lãi suất danh nghĩa năm) là lãi suất theo năm không tính lãi kép. APY (annual percentage yield, lợi suất thực năm) là mức lãi bạn thực sự nhận hoặc trả trong một năm, khi tiền lãi được cộng vào số dư và bắt đầu sinh lãi. Công thức quy đổi là `APY = (1 + APR/n)^n − 1`, trong đó `n` là số kỳ ghép lãi mỗi năm, nên 5% APR ghép lãi hằng tháng tương đương khoảng 5,116% APY.",
+  "sections": [
+    {
+      "h": "So sánh hai loại lãi suất",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "APR",
+              "APY"
+            ],
+            "rows": [
+              [
+                "Viết tắt của",
+                "Annual percentage rate (lãi suất danh nghĩa năm)",
+                "Annual percentage yield (còn gọi là lãi suất thực năm)"
+              ],
+              [
+                "Tính lãi kép",
+                "Không",
+                "Có"
+              ],
+              [
+                "Thường được công bố cho",
+                "Khoản vay, vay thế chấp mua nhà, thẻ tín dụng",
+                "Tài khoản tiết kiệm, chứng chỉ tiền gửi (CD), tiền gửi"
+              ],
+              [
+                "Bao gồm phí",
+                "Với khoản vay, có bao gồm một số loại phí của bên cho vay",
+                "Không; chỉ phản ánh tiền lãi"
+              ],
+              [
+                "Quan hệ",
+                "Thấp hơn hoặc bằng",
+                "Bằng nhau khi ghép lãi mỗi năm một lần, còn lại thì cao hơn"
+              ]
+            ]
+          }
+        },
+        "Bên cho vay thường công bố APR trông thấp hơn, còn ngân hàng nhận tiền gửi công bố APY trông cao hơn. Bản thân từng con số không gây hiểu lầm, nhưng so APR với APY là so hai phép đo khác nhau."
+      ]
+    },
+    {
+      "h": "Công thức và ví dụ cụ thể",
+      "body": [
+        "Với `n` kỳ ghép lãi mỗi năm, mỗi kỳ sinh lãi `APR/n`. Sau một năm, mỗi đơn vị tiền đã tăng lên `(1 + APR/n)^n` lần. Trừ đi 1 để ra lợi suất:",
+        {
+          "ol": [
+            "Viết APR dưới dạng thập phân: 5% là `0.05`.",
+            "Chia cho số kỳ: hằng tháng là `0.05 / 12 = 0.0041667`.",
+            "Cộng 1 và lũy thừa theo số kỳ: `1.0041667^12 = 1.0511619`.",
+            "Trừ 1: `0.0511619`, tức 5,116% APY."
+          ]
+        },
+        "Với khoản tiền gửi $10.000, đó là $511,62 tiền lãi trong một năm thay vì $500 nếu tính lãi đơn 5%. Để quy đổi ngược lại, `APR = n × ((1 + APY)^(1/n) − 1)`: 5% APY ghép lãi hằng tháng tương ứng khoảng 4,889% APR."
+      ]
+    },
+    {
+      "h": "Tần suất ghép lãi thay đổi lợi suất thế nào",
+      "body": [
+        "Lãi được ghép càng thường xuyên thì APY càng cao, nhưng phần tăng thêm giảm đi rất nhanh:",
+        {
+          "table": {
+            "head": [
+              "APR",
+              "Ghép lãi",
+              "`n`",
+              "APY"
+            ],
+            "rows": [
+              [
+                "5%",
+                "Hằng năm",
+                "1",
+                "5,000%"
+              ],
+              [
+                "5%",
+                "Nửa năm một lần",
+                "2",
+                "5,063%"
+              ],
+              [
+                "5%",
+                "Hằng quý",
+                "4",
+                "5,095%"
+              ],
+              [
+                "5%",
+                "Hằng tháng",
+                "12",
+                "5,116%"
+              ],
+              [
+                "5%",
+                "Hằng ngày",
+                "365",
+                "5,127%"
+              ],
+              [
+                "5%",
+                "Liên tục",
+                "∞",
+                "5,127% (`e^0.05 − 1`)"
+              ],
+              [
+                "12%",
+                "Hằng tháng",
+                "12",
+                "12,683%"
+              ],
+              [
+                "24%",
+                "Hằng tháng",
+                "12",
+                "26,824%"
+              ]
+            ]
+          }
+        },
+        "Ở mức lãi suất tiết kiệm, chênh lệch giữa ghép lãi hằng tháng và hằng ngày chỉ khoảng một phần trăm của một phần trăm. Ở mức lãi suất thẻ tín dụng thì chênh lệch lớn: một thẻ 24% APR ghép lãi hằng tháng tốn gần 27% mỗi năm với số dư không bao giờ được trả bớt."
+      ]
+    },
+    {
+      "h": "APR của khoản vay còn bao gồm phí",
+      "body": [
+        "Với khoản vay, APR rộng hơn lãi suất. Cục Bảo vệ Tài chính Người tiêu dùng Hoa Kỳ (CFPB) mô tả APR là lãi suất cộng các chi phí khác của khoản vay, như phí môi giới, điểm chiết khấu (discount points) và một số chi phí hoàn tất thủ tục, quy ra tỷ lệ phần trăm theo năm. Theo Đạo luật Trung thực trong Cho vay (Truth in Lending Act) của Hoa Kỳ, bên cho vay phải công bố APR để người vay so sánh các đề nghị.",
+        {
+          "ul": [
+            "Một khoản vay thế chấp lãi suất 6,5% với $6.000 điểm chiết khấu và phí sẽ có APR cao hơn 6,5%.",
+            "Hai khoản vay cùng lãi suất có thể có APR khác nhau vì phí khác nhau.",
+            "Loại phí nào được tính vào do quy định pháp luật đặt ra, và một số chi phí, như phí thẩm định hay phí quyền sở hữu với nhiều khoản vay thế chấp, không được tính."
+          ]
+        },
+        "APR của thẻ tín dụng hoạt động khác: đó là lãi suất theo năm, thường được áp dụng dưới dạng lãi suất ngày (APR chia 365) lên số dư của bạn, và không bao gồm phí thường niên hay phí trả chậm."
+      ]
+    },
+    {
+      "h": "So sánh các đề nghị một cách công bằng",
+      "body": [
+        {
+          "ul": [
+            "So APR với APR, hoặc APY với APY. Nếu hai đề nghị công bố theo hai cách khác nhau, hãy quy đổi bằng công thức ở trên.",
+            "Kiểm tra tần suất ghép lãi; đó là một phần của điều khoản và làm thay đổi lãi suất thực.",
+            "Với khoản vay, hãy so cả tổng số tiền phải trả và kỳ hạn. Kỳ hạn dài hơn có thể giảm khoản trả hằng tháng nhưng làm tăng tổng tiền lãi.",
+            "Lãi suất ưu đãi ban đầu và lãi suất thả nổi có thể thay đổi. APR hoặc APY được công bố chỉ đúng chừng nào lãi suất còn giữ nguyên."
+          ]
+        },
+        {
+          "note": "Trang này giải thích cách tính các loại lãi suất. Đây không phải lời khuyên tài chính; hãy đọc các văn bản công bố chính thức của từng sản phẩm và cân nhắc hỏi ý kiến chuyên gia có chuyên môn trước khi quyết định."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "APY cao hơn có tốt hơn không?",
+      "a": "Với tiền bạn gửi thì có: APY cao hơn nghĩa là nhận nhiều lãi hơn mỗi năm, miễn là đó không phải lãi suất ưu đãi ngắn hạn và tài khoản không có phí bù trừ. Với khoản nợ, chi phí quy đổi theo năm càng thấp càng tốt."
+    },
+    {
+      "q": "APR và APY có thể bằng nhau không?",
+      "a": "Có, khi lãi được ghép mỗi năm một lần và, với khoản vay, không có phí phát sinh thêm. Khi ghép lãi thường xuyên hơn, APY luôn cao hơn APR."
+    },
+    {
+      "q": "Vì sao ngân hàng quảng cáo APY còn bên cho vay quảng cáo APR?",
+      "a": "Quy định của Hoa Kỳ yêu cầu tài khoản tiền gửi công bố APY và khoản vay công bố APR. Điều đó cũng tình cờ khiến tiền tiết kiệm trông sinh lời nhiều hơn và đi vay trông rẻ hơn."
+    },
+    {
+      "q": "24% APR thì lãi suất mỗi tháng là bao nhiêu?",
+      "a": "Lãi suất mỗi kỳ là `24% / 12 = 2%` mỗi tháng. Ghép lãi qua mười hai tháng là `1.02^12 − 1`, khoảng 26,8% mỗi năm."
+    }
+  ]
+}

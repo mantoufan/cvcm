@@ -1,0 +1,128 @@
+{
+  "title": "Apa itu data EXIF? Isi metadata foto dan cara menghapusnya — cv.cm",
+  "description": "EXIF adalah metadata di dalam foto: model kamera, pengaturan, tanggal, dan sering kali lokasi GPS. Lihat tag apa saja yang ada dan cara menghapusnya dengan aman.",
+  "h1": "Apa itu data EXIF pada foto?",
+  "answer": "EXIF (Exchangeable Image File Format) adalah standar metadata yang ditulis kamera dan ponsel ke setiap foto. Isinya mencatat merek dan model perangkat, pengaturan eksposur, tanggal dan jam foto diambil, orientasi gambar, dan, jika lokasi diaktifkan, koordinat GPS yang cukup presisi untuk menunjukkan sebuah rumah. Data ini tidak terlihat di gambarnya, tetapi bisa dibaca siapa pun yang memiliki file-nya.",
+  "sections": [
+    {
+      "h": "Apa saja yang disimpan EXIF",
+      "body": [
+        "EXIF dibuat oleh asosiasi elektronik Jepang JEIDA pada tahun 1995 dan kini dikelola oleh CIPA dan JEITA. Standar ini memakai ulang struktur tag format TIFF, sehingga setiap data berupa tag bernomor dengan nama dan nilai.",
+        {
+          "table": {
+            "head": [
+              "Tag",
+              "Contoh nilai",
+              "Yang diungkapkan"
+            ],
+            "rows": [
+              [
+                "`Make` / `Model`",
+                "Apple / iPhone 15",
+                "Perangkat yang dipakai"
+              ],
+              [
+                "`DateTimeOriginal`",
+                "2026:09:12 18:42:07",
+                "Kapan foto diambil"
+              ],
+              [
+                "`ExposureTime`, `FNumber`, `ISOSpeedRatings`",
+                "1/120, f/1.8, 64",
+                "Pengaturan kamera"
+              ],
+              [
+                "`FocalLength`",
+                "6,9 mm",
+                "Lensa dan zoom"
+              ],
+              [
+                "`Orientation`",
+                "6 (putar 90° searah jarum jam)",
+                "Cara gambar harus ditampilkan"
+              ],
+              [
+                "`GPSLatitude` / `GPSLongitude`",
+                "48° 51' 29.6\" N, 2° 17' 40.2\" E",
+                "Lokasi foto diambil"
+              ],
+              [
+                "`BodySerialNumber`",
+                "Khusus per kamera",
+                "Bisa mengaitkan foto-foto ke satu kamera"
+              ],
+              [
+                "`Software`",
+                "Nama dan versi editor",
+                "Cara file diproses"
+              ]
+            ]
+          }
+        },
+        "Banyak file juga membawa thumbnail kecil yang tertanam, maker notes dalam format privat produsen, serta blok XMP atau IPTC terpisah berisi keterangan, kata kunci, dan hak cipta."
+      ]
+    },
+    {
+      "h": "Di mana EXIF berada dalam file",
+      "body": [
+        "Pada JPG, EXIF berada di segmen `APP1` dekat awal file, diawali byte `Exif` diikuti dua byte nol, dan dibatasi 64 KB. HEIC, WebP, TIFF, dan banyak format raw kamera juga membawa EXIF, dan PNG mendapatkan chunk `eXIf` resmi pada tahun 2017.",
+        "Karena metadata terpisah dari piksel, data ini bisa dibaca atau dihapus tanpa memengaruhi kualitas gambar. Screenshot dari sebuah foto tidak menyalin EXIF aslinya, meskipun screenshot itu mendapat metadata minimal sendiri."
+      ]
+    },
+    {
+      "h": "Mengapa EXIF penting untuk privasi",
+      "body": [
+        "Tag GPS adalah risiko utamanya. Kamera ponsel yang punya akses lokasi mencatat lintang dan bujur hingga akurasi beberapa meter, sehingga foto yang diambil di rumah dan dibagikan sebagai file asli bisa mengungkap alamat. Stempel waktu dan model perangkat menambah konteks, dan nomor seri bisa mengaitkan beberapa foto anonim ke kamera yang sama.",
+        {
+          "ul": [
+            "Jejaring sosial besar umumnya menghapus EXIF dari unggahan publik, tetapi kebijakannya bisa berubah dan tidak dijamin.",
+            "Lampiran email, tautan cloud drive, forum, marketplace, dan aplikasi pesan yang mengirim foto sebagai file biasanya mempertahankan metadata lengkap.",
+            "Foto yang dikirim ke formulir resmi atau pemberi kerja bisa diteruskan dan disimpan selama bertahun-tahun."
+          ]
+        },
+        {
+          "note": "Menghapus EXIF tidak menghapus apa yang terlihat di gambar. Rambu jalan, nomor rumah, pantulan, dan detail dokumen tetap bisa mengungkap tempat atau orang, jadi periksa gambarnya sendiri sebelum mengunggah."
+        }
+      ]
+    },
+    {
+      "h": "Cara melihat dan menghapus EXIF",
+      "body": [
+        "Di komputer, properti file menampilkan EXIF dasar: Dapatkan Info atau Inspektur di Pratinjau pada Mac, Properti › Detail di Windows. Untuk detail lengkap, gunakan penampil metadata atau alat yang berjalan di browser agar foto tidak diunggah.",
+        {
+          "ol": [
+            "Buka foto di penampil metadata dan periksa tag GPS lebih dulu.",
+            "Hapus semua metadata, atau hanya lokasi jika Anda ingin mempertahankan pengaturan kamera.",
+            "Simpan sebagai file baru dan simpan file aslinya secara pribadi.",
+            "Buka kembali file baru untuk memastikan kolom GPS sudah hilang."
+          ]
+        },
+        "Di ponsel, iOS maupun Android memungkinkan Anda mematikan lokasi di lembar bagikan atau pengaturan kamera. Lembar bagikan iPhone punya tautan Pilihan dengan sakelar Lokasi; di Android, aplikasi kamera punya pengaturan tag lokasi."
+      ]
+    },
+    {
+      "h": "Jebakan orientasi",
+      "body": [
+        "Ponsel sering menyimpan gambar dalam posisi menyamping dan mengisi tag `Orientation` (nilai 1 sampai 8) untuk memberi tahu penampil cara memutarnya. Jika sebuah alat menghapus EXIF tanpa menerapkan rotasi itu ke piksel terlebih dahulu, foto yang sudah dibersihkan bisa tampil menyamping atau terbalik. Penghapus metadata yang baik memutar piksel sebelum menghapus tag tersebut."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah orang mengetahui lokasi saya dari sebuah foto?",
+      "a": "Bisa, jika file aslinya masih berisi tag GPS. Siapa pun yang mengunduhnya bisa membaca koordinatnya dengan penampil gratis lalu menempelkannya ke peta."
+    },
+    {
+      "q": "Apakah menghapus EXIF menurunkan kualitas gambar?",
+      "a": "Tidak. Metadata disimpan terpisah dari piksel, sehingga penghapus metadata yang benar tidak menyentuh data gambar. Sebagian alat menyimpan ulang gambar sambil menghapus metadata, yang bisa menambah sedikit kompresi JPG."
+    },
+    {
+      "q": "Apakah screenshot punya data EXIF?",
+      "a": "Screenshot hanya membawa sedikit metadata, biasanya dimensi, tanggal pembuatan, dan kadang perangkatnya, tetapi tidak ada lokasi GPS. Screenshot tidak mewarisi EXIF foto aslinya."
+    },
+    {
+      "q": "Apakah WhatsApp atau Instagram menghapus EXIF?",
+      "a": "Jalur berbagi foto mereka umumnya menghapus sebagian besar metadata saat mengompresi gambar, tetapi mengirim foto sebagai dokumen atau file tetap mempertahankan metadata aslinya. Periksa perilaku terbaru aplikasi tersebut jika privasi lokasi penting bagi Anda."
+    }
+  ]
+}

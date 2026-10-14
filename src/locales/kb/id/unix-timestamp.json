@@ -1,0 +1,147 @@
+{
+  "title": "Apa itu Unix timestamp? Penjelasan epoch time dan contohnya — cv.cm",
+  "description": "Unix timestamp menghitung detik sejak 1970-01-01 00:00:00 UTC. Lihat cara menghitungnya, detik vs milidetik, detik kabisat, dan masalah tahun 2038.",
+  "h1": "Apa itu Unix timestamp?",
+  "answer": "Unix timestamp adalah jumlah detik yang telah berlalu sejak pukul 00:00:00 UTC tanggal 1 Januari 1970, yang disebut epoch Unix, tanpa menghitung detik kabisat. Nilainya berupa satu bilangan bulat tanpa zona waktu, sehingga `1700000000` berarti momen yang sama di mana pun: 14 November 2023, 22:13:20 UTC. JavaScript dan banyak API memakai milidetik, sehingga angkanya tiga digit lebih panjang.",
+  "sections": [
+    {
+      "h": "Bagaimana angkanya didefinisikan",
+      "body": [
+        "POSIX mendefinisikan \"seconds since the epoch\" dengan rumus tetap: setiap hari dihitung tepat 86.400 detik, dan hitungan dimulai dari `1970-01-01T00:00:00Z`. Momen sebelum epoch bernilai negatif, jadi `-1` adalah `1969-12-31T23:59:59Z`.",
+        "Karena nilainya diukur dalam UTC, nilai ini tidak membawa zona waktu maupun waktu musim panas (DST). Mengubahnya menjadi jam dinding adalah langkah terpisah yang membutuhkan zona, misalnya `Asia/Tokyo` atau `America/New_York`.",
+        {
+          "table": {
+            "head": [
+              "Timestamp (detik)",
+              "Tanggal dan waktu UTC",
+              "Keterangan"
+            ],
+            "rows": [
+              [
+                "`0`",
+                "1970-01-01T00:00:00Z",
+                "Epoch Unix"
+              ],
+              [
+                "`1000000000`",
+                "2001-09-09T01:46:40Z",
+                "Nilai 10 digit pertama"
+              ],
+              [
+                "`1234567890`",
+                "2009-02-13T23:31:30Z",
+                "Tonggak yang terkenal"
+              ],
+              [
+                "`1700000000`",
+                "2023-11-14T22:13:20Z",
+                "Angka bulat terkini"
+              ],
+              [
+                "`1791936000`",
+                "2026-10-14T00:00:00Z",
+                "Tengah malam UTC, 14 Okt 2026"
+              ],
+              [
+                "`2147483647`",
+                "2038-01-19T03:14:07Z",
+                "Nilai signed 32-bit terbesar"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Detik, milidetik, dan satuan lain",
+      "body": [
+        "Unix timestamp klasik memakai detik, tetapi banyak sistem menyimpan satuan yang lebih halus. Jumlah digit adalah cara tercepat untuk membedakannya pada tanggal saat ini:",
+        {
+          "table": {
+            "head": [
+              "Satuan",
+              "Jumlah digit saat ini",
+              "Contoh untuk momen yang sama",
+              "Umum dipakai di"
+            ],
+            "rows": [
+              [
+                "Detik",
+                "10",
+                "`1700000000`",
+                "Alat Unix, PHP `time()`, Python `time.time()` (sebagai float), klaim `exp` pada JWT"
+              ],
+              [
+                "Milidetik",
+                "13",
+                "`1700000000000`",
+                "JavaScript `Date.now()`, Java `System.currentTimeMillis()`"
+              ],
+              [
+                "Mikrodetik",
+                "16",
+                "`1700000000000000`",
+                "Internal PostgreSQL, sebagian sistem logging"
+              ],
+              [
+                "Nanodetik",
+                "19",
+                "`1700000000000000000`",
+                "Go `time.UnixNano()`, tracing resolusi tinggi"
+              ]
+            ]
+          }
+        },
+        "Mencampur satuan adalah bug timestamp yang paling umum. Nilai detik yang diberikan ke `new Date()` di JavaScript akan jatuh di Januari 1970; nilai milidetik yang dibaca sebagai detik akan jatuh puluhan ribu tahun di masa depan. Di JavaScript, konversi dengan `Math.floor(Date.now() / 1000)` untuk mendapatkan detik, dan `new Date(seconds * 1000)` untuk kembali."
+      ]
+    },
+    {
+      "h": "Detik kabisat tidak dihitung",
+      "body": [
+        "UTC sesekali menyisipkan detik kabisat agar tetap selaras dengan rotasi Bumi; sudah 27 detik kabisat ditambahkan sejak 1972. Unix time mengabaikannya: rumus POSIX menganggap setiap hari berisi 86.400 detik, sehingga detik kabisat diulang atau disebar (smear) ke periode yang lebih panjang, tergantung sistemnya.",
+        "Dalam praktiknya, mengurangkan dua timestamp memberi selisih waktu yang bisa meleset sebanyak jumlah detik kabisat di antaranya. Untuk penjadwalan sehari-hari, galat itu tidak berarti; untuk pengukuran waktu ilmiah atau keuangan, sistem memakai TAI atau waktu GPS. Badan-badan pengatur waktu internasional memutuskan pada tahun 2022 untuk berhenti menambahkan detik kabisat paling lambat 2035."
+      ]
+    },
+    {
+      "h": "Masalah tahun 2038",
+      "body": [
+        "Perangkat lunak lama menyimpan Unix time dalam integer signed 32-bit, yang nilai maksimumnya `2147483647`. Nilai itu tercapai pada `2038-01-19T03:14:07Z`. Satu detik kemudian penghitungnya overflow menjadi `-2147483648`, yang terbaca sebagai `1901-12-13T20:45:52Z`.",
+        {
+          "ul": [
+            "Sistem operasi, bahasa, dan database 64-bit modern memakai `time_t` 64-bit, yang cukup untuk sekitar 292 miliar tahun.",
+            "Risiko masih ada di perangkat embedded, format file lama, kolom database 32-bit seperti `TIMESTAMP` di MySQL, dan protokol biner yang hanya menyediakan empat byte untuk waktu.",
+            "Nilai berjangka panjang seperti sertifikat 20 tahun, KPR, dan tanggal kedaluwarsa sudah melewati 2038, sehingga bug ini bisa muncul jauh sebelum tanggal itu."
+          ]
+        },
+        {
+          "note": "JavaScript tidak terdampak dengan cara yang sama: `Date` menyimpan milidetik dalam float 64-bit dan valid hingga tahun 275760."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai timestamp dan kapan memakai string tanggal",
+      "body": [
+        "Simpan momen (kapan suatu kejadian terjadi, kapan token kedaluwarsa) sebagai Unix timestamp atau string tanggal UTC. Keduanya tidak ambigu dan terurut dengan benar.",
+        "Gunakan string ISO 8601 yang mudah dibaca seperti `2026-10-14T09:30:00Z` di log, API, dan file yang akan dibaca orang, karena `1791970200` tidak bermakna apa-apa sekilas pandang. Simpan acara lokal di masa depan, seperti rapat pukul 09:00 di Paris musim semi mendatang, sebagai waktu lokal plus nama zona IANA: aturan DST bisa berubah sebelum tanggalnya tiba, dan timestamp yang sudah dihitung sebelumnya akan menjadi salah."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Unix timestamp selalu dalam UTC?",
+      "a": "Ya. Hitungannya didefinisikan dari tengah malam UTC tanggal 1 Januari 1970, jadi angkanya sendiri tidak punya zona waktu. Hanya konversi ke waktu lokal yang mudah dibaca yang bergantung pada zona."
+    },
+    {
+      "q": "Bagaimana cara mendapatkan Unix timestamp saat ini?",
+      "a": "Jalankan `date +%s` di terminal Linux atau macOS, `Math.floor(Date.now() / 1000)` di JavaScript, atau `int(time.time())` di Python. Semuanya mengembalikan jumlah detik sejak epoch."
+    },
+    {
+      "q": "Mengapa timestamp saya terkonversi menjadi tanggal di tahun 1970?",
+      "a": "Nilainya hampir pasti dalam detik tetapi dibaca sebagai milidetik. Kalikan dengan 1.000 sebelum memberikannya ke fungsi yang mengharapkan milidetik, seperti `new Date()` di JavaScript."
+    },
+    {
+      "q": "Bisakah Unix timestamp bernilai negatif?",
+      "a": "Bisa. Nilai negatif menghitung mundur dari epoch, jadi `-86400` adalah 31 Desember 1969 pukul 00:00 UTC. Sebagian sistem lama menolaknya, jadi uji dulu sebelum menyimpan tanggal sebelum 1970 dengan cara ini."
+    }
+  ]
+}

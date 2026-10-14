@@ -1,0 +1,175 @@
+{
+  "title": "Unicode vs UTF-8: apa bedanya, lengkap dengan contoh byte — cv.cm",
+  "description": "Unicode memberi setiap karakter sebuah nomor; UTF-8 mengubahnya menjadi 1–4 byte. Lihat contoh byte, UTF-16 dan BOM, serta mengapa teks berubah menjadi Ã©.",
+  "h1": "Apa beda Unicode dan UTF-8?",
+  "answer": "Unicode adalah set karakter: setiap karakter diberi nomor yang disebut code point, misalnya U+00E9 untuk \"é\". UTF-8 adalah encoding: aturan untuk menyimpan nomor-nomor itu sebagai byte. UTF-8 memakai 1 byte untuk ASCII dan 2 hingga 4 byte untuk karakter lainnya, sehingga \"é\" menjadi `C3 A9`. Unicode menentukan karakter mana; UTF-8 menentukan cara karakter itu ditulis ke disk atau dikirim lewat jaringan.",
+  "sections": [
+    {
+      "h": "Code point dulu, byte kemudian",
+      "body": [
+        "Unicode mendefinisikan ruang kode dari U+0000 sampai U+10FFFF, cukup untuk 1.114.112 code point yang dibagi menjadi 17 plane masing-masing berisi 65.536. Lebih dari 150.000 di antaranya sudah ditetapkan untuk karakter, mencakup aksara modern dan kuno, simbol, serta emoji. Code point ditulis sebagai `U+` diikuti minimal empat digit heksadesimal.",
+        "Code point hanyalah sebuah angka. Untuk menyimpan atau mengirim teks, angka itu harus diubah menjadi byte, dan ada beberapa cara melakukannya: UTF-8, UTF-16, dan UTF-32 semuanya adalah encoding untuk karakter Unicode yang sama.",
+        {
+          "table": {
+            "head": [
+              "Karakter",
+              "Code point",
+              "Byte UTF-8",
+              "UTF-16 (big-endian)"
+            ],
+            "rows": [
+              [
+                "A",
+                "U+0041",
+                "`41`",
+                "`00 41`"
+              ],
+              [
+                "é",
+                "U+00E9",
+                "`C3 A9`",
+                "`00 E9`"
+              ],
+              [
+                "€",
+                "U+20AC",
+                "`E2 82 AC`",
+                "`20 AC`"
+              ],
+              [
+                "日",
+                "U+65E5",
+                "`E6 97 A5`",
+                "`65 E5`"
+              ],
+              [
+                "😀",
+                "U+1F600",
+                "`F0 9F 98 80`",
+                "`D8 3D DE 00`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Bagaimana UTF-8 memilih 1, 2, 3, atau 4 byte",
+      "body": [
+        "UTF-8, yang dispesifikasikan dalam RFC 3629, adalah encoding dengan lebar variabel. Bit-bit awal pada byte pertama menunjukkan berapa byte yang menyusul, dan setiap byte lanjutan diawali bit `10`. Hal ini membuat aliran data dapat menyinkronkan diri: decoder yang mendarat di tengah karakter bisa melompat ke byte awal berikutnya.",
+        {
+          "table": {
+            "head": [
+              "Rentang code point",
+              "Byte",
+              "Pola bit"
+            ],
+            "rows": [
+              [
+                "U+0000 – U+007F",
+                "1",
+                "`0xxxxxxx`"
+              ],
+              [
+                "U+0080 – U+07FF",
+                "2",
+                "`110xxxxx 10xxxxxx`"
+              ],
+              [
+                "U+0800 – U+FFFF",
+                "3",
+                "`1110xxxx 10xxxxxx 10xxxxxx`"
+              ],
+              [
+                "U+10000 – U+10FFFF",
+                "4",
+                "`11110xxx 10xxxxxx 10xxxxxx 10xxxxxx`"
+              ]
+            ]
+          }
+        },
+        "Contoh perhitungan: \"é\" adalah U+00E9, dalam biner `000 1110 1001`. Karakter ini butuh pola 2 byte. Lima bit teratas `00011` dimasukkan ke `110xxxxx` sehingga menjadi `11000011` (`C3`), dan enam bit terbawah `101001` dimasukkan ke `10xxxxxx` sehingga menjadi `10101001` (`A9`).",
+        "Karena 128 code point pertama di-encode menjadi byte tunggal yang sama dengan ASCII, setiap file ASCII yang valid otomatis juga UTF-8 yang valid. Kompatibilitas mundur inilah alasan utama UTF-8 menjadi default di web, yang dipakai oleh sekitar 98% situs web."
+      ]
+    },
+    {
+      "h": "UTF-8 vs UTF-16 vs UTF-32",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Encoding",
+              "Ukuran unit",
+              "Byte per karakter",
+              "Umum dipakai di"
+            ],
+            "rows": [
+              [
+                "UTF-8",
+                "8 bit",
+                "1–4",
+                "Halaman web, JSON, file Linux dan macOS, sebagian besar API"
+              ],
+              [
+                "UTF-16",
+                "16 bit",
+                "2 atau 4",
+                "String JavaScript, Java, API Windows"
+              ],
+              [
+                "UTF-32",
+                "32 bit",
+                "Selalu 4",
+                "Pemrosesan internal yang diuntungkan oleh lebar tetap"
+              ]
+            ]
+          }
+        },
+        "UTF-16 menyimpan karakter di atas U+FFFF sebagai pasangan surrogate yang terdiri dari dua unit 16-bit. Itulah sebabnya `\"😀\".length` bernilai `2` di JavaScript: bahasa ini menghitung unit UTF-16, bukan karakter. Iterasi dengan `[...\"😀\"].length` menghasilkan `1`.",
+        "Untuk teks bahasa Inggris, UTF-8 paling ringkas. Untuk teks yang sebagian besar berbahasa Tionghoa, Jepang, atau Korea, UTF-16 bisa lebih kecil, karena karakter tersebut memakan 3 byte di UTF-8 tetapi 2 byte di UTF-16."
+      ]
+    },
+    {
+      "h": "Byte order mark (BOM)",
+      "body": [
+        "BOM adalah karakter U+FEFF yang diletakkan di awal file. Pada UTF-16 dan UTF-32, BOM memberi tahu pembaca apakah byte-nya big-endian atau little-endian. Pada UTF-8, BOM di-encode sebagai `EF BB BF` dan hanya berfungsi sebagai penanda, karena UTF-8 tidak punya urutan byte.",
+        "FAQ Unicode menyatakan BOM UTF-8 tidak diwajibkan dan tidak disarankan. Sebagian editor Windows tetap menambahkannya, lalu BOM itu merusak skrip shell (baris `#!` tidak lagi berada paling awal), header CSV, dan parser JSON yang tidak mengharapkannya. Jika sebuah file menampilkan `ï»¿` di bagian atas, itu adalah BOM UTF-8 yang dibaca sebagai Windows-1252."
+      ]
+    },
+    {
+      "h": "Mengapa teks berubah menjadi Ã© atau ���",
+      "body": [
+        "Teks kacau, yang disebut mojibake, muncul saat byte di-decode dengan encoding yang berbeda dari encoding saat ditulis:",
+        {
+          "ul": [
+            "`Ã©` alih-alih `é`: byte UTF-8 `C3 A9` dibaca sebagai Windows-1252 atau Latin-1, yang memetakan `C3` ke `Ã` dan `A9` ke `©`.",
+            "`�` (U+FFFD, karakter pengganti): decoder menemukan byte yang bukan UTF-8 valid, sering kali teks Latin-1 yang dibaca sebagai UTF-8.",
+            "Tanda tanya di database: kolom atau koneksinya memakai charset yang tidak bisa menampung karakter tersebut, sehingga karakter itu diganti saat ditulis dan hilang selamanya."
+          ]
+        },
+        "Solusinya adalah menyatakan encoding di setiap batas: `<meta charset=\"utf-8\">` di HTML, `Content-Type: text/html; charset=utf-8` di header HTTP, serta UTF-8 untuk kolom dan koneksi database. Di MySQL, gunakan `utf8mb4`; charset `utf8` yang lebih lama hanya menyimpan maksimal 3 byte per karakter dan menolak emoji.",
+        {
+          "note": "Mojibake akibat salah decode bisa dipulihkan jika Anda masih punya byte aslinya. Teks yang sudah disimpan ulang setelah salah dibaca, atau yang karakternya sudah berubah menjadi `?` saat ditulis, biasanya tidak bisa dipulihkan."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah UTF-8 sama dengan Unicode?",
+      "a": "Tidak. Unicode adalah daftar karakter beserta nomornya; UTF-8 adalah salah satu cara menyimpan nomor-nomor itu sebagai byte. Orang sering menyebut \"Unicode\" padahal maksudnya teks UTF-8."
+    },
+    {
+      "q": "Berapa byte satu karakter di UTF-8?",
+      "a": "Antara 1 dan 4. Huruf ASCII memakan 1 byte, sebagian besar huruf beraksen Eropa 2 byte, sebagian besar karakter Tionghoa, Jepang, dan Korea 3 byte, dan emoji 4 byte."
+    },
+    {
+      "q": "Apakah UTF-8 bisa merepresentasikan semua karakter?",
+      "a": "Ya. UTF-8 bisa meng-encode setiap code point Unicode dari U+0000 sampai U+10FFFF, jadi karakter apa pun yang didefinisikan Unicode bisa ditulis dalam UTF-8."
+    },
+    {
+      "q": "Apakah file sebaiknya disimpan dengan BOM?",
+      "a": "Untuk UTF-8, biasanya tidak. BOM bersifat opsional, tidak berguna untuk urutan byte, dan membingungkan alat yang mengharapkan byte pertama berupa isi file. Sebagian versi Excel lama membutuhkannya agar bisa membuka file CSV UTF-8 dengan benar."
+    }
+  ]
+}

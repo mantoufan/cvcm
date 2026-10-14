@@ -1,0 +1,157 @@
+{
+  "title": "JPG, PNG hay WebP: nên dùng định dạng ảnh nào, khi nào? — cv.cm",
+  "description": "JPG hợp với ảnh chụp, PNG hợp với đồ họa sắc nét và nền trong suốt, WebP làm được cả hai mà file nhỏ hơn. So sánh độ nén, chất lượng, mức hỗ trợ và khi nào nên dùng AVIF.",
+  "h1": "JPG, PNG hay WebP: nên dùng định dạng ảnh nào?",
+  "answer": "Dùng JPG cho ảnh chụp khi cần file nhỏ và không cần nền trong suốt. Dùng PNG cho ảnh chụp màn hình, logo, chữ và mọi thứ cần đúng từng điểm ảnh hoặc nền trong suốt. Dùng WebP khi ảnh được đưa lên website: nó hỗ trợ cả chế độ nén có mất dữ liệu lẫn không mất dữ liệu, cùng nền trong suốt, và theo đo đạc của Google, WebP nén có mất dữ liệu nhỏ hơn JPG 25–34% ở cùng chất lượng. Mọi trình duyệt hiện nay đều hiển thị được WebP.",
+  "sections": [
+    {
+      "h": "So sánh ba định dạng",
+      "body": [
+        "Mỗi định dạng được thiết kế cho một mục đích khác nhau, và khác biệt nằm ở cách nén điểm ảnh cùng các tính năng đi kèm.",
+        {
+          "table": {
+            "head": [
+              "",
+              "JPG (JPEG)",
+              "PNG",
+              "WebP"
+            ],
+            "rows": [
+              [
+                "Ra đời",
+                "1992",
+                "1996",
+                "2010"
+              ],
+              [
+                "Kiểu nén",
+                "Có mất dữ liệu",
+                "Không mất dữ liệu",
+                "Có hoặc không mất dữ liệu"
+              ],
+              [
+                "Nền trong suốt",
+                "Không",
+                "Có, kênh alpha đầy đủ",
+                "Có, kênh alpha đầy đủ"
+              ],
+              [
+                "Ảnh động",
+                "Không",
+                "Biến thể APNG",
+                "Có"
+              ],
+              [
+                "Độ sâu bit",
+                "8 bit mỗi kênh (bản cơ bản)",
+                "Tối đa 16 bit mỗi kênh",
+                "8 bit mỗi kênh"
+              ],
+              [
+                "Phù hợp nhất cho",
+                "Ảnh chụp",
+                "Đồ họa, ảnh chụp màn hình, chữ",
+                "Mọi loại ảnh trên web"
+              ],
+              [
+                "Hạn chế hỗ trợ thường gặp",
+                "Không có",
+                "Không có",
+                "Một số phần mềm máy tính cũ và biểu mẫu tải lên"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Nén có mất dữ liệu và không mất dữ liệu: khác biệt quyết định",
+      "body": [
+        "Nén có mất dữ liệu (JPG, WebP lossy) loại bỏ những chi tiết mắt người khó nhận ra. Cách này hiệu quả với ảnh chụp, nơi màu sắc chuyển dần, nhưng lại làm nhòe các cạnh sắc: chữ và nét mảnh trong JPG bị viền mờ gọi là hiện tượng ringing hay nhiễu muỗi, và ở chất lượng thấp có thể xuất hiện các khối 8×8 điểm ảnh.",
+        "Nén không mất dữ liệu (PNG, WebP lossless) lưu chính xác từng điểm ảnh. Nó nén rất tốt các vùng màu phẳng lớn, nên ảnh chụp màn hình lưu PNG có thể nhỏ hơn JPG, nhưng ảnh chụp lưu PNG thường lớn gấp 3–5 lần một file JPG tốt mà không đẹp hơn chút nào.",
+        {
+          "ul": [
+            "Mỗi lần chỉnh sửa rồi lưu lại, JPG bị nén thêm một lần và mất thêm chút chi tiết. Hãy giữ một bản gốc không mất dữ liệu nếu bạn sẽ chỉnh sửa nhiều lần.",
+            "Chuyển JPG sang PNG không khôi phục được chi tiết đã mất; nó chỉ lưu những điểm ảnh đã bị nén mà không mất thêm, trong một file lớn hơn.",
+            "Mức chất lượng JPG khoảng 80–90% là điểm cân bằng phổ biến giữa dung lượng và độ nhiễu nhìn thấy được."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "WebP nhỏ hơn bao nhiêu?",
+      "body": [
+        "Nghiên cứu nén WebP của Google so sánh các file ở cùng chỉ số tương đồng cấu trúc (SSIM). WebP lossy nhỏ hơn JPG 25–34%, và Google cho biết WebP lossless nhỏ hơn PNG khoảng 26%. Mức tiết kiệm thực tế tùy vào ảnh, bộ mã hóa và mức chất lượng.",
+        "Ví dụ cụ thể: một ảnh banner 400 KB lưu dạng JPG thường chỉ còn khoảng 265–300 KB khi lưu WebP lossy ở chất lượng tương đương. Với một trang có hai mươi ảnh, khác biệt đó giúp trang tải nhanh hơn trên mạng di động.",
+        {
+          "note": "WebP giới hạn ở 16.383 × 16.383 điểm ảnh và màu 8 bit, nên không phải định dạng lưu trữ tốt cho ảnh gốc độ phân giải cao hay HDR. Hãy giữ ảnh gốc từ máy ảnh và xuất bản sao WebP để dùng trên web."
+        }
+      ]
+    },
+    {
+      "h": "AVIF đứng ở đâu",
+      "body": [
+        "AVIF là định dạng mới hơn, lưu ảnh nén bằng AV1 trong một vỏ chứa kiểu HEIF. Với ảnh chụp, nó thường nhỏ hơn WebP, hỗ trợ màu 10 và 12 bit cùng HDR, và có nền trong suốt. Chrome hỗ trợ từ phiên bản 85, Firefox từ 93 và Safari từ 16.",
+        "Đổi lại, AVIF mã hóa chậm hơn, ít được phần mềm máy tính cũ hỗ trợ, và đôi khi mất vân chi tiết ở chất lượng rất thấp. Nhiều website ưu tiên phục vụ AVIF, sau đó là WebP và dùng JPG làm phương án dự phòng thông qua thẻ HTML `<picture>`."
+      ]
+    },
+    {
+      "h": "Hướng dẫn chọn nhanh",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "Định dạng nên dùng"
+            ],
+            "rows": [
+              [
+                "Ảnh chụp từ máy ảnh hoặc điện thoại cho website",
+                "WebP hoặc AVIF, kèm JPG dự phòng nếu cần"
+              ],
+              [
+                "Ảnh gửi email, gửi tiệm in hoặc tải lên biểu mẫu",
+                "JPG"
+              ],
+              [
+                "Logo, biểu tượng hoặc sơ đồ có nền trong suốt",
+                "PNG, hoặc SVG nếu là đồ họa vector"
+              ],
+              [
+                "Ảnh chụp màn hình có chữ",
+                "PNG hoặc WebP lossless"
+              ],
+              [
+                "Ảnh động ngắn lặp lại",
+                "WebP động hoặc file video thay cho GIF"
+              ],
+              [
+                "Bản gốc sẽ còn chỉnh sửa",
+                "PNG, TIFF hoặc định dạng gốc của máy ảnh"
+              ]
+            ]
+          }
+        },
+        "Nếu biểu mẫu từ chối WebP, hãy chuyển một bản sao sang JPG với ảnh chụp hoặc PNG với đồ họa. Chuyển file có mất dữ liệu sang không mất dữ liệu chẳng được lợi gì ngoài khả năng tương thích."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PNG có chất lượng cao hơn JPG không?",
+      "a": "PNG là định dạng không mất dữ liệu nên giữ chính xác từng điểm ảnh, còn JPG bỏ bớt một số chi tiết. Với ảnh chụp ở chất lượng JPG cao, khác biệt thường không nhìn thấy được; với chữ và cạnh sắc, PNG trông sạch hơn rõ rệt."
+    },
+    {
+      "q": "Vì sao file PNG của tôi lớn hơn JPG nhiều thế?",
+      "a": "Nén không mất dữ liệu không thể bỏ đi nhiễu hạt và dải chuyển màu có trong ảnh chụp, nên ảnh chụp lưu PNG thường lớn gấp nhiều lần. Hãy dùng JPG hoặc WebP cho ảnh chụp."
+    },
+    {
+      "q": "Tất cả trình duyệt đều hỗ trợ WebP chứ?",
+      "a": "Đúng vậy. Chrome, Edge, Firefox và Opera đã hỗ trợ từ nhiều năm, còn Safari bổ sung ở phiên bản 14 vào năm 2020. Một số phần mềm máy tính cũ và biểu mẫu tải lên vẫn từ chối WebP."
+    },
+    {
+      "q": "Chuyển PNG sang JPG có mất nền trong suốt không?",
+      "a": "Có. JPG không có kênh alpha nên vùng trong suốt sẽ bị tô một màu đặc, thường là trắng hoặc đen. Hãy dùng WebP hoặc giữ PNG nếu bạn cần nền trong suốt."
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "title": "JSON vs YAML vs XML: perbedaan dan kapan memakai masing-masing — cv.cm",
+  "description": "JSON, YAML, dan XML sama-sama untuk data terstruktur. Bandingkan sintaks, tipe, komentar, skema, dan celah keamanan, serta mana yang cocok untuk API atau konfigurasi.",
+  "h1": "JSON vs YAML vs XML: format mana yang sebaiknya dipakai?",
+  "answer": "JSON, YAML, dan XML adalah format teks untuk data terstruktur. JSON ringkas dan ketat, dengan enam tipe nilai, serta mendominasi API web. YAML berbasis indentasi, mengizinkan komentar, dan populer untuk file konfigurasi. XML memakai tag dan atribut, mendukung namespace dan skema formal, dan masih umum di dokumen, sistem enterprise, serta feed. Ketiganya bisa merepresentasikan data bersarang yang sama.",
+  "sections": [
+    {
+      "h": "Data yang sama dalam tiga format",
+      "body": [
+        "Seorang pengguna dengan nama, penanda aktif, dan dua peran tampak seperti ini di setiap format:",
+        {
+          "table": {
+            "head": [
+              "Format",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "JSON",
+                "`{\"name\": \"Ana\", \"active\": true, \"roles\": [\"admin\", \"editor\"]}`"
+              ],
+              [
+                "YAML",
+                "`name: Ana` / `active: true` / `roles: [admin, editor]` (satu key per baris)"
+              ],
+              [
+                "XML",
+                "`<user active=\"true\"><name>Ana</name><role>admin</role><role>editor</role></user>`"
+              ]
+            ]
+          }
+        },
+        "JSON dan YAML terpetakan langsung ke objek, list, dan skalar di sebagian besar bahasa pemrograman. XML menggambarkan pohon elemen, dan pemetaannya ke objek hanyalah konvensi: di sini penanda aktif bisa berupa atribut atau elemen anak, dan XML sendiri tidak menyatakan bahwa nilainya boolean, bukan teks `true`."
+      ]
+    },
+    {
+      "h": "Perbandingan berdampingan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "JSON",
+              "YAML",
+              "XML"
+            ],
+            "rows": [
+              [
+                "Spesifikasi",
+                "RFC 8259, ECMA-404",
+                "YAML 1.2.2 (2021)",
+                "W3C XML 1.0, Fifth Edition"
+              ],
+              [
+                "Struktur",
+                "Kurung kurawal dan kurung siku",
+                "Indentasi",
+                "Tag pembuka dan penutup"
+              ],
+              [
+                "Komentar",
+                "Tidak diizinkan",
+                "`# comment`",
+                "`<!-- comment -->`"
+              ],
+              [
+                "Tipe bawaan",
+                "Object, array, string, number, boolean, null",
+                "Map, sequence, skalar yang ditentukan tipenya",
+                "Hanya teks, kecuali skema menetapkan tipe"
+              ],
+              [
+                "Bahasa skema",
+                "JSON Schema",
+                "Biasanya JSON Schema",
+                "XSD, DTD, RELAX NG"
+              ],
+              [
+                "Fitur tambahan",
+                "Tidak ada",
+                "Anchor dan alias, banyak dokumen dalam satu file",
+                "Atribut, namespace, mixed content"
+              ],
+              [
+                "Penggunaan umum",
+                "API web, data browser, log",
+                "Konfigurasi: Kubernetes, pipeline CI, Docker Compose",
+                "File Office, SVG, RSS, SOAP, layout Android"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "JSON: ketat dan bisa diprediksi",
+      "body": [
+        "Tata bahasa JSON cukup kecil untuk muat dalam satu halaman, itulah sebabnya parser di semua bahasa sepakat tentangnya. Ketatnya aturan itu juga menjadi sumber kesalahan paling umum:",
+        {
+          "ul": [
+            "Key dan string wajib memakai tanda kutip ganda; tanda kutip tunggal tidak valid.",
+            "Tidak boleh ada koma di belakang item terakhir pada object atau array.",
+            "Tidak ada komentar, sehingga konfigurasi yang ditulis dalam JSON tidak bisa menjelaskan dirinya sendiri. Varian seperti JSONC dan JSON5 menambahkan komentar, tetapi bukan JSON standar.",
+            "RFC 8259 mewajibkan UTF-8 untuk JSON yang dipertukarkan antarsistem."
+          ]
+        },
+        "Tata bahasanya tidak membatasi ukuran angka, tetapi RFC 8259 mencatat bahwa sebagian besar perangkat lunak memakai double IEEE 754. Di JavaScript, bilangan bulat di atas `9007199254740992` (2^53) kehilangan presisi, jadi ID besar lebih aman dikirim sebagai string."
+      ]
+    },
+    {
+      "h": "YAML: mudah dibaca, tapi banyak jebakan",
+      "body": [
+        "YAML dirancang agar mudah dibaca dan disunting manusia, dan YAML 1.2 nyaris merupakan superset JSON, sehingga sebagian besar file JSON juga YAML yang valid. Fleksibilitasnya ada harganya:",
+        {
+          "ul": [
+            "Indentasi adalah struktur. Satu spasi yang salah tempat mengubah tingkat sarang, dan tab tidak boleh dipakai untuk indentasi.",
+            "Nilai tanpa tanda kutip ditebak tipenya. Menurut aturan YAML 1.1, yang masih dipakai banyak parser, `no`, `off`, dan `yes` menjadi boolean, sehingga kode negara `NO` berubah menjadi `false`. Skema inti YAML 1.2 hanya menganggap `true` dan `false` sebagai boolean, tetapi periksa versi mana yang diterapkan parser Anda.",
+            "Nilai seperti `1.10` bisa menjadi angka `1.1`, dan `012` bisa menjadi bilangan oktal. Beri tanda kutip pada string yang hanya tampak seperti angka, misalnya nomor versi dan kode pos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "XML: bertele-tele, tapi dibuat untuk dokumen",
+      "body": [
+        "Untuk data biasa, XML lebih berat daripada JSON, tetapi XML bisa menangani hal yang tidak bisa ditangani format lain: mixed content (teks dengan markup sisipan, seperti `<p>Hello <b>world</b></p>`), namespace yang memungkinkan kosakata dari sumber berbeda hidup berdampingan dalam satu file, dan validasi matang lewat XSD. Format seperti DOCX, XLSX, SVG, dan RSS pada dasarnya adalah XML.",
+        "Konversi XML ke JSON pada dasarnya selalu kehilangan sesuatu. Atribut, urutan elemen, elemen berulang, dan mixed content tidak punya padanan tunggal di JSON, sehingga konverter memilih konvensi seperti awalan `@` untuk atribut atau memaksa elemen berulang menjadi array.",
+        {
+          "note": "Mem-parsing input yang tidak tepercaya punya risiko khusus untuk tiap format. Parser XML yang me-resolve external entity rentan terhadap serangan XXE yang membaca file lokal; nonaktifkan pemrosesan DTD dan external entity. Loader YAML yang bisa membuat objek sembarang dapat menjalankan kode; gunakan loader aman seperti `yaml.safe_load` dari PyYAML."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah YAML superset dari JSON?",
+      "a": "YAML 1.2 direvisi agar hampir menjadi superset ketat JSON, sehingga hampir setiap dokumen JSON bisa di-parse sebagai YAML. Ada beberapa kasus tepi yang berbeda, dan parser YAML 1.1 kurang kompatibel."
+    },
+    {
+      "q": "Mengapa JSON tidak mengizinkan komentar?",
+      "a": "Pembuatnya sengaja tidak menyertakan komentar agar komentar tidak dipakai untuk membawa direktif parsing yang akan merusak interoperabilitas. Alat yang butuh komentar di konfigurasi memakai JSONC, JSON5, atau YAML."
+    },
+    {
+      "q": "Mana yang lebih cepat di-parse, JSON atau XML?",
+      "a": "JSON biasanya lebih cepat dan lebih kecil untuk data yang sama, karena tata bahasanya lebih sederhana dan tidak punya tag penutup, atribut, atau namespace. Perbedaannya terutama terasa pada volume tinggi."
+    },
+    {
+      "q": "Bisakah YAML dikonversi ke JSON tanpa kehilangan apa pun?",
+      "a": "Datanya tetap utuh, tetapi komentar, anchor, dan format key tidak, karena JSON tidak punya tempat untuk itu. Konversi JSON ke YAML tidak kehilangan apa pun."
+    }
+  ]
+}

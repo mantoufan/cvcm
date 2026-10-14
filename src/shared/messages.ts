@@ -1,6 +1,8 @@
 import type { Walkthrough } from "./game-walkthrough";
 import type { GameCopy } from "./games-i18n";
 import type { Locale } from "./locale";
+import type { KbId } from "./kb";
+import type { KbArticleCopy } from "./kb-i18n";
 import type { MarketMessages } from "./markets-i18n";
 
 export type UiMessages = typeof import("../locales/en.json");
@@ -33,6 +35,7 @@ const loadedLegal: Partial<Record<Locale, LegalMessages>> = {};
 const loadedQuiz: Partial<Record<Locale, QuizMessages>> = {};
 const loadedDatasets: Partial<Record<Locale, DatasetMessages>> = {};
 const loadedKb: Partial<Record<Locale, KbMessages>> = {};
+const loadedKbArticles: Partial<Record<Locale, Partial<Record<KbId, KbArticleCopy>>>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -111,7 +114,22 @@ export function hasKbMessages(locale: Locale): boolean {
   return Boolean(loadedKb[locale]);
 }
 
-/** Knowledge article copy; on the client only after the kb pack is loaded (knowledge pages). */
+/** Knowledge hub copy and labels; on the client only after the kb pack is loaded (knowledge pages). */
 export function kbMessages(locale: Locale): KbMessages {
   return pick(loadedKb, locale, "kb messages");
+}
+
+/** One knowledge article's copy. The client loads each article on its own. */
+export function registerKbArticle(locale: Locale, id: KbId, copy: KbArticleCopy): void {
+  (loadedKbArticles[locale] ??= {})[id] = copy;
+}
+
+export function hasKbArticle(locale: Locale, id: KbId): boolean {
+  return Boolean(loadedKbArticles[locale]?.[id]);
+}
+
+export function kbArticleMessages(locale: Locale, id: KbId): KbArticleCopy {
+  const copy = loadedKbArticles[locale]?.[id] ?? loadedKbArticles.en?.[id];
+  if (!copy) throw new Error(`kb article not loaded: ${locale} ${id}`);
+  return copy;
 }

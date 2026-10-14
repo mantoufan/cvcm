@@ -2,7 +2,8 @@ import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { KB_ARTICLES, KB_GROUPS, KB_META, kbGroupOf, type KbId } from "./kb";
-import { kbMessages, messages, type KbMessages } from "./messages";
+import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
+import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
 
@@ -38,7 +39,7 @@ export function kbHub(locale: Locale): KbHubCopy {
 }
 
 export function kbCopy(locale: Locale, id: KbId): KbArticleCopy {
-  return (kbMessages(locale).articles as unknown as Record<KbId, KbArticleCopy>)[id];
+  return kbArticleMessages(locale, id);
 }
 
 /** Name and one-line blurb, from the core pack: the tutorial hub and tool pages list articles without the kb pack. */
@@ -59,21 +60,14 @@ export function kbFaqItems(locale: Locale, id: KbId | null): { q: string; a: str
 }
 
 
-function blockText(block: KbBlock): string {
-  if (typeof block === "string") return block;
-  if ("ul" in block) return block.ul.join(" ");
-  if ("ol" in block) return block.ol.join(" ");
-  if ("table" in block) return [...block.table.head, ...block.table.rows.flat()].join(" ");
-  return block.note;
+/** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
+export function kbUpdated(locale: Locale, id: KbId): string {
+  return KB_UPDATED[id][locale];
 }
 
-/** Reading time: ~220 words a minute, or ~400 characters for Chinese, Japanese and Korean. */
+/** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
 export function kbMinutes(locale: Locale, id: KbId): number {
-  const copy = kbCopy(locale, id);
-  const text = [copy.answer, ...copy.sections.flatMap((s) => [s.h, ...s.body.map(blockText)]), ...copy.faq.flatMap((f) => [f.q, f.a])].join(" ");
-  const cjk = locale === "zh-CN" || locale === "zh-TW" || locale === "ja" || locale === "ko";
-  const units = cjk ? text.replace(/\s+/g, "").length / 400 : text.split(/\s+/).filter(Boolean).length / 220;
-  return Math.max(1, Math.round(units));
+  return KB_MINUTES[id][locale];
 }
 
 /** Plain text with `code` spans; everything else escaped. */
@@ -176,7 +170,7 @@ export function kbPageHtml(locale: Locale, id: KbId | null): string {
     `<article class="kb">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(hub.groups[kbGroupOf(id)])}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${meta.updated}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, meta.updated) }))}</time></p></header>`,
+    `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${kbUpdated(locale, id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, kbUpdated(locale, id)) }))}</time></p></header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p>`,
     `<a class="btn" href="${escapeHtml(appHref(locale, mainTool))}" data-nav="${escapeHtml(mainTool)}">${escapeHtml(fill(ui.open, { name: toolName }))}</a></section>`,
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
@@ -262,7 +256,7 @@ export function kbArticleJsonLd(locale: Locale, id: KbId | null): Record<string,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
     datePublished: meta.published,
-    dateModified: meta.updated,
+    dateModified: kbUpdated(locale, id),
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,
