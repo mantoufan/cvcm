@@ -243,6 +243,12 @@ export const GAME_COVER: Record<GameId, string> = {
   "detruit-les-ballons": "/covers/games/detruit-les-ballons.jpg?v=1",
   "tag-chase": "/covers/games/tag-chase.jpg?v=1",
   "ricochet-kill": "/covers/games/ricochet-kill.jpg?v=1",
+  "coco-battle-royale-2": "/covers/games/coco-battle-royale-2.jpg?v=1",
+  "gb-wordyl": "/covers/games/gb-wordyl.jpg?v=1",
+  "dashy-no-witch": "/covers/games/dashy-no-witch.jpg?v=1",
+  "pelmanism": "/covers/games/pelmanism.jpg?v=1",
+  "cascade7": "/covers/games/cascade7.jpg?v=1",
+  "ending": "/covers/games/ending.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

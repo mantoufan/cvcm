@@ -3841,5 +3841,206 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II es un battle royale de NES que se distribuye como software libre. El ROM se carga al abrir la página. Veinte gallinas entran en una arena vallada y solo sale una.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar una ronda",
+        "body": "Elige 1 PLAYERS y pulsa Start. La línea de créditos de abajo nombra a Rodrigo Dornelles y Psywave Games.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Encuentra tu gallina",
+        "body": "Un pequeño 1 flota sobre tu gallina. Camina con la cruceta y picotea con A o B. Las otras gallinas también se pelean entre ellas.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "La última gallina",
+        "body": "El contador de arriba a la derecha baja desde 20. Evita los grupos, ve a por las que andan solas y no dejes de moverte hasta quedar tú sola.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "GPL-3.0. Código: https://github.com/psywave-games/coco-battle-royale-2. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl es un juego de palabras para Game Boy de código abierto que se puede redistribuir. El ROM se carga al abrir la página. Tienes seis intentos para dar con una palabra inglesa de cinco letras.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Pulsa Start en la portada. Dos pantallas de ayuda explican los colores y los atajos del menú; cualquier tecla avanza.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Escribe un intento",
+        "body": "Mueve el cursor por el teclado en pantalla con la cruceta y pulsa A en cada letra. B borra. Con cinco letras, pulsa Start.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "Lee los colores",
+        "body": "Gris: la letra no está en la palabra. Amarillo: está, pero en otro sitio. Verde: letra y sitio correctos.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "Acota",
+        "body": "El teclado de abajo también guarda los colores. Aquí WRITE descartó W, R, T y E y mostró que la I está en la palabra, pero no en el centro. Usa las pistas hasta que las cinco casillas salgan verdes.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "GPL-3.0. Código: https://github.com/bbbbbr/gb-wordyl. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch es un juego de acción para Game Boy bajo 0BSD que se puede redistribuir. El ROM se carga al abrir la página. Vuela por el cielo nocturno y atraviesa a los murciélagos.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Pulsa Start en la portada de la luna. La introducción termina con una pista: mantén B y la cruceta para embestir a los enemigos.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Volar",
+        "body": "La cruceta mueve arriba, abajo, izquierda y derecha. Si sigues avanzando, la barra GOAL de abajo se llena.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "Embestir",
+        "body": "Cuando llegue un murciélago, mantén B y apunta la cruceta hacia él. Cada embestida gasta parte de la barra DASH; no la malgastes.",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "0BSD. Página: https://voxel.itch.io/dashy-no-witch. No se alojan ROM comerciales.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism es un juego de cartas para Game Boy Color de código abierto que se puede redistribuir. El ROM se carga al abrir la página. Las 52 cartas están boca abajo; recuerda dónde está cada una y saca las parejas.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Elegir juego",
+        "body": "Pulsa cualquier tecla en la portada. En GAME SELECT deja PELMANISM y pulsa A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "Elegir nivel",
+        "body": "Elige EASY, NORMAL o HARD con la cruceta y pulsa A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "Destapar una carta",
+        "body": "Lleva la mano a una carta y pulsa A. La carta aparece en el recuadro izquierdo de abajo.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Hacer parejas",
+        "body": "Destapa una segunda carta. Una pareja se retira y LEFT baja 2; si fallas, las dos vuelven boca abajo. Recuerda lo que viste y vacía la mesa.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://gitlab.com/teamknox/gbccardgame. No se alojan ROM comerciales.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 es un puzle para Game Boy Advance de código abierto que se puede redistribuir. El ROM se carga al abrir la página. Suelta discos del 1 al 7 y haz que desaparezcan cuando la cuenta coincida.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Soltar un disco",
+        "body": "El siguiente disco espera sobre el tablero. Muévelo a izquierda o derecha y pulsa A para soltarlo.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "Eliminar por cantidad",
+        "body": "Un 3 desaparece cuando su fila o su columna tiene exactamente 3 discos. Una eliminación puede provocar otra; eso es una cascada y puntúa más.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "Vigila la subida",
+        "body": "RISE cuenta las jugadas que faltan para que suba desde abajo una fila de discos en blanco. Los discos en blanco se agrietan con la primera eliminación a su lado y se vuelven números con la segunda. Mantén las columnas bajas.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/mick-schroeder/gba-cascade7. La pantalla About del menú de pausa nombra a Mick Schroeder.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending empieza con tres iconos. Pulsa reproducir, elige un nivel y muévete con las flechas. Cada paso que das, la sala entera responde con otro.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Pulsar reproducir",
+        "body": "El triángulo de reproducir abre los niveles. Los iconos del laberinto y del martillo son los otros modos.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "Elegir nivel",
+        "body": "Los niveles del 00 al 19 forman una cuadrícula. Empieza por el 00 y ve subiendo.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "Leer la sala",
+        "body": "La espiral eres tú. Los cuadrados blancos son bloques que puedes romper, los grises estorban y la salida está en el borde del muro.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "Romper un bloque",
+        "body": "Camina contra un bloque blanco para romperlo. Los demás bloques se mueven después de ti, así que piensa un paso por delante.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "Llegar a la salida",
+        "body": "Rodea los cuadrados grises y pisa la salida.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "Siguiente nivel",
+        "body": "La sala se apaga y aparece el número del siguiente nivel.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "GPL-2.0. Aaron Steed, 2013. Código: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }
