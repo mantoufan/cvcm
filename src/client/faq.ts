@@ -23,6 +23,8 @@ import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import { quizBreadcrumbJsonLd, quizFaqJsonLd } from "../shared/quiz-i18n";
 import type { QuizId } from "../shared/quiz";
+import { datasetBreadcrumbJsonLd, datasetFaqJsonLd, datasetJsonLd } from "../shared/datasets-i18n";
+import type { DatasetId } from "../shared/datasets";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -78,7 +80,17 @@ export function syncPageJsonLd(
   gamesConsole: GameConsoleId | null = null,
   legalPage: LegalPageId | null = null,
   quizPage: QuizId | "hub" | null = null,
+  datasetPage: DatasetId | "hub" | null = null,
 ): void {
+  if (datasetPage) {
+    const id = datasetPage === "hub" ? null : datasetPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", datasetFaqJsonLd(locale, id));
+    writeJsonLd("breadcrumb-jsonld", datasetBreadcrumbJsonLd(locale, id));
+    writeJsonLd("dataset-jsonld", datasetJsonLd(locale, id));
+    return;
+  }
+  writeJsonLd("dataset-jsonld", null);
   if (quizPage) {
     const id = quizPage === "hub" ? null : quizPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);

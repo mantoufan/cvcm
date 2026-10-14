@@ -1,0 +1,364 @@
+{
+  "crumbHome": "Inicio",
+  "hub": {
+    "title": "Datos públicos gratis: población, PIB, códigos de país | cv.cm",
+    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población mundial, PIB, esperanza de vida, fecundidad, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
+    "h1": "Datos públicos",
+    "lede": "Tablas sencillas con datos públicos del Banco Mundial, ISO e IANA. Se pueden buscar, ordenar por cualquier columna o descargar en CSV. Cada tabla indica su fuente y su licencia.",
+    "groups": {
+      "world": "Países y economía mundial",
+      "codes": "Códigos y estándares",
+      "reference": "Consulta rápida"
+    },
+    "about": [
+      "Cada tabla es una instantánea de una fuente oficial, actualizada desde esa fuente y fechada en la página. Las cifras por país proceden de los Indicadores del Desarrollo Mundial del Banco Mundial (CC BY 4.0). Los códigos proceden de las listas ISO 3166 e ISO 4217 y de la base de datos de husos horarios de IANA.",
+      "Los números se muestran en su idioma, pero los archivos CSV conservan los valores sin formato y los códigos ISO, así que se abren sin problemas en Excel, Google Sheets o desde código."
+    ],
+    "faq": [
+      { "q": "¿De dónde proceden estos datos?", "a": "Las estadísticas por país proceden de los Indicadores del Desarrollo Mundial del Banco Mundial. Los códigos de país, de moneda y telefónicos siguen ISO 3166, ISO 4217 y la lista de la UIT. Los husos horarios proceden de la base de datos IANA tz. Los tamaños de papel siguen ISO 216, ISO 269, JIS P 0138 y ANSI." },
+      { "q": "¿Se pueden usar estas tablas gratis?", "a": "Sí. Los datos del Banco Mundial tienen licencia CC BY 4.0, así que basta con citar al Banco Mundial al reutilizarlos. Los códigos y las tablas de referencia son datos públicos de libre uso." },
+      { "q": "¿Qué tan recientes son las cifras?", "a": "Cada página muestra la fecha de la instantánea y el año de cada valor. El Banco Mundial publica la mayoría de los indicadores con uno o dos años de retraso, por lo que el último valor de un país puede ser de un año anterior." }
+    ]
+  },
+  "ui": {
+    "all": "Todos los datos",
+    "search": "Filtrar filas",
+    "searchPlaceholder": "Escriba un país, código o valor",
+    "rows": "{n} filas",
+    "shown": "{shown} de {n} filas",
+    "noMatch": "Ninguna fila coincide.",
+    "download": "Descargar CSV",
+    "sortHint": "Seleccione el encabezado de una columna para ordenar.",
+    "facts": "Datos clave",
+    "about": "Acerca de estos datos",
+    "faq": "Preguntas frecuentes",
+    "related": "Más datos",
+    "tools": "Herramientas relacionadas",
+    "source": "Fuente",
+    "license": "Licencia",
+    "snapshot": "Datos del {date}",
+    "rank": "#",
+    "country": "País o territorio",
+    "year": "Año",
+    "share": "% del mundo",
+    "continents": {
+      "AF": "África",
+      "AN": "Antártida",
+      "AS": "Asia",
+      "EU": "Europa",
+      "NA": "América del Norte",
+      "OC": "Oceanía",
+      "SA": "América del Sur"
+    },
+    "series": {
+      "A": "ISO A",
+      "B": "ISO B",
+      "C": "ISO C (sobres)",
+      "JIS": "JIS B (Japón)",
+      "US": "EE. UU. / ANSI"
+    }
+  },
+  "sets": {
+    "population": {
+      "name": "Población por país",
+      "title": "Población mundial por país {to} (lista de {rows} países) | cv.cm",
+      "description": "Población de {rows} países y territorios, en orden, con su porcentaje del total mundial. Población mundial: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Población mundial por país, {to}",
+      "lede": "Población total de {rows} países y territorios, de mayor a menor, con el porcentaje que representa cada uno en el mundo. Fuente: Banco Mundial.",
+      "value": "Población",
+      "facts": [
+        "Población mundial: {world} ({worldYear}).",
+        "Los más poblados: {top1} ({v1}), seguido de {top2} ({v2}) y {top3} ({v3}).",
+        "El menos poblado de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La población total cuenta a todos los residentes, sin importar su situación legal o ciudadanía. Los valores son estimaciones a mitad de año basadas en censos nacionales y en la División de Población de la ONU, publicadas por el Banco Mundial.",
+        "La lista abarca las 217 economías sobre las que informa el Banco Mundial. Algunos territorios aparecen por separado del país al que pertenecen."
+      ],
+      "faq": [
+        { "q": "¿Cuál es el país más poblado del mundo?", "a": "{top1}, con {v1} habitantes en {year1}. {top2} ocupa el segundo lugar con {v2}." },
+        { "q": "¿Cuál es la población mundial?", "a": "Según el Banco Mundial, la población mundial era de {world} en {worldYear}." },
+        { "q": "¿Cuál es el país menos poblado?", "a": "En esta lista es {last}, con {vlast} habitantes. No se incluyen territorios sobre los que el Banco Mundial no informa, como la Ciudad del Vaticano." }
+      ]
+    },
+    "gdp": {
+      "name": "PIB por país",
+      "title": "PIB por país {to}: ranking de {rows} economías en US$ | cv.cm",
+      "description": "Producto interno bruto de {rows} economías en dólares estadounidenses corrientes, en orden, con su porcentaje del PIB mundial. PIB mundial: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "PIB por país, {to} (US$ corrientes)",
+      "lede": "PIB nominal de {rows} economías en dólares estadounidenses corrientes, en orden, con el porcentaje del total mundial de cada una. Fuente: Banco Mundial.",
+      "value": "PIB (US$)",
+      "facts": [
+        "PIB mundial: {world} ({worldYear}).",
+        "Las mayores economías: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La menor de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "El PIB es el valor de todos los bienes y servicios finales producidos en un país en un año. Estas cifras se convierten a dólares con el tipo de cambio oficial, por lo que las variaciones de la moneda las mueven aunque la producción no cambie.",
+        "Para comparar niveles de vida, conviene mirar el PIB per cápita o el PIB en paridad de poder adquisitivo (PPA), que ajusta por el nivel de precios."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el mayor PIB?", "a": "{top1}, con un PIB de {v1} en {year1}. {top2} ocupa el segundo lugar con {v2}." },
+        { "q": "¿Cuál es el PIB mundial?", "a": "El PIB mundial fue de {world} en {worldYear}, en dólares estadounidenses corrientes." },
+        { "q": "¿Por qué algunos países muestran un año anterior?", "a": "El Banco Mundial solo publica una cifra cuando el país la reporta. Cada fila muestra el último año disponible, así que algunos países van con retraso." }
+      ]
+    },
+    "gdp-per-capita": {
+      "name": "PIB per cápita por país",
+      "title": "PIB per cápita por país {to}: ranking de {rows} países | cv.cm",
+      "description": "PIB por habitante de {rows} países en dólares estadounidenses corrientes, del más rico al más pobre. Promedio mundial: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "PIB per cápita por país, {to} (US$ corrientes)",
+      "lede": "PIB dividido entre la población de {rows} países y territorios, en dólares estadounidenses corrientes, de mayor a menor. Fuente: Banco Mundial.",
+      "value": "PIB per cápita (US$)",
+      "facts": [
+        "PIB per cápita mundial: {world} ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "El PIB per cápita es el producto interno bruto dividido entre la población a mitad de año. Es una medida común y aproximada del ingreso medio, pero no dice nada sobre cómo se reparte ese ingreso.",
+        "Los pequeños centros financieros y los exportadores de materias primas suelen encabezar la lista porque una economía grande se divide entre pocos habitantes."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el PIB per cápita más alto?", "a": "{top1}, con {v1} por habitante en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es el PIB per cápita promedio del mundo?", "a": "{world} en {worldYear}, en dólares estadounidenses corrientes." },
+        { "q": "¿Qué país tiene el PIB per cápita más bajo?", "a": "En esta lista, {last}, con {vlast} por habitante." }
+      ]
+    },
+    "life-expectancy": {
+      "name": "Esperanza de vida por país",
+      "title": "Esperanza de vida por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Esperanza de vida al nacer en {rows} países, en orden. Promedio mundial: {world} años ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Esperanza de vida al nacer por país, {to}",
+      "lede": "Cuántos años viviría un recién nacido si se mantuvieran las tasas de mortalidad actuales, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial.",
+      "value": "Esperanza de vida (años)",
+      "facts": [
+        "Esperanza de vida mundial: {world} años ({worldYear}).",
+        "La más alta: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La esperanza de vida al nacer es el número medio de años que viviría un recién nacido si las tasas de mortalidad de su año de nacimiento se mantuvieran durante toda su vida. Resume la salud actual; no es una previsión.",
+        "Los valores corresponden a ambos sexos. Las mujeres viven más que los hombres en casi todos los países."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor esperanza de vida?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio en el mundo?", "a": "{world} años en {worldYear}, para ambos sexos." },
+        { "q": "¿Qué país tiene la menor esperanza de vida?", "a": "En esta lista, {last}, con {vlast} años." }
+      ]
+    },
+    "fertility-rate": {
+      "name": "Tasa de fecundidad por país",
+      "title": "Tasa de fecundidad por país {to}: hijos por mujer ({rows}) | cv.cm",
+      "description": "Tasa global de fecundidad (hijos por mujer) en {rows} países, en orden. Promedio mundial: {world} ({worldYear}). El nivel de reemplazo es de unos 2,1. Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de fecundidad por país, {to} (hijos por mujer)",
+      "lede": "Número medio de hijos que tendría una mujer con las tasas de natalidad actuales, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial.",
+      "value": "Hijos por mujer",
+      "facts": [
+        "Tasa de fecundidad mundial: {world} hijos por mujer ({worldYear}).",
+        "La más alta: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La tasa global de fecundidad es el número de hijos que tendría una mujer si viviera hasta el final de su edad fértil y tuviera hijos a cada edad según las tasas de ese año.",
+        "Unos 2,1 hijos por mujer mantienen estable una población sin migración. La mayor parte de Asia Oriental y Europa está muy por debajo."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de fecundidad más alta?", "a": "{top1}, con {v1} hijos por mujer en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Qué país tiene la tasa de fecundidad más baja?", "a": "En esta lista, {last}, con {vlast} hijos por mujer." },
+        { "q": "¿Cuál es la tasa de fecundidad de reemplazo?", "a": "Unos 2,1 hijos por mujer en países con baja mortalidad infantil. El promedio mundial es {world} ({worldYear})." }
+      ]
+    },
+    "internet-users": {
+      "name": "Usuarios de internet por país",
+      "title": "Usuarios de internet por país {to}: % en {rows} países | cv.cm",
+      "description": "Porcentaje de personas que usan internet en {rows} países, en orden. Promedio mundial: {world}% ({worldYear}). Datos del Banco Mundial / UIT, descarga en CSV.",
+      "h1": "Usuarios de internet por país, {to} (% de la población)",
+      "lede": "Porcentaje de la población que usó internet en los últimos tres meses, en {rows} países y territorios, en orden. Fuente: Banco Mundial, con datos de la UIT.",
+      "value": "Usuarios de internet (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas usa internet ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Un usuario de internet es cualquier persona que se conectó en los últimos tres meses desde cualquier dispositivo o lugar. La Unión Internacional de Telecomunicaciones (UIT) reúne las cifras a partir de encuestas y estimaciones nacionales.",
+        "Varios países informan solo cada pocos años, así que conviene revisar la columna del año antes de comparar dos filas."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el mayor porcentaje de usuarios de internet?", "a": "{top1}, donde el {v1}% de las personas se conectó en {year1}." },
+        { "q": "¿Qué porcentaje del mundo usa internet?", "a": "El {world}% de la población mundial en {worldYear}." },
+        { "q": "¿Qué país tiene menos usuarios de internet?", "a": "En esta lista, {last}, con el {vlast}% de la población." }
+      ]
+    },
+    "country-codes": {
+      "name": "Códigos de país (ISO 3166)",
+      "title": "Códigos de país ISO 3166: alfa-2, alfa-3 y numérico ({rows}) | cv.cm",
+      "description": "Los {rows} códigos de país ISO 3166-1: de dos letras (alfa-2), de tres letras (alfa-3) y numéricos, con dominio de internet y continente. Con búsqueda y descarga en CSV.",
+      "h1": "Códigos de país ISO 3166",
+      "lede": "Códigos de dos letras, tres letras y numéricos de los {rows} países y territorios de ISO 3166-1, con el dominio de internet y el continente de cada uno.",
+      "cols": {
+        "name": "País o territorio",
+        "alpha2": "Alfa-2",
+        "alpha3": "Alfa-3",
+        "numeric": "Numérico",
+        "tld": "Dominio",
+        "continent": "Continente"
+      },
+      "facts": [
+        "{rows} países y territorios tienen un código ISO 3166-1.",
+        "Los códigos alfa-2 se usan en los dominios de internet (.es, .mx) y en las etiquetas de idioma (es-ES, es-MX).",
+        "Los códigos alfa-3 aparecen en los pasaportes; los numéricos proceden de la norma M49 de la ONU."
+      ],
+      "about": [
+        "ISO 3166-1 asigna tres códigos a cada país y a muchos territorios dependientes. El alfa-2 (ES, MX) es el que usan la mayoría de los sistemas. El alfa-3 (ESP, MEX) es más fácil de leer. El código numérico (724, 484) sirve donde no se usan letras latinas.",
+        "El Reino Unido usa el dominio .uk aunque su código ISO es GB. Los nombres aparecen aquí en su idioma."
+      ],
+      "faq": [
+        { "q": "¿Qué diferencia hay entre los códigos alfa-2 y alfa-3?", "a": "Los códigos alfa-2 tienen dos letras (ES) y se usan en dominios, etiquetas de idioma y la mayoría del software. Los alfa-3 tienen tres letras (ESP) y se usan en pasaportes y estadísticas." },
+        { "q": "¿Cuántos códigos de país ISO existen?", "a": "ISO 3166-1 recoge {rows} países y territorios, cada uno con un código alfa-2, alfa-3 y numérico." },
+        { "q": "¿Cuál es el código de país de España?", "a": "ES (alfa-2), ESP (alfa-3) y 724 (numérico). Su dominio de internet es .es. México tiene MX, MEX y 484, con el dominio .mx." }
+      ]
+    },
+    "calling-codes": {
+      "name": "Prefijos telefónicos internacionales",
+      "title": "Prefijos telefónicos internacionales: lista de {rows} países | cv.cm",
+      "description": "Prefijos telefónicos de {rows} países y territorios, del +1 al +998. Búsqueda por país o por prefijo, con códigos ISO. Descarga en CSV.",
+      "h1": "Prefijos telefónicos internacionales por país",
+      "lede": "El número que se marca después del prefijo internacional (+) para llamar a cada uno de los {rows} países y territorios.",
+      "cols": {
+        "name": "País o territorio",
+        "dial": "Prefijo",
+        "alpha2": "Código ISO"
+      },
+      "facts": [
+        "Se marca + (o el código de salida del país, como 00 en España y México o 011 en EE. UU.), luego el prefijo del país y después el número sin el 0 inicial.",
+        "El +1 lo comparten EE. UU., Canadá y muchas islas del Caribe, que añaden un código de área de 3 cifras.",
+        "El +7 lo comparten Rusia y Kazajistán."
+      ],
+      "about": [
+        "Los prefijos telefónicos los asigna la Unión Internacional de Telecomunicaciones (UIT-T E.164). Tienen de una a tres cifras, y algunos grupos de países comparten uno.",
+        "En el móvil, mantenga pulsado el 0 para escribir +. Funciona desde cualquier país, así que no hace falta conocer el código de salida local."
+      ],
+      "faq": [
+        { "q": "¿Cómo se llama a otro país?", "a": "Se marca + (o el código de salida: 00 en España y México, 011 desde EE. UU. y Canadá), el prefijo del país y luego el número local sin el 0 inicial." },
+        { "q": "¿De qué país es el +34?", "a": "El +34 es España. Otros prefijos frecuentes: +52 México, +54 Argentina y +57 Colombia." },
+        { "q": "¿Por qué varios países comparten el +1?", "a": "Forman parte del Plan de Numeración de América del Norte. El código de área de 3 cifras que sigue al +1 indica el país." }
+      ]
+    },
+    "currency-codes": {
+      "name": "Códigos de moneda (ISO 4217)",
+      "title": "Códigos de moneda ISO 4217: {rows} monedas con sus símbolos | cv.cm",
+      "description": "Los {rows} códigos de moneda ISO 4217 vigentes, con código numérico, símbolo, decimales y los países que usan cada uno. Con búsqueda y descarga en CSV.",
+      "h1": "Códigos de moneda ISO 4217",
+      "lede": "Códigos de tres letras, códigos numéricos, símbolos y decimales de las {rows} monedas de ISO 4217, y dónde se usa cada una.",
+      "cols": {
+        "code": "Código",
+        "name": "Moneda",
+        "symbol": "Símbolo",
+        "numeric": "Numérico",
+        "minor": "Decimales",
+        "used": "Se usa en"
+      },
+      "facts": [
+        "ISO 4217 recoge {rows} códigos de moneda vigentes, incluidos fondos y metales preciosos.",
+        "Las dos primeras letras suelen ser el código ISO del país: MXN es el peso mexicano.",
+        "Los códigos que empiezan por X no corresponden a ningún país: XAU es el oro y XDR, el derecho especial de giro del FMI."
+      ],
+      "about": [
+        "Bancos, sistemas de pago y programas de contabilidad usan los códigos ISO 4217 porque los símbolos son ambiguos: el $ lo usan más de 20 monedas, entre ellas varios pesos latinoamericanos.",
+        "Los decimales indican cuántas cifras tiene la unidad fraccionaria (los céntimos o centavos). JPY y KRW no tienen, y algunas monedas del Golfo tienen tres."
+      ],
+      "faq": [
+        { "q": "¿Cuál es el código del euro y del peso mexicano?", "a": "El euro es EUR, con código numérico 978 y 2 decimales. El peso mexicano es MXN, con código numérico 484 y 2 decimales." },
+        { "q": "¿Cuántas monedas hay en el mundo?", "a": "ISO 4217 recoge {rows} códigos vigentes, incluidos algunos fondos, metales preciosos y códigos de prueba." },
+        { "q": "¿Por qué el euro tiene un solo código para muchos países?", "a": "EUR es una única moneda compartida por la zona del euro, así que tiene un solo código. La columna Se usa en muestra todos los países y territorios que la usan." }
+      ]
+    },
+    "time-zones": {
+      "name": "Husos horarios (IANA)",
+      "title": "Husos horarios y diferencia UTC ({rows} zonas IANA, {year}) | cv.cm",
+      "description": "Las {rows} zonas horarias IANA (Europe/Madrid, America/Mexico_City) con su diferencia con UTC en enero y julio de {year}, para ver cuáles tienen horario de verano. Descarga en CSV.",
+      "h1": "Husos horarios y diferencia con UTC",
+      "lede": "Cada zona horaria IANA con su diferencia con UTC en enero y julio de {year}. Si las dos no coinciden, la zona aplica horario de verano.",
+      "cols": {
+        "id": "ID de zona horaria",
+        "name": "Nombre",
+        "jan": "Diferencia UTC (ene.)",
+        "jul": "Diferencia UTC (jul.)"
+      },
+      "facts": [
+        "{rows} identificadores de zona horaria IANA, ordenados de oeste (UTC-12) a este (UTC+14).",
+        "Una zona cuya diferencia en enero y julio no coincide aplica horario de verano.",
+        "Algunas zonas tienen desfases de 30 o 45 minutos, como India (UTC+05:30) y Nepal (UTC+05:45)."
+      ],
+      "about": [
+        "Los identificadores de zona horaria IANA, como Europe/London, son los que usan teléfonos, computadoras y lenguajes de programación. Cada ID abarca una zona cuyos relojes coinciden desde 1970, con todas sus reglas de horario de verano.",
+        "Las diferencias se calculan para el 15 de enero y el 15 de julio de {year} con la base de datos tz {tz}. Los gobiernos a veces cambian sus reglas con poca antelación."
+      ],
+      "faq": [
+        { "q": "¿Qué huso horario tiene España?", "a": "La España peninsular usa Europe/Madrid: UTC+01:00 en invierno y UTC+02:00 en verano. Canarias usa Atlantic/Canary: UTC+00:00 en invierno y UTC+01:00 en verano. Ciudad de México (America/Mexico_City) está en UTC-06:00 todo el año, ya que México eliminó el horario de verano en 2022, salvo en algunas zonas fronterizas." },
+        { "q": "¿Qué diferencia hay entre UTC y GMT?", "a": "En el uso diario marcan la misma hora. UTC es el estándar de tiempo atómico; GMT es la zona horaria del meridiano 0°, que el Reino Unido usa en invierno." },
+        { "q": "¿Cuántos husos horarios hay?", "a": "La base de datos IANA usada aquí tiene {rows} identificadores de zona. Usan menos de 40 diferencias con UTC distintas." }
+      ]
+    },
+    "paper-sizes": {
+      "name": "Tamaños de papel",
+      "title": "Tamaños de papel: A4, A3, B5 y Carta en mm, pulgadas y píxeles | cv.cm",
+      "description": "Medidas de {rows} tamaños de papel (A0–A10, B, C, JIS B, Carta, Oficio/Legal) en milímetros, pulgadas y píxeles a 300 y 96 DPI. Descarga en CSV.",
+      "h1": "Tamaños de papel en mm, pulgadas y píxeles",
+      "lede": "Ancho × alto de los tamaños ISO A, B y C, los JIS B japoneses y los norteamericanos, con su tamaño en píxeles para imprimir (300 DPI) y para pantalla (96 DPI).",
+      "cols": {
+        "size": "Tamaño",
+        "series": "Serie",
+        "mm": "Milímetros",
+        "in": "Pulgadas",
+        "px300": "Píxeles a 300 DPI",
+        "px96": "Píxeles a 96 DPI"
+      },
+      "facts": [
+        "El A4 mide 210 × 297 mm (8,27 × 11,69 in), 2480 × 3508 px a 300 DPI.",
+        "El Carta (US Letter) mide 215,9 × 279,4 mm (8,5 × 11 in).",
+        "Cada tamaño A es la mitad del anterior: dos hojas A4 forman un A3."
+      ],
+      "about": [
+        "Los tamaños ISO 216 mantienen la misma proporción 1:√2, así que una página pasa de A4 a A3 o A5 sin recortes. El A0 tiene una superficie de un metro cuadrado.",
+        "Los tamaños JIS B, habituales en Japón y China para cuadernos y libros, son algo mayores que los ISO B. El JIS B5 mide 182 × 257 mm, y el ISO B5, 176 × 250 mm."
+      ],
+      "faq": [
+        { "q": "¿Cuánto mide una hoja A4?", "a": "210 × 297 mm, o 8,27 × 11,69 pulgadas. A 300 DPI son 2480 × 3508 píxeles." },
+        { "q": "¿Qué diferencia hay entre A4 y Carta?", "a": "El A4 (210 × 297 mm) es más estrecho y más alto que el Carta o US Letter (215,9 × 279,4 mm). España y la mayor parte de Latinoamérica usan A4; en México se usan tanto Carta como A4, y en EE. UU. y Canadá, Carta." },
+        { "q": "¿Cuántos píxeles se necesitan para imprimir en A4?", "a": "2480 × 3508 px para una impresión nítida a 300 DPI. 1240 × 1754 px (150 DPI) bastan para borradores." }
+      ]
+    },
+    "ascii": {
+      "name": "Tabla ASCII",
+      "title": "Tabla ASCII: los 128 códigos en decimal, hex, octal y binario | cv.cm",
+      "description": "Tabla ASCII completa con los 128 caracteres y sus valores en decimal, hexadecimal, octal y binario, más los nombres de los caracteres de control. Descarga en CSV.",
+      "h1": "Tabla ASCII",
+      "lede": "Los 128 códigos ASCII con sus valores en decimal, hexadecimal, octal y binario, el carácter y el nombre de cada carácter de control.",
+      "cols": {
+        "dec": "Decimal",
+        "hex": "Hex",
+        "oct": "Octal",
+        "bin": "Binario",
+        "char": "Carácter",
+        "name": "Nombre"
+      },
+      "facts": [
+        "Los códigos 0–31 y 127 son caracteres de control; del 32 al 126 son imprimibles.",
+        "La A es 65 (0x41) y la a es 97 (0x61): mayúsculas y minúsculas se diferencian en 32.",
+        "Los dígitos 0–9 son los códigos 48–57."
+      ],
+      "about": [
+        "ASCII (American Standard Code for Information Interchange, 1963) asigna 128 códigos de 7 bits a letras inglesas, dígitos, signos de puntuación y señales de control. No incluye la ñ ni las vocales con tilde.",
+        "UTF-8 codifica estos 128 caracteres exactamente igual que ASCII, así que todo archivo ASCII es también UTF-8 válido."
+      ],
+      "faq": [
+        { "q": "¿Cuál es el código ASCII de la A?", "a": "La A mayúscula es 65 en decimal, 0x41 en hexadecimal y 1000001 en binario. La a minúscula es 97 (0x61)." },
+        { "q": "¿Cuál es el código ASCII del espacio?", "a": "32 en decimal, 0x20 en hexadecimal." },
+        { "q": "¿Qué diferencia hay entre LF y CR?", "a": "LF (10, salto de línea) inicia una línea nueva en Linux y macOS. Los archivos de texto de Windows terminan las líneas con CR LF (13 y luego 10)." }
+      ]
+    }
+  }
+}

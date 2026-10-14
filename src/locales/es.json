@@ -349,7 +349,8 @@
     "games": "Juegos",
     "device": "Dispositivo",
     "assets": "Activos",
-    "tests": "Tests"
+    "tests": "Tests",
+    "data": "Datos"
   },
   "lang": {
     "label": "Idioma",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "Test de depresión (PHQ-9)",
       "blurb": "El cribado de depresión de 9 preguntas, de 0 a 27."
+    }
+  },
+  "dataset": {
+    "all": "Todos los datos",
+    "population": {
+      "name": "Población mundial por país",
+      "blurb": "Población de 217 países y territorios, ordenada, con su peso mundial."
+    },
+    "gdp": {
+      "name": "PIB por país",
+      "blurb": "PIB nominal en dólares de cada economía, ordenado."
+    },
+    "gdp-per-capita": {
+      "name": "PIB per cápita por país",
+      "blurb": "PIB por persona, de mayor a menor."
+    },
+    "life-expectancy": {
+      "name": "Esperanza de vida por país",
+      "blurb": "Años que se espera viva un recién nacido en cada país."
+    },
+    "fertility-rate": {
+      "name": "Tasa de fecundidad por país",
+      "blurb": "Hijos por mujer, de mayor a menor."
+    },
+    "internet-users": {
+      "name": "Usuarios de internet por país",
+      "blurb": "Porcentaje de la población que usa internet."
+    },
+    "country-codes": {
+      "name": "Códigos de país ISO 3166",
+      "blurb": "Códigos alfa-2, alfa-3 y numéricos de 249 países y territorios."
+    },
+    "calling-codes": {
+      "name": "Prefijos telefónicos internacionales",
+      "blurb": "El prefijo + para llamar a cada país."
+    },
+    "currency-codes": {
+      "name": "Códigos de moneda ISO 4217",
+      "blurb": "Códigos, símbolos y dónde se usa cada moneda."
+    },
+    "time-zones": {
+      "name": "Husos horarios y diferencia UTC",
+      "blurb": "Todas las zonas IANA con su desfase UTC en invierno y verano."
+    },
+    "paper-sizes": {
+      "name": "Tamaños de papel",
+      "blurb": "A4, A3, B5, Carta y más en mm, pulgadas y píxeles."
+    },
+    "ascii": {
+      "name": "Tabla ASCII",
+      "blurb": "Los 128 códigos en decimal, hexadecimal, octal y binario."
     }
   }
 }

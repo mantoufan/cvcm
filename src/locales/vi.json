@@ -349,7 +349,8 @@
     "games": "Trò chơi",
     "device": "Thiết bị",
     "assets": "Tài sản",
-    "tests": "Trắc nghiệm"
+    "tests": "Trắc nghiệm",
+    "data": "Dữ liệu"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "Kiểm tra trầm cảm (PHQ-9)",
       "blurb": "Bảng sàng lọc trầm cảm 9 câu, 0 đến 27 điểm."
+    }
+  },
+  "dataset": {
+    "all": "Tất cả dữ liệu",
+    "population": {
+      "name": "Dân số thế giới theo quốc gia",
+      "blurb": "Dân số 217 quốc gia và vùng lãnh thổ, xếp hạng, kèm tỷ lệ thế giới."
+    },
+    "gdp": {
+      "name": "GDP theo quốc gia",
+      "blurb": "GDP danh nghĩa bằng đô la Mỹ của mọi nền kinh tế, xếp hạng."
+    },
+    "gdp-per-capita": {
+      "name": "GDP bình quân đầu người",
+      "blurb": "GDP trên mỗi người, từ cao đến thấp."
+    },
+    "life-expectancy": {
+      "name": "Tuổi thọ trung bình theo quốc gia",
+      "blurb": "Tuổi thọ kỳ vọng khi sinh của từng nước."
+    },
+    "fertility-rate": {
+      "name": "Tỷ suất sinh theo quốc gia",
+      "blurb": "Số con trên mỗi phụ nữ, từ cao đến thấp."
+    },
+    "internet-users": {
+      "name": "Tỷ lệ dùng Internet theo quốc gia",
+      "blurb": "Tỷ lệ người dân sử dụng Internet."
+    },
+    "country-codes": {
+      "name": "Mã quốc gia ISO 3166",
+      "blurb": "Mã 2 chữ, 3 chữ và mã số của 249 quốc gia và vùng lãnh thổ."
+    },
+    "calling-codes": {
+      "name": "Mã điện thoại quốc tế",
+      "blurb": "Mã + cần bấm để gọi đến từng nước."
+    },
+    "currency-codes": {
+      "name": "Mã tiền tệ ISO 4217",
+      "blurb": "Mã, ký hiệu và nơi sử dụng của từng loại tiền."
+    },
+    "time-zones": {
+      "name": "Múi giờ và độ lệch UTC",
+      "blurb": "Mọi múi giờ IANA với độ lệch UTC mùa đông và mùa hè."
+    },
+    "paper-sizes": {
+      "name": "Khổ giấy",
+      "blurb": "A4, A3, B5, Letter... theo mm, inch và pixel."
+    },
+    "ascii": {
+      "name": "Bảng mã ASCII",
+      "blurb": "Đủ 128 mã ở dạng thập phân, hex, bát phân và nhị phân."
     }
   }
 }
