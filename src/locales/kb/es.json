@@ -1,0 +1,2983 @@
+{
+  "crumbHome": "Inicio",
+  "ui": {
+    "learn": "Tutoriales",
+    "kicker": "Conocimientos",
+    "minutes": "{n} min de lectura",
+    "updated": "Actualizado el {date}",
+    "answer": "Respuesta corta",
+    "toc": "En esta página",
+    "tools": "Pruébalo en tu navegador",
+    "tutorials": "Tutoriales paso a paso",
+    "related": "Artículos relacionados",
+    "sources": "Fuentes",
+    "faq": "Preguntas frecuentes",
+    "all": "Todos los artículos",
+    "open": "Abrir {name}"
+  },
+  "hub": {
+    "title": "Base de conocimientos: formatos, codificaciones, fechas y finanzas — cv.cm",
+    "description": "Explicaciones claras y con fuentes sobre HEIC, JPG vs PNG vs WebP, EXIF, DPI, Base64, UTF-8, codificación URL, hashes, UUID, tiempo Unix, ISO 8601, zonas horarias, APR vs APY y margen vs markup.",
+    "h1": "Base de conocimientos",
+    "lede": "Explicaciones breves y con fuentes sobre los formatos, códigos y números que encuentras a diario. Cada artículo responde primero a la pregunta y luego explica el porqué, con enlaces a los estándares y a una herramienta gratuita que funciona en tu navegador.",
+    "groups": {
+      "files": "Imágenes y archivos",
+      "data": "Texto, datos y seguridad",
+      "time": "Fechas y horas",
+      "money": "Cálculos financieros"
+    },
+    "about": [
+      "Los tutoriales de cv.cm muestran cómo hacer una tarea. Estos artículos explican lo que ocurre por debajo: por qué una foto es HEIC, por qué un PDF pesa 40 MB, por qué una contraseña de cuatro palabras al azar es mejor que una con símbolos.",
+      "Cada artículo se contrasta con el estándar publicado o la documentación oficial que se indica en Fuentes, y lleva fecha para que veas cuándo se revisó por última vez."
+    ],
+    "faq": [
+      {
+        "q": "¿Quién escribe estos artículos?",
+        "a": "Los escribe el equipo de cv.cm, que verifica cada dato con los estándares y la documentación oficial que se citan al final de cada artículo."
+      },
+      {
+        "q": "¿Puedo usar gratis las herramientas mencionadas?",
+        "a": "Sí. Las herramientas enlazadas son gratuitas, no requieren cuenta y procesan los archivos en tu navegador."
+      },
+      {
+        "q": "¿En qué se diferencia un artículo de conocimientos de un tutorial?",
+        "a": "Un tutorial guía paso a paso por una tarea concreta. Un artículo de conocimientos explica la idea que hay detrás, como el funcionamiento de un formato o de una fórmula, para que puedas tomar tus propias decisiones."
+      }
+    ]
+  },
+  "articles": {
+    "what-is-heic": {
+      "title": "¿Qué es HEIC? Diferencias con JPG y cómo abrir archivos HEIC — cv.cm",
+      "description": "HEIC es el formato de fotos del iPhone: HEIF comprimido con HEVC, la mitad de peso que un JPG con calidad similar. Quién puede abrirlo y cuándo convertirlo.",
+      "h1": "¿Qué es un archivo HEIC?",
+      "answer": "HEIC es una foto guardada en el formato High Efficiency Image File Format (HEIF) cuyos píxeles se comprimen con HEVC, el códec de video también llamado H.265. iPhone y iPad lo usan por defecto desde iOS 11 porque mantiene una calidad similar ocupando aproximadamente la mitad que un JPG. Se abre de forma nativa en dispositivos Apple y en versiones recientes de Windows y Android, pero muchos sitios web y programas antiguos siguen esperando un JPG.",
+      "sections": [
+        {
+          "h": "HEIF, HEIC y HEVC: tres nombres, un archivo",
+          "body": [
+            "HEIF es el estándar del contenedor (ISO/IEC 23008-12). Define cómo se empaquetan en un solo archivo las imágenes, miniaturas, mapas de profundidad y metadatos, y se basa en la misma estructura de cajas (boxes) que el video MP4.",
+            "HEVC es el códec que comprime los píxeles. Un archivo HEIF cuyas imágenes usan HEVC recibe la marca `heic` y normalmente la extensión `.heic`. El mismo contenedor admite otros códecs: con AV1 dentro se convierte en AVIF.",
+            {
+              "table": {
+                "head": [
+                  "Término",
+                  "Qué es",
+                  "Ejemplo"
+                ],
+                "rows": [
+                  [
+                    "HEIF",
+                    "Formato contenedor para imágenes y secuencias de imágenes",
+                    "La estructura del archivo"
+                  ],
+                  [
+                    "HEVC (H.265)",
+                    "Método de compresión de los píxeles",
+                    "El códec que lleva dentro"
+                  ],
+                  [
+                    "HEIC",
+                    "HEIF + HEVC, el archivo que genera un iPhone",
+                    "IMG_0042.HEIC"
+                  ],
+                  [
+                    "AVIF",
+                    "Contenedor tipo HEIF + códec AV1",
+                    "photo.avif"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Por qué los teléfonos guardan HEIC en lugar de JPG",
+          "body": [
+            "JPEG data de 1992. HEVC usa bloques más grandes y adaptables y una mejor predicción, así que una foto HEIC suele ocupar entre un 40 y un 50 % menos que un JPG de calidad visual similar. En un teléfono con miles de fotos, ese ahorro se mide en gigabytes.",
+            "HEIC también permite cosas que JPG no puede:",
+            {
+              "ul": [
+                "Profundidad de color de 16 bits y gama amplia (Display P3) sin bandas, mientras que el JPG básico se queda en 8 bits.",
+                "Transparencia, mapas de profundidad para el desenfoque del modo Retrato y varias imágenes en un solo archivo (fotogramas de Live Photos, ráfagas).",
+                "Ediciones como la rotación guardadas como instrucciones, de modo que los píxeles originales quedan intactos."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "Dónde se abre HEIC y dónde no",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Plataforma",
+                  "¿Abre HEIC?"
+                ],
+                "rows": [
+                  [
+                    "iPhone, iPad, Mac",
+                    "Sí, de forma nativa"
+                  ],
+                  [
+                    "Windows 10/11",
+                    "Con las extensiones HEIF y HEVC de Microsoft Store"
+                  ],
+                  [
+                    "Android",
+                    "La mayoría de los teléfonos con Android 10 o posterior pueden mostrarlo; la edición varía"
+                  ],
+                  [
+                    "Navegadores web",
+                    "Safari 17+ lo muestra; la mayoría de los demás navegadores no, por eso los sitios web rara vez lo aceptan"
+                  ],
+                  [
+                    "Formularios de subida y software antiguo",
+                    "Suelen rechazarlo; JPG es la opción segura"
+                  ]
+                ]
+              }
+            },
+            "Cuando compartes una foto HEIC por Mail, Mensajes o AirDrop, el iPhone a menudo la convierte a JPG automáticamente. Copiar los archivos por cable o desde una carpeta en la nube conserva el HEIC original."
+          ]
+        },
+        {
+          "h": "Cuándo convertir HEIC a JPG",
+          "body": [
+            "Conserva HEIC como archivo maestro: ocupa menos y guarda más color. Convierte una copia cuando el destino no dependa de ti:",
+            {
+              "ul": [
+                "Formularios de subida para visados, solicitudes de empleo y sitios del gobierno, que suelen admitir solo JPG o PNG.",
+                "Sitios web y blogs, donde los navegadores de la mayoría de los visitantes no pueden mostrar HEIC.",
+                "Editores de fotos antiguos, quioscos de impresión y software de oficina."
+              ]
+            },
+            "Al convertir a JPG la imagen se vuelve a comprimir una vez, así que elige una calidad de entre el 85 y el 92 % para que se vea idéntica. Si necesitas transparencia, convierte a PNG."
+          ]
+        },
+        {
+          "h": "Cambiar el formato predeterminado en un iPhone",
+          "body": [
+            "Para que la cámara guarde JPG a partir de ahora, abre Ajustes › Cámara › Formatos y elige Más compatible. Las fotos ya tomadas siguen en HEIC. Con Más compatible el video también se graba en H.264 en lugar de HEVC, así que los archivos ocupan más.",
+            {
+              "note": "Las fotos HEIC conservan los metadatos EXIF, incluida la ubicación GPS si Localización está activada para la Cámara. Convertir el archivo no los elimina automáticamente; bórralos antes de publicar una foto."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿HEIC tiene mejor calidad que JPG?",
+          "a": "Con el mismo tamaño de archivo, sí: la compresión HEVC conserva más detalle y admite color de 10 bits. Con la misma calidad, HEIC ocupa aproximadamente la mitad."
+        },
+        {
+          "q": "¿Se pierde calidad al convertir HEIC a JPG?",
+          "a": "Un poco, porque el JPG se vuelve a comprimir. Con una calidad del 85–92 % la diferencia no se aprecia en una visualización normal."
+        },
+        {
+          "q": "¿Se puede abrir HEIC en Windows?",
+          "a": "Sí. Windows 10 y 11 abren HEIC tras instalar Extensiones de imagen HEIF y Extensiones de vídeo HEVC desde Microsoft Store; también puedes convertir el archivo a JPG en el navegador."
+        },
+        {
+          "q": "¿HEIC es lo mismo que HEIF?",
+          "a": "HEIC es un tipo de archivo HEIF: el contenedor HEIF con imágenes comprimidas con HEVC. Los dos nombres se suelen usar indistintamente."
+        }
+      ]
+    },
+    "jpg-vs-png-vs-webp": {
+      "title": "JPG, PNG o WebP: qué formato de imagen usar y cuándo — cv.cm",
+      "description": "JPG para fotos, PNG para gráficos nítidos y transparencia, WebP para ambos con menos peso. Compara compresión, calidad, compatibilidad y cuándo usar AVIF.",
+      "h1": "JPG vs PNG vs WebP: ¿qué formato de imagen conviene usar?",
+      "answer": "Usa JPG para fotografías cuando importe el tamaño del archivo y no la transparencia. Usa PNG para capturas de pantalla, logotipos, texto y todo lo que necesite píxeles exactos o un fondo transparente. Usa WebP cuando la imagen vaya en un sitio web: admite modos con y sin pérdida, además de transparencia, y Google midió archivos WebP con pérdida entre un 25 y un 34 % más pequeños que JPG a igual calidad. Todos los navegadores actuales muestran WebP.",
+      "sections": [
+        {
+          "h": "Los tres formatos, lado a lado",
+          "body": [
+            "Cada formato se diseñó para una tarea distinta, y las diferencias se reducen a cómo comprimen los píxeles y qué funciones adicionales incluyen.",
+            {
+              "table": {
+                "head": [
+                  "",
+                  "JPG (JPEG)",
+                  "PNG",
+                  "WebP"
+                ],
+                "rows": [
+                  [
+                    "Año de creación",
+                    "1992",
+                    "1996",
+                    "2010"
+                  ],
+                  [
+                    "Compresión",
+                    "Con pérdida",
+                    "Sin pérdida",
+                    "Con o sin pérdida"
+                  ],
+                  [
+                    "Transparencia",
+                    "No",
+                    "Sí, canal alfa completo",
+                    "Sí, canal alfa completo"
+                  ],
+                  [
+                    "Animación",
+                    "No",
+                    "Variante APNG",
+                    "Sí"
+                  ],
+                  [
+                    "Profundidad de bits",
+                    "8 bits por canal (básico)",
+                    "Hasta 16 bits por canal",
+                    "8 bits por canal"
+                  ],
+                  [
+                    "Ideal para",
+                    "Fotos",
+                    "Gráficos, capturas, texto",
+                    "Imágenes web de cualquier tipo"
+                  ],
+                  [
+                    "Problemas de compatibilidad habituales",
+                    "Ninguno",
+                    "Ninguno",
+                    "Algún software de escritorio antiguo y formularios de subida"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Con pérdida vs sin pérdida: la diferencia decisiva",
+          "body": [
+            "La compresión con pérdida (JPG, WebP con pérdida) descarta detalles que el ojo difícilmente notará. Funciona bien en fotos, donde los colores cambian de forma gradual, pero emborrona los bordes nítidos: el texto y las líneas finas de un JPG adquieren halos tenues llamados ringing o ruido de mosquito, y con calidad baja pueden aparecer bloques de 8×8 píxeles.",
+            "La compresión sin pérdida (PNG, WebP sin pérdida) guarda cada píxel exactamente. Reduce muy bien las grandes zonas de color plano, por eso una captura de pantalla puede ocupar menos en PNG que en JPG, pero una foto guardada como PNG suele ser de 3 a 5 veces más grande que un buen JPG sin ninguna ventaja visible.",
+            {
+              "ul": [
+                "Cada vez que se edita y se vuelve a guardar un JPG, se comprime de nuevo y pierde un poco más de detalle. Conserva un original sin pérdida si vas a editar varias veces.",
+                "Convertir un JPG a PNG no recupera el detalle perdido; solo guarda los píxeles ya comprimidos sin más pérdida, en un archivo más grande.",
+                "Una calidad JPG de entre el 80 y el 90 % es un equilibrio habitual entre tamaño y artefactos visibles."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "¿Cuánto más pequeño es WebP?",
+          "body": [
+            "El estudio de compresión de WebP de Google comparó archivos con igual similitud estructural (SSIM). WebP con pérdida resultó entre un 25 y un 34 % más pequeño que JPG, y Google indica que WebP sin pérdida ocupa alrededor de un 26 % menos que PNG. El ahorro real depende de la imagen, del codificador y de la calidad elegida.",
+            "Un ejemplo práctico: una foto de portada de 400 KB guardada como JPG quedaría normalmente en unos 265–300 KB como WebP con pérdida de calidad similar. En una página con veinte imágenes, esa diferencia acorta el tiempo de carga en conexiones móviles.",
+            {
+              "note": "WebP está limitado a 16,383 × 16,383 píxeles y color de 8 bits, así que no es un buen formato de archivo para originales de alta resolución o HDR. Conserva el original de la cámara y exporta copias WebP para la web."
+            }
+          ]
+        },
+        {
+          "h": "Dónde encaja AVIF",
+          "body": [
+            "AVIF es un formato más reciente que guarda imágenes comprimidas con AV1 en un contenedor tipo HEIF. En fotos suele superar a WebP en tamaño de archivo, admite color de 10 y 12 bits y HDR, y maneja transparencia. Chrome lo incorporó en la versión 85, Firefox en la 93 y Safari en la 16.",
+            "Sus inconvenientes son una codificación más lenta, menor compatibilidad con software de escritorio antiguo y, a veces, pérdida de texturas finas con calidad muy baja. Muchos sitios sirven primero AVIF, luego WebP y JPG como respaldo usando el elemento HTML `<picture>`."
+          ]
+        },
+        {
+          "h": "Guía rápida para decidir",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Situación",
+                  "Formato recomendado"
+                ],
+                "rows": [
+                  [
+                    "Foto de cámara o teléfono para un sitio web",
+                    "WebP o AVIF, con JPG de respaldo si hace falta"
+                  ],
+                  [
+                    "Foto para correo, una imprenta o un formulario de subida",
+                    "JPG"
+                  ],
+                  [
+                    "Logotipo, icono o diagrama con transparencia",
+                    "PNG, o SVG si es arte vectorial"
+                  ],
+                  [
+                    "Captura de pantalla con texto",
+                    "PNG o WebP sin pérdida"
+                  ],
+                  [
+                    "Animación corta en bucle",
+                    "WebP animado o un archivo de video en lugar de GIF"
+                  ],
+                  [
+                    "Copia maestra que volverás a editar",
+                    "PNG, TIFF o el formato original de la cámara"
+                  ]
+                ]
+              }
+            },
+            "Si un formulario rechaza WebP, convierte una copia a JPG para fotos o a PNG para gráficos. Convertir un archivo con pérdida a uno sin pérdida no aporta nada más allá de la compatibilidad."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿PNG tiene más calidad que JPG?",
+          "a": "PNG es sin pérdida, así que conserva cada píxel exactamente, mientras que JPG descarta algo de detalle. En fotos, con una calidad JPG alta la diferencia suele ser invisible; en texto y bordes nítidos, PNG se ve claramente más limpio."
+        },
+        {
+          "q": "¿Por qué mi PNG es mucho más grande que el JPG?",
+          "a": "La compresión sin pérdida no puede descartar el ruido fino ni los degradados de las fotos, así que un PNG fotográfico suele ser varias veces más grande. Usa JPG o WebP para fotos."
+        },
+        {
+          "q": "¿Todos los navegadores admiten WebP?",
+          "a": "Sí. Chrome, Edge, Firefox y Opera lo admiten desde hace años, y Safari lo añadió en la versión 14, en 2020. Algunos programas de escritorio antiguos y formularios de subida todavía lo rechazan."
+        },
+        {
+          "q": "¿Convertir PNG a JPG elimina la transparencia?",
+          "a": "Sí. JPG no tiene canal alfa, así que las zonas transparentes se rellenan con un color sólido, normalmente blanco o negro. Usa WebP o mantén PNG si necesitas transparencia."
+        }
+      ]
+    },
+    "what-is-exif": {
+      "title": "¿Qué son los datos EXIF? Qué revelan tus fotos y cómo borrarlos — cv.cm",
+      "description": "EXIF son los metadatos ocultos en las fotos: cámara, ajustes, fecha y a menudo la ubicación GPS. Qué etiquetas existen, quién las elimina y cómo borrarlas.",
+      "h1": "¿Qué son los datos EXIF de una foto?",
+      "answer": "EXIF (Exchangeable Image File Format) es un estándar de metadatos que cámaras y teléfonos escriben en cada foto. Registra la marca y el modelo del dispositivo, los ajustes de exposición, la fecha y hora de la toma, la orientación de la imagen y, si la ubicación está activada, coordenadas GPS lo bastante precisas como para identificar una vivienda. No se ve en la imagen, pero cualquiera que tenga el archivo puede leerlo.",
+      "sections": [
+        {
+          "h": "Qué guarda EXIF",
+          "body": [
+            "EXIF lo creó la asociación japonesa de electrónica JEIDA en 1995 y hoy lo mantienen CIPA y JEITA. Reutiliza la estructura de etiquetas del formato TIFF, así que cada dato es una etiqueta numerada con un nombre y un valor.",
+            {
+              "table": {
+                "head": [
+                  "Etiqueta",
+                  "Valor de ejemplo",
+                  "Qué revela"
+                ],
+                "rows": [
+                  [
+                    "`Make` / `Model`",
+                    "Apple / iPhone 15",
+                    "El dispositivo usado"
+                  ],
+                  [
+                    "`DateTimeOriginal`",
+                    "2026:09:12 18:42:07",
+                    "Cuándo se tomó la foto"
+                  ],
+                  [
+                    "`ExposureTime`, `FNumber`, `ISOSpeedRatings`",
+                    "1/120, f/1.8, 64",
+                    "Ajustes de la cámara"
+                  ],
+                  [
+                    "`FocalLength`",
+                    "6.9 mm",
+                    "Objetivo y zoom"
+                  ],
+                  [
+                    "`Orientation`",
+                    "6 (girar 90° en sentido horario)",
+                    "Cómo debe mostrarse la imagen"
+                  ],
+                  [
+                    "`GPSLatitude` / `GPSLongitude`",
+                    "48° 51' 29.6\" N, 2° 17' 40.2\" E",
+                    "Dónde se tomó la foto"
+                  ],
+                  [
+                    "`BodySerialNumber`",
+                    "Propio de cada cámara",
+                    "Puede vincular fotos a una misma cámara"
+                  ],
+                  [
+                    "`Software`",
+                    "Nombre y versión del editor",
+                    "Cómo se procesó el archivo"
+                  ]
+                ]
+              }
+            },
+            "Muchos archivos incluyen además una pequeña miniatura incrustada, notas del fabricante (maker notes) en un formato privado y bloques XMP o IPTC aparte con pies de foto, palabras clave y derechos de autor."
+          ]
+        },
+        {
+          "h": "Dónde se guarda EXIF dentro del archivo",
+          "body": [
+            "En un JPG, EXIF se encuentra en un segmento `APP1` cerca del inicio del archivo, que empieza con los bytes `Exif` seguidos de dos bytes cero, y está limitado a 64 KB. HEIC, WebP, TIFF y muchos formatos RAW de cámara también llevan EXIF, y PNG incorporó un chunk oficial `eXIf` en 2017.",
+            "Como los metadatos están separados de los píxeles, se pueden leer o borrar sin afectar a la calidad de la imagen. Una captura de pantalla de una foto no copia el EXIF del original, aunque la captura recibe sus propios metadatos mínimos."
+          ]
+        },
+        {
+          "h": "Por qué EXIF importa para la privacidad",
+          "body": [
+            "Las etiquetas GPS son el riesgo principal. La cámara de un teléfono con acceso a la ubicación registra latitud y longitud con un margen de pocos metros, así que una foto tomada en casa y compartida como archivo original puede revelar la dirección. La fecha y el modelo del dispositivo aportan contexto, y un número de serie puede vincular varias fotos anónimas a la misma cámara.",
+            {
+              "ul": [
+                "Las grandes redes sociales suelen eliminar el EXIF de las publicaciones públicas, pero las políticas cambian y no está garantizado.",
+                "Los adjuntos de correo, los enlaces de almacenamiento en la nube, los foros, los sitios de compraventa y las apps de mensajería que envían la foto como archivo suelen conservar todos los metadatos.",
+                "Las fotos enviadas a formularios oficiales o a empleadores pueden reenviarse y guardarse durante años."
+              ]
+            },
+            {
+              "note": "Borrar el EXIF no elimina lo que se ve en la imagen. Letreros de calles, números de portal, reflejos y detalles de documentos pueden seguir identificando un lugar o a una persona, así que revisa la propia imagen antes de publicarla."
+            }
+          ]
+        },
+        {
+          "h": "Cómo ver y borrar el EXIF",
+          "body": [
+            "En una computadora, las propiedades del archivo muestran el EXIF básico: Obtener información o el Inspector de Vista Previa en Mac, Propiedades › Detalles en Windows. Para ver todos los detalles, usa un visor de metadatos o una herramienta que funcione en el navegador para no subir la foto.",
+            {
+              "ol": [
+                "Abre la foto en un visor de metadatos y busca primero las etiquetas GPS.",
+                "Elimina todos los metadatos, o solo la ubicación si quieres conservar los ajustes de la cámara.",
+                "Guárdala como un archivo nuevo y conserva el original en privado.",
+                "Vuelve a abrir el archivo nuevo para confirmar que los campos GPS han desaparecido."
+              ]
+            },
+            "En los teléfonos, tanto iOS como Android permiten desactivar la ubicación en la hoja de compartir o en los ajustes de la cámara. La hoja de compartir del iPhone tiene un enlace Opciones con un interruptor Ubicación; en Android, las apps de cámara tienen un ajuste de etiqueta de ubicación."
+          ]
+        },
+        {
+          "h": "La trampa de la orientación",
+          "body": [
+            "Los teléfonos suelen guardar la imagen de lado y establecer la etiqueta `Orientation` (valores del 1 al 8) para indicar a los visores cómo girarla. Si una herramienta borra el EXIF sin aplicar antes esa rotación a los píxeles, la foto limpia puede aparecer de lado o al revés. Un buen eliminador de metadatos gira los píxeles antes de quitar la etiqueta."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Alguien puede averiguar mi ubicación a partir de una foto?",
+          "a": "Sí, si el archivo original aún contiene etiquetas GPS. Cualquiera que lo descargue puede leer las coordenadas con un visor gratuito y pegarlas en un mapa."
+        },
+        {
+          "q": "¿Borrar el EXIF reduce la calidad de la imagen?",
+          "a": "No. Los metadatos se guardan aparte de los píxeles, así que un eliminador de metadatos bien hecho deja intactos los datos de la imagen. Algunas herramientas vuelven a guardar la imagen al limpiarla, lo que puede añadir una ligera compresión JPG."
+        },
+        {
+          "q": "¿Las capturas de pantalla tienen datos EXIF?",
+          "a": "Las capturas llevan pocos metadatos, normalmente las dimensiones, la fecha de creación y a veces el dispositivo, pero no la ubicación GPS. No heredan el EXIF de la foto original."
+        },
+        {
+          "q": "¿WhatsApp o Instagram eliminan el EXIF?",
+          "a": "Por lo general sus flujos para compartir fotos eliminan la mayoría de los metadatos al comprimir las imágenes, pero enviar una foto como documento o archivo conserva los metadatos originales. Comprueba el comportamiento actual de cada app si te importa la privacidad de tu ubicación."
+        }
+      ]
+    },
+    "dpi-vs-ppi": {
+      "title": "DPI vs PPI: qué significan para pantallas e impresión — cv.cm",
+      "description": "PPI son píxeles por pulgada; DPI, puntos de tinta de una impresora. Qué significa 300 DPI, cómo preparar imágenes para imprimir y por qué 72 DPI es un mito.",
+      "h1": "DPI vs PPI: ¿cuál es la diferencia?",
+      "answer": "PPI (píxeles por pulgada) describe la densidad de píxeles de una imagen al imprimirse o en una pantalla. DPI (puntos por pulgada) describe cuántos puntos de tinta coloca una impresora por pulgada. En el uso cotidiano ambos términos se intercambian. En una imagen digital solo importan las dimensiones en píxeles; el valor PPI solo fija el tamaño de impresión, así que 3000 píxeles a 300 PPI se imprimen con 10 pulgadas de ancho.",
+      "sections": [
+        {
+          "h": "Dos medidas diferentes",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Término",
+                  "Mide",
+                  "Dónde se aplica",
+                  "Valores habituales"
+                ],
+                "rows": [
+                  [
+                    "PPI",
+                    "Píxeles de la imagen por pulgada de salida",
+                    "Archivos de imagen, pantallas",
+                    "300 para impresión, 400–500+ en pantallas de teléfono"
+                  ],
+                  [
+                    "DPI",
+                    "Puntos de tinta o tóner por pulgada",
+                    "Impresoras",
+                    "600–2400 en láser, hasta 4800 × 1200 en inyección de tinta"
+                  ],
+                  [
+                    "LPI",
+                    "Líneas de semitono por pulgada",
+                    "Impresión offset",
+                    "133–175 en revistas"
+                  ]
+                ]
+              }
+            },
+            "Una impresora necesita varios puntos de tinta para reproducir el color de un píxel, por eso los DPI de una impresora son mucho más altos que los PPI de la imagen. Programas como Photoshop llaman a este ajuste «Resolución» en píxeles por pulgada, mientras que muchos formularios de subida piden «300 DPI» cuando en realidad quieren decir 300 PPI."
+          ]
+        },
+        {
+          "h": "La fórmula: píxeles, pulgadas y PPI",
+          "body": [
+            "Tamaño de impresión, número de píxeles y PPI están ligados por una sola ecuación: `píxeles = pulgadas × PPI`. Despejando, `pulgadas = píxeles ÷ PPI`.",
+            {
+              "table": {
+                "head": [
+                  "Tamaño en píxeles",
+                  "A 300 PPI",
+                  "A 150 PPI",
+                  "A 72 PPI"
+                ],
+                "rows": [
+                  [
+                    "1200 × 1800",
+                    "4 × 6 in",
+                    "8 × 12 in",
+                    "16.7 × 25 in"
+                  ],
+                  [
+                    "2480 × 3508",
+                    "A4 (8.27 × 11.69 in)",
+                    "16.5 × 23.4 in",
+                    "34.4 × 48.7 in"
+                  ],
+                  [
+                    "3000 × 2000",
+                    "10 × 6.67 in",
+                    "20 × 13.3 in",
+                    "41.7 × 27.8 in"
+                  ],
+                  [
+                    "600 × 600",
+                    "2 × 2 in",
+                    "4 × 4 in",
+                    "8.3 × 8.3 in"
+                  ]
+                ]
+              }
+            },
+            "Ejemplo práctico: para imprimir una foto de 8 × 10 pulgadas a 300 PPI necesitas 8 × 300 = 2400 por 10 × 300 = 3000 píxeles. Una imagen de 1200 × 1500 píxeles se imprimiría a ese tamaño a solo 150 PPI y se vería poco nítida de cerca."
+          ]
+        },
+        {
+          "h": "Por qué cambiar solo los DPI no cambia nada en pantalla",
+          "body": [
+            "El valor PPI es un único número guardado en los metadatos del archivo. Cambiarlo de 72 a 300 sin remuestrear no añade ni un píxel; la imagen se ve idéntica en pantalla y simplemente se imprime más pequeña. Solo el remuestreo, que cambia las dimensiones en píxeles, altera la calidad.",
+            {
+              "ul": [
+                "Ampliar una imagen pequeña para llegar a 300 PPI inventa píxeles por interpolación; la imagen crece, pero no gana nitidez.",
+                "Reducir a un tamaño en píxeles menor descarta detalle para siempre, así que conserva el original.",
+                "Cuando un formulario exige «300 DPI», comprueba si también indica dimensiones en píxeles. Eso es lo que de verdad importa."
+              ]
+            },
+            {
+              "note": "El tan repetido «72 DPI para la web» viene del Macintosh de 1984, cuya pantalla mostraba 72 píxeles por pulgada para que un píxel equivaliera a un punto tipográfico. Los navegadores ignoran por completo el valor PPI de una imagen."
+            }
+          ]
+        },
+        {
+          "h": "Cómo usan las pantallas la densidad de píxeles",
+          "body": [
+            "CSS define su propia unidad: 1 pulgada CSS equivale a 96 píxeles CSS, y 1 punto es 1/72 de pulgada. Las pantallas modernas meten más píxeles físicos en cada píxel CSS; esa proporción está disponible para las páginas web como `window.devicePixelRatio`.",
+            "Un teléfono con una proporción de 3 dibuja cada píxel CSS con un bloque de 3 × 3 píxeles físicos. Por tanto, una imagen mostrada con 400 píxeles CSS de ancho necesita unos 1200 píxeles de ancho para verse totalmente nítida en esa pantalla; por eso los sitios sirven varios tamaños con `srcset`."
+          ]
+        },
+        {
+          "h": "¿Cuántos PPI necesitas?",
+          "body": [
+            "La densidad necesaria disminuye a medida que aumenta la distancia de visión. Con una foto impresa a la distancia del brazo, 300 PPI está cerca del límite de lo que la mayoría de la gente puede distinguir; un póster visto a dos metros se ve bien a 100–150 PPI, y las vallas publicitarias se imprimen a unos 10–30.",
+            {
+              "ul": [
+                "Fotos impresas, folletos, libros: 300 PPI.",
+                "Pósteres e impresiones grandes: 150–200 PPI.",
+                "Pancartas y carteles que se ven de lejos: 30–100 PPI.",
+                "Pantallas: ignora los PPI; dimensiona la imagen en píxeles para la pantalla."
+              ]
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué es mejor para la web, 72 DPI o 300 DPI?",
+          "a": "Ninguno: los navegadores ignoran el valor DPI y muestran las imágenes según sus dimensiones en píxeles. Una imagen de 1200 píxeles de ancho se ve igual en línea tanto si sus metadatos dicen 72 como 300."
+        },
+        {
+          "q": "¿Cómo pongo una imagen a 300 DPI?",
+          "a": "Ajusta la resolución a 300 en un editor de imágenes sin remuestrear; el tamaño de impresión se reduce en consecuencia. Si el tamaño resultante es demasiado pequeño, la imagen no tiene suficientes píxeles para 300 PPI a ese tamaño."
+        },
+        {
+          "q": "¿Cuántos píxeles tiene una foto de 4 × 6 a 300 DPI?",
+          "a": "1200 × 1800 píxeles, porque 4 × 300 = 1200 y 6 × 300 = 1800."
+        },
+        {
+          "q": "¿Escanear con más DPI da mejor calidad?",
+          "a": "Hasta cierto punto. Escanear a 300 DPI basta para documentos y fotos impresas; 600 DPI o más ayuda con fotos pequeñas que quieras ampliar, pero el archivo se multiplica por cuatro cada vez que se duplican los DPI."
+        }
+      ]
+    },
+    "aspect-ratios": {
+      "title": "Relación de aspecto: 16:9, 4:3, 1:1, 9:16 y cómo calcularla — cv.cm",
+      "description": "La relación de aspecto es ancho entre alto, como 16:9. Relaciones habituales en fotos, video y pantallas, y cómo calcular tamaños y recortar sin deformar.",
+      "h1": "¿Qué es la relación de aspecto?",
+      "answer": "La relación de aspecto es la proporción entre el ancho y el alto de una imagen, escrita con dos números como 16:9 o 4:3. Describe la forma, no el tamaño: 1920 × 1080 y 1280 × 720 son ambos 16:9. Para mantener la proporción al redimensionar, calcula el nuevo alto como nuevo ancho × alto ÷ ancho; en 16:9 con 1200 píxeles de ancho, salen 675 píxeles de alto.",
+      "sections": [
+        {
+          "h": "Relaciones de aspecto habituales y dónde se usan",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Relación",
+                  "Decimal",
+                  "Tamaño de ejemplo (px)",
+                  "Uso típico"
+                ],
+                "rows": [
+                  [
+                    "1:1",
+                    "1.00",
+                    "1080 × 1080",
+                    "Publicaciones cuadradas en redes, fotos de perfil"
+                  ],
+                  [
+                    "4:5",
+                    "0.80",
+                    "1080 × 1350",
+                    "Publicaciones verticales en el feed de redes sociales"
+                  ],
+                  [
+                    "4:3",
+                    "1.33",
+                    "1600 × 1200",
+                    "Fotos de cámara de teléfono, televisores antiguos, tabletas"
+                  ],
+                  [
+                    "3:2",
+                    "1.50",
+                    "6000 × 4000",
+                    "Fotos de réflex y sin espejo, copias de 4 × 6"
+                  ],
+                  [
+                    "16:9",
+                    "1.78",
+                    "1920 × 1080",
+                    "Video HD y 4K, monitores, presentaciones"
+                  ],
+                  [
+                    "9:16",
+                    "0.56",
+                    "1080 × 1920",
+                    "Video vertical, historias, clips cortos"
+                  ],
+                  [
+                    "21:9 (comercial)",
+                    "aprox. 2.37",
+                    "2560 × 1080",
+                    "Monitores ultrapanorámicos"
+                  ],
+                  [
+                    "2.39:1",
+                    "2.39",
+                    "4096 × 1716",
+                    "Cine panorámico"
+                  ],
+                  [
+                    "1:√2",
+                    "0.71",
+                    "2480 × 3508",
+                    "Tamaños de papel ISO como A4"
+                  ]
+                ]
+              }
+            },
+            "La relación 16:9 se convirtió en el estándar de la HDTV a través de ITU-R BT.709, que define imágenes de 1920 × 1080 y 1280 × 720. La 3:2 procede del fotograma de 36 × 24 mm de la película de 35 mm."
+          ]
+        },
+        {
+          "h": "Cómo averiguar la relación de cualquier imagen",
+          "body": [
+            "Divide el ancho y el alto entre su máximo común divisor (MCD).",
+            {
+              "ol": [
+                "Toma el tamaño en píxeles, por ejemplo 1920 × 1080.",
+                "Busca el mayor número que divide a ambos: 120.",
+                "Divide: 1920 ÷ 120 = 16 y 1080 ÷ 120 = 9, así que la relación es 16:9."
+              ]
+            },
+            "Algunos tamaños solo se aproximan a una relación conocida. Una pantalla de portátil de 1366 × 768 se reduce a 683:384, que es 1.779, y se vende como 16:9. Un monitor «21:9» de 2560 × 1080 es exactamente 64:27. Comparar decimales (ancho ÷ alto) suele ser más fácil que comparar fracciones."
+          ]
+        },
+        {
+          "h": "Calcular un nuevo tamaño sin deformar",
+          "body": [
+            "Mantén la proporción escalando ambos lados por el mismo factor. Dos fórmulas cubren todos los casos:",
+            {
+              "ul": [
+                "`nuevo alto = nuevo ancho × alto original ÷ ancho original`",
+                "`nuevo ancho = nuevo alto × ancho original ÷ alto original`"
+              ]
+            },
+            "Ejemplo: una foto de 4032 × 3024 (4:3) redimensionada a 1600 píxeles de ancho queda en 1600 × 3024 ÷ 4032 = 1200 píxeles de alto. Para un video 9:16 de 720 píxeles de ancho, el alto es 720 × 16 ÷ 9 = 1280.",
+            "Si el resultado no es un número entero, redondea al píxel más cercano. Los codificadores de video suelen exigir dimensiones pares, así que en video redondea a un número par."
+          ]
+        },
+        {
+          "h": "Cambiar la relación: recortar, rellenar o estirar",
+          "body": [
+            "Convertir una foto 4:3 en un encuadre 16:9 o en una publicación 1:1 no se puede hacer solo redimensionando. Hay tres opciones:",
+            {
+              "table": {
+                "head": [
+                  "Método",
+                  "Qué ocurre",
+                  "Cuándo usarlo"
+                ],
+                "rows": [
+                  [
+                    "Recortar",
+                    "Elimina parte de la imagen",
+                    "La mayoría de las fotos; mantén el sujeto dentro del encuadre"
+                  ],
+                  [
+                    "Rellenar (letterbox o pillarbox)",
+                    "Añade franjas o un fondo desenfocado",
+                    "Cuando no se puede cortar nada, como en documentos u obras de arte"
+                  ],
+                  [
+                    "Estirar",
+                    "Escala ancho y alto de forma desigual",
+                    "Casi nunca; las caras y los círculos se ven deformados"
+                  ]
+                ]
+              }
+            },
+            "Recortar una imagen de 4000 × 3000 a 16:9 conserva todo el ancho y reduce el alto a 4000 × 9 ÷ 16 = 2250 píxeles, descartando el 25 % de la imagen. Recortar la misma imagen a 1:1 conserva 3000 × 3000."
+          ]
+        },
+        {
+          "h": "La relación de aspecto en la web",
+          "body": [
+            "CSS tiene una propiedad `aspect-ratio`, por ejemplo `aspect-ratio: 16 / 9`, que reserva el espacio adecuado antes de que cargue una imagen o un video. Definirla, o dar a las imágenes atributos `width` y `height`, evita que la página salte al llegar el contenido multimedia, lo que mejora la puntuación de Cumulative Layout Shift.",
+            {
+              "note": "Las plataformas cambian con el tiempo sus tamaños de subida recomendados. Consulta la página de ayuda actual del servicio antes de preparar un lote grande de imágenes o un video."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué relación de aspecto tiene 1920 × 1080?",
+          "a": "16:9. Ambos números son divisibles entre 120, lo que da 16 y 9."
+        },
+        {
+          "q": "¿El 4K es 16:9?",
+          "a": "El 4K UHD doméstico es 3840 × 2160, exactamente 16:9. El 4K de cine (DCI) es 4096 × 2160, aproximadamente 1.90:1."
+        },
+        {
+          "q": "¿Qué relación de aspecto tiene una foto de teléfono?",
+          "a": "La mayoría de las cámaras de teléfono disparan en 4:3 por defecto, por ejemplo 4032 × 3024. Muchas ofrecen también modos 16:9 y 1:1, que recortan la imagen del sensor."
+        },
+        {
+          "q": "¿Cambiar la relación de aspecto reduce la calidad?",
+          "a": "Recortar elimina píxeles pero no desenfoca el resto. Estirar deforma las formas, y ampliar tras un recorte fuerte puede hacer que la imagen pierda nitidez."
+        }
+      ]
+    },
+    "why-pdf-files-are-large": {
+      "title": "¿Por qué un PDF pesa tanto? Causas y cómo reducirlo — cv.cm",
+      "description": "Un PDF pesado suele deberse a imágenes de alta resolución, escaneos, fuentes incrustadas o historial de edición. Qué ocupa espacio y cómo reducirlo.",
+      "h1": "¿Por qué mi archivo PDF pesa tanto?",
+      "answer": "La mayoría de los PDF demasiado grandes lo son por las imágenes: fotos a resolución completa o páginas escaneadas guardadas con poca compresión. Otras causas son las fuentes incrustadas completas, sobre todo las de chino, japonés y coreano, el historial de edición que dejan los guardados incrementales, las imágenes duplicadas y los archivos adjuntos. Reducir las imágenes a 150 PPI para lectura en pantalla, volver a comprimirlas y guardar una copia limpia suele reducir el tamaño a la mitad o más.",
+      "sections": [
+        {
+          "h": "Qué ocupa realmente espacio en un PDF",
+          "body": [
+            "Un PDF, estandarizado como ISO 32000, es un conjunto de objetos: descripciones de página, fuentes, imágenes y metadatos, cada uno opcionalmente comprimido. El texto y los dibujos vectoriales son diminutos; una página entera de texto suele necesitar solo unos pocos kilobytes. Los problemas de tamaño vienen de los objetos pesados.",
+            {
+              "table": {
+                "head": [
+                  "Causa",
+                  "Impacto típico",
+                  "Por qué ocurre"
+                ],
+                "rows": [
+                  [
+                    "Fotos a resolución de cámara",
+                    "1–10 MB por imagen",
+                    "Una foto de 12 megapíxeles se coloca en una página que necesita una fracción de esos píxeles"
+                  ],
+                  [
+                    "Páginas escaneadas",
+                    "0.5–5 MB por página",
+                    "Cada página es una imagen a todo color, aunque solo contenga texto negro"
+                  ],
+                  [
+                    "Fuentes incrustadas",
+                    "De decenas de KB a más de 20 MB",
+                    "Se incrustan archivos de fuente completos en lugar de solo los caracteres usados"
+                  ],
+                  [
+                    "Guardados incrementales",
+                    "Crece con cada edición",
+                    "Los cambios se añaden al final; las versiones antiguas de los objetos siguen en el archivo"
+                  ],
+                  [
+                    "Imágenes duplicadas",
+                    "Multiplica el tamaño de las imágenes",
+                    "Un logotipo guardado una vez por página en lugar de compartido"
+                  ],
+                  [
+                    "Adjuntos, capas, formularios",
+                    "Variable",
+                    "Archivos incrustados, capas ocultas y scripts de formulario"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Páginas escaneadas: las cuentas",
+          "body": [
+            "Una página A4 escaneada a 300 PPI tiene 2480 × 3508 = 8,699,840 píxeles. En color, a 3 bytes por píxel, son unos 26.1 MB sin comprimir por página.",
+            {
+              "ul": [
+                "En escala de grises (1 byte por píxel) la misma página ocupa unos 8.7 MB sin comprimir.",
+                "En blanco y negro (1 bit por píxel) baja a unos 1.09 MB, y la compresión binivel como CCITT Group 4 o JBIG2 suele dejar una página de texto en decenas de kilobytes.",
+                "La compresión JPG en la versión a color suele dar 1–3 MB por página, así que un escaneo a color de 20 páginas supera fácilmente los 20 MB."
+              ]
+            },
+            "Escanear documentos de texto en escala de grises o en blanco y negro a 300 PPI, en lugar de a color a 600, es el mayor ahorro posible en los escaneos."
+          ]
+        },
+        {
+          "h": "Cómo funciona la compresión en PDF",
+          "body": [
+            "Los streams de un PDF declaran un filtro que indica cómo están comprimidos. Elegir un filtro mejor, o volver a comprimir con ajustes más agresivos, es como las herramientas de compresión reducen los archivos.",
+            {
+              "table": {
+                "head": [
+                  "Filtro",
+                  "Método",
+                  "Se usa para"
+                ],
+                "rows": [
+                  [
+                    "`FlateDecode`",
+                    "Sin pérdida (zlib/deflate, como en PNG y ZIP)",
+                    "Texto, gráficos vectoriales, imágenes sin pérdida"
+                  ],
+                  [
+                    "`DCTDecode`",
+                    "JPEG con pérdida",
+                    "Fotos"
+                  ],
+                  [
+                    "`JPXDecode`",
+                    "JPEG 2000",
+                    "Imágenes de alta calidad, escaneos de archivo"
+                  ],
+                  [
+                    "`JBIG2Decode`",
+                    "Binivel, con o sin pérdida",
+                    "Escaneos en blanco y negro"
+                  ],
+                  [
+                    "`CCITTFaxDecode`",
+                    "Compresión binivel de fax",
+                    "Escaneos antiguos en blanco y negro"
+                  ]
+                ]
+              }
+            },
+            "PDF 1.5 introdujo además los object streams y los cross-reference streams, que comprimen la estructura interna del archivo. Guardar con una versión moderna de PDF los activa."
+          ]
+        },
+        {
+          "h": "Cómo reducir el tamaño de un PDF",
+          "body": [
+            {
+              "ol": [
+                "Reduce la resolución de las imágenes: 150 PPI basta para leer en pantalla y enviar por correo, 300 PPI para imprimir.",
+                "Vuelve a comprimir las fotos como JPG con calidad moderada; convierte los escaneos de texto a escala de grises o a blanco y negro.",
+                "Usa «Guardar como» o un comando de optimización en lugar de «Guardar», que reescribe el archivo y descarta las actualizaciones incrementales antiguas.",
+                "Incrusta subconjuntos de fuentes (solo los caracteres usados) en lugar de fuentes completas.",
+                "Elimina adjuntos, capas ocultas, miniaturas y datos de formulario que no necesites.",
+                "Si un archivo sigue siendo demasiado grande, divídelo en partes o envía solo las páginas necesarias."
+              ]
+            },
+            "Ejemplo práctico: un informe de 30 páginas con diez fotos de teléfono de 4 MB ocupa unos 40 MB. Reducir esas fotos a 150 PPI para su tamaño impreso de unas 6 pulgadas de ancho (900 píxeles) y guardarlas como JPG al 80 % de calidad suele dejar cada una por debajo de 200 KB, y el archivo completo en unos 2–3 MB."
+          ]
+        },
+        {
+          "h": "Qué tener en cuenta",
+          "body": [
+            "La compresión agresiva tiene sus costos. Bajar de 150 PPI hace difícil leer el texto pequeño de las imágenes, y JBIG2 con pérdida ha llegado a sustituir dígitos de aspecto parecido en números escaneados, así que los modos sin pérdida son más seguros para facturas y contratos.",
+            {
+              "note": "Los PDF suelen contener datos personales o confidenciales. Un compresor que funciona en tu navegador procesa el archivo localmente; un servicio en línea que sube el archivo lo envía al servidor de otra persona. Comprueba cuál estás usando antes de comprimir contratos, documentos de identidad o historiales médicos."
+            },
+            "Muchos servicios de correo limitan los adjuntos a unos 20–25 MB, y algunos formularios de subida solo aceptan 2–5 MB, así que comprueba el límite antes de decidir cuánto comprimir."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Comprimir un PDF reduce la calidad?",
+          "a": "Las optimizaciones sin pérdida, como eliminar objetos antiguos y comprimir la estructura, no. Reducir la resolución y volver a comprimir las imágenes sí reduce su detalle, aunque a 150 PPI en pantalla normalmente no se nota."
+        },
+        {
+          "q": "¿Por qué un PDF de pocas páginas pesa tanto?",
+          "a": "Casi seguro contiene imágenes grandes, una página escaneada guardada a todo color o una fuente incrustada completa. El texto por sí solo ocupa muy poco."
+        },
+        {
+          "q": "¿Por qué mi PDF crece cada vez que lo guardo?",
+          "a": "Muchos editores usan guardados incrementales, que añaden los cambios al final del archivo y conservan los objetos antiguos. Guardar una copia nueva con «Guardar como» o una opción de optimización los elimina."
+        },
+        {
+          "q": "¿Qué resolución deben tener las imágenes de un PDF?",
+          "a": "Unos 150 PPI para documentos que se leen en pantalla o se envían por correo, y 300 PPI para impresión profesional. Valores más altos sobre todo añaden peso."
+        }
+      ]
+    },
+    "what-is-base64": {
+      "title": "¿Qué es Base64? Cómo funciona la codificación, con ejemplos — cv.cm",
+      "description": "Base64 convierte datos binarios en 64 caracteres de texto, 3 bytes en 4. Cómo «Man» se convierte en TWFu, por qué ocupa un 33 % más y dónde se usa.",
+      "h1": "¿Qué es la codificación Base64?",
+      "answer": "Base64 es una forma de representar datos binarios usando solo 64 caracteres imprimibles: A–Z, a–z, 0–9, + y /, con = como relleno. Divide cada 3 bytes en cuatro grupos de 6 bits y asigna a cada grupo un carácter, de modo que «Man» se convierte en «TWFu». Permite enviar datos binarios por canales que solo admiten texto, como el correo electrónico, JSON y las URL, a costa de ocupar alrededor de un 33 % más. Es una codificación, no un cifrado.",
+      "sections": [
+        {
+          "h": "Cómo funciona Base64, paso a paso",
+          "body": [
+            "Base64 está definido en RFC 4648. Como 64 = 2⁶, cada carácter de salida lleva exactamente 6 bits, y 3 bytes (24 bits) encajan justo en 4 caracteres.",
+            {
+              "table": {
+                "head": [
+                  "Paso",
+                  "M",
+                  "a",
+                  "n"
+                ],
+                "rows": [
+                  [
+                    "Código ASCII",
+                    "77",
+                    "97",
+                    "110"
+                  ],
+                  [
+                    "Binario (8 bits cada uno)",
+                    "01001101",
+                    "01100001",
+                    "01101110"
+                  ]
+                ]
+              }
+            },
+            {
+              "ol": [
+                "Une los 24 bits: `010011010110000101101110`.",
+                "Divídelos en cuatro grupos de 6 bits: `010011` `010110` `000101` `101110`.",
+                "Conviértelos a números: 19, 22, 5, 46.",
+                "Busca cada uno en el alfabeto (0 = A, 25 = Z, 26 = a, 51 = z, 52 = 0, 61 = 9, 62 = +, 63 = /): T, W, F, u.",
+                "Resultado: `TWFu`."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "El relleno con =",
+          "body": [
+            "Cuando la longitud de la entrada no es múltiplo de 3, el último grupo se completa con bits cero y `=` marca los bytes que faltan, así que la longitud de salida siempre es múltiplo de 4.",
+            {
+              "table": {
+                "head": [
+                  "Entrada",
+                  "Bytes",
+                  "Base64"
+                ],
+                "rows": [
+                  [
+                    "`M`",
+                    "1",
+                    "`TQ==`"
+                  ],
+                  [
+                    "`Ma`",
+                    "2",
+                    "`TWE=`"
+                  ],
+                  [
+                    "`Man`",
+                    "3",
+                    "`TWFu`"
+                  ],
+                  [
+                    "`Hello`",
+                    "5",
+                    "`SGVsbG8=`"
+                  ],
+                  [
+                    "`é` (bytes UTF-8 C3 A9)",
+                    "2",
+                    "`w6k=`"
+                  ]
+                ]
+              }
+            },
+            "La longitud codificada es de `4 × ceil(n ÷ 3)` caracteres para n bytes. Un archivo de 1 MB se convierte en unos 1.33 MB de texto, y el correo MIME añade saltos de línea cada 76 caracteres, lo que eleva un poco más la sobrecarga."
+          ]
+        },
+        {
+          "h": "Dónde se usa Base64",
+          "body": [
+            {
+              "ul": [
+                "Adjuntos de correo: MIME codifica los archivos en Base64 porque el sistema de correo original solo transportaba texto de 7 bits.",
+                "Data URLs: imágenes pequeñas incrustadas en HTML o CSS, escritas como `data:image/png;base64,iVBORw0KGgo...`.",
+                "API JSON y XML que necesitan transportar datos binarios como imágenes, claves o certificados.",
+                "JSON Web Tokens (JWT), cuyo encabezado y carga útil son JSON codificado en Base64url.",
+                "Archivos PEM de certificados y claves TLS, que envuelven el Base64 entre líneas `-----BEGIN CERTIFICATE-----`.",
+                "La autenticación HTTP Basic, que envía `username:password` codificado en Base64."
+              ]
+            },
+            "Incrustar imágenes como data URLs ahorra una petición de red, pero aumenta su tamaño un 33 % e impide almacenarlas en caché por separado, así que normalmente solo compensa con imágenes muy pequeñas."
+          ]
+        },
+        {
+          "h": "Base64 frente a Base64url y otras codificaciones",
+          "body": [
+            "El Base64 estándar usa `+` y `/`, que tienen un significado especial en las URL y en los nombres de archivo. La variante segura para URL del mismo RFC los sustituye por `-` y `_`, y a menudo omite el relleno `=`.",
+            {
+              "table": {
+                "head": [
+                  "Codificación",
+                  "Caracteres",
+                  "Sobrecarga de tamaño",
+                  "Uso de ejemplo"
+                ],
+                "rows": [
+                  [
+                    "Base16 (hex)",
+                    "0–9, A–F",
+                    "100%",
+                    "Hashes, códigos de color"
+                  ],
+                  [
+                    "Base32",
+                    "A–Z, 2–7",
+                    "60%",
+                    "Secretos de autenticación en dos pasos"
+                  ],
+                  [
+                    "Base64",
+                    "A–Z, a–z, 0–9, +, /",
+                    "33%",
+                    "Correo, data URLs, PEM"
+                  ],
+                  [
+                    "Base64url",
+                    "A–Z, a–z, 0–9, -, _",
+                    "33%",
+                    "JWT, parámetros de URL"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Errores comunes",
+          "body": [
+            {
+              "note": "Base64 no es cifrado. Cualquiera puede decodificarlo al instante, así que una contraseña o una clave de API en Base64 dentro de una URL, un archivo de configuración o la carga útil de un JWT es, a efectos prácticos, texto plano."
+            },
+            {
+              "ul": [
+                "El texto debe convertirse primero a bytes, normalmente en UTF-8. En JavaScript, `btoa()` lanza un error con caracteres fuera de Latin-1, como emojis o chino, salvo que la cadena se codifique antes en UTF-8.",
+                "Mezclar el alfabeto estándar y el seguro para URL provoca errores de decodificación; sustituye `-` y `_` por `+` y `/` antes de usar un decodificador estándar.",
+                "La falta de relleno puede hacer fallar a los decodificadores estrictos; añade `=` hasta que la longitud sea múltiplo de 4.",
+                "Algunos decodificadores solo aceptan la cadena si antes se eliminan los saltos de línea de la codificación tipo correo."
+              ]
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Por qué Base64 hace que los datos ocupen más?",
+          "a": "Cada 3 bytes se convierten en 4 caracteres, y cada carácter se guarda como un byte completo, así que la salida es alrededor de un 33 % más grande que la entrada."
+        },
+        {
+          "q": "¿Base64 es seguro?",
+          "a": "No. No oculta nada; decodificarlo no requiere ninguna clave. Usa un cifrado real como AES para proteger los datos, y Base64 solo para transportar el resultado como texto."
+        },
+        {
+          "q": "¿Qué significa el = al final de un Base64?",
+          "a": "Es relleno. Un `=` indica que el último grupo contenía 2 bytes, y `==` que contenía solo 1 byte."
+        },
+        {
+          "q": "¿Cómo reconozco una cadena Base64?",
+          "a": "Solo contiene letras, dígitos, + y / (o - y _), su longitud suele ser múltiplo de 4 y puede terminar en uno o dos signos =. Las cadenas que empiezan por `eyJ` suelen ser JSON codificado en Base64, porque un texto JSON que empieza por `{\"` se codifica como una cadena que empieza por `eyJ`."
+        }
+      ]
+    },
+    "unicode-and-utf-8": {
+      "title": "Unicode vs UTF-8: en qué se diferencian, con ejemplos de bytes — cv.cm",
+      "description": "Unicode asigna un número a cada carácter; UTF-8 lo guarda en 1 a 4 bytes. Ejemplos de bytes, UTF-16 y BOM, y por qué el texto aparece como Ã©.",
+      "h1": "¿Cuál es la diferencia entre Unicode y UTF-8?",
+      "answer": "Unicode es un juego de caracteres: asigna a cada carácter un número llamado punto de código, como U+00E9 para «é». UTF-8 es una codificación: una regla para guardar esos números como bytes. Usa 1 byte para ASCII y de 2 a 4 bytes para todo lo demás, así que «é» se convierte en `C3 A9`. Unicode dice qué carácter es; UTF-8 dice cómo se escribe en disco o se envía por la red.",
+      "sections": [
+        {
+          "h": "Primero los puntos de código, después los bytes",
+          "body": [
+            "Unicode define un espacio de códigos de U+0000 a U+10FFFF, con cabida para 1,114,112 puntos de código repartidos en 17 planos de 65,536 cada uno. Más de 150,000 están asignados a caracteres, que abarcan escrituras modernas e históricas, símbolos y emojis. Un punto de código se escribe como `U+` seguido de al menos cuatro dígitos hexadecimales.",
+            "Un punto de código es solo un número. Para guardar o transmitir texto hay que convertirlo en bytes, y hay varias formas de hacerlo: UTF-8, UTF-16 y UTF-32 son codificaciones de los mismos caracteres Unicode.",
+            {
+              "table": {
+                "head": [
+                  "Carácter",
+                  "Punto de código",
+                  "Bytes UTF-8",
+                  "UTF-16 (big-endian)"
+                ],
+                "rows": [
+                  [
+                    "A",
+                    "U+0041",
+                    "`41`",
+                    "`00 41`"
+                  ],
+                  [
+                    "é",
+                    "U+00E9",
+                    "`C3 A9`",
+                    "`00 E9`"
+                  ],
+                  [
+                    "€",
+                    "U+20AC",
+                    "`E2 82 AC`",
+                    "`20 AC`"
+                  ],
+                  [
+                    "日",
+                    "U+65E5",
+                    "`E6 97 A5`",
+                    "`65 E5`"
+                  ],
+                  [
+                    "😀",
+                    "U+1F600",
+                    "`F0 9F 98 80`",
+                    "`D8 3D DE 00`"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Cómo elige UTF-8 entre 1, 2, 3 o 4 bytes",
+          "body": [
+            "UTF-8, especificado en RFC 3629, es una codificación de ancho variable. Los bits iniciales del primer byte indican cuántos bytes siguen, y todos los bytes de continuación empiezan por los bits `10`. Eso hace que el flujo se autosincronice: un decodificador que cae en medio de un carácter puede avanzar hasta el siguiente byte inicial.",
+            {
+              "table": {
+                "head": [
+                  "Rango de puntos de código",
+                  "Bytes",
+                  "Patrón de bits"
+                ],
+                "rows": [
+                  [
+                    "U+0000 – U+007F",
+                    "1",
+                    "`0xxxxxxx`"
+                  ],
+                  [
+                    "U+0080 – U+07FF",
+                    "2",
+                    "`110xxxxx 10xxxxxx`"
+                  ],
+                  [
+                    "U+0800 – U+FFFF",
+                    "3",
+                    "`1110xxxx 10xxxxxx 10xxxxxx`"
+                  ],
+                  [
+                    "U+10000 – U+10FFFF",
+                    "4",
+                    "`11110xxx 10xxxxxx 10xxxxxx 10xxxxxx`"
+                  ]
+                ]
+              }
+            },
+            "Ejemplo práctico: «é» es U+00E9, en binario `000 1110 1001`. Necesita el patrón de 2 bytes. Los 5 bits superiores `00011` van en `110xxxxx` y dan `11000011` (`C3`), y los 6 bits inferiores `101001` van en `10xxxxxx` y dan `10101001` (`A9`).",
+            "Como los primeros 128 puntos de código se codifican con los mismos bytes únicos que ASCII, cualquier archivo ASCII válido ya es UTF-8 válido. Esa compatibilidad hacia atrás es la razón principal por la que UTF-8 se convirtió en el estándar de la web, donde lo usa alrededor del 98 % de los sitios."
+          ]
+        },
+        {
+          "h": "UTF-8 vs UTF-16 vs UTF-32",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Codificación",
+                  "Tamaño de unidad",
+                  "Bytes por carácter",
+                  "Habitual en"
+                ],
+                "rows": [
+                  [
+                    "UTF-8",
+                    "8 bits",
+                    "1–4",
+                    "Páginas web, JSON, archivos de Linux y macOS, la mayoría de las API"
+                  ],
+                  [
+                    "UTF-16",
+                    "16 bits",
+                    "2 o 4",
+                    "Cadenas de JavaScript, Java, API de Windows"
+                  ],
+                  [
+                    "UTF-32",
+                    "32 bits",
+                    "Siempre 4",
+                    "Procesamiento interno donde ayuda el ancho fijo"
+                  ]
+                ]
+              }
+            },
+            "UTF-16 guarda los caracteres por encima de U+FFFF como un par sustituto (surrogate pair) de dos unidades de 16 bits. Por eso `\"😀\".length` vale `2` en JavaScript: el lenguaje cuenta unidades UTF-16, no caracteres. Iterar con `[...\"😀\"].length` devuelve `1`.",
+            "Para texto en inglés UTF-8 es lo más compacto. Para texto mayoritariamente en chino, japonés o coreano, UTF-16 puede ocupar menos, ya que esos caracteres ocupan 3 bytes en UTF-8 pero 2 en UTF-16."
+          ]
+        },
+        {
+          "h": "La marca de orden de bytes (BOM)",
+          "body": [
+            "Un BOM es el carácter U+FEFF colocado al principio de un archivo. En UTF-16 y UTF-32 indica al lector si los bytes son big-endian o little-endian. En UTF-8 se codifica como `EF BB BF` y solo sirve como firma, ya que UTF-8 no tiene orden de bytes.",
+            "Las preguntas frecuentes de Unicode indican que el BOM en UTF-8 no es necesario ni recomendable. Algunos editores de Windows lo añaden de todos modos, y entonces rompe scripts de shell (la línea `#!` deja de ser la primera), encabezados CSV y analizadores JSON que no lo esperan. Si un archivo muestra `ï»¿` al principio, es un BOM de UTF-8 leído como Windows-1252."
+          ]
+        },
+        {
+          "h": "Por qué el texto aparece como Ã© o ���",
+          "body": [
+            "El texto ilegible, llamado mojibake, aparece cuando los bytes se decodifican con una codificación distinta de la que se usó para escribirlos:",
+            {
+              "ul": [
+                "`Ã©` en lugar de `é`: los bytes UTF-8 `C3 A9` leídos como Windows-1252 o Latin-1, que asigna `C3` a `Ã` y `A9` a `©`.",
+                "`�` (U+FFFD, el carácter de sustitución): el decodificador encontró bytes que no son UTF-8 válido, a menudo texto Latin-1 leído como UTF-8.",
+                "Signos de interrogación en una base de datos: la columna o la conexión usaba un juego de caracteres que no puede contener ese carácter, así que se sustituyó al escribir y se ha perdido."
+              ]
+            },
+            "La solución es declarar la codificación en cada frontera: `<meta charset=\"utf-8\">` en HTML, `Content-Type: text/html; charset=utf-8` en las cabeceras HTTP, y UTF-8 en las columnas y conexiones de la base de datos. En MySQL, usa `utf8mb4`; el antiguo juego `utf8` guarda como máximo 3 bytes por carácter y rechaza los emojis.",
+            {
+              "note": "El mojibake causado por una decodificación errónea es reversible si todavía tienes los bytes originales. El texto que se volvió a guardar tras leerse mal, o que perdió caracteres convertidos en `?` al escribirse, normalmente no se puede recuperar."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿UTF-8 es lo mismo que Unicode?",
+          "a": "No. Unicode es la lista de caracteres y sus números; UTF-8 es una forma de guardar esos números como bytes. A menudo se dice «Unicode» cuando se quiere decir texto en UTF-8."
+        },
+        {
+          "q": "¿Cuántos bytes ocupa un carácter en UTF-8?",
+          "a": "Entre 1 y 4. Las letras ASCII ocupan 1 byte, la mayoría de las letras acentuadas europeas 2, la mayoría de los caracteres chinos, japoneses y coreanos 3, y los emojis 4."
+        },
+        {
+          "q": "¿UTF-8 puede representar cualquier carácter?",
+          "a": "Sí. UTF-8 puede codificar todos los puntos de código Unicode de U+0000 a U+10FFFF, así que cualquier carácter definido por Unicode se puede escribir en UTF-8."
+        },
+        {
+          "q": "¿Debo guardar los archivos con BOM?",
+          "a": "En UTF-8, normalmente no. Es opcional, no aporta nada en cuanto al orden de bytes y confunde a las herramientas que esperan que los primeros bytes sean contenido. Algunas versiones antiguas de Excel lo necesitan para abrir correctamente archivos CSV en UTF-8."
+        }
+      ]
+    },
+    "url-encoding": {
+      "title": "Codificación URL (percent-encoding) explicada con ejemplos — cv.cm",
+      "description": "La codificación URL cambia caracteres no seguros por % y dos dígitos hex: espacio es %20, & es %26, é es %C3%A9. Qué codificar y qué función usar.",
+      "h1": "¿Qué es la codificación URL?",
+      "answer": "La codificación URL, formalmente percent-encoding o codificación por porcentaje, sustituye los caracteres no permitidos o con significado especial en una URL por `%` seguido de dos dígitos hexadecimales por cada byte. Un espacio se convierte en `%20`, `&` en `%26`, y el texto no ASCII se convierte primero a UTF-8, de modo que «é» pasa a `%C3%A9`. La cadena «a b&c» se codifica como `a%20b%26c`.",
+      "sections": [
+        {
+          "h": "Por qué las URL necesitan codificación",
+          "body": [
+            "RFC 3986 limita las URL a un pequeño conjunto de caracteres ASCII, y algunos de ellos tienen una función. `?` inicia la consulta, `&` separa parámetros, `=` separa un nombre de su valor, `#` inicia el fragmento y `/` separa los segmentos de la ruta. Si un valor contiene uno de esos caracteres, la URL se vuelve ambigua.",
+            "Supongamos una búsqueda de «salt & pepper». Escrita tal cual como `?q=salt & pepper`, el servidor ve un parámetro `q` con el valor `salt ` y un segundo parámetro vacío llamado ` pepper`. Codificada como `?q=salt%20%26%20pepper`, llega como un único valor."
+          ]
+        },
+        {
+          "h": "Qué caracteres se codifican",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Grupo",
+                  "Caracteres",
+                  "Regla"
+                ],
+                "rows": [
+                  [
+                    "No reservados",
+                    "`A–Z a–z 0–9 - . _ ~`",
+                    "Nunca necesitan codificación"
+                  ],
+                  [
+                    "Reservados (gen-delims)",
+                    "`: / ? # [ ] @`",
+                    "Codificar cuando se usan dentro de un valor"
+                  ],
+                  [
+                    "Reservados (sub-delims)",
+                    "`! $ & ' ( ) * + , ; =`",
+                    "Codificar cuando se usan dentro de un valor"
+                  ],
+                  [
+                    "Todo lo demás",
+                    "Espacio, `\"`, `<`, `>`, `%`, no ASCII",
+                    "Codificar siempre"
+                  ]
+                ]
+              }
+            },
+            "La codificación trabaja con bytes, no con caracteres. El texto no ASCII se convierte primero a UTF-8, y cada byte se convierte en su propio triplete `%XX`:",
+            {
+              "table": {
+                "head": [
+                  "Entrada",
+                  "Bytes UTF-8",
+                  "Codificado"
+                ],
+                "rows": [
+                  [
+                    "espacio",
+                    "`20`",
+                    "`%20`"
+                  ],
+                  [
+                    "&",
+                    "`26`",
+                    "`%26`"
+                  ],
+                  [
+                    "%",
+                    "`25`",
+                    "`%25`"
+                  ],
+                  [
+                    "é",
+                    "`C3 A9`",
+                    "`%C3%A9`"
+                  ],
+                  [
+                    "日本",
+                    "`E6 97 A5 E6 9C AC`",
+                    "`%E6%97%A5%E6%9C%AC`"
+                  ]
+                ]
+              }
+            },
+            "Los dígitos hexadecimales no distinguen mayúsculas de minúsculas, así que `%c3%a9` y `%C3%A9` significan lo mismo, pero RFC 3986 recomienda las mayúsculas por coherencia."
+          ]
+        },
+        {
+          "h": "%20 o +: dos reglas para los espacios",
+          "body": [
+            "La codificación por porcentaje definida en RFC 3986 siempre escribe un espacio como `%20`. Los envíos de formularios HTML usan un formato relacionado, `application/x-www-form-urlencoded`, en el que un espacio se convierte en `+` y un signo más literal en `%2B`.",
+            {
+              "ul": [
+                "En una ruta como `/files/my report.pdf`, usa `%20`. Un `+` en una ruta es un signo más literal.",
+                "En una query string, los servidores que interpretan la codificación de formularios leen `+` como espacio. `%20` lo entienden ambas convenciones, así que es la opción más segura en caso de duda.",
+                "Si un valor puede contener un `+` real, por ejemplo un número de teléfono como `+84`, hay que enviarlo como `%2B` o llegará como un espacio."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "encodeURIComponent vs encodeURI en JavaScript",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Función",
+                  "Deja sin codificar",
+                  "Se usa para"
+                ],
+                "rows": [
+                  [
+                    "`encodeURIComponent()`",
+                    "`A–Z a–z 0–9 - _ . ! ~ * ' ( )`",
+                    "Un único valor: un parámetro de consulta o un segmento de ruta"
+                  ],
+                  [
+                    "`encodeURI()`",
+                    "Lo anterior más `; , / ? : @ & = + $ #`",
+                    "Una URL completa que ya está estructurada"
+                  ],
+                  [
+                    "`URLSearchParams`",
+                    "Reglas de codificación de formularios (el espacio pasa a `+`)",
+                    "Construir o leer query strings"
+                  ]
+                ]
+              }
+            },
+            "`encodeURIComponent(\"a b&c\")` devuelve `a%20b%26c`, mientras que `encodeURI(\"a b&c\")` devuelve `a%20b&c` porque asume que `&` es un separador. El error típico es llamar a `encodeURI` sobre el valor de un parámetro, lo que deja pasar `&`, `=` y `#` y parte el valor.",
+            "`new URLSearchParams({ q: \"a b&c\" }).toString()` da `q=a+b%26c`. Ambas formas se decodifican al mismo valor en un servidor estándar."
+          ]
+        },
+        {
+          "h": "Errores comunes",
+          "body": [
+            {
+              "ol": [
+                "Doble codificación: codificar un texto ya codificado convierte `%20` en `%2520`, porque el propio `%` se codifica como `%25`. Codifica cada valor exactamente una vez, en el momento de colocarlo en la URL.",
+                "Codificar la URL completa con una función de componente: `https://` se convierte en `https%3A%2F%2F` y el enlace deja de funcionar.",
+                "Decodificar antes de enrutar: un servidor que decodifica `%2F` como `/` antes de buscar la ruta puede ser engañado para leer una ruta distinta.",
+                "Suponer un juego de caracteres heredado: algunos sistemas antiguos codificaban «é» como `%E9` (Latin-1). Los navegadores modernos y el WHATWG URL Standard usan UTF-8."
+              ]
+            },
+            {
+              "note": "La codificación URL no es cifrado ni saneamiento. Cualquiera puede decodificarla, y no hace que una entrada sea segura para insertarla en HTML o SQL. Escapa o parametriza por separado para cada contexto."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Por qué un espacio es %20 en una URL?",
+          "a": "Un espacio no está permitido en una URL, así que se sustituye por `%` más el valor de su byte en hexadecimal. El código ASCII del espacio es 32 en decimal, que es `20` en hexadecimal."
+        },
+        {
+          "q": "¿Qué significa %2F en una URL?",
+          "a": "`%2F` es una barra codificada. Permite que aparezca una `/` dentro de un valor sin que se lea como separador de ruta."
+        },
+        {
+          "q": "¿La codificación URL es lo mismo que Base64?",
+          "a": "No. La codificación URL solo sustituye los caracteres no seguros y deja el resto legible. Base64 convierte todos los bytes a un alfabeto de 64 caracteres, y sus caracteres estándar `+` y `/` necesitan a su vez codificación URL salvo que se use la variante segura para URL."
+        },
+        {
+          "q": "¿Hay que codificar las letras con tilde o los caracteres chinos?",
+          "a": "Sí, en la petición real. Los navegadores los muestran de forma legible en la barra de direcciones, pero envían la forma UTF-8 codificada por porcentaje, como `%E6%97%A5` para 日."
+        }
+      ]
+    },
+    "json-vs-yaml-vs-xml": {
+      "title": "JSON vs YAML vs XML: diferencias y cuándo usar cada uno — cv.cm",
+      "description": "JSON, YAML y XML describen datos estructurados. Compara sintaxis, tipos, comentarios, esquemas y riesgos de seguridad para API o configuración.",
+      "h1": "JSON vs YAML vs XML: ¿qué formato conviene usar?",
+      "answer": "JSON, YAML y XML son formatos de texto para datos estructurados. JSON es compacto y estricto, con seis tipos de valor, y domina las API web. YAML se basa en la sangría, admite comentarios y es popular en archivos de configuración. XML usa etiquetas y atributos, admite espacios de nombres y esquemas formales, y sigue siendo habitual en documentos, sistemas empresariales y feeds. Los tres pueden representar los mismos datos anidados.",
+      "sections": [
+        {
+          "h": "Los mismos datos en tres formatos",
+          "body": [
+            "Un usuario con nombre, un indicador de activo y dos roles se ve así en cada formato:",
+            {
+              "table": {
+                "head": [
+                  "Formato",
+                  "Ejemplo"
+                ],
+                "rows": [
+                  [
+                    "JSON",
+                    "`{\"name\": \"Ana\", \"active\": true, \"roles\": [\"admin\", \"editor\"]}`"
+                  ],
+                  [
+                    "YAML",
+                    "`name: Ana` / `active: true` / `roles: [admin, editor]` (una clave por línea)"
+                  ],
+                  [
+                    "XML",
+                    "`<user active=\"true\"><name>Ana</name><role>admin</role><role>editor</role></user>`"
+                  ]
+                ]
+              }
+            },
+            "JSON y YAML se corresponden directamente con objetos, listas y valores escalares en la mayoría de los lenguajes de programación. XML describe un árbol de elementos, y su correspondencia con objetos es una convención: aquí el indicador de activo podría ser un atributo o un elemento hijo, y nada en el propio XML dice que el valor sea un booleano y no el texto `true`."
+          ]
+        },
+        {
+          "h": "Comparación lado a lado",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "",
+                  "JSON",
+                  "YAML",
+                  "XML"
+                ],
+                "rows": [
+                  [
+                    "Especificación",
+                    "RFC 8259, ECMA-404",
+                    "YAML 1.2.2 (2021)",
+                    "W3C XML 1.0, quinta edición"
+                  ],
+                  [
+                    "Estructura",
+                    "Llaves y corchetes",
+                    "Sangría",
+                    "Etiquetas de apertura y cierre"
+                  ],
+                  [
+                    "Comentarios",
+                    "No permitidos",
+                    "`# comment`",
+                    "`<!-- comment -->`"
+                  ],
+                  [
+                    "Tipos integrados",
+                    "Objeto, array, cadena, número, booleano, null",
+                    "Mapas, secuencias, escalares resueltos a tipos",
+                    "Solo texto, salvo que un esquema asigne tipos"
+                  ],
+                  [
+                    "Lenguajes de esquema",
+                    "JSON Schema",
+                    "Normalmente JSON Schema",
+                    "XSD, DTD, RELAX NG"
+                  ],
+                  [
+                    "Extras",
+                    "Ninguno",
+                    "Anclas y alias, varios documentos por archivo",
+                    "Atributos, espacios de nombres, contenido mixto"
+                  ],
+                  [
+                    "Uso típico",
+                    "API web, datos del navegador, logs",
+                    "Configuración: Kubernetes, pipelines de CI, Docker Compose",
+                    "Archivos de Office, SVG, RSS, SOAP, layouts de Android"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "JSON: estricto y predecible",
+          "body": [
+            "La gramática de JSON cabe en una página, por eso los analizadores de todos los lenguajes coinciden en ella. Esa rigidez también causa los errores más comunes:",
+            {
+              "ul": [
+                "Las claves y las cadenas necesitan comillas dobles; las comillas simples no son válidas.",
+                "No se admite una coma final tras el último elemento de un objeto o array.",
+                "No hay comentarios, así que una configuración escrita en JSON no puede explicarse a sí misma. Variantes como JSONC y JSON5 añaden comentarios, pero no son JSON estándar.",
+                "RFC 8259 exige UTF-8 para el JSON intercambiado entre sistemas."
+              ]
+            },
+            "La gramática no limita el tamaño de los números, pero RFC 8259 señala que la mayoría del software usa dobles IEEE 754. En JavaScript, los enteros por encima de `9007199254740992` (2^53) pierden precisión, así que es más seguro enviar los ID grandes como cadenas."
+          ]
+        },
+        {
+          "h": "YAML: legible, pero con aristas",
+          "body": [
+            "YAML está pensado para que las personas lo lean y editen, y YAML 1.2 es casi un superconjunto de JSON, así que la mayoría de los archivos JSON también son YAML válido. Su flexibilidad tiene un precio:",
+            {
+              "ul": [
+                "La sangría es estructura. Un espacio mal puesto cambia el anidamiento, y no se permiten tabulaciones para sangrar.",
+                "Los valores sin comillas se interpretan por tipo. Con las reglas de YAML 1.1, que aún usan muchos analizadores, `no`, `off` y `yes` se convierten en booleanos, así que el código de país `NO` pasa a ser `false`. El esquema core de YAML 1.2 solo trata `true` y `false` como booleanos, pero comprueba qué versión implementa tu analizador.",
+                "Valores como `1.10` pueden convertirse en el número `1.1`, y `012` en un número octal. Pon entre comillas las cadenas que solo parecen números, como números de versión y códigos postales."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "XML: verboso, pero hecho para documentos",
+          "body": [
+            "XML es más pesado que JSON para datos simples, pero resuelve cosas que los otros no pueden: contenido mixto (texto con marcado en línea, como en `<p>Hello <b>world</b></p>`), espacios de nombres que permiten que vocabularios de distintas fuentes convivan en un archivo y una validación madura mediante XSD. Formatos como DOCX, XLSX, SVG y RSS son XML por dentro.",
+            "Convertir XML a JSON implica pérdidas por naturaleza. Los atributos, el orden de los elementos, los elementos repetidos y el contenido mixto no tienen un único equivalente en JSON, así que los conversores eligen convenciones como prefijos `@` para los atributos o forzar los elementos repetidos a arrays.",
+            {
+              "note": "Analizar entradas no confiables tiene riesgos propios de cada formato. Los analizadores XML que resuelven entidades externas son vulnerables a ataques XXE que leen archivos locales; desactiva el procesamiento de DTD y de entidades externas. Los cargadores YAML que construyen objetos arbitrarios pueden ejecutar código; usa cargadores seguros como `yaml.safe_load` de PyYAML."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿YAML es un superconjunto de JSON?",
+          "a": "YAML 1.2 se revisó para ser casi un superconjunto estricto de JSON, así que prácticamente cualquier documento JSON se puede analizar como YAML. Difieren algunos casos límite, y los analizadores YAML 1.1 son menos compatibles."
+        },
+        {
+          "q": "¿Por qué JSON no admite comentarios?",
+          "a": "Su autor los dejó fuera para que no pudieran usarse para incluir directivas de análisis que rompieran la interoperabilidad. Las herramientas que necesitan comentarios en la configuración usan JSONC, JSON5 o YAML."
+        },
+        {
+          "q": "¿Qué se analiza más rápido, JSON o XML?",
+          "a": "JSON suele ser más rápido y ocupar menos con los mismos datos, porque su gramática es más simple y no tiene etiquetas de cierre, atributos ni espacios de nombres. La diferencia importa sobre todo con grandes volúmenes."
+        },
+        {
+          "q": "¿Puedo convertir YAML a JSON sin perder nada?",
+          "a": "Los datos se conservan, pero los comentarios, las anclas y el formato de las claves no, porque JSON no tiene dónde guardarlos. Convertir JSON a YAML no pierde nada."
+        }
+      ]
+    },
+    "md5-vs-sha-256": {
+      "title": "MD5 vs SHA-256: diferencias, colisiones y cuál usar — cv.cm",
+      "description": "MD5 da un hash de 128 bits con colisiones prácticas; SHA-256, uno de 256 bits sin colisiones conocidas. Cuándo sirve cada uno y por qué no para contraseñas.",
+      "h1": "MD5 vs SHA-256: ¿cuál es la diferencia?",
+      "answer": "MD5 y SHA-256 son funciones hash que convierten cualquier entrada en una huella de longitud fija: 128 bits en MD5 y 256 bits en SHA-256. MD5 está roto en cuanto a seguridad porque un atacante puede crear dos archivos distintos con el mismo hash. SHA-256 no tiene ataques prácticos conocidos y es la opción por defecto para firmas y comprobaciones de integridad. MD5 sigue siendo aceptable para detectar corrupción accidental, y ninguno de los dos debe guardar contraseñas directamente.",
+      "sections": [
+        {
+          "h": "Qué hace una función hash",
+          "body": [
+            "Un hash criptográfico toma una entrada de cualquier tamaño y devuelve un resumen (digest) de tamaño fijo. La misma entrada siempre da el mismo resumen, un cambio de un solo carácter da uno completamente distinto, y el resumen no se puede convertir de vuelta en la entrada.",
+            {
+              "table": {
+                "head": [
+                  "Entrada",
+                  "MD5",
+                  "SHA-256"
+                ],
+                "rows": [
+                  [
+                    "`abc`",
+                    "`900150983cd24fb0d6963f7d28e17f72`",
+                    "`ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`"
+                  ],
+                  [
+                    "Cadena vacía",
+                    "`d41d8cd98f00b204e9800998ecf8427e`",
+                    "`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`"
+                  ]
+                ]
+              }
+            },
+            "Un hash seguro debe resistir tres ataques: encontrar una entrada para un resumen dado (preimagen), encontrar una segunda entrada con el mismo resumen que una dada (segunda preimagen) y encontrar dos entradas cualesquiera con el mismo resumen (colisión). Las colisiones son las más fáciles; para un hash ideal de n bits requieren unos 2^(n/2) intentos debido a la paradoja del cumpleaños."
+          ]
+        },
+        {
+          "h": "MD5, SHA-1, SHA-256 y SHA-3 comparados",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Algoritmo",
+                  "Tamaño del resumen",
+                  "Longitud hex",
+                  "Estado"
+                ],
+                "rows": [
+                  [
+                    "MD5 (1992)",
+                    "128 bits",
+                    "32",
+                    "Colisiones prácticas desde 2004; roto para seguridad"
+                  ],
+                  [
+                    "SHA-1 (1995)",
+                    "160 bits",
+                    "40",
+                    "Primera colisión pública en 2017; NIST prevé retirarlo antes de 2030"
+                  ],
+                  [
+                    "SHA-256 (SHA-2, 2001)",
+                    "256 bits",
+                    "64",
+                    "Seguro; estandarizado en FIPS 180-4"
+                  ],
+                  [
+                    "SHA-512 (SHA-2)",
+                    "512 bits",
+                    "128",
+                    "Seguro; a menudo más rápido que SHA-256 en CPU de 64 bits"
+                  ],
+                  [
+                    "SHA3-256 (2015)",
+                    "256 bits",
+                    "64",
+                    "Seguro; diseño interno distinto, estandarizado en FIPS 202"
+                  ]
+                ]
+              }
+            },
+            "SHA-256 es un miembro de la familia SHA-2. «SHA-2» y «SHA-256» se usan a menudo como sinónimos, pero SHA-224, SHA-384 y SHA-512 también son funciones SHA-2."
+          ]
+        },
+        {
+          "h": "Cómo se rompieron MD5 y SHA-1",
+          "body": [
+            "En 2004 Xiaoyun Wang y sus colegas publicaron colisiones de MD5 encontradas en horas. Trabajos posteriores lograron colisiones de prefijo elegido, en las que el atacante parte de dos archivos distintos con sentido y añade datos hasta que los hashes coinciden. En 2008 unos investigadores lo usaron para crear un certificado de autoridad de certificación fraudulento, y el malware Flame, descubierto en 2012, usó una colisión de MD5 para falsificar un certificado de firma de código de Microsoft. RFC 6151 establece que MD5 no debe usarse donde se requiera resistencia a colisiones, como en las firmas digitales.",
+            "Después cayó SHA-1. En 2017 el proyecto SHAttered de Google y el CWI de Ámsterdam publicó dos archivos PDF distintos con el mismo hash SHA-1, y en 2020 se demostró una colisión de prefijo elegido en SHA-1. Git, los certificados TLS y la firma de código ya han migrado o están migrando a SHA-256.",
+            "Los ataques de preimagen contra MD5 siguen sin ser prácticos. Que esté roto significa que un atacante puede fabricar pares de archivos que colisionan, no que se pueda revertir cualquier MD5 existente."
+          ]
+        },
+        {
+          "h": "Cuándo MD5 sigue valiendo y cuándo no",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Uso",
+                  "¿Es aceptable MD5?",
+                  "Por qué"
+                ],
+                "rows": [
+                  [
+                    "Detectar corrupción accidental en una descarga o copia",
+                    "Sí",
+                    "Los errores aleatorios de bits no producen colisiones"
+                  ],
+                  [
+                    "Deduplicación o claves de caché dentro de tu propio sistema",
+                    "Normalmente",
+                    "Vale, salvo que un atacante controle las entradas"
+                  ],
+                  [
+                    "Verificar una descarga frente a un mirror malicioso",
+                    "No",
+                    "Un atacante puede preparar un archivo que colisione; usa SHA-256"
+                  ],
+                  [
+                    "Firmas digitales y certificados",
+                    "No",
+                    "Los ataques de colisión falsifican firmas"
+                  ],
+                  [
+                    "Guardar contraseñas",
+                    "No",
+                    "Se calcula demasiado rápido; lo mismo vale para SHA-256"
+                  ]
+                ]
+              }
+            },
+            "Si puedes elegir, elige SHA-256. Está disponible en todas partes, tiene aceleración por hardware en las CPU modernas y evita tener que discutir si un uso concreto es sensible a colisiones."
+          ]
+        },
+        {
+          "h": "Las contraseñas necesitan hashes lentos y con sal",
+          "body": [
+            "Los hashes de uso general están diseñados para ser rápidos. Una sola GPU moderna puede calcular miles de millones de hashes MD5 o SHA-256 por segundo, así que una tabla filtrada de hashes SHA-256 de contraseñas sin sal puede atacarse con enormes listas de palabras, y las contraseñas idénticas aparecen como hashes idénticos.",
+            "Las funciones de hash de contraseñas resuelven ambos problemas. Añaden una sal aleatoria única por usuario para que contraseñas idénticas den hashes distintos, y son deliberadamente lentas y, en los diseños más recientes, exigentes en memoria (memory-hard), de modo que las GPU ganan poco:",
+            {
+              "ul": [
+                "Argon2id: ganador de la Password Hashing Competition de 2015 y la primera opción habitual para sistemas nuevos.",
+                "scrypt: memory-hard y ampliamente disponible.",
+                "bcrypt: décadas de uso; ten en cuenta que solo lee los primeros 72 bytes de una contraseña.",
+                "PBKDF2 con un número de iteraciones alto: aceptable donde se exigen algoritmos validados por FIPS."
+              ]
+            },
+            {
+              "note": "SHA-256 a secas tampoco sirve como código de autenticación de mensajes: `SHA-256(secret + message)` es vulnerable a ataques de extensión de longitud. Usa HMAC-SHA-256 cuando un hash deba demostrar que un mensaje procede de alguien que posee una clave."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Se puede descifrar un hash MD5?",
+          "a": "No. Un hash no es cifrado y no tiene ninguna clave para revertirlo. Los «descifradores de MD5» en línea buscan el hash en tablas de cadenas comunes ya calculadas, por eso las entradas cortas o comunes se encuentran enseguida."
+        },
+        {
+          "q": "¿SHA-256 es seguro en 2026?",
+          "a": "Sí. No se conoce ningún ataque práctico de colisión ni de preimagen contra SHA-256, y NIST lo sigue aprobando. Su resistencia a colisiones de 2^128 está muy por encima de la capacidad de cálculo actual."
+        },
+        {
+          "q": "¿Por qué los sitios web siguen publicando sumas MD5?",
+          "a": "Detectan descargas incompletas o dañadas, que es el problema más habitual. Frente a un archivo manipulado solo sirven si la suma de verificación procede de una fuente de confianza y usa SHA-256 o algo mejor."
+        },
+        {
+          "q": "¿SHA-256 sirve para hashear contraseñas?",
+          "a": "Por sí solo, no. Es rápido y no lleva sal por defecto, así que los hashes filtrados pueden romperse a miles de millones de intentos por segundo. Usa Argon2id, scrypt o bcrypt."
+        }
+      ]
+    },
+    "password-strength": {
+      "title": "¿Qué hace segura una contraseña? Longitud, entropía y NIST — cv.cm",
+      "description": "La seguridad de una contraseña depende de su longitud y aleatoriedad, no de los símbolos. Reglas de NIST SP 800-63B, cálculo de entropía y frases de contraseña.",
+      "h1": "¿Qué hace que una contraseña sea segura?",
+      "answer": "Una contraseña segura es larga, generada al azar y se usa en una sola cuenta. La longitud y la aleatoriedad importan más que mezclar símbolos: NIST SP 800-63B recomienda ahora al menos 15 caracteres cuando la contraseña es el único factor, ninguna regla de composición obligatoria, ninguna caducidad programada y comprobar las contraseñas contra listas de contraseñas filtradas. Cuatro palabras al azar de una lista de 7,776 dan unos 51.7 bits de entropía; seis dan unos 77.5 bits.",
+      "sections": [
+        {
+          "h": "La seguridad se mide en intentos",
+          "body": [
+            "Los atacantes no adivinan letra por letra. Primero prueban contraseñas filtradas, luego palabras de diccionario con sustituciones comunes y después patrones como una palabra con mayúscula inicial seguida de un año y `!`. Una contraseña como `P@ssw0rd2024!` cumple la mayoría de las reglas de complejidad y aun así cae pronto, porque todas sus partes son predecibles.",
+            "La entropía mide cuántos intentos necesita una contraseña cuando se generó al azar. Para una contraseña de longitud L elegida uniformemente de un conjunto de N símbolos, la entropía es L × log2(N) bits, y cada bit adicional duplica el trabajo. La fórmula solo se aplica a la generación aleatoria; no dice nada útil sobre una contraseña inventada por una persona."
+          ]
+        },
+        {
+          "h": "Entropía de los estilos de contraseña habituales",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Estilo",
+                  "Conjunto de símbolos",
+                  "Bits por símbolo",
+                  "Longitud de ejemplo",
+                  "Entropía total"
+                ],
+                "rows": [
+                  [
+                    "Letras minúsculas",
+                    "26",
+                    "4.70",
+                    "16 caracteres",
+                    "≈ 75.2 bits"
+                  ],
+                  [
+                    "Letras y dígitos",
+                    "62",
+                    "5.95",
+                    "12 caracteres",
+                    "≈ 71.5 bits"
+                  ],
+                  [
+                    "Todo el ASCII imprimible",
+                    "94",
+                    "6.55",
+                    "12 caracteres",
+                    "≈ 78.7 bits"
+                  ],
+                  [
+                    "Todo el ASCII imprimible",
+                    "94",
+                    "6.55",
+                    "16 caracteres",
+                    "≈ 104.9 bits"
+                  ],
+                  [
+                    "Palabras Diceware",
+                    "7,776",
+                    "12.92",
+                    "4 palabras",
+                    "≈ 51.7 bits"
+                  ],
+                  [
+                    "Palabras Diceware",
+                    "7,776",
+                    "12.92",
+                    "6 palabras",
+                    "≈ 77.5 bits"
+                  ]
+                ]
+              }
+            },
+            "Ejemplo práctico: log2(7,776) = 12.925, así que cuatro palabras al azar dan 4 × 12.925 ≈ 51.7 bits, unas 3.7 × 10^15 posibilidades. Un atacante que pruebe 10 mil millones de contraseñas por segundo contra un hash rápido filtrado las cubriría todas en unos 4 días. Seis palabras requieren unos 700,000 años al mismo ritmo.",
+            "Los ataques en línea son mucho más lentos, ya que los formularios de inicio de sesión limitan los intentos y bloquean la cuenta. Los márgenes amplios importan en los ataques sin conexión tras la filtración de una base de datos, donde la velocidad de prueba depende de cómo guardó el sitio el hash."
+          ]
+        },
+        {
+          "h": "Qué dice ahora NIST SP 800-63B",
+          "body": [
+            "La Special Publication 800-63B de NIST, revisión 4, publicada en su versión final en 2025, fija las reglas de contraseñas para los sistemas federales de EE. UU. y se copia ampliamente en otros ámbitos. Sus principales requisitos para los servicios que aceptan contraseñas:",
+            {
+              "ul": [
+                "Longitud mínima de 15 caracteres cuando la contraseña es el único autenticador, y de 8 cuando forma parte de una autenticación multifactor.",
+                "Permitir contraseñas de al menos 64 caracteres y aceptar espacios, todo el ASCII imprimible y los caracteres Unicode.",
+                "Ninguna regla de composición, como exigir un dígito, una mayúscula y un símbolo.",
+                "Ningún cambio periódico obligatorio. Exigir el cambio solo cuando haya indicios de que la contraseña se ha visto comprometida.",
+                "Comprobar las contraseñas nuevas contra una lista de bloqueo de valores filtrados, comunes o propios del contexto, como el nombre del servicio o el del usuario.",
+                "Nada de pistas de contraseña ni preguntas de seguridad, y permitir pegar para que funcionen los gestores de contraseñas."
+              ]
+            },
+            "El razonamiento es que las reglas de composición y la caducidad empujan a la gente hacia patrones predecibles, como que `Summer2025!` pase a ser `Autumn2025!`, que aportan muy poca entropía real."
+          ]
+        },
+        {
+          "h": "Frases de contraseña frente a caracteres aleatorios",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "",
+                  "Caracteres aleatorios",
+                  "Palabras aleatorias"
+                ],
+                "rows": [
+                  [
+                    "Ejemplo",
+                    "`r7#Qm2!vLx9@pT4z`",
+                    "`orbit-candle-mosaic-thrift-velvet-harbor`"
+                  ],
+                  [
+                    "Entropía",
+                    "≈ 105 bits (16 de 94)",
+                    "≈ 77.5 bits (6 de 7,776)"
+                  ],
+                  [
+                    "Fácil de escribir",
+                    "No, sobre todo en el teléfono",
+                    "Sí"
+                  ],
+                  [
+                    "Fácil de recordar",
+                    "No",
+                    "Con práctica"
+                  ],
+                  [
+                    "Ideal para",
+                    "Cuentas guardadas en un gestor de contraseñas",
+                    "Las pocas contraseñas que debes memorizar"
+                  ]
+                ]
+              }
+            },
+            "Las palabras deben elegirse al azar, con dados o con un generador, no escogerlas tú. Una frase de una canción, una cita o una oración que escribirías tú tiene mucha menos entropía de lo que sugiere su longitud."
+          ]
+        },
+        {
+          "h": "Reglas prácticas",
+          "body": [
+            {
+              "ol": [
+                "Usa un gestor de contraseñas y deja que genere una contraseña aleatoria única, de 16 caracteres o más, para cada cuenta. CISA da el mismo consejo.",
+                "Memoriza solo unas pocas frases de contraseña: la contraseña maestra del gestor y la del inicio de sesión de tu dispositivo. Usa cinco o seis palabras al azar.",
+                "No reutilices nunca una contraseña. El credential stuffing, probar en otros sitios pares de correo y contraseña filtrados, es una de las formas más comunes de robo de cuentas.",
+                "Activa la autenticación multifactor, preferiblemente con llaves de acceso (passkeys) o una app de autenticación en lugar de SMS, para el correo, el banco y el gestor de contraseñas.",
+                "Cambia una contraseña cuando un servicio informe de una filtración, no según un calendario."
+              ]
+            },
+            {
+              "note": "Los medidores de seguridad de los sitios web estiman lo fácil que es adivinar una contraseña a partir de patrones y pueden no coincidir entre sí. Un generador que funciona en tu navegador con la Web Crypto API crea contraseñas sin enviarlas a ninguna parte; evita las herramientas que generan contraseñas en un servidor remoto."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué longitud debe tener una contraseña?",
+          "a": "Al menos 15 caracteres para una cuenta protegida solo por contraseña, según NIST SP 800-63B rev 4. Para contraseñas generadas al azar y guardadas en un gestor, de 16 a 20 caracteres es un valor cómodo por defecto."
+        },
+        {
+          "q": "¿Las frases de contraseña son más seguras que las contraseñas?",
+          "a": "Pueden serlo, si las palabras se eligen al azar. Seis palabras aleatorias superan a una contraseña típica de 10 caracteres inventada por una persona, pero una contraseña aleatoria de 16 caracteres tiene más entropía que seis palabras."
+        },
+        {
+          "q": "¿Debo cambiar mis contraseñas con regularidad?",
+          "a": "No. NIST desaconseja los cambios periódicos obligatorios porque llevan a variaciones predecibles. Cambia una contraseña cuando haya señales de que se ha comprometido, como un aviso de filtración."
+        },
+        {
+          "q": "¿Los caracteres especiales hacen más segura una contraseña?",
+          "a": "Solo un poco. Pasar de 62 a 94 caracteres posibles añade unos 0.6 bits por carácter, mientras que añadir un carácter más suma unos 6.5 bits. La longitud ayuda más que los símbolos."
+        }
+      ]
+    },
+    "what-is-uuid": {
+      "title": "¿Qué es un UUID? Formato, versiones y v4 vs v7 explicados — cv.cm",
+      "description": "Un UUID es un ID de 128 bits de 36 caracteres, como f47ac10b-58cc-4372-a567-0e02b2c3d479. Estructura, versiones de RFC 9562, v4 vs v7 y colisiones.",
+      "h1": "¿Qué es un UUID?",
+      "answer": "Un UUID (identificador único universal) es un número de 128 bits que sirve para etiquetar datos sin que una autoridad central reparta los identificadores. Se escribe como 32 dígitos hexadecimales en cinco grupos, como `f47ac10b-58cc-4372-a567-0e02b2c3d479`. El estándar actual, RFC 9562, define varias versiones; la versión 4 es totalmente aleatoria y la versión 7 empieza con una marca de tiempo, de modo que los identificadores se ordenan por fecha de creación.",
+      "sections": [
+        {
+          "h": "Cómo leer un UUID",
+          "body": [
+            "La forma de texto tiene 36 caracteres: 32 dígitos hexadecimales más 4 guiones, agrupados 8-4-4-4-12. En binario ocupa 16 bytes. Dos posiciones llevan metadatos en todos los UUID:",
+            {
+              "ul": [
+                "Versión: el primer dígito del tercer grupo. En `f47ac10b-58cc-4372-a567-0e02b2c3d479` es `4`.",
+                "Variante: el primer dígito del cuarto grupo. En los UUID estándar es `8`, `9`, `a` o `b`; aquí es `a`."
+              ]
+            },
+            "GUID, el nombre que usa Microsoft para lo mismo, sigue el mismo formato. Las mayúsculas y minúsculas hexadecimales son equivalentes; RFC 9562 recomienda generar en minúsculas y aceptar la entrada sin distinguir mayúsculas. Existen dos valores especiales: el Nil UUID, todo ceros, y el Max UUID, todo `f`."
+          ]
+        },
+        {
+          "h": "Versiones de UUID",
+          "body": [
+            "RFC 9562, publicado en mayo de 2024, sustituyó a RFC 4122, mantuvo las versiones 1 a 5 y añadió la 6, la 7 y la 8.",
+            {
+              "table": {
+                "head": [
+                  "Versión",
+                  "Se construye a partir de",
+                  "Ordenable por tiempo",
+                  "Uso típico"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Marca de tiempo (intervalos de 100 ns desde 1582) + secuencia de reloj + ID de nodo, a menudo una dirección MAC",
+                    "No como texto",
+                    "Sistemas heredados"
+                  ],
+                  [
+                    "3",
+                    "Hash MD5 de un espacio de nombres y un nombre",
+                    "No",
+                    "Identificadores deterministas (mejor v5)"
+                  ],
+                  [
+                    "4",
+                    "122 bits aleatorios",
+                    "No",
+                    "Identificadores de uso general"
+                  ],
+                  [
+                    "5",
+                    "Hash SHA-1 de un espacio de nombres y un nombre",
+                    "No",
+                    "La misma entrada siempre da el mismo UUID"
+                  ],
+                  [
+                    "6",
+                    "Campos de la versión 1 reordenados, con la parte más significativa del tiempo primero",
+                    "Sí",
+                    "Migración desde v1"
+                  ],
+                  [
+                    "7",
+                    "Tiempo Unix de 48 bits en milisegundos + bits aleatorios",
+                    "Sí",
+                    "Claves de base de datos, logs, eventos"
+                  ],
+                  [
+                    "8",
+                    "Estructura personalizada, definida por el proveedor",
+                    "Depende",
+                    "Usos experimentales o específicos de una aplicación"
+                  ]
+                ]
+              }
+            },
+            "Las versiones 3 y 5 son deterministas: aplicar el hash al espacio de nombres DNS con `example.com` da el mismo UUID en cualquier máquina. Usan MD5 y SHA-1 solo como forma de repartir los bits, no por seguridad."
+          ]
+        },
+        {
+          "h": "Versión 4 vs versión 7",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "Bits",
+                  "Versión 4",
+                  "Versión 7"
+                ],
+                "rows": [
+                  [
+                    "0–47",
+                    "Aleatorios",
+                    "Marca de tiempo Unix en milisegundos"
+                  ],
+                  [
+                    "48–51",
+                    "Versión `0100` (4)",
+                    "Versión `0111` (7)"
+                  ],
+                  [
+                    "52–63",
+                    "Aleatorios",
+                    "Aleatorios, o un contador de submilisegundos"
+                  ],
+                  [
+                    "64–65",
+                    "Variante `10`",
+                    "Variante `10`"
+                  ],
+                  [
+                    "66–127",
+                    "Aleatorios",
+                    "Aleatorios"
+                  ],
+                  [
+                    "Bits aleatorios",
+                    "122",
+                    "Hasta 74"
+                  ]
+                ]
+              }
+            },
+            "El ejemplo de versión 7 del RFC es `017f22e2-79b0-7cc3-98c4-dc0c0c07398f`. Sus primeros 12 dígitos hexadecimales, `017f22e279b0`, equivalen a 1,645,557,742,000 milisegundos desde la época Unix, es decir, 2022-02-22 19:22:22 UTC.",
+            "La diferencia práctica está en el rendimiento de la base de datos. Las claves v4 aleatorias caen en puntos aleatorios de un índice B-tree, lo que divide páginas y reparte las escrituras por todo el índice. Las claves v7, ordenadas por tiempo, se añaden cerca del final, como un entero autoincremental, lo que mantiene las inserciones rápidas y el índice compacto. Para nuevas claves primarias de base de datos, v7 suele ser la mejor opción; para tokens opacos en los que no debe verse la fecha de creación, usa v4."
+          ]
+        },
+        {
+          "h": "¿Hasta qué punto es único?",
+          "body": [
+            "Con 122 bits aleatorios hay unos 5.3 × 10^36 UUID de versión 4 posibles. Según la cota del cumpleaños, harían falta unos 2.7 × 10^18 antes de que la probabilidad de una sola colisión llegue al 50 %. Generando mil millones por segundo, eso lleva unos 86 años.",
+            "Las colisiones reales vienen de una mala aleatoriedad, no de las matemáticas. Una máquina virtual clonada con el mismo estado aleatorio, o un generador basado en una función no criptográfica como `Math.random()`, pueden repetir valores. Usa una fuente criptográficamente segura: `crypto.randomUUID()` en navegadores y Node.js, `uuid.uuid4()` en Python o `gen_random_uuid()` en PostgreSQL.",
+            {
+              "note": "Los UUID son identificadores, no secretos. RFC 9562 advierte contra usarlos como credenciales de seguridad. La versión 1 puede exponer una dirección MAC y la hora, la versión 7 revela cuándo se creó un registro, y cualquier UUID en una URL puede compartirse o quedar en los logs. Comprueba los permisos de acceso en lugar de confiar en que un UUID sea difícil de adivinar."
+            }
+          ]
+        },
+        {
+          "h": "Cómo almacenar UUID",
+          "body": [
+            {
+              "ul": [
+                "Usa un tipo nativo si existe, como `uuid` en PostgreSQL: 16 bytes en lugar de 36 como texto.",
+                "En MySQL, guárdalo como `BINARY(16)`; guardarlo como texto duplica con creces el tamaño del índice.",
+                "Compara los UUID sin distinguir mayúsculas, o normalízalos a minúsculas al recibirlos.",
+                "No intentes extraer significado de los UUID v4. Solo los bits de versión y variante contienen información."
+              ]
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué diferencia hay entre un UUID y un GUID?",
+          "a": "En la práctica, ninguna. GUID es el nombre que usa Microsoft, y los GUID siguen el mismo formato de 128 bits y las mismas versiones que los UUID."
+        },
+        {
+          "q": "¿Pueden coincidir dos UUID?",
+          "a": "En teoría, sí; en la práctica, no si se generan con una fuente aleatoria segura. La probabilidad de cualquier colisión sigue siendo despreciable hasta que existen mucho más de un trillón de UUID de versión 4."
+        },
+        {
+          "q": "¿Qué versión de UUID debo usar?",
+          "a": "La versión 7 para claves de base de datos y todo lo que se beneficie del orden temporal, la versión 4 cuando el identificador no deba revelar nada y la versión 5 cuando la misma entrada deba producir siempre el mismo identificador."
+        },
+        {
+          "q": "¿Cómo genero un UUID en JavaScript?",
+          "a": "Llama a `crypto.randomUUID()`, que devuelve un UUID de versión 4 desde un generador criptográficamente seguro. Funciona en los navegadores modernos en páginas HTTPS y en Node.js 19 y posteriores como función global."
+        }
+      ]
+    },
+    "unix-timestamp": {
+      "title": "¿Qué es un timestamp Unix? Tiempo epoch explicado con ejemplos — cv.cm",
+      "description": "Un timestamp Unix cuenta los segundos desde el 1970-01-01 00:00:00 UTC. Cómo se calcula, segundos vs milisegundos, segundos intercalares y el problema de 2038.",
+      "h1": "¿Qué es un timestamp Unix?",
+      "answer": "Un timestamp Unix (marca de tiempo Unix) es el número de segundos transcurridos desde las 00:00:00 UTC del 1 de enero de 1970, la llamada época Unix, sin contar los segundos intercalares. Es un único entero sin zona horaria, así que `1700000000` significa el mismo instante en todas partes: el 14 de noviembre de 2023 a las 22:13:20 UTC. JavaScript y muchas API usan milisegundos, lo que añade tres dígitos al número.",
+      "sections": [
+        {
+          "h": "Cómo se define el número",
+          "body": [
+            "POSIX define los «segundos desde la época» con una fórmula fija: cada día cuenta exactamente 86,400 segundos, y la cuenta empieza en `1970-01-01T00:00:00Z`. Los instantes anteriores a la época son negativos, así que `-1` es `1969-12-31T23:59:59Z`.",
+            "Como el valor se mide en UTC, no lleva zona horaria ni horario de verano. Convertirlo a una hora local es un paso aparte que necesita una zona, por ejemplo `Asia/Tokyo` o `America/New_York`.",
+            {
+              "table": {
+                "head": [
+                  "Timestamp (segundos)",
+                  "Fecha y hora UTC",
+                  "Nota"
+                ],
+                "rows": [
+                  [
+                    "`0`",
+                    "1970-01-01T00:00:00Z",
+                    "La época Unix"
+                  ],
+                  [
+                    "`1000000000`",
+                    "2001-09-09T01:46:40Z",
+                    "Primer valor de 10 dígitos"
+                  ],
+                  [
+                    "`1234567890`",
+                    "2009-02-13T23:31:30Z",
+                    "Un hito muy conocido"
+                  ],
+                  [
+                    "`1700000000`",
+                    "2023-11-14T22:13:20Z",
+                    "Número redondo reciente"
+                  ],
+                  [
+                    "`1791936000`",
+                    "2026-10-14T00:00:00Z",
+                    "Medianoche UTC, 14 oct 2026"
+                  ],
+                  [
+                    "`2147483647`",
+                    "2038-01-19T03:14:07Z",
+                    "Mayor valor con signo de 32 bits"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Segundos, milisegundos y otras unidades",
+          "body": [
+            "El timestamp Unix clásico está en segundos, pero muchos sistemas guardan unidades más finas. El número de dígitos es la forma más rápida de distinguirlas para fechas actuales:",
+            {
+              "table": {
+                "head": [
+                  "Unidad",
+                  "Dígitos hoy",
+                  "Ejemplo para el mismo instante",
+                  "Habitual en"
+                ],
+                "rows": [
+                  [
+                    "Segundos",
+                    "10",
+                    "`1700000000`",
+                    "Herramientas Unix, `time()` de PHP, `time.time()` de Python (como float), claims `exp` de JWT"
+                  ],
+                  [
+                    "Milisegundos",
+                    "13",
+                    "`1700000000000`",
+                    "`Date.now()` de JavaScript, `System.currentTimeMillis()` de Java"
+                  ],
+                  [
+                    "Microsegundos",
+                    "16",
+                    "`1700000000000000`",
+                    "Internos de PostgreSQL, algunos sistemas de logs"
+                  ],
+                  [
+                    "Nanosegundos",
+                    "19",
+                    "`1700000000000000000`",
+                    "`time.UnixNano()` de Go, trazas de alta resolución"
+                  ]
+                ]
+              }
+            },
+            "Mezclar unidades es el error más común con timestamps. Un valor en segundos pasado a `new Date()` de JavaScript cae en enero de 1970; un valor en milisegundos leído como segundos cae decenas de miles de años en el futuro. En JavaScript, convierte con `Math.floor(Date.now() / 1000)` para obtener segundos, y con `new Date(seconds * 1000)` para volver."
+          ]
+        },
+        {
+          "h": "Los segundos intercalares no se cuentan",
+          "body": [
+            "UTC inserta de vez en cuando un segundo intercalar para mantenerse acompasado con la rotación de la Tierra; se han añadido 27 desde 1972. El tiempo Unix los ignora: la fórmula POSIX supone que todos los días tienen 86,400 segundos, así que un segundo intercalar se repite o se reparte a lo largo de un periodo más largo, según el sistema.",
+            "En la práctica, restar dos timestamps da un tiempo transcurrido que puede desviarse en tantos segundos como intercalares haya entre ellos. Para la planificación cotidiana ese error no importa; para mediciones científicas o financieras, los sistemas usan TAI o la hora GPS. Los organismos internacionales de medición del tiempo votaron en 2022 dejar de añadir segundos intercalares antes de 2035."
+          ]
+        },
+        {
+          "h": "El problema del año 2038",
+          "body": [
+            "El software antiguo guarda el tiempo Unix en un entero con signo de 32 bits, cuyo máximo es `2147483647`. Ese valor se alcanza el `2038-01-19T03:14:07Z`. Un segundo después el contador se desborda a `-2147483648`, que se interpreta como `1901-12-13T20:45:52Z`.",
+            {
+              "ul": [
+                "Los sistemas operativos, lenguajes y bases de datos modernos de 64 bits usan un `time_t` de 64 bits, que dura unos 292 mil millones de años.",
+                "El riesgo persiste en dispositivos embebidos, formatos de archivo antiguos, columnas de base de datos de 32 bits como `TIMESTAMP` de MySQL y protocolos binarios que reservan solo cuatro bytes para la hora.",
+                "Los valores a largo plazo, como certificados a 20 años, hipotecas y fechas de vencimiento, ya superan 2038, así que el fallo puede aparecer mucho antes de esa fecha."
+              ]
+            },
+            {
+              "note": "JavaScript no se ve afectado de la misma manera: un `Date` guarda milisegundos en un float de 64 bits y es válido hasta el año 275760."
+            }
+          ]
+        },
+        {
+          "h": "Cuándo usar un timestamp y cuándo una cadena de fecha",
+          "body": [
+            "Guarda los instantes (cuándo ocurrió un evento, cuándo caduca un token) como timestamp Unix o como cadena de fecha en UTC. Ambos son inequívocos y se ordenan correctamente.",
+            "Usa una cadena ISO 8601 legible, como `2026-10-14T09:30:00Z`, en logs, API y archivos que vayan a leer personas, porque `1791970200` no dice nada a simple vista. Guarda los eventos locales futuros, como una reunión a las 09:00 en París la próxima primavera, como hora local más un nombre de zona IANA: las reglas del horario de verano pueden cambiar antes de esa fecha, y un timestamp calculado de antemano sería entonces incorrecto."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Un timestamp Unix siempre está en UTC?",
+          "a": "Sí. La cuenta se define desde la medianoche UTC del 1 de enero de 1970, así que el número en sí no tiene zona horaria. Solo la conversión a una hora local legible depende de una zona."
+        },
+        {
+          "q": "¿Cómo obtengo el timestamp Unix actual?",
+          "a": "Ejecuta `date +%s` en una terminal de Linux o macOS, `Math.floor(Date.now() / 1000)` en JavaScript o `int(time.time())` en Python. Todos devuelven los segundos desde la época."
+        },
+        {
+          "q": "¿Por qué mi timestamp se convierte en una fecha de 1970?",
+          "a": "Casi seguro el valor está en segundos pero se leyó como milisegundos. Multiplícalo por 1,000 antes de pasarlo a una función que espera milisegundos, como `new Date()` de JavaScript."
+        },
+        {
+          "q": "¿Un timestamp Unix puede ser negativo?",
+          "a": "Sí. Los valores negativos cuentan hacia atrás desde la época, así que `-86400` es el 31 de diciembre de 1969 a las 00:00 UTC. Algunos sistemas antiguos los rechazan, así que haz pruebas antes de guardar así fechas anteriores a 1970."
+        }
+      ]
+    },
+    "iso-8601": {
+      "title": "Formato de fecha ISO 8601: fechas, horas, semanas y duraciones — cv.cm",
+      "description": "ISO 8601 escribe las fechas como YYYY-MM-DD y las horas con desfase UTC. Formas de fecha, hora, semana y duración, y cómo RFC 3339 lo acota para la web.",
+      "h1": "¿Qué es el formato de fecha ISO 8601?",
+      "answer": "ISO 8601 es el estándar internacional para escribir fechas y horas como texto. Su forma básica ordena las unidades de mayor a menor: `2026-10-14` para una fecha y `2026-10-14T09:30:00+02:00` para un instante con su desfase respecto a UTC. También define fechas de semana como `2026-W42-3`, fechas ordinales y duraciones como `P3DT4H`. Como es inequívoco y se ordena alfabéticamente en orden cronológico, la mayoría de las API y formatos de datos lo usan.",
+      "sections": [
+        {
+          "h": "Por qué YYYY-MM-DD",
+          "body": [
+            "`03/04/2026` es el 3 de abril en la mayor parte del mundo y el 4 de marzo en Estados Unidos. ISO 8601 elimina la duda fijando un único orden, año, luego mes y luego día, con un año de cuatro dígitos y mes y día de dos dígitos rellenados con ceros.",
+            "Una segunda ventaja es la ordenación: las cadenas con la forma `YYYY-MM-DD` se ordenan alfabéticamente en el mismo orden que las propias fechas, así que nombres de archivo como `2026-10-14-report.pdf` quedan bien alineados en cualquier carpeta.",
+            {
+              "table": {
+                "head": [
+                  "Forma",
+                  "Extendida (con separadores)",
+                  "Básica (compacta)"
+                ],
+                "rows": [
+                  [
+                    "Fecha de calendario",
+                    "`2026-10-14`",
+                    "`20261014`"
+                  ],
+                  [
+                    "Fecha ordinal (día del año)",
+                    "`2026-287`",
+                    "`2026287`"
+                  ],
+                  [
+                    "Fecha de semana",
+                    "`2026-W42-3`",
+                    "`2026W423`"
+                  ],
+                  [
+                    "Hora del día",
+                    "`09:30:00`",
+                    "`093000`"
+                  ],
+                  [
+                    "Fecha y hora en UTC",
+                    "`2026-10-14T09:30:00Z`",
+                    "`20261014T093000Z`"
+                  ],
+                  [
+                    "Fecha y hora con desfase",
+                    "`2026-10-14T11:30:00+02:00`",
+                    "`20261014T113000+0200`"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "h": "Horas, zonas horarias y la letra Z",
+          "body": [
+            "La hora va tras la fecha, después de una `T`. Las horas usan el reloj de 24 horas, y las fracciones de segundo van tras un punto decimal: `09:30:00.250`.",
+            {
+              "ul": [
+                "`Z` (se lee «Zulu») indica que la hora está en UTC: `2026-10-14T09:30:00Z`.",
+                "Un desfase como `+02:00` o `-05:00` da la hora local y su distancia respecto a UTC. `2026-10-14T11:30:00+02:00` es el mismo instante que el ejemplo en UTC anterior.",
+                "Una hora sin `Z` ni desfase es una hora local de zona desconocida. Es ISO 8601 válido, pero otros sistemas no pueden saber a qué instante se refiere."
+              ]
+            },
+            "Un desfase no es una zona horaria. `+01:00` puede ser París en invierno o Lagos todo el año. ISO 8601 solo registra el desfase; las reglas de la zona vienen de otra fuente, como la base de datos de zonas horarias de IANA."
+          ]
+        },
+        {
+          "h": "Fechas de semana y números de semana",
+          "body": [
+            "Las semanas ISO empiezan el lunes, y la semana 1 es la que contiene el primer jueves del año (o, lo que es lo mismo, la que contiene el 4 de enero). Una fecha de semana se escribe con el año, `W`, el número de semana y luego el día de la semana del 1 (lunes) al 7 (domingo).",
+            "Como las semanas no se parten entre años, el año de numeración de semanas ISO puede diferir del año de calendario en los extremos:",
+            {
+              "table": {
+                "head": [
+                  "Fecha de calendario",
+                  "Fecha de semana ISO",
+                  "Por qué"
+                ],
+                "rows": [
+                  [
+                    "2021-01-01 (viernes)",
+                    "`2020-W53-5`",
+                    "Pertenece a la semana que empezó el lunes 28 dic 2020"
+                  ],
+                  [
+                    "2024-12-30 (lunes)",
+                    "`2025-W01-1`",
+                    "La semana contiene el jueves 2 ene 2025"
+                  ],
+                  [
+                    "2026-01-01 (jueves)",
+                    "`2026-W01-4`",
+                    "El 1 de enero es jueves"
+                  ],
+                  [
+                    "2027-01-01 (viernes)",
+                    "`2026-W53-5`",
+                    "2026 empieza en jueves, así que tiene 53 semanas"
+                  ]
+                ]
+              }
+            },
+            "Un año tiene 52 o 53 semanas ISO. Los números de semana de los calendarios estadounidenses, que a menudo empiezan en domingo y ponen siempre el 1 de enero en la semana 1, pueden diferir en uno de los números ISO."
+          ]
+        },
+        {
+          "h": "Duraciones e intervalos",
+          "body": [
+            "Una duración empieza por `P` (periodo). Primero van las partes de fecha, luego una `T` y después las partes de hora. Las partes con valor cero se pueden omitir.",
+            {
+              "table": {
+                "head": [
+                  "Duración",
+                  "Significado"
+                ],
+                "rows": [
+                  [
+                    "`P3DT4H`",
+                    "3 días y 4 horas"
+                  ],
+                  [
+                    "`PT30M`",
+                    "30 minutos"
+                  ],
+                  [
+                    "`P30M`",
+                    "30 meses, no minutos: la `T` importa"
+                  ],
+                  [
+                    "`P1Y2M10D`",
+                    "1 año, 2 meses y 10 días"
+                  ],
+                  [
+                    "`P2W`",
+                    "2 semanas"
+                  ],
+                  [
+                    "`PT0.5S`",
+                    "Medio segundo"
+                  ]
+                ]
+              }
+            },
+            "Un intervalo une dos partes con una barra: `2026-10-14/2026-10-20` (inicio y fin), `2026-10-14T09:00Z/PT2H` (inicio y duración) o `P1D/2026-10-14` (duración y fin). Las duraciones en años y meses no tienen una longitud fija en segundos, así que el software las suma sobre un calendario, no como un número fijo de segundos."
+          ]
+        },
+        {
+          "h": "RFC 3339: el perfil estricto de la web",
+          "body": [
+            "ISO 8601 admite muchas variantes, lo que complica los analizadores completos. RFC 3339 elige un perfil para los protocolos de internet, y la mayoría de las API JSON, los feeds Atom y los formatos de log lo siguen.",
+            {
+              "ul": [
+                "Se exige fecha y hora completas, siempre en formato extendido: `2026-10-14T09:30:00Z`.",
+                "Todo timestamp debe llevar `Z` o un desfase numérico como `+02:00`; no se permiten horas locales sin desfase.",
+                "Las fechas de semana, las fechas ordinales y las duraciones no forman parte del perfil.",
+                "`-00:00` indica que la hora está en UTC pero se desconoce el desfase local original.",
+                "El RFC señala que se puede usar un espacio en lugar de la `T` para mejorar la legibilidad, una forma que muestran muchas bases de datos."
+              ]
+            },
+            {
+              "note": "Para generar una cadena RFC 3339 en JavaScript, usa `new Date().toISOString()`. Siempre devuelve UTC con milisegundos, por ejemplo `2026-10-14T09:30:00.000Z`."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué significa la T en una fecha ISO 8601?",
+          "a": "La `T` separa la fecha de la hora, como en `2026-10-14T09:30:00`. RFC 3339 también acepta un espacio en esa posición para mejorar la legibilidad."
+        },
+        {
+          "q": "¿Qué significa la Z al final de un timestamp?",
+          "a": "`Z` indica que la hora está en UTC, con desfase cero. `09:30:00Z` y `09:30:00+00:00` describen el mismo instante."
+        },
+        {
+          "q": "¿ISO 8601 es lo mismo que RFC 3339?",
+          "a": "RFC 3339 es un subconjunto más estricto de ISO 8601 para uso en internet. Todo timestamp RFC 3339 es ISO 8601 válido, pero ISO 8601 también admite formas que RFC 3339 no, como las fechas de semana y las duraciones."
+        },
+        {
+          "q": "¿Cuál es la semana 1 en ISO 8601?",
+          "a": "La semana 1 es la semana de lunes a domingo que contiene el primer jueves del año. Por eso el 1 de enero puede caer en la semana 52 o 53 del año anterior."
+        }
+      ]
+    },
+    "utc-and-time-zones": {
+      "title": "UTC y zonas horarias: desfases, GMT, IANA y horario de verano — cv.cm",
+      "description": "UTC es el reloj de referencia; las zonas horarias son desfases más reglas de horario de verano. UTC vs GMT, por qué Europe/London supera a +00:00 y +05:45.",
+      "h1": "UTC y zonas horarias: cómo funcionan",
+      "answer": "UTC (tiempo universal coordinado) es el reloj de referencia respecto al que se define toda zona horaria civil. Una zona horaria es una región que comparte la misma hora local, expresada como un desfase respecto a UTC, como `-05:00` o `+05:30`, junto con las reglas que indican cuándo empieza y termina el horario de verano. Los desfases van de `-12:00` a `+14:00`, y algunos no son horas enteras.",
+      "sections": [
+        {
+          "h": "Qué es UTC",
+          "body": [
+            "UTC lo calcula la Oficina Internacional de Pesas y Medidas (BIPM) a partir de cientos de relojes atómicos de todo el mundo. Avanza en segundos del SI, igual que el Tiempo Atómico Internacional (TAI), pero de vez en cuando se ajusta con segundos intercalares para no alejarse más de 0.9 segundos de la rotación de la Tierra. Desde 2017, UTC va 37 segundos por detrás de TAI.",
+            "UTC no aplica horario de verano y nunca cambia con las estaciones. Esa estabilidad es la razón por la que funcionan con él los servidores, los logs, la aviación y las bases de datos."
+          ]
+        },
+        {
+          "h": "UTC vs GMT",
+          "body": [
+            "En el uso cotidiano, GMT y UTC marcan la misma hora, pero no son lo mismo:",
+            {
+              "table": {
+                "head": [
+                  "",
+                  "UTC",
+                  "GMT"
+                ],
+                "rows": [
+                  [
+                    "Qué es",
+                    "Un estándar de tiempo basado en relojes atómicos",
+                    "Históricamente, un tiempo astronómico en Greenwich; hoy, el nombre de una zona horaria"
+                  ],
+                  [
+                    "Desfase",
+                    "El punto cero por definición",
+                    "UTC+00:00"
+                  ],
+                  [
+                    "Horario de verano",
+                    "Nunca",
+                    "GMT en sí no, pero el Reino Unido pasa de GMT a BST (UTC+01:00) en verano"
+                  ],
+                  [
+                    "Uso en software",
+                    "La referencia estándar",
+                    "Sobre todo como etiqueta; es preferible UTC"
+                  ]
+                ]
+              }
+            },
+            "La trampa práctica: la «hora de Londres» solo coincide con GMT en invierno. Desde el último domingo de marzo hasta el último domingo de octubre, Londres va una hora por delante de UTC."
+          ]
+        },
+        {
+          "h": "Los desfases no son zonas horarias",
+          "body": [
+            "Un desfase como `+01:00` describe un momento. Una zona horaria describe un lugar a lo largo del tiempo: su desfase, sus reglas de horario de verano y todos sus cambios históricos. La base de datos de zonas horarias de IANA, que usan Linux, macOS, Android, Java y todos los navegadores principales, nombra las zonas por región y ciudad, como `Europe/London`, `America/New_York` y `Asia/Kolkata`.",
+            "`Europe/London` es mejor que `+00:00` para cualquier fecha futura o pasada porque sabe que el desfase es `+00:00` en enero y `+01:00` en julio. Una reunión periódica guardada como `+00:00` irá desfasada una hora durante medio año.",
+            {
+              "ul": [
+                "Guarda los instantes pasados en UTC (o como timestamp Unix).",
+                "Guarda los eventos locales futuros como hora local más un nombre de zona IANA, y calcula el instante UTC cuando lo necesites, porque los gobiernos cambian las reglas del horario de verano con poca antelación.",
+                "Evita abreviaturas como `CST` o `IST`: `CST` puede significar Central Standard Time (UTC-6) o China Standard Time (UTC+8), e `IST` se usa para India, Irlanda e Israel."
+              ]
+            }
+          ]
+        },
+        {
+          "h": "El horario de verano",
+          "body": [
+            "El horario de verano (DST) adelanta los relojes, normalmente una hora, durante parte del año. Las fechas varían según la región: Estados Unidos cambia el segundo domingo de marzo y vuelve el primer domingo de noviembre, mientras que la Unión Europea cambia el último domingo de marzo y de octubre, a las 01:00 UTC en todas partes. La mayoría de los países de Asia y África, incluidos China, Japón e India, no usan horario de verano. En el hemisferio sur, el horario de verano va aproximadamente de octubre a abril.",
+            "Cada cambio crea dos casos límite:",
+            {
+              "ul": [
+                "Un hueco: cuando los relojes se adelantan, horas locales como las 02:30 de ese día no existen en las zonas que saltan de las 02:00 a las 03:00.",
+                "Un solapamiento: cuando los relojes se atrasan, una hora como la 01:30 ocurre dos veces, así que una hora local sola es ambigua sin el desfase."
+              ]
+            },
+            {
+              "note": "Un día con cambio de horario tiene 23 o 25 horas de hora local. Sumar 24 horas y sumar un día de calendario dan resultados distintos esos días."
+            }
+          ]
+        },
+        {
+          "h": "Desfases poco habituales",
+          "body": [
+            "No todas las zonas están a un número entero de horas de UTC. Todas estas están en uso actualmente:",
+            {
+              "table": {
+                "head": [
+                  "Desfase",
+                  "Zona de ejemplo",
+                  "Región"
+                ],
+                "rows": [
+                  [
+                    "`-12:00`",
+                    "Etc/GMT+12",
+                    "Islas Baker y Howland, deshabitadas; el desfase más tardío"
+                  ],
+                  [
+                    "`-03:30`",
+                    "America/St_Johns",
+                    "Terranova, Canadá (hora estándar)"
+                  ],
+                  [
+                    "`+05:30`",
+                    "Asia/Kolkata",
+                    "India y Sri Lanka"
+                  ],
+                  [
+                    "`+05:45`",
+                    "Asia/Kathmandu",
+                    "Nepal"
+                  ],
+                  [
+                    "`+09:30`",
+                    "Australia/Darwin",
+                    "Territorio del Norte, Australia"
+                  ],
+                  [
+                    "`+12:45`",
+                    "Pacific/Chatham",
+                    "Islas Chatham, Nueva Zelanda (hora estándar)"
+                  ],
+                  [
+                    "`+14:00`",
+                    "Pacific/Kiritimati",
+                    "Islas de la Línea, Kiribati; el primer lugar en llegar a cada nuevo día"
+                  ]
+                ]
+              }
+            },
+            "Como los desfases abarcan 26 horas, una misma fecha de calendario existe en algún lugar de la Tierra durante hasta unas 50 horas. «Al final del día 14» necesita una zona para significar algo preciso."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿UTC es lo mismo que GMT?",
+          "a": "Marcan la misma hora, pero UTC es un estándar de tiempo atómico y GMT es una zona horaria. El Reino Unido usa GMT solo en invierno y BST (UTC+01:00) en verano."
+        },
+        {
+          "q": "¿UTC cambia con el horario de verano?",
+          "a": "No. UTC es el mismo todo el año; solo las zonas horarias locales cambian su desfase respecto a UTC cuando empieza o termina el horario de verano."
+        },
+        {
+          "q": "¿Por qué India usa UTC+05:30?",
+          "a": "India usa una única zona centrada en un meridiano a 82.5° E, que está a cinco horas y media de Greenwich. Los desfases de media hora y de cuarto de hora se eligen para ajustarse mejor a la longitud geográfica de un país."
+        },
+        {
+          "q": "¿Qué significa el signo de Etc/GMT+12?",
+          "a": "En los nombres IANA `Etc/GMT` el signo está invertido por compatibilidad con POSIX, así que `Etc/GMT+12` es UTC-12:00. Para lugares reales, es preferible usar nombres basados en ciudades como `Asia/Tokyo`."
+        }
+      ]
+    },
+    "apr-vs-apy": {
+      "title": "APR vs APY (TAN vs TAE): diferencia, fórmula y ejemplos — cv.cm",
+      "description": "La APR no incluye capitalización; la APY sí. Fórmula APY = (1 + APR/n)^n − 1, por qué un 5 % APR mensual es 5.116 % APY y cómo la APR suma comisiones.",
+      "h1": "APR vs APY: ¿cuál es la diferencia?",
+      "answer": "La APR (tasa de porcentaje anual, similar a la TAN o tasa nominal anual) es una tasa anual que no incluye la capitalización. La APY (rendimiento porcentual anual, similar a la TAE o tasa efectiva anual) es la tasa que realmente ganas o pagas en un año una vez que los intereses se suman al saldo y empiezan a generar intereses a su vez. La conversión es `APY = (1 + APR/n)^n − 1`, donde `n` es el número de periodos de capitalización al año, así que un 5 % APR con capitalización mensual equivale a un 5.116 % APY aproximadamente.",
+      "sections": [
+        {
+          "h": "Las dos tasas, lado a lado",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "",
+                  "APR",
+                  "APY"
+                ],
+                "rows": [
+                  [
+                    "Significado",
+                    "Annual percentage rate (tasa de porcentaje anual)",
+                    "Annual percentage yield (también llamada tasa efectiva anual)"
+                  ],
+                  [
+                    "Incluye capitalización",
+                    "No",
+                    "Sí"
+                  ],
+                  [
+                    "Se suele indicar en",
+                    "Préstamos, hipotecas, tarjetas de crédito",
+                    "Cuentas de ahorro, certificados de depósito, depósitos"
+                  ],
+                  [
+                    "Incluye comisiones",
+                    "En préstamos, incluye ciertas comisiones del prestamista",
+                    "No; refleja solo los intereses"
+                  ],
+                  [
+                    "Relación",
+                    "Menor o igual",
+                    "Igual cuando los intereses se capitalizan una vez al año; mayor en los demás casos"
+                  ]
+                ]
+              }
+            },
+            "Los prestamistas suelen anunciar la APR, que parece más baja, y los bancos la APY, que parece más alta. Ninguna engaña por sí sola, pero comparar una APR con una APY es comparar medidas distintas."
+          ]
+        },
+        {
+          "h": "La fórmula y un ejemplo práctico",
+          "body": [
+            "Con `n` periodos de capitalización al año, cada periodo genera `APR/n`. Al cabo de un año, cada unidad de dinero ha crecido `(1 + APR/n)^n`. Resta 1 para obtener el rendimiento:",
+            {
+              "ol": [
+                "Escribe la APR en decimal: 5 % es `0.05`.",
+                "Divide entre el número de periodos: mensual es `0.05 / 12 = 0.0041667`.",
+                "Suma 1 y eleva a la cantidad de periodos: `1.0041667^12 = 1.0511619`.",
+                "Resta 1: `0.0511619`, o un 5.116 % APY."
+              ]
+            },
+            "Sobre un depósito de $10,000, eso son $511.62 de intereses en un año en lugar de los $500 que daría un 5 % simple. Para la conversión inversa, `APR = n × ((1 + APY)^(1/n) − 1)`: un 5 % APY con capitalización mensual corresponde a un 4.889 % APR aproximadamente."
+          ]
+        },
+        {
+          "h": "Cómo cambia el rendimiento según la frecuencia de capitalización",
+          "body": [
+            "Cuanto más a menudo se capitalizan los intereses, mayor es la APY, pero la ganancia se reduce rápidamente:",
+            {
+              "table": {
+                "head": [
+                  "APR",
+                  "Capitalización",
+                  "`n`",
+                  "APY"
+                ],
+                "rows": [
+                  [
+                    "5%",
+                    "Anual",
+                    "1",
+                    "5.000%"
+                  ],
+                  [
+                    "5%",
+                    "Semestral",
+                    "2",
+                    "5.063%"
+                  ],
+                  [
+                    "5%",
+                    "Trimestral",
+                    "4",
+                    "5.095%"
+                  ],
+                  [
+                    "5%",
+                    "Mensual",
+                    "12",
+                    "5.116%"
+                  ],
+                  [
+                    "5%",
+                    "Diaria",
+                    "365",
+                    "5.127%"
+                  ],
+                  [
+                    "5%",
+                    "Continua",
+                    "∞",
+                    "5.127% (`e^0.05 − 1`)"
+                  ],
+                  [
+                    "12%",
+                    "Mensual",
+                    "12",
+                    "12.683%"
+                  ],
+                  [
+                    "24%",
+                    "Mensual",
+                    "12",
+                    "26.824%"
+                  ]
+                ]
+              }
+            },
+            "Con las tasas de una cuenta de ahorro, la diferencia entre capitalización mensual y diaria es de alrededor de una centésima de punto porcentual. Con las tasas de una tarjeta de crédito es grande: una tarjeta con un 24 % APR que capitaliza mensualmente cuesta casi un 27 % al año sobre un saldo que nunca se amortiza."
+          ]
+        },
+        {
+          "h": "La APR de un préstamo también incluye comisiones",
+          "body": [
+            "En los préstamos, la APR es más amplia que la tasa de interés. La Oficina de Protección Financiera del Consumidor de EE. UU. (CFPB) describe la APR como la tasa de interés más otros costos del préstamo, como comisiones de corretaje, puntos de descuento y algunos gastos de cierre, expresada como porcentaje anual. Según la ley estadounidense Truth in Lending Act, los prestamistas deben informarla para que los prestatarios puedan comparar ofertas.",
+            {
+              "ul": [
+                "Una hipoteca al 6.5 % de interés con $6,000 en puntos y comisiones mostrará una APR superior al 6.5 %.",
+                "Dos préstamos con la misma tasa de interés pueden tener APR distintas porque sus comisiones son diferentes.",
+                "Qué comisiones se incluyen lo fija la normativa, y algunos costos, como la tasación o los gastos de título en muchas hipotecas, quedan fuera."
+              ]
+            },
+            "La APR de una tarjeta de crédito funciona de otra forma: es la tasa de interés anual, que normalmente se aplica como tasa diaria (APR dividida entre 365) sobre el saldo, y no incluye cuotas anuales ni recargos por pago tardío."
+          ]
+        },
+        {
+          "h": "Comparar ofertas de forma justa",
+          "body": [
+            {
+              "ul": [
+                "Compara APR con APR, o APY con APY. Si dos ofertas usan medidas distintas, convierte una en la otra con la fórmula anterior.",
+                "Revisa la frecuencia de capitalización; forma parte de las condiciones y cambia la tasa efectiva.",
+                "En los préstamos, compara también el importe total a devolver y el plazo. Un plazo más largo puede bajar la cuota mensual y a la vez aumentar el total de intereses.",
+                "Las tasas promocionales y variables pueden cambiar. La APR o APY indicada solo se aplica mientras la tasa no cambie."
+              ]
+            },
+            {
+              "note": "Esta página explica cómo se calculan las tasas. No es asesoramiento financiero; lee la información oficial de cualquier producto y considera consultar a un asesor cualificado antes de decidir."
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Es mejor una APY más alta?",
+          "a": "Para el dinero que depositas, sí: una APY más alta significa más intereses ganados al año, siempre que la tasa no sea promocional y la cuenta no tenga comisiones que la compensen. En una deuda, el costo anual equivalente debe ser lo más bajo posible."
+        },
+        {
+          "q": "¿La APR y la APY pueden ser iguales?",
+          "a": "Sí, cuando los intereses se capitalizan una vez al año y, en los préstamos, no hay comisiones adicionales. Con una capitalización más frecuente, la APY siempre es mayor que la APR."
+        },
+        {
+          "q": "¿Por qué los bancos anuncian la APY y los prestamistas la APR?",
+          "a": "Las normas de EE. UU. exigen que las cuentas de depósito informen la APY y los préstamos la APR. Además, así el ahorro parece más rentable y el crédito más barato."
+        },
+        {
+          "q": "¿Cuál es la tasa mensual de un 24 % APR?",
+          "a": "La tasa periódica es `24% / 12 = 2%` al mes. Capitalizada durante doce meses es `1.02^12 − 1`, alrededor de un 26.8 % al año."
+        }
+      ]
+    },
+    "margin-vs-markup": {
+      "title": "Margen vs markup: diferencia, fórmulas y tabla de conversión — cv.cm",
+      "description": "El margen es la ganancia entre el precio; el markup, la ganancia entre el costo. Fórmulas, conversión y por qué un markup del 25 % es solo un margen del 20 %.",
+      "h1": "Margen vs markup: ¿cuál es la diferencia?",
+      "answer": "El margen y el markup (recargo sobre el costo) miden la misma ganancia con bases distintas. El margen es la ganancia como porcentaje del precio de venta: `(precio − costo) / precio`. El markup es la ganancia como porcentaje del costo: `(precio − costo) / costo`. Un artículo que cuesta $60 y se vende a $100 tiene una ganancia de $40, un margen del 40 % y un markup del 66.7 %. El markup siempre es el número mayor.",
+      "sections": [
+        {
+          "h": "Las dos fórmulas",
+          "body": [
+            {
+              "table": {
+                "head": [
+                  "",
+                  "Margen",
+                  "Markup"
+                ],
+                "rows": [
+                  [
+                    "Fórmula",
+                    "`(precio − costo) / precio`",
+                    "`(precio − costo) / costo`"
+                  ],
+                  [
+                    "Base",
+                    "Precio de venta (ingresos)",
+                    "Costo"
+                  ],
+                  [
+                    "Rango",
+                    "Menos del 100 % (salvo que el costo sea cero)",
+                    "De 0 % a ilimitado"
+                  ],
+                  [
+                    "Responde a",
+                    "¿Qué parte de cada venta es ganancia?",
+                    "¿Cuánto se añadió sobre el costo?"
+                  ],
+                  [
+                    "Quién lo usa",
+                    "Finanzas, contabilidad, inversores",
+                    "Fijación de precios en comercio minorista y mayorista"
+                  ]
+                ]
+              }
+            },
+            "Ejemplo con un costo de $60 y un precio de $100: la ganancia es `100 − 60 = 40`. El margen es `40 / 100 = 40%`. El markup es `40 / 60 = 66.7%`.",
+            "En contabilidad, el «margen bruto» usa el costo de las mercancías vendidas. El margen operativo y el margen neto restan más costos, como alquiler, salarios e impuestos, así que son menores que el margen bruto para el mismo producto."
+          ]
+        },
+        {
+          "h": "Convertir entre margen y markup",
+          "body": [
+            "Como ambos usan la misma ganancia, uno se convierte directamente en el otro. Escribe los porcentajes en decimal:",
+            {
+              "ul": [
+                "`markup = margen / (1 − margen)`. Un margen del 40 % es `0.4 / 0.6 = 0.667`, un markup del 66.7 %.",
+                "`margen = markup / (1 + markup)`. Un markup del 50 % es `0.5 / 1.5 = 0.333`, un margen del 33.3 %."
+              ]
+            },
+            {
+              "table": {
+                "head": [
+                  "Margen",
+                  "Markup equivalente"
+                ],
+                "rows": [
+                  [
+                    "10%",
+                    "11.11%"
+                  ],
+                  [
+                    "15%",
+                    "17.65%"
+                  ],
+                  [
+                    "20%",
+                    "25%"
+                  ],
+                  [
+                    "25%",
+                    "33.33%"
+                  ],
+                  [
+                    "30%",
+                    "42.86%"
+                  ],
+                  [
+                    "33.33%",
+                    "50%"
+                  ],
+                  [
+                    "40%",
+                    "66.67%"
+                  ],
+                  [
+                    "50%",
+                    "100%"
+                  ],
+                  [
+                    "60%",
+                    "150%"
+                  ],
+                  [
+                    "75%",
+                    "300%"
+                  ]
+                ]
+              }
+            },
+            "La diferencia crece rápido: con un margen del 50 %, el markup ya es del 100 %, es decir, el precio es el doble del costo (el llamado precio «keystone» en el comercio minorista)."
+          ]
+        },
+        {
+          "h": "Fijar un precio a partir de un objetivo",
+          "body": [
+            "La fórmula que uses depende del número que quieras alcanzar:",
+            {
+              "table": {
+                "head": [
+                  "Objetivo",
+                  "Fórmula",
+                  "Ejemplo con costo de $60"
+                ],
+                "rows": [
+                  [
+                    "Markup objetivo del 25 %",
+                    "`precio = costo × (1 + markup)`",
+                    "`60 × 1.25 = $75`"
+                  ],
+                  [
+                    "Margen objetivo del 25 %",
+                    "`precio = costo / (1 − margen)`",
+                    "`60 / 0.75 = $80`"
+                  ],
+                  [
+                    "Margen objetivo del 40 %",
+                    "`precio = costo / (1 − margen)`",
+                    "`60 / 0.6 = $100`"
+                  ]
+                ]
+              }
+            },
+            "Observa la diferencia de $5 entre las dos primeras filas. Ambas dicen «25 %», pero una se calcula sobre el costo y la otra sobre el precio."
+          ]
+        },
+        {
+          "h": "El error de precios más común",
+          "body": [
+            "Una empresa quiere un margen del 30 %, así que suma un 30 % al costo. Con un costo de $100, el precio pasa a $130 y la ganancia a $30. El margen es `30 / 130 = 23.1%`, no 30 %. Para lograr un margen real del 30 %, el precio debe ser `100 / 0.7 = $142.86`.",
+            "La misma confusión aparece con los descuentos. Un markup del 25 % seguido de un descuento del 25 % no devuelve al costo: `100 × 1.25 = 125`, luego `125 × 0.75 = 93.75`, una pérdida de $6.25 por unidad. Los precios de oferta deben comprobarse directamente contra el costo.",
+            {
+              "note": "Cuando un proveedor, comprador o socio te dé un porcentaje, pregunta si es margen o markup. La misma expresión «porcentaje de ganancia» puede describir ambos, y la diferencia puede ser de miles en un pedido grande."
+            }
+          ]
+        },
+        {
+          "h": "¿Cuál conviene seguir?",
+          "body": [
+            {
+              "ul": [
+                "Usa el markup al fijar el precio de artículos individuales a partir de su costo, por ejemplo al aplicar un markup estándar a todos los productos de una categoría.",
+                "Usa el margen para informes y comparaciones. Es la cifra que aparece en el estado de resultados, así que cuadra con los ingresos totales, los presupuestos y las referencias del sector.",
+                "Usa el margen para decidir hasta dónde puede llegar un descuento: un artículo con un margen del 20 % no admite un descuento superior al 20 % sin venderse por debajo del costo.",
+                "Mantén coherentes los datos de partida. Incluye el envío, las comisiones de pago y el embalaje en el costo, o ambos porcentajes parecerán mejores de lo que son."
+              ]
+            }
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Un markup del 50 % es lo mismo que un margen del 50 %?",
+          "a": "No. Un markup del 50 % sobre un costo de $100 da un precio de $150 y un margen del 33.3 %. Un margen del 50 % requiere un precio de $200, que es un markup del 100 %."
+        },
+        {
+          "q": "¿El margen puede superar el 100 %?",
+          "a": "No, porque la ganancia nunca puede superar el precio de venta cuando el costo es positivo. El markup no tiene límite superior, así que valores como el 300 % son habituales en artículos de bajo costo."
+        },
+        {
+          "q": "¿Cómo calculo el precio de venta a partir del margen?",
+          "a": "Divide el costo entre `1 − margen`. Para un costo de $45 y un margen del 40 %, el precio es `45 / 0.6 = $75`."
+        },
+        {
+          "q": "¿Qué es un buen margen de ganancia?",
+          "a": "Depende del sector: los supermercados suelen tener márgenes netos de pocos puntos porcentuales, mientras que las empresas de software pueden superar el 20 %. Compara con negocios de estructura de costos similar en lugar de fijar un único objetivo."
+        }
+      ]
+    }
+  }
+}

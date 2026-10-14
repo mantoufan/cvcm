@@ -5692,5 +5692,82 @@
       "name": "うつ病チェック（PHQ-9）",
       "blurb": "医療現場で使われる9問のうつスクリーニング。0〜27点。"
     }
+  },
+  "kb": {
+    "label": "基礎知識",
+    "all": "基礎知識の記事一覧",
+    "lead": "ファイル形式、文字コード、計算式の意味を出典つきで解説します。",
+    "what-is-heic": {
+      "name": "HEICとは？",
+      "blurb": "iPhone の写真形式。JPG との違いと、変換すべきタイミング。"
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG・PNG・WebP・AVIF の違い",
+      "blurb": "写真、スクリーンショット、Web に使うべき画像形式。"
+    },
+    "what-is-exif": {
+      "name": "EXIF情報とは？",
+      "blurb": "写真に隠れたカメラ・日時・GPS の情報と、その削除方法。"
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI と PPI の違い",
+      "blurb": "画素数と印刷サイズ、300 DPI が紙の上でしか意味を持たない理由。"
+    },
+    "aspect-ratios": {
+      "name": "アスペクト比とは",
+      "blurb": "16:9、4:3、1:1、9:16 と、それぞれに対応する画素数。"
+    },
+    "why-pdf-files-are-large": {
+      "name": "PDF の容量が大きい原因",
+      "blurb": "PDF を重くする画像・フォント・スキャンと、圧縮で変わること。"
+    },
+    "what-is-base64": {
+      "name": "Base64とは？",
+      "blurb": "Base64 がバイト列をテキストにする仕組み、33% 増える理由、暗号化ではない理由。"
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode と UTF-8",
+      "blurb": "コードポイントとバイト、文字化けが起こる理由。"
+    },
+    "url-encoding": {
+      "name": "URL エンコード（パーセントエンコーディング）",
+      "blurb": "スペースが %20 になる理由と、エスケープが必要な文字。"
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON・YAML・XML の違い",
+      "blurb": "3つのデータ形式の構文、長所、落とし穴。"
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 と SHA-256 の違い",
+      "blurb": "ハッシュとは何か、破られたハッシュ、パスワードに使うべきもの。"
+    },
+    "password-strength": {
+      "name": "強いパスワードの条件",
+      "blurb": "最新の NIST の指針に基づく、長さ・ランダムさ・エントロピー。"
+    },
+    "what-is-uuid": {
+      "name": "UUIDとは？",
+      "blurb": "UUID のバージョン 4 と 7、衝突の確率、使い分け。"
+    },
+    "unix-timestamp": {
+      "name": "Unix タイムスタンプとは？",
+      "blurb": "1970年からの秒数、JavaScript のミリ秒、2038年問題。"
+    },
+    "iso-8601": {
+      "name": "ISO 8601 の日付と週番号",
+      "blurb": "YYYY-MM-DD、第1週、期間、RFC 3339 プロファイル。"
+    },
+    "utc-and-time-zones": {
+      "name": "UTC・GMT とタイムゾーン",
+      "blurb": "時差、夏時間、オフセットよりタイムゾーン名が良い理由。"
+    },
+    "apr-vs-apy": {
+      "name": "APR と APY の違い",
+      "blurb": "単利と複利の利率、計算式と計算例。"
+    },
+    "margin-vs-markup": {
+      "name": "マージンとマークアップの違い",
+      "blurb": "利益の2つの表し方、換算方法、早見表。"
+    }
   }
 }

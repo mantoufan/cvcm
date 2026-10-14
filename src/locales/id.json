@@ -5692,5 +5692,82 @@
       "name": "Tes depresi (PHQ-9)",
       "blurb": "Skrining depresi 9 soal, skor 0 sampai 27."
     }
+  },
+  "kb": {
+    "label": "Pengetahuan",
+    "all": "Semua artikel pengetahuan",
+    "lead": "Arti format, encoding, dan rumus, lengkap dengan sumbernya.",
+    "what-is-heic": {
+      "name": "Apa itu HEIC?",
+      "blurb": "Format foto iPhone, bedanya dengan JPG, dan kapan perlu dikonversi."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Format gambar mana untuk foto, screenshot, dan web."
+    },
+    "what-is-exif": {
+      "name": "Apa itu data EXIF?",
+      "blurb": "Info kamera, waktu, dan GPS yang tersembunyi di foto, serta cara menghapusnya."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Piksel, ukuran cetak, dan mengapa 300 DPI hanya penting di kertas."
+    },
+    "aspect-ratios": {
+      "name": "Penjelasan rasio aspek",
+      "blurb": "16:9, 4:3, 1:1, 9:16 dan ukuran piksel yang sesuai."
+    },
+    "why-pdf-files-are-large": {
+      "name": "Kenapa file PDF begitu besar?",
+      "blurb": "Gambar, font, dan hasil scan yang membengkakkan PDF, serta efek kompresinya."
+    },
+    "what-is-base64": {
+      "name": "Apa itu Base64?",
+      "blurb": "Cara Base64 mengubah byte menjadi teks, mengapa ukurannya naik 33%, dan mengapa bukan enkripsi."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode dan UTF-8",
+      "blurb": "Code point, byte, dan mengapa teks berubah menjadi karakter kacau."
+    },
+    "url-encoding": {
+      "name": "URL encoding (percent-encoding)",
+      "blurb": "Mengapa spasi menjadi %20 dan karakter mana yang harus di-encode."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Sintaks, kelebihan, dan jebakan ketiga format data."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "Apa itu hash, mana yang sudah jebol, dan apa yang dipakai untuk kata sandi."
+    },
+    "password-strength": {
+      "name": "Seperti apa kata sandi yang kuat?",
+      "blurb": "Panjang, keacakan, dan entropi, sesuai pedoman NIST terbaru."
+    },
+    "what-is-uuid": {
+      "name": "Apa itu UUID?",
+      "blurb": "UUID versi 4 dan 7, peluang collision, dan kapan memakai masing-masing."
+    },
+    "unix-timestamp": {
+      "name": "Apa itu Unix timestamp?",
+      "blurb": "Detik sejak 1970, milidetik di JavaScript, dan masalah tahun 2038."
+    },
+    "iso-8601": {
+      "name": "Tanggal ISO 8601 dan nomor minggu",
+      "blurb": "YYYY-MM-DD, minggu ke-1, durasi, dan profil RFC 3339."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT, dan zona waktu",
+      "blurb": "Offset, waktu musim panas, dan mengapa nama zona lebih baik daripada offset."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Bunga sederhana vs majemuk, rumusnya, dan contoh perhitungan."
+    },
+    "margin-vs-markup": {
+      "name": "Margin vs markup",
+      "blurb": "Dua cara menyatakan laba, cara mengonversinya, dan tabel ringkas."
+    }
   }
 }

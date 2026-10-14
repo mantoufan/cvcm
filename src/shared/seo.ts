@@ -8,13 +8,15 @@ import { toolHowToJsonLd } from "./guide";
 import { legalBreadcrumbJsonLd, legalPageCopy, legalStaticHtml } from "./legal";
 import { quizBreadcrumbJsonLd, quizDescription, quizFaqJsonLd, quizStaticHtml, quizTitle } from "./quiz-i18n";
 import type { QuizId } from "./quiz";
+import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPageHtml, kbTitle } from "./kb-i18n";
+import type { KbId } from "./kb";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, legalHref, marketsHref, quizHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -46,6 +48,9 @@ export type SeoInput = {
   /** A test page under /tests/; `quizId` null is the hub. */
   quiz?: boolean;
   quizId?: QuizId | null;
+  /** A knowledge page under /learn/knowledge/; `kbId` null is the hub. */
+  kb?: boolean;
+  kbId?: KbId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -389,6 +394,7 @@ const LEARN_DESC: Record<TutorialId, string> = {
 
 export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.kb) return kbTitle(locale, seo.kbId ?? null);
   if (seo.learn) {
     return lookup(locale, seo.tutorial ? LEARN_TITLE[seo.tutorial] : "meta.titleLearn");
   }
@@ -408,6 +414,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
 
 export function pageDescription(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.kb) return kbDescription(locale, seo.kbId ?? null);
   if (seo.learn) {
     return lookup(locale, seo.tutorial ? LEARN_DESC[seo.tutorial] : "meta.descLearn");
   }
@@ -444,6 +451,7 @@ export function pageCanonical(
   clipId?: string | null,
 ): string {
   const seo = normalizeSeo(input, clipId);
+  if (seo.kb) return `https://cv.cm${kbHref(locale, seo.kbId ?? null)}`;
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
   if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
   if (seo.markets) return `https://cv.cm${marketsHref(locale, seo.market ?? null)}`;
@@ -744,11 +752,12 @@ export function applyHtmlSeo(
   out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="software-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="article-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && seo.kbId) ? "article" : "website"}" />`,
     `<meta property="og:site_name" content="cv.cm" />`,
     `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
     `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
@@ -781,6 +790,12 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(deviceBreadcrumbJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(deviceFaqJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.kb) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(kbBreadcrumbJsonLd(locale, seo.kbId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(kbFaqJsonLd(locale, seo.kbId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(kbArticleJsonLd(locale, seo.kbId ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.quiz) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(quizBreadcrumbJsonLd(locale, seo.quizId ?? null)).replace(/</g, "\\u003c")}</script>`,
@@ -795,7 +810,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -815,7 +830,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -823,7 +838,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -841,6 +856,8 @@ export function applyHtmlSeo(
     ? legalStaticHtml(locale, seo.legalPage)
     : seo.quiz
     ? quizStaticHtml(locale, seo.quizId ?? null)
+    : seo.kb
+    ? kbPageHtml(locale, seo.kbId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
   // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
@@ -886,7 +903,8 @@ function staticPageHtml(
     const tutorials = FEATURED_TUTORIALS
       .filter((id) => id !== seo.tutorial)
       .map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
-    parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...tutorials] : tutorials));
+    const kbHub = { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) };
+    parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, kbHub, ...tutorials] : [kbHub, ...tutorials]));
   } else if (seo.games || seo.markets) {
     parts.push(linkList([home]));
   } else if (seo.tool) {
@@ -901,6 +919,7 @@ function staticPageHtml(
       { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },
       { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
+      { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));

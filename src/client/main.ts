@@ -9,6 +9,7 @@ import {
   appHref,
   gamesHref,
   isPublishedTutorial,
+  kbHref,
   learnHref,
   legalHref,
   deviceHref,
@@ -28,6 +29,7 @@ import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
+import { KB_GROUPS, type KbId } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -59,6 +61,8 @@ let devicePage: DevicePageId | null = null;
 let legalPage: LegalPageId | null = null;
 /** A test page: "hub" for /tests/, else the test id. */
 let quizPage: QuizId | "hub" | null = null;
+/** A knowledge page: "hub" for /learn/knowledge/, else the article id. */
+let kbPage: KbId | "hub" | null = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -150,6 +154,18 @@ export function boot(): void {
     setLocale(loc);
     applyQuiz(parsed.quiz);
     history.replaceState(null, "", withSearch(quizHref(loc, parsed.quiz), location.search));
+  } else if (parsed.kind === "kb") {
+    setLocale(parsed.locale);
+    applyKb(parsed.article);
+    const canonical = kbHref(parsed.locale, parsed.article);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-kb") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyKb(parsed.article);
+    history.replaceState(null, "", withSearch(kbHref(loc, parsed.article), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -230,6 +246,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  kbPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -245,6 +262,7 @@ function applyLearn(next: TutorialId | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  kbPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -260,6 +278,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  kbPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -275,6 +294,7 @@ function applyDevice(page: DevicePageId): void {
   devicePage = page;
   legalPage = null;
   quizPage = null;
+  kbPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -290,6 +310,7 @@ function applyLegal(page: LegalPageId): void {
   devicePage = null;
   legalPage = page;
   quizPage = null;
+  kbPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -305,6 +326,12 @@ function applyQuiz(id: QuizId | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = id ?? "hub";
+  kbPage = null;
+}
+
+function applyKb(id: KbId | null): void {
+  applyTool(null, null);
+  kbPage = id ?? "hub";
 }
 
 function unmountTools(): void {
@@ -315,16 +342,17 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "kb"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
   const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
   const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
-  if (!hasPageMessages(loc, gamePage, legal, quiz)) {
+  const kb = parsed.kind === "kb" || parsed.kind === "bare-kb";
+  if (!hasPageMessages(loc, gamePage, legal, quiz, kb)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz).then(
+    loadPageMessages(loc, gamePage, legal, quiz, kb).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -387,13 +415,20 @@ export function render(): void {
     applyQuiz(parsed.quiz);
   } else if (parsed.kind === "bare-quiz") {
     applyQuiz(parsed.quiz);
+  } else if (parsed.kind === "kb") {
+    setLocale(parsed.locale);
+    applyKb(parsed.article);
+  } else if (parsed.kind === "bare-kb") {
+    applyKb(parsed.article);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
     applyTool(null, null);
   }
 
-  const seo = learnHub || tutorial
+  const seo = kbPage
+    ? { kb: true as const, kbId: kbPage === "hub" ? null : kbPage }
+    : learnHub || tutorial
     ? { learn: true as const, tutorial }
     : gamesHub || gameId
       ? { games: true as const, console: gameConsole, game: gameId }
@@ -418,7 +453,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || (kbPage && kbPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -436,7 +471,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, kbPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -569,10 +604,10 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || kbPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
-  const learnOn = learnHub || Boolean(tutorial);
+  const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
@@ -623,6 +658,14 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
+      h("p", null,
+        ...KB_GROUPS.flatMap((group) => group.articles).map((id) =>
+          h("a", { href: kbHref(loc, id), "data-nav": `kb-${id}`, "aria-current": kbPage === id ? "page" : undefined }, t(`kb.${id}.name`)),
+        ),
+      ),
+    ),
   );
 }
 
@@ -664,6 +707,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     if (!alive()) return;
     if (quizPage === "hub") m.mountQuizHub(main, loc);
     else m.mountQuiz(main, loc, quizPage);
+  } else if (kbPage) {
+    const m = await import("./kb/ui");
+    if (!alive()) return;
+    m.mountKb(main, loc, kbPage === "hub" ? null : kbPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -732,6 +779,8 @@ function localeHref(next: Locale): string {
     ? withSearch(deviceHref(next, devicePage), location.search)
     : quizPage
     ? withSearch(quizHref(next, quizPage === "hub" ? null : quizPage), location.search)
+    : kbPage
+    ? withSearch(kbHref(next, kbPage === "hub" ? null : kbPage), location.search)
     : legalPage
     ? withSearch(legalHref(next, legalPage), location.search)
     : learnHub || tutorial

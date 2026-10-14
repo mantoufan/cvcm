@@ -500,3 +500,27 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
   .quiz-scale.n5 { gap: 0.25rem; }
   .quiz-scale .quiz-opt { font-size: 0.7rem; padding: 0.3rem 0.2rem; }
 }
+
+/* Knowledge articles (/learn/knowledge/): readable measure, plain tables, one callout style. */
+.kb { max-width: 46rem; }
+.kb-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0; color: var(--ink-soft); font-size: 0.82rem; }
+.kb-answer { margin: 1rem 0 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-left: 3px solid var(--pink-deep); border-radius: var(--radius); background: var(--pink-soft); }
+.kb-answer h2 { margin: 0 0 0.3rem; font-size: 0.8rem; color: var(--pink-deep); text-transform: uppercase; letter-spacing: 0.04em; }
+.kb-answer p { margin: 0 0 0.75rem; }
+.kb-toc { margin-top: 1.5rem; font-size: 0.92rem; }
+.kb-toc h2 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+.kb-toc ol { margin: 0; padding-left: 1.3rem; }
+.kb-section { margin-top: 2rem; scroll-margin-top: 1rem; }
+.kb-section h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.kb-section p, .kb-section li { overflow-wrap: anywhere; }
+.kb code { font-family: var(--mono); font-size: 0.88em; padding: 0.05em 0.3em; border-radius: 4px; background: var(--gray); border: 1px solid var(--line); }
+.kb-table { overflow-x: auto; margin: 0.75rem 0; border: 1px solid var(--line); border-radius: var(--radius); }
+.kb-table table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.kb-table th, .kb-table td { padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.kb-table thead th { background: var(--pink-soft); font-weight: 600; white-space: nowrap; }
+.kb-table tbody th { font-weight: 600; }
+.kb-table tbody tr:last-child > * { border-bottom: 0; }
+.kb-note { margin: 0.75rem 0; padding: 0.7rem 0.9rem; border-radius: var(--radius); background: var(--gray); border: 1px solid var(--line); font-size: 0.92rem; }
+.kb-note p { margin: 0; }
+.kb-sources li { font-size: 0.9rem; }
+.kb-about { margin-top: 2rem; color: var(--ink-soft); }

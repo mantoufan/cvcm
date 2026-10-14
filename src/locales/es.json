@@ -5692,5 +5692,82 @@
       "name": "Test de depresión (PHQ-9)",
       "blurb": "El cribado de depresión de 9 preguntas, de 0 a 27."
     }
+  },
+  "kb": {
+    "label": "Conocimientos",
+    "all": "Todos los artículos",
+    "lead": "Qué significan los formatos, las codificaciones y las fórmulas, con fuentes.",
+    "what-is-heic": {
+      "name": "¿Qué es HEIC?",
+      "blurb": "El formato de fotos del iPhone, en qué se diferencia de JPG y cuándo convertirlo."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Qué formato de imagen usar para fotos, capturas de pantalla y la web."
+    },
+    "what-is-exif": {
+      "name": "¿Qué son los datos EXIF?",
+      "blurb": "Cámara, hora y GPS ocultos en las fotos, y cómo eliminarlos."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Píxeles, tamaño de impresión y por qué 300 DPI solo importa en papel."
+    },
+    "aspect-ratios": {
+      "name": "Relación de aspecto",
+      "blurb": "16:9, 4:3, 1:1, 9:16 y los tamaños en píxeles que les corresponden."
+    },
+    "why-pdf-files-are-large": {
+      "name": "¿Por qué un PDF pesa tanto?",
+      "blurb": "Imágenes, fuentes y escaneos que inflan un PDF, y qué cambia al comprimirlo."
+    },
+    "what-is-base64": {
+      "name": "¿Qué es Base64?",
+      "blurb": "Cómo Base64 convierte bytes en texto, por qué crece un 33 % y por qué no es cifrado."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode y UTF-8",
+      "blurb": "Puntos de código, bytes y por qué el texto aparece con caracteres ilegibles."
+    },
+    "url-encoding": {
+      "name": "Codificación URL (percent-encoding)",
+      "blurb": "Por qué los espacios se convierten en %20 y qué caracteres hay que escapar."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Sintaxis, ventajas y trampas de los tres formatos de datos."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "Qué es un hash, cuáles están rotos y qué usar para las contraseñas."
+    },
+    "password-strength": {
+      "name": "¿Qué hace segura una contraseña?",
+      "blurb": "Longitud, aleatoriedad y entropía, según las recomendaciones actuales de NIST."
+    },
+    "what-is-uuid": {
+      "name": "¿Qué es un UUID?",
+      "blurb": "Las versiones 4 y 7 de UUID, la probabilidad de colisión y cuándo usar cada una."
+    },
+    "unix-timestamp": {
+      "name": "¿Qué es un timestamp Unix?",
+      "blurb": "Segundos desde 1970, milisegundos en JavaScript y el problema del año 2038."
+    },
+    "iso-8601": {
+      "name": "Fechas ISO 8601 y números de semana",
+      "blurb": "YYYY-MM-DD, la semana 1, las duraciones y el perfil RFC 3339."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT y zonas horarias",
+      "blurb": "Desfases, horario de verano y por qué los nombres de zona son mejores que los desfases."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Tasa simple frente a tasa capitalizada, la fórmula y un ejemplo práctico."
+    },
+    "margin-vs-markup": {
+      "name": "Margen vs markup",
+      "blurb": "Dos formas de expresar la ganancia, cómo convertirlas y una tabla rápida."
+    }
   }
 }
