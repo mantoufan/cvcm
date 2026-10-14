@@ -328,7 +328,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const max = maxTotal(id);
       const nodes = [
         ...headline(results[result.key]),
-        bar(ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
+        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
       ];
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));

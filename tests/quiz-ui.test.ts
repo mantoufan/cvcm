@@ -90,6 +90,21 @@ describe("test page UI", () => {
     }
   });
 
+  it("shows the extraversion band with its score and the work style profile", () => {
+    const main = mount("introvert", "zh-CN");
+    answer(main, () => 2);
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("40 / 80");
+    expect(result.querySelector(".quiz-crisis")).toBeNull();
+    // Not a wellbeing check: no "not a diagnosis" line.
+    expect(result.querySelector("p.muted")).toBeNull();
+    const work = mount("work-style");
+    answer(work, () => 2);
+    submit(work);
+    expect(work.querySelectorAll("#result .quiz-trait")).toHaveLength(4);
+  });
+
   it("lists every test on the hub", () => {
     document.body.innerHTML = "<main></main>";
     const main = document.querySelector("main")!;

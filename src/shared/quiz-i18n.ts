@@ -22,6 +22,8 @@ export type QuizCopy = {
   results?: Record<string, QuizResultCopy>;
   tips?: Record<string, string>;
   codeTitle?: string;
+  /** Label of the score bar on band results, when "Score" alone is unclear. */
+  scoreLabel?: string;
 };
 
 export type QuizUi = QuizMessages["ui"];

@@ -3,10 +3,10 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "enneagram"] },
-  { id: "love", quizzes: ["love-language", "attachment", "marriage"] },
-  { id: "career", quizzes: ["career", "money"] },
-  { id: "fun", quizzes: ["anime", "face-shape"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram"] },
+  { id: "love", quizzes: ["love-language", "attachment", "marriage", "conflict-style"] },
+  { id: "career", quizzes: ["career", "work-style", "money"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "anime", "face-shape"] },
   { id: "wellbeing", quizzes: ["self-esteem", "anxiety", "depression"] },
 ] as const;
 
@@ -32,18 +32,22 @@ export const SCALE_POINTS: Record<Scale, number> = { agree5: 5, agree4: 4, freq4
 
 /** A statement scored on the scale: it adds to `dim`, reversed when `rev`. */
 export type LikertItem = { dim: string; rev?: boolean };
-/** A multiple-choice question: each option adds its weights to the named dimensions. */
-export type ChoiceItem = { options: Record<string, number>[] };
+/**
+ * A multiple-choice question: each option adds its weights to the named dimensions. `exclude[i]` lists results that
+ * option i rules out whatever the scores (a fur allergy rules out furry pets); see `scoreQuiz`.
+ */
+export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly (readonly string[] | undefined)[] };
 
 /**
  * profile  — every dimension as a percentage with a low / mid / high reading (Big Five).
  * types    — four opposite pairs; dims are pairs like "EI", agree scores the first letter (16 types).
- * top      — the highest dimension wins; all dimensions shown ranked.
+ * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
  *            the lowest area gets a tip (marriage readiness).
- * band     — the raw total picks a band (Rosenberg, GAD-7, PHQ-9).
+ * band     — the raw total picks a band (Rosenberg, GAD-7, PHQ-9; extraversion; chronotype, where choice options
+ *            add their weights to the total).
  */
 export type ResultRule =
   | { kind: "profile" }
@@ -106,6 +110,28 @@ const MONEY = likert(`
   saver+ spender+ investor+ avoider+ giver+  saver+ spender+ investor+ avoider+ giver+
 `);
 
+/**
+ * Extraversion scale of the IPIP 100-item Big-Five Factor Markers (Goldberg, public domain): ten positively and ten
+ * negatively keyed items, alternated. Items and keys as listed at https://ipip.ori.org/newBigFive5broadKey.htm (Factor I,
+ * 20-item scale); its 10-item subset is the Big Five test's E items. Total 0–80; the bands split the scale range at 40% and 60%, like `traitLevel`.
+ */
+const EXTRAVERSION = likert(`
+  ext+ ext- ext+ ext- ext+ ext- ext+ ext- ext+ ext-
+  ext+ ext- ext+ ext- ext+ ext- ext+ ext- ext+ ext-
+`);
+
+/** Five conflict-handling styles, four original statements each. */
+const CONFLICT = likert(`
+  compete+ collab+ compromise+ avoid+ accommodate+  compete+ collab+ compromise+ avoid+ accommodate+
+  compete+ collab+ compromise+ avoid+ accommodate+  compete+ collab+ compromise+ avoid+ accommodate+
+`);
+
+/** Work preferences: place (home over office), people, structure and variety; five statements each, two reversed. */
+const WORK = likert(`
+  remote+ team+ structure+ variety+  remote- team- structure- variety-  remote+ team+ structure+ variety+
+  remote- team- structure- variety-  remote+ team+ structure+ variety+
+`);
+
 /** Rosenberg Self-Esteem Scale: items 2, 5, 6, 8 and 9 are reverse-scored. Total 0–30. */
 const ROSENBERG = likert("se+ se- se+ se+ se- se- se+ se- se- se+");
 
@@ -142,9 +168,63 @@ const FACE: ChoiceItem[] = [
   { options: [{ diamond: 3, heart: 1 }, { round: 3 }, { oval: 2 }, { square: 1, oblong: 2 }] },
 ];
 
+/**
+ * One morning–evening axis: every answer runs from earliest (0) to latest (3), 14 questions, total 0–42. Banded at
+ * 40% and 60% of the range, like the extraversion test.
+ */
+const EARLY_TO_LATE: ChoiceItem = { options: [{ eve: 0 }, { eve: 1 }, { eve: 2 }, { eve: 3 }] };
+const CHRONOTYPE: ChoiceItem[] = Array.from({ length: 14 }, () => EARLY_TO_LATE);
+
+const PET: ChoiceItem[] = [
+  // Daily time for care and company.
+  { options: [{ fish: 2, reptile: 1 }, { cat: 2, hamster: 2, reptile: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2, bird: 2 }] },
+  // Living space.
+  { options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, reptile: 1, bird: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2 }] },
+  // Hours away from home.
+  { options: [{ fish: 2, reptile: 2 }, { cat: 2, hamster: 1, fish: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
+  // Travel.
+  { options: [{ reptile: 2, fish: 1 }, { cat: 2, hamster: 1, rabbit: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
+  // Allergies: a fur or dander allergy leaves only fish and reptiles (feather dust is a common allergen too).
+  {
+    options: [{ dog: 1, cat: 1, rabbit: 1, bird: 1, hamster: 1 }, { fish: 2, reptile: 2 }, { fish: 1, reptile: 1 }],
+    exclude: [undefined, ["cat", "dog", "rabbit", "bird", "hamster"]],
+  },
+  // Monthly budget.
+  { options: [{ fish: 2, hamster: 2 }, { cat: 2, rabbit: 1, bird: 1, reptile: 1 }, { dog: 2, rabbit: 1, bird: 1, reptile: 1 }] },
+  // How you want to interact.
+  { options: [{ fish: 2, reptile: 1 }, { cat: 2 }, { dog: 2, bird: 2 }, { hamster: 2, rabbit: 1, reptile: 1 }] },
+  // Noise.
+  { options: [{ fish: 2, reptile: 2, rabbit: 1 }, { cat: 2, hamster: 1 }, { dog: 2, bird: 2 }] },
+  // Years of commitment.
+  { options: [{ hamster: 2, fish: 1 }, { rabbit: 2, dog: 1, fish: 1 }, { cat: 2, dog: 1, bird: 1, reptile: 1 }, { bird: 2, reptile: 2 }] },
+  // Least bad chore.
+  { options: [{ dog: 2 }, { cat: 2, rabbit: 1 }, { fish: 2 }, { hamster: 2, rabbit: 1, bird: 1 }, { reptile: 2 }] },
+  // Who lives with you.
+  { options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }] },
+  // Rental or building rules: "small caged or tank animals only" (birds and rabbits live in cages too) and "no dogs"
+  // are hard limits.
+  {
+    options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }],
+    exclude: [["dog", "cat"], ["dog"]],
+  },
+  // A pet that follows you everywhere.
+  { options: [{ dog: 2, bird: 1 }, { cat: 2, rabbit: 1 }, { fish: 2, reptile: 2, hamster: 1 }] },
+  // A perfect evening together.
+  { options: [{ hamster: 2 }, { rabbit: 2, bird: 2 }, { reptile: 2, fish: 1 }, { dog: 2, cat: 1 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
+  introvert: {
+    id: "introvert",
+    type: "likert",
+    scale: "agree5",
+    dims: ["ext"],
+    items: EXTRAVERSION,
+    // 40% and 60% of 0–80 are 32 and 48: below 32 is introvert, above 48 extrovert (the `traitLevel` split).
+    result: { kind: "band", bands: [{ max: 31, key: "introvert" }, { max: 48, key: "ambivert" }, { max: 80, key: "extrovert" }] },
+  },
   enneagram: { id: "enneagram", type: "likert", scale: "agree5", dims: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], items: ENNEAGRAM, result: { kind: "top" } },
   "love-language": { id: "love-language", type: "likert", scale: "agree5", dims: ["words", "time", "gifts", "service", "touch"], items: LOVE, result: { kind: "top" } },
   attachment: {
@@ -163,8 +243,32 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: MARRIAGE,
     result: { kind: "areas", bands: [{ min: 80, key: "ready", floor: 60 }, { min: 65, key: "close" }, { min: 45, key: "work" }, { min: 0, key: "early" }] },
   },
+  "conflict-style": {
+    id: "conflict-style",
+    type: "likert",
+    scale: "agree5",
+    // Ties go to the earlier style, so a flat profile reads as compromising, never as competing.
+    dims: ["compromise", "collab", "accommodate", "avoid", "compete"],
+    items: CONFLICT,
+    result: { kind: "top" },
+  },
   career: { id: "career", type: "likert", scale: "agree5", dims: ["R", "I", "A", "S", "E", "C"], items: RIASEC, result: { kind: "code" } },
+  "work-style": { id: "work-style", type: "likert", scale: "agree5", dims: ["remote", "team", "structure", "variety"], items: WORK, result: { kind: "profile" } },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
+  chronotype: {
+    id: "chronotype",
+    type: "choice",
+    dims: ["eve"],
+    items: CHRONOTYPE,
+    result: { kind: "band", bands: [{ max: 16, key: "lark" }, { max: 25, key: "between" }, { max: 42, key: "owl" }] },
+  },
+  pet: {
+    id: "pet",
+    type: "choice",
+    dims: ["cat", "dog", "rabbit", "fish", "bird", "hamster", "reptile"],
+    items: PET,
+    result: { kind: "top" },
+  },
   anime: {
     id: "anime",
     type: "choice",
@@ -234,8 +338,10 @@ export type QuizResult = {
   scores: DimScore[];
   /** Raw total, for band results. */
   total: number;
-  /** Highest to lowest, for top / code results. */
+  /** Highest to lowest, for top / code results, without the results an answer ruled out. */
   ranked: DimScore[];
+  /** Results ruled out by an answer (choice options' `exclude`), left out of `ranked`. Empty if that would rule out all. */
+  excluded: string[];
   /** Areas result: the weakest area. */
   weakest?: string;
   /** Overall percentage (areas and profile). */
@@ -276,6 +382,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const scores: DimScore[] = def.dims.map((dim) => ({ dim, raw: 0, min: 0, max: 0, pct: 0 }));
   const byDim = new Map(scores.map((s) => [s.dim, s]));
   let total = 0;
+  const excluded = new Set<string>();
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -293,15 +400,21 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         const best = Math.max(0, ...item.options.map((o) => o[dim] ?? 0));
         byDim.get(dim)!.max += best;
       }
-      const picked = item.options[answers[i] ?? 0] ?? {};
+      const answer = answers[i] ?? 0;
+      const picked = item.options[answer] ?? {};
       for (const [dim, weight] of Object.entries(picked)) {
         const s = byDim.get(dim);
-        if (s) s.raw += weight;
+        if (!s) continue;
+        s.raw += weight;
+        total += weight;
       }
+      for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
   }
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
-  const ranked = rank(scores);
+  // If the answers rule out every result, ignore the exclusions rather than show nothing.
+  if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)));
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
@@ -310,7 +423,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const watch = SAFETY[id];
   const safety = Boolean(watch && ((answers[watch.item] ?? 0) > 0 || watch.bands.includes(key)));
   const weakest = rule.kind === "areas" ? lowest(scores).dim : undefined;
-  return { key, scores, total, ranked, overall, safety, ...(weakest ? { weakest } : {}) };
+  return { key, scores, total, ranked, excluded: [...excluded], overall, safety, ...(weakest ? { weakest } : {}) };
 }
 
 function lowest(scores: DimScore[]): DimScore {
@@ -357,8 +470,10 @@ export function traitLevel(value: number): "low" | "mid" | "high" {
 /** Highest possible raw total (band results show "12 / 27"). */
 export function maxTotal(id: QuizId): number {
   const def = QUIZ_DEFS[id];
-  if (def.type !== "likert") return 0;
-  return def.items.length * (SCALE_POINTS[def.scale] - 1);
+  if (def.type === "likert") return def.items.length * (SCALE_POINTS[def.scale] - 1);
+  // Choice: the best option of each question, counting only the quiz's own dimensions (as `scoreQuiz` does).
+  const weight = (o: Record<string, number>): number => def.dims.reduce((a, dim) => a + (o[dim] ?? 0), 0);
+  return def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map(weight)), 0);
 }
 
 /** Result keys the copy must define, per quiz (tests check every locale has them all). */

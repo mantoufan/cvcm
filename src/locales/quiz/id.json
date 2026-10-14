@@ -37,9 +37,9 @@
   },
   "hub": {
     "title": "Tes kepribadian gratis: MBTI, Big Five, cinta & karier — cv.cm",
-    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, Enneagram, bahasa cinta, minat bakat, bentuk wajah, kecemasan, dan depresi. Tanpa daftar.",
+    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, introvert ekstrovert, Enneagram, bahasa cinta, kelekatan, gaya konflik, minat bakat, gaya kerja, keuangan, kronotipe, hewan peliharaan, anime, bentuk wajah, harga diri, kecemasan, dan depresi. Tanpa daftar; jawaban tetap di browsermu.",
     "h1": "Tes kepribadian dan psikologi",
-    "lede": "Tiga belas tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
+    "lede": "Delapan belas tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, gaya kerjamu, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
     "groups": {
       "personality": "Kepribadian",
       "love": "Cinta dan hubungan",
@@ -49,7 +49,7 @@
     },
     "about": [
       "Setiap tes menampilkan semua pertanyaannya dalam satu halaman. Jawab semuanya, tekan tombol, dan hasilnya muncul di bawah pertanyaan beserta penjelasan singkat dan grafik skormu.",
-      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis."
+      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five dan tes introvert–ekstrovert memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis."
     ],
     "faq": [
       { "q": "Apakah tes ini gratis?", "a": "Ya. Semua tes gratis, tanpa daftar, tanpa email, dan tanpa bayar untuk melihat hasil." },
@@ -232,6 +232,71 @@
           "low": "Emosimu stabil dan kamu tetap tenang di bawah tekanan. Kemunduran jarang mengguncangmu lama.",
           "mid": "Kamu merasakan stres dan kekhawatiran pada tingkat yang wajar dan biasanya pulih dalam waktu yang masuk akal.",
           "high": "Kamu merasakan emosi dengan intens dan bisa rentan terhadap kekhawatiran, stres, atau suasana hati yang murung. Istirahat teratur, olahraga, dan bercerita kepada orang lain bisa membantu."
+        }
+      }
+    },
+    "introvert": {
+      "title": "Tes introvert atau ekstrovert gratis (IPIP, 20 soal) — cv.cm",
+      "description": "Kamu introvert, ambivert, atau ekstrovert? Nilai 20 pernyataan IPIP domain publik dan dapatkan skor dari 80 plus tips praktis. Gratis, tanpa daftar.",
+      "h1": "Tes introvert atau ekstrovert",
+      "lede": "Cari tahu posisimu di antara introversi dan ekstraversi. 20 pernyataan singkat dari kuesioner penelitian, skor dari 80, dan artinya bagi energi, pekerjaan, dan pertemananmu.",
+      "about": [
+        "Ekstraversi adalah salah satu sifat Big Five. Orang yang tinggi dalam sifat ini mendapat energi dari kebersamaan, mudah bicara, dan senang diperhatikan. Orang yang rendah, para introvert, lebih suka kelompok kecil dan waktu tenang, serta berpikir dulu sebelum bicara. Kebanyakan orang ada di tengah-tengah: ambivert.",
+        "Ke-20 pernyataan ini adalah skala ekstraversi dari 100 butir Big-Five Factor Markers dalam International Personality Item Pool (IPIP), yang dikembangkan oleh Lewis Goldberg dan berstatus domain publik. Separuhnya dinilai terbalik. Batas kategorinya ada di 40% dan 60% rentang skala (di bawah 40% introvert, 40–60% ambivert, di atas 60% ekstrovert); ini bukan norma populasi.",
+        "Introvert tidak sama dengan pemalu. Pemalu berarti khawatir dinilai orang; introversi berkaitan dengan dari mana energimu berasal. Seorang introvert bisa percaya diri dan pandai bergaul, dan seorang ekstrovert bisa saja pemalu."
+      ],
+      "faq": [
+        {
+          "q": "Apa itu ambivert?",
+          "a": "Orang yang berada di tengah skala: supel di situasi tertentu, senang sendirian di situasi lain. Kebanyakan orang adalah ambivert."
+        },
+        {
+          "q": "Apakah lebih baik menjadi ekstrovert?",
+          "a": "Tidak. Ekstrovert sering lebih mudah membangun relasi dan bekerja dalam kelompok; introvert sering unggul dalam kerja yang mendalam dan fokus serta mendengarkan secara empat mata. Keduanya bisa mempelajari keterampilan satu sama lain."
+        },
+        {
+          "q": "Dari mana asal pertanyaannya?",
+          "a": "Dari IPIP 100-item Big-Five Factor Markers karya Lewis Goldberg, kumpulan butir domain publik yang banyak dipakai dalam penelitian. Tes ini memakai 20 butir ekstraversinya."
+        },
+        {
+          "q": "Bisakah hasilku berubah?",
+          "a": "Tingkat dasar ekstraversimu cukup stabil saat dewasa, tetapi sedikit bergeser seiring usia, peran, dan suasana hati. Ulangi tes ini beberapa bulan lagi lalu bandingkan."
+        }
+      ],
+      "items": [
+        "Saya adalah pusat perhatian di pesta.",
+        "Saya tidak banyak bicara.",
+        "Saya merasa nyaman berada di sekitar orang lain.",
+        "Saya lebih suka berada di belakang layar.",
+        "Saya memulai percakapan.",
+        "Saya hanya punya sedikit hal untuk dikatakan.",
+        "Saya berbicara dengan banyak orang berbeda di pesta.",
+        "Saya tidak suka menarik perhatian pada diri sendiri.",
+        "Saya tidak keberatan menjadi pusat perhatian.",
+        "Saya pendiam di depan orang asing.",
+        "Saya mudah berteman.",
+        "Saya sulit mendekati orang lain.",
+        "Saya mengambil kendali.",
+        "Saya sering merasa tidak nyaman di dekat orang lain.",
+        "Saya tahu cara memikat orang.",
+        "Saya memendam perasaan saya.",
+        "Saya merasa santai bersama orang lain.",
+        "Saya orang yang sangat tertutup.",
+        "Saya pandai menghadapi situasi sosial.",
+        "Saya menunggu orang lain memimpin."
+      ],
+      "results": {
+        "introvert": {
+          "name": "Introvert",
+          "body": "Kamu mengisi ulang energi sendirian atau bersama satu-dua orang dekat, dan interaksi sosial yang panjang menguras tenagamu. Kekuatan: fokus, mendengarkan dengan saksama, dan berpikir sebelum bicara. Tips: rencanakan waktu tenang setelah hari yang sibuk tanpa merasa bersalah; di acara, pasang target (dua obrolan yang bermakna) lalu pulang setelah tercapai; tawarkan untuk berbagi ide lewat tulisan atau empat mata, di situlah kamu bersinar."
+        },
+        "ambivert": {
+          "name": "Ambivert",
+          "body": "Kamu ada di tengah: supel saat situasinya pas, senang sendirian saat tidak. Fleksibilitas itu adalah kekuatan: kamu bisa membaca suasana dan berganti mode. Tips: perhatikan situasi mana yang memberimu energi dan mana yang menguras, lalu atur minggumu agar tidak ada yang menumpuk terlalu lama."
+        },
+        "extrovert": {
+          "name": "Ekstrovert",
+          "body": "Kamu mendapat energi dari orang lain, mengolah ide dengan membicarakannya, dan menikmati tempo yang ramai. Kekuatan: membangun jaringan, memulai percakapan, dan menyemangati kelompok. Tips: dalam rapat, beri ruang bagi orang yang lebih pendiam untuk bicara; saat butuh fokus mendalam, buat sesi singkat dengan teman atau rekan kerja di dekatmu; tanyakan pada dirimu dulu sebelum mengiyakan setiap undangan."
         }
       }
     },
@@ -464,6 +529,85 @@
         "future": "Tulis masing-masing di mana kalian ingin berada dalam lima tahun (rumah, anak, karier), lalu bandingkan dan temukan titik temunya."
       }
     },
+    "conflict-style": {
+      "title": "Tes gaya konflik gratis: bagaimana caramu menghadapi perbedaan pendapat? — cv.cm",
+      "description": "Kuis gaya konflik gratis. Nilai 20 pernyataan: kamu cenderung bersaing, berkolaborasi, berkompromi, menghindar, atau mengalah? Plus kapan tiap gaya membantu.",
+      "h1": "Tes gaya konflik",
+      "lede": "Setiap orang punya langkah bawaan saat perselisihan dimulai. Temukan gayamu di antara lima gaya konflik klasik, lihat seberapa kuat kamu memakai gaya lainnya, dan pelajari kapan harus berganti.",
+      "about": [
+        "Peneliti menggambarkan lima cara menghadapi konflik berdasarkan dua pertanyaan: seberapa keras kamu memperjuangkan kebutuhanmu sendiri (ketegasan) dan seberapa peduli kamu pada kebutuhan orang lain (kerja sama). Bersaing tinggi di yang pertama, mengalah tinggi di yang kedua, berkolaborasi tinggi di keduanya, menghindar rendah di keduanya, dan berkompromi ada di tengah.",
+        "Pernyataan di halaman ini disusun untuk cv.cm; tidak diambil dari instrumen komersial mana pun. Setiap gaya berguna pada saat yang tepat. Tujuannya bukan menemukan gaya yang \"benar\", melainkan menyadari kebiasaanmu dan memilih dengan sengaja."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja lima gaya konflik?",
+          "a": "Bersaing (mempertahankan pendirian), berkolaborasi (menyelesaikan bersama agar sama-sama menang), berkompromi (bertemu di tengah), menghindar (mundur dulu), dan mengalah (memberi orang lain apa yang mereka mau)."
+        },
+        {
+          "q": "Gaya konflik mana yang terbaik?",
+          "a": "Tidak ada yang terbaik untuk semua situasi. Berkolaborasi cocok untuk masalah penting yang ada waktu untuk dibahas; bersaing untuk keadaan darurat; berkompromi untuk jalan buntu; menghindar untuk hal sepele atau suasana yang memanas; mengalah untuk masalah yang lebih penting bagi pihak lain."
+        },
+        {
+          "q": "Apakah ini instrumen Thomas-Kilmann?",
+          "a": "Bukan. Tes ini memakai model lima gaya yang sama dan banyak diajarkan, tetapi pertanyaan dan hasilnya asli buatan cv.cm, dan skornya tidak bisa dibandingkan dengan tes komersial mana pun."
+        },
+        {
+          "q": "Bisakah aku memakainya bersama pasangan atau tim?",
+          "a": "Bisa. Kerjakan secara terpisah, bandingkan grafiknya, lalu bicarakan gaya mana yang masing-masing kalian pakai saat tertekan. Mengetahui gaya bawaan orang lain membuatmu lebih mudah tidak menganggapnya pribadi."
+        }
+      ],
+      "items": [
+        "Saat berbeda pendapat, saya mempertahankan posisi saya dengan tegas sampai orang lain sepakat dengan saya.",
+        "Saya berusaha agar semua kekhawatiran dibahas terbuka sebelum kami memutuskan apa pun.",
+        "Saya senang bertemu di tengah supaya kami bisa lanjut.",
+        "Saya lebih memilih melepaskan topik sensitif daripada berisiko bertengkar.",
+        "Saya biasanya mengalah jika masalahnya lebih penting bagi orang lain daripada bagi saya.",
+        "Saat yakin saya benar, saya tidak mundur hanya demi menjaga suasana damai.",
+        "Saya mencari solusi yang benar-benar cocok untuk kami berdua, meski butuh waktu lebih lama.",
+        "Pertukaran yang adil, di mana setiap pihak merelakan sesuatu, terasa sebagai hasil yang baik bagi saya.",
+        "Saat konflik dimulai, saya sering mengganti topik atau keluar ruangan.",
+        "Menjaga hubungan tetap mulus lebih penting bagi saya daripada memenangkan argumen.",
+        "Saya menganggap debat sebagai sesuatu yang harus dimenangkan.",
+        "Saya banyak bertanya untuk memahami apa yang sebenarnya dibutuhkan orang lain.",
+        "Saat buntu, saya menyarankan untuk ambil jalan tengah.",
+        "Saya menunda percakapan yang sulit, berharap masalahnya selesai dengan sendirinya.",
+        "Saya sering mendahulukan keinginan orang lain di atas keinginan saya agar mereka tidak kecewa.",
+        "Jika sebuah keputusan penting bagi saya, saya memperjuangkannya habis-habisan, meski menimbulkan sedikit ketegangan.",
+        "Saya lebih suka menyelesaikan perbedaan pendapat bersama-sama daripada cepat-cepat mengakhirinya.",
+        "Saya mau merelakan sebagian keinginan saya jika orang lain melakukan hal yang sama.",
+        "Banyak perbedaan pendapat tidak sepadan dengan tenaganya, jadi saya membiarkannya.",
+        "Saya mudah berkata, \"Ya sudah, kita pakai caramu saja.\""
+      ],
+      "dims": {
+        "compete": "Bersaing",
+        "collab": "Berkolaborasi",
+        "compromise": "Berkompromi",
+        "avoid": "Menghindar",
+        "accommodate": "Mengalah"
+      },
+      "results": {
+        "compete": {
+          "name": "Bersaing",
+          "body": "Kamu membela posisimu dan tidak goyah di bawah tekanan. Membantu: keadaan darurat, keputusan yang tidak populer tapi perlu, melindungi diri agar tidak dimanfaatkan. Merugikan: saat jadi satu-satunya caramu, orang berhenti terbuka padamu dan diam-diam kesal pada keputusanmu. Coba: sebelum berdebat, ajukan satu pertanyaan tulus tentang kebutuhan orang lain, dan simpan tenaga penuhmu untuk hal yang benar-benar penting."
+        },
+        "collab": {
+          "name": "Berkolaborasi",
+          "body": "Kamu ingin solusi yang benar-benar cocok untuk kedua pihak, dan kamu menggali kepentingan sebenarnya di balik setiap posisi. Membantu: keputusan penting, hubungan jangka panjang, masalah yang membuka ruang untuk jawaban kreatif. Merugikan: butuh waktu dan tenaga, dan tidak setiap masalah kecil layak dibahas panjang lebar. Coba: putuskan sejak awal apakah sebuah topik layak diproses penuh; untuk hal kecil, kompromi cepat sudah cukup."
+        },
+        "compromise": {
+          "name": "Berkompromi",
+          "body": "Kamu mencari jalan tengah yang adil supaya semua bisa lanjut. Membantu: jalan buntu, kekuatan yang seimbang di kedua pihak, waktu yang mepet. Merugikan: terlalu cepat ambil jalan tengah bisa membuat kedua pihak cuma setengah puas dan melewatkan jawaban yang lebih baik. Coba: sebelum menawarkan jalan tengah, tanyakan \"Apa yang paling penting buatmu di sini?\"; mungkin ada pertukaran di mana tiap pihak mendapat hal yang paling ia pedulikan."
+        },
+        "avoid": {
+          "name": "Menghindar",
+          "body": "Kamu mundur dari konflik, dan kamu pandai tidak membesar-besarkan hal kecil. Membantu: masalah sepele, suasana panas yang butuh pendinginan, pertengkaran yang tidak bisa atau tidak perlu kamu menangkan. Merugikan: masalah penting membesar selama ditunda, dan orang lain bisa mengira diammu berarti setuju. Coba: saat menghindar, tetapkan waktu untuk kembali membahasnya (\"Bisa kita bicarakan besok malam?\"), dan tulis satu poin yang perlu kamu sampaikan."
+        },
+        "accommodate": {
+          "name": "Mengalah",
+          "body": "Kamu menjaga hubungan dan membiarkan orang lain mendapatkan maunya. Membantu: masalah yang lebih penting bagi mereka, saat kamu sadar kamu salah, membangun niat baik. Merugikan: jika ini jadi kebiasaanmu, kebutuhanmu sendiri lenyap dan rasa frustrasi menumpuk. Coba: sebelum mengiyakan, nilai seberapa penting masalah itu bagimu dari 1 sampai 10; jika di atas 6, sampaikan keinginanmu dengan ramah dan jelas."
+        }
+      }
+    },
     "career": {
       "title": "Tes minat bakat Holland (RIASEC) gratis — cv.cm",
       "description": "Tes minat bakat gratis berdasarkan model RIASEC Holland. Nilai 36 aktivitas untuk mendapat kode Holland tiga hurufmu dan karier yang sesuai minatmu. Tanpa daftar.",
@@ -535,6 +679,84 @@
         "C": { "name": "Konvensional (pengatur)", "body": "Kamu suka keteraturan, ketelitian, dan prosedur yang jelas dalam mengolah data. Karier untuk dijelajahi: akuntan, auditor, staf administrasi, koordinator logistik, pegawai bank, administrator basis data." }
       }
     },
+    "work-style": {
+      "title": "Tes gaya kerja gratis: remote, hybrid, atau kantor? Sendiri atau tim? — cv.cm",
+      "description": "Kuis gaya kerja gratis. Nilai 20 pernyataan: cocok remote, hybrid, atau kantor? Seberapa butuh kerja tim, struktur, dan variasi? Lengkap dengan tips praktis.",
+      "h1": "Tes gaya kerja",
+      "lede": "Di mana dan bagaimana kamu bekerja paling baik? Ukur empat preferensi: rumah atau kantor, sendiri atau tim, struktur atau kebebasan, fokus atau variasi, dan dapatkan tips untuk masing-masing.",
+      "about": [
+        "Kepuasan kerja tidak hanya bergantung pada apa yang kamu kerjakan, tetapi juga pada bagaimana pekerjaan itu diatur. Tes yang disusun untuk cv.cm ini mengukur empat preferensi sehari-hari: di mana kamu suka bekerja, seberapa suka kamu bekerja bersama orang lain, seberapa banyak struktur yang kamu inginkan, dan apakah kamu lebih suka variasi atau fokus panjang.",
+        "Setiap skor berkisar dari 0 sampai 100. Di bawah 40 condong ke satu sisi, di atas 60 ke sisi lain, dan bagian tengah berarti campuran. Gunakan hasilnya untuk mengajukan pertanyaan yang lebih tepat saat wawancara kerja (\"Berapa hari harus ke kantor?\", \"Bagaimana prioritas ditentukan?\") dan untuk membentuk pekerjaanmu sekarang."
+      ],
+      "faq": [
+        {
+          "q": "Apakah tes ini memberi tahu karier mana yang harus kupilih?",
+          "a": "Tidak. Tes ini menggambarkan kondisi kerja, bukan bidang. Untuk bidang karier, ambil tes karier kode Holland, lalu gunakan tes ini untuk memilih di antara pekerjaan yang mirip."
+        },
+        {
+          "q": "Skor remote-ku di tengah. Apa artinya?",
+          "a": "Kemungkinan besar kamu paling cocok dengan pola hybrid: hari di kantor untuk rapat dan bertemu orang, hari di rumah untuk kerja yang butuh fokus."
+        },
+        {
+          "q": "Bagaimana jika pekerjaanku tidak sesuai dengan hasilku?",
+          "a": "Perubahan kecil bisa membantu: blokir waktu fokus di kalender, minta satu hari kerja remote, sepakati prioritas yang lebih jelas dengan atasan, atau bertukar tugas dengan rekan yang menyukai pekerjaan yang tidak kamu sukai."
+        },
+        {
+          "q": "Apakah satu gaya kerja lebih baik dari yang lain?",
+          "a": "Tidak. Tim butuh orang yang suka struktur dan orang yang suka kebebasan, orang yang kerja sendiri dan orang yang suka menghubungkan. Yang penting adalah kecocokan."
+        }
+      ],
+      "items": [
+        "Saya lebih produktif di rumah daripada di kantor.",
+        "Saya bekerja paling baik saat bisa bertukar ide dengan orang lain.",
+        "Saya suka tahu persis apa yang diharapkan dari saya dan kapan tenggatnya.",
+        "Hari yang penuh tugas berbeda-beda memberi saya lebih banyak energi daripada satu tugas panjang.",
+        "Saya butuh suasana ramai kantor agar tetap termotivasi.",
+        "Saya lebih suka memegang satu pekerjaan dari awal sampai akhir sendirian.",
+        "Saya bekerja paling baik saat bisa menentukan sendiri cara dan waktunya.",
+        "Saya paling senang mengerjakan satu tugas berjam-jam tanpa berganti.",
+        "Bagi saya, perjalanan pulang-pergi kerja terasa buang-buang waktu.",
+        "Rapat dan check-in rutin lebih banyak membantu saya daripada memperlambat.",
+        "Proses dan rutinitas yang jelas membuat kerja terasa tidak terlalu stres bagi saya.",
+        "Saya menikmati tempo cepat dengan masalah baru setiap hari.",
+        "Saya belajar banyak hanya dengan berada di dekat rekan kerja dan mendengar cara mereka bekerja.",
+        "Grup chat dan rapat yang terus-menerus menguras tenaga saya.",
+        "Aturan kaku dan jadwal tetap membuat saya gelisah.",
+        "Gangguan yang sering merusak pekerjaan terbaik saya.",
+        "Saya bisa menjaga rutinitas yang teratur di rumah tanpa ada yang mengawasi.",
+        "Keberhasilan bersama lebih berarti bagi saya daripada keberhasilan pribadi.",
+        "Saya suka punya atasan yang menetapkan prioritas jelas untuk saya.",
+        "Saya cepat bosan begitu pekerjaan menjadi rutin."
+      ],
+      "dims": {
+        "remote": "Kerja dari rumah",
+        "team": "Kerja tim",
+        "structure": "Struktur",
+        "variety": "Variasi"
+      },
+      "levels": {
+        "remote": {
+          "low": "Kantor: kamu mendapat energi, fokus, dan pembelajaran dari berada di dekat rekan kerja. Cari peran dengan budaya kantor yang nyata, dan jika bekerja remote, pakai coworking space atau jadwalkan hari rutin ke kantor agar tidak terisolasi.",
+          "mid": "Hybrid: hari di kantor untuk rapat dan bertemu orang, hari di rumah untuk kerja fokus. Tanyakan ke calon pemberi kerja bagaimana pola hybrid berjalan dalam praktiknya, dan rencanakan tugas mana untuk hari apa.",
+          "high": "Remote: kamu bekerja baik dengan jadwalmu sendiri dan tidak merindukan perjalanan ke kantor. Cari tim remote-first dengan komunikasi tertulis yang baik, dan jaga jam mulai dan selesai agar pekerjaan tidak memenuhi seharian."
+        },
+        "team": {
+          "low": "Sendiri: kamu lebih suka memegang pekerjaan dari awal sampai akhir. Peran seperti spesialis, analis, penulis, atau developer dengan kepemilikan yang jelas cocok untukmu. Sepakati beberapa check-in tetap agar kamu tetap mengikuti perkembangan tanpa rapat terus-menerus.",
+          "mid": "Campuran: kamu suka waktu sendiri untuk mengerjakan tugas dan waktu bersama untuk merencanakan dan mengevaluasinya. Kumpulkan rapat di satu bagian hari dan sisakan sisanya untuk fokus.",
+          "high": "Tim: kamu berpikir paling jernih dengan membicarakannya dan menikmati tujuan bersama. Cari peran kolaboratif seperti kerja proyek, penjualan, mengajar, atau tim produk, dan untuk tugas sendirian, cari partner atau adakan check-in singkat agar tetap termotivasi."
+        },
+        "structure": {
+          "low": "Kebebasan: kamu ingin menentukan sendiri cara dan waktu bekerja. Startup, freelance, dan peran yang dinilai dari hasil cocok untukmu. Tetapkan tenggatmu sendiri dan bagikan, agar kebebasan tidak berubah jadi stres menit terakhir.",
+          "mid": "Seimbang: kamu suka tujuan yang jelas tapi tetap ingin punya suara soal cara mencapainya. Minta atasan menjelaskan \"apa\" dan \"kapan\", lalu usulkan sendiri \"bagaimana\"-nya.",
+          "high": "Struktur: harapan, proses, dan prioritas yang jelas menenangkanmu dan membantumu bekerja dengan sangat baik. Organisasi besar dan peran berbasis proses cocok untukmu; saat semuanya kabur, minta checklist atau definisi \"selesai\" sejak awal."
+        },
+        "variety": {
+          "low": "Fokus mendalam: kamu bekerja paling baik dalam blok waktu panjang tanpa gangguan. Jadwalkan blok fokus dua atau tiga jam, matikan notifikasi, dan cari peran yang menghargai kedalaman seperti riset, engineering, atau editing.",
+          "mid": "Seimbang: sedikit variasi membuatmu tetap segar, tapi terlalu sering berganti tugas melelahkanmu. Kelompokkan tugas yang mirip dan beri setiap hari satu fokus utama.",
+          "high": "Variasi: masalah baru dan tempo cepat memberimu energi, sementara rutinitas membuatmu bosan. Peran di operasional, layanan klien, event, atau startup cocok; simpan daftar sederhana agar banyak urusan tidak terlewat."
+        }
+      }
+    },
     "money": {
       "title": "Tes kepribadian keuangan gratis: apa tipe uangmu? — cv.cm",
       "description": "Kuis kepribadian keuangan gratis. Nilai 20 pernyataan: kamu penabung, pembelanja, investor, penghindar, atau pemberi? Plus kelebihan, titik buta, dan tips.",
@@ -585,6 +807,365 @@
         "investor": { "name": "Si Investor", "body": "Kekuatan: kamu jeli melihat peluang dan membiarkan uang bekerja untukmu. Titik buta: mengejar keuntungan besar bisa berarti terlalu banyak risiko di satu tempat. Tips: siapkan dana darurat lebih dulu, dan jangan pernah menaruh lebih banyak di satu taruhan daripada yang sanggup kamu relakan hilang." },
         "avoider": { "name": "Si Penghindar", "body": "Kekuatan: uang tidak mengendalikan hidupmu. Titik buta: tagihan yang tak dibuka, denda keterlambatan, dan peluang yang terlewat karena melihatnya terasa membuat stres. Tips: jadwalkan \"kencan keuangan\" 15 menit setiap minggu untuk mengecek saldo dan membayar tagihan; ini cepat terasa lebih mudah." },
         "giver": { "name": "Si Pemberi", "body": "Kekuatan: kemurahan hati dan hubungan yang erat. Titik buta: memberikan apa yang kamu butuhkan untuk keamananmu sendiri. Tips: tentukan anggaran berbagi sejak awal, agar kamu bisa murah hati tanpa membahayakan masa depanmu sendiri." }
+      }
+    },
+    "chronotype": {
+      "title": "Tes kronotipe gratis: kamu tipe pagi atau burung hantu malam? — cv.cm",
+      "description": "Kuis kronotipe gratis. Jawab 14 pertanyaan tentang ritme tidur dan energimu: tipe pagi, burung hantu malam, atau di tengah? Plus tips jadwal yang praktis.",
+      "h1": "Tes kronotipe: tipe pagi atau burung hantu malam?",
+      "lede": "Kronotipe adalah waktu alami jam biologismu: kapan kamu mengantuk, kapan bangun, dan kapan pikiranmu paling tajam. Jawab 14 pertanyaan tentang caramu hidup saat tidak ada alarm yang berbunyi.",
+      "about": [
+        "Kronotipe sebagian ditentukan oleh genetika dan berubah seiring usia: remaja dan dewasa muda cenderung tidur dan bangun lebih larut, dan kebanyakan orang bergeser lebih pagi setelah pertengahan usia dua puluhan. Tipe pagi merasa paling tajam di pagi hari; burung hantu malam mencapai puncaknya di malam hari; kebanyakan orang ada di antaranya.",
+        "Pertanyaan di sini disusun untuk cv.cm dan bukan kuesioner klinis. Hasilnya adalah refleksi diri, bukan diagnosis. Jika kamu sering sulit tidur, bangun dalam keadaan lelah setelah tidur semalaman, atau sangat mengantuk di siang hari, bicarakan dengan dokter: itu bisa jadi tanda gangguan tidur yang tidak ada hubungannya dengan menjadi burung hantu malam."
+      ],
+      "faq": [
+        {
+          "q": "Bisakah burung hantu malam menjadi tipe pagi?",
+          "a": "Sebagian. Kecenderungan dasarmu tetap, tetapi kamu bisa menggeser jadwal lebih pagi dengan kebiasaan yang konsisten: cahaya terang segera setelah bangun, cahaya redup di malam hari, dan jam bangun yang sama setiap hari, dimajukan 15 menit sekali geser."
+        },
+        {
+          "q": "Apakah satu kronotipe lebih sehat?",
+          "a": "Tidak ada kronotipe yang tidak sehat dengan sendirinya. Masalah muncul dari ketidakcocokan: burung hantu malam yang dipaksa mulai pagi akan menumpuk utang tidur. Yang paling penting adalah menyesuaikan jadwal dengan jam biologismu sebisa mungkin, dan menjaganya tetap teratur."
+        },
+        {
+          "q": "Kenapa ada pertanyaan soal akhir pekan?",
+          "a": "Bangun jauh lebih siang di hari libur dibanding hari kerja, kadang disebut social jet lag, adalah tanda umum bahwa jam alamimu berjalan lebih larut daripada jadwalmu."
+        },
+        {
+          "q": "Apakah ini tes gangguan tidur?",
+          "a": "Bukan. Tes ini menggambarkan waktu alamimu. Tes ini tidak bisa mendeteksi insomnia, sleep apnea, atau kondisi lain; temui dokter jika masalah tidur mengganggu kehidupan sehari-harimu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tanpa alarm dan tanpa rencana, jam berapa kamu akan bangun dengan sendirinya?",
+          "options": [
+            "Sebelum 06.30",
+            "06.30 sampai 08.00",
+            "08.00 sampai 09.30",
+            "Setelah 09.30"
+          ]
+        },
+        {
+          "q": "Di malam yang santai tanpa acara keesokan harinya, kapan kamu mulai mengantuk?",
+          "options": [
+            "Sebelum 22.00",
+            "22.00 sampai 23.30",
+            "23.30 sampai 01.00",
+            "Setelah 01.00"
+          ]
+        },
+        {
+          "q": "Bagaimana rasanya setengah jam pertama setelah bangun?",
+          "options": [
+            "Segar dan siap beraktivitas",
+            "Baik-baik saja setelah beberapa menit",
+            "Linglung cukup lama",
+            "Seperti zombi sampai menjelang siang"
+          ]
+        },
+        {
+          "q": "Kapan kamu paling bisa bekerja dengan fokus?",
+          "options": [
+            "Pagi-pagi sekali",
+            "Menjelang siang",
+            "Sore",
+            "Malam hari"
+          ]
+        },
+        {
+          "q": "Seorang teman mengajakmu lari pukul 07.00. Kamu berpikir…",
+          "options": [
+            "Asyik, ini waktu favoritku",
+            "Oke, asal aku tidur cepat",
+            "Aku ikut, tapi bakal berat",
+            "Sama sekali tidak"
+          ]
+        },
+        {
+          "q": "Malam main game atau pesta dimulai pukul 23.00. Kamu…",
+          "options": [
+            "Sudah mulai lemas",
+            "Masih kuat sekitar satu jam",
+            "Baik-baik saja",
+            "Baru mulai panas"
+          ]
+        },
+        {
+          "q": "Seberapa siang kamu bangun di hari libur dibanding hari kerja?",
+          "options": [
+            "Kurang lebih sama",
+            "Kurang dari satu jam lebih siang",
+            "Satu sampai dua jam lebih siang",
+            "Lebih dari dua jam lebih siang"
+          ]
+        },
+        {
+          "q": "Kamu boleh memilih jam ujian atau wawancara penting. Kamu pilih…",
+          "options": [
+            "08.00",
+            "11.00",
+            "15.00",
+            "19.00"
+          ]
+        },
+        {
+          "q": "Seberapa lapar kamu untuk sarapan?",
+          "options": [
+            "Langsung lapar begitu bangun",
+            "Lapar dalam satu jam",
+            "Baru lapar menjelang siang",
+            "Biasanya aku melewatkannya"
+          ]
+        },
+        {
+          "q": "Jika malam ini kamu harus mematikan lampu pukul 22.00, kamu akan…",
+          "options": [
+            "Tertidur dengan mudah",
+            "Tertidur setelah beberapa saat",
+            "Terjaga satu jam atau lebih",
+            "Hampir mustahil tidur"
+          ]
+        },
+        {
+          "q": "Pada hari biasa, kapan energimu biasanya paling rendah?",
+          "options": [
+            "Sore menjelang malam",
+            "Setelah makan siang",
+            "Menjelang siang",
+            "Begitu bangun pagi"
+          ]
+        },
+        {
+          "q": "Kapan ide-ide terbaikmu biasanya muncul?",
+          "options": [
+            "Di pagi hari",
+            "Sekitar tengah hari",
+            "Di malam hari",
+            "Lewat tengah malam"
+          ]
+        },
+        {
+          "q": "Jika jam kerja sepenuhnya terserah kamu, kamu akan bekerja…",
+          "options": [
+            "06.00 sampai 14.00",
+            "08.00 sampai 16.00",
+            "10.00 sampai 18.00",
+            "13.00 sampai 21.00 atau lebih larut"
+          ]
+        },
+        {
+          "q": "Mana yang paling menggambarkan dirimu?",
+          "options": [
+            "Jelas tipe pagi",
+            "Lebih ke pagi daripada malam",
+            "Lebih ke malam daripada pagi",
+            "Jelas tipe malam"
+          ]
+        }
+      ],
+      "scoreLabel": "Skor tipe malam (0 = paling pagi)",
+      "results": {
+        "lark": {
+          "name": "Tipe pagi",
+          "body": "Jam biologismu berjalan lebih awal: kamu mudah bangun dan paling tajam sebelum makan siang. Tips: taruh pekerjaan tersulit sekitar pukul 08.00 sampai 12.00 dan sisakan sore untuk rapat dan tugas rutin; jaga jam tidurmu saat ada acara malam, atau rencanakan tidur siang singkat daripada bangun siang; redupkan layar satu jam sebelum tidur agar tidak terbangun pukul 04.00. Tipe pagi sering merasa acara larut malam melelahkan: tak masalah mengusulkan brunch daripada nongkrong malam."
+        },
+        "between": {
+          "name": "Di tengah",
+          "body": "Jam biologismu ada di tengah, seperti kebanyakan orang, jadi kamu cukup mudah beradaptasi dengan jadwal normal. Tips: bangun di jam yang sama setiap hari, termasuk akhir pekan, dengan selisih maksimal sekitar satu jam; dapatkan sinar matahari di pagi hari; dan kenali puncak energimu, biasanya menjelang siang, untuk tugas yang berat. Rutinitas yang teratur lebih penting daripada jam berapa yang kamu pilih."
+        },
+        "owl": {
+          "name": "Burung hantu malam",
+          "body": "Jam biologismu berjalan lebih larut: pagi terasa berat dan kamu baru hidup di malam hari. Tips: dapatkan cahaya terang, sebaiknya di luar ruangan, dalam satu jam setelah bangun, dan buat cahaya malam tetap redup dan hangat; di akhir pekan, jaga jam bangun dalam selisih satu jam untuk membatasi social jet lag; berhenti minum kafein sekitar delapan jam sebelum tidur; untuk bergeser lebih pagi, majukan jam tidur dan bangun 15 menit setiap beberapa hari. Minta jadwal rapat yang lebih siang jika bisa, dan taruh pekerjaan berat di sore hari."
+        }
+      }
+    },
+    "pet": {
+      "title": "Hewan peliharaan apa yang cocok untukku? Kuis gratis — cv.cm",
+      "description": "Kuis hewan peliharaan gratis. Jawab 14 pertanyaan soal waktu, rumah, anggaran, alergi, dan gaya hidup: kucing, anjing, kelinci, ikan, burung, hamster, atau reptil?",
+      "h1": "Hewan peliharaan apa yang cocok untukmu?",
+      "lede": "Kecocokan yang baik membuat hidup lebih menyenangkan bagimu dan bagi hewannya. Jawab 14 pertanyaan dengan jujur tentang waktu, ruang, uang, dan kebiasaanmu, lalu lihat hewan mana yang cocok dengan hidupmu saat ini.",
+      "about": [
+        "Kuis yang disusun untuk cv.cm ini menimbang hal-hal praktis yang menentukan apakah seekor hewan akan tumbuh sehat bersamamu: waktu harian, ukuran rumah, lama kamu pergi, perjalanan, alergi, anggaran, kebisingan, umur hewan, dan tugas perawatan yang sanggup kamu jalani. Ini titik awal, bukan jaminan: setiap hewan dan ras bisa sangat berbeda.",
+        "Sebelum membawa hewan apa pun pulang: pelajari kebutuhan spesiesnya, hitung biaya lengkap termasuk dokter hewan, cek aturan sewa dan peraturan setempat, dan pikirkan siapa yang akan merawatnya saat kamu bepergian. Pertimbangkan adopsi dari shelter atau komunitas penyelamat hewan, dan coba jadi foster dulu jika belum yakin. Hewan peliharaan adalah komitmen seumur hidupnya, yang bisa berarti puluhan tahun."
+      ],
+      "faq": [
+        {
+          "q": "Hewan peliharaan apa yang paling mudah untuk pemula?",
+          "a": "Tidak ada hewan peliharaan yang tanpa usaha. Untuk orang sibuk, kucing atau akuarium yang disiapkan dengan benar biasanya paling cocok; untuk keluarga yang punya waktu dan ruang, anjing. Hewan kecil seperti hamster dan kelinci butuh perawatan yang lebih khusus daripada yang dikira orang."
+        },
+        {
+          "q": "Aku alergi. Masih bisakah aku memelihara hewan?",
+          "a": "Ikan dan reptil tidak merontokkan bulu atau ketombe hewan, jadi itu pilihan paling aman. Tidak ada kucing atau anjing yang benar-benar hipoalergenik; jika kamu menginginkannya, habiskan waktu dengan hewan tersebut sebelum mengadopsi dan tanyakan ke dokter."
+        },
+        {
+          "q": "Berapa biaya memelihara hewan?",
+          "a": "Tergantung spesies dan tempat tinggalmu. Selain makanan, anggarkan perlengkapan awal (kandang, akuarium, lampu), vaksinasi, sterilisasi, dan dana darurat dokter hewan. Perlengkapan reptil dan akuarium butuh biaya awal yang lebih besar daripada yang dikira banyak orang."
+        },
+        {
+          "q": "Haruskah aku memelihara hewan untuk anakku?",
+          "a": "Hanya jika ada orang dewasa yang siap menjadi perawat utamanya. Anak-anak bisa membantu, tetapi hamster dan kelinci rapuh dan sering tidak suka digendong, jadi awasi setiap interaksi."
+        }
+      ],
+      "items": [
+        {
+          "q": "Berapa banyak waktu yang bisa kamu luangkan untuk hewan peliharaan setiap hari, termasuk perawatan dan bermain?",
+          "options": [
+            "Kurang dari 15 menit",
+            "15 sampai 45 menit",
+            "Satu sampai dua jam",
+            "Dua jam atau lebih, termasuk jalan-jalan"
+          ]
+        },
+        {
+          "q": "Di mana kamu tinggal?",
+          "options": [
+            "Kamar kecil, studio, atau kos",
+            "Apartemen berukuran sedang",
+            "Apartemen luas atau rumah",
+            "Rumah dengan halaman"
+          ]
+        },
+        {
+          "q": "Pada hari biasa, berapa lama rumah kosong tanpa orang?",
+          "options": [
+            "Sepuluh jam atau lebih",
+            "Seharian kerja normal, delapan atau sembilan jam",
+            "Hampir selalu ada orang di rumah"
+          ]
+        },
+        {
+          "q": "Seberapa sering kamu pergi selama beberapa hari?",
+          "options": [
+            "Sering, untuk kerja atau liburan",
+            "Beberapa kali setahun, dan ada yang bisa menjaga hewan",
+            "Jarang"
+          ]
+        },
+        {
+          "q": "Ada alergi di rumahmu?",
+          "options": [
+            "Tidak ada, sejauh yang aku tahu",
+            "Ada, terhadap bulu atau ketombe hewan",
+            "Tidak yakin"
+          ]
+        },
+        {
+          "q": "Berapa yang bisa kamu keluarkan setiap bulan untuk makanan, perlengkapan, dan dana dokter hewan?",
+          "options": [
+            "Sesedikit mungkin",
+            "Jumlah yang sedang",
+            "Cukup untuk biaya dokter hewan dan makanan yang bagus"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu ingin menikmati hewan peliharaanmu?",
+          "options": [
+            "Mengamatinya; itu menenangkan buatku",
+            "Sesekali dimanja oleh teman yang mandiri",
+            "Bermain, melatih, dan beraktivitas bersama setiap hari",
+            "Ditemani dengan tenang dan dielus lembut di malam hari"
+          ]
+        },
+        {
+          "q": "Bagaimana perasaanmu soal kebisingan?",
+          "options": [
+            "Aku butuh rumah yang tenang",
+            "Sedikit berisik di malam hari tidak apa-apa",
+            "Gonggongan atau ocehan tidak menggangguku"
+          ]
+        },
+        {
+          "q": "Berapa tahun kamu siap berkomitmen?",
+          "options": [
+            "Dua atau tiga tahun",
+            "Sekitar sepuluh tahun",
+            "Lima belas tahun atau lebih",
+            "Puluhan tahun, bahkan lebih dari 30 tahun"
+          ]
+        },
+        {
+          "q": "Tugas mana yang terdengar paling tidak merepotkan?",
+          "options": [
+            "Jalan-jalan dalam segala cuaca",
+            "Membersihkan kotak pasir",
+            "Mengganti dan mengetes air setiap minggu",
+            "Membersihkan kandang dan mengganti alasnya",
+            "Mengatur lampu pemanas dan pakan hidup atau beku"
+          ]
+        },
+        {
+          "q": "Siapa yang tinggal bersamamu?",
+          "options": [
+            "Hanya aku",
+            "Pasangan atau teman serumah dewasa",
+            "Anak kecil"
+          ]
+        },
+        {
+          "q": "Apa yang diizinkan oleh aturan sewa atau gedungmu?",
+          "options": [
+            "Hanya hewan kecil dalam kandang atau akuarium",
+            "Kucing dan hewan kecil, tanpa anjing",
+            "Hewan apa saja, atau rumahku sendiri"
+          ]
+        },
+        {
+          "q": "Bagaimana perasaanmu jika hewan peliharaanmu mengikutimu ke mana-mana dan selalu minta perhatian?",
+          "options": [
+            "Aku akan suka sekali",
+            "Menyenangkan, asal tidak terlalu sering",
+            "Aku lebih suka hewan yang betah sendiri"
+          ]
+        },
+        {
+          "q": "Malam bersama hewan peliharaan seperti apa yang paling menyenangkan?",
+          "options": [
+            "Mengamati hewan mungil yang sibuk menggali dan berlari di rodanya",
+            "Waktu bebas berkeliaran dengan kelinci yang melesat ke sana kemari atau burung yang mengoceh denganku",
+            "Melihat kadal berjemur di bawah lampunya atau ikan yang melayang tenang",
+            "Jalan-jalan bersama, lalu bergelung di sofa"
+          ]
+        }
+      ],
+      "dims": {
+        "cat": "Kucing",
+        "dog": "Anjing",
+        "rabbit": "Kelinci",
+        "fish": "Ikan",
+        "bird": "Burung",
+        "hamster": "Hamster",
+        "reptile": "Reptil"
+      },
+      "results": {
+        "cat": {
+          "name": "Kucing",
+          "body": "Kucing cocok untuk hidup yang sibuk dengan ruang sedang: mandiri tapi penyayang, tidak masalah ditinggal seharian kerja, dan tidak perlu diajak jalan-jalan. Siapkan: 15 tahun atau lebih, kotak pasir yang bersih (satu per kucing ditambah satu), tiang garukan, waktu bermain setiap hari, pemeriksaan dokter hewan tahunan, dan sterilisasi. Kucing yang di dalam rumah hidup lebih lama; catio atau tempat bertengger di jendela membuat mereka tetap terhibur."
+        },
+        "dog": {
+          "name": "Anjing",
+          "body": "Kamu punya waktu, ruang, dan energi yang dibutuhkan anjing, dan kamu ingin teman yang ikut menjalani harimu. Siapkan: 10 sampai 15 tahun, jalan-jalan dan bermain setiap hari, latihan sejak hari pertama, ada orang di rumah atau jasa dog walker saat harimu panjang, dan anggaran lebih besar untuk makanan, grooming, dan dokter hewan. Pilih tingkat energi dan ukuran yang sesuai dengan hidupmu, dan lihat shelter serta komunitas penyelamat ras lebih dulu."
+        },
+        "rabbit": {
+          "name": "Kelinci",
+          "body": "Kelinci cocok untuk rumah yang tenang dengan ruang lantai dan ada orang di rumah sebagian besar hari. Kelinci adalah hewan sosial, jadi kebanyakan paling bahagia berpasangan, dan mereka butuh berjam-jam waktu bebas di ruangan yang aman dari gigitan kelinci, bukan kandang kecil. Siapkan: 8 sampai 12 tahun, jerami tanpa batas, dokter hewan yang paham kelinci, dan sterilisasi. Mereka jarang suka digendong; nikmati mereka sejajar di lantai."
+        },
+        "fish": {
+          "name": "Ikan",
+          "body": "Akuarium cocok untuk ruang kecil, jadwal padat, dan penderita alergi, dan benar-benar menenangkan untuk ditonton. Lupakan akuarium bulat: mulailah dengan akuarium berfilter dan berpemanas minimal 40 liter (sekitar 10 galon), dan jalankan siklusnya beberapa minggu sebelum memasukkan ikan. Siapkan: penggantian sebagian air setiap minggu, alat tes air, dan pilih spesies yang sesuai ukuran akuarium dan cocok satu sama lain."
+        },
+        "bird": {
+          "name": "Burung",
+          "body": "Burung cocok untuk orang yang sering di rumah, senang berinteraksi, dan tidak keberatan dengan suara bising. Burung paruh bengkok, bahkan yang kecil, cerdas, sosial, dan butuh berjam-jam di luar sangkar, mainan untuk dikunyah, dan latihan. Siapkan: umur yang panjang (parkit 5 sampai 10 tahun, burung paruh bengkok besar 30 tahun atau lebih), dokter hewan khusus burung, dan pakan segar selain biji-bijian. Jika kamu pergi seharian, sepasang burung kecil mungkin lebih baik daripada satu."
+        },
+        "hamster": {
+          "name": "Hamster",
+          "body": "Hamster cocok untuk ruang kecil, anggaran terbatas, dan rutinitas malam yang tenang. Mereka hidup soliter dan aktif di malam hari, jadi mereka bangun saat kamu bersantai, dan rodanya mungkin berderit di malam hari. Siapkan: kandang besar (alas minimal 100 × 50 cm), alas tebal untuk menggali, roda padat dengan ukuran yang pas, dan umur 2 sampai 3 tahun. Pegang dengan lembut; hamster kurang ideal untuk anak kecil."
+        },
+        "reptile": {
+          "name": "Reptil",
+          "body": "Reptil cocok untuk orang yang penasaran, sabar, alergi bulu, atau sering bepergian. Banyak spesies yang tenang dan tidak masalah ditinggal sehari atau dua hari setelah perlengkapannya berjalan baik. Siapkan: kandang yang layak dengan pemanas dan lampu UVB berpengatur waktu, pakan hidup atau beku untuk banyak spesies, dokter hewan eksotis, dan umur yang panjang (leopard gecko 15 sampai 20 tahun, kura-kura darat jauh lebih lama). Pilih hewan hasil penangkaran dan pelajari spesiesnya lebih dulu."
+        }
       }
     },
     "anime": {
