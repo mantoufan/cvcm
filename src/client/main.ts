@@ -2,7 +2,7 @@ import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
-import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasPageMessages, type KbPage, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -31,7 +31,7 @@ import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
-import { KB_ARTICLES, type KbId } from "../shared/kb";
+import { KB_ARTICLES, isKbId, type KbId } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -230,8 +230,14 @@ function prefetchGamePack(e: Event): void {
   const loc = locale();
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
-  } else if (target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"]')) {
-    if (!hasPageMessages(loc, false, false, false, false, true)) loadPageMessages(loc, false, false, false, false, true).catch(() => {});
+  } else {
+    const link = target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"]');
+    if (!link) return;
+    // data-nav is "kb-<article id>" on an article link, "knowledge" on a hub link.
+    const nav = link.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("kb-") ? nav.slice(3) : "";
+    const page: KbPage = isKbId(id) ? id : "hub";
+    if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
   }
 }
 
@@ -391,7 +397,7 @@ export function render(): void {
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
   const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
   const dataset = parsed.kind === "dataset" || parsed.kind === "bare-dataset";
-  const kb = parsed.kind === "kb" || parsed.kind === "bare-kb";
+  const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
   if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
     loadPageMessages(loc, gamePage, legal, quiz, dataset, kb).then(

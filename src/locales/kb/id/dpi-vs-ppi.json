@@ -1,0 +1,142 @@
+{
+  "title": "DPI vs PPI: arti angkanya untuk layar dan cetak — cv.cm",
+  "description": "PPI menghitung piksel per inci pada gambar atau layar; DPI menghitung titik tinta printer. Arti 300 DPI, cara mengatur ukuran cetak, dan mengapa 72 DPI hanya mitos.",
+  "h1": "DPI vs PPI: apa bedanya?",
+  "answer": "PPI (pixels per inch) menggambarkan seberapa rapat piksel tersusun dalam gambar saat dicetak atau di layar. DPI (dots per inch) menggambarkan berapa banyak titik tinta yang diletakkan printer per inci. Dalam percakapan sehari-hari, kedua istilah ini sering dipertukarkan. Untuk gambar digital, yang penting hanyalah dimensi pikselnya; nilai PPI hanya menentukan ukuran cetak, jadi 3000 piksel pada 300 PPI tercetak selebar 10 inci.",
+  "sections": [
+    {
+      "h": "Dua ukuran yang berbeda",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Yang diukur",
+              "Berlaku untuk",
+              "Nilai umum"
+            ],
+            "rows": [
+              [
+                "PPI",
+                "Piksel gambar per inci hasil cetak/tampilan",
+                "File gambar, layar",
+                "300 untuk cetak, 400–500+ di layar ponsel"
+              ],
+              [
+                "DPI",
+                "Titik tinta atau toner per inci",
+                "Printer",
+                "600–2400 untuk laser, hingga 4800 × 1200 untuk inkjet"
+              ],
+              [
+                "LPI",
+                "Garis halftone per inci",
+                "Cetak offset",
+                "133–175 untuk majalah"
+              ]
+            ]
+          }
+        },
+        "Printer membutuhkan beberapa titik tinta untuk mereproduksi warna satu piksel, itulah sebabnya DPI printer jauh lebih tinggi daripada PPI gambar. Perangkat lunak seperti Photoshop menamai pengaturan gambar ini \"Resolution\" dalam piksel per inci, sementara banyak formulir unggahan meminta \"300 DPI\" padahal maksudnya 300 PPI."
+      ]
+    },
+    {
+      "h": "Rumusnya: piksel, inci, dan PPI",
+      "body": [
+        "Ukuran cetak, jumlah piksel, dan PPI terikat oleh satu persamaan: `pixels = inches × PPI`. Jika disusun ulang, `inches = pixels ÷ PPI`.",
+        {
+          "table": {
+            "head": [
+              "Ukuran piksel",
+              "Pada 300 PPI",
+              "Pada 150 PPI",
+              "Pada 72 PPI"
+            ],
+            "rows": [
+              [
+                "1200 × 1800",
+                "4 × 6 in",
+                "8 × 12 in",
+                "16,7 × 25 in"
+              ],
+              [
+                "2480 × 3508",
+                "A4 (8,27 × 11,69 in)",
+                "16,5 × 23,4 in",
+                "34,4 × 48,7 in"
+              ],
+              [
+                "3000 × 2000",
+                "10 × 6,67 in",
+                "20 × 13,3 in",
+                "41,7 × 27,8 in"
+              ],
+              [
+                "600 × 600",
+                "2 × 2 in",
+                "4 × 4 in",
+                "8,3 × 8,3 in"
+              ]
+            ]
+          }
+        },
+        "Contoh perhitungan: untuk mencetak foto 8 × 10 inci pada 300 PPI, Anda butuh 8 × 300 = 2400 kali 10 × 300 = 3000 piksel. Gambar 1200 × 1500 piksel yang dicetak pada ukuran itu hanya mencapai 150 PPI dan tampak kurang tajam jika dilihat dari dekat."
+      ]
+    },
+    {
+      "h": "Mengapa mengubah DPI saja tidak berpengaruh di layar",
+      "body": [
+        "Nilai PPI hanyalah satu angka yang disimpan di metadata file. Mengubahnya dari 72 ke 300 tanpa resampling tidak menambah satu piksel pun; gambar tampak sama persis di layar dan hanya tercetak lebih kecil. Hanya resampling, yang mengubah dimensi piksel, yang memengaruhi kualitas.",
+        {
+          "ul": [
+            "Memperbesar gambar kecil agar mencapai 300 PPI menciptakan piksel baru lewat interpolasi; gambarnya jadi lebih besar, bukan lebih tajam.",
+            "Memperkecil ke ukuran piksel yang lebih kecil membuang detail secara permanen, jadi simpan file aslinya.",
+            "Jika formulir meminta \"300 DPI\", periksa apakah formulir itu juga mencantumkan dimensi piksel. Dimensi itulah yang sebenarnya penting."
+          ]
+        },
+        {
+          "note": "Anjuran \"72 DPI untuk web\" yang sering dikutip berasal dari Macintosh tahun 1984, yang layarnya menampilkan 72 piksel per inci sehingga satu piksel sama dengan satu poin tipografi. Browser sama sekali mengabaikan nilai PPI gambar."
+        }
+      ]
+    },
+    {
+      "h": "Cara layar memakai kerapatan piksel",
+      "body": [
+        "CSS punya satuannya sendiri: 1 inci CSS sama dengan 96 piksel CSS, dan 1 poin adalah 1/72 inci. Layar modern memuat lebih banyak piksel fisik ke dalam setiap piksel CSS; rasionya tersedia bagi halaman web sebagai `window.devicePixelRatio`.",
+        "Ponsel dengan rasio 3 menggambar setiap piksel CSS dengan blok 3 × 3 piksel fisik. Karena itu, gambar yang ditampilkan selebar 400 piksel CSS butuh lebar sekitar 1200 piksel agar tampak benar-benar tajam di layar tersebut, itulah sebabnya situs menyajikan beberapa ukuran dengan `srcset`."
+      ]
+    },
+    {
+      "h": "Berapa PPI yang Anda butuhkan?",
+      "body": [
+        "Kerapatan yang dibutuhkan turun seiring jarak pandang yang makin jauh. Pegang cetakan foto sejauh lengan dan 300 PPI sudah mendekati batas yang bisa dibedakan kebanyakan orang; poster yang dilihat dari jarak dua meter tampak baik pada 100–150 PPI, dan baliho dicetak sekitar 10–30.",
+        {
+          "ul": [
+            "Cetak foto, brosur, buku: 300 PPI.",
+            "Poster dan cetakan besar: 150–200 PPI.",
+            "Spanduk dan papan nama yang dilihat dari jauh: 30–100 PPI.",
+            "Layar: abaikan PPI; atur ukuran gambar dalam piksel sesuai tampilan."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Untuk web, mana yang lebih baik: 72 DPI atau 300 DPI?",
+      "a": "Tidak keduanya: browser mengabaikan nilai DPI dan menampilkan gambar berdasarkan dimensi piksel. Gambar selebar 1200 piksel tampak sama secara online, baik metadatanya bertuliskan 72 maupun 300."
+    },
+    {
+      "q": "Bagaimana cara membuat gambar 300 DPI?",
+      "a": "Atur resolusi ke 300 di editor gambar tanpa resampling; ukuran cetaknya akan menyusut menyesuaikan. Jika ukuran cetak hasilnya terlalu kecil, berarti gambar tidak punya cukup piksel untuk 300 PPI pada ukuran itu."
+    },
+    {
+      "q": "Berapa piksel foto 4 × 6 pada 300 DPI?",
+      "a": "1200 × 1800 piksel, karena 4 × 300 = 1200 dan 6 × 300 = 1800."
+    },
+    {
+      "q": "Apakah scan dengan DPI lebih tinggi menghasilkan kualitas lebih baik?",
+      "a": "Sampai batas tertentu. Scan 300 DPI cocok untuk dokumen dan cetakan; 600 DPI atau lebih membantu untuk foto kecil yang ingin diperbesar, tetapi ukuran file bertambah empat kali lipat setiap kali DPI dinaikkan dua kali."
+    }
+  ]
+}

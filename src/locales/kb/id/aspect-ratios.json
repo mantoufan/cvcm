@@ -1,0 +1,168 @@
+{
+  "title": "Rasio aspek: 16:9, 4:3, 1:1, 9:16 dan cara menghitungnya — cv.cm",
+  "description": "Rasio aspek adalah perbandingan lebar dan tinggi, misalnya 16:9. Lihat rasio umum untuk foto, video, dan layar, cara menghitung ukuran, dan crop tanpa gambar melar.",
+  "h1": "Apa itu rasio aspek?",
+  "answer": "Rasio aspek adalah perbandingan antara lebar dan tinggi gambar, ditulis sebagai dua angka seperti 16:9 atau 4:3. Rasio ini menggambarkan bentuk, bukan ukuran: 1920 × 1080 dan 1280 × 720 sama-sama 16:9. Agar rasio tetap saat mengubah ukuran, hitung tinggi baru sebagai lebar baru × tinggi ÷ lebar; untuk 16:9 dengan lebar 1200 piksel, tingginya 675 piksel.",
+  "sections": [
+    {
+      "h": "Rasio aspek umum dan penggunaannya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rasio",
+              "Desimal",
+              "Contoh ukuran (px)",
+              "Penggunaan umum"
+            ],
+            "rows": [
+              [
+                "1:1",
+                "1,00",
+                "1080 × 1080",
+                "Postingan media sosial persegi, foto profil"
+              ],
+              [
+                "4:5",
+                "0,80",
+                "1080 × 1350",
+                "Postingan feed media sosial potret"
+              ],
+              [
+                "4:3",
+                "1,33",
+                "1600 × 1200",
+                "Foto kamera ponsel, TV lama, tablet"
+              ],
+              [
+                "3:2",
+                "1,50",
+                "6000 × 4000",
+                "Foto DSLR dan mirrorless, cetak 4 × 6"
+              ],
+              [
+                "16:9",
+                "1,78",
+                "1920 × 1080",
+                "Video HD dan 4K, monitor, presentasi"
+              ],
+              [
+                "9:16",
+                "0,56",
+                "1080 × 1920",
+                "Video vertikal, story, video pendek"
+              ],
+              [
+                "21:9 (sebutan pemasaran)",
+                "sekitar 2,37",
+                "2560 × 1080",
+                "Monitor ultrawide"
+              ],
+              [
+                "2.39:1",
+                "2,39",
+                "4096 × 1716",
+                "Film layar lebar"
+              ],
+              [
+                "1:√2",
+                "0,71",
+                "2480 × 3508",
+                "Ukuran kertas ISO seperti A4"
+              ]
+            ]
+          }
+        },
+        "Rasio 16:9 menjadi standar HDTV melalui ITU-R BT.709, yang mendefinisikan gambar 1920 × 1080 dan 1280 × 720. Rasio 3:2 berasal dari bingkai 36 × 24 mm pada film 35 mm."
+      ]
+    },
+    {
+      "h": "Cara mengetahui rasio sebuah gambar",
+      "body": [
+        "Bagi lebar dan tinggi dengan faktor persekutuan terbesarnya (FPB).",
+        {
+          "ol": [
+            "Ambil ukuran pikselnya, misalnya 1920 × 1080.",
+            "Cari bilangan terbesar yang bisa membagi keduanya: 120.",
+            "Bagi: 1920 ÷ 120 = 16 dan 1080 ÷ 120 = 9, jadi rasionya 16:9."
+          ]
+        },
+        "Sebagian ukuran hanya mendekati rasio yang dinamai. Layar laptop 1366 × 768 disederhanakan menjadi 683:384, yaitu 1,779, dan dijual sebagai 16:9. Monitor \"21:9\" 2560 × 1080 sebenarnya tepat 64:27. Membandingkan desimal (lebar ÷ tinggi) sering lebih mudah daripada membandingkan pecahan."
+      ]
+    },
+    {
+      "h": "Menghitung ukuran baru tanpa distorsi",
+      "body": [
+        "Pertahankan rasio dengan mengalikan kedua sisi dengan faktor yang sama. Dua rumus ini mencakup semua kasus:",
+        {
+          "ul": [
+            "`new height = new width × original height ÷ original width`",
+            "`new width = new height × original width ÷ original height`"
+          ]
+        },
+        "Contoh: foto 4032 × 3024 (4:3) yang diubah menjadi lebar 1600 piksel akan bertinggi 1600 × 3024 ÷ 4032 = 1200 piksel. Untuk video 9:16 selebar 720 piksel, tingginya 720 × 16 ÷ 9 = 1280.",
+        "Jika hasilnya bukan bilangan bulat, bulatkan ke piksel terdekat. Encoder video biasanya mensyaratkan dimensi genap, jadi bulatkan ke angka genap untuk video."
+      ]
+    },
+    {
+      "h": "Mengubah rasio: crop, pad, atau stretch",
+      "body": [
+        "Mengubah foto 4:3 menjadi bingkai 16:9 atau postingan 1:1 tidak bisa dilakukan hanya dengan mengubah ukuran. Ada tiga pilihan:",
+        {
+          "table": {
+            "head": [
+              "Metode",
+              "Yang terjadi",
+              "Kapan dipakai"
+            ],
+            "rows": [
+              [
+                "Crop (potong)",
+                "Membuang sebagian gambar",
+                "Sebagian besar foto; pastikan subjek tetap di dalam bingkai"
+              ],
+              [
+                "Pad (letterbox atau pillarbox)",
+                "Menambahkan bilah atau latar belakang buram",
+                "Saat tidak ada bagian yang boleh terpotong, seperti dokumen atau karya seni"
+              ],
+              [
+                "Stretch (regangkan)",
+                "Menskalakan lebar dan tinggi secara tidak sama",
+                "Hampir tidak pernah; wajah dan lingkaran tampak terdistorsi"
+              ]
+            ]
+          }
+        },
+        "Memotong gambar 4000 × 3000 menjadi 16:9 mempertahankan lebar penuh dan memangkas tinggi menjadi 4000 × 9 ÷ 16 = 2250 piksel, membuang 25% gambar. Memotong gambar yang sama menjadi 1:1 menyisakan 3000 × 3000."
+      ]
+    },
+    {
+      "h": "Rasio aspek di web",
+      "body": [
+        "CSS punya properti `aspect-ratio`, misalnya `aspect-ratio: 16 / 9`, yang menyediakan ruang yang pas sebelum gambar atau video dimuat. Mengaturnya, atau memberi atribut `width` dan `height` pada gambar, mencegah halaman melompat saat media dimuat, sehingga skor Cumulative Layout Shift membaik.",
+        {
+          "note": "Platform mengubah ukuran unggahan yang direkomendasikan dari waktu ke waktu. Periksa halaman bantuan terbaru dari layanan tersebut sebelum menyiapkan banyak gambar atau video sekaligus."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "1920 × 1080 itu rasio aspek berapa?",
+      "a": "16:9. Kedua angka habis dibagi 120, menghasilkan 16 dan 9."
+    },
+    {
+      "q": "Apakah 4K itu 16:9?",
+      "a": "4K UHD untuk konsumen berukuran 3840 × 2160, tepat 16:9. 4K bioskop (DCI) berukuran 4096 × 2160, sekitar 1.90:1."
+    },
+    {
+      "q": "Berapa rasio aspek foto dari ponsel?",
+      "a": "Sebagian besar kamera ponsel memotret 4:3 secara default, misalnya 4032 × 3024. Banyak juga yang menawarkan mode 16:9 dan 1:1, yang memotong gambar dari sensor."
+    },
+    {
+      "q": "Apakah mengubah rasio aspek menurunkan kualitas?",
+      "a": "Crop membuang piksel tetapi tidak membuat sisanya buram. Stretch mendistorsi bentuk, dan memperbesar gambar setelah dipotong banyak bisa membuatnya tampak kurang tajam."
+    }
+  ]
+}

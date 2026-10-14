@@ -19,6 +19,9 @@ const localePacks = {};
 for (const [src, chunk] of Object.entries(manifest)) {
   const m = /^src\/locales\/packs\/(.+)\.ts$/.exec(src);
   if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).map((key) => manifest[key].file)].map((f) => `/${f}`);
+  // One knowledge article in one locale: preloaded as "kb-<locale>/<id>".
+  const article = /^src\/locales\/kb\/([^/]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (article) localePacks[`kb-${article[1]}/${article[2]}`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 

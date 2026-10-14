@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
 import en from "../src/locales/kb/en.json";
+import enHeic from "../src/locales/kb/en/what-is-heic.json";
+import syncMeta from "../src/locales/kb/meta.json";
+import { KB_ALL } from "../src/locales/kb/all";
+import { KB_LOADERS } from "../src/locales/kb/loaders";
+import { syncEntry, type KbSyncEntry } from "../src/shared/kb-sync";
+import { preloadLocalePack } from "../src/shared/locale-preload";
 import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { KB_ARTICLES, KB_GROUPS, KB_META, kbForTool } from "../src/shared/kb";
-import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, type KbBlock } from "../src/shared/kb-i18n";
+import { KB_ARTICLES, KB_GROUPS, KB_META, kbForTool, kbMinutes, kbUpdated, type KbId } from "../src/shared/kb";
+import { kbArticleJsonLd, kbCopy, kbPageHtml, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
@@ -93,7 +99,7 @@ describe("knowledge: SEO", () => {
     const ld = kbArticleJsonLd("en", "md5-vs-sha-256") as Record<string, unknown>;
     expect(ld["@type"]).toBe("TechArticle");
     expect(ld.datePublished).toBe(KB_META["md5-vs-sha-256"].published);
-    expect(ld.dateModified).toBe(KB_META["md5-vs-sha-256"].updated);
+    expect(ld.dateModified).toBe(kbUpdated("md5-vs-sha-256"));
     expect((ld.citation as unknown[]).length).toBe(KB_META["md5-vs-sha-256"].sources.length);
     const hub = kbArticleJsonLd("en", null) as { mainEntity: { itemListElement: unknown[] } };
     expect(hub.mainEntity.itemListElement.length).toBe(KB_ARTICLES.length);
@@ -128,7 +134,12 @@ describe("knowledge: catalog and copy", () => {
   });
 
   it("has the same copy structure in every locale", () => {
-    for (const locale of LOCALES) expect(shape(kbMessages(locale)), locale).toEqual(shape(en));
+    for (const locale of LOCALES) {
+      expect(shape(kbMessages(locale)), locale).toEqual(shape(en));
+      // Articles differ in sections and tables; each must match its English original.
+      for (const id of KB_ARTICLES) expect(shape(kbCopy(locale, id)), `${locale} ${id}`).toEqual(shape(kbCopy("en", id)));
+    }
+    expect(shape(kbCopy("en", "what-is-heic"))).toEqual(shape(enHeic));
   });
 
   it("has a name and blurb for every article in every core pack", () => {
@@ -165,5 +176,48 @@ describe("knowledge: catalog and copy", () => {
         expect(kbMinutes(locale, id), where).toBeGreaterThanOrEqual(2);
       }
     }
+  });
+});
+
+describe("knowledge: sync (run `npm run kb:sync` after editing any article)", () => {
+  it("has meta.json in step with the copy: fingerprint, reading time and a changed date", () => {
+    const meta = syncMeta as unknown as Record<KbId, KbSyncEntry>;
+    expect(Object.keys(meta).sort()).toEqual([...KB_ARTICLES].sort());
+    for (const id of KB_ARTICLES) {
+      const copies = Object.fromEntries(LOCALES.map((locale) => [locale, KB_ALL[locale][id]])) as Record<typeof LOCALES[number], KbArticleCopy>;
+      const fresh = syncEntry(copies, meta[id], "changed");
+      // A different fingerprint means the copy changed without `npm run kb:sync`, so its "Updated" date is stale.
+      expect(fresh, `${id}: copy changed, run npm run kb:sync`).toEqual(meta[id]);
+      expect(meta[id].updated >= KB_META[id].published, id).toBe(true);
+      expect(meta[id].updated).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+  });
+
+  it("bumps the date only when the copy changes", () => {
+    const copies = Object.fromEntries(LOCALES.map((locale) => [locale, KB_ALL[locale]["iso-8601"]])) as Record<typeof LOCALES[number], KbArticleCopy>;
+    const before = syncEntry(copies, undefined, "2026-01-01");
+    expect(syncEntry(copies, before, "2026-02-02").updated).toBe("2026-01-01");
+    const edited = { ...copies, ja: { ...copies.ja, answer: copies.ja.answer + "。" } };
+    expect(syncEntry(edited, before, "2026-02-02").updated).toBe("2026-02-02");
+  });
+
+  it("has a generated lazy loader for every article in every locale", () => {
+    for (const locale of LOCALES) expect(Object.keys(KB_LOADERS[locale]).sort(), locale).toEqual([...KB_ARTICLES].sort());
+  });
+
+  it("reads reading time from meta.json for lists", () => {
+    expect(kbMinutes("en", "what-is-heic")).toBe((syncMeta as unknown as Record<KbId, KbSyncEntry>)["what-is-heic"].minutes.en);
+  });
+
+  it("preloads only the hub pack, or the hub pack plus one article", () => {
+    const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
+    const shell = "<head></head>";
+    const hub = preloadLocalePack(shell, "en", false, packs, false, false, "hub");
+    expect(hub).toContain("/a/kb-en.js");
+    expect(hub).not.toContain("/a/iso.js");
+    const article = preloadLocalePack(shell, "en", false, packs, false, false, "iso-8601");
+    expect(article).toContain("/a/kb-en.js");
+    expect(article).toContain("/a/iso.js");
+    expect(article).not.toContain("/a/uuid.js");
   });
 });

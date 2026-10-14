@@ -1,0 +1,154 @@
+{
+  "title": "UTC y zonas horarias: desfases, GMT, IANA y horario de verano — cv.cm",
+  "description": "UTC es el reloj de referencia; las zonas horarias son desfases más reglas de horario de verano. UTC vs GMT, por qué Europe/London supera a +00:00 y +05:45.",
+  "h1": "UTC y zonas horarias: cómo funcionan",
+  "answer": "UTC (tiempo universal coordinado) es el reloj de referencia respecto al que se define toda zona horaria civil. Una zona horaria es una región que comparte la misma hora local, expresada como un desfase respecto a UTC, como `-05:00` o `+05:30`, junto con las reglas que indican cuándo empieza y termina el horario de verano. Los desfases van de `-12:00` a `+14:00`, y algunos no son horas enteras.",
+  "sections": [
+    {
+      "h": "Qué es UTC",
+      "body": [
+        "UTC lo calcula la Oficina Internacional de Pesas y Medidas (BIPM) a partir de cientos de relojes atómicos de todo el mundo. Avanza en segundos del SI, igual que el Tiempo Atómico Internacional (TAI), pero de vez en cuando se ajusta con segundos intercalares para no alejarse más de 0.9 segundos de la rotación de la Tierra. Desde 2017, UTC va 37 segundos por detrás de TAI.",
+        "UTC no aplica horario de verano y nunca cambia con las estaciones. Esa estabilidad es la razón por la que funcionan con él los servidores, los logs, la aviación y las bases de datos."
+      ]
+    },
+    {
+      "h": "UTC vs GMT",
+      "body": [
+        "En el uso cotidiano, GMT y UTC marcan la misma hora, pero no son lo mismo:",
+        {
+          "table": {
+            "head": [
+              "",
+              "UTC",
+              "GMT"
+            ],
+            "rows": [
+              [
+                "Qué es",
+                "Un estándar de tiempo basado en relojes atómicos",
+                "Históricamente, un tiempo astronómico en Greenwich; hoy, el nombre de una zona horaria"
+              ],
+              [
+                "Desfase",
+                "El punto cero por definición",
+                "UTC+00:00"
+              ],
+              [
+                "Horario de verano",
+                "Nunca",
+                "GMT en sí no, pero el Reino Unido pasa de GMT a BST (UTC+01:00) en verano"
+              ],
+              [
+                "Uso en software",
+                "La referencia estándar",
+                "Sobre todo como etiqueta; es preferible UTC"
+              ]
+            ]
+          }
+        },
+        "La trampa práctica: la «hora de Londres» solo coincide con GMT en invierno. Desde el último domingo de marzo hasta el último domingo de octubre, Londres va una hora por delante de UTC."
+      ]
+    },
+    {
+      "h": "Los desfases no son zonas horarias",
+      "body": [
+        "Un desfase como `+01:00` describe un momento. Una zona horaria describe un lugar a lo largo del tiempo: su desfase, sus reglas de horario de verano y todos sus cambios históricos. La base de datos de zonas horarias de IANA, que usan Linux, macOS, Android, Java y todos los navegadores principales, nombra las zonas por región y ciudad, como `Europe/London`, `America/New_York` y `Asia/Kolkata`.",
+        "`Europe/London` es mejor que `+00:00` para cualquier fecha futura o pasada porque sabe que el desfase es `+00:00` en enero y `+01:00` en julio. Una reunión periódica guardada como `+00:00` irá desfasada una hora durante medio año.",
+        {
+          "ul": [
+            "Guarda los instantes pasados en UTC (o como timestamp Unix).",
+            "Guarda los eventos locales futuros como hora local más un nombre de zona IANA, y calcula el instante UTC cuando lo necesites, porque los gobiernos cambian las reglas del horario de verano con poca antelación.",
+            "Evita abreviaturas como `CST` o `IST`: `CST` puede significar Central Standard Time (UTC-6) o China Standard Time (UTC+8), e `IST` se usa para India, Irlanda e Israel."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "El horario de verano",
+      "body": [
+        "El horario de verano (DST) adelanta los relojes, normalmente una hora, durante parte del año. Las fechas varían según la región: Estados Unidos cambia el segundo domingo de marzo y vuelve el primer domingo de noviembre, mientras que la Unión Europea cambia el último domingo de marzo y de octubre, a las 01:00 UTC en todas partes. La mayoría de los países de Asia y África, incluidos China, Japón e India, no usan horario de verano. En el hemisferio sur, el horario de verano va aproximadamente de octubre a abril.",
+        "Cada cambio crea dos casos límite:",
+        {
+          "ul": [
+            "Un hueco: cuando los relojes se adelantan, horas locales como las 02:30 de ese día no existen en las zonas que saltan de las 02:00 a las 03:00.",
+            "Un solapamiento: cuando los relojes se atrasan, una hora como la 01:30 ocurre dos veces, así que una hora local sola es ambigua sin el desfase."
+          ]
+        },
+        {
+          "note": "Un día con cambio de horario tiene 23 o 25 horas de hora local. Sumar 24 horas y sumar un día de calendario dan resultados distintos esos días."
+        }
+      ]
+    },
+    {
+      "h": "Desfases poco habituales",
+      "body": [
+        "No todas las zonas están a un número entero de horas de UTC. Todas estas están en uso actualmente:",
+        {
+          "table": {
+            "head": [
+              "Desfase",
+              "Zona de ejemplo",
+              "Región"
+            ],
+            "rows": [
+              [
+                "`-12:00`",
+                "Etc/GMT+12",
+                "Islas Baker y Howland, deshabitadas; el desfase más tardío"
+              ],
+              [
+                "`-03:30`",
+                "America/St_Johns",
+                "Terranova, Canadá (hora estándar)"
+              ],
+              [
+                "`+05:30`",
+                "Asia/Kolkata",
+                "India y Sri Lanka"
+              ],
+              [
+                "`+05:45`",
+                "Asia/Kathmandu",
+                "Nepal"
+              ],
+              [
+                "`+09:30`",
+                "Australia/Darwin",
+                "Territorio del Norte, Australia"
+              ],
+              [
+                "`+12:45`",
+                "Pacific/Chatham",
+                "Islas Chatham, Nueva Zelanda (hora estándar)"
+              ],
+              [
+                "`+14:00`",
+                "Pacific/Kiritimati",
+                "Islas de la Línea, Kiribati; el primer lugar en llegar a cada nuevo día"
+              ]
+            ]
+          }
+        },
+        "Como los desfases abarcan 26 horas, una misma fecha de calendario existe en algún lugar de la Tierra durante hasta unas 50 horas. «Al final del día 14» necesita una zona para significar algo preciso."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿UTC es lo mismo que GMT?",
+      "a": "Marcan la misma hora, pero UTC es un estándar de tiempo atómico y GMT es una zona horaria. El Reino Unido usa GMT solo en invierno y BST (UTC+01:00) en verano."
+    },
+    {
+      "q": "¿UTC cambia con el horario de verano?",
+      "a": "No. UTC es el mismo todo el año; solo las zonas horarias locales cambian su desfase respecto a UTC cuando empieza o termina el horario de verano."
+    },
+    {
+      "q": "¿Por qué India usa UTC+05:30?",
+      "a": "India usa una única zona centrada en un meridiano a 82.5° E, que está a cinco horas y media de Greenwich. Los desfases de media hora y de cuarto de hora se eligen para ajustarse mejor a la longitud geográfica de un país."
+    },
+    {
+      "q": "¿Qué significa el signo de Etc/GMT+12?",
+      "a": "En los nombres IANA `Etc/GMT` el signo está invertido por compatibilidad con POSIX, así que `Etc/GMT+12` es UTC-12:00. Para lugares reales, es preferible usar nombres basados en ciudades como `Asia/Tokyo`."
+    }
+  ]
+}

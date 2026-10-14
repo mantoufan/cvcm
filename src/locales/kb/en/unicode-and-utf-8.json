@@ -1,0 +1,175 @@
+{
+  "title": "Unicode vs UTF-8: what's the difference, with byte examples — cv.cm",
+  "description": "Unicode assigns every character a number; UTF-8 turns that number into 1 to 4 bytes. See worked byte examples, UTF-16 and BOM, and why text turns into Ã©.",
+  "h1": "What is the difference between Unicode and UTF-8?",
+  "answer": "Unicode is a character set: it gives every character a number called a code point, such as U+00E9 for \"é\". UTF-8 is an encoding: a rule for storing those numbers as bytes. It uses 1 byte for ASCII and 2 to 4 bytes for everything else, so \"é\" becomes `C3 A9`. Unicode says which character; UTF-8 says how it is written to disk or sent over a network.",
+  "sections": [
+    {
+      "h": "Code points first, bytes second",
+      "body": [
+        "Unicode defines a code space from U+0000 to U+10FFFF, room for 1,114,112 code points split into 17 planes of 65,536 each. More than 150,000 of them are assigned to characters, covering modern and historic scripts, symbols and emoji. A code point is written as `U+` followed by at least four hex digits.",
+        "A code point is only a number. To save or transmit text, it has to be turned into bytes, and there are several ways to do that: UTF-8, UTF-16 and UTF-32 are all encodings of the same Unicode characters.",
+        {
+          "table": {
+            "head": [
+              "Character",
+              "Code point",
+              "UTF-8 bytes",
+              "UTF-16 (big-endian)"
+            ],
+            "rows": [
+              [
+                "A",
+                "U+0041",
+                "`41`",
+                "`00 41`"
+              ],
+              [
+                "é",
+                "U+00E9",
+                "`C3 A9`",
+                "`00 E9`"
+              ],
+              [
+                "€",
+                "U+20AC",
+                "`E2 82 AC`",
+                "`20 AC`"
+              ],
+              [
+                "日",
+                "U+65E5",
+                "`E6 97 A5`",
+                "`65 E5`"
+              ],
+              [
+                "😀",
+                "U+1F600",
+                "`F0 9F 98 80`",
+                "`D8 3D DE 00`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "How UTF-8 picks 1, 2, 3 or 4 bytes",
+      "body": [
+        "UTF-8, specified in RFC 3629, is a variable-width encoding. The leading bits of the first byte say how many bytes follow, and every continuation byte starts with the bits `10`. That makes the stream self-synchronizing: a decoder that lands in the middle of a character can skip forward to the next start byte.",
+        {
+          "table": {
+            "head": [
+              "Code point range",
+              "Bytes",
+              "Bit pattern"
+            ],
+            "rows": [
+              [
+                "U+0000 – U+007F",
+                "1",
+                "`0xxxxxxx`"
+              ],
+              [
+                "U+0080 – U+07FF",
+                "2",
+                "`110xxxxx 10xxxxxx`"
+              ],
+              [
+                "U+0800 – U+FFFF",
+                "3",
+                "`1110xxxx 10xxxxxx 10xxxxxx`"
+              ],
+              [
+                "U+10000 – U+10FFFF",
+                "4",
+                "`11110xxx 10xxxxxx 10xxxxxx 10xxxxxx`"
+              ]
+            ]
+          }
+        },
+        "Worked example: \"é\" is U+00E9, binary `000 1110 1001`. It needs the 2-byte pattern. The top 5 bits `00011` go into `110xxxxx` to give `11000011` (`C3`), and the low 6 bits `101001` go into `10xxxxxx` to give `10101001` (`A9`).",
+        "Because the first 128 code points encode to the same single bytes as ASCII, any valid ASCII file is already valid UTF-8. That backward compatibility is the main reason UTF-8 became the default for the web, where it is used by about 98% of websites."
+      ]
+    },
+    {
+      "h": "UTF-8 vs UTF-16 vs UTF-32",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Encoding",
+              "Unit size",
+              "Bytes per character",
+              "Common in"
+            ],
+            "rows": [
+              [
+                "UTF-8",
+                "8 bits",
+                "1–4",
+                "Web pages, JSON, Linux and macOS files, most APIs"
+              ],
+              [
+                "UTF-16",
+                "16 bits",
+                "2 or 4",
+                "JavaScript strings, Java, Windows APIs"
+              ],
+              [
+                "UTF-32",
+                "32 bits",
+                "Always 4",
+                "Internal processing where fixed width helps"
+              ]
+            ]
+          }
+        },
+        "UTF-16 stores characters above U+FFFF as a surrogate pair of two 16-bit units. That is why `\"😀\".length` is `2` in JavaScript: the language counts UTF-16 units, not characters. Iterating with `[...\"😀\"].length` returns `1`.",
+        "For English text UTF-8 is the most compact. For text that is mostly Chinese, Japanese or Korean, UTF-16 can be smaller, since those characters take 3 bytes in UTF-8 but 2 in UTF-16."
+      ]
+    },
+    {
+      "h": "The byte order mark (BOM)",
+      "body": [
+        "A BOM is the character U+FEFF placed at the very start of a file. In UTF-16 and UTF-32 it tells the reader whether the bytes are big-endian or little-endian. In UTF-8 it encodes as `EF BB BF` and serves only as a signature, since UTF-8 has no byte order.",
+        "The Unicode FAQ says a UTF-8 BOM is neither required nor recommended. Some Windows editors add it anyway, and it then breaks shell scripts (the `#!` line is no longer first), CSV headers and JSON parsers that do not expect it. If a file shows `ï»¿` at the top, that is a UTF-8 BOM read as Windows-1252."
+      ]
+    },
+    {
+      "h": "Why text turns into Ã© or ���",
+      "body": [
+        "Garbled text, called mojibake, appears when bytes are decoded with a different encoding than the one used to write them:",
+        {
+          "ul": [
+            "`Ã©` instead of `é`: UTF-8 bytes `C3 A9` read as Windows-1252 or Latin-1, which maps `C3` to `Ã` and `A9` to `©`.",
+            "`�` (U+FFFD, the replacement character): the decoder hit bytes that are not valid UTF-8, often Latin-1 text read as UTF-8.",
+            "Question marks in a database: the column or connection used a charset that cannot hold the character, so it was replaced on write and is gone."
+          ]
+        },
+        "The fix is to declare the encoding at every boundary: `<meta charset=\"utf-8\">` in HTML, `Content-Type: text/html; charset=utf-8` in HTTP headers, and UTF-8 for database columns and connections. In MySQL, use `utf8mb4`; the older `utf8` charset stores at most 3 bytes per character and rejects emoji.",
+        {
+          "note": "Mojibake caused by a wrong decode is reversible if you still have the original bytes. Text that was re-saved after being misread, or that lost characters to `?` on write, usually cannot be recovered."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is UTF-8 the same as Unicode?",
+      "a": "No. Unicode is the list of characters and their numbers; UTF-8 is one way to store those numbers as bytes. People often say \"Unicode\" when they mean UTF-8 text."
+    },
+    {
+      "q": "How many bytes is a character in UTF-8?",
+      "a": "Between 1 and 4. ASCII letters take 1 byte, most European accented letters 2, most Chinese, Japanese and Korean characters 3, and emoji 4."
+    },
+    {
+      "q": "Can UTF-8 represent every character?",
+      "a": "Yes. UTF-8 can encode every Unicode code point from U+0000 to U+10FFFF, so any character Unicode defines can be written in UTF-8."
+    },
+    {
+      "q": "Should I save files with a BOM?",
+      "a": "For UTF-8, usually not. It is optional, adds nothing for byte order, and confuses tools that expect the first bytes to be content. Some older Excel versions need it to open UTF-8 CSV files correctly."
+    }
+  ]
+}

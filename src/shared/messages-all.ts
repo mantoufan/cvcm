@@ -47,9 +47,12 @@ import koKb from "../locales/packs/kb-ko";
 import viKb from "../locales/packs/kb-vi";
 import zhCNKb from "../locales/packs/kb-zh-CN";
 import zhTWKb from "../locales/packs/kb-zh-TW";
+import { KB_ALL } from "../locales/kb/all";
+import type { KbId } from "./kb";
 import type { Locale } from "./locale";
 import {
   registerGameMessages,
+  registerKbArticle,
   registerKbMessages,
   registerLegalMessages,
   registerMessages,
@@ -125,3 +128,6 @@ const DATASETS: Record<Locale, DatasetMessages> = {
 };
 for (const [locale, pack] of Object.entries(DATASETS)) registerDatasetMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(KB)) registerKbMessages(locale as Locale, pack);
+for (const [locale, articles] of Object.entries(KB_ALL)) {
+  for (const [id, copy] of Object.entries(articles)) registerKbArticle(locale as Locale, id as KbId, copy);
+}

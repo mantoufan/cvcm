@@ -12,6 +12,7 @@
     "build": "node scripts/write-sitemap.mjs && vite build && node scripts/prerender.mjs && node scripts/build-worker.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
+    "kb:sync": "node scripts/kb-sync.mjs",
     "test": "vitest run",
     "deploy": "npm run build && wrangler pages deploy dist --project-name cvcm --commit-dirty=true"
   },

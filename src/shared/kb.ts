@@ -1,4 +1,7 @@
 import type { ToolId, TutorialId } from "./path";
+import type { Locale } from "./locale";
+import type { KbSyncEntry } from "./kb-sync";
+import syncMeta from "../locales/kb/meta.json";
 
 /**
  * Knowledge articles: plain explanations of the formats, encodings and numbers the tools work with,
@@ -41,9 +44,8 @@ export const KB_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] 
 export type KbSource = { title: string; href: string };
 
 export type KbMeta = {
-  /** ISO dates: first published and last fact-checked. */
+  /** ISO date first published. The last-changed date is in src/locales/kb/meta.json (`npm run kb:sync`). */
   published: string;
-  updated: string;
   /** Tools that put the article to work, first one is the main call to action. */
   tools: ToolId[];
   tutorials: TutorialId[];
@@ -57,7 +59,6 @@ const D = "2026-10-14";
 export const KB_META: Record<KbId, KbMeta> = {
   "what-is-heic": {
     published: D,
-    updated: D,
     tools: ["convert", "image-pdf", "resize"],
     tutorials: ["heic-to-jpg", "jpg-to-pdf"],
     related: ["jpg-vs-png-vs-webp", "what-is-exif"],
@@ -69,7 +70,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "jpg-vs-png-vs-webp": {
     published: D,
-    updated: D,
     tools: ["convert", "resize", "image-pdf"],
     tutorials: ["png-to-jpg", "webp-to-png", "png-to-webp", "avif-to-jpg"],
     related: ["what-is-heic", "dpi-vs-ppi"],
@@ -82,7 +82,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "what-is-exif": {
     published: D,
-    updated: D,
     tools: ["exif", "watermark", "mosaic"],
     tutorials: ["remove-exif", "watermark-id-copy"],
     related: ["what-is-heic", "jpg-vs-png-vs-webp"],
@@ -93,7 +92,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "dpi-vs-ppi": {
     published: D,
-    updated: D,
     tools: ["resize", "crop", "aspect"],
     tutorials: ["resize-image", "crop-photo"],
     related: ["aspect-ratios", "jpg-vs-png-vs-webp"],
@@ -104,7 +102,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "aspect-ratios": {
     published: D,
-    updated: D,
     tools: ["aspect", "crop", "resize"],
     tutorials: ["aspect-ratio", "crop-photo"],
     related: ["dpi-vs-ppi", "jpg-vs-png-vs-webp"],
@@ -115,7 +112,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "why-pdf-files-are-large": {
     published: D,
-    updated: D,
     tools: ["compress-pdf", "split-pdf", "merge-pdf"],
     tutorials: ["compress-pdf", "split-pdf", "jpg-to-pdf"],
     related: ["dpi-vs-ppi", "jpg-vs-png-vs-webp"],
@@ -126,7 +122,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "what-is-base64": {
     published: D,
-    updated: D,
     tools: ["base64", "data", "text-hex"],
     tutorials: ["decode-base64", "read-jwt"],
     related: ["unicode-and-utf-8", "url-encoding"],
@@ -137,7 +132,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "unicode-and-utf-8": {
     published: D,
-    updated: D,
     tools: ["text-hex", "url-encode", "word-count"],
     tutorials: ["encode-url", "count-words"],
     related: ["what-is-base64", "url-encoding"],
@@ -148,7 +142,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "url-encoding": {
     published: D,
-    updated: D,
     tools: ["url-encode", "slug", "html"],
     tutorials: ["encode-url"],
     related: ["unicode-and-utf-8", "what-is-base64"],
@@ -160,7 +153,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "json-vs-yaml-vs-xml": {
     published: D,
-    updated: D,
     tools: ["json", "yaml-json", "xml-json"],
     tutorials: ["format-json"],
     related: ["what-is-base64", "unicode-and-utf-8"],
@@ -172,7 +164,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "md5-vs-sha-256": {
     published: D,
-    updated: D,
     tools: ["hash", "password", "uuid"],
     tutorials: ["make-password"],
     related: ["password-strength", "what-is-base64"],
@@ -184,7 +175,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "password-strength": {
     published: D,
-    updated: D,
     tools: ["password", "hash", "random"],
     tutorials: ["make-password"],
     related: ["md5-vs-sha-256", "what-is-uuid"],
@@ -195,7 +185,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "what-is-uuid": {
     published: D,
-    updated: D,
     tools: ["uuid", "random", "hash"],
     tutorials: [],
     related: ["md5-vs-sha-256", "unix-timestamp"],
@@ -206,7 +195,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "unix-timestamp": {
     published: D,
-    updated: D,
     tools: ["timestamp", "timezone", "days"],
     tutorials: ["unix-time", "convert-timezone"],
     related: ["iso-8601", "utc-and-time-zones"],
@@ -217,7 +205,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "iso-8601": {
     published: D,
-    updated: D,
     tools: ["week", "days", "timestamp"],
     tutorials: ["iso-week", "days-between", "shift-date"],
     related: ["unix-timestamp", "utc-and-time-zones"],
@@ -228,7 +215,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "utc-and-time-zones": {
     published: D,
-    updated: D,
     tools: ["timezone", "timestamp", "countdown"],
     tutorials: ["convert-timezone", "unix-time"],
     related: ["unix-timestamp", "iso-8601"],
@@ -239,7 +225,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "apr-vs-apy": {
     published: D,
-    updated: D,
     tools: ["compound", "loan", "percent"],
     tutorials: ["loan-payment", "calculate-percent"],
     related: ["margin-vs-markup"],
@@ -250,7 +235,6 @@ export const KB_META: Record<KbId, KbMeta> = {
   },
   "margin-vs-markup": {
     published: D,
-    updated: D,
     tools: ["margin", "percent", "discount"],
     tutorials: ["profit-margin", "percent-off", "vat-price"],
     related: ["apr-vs-apy"],
@@ -271,4 +255,16 @@ export function kbGroupOf(id: KbId): KbGroupId {
 /** Articles that use this tool, in hub order: tool pages link to them. */
 export function kbForTool(tool: ToolId): KbId[] {
   return KB_ARTICLES.filter((id) => KB_META[id].tools.includes(tool));
+}
+
+const SYNC = syncMeta as unknown as Record<KbId, KbSyncEntry>;
+
+/** When the article's copy last changed (any locale), from `npm run kb:sync`. */
+export function kbUpdated(id: KbId): string {
+  return SYNC[id].updated;
+}
+
+/** Reading time in minutes, computed by `npm run kb:sync` so lists need no article copy. */
+export function kbMinutes(locale: Locale, id: KbId): number {
+  return SYNC[id].minutes[locale];
 }

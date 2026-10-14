@@ -1,0 +1,137 @@
+{
+  "title": "What is HEIC? HEIC vs JPG explained, and how to open it — cv.cm",
+  "description": "HEIC is Apple's name for HEIF photos compressed with HEVC: about half the size of JPG at similar quality. Learn what it stores, who can open it and when to convert.",
+  "h1": "What is a HEIC file?",
+  "answer": "HEIC is a photo saved in the High Efficiency Image File Format (HEIF) with its pixels compressed by HEVC, the video codec also called H.265. iPhones and iPads use it by default since iOS 11 because it keeps similar quality at roughly half the size of a JPG. It opens natively on Apple devices and recent Windows and Android, but many websites and older programs still expect JPG.",
+  "sections": [
+    {
+      "h": "HEIF, HEIC and HEVC: three names, one file",
+      "body": [
+        "HEIF is the container standard (ISO/IEC 23008-12). It defines how images, thumbnails, depth maps and metadata are packed into one file, and it is built on the same box structure as MP4 video.",
+        "HEVC is the codec that compresses the pixels. A HEIF file whose images use HEVC gets the brand `heic` and usually the extension `.heic`. The same container can hold other codecs: with AV1 inside it becomes AVIF.",
+        {
+          "table": {
+            "head": [
+              "Term",
+              "What it is",
+              "Example"
+            ],
+            "rows": [
+              [
+                "HEIF",
+                "Container format for images and image sequences",
+                "The file structure"
+              ],
+              [
+                "HEVC (H.265)",
+                "Compression method for the pixels",
+                "The codec inside"
+              ],
+              [
+                "HEIC",
+                "HEIF + HEVC, the file you get from an iPhone",
+                "IMG_0042.HEIC"
+              ],
+              [
+                "AVIF",
+                "HEIF-style container + AV1 codec",
+                "photo.avif"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Why phones save HEIC instead of JPG",
+      "body": [
+        "JPEG dates from 1992. HEVC uses larger, adaptive blocks and better prediction, so a HEIC photo is typically around 40–50% smaller than a JPG of similar visual quality. On a phone with thousands of photos, that saving is gigabytes.",
+        "HEIC can also do things JPG cannot:",
+        {
+          "ul": [
+            "16-bit color depth and wide color (Display P3) without banding, where baseline JPG stops at 8 bits.",
+            "Transparency, depth maps for portrait-mode blur, and several images in one file (Live Photo stills, bursts).",
+            "Edits such as rotation stored as instructions, so the original pixels stay untouched."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where HEIC opens, and where it does not",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Opens HEIC?"
+            ],
+            "rows": [
+              [
+                "iPhone, iPad, Mac",
+                "Yes, natively"
+              ],
+              [
+                "Windows 10/11",
+                "With the HEIF and HEVC extensions from the Microsoft Store"
+              ],
+              [
+                "Android",
+                "Most phones from Android 10 on can view it; editing support varies"
+              ],
+              [
+                "Web browsers",
+                "Safari 17+ shows it; most other browsers do not, so websites rarely accept it"
+              ],
+              [
+                "Upload forms and older software",
+                "Often rejected; JPG is the safe choice"
+              ]
+            ]
+          }
+        },
+        "When you share a HEIC photo through Mail, Messages or AirDrop, an iPhone often converts it to JPG automatically. Copying files from a cable or a cloud folder keeps the HEIC original."
+      ]
+    },
+    {
+      "h": "When to convert HEIC to JPG",
+      "body": [
+        "Keep HEIC as your archive: it is smaller and holds more color. Convert a copy when the destination is not under your control:",
+        {
+          "ul": [
+            "Upload forms for visas, job applications and government sites, which usually list JPG or PNG only.",
+            "Websites and blogs, where most visitors' browsers cannot display HEIC.",
+            "Older photo editors, printers' kiosks and office software."
+          ]
+        },
+        "Converting to JPG re-compresses the image once, so pick a quality of about 85–92% to keep it visually identical. If you need transparency, convert to PNG instead."
+      ]
+    },
+    {
+      "h": "Change the default on an iPhone",
+      "body": [
+        "To make the camera save JPG from now on, open Settings › Camera › Formats and choose Most Compatible. Photos already taken stay HEIC. Choosing Most Compatible also records video as H.264 instead of HEVC, so files get larger.",
+        {
+          "note": "HEIC photos keep EXIF metadata, including GPS location when Location Services is on for the Camera. Converting does not remove it automatically; strip it before you post a photo publicly."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is HEIC better quality than JPG?",
+      "a": "At the same file size, yes: HEVC compression keeps more detail and supports 10-bit color. At the same quality, HEIC is roughly half the size."
+    },
+    {
+      "q": "Does converting HEIC to JPG lose quality?",
+      "a": "Slightly, because the JPG is compressed again. At a quality setting of 85–92% the difference is not visible in normal viewing."
+    },
+    {
+      "q": "Can I open HEIC on Windows?",
+      "a": "Yes. Windows 10 and 11 open HEIC after you install the HEIF Image Extensions and HEVC Video Extensions from the Microsoft Store, or you can convert the file to JPG in a browser."
+    },
+    {
+      "q": "Is HEIC the same as HEIF?",
+      "a": "HEIC is one kind of HEIF file: the HEIF container with HEVC-compressed images. The two names are often used interchangeably."
+    }
+  ]
+}

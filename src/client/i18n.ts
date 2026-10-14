@@ -9,6 +9,7 @@ import {
   hasGameMessages,
   hasLegalMessages,
   hasMessages,
+  hasKbArticle,
   hasKbMessages,
   hasQuizMessages,
   hasDatasetMessages,
@@ -16,6 +17,7 @@ import {
   registerGameMessages,
   registerLegalMessages,
   registerMessages,
+  registerKbArticle,
   registerKbMessages,
   registerQuizMessages,
   registerDatasetMessages,
@@ -26,6 +28,9 @@ import {
   type QuizMessages,
   type DatasetMessages,
 } from "../shared/messages";
+import type { KbId } from "../shared/kb";
+// One chunk per knowledge article and locale, so an article page downloads only its own text.
+import { KB_LOADERS } from "../locales/kb/loaders";
 
 // One chunk per locale, so a page downloads only the strings it shows.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
@@ -99,12 +104,17 @@ const KB_PACKS: Record<Locale, () => Promise<{ default: KbMessages }>> = {
   es: () => import("../locales/packs/kb-es"),
 };
 
+
+/** A knowledge page: the hub, or one article. */
+export type KbPage = KbId | "hub" | null;
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb = false): boolean {
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next)) && (!kb || hasKbMessages(next));
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null): boolean {
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
+    && (!kb || (hasKbMessages(next) && (kb === "hub" || hasKbArticle(next, kb))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null): Promise<void> {
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -112,6 +122,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),
     !dataset || hasDatasetMessages(next) ? null : DATASET_PACKS[next]().then((m) => registerDatasetMessages(next, m.default)),
     !kb || hasKbMessages(next) ? null : KB_PACKS[next]().then((m) => registerKbMessages(next, m.default)),
+    !kb || kb === "hub" || hasKbArticle(next, kb) ? null : KB_LOADERS[next][kb]().then((m) => registerKbArticle(next, kb, m.default)),
   ]);
 }
 

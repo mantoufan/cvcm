@@ -1,0 +1,170 @@
+{
+  "title": "MD5 và SHA-256: khác nhau thế nào, xung đột băm và nên dùng gì — cv.cm",
+  "description": "MD5 tạo mã băm 128 bit và đã có xung đột thực tế; SHA-256 tạo mã băm 256 bit, chưa có xung đột nào. Khi nào dùng được từng loại và vì sao không nên dùng để lưu mật khẩu.",
+  "h1": "MD5 và SHA-256 khác nhau thế nào?",
+  "answer": "MD5 và SHA-256 là các hàm băm biến mọi dữ liệu đầu vào thành một dấu vân tay có độ dài cố định: 128 bit với MD5, 256 bit với SHA-256. MD5 đã bị phá vỡ về mặt bảo mật vì kẻ tấn công có thể tạo hai file khác nhau có cùng mã băm. SHA-256 chưa có tấn công thực tế nào được biết và là lựa chọn mặc định cho chữ ký số và kiểm tra toàn vẹn. MD5 vẫn chấp nhận được để phát hiện hư hỏng ngẫu nhiên, nhưng không nên dùng loại nào để lưu trực tiếp mật khẩu.",
+  "sections": [
+    {
+      "h": "Hàm băm làm gì",
+      "body": [
+        "Hàm băm mật mã nhận đầu vào kích thước bất kỳ và trả về một bản tóm tắt (digest) có kích thước cố định. Cùng một đầu vào luôn cho cùng một digest, đổi một ký tự sẽ cho digest hoàn toàn khác, và không thể đảo ngược digest để lấy lại đầu vào.",
+        {
+          "table": {
+            "head": [
+              "Đầu vào",
+              "MD5",
+              "SHA-256"
+            ],
+            "rows": [
+              [
+                "`abc`",
+                "`900150983cd24fb0d6963f7d28e17f72`",
+                "`ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`"
+              ],
+              [
+                "Chuỗi rỗng",
+                "`d41d8cd98f00b204e9800998ecf8427e`",
+                "`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`"
+              ]
+            ]
+          }
+        },
+        "Hàm băm an toàn phải chống được ba kiểu tấn công: tìm một đầu vào cho digest cho trước (tiền ảnh), tìm đầu vào thứ hai có cùng digest với một đầu vào cho trước (tiền ảnh thứ hai), và tìm hai đầu vào bất kỳ có cùng digest (xung đột). Xung đột là dễ nhất; với hàm băm n bit lý tưởng, cần khoảng 2^(n/2) lần thử do nghịch lý ngày sinh."
+      ]
+    },
+    {
+      "h": "So sánh MD5, SHA-1, SHA-256 và SHA-3",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Kích thước digest",
+              "Độ dài hex",
+              "Tình trạng"
+            ],
+            "rows": [
+              [
+                "MD5 (1992)",
+                "128 bit",
+                "32",
+                "Xung đột khả thi từ 2004; đã bị phá vỡ về bảo mật"
+              ],
+              [
+                "SHA-1 (1995)",
+                "160 bit",
+                "40",
+                "Xung đột công khai đầu tiên năm 2017; NIST dự kiến loại bỏ trước năm 2030"
+              ],
+              [
+                "SHA-256 (SHA-2, 2001)",
+                "256 bit",
+                "64",
+                "An toàn; chuẩn hóa trong FIPS 180-4"
+              ],
+              [
+                "SHA-512 (SHA-2)",
+                "512 bit",
+                "128",
+                "An toàn; thường nhanh hơn SHA-256 trên CPU 64 bit"
+              ],
+              [
+                "SHA3-256 (2015)",
+                "256 bit",
+                "64",
+                "An toàn; thiết kế bên trong khác, chuẩn hóa trong FIPS 202"
+              ]
+            ]
+          }
+        },
+        "SHA-256 là một thành viên của họ SHA-2. \"SHA-2\" và \"SHA-256\" hay được dùng thay cho nhau, nhưng SHA-224, SHA-384 và SHA-512 cũng là các hàm SHA-2."
+      ]
+    },
+    {
+      "h": "MD5 và SHA-1 đã bị phá vỡ ra sao",
+      "body": [
+        "Năm 2004, Vương Tiểu Vân (Xiaoyun Wang) và cộng sự công bố các xung đột MD5 tìm được chỉ trong vài giờ. Các nghiên cứu sau đó tạo ra xung đột tiền tố chọn trước (chosen-prefix), khi kẻ tấn công bắt đầu từ hai file có nghĩa khác nhau rồi nối thêm dữ liệu cho tới khi mã băm trùng nhau. Năm 2008, các nhà nghiên cứu dùng kỹ thuật này tạo ra chứng chỉ của một tổ chức cấp chứng chỉ giả mạo, và mã độc Flame bị phát hiện năm 2012 đã dùng xung đột MD5 để giả mạo chứng chỉ ký mã của Microsoft. RFC 6151 nêu rõ không được dùng MD5 ở nơi cần khả năng chống xung đột, như chữ ký số.",
+        "SHA-1 cũng chịu chung số phận. Năm 2017, dự án SHAttered của Google và CWI Amsterdam công bố hai file PDF khác nhau có cùng mã băm SHA-1, và năm 2020 xung đột SHA-1 tiền tố chọn trước đã được trình diễn. Git, chứng chỉ TLS và ký mã từ đó đã hoặc đang chuyển sang SHA-256.",
+        "Tấn công tiền ảnh vào MD5 vẫn chưa khả thi. Bị phá vỡ ở đây nghĩa là kẻ tấn công có thể chế tạo các cặp file xung đột, chứ không phải có thể đảo ngược bất kỳ mã MD5 nào đang tồn tại."
+      ]
+    },
+    {
+      "h": "Khi nào MD5 vẫn dùng được, khi nào không",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mục đích",
+              "Dùng MD5 được không?",
+              "Vì sao"
+            ],
+            "rows": [
+              [
+                "Phát hiện hư hỏng ngẫu nhiên khi tải xuống hoặc sao chép",
+                "Được",
+                "Lỗi bit ngẫu nhiên không tạo ra xung đột"
+              ],
+              [
+                "Khử trùng lặp hoặc khóa cache trong hệ thống của riêng bạn",
+                "Thường là được",
+                "Ổn, trừ khi kẻ tấn công kiểm soát được đầu vào"
+              ],
+              [
+                "Xác minh file tải về từ một mirror có thể độc hại",
+                "Không",
+                "Kẻ tấn công có thể chuẩn bị file xung đột; hãy dùng SHA-256"
+              ],
+              [
+                "Chữ ký số và chứng chỉ",
+                "Không",
+                "Tấn công xung đột giả mạo được chữ ký"
+              ],
+              [
+                "Lưu mật khẩu",
+                "Không",
+                "Tính quá nhanh; SHA-256 cũng vậy"
+              ]
+            ]
+          }
+        },
+        "Nếu được chọn, hãy chọn SHA-256. Nó được hỗ trợ ở mọi nơi, được tăng tốc phần cứng trên CPU hiện đại, và giúp bạn khỏi phải tranh luận một mục đích cụ thể có nhạy cảm với xung đột hay không."
+      ]
+    },
+    {
+      "h": "Mật khẩu cần hàm băm chậm, có salt",
+      "body": [
+        "Hàm băm đa dụng được thiết kế để chạy nhanh. Một GPU hiện đại có thể tính hàng tỷ mã băm MD5 hoặc SHA-256 mỗi giây, nên một bảng mã băm SHA-256 không có salt bị lộ có thể bị tấn công bằng danh sách từ khổng lồ, và các mật khẩu giống nhau hiện ra dưới dạng mã băm giống nhau.",
+        "Hàm băm mật khẩu giải quyết cả hai vấn đề. Chúng thêm một salt ngẫu nhiên riêng cho mỗi người dùng để mật khẩu giống nhau cho ra mã băm khác nhau, và được thiết kế chậm có chủ ý, ở các thiết kế mới còn tốn nhiều bộ nhớ (memory-hard), nên GPU gần như không có lợi thế:",
+        {
+          "ul": [
+            "Argon2id: thắng cuộc thi Password Hashing Competition năm 2015 và thường là lựa chọn đầu tiên cho hệ thống mới.",
+            "scrypt: tốn nhiều bộ nhớ, được hỗ trợ rộng rãi.",
+            "bcrypt: đã được dùng hàng chục năm; lưu ý nó chỉ đọc 72 byte đầu tiên của mật khẩu.",
+            "PBKDF2 với số vòng lặp cao: chấp nhận được ở nơi bắt buộc dùng thuật toán đã được FIPS thẩm định."
+          ]
+        },
+        {
+          "note": "SHA-256 thuần cũng không phù hợp làm mã xác thực thông điệp: `SHA-256(secret + message)` dễ bị tấn công mở rộng độ dài (length extension). Hãy dùng HMAC-SHA-256 khi mã băm cần chứng minh thông điệp đến từ người nắm giữ khóa."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Có giải mã được mã băm MD5 không?",
+      "a": "Không. Băm không phải mã hóa và không có khóa để đảo ngược. Các trang \"giải mã MD5\" trực tuyến chỉ tra mã băm trong các bảng chuỗi phổ biến đã được băm sẵn, vì thế đầu vào ngắn hoặc phổ biến bị tìm ra rất nhanh."
+    },
+    {
+      "q": "SHA-256 có còn an toàn vào năm 2026 không?",
+      "a": "Có. Chưa có tấn công xung đột hay tiền ảnh thực tế nào vào SHA-256 được biết đến, và NIST vẫn tiếp tục phê duyệt nó. Khả năng chống xung đột 2^128 của nó vượt xa năng lực tính toán hiện nay."
+    },
+    {
+      "q": "Vì sao các trang web vẫn công bố checksum MD5?",
+      "a": "Chúng giúp phát hiện file tải về bị thiếu hoặc hỏng, vốn là vấn đề thường gặp. Với file bị can thiệp có chủ đích, checksum chỉ có ích nếu đến từ nguồn đáng tin và dùng SHA-256 trở lên."
+    },
+    {
+      "q": "SHA-256 có tốt để băm mật khẩu không?",
+      "a": "Nếu dùng riêng thì không. Nó nhanh và mặc định không có salt, nên mã băm bị lộ có thể bị bẻ khóa với tốc độ hàng tỷ lần đoán mỗi giây. Hãy dùng Argon2id, scrypt hoặc bcrypt."
+    }
+  ]
+}

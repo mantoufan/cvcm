@@ -284,7 +284,7 @@ export default {
         : parsed.kind === "legal" ? null
         : "home";
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset", parsed.kind === "kb");
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset", parsed.kind === "kb" ? parsed.article ?? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "dataset" && parsed.dataset) {
         for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
