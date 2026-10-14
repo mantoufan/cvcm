@@ -1,6 +1,7 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
-import { KB_GROUPS, KB_META, type KbId } from "./kb";
+import { fill } from "./fill";
+import { KB_ARTICLES, KB_GROUPS, KB_META, kbGroupOf, type KbId } from "./kb";
 import { kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
@@ -57,11 +58,6 @@ export function kbFaqItems(locale: Locale, id: KbId | null): { q: string; a: str
   return id ? kbCopy(locale, id).faq : kbHub(locale).faq;
 }
 
-function fill(text: string, vars: Record<string, string | number>): string {
-  let out = text;
-  for (const [key, value] of Object.entries(vars)) out = out.replaceAll(`{${key}}`, String(value));
-  return out;
-}
 
 function blockText(block: KbBlock): string {
   if (typeof block === "string") return block;
@@ -113,7 +109,7 @@ function crumbHtml(locale: Locale, id: KbId | null): string {
 
 function faqHtml(locale: Locale, id: KbId | null): string {
   const items = kbFaqItems(locale, id).map((item, index) => (
-    `<details${index === 0 ? " open" : ""}><summary>${escapeHtml(item.q)}</summary><p>${inline(item.a)}</p></details>`
+    `<details${index === 0 ? " open" : ""}><summary>${inline(item.q)}</summary><p>${inline(item.a)}</p></details>`
   )).join("");
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(kbUi(locale).faq)}</h2>${items}</section>`;
 }
@@ -162,13 +158,13 @@ export function kbPageHtml(locale: Locale, id: KbId | null): string {
       crumbHtml(locale, null),
       `<header class="tool-head"><h1>${escapeHtml(hub.h1)}</h1><p class="lede">${escapeHtml(hub.lede)}</p></header>`,
       groups,
-      `<section class="kb-about">${hub.about.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</section>`,
+      `<section class="kb-about">${hub.about.map((p) => `<p>${inline(p)}</p>`).join("")}</section>`,
       faqHtml(locale, null),
     ].join("");
   }
   const copy = kbCopy(locale, id);
   const meta = KB_META[id];
-  const toc = copy.sections.map((s, i) => `<li><a href="#kb-${i + 1}">${escapeHtml(s.h)}</a></li>`).join("");
+  const toc = copy.sections.map((s, i) => `<li><a href="#kb-${i + 1}">${inline(s.h)}</a></li>`).join("");
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="kb-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
@@ -178,7 +174,7 @@ export function kbPageHtml(locale: Locale, id: KbId | null): string {
   return [
     crumbHtml(locale, id),
     `<article class="kb">`,
-    `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(hub.groups[KB_GROUPS.find((g) => g.articles.includes(id))!.id])}</p>`,
+    `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(hub.groups[kbGroupOf(id)])}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
     `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${meta.updated}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, meta.updated) }))}</time></p></header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p>`,
@@ -218,7 +214,7 @@ export function kbFaqJsonLd(locale: Locale, id: KbId | null): Record<string, unk
     "@type": "FAQPage",
     mainEntity: kbFaqItems(locale, id).map((item) => ({
       "@type": "Question",
-      name: item.q,
+      name: item.q.replaceAll("`", ""),
       acceptedAnswer: { "@type": "Answer", text: item.a.replaceAll("`", "") },
     })),
   };
@@ -244,7 +240,7 @@ export function kbArticleJsonLd(locale: Locale, id: KbId | null): Record<string,
       inLanguage: HREFLANG[locale],
       mainEntity: {
         "@type": "ItemList",
-        itemListElement: KB_GROUPS.flatMap((g) => g.articles).map((article, index) => ({
+        itemListElement: KB_ARTICLES.map((article, index) => ({
           "@type": "ListItem",
           position: index + 1,
           url: `${ORIGIN}${kbHref(locale, article)}`,
@@ -270,7 +266,7 @@ export function kbArticleJsonLd(locale: Locale, id: KbId | null): Record<string,
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,
-    articleSection: kbHub(locale).groups[KB_GROUPS.find((g) => g.articles.includes(id))!.id],
+    articleSection: kbHub(locale).groups[kbGroupOf(id)],
     ...(meta.sources.length ? { citation: meta.sources.map((s) => ({ "@type": "CreativeWork", name: s.title, url: s.href })) } : {}),
   };
 }

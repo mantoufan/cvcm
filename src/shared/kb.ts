@@ -254,7 +254,9 @@ export const KB_META: Record<KbId, KbMeta> = {
     tools: ["margin", "percent", "discount"],
     tutorials: ["profit-margin", "percent-off", "vat-price"],
     related: ["apr-vs-apy"],
-    sources: [],
+    sources: [
+      { title: "U.S. SEC: Beginners' Guide to Financial Statements (revenue, cost of sales, gross profit)", href: "https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements" },
+    ],
   },
 };
 
@@ -268,5 +270,5 @@ export function kbGroupOf(id: KbId): KbGroupId {
 
 /** Articles that use this tool, in hub order: tool pages link to them. */
 export function kbForTool(tool: ToolId): KbId[] {
-  return KB_GROUPS.flatMap((group) => group.articles).filter((id) => KB_META[id].tools.includes(tool));
+  return KB_ARTICLES.filter((id) => KB_META[id].tools.includes(tool));
 }

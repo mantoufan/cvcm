@@ -111,6 +111,8 @@ describe("knowledge: catalog and copy", () => {
     const grouped = KB_GROUPS.flatMap((g) => g.articles);
     expect([...grouped].sort()).toEqual([...KB_ARTICLES].sort());
     expect(new Set(grouped).size).toBe(grouped.length);
+    // Lists use KB_ARTICLES directly, so it must already be in hub order.
+    expect(grouped).toEqual([...KB_ARTICLES]);
   });
 
   it("links only to real tools, published tutorials and other articles", () => {

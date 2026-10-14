@@ -29,7 +29,7 @@ import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
-import { KB_GROUPS, type KbId } from "../shared/kb";
+import { KB_ARTICLES, type KbId } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -208,12 +208,15 @@ export function boot(): void {
   render();
 }
 
-/** Start the game pack download when a game link is about to be followed, so the page opens without a wait. */
+/** Start the game or knowledge pack download when such a link is about to be followed, so the page opens without a wait. */
 function prefetchGamePack(e: Event): void {
-  const link = (e.target as Element | null)?.closest?.('a[data-nav^="game-"]');
-  if (!link) return;
+  const target = e.target as Element | null;
   const loc = locale();
-  if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
+  if (target?.closest?.('a[data-nav^="game-"]')) {
+    if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"]')) {
+    if (!hasPageMessages(loc, false, false, false, true)) loadPageMessages(loc, false, false, false, true).catch(() => {});
+  }
 }
 
 function onClick(e: MouseEvent): void {
@@ -661,7 +664,7 @@ function toolDirectory(loc: Locale): HTMLElement {
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
       h("p", null,
-        ...KB_GROUPS.flatMap((group) => group.articles).map((id) =>
+        ...KB_ARTICLES.map((id) =>
           h("a", { href: kbHref(loc, id), "data-nav": `kb-${id}`, "aria-current": kbPage === id ? "page" : undefined }, t(`kb.${id}.name`)),
         ),
       ),

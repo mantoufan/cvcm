@@ -6,7 +6,8 @@ import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
 import { gameName } from "../shared/games-i18n";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, kbHref, learnHref, quizHref } from "../shared/path";
-import { KB_GROUPS } from "../shared/kb";
+import { KB_ARTICLES } from "../shared/kb";
+import { kbLinkItems } from "../shared/kb-i18n";
 import { QUIZZES } from "../shared/quiz";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
@@ -56,7 +57,7 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       : []),
     h("section", { class: "wall" },
       h("h2", null, h("a", { href: kbHref(locale), "data-nav": "knowledge" }, t("kb.label"))),
-      linkList(KB_GROUPS.flatMap((group) => group.articles).map((id) => ({ href: kbHref(locale, id), name: t(`kb.${id}.name`), blurb: t(`kb.${id}.blurb`), nav: `kb-${id}` }))),
+      linkList(kbLinkItems(locale, KB_ARTICLES)),
       h("p", { class: "more" }, h("a", { href: kbHref(locale), "data-nav": "knowledge" }, t("kb.all"))),
     ),
     h("section", { class: "wall" },
