@@ -6,11 +6,12 @@ declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
 const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "undefined" ? {} : __LOCALE_PACKS__;
 
 /** Fetch the page's strings (plus the game or quiz pack on those pages) in parallel with the entry script instead of after it runs. */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false, dataset = false): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     ...(game ? packs[`games-${locale}`] ?? [] : []),
     ...(quiz ? packs[`quiz-${locale}`] ?? [] : []),
+    ...(dataset ? packs[`datasets-${locale}`] ?? [] : []),
   ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");

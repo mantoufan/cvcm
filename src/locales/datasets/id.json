@@ -1,0 +1,364 @@
+{
+  "crumbHome": "Beranda",
+  "hub": {
+    "title": "Tabel Data Publik Gratis: Penduduk, PDB, Kode Negara | cv.cm",
+    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk dunia, PDB, angka harapan hidup, tingkat kesuburan, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
+    "h1": "Data publik",
+    "lede": "Tabel sederhana berisi data publik dari Bank Dunia, ISO, dan IANA. Cari, urutkan berdasarkan kolom apa pun, atau unduh CSV-nya. Setiap tabel mencantumkan sumber dan lisensinya.",
+    "groups": {
+      "world": "Negara dan ekonomi dunia",
+      "codes": "Kode dan standar",
+      "reference": "Referensi cepat"
+    },
+    "about": [
+      "Setiap tabel adalah salinan dari sumber resmi, diperbarui dari sumber tersebut dan diberi tanggal di halamannya. Angka negara berasal dari World Development Indicators Bank Dunia (CC BY 4.0). Kode berasal dari daftar ISO 3166 dan ISO 4217 serta basis data zona waktu IANA.",
+      "Angka ditampilkan dalam bahasa Anda, tetapi file CSV menyimpan nilai mentah dan kode ISO, sehingga bisa dibuka dengan rapi di Excel, Google Sheets, atau kode."
+    ],
+    "faq": [
+      { "q": "Dari mana data ini berasal?", "a": "Statistik negara berasal dari World Development Indicators Bank Dunia. Kode negara, mata uang, dan telepon mengikuti ISO 3166, ISO 4217, dan daftar ITU. Zona waktu berasal dari basis data IANA tz. Ukuran kertas mengikuti ISO 216, ISO 269, JIS P 0138, dan ANSI." },
+      { "q": "Apakah tabel ini boleh dipakai gratis?", "a": "Ya. Data Bank Dunia berlisensi CC BY 4.0, jadi sebutkan Bank Dunia sebagai sumber saat menggunakannya kembali. Kode dan tabel referensi adalah fakta publik yang bebas dipakai." },
+      { "q": "Seberapa baru angkanya?", "a": "Setiap halaman menampilkan tanggal pengambilan data dan tahun setiap nilai. Bank Dunia menerbitkan sebagian besar indikator satu atau dua tahun setelahnya, jadi nilai terbaru suatu negara bisa berasal dari tahun yang lebih lama." }
+    ]
+  },
+  "ui": {
+    "all": "Semua data",
+    "search": "Saring baris",
+    "searchPlaceholder": "Ketik negara, kode, atau nilai",
+    "rows": "{n} baris",
+    "shown": "{shown} dari {n} baris",
+    "noMatch": "Tidak ada baris yang cocok.",
+    "download": "Unduh CSV",
+    "sortHint": "Pilih judul kolom untuk mengurutkan.",
+    "facts": "Fakta utama",
+    "about": "Tentang data ini",
+    "faq": "Tanya jawab",
+    "related": "Data lainnya",
+    "tools": "Alat terkait",
+    "source": "Sumber",
+    "license": "Lisensi",
+    "snapshot": "Data per {date}",
+    "rank": "#",
+    "country": "Negara atau wilayah",
+    "year": "Tahun",
+    "share": "Porsi dunia",
+    "continents": {
+      "AF": "Afrika",
+      "AN": "Antartika",
+      "AS": "Asia",
+      "EU": "Eropa",
+      "NA": "Amerika Utara",
+      "OC": "Oseania",
+      "SA": "Amerika Selatan"
+    },
+    "series": {
+      "A": "ISO A",
+      "B": "ISO B",
+      "C": "ISO C (amplop)",
+      "JIS": "JIS B (Jepang)",
+      "US": "AS / ANSI"
+    }
+  },
+  "sets": {
+    "population": {
+      "name": "Jumlah penduduk per negara",
+      "title": "Jumlah Penduduk Dunia per Negara {to} ({rows} Negara) | cv.cm",
+      "description": "Jumlah penduduk {rows} negara dan wilayah, diurutkan, beserta porsinya dari total dunia. Penduduk dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Jumlah penduduk dunia per negara, {to}",
+      "lede": "Total penduduk {rows} negara dan wilayah, diurutkan dari terbesar ke terkecil, beserta porsi masing-masing dari dunia. Sumber: Bank Dunia.",
+      "value": "Penduduk",
+      "facts": [
+        "Penduduk dunia: {world} ({worldYear}).",
+        "Terbesar: {top1} ({v1}), lalu {top2} ({v2}) dan {top3} ({v3}).",
+        "Terkecil dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Total penduduk mencakup semua penduduk tanpa memandang status hukum atau kewarganegaraan. Nilainya adalah perkiraan pertengahan tahun dari sensus nasional dan Divisi Kependudukan PBB, yang diterbitkan oleh Bank Dunia.",
+        "Daftar ini mencakup 217 perekonomian yang dilaporkan Bank Dunia. Beberapa wilayah dicantumkan terpisah dari negara induknya."
+      ],
+      "faq": [
+        { "q": "Negara mana yang penduduknya paling banyak?", "a": "{top1}, dengan {v1} jiwa pada {year1}. {top2} di urutan kedua dengan {v2}." },
+        { "q": "Berapa jumlah penduduk dunia?", "a": "Menurut Bank Dunia, jumlah penduduk dunia pada {worldYear} adalah {world}." },
+        { "q": "Negara mana yang penduduknya paling sedikit?", "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa. Wilayah yang tidak dilaporkan Bank Dunia, seperti Vatikan, tidak termasuk." }
+      ]
+    },
+    "gdp": {
+      "name": "PDB per negara",
+      "title": "PDB Negara {to}: Peringkat {rows} Ekonomi dalam US$ | cv.cm",
+      "description": "Produk domestik bruto {rows} perekonomian dalam dolar AS berlaku, diurutkan, beserta porsinya dari PDB dunia. PDB dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "PDB per negara, {to} (US$ berlaku)",
+      "lede": "PDB nominal {rows} perekonomian dalam dolar AS berlaku, diurutkan, beserta porsi masing-masing dari total dunia. Sumber: Bank Dunia.",
+      "value": "PDB (US$)",
+      "facts": [
+        "PDB dunia: {world} ({worldYear}).",
+        "Ekonomi terbesar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terkecil dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "PDB adalah nilai semua barang dan jasa akhir yang dihasilkan suatu negara dalam setahun. Angka ini dikonversi ke dolar AS dengan kurs resmi, sehingga gejolak kurs bisa mengubahnya meski produksinya tetap.",
+        "Untuk membandingkan taraf hidup, lihat PDB per kapita, atau PDB berdasarkan paritas daya beli (PPP) yang memperhitungkan tingkat harga."
+      ],
+      "faq": [
+        { "q": "Negara mana yang PDB-nya terbesar?", "a": "{top1}, dengan PDB {v1} pada {year1}. {top2} di urutan kedua dengan {v2}." },
+        { "q": "Berapa PDB dunia?", "a": "PDB dunia pada {worldYear} adalah {world}, dalam dolar AS berlaku." },
+        { "q": "Mengapa beberapa negara menampilkan tahun yang lebih lama?", "a": "Bank Dunia baru menerbitkan angka setelah negara tersebut melaporkannya. Setiap baris menampilkan tahun terbaru yang tersedia, jadi beberapa negara tertinggal." }
+      ]
+    },
+    "gdp-per-capita": {
+      "name": "PDB per kapita per negara",
+      "title": "PDB per Kapita Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "PDB per orang di {rows} negara dalam dolar AS berlaku, diurutkan dari terkaya ke termiskin. Rata-rata dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "PDB per kapita per negara, {to} (US$ berlaku)",
+      "lede": "PDB dibagi jumlah penduduk untuk {rows} negara dan wilayah, dalam dolar AS berlaku, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "PDB per kapita (US$)",
+      "facts": [
+        "PDB per kapita dunia: {world} ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "PDB per kapita adalah produk domestik bruto dibagi jumlah penduduk pertengahan tahun. Ini ukuran kasar yang umum untuk pendapatan rata-rata, tetapi tidak menunjukkan bagaimana pendapatan itu terbagi.",
+        "Pusat keuangan kecil dan negara pengekspor sumber daya sering berada di puncak karena ekonomi yang besar dibagi ke sedikit penduduk."
+      ],
+      "faq": [
+        { "q": "Negara mana yang PDB per kapitanya tertinggi?", "a": "{top1}, sebesar {v1} per orang pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa rata-rata PDB per kapita dunia?", "a": "{world} pada {worldYear}, dalam dolar AS berlaku." },
+        { "q": "Negara mana yang PDB per kapitanya terendah?", "a": "Dalam daftar ini, {last}, sebesar {vlast} per orang." }
+      ]
+    },
+    "life-expectancy": {
+      "name": "Angka harapan hidup per negara",
+      "title": "Angka Harapan Hidup per Negara {to}: {rows} Negara | cv.cm",
+      "description": "Angka harapan hidup saat lahir di {rows} negara, diurutkan. Rata-rata dunia {world} tahun ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Angka harapan hidup saat lahir per negara, {to}",
+      "lede": "Berapa tahun bayi yang baru lahir akan hidup jika angka kematian saat ini tetap, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "Harapan hidup (tahun)",
+      "facts": [
+        "Angka harapan hidup dunia: {world} tahun ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka harapan hidup saat lahir adalah rata-rata tahun hidup seorang bayi jika angka kematian pada tahun kelahirannya berlaku sepanjang hidupnya. Ini gambaran kesehatan saat ini, bukan ramalan.",
+        "Nilainya untuk laki-laki dan perempuan. Di hampir semua negara, perempuan hidup lebih lama daripada laki-laki."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka harapan hidupnya tertinggi?", "a": "{top1}, yaitu {v1} tahun pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa rata-rata angka harapan hidup dunia?", "a": "{world} tahun pada {worldYear}, untuk laki-laki dan perempuan." },
+        { "q": "Negara mana yang angka harapan hidupnya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} tahun." }
+      ]
+    },
+    "fertility-rate": {
+      "name": "Tingkat kesuburan per negara",
+      "title": "Tingkat Kesuburan (TFR) per Negara {to}: {rows} Negara | cv.cm",
+      "description": "Angka kelahiran total (anak per perempuan) di {rows} negara, diurutkan. Rata-rata dunia {world} ({worldYear}). Tingkat penggantian sekitar 2,1. Data Bank Dunia, unduh CSV.",
+      "h1": "Tingkat kesuburan per negara, {to} (anak per perempuan)",
+      "lede": "Rata-rata jumlah anak yang akan dimiliki seorang perempuan pada tingkat kelahiran saat ini, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "Anak per perempuan",
+      "facts": [
+        "Tingkat kesuburan dunia: {world} anak per perempuan ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka kelahiran total (TFR) adalah jumlah anak yang akan dimiliki seorang perempuan jika ia hidup sampai akhir masa suburnya dan melahirkan di setiap usia sesuai tingkat kelahiran tahun itu.",
+        "Sekitar 2,1 anak per perempuan menjaga jumlah penduduk tetap stabil tanpa migrasi. Sebagian besar Asia Timur dan Eropa jauh di bawahnya."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat kesuburannya tertinggi?", "a": "{top1}, yaitu {v1} anak per perempuan pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Negara mana yang tingkat kesuburannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} anak per perempuan." },
+        { "q": "Apa itu tingkat kesuburan pengganti?", "a": "Sekitar 2,1 anak per perempuan di negara dengan angka kematian anak yang rendah. Rata-rata dunia adalah {world} ({worldYear})." }
+      ]
+    },
+    "internet-users": {
+      "name": "Pengguna internet per negara",
+      "title": "Pengguna Internet per Negara {to}: % Penduduk ({rows}) | cv.cm",
+      "description": "Persentase penduduk yang menggunakan internet di {rows} negara, diurutkan. Rata-rata dunia {world}% ({worldYear}). Data Bank Dunia / ITU, unduh CSV.",
+      "h1": "Pengguna internet per negara, {to} (% penduduk)",
+      "lede": "Persentase penduduk yang menggunakan internet dalam tiga bulan terakhir, untuk {rows} negara dan wilayah, diurutkan. Sumber: Bank Dunia, dari data ITU.",
+      "value": "Pengguna internet (%)",
+      "facts": [
+        "Dunia: {world}% penduduk menggunakan internet ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Pengguna internet adalah siapa saja yang daring dalam tiga bulan terakhir dari perangkat atau tempat mana pun. International Telecommunication Union (ITU) mengumpulkan angkanya dari survei dan perkiraan nasional.",
+        "Beberapa negara melapor hanya setiap beberapa tahun, jadi periksa kolom tahun sebelum membandingkan dua baris."
+      ],
+      "faq": [
+        { "q": "Negara mana yang persentase pengguna internetnya tertinggi?", "a": "{top1}, dengan {v1}% penduduk daring pada {year1}." },
+        { "q": "Berapa persen penduduk dunia yang menggunakan internet?", "a": "{world}% penduduk dunia pada {worldYear}." },
+        { "q": "Negara mana yang pengguna internetnya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% penduduk." }
+      ]
+    },
+    "country-codes": {
+      "name": "Kode negara (ISO 3166)",
+      "title": "Kode Negara ISO 3166: Alpha-2, Alpha-3, Numerik ({rows}) | cv.cm",
+      "description": "Semua {rows} kode negara ISO 3166-1: kode dua huruf (alpha-2), tiga huruf (alpha-3), dan numerik, beserta domain internet dan benua. Bisa dicari, unduh CSV.",
+      "h1": "Kode negara ISO 3166",
+      "lede": "Kode dua huruf, tiga huruf, dan numerik untuk semua {rows} negara dan wilayah dalam ISO 3166-1, beserta domain internet dan benuanya.",
+      "cols": {
+        "name": "Negara atau wilayah",
+        "alpha2": "Alpha-2",
+        "alpha3": "Alpha-3",
+        "numeric": "Numerik",
+        "tld": "Domain",
+        "continent": "Benua"
+      },
+      "facts": [
+        "{rows} negara dan wilayah memiliki kode ISO 3166-1.",
+        "Kode alpha-2 dipakai untuk domain internet (.id, .jp) dan tag bahasa (id-ID).",
+        "Kode alpha-3 tercantum di paspor; kode numerik berasal dari standar PBB M49."
+      ],
+      "about": [
+        "ISO 3166-1 memberi setiap negara dan banyak wilayah dependen tiga kode. Alpha-2 (ID, US) paling banyak dipakai sistem. Alpha-3 (IDN, USA) lebih mudah dibaca. Kode numerik (360, 840) berguna di tempat yang tidak memakai huruf Latin.",
+        "Inggris memakai domain internet .uk walaupun kode ISO-nya GB. Nama di sini ditampilkan dalam bahasa Anda."
+      ],
+      "faq": [
+        { "q": "Apa beda kode alpha-2 dan alpha-3?", "a": "Kode alpha-2 terdiri dari dua huruf (ID) dan dipakai di domain, tag bahasa, dan sebagian besar perangkat lunak. Kode alpha-3 terdiri dari tiga huruf (IDN) dan dipakai di paspor dan statistik." },
+        { "q": "Ada berapa kode negara ISO?", "a": "ISO 3166-1 mencantumkan {rows} negara dan wilayah, masing-masing dengan kode alpha-2, alpha-3, dan numerik." },
+        { "q": "Apa kode negara Indonesia?", "a": "ID (alpha-2), IDN (alpha-3), dan 360 (numerik). Domain internetnya .id." }
+      ]
+    },
+    "calling-codes": {
+      "name": "Kode telepon internasional",
+      "title": "Kode Telepon Internasional: Daftar {rows} Negara | cv.cm",
+      "description": "Kode telepon negara untuk {rows} negara dan wilayah, dari +1 sampai +998. Cari berdasarkan negara atau kode, beserta kode ISO. Unduh CSV.",
+      "h1": "Kode telepon internasional per negara",
+      "lede": "Nomor yang ditekan setelah awalan internasional (+) untuk menghubungi {rows} negara dan wilayah.",
+      "cols": {
+        "name": "Negara atau wilayah",
+        "dial": "Kode telepon",
+        "alpha2": "Kode ISO"
+      },
+      "facts": [
+        "Tekan + (atau kode akses internasional, misalnya 001, 007, atau 008 di Indonesia), lalu kode negara, lalu nomor tanpa angka 0 di depan.",
+        "+1 dipakai bersama oleh AS, Kanada, dan banyak pulau Karibia, yang menambahkan kode area 3 digit.",
+        "+7 dipakai bersama oleh Rusia dan Kazakhstan."
+      ],
+      "about": [
+        "Kode telepon ditetapkan oleh International Telecommunication Union (ITU-T E.164). Panjangnya satu sampai tiga digit, dan beberapa kelompok negara berbagi satu kode.",
+        "Di ponsel, tahan tombol 0 untuk mengetik +. Cara ini berlaku dari negara mana pun, jadi Anda tidak perlu tahu kode akses internasional setempat."
+      ],
+      "faq": [
+        { "q": "Bagaimana cara menelepon ke luar negeri?", "a": "Ketik + (atau kode akses internasional, misalnya 001, 007, atau 008 dari Indonesia, atau 011 dari AS), kode negara, lalu nomor lokal tanpa angka 0 di depan. Untuk menelepon Indonesia dari luar negeri, tekan +62 lalu hapus 0 di depan: 08xx menjadi +62 8xx." },
+        { "q": "+62 kode negara mana?", "a": "+62 adalah kode telepon Indonesia." },
+        { "q": "Mengapa beberapa negara berbagi +1?", "a": "Negara-negara itu tergabung dalam North American Numbering Plan. Kode area 3 digit setelah +1 menunjukkan negaranya." }
+      ]
+    },
+    "currency-codes": {
+      "name": "Kode mata uang (ISO 4217)",
+      "title": "Kode Mata Uang ISO 4217: {rows} Mata Uang dan Simbolnya | cv.cm",
+      "description": "Semua {rows} kode mata uang ISO 4217 yang berlaku, dengan kode numerik, simbol, jumlah desimal, dan negara pemakainya. Bisa dicari, unduh CSV.",
+      "h1": "Kode mata uang ISO 4217",
+      "lede": "Kode tiga huruf, kode numerik, simbol, dan jumlah desimal untuk {rows} mata uang dalam ISO 4217, serta tempat pemakaiannya.",
+      "cols": {
+        "code": "Kode",
+        "name": "Mata uang",
+        "symbol": "Simbol",
+        "numeric": "Numerik",
+        "minor": "Desimal",
+        "used": "Dipakai di"
+      },
+      "facts": [
+        "ISO 4217 mencantumkan {rows} kode mata uang yang berlaku, termasuk dana dan logam mulia.",
+        "Dua huruf pertama biasanya kode negara ISO: IDR adalah rupiah Indonesia.",
+        "Kode yang diawali X tidak terkait negara mana pun: XAU adalah emas, XDR adalah hak penarikan khusus IMF."
+      ],
+      "about": [
+        "Bank, sistem pembayaran, dan perangkat lunak akuntansi memakai kode ISO 4217 karena simbol bisa membingungkan: $ dipakai oleh lebih dari 20 mata uang.",
+        "Desimal adalah jumlah digit satuan kecil (sen). JPY dan KRW tidak punya desimal, dan beberapa mata uang negara Teluk punya tiga."
+      ],
+      "faq": [
+        { "q": "Apa kode mata uang rupiah?", "a": "IDR, dengan kode numerik 360. Dalam ISO 4217 rupiah tercatat dengan 2 desimal, meski sen sudah tidak dipakai dalam praktik." },
+        { "q": "Ada berapa mata uang di dunia?", "a": "ISO 4217 mencantumkan {rows} kode yang berlaku, termasuk beberapa dana, logam mulia, dan kode untuk pengujian." },
+        { "q": "Mengapa euro punya satu kode untuk banyak negara?", "a": "EUR adalah satu mata uang yang dipakai bersama di kawasan euro, jadi kodenya hanya satu. Kolom Dipakai di mencantumkan semua negara dan wilayah yang memakainya." }
+      ]
+    },
+    "time-zones": {
+      "name": "Zona waktu (IANA)",
+      "title": "Daftar Zona Waktu dan Selisih UTC ({rows} Zona IANA, {year}) | cv.cm",
+      "description": "Semua {rows} zona waktu IANA (Asia/Jakarta, America/New_York) dengan selisih UTC pada Januari dan Juli {year}, sehingga terlihat mana yang memakai waktu musim panas. Unduh CSV.",
+      "h1": "Zona waktu dan selisih UTC",
+      "lede": "Setiap zona waktu IANA dengan selisih UTC pada Januari dan Juli {year}. Jika keduanya berbeda, zona tersebut memakai waktu musim panas (DST).",
+      "cols": {
+        "id": "ID zona waktu",
+        "name": "Nama",
+        "jan": "Selisih UTC (Jan)",
+        "jul": "Selisih UTC (Jul)"
+      },
+      "facts": [
+        "{rows} ID zona waktu IANA, diurutkan dari barat ({west}) ke timur ({east}).",
+        "Zona yang selisih Januari dan Julinya berbeda memakai waktu musim panas.",
+        "Beberapa zona bergeser 30 atau 45 menit, seperti India (UTC+05:30) dan Nepal (UTC+05:45)."
+      ],
+      "about": [
+        "ID zona waktu IANA seperti Europe/London adalah yang dipakai ponsel, komputer, dan bahasa pemrograman. Daftar ini mengikuti zone.tab dari IANA: satu baris per negara dan zona, masing-masing dengan aturan waktu musim panas wilayahnya.",
+        "Selisih dihitung untuk 15 Januari dan 15 Juli {year} dari basis data tz {tz}. Pemerintah terkadang mengubah aturannya secara mendadak."
+      ],
+      "faq": [
+        { "q": "Indonesia memakai zona waktu apa?", "a": "Indonesia punya tiga zona waktu: WIB (UTC+07:00, Asia/Jakarta), WITA (UTC+08:00, Asia/Makassar), dan WIT (UTC+09:00, Asia/Jayapura). Tidak ada waktu musim panas." },
+        { "q": "Apa beda UTC dan GMT?", "a": "Untuk keperluan sehari-hari, waktunya sama. UTC adalah standar waktu atom; GMT adalah zona waktu di bujur 0°, yang dipakai Inggris saat musim dingin." },
+        { "q": "Ada berapa zona waktu?", "a": "Basis data IANA yang dipakai di sini memiliki {rows} ID zona. Semuanya memakai kurang dari 40 selisih UTC yang berbeda." }
+      ]
+    },
+    "paper-sizes": {
+      "name": "Ukuran kertas",
+      "title": "Ukuran Kertas A4, A3, B5, Letter dalam mm, Inci, dan Piksel | cv.cm",
+      "description": "Ukuran {rows} jenis kertas (A0–A10, B, C, JIS B, Letter, Legal) dalam milimeter, inci, dan piksel pada 300 dan 96 DPI. Unduh CSV.",
+      "h1": "Ukuran kertas dalam mm, inci, dan piksel",
+      "lede": "Lebar × tinggi ukuran ISO A, B, dan C, ukuran JIS B Jepang, dan ukuran Amerika Utara, dengan ukuran piksel untuk cetak (300 DPI) dan layar (96 DPI).",
+      "cols": {
+        "size": "Ukuran",
+        "series": "Seri",
+        "mm": "Milimeter",
+        "in": "Inci",
+        "px300": "Piksel pada 300 DPI",
+        "px96": "Piksel pada 96 DPI"
+      },
+      "facts": [
+        "A4 berukuran 210 × 297 mm (8,27 × 11,69 inci), 2480 × 3508 px pada 300 DPI.",
+        "US Letter berukuran 215,9 × 279,4 mm (8,5 × 11 inci).",
+        "Setiap ukuran A setengah dari ukuran sebelumnya: dua lembar A4 sama dengan satu A3."
+      ],
+      "about": [
+        "Ukuran ISO 216 memiliki rasio yang sama, 1:√2, sehingga halaman bisa diperbesar dari A4 ke A3 atau diperkecil ke A5 tanpa terpotong. Luas A0 tepat satu meter persegi.",
+        "Ukuran JIS B, yang umum di Jepang dan Tiongkok untuk buku tulis dan buku, sedikit lebih besar daripada ISO B. JIS B5 berukuran 182 × 257 mm, sedangkan ISO B5 176 × 250 mm."
+      ],
+      "faq": [
+        { "q": "Berapa ukuran kertas A4?", "a": "210 × 297 mm, atau 8,27 × 11,69 inci. Pada 300 DPI, ukurannya 2480 × 3508 piksel." },
+        { "q": "Apa beda A4 dan Letter?", "a": "A4 (210 × 297 mm) lebih sempit dan lebih panjang daripada US Letter (215,9 × 279,4 mm). Sebagian besar dunia, termasuk Indonesia, memakai A4; AS, Kanada, dan Meksiko memakai Letter." },
+        { "q": "Berapa piksel yang dibutuhkan untuk mencetak A4?", "a": "2480 × 3508 px untuk hasil tajam pada 300 DPI. 1240 × 1754 px (150 DPI) cukup untuk draf." }
+      ]
+    },
+    "ascii": {
+      "name": "Tabel ASCII",
+      "title": "Tabel ASCII: 128 Kode dalam Desimal, Hex, Oktal, dan Biner | cv.cm",
+      "description": "Tabel ASCII lengkap berisi 128 karakter dengan nilai desimal, heksadesimal, oktal, dan biner serta nama karakter kontrol. Unduh CSV.",
+      "h1": "Tabel ASCII",
+      "lede": "Semua 128 kode ASCII dengan nilai desimal, hex, oktal, dan biner, karakternya, serta nama setiap karakter kontrol.",
+      "cols": {
+        "dec": "Desimal",
+        "hex": "Hex",
+        "oct": "Oktal",
+        "bin": "Biner",
+        "char": "Karakter",
+        "name": "Nama"
+      },
+      "facts": [
+        "Kode 0–31 dan 127 adalah karakter kontrol; 32–126 bisa dicetak.",
+        "A adalah 65 (0x41) dan a adalah 97 (0x61): huruf besar dan kecil berselisih 32.",
+        "Angka 0–9 adalah kode 48–57."
+      ],
+      "about": [
+        "ASCII (American Standard Code for Information Interchange, 1963) memberi 128 kode untuk huruf Inggris, angka, tanda baca, dan sinyal kontrol, menggunakan 7 bit.",
+        "UTF-8 mengodekan 128 karakter ini persis sama dengan ASCII, jadi setiap file ASCII juga merupakan UTF-8 yang valid."
+      ],
+      "faq": [
+        { "q": "Berapa kode ASCII huruf A?", "a": "Huruf kapital A adalah 65 dalam desimal, 0x41 dalam hex, dan 1000001 dalam biner. Huruf kecil a adalah 97 (0x61)." },
+        { "q": "Berapa kode ASCII untuk spasi?", "a": "32 dalam desimal, 0x20 dalam hex." },
+        { "q": "Apa beda LF dan CR?", "a": "LF (10, line feed) memulai baris baru di Linux dan macOS. File teks Windows mengakhiri baris dengan CR LF (13 lalu 10)." }
+      ]
+    }
+  }
+}

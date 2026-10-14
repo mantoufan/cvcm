@@ -349,7 +349,8 @@
     "games": "遊戲",
     "device": "裝置",
     "assets": "資產",
-    "tests": "測驗"
+    "tests": "測驗",
+    "data": "資料"
   },
   "lang": {
     "label": "語言",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "憂鬱自評量表（PHQ-9）",
       "blurb": "醫師常用的 9 題憂鬱篩檢，0–27 分。"
+    }
+  },
+  "dataset": {
+    "all": "全部資料",
+    "population": {
+      "name": "世界各國人口",
+      "blurb": "217 個國家和地區人口排名及占世界比例。"
+    },
+    "gdp": {
+      "name": "世界各國 GDP",
+      "blurb": "各經濟體名目 GDP（美元）排名。"
+    },
+    "gdp-per-capita": {
+      "name": "各國人均 GDP",
+      "blurb": "人均國內生產毛額，由高到低排名。"
+    },
+    "life-expectancy": {
+      "name": "各國平均預期壽命",
+      "blurb": "各國出生時預期壽命排名。"
+    },
+    "fertility-rate": {
+      "name": "各國生育率",
+      "blurb": "每名婦女平均生育子女數，由高到低。"
+    },
+    "internet-users": {
+      "name": "各國網路普及率",
+      "blurb": "各國上網人口占總人口的比例。"
+    },
+    "country-codes": {
+      "name": "國家代碼 ISO 3166",
+      "blurb": "249 個國家和地區的二字母、三字母和數字代碼。"
+    },
+    "calling-codes": {
+      "name": "國際電話國碼",
+      "blurb": "撥打各國家和地區的 + 號國際碼。"
+    },
+    "currency-codes": {
+      "name": "貨幣代碼 ISO 4217",
+      "blurb": "貨幣代碼、符號及使用國家和地區。"
+    },
+    "time-zones": {
+      "name": "時區與 UTC 時差",
+      "blurb": "全部 IANA 時區及冬季、夏季 UTC 偏移。"
+    },
+    "paper-sizes": {
+      "name": "紙張尺寸",
+      "blurb": "A4、A3、B5、Letter 等的公釐、英寸和像素尺寸。"
+    },
+    "ascii": {
+      "name": "ASCII 碼表",
+      "blurb": "全部 128 個字元的十進位、十六進位、八進位和二進位。"
     }
   }
 }

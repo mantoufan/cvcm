@@ -349,7 +349,8 @@
     "games": "ゲーム",
     "device": "端末",
     "assets": "資産",
-    "tests": "診断"
+    "tests": "診断",
+    "data": "データ"
   },
   "lang": {
     "label": "言語",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "うつ病チェック（PHQ-9）",
       "blurb": "医療現場で使われる9問のうつスクリーニング。0〜27点。"
+    }
+  },
+  "dataset": {
+    "all": "すべてのデータ",
+    "population": {
+      "name": "世界の国別人口",
+      "blurb": "217の国と地域の人口ランキングと世界に占める割合。"
+    },
+    "gdp": {
+      "name": "国別GDP",
+      "blurb": "各国の名目GDP(米ドル)ランキング。"
+    },
+    "gdp-per-capita": {
+      "name": "国別一人当たりGDP",
+      "blurb": "一人当たりGDPを高い順に。"
+    },
+    "life-expectancy": {
+      "name": "国別平均寿命",
+      "blurb": "各国の出生時平均余命ランキング。"
+    },
+    "fertility-rate": {
+      "name": "国別出生率",
+      "blurb": "女性一人当たりの出生数を高い順に。"
+    },
+    "internet-users": {
+      "name": "国別インターネット利用率",
+      "blurb": "インターネットを利用する人の割合。"
+    },
+    "country-codes": {
+      "name": "国名コード ISO 3166",
+      "blurb": "249の国と地域の2文字・3文字・数字コード。"
+    },
+    "calling-codes": {
+      "name": "国際電話の国番号",
+      "blurb": "各国にかけるときの+国番号。"
+    },
+    "currency-codes": {
+      "name": "通貨コード ISO 4217",
+      "blurb": "通貨コード、記号、使用されている国と地域。"
+    },
+    "time-zones": {
+      "name": "タイムゾーンとUTCとの時差",
+      "blurb": "全IANAタイムゾーンの冬と夏のUTCオフセット。"
+    },
+    "paper-sizes": {
+      "name": "用紙サイズ",
+      "blurb": "A4・A3・B5・レターなどのmm、インチ、ピクセル。"
+    },
+    "ascii": {
+      "name": "ASCIIコード表",
+      "blurb": "全128文字の10進・16進・8進・2進。"
     }
   }
 }
