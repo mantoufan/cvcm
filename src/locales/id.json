@@ -349,7 +349,8 @@
     "games": "Game",
     "device": "Perangkat",
     "assets": "Aset",
-    "tests": "Tes"
+    "tests": "Tes",
+    "data": "Data"
   },
   "lang": {
     "label": "Bahasa",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "Tes depresi (PHQ-9)",
       "blurb": "Skrining depresi 9 soal, skor 0 sampai 27."
+    }
+  },
+  "dataset": {
+    "all": "Semua data",
+    "population": {
+      "name": "Populasi dunia menurut negara",
+      "blurb": "Populasi 217 negara dan wilayah, berperingkat, dengan pangsa dunia."
+    },
+    "gdp": {
+      "name": "PDB menurut negara",
+      "blurb": "PDB nominal dalam dolar AS untuk setiap ekonomi, berperingkat."
+    },
+    "gdp-per-capita": {
+      "name": "PDB per kapita menurut negara",
+      "blurb": "PDB per orang, dari tertinggi ke terendah."
+    },
+    "life-expectancy": {
+      "name": "Angka harapan hidup menurut negara",
+      "blurb": "Harapan hidup saat lahir di tiap negara."
+    },
+    "fertility-rate": {
+      "name": "Angka kelahiran menurut negara",
+      "blurb": "Kelahiran per perempuan, dari tertinggi ke terendah."
+    },
+    "internet-users": {
+      "name": "Pengguna internet menurut negara",
+      "blurb": "Persentase penduduk yang memakai internet."
+    },
+    "country-codes": {
+      "name": "Kode negara ISO 3166",
+      "blurb": "Kode alpha-2, alpha-3 dan numerik 249 negara dan wilayah."
+    },
+    "calling-codes": {
+      "name": "Kode telepon internasional",
+      "blurb": "Kode + untuk menelepon setiap negara."
+    },
+    "currency-codes": {
+      "name": "Kode mata uang ISO 4217",
+      "blurb": "Kode, simbol, dan negara pengguna tiap mata uang."
+    },
+    "time-zones": {
+      "name": "Zona waktu dan selisih UTC",
+      "blurb": "Semua zona waktu IANA dengan selisih UTC musim dingin dan panas."
+    },
+    "paper-sizes": {
+      "name": "Ukuran kertas",
+      "blurb": "A4, A3, B5, Letter dan lainnya dalam mm, inci, dan piksel."
+    },
+    "ascii": {
+      "name": "Tabel ASCII",
+      "blurb": "Semua 128 kode dalam desimal, heksa, oktal, dan biner."
     }
   },
   "kb": {

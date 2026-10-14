@@ -16,6 +16,7 @@ import {
   marketsHref,
   parseAppPath,
   quizHref,
+  datasetHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -29,6 +30,7 @@ import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
+import { DATASETS, type DatasetId } from "../shared/datasets";
 import { KB_ARTICLES, type KbId } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
@@ -61,6 +63,8 @@ let devicePage: DevicePageId | null = null;
 let legalPage: LegalPageId | null = null;
 /** A test page: "hub" for /tests/, else the test id. */
 let quizPage: QuizId | "hub" | null = null;
+/** A data page: "hub" for /datasets/, else the table id. */
+let datasetPage: DatasetId | "hub" | null = null;
 /** A knowledge page: "hub" for /learn/knowledge/, else the article id. */
 let kbPage: KbId | "hub" | null = null;
 const noop = (): void => {};
@@ -154,6 +158,18 @@ export function boot(): void {
     setLocale(loc);
     applyQuiz(parsed.quiz);
     history.replaceState(null, "", withSearch(quizHref(loc, parsed.quiz), location.search));
+  } else if (parsed.kind === "dataset") {
+    setLocale(parsed.locale);
+    applyDataset(parsed.dataset);
+    const canonical = datasetHref(parsed.locale, parsed.dataset);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-dataset") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyDataset(parsed.dataset);
+    history.replaceState(null, "", withSearch(datasetHref(loc, parsed.dataset), location.search));
   } else if (parsed.kind === "kb") {
     setLocale(parsed.locale);
     applyKb(parsed.article);
@@ -215,7 +231,7 @@ function prefetchGamePack(e: Event): void {
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="kb-"], a[data-nav="knowledge"]')) {
-    if (!hasPageMessages(loc, false, false, false, true)) loadPageMessages(loc, false, false, false, true).catch(() => {});
+    if (!hasPageMessages(loc, false, false, false, false, true)) loadPageMessages(loc, false, false, false, false, true).catch(() => {});
   }
 }
 
@@ -249,6 +265,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  datasetPage = null;
   kbPage = null;
 }
 
@@ -265,6 +282,7 @@ function applyLearn(next: TutorialId | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  datasetPage = null;
   kbPage = null;
 }
 
@@ -281,6 +299,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   devicePage = null;
   legalPage = null;
   quizPage = null;
+  datasetPage = null;
   kbPage = null;
 }
 
@@ -297,6 +316,7 @@ function applyDevice(page: DevicePageId): void {
   devicePage = page;
   legalPage = null;
   quizPage = null;
+  datasetPage = null;
   kbPage = null;
 }
 
@@ -313,6 +333,7 @@ function applyLegal(page: LegalPageId): void {
   devicePage = null;
   legalPage = page;
   quizPage = null;
+  datasetPage = null;
   kbPage = null;
 }
 
@@ -329,6 +350,23 @@ function applyQuiz(id: QuizId | null): void {
   devicePage = null;
   legalPage = null;
   quizPage = id ?? "hub";
+  datasetPage = null;
+}
+
+function applyDataset(id: DatasetId | null): void {
+  tool = null;
+  clipId = null;
+  tutorial = null;
+  learnHub = false;
+  gamesHub = false;
+  gameConsole = null;
+  gameId = null;
+  marketsHub = false;
+  marketId = null;
+  devicePage = null;
+  legalPage = null;
+  quizPage = null;
+  datasetPage = id ?? "hub";
   kbPage = null;
 }
 
@@ -345,17 +383,18 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "kb"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
   const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
   const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
+  const dataset = parsed.kind === "dataset" || parsed.kind === "bare-dataset";
   const kb = parsed.kind === "kb" || parsed.kind === "bare-kb";
-  if (!hasPageMessages(loc, gamePage, legal, quiz, kb)) {
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, kb).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -418,6 +457,11 @@ export function render(): void {
     applyQuiz(parsed.quiz);
   } else if (parsed.kind === "bare-quiz") {
     applyQuiz(parsed.quiz);
+  } else if (parsed.kind === "dataset") {
+    setLocale(parsed.locale);
+    applyDataset(parsed.dataset);
+  } else if (parsed.kind === "bare-dataset") {
+    applyDataset(parsed.dataset);
   } else if (parsed.kind === "kb") {
     setLocale(parsed.locale);
     applyKb(parsed.article);
@@ -439,6 +483,8 @@ export function render(): void {
         ? { devicePage }
         : quizPage
         ? { quiz: true as const, quizId: quizPage === "hub" ? null : quizPage }
+        : datasetPage
+        ? { dataset: true as const, datasetId: datasetPage === "hub" ? null : datasetPage }
         : legalPage
         ? { legalPage }
         : marketsHub || marketId
@@ -474,7 +520,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, kbPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -607,17 +653,19 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || kbPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || kbPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
+  const dataOn = Boolean(datasetPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
       h("nav", { class: "nav", "aria-label": t("nav.tools") },
         navLink(`${appHref(loc, null)}#tools`, t("nav.tools"), toolsOn, "tools"),
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
+        navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -658,6 +706,14 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...QUIZZES.map((id) =>
           h("a", { href: quizHref(loc, id), "data-nav": `test-${id}`, "aria-current": quizPage === id ? "page" : undefined }, t(`quiz.${id}.name`)),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: datasetHref(loc), "data-nav": "datasets" }, t("nav.data"))),
+      h("p", null,
+        ...DATASETS.map((id) =>
+          h("a", { href: datasetHref(loc, id), "data-nav": `dataset-${id}`, "aria-current": datasetPage === id ? "page" : undefined }, t(`dataset.${id}.name`)),
         ),
       ),
     ),
@@ -710,6 +766,11 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     if (!alive()) return;
     if (quizPage === "hub") m.mountQuizHub(main, loc);
     else m.mountQuiz(main, loc, quizPage);
+  } else if (datasetPage) {
+    const m = await import("./datasets/ui");
+    if (!alive()) return;
+    if (datasetPage === "hub") m.mountDatasetHub(main, loc);
+    else await m.mountDataset(main, loc, datasetPage, alive);
   } else if (kbPage) {
     const m = await import("./kb/ui");
     if (!alive()) return;
@@ -782,6 +843,8 @@ function localeHref(next: Locale): string {
     ? withSearch(deviceHref(next, devicePage), location.search)
     : quizPage
     ? withSearch(quizHref(next, quizPage === "hub" ? null : quizPage), location.search)
+    : datasetPage
+    ? withSearch(datasetHref(next, datasetPage === "hub" ? null : datasetPage), location.search)
     : kbPage
     ? withSearch(kbHref(next, kbPage === "hub" ? null : kbPage), location.search)
     : legalPage

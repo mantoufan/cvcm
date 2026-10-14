@@ -349,7 +349,8 @@
     "games": "Games",
     "device": "Device",
     "assets": "Assets",
-    "tests": "Tests"
+    "tests": "Tests",
+    "data": "Data"
   },
   "lang": {
     "label": "Language",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "Depression test (PHQ-9)",
       "blurb": "The 9-question depression screening, scored 0 to 27."
+    }
+  },
+  "dataset": {
+    "all": "All data",
+    "population": {
+      "name": "World population by country",
+      "blurb": "Population of 217 countries, ranked, with share of the world."
+    },
+    "gdp": {
+      "name": "GDP by country",
+      "blurb": "Nominal GDP in US dollars for every economy, ranked."
+    },
+    "gdp-per-capita": {
+      "name": "GDP per capita by country",
+      "blurb": "Average output per person, richest to poorest."
+    },
+    "life-expectancy": {
+      "name": "Life expectancy by country",
+      "blurb": "Years a newborn can expect to live, by country."
+    },
+    "fertility-rate": {
+      "name": "Fertility rate by country",
+      "blurb": "Births per woman, from highest to lowest."
+    },
+    "internet-users": {
+      "name": "Internet users by country",
+      "blurb": "Share of each country's people who go online."
+    },
+    "country-codes": {
+      "name": "ISO country codes",
+      "blurb": "Alpha-2, alpha-3 and numeric codes for 249 countries."
+    },
+    "calling-codes": {
+      "name": "International calling codes",
+      "blurb": "The +code to dial for every country."
+    },
+    "currency-codes": {
+      "name": "ISO currency codes",
+      "blurb": "ISO 4217 codes, symbols and where each currency is used."
+    },
+    "time-zones": {
+      "name": "Time zones and UTC offsets",
+      "blurb": "Every IANA time zone with its winter and summer offset."
+    },
+    "paper-sizes": {
+      "name": "Paper sizes",
+      "blurb": "A4, A3, B5, Letter and more in mm, inches and pixels."
+    },
+    "ascii": {
+      "name": "ASCII table",
+      "blurb": "All 128 codes in decimal, hex, octal and binary."
     }
   },
   "kb": {

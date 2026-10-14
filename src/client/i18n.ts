@@ -11,17 +11,20 @@ import {
   hasMessages,
   hasKbMessages,
   hasQuizMessages,
+  hasDatasetMessages,
   messages,
   registerGameMessages,
   registerLegalMessages,
   registerMessages,
   registerKbMessages,
   registerQuizMessages,
+  registerDatasetMessages,
   type GameMessages,
   type LegalMessages,
   type LocaleMessages,
   type KbMessages,
   type QuizMessages,
+  type DatasetMessages,
 } from "../shared/messages";
 
 // One chunk per locale, so a page downloads only the strings it shows.
@@ -72,6 +75,18 @@ const QUIZ_PACKS: Record<Locale, () => Promise<{ default: QuizMessages }>> = {
   es: () => import("../locales/packs/quiz-es"),
 };
 
+// Data table copy, only for /datasets/ pages.
+const DATASET_PACKS: Record<Locale, () => Promise<{ default: DatasetMessages }>> = {
+  en: () => import("../locales/packs/datasets-en"),
+  "zh-CN": () => import("../locales/packs/datasets-zh-CN"),
+  "zh-TW": () => import("../locales/packs/datasets-zh-TW"),
+  ja: () => import("../locales/packs/datasets-ja"),
+  ko: () => import("../locales/packs/datasets-ko"),
+  vi: () => import("../locales/packs/datasets-vi"),
+  id: () => import("../locales/packs/datasets-id"),
+  es: () => import("../locales/packs/datasets-es"),
+};
+
 // Knowledge article copy, only for /learn/knowledge/ pages.
 const KB_PACKS: Record<Locale, () => Promise<{ default: KbMessages }>> = {
   en: () => import("../locales/packs/kb-en"),
@@ -84,17 +99,18 @@ const KB_PACKS: Record<Locale, () => Promise<{ default: KbMessages }>> = {
   es: () => import("../locales/packs/kb-es"),
 };
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, kb = false): boolean {
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!kb || hasKbMessages(next));
+/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb = false): boolean {
+  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next)) && (!kb || hasKbMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, kb = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb = false): Promise<void> {
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
     !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
     !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),
+    !dataset || hasDatasetMessages(next) ? null : DATASET_PACKS[next]().then((m) => registerDatasetMessages(next, m.default)),
     !kb || hasKbMessages(next) ? null : KB_PACKS[next]().then((m) => registerKbMessages(next, m.default)),
   ]);
 }

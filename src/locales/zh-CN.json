@@ -349,7 +349,8 @@
     "games": "游戏",
     "device": "设备",
     "assets": "资产",
-    "tests": "测试"
+    "tests": "测试",
+    "data": "数据"
   },
   "lang": {
     "label": "语言",
@@ -5691,6 +5692,57 @@
     "depression": {
       "name": "抑郁自评量表（PHQ-9）",
       "blurb": "医生常用的 9 题抑郁筛查，0–27 分。"
+    }
+  },
+  "dataset": {
+    "all": "全部数据",
+    "population": {
+      "name": "世界各国人口",
+      "blurb": "217 个国家和地区人口排名及占世界比例。"
+    },
+    "gdp": {
+      "name": "世界各国 GDP",
+      "blurb": "各经济体名义 GDP（美元）排名。"
+    },
+    "gdp-per-capita": {
+      "name": "各国人均 GDP",
+      "blurb": "人均国内生产总值，从高到低排名。"
+    },
+    "life-expectancy": {
+      "name": "各国人均预期寿命",
+      "blurb": "各国出生时预期寿命排名。"
+    },
+    "fertility-rate": {
+      "name": "各国生育率",
+      "blurb": "每名妇女平均生育子女数，从高到低。"
+    },
+    "internet-users": {
+      "name": "各国互联网普及率",
+      "blurb": "各国上网人口占总人口的比例。"
+    },
+    "country-codes": {
+      "name": "国家代码 ISO 3166",
+      "blurb": "249 个国家和地区的二字母、三字母和数字代码。"
+    },
+    "calling-codes": {
+      "name": "国际电话区号",
+      "blurb": "拨打各国家和地区的 + 号国际区号。"
+    },
+    "currency-codes": {
+      "name": "货币代码 ISO 4217",
+      "blurb": "货币代码、符号及使用国家和地区。"
+    },
+    "time-zones": {
+      "name": "时区与 UTC 时差",
+      "blurb": "全部 IANA 时区及冬季、夏季 UTC 偏移。"
+    },
+    "paper-sizes": {
+      "name": "纸张尺寸",
+      "blurb": "A4、A3、B5、Letter 等的毫米、英寸和像素尺寸。"
+    },
+    "ascii": {
+      "name": "ASCII 码表",
+      "blurb": "全部 128 个字符的十进制、十六进制、八进制和二进制。"
     }
   },
   "kb": {

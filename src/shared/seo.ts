@@ -8,6 +8,8 @@ import { toolHowToJsonLd } from "./guide";
 import { legalBreadcrumbJsonLd, legalPageCopy, legalStaticHtml } from "./legal";
 import { quizBreadcrumbJsonLd, quizDescription, quizFaqJsonLd, quizStaticHtml, quizTitle } from "./quiz-i18n";
 import type { QuizId } from "./quiz";
+import { datasetBreadcrumbJsonLd, datasetDescription, datasetFaqJsonLd, datasetJsonLd, datasetStaticHtml, datasetTitle } from "./datasets-i18n";
+import type { DatasetId } from "./datasets";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPageHtml, kbTitle } from "./kb-i18n";
 import type { KbId } from "./kb";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
@@ -16,7 +18,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -48,6 +50,9 @@ export type SeoInput = {
   /** A test page under /tests/; `quizId` null is the hub. */
   quiz?: boolean;
   quizId?: QuizId | null;
+  /** A data table under /datasets/; `datasetId` null is the hub. */
+  dataset?: boolean;
+  datasetId?: DatasetId | null;
   /** A knowledge page under /learn/knowledge/; `kbId` null is the hub. */
   kb?: boolean;
   kbId?: KbId | null;
@@ -406,6 +411,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).title : marketHub(locale).title;
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).title;
   if (seo.quiz) return quizTitle(locale, seo.quizId ?? null);
+  if (seo.dataset) return datasetTitle(locale, seo.datasetId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).title;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
@@ -426,6 +432,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).description : marketHub(locale).description;
   if (seo.devicePage) return devicePageCopy(locale, seo.devicePage).description;
   if (seo.quiz) return quizDescription(locale, seo.quizId ?? null);
+  if (seo.dataset) return datasetDescription(locale, seo.datasetId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).description;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
@@ -457,6 +464,7 @@ export function pageCanonical(
   if (seo.markets) return `https://cv.cm${marketsHref(locale, seo.market ?? null)}`;
   if (seo.devicePage) return `https://cv.cm${deviceHref(locale, seo.devicePage)}`;
   if (seo.quiz) return `https://cv.cm${quizHref(locale, seo.quizId ?? null)}`;
+  if (seo.dataset) return `https://cv.cm${datasetHref(locale, seo.datasetId ?? null)}`;
   if (seo.legalPage) return `https://cv.cm${legalHref(locale, seo.legalPage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
@@ -752,6 +760,7 @@ export function applyHtmlSeo(
   out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="software-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="dataset-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="article-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
@@ -801,6 +810,13 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(quizBreadcrumbJsonLd(locale, seo.quizId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(quizFaqJsonLd(locale, seo.quizId ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.dataset) {
+    const id = seo.datasetId ?? null;
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(datasetBreadcrumbJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(datasetFaqJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="dataset-jsonld">${JSON.stringify(datasetJsonLd(locale, id)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.legalPage) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(legalBreadcrumbJsonLd(locale, seo.legalPage)).replace(/</g, "\\u003c")}</script>`,
@@ -810,7 +826,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -830,7 +846,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -838,7 +854,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.kb && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.kb && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -856,6 +872,8 @@ export function applyHtmlSeo(
     ? legalStaticHtml(locale, seo.legalPage)
     : seo.quiz
     ? quizStaticHtml(locale, seo.quizId ?? null)
+    : seo.dataset
+    ? datasetStaticHtml(locale, seo.datasetId ?? null)
     : seo.kb
     ? kbPageHtml(locale, seo.kbId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
@@ -919,6 +937,7 @@ function staticPageHtml(
       { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },
       { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
+      { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
