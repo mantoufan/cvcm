@@ -293,7 +293,7 @@
         "Some zones are offset by 30 or 45 minutes, such as India (UTC+05:30) and Nepal (UTC+05:45)."
       ],
       "about": [
-        "IANA time zone IDs such as Europe/London are what phones, computers and programming languages use. Each ID covers an area whose clocks have agreed since 1970, including all its daylight saving rules.",
+        "IANA time zone IDs such as Europe/London are what phones, computers and programming languages use. This list follows IANA's zone.tab: one row per country and zone, each carrying that area's daylight saving rules.",
         "Offsets are calculated for 15 January and 15 July {year} from the {tz} tz database. Governments sometimes change their rules at short notice."
       ],
       "faq": [

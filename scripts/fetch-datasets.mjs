@@ -162,7 +162,15 @@ const zoneTab = (await getText("https://data.iana.org/time-zones/tzdb/zone.tab")
   .split("\n").filter((line) => line && !line.startsWith("#")).map((line) => line.split("\t"));
 const tzVersion = (await getText("https://data.iana.org/time-zones/tzdb/version")).trim();
 const zones = zoneTab
-  .map(([country, , tz]) => [tz, offsetMinutes(tz, 0), offsetMinutes(tz, 6), country])
+  .flatMap(([country, , tz]) => {
+    // A zone newer than Node's ICU data has no offsets here: skip it rather than guess (update Node to pick it up).
+    try {
+      return [[tz, offsetMinutes(tz, 0), offsetMinutes(tz, 6), country]];
+    } catch {
+      console.warn(`time zones: ${tz} is unknown to this Node's ICU (${process.versions.tz}), skipped`);
+      return [];
+    }
+  })
   .sort((a, b) => Math.min(a[1], a[2]) - Math.min(b[1], b[2]) || a[0].localeCompare(b[0]));
 writeJson("time-zones.json", zones);
 const offsets = zones.flatMap((z) => [z[1], z[2]]);
