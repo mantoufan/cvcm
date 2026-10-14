@@ -314,7 +314,9 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("pet", doggy).key).not.toBe("dog");
     expect(scoreQuiz("pet", doggy.map((a, i) => (i === ALLERGY ? 0 : i === LEASE ? 2 : a))).key).toBe("dog");
     const allergyOk = new Set(["fish", "reptile"]);
-    const tankOnly = new Set(["fish", "reptile", "hamster"]);
+    const noCatOrDog = (key: string): boolean => key !== "cat" && key !== "dog";
+    // Caged pets, birds and rabbits included, stay possible under a "small caged or tank animals" lease.
+    const caged = new Set<string>();
     // Many random answer sets: the limits hold whatever else is picked.
     let seed = 7;
     const next = (n: number): number => {
@@ -328,12 +330,19 @@ describe("test pages: scoring", () => {
         expect(allergyOk.has(result.key), `${answers}`).toBe(true);
         expect(result.excluded).toEqual(expect.arrayContaining(["cat", "dog", "rabbit", "bird", "hamster"]));
       }
-      if (answers[LEASE] === 0) expect(tankOnly.has(result.key), `${answers}`).toBe(true);
+      if (answers[LEASE] === 0) expect(noCatOrDog(result.key), `${answers}`).toBe(true);
+      if (answers[LEASE] === 0) caged.add(result.key);
       if (answers[LEASE] === 1) expect(result.key, `${answers}`).not.toBe("dog");
-      // Ruled-out results rank after the rest.
-      const firstOut = result.ranked.findIndex((s) => result.excluded.includes(s.dim));
-      if (firstOut >= 0) expect(result.ranked.slice(firstOut).every((s) => result.excluded.includes(s.dim))).toBe(true);
+      // Ruled-out results are left out of the ranking.
+      expect(result.ranked.some((s) => result.excluded.includes(s.dim))).toBe(false);
+      expect(result.ranked.length + result.excluded.length).toBe(def.dims.length);
     }
+    expect([...caged]).toEqual(expect.arrayContaining(["bird", "rabbit", "hamster", "fish", "reptile"]));
+  });
+
+  it("keeps birds and rabbits possible under a caged-animals-only lease", () => {
+    expect(scoreQuiz("pet", [2, 2, 2, 2, 0, 2, 2, 2, 3, 3, 1, 0, 0, 1]).key).toBe("bird");
+    expect(scoreQuiz("pet", [2, 2, 2, 1, 0, 1, 3, 0, 1, 1, 1, 0, 1, 1]).key).toBe("rabbit");
   });
 
   it("does not read a flat conflict profile as competing", () => {

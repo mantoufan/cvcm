@@ -112,7 +112,8 @@ const MONEY = likert(`
 
 /**
  * Extraversion scale of the IPIP 100-item Big-Five Factor Markers (Goldberg, public domain): ten positively and ten
- * negatively keyed items, alternated. Total 0–80; the bands split the scale range at 40% and 60%, like `traitLevel`.
+ * negatively keyed items, alternated. Items and keys as listed at https://ipip.ori.org/newBigFive5broadKey.htm (Factor I,
+ * 20-item scale); its 10-item subset is the Big Five test's E items. Total 0–80; the bands split the scale range at 40% and 60%, like `traitLevel`.
  */
 const EXTRAVERSION = likert(`
   ext+ ext- ext+ ext- ext+ ext- ext+ ext- ext+ ext-
@@ -200,10 +201,11 @@ const PET: ChoiceItem[] = [
   { options: [{ dog: 2 }, { cat: 2, rabbit: 1 }, { fish: 2 }, { hamster: 2, rabbit: 1, bird: 1 }, { reptile: 2 }] },
   // Who lives with you.
   { options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }] },
-  // Rental or building rules: "small caged or tank animals only" and "no dogs" are hard limits.
+  // Rental or building rules: "small caged or tank animals only" (birds and rabbits live in cages too) and "no dogs"
+  // are hard limits.
   {
     options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }],
-    exclude: [["dog", "cat", "rabbit", "bird"], ["dog"]],
+    exclude: [["dog", "cat"], ["dog"]],
   },
   // A pet that follows you everywhere.
   { options: [{ dog: 2, bird: 1 }, { cat: 2, rabbit: 1 }, { fish: 2, reptile: 2, hamster: 1 }] },
@@ -336,9 +338,9 @@ export type QuizResult = {
   scores: DimScore[];
   /** Raw total, for band results. */
   total: number;
-  /** Highest to lowest, for top / code results; results an answer ruled out come last. */
+  /** Highest to lowest, for top / code results, without the results an answer ruled out. */
   ranked: DimScore[];
-  /** Results ruled out by an answer (choice options' `exclude`); never the key unless every result is ruled out. */
+  /** Results ruled out by an answer (choice options' `exclude`), left out of `ranked`. Empty if that would rule out all. */
   excluded: string[];
   /** Areas result: the weakest area. */
   weakest?: string;
@@ -359,12 +361,9 @@ function pct(raw: number, min: number, max: number): number {
   return max === min ? 0 : Math.round(((raw - min) / (max - min)) * 100);
 }
 
-function rank(scores: DimScore[], excluded: ReadonlySet<string> = new Set()): DimScore[] {
-  // Ruled-out results last; stable: a tie keeps definition order.
-  const out = (s: DimScore): number => Number(excluded.has(s.dim));
-  return scores.map((s, i) => ({ s, i }))
-    .sort((a, b) => out(a.s) - out(b.s) || b.s.pct - a.s.pct || a.i - b.i)
-    .map(({ s }) => s);
+function rank(scores: DimScore[]): DimScore[] {
+  // Stable: a tie keeps definition order.
+  return scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || a.i - b.i).map(({ s }) => s);
 }
 
 /** Every item answered with a valid option index. */
@@ -415,7 +414,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
-  const ranked = rank(scores, excluded);
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)));
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
@@ -472,8 +471,9 @@ export function traitLevel(value: number): "low" | "mid" | "high" {
 export function maxTotal(id: QuizId): number {
   const def = QUIZ_DEFS[id];
   if (def.type === "likert") return def.items.length * (SCALE_POINTS[def.scale] - 1);
-  // Choice: the best-weighted option of each question.
-  return def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => Object.values(o).reduce((a, w) => a + w, 0))), 0);
+  // Choice: the best option of each question, counting only the quiz's own dimensions (as `scoreQuiz` does).
+  const weight = (o: Record<string, number>): number => def.dims.reduce((a, dim) => a + (o[dim] ?? 0), 0);
+  return def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map(weight)), 0);
 }
 
 /** Result keys the copy must define, per quiz (tests check every locale has them all). */

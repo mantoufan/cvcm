@@ -288,14 +288,12 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       return { nodes, summary };
     }
     case "top": {
-      // Results an answer ruled out (a fur allergy and a dog) are left off the chart.
-      const shown = result.ranked.filter((s) => !result.excluded.includes(s.dim));
-      const [first, second] = shown;
+      const [first, second] = result.ranked;
       const nodes = [...headline(results[first.dim])];
       if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
-      nodes.push(...shown.map((s) => bar(label(s.dim), s.pct)));
+      nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       return { nodes, summary: results[first.dim]?.name ?? first.dim };
     }
     case "code": {
