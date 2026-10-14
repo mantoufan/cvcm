@@ -1,7 +1,4 @@
 import type { ToolId, TutorialId } from "./path";
-import type { Locale } from "./locale";
-import type { KbSyncEntry } from "./kb-sync";
-import syncMeta from "../locales/kb/meta.json";
 
 /**
  * Knowledge articles: plain explanations of the formats, encodings and numbers the tools work with,
@@ -32,6 +29,9 @@ export const KB_ARTICLES = [
 
 export type KbId = (typeof KB_ARTICLES)[number];
 
+/** A knowledge page: the hub, one article, or none. */
+export type KbPage = KbId | "hub" | null;
+
 export type KbGroupId = "files" | "data" | "time" | "money";
 
 export const KB_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
@@ -44,7 +44,7 @@ export const KB_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] 
 export type KbSource = { title: string; href: string };
 
 export type KbMeta = {
-  /** ISO date first published. The last-changed date is in src/locales/kb/meta.json (`npm run kb:sync`). */
+  /** ISO date first published. Last-changed dates per locale come from `npm run kb:sync` (src/locales/kb/meta.ts). */
   published: string;
   /** Tools that put the article to work, first one is the main call to action. */
   tools: ToolId[];
@@ -255,16 +255,4 @@ export function kbGroupOf(id: KbId): KbGroupId {
 /** Articles that use this tool, in hub order: tool pages link to them. */
 export function kbForTool(tool: ToolId): KbId[] {
   return KB_ARTICLES.filter((id) => KB_META[id].tools.includes(tool));
-}
-
-const SYNC = syncMeta as unknown as Record<KbId, KbSyncEntry>;
-
-/** When the article's copy last changed (any locale), from `npm run kb:sync`. */
-export function kbUpdated(id: KbId): string {
-  return SYNC[id].updated;
-}
-
-/** Reading time in minutes, computed by `npm run kb:sync` so lists need no article copy. */
-export function kbMinutes(locale: Locale, id: KbId): number {
-  return SYNC[id].minutes[locale];
 }

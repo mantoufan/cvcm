@@ -2,7 +2,7 @@ import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
-import { LOCALES, hasPageMessages, type KbPage, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -31,7 +31,7 @@ import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
-import { KB_ARTICLES, isKbId, type KbId } from "../shared/kb";
+import { KB_ARTICLES, isKbId, type KbPage } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -66,7 +66,7 @@ let quizPage: QuizId | "hub" | null = null;
 /** A data page: "hub" for /datasets/, else the table id. */
 let datasetPage: DatasetId | "hub" | null = null;
 /** A knowledge page: "hub" for /learn/knowledge/, else the article id. */
-let kbPage: KbId | "hub" | null = null;
+let kbPage: KbPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -376,7 +376,7 @@ function applyDataset(id: DatasetId | null): void {
   kbPage = null;
 }
 
-function applyKb(id: KbId | null): void {
+function applyKb(id: Exclude<KbPage, "hub">): void {
   applyTool(null, null);
   kbPage = id ?? "hub";
 }

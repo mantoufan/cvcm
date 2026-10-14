@@ -10,8 +10,9 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { KB_ARTICLES, KB_GROUPS, KB_META, kbForTool, kbMinutes, kbUpdated, type KbId } from "../src/shared/kb";
-import { kbArticleJsonLd, kbCopy, kbPageHtml, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
+import { KB_ARTICLES, KB_GROUPS, KB_META, kbForTool, type KbId } from "../src/shared/kb";
+import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
+import { KB_MINUTES, KB_UPDATED } from "../src/locales/kb/meta";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
@@ -99,7 +100,7 @@ describe("knowledge: SEO", () => {
     const ld = kbArticleJsonLd("en", "md5-vs-sha-256") as Record<string, unknown>;
     expect(ld["@type"]).toBe("TechArticle");
     expect(ld.datePublished).toBe(KB_META["md5-vs-sha-256"].published);
-    expect(ld.dateModified).toBe(kbUpdated("md5-vs-sha-256"));
+    expect(ld.dateModified).toBe(kbUpdated("en", "md5-vs-sha-256"));
     expect((ld.citation as unknown[]).length).toBe(KB_META["md5-vs-sha-256"].sources.length);
     const hub = kbArticleJsonLd("en", null) as { mainEntity: { itemListElement: unknown[] } };
     expect(hub.mainEntity.itemListElement.length).toBe(KB_ARTICLES.length);
@@ -179,34 +180,49 @@ describe("knowledge: catalog and copy", () => {
   });
 });
 
-describe("knowledge: sync (run `npm run kb:sync` after editing any article)", () => {
-  it("has meta.json in step with the copy: fingerprint, reading time and a changed date", () => {
-    const meta = syncMeta as unknown as Record<KbId, KbSyncEntry>;
+describe("knowledge: sync (run `npm run kb:sync` after editing any article or its sources)", () => {
+  const meta = syncMeta as unknown as Record<KbId, KbSyncEntry>;
+  const copiesOf = (id: KbId): Record<typeof LOCALES[number], KbArticleCopy> =>
+    Object.fromEntries(LOCALES.map((locale) => [locale, KB_ALL[locale][id]])) as Record<typeof LOCALES[number], KbArticleCopy>;
+
+  it("has meta.json in step with the copy and sources of every page", () => {
     expect(Object.keys(meta).sort()).toEqual([...KB_ARTICLES].sort());
     for (const id of KB_ARTICLES) {
-      const copies = Object.fromEntries(LOCALES.map((locale) => [locale, KB_ALL[locale][id]])) as Record<typeof LOCALES[number], KbArticleCopy>;
-      const fresh = syncEntry(copies, meta[id], "changed");
       // A different fingerprint means the copy changed without `npm run kb:sync`, so its "Updated" date is stale.
-      expect(fresh, `${id}: copy changed, run npm run kb:sync`).toEqual(meta[id]);
-      expect(meta[id].updated >= KB_META[id].published, id).toBe(true);
-      expect(meta[id].updated).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(syncEntry(copiesOf(id), KB_META[id].sources, meta[id], "changed"), `${id}: copy or sources changed, run npm run kb:sync`).toEqual(meta[id]);
+      for (const locale of LOCALES) {
+        expect(meta[id].updated[locale], `${id} ${locale}`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(meta[id].updated[locale] >= KB_META[id].published, `${id} ${locale}`).toBe(true);
+      }
     }
   });
 
-  it("bumps the date only when the copy changes", () => {
-    const copies = Object.fromEntries(LOCALES.map((locale) => [locale, KB_ALL[locale]["iso-8601"]])) as Record<typeof LOCALES[number], KbArticleCopy>;
-    const before = syncEntry(copies, undefined, "2026-01-01");
-    expect(syncEntry(copies, before, "2026-02-02").updated).toBe("2026-01-01");
-    const edited = { ...copies, ja: { ...copies.ja, answer: copies.ja.answer + "。" } };
-    expect(syncEntry(edited, before, "2026-02-02").updated).toBe("2026-02-02");
+  it("ships the same dates and reading times to the pages", () => {
+    for (const id of KB_ARTICLES) {
+      expect(KB_UPDATED[id], id).toEqual(meta[id].updated);
+      expect(KB_MINUTES[id], id).toEqual(meta[id].minutes);
+    }
+    expect(kbMinutes("ja", "what-is-heic")).toBe(meta["what-is-heic"].minutes.ja);
+    expect(kbUpdated("vi", "iso-8601")).toBe(meta["iso-8601"].updated.vi);
+  });
+
+  it("dates only the locale whose copy changed, every locale when sources change, and all on --touch", () => {
+    const copies = copiesOf("iso-8601");
+    const sources = KB_META["iso-8601"].sources;
+    const before = syncEntry(copies, sources, undefined, "2026-01-01");
+    const same = syncEntry(copies, sources, before, "2026-02-02");
+    expect(same.updated).toEqual(before.updated);
+    const edited = syncEntry({ ...copies, ja: { ...copies.ja, answer: copies.ja.answer + "。" } }, sources, before, "2026-02-02");
+    expect(edited.updated.ja).toBe("2026-02-02");
+    expect(edited.updated.en).toBe("2026-01-01");
+    const newSource = syncEntry(copies, [...sources, { title: "x", href: "https://example.org/" }], before, "2026-02-02");
+    for (const locale of LOCALES) expect(newSource.updated[locale]).toBe("2026-02-02");
+    const touched = syncEntry(copies, sources, before, "2026-03-03", true);
+    for (const locale of LOCALES) expect(touched.updated[locale]).toBe("2026-03-03");
   });
 
   it("has a generated lazy loader for every article in every locale", () => {
     for (const locale of LOCALES) expect(Object.keys(KB_LOADERS[locale]).sort(), locale).toEqual([...KB_ARTICLES].sort());
-  });
-
-  it("reads reading time from meta.json for lists", () => {
-    expect(kbMinutes("en", "what-is-heic")).toBe((syncMeta as unknown as Record<KbId, KbSyncEntry>)["what-is-heic"].minutes.en);
   });
 
   it("preloads only the hub pack, or the hub pack plus one article", () => {

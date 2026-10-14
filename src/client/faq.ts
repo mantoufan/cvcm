@@ -26,7 +26,7 @@ import type { QuizId } from "../shared/quiz";
 import { datasetBreadcrumbJsonLd, datasetFaqJsonLd, datasetJsonLd } from "../shared/datasets-i18n";
 import type { DatasetId } from "../shared/datasets";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbFaqJsonLd } from "../shared/kb-i18n";
-import type { KbId } from "../shared/kb";
+import type { KbPage } from "../shared/kb";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -83,7 +83,7 @@ export function syncPageJsonLd(
   legalPage: LegalPageId | null = null,
   quizPage: QuizId | "hub" | null = null,
   datasetPage: DatasetId | "hub" | null = null,
-  kbPage: KbId | "hub" | null = null,
+  kbPage: KbPage = null,
 ): void {
   writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage === "hub" ? null : kbPage) : null);
   if (datasetPage) {

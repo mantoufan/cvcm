@@ -1,12 +1,18 @@
 import { LOCALES, type Locale } from "./locale";
 import type { KbBlock, KbArticleCopy } from "./kb-i18n";
+import type { KbSource } from "./kb";
 
 /**
- * What `npm run kb:sync` writes to src/locales/kb/meta.json, per article: when its copy last changed,
- * a fingerprint of that copy in every locale, and the reading time per locale.
- * A test recomputes these, so editing an article without running the sync fails CI.
+ * What `npm run kb:sync` writes to src/locales/kb/meta.json, per article and locale: a fingerprint of that page's
+ * copy (plus the article's sources), when it last changed, and its reading time. A test recomputes the fingerprints,
+ * so editing an article without running the sync fails CI. The page code reads only the dates and minutes, from the
+ * generated src/locales/kb/meta.ts.
  */
-export type KbSyncEntry = { updated: string; hash: string; minutes: Record<Locale, number> };
+export type KbSyncEntry = {
+  hash: Record<Locale, string>;
+  updated: Record<Locale, string>;
+  minutes: Record<Locale, number>;
+};
 
 function blockText(block: KbBlock): string {
   if (typeof block === "string") return block;
@@ -38,13 +44,29 @@ function cyrb53(text: string): string {
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 
-/** Fingerprint of one article's copy across every locale. */
-export function articleHash(copies: Record<Locale, KbArticleCopy>): string {
-  return cyrb53(LOCALES.map((locale) => `${locale}\n${JSON.stringify(copies[locale])}`).join("\n"));
+/** Fingerprint of one locale's page: its copy, plus the sources every locale shows (a fixed source is a fact change). */
+export function pageHash(copy: KbArticleCopy, sources: readonly KbSource[]): string {
+  return cyrb53(JSON.stringify([copy, sources]));
 }
 
-export function syncEntry(copies: Record<Locale, KbArticleCopy>, previous: KbSyncEntry | undefined, today: string): KbSyncEntry {
-  const hash = articleHash(copies);
-  const minutes = Object.fromEntries(LOCALES.map((locale) => [locale, readingMinutes(locale, copies[locale])])) as Record<Locale, number>;
-  return { updated: previous && previous.hash === hash ? previous.updated : today, hash, minutes };
+/**
+ * New sync entry for one article. A locale's date moves to `today` when its fingerprint changed,
+ * or when `touch` is set (facts re-checked with no edit).
+ */
+export function syncEntry(
+  copies: Record<Locale, KbArticleCopy>,
+  sources: readonly KbSource[],
+  previous: KbSyncEntry | undefined,
+  today: string,
+  touch = false,
+): KbSyncEntry {
+  const entry: KbSyncEntry = { hash: {} as Record<Locale, string>, updated: {} as Record<Locale, string>, minutes: {} as Record<Locale, number> };
+  for (const locale of LOCALES) {
+    const hash = pageHash(copies[locale], sources);
+    const same = previous?.hash?.[locale] === hash && Boolean(previous?.updated?.[locale]);
+    entry.hash[locale] = hash;
+    entry.updated[locale] = same && !touch ? previous!.updated[locale] : today;
+    entry.minutes[locale] = readingMinutes(locale, copies[locale]);
+  }
+  return entry;
 }

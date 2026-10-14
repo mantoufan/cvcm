@@ -1,7 +1,8 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { KB_ARTICLES, KB_GROUPS, KB_META, kbGroupOf, kbMinutes, kbUpdated, type KbId } from "./kb";
+import { KB_ARTICLES, KB_GROUPS, KB_META, kbGroupOf, type KbId } from "./kb";
+import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
@@ -46,8 +47,6 @@ export function kbName(locale: Locale, id: KbId): { name: string; blurb: string 
   return (messages(locale).ui.kb as unknown as Record<KbId, { name: string; blurb: string }>)[id];
 }
 
-export { kbMinutes };
-
 export function kbTitle(locale: Locale, id: KbId | null): string {
   return id ? kbCopy(locale, id).title : kbHub(locale).title;
 }
@@ -60,6 +59,16 @@ export function kbFaqItems(locale: Locale, id: KbId | null): { q: string; a: str
   return id ? kbCopy(locale, id).faq : kbHub(locale).faq;
 }
 
+
+/** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
+export function kbUpdated(locale: Locale, id: KbId): string {
+  return KB_UPDATED[id][locale];
+}
+
+/** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
+export function kbMinutes(locale: Locale, id: KbId): number {
+  return KB_MINUTES[id][locale];
+}
 
 /** Plain text with `code` spans; everything else escaped. */
 function inline(text: string): string {
@@ -161,7 +170,7 @@ export function kbPageHtml(locale: Locale, id: KbId | null): string {
     `<article class="kb">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(hub.groups[kbGroupOf(id)])}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${kbUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, kbUpdated(id)) }))}</time></p></header>`,
+    `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${kbUpdated(locale, id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, kbUpdated(locale, id)) }))}</time></p></header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p>`,
     `<a class="btn" href="${escapeHtml(appHref(locale, mainTool))}" data-nav="${escapeHtml(mainTool)}">${escapeHtml(fill(ui.open, { name: toolName }))}</a></section>`,
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
@@ -247,7 +256,7 @@ export function kbArticleJsonLd(locale: Locale, id: KbId | null): Record<string,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
     datePublished: meta.published,
-    dateModified: kbUpdated(id),
+    dateModified: kbUpdated(locale, id),
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,
