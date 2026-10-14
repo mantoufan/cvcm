@@ -121,6 +121,16 @@ Same character and room. Three cream cards fanned, each stamped with a different
 
 Same character and room. Two small pink hourglasses tied with a ribbon. No numerals. Save `public/covers/duration-sweet.jpg`, `sips -z 720 1280`.
 
+## TDEE, subnet, chmod, typing test, image palette (2026-10-14)
+
+Codex (`codex exec`, built-in image tool), refs `qr-sweet.jpg` + `password-sweet.jpg`, run serially. Same character, cream-pink desk, lace curtains and roses. Saved via `sips -s format jpeg -z 720 1280` as `public/covers/<id>-sweet.jpg`.
+
+- `tdee`: a small cream food scale with a pink heart-shaped dish holding a strawberry and a macaron, a pink measuring tape looped like a ribbon, a pink running shoe with a heart lace.
+- `cidr`: a cream lace doily shaped like a tree of pearls (one big pink pearl linked by satin ribbons to four small pearls), a pink jewelry-box router with heart lights.
+- `chmod`: a ring of three ornate pink keys with heart bows, a cream jewelry box with three heart padlocks, one open.
+- `typing`: a pastel pink keyboard with blank pearl keycaps and a heart enter key, a cream paper ribbon of wavy abstract lines, a tiny pink hourglass.
+- `image-colors`: a cream artist palette with rose, peach, mint, lavender and sky dabs, a pink heart eyedropper, an instant photo of a garden with matching color dots.
+
 ## Mosaic / redact (2026-10-08)
 
 Codex (`codex exec`, built-in image tool), refs `watermark-sweet.jpg` + `qr-sweet.jpg`. Same character and room. She holds up an instant photo of a plush teddy bear whose face is a pastel pink pixel-mosaic grid, and a small pink heart wand trailing square pixel sparkles. On the desk: a closed pink card with a black rounded bar over one line, and a heart padlock. No words, letters, numbers, logo or watermark. Saved `public/covers/mosaic-sweet.jpg` via `sips -z 720 1280`.
