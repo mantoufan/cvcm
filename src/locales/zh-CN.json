@@ -5744,5 +5744,82 @@
       "name": "ASCII 码表",
       "blurb": "全部 128 个字符的十进制、十六进制、八进制和二进制。"
     }
+  },
+  "kb": {
+    "label": "知识库",
+    "all": "全部知识文章",
+    "lead": "各种格式、编码和公式是什么意思，附参考出处。",
+    "what-is-heic": {
+      "name": "HEIC 是什么格式？",
+      "blurb": "iPhone 照片格式，与 JPG 有何不同，什么时候需要转换。"
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG、PNG、WebP 与 AVIF 的区别",
+      "blurb": "照片、截图和网页图片分别该用哪种格式。"
+    },
+    "what-is-exif": {
+      "name": "EXIF 是什么？",
+      "blurb": "照片中隐藏的相机、时间和 GPS 信息，以及如何删除。"
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI 和 PPI 的区别",
+      "blurb": "像素、打印尺寸，以及为什么 300 DPI 只对打印有意义。"
+    },
+    "aspect-ratios": {
+      "name": "宽高比详解",
+      "blurb": "16:9、4:3、1:1、9:16 及对应的像素尺寸。"
+    },
+    "why-pdf-files-are-large": {
+      "name": "PDF 为什么这么大？",
+      "blurb": "让 PDF 变大的图片、字体和扫描页，以及压缩能改变什么。"
+    },
+    "what-is-base64": {
+      "name": "Base64 是什么？",
+      "blurb": "Base64 如何把字节变成文本，为什么体积大 33%，为什么它不是加密。"
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode 和 UTF-8",
+      "blurb": "码点、字节，以及文字为什么会变成乱码。"
+    },
+    "url-encoding": {
+      "name": "URL 编码（百分号编码）",
+      "blurb": "为什么空格会变成 %20，哪些字符必须转义。"
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON、YAML 与 XML 的区别",
+      "blurb": "三种数据格式的语法、优势和常见陷阱。"
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 和 SHA-256 的区别",
+      "blurb": "什么是哈希，哪些已被攻破，密码该用什么存储。"
+    },
+    "password-strength": {
+      "name": "怎样的密码才算强？",
+      "blurb": "依据最新 NIST 指南，讲清长度、随机性和熵。"
+    },
+    "what-is-uuid": {
+      "name": "UUID 是什么？",
+      "blurb": "UUID 版本 4 和 7、碰撞概率，以及各自的适用场景。"
+    },
+    "unix-timestamp": {
+      "name": "Unix 时间戳是什么？",
+      "blurb": "1970 年以来的秒数、JavaScript 中的毫秒，以及 2038 年问题。"
+    },
+    "iso-8601": {
+      "name": "ISO 8601 日期与周数",
+      "blurb": "YYYY-MM-DD、第 1 周、时长写法，以及 RFC 3339 子集。"
+    },
+    "utc-and-time-zones": {
+      "name": "UTC、GMT 与时区",
+      "blurb": "时区偏移、夏令时，以及为什么时区名比偏移更可靠。"
+    },
+    "apr-vs-apy": {
+      "name": "APR 和 APY 的区别",
+      "blurb": "单利与复利年化利率、换算公式和计算示例。"
+    },
+    "margin-vs-markup": {
+      "name": "毛利率和加价率的区别",
+      "blurb": "两种表示利润的方式、如何换算，附速查表。"
+    }
   }
 }

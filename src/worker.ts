@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, quizHref, datasetHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, datasetHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -146,6 +146,9 @@ export default {
       if (parsed.kind === "bare-dataset") {
         return redirectTo(datasetHref(locale, parsed.dataset), url, 302);
       }
+      if (parsed.kind === "bare-kb") {
+        return redirectTo(kbHref(locale, parsed.article), url, 302);
+      }
       if (parsed.kind === "unknown") {
         return withHeaders(notFound(locale, request.method), path);
       }
@@ -197,6 +200,12 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
+      if (parsed.kind === "kb") {
+        const canonical = kbHref(parsed.locale, parsed.article);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
     }
 
     // Fetch the page's prerendered body alongside the page itself.
@@ -234,10 +243,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -257,6 +266,8 @@ export default {
               ? { quiz: true as const, quizId: parsed.quiz }
             : parsed.kind === "dataset"
               ? { dataset: true as const, datasetId: parsed.dataset }
+            : parsed.kind === "kb"
+              ? { kb: true as const, kbId: parsed.article }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
@@ -269,10 +280,11 @@ export default {
         : parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "markets" ? parsed.kind
         : parsed.kind === "quiz" ? "quiz"
         : parsed.kind === "dataset" ? "dataset"
+        : parsed.kind === "kb" ? "kb"
         : parsed.kind === "legal" ? null
         : "home";
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset");
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset", parsed.kind === "kb");
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "dataset" && parsed.dataset) {
         for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
@@ -303,7 +315,7 @@ function unconditional(request: Request): Request {
 function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string | null {
   if (STATIC_FILE.test(path)) return null;
   if (parsed.kind === "app") return parsed.clipId ? null : path;
-  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset") return path;
+  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "kb") return path;
   return null;
 }
 

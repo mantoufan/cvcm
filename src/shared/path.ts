@@ -10,6 +10,7 @@ import {
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
+import { KB_SEGMENT, isKbId, type KbId } from "./kb";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
@@ -277,6 +278,7 @@ export type AppPath =
   | { kind: "bare-legal"; page: LegalPageId }
   | { kind: "bare-quiz"; quiz: QuizId | null }
   | { kind: "bare-dataset"; dataset: DatasetId | null }
+  | { kind: "bare-kb"; article: KbId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -285,6 +287,7 @@ export type AppPath =
   | { kind: "legal"; locale: Locale; page: LegalPageId }
   | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
   | { kind: "dataset"; locale: Locale; dataset: DatasetId | null }
+  | { kind: "kb"; locale: Locale; article: KbId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -335,6 +338,12 @@ export function parseAppPath(pathname: string): AppPath {
       return { kind: "app", locale, tool: null };
     }
     if (second === "learn") {
+      if (third === KB_SEGMENT) {
+        if (rest.length > 1) return { kind: "unknown" };
+        if (!rest[0]) return { kind: "kb", locale, article: null };
+        if (isKbId(rest[0])) return { kind: "kb", locale, article: rest[0] };
+        return { kind: "unknown" };
+      }
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "learn", locale, tutorial: null };
       if (isTutorialId(third)) return { kind: "learn", locale, tutorial: third };
@@ -387,6 +396,12 @@ export function parseAppPath(pathname: string): AppPath {
   }
 
   if (first === "learn") {
+    if (second === KB_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "bare-kb", article: null };
+      if (isKbId(third)) return { kind: "bare-kb", article: third };
+      return { kind: "unknown" };
+    }
     if (!second) return { kind: "bare-learn", tutorial: null };
     if (isTutorialId(second) && !third) return { kind: "bare-learn", tutorial: second };
     return { kind: "unknown" };
@@ -473,6 +488,12 @@ export function legalHref(locale: Locale, page: LegalPageId): string {
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
   const base = `/${localePath(locale)}/learn`;
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
+}
+
+/** Knowledge articles sit under the tutorials: `/{locale}/learn/knowledge/{id}/`. */
+export function kbHref(locale: Locale, article: KbId | null = null): string {
+  const base = `/${localePath(locale)}/learn/${KB_SEGMENT}`;
+  return article ? `${base}/${article}/` : `${base}/`;
 }
 
 export function marketsHref(locale: Locale, market: MarketId | null = null): string {

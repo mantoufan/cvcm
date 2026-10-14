@@ -39,14 +39,24 @@ import koDatasets from "../locales/packs/datasets-ko";
 import viDatasets from "../locales/packs/datasets-vi";
 import zhCNDatasets from "../locales/packs/datasets-zh-CN";
 import zhTWDatasets from "../locales/packs/datasets-zh-TW";
+import enKb from "../locales/packs/kb-en";
+import esKb from "../locales/packs/kb-es";
+import idKb from "../locales/packs/kb-id";
+import jaKb from "../locales/packs/kb-ja";
+import koKb from "../locales/packs/kb-ko";
+import viKb from "../locales/packs/kb-vi";
+import zhCNKb from "../locales/packs/kb-zh-CN";
+import zhTWKb from "../locales/packs/kb-zh-TW";
 import type { Locale } from "./locale";
 import {
   registerGameMessages,
+  registerKbMessages,
   registerLegalMessages,
   registerMessages,
   registerQuizMessages,
   registerDatasetMessages,
   type GameMessages,
+  type KbMessages,
   type LegalMessages,
   type LocaleMessages,
   type QuizMessages,
@@ -87,6 +97,17 @@ const QUIZ: Record<Locale, QuizMessages> = {
   es: esQuiz,
 };
 
+const KB: Record<Locale, KbMessages> = {
+  en: enKb,
+  "zh-CN": zhCNKb,
+  "zh-TW": zhTWKb,
+  ja: jaKb,
+  ko: koKb,
+  vi: viKb,
+  id: idKb,
+  es: esKb,
+};
+
 for (const [locale, pack] of Object.entries(ALL)) registerMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(GAMES)) registerGameMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(LEGAL)) registerLegalMessages(locale as Locale, pack);
@@ -103,3 +124,4 @@ const DATASETS: Record<Locale, DatasetMessages> = {
   es: esDatasets,
 };
 for (const [locale, pack] of Object.entries(DATASETS)) registerDatasetMessages(locale as Locale, pack);
+for (const [locale, pack] of Object.entries(KB)) registerKbMessages(locale as Locale, pack);

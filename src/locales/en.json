@@ -5744,5 +5744,82 @@
       "name": "ASCII table",
       "blurb": "All 128 codes in decimal, hex, octal and binary."
     }
+  },
+  "kb": {
+    "label": "Knowledge",
+    "all": "All knowledge articles",
+    "lead": "What formats, encodings and formulas mean, with sources.",
+    "what-is-heic": {
+      "name": "What is HEIC?",
+      "blurb": "iPhone photo format, how it differs from JPG, and when to convert."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Which image format to use for photos, screenshots and the web."
+    },
+    "what-is-exif": {
+      "name": "What is EXIF data?",
+      "blurb": "Camera, time and GPS details hidden in photos, and how to remove them."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Pixels, print size and why 300 DPI only matters on paper."
+    },
+    "aspect-ratios": {
+      "name": "Aspect ratios explained",
+      "blurb": "16:9, 4:3, 1:1, 9:16 and the pixel sizes that go with them."
+    },
+    "why-pdf-files-are-large": {
+      "name": "Why are PDF files so large?",
+      "blurb": "Images, fonts and scans that bloat a PDF, and what compression changes."
+    },
+    "what-is-base64": {
+      "name": "What is Base64?",
+      "blurb": "How Base64 turns bytes into text, why it grows 33%, and why it is not encryption."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode and UTF-8",
+      "blurb": "Code points, bytes, and why text turns into garbled characters."
+    },
+    "url-encoding": {
+      "name": "URL encoding (percent-encoding)",
+      "blurb": "Why spaces become %20 and which characters must be escaped."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Syntax, strengths and pitfalls of the three data formats."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "What a hash is, which ones are broken, and what to use for passwords."
+    },
+    "password-strength": {
+      "name": "What makes a password strong?",
+      "blurb": "Length, randomness and entropy, following current NIST guidance."
+    },
+    "what-is-uuid": {
+      "name": "What is a UUID?",
+      "blurb": "UUID versions 4 and 7, collision odds and when to use each."
+    },
+    "unix-timestamp": {
+      "name": "What is a Unix timestamp?",
+      "blurb": "Seconds since 1970, milliseconds in JavaScript and the 2038 problem."
+    },
+    "iso-8601": {
+      "name": "ISO 8601 dates and week numbers",
+      "blurb": "YYYY-MM-DD, week 1, durations and the RFC 3339 profile."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT and time zones",
+      "blurb": "Offsets, daylight saving time and why zone names beat offsets."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Simple vs compounded rates, the formula and a worked example."
+    },
+    "margin-vs-markup": {
+      "name": "Margin vs markup",
+      "blurb": "Two ways to state profit, how to convert them and a quick table."
+    }
   }
 }

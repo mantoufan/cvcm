@@ -37,6 +37,7 @@ const pageModules = {
   markets: "src/client/markets/ui.ts",
   quiz: "src/client/quiz/ui.ts",
   dataset: "src/client/datasets/ui.ts",
+  kb: "src/client/kb/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

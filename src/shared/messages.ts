@@ -10,6 +10,7 @@ export type GameName = { name: string; blurb: string };
 export type LegalMessages = typeof import("../locales/legal/en.json");
 export type QuizMessages = typeof import("../locales/quiz/en.json");
 export type DatasetMessages = typeof import("../locales/datasets/en.json");
+export type KbMessages = typeof import("../locales/kb/en.json");
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
@@ -31,6 +32,7 @@ const loadedGames: Partial<Record<Locale, GameMessages>> = {};
 const loadedLegal: Partial<Record<Locale, LegalMessages>> = {};
 const loadedQuiz: Partial<Record<Locale, QuizMessages>> = {};
 const loadedDatasets: Partial<Record<Locale, DatasetMessages>> = {};
+const loadedKb: Partial<Record<Locale, KbMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -99,4 +101,17 @@ export function hasDatasetMessages(locale: Locale): boolean {
 /** Data table copy; on the client only after the dataset pack is loaded (data pages). */
 export function datasetMessages(locale: Locale): DatasetMessages {
   return pick(loadedDatasets, locale, "dataset messages");
+}
+
+export function registerKbMessages(locale: Locale, pack: KbMessages): void {
+  loadedKb[locale] = pack;
+}
+
+export function hasKbMessages(locale: Locale): boolean {
+  return Boolean(loadedKb[locale]);
+}
+
+/** Knowledge article copy; on the client only after the kb pack is loaded (knowledge pages). */
+export function kbMessages(locale: Locale): KbMessages {
+  return pick(loadedKb, locale, "kb messages");
 }

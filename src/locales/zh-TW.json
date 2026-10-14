@@ -5744,5 +5744,82 @@
       "name": "ASCII 碼表",
       "blurb": "全部 128 個字元的十進位、十六進位、八進位和二進位。"
     }
+  },
+  "kb": {
+    "label": "知識",
+    "all": "所有知識文章",
+    "lead": "格式、編碼與公式代表什麼，附參考資料。",
+    "what-is-heic": {
+      "name": "HEIC 是什麼格式？",
+      "blurb": "iPhone 的照片格式、與 JPG 的差別，以及何時該轉檔。"
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG、PNG、WebP、AVIF 比較",
+      "blurb": "照片、截圖和網頁各該用哪種圖片格式。"
+    },
+    "what-is-exif": {
+      "name": "EXIF 資料是什麼？",
+      "blurb": "藏在照片裡的相機、時間與 GPS 資訊，以及如何移除。"
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI 與 PPI 的差別",
+      "blurb": "像素、列印尺寸，以及為什麼 300 DPI 只在紙上才有意義。"
+    },
+    "aspect-ratios": {
+      "name": "長寬比解說",
+      "blurb": "16:9、4:3、1:1、9:16 及對應的像素尺寸。"
+    },
+    "why-pdf-files-are-large": {
+      "name": "PDF 檔案為什麼這麼大？",
+      "blurb": "讓 PDF 變肥的圖片、字型與掃描頁，以及壓縮能改變什麼。"
+    },
+    "what-is-base64": {
+      "name": "Base64 是什麼？",
+      "blurb": "Base64 如何把位元組轉成文字、為何大 33%，以及為何它不是加密。"
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode 與 UTF-8",
+      "blurb": "碼位、位元組，以及文字為什麼會變成亂碼。"
+    },
+    "url-encoding": {
+      "name": "URL 編碼（百分比編碼）",
+      "blurb": "空格為什麼變成 %20，以及哪些字元必須跳脫。"
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON、YAML、XML 比較",
+      "blurb": "三種資料格式的語法、優點與陷阱。"
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 與 SHA-256 比較",
+      "blurb": "雜湊是什麼、哪些已被破解，以及密碼該用什麼。"
+    },
+    "password-strength": {
+      "name": "怎樣才算強密碼？",
+      "blurb": "依 NIST 最新指引，談長度、隨機性與熵值。"
+    },
+    "what-is-uuid": {
+      "name": "UUID 是什麼？",
+      "blurb": "UUID 第 4 版與第 7 版、碰撞機率，以及各自的使用時機。"
+    },
+    "unix-timestamp": {
+      "name": "Unix 時間戳記是什麼？",
+      "blurb": "自 1970 年起的秒數、JavaScript 的毫秒，以及 2038 年問題。"
+    },
+    "iso-8601": {
+      "name": "ISO 8601 日期與週數",
+      "blurb": "YYYY-MM-DD、第 1 週、期間，以及 RFC 3339 規範。"
+    },
+    "utc-and-time-zones": {
+      "name": "UTC、GMT 與時區",
+      "blurb": "時差、日光節約時間，以及為何時區名稱勝過時差。"
+    },
+    "apr-vs-apy": {
+      "name": "APR 與 APY 比較",
+      "blurb": "單利與複利、換算公式與計算範例。"
+    },
+    "margin-vs-markup": {
+      "name": "毛利率與加成率",
+      "blurb": "表示利潤的兩種方式、如何換算，附速查表。"
+    }
   }
 }
