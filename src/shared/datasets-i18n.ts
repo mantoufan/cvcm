@@ -103,7 +103,7 @@ export function currencySymbol(locale: Locale, code: string): string {
 
 export function zoneName(locale: Locale, zone: string): string {
   try {
-    const format = new Intl.DateTimeFormat(locale, { timeZone: zone, timeZoneName: "longGeneric" });
+    const format = memo(`tz:${locale}:${zone}`, () => new Intl.DateTimeFormat(locale, { timeZone: zone, timeZoneName: "longGeneric" }));
     return format.formatToParts(new Date(Date.UTC(2026, 0, 15, 12))).find((part) => part.type === "timeZoneName")?.value ?? "";
   } catch {
     return "";
@@ -146,6 +146,10 @@ export function datasetVars(locale: Locale, id: DatasetId): Record<string, strin
   const vars: Record<string, string | number> = { rows: formatCount(locale, meta.rows), date: DATASET_SNAPSHOT };
   if (meta.year) vars.year = meta.year;
   if (meta.tzdata) vars.tz = meta.tzdata;
+  if (meta.west !== undefined && meta.east !== undefined) {
+    vars.west = utcOffset(meta.west);
+    vars.east = utcOffset(meta.east);
+  }
   if (!isIndicator(id)) return vars;
   const m = indicatorMeta(id);
   vars.from = m.from;
@@ -210,6 +214,12 @@ export type DatasetColumn = { label: string; num?: boolean; mono?: boolean; head
 export type DatasetCell = { text: string; sort: string | number };
 export type DatasetTable = { columns: DatasetColumn[]; rows: DatasetCell[][] };
 
+/** "+1-809, +1-829" sorts as 1.0809: by country code, then by the area code after it. */
+function dialSort(dial: string): number {
+  const [code, area = "0"] = dial.split(",")[0].replace("+", "").split("-");
+  return Number(code) + Number(area) / 10000;
+}
+
 const cell = (text: string | number, sort: string | number = typeof text === "number" ? text : String(text)): DatasetCell => ({ text: String(text), sort });
 
 /** `countries` names the users of each currency (the currency table only). */
@@ -225,6 +235,9 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
     const rows = data as IndicatorRow[];
     const world = indicatorMeta(id).world;
     const share = (id === "population" || id === "gdp") && world;
+    // Rows come sorted by value; equal values share a rank (four countries at 100% internet use are all #1).
+    const ranks: number[] = [];
+    rows.forEach((row, index) => ranks.push(index > 0 && row[2] === rows[index - 1][2] ? ranks[index - 1] : index + 1));
     return {
       columns: [
         { label: ui.rank, num: true },
@@ -234,7 +247,7 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
         { label: ui.year, num: true },
       ],
       rows: rows.map(([code, , value, year, en], index) => [
-        cell(index + 1),
+        cell(ranks[index]),
         cell(regionName(locale, code, en)),
         cell(formatIndicator(locale, id, value), value),
         ...(share ? [cell(formatShare(locale, value / world[0]), value)] : []),
@@ -255,7 +268,7 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
     return {
       columns: [{ label: cols.name, head: true }, { label: cols.dial, mono: true }, { label: cols.alpha2, mono: true }],
       rows: byName((data as CountryRow[]).filter((r) => r[5]), (r) => regionName(locale, r[0], r[7])).map(({ row, name }) => [
-        cell(name), cell(row[5], Number(row[5].replace(/\D/g, ""))), cell(row[0]),
+        cell(name), cell(row[5], dialSort(row[5])), cell(row[0]),
       ]),
     };
   }
@@ -276,9 +289,9 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
   }
   if (id === "time-zones") {
     return {
-      columns: [{ label: cols.id, mono: true, head: true }, { label: cols.name }, { label: cols.jan, num: true }, { label: cols.jul, num: true }],
-      rows: (data as ZoneRow[]).map(([zone, jan, jul]) => [
-        cell(zone), cell(zoneName(locale, zone)), cell(utcOffset(jan), jan), cell(utcOffset(jul), jul),
+      columns: [{ label: cols.id, mono: true, head: true }, { label: ui.country }, { label: cols.name }, { label: cols.jan, num: true }, { label: cols.jul, num: true }],
+      rows: (data as ZoneRow[]).map(([zone, jan, jul, country]) => [
+        cell(zone), cell(regionName(locale, country, country)), cell(zoneName(locale, zone)), cell(utcOffset(jan), jan), cell(utcOffset(jul), jul),
       ]),
     };
   }

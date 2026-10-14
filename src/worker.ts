@@ -7,6 +7,7 @@ import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHr
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
+import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
 
@@ -273,6 +274,9 @@ export default {
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
       out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset");
       out = preloadPageChunk(out, chunk);
+      if (parsed.kind === "dataset" && parsed.dataset) {
+        for (const file of DATASET_FILES[parsed.dataset]) out = preloadPageChunk(out, `rows-${file}`);
+      }
       return withHeaders(
         new Response(out, {
           status: assetResponse.status,

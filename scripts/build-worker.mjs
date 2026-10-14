@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild";
-import { readFileSync, rmSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 import { fileURLToPath } from "node:url";
@@ -51,6 +51,14 @@ for (const [page, src] of Object.entries(pageModules)) {
   const files = chunkFiles(src);
   if (!files.length) throw new Error(`no Vite chunk for ${src} (page ${page})`);
   pageChunks[page] = files;
+}
+// Data tables: each table's rows are their own lazy chunk, preloaded as "rows-<file>" next to the dataset page chunk.
+for (const file of readdirSync(resolve(root, "src/data"))) {
+  const m = /^(.+)\.json$/.exec(file);
+  if (!m || m[1] === "meta") continue;
+  const files = chunkFiles(`src/data/${file}`);
+  if (!files.length) throw new Error(`no Vite chunk for src/data/${file}`);
+  pageChunks[`rows-${m[1]}`] = files;
 }
 rmSync(manifestDir, { recursive: true, force: true });
 

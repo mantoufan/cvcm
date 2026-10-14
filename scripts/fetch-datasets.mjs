@@ -2,7 +2,7 @@
 // Run by hand to refresh (`node scripts/fetch-datasets.mjs`), then commit. Pages never call these APIs.
 //   World Bank indicators (CC BY 4.0): https://data.worldbank.org/
 //   ISO 3166 / ITU dialing / ISO 4217 via datahub.io core datasets (ODC-PDDL)
-//   IANA time zones from the Node ICU tz database
+//   IANA time zones from zone.tab (data.iana.org), offsets from the Node ICU tz database
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -84,7 +84,8 @@ for (const [id, code] of Object.entries(WB)) {
       const decimals = id === "population" || id === "gdp" ? 0 : 2;
       return [c.iso2Code, c.id, Number(r.value.toFixed(decimals)), Number(r.date), c.name.trim()];
     })
-    .sort((a, b) => b[2] - a[2]);
+    // Ties (several countries at 100% internet use) fall back to name order, so reruns do not reshuffle them.
+    .sort((a, b) => b[2] - a[2] || a[4].localeCompare(b[4]));
   // A last value from decades ago (1990 internet use) misleads more than a gap does.
   const latest = Math.max(...rows.map((r) => r[3]));
   rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - 15));
@@ -113,8 +114,10 @@ const cc = parseCsv(await getText("https://datahub.io/core/country-codes/r/count
     r["ISO3166-1-numeric"].padStart(3, "0"),
     r.TLD,
     r.Continent,
-    r.Dial ? `+${r.Dial.replace(/^\+/, "")}` : "",
-    r["ISO4217-currency_alphabetic_code"].split(",")[0] ?? "",
+    // Some areas have several codes ("1-809,1-829,1-849").
+    r.Dial ? r.Dial.split(",").map((d) => `+${d.trim().replace(/^\+/, "")}`).join(", ") : "",
+    // Every currency in use, comma-separated (Bhutan: "INR,BTN"; Panama: "PAB,USD").
+    r["ISO4217-currency_alphabetic_code"],
     r["CLDR display name"] || r["UNTERM English Short"] || r.official_name_en,
   ])
   .sort((a, b) => a[0].localeCompare(b[0]));
@@ -135,7 +138,9 @@ for (const r of parseCsv(await getText("https://datahub.io/core/currency-codes/r
     cur.set(r.AlphabeticCode, [r.AlphabeticCode, r.NumericCode.padStart(3, "0"), r.MinorUnit === "N.A." ? null : Number(r.MinorUnit), [], r.Currency]);
   }
 }
-for (const c of cc) if (c[6] && cur.has(c[6])) cur.get(c[6])[3].push(c[0]);
+for (const c of cc) {
+  for (const code of c[6].split(",").map((x) => x.trim())) if (cur.has(code)) cur.get(code)[3].push(c[0]);
+}
 const currencies = [...cur.values()].sort((a, b) => a[0].localeCompare(b[0]));
 writeJson("currencies.json", currencies);
 meta.sets["currency-codes"] = { rows: currencies.length };
@@ -152,14 +157,19 @@ function offsetMinutes(tz, month) {
   const m = /GMT([+-])(\d{2}):(\d{2})/.exec(name);
   return m ? (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3])) : 0;
 }
-const zones = Intl.supportedValuesOf("timeZone")
-  .map((tz) => [tz, offsetMinutes(tz, 0), offsetMinutes(tz, 6)])
+// zone.tab: one line per country and zone with current IANA names (Asia/Kolkata, not ICU's Asia/Calcutta).
+const zoneTab = (await getText("https://data.iana.org/time-zones/tzdb/zone.tab"))
+  .split("\n").filter((line) => line && !line.startsWith("#")).map((line) => line.split("\t"));
+const tzVersion = (await getText("https://data.iana.org/time-zones/tzdb/version")).trim();
+const zones = zoneTab
+  .map(([country, , tz]) => [tz, offsetMinutes(tz, 0), offsetMinutes(tz, 6), country])
   .sort((a, b) => Math.min(a[1], a[2]) - Math.min(b[1], b[2]) || a[0].localeCompare(b[0]));
 writeJson("time-zones.json", zones);
-meta.sets["time-zones"] = { rows: zones.length, year, tzdata: process.versions.tz ?? null };
+const offsets = zones.flatMap((z) => [z[1], z[2]]);
+meta.sets["time-zones"] = { rows: zones.length, year, tzdata: process.versions.tz ?? tzVersion, west: Math.min(...offsets), east: Math.max(...offsets), offsets: new Set(offsets).size };
 const fmt = (m) => `${m < 0 ? "-" : "+"}${String(Math.floor(Math.abs(m) / 60)).padStart(2, "0")}:${String(Math.abs(m) % 60).padStart(2, "0")}`;
-writeCsv("time-zones", ["time_zone", `utc_offset_jan_${year}`, `utc_offset_jul_${year}`], zones.map((z) => [z[0], fmt(z[1]), fmt(z[2])]));
-console.log(`time zones: ${zones.length} (tzdata ${process.versions.tz})`);
+writeCsv("time-zones", ["time_zone", "country", `utc_offset_jan_${year}`, `utc_offset_jul_${year}`], zones.map((z) => [z[0], z[3], fmt(z[1]), fmt(z[2])]));
+console.log(`time zones: ${zones.length} (zone.tab ${tzVersion}, offsets from ICU tzdata ${process.versions.tz})`);
 
 // --- Paper sizes (ISO 216 / 269, JIS P 0138, ANSI) -------------------------
 

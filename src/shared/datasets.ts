@@ -94,7 +94,8 @@ export type IndicatorMeta = {
   top: [string, number, string, number][];
   bottom: [string, number, string, number][];
 };
-export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null } & Partial<IndicatorMeta>;
+/** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */
+export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
 
 export const DATASET_SNAPSHOT: string = meta.updated;
 
@@ -106,6 +107,22 @@ export function indicatorMeta(id: IndicatorId): IndicatorMeta {
   return datasetMeta(id) as IndicatorMeta;
 }
 
+/** Row files in `src/data/` each table reads (the currency table names its users from the country list). */
+export const DATASET_FILES: Record<DatasetId, readonly string[]> = {
+  population: ["population"],
+  gdp: ["gdp"],
+  "gdp-per-capita": ["gdp-per-capita"],
+  "life-expectancy": ["life-expectancy"],
+  "fertility-rate": ["fertility-rate"],
+  "internet-users": ["internet-users"],
+  "country-codes": ["countries"],
+  "calling-codes": ["countries"],
+  "currency-codes": ["currencies", "countries"],
+  "time-zones": ["time-zones"],
+  "paper-sizes": ["paper-sizes"],
+  ascii: ["ascii"],
+};
+
 export function csvHref(id: DatasetId): string {
   return `/${DATASET_SEGMENT}/${id}.csv`;
 }
@@ -114,12 +131,12 @@ export function csvHref(id: DatasetId): string {
 
 /** [iso2, iso3, value, year, English name], sorted by value, largest first. */
 export type IndicatorRow = [string, string, number, number, string];
-/** [alpha2, alpha3, numeric, tld, continent, dial, currency, English name] */
+/** [alpha2, alpha3, numeric, tld, continent, dial codes ("+1-809, +1-829"), currencies ("INR,BTN"), English name] */
 export type CountryRow = [string, string, string, string, string, string, string, string];
 /** [code, numeric, minor unit (null for funds and metals), alpha2 users, English name] */
 export type CurrencyRow = [string, string, number | null, string[], string];
-/** [IANA id, offset in minutes on 15 Jan, on 15 Jul] */
-export type ZoneRow = [string, number, number];
+/** [IANA id, offset in minutes on 15 Jan, on 15 Jul, alpha2 from zone.tab] */
+export type ZoneRow = [string, number, number, string];
 /** [name, series, width mm, height mm] */
 export type PaperRow = [string, string, number, number];
 /** [code, character or control abbreviation, control name] */

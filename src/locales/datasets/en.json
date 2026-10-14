@@ -288,7 +288,7 @@
         "jul": "UTC offset (Jul)"
       },
       "facts": [
-        "{rows} IANA time zone IDs, sorted from west (UTC-12) to east (UTC+14).",
+        "{rows} IANA time zone IDs, sorted from west ({west}) to east ({east}).",
         "A zone whose January and July offsets differ observes daylight saving time.",
         "Some zones are offset by 30 or 45 minutes, such as India (UTC+05:30) and Nepal (UTC+05:45)."
       ],

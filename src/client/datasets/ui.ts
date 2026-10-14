@@ -7,6 +7,7 @@ import {
   DATASET_GROUPS,
   DATASET_SNAPSHOT,
   DATASET_SOURCE,
+  DATASET_FILES,
   DATASET_TOOLS,
   csvHref,
   datasetGroupOf,
@@ -25,7 +26,7 @@ import {
   type DatasetTable,
 } from "../../shared/datasets-i18n";
 import { datasetMessages } from "../../shared/messages";
-import { loadDatasetRows } from "./rows";
+import { loadRowFile } from "./rows";
 
 function crumb(locale: Locale, id: DatasetId | null): HTMLElement {
   const hub = datasetHub(locale);
@@ -86,6 +87,7 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
   const count = h("p", { class: "data-count", "aria-live": "polite" }, fill(ui.rows, { n: total.toLocaleString(locale) }));
   const empty = h("p", { class: "data-empty", hidden: true }, ui.noMatch);
   const body = h("tbody", null, ...rows.map((r) => r.el));
+  const collator = new Intl.Collator(locale, { numeric: true });
   let sortCol = -1;
   let dir = 1;
   const heads = table.columns.map((col, index) => {
@@ -97,7 +99,7 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
       const sorted = [...rows].sort((a, b) => {
         const x = a.cells[index].sort;
         const y = b.cells[index].sort;
-        const diff = typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), locale);
+        const diff = typeof x === "number" && typeof y === "number" ? x - y : collator.compare(String(x), String(y));
         return diff * dir || a.index - b.index;
       });
       body.append(...sorted.map((r) => r.el));
@@ -145,10 +147,7 @@ function tableView(locale: Locale, id: DatasetId, table: DatasetTable): HTMLElem
 }
 
 export async function mountDataset(host: HTMLElement, locale: Locale, id: DatasetId, alive: () => boolean): Promise<void> {
-  const [rows, countries] = await Promise.all([
-    loadDatasetRows(id),
-    id === "currency-codes" ? loadDatasetRows("country-codes") : Promise.resolve([]),
-  ]);
+  const [rows, countries = []] = await Promise.all(DATASET_FILES[id].map(loadRowFile));
   if (!alive()) return;
   const ui = datasetUi(locale);
   const copy = datasetPageCopy(locale, id);

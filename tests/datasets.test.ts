@@ -6,30 +6,15 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows } from "../src/shared/datasets";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 
-const FILE: Record<DatasetId, string> = {
-  population: "population",
-  gdp: "gdp",
-  "gdp-per-capita": "gdp-per-capita",
-  "life-expectancy": "life-expectancy",
-  "fertility-rate": "fertility-rate",
-  "internet-users": "internet-users",
-  "country-codes": "countries",
-  "calling-codes": "countries",
-  "currency-codes": "currencies",
-  "time-zones": "time-zones",
-  "paper-sizes": "paper-sizes",
-  ascii: "ascii",
-};
-
 function rows(id: DatasetId): DatasetRows {
-  return JSON.parse(readFileSync(`src/data/${FILE[id]}.json`, "utf8")) as DatasetRows;
+  return JSON.parse(readFileSync(`src/data/${DATASET_FILES[id][0]}.json`, "utf8")) as DatasetRows;
 }
 
 function placeholders(value: unknown): string[] {
@@ -170,7 +155,13 @@ describe("data pages: tables", () => {
     expect(utcOffset(-210)).toBe("UTC-03:30");
     const zones = datasetTable("en", "time-zones", rows("time-zones"));
     const shanghai = zones.rows.find((r) => r[0].text === "Asia/Shanghai")!;
-    expect([shanghai[2].text, shanghai[3].text]).toEqual(["UTC+08:00", "UTC+08:00"]);
+    expect([shanghai[3].text, shanghai[4].text]).toEqual(["UTC+08:00", "UTC+08:00"]);
+    // Current IANA names from zone.tab, not ICU's legacy aliases.
+    const ids = zones.rows.map((r) => r[0].text);
+    expect(ids).toContain("Asia/Kolkata");
+    expect(ids).toContain("Europe/Kyiv");
+    expect(ids).not.toContain("Asia/Calcutta");
+    expect(datasetPageCopy("en", "time-zones").facts[0]).toMatch(/west \(UTC-1\d:00\) to east \(UTC\+1\d:00\)/);
   });
 
   it("names currencies and countries in the page language", () => {
@@ -180,5 +171,20 @@ describe("data pages: tables", () => {
     expect(jpy[4].text).toBe("0");
     expect(jpy[5].text).toContain("日本");
     expect(regionName("en", "JG", "Channel Islands")).toBe("Channel Islands");
+    // A country with two currencies is listed under both.
+    const en = datasetTable("en", "currency-codes", rows("currency-codes"), countries as CountryRow[]);
+    expect(en.rows.find((r) => r[0].text === "BTN")![5].text).toContain("Bhutan");
+    expect(en.rows.find((r) => r[0].text === "USD")![5].text).toContain("Panama");
+  });
+
+  it("shares ranks between equal values and sorts multi-code dialing areas by their first code", () => {
+    const internet = datasetTable("en", "internet-users", rows("internet-users"));
+    expect(internet.rows[0][2].sort).toBe(internet.rows[1][2].sort);
+    expect(internet.rows[1][0].text).toBe("1");
+    const calling = datasetTable("en", "calling-codes", rows("calling-codes"));
+    const dominican = calling.rows.find((r) => r[2].text === "DO")!;
+    expect(dominican[1].text).toBe("+1-809, +1-829, +1-849");
+    expect(dominican[1].sort).toBeCloseTo(1.0809);
+    expect(calling.rows.find((r) => r[2].text === "CN")![1].sort).toBe(86);
   });
 });
