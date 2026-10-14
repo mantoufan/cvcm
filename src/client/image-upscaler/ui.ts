@@ -35,6 +35,12 @@ let splitEl: HTMLInputElement | null = null;
 let scaleChips: HTMLButtonElement[] = [];
 let styleChips: HTMLButtonElement[] = [];
 let alive = false;
+let retired: ImageBitmap[] = [];
+
+function closeRetired(): void {
+  for (const bitmap of retired) bitmap.close();
+  retired = [];
+}
 
 const model = (): "esrgan-photo" | "esrgan-anime" => (state.style === "anime" ? "esrgan-anime" : "esrgan-photo");
 
@@ -65,6 +71,7 @@ export function unmountImageUpscaler(): void {
   client = null;
   state.source?.bitmap.close();
   state.source = null;
+  closeRetired();
   state.result = null;
   state.running = false;
   state.actual = false;
@@ -217,7 +224,9 @@ async function setFile(file: File | undefined): Promise<void> {
       decoded.bitmap.close();
       return;
     }
-    state.source?.bitmap.close();
+    // A run may still be reading the old bitmap: free it once that run ends.
+    if (state.source) retired.push(state.source.bitmap);
+    if (!state.running) closeRetired();
     state.source = { file, ...decoded, hasAlpha: detectAlpha(decoded.bitmap) };
     state.result = null;
     status?.idle();
@@ -297,11 +306,12 @@ async function run(): Promise<void> {
     status.done(t("ai.doneIn", { s: formatSeconds(seconds), device: deviceLabel(backend) }));
     redraw();
   } catch (err) {
-    if (!alive) return;
+    if (!alive || state.source !== src) return;
     console.error(err);
     status.error(t("ai.errorRun"));
   } finally {
     state.running = false;
+    closeRetired();
     if (state.again && alive) {
       state.again = false;
       void run();

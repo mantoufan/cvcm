@@ -29,6 +29,12 @@ let preview: HTMLCanvasElement | null = null;
 let hintEl: HTMLElement | null = null;
 let paletteChips: HTMLButtonElement[] = [];
 let alive = false;
+let retired: ImageBitmap[] = [];
+
+function closeRetired(): void {
+  for (const bitmap of retired) bitmap.close();
+  retired = [];
+}
 
 export async function mountDepthMap(host: HTMLElement): Promise<void> {
   alive = true;
@@ -57,6 +63,7 @@ export function unmountDepthMap(): void {
   client = null;
   state.bitmap?.close();
   state.bitmap = null;
+  closeRetired();
   state.file = null;
   state.depth = null;
   state.running = false;
@@ -158,7 +165,9 @@ async function setFile(file: File | undefined): Promise<void> {
     decoded.bitmap.close();
     return;
   }
-  state.bitmap?.close();
+  // A run may still be reading the old bitmap: free it once that run ends.
+  if (state.bitmap) retired.push(state.bitmap);
+  if (!state.running) closeRetired();
   Object.assign(state, { file, depth: null, ...decoded });
   redraw();
   void run();
@@ -187,11 +196,12 @@ async function run(): Promise<void> {
     status.done(t("ai.doneIn", { s: formatSeconds(seconds), device: deviceLabel(backend) }));
     redraw();
   } catch (err) {
-    if (!alive) return;
+    if (!alive || state.bitmap !== source) return;
     console.error(err);
     status.error(t("ai.errorRun"));
   } finally {
     state.running = false;
+    closeRetired();
     if (state.again && alive) {
       state.again = false;
       void run();
