@@ -3841,5 +3841,208 @@
         "body": "MIT。Antoine Boucher，2010 年。源：https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II 是一款自由软件 FC 大逃杀。ROM 已托管，打开页面就会载入。二十只小鸡在围墙里开打，只有一只能走出来。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开一局",
+        "body": "选 1 PLAYERS 按 Start。画面底部的署名是 Rodrigo Dornelles 和 Psywave Games。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "找到你的小鸡",
+        "body": "你的小鸡头上飘着一个小 1。方向键走，A 或 B 啄。其他小鸡之间也会互相打。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "活到最后",
+        "body": "右上角的数字从 20 往下掉。别往鸡群里钻，专挑落单的下手，一直走动，直到只剩你一只。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "许可 GPL-3.0。源码在 https://github.com/psywave-games/coco-battle-royale-2。商业游戏不会这样托管。",
+        "image": "license"
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl 是可再分发的开源 Game Boy 猜词游戏。ROM 已托管，打开页面就会载入。你有六次机会猜出一个五个字母的英文单词。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "标题画面按 Start。接下来两页说明颜色含义和菜单快捷键，按任意键翻过去。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "输入猜测",
+        "body": "用方向键在屏幕键盘上移动光标，每个字母按一次 A。B 删除，凑满五个字母按 Start 提交。",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "看颜色",
+        "body": "灰色：单词里没有这个字母。黄色：有，但在别的位置。绿色：字母和位置都对。",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "缩小范围",
+        "body": "下面的键盘也会记住颜色。这里猜 WRITE 排除了 W、R、T、E，并且知道 I 在单词里，只是不在中间。照着线索继续猜，直到五格全绿。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "许可 GPL-3.0。源码在 https://github.com/bbbbbr/gb-wordyl。商业游戏不会这样托管。",
+        "image": "license"
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch 是以 0BSD 发布、可再分发的 Game Boy 动作游戏。ROM 已托管，打开页面就会载入。骑扫帚飞过夜空，冲刺撞开蝙蝠。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "在月亮标题画面按 Start。开场最后会提示：按住 B 加方向键冲向敌人。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "飞行",
+        "body": "方向键上下左右移动。一直往前飞，底部的 GOAL 条会慢慢填满。",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "冲刺",
+        "body": "蝙蝠飞过来时，按住 B，方向键指向它。每次冲刺都会用掉一截 DASH 条，别乱用。",
+        "image": "dash"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "许可 0BSD。页面在 https://voxel.itch.io/dashy-no-witch。商业游戏不会这样托管。",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism 是可再分发的开源 Game Boy Color 翻牌游戏。ROM 已托管，打开页面就会载入。52 张牌全部扣着，记住每张的位置，把成对的牌找出来。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "选游戏",
+        "body": "标题画面按任意键。GAME SELECT 里保持 PELMANISM，按 A。",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "选难度",
+        "body": "用方向键选 EASY、NORMAL 或 HARD，按 A。",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "翻一张",
+        "body": "把手移到一张牌上按 A，翻开的牌显示在下方左边的框里。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "配对",
+        "body": "再翻第二张。成对就拿走，LEFT 减 2；不成对两张都翻回去。记住看过的牌，清空牌桌。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "许可 MIT。源码在 https://gitlab.com/teamknox/gbccardgame。商业游戏不会这样托管。",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 是可再分发的开源 GBA 益智游戏。ROM 已托管，打开页面就会载入。投下写着 1 到 7 的圆片，数量对上就会消除。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "投下圆片",
+        "body": "下一枚圆片停在棋盘上方。左右移动，按 A 投下去。",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "按数量消除",
+        "body": "数字 3 所在的行或列刚好有 3 枚圆片时，它就会消掉。一次消除可能引发下一次，这就是连锁，分数更高。",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "留意上升",
+        "body": "RISE 是离下一次上升还剩几次投放，到 0 时底部会推上一排空白圆片。空白圆片旁边第一次消除时裂开，第二次变成数字。尽量让每列保持低。",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "许可 MIT。源码在 https://github.com/mick-schroeder/gba-cascade7。暂停菜单的 About 页写着作者 Mick Schroeder。",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending 开场是三个图标。点播放、选关卡，然后用方向键移动。你每走一步，整个房间都会跟着回应一步。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "点播放",
+        "body": "播放三角进入关卡列表。迷宫图标和锤子图标是另外两种模式。",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "选关卡",
+        "body": "00 到 19 关排成一格一格。从 00 开始，一关一关往上打。",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "看清房间",
+        "body": "螺旋符号就是你。白色方块可以打碎，灰色方块挡路，出口在墙边。",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "打碎方块",
+        "body": "走进白色方块把它打碎。其他方块会在你之后移动，多看一步。",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "走到出口",
+        "body": "绕开灰色方块，踩上出口。",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "下一关",
+        "body": "房间渐暗，出现下一关的编号。",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "GPL-2.0。Aaron Steed，2013 年。源码：https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

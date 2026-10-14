@@ -3841,5 +3841,208 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II는 자유 소프트웨어 패미컴 배틀로얄이다. 페이지를 열면 ROM이 로드된다. 울타리 안에서 닭 20마리가 싸우고 한 마리만 살아 나간다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "라운드 시작",
+        "body": "1 PLAYERS를 고르고 Start. 화면 아래 크레디트에 Rodrigo Dornelles와 Psywave Games가 적혀 있다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "내 닭 찾기",
+        "body": "내 닭 위에 작은 1이 떠 있다. 방향키로 걷고 A나 B로 쫀다. 다른 닭끼리도 싸운다.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "마지막 한 마리",
+        "body": "오른쪽 위 숫자가 20에서 줄어든다. 무리에 끼지 말고 떨어진 닭을 노리며 계속 움직여 마지막까지 남는다.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "GPL-3.0. 소스: https://github.com/psywave-games/coco-battle-royale-2. 상용 게임은 호스팅하지 않는다.",
+        "image": "license"
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl은 재배포할 수 있는 오픈소스 게임보이 단어 게임이다. 페이지를 열면 ROM이 로드된다. 다섯 글자 영어 단어를 여섯 번 안에 찾는다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "타이틀에서 Start. 색 의미와 메뉴 단축키를 알려 주는 설명 두 장이 나오고, 아무 키로 넘긴다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "추측 입력",
+        "body": "방향키로 화면 키보드 위를 움직이고 글자마다 A. B로 지운다. 다섯 글자가 차면 Start로 제출한다.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "색 읽기",
+        "body": "회색: 단어에 없는 글자. 노랑: 단어에 있지만 다른 자리. 초록: 글자도 자리도 맞음.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "범위 좁히기",
+        "body": "아래 키보드에도 색이 남는다. 여기서 WRITE로 W, R, T, E가 빠지고 I는 단어에 있지만 가운데는 아니라는 것을 알았다. 다섯 칸이 모두 초록이 될 때까지 단서를 쓴다.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "GPL-3.0. 소스: https://github.com/bbbbbr/gb-wordyl. 상용 게임은 호스팅하지 않는다.",
+        "image": "license"
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch는 0BSD로 재배포할 수 있는 게임보이 액션 게임이다. 페이지를 열면 ROM이 로드된다. 밤하늘을 날며 박쥐를 대시로 쓰러뜨린다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "달 타이틀에서 Start. 오프닝 끝에 'B와 방향키로 적에게 대시'라는 힌트가 나온다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "날기",
+        "body": "방향키로 상하좌우로 움직인다. 계속 나아가면 화면 아래 GOAL 게이지가 찬다.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "대시",
+        "body": "박쥐가 오면 B를 누른 채 방향키를 그쪽으로 향한다. 대시할 때마다 DASH 게이지가 줄어드니 아껴 쓴다.",
+        "image": "dash"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "0BSD. 페이지: https://voxel.itch.io/dashy-no-witch. 상용 게임은 호스팅하지 않는다.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism은 재배포할 수 있는 오픈소스 게임보이 컬러 카드 게임이다. 페이지를 열면 ROM이 로드된다. 엎어 놓은 52장의 위치를 기억해 짝을 찾아낸다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "게임 고르기",
+        "body": "타이틀에서 아무 키. GAME SELECT에서 PELMANISM 그대로 A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "난이도 고르기",
+        "body": "방향키로 EASY, NORMAL, HARD 중 하나를 고르고 A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "한 장 뒤집기",
+        "body": "손을 카드 위에 놓고 A. 뒤집은 카드는 아래 왼쪽 칸에 보인다.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "짝 찾기",
+        "body": "두 번째 카드를 뒤집는다. 짝이면 없어지고 LEFT가 2 줄며, 아니면 둘 다 다시 덮인다. 본 카드를 기억해 판을 비운다.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://gitlab.com/teamknox/gbccardgame. 상용 게임은 호스팅하지 않는다.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7은 재배포할 수 있는 오픈소스 게임보이 어드밴스 퍼즐이다. 페이지를 열면 ROM이 로드된다. 1부터 7까지 적힌 원반을 떨어뜨리고 개수가 맞으면 사라진다.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "원반 떨어뜨리기",
+        "body": "다음 원반이 판 위에서 기다린다. 좌우로 옮기고 A로 떨어뜨린다.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "개수로 없애기",
+        "body": "3 원반은 그 행이나 열에 원반이 정확히 3개 있으면 사라진다. 하나가 사라지며 다음이 이어지는 것이 연쇄이고, 점수가 높다.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "올라오는 줄 조심",
+        "body": "RISE는 다음 줄이 올라오기까지 남은 횟수다. 0이 되면 아래에서 빈 원반 한 줄이 밀려 올라온다. 빈 원반은 옆에서 한 번 사라지면 금이 가고, 두 번째에 숫자가 된다. 줄을 낮게 유지한다.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/mick-schroeder/gba-cascade7. 일시정지 메뉴의 About 화면에 제작자 Mick Schroeder가 나온다.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending을 열면 아이콘 세 개가 나온다. 재생을 누르고 레벨을 고른 뒤 방향키로 움직인다. 한 걸음 갈 때마다 방 전체가 한 걸음 응답한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "재생 누르기",
+        "body": "재생 삼각형이 레벨 목록을 연다. 미로와 망치 아이콘은 다른 모드다.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "레벨 고르기",
+        "body": "00부터 19까지 레벨이 칸으로 놓여 있다. 00부터 차례로 올라간다.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "방 읽기",
+        "body": "소용돌이가 나다. 흰 네모는 부술 수 있는 블록, 회색 네모는 길을 막고, 출구는 벽 가장자리에 있다.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "블록 부수기",
+        "body": "흰 블록 쪽으로 움직이면 부서진다. 다른 블록은 내 뒤에 움직이니 한 수 앞을 본다.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "출구로",
+        "body": "회색 네모를 돌아 출구에 올라선다.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "다음 레벨",
+        "body": "방이 어두워지고 다음 레벨 번호가 나온다.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "GPL-2.0. Aaron Steed, 2013년. 소스: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

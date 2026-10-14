@@ -3841,5 +3841,208 @@
         "body": "MIT。Antoine Boucher、2010 年。https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II はフリーソフトウェアのファミコン用バトルロイヤル。ページを開くと ROM が読み込まれる。囲いの中で 20 羽が戦い、出られるのは 1 羽だけ。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "ラウンド開始",
+        "body": "1 PLAYERS を選んで Start。画面下のクレジットに Rodrigo Dornelles と Psywave Games の名前がある。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "自分のニワトリ",
+        "body": "自分のニワトリの上に小さな 1 が浮かぶ。方向キーで歩き、A か B でつつく。ほかのニワトリ同士も戦う。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "最後の 1 羽",
+        "body": "右上の数字は 20 から減っていく。群れには近づかず、はぐれた相手を狙い、動き続けて最後の 1 羽になる。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "GPL-3.0。ソースは https://github.com/psywave-games/coco-battle-royale-2。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl は再配布できるオープンソースのゲームボーイ単語ゲーム。ページを開くと ROM が読み込まれる。5 文字の英単語を 6 回のうちに当てる。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "スタート",
+        "body": "タイトルで Start。色の意味とメニュー操作の説明が 2 枚出るので、好きなキーで進める。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "推測を入力",
+        "body": "方向キーで画面のキーボードを移動し、1 文字ごとに A。B で消す。5 文字そろったら Start で送信。",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "色を読む",
+        "body": "灰：その文字は単語にない。黄：単語にあるが別の位置。緑：文字も位置も正解。",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "絞り込む",
+        "body": "下のキーボードにも色が残る。この WRITE では W、R、T、E が外れ、I は単語にあるが真ん中ではないとわかった。5 マスが全部緑になるまで手がかりを使う。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "GPL-3.0。ソースは https://github.com/bbbbbr/gb-wordyl。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch は 0BSD で再配布できるゲームボーイ用アクション。ページを開くと ROM が読み込まれる。夜空を飛び、コウモリをダッシュで倒していく。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "スタート",
+        "body": "月のタイトルで Start。オープニングの最後に「B と十字キーで敵にダッシュ」のヒントが出る。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "飛ぶ",
+        "body": "方向キーで上下左右に動く。進み続けると画面下の GOAL ゲージがたまる。",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "ダッシュ",
+        "body": "コウモリが来たら B を押しながら方向キーを向ける。ダッシュのたびに DASH ゲージが減るので無駄打ちしない。",
+        "image": "dash"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "0BSD。ページは https://voxel.itch.io/dashy-no-witch。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism は再配布できるオープンソースのゲームボーイカラー用神経衰弱。ページを開くと ROM が読み込まれる。52 枚が伏せてあるので、位置を覚えてペアを取っていく。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "ゲームを選ぶ",
+        "body": "タイトルで好きなキー。GAME SELECT では PELMANISM のまま A。",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "難易度を選ぶ",
+        "body": "方向キーで EASY、NORMAL、HARD を選んで A。",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "1 枚めくる",
+        "body": "手をカードに合わせて A。めくったカードは下の左の枠に表示される。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "ペアを取る",
+        "body": "2 枚目をめくる。ペアなら取り除かれて LEFT が 2 減り、違えば両方裏に戻る。見たカードを覚えて場を空にする。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://gitlab.com/teamknox/gbccardgame。市販作は配信しない。",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 は再配布できるオープンソースのゲームボーイアドバンス用パズル。ページを開くと ROM が読み込まれる。1〜7 の円盤を落とし、数が合ったら消える。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "円盤を落とす",
+        "body": "次の円盤は盤の上で待っている。左右に動かし、A で落とす。",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "数で消す",
+        "body": "3 の円盤は、その行か列に円盤がちょうど 3 枚あると消える。消えたことで次の消去が起きるのが連鎖で、点が高い。",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "せり上がりに注意",
+        "body": "RISE は次のせり上がりまでの残り手数。0 になると下から空白の円盤が 1 列押し上がる。空白は隣で 1 回消えるとひび、2 回目で数字になる。列を低く保つ。",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/mick-schroeder/gba-cascade7。一時停止メニューの About に作者 Mick Schroeder の名前がある。",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending を開くとアイコンが 3 つ並ぶ。再生を押してレベルを選び、矢印キーで動く。1 歩進むたびに、部屋全体も 1 歩応える。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "再生を押す",
+        "body": "再生の三角でレベル一覧へ。迷路とハンマーのアイコンは別のモード。",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "レベルを選ぶ",
+        "body": "00〜19 のレベルが並ぶ。00 から順に進める。",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "部屋を読む",
+        "body": "うずまきが自分。白い四角は壊せるブロック、灰色の四角は通せんぼ、出口は壁ぎわにある。",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "ブロックを壊す",
+        "body": "白いブロックに向かって進むと壊れる。ほかのブロックは自分のあとに動くので、1 歩先を読む。",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "出口へ",
+        "body": "灰色の四角を回り込み、出口に乗る。",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "次のレベル",
+        "body": "部屋が暗くなり、次のレベル番号が出る。",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "GPL-2.0。Aaron Steed、2013 年。ソース: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }
