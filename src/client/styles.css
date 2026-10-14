@@ -332,6 +332,29 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .stats-grid { display: grid; grid-template-columns: 1fr auto; gap: 0.45rem 1rem; margin: 0; }
 .stats-grid dt { color: var(--ink-soft); font-size: 0.9rem; }
 .stats-grid dd { margin: 0; font-weight: 700; color: var(--pink-deep); text-align: right; }
+.perm-grid { border-collapse: collapse; width: 100%; max-width: 22rem; font-size: 0.9rem; }
+.perm-grid th, .perm-grid td { padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--line); text-align: center; }
+.perm-grid th[scope="row"] { text-align: left; color: var(--ink-soft); font-weight: 600; }
+.perm-grid input { width: 1.15rem; height: 1.15rem; accent-color: var(--pink-deep); }
+.chmod-out { min-height: 0; }
+.chmod-safe-box { display: grid; gap: 0.5rem; margin-top: 0.6rem; }
+.chmod-safe-box[hidden] { display: none; }
+.stats-grid > .hint { grid-column: 1 / -1; margin-top: 0.3rem; }
+.copy-failed { color: var(--pink-deep); }
+.btn.copy-failed { color: var(--white); background: var(--pink-dark); }
+.typing-stage { display: grid; gap: 0.7rem; }
+.typing-text { margin: 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font-size: 1.15rem; line-height: 1.9; white-space: pre-wrap; word-break: break-word; user-select: none; }
+.typing-text .tc-todo { color: var(--ink-soft); }
+.typing-text .tc-ok { color: var(--ink); }
+.typing-text .tc-bad { color: var(--pink-deep); background: #fde8f0; text-decoration: underline; }
+.typing-text .tc-cur { border-bottom: 2px solid var(--pink-deep); color: var(--ink); }
+.typing-input { font-size: 1.05rem; min-height: 6rem; }
+.palette-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.palette-item { display: grid; grid-template-columns: 2.4rem 1fr auto; align-items: center; gap: 0.6rem; width: 100%; padding: 0.3rem; border: 1px solid var(--line); border-radius: 10px; background: var(--white); cursor: pointer; text-align: left; }
+.palette-item:hover { border-color: var(--pink); background: var(--pink-soft); }
+.palette-chip { width: 2.4rem; height: 2.4rem; border-radius: 8px; border: 1px solid var(--line); }
+.palette-item code { font-family: var(--mono); font-size: 0.95rem; }
+.palette-item small { color: var(--ink-soft); }
 .crop-wrap { position: relative; max-width: 100%; }
 .crop-box { position: absolute; box-sizing: border-box; border: 2px solid var(--pink-deep); box-shadow: 0 0 0 9999px rgba(42, 20, 32, 0.28); cursor: move; display: none; }
 .crop-handle { position: absolute; width: 14px; height: 14px; background: #fff; border: 2px solid var(--pink-deep); border-radius: 3px; }
