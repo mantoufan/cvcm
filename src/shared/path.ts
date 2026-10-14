@@ -13,7 +13,7 @@ import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
-  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)/;
+  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)/;
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
 export const QUIZ_SEGMENT = "tests";
