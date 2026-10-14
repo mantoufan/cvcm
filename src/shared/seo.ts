@@ -134,6 +134,10 @@ const TITLE: Record<ToolId, string> = {
   palladium: "meta.titlePalladium",
   oil: "meta.titleOil",
   stocks: "meta.titleStocks",
+  "remove-background": "meta.titleRemoveBg",
+  "image-upscaler": "meta.titleUpscaler",
+  "speech-to-text": "meta.titleStt",
+  "depth-map": "meta.titleDepthMap",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -247,6 +251,10 @@ const DESC: Record<ToolId, string> = {
   palladium: "meta.descPalladium",
   oil: "meta.descOil",
   stocks: "meta.descStocks",
+  "remove-background": "meta.descRemoveBg",
+  "image-upscaler": "meta.descUpscaler",
+  "speech-to-text": "meta.descStt",
+  "depth-map": "meta.descDepthMap",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -651,7 +659,10 @@ export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, 
   };
 }
 
-const IMAGE_TOOLS = new Set<ToolId>(CATEGORIES.find((c) => c.id === "image")!.tools);
+const IMAGE_TOOLS = new Set<ToolId>([
+  ...CATEGORIES.find((c) => c.id === "image")!.tools,
+  ...CATEGORIES.find((c) => c.id === "ai")!.tools,
+]);
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
 

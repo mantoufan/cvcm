@@ -335,7 +335,15 @@
     "titleMosaicPhoto": "Cómo pixelar una foto: oculta DNI, caras y matrículas | cv.cm",
     "descMosaicPhoto": "Tapa números en negro, pixela caras y revisa al 100% antes de compartir. Gratis en el navegador, sin subir nada.",
     "titleWatermarkIdCopy": "Cómo poner marca de agua a una copia del DNI (uso + fecha) | cv.cm",
-    "descWatermarkIdCopy": "Escribe destinatario y fin, repítelo en diagonal con la fecha de hoy y tapa en negro lo innecesario. En el navegador, sin subir nada."
+    "descWatermarkIdCopy": "Escribe destinatario y fin, repítelo en diagonal con la fecha de hoy y tapa en negro lo innecesario. En el navegador, sin subir nada.",
+    "titleRemoveBg": "Quitar fondo de imagen con IA — gratis, sin subir — cv.cm",
+    "descRemoveBg": "Quita el fondo de tus fotos con IA en el navegador. Personas, productos y mascotas en PNG transparente; fondo blanco, de color o desenfocado; lote en ZIP. Nada se sube.",
+    "titleUpscaler": "Ampliar imagen con IA — 2× y 4× sin perder calidad, gratis — cv.cm",
+    "descUpscaler": "Amplía imágenes 2× o 4× con Real-ESRGAN en tu navegador. Fotos borrosas y arte anime más nítidos, hasta 16 MP. Gratis, sin registro y sin subir nada.",
+    "titleStt": "Transcribir audio a texto — voz a texto y subtítulos SRT gratis — cv.cm",
+    "descStt": "Transcribe grabaciones, reuniones y vídeos a texto con Whisper IA en el navegador. 99 idiomas, detección automática, subtítulos SRT/VTT y micrófono. El audio no se sube.",
+    "titleDepthMap": "Generador de mapa de profundidad — IA desde una foto — cv.cm",
+    "descDepthMap": "Crea un mapa de profundidad desde una foto con Depth Anything V2 en tu navegador. PNG en grises o color para 3D, paralaje, Blender y ControlNet. La foto no se sube."
   },
   "brand": "cv.cm",
   "nav": {
@@ -349,7 +357,8 @@
     "games": "Juegos",
     "device": "Dispositivo",
     "assets": "Activos",
-    "tests": "Tests"
+    "tests": "Tests",
+    "ai": "IA"
   },
   "lang": {
     "label": "Idioma",
@@ -722,6 +731,22 @@
     "mosaic": {
       "name": "Pixelar foto",
       "blurb": "Pixela o tapa en negro números de DNI, caras y matrículas. Sin subir nada."
+    },
+    "remove-background": {
+      "name": "Quitar fondo",
+      "blurb": "Recorta personas, productos y mascotas con IA. PNG transparente. En tu navegador."
+    },
+    "image-upscaler": {
+      "name": "Ampliar imagen con IA",
+      "blurb": "Amplía fotos y arte anime 2× o 4× con IA. Sin subir nada."
+    },
+    "speech-to-text": {
+      "name": "Voz a texto",
+      "blurb": "Transcribe audio y vídeo con Whisper. TXT, SRT y VTT. Sin subir nada."
+    },
+    "depth-map": {
+      "name": "Generador de mapa de profundidad",
+      "blurb": "Convierte una foto en un mapa de profundidad para 3D, paralaje y ControlNet."
     }
   },
   "watermark": {
@@ -2843,6 +2868,54 @@
       "a4": "Sí. En la misma página añade “Solo para …”. Primero se censura y luego va la marca encima.",
       "q5": "¿Puede quitar un pixelado?",
       "a5": "No. Solo tapa; no recupera lo que otra persona censuró. En tu exportación los píxeles tapados quedan reemplazados."
+    },
+    "remove-background": {
+      "q1": "¿Es gratis quitar el fondo?",
+      "a1": "Sí. Sin registro, marca de agua ni límite. El modelo de IA se descarga una vez y funciona en tu propio dispositivo.",
+      "q2": "¿Se suben mis fotos?",
+      "a2": "No. El modelo funciona en esta pestaña con WebGPU o WebAssembly. Las fotos no salen de tu dispositivo y se borran al cerrar la pestaña.",
+      "q3": "¿Qué fotos funcionan mejor?",
+      "a3": "Sujetos claros: personas, productos, mascotas, coches, muebles. El pelo fino y el cristal cuestan más; un fondo liso y con contraste ayuda.",
+      "q4": "¿Puedo quitar el fondo a muchas imágenes a la vez?",
+      "a4": "Sí. Suelta varias fotos; se procesan una tras otra y Descargar todo guarda un ZIP.",
+      "q5": "¿Puedo poner otro fondo?",
+      "a5": "Elige transparente, blanco, cualquier color o una copia desenfocada del original. Transparente necesita PNG o WebP; JPG lleva blanco."
+    },
+    "image-upscaler": {
+      "q1": "¿Cómo funciona el ampliador con IA?",
+      "a1": "Ejecuta Real-ESRGAN, una red de superresolución, en tu GPU o CPU. Amplía 4× redibujando bordes y texturas; 2× reduce ese resultado para un acabado más limpio.",
+      "q2": "¿Se sube mi imagen?",
+      "a2": "No. El modelo de 2–5 MB se descarga una vez; la imagen se procesa en esta pestaña y no sale de tu dispositivo.",
+      "q3": "¿Cuál es el tamaño máximo?",
+      "a3": "Unos 16 megapíxeles (por ejemplo 4096 × 4096), el límite que Safari puede dibujar. Las imágenes mayores se reducen antes.",
+      "q4": "¿Foto o Anime / ilustración?",
+      "a4": "Foto sirve para fotografías y capturas. Anime / ilustración mantiene colores planos y contornos en ilustraciones, cómics y arte de videojuegos.",
+      "q5": "¿Recupera detalles que no existían?",
+      "a5": "Ningún ampliador puede. La imagen queda más nítida y limpia, pero el texto pequeño o las caras que no se ven se inventan, no se recuperan."
+    },
+    "speech-to-text": {
+      "q1": "¿Es gratis la voz a texto?",
+      "a1": "Sí, sin registro ni límite de minutos. Usa el modelo abierto Whisper de OpenAI, que se descarga una vez y funciona en tu dispositivo.",
+      "q2": "¿Se sube mi audio?",
+      "a2": "No. El audio y el vídeo se decodifican y transcriben en esta pestaña. Nada se envía a un servidor, ideal para reuniones y entrevistas privadas.",
+      "q3": "¿Qué idiomas admite?",
+      "a3": "Whisper reconoce 99 idiomas, entre ellos español, inglés, chino, japonés, coreano, vietnamita e indonesio. Puede detectar el idioma o traducir al inglés.",
+      "q4": "¿Puedo crear subtítulos?",
+      "a4": "Sí. Descarga SRT o VTT con marcas de tiempo para YouTube, Premiere, CapCut o un reproductor, o TXT sin formato.",
+      "q5": "¿Qué duración puede tener el archivo?",
+      "a5": "Varias horas; el audio se lee en ventanas de 30 segundos. La velocidad depende del equipo: con GPU, una hora suele tardar pocos minutos."
+    },
+    "depth-map": {
+      "q1": "¿Qué es un mapa de profundidad?",
+      "a1": "Una imagen en grises donde el brillo indica distancia: cerca es blanco y lejos, negro. Las herramientas 3D lo usan para paralaje, desenfoque e iluminación.",
+      "q2": "¿Qué modelo de IA usa?",
+      "a2": "Depth Anything V2 Small (Apache-2.0). Se descarga una vez (unos 25–100 MB según el equipo) y funciona en esta pestaña.",
+      "q3": "¿Se sube mi foto?",
+      "a3": "No. La foto se procesa en el navegador y no sale de tu dispositivo.",
+      "q4": "¿Sirve para ControlNet o Blender?",
+      "a4": "Sí. Descarga el PNG en grises como entrada de profundidad de ControlNet, mapa de desplazamiento en Blender o efecto de foto 3D.",
+      "q5": "¿La profundidad está en metros?",
+      "a5": "No. Es profundidad relativa: ordena qué está más cerca o más lejos, no mide distancias."
     }
   },
   "qr": {
@@ -5692,5 +5765,127 @@
       "name": "Test de depresión (PHQ-9)",
       "blurb": "El cribado de depresión de 9 preguntas, de 0 a 27."
     }
+  },
+  "ai": {
+    "gpu": "GPU (WebGPU)",
+    "cpu": "CPU (WebAssembly)",
+    "size": "{size}, se descarga una vez",
+    "cached": "guardado en este navegador, funciona sin conexión",
+    "downloading": "Descargando el modelo de IA… {pct}% ({done} de {total})",
+    "starting": "Iniciando el modelo de IA…",
+    "running": "Procesando en la {device}…",
+    "runningPart": "Procesando en la {device}… {done}/{total}",
+    "doneIn": "Listo en {s} s en la {device}.",
+    "errorRun": "Falló el proceso. Recarga la página e inténtalo de nuevo, o usa un archivo más pequeño."
+  },
+  "removeBg": {
+    "back": "Todas las herramientas",
+    "title": "Quitar fondo",
+    "privacyNote": "La IA funciona en esta pestaña. Tus fotos nunca se suben.",
+    "filesTitle": "Fotos",
+    "dropTitle": "Suelta fotos",
+    "dropHint": "O pégalas. Puedes añadir varias a la vez.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Personas, productos, mascotas y objetos. La primera vez descarga el modelo una sola vez.",
+    "compare": "Mantén pulsado para ver el original",
+    "download": "Descargar",
+    "downloadAll": "Descargar todo (ZIP)",
+    "background": "Fondo",
+    "bg_transparent": "Transparente",
+    "bg_white": "Blanco",
+    "bg_color": "Color",
+    "bg_blur": "Desenfoque",
+    "export": "Exportar",
+    "format": "Formato",
+    "formatNote": "PNG y WebP conservan la transparencia. JPG lleva fondo blanco.",
+    "state_queued": "En cola",
+    "state_running": "Quitando fondo…",
+    "state_done": "Listo",
+    "state_error": "Error",
+    "remove": "Quitar",
+    "emptyDownload": "Añade una foto y espera a que termine el recorte.",
+    "errorDecode": "No se pudo leer esa imagen."
+  },
+  "upscaler": {
+    "back": "Todas las herramientas",
+    "title": "Ampliar imagen con IA",
+    "privacyNote": "La IA funciona en esta pestaña. Tu imagen nunca se sube.",
+    "filesTitle": "Imagen",
+    "dropTitle": "Suelta una imagen",
+    "dropHint": "O pégala. Se amplía al momento.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Las imágenes pequeñas, borrosas o comprimidas son las que más ganan.",
+    "compare": "Antes / después",
+    "actual": "Píxeles reales",
+    "run": "Ampliar de nuevo",
+    "download": "Descargar",
+    "scale": "Escala",
+    "style": "Tipo",
+    "style_photo": "Foto",
+    "style_anime": "Anime / ilustración",
+    "styleNote": "Anime / ilustración mantiene colores planos y líneas limpias.",
+    "export": "Exportar",
+    "format": "Formato",
+    "sizes": "{from} → {to}",
+    "capped": "(máximo 16 MP)",
+    "empty": "Primero añade una imagen.",
+    "errorDecode": "No se pudo leer esa imagen."
+  },
+  "stt": {
+    "back": "Todas las herramientas",
+    "title": "Voz a texto",
+    "privacyNote": "Whisper IA funciona en esta pestaña. Tu audio nunca se sube.",
+    "filesTitle": "Audio o vídeo",
+    "dropTitle": "Suelta audio o vídeo",
+    "dropHint": "Grabaciones, pódcasts, reuniones, clips MP4.",
+    "dropTypes": "MP3, WAV, M4A, OGG, WebM, MP4, MOV",
+    "record": "Grabar con el micrófono",
+    "stop": "Detener grabación ({time})",
+    "recordingName": "grabacion",
+    "placeholder": "La transcripción aparece aquí a medida que se escribe.",
+    "outputLabel": "Transcripción",
+    "hint": "Los archivos largos funcionan: se leen en ventanas de 30 segundos.",
+    "run": "Transcribir de nuevo",
+    "copy": "Copiar texto",
+    "copied": "Copiado.",
+    "autoDetect": "Detectar automáticamente",
+    "common": "Frecuentes",
+    "more": "Más idiomas",
+    "model": "Modelo",
+    "model_fast": "Rápido",
+    "model_accurate": "Preciso",
+    "modelSizes": "Rápido: Whisper base, {fast}. Preciso: Whisper small, {accurate}, mejor para chino, japonés y coreano.",
+    "options": "Opciones",
+    "language": "Idioma hablado",
+    "task": "Salida",
+    "task_transcribe": "Mismo idioma",
+    "task_translate": "Traducir al inglés",
+    "script": "Caracteres chinos",
+    "scriptAsIs": "Tal cual",
+    "decoding": "Leyendo el audio…",
+    "doneIn": "{len} de audio listos en {s} s en la {device}.",
+    "empty": "Añade un archivo de audio o vídeo, o graba uno.",
+    "errorDecode": "Este navegador no puede leer el audio de ese archivo. Prueba con MP3, WAV o M4A.",
+    "errorMic": "El micrófono no está disponible. Permítelo en el navegador o suelta un archivo."
+  },
+  "depthMap": {
+    "back": "Todas las herramientas",
+    "title": "Mapa de profundidad",
+    "privacyNote": "La IA funciona en esta pestaña. Tu foto nunca se sube.",
+    "filesTitle": "Foto",
+    "dropTitle": "Suelta una foto",
+    "dropHint": "O pégala. El mapa aparece en segundos.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Lo cercano es claro y lo lejano, oscuro.",
+    "download": "Descargar PNG",
+    "style": "Estilo",
+    "palette_gray": "Grises",
+    "palette_turbo": "Turbo",
+    "palette_magma": "Magma",
+    "invert": "Invertir (cerca = oscuro)",
+    "side": "Mostrar la foto al lado",
+    "note": "Profundidad relativa, no en metros. El PNG tiene el tamaño de la foto.",
+    "empty": "Primero añade una foto.",
+    "errorDecode": "No se pudo leer esa imagen."
   }
 }

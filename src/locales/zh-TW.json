@@ -335,7 +335,15 @@
     "titleMosaicPhoto": "圖片怎麼打馬賽克：遮住證件號碼、人臉、車牌 | cv.cm",
     "descMosaicPhoto": "證件號碼蓋黑塊，人臉打馬賽克，傳出前用 100% 檢查。瀏覽器免費完成，不上傳。",
     "titleWatermarkIdCopy": "身分證影本加浮水印怎麼寫：僅供XX使用+日期 | cv.cm",
-    "descWatermarkIdCopy": "寫清對象和用途，加上當天日期斜鋪滿整張，再替用不到的欄位蓋黑塊。瀏覽器完成，不上傳。"
+    "descWatermarkIdCopy": "寫清對象和用途，加上當天日期斜鋪滿整張，再替用不到的欄位蓋黑塊。瀏覽器完成，不上傳。",
+    "titleRemoveBg": "AI 去背 — 線上移除圖片背景，免費不上傳 — cv.cm",
+    "descRemoveBg": "在瀏覽器用 AI 一鍵去背：人像、商品、寵物移除背景，匯出透明 PNG，可換白底、純色或模糊背景，批次打包 ZIP。圖片不上傳。",
+    "titleUpscaler": "AI 圖片無損放大 — 2 倍 / 4 倍變清晰，免費不上傳 — cv.cm",
+    "descUpscaler": "用 Real-ESRGAN 在瀏覽器把圖片放大 2 倍或 4 倍，模糊照片與動漫圖變清晰，最高 1600 萬像素。免費、免註冊、不上傳。",
+    "titleStt": "語音轉文字 — 音訊影片轉逐字稿、SRT 字幕，免費不上傳 — cv.cm",
+    "descStt": "用 Whisper AI 在瀏覽器把錄音、會議、影片轉成文字：支援中文等 99 種語言、自動偵測語言、匯出 SRT/VTT 字幕、麥克風錄音。音訊不上傳。",
+    "titleDepthMap": "深度圖產生器 — AI 從照片產生深度圖 — cv.cm",
+    "descDepthMap": "用 Depth Anything V2 在瀏覽器從照片產生深度圖，匯出灰階或彩色 PNG，可用於 3D、視差、Blender 與 ControlNet。照片不上傳。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -349,7 +357,8 @@
     "games": "遊戲",
     "device": "裝置",
     "assets": "資產",
-    "tests": "測驗"
+    "tests": "測驗",
+    "ai": "AI"
   },
   "lang": {
     "label": "語言",
@@ -722,6 +731,22 @@
     "mosaic": {
       "name": "圖片打馬賽克",
       "blurb": "拖框遮住證件號碼、人臉、車牌：馬賽克或黑塊。不上傳。"
+    },
+    "remove-background": {
+      "name": "AI 去背",
+      "blurb": "一鍵移除圖片背景：人像、商品、寵物，匯出透明 PNG。在瀏覽器執行。"
+    },
+    "image-upscaler": {
+      "name": "AI 圖片放大",
+      "blurb": "照片、動漫圖無損放大 2 倍或 4 倍，更清晰。不上傳。"
+    },
+    "speech-to-text": {
+      "name": "語音轉文字",
+      "blurb": "用 Whisper 把音訊、影片轉成逐字稿，匯出 TXT、SRT、VTT 字幕。不上傳。"
+    },
+    "depth-map": {
+      "name": "深度圖產生器",
+      "blurb": "AI 從一張照片產生深度圖，用於 3D、視差與 ControlNet。"
     }
   },
   "watermark": {
@@ -2843,6 +2868,54 @@
       "a4": "能。同一頁加「僅供XX使用」浮水印。先打碼，再蓋印。",
       "q5": "能去掉馬賽克嗎？",
       "a5": "不能。這裡只遮擋，不會還原別人打的碼。匯出的新圖裡，被遮區域的像素已經被替換，不是蓋了一層。"
+    },
+    "remove-background": {
+      "q1": "AI 去背免費嗎？",
+      "a1": "免費，免註冊，沒有浮水印，也不限張數。AI 模型只下載一次，之後在你自己的裝置上執行。",
+      "q2": "照片會上傳嗎？",
+      "a2": "不會。模型透過 WebGPU 或 WebAssembly 在本頁執行，照片不離開你的裝置，關閉頁面即清除。",
+      "q3": "什麼圖片效果最好？",
+      "a3": "主體清楚的圖：人像、商品、寵物、汽車、家具。細碎髮絲與玻璃較難，背景單純、對比明顯時更準。",
+      "q4": "可以批次去背嗎？",
+      "a4": "可以。一次拖入多張會依序處理，按「全部下載」打包成 ZIP。",
+      "q5": "能換背景嗎？",
+      "a5": "可選透明、白底、任意純色或原圖模糊。透明背景請用 PNG 或 WebP，JPG 會自動補白。"
+    },
+    "image-upscaler": {
+      "q1": "AI 放大是怎麼做到的？",
+      "a1": "本頁在你的 GPU 或 CPU 上執行超解析度模型 Real-ESRGAN：先放大 4 倍並重繪邊緣與紋理，選 2 倍時再精細縮回，畫面更乾淨。",
+      "q2": "圖片會上傳嗎？",
+      "a2": "不會。2–5 MB 的模型只下載一次，圖片在本頁處理，不離開你的裝置。",
+      "q3": "最大能輸出多大？",
+      "a3": "約 1600 萬像素（例如 4096 × 4096），這是 Safari 能繪製的上限。原圖過大會先等比縮小。",
+      "q4": "照片模式還是動漫模式？",
+      "a4": "照片模式適合相機照片與截圖；動漫 / 插畫模式適合插畫、漫畫與遊戲圖，保留平塗色與描線。",
+      "q5": "能還原原本沒有的細節嗎？",
+      "a5": "任何放大工具都做不到。它會讓畫面更清晰乾淨，但看不清的小字與人臉是推測出來的，不是真實還原。"
+    },
+    "speech-to-text": {
+      "q1": "語音轉文字免費嗎？",
+      "a1": "免費，免註冊，不限時長。使用 OpenAI 開源的 Whisper 模型，下載一次後在你的裝置上執行。",
+      "q2": "音訊會上傳嗎？",
+      "a2": "不會。音訊與影片在本頁解碼與辨識，不送到任何伺服器，適合會議、訪談等私密內容。",
+      "q3": "支援哪些語言？",
+      "a3": "Whisper 支援 99 種語言，包括中文、英文、日文、韓文、越南語、印尼語與西班牙語，可自動偵測語言，也可直接翻譯成英文。",
+      "q4": "能產生字幕嗎？",
+      "a4": "可以。下載含時間軸的 SRT 或 VTT 字幕，可匯入 Premiere、YouTube、剪映與播放器，也可下載純文字 TXT。",
+      "q5": "檔案可以多長？",
+      "a5": "幾個小時也可以，音訊以 30 秒為一段辨識。速度取決於裝置：有 GPU 時一小時音訊通常幾分鐘完成。"
+    },
+    "depth-map": {
+      "q1": "什麼是深度圖？",
+      "a1": "用明暗表示遠近的灰階圖：近處白、遠處黑。3D 工具用它做視差、景深與重新打光。",
+      "q2": "用的是什麼模型？",
+      "a2": "Depth Anything V2 Small（Apache-2.0）。只下載一次（依裝置約 25–100 MB），在本頁執行。",
+      "q3": "照片會上傳嗎？",
+      "a3": "不會。照片在瀏覽器裡處理，不離開你的裝置。",
+      "q4": "能用於 ControlNet 或 Blender 嗎？",
+      "a4": "可以。下載灰階 PNG，作為 ControlNet 深度輸入、Blender 置換貼圖或 3D 照片效果。",
+      "q5": "深度是以公尺為單位嗎？",
+      "a5": "不是。這是相對深度，只表示誰近誰遠，不是實測距離。"
     }
   },
   "qr": {
@@ -5692,5 +5765,127 @@
       "name": "憂鬱自評量表（PHQ-9）",
       "blurb": "醫師常用的 9 題憂鬱篩檢，0–27 分。"
     }
+  },
+  "ai": {
+    "gpu": "GPU（WebGPU）",
+    "cpu": "CPU（WebAssembly）",
+    "size": "{size}，只下載一次",
+    "cached": "已存在此瀏覽器，可離線使用",
+    "downloading": "正在下載 AI 模型… {pct}%（{done} / {total}）",
+    "starting": "正在啟動 AI 模型…",
+    "running": "正在用 {device} 處理…",
+    "runningPart": "正在用 {device} 處理… {done}/{total}",
+    "doneIn": "完成，耗時 {s} 秒（{device}）。",
+    "errorRun": "處理失敗。請重新整理頁面再試，或改用較小的檔案。"
+  },
+  "removeBg": {
+    "back": "所有工具",
+    "title": "AI 去背",
+    "privacyNote": "AI 在本頁執行，照片不會上傳。",
+    "filesTitle": "照片",
+    "dropTitle": "拖入照片",
+    "dropHint": "或直接貼上，可一次放多張。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "人像、商品、寵物與物體都可以。第一次使用會下載一次模型。",
+    "compare": "按住查看原圖",
+    "download": "下載",
+    "downloadAll": "全部下載（ZIP）",
+    "background": "背景",
+    "bg_transparent": "透明",
+    "bg_white": "白底",
+    "bg_color": "純色",
+    "bg_blur": "模糊",
+    "export": "匯出",
+    "format": "格式",
+    "formatNote": "PNG 與 WebP 保留透明；JPG 會補白底。",
+    "state_queued": "等待中",
+    "state_running": "正在去背…",
+    "state_done": "完成",
+    "state_error": "失敗",
+    "remove": "移除",
+    "emptyDownload": "請先加入照片並等去背完成。",
+    "errorDecode": "無法讀取這張圖片。"
+  },
+  "upscaler": {
+    "back": "所有工具",
+    "title": "AI 圖片放大",
+    "privacyNote": "AI 在本頁執行，圖片不會上傳。",
+    "filesTitle": "圖片",
+    "dropTitle": "拖入圖片",
+    "dropHint": "或直接貼上，立即開始放大。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "小圖、模糊圖與壓縮過的圖效果最明顯。",
+    "compare": "前後比較",
+    "actual": "實際像素",
+    "run": "重新放大",
+    "download": "下載",
+    "scale": "倍數",
+    "style": "類型",
+    "style_photo": "照片",
+    "style_anime": "動漫 / 插畫",
+    "styleNote": "動漫 / 插畫模式保留平塗色塊與乾淨線條。",
+    "export": "匯出",
+    "format": "格式",
+    "sizes": "{from} → {to}",
+    "capped": "（上限 1600 萬像素）",
+    "empty": "請先加入圖片。",
+    "errorDecode": "無法讀取這張圖片。"
+  },
+  "stt": {
+    "back": "所有工具",
+    "title": "語音轉文字",
+    "privacyNote": "Whisper AI 在本頁執行，音訊不會上傳。",
+    "filesTitle": "音訊或影片",
+    "dropTitle": "拖入音訊或影片",
+    "dropHint": "錄音、Podcast、會議、MP4 影片都可以。",
+    "dropTypes": "MP3、WAV、M4A、OGG、WebM、MP4、MOV",
+    "record": "麥克風錄音",
+    "stop": "停止錄音（{time}）",
+    "recordingName": "錄音",
+    "placeholder": "辨識出的文字會即時顯示在這裡。",
+    "outputLabel": "逐字稿",
+    "hint": "長檔案也可以，會以 30 秒為一段辨識。",
+    "run": "重新辨識",
+    "copy": "複製文字",
+    "copied": "已複製。",
+    "autoDetect": "自動偵測",
+    "common": "常用",
+    "more": "更多語言",
+    "model": "模型",
+    "model_fast": "快速",
+    "model_accurate": "精準",
+    "modelSizes": "快速：Whisper base，{fast}。精準：Whisper small，{accurate}，中文、日文、韓文更準。",
+    "options": "選項",
+    "language": "說話語言",
+    "task": "輸出",
+    "task_transcribe": "原語言",
+    "task_translate": "翻譯成英文",
+    "script": "中文字形",
+    "scriptAsIs": "保持原樣",
+    "decoding": "正在讀取音訊…",
+    "doneIn": "{len} 的音訊已辨識完成，耗時 {s} 秒（{device}）。",
+    "empty": "請先加入音訊或影片檔，或錄一段音。",
+    "errorDecode": "瀏覽器無法讀取這個檔案的音軌，請改用 MP3、WAV 或 M4A。",
+    "errorMic": "無法使用麥克風。請在瀏覽器允許麥克風，或改為拖入檔案。"
+  },
+  "depthMap": {
+    "back": "所有工具",
+    "title": "深度圖產生器",
+    "privacyNote": "AI 在本頁執行，照片不會上傳。",
+    "filesTitle": "照片",
+    "dropTitle": "拖入照片",
+    "dropHint": "或直接貼上，幾秒就有深度圖。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "近處亮，遠處暗。",
+    "download": "下載 PNG",
+    "style": "樣式",
+    "palette_gray": "灰階",
+    "palette_turbo": "Turbo 彩色",
+    "palette_magma": "Magma 彩色",
+    "invert": "反相（近處暗）",
+    "side": "並排顯示原圖",
+    "note": "相對深度，不是公尺。PNG 與原圖同尺寸。",
+    "empty": "請先加入照片。",
+    "errorDecode": "無法讀取這張圖片。"
   }
 }

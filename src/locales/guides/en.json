@@ -777,6 +777,42 @@
       "s2b": "Black box for ID numbers, mosaic for faces. Undo removes the last box.",
       "s3t": "Download",
       "s3b": "Download one image or a ZIP. Export drops EXIF."
+    },
+    "remove-background": {
+      "lead": "Cut people, products or pets out of a photo in this tab, then download a transparent PNG.",
+      "s1t": "Add photos",
+      "s1b": "Drop or paste one or more pictures. The first run downloads the AI model once.",
+      "s2t": "Pick a background",
+      "s2b": "Keep it transparent, or fill white, a color or a blurred copy. Hold the compare button to check edges.",
+      "s3t": "Download",
+      "s3b": "Save PNG or WebP with transparency, JPG on white, or every photo as a ZIP."
+    },
+    "image-upscaler": {
+      "lead": "Enlarge a small or blurry picture 2× or 4× with AI, then download the sharp copy.",
+      "s1t": "Add an image",
+      "s1b": "Drop or paste a picture. Upscaling starts at once on your GPU or CPU.",
+      "s2t": "Choose scale and style",
+      "s2b": "Pick 2× or 4×, and Photo or Anime / art, then upscale again. Drag the slider to compare.",
+      "s3t": "Download",
+      "s3b": "Save the result as PNG, JPG or WebP."
+    },
+    "speech-to-text": {
+      "lead": "Turn a recording or video into text and subtitles in this tab.",
+      "s1t": "Add audio",
+      "s1b": "Drop an audio or video file, or record from the microphone.",
+      "s2t": "Check the options",
+      "s2b": "Leave the language on automatic or pick it, and choose Fast or Accurate. Text appears as it is written.",
+      "s3t": "Export",
+      "s3b": "Copy the text, or download TXT, SRT or VTT subtitles with timestamps."
+    },
+    "depth-map": {
+      "lead": "Make a depth map from one photo in this tab.",
+      "s1t": "Add a photo",
+      "s1b": "Drop or paste a picture. The model downloads once, then runs in seconds.",
+      "s2t": "Pick a style",
+      "s2b": "Grayscale for 3D tools, or Turbo and Magma colors to read depth at a glance. Invert if your tool expects near = dark.",
+      "s3t": "Download",
+      "s3b": "Save a PNG the same size as your photo."
     }
   }
 }

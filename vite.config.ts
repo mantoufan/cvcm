@@ -20,6 +20,14 @@ export default defineConfig({
       return `export default ${gameNamesSource(file)};`;
     },
   }],
+  resolve: {
+    alias: [
+      // ONNX Runtime's default web bundle pulls its 27 MB .wasm into dist/ (over Pages' 25 MiB file limit).
+      // The extern-wasm build loads it from the URL the AI worker sets (/ai/ort/, mirrored on s3.cv.cm).
+      { find: /^onnxruntime-web\/webgpu$/, replacement: resolve("node_modules/onnxruntime-web/dist/ort.webgpu.min.mjs") },
+    ],
+  },
+  worker: { format: "es" },
   publicDir: "public",
   build: {
     outDir: "dist",
@@ -33,6 +41,10 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // VITE_COI=1 serves every dev page cross-origin isolated, like the Worker does for AI tools (threaded WASM).
+    headers: process.env.VITE_COI
+      ? { "Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "credentialless" }
+      : undefined,
   },
   preview: {
     port: 4173,

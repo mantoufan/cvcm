@@ -335,7 +335,15 @@
     "titleMosaicPhoto": "图片怎么打马赛克：遮挡证件号、人脸、车牌 | cv.cm",
     "descMosaicPhoto": "证件号盖黑块，人脸打马赛克，发出前用 100% 检查。浏览器免费完成，不上传。",
     "titleWatermarkIdCopy": "身份证复印件加水印怎么写：仅供XX使用+日期 | cv.cm",
-    "descWatermarkIdCopy": "写清对象和用途，加上当天日期斜铺满整张，再给用不到的栏位盖黑块。浏览器完成，不上传。"
+    "descWatermarkIdCopy": "写清对象和用途，加上当天日期斜铺满整张，再给用不到的栏位盖黑块。浏览器完成，不上传。",
+    "titleRemoveBg": "AI 一键抠图 — 在线去除图片背景，免费不上传 — cv.cm",
+    "descRemoveBg": "在浏览器里用 AI 抠图：人像、商品、宠物一键去背景，导出透明 PNG，可换白底、纯色或虚化背景，批量打包 ZIP。图片不上传。",
+    "titleUpscaler": "AI 图片无损放大 — 2 倍 / 4 倍变清晰，免费不上传 — cv.cm",
+    "descUpscaler": "用 Real-ESRGAN 在浏览器里把图片放大 2 倍或 4 倍，模糊照片和动漫图变清晰，最高 1600 万像素。免费、免注册、不上传。",
+    "titleStt": "语音转文字 — 音频视频转文字、生成 SRT 字幕，免费不上传 — cv.cm",
+    "descStt": "用 Whisper AI 在浏览器里把录音、会议、视频转成文字：支持中文等 99 种语言、自动识别语种、导出 SRT/VTT 字幕、麦克风录音。音频不上传。",
+    "titleDepthMap": "深度图生成器 — AI 从照片生成深度图 — cv.cm",
+    "descDepthMap": "用 Depth Anything V2 在浏览器里从照片生成深度图，导出灰度或彩色 PNG，可用于 3D、视差、Blender 和 ControlNet。照片不上传。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -349,7 +357,8 @@
     "games": "游戏",
     "device": "设备",
     "assets": "资产",
-    "tests": "测试"
+    "tests": "测试",
+    "ai": "AI"
   },
   "lang": {
     "label": "语言",
@@ -722,6 +731,22 @@
     "mosaic": {
       "name": "图片打马赛克",
       "blurb": "拖框遮挡证件号、人脸、车牌：马赛克或黑块。不上传。"
+    },
+    "remove-background": {
+      "name": "AI 抠图",
+      "blurb": "一键去除图片背景：人像、商品、宠物，导出透明 PNG。浏览器本地运行。"
+    },
+    "image-upscaler": {
+      "name": "AI 图片放大",
+      "blurb": "照片、动漫图无损放大 2 倍或 4 倍，更清晰。不上传。"
+    },
+    "speech-to-text": {
+      "name": "语音转文字",
+      "blurb": "用 Whisper 把音频、视频转成文字，导出 TXT、SRT、VTT 字幕。不上传。"
+    },
+    "depth-map": {
+      "name": "深度图生成",
+      "blurb": "AI 从一张照片生成深度图，用于 3D、视差和 ControlNet。"
     }
   },
   "watermark": {
@@ -2843,6 +2868,54 @@
       "a4": "能。同一页加「仅供XX使用」水印。先打码，再盖印。",
       "q5": "能去掉马赛克吗？",
       "a5": "不能。这里只遮挡，不会还原别人打的码。导出的新图里，被遮区域的像素已经被替换，不是盖了一层。"
+    },
+    "remove-background": {
+      "q1": "AI 抠图免费吗？",
+      "a1": "免费，无需注册，没有水印，也不限张数。AI 模型只下载一次，之后在你自己的设备上运行。",
+      "q2": "照片会上传吗？",
+      "a2": "不会。模型通过 WebGPU 或 WebAssembly 在本页运行，照片不离开你的设备，关掉页面即清除。",
+      "q3": "什么图片效果最好？",
+      "a3": "主体清楚的图：人像、商品、宠物、汽车、家具。细碎发丝和玻璃更难，背景简单、对比明显时更准。",
+      "q4": "可以批量抠图吗？",
+      "a4": "可以。一次拖入多张会依次处理，点“全部下载”打包成 ZIP。",
+      "q5": "能换背景吗？",
+      "a5": "可选透明、白底、任意纯色或原图虚化。透明背景请用 PNG 或 WebP，JPG 会自动填白。"
+    },
+    "image-upscaler": {
+      "q1": "AI 放大是怎么做到的？",
+      "a1": "本页在你的 GPU 或 CPU 上运行超分辨率模型 Real-ESRGAN：先放大 4 倍并重绘边缘和纹理，选 2 倍时再精细缩回，画面更干净。",
+      "q2": "图片会上传吗？",
+      "a2": "不会。2–5 MB 的模型只下载一次，图片在本页处理，不离开你的设备。",
+      "q3": "最大能输出多大？",
+      "a3": "约 1600 万像素（例如 4096 × 4096），这是 Safari 能绘制的上限。原图过大会先等比缩小。",
+      "q4": "照片模式还是动漫模式？",
+      "a4": "照片模式适合相机照片和截图；动漫 / 插画模式适合插画、漫画和游戏图，保留平涂色和描线。",
+      "q5": "能还原原本没有的细节吗？",
+      "a5": "任何放大工具都做不到。它会让画面更清晰干净，但看不清的小字和人脸是推测出来的，不是真实还原。"
+    },
+    "speech-to-text": {
+      "q1": "语音转文字免费吗？",
+      "a1": "免费，无需注册，不限时长。使用 OpenAI 开源的 Whisper 模型，下载一次后在你的设备上运行。",
+      "q2": "音频会上传吗？",
+      "a2": "不会。音视频在本页解码和识别，不发送到任何服务器，适合会议、采访等私密内容。",
+      "q3": "支持哪些语言？",
+      "a3": "Whisper 支持 99 种语言，包括中文、英文、日文、韩文、越南语、印尼语和西班牙语，可自动识别语种，也可直接翻译成英文。",
+      "q4": "能生成字幕吗？",
+      "a4": "可以。下载带时间轴的 SRT 或 VTT 字幕，可导入剪映、Premiere、YouTube 和播放器，也可下载纯文本 TXT。",
+      "q5": "文件可以多长？",
+      "a5": "几个小时也可以，音频按 30 秒分段识别。速度取决于设备：有 GPU 时一小时音频通常几分钟完成。"
+    },
+    "depth-map": {
+      "q1": "什么是深度图？",
+      "a1": "用明暗表示远近的灰度图：近处白、远处黑。3D 工具用它做视差、景深和重新打光。",
+      "q2": "用的是什么模型？",
+      "a2": "Depth Anything V2 Small（Apache-2.0）。只下载一次（视设备约 25–100 MB），在本页运行。",
+      "q3": "照片会上传吗？",
+      "a3": "不会。照片在浏览器里处理，不离开你的设备。",
+      "q4": "能用于 ControlNet 或 Blender 吗？",
+      "a4": "可以。下载灰度 PNG，作为 ControlNet 深度输入、Blender 置换贴图或 3D 照片效果。",
+      "q5": "深度是以米为单位吗？",
+      "a5": "不是。这是相对深度，只表示谁近谁远，不是实测距离。"
     }
   },
   "qr": {
@@ -5692,5 +5765,127 @@
       "name": "抑郁自评量表（PHQ-9）",
       "blurb": "医生常用的 9 题抑郁筛查，0–27 分。"
     }
+  },
+  "ai": {
+    "gpu": "GPU（WebGPU）",
+    "cpu": "CPU（WebAssembly）",
+    "size": "{size}，只下载一次",
+    "cached": "已存在本浏览器，可离线使用",
+    "downloading": "正在下载 AI 模型… {pct}%（{done} / {total}）",
+    "starting": "正在启动 AI 模型…",
+    "running": "正在用 {device} 处理…",
+    "runningPart": "正在用 {device} 处理… {done}/{total}",
+    "doneIn": "完成，用时 {s} 秒（{device}）。",
+    "errorRun": "处理失败。请刷新页面重试，或换一个小一点的文件。"
+  },
+  "removeBg": {
+    "back": "全部工具",
+    "title": "AI 抠图",
+    "privacyNote": "AI 在本页运行，照片不会上传。",
+    "filesTitle": "照片",
+    "dropTitle": "拖入照片",
+    "dropHint": "或直接粘贴，可一次放多张。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "人像、商品、宠物和物体都可以。首次使用会下载一次模型。",
+    "compare": "按住查看原图",
+    "download": "下载",
+    "downloadAll": "全部下载（ZIP）",
+    "background": "背景",
+    "bg_transparent": "透明",
+    "bg_white": "白底",
+    "bg_color": "纯色",
+    "bg_blur": "虚化",
+    "export": "导出",
+    "format": "格式",
+    "formatNote": "PNG 和 WebP 保留透明；JPG 会填白底。",
+    "state_queued": "排队中",
+    "state_running": "正在抠图…",
+    "state_done": "完成",
+    "state_error": "失败",
+    "remove": "移除",
+    "emptyDownload": "请先加入照片并等抠图完成。",
+    "errorDecode": "无法读取这张图片。"
+  },
+  "upscaler": {
+    "back": "全部工具",
+    "title": "AI 图片放大",
+    "privacyNote": "AI 在本页运行，图片不会上传。",
+    "filesTitle": "图片",
+    "dropTitle": "拖入图片",
+    "dropHint": "或直接粘贴，马上开始放大。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "小图、模糊图和压缩过的图效果最明显。",
+    "compare": "前后对比",
+    "actual": "原始像素",
+    "run": "重新放大",
+    "download": "下载",
+    "scale": "倍数",
+    "style": "类型",
+    "style_photo": "照片",
+    "style_anime": "动漫 / 插画",
+    "styleNote": "动漫 / 插画模式保留平涂色块和干净线条。",
+    "export": "导出",
+    "format": "格式",
+    "sizes": "{from} → {to}",
+    "capped": "（上限 1600 万像素）",
+    "empty": "请先加入图片。",
+    "errorDecode": "无法读取这张图片。"
+  },
+  "stt": {
+    "back": "全部工具",
+    "title": "语音转文字",
+    "privacyNote": "Whisper AI 在本页运行，音频不会上传。",
+    "filesTitle": "音频或视频",
+    "dropTitle": "拖入音频或视频",
+    "dropHint": "录音、播客、会议、MP4 视频都可以。",
+    "dropTypes": "MP3、WAV、M4A、OGG、WebM、MP4、MOV",
+    "record": "麦克风录音",
+    "stop": "停止录音（{time}）",
+    "recordingName": "录音",
+    "placeholder": "识别出的文字会实时显示在这里。",
+    "outputLabel": "转写结果",
+    "hint": "长文件也可以，会按 30 秒分段识别。",
+    "run": "重新识别",
+    "copy": "复制文字",
+    "copied": "已复制。",
+    "autoDetect": "自动识别",
+    "common": "常用",
+    "more": "更多语言",
+    "model": "模型",
+    "model_fast": "快速",
+    "model_accurate": "精准",
+    "modelSizes": "快速：Whisper base，{fast}。精准：Whisper small，{accurate}，中文、日文、韩文更准。",
+    "options": "选项",
+    "language": "说话语言",
+    "task": "输出",
+    "task_transcribe": "原语言",
+    "task_translate": "翻译成英文",
+    "script": "中文字形",
+    "scriptAsIs": "保持原样",
+    "decoding": "正在读取音频…",
+    "doneIn": "{len} 的音频已识别完成，用时 {s} 秒（{device}）。",
+    "empty": "请先加入音频或视频文件，或录一段音。",
+    "errorDecode": "浏览器无法读取这个文件的音轨，请换成 MP3、WAV 或 M4A。",
+    "errorMic": "无法使用麦克风。请在浏览器里允许麦克风，或改为拖入文件。"
+  },
+  "depthMap": {
+    "back": "全部工具",
+    "title": "深度图生成",
+    "privacyNote": "AI 在本页运行，照片不会上传。",
+    "filesTitle": "照片",
+    "dropTitle": "拖入照片",
+    "dropHint": "或直接粘贴，几秒出深度图。",
+    "dropTypes": "JPG、PNG、WebP、HEIC",
+    "hint": "近处亮，远处暗。",
+    "download": "下载 PNG",
+    "style": "样式",
+    "palette_gray": "灰度",
+    "palette_turbo": "Turbo 彩色",
+    "palette_magma": "Magma 彩色",
+    "invert": "反相（近处暗）",
+    "side": "并排显示原图",
+    "note": "相对深度，不是米数。PNG 与原图同尺寸。",
+    "empty": "请先加入照片。",
+    "errorDecode": "无法读取这张图片。"
   }
 }

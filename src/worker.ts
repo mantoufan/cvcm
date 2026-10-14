@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isAiToolPath, isPublishedTutorial, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -21,10 +21,13 @@ export interface Env {
   S3_REGION?: string;
 }
 
-function siteCsp(analytics: boolean): string {
+function siteCsp(analytics: boolean, wasm = false): string {
   return [
     "default-src 'self'",
-    analytics ? `script-src 'self' ${GA_SCRIPT_HOST}` : "script-src 'self'",
+    analytics
+      ? `script-src 'self' ${GA_SCRIPT_HOST}`
+      // AI tools: ONNX Runtime compiles WebAssembly and imports its loader from a blob: URL (in the worker).
+      : wasm ? "script-src 'self' 'wasm-unsafe-eval' blob:" : "script-src 'self'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data: https:",
     "font-src 'self'",
@@ -43,6 +46,8 @@ function siteCsp(analytics: boolean): string {
 // File tools and clip notes get a CSP without the analytics hosts (AGENTS.md rule 1).
 const CSP = siteCsp(false);
 const CSP_ANALYTICS = siteCsp(true);
+// AI tool pages, and scripts (a worker takes its CSP from its own script's response, not the page's).
+const CSP_AI = siteCsp(false, true);
 
 const EMU_CSP = [
   "default-src 'self'",
@@ -63,6 +68,8 @@ const EMU_CSP = [
 ].join("; ");
 
 const EMU_PROXY = /^\/emu\/(data|assets|roms)\/([A-Za-z0-9._/-]+)$/;
+/** AI model weights and ONNX Runtime's WebAssembly, mirrored on s3.cv.cm (scripts/ai/mirror.mjs). Paths are versioned. */
+const AI_PROXY = /^\/ai\/(models|ort)\/([A-Za-z0-9._/-]+)$/;
 const COVER_PROXY = /^\/covers\/([A-Za-z0-9._/-]+)$/;
 
 const ALLOWED = "GET, HEAD";
@@ -110,6 +117,8 @@ export default {
     if (emu) return withHeaders(emu, path);
     const cover = await proxyCovers(path, request.method);
     if (cover) return withHeaders(cover, path);
+    const ai = await proxyAi(path, request.method);
+    if (ai) return withHeaders(ai, path);
 
     if (!STATIC_FILE.test(path)) {
       const parsed = parseAppPath(path);
@@ -375,6 +384,35 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   return new Response(upstream.body, { status: 200, headers });
 }
 
+async function proxyAi(pathname: string, method: string): Promise<Response | null> {
+  const match = AI_PROXY.exec(pathname);
+  if (!match) return null;
+  if (method !== "GET" && method !== "HEAD") {
+    return new Response("Method Not Allowed", { status: 405, headers: { Allow: ALLOWED } });
+  }
+  const rest = match[2];
+  if (!rest || rest.includes("..") || rest.includes("//")) {
+    return new Response("Bad Request", { status: 400 });
+  }
+  // Every URL names a pinned revision, so the edge keeps it for a year and s3.cv.cm serves each file about once per PoP.
+  const upstream = await fetch(`https://s3.cv.cm/files/ai/${match[1]}/${rest}`, {
+    cf: { cacheEverything: true, cacheTtl: 31_536_000 },
+  } as RequestInit);
+  if (!upstream.ok) {
+    // A real 404: Transformers.js probes optional files and must not get the SPA's index.html.
+    return new Response(method === "HEAD" ? null : "Not Found", {
+      status: 404,
+      headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
+  const headers = new Headers();
+  for (const name of ["Content-Type", "Content-Length", "ETag", "Last-Modified"]) {
+    const value = upstream.headers.get(name);
+    if (value) headers.set(name, value);
+  }
+  return new Response(method === "HEAD" ? null : upstream.body, { status: 200, headers });
+}
+
 async function proxyCovers(pathname: string, method: string): Promise<Response | null> {
   const match = COVER_PROXY.exec(pathname);
   if (!match) return null;
@@ -417,18 +455,24 @@ function withHeaders(res: Response, pathname: string): Response {
   else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  // AI tool pages (and the scripts their workers run) are cross-origin isolated: ONNX Runtime needs
+  // SharedArrayBuffer for threaded WebAssembly. `credentialless` still lets images from other sites load.
+  const aiPage = isAiToolPath(pathname);
+  const script = pathname.startsWith("/assets/") && /\.m?js$/.test(pathname);
+  if (aiPage || script || pathname.startsWith("/ai/")) headers.set("Cross-Origin-Embedder-Policy", "credentialless");
   headers.set(
     "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=()",
+    // Speech to text can record from the microphone; every other page keeps it off.
+    `camera=(), microphone=(${aiPage && pathname.split("/").includes("speech-to-text") ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
   );
-  headers.set("Content-Security-Policy", player ? EMU_CSP : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
+  headers.set("Content-Security-Policy", player ? EMU_CSP : aiPage || script ? CSP_AI : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
   if (pathname === "/api/device/ip") {
     headers.set("Cache-Control", "private, no-store");
     headers.set("CDN-Cache-Control", "no-store");
     headers.set("X-Robots-Tag", "noindex");
   } else if (res.status !== 200 || emuShell) {
     headers.set("Cache-Control", "no-store");
-  } else if (pathname.startsWith("/assets/")) {
+  } else if (pathname.startsWith("/assets/") || pathname.startsWith("/ai/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
   } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
     headers.set("Cache-Control", "no-cache");

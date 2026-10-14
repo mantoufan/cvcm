@@ -335,7 +335,15 @@
     "titleMosaicPhoto": "How to pixelate a photo: hide ID numbers, faces, plates | cv.cm",
     "descMosaicPhoto": "Black out numbers, pixelate faces, check at 100% before you share. Free, in the browser, nothing uploaded.",
     "titleWatermarkIdCopy": "How to watermark an ID copy (for-use-only + date) | cv.cm",
-    "descWatermarkIdCopy": "Write the receiver and purpose, tile it with today's date across the card, black out unneeded fields. In the browser, nothing uploaded."
+    "descWatermarkIdCopy": "Write the receiver and purpose, tile it with today's date across the card, black out unneeded fields. In the browser, nothing uploaded.",
+    "titleRemoveBg": "Remove background from image — free AI, no upload — cv.cm",
+    "descRemoveBg": "Remove the background from photos with AI in your browser. People, products, pets. Transparent PNG, white or blurred background, batch ZIP. Nothing is uploaded.",
+    "titleUpscaler": "AI image upscaler — enlarge 2× / 4×, free, no upload — cv.cm",
+    "descUpscaler": "Upscale images 2× or 4× with Real-ESRGAN in your browser. Sharper photos and anime art up to 16 MP. Free, no sign-up, nothing is uploaded.",
+    "titleStt": "Speech to text — free audio & video transcription, no upload — cv.cm",
+    "descStt": "Transcribe audio and video to text with Whisper AI in your browser. 99 languages, auto-detect, SRT and VTT subtitles, microphone. Nothing is uploaded.",
+    "titleDepthMap": "Depth map generator — AI depth from any photo — cv.cm",
+    "descDepthMap": "Make a depth map from a photo with Depth Anything V2 in your browser. Grayscale or color PNG for 3D, parallax, Blender and ControlNet. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -349,7 +357,8 @@
     "games": "Games",
     "device": "Device",
     "assets": "Assets",
-    "tests": "Tests"
+    "tests": "Tests",
+    "ai": "AI"
   },
   "lang": {
     "label": "Language",
@@ -1968,6 +1977,22 @@
     "mosaic": {
       "name": "Photo mosaic & redact",
       "blurb": "Pixelate or black out ID numbers, faces, and plates. Nothing is uploaded."
+    },
+    "remove-background": {
+      "name": "Remove background",
+      "blurb": "AI cut-out for people, products and pets. Transparent PNG. Runs in your browser."
+    },
+    "image-upscaler": {
+      "name": "AI image upscaler",
+      "blurb": "Enlarge photos and anime art 2× or 4× with AI. Nothing is uploaded."
+    },
+    "speech-to-text": {
+      "name": "Speech to text",
+      "blurb": "Transcribe audio and video with Whisper. TXT, SRT and VTT. Nothing is uploaded."
+    },
+    "depth-map": {
+      "name": "Depth map generator",
+      "blurb": "Turn a photo into an AI depth map for 3D, parallax and ControlNet."
     }
   },
   "watermark": {
@@ -4089,6 +4114,54 @@
       "a4": "Yes. On the same page, add a “for [org] use only” mark. Redaction is applied first, then the mark.",
       "q5": "Can it remove a mosaic?",
       "a5": "No. This only covers areas. It cannot restore pixels someone else covered. In your export the covered pixels are replaced, not hidden."
+    },
+    "remove-background": {
+      "q1": "Is this background remover free?",
+      "a1": "Yes. There is no sign-up, watermark or limit. The AI model downloads once and then runs on your own device.",
+      "q2": "Are my photos uploaded?",
+      "a2": "No. The model runs in this browser tab with WebGPU or WebAssembly. Photos never leave your device, and closing the tab discards them.",
+      "q3": "Which pictures work best?",
+      "a3": "Clear subjects: people, products, pets, cars, furniture. Fine hair and glass are harder; a plain, contrasting background helps.",
+      "q4": "Can I remove backgrounds from many images at once?",
+      "a4": "Yes. Drop several photos; they are processed one after another, and Download all saves a ZIP.",
+      "q5": "Can I put a new background behind the subject?",
+      "a5": "Choose transparent, white, any color, or a blurred copy of the original. Transparent needs PNG or WebP; JPG adds white."
+    },
+    "image-upscaler": {
+      "q1": "How does the AI upscaler work?",
+      "a1": "It runs Real-ESRGAN, a super-resolution network, on your GPU or CPU. It enlarges 4× and redraws edges and textures; 2× averages that down for a cleaner result.",
+      "q2": "Is my image uploaded?",
+      "a2": "No. The 2–5 MB model downloads once; the image is processed in this tab and never leaves your device.",
+      "q3": "What is the largest output?",
+      "a3": "Up to about 16 megapixels (for example 4096 × 4096), the limit Safari can draw. Bigger inputs are scaled to fit first.",
+      "q4": "Photo or Anime / art?",
+      "a4": "Photo suits camera pictures and screenshots. Anime / art keeps flat colors and outlines in illustrations, comics and game art.",
+      "q5": "Can it recover details that were never there?",
+      "a5": "No upscaler can. It makes pictures sharper and cleaner, but small text or faces it cannot see are guessed, not restored."
+    },
+    "speech-to-text": {
+      "q1": "Is this speech to text free?",
+      "a1": "Yes, with no sign-up or minutes limit. It uses OpenAI's open Whisper model, which downloads once and runs on your device.",
+      "q2": "Is my audio uploaded?",
+      "a2": "No. Audio and video are decoded and transcribed in this tab. Nothing is sent to a server, which suits private meetings and interviews.",
+      "q3": "Which languages are supported?",
+      "a3": "Whisper knows 99 languages, including English, Chinese, Japanese, Korean, Vietnamese, Indonesian and Spanish. It can detect the language or translate the speech into English.",
+      "q4": "Can I make subtitles?",
+      "a4": "Yes. Download SRT or VTT with timestamps for YouTube, Premiere, CapCut or a video player, or plain TXT.",
+      "q5": "How long can a file be?",
+      "a5": "Hours are fine; the audio is read in 30-second windows. Speed depends on your device: with a GPU, an hour usually takes a few minutes."
+    },
+    "depth-map": {
+      "q1": "What is a depth map?",
+      "a1": "A grayscale image where brightness shows distance: near is white, far is black. 3D tools use it for parallax, depth of field and relighting.",
+      "q2": "Which AI model is used?",
+      "a2": "Depth Anything V2 Small (Apache-2.0). It downloads once (about 25–100 MB, depending on your device) and runs in this tab.",
+      "q3": "Is my photo uploaded?",
+      "a3": "No. The photo is processed in your browser and never leaves your device.",
+      "q4": "Can I use it with ControlNet or Blender?",
+      "a4": "Yes. Download the grayscale PNG for a ControlNet depth input, a Blender displacement map or a 3D photo effect.",
+      "q5": "Is the depth in meters?",
+      "a5": "No. It is relative depth: it orders what is nearer or farther, not measured distance."
     }
   },
   "qr": {
@@ -5692,5 +5765,127 @@
       "name": "Depression test (PHQ-9)",
       "blurb": "The 9-question depression screening, scored 0 to 27."
     }
+  },
+  "ai": {
+    "gpu": "GPU (WebGPU)",
+    "cpu": "CPU (WebAssembly)",
+    "size": "{size}, downloaded once",
+    "cached": "saved in this browser, works offline",
+    "downloading": "Downloading the AI model… {pct}% ({done} of {total})",
+    "starting": "Starting the AI model…",
+    "running": "Working on the {device}…",
+    "runningPart": "Working on the {device}… {done}/{total}",
+    "doneIn": "Done in {s} s on the {device}.",
+    "errorRun": "Processing failed. Reload the page and try again, or use a smaller file."
+  },
+  "removeBg": {
+    "back": "All tools",
+    "title": "Remove background",
+    "privacyNote": "AI runs in this tab. Your photos are never uploaded.",
+    "filesTitle": "Photos",
+    "dropTitle": "Drop photos",
+    "dropHint": "Or paste. Several at once is fine.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "People, products, pets and objects. The first run downloads the model once.",
+    "compare": "Hold to see the original",
+    "download": "Download",
+    "downloadAll": "Download all (ZIP)",
+    "background": "Background",
+    "bg_transparent": "Transparent",
+    "bg_white": "White",
+    "bg_color": "Color",
+    "bg_blur": "Blur",
+    "export": "Export",
+    "format": "Format",
+    "formatNote": "PNG and WebP keep transparency. JPG gets a white background.",
+    "state_queued": "Waiting",
+    "state_running": "Removing background…",
+    "state_done": "Done",
+    "state_error": "Failed",
+    "remove": "Remove",
+    "emptyDownload": "Add a photo and wait for the cut-out first.",
+    "errorDecode": "Could not read that image."
+  },
+  "upscaler": {
+    "back": "All tools",
+    "title": "AI image upscaler",
+    "privacyNote": "AI runs in this tab. Your image is never uploaded.",
+    "filesTitle": "Image",
+    "dropTitle": "Drop an image",
+    "dropHint": "Or paste. It upscales right away.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Small, soft or compressed pictures gain the most.",
+    "compare": "Before / after",
+    "actual": "Actual pixels",
+    "run": "Upscale again",
+    "download": "Download",
+    "scale": "Scale",
+    "style": "Style",
+    "style_photo": "Photo",
+    "style_anime": "Anime / art",
+    "styleNote": "Anime / art keeps flat colors and clean lines.",
+    "export": "Export",
+    "format": "Format",
+    "sizes": "{from} → {to}",
+    "capped": "(capped at 16 MP)",
+    "empty": "Add an image first.",
+    "errorDecode": "Could not read that image."
+  },
+  "stt": {
+    "back": "All tools",
+    "title": "Speech to text",
+    "privacyNote": "Whisper AI runs in this tab. Your audio is never uploaded.",
+    "filesTitle": "Audio or video",
+    "dropTitle": "Drop audio or video",
+    "dropHint": "Recordings, podcasts, meetings, MP4 clips.",
+    "dropTypes": "MP3, WAV, M4A, OGG, WebM, MP4, MOV",
+    "record": "Record from microphone",
+    "stop": "Stop recording ({time})",
+    "recordingName": "recording",
+    "placeholder": "The transcript appears here as it is written.",
+    "outputLabel": "Transcript",
+    "hint": "Long files work: they are read in 30-second windows.",
+    "run": "Transcribe again",
+    "copy": "Copy text",
+    "copied": "Copied.",
+    "autoDetect": "Detect automatically",
+    "common": "Common",
+    "more": "More languages",
+    "model": "Model",
+    "model_fast": "Fast",
+    "model_accurate": "Accurate",
+    "modelSizes": "Fast: Whisper base, {fast}. Accurate: Whisper small, {accurate}, better for Chinese, Japanese and Korean.",
+    "options": "Options",
+    "language": "Spoken language",
+    "task": "Output",
+    "task_transcribe": "Same language",
+    "task_translate": "Translate to English",
+    "script": "Chinese characters",
+    "scriptAsIs": "As written",
+    "decoding": "Reading the audio…",
+    "doneIn": "{len} of audio done in {s} s on the {device}.",
+    "empty": "Add an audio or video file, or record one.",
+    "errorDecode": "This browser cannot read that file's audio. Try MP3, WAV or M4A.",
+    "errorMic": "The microphone is not available. Allow it in the browser, or drop a file instead."
+  },
+  "depthMap": {
+    "back": "All tools",
+    "title": "Depth map generator",
+    "privacyNote": "AI runs in this tab. Your photo is never uploaded.",
+    "filesTitle": "Photo",
+    "dropTitle": "Drop a photo",
+    "dropHint": "Or paste. The depth map appears in seconds.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Near is bright, far is dark.",
+    "download": "Download PNG",
+    "style": "Style",
+    "palette_gray": "Grayscale",
+    "palette_turbo": "Turbo",
+    "palette_magma": "Magma",
+    "invert": "Invert (near = dark)",
+    "side": "Show the photo beside it",
+    "note": "Relative depth, not meters. The PNG matches the photo's size.",
+    "empty": "Add a photo first.",
+    "errorDecode": "Could not read that image."
   }
 }

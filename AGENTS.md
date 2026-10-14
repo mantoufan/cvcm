@@ -12,7 +12,8 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 6. Tutorials must be minimal, complete, and illustrated (owner correction, 2026-09-13). Explain the whole task from preparation through completion with concise steps and meaningful instructional diagrams. Use captions to explain each image. Present tutorials, not exercise cards, assignments, submission requirements, or grading criteria. Keep photography first. JK/Lolita/Hanfu fashion examples use adults.
 7. Design is plain pink and white, built for speed and search (owner, 2026-10-13): no decorative images, gradients, shadows or ornaments; lists are text links (`src/client/links.ts`). Covers appear only as `og:image`, never in the page. Tool-page how-tos are text (the live tool sits right above them); tutorial step diagrams and game walkthrough shots stay, lazy-loaded.
 8. Every sitemap page is prerendered at build (`scripts/prerender.mjs` runs the real client in happy-dom → `dist/_ssr/<path>/index.html`). The Worker puts that markup in `#app`, so the first paint needs no JS; the client then mounts the same page off-screen and swaps it in (`render()` in `main.ts`). Keep mounts deterministic and free of network calls at mount, or the page falls back to the Worker's text copy (the prerender logs skipped pages).
-9. Tool covers for `og:image` (`public/covers/*-sweet.jpg`, 1280×720 JPEG): generate with **Codex** using existing covers as style references (same pink twin-tail chibi, lace bonnet, cream-pink room). Do not use Grok `image_gen` for new tool covers. See `docs/tool-cover-prompts.md`.
+9. AI tools (`ai` group in `CATEGORIES`: `remove-background`, `image-upscaler`, `speech-to-text`, `depth-map`) run models in the page with Transformers.js + ONNX Runtime Web, in one module worker (`src/client/ai/worker.ts`), WebGPU first (fp16 when the adapter has `shader-f16`), threaded WASM otherwise. Never call an inference API and never load models from a third-party host: weights are mirrored at pinned revisions to s3.cv.cm `files/ai/` (`scripts/ai/mirror.mjs`) and served same-origin at `/ai/models/` and `/ai/ort/` by the Worker (edge-cached a year; a missing file is a real 404). Add models to `src/shared/ai-models.ts` with exact byte sizes. AI pages are cross-origin isolated (COEP `credentialless`; links into or out of them load a new document) and get a CSP with `'wasm-unsafe-eval'`; only `speech-to-text` may use the microphone. Mounts must not download anything: models load on first file (small or cached ones may warm on hover).
+10. Tool covers for `og:image` (`public/covers/*-sweet.jpg`, 1280×720 JPEG): generate with **Codex** using existing covers as style references (same pink twin-tail chibi, lace bonnet, cream-pink room). Do not use Grok `image_gen` for new tool covers. See `docs/tool-cover-prompts.md`.
 
 ## Layout
 
@@ -99,6 +100,12 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/diff/` — text diff checker
 - `src/client/uuid/` — UUID v4 generator
 - `src/client/regex/` — regex tester
+- `src/client/ai/` — shared AI runtime: `worker.ts` (all inference), `client.ts` (job RPC, backend guess, cache check), `kit.ts` (model line, progress, GPU→CPU retry, drop zone), `zh.ts` (Traditional ↔ Simplified for transcripts)
+- `src/client/remove-background/` — AI background remover (BiRefNet lite, batch, ZIP)
+- `src/client/image-upscaler/` — AI image upscaler (Real-ESRGAN compact, 2× / 4×, photo / anime)
+- `src/client/speech-to-text/` — speech to text (Whisper base / small, auto language, mic, TXT / SRT / VTT)
+- `src/client/depth-map/` — depth map generator (Depth Anything V2 small)
+- `scripts/ai/` — model pipeline: `export-birefnet.py` (native DeformConv re-export + fp16), `export-realesrgan.py`, `mirror.mjs` (stage + upload to `files/ai/`), `gen-zh-chars.py`
 - `src/client/guide.ts` — text how-to above FAQ
 - `src/locales/guides/` — 8-locale how-to copy
 - `public/covers/` — tool/game/learn images (`og:image`, tutorial diagrams); `/thumbs/` URLs from older builds redirect to the originals; production serves them from S3 (`s3.cv.cm/files/covers/`) via Worker `/covers/`. Keep copies in git for local Vite. Favicons stay on Pages (`/favicon.svg`, `/favicon-*.png`)

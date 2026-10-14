@@ -89,6 +89,10 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   palladium: 3,
   oil: 3,
   stocks: 3,
+  "remove-background": 3,
+  "image-upscaler": 3,
+  "speech-to-text": 3,
+  "depth-map": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

@@ -89,6 +89,10 @@ export const TOOL_COVER: Record<ToolId, string> = {
   palladium: "/covers/palladium-sweet.jpg?v=1",
   oil: "/covers/oil-sweet.jpg?v=1",
   stocks: "/covers/stocks-sweet.jpg?v=1",
+  "remove-background": "/covers/remove-background-sweet.jpg?v=1",
+  "image-upscaler": "/covers/image-upscaler-sweet.jpg?v=1",
+  "speech-to-text": "/covers/speech-to-text-sweet.jpg?v=1",
+  "depth-map": "/covers/depth-map-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

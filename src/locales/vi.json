@@ -335,7 +335,15 @@
     "titleMosaicPhoto": "Cách làm mờ ảnh: che số CCCD, khuôn mặt, biển số | cv.cm",
     "descMosaicPhoto": "Che đen số, làm mờ khuôn mặt, kiểm tra ở 100% trước khi chia sẻ. Miễn phí trong trình duyệt, không tải lên.",
     "titleWatermarkIdCopy": "Cách đóng dấu bản sao CCCD (mục đích + ngày) | cv.cm",
-    "descWatermarkIdCopy": "Ghi nơi nhận và mục đích, lặp chéo kèm ngày hôm nay kín thẻ, che đen phần không cần. Trong trình duyệt, không tải lên."
+    "descWatermarkIdCopy": "Ghi nơi nhận và mục đích, lặp chéo kèm ngày hôm nay kín thẻ, che đen phần không cần. Trong trình duyệt, không tải lên.",
+    "titleRemoveBg": "Xóa phông nền ảnh bằng AI — tách nền online miễn phí, không tải lên — cv.cm",
+    "descRemoveBg": "Xóa phông ảnh bằng AI ngay trong trình duyệt: tách nền người, sản phẩm, thú cưng ra PNG trong suốt, đổi nền trắng, màu hoặc làm mờ, tải hàng loạt ZIP. Ảnh không bị tải lên.",
+    "titleUpscaler": "Làm nét ảnh AI — phóng to 2x, 4x miễn phí, không tải lên — cv.cm",
+    "descUpscaler": "Tăng độ phân giải ảnh 2× hoặc 4× bằng Real-ESRGAN trong trình duyệt. Ảnh mờ và ảnh anime nét hơn, tối đa 16 MP. Miễn phí, không cần đăng ký, không tải lên.",
+    "titleStt": "Chuyển giọng nói thành văn bản — gỡ băng audio, video, phụ đề SRT miễn phí — cv.cm",
+    "descStt": "Chuyển ghi âm, cuộc họp, video thành văn bản bằng Whisper AI trong trình duyệt. 99 ngôn ngữ gồm tiếng Việt, tự nhận diện ngôn ngữ, phụ đề SRT/VTT, ghi âm micro. Audio không bị tải lên.",
+    "titleDepthMap": "Tạo bản đồ độ sâu (depth map) từ ảnh bằng AI — cv.cm",
+    "descDepthMap": "Tạo depth map từ ảnh bằng Depth Anything V2 trong trình duyệt. PNG xám hoặc màu cho 3D, parallax, Blender, ControlNet. Ảnh không bị tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -349,7 +357,8 @@
     "games": "Trò chơi",
     "device": "Thiết bị",
     "assets": "Tài sản",
-    "tests": "Trắc nghiệm"
+    "tests": "Trắc nghiệm",
+    "ai": "AI"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -722,6 +731,22 @@
     "mosaic": {
       "name": "Làm mờ ảnh (mosaic)",
       "blurb": "Che số giấy tờ, khuôn mặt, biển số bằng mosaic hoặc ô đen. Không tải lên."
+    },
+    "remove-background": {
+      "name": "Xóa phông nền",
+      "blurb": "AI tách nền người, sản phẩm, thú cưng. PNG trong suốt. Chạy trong trình duyệt."
+    },
+    "image-upscaler": {
+      "name": "Làm nét ảnh AI",
+      "blurb": "Phóng to ảnh chụp và ảnh anime 2× hoặc 4× bằng AI. Không tải lên."
+    },
+    "speech-to-text": {
+      "name": "Chuyển giọng nói thành văn bản",
+      "blurb": "Gỡ băng audio, video bằng Whisper. TXT, SRT, VTT. Không tải lên."
+    },
+    "depth-map": {
+      "name": "Tạo bản đồ độ sâu",
+      "blurb": "Biến ảnh thành depth map bằng AI cho 3D, parallax, ControlNet."
     }
   },
   "watermark": {
@@ -2843,6 +2868,54 @@
       "a4": "Có. Ngay trang này, thêm dòng “Chỉ dùng cho …”. Che trước, dấu đè sau.",
       "q5": "Có gỡ được mosaic không?",
       "a5": "Không. Công cụ chỉ che, không khôi phục phần người khác đã che. Trong ảnh xuất ra, điểm ảnh bị che đã được thay thế."
+    },
+    "remove-background": {
+      "q1": "Xóa phông nền có miễn phí không?",
+      "a1": "Miễn phí, không cần đăng ký, không watermark, không giới hạn số ảnh. Mô hình AI tải một lần rồi chạy trên máy của bạn.",
+      "q2": "Ảnh có bị tải lên không?",
+      "a2": "Không. Mô hình chạy trong tab này bằng WebGPU hoặc WebAssembly. Ảnh không rời khỏi máy và mất đi khi đóng tab.",
+      "q3": "Ảnh nào tách nền đẹp nhất?",
+      "a3": "Ảnh có chủ thể rõ: người, sản phẩm, thú cưng, xe, đồ nội thất. Tóc mảnh và kính khó hơn; nền đơn giản, tương phản giúp chính xác hơn.",
+      "q4": "Có xóa phông hàng loạt được không?",
+      "a4": "Được. Thả nhiều ảnh, chúng được xử lý lần lượt, và Tải tất cả sẽ lưu một tệp ZIP.",
+      "q5": "Có thay nền mới được không?",
+      "a5": "Chọn trong suốt, trắng, màu bất kỳ hoặc bản làm mờ của ảnh gốc. Nền trong suốt cần PNG hoặc WebP; JPG sẽ có nền trắng."
+    },
+    "image-upscaler": {
+      "q1": "Làm nét ảnh AI hoạt động thế nào?",
+      "a1": "Trang chạy mô hình siêu phân giải Real-ESRGAN trên GPU hoặc CPU. Ảnh được phóng 4× và vẽ lại cạnh, chi tiết; chọn 2× thì thu nhỏ lại cho sạch hơn.",
+      "q2": "Ảnh có bị tải lên không?",
+      "a2": "Không. Mô hình 2–5 MB chỉ tải một lần; ảnh được xử lý trong tab này và không rời máy.",
+      "q3": "Ảnh đầu ra lớn nhất là bao nhiêu?",
+      "a3": "Khoảng 16 megapixel (ví dụ 4096 × 4096), giới hạn mà Safari vẽ được. Ảnh lớn hơn sẽ được thu nhỏ trước.",
+      "q4": "Chọn Ảnh chụp hay Anime / tranh vẽ?",
+      "a4": "Ảnh chụp hợp với ảnh máy ảnh và ảnh chụp màn hình. Anime / tranh vẽ hợp với tranh minh họa, truyện tranh, ảnh game, giữ mảng màu và nét viền.",
+      "q5": "Có khôi phục được chi tiết vốn không có không?",
+      "a5": "Không công cụ nào làm được. Ảnh sẽ nét và sạch hơn, nhưng chữ nhỏ hay khuôn mặt không nhìn rõ chỉ được đoán ra, không phải khôi phục thật."
+    },
+    "speech-to-text": {
+      "q1": "Chuyển giọng nói thành văn bản có miễn phí không?",
+      "a1": "Miễn phí, không đăng ký, không giới hạn số phút. Dùng mô hình mở Whisper của OpenAI, tải một lần rồi chạy trên máy bạn.",
+      "q2": "Audio có bị tải lên không?",
+      "a2": "Không. Audio và video được giải mã và nhận dạng ngay trong tab này, không gửi lên máy chủ, phù hợp cho cuộc họp và phỏng vấn riêng tư.",
+      "q3": "Hỗ trợ những ngôn ngữ nào?",
+      "a3": "Whisper hỗ trợ 99 ngôn ngữ, gồm tiếng Việt, Anh, Trung, Nhật, Hàn, Indonesia và Tây Ban Nha. Có thể tự nhận diện ngôn ngữ hoặc dịch sang tiếng Anh.",
+      "q4": "Có tạo phụ đề được không?",
+      "a4": "Được. Tải SRT hoặc VTT có mốc thời gian cho YouTube, Premiere, CapCut hay trình phát video, hoặc tệp TXT thuần.",
+      "q5": "Tệp dài tối đa bao nhiêu?",
+      "a5": "Vài giờ vẫn được; audio được xử lý theo đoạn 30 giây. Tốc độ phụ thuộc thiết bị: có GPU thì một giờ audio thường mất vài phút."
+    },
+    "depth-map": {
+      "q1": "Bản đồ độ sâu là gì?",
+      "a1": "Ảnh xám dùng độ sáng để thể hiện khoảng cách: gần là trắng, xa là đen. Công cụ 3D dùng nó cho parallax, độ sâu trường ảnh và đổi ánh sáng.",
+      "q2": "Dùng mô hình AI nào?",
+      "a2": "Depth Anything V2 Small (Apache-2.0). Tải một lần (khoảng 25–100 MB tùy thiết bị) và chạy trong tab này.",
+      "q3": "Ảnh có bị tải lên không?",
+      "a3": "Không. Ảnh được xử lý trong trình duyệt và không rời khỏi máy.",
+      "q4": "Dùng với ControlNet hay Blender được không?",
+      "a4": "Được. Tải PNG xám làm đầu vào depth cho ControlNet, displacement map trong Blender hoặc hiệu ứng ảnh 3D.",
+      "q5": "Độ sâu có tính bằng mét không?",
+      "a5": "Không. Đây là độ sâu tương đối: chỉ cho biết vật nào gần hơn hay xa hơn, không phải khoảng cách đo được."
     }
   },
   "qr": {
@@ -5692,5 +5765,127 @@
       "name": "Kiểm tra trầm cảm (PHQ-9)",
       "blurb": "Bảng sàng lọc trầm cảm 9 câu, 0 đến 27 điểm."
     }
+  },
+  "ai": {
+    "gpu": "GPU (WebGPU)",
+    "cpu": "CPU (WebAssembly)",
+    "size": "{size}, chỉ tải một lần",
+    "cached": "đã lưu trong trình duyệt, dùng được offline",
+    "downloading": "Đang tải mô hình AI… {pct}% ({done} / {total})",
+    "starting": "Đang khởi động mô hình AI…",
+    "running": "Đang xử lý trên {device}…",
+    "runningPart": "Đang xử lý trên {device}… {done}/{total}",
+    "doneIn": "Xong trong {s} giây trên {device}.",
+    "errorRun": "Xử lý thất bại. Tải lại trang rồi thử lại, hoặc dùng tệp nhỏ hơn."
+  },
+  "removeBg": {
+    "back": "Tất cả công cụ",
+    "title": "Xóa phông nền",
+    "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "Hoặc dán. Có thể nhiều ảnh cùng lúc.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Người, sản phẩm, thú cưng và đồ vật. Lần đầu sẽ tải mô hình một lần.",
+    "compare": "Giữ để xem ảnh gốc",
+    "download": "Tải xuống",
+    "downloadAll": "Tải tất cả (ZIP)",
+    "background": "Nền",
+    "bg_transparent": "Trong suốt",
+    "bg_white": "Trắng",
+    "bg_color": "Màu",
+    "bg_blur": "Làm mờ",
+    "export": "Xuất",
+    "format": "Định dạng",
+    "formatNote": "PNG và WebP giữ nền trong suốt. JPG sẽ có nền trắng.",
+    "state_queued": "Đang chờ",
+    "state_running": "Đang xóa phông…",
+    "state_done": "Xong",
+    "state_error": "Lỗi",
+    "remove": "Bỏ",
+    "emptyDownload": "Hãy thêm ảnh và chờ tách nền xong.",
+    "errorDecode": "Không đọc được ảnh này."
+  },
+  "upscaler": {
+    "back": "Tất cả công cụ",
+    "title": "Làm nét ảnh AI",
+    "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "Hoặc dán. Sẽ phóng to ngay.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Ảnh nhỏ, mờ hoặc đã nén cải thiện rõ nhất.",
+    "compare": "Trước / sau",
+    "actual": "Điểm ảnh thực",
+    "run": "Phóng to lại",
+    "download": "Tải xuống",
+    "scale": "Tỉ lệ",
+    "style": "Loại ảnh",
+    "style_photo": "Ảnh chụp",
+    "style_anime": "Anime / tranh vẽ",
+    "styleNote": "Anime / tranh vẽ giữ mảng màu phẳng và nét viền sạch.",
+    "export": "Xuất",
+    "format": "Định dạng",
+    "sizes": "{from} → {to}",
+    "capped": "(tối đa 16 MP)",
+    "empty": "Hãy thêm ảnh trước.",
+    "errorDecode": "Không đọc được ảnh này."
+  },
+  "stt": {
+    "back": "Tất cả công cụ",
+    "title": "Chuyển giọng nói thành văn bản",
+    "privacyNote": "Whisper AI chạy trong tab này. Audio của bạn không bao giờ bị tải lên.",
+    "filesTitle": "Audio hoặc video",
+    "dropTitle": "Thả audio hoặc video",
+    "dropHint": "Ghi âm, podcast, cuộc họp, video MP4.",
+    "dropTypes": "MP3, WAV, M4A, OGG, WebM, MP4, MOV",
+    "record": "Ghi âm từ micro",
+    "stop": "Dừng ghi ({time})",
+    "recordingName": "ghi-am",
+    "placeholder": "Văn bản sẽ hiện ở đây ngay khi được nhận dạng.",
+    "outputLabel": "Văn bản",
+    "hint": "Tệp dài vẫn được: xử lý theo từng đoạn 30 giây.",
+    "run": "Nhận dạng lại",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép.",
+    "autoDetect": "Tự nhận diện",
+    "common": "Phổ biến",
+    "more": "Ngôn ngữ khác",
+    "model": "Mô hình",
+    "model_fast": "Nhanh",
+    "model_accurate": "Chính xác",
+    "modelSizes": "Nhanh: Whisper base, {fast}. Chính xác: Whisper small, {accurate}, tốt hơn cho tiếng Trung, Nhật, Hàn.",
+    "options": "Tùy chọn",
+    "language": "Ngôn ngữ nói",
+    "task": "Đầu ra",
+    "task_transcribe": "Giữ ngôn ngữ gốc",
+    "task_translate": "Dịch sang tiếng Anh",
+    "script": "Chữ Hán",
+    "scriptAsIs": "Giữ nguyên",
+    "decoding": "Đang đọc audio…",
+    "doneIn": "Đã xong {len} audio trong {s} giây trên {device}.",
+    "empty": "Hãy thêm tệp audio, video hoặc ghi âm.",
+    "errorDecode": "Trình duyệt không đọc được âm thanh của tệp này. Hãy thử MP3, WAV hoặc M4A.",
+    "errorMic": "Không dùng được micro. Hãy cho phép trong trình duyệt, hoặc thả tệp vào."
+  },
+  "depthMap": {
+    "back": "Tất cả công cụ",
+    "title": "Tạo bản đồ độ sâu",
+    "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
+    "filesTitle": "Ảnh",
+    "dropTitle": "Thả ảnh vào đây",
+    "dropHint": "Hoặc dán. Có depth map sau vài giây.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Gần thì sáng, xa thì tối.",
+    "download": "Tải PNG",
+    "style": "Kiểu",
+    "palette_gray": "Xám",
+    "palette_turbo": "Turbo",
+    "palette_magma": "Magma",
+    "invert": "Đảo ngược (gần = tối)",
+    "side": "Hiện ảnh gốc bên cạnh",
+    "note": "Độ sâu tương đối, không phải mét. PNG cùng kích thước ảnh gốc.",
+    "empty": "Hãy thêm ảnh trước.",
+    "errorDecode": "Không đọc được ảnh này."
   }
 }
