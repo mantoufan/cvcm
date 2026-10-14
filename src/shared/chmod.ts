@@ -85,15 +85,15 @@ export type ChmodOptions = {
 };
 
 /**
- * Mode digits for the command: special bits set → 4 digits (4755); folder (or -R) without special bits → 00755,
- * because GNU chmod only clears a folder's setuid/setgid with that extra 0 (BSD/macOS read it as 0755);
- * a file whose special bits were just cleared → 0755; otherwise 755.
+ * Mode digits for the command: folder (or -R) → 5 digits with a leading 0 (00755, 02755), because GNU chmod
+ * only clears a folder's setuid/setgid with that extra 0 (BSD/macOS read it as 0755 / 2755);
+ * otherwise special bits set → 4 digits (4755), a file whose special bits were just cleared → 0755, else 755.
  */
 export function commandMode(mode: number, opts: ChmodOptions = {}): string {
   const m = mode & MAX_MODE;
+  if (opts.directory || opts.recursive) return `0${toOctal(m).padStart(4, "0")}`;
   if (m > 0o777) return toOctal(m);
   const base = toOctal(m);
-  if (opts.directory || opts.recursive) return `00${base}`;
   if (opts.clearSpecial) return `0${base}`;
   return base;
 }

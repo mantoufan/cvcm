@@ -143,7 +143,8 @@ describe("chmod", () => {
     expect(shellQuote("it's")).toBe("'it'\\''s'");
     expect(shellQuote("=x")).toBe("'=x'");
     expect(commandMode(0o4755)).toBe("4755");
-    expect(commandMode(0o4755, { directory: true })).toBe("4755");
+    expect(commandMode(0o4755, { directory: true })).toBe("04755");
+    expect(commandMode(0o2755, { recursive: true })).toBe("02755");
     expect(commandMode(0o755, { directory: true })).toBe("00755");
     expect(commandMode(0o755, { clearSpecial: true })).toBe("0755");
     expect(commandMode(0o755)).toBe("755");
