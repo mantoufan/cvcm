@@ -288,12 +288,14 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       return { nodes, summary };
     }
     case "top": {
-      const [first, second] = result.ranked;
+      // Results an answer ruled out (a fur allergy and a dog) are left off the chart.
+      const shown = result.ranked.filter((s) => !result.excluded.includes(s.dim));
+      const [first, second] = shown;
       const nodes = [...headline(results[first.dim])];
       if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
-      nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
+      nodes.push(...shown.map((s) => bar(label(s.dim), s.pct)));
       return { nodes, summary: results[first.dim]?.name ?? first.dim };
     }
     case "code": {
@@ -328,7 +330,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const max = maxTotal(id);
       const nodes = [
         ...headline(results[result.key]),
-        bar(ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
+        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
       ];
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));

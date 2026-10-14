@@ -32,18 +32,22 @@ export const SCALE_POINTS: Record<Scale, number> = { agree5: 5, agree4: 4, freq4
 
 /** A statement scored on the scale: it adds to `dim`, reversed when `rev`. */
 export type LikertItem = { dim: string; rev?: boolean };
-/** A multiple-choice question: each option adds its weights to the named dimensions. */
-export type ChoiceItem = { options: Record<string, number>[] };
+/**
+ * A multiple-choice question: each option adds its weights to the named dimensions. `exclude[i]` lists results that
+ * option i rules out whatever the scores (a fur allergy rules out furry pets); see `scoreQuiz`.
+ */
+export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly (readonly string[] | undefined)[] };
 
 /**
  * profile  — every dimension as a percentage with a low / mid / high reading (Big Five).
  * types    — four opposite pairs; dims are pairs like "EI", agree scores the first letter (16 types).
- * top      — the highest dimension wins; all dimensions shown ranked.
+ * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
  *            the lowest area gets a tip (marriage readiness).
- * band     — the raw total picks a band (Rosenberg, GAD-7, PHQ-9).
+ * band     — the raw total picks a band (Rosenberg, GAD-7, PHQ-9; extraversion; chronotype, where choice options
+ *            add their weights to the total).
  */
 export type ResultRule =
   | { kind: "profile" }
@@ -163,41 +167,12 @@ const FACE: ChoiceItem[] = [
   { options: [{ diamond: 3, heart: 1 }, { round: 3 }, { oval: 2 }, { square: 1, oblong: 2 }] },
 ];
 
-// Most items: earliest answer = lark 2, then lark 1 + in-between 1, in-between 1 + owl 1, owl 2.
-const EARLY = { lark: 2 };
-const EARLYISH = { lark: 1, between: 1 };
-const LATEISH = { between: 1, owl: 1 };
-const LATE = { owl: 2 };
-const CHRONOTYPE: ChoiceItem[] = [
-  // Natural wake time with no alarm.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Sleepy on a free evening.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // First half hour after waking.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Best hours for focused work: afternoon is the in-between answer.
-  { options: [EARLY, EARLYISH, { between: 2 }, LATE] },
-  // A 7 a.m. run.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Something starting at 11 p.m.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // How much later you wake on free days.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Slot for an exam or interview.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Breakfast appetite.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Lights out at 10 p.m.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Energy dip: after lunch is the in-between answer.
-  { options: [EARLY, { between: 2 }, LATEISH, LATE] },
-  // When ideas come.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // Ideal working hours.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-  // How you see yourself.
-  { options: [EARLY, EARLYISH, LATEISH, LATE] },
-];
+/**
+ * One morning–evening axis: every answer runs from earliest (0) to latest (3), 14 questions, total 0–42. Banded at
+ * 40% and 60% of the range, like the extraversion test.
+ */
+const EARLY_TO_LATE: ChoiceItem = { options: [{ eve: 0 }, { eve: 1 }, { eve: 2 }, { eve: 3 }] };
+const CHRONOTYPE: ChoiceItem[] = Array.from({ length: 14 }, () => EARLY_TO_LATE);
 
 const PET: ChoiceItem[] = [
   // Daily time for care and company.
@@ -208,8 +183,11 @@ const PET: ChoiceItem[] = [
   { options: [{ fish: 2, reptile: 2 }, { cat: 2, hamster: 1, fish: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
   // Travel.
   { options: [{ reptile: 2, fish: 1 }, { cat: 2, hamster: 1, rabbit: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
-  // Allergies.
-  { options: [{ dog: 1, cat: 1, rabbit: 1, bird: 1, hamster: 1 }, { fish: 2, reptile: 2 }, { fish: 1, reptile: 1 }] },
+  // Allergies: a fur or dander allergy leaves only fish and reptiles (feather dust is a common allergen too).
+  {
+    options: [{ dog: 1, cat: 1, rabbit: 1, bird: 1, hamster: 1 }, { fish: 2, reptile: 2 }, { fish: 1, reptile: 1 }],
+    exclude: [undefined, ["cat", "dog", "rabbit", "bird", "hamster"]],
+  },
   // Monthly budget.
   { options: [{ fish: 2, hamster: 2 }, { cat: 2, rabbit: 1, bird: 1, reptile: 1 }, { dog: 2, rabbit: 1, bird: 1, reptile: 1 }] },
   // How you want to interact.
@@ -222,8 +200,11 @@ const PET: ChoiceItem[] = [
   { options: [{ dog: 2 }, { cat: 2, rabbit: 1 }, { fish: 2 }, { hamster: 2, rabbit: 1, bird: 1 }, { reptile: 2 }] },
   // Who lives with you.
   { options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }] },
-  // Rental or building rules.
-  { options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }] },
+  // Rental or building rules: "small caged or tank animals only" and "no dogs" are hard limits.
+  {
+    options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }],
+    exclude: [["dog", "cat", "rabbit", "bird"], ["dog"]],
+  },
   // A pet that follows you everywhere.
   { options: [{ dog: 2, bird: 1 }, { cat: 2, rabbit: 1 }, { fish: 2, reptile: 2, hamster: 1 }] },
   // A perfect evening together.
@@ -239,6 +220,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     scale: "agree5",
     dims: ["ext"],
     items: EXTRAVERSION,
+    // 40% and 60% of 0–80 are 32 and 48: below 32 is introvert, above 48 extrovert (the `traitLevel` split).
     result: { kind: "band", bands: [{ max: 31, key: "introvert" }, { max: 48, key: "ambivert" }, { max: 80, key: "extrovert" }] },
   },
   enneagram: { id: "enneagram", type: "likert", scale: "agree5", dims: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], items: ENNEAGRAM, result: { kind: "top" } },
@@ -263,14 +245,21 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     id: "conflict-style",
     type: "likert",
     scale: "agree5",
-    dims: ["compete", "collab", "compromise", "avoid", "accommodate"],
+    // Ties go to the earlier style, so a flat profile reads as compromising, never as competing.
+    dims: ["compromise", "collab", "accommodate", "avoid", "compete"],
     items: CONFLICT,
     result: { kind: "top" },
   },
   career: { id: "career", type: "likert", scale: "agree5", dims: ["R", "I", "A", "S", "E", "C"], items: RIASEC, result: { kind: "code" } },
   "work-style": { id: "work-style", type: "likert", scale: "agree5", dims: ["remote", "team", "structure", "variety"], items: WORK, result: { kind: "profile" } },
   money: { id: "money", type: "likert", scale: "agree5", dims: ["saver", "spender", "investor", "avoider", "giver"], items: MONEY, result: { kind: "top" } },
-  chronotype: { id: "chronotype", type: "choice", dims: ["lark", "between", "owl"], items: CHRONOTYPE, result: { kind: "top" } },
+  chronotype: {
+    id: "chronotype",
+    type: "choice",
+    dims: ["eve"],
+    items: CHRONOTYPE,
+    result: { kind: "band", bands: [{ max: 16, key: "lark" }, { max: 25, key: "between" }, { max: 42, key: "owl" }] },
+  },
   pet: {
     id: "pet",
     type: "choice",
@@ -347,8 +336,10 @@ export type QuizResult = {
   scores: DimScore[];
   /** Raw total, for band results. */
   total: number;
-  /** Highest to lowest, for top / code results. */
+  /** Highest to lowest, for top / code results; results an answer ruled out come last. */
   ranked: DimScore[];
+  /** Results ruled out by an answer (choice options' `exclude`); never the key unless every result is ruled out. */
+  excluded: string[];
   /** Areas result: the weakest area. */
   weakest?: string;
   /** Overall percentage (areas and profile). */
@@ -368,9 +359,12 @@ function pct(raw: number, min: number, max: number): number {
   return max === min ? 0 : Math.round(((raw - min) / (max - min)) * 100);
 }
 
-function rank(scores: DimScore[]): DimScore[] {
-  // Stable: a tie keeps definition order.
-  return scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || a.i - b.i).map(({ s }) => s);
+function rank(scores: DimScore[], excluded: ReadonlySet<string> = new Set()): DimScore[] {
+  // Ruled-out results last; stable: a tie keeps definition order.
+  const out = (s: DimScore): number => Number(excluded.has(s.dim));
+  return scores.map((s, i) => ({ s, i }))
+    .sort((a, b) => out(a.s) - out(b.s) || b.s.pct - a.s.pct || a.i - b.i)
+    .map(({ s }) => s);
 }
 
 /** Every item answered with a valid option index. */
@@ -389,6 +383,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const scores: DimScore[] = def.dims.map((dim) => ({ dim, raw: 0, min: 0, max: 0, pct: 0 }));
   const byDim = new Map(scores.map((s) => [s.dim, s]));
   let total = 0;
+  const excluded = new Set<string>();
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -406,15 +401,21 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         const best = Math.max(0, ...item.options.map((o) => o[dim] ?? 0));
         byDim.get(dim)!.max += best;
       }
-      const picked = item.options[answers[i] ?? 0] ?? {};
+      const answer = answers[i] ?? 0;
+      const picked = item.options[answer] ?? {};
       for (const [dim, weight] of Object.entries(picked)) {
         const s = byDim.get(dim);
-        if (s) s.raw += weight;
+        if (!s) continue;
+        s.raw += weight;
+        total += weight;
       }
+      for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
   }
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
-  const ranked = rank(scores);
+  // If the answers rule out every result, ignore the exclusions rather than show nothing.
+  if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
+  const ranked = rank(scores, excluded);
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
@@ -423,7 +424,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const watch = SAFETY[id];
   const safety = Boolean(watch && ((answers[watch.item] ?? 0) > 0 || watch.bands.includes(key)));
   const weakest = rule.kind === "areas" ? lowest(scores).dim : undefined;
-  return { key, scores, total, ranked, overall, safety, ...(weakest ? { weakest } : {}) };
+  return { key, scores, total, ranked, excluded: [...excluded], overall, safety, ...(weakest ? { weakest } : {}) };
 }
 
 function lowest(scores: DimScore[]): DimScore {
@@ -470,8 +471,9 @@ export function traitLevel(value: number): "low" | "mid" | "high" {
 /** Highest possible raw total (band results show "12 / 27"). */
 export function maxTotal(id: QuizId): number {
   const def = QUIZ_DEFS[id];
-  if (def.type !== "likert") return 0;
-  return def.items.length * (SCALE_POINTS[def.scale] - 1);
+  if (def.type === "likert") return def.items.length * (SCALE_POINTS[def.scale] - 1);
+  // Choice: the best-weighted option of each question.
+  return def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => Object.values(o).reduce((a, w) => a + w, 0))), 0);
 }
 
 /** Result keys the copy must define, per quiz (tests check every locale has them all). */

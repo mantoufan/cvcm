@@ -274,24 +274,72 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("work-style", all("work-style", 2)).scores.every((s) => s.pct === 50)).toBe(true);
   });
 
-  it("scores chronotype answers from early to late", () => {
-    expect(scoreQuiz("chronotype", all("chronotype", 0)).key).toBe("lark");
-    expect(scoreQuiz("chronotype", all("chronotype", 3)).key).toBe("owl");
-    expect(scoreQuiz("chronotype", all("chronotype", 1)).key).toBe("between");
-    expect(scoreQuiz("chronotype", all("chronotype", 2)).key).toBe("between");
+  it("scores chronotype on one early-to-late axis", () => {
+    expect(maxTotal("chronotype")).toBe(42);
+    expect(scoreQuiz("chronotype", all("chronotype", 0))).toMatchObject({ total: 0, key: "lark" });
+    expect(scoreQuiz("chronotype", all("chronotype", 3))).toMatchObject({ total: 42, key: "owl" });
+    // "Somewhat early" everywhere is still a lark, "somewhat late" an owl; a mix of the two is in between.
+    expect(scoreQuiz("chronotype", all("chronotype", 1)).key).toBe("lark");
+    expect(scoreQuiz("chronotype", all("chronotype", 2)).key).toBe("owl");
+    expect(scoreQuiz("chronotype", QUIZ_DEFS.chronotype.items.map((_, i) => 1 + (i % 2))).key).toBe("between");
+    // Clear larks and owls: the earliest answer on the first four questions, the next one after that.
+    const lark = all("chronotype", 1).map((a, i) => (i < 4 ? 0 : a));
+    expect(scoreQuiz("chronotype", lark).key).toBe("lark");
+    const owl = all("chronotype", 2).map((a, i) => (i < 4 ? 3 : a));
+    expect(scoreQuiz("chronotype", owl).key).toBe("owl");
     // Mostly late answers with a couple of middle ones still read as an owl.
     const owlish = all("chronotype", 3);
     owlish[0] = 2;
     owlish[5] = 2;
     expect(scoreQuiz("chronotype", owlish).key).toBe("owl");
+    // Cut-offs at 40% and 60% of 0-42.
+    const at = (total: number): string => {
+      let left = total;
+      return scoreQuiz("chronotype", QUIZ_DEFS.chronotype.items.map(() => {
+        const points = Math.min(3, left);
+        left -= points;
+        return points;
+      })).key;
+    };
+    expect([at(16), at(17), at(25), at(26)]).toEqual(["lark", "between", "between", "owl"]);
   });
 
-  it("points fur allergies and tiny homes away from furry pets", () => {
-    // Under 15 minutes a day, a studio, out 10+ hours, often away, fur allergy, low budget, quiet...
-    const result = scoreQuiz("pet", [0, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0, 2, 2]);
-    expect(["fish", "reptile"]).toContain(result.key);
-    // Lots of time, a yard, someone home, rarely away, no allergy, comfortable budget, active play.
-    expect(scoreQuiz("pet", [3, 3, 2, 2, 0, 2, 2, 2, 2, 0, 2, 2, 0, 3]).key).toBe("dog");
+  it("treats a pet allergy and lease rules as hard limits", () => {
+    const def = QUIZ_DEFS.pet;
+    if (def.type !== "choice") throw new Error();
+    const ALLERGY = 4;
+    const LEASE = 11;
+    // Every other answer pushes toward a dog.
+    const doggy = [3, 3, 2, 2, 1, 2, 2, 2, 2, 0, 2, 1, 0, 3];
+    expect(scoreQuiz("pet", doggy).key).not.toBe("dog");
+    expect(scoreQuiz("pet", doggy.map((a, i) => (i === ALLERGY ? 0 : i === LEASE ? 2 : a))).key).toBe("dog");
+    const allergyOk = new Set(["fish", "reptile"]);
+    const tankOnly = new Set(["fish", "reptile", "hamster"]);
+    // Many random answer sets: the limits hold whatever else is picked.
+    let seed = 7;
+    const next = (n: number): number => {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      return seed % n;
+    };
+    for (let run = 0; run < 3000; run++) {
+      const answers = def.items.map((item) => next(item.options.length));
+      const result = scoreQuiz("pet", answers);
+      if (answers[ALLERGY] === 1) {
+        expect(allergyOk.has(result.key), `${answers}`).toBe(true);
+        expect(result.excluded).toEqual(expect.arrayContaining(["cat", "dog", "rabbit", "bird", "hamster"]));
+      }
+      if (answers[LEASE] === 0) expect(tankOnly.has(result.key), `${answers}`).toBe(true);
+      if (answers[LEASE] === 1) expect(result.key, `${answers}`).not.toBe("dog");
+      // Ruled-out results rank after the rest.
+      const firstOut = result.ranked.findIndex((s) => result.excluded.includes(s.dim));
+      if (firstOut >= 0) expect(result.ranked.slice(firstOut).every((s) => result.excluded.includes(s.dim))).toBe(true);
+    }
+  });
+
+  it("does not read a flat conflict profile as competing", () => {
+    expect(scoreQuiz("conflict-style", all("conflict-style", 2)).key).toBe("compromise");
+    expect(scoreQuiz("conflict-style", all("conflict-style", 4)).key).toBe("compromise");
+    expect(scoreQuiz("conflict-style", all("conflict-style", 0)).key).toBe("compromise");
   });
 
   it("scores choice quizzes by weight and lets every result win", () => {
@@ -299,7 +347,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "chronotype", "pet"] as const) {
+    for (const id of ["face-shape", "anime", "pet"] as const) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
