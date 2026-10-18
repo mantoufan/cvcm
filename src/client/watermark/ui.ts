@@ -502,7 +502,7 @@ function blindPayload(): string {
 }
 
 function blindCount(): string {
-  return t("watermark.blindBytes", { n: String(utf8Bytes(blindPayload())), max: String(BLIND_MAX_BYTES) });
+  return t("watermark.blindBytes", { n: String(utf8Bytes(state.blindText)), max: String(BLIND_MAX_BYTES) });
 }
 
 /** Decoded pixels for reading a mark. The decoder works on a 384 px grid, so 2048 px is plenty. */
@@ -813,6 +813,8 @@ async function addSample(): Promise<void> {
 }
 
 function removeItem(id: string): void {
+  // An export in progress still draws these bitmaps.
+  if (state.working) return;
   const idx = state.items.findIndex((it) => it.id === id);
   if (idx < 0) return;
   const [item] = state.items.splice(idx, 1);
@@ -825,6 +827,7 @@ function removeItem(id: string): void {
 }
 
 function clearItems(): void {
+  if (state.working) return;
   for (const item of state.items) {
     item.bitmap?.close();
     URL.revokeObjectURL(item.url);
@@ -838,6 +841,7 @@ function clearItems(): void {
 }
 
 async function setLogo(file: File): Promise<void> {
+  if (state.working) return;
   clearLogo();
   try {
     const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -857,7 +861,8 @@ async function setLogo(file: File): Promise<void> {
 }
 
 function clearLogo(): void {
-  if (!state.logo) return;
+  // The running export's frozen spec still draws this bitmap.
+  if (!state.logo || state.working) return;
   state.logo.bitmap.close();
   URL.revokeObjectURL(state.logo.url);
   state.logo = null;
@@ -1344,10 +1349,10 @@ function blindStatus(payload: string, results: { name: string; blind: BlindOutco
 async function exportSource(
   source: { image: CanvasImageSource; width: number; height: number },
   job: ExportJob,
-  redactions: Redaction[] = currentRedactions(),
+  spec: WatermarkSpec,
 ): Promise<Exported> {
   const fit = fitExportSize(source.width, source.height);
-  const render = () => renderWatermark(source.image, source.width, source.height, specFor(redactions), fit.width, fit.height);
+  const render = () => renderWatermark(source.image, source.width, source.height, spec, fit.width, fit.height);
   const out = await encodeCanvas(render(), job, job.payload);
   if (out !== "missed") return out;
   // A mark that cannot be read back is not worth the changed pixels: export the image untouched.
@@ -1366,7 +1371,7 @@ async function downloadOne(): Promise<void> {
   const job = exportJob();
   setStatus(t("watermark.working"));
   try {
-    const { blob, blind } = await exportSource(source, job);
+    const { blob, blind } = await exportSource(source, job, specFor());
     const name = outputFilename(source.name, blob.type);
     downloadBlob(blob, name);
     setStatus(blindStatus(job.payload, [{ name, blind }]));
@@ -1398,12 +1403,14 @@ async function downloadAll(): Promise<void> {
   try {
     const entries = [];
     const results: { name: string; blind: BlindOutcome }[] = [];
+    // Freeze each file's visible mark now; the panel stays live while the batch runs.
+    const specs = ready.map((item) => specFor(item.redactions));
     const used = new Set<string>();
-    for (const item of ready) {
+    for (const [i, item] of ready.entries()) {
       const { blob, blind } = await exportSource(
         { image: item.bitmap, width: item.width, height: item.height },
         job,
-        item.redactions,
+        specs[i],
       );
       const buf = new Uint8Array(await blob.arrayBuffer());
       let name = outputFilename(item.file.name, blob.type);
