@@ -13,9 +13,18 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { zipStore } from "../../shared/zip";
-import { utf8Bytes } from "../../shared/clip";
 import { canvasToBlob, decodeImage } from "../decode";
-import { BLIND_GRID, BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels } from "./blind";
+import {
+  BLIND_GRID,
+  BLIND_MAX_BYTES,
+  type BlindPayload,
+  blindPayloadOf,
+  decodeBlind,
+  embedBlind,
+  fitBlindText,
+  type Pixels,
+  sameBlind,
+} from "./blind";
 import {
   type Anchor,
   fitExportSize,
@@ -450,14 +459,15 @@ function blindFieldset(): HTMLElement {
       h("input", {
         type: "text",
         id: "wm-blind-text",
-        maxlength: String(BLIND_MAX_BYTES),
+        maxlength: "80",
         placeholder: t("watermark.blindPlaceholder"),
         value: state.blindText,
         // Clip only once an IME composition ends, or pinyin / kana input breaks near the limit.
-        onInput: (e: InputEvent) => {
-          if (!e.isComposing) setBlindText(e.target as HTMLInputElement, count);
+        onInput: (e: Event) => {
+          state.blindText = (e.target as HTMLInputElement).value;
+          syncBlindCount();
+          scheduleSave();
         },
-        onCompositionend: (e: Event) => setBlindText(e.target as HTMLInputElement, count),
       }),
     ),
     count,
@@ -476,33 +486,34 @@ function blindFieldset(): HTMLElement {
   );
 }
 
-function setBlindText(input: HTMLInputElement, count: HTMLElement): void {
-  if (clipUtf8(input.value) !== input.value) {
-    // Over the byte limit: trim what was just typed or pasted, not the end of the existing text.
-    const end = input.selectionStart ?? input.value.length;
-    const start = Math.max(0, end - (input.value.length - state.blindText.length));
-    const before = input.value.slice(0, start);
-    const after = input.value.slice(end);
-    const room = BLIND_MAX_BYTES - utf8Bytes(before + after);
-    const added = room > 0 ? clipUtf8(input.value.slice(start, end), room) : "";
-    input.value = clipUtf8(before + added + after);
-    input.setSelectionRange(start + added.length, start + added.length);
-  }
-  state.blindText = input.value;
-  count.textContent = blindCount();
-  scheduleSave();
+/** Hidden text: the field when filled, otherwise the visible text (one line, its date dropped: the date travels separately). */
+function blindText(): string {
+  const date = todayStamp();
+  const own = state.blindText.trim();
+  const base = own || state.text.split(date).join(" ");
+  return base.replace(/\s+/g, " ").trim();
 }
 
-function defaultBlindText(): string {
-  return clipUtf8(`cv.cm ${todayStamp()}`);
+function blindPayload(): BlindPayload {
+  return blindPayloadOf(blindText(), todayStamp());
 }
 
-function blindPayload(): string {
-  return clipUtf8(state.blindText.trim() || defaultBlindText());
+/** "仅供XX办理使用 他用无效 · cv.cm 2026-10-18" */
+function blindLabel(p: BlindPayload): string {
+  const tail = p.date ? `cv.cm ${p.date}` : "";
+  return [p.text, tail].filter(Boolean).join(" · ");
 }
 
 function blindCount(): string {
-  return t("watermark.blindBytes", { n: String(utf8Bytes(state.blindText)), max: String(BLIND_MAX_BYTES) });
+  const full = blindText();
+  const fit = fitBlindText(full);
+  const count = t("watermark.blindBytes", { n: String(fit.bytes), max: String(BLIND_MAX_BYTES) });
+  return fit.text.length < full.length ? `${count} · ${t("watermark.blindTrimmed")}` : count;
+}
+
+function syncBlindCount(): void {
+  const el = document.getElementById("wm-blind-count");
+  if (el) el.textContent = blindCount();
 }
 
 /** Decoded pixels for reading a mark. The decoder works on a 384 px grid, so 2048 px is plenty. */
@@ -531,7 +542,7 @@ async function detectBlind(file: File, out: HTMLElement): Promise<void> {
   let msg: string;
   try {
     const found = decodeBlind(await pixelsOf(file));
-    msg = found ? t("watermark.blindFound", { text: found.text }) : t("watermark.blindNone");
+    msg = found ? t("watermark.blindFound", { text: blindLabel(found) }) : t("watermark.blindNone");
   } catch {
     msg = t("watermark.errorDecode");
   }
@@ -1146,6 +1157,8 @@ function composeSource(): { image: CanvasImageSource; width: number; height: num
 
 function redraw(): void {
   if (!restoring) scheduleSave();
+  // The hidden text follows the visible one unless the field is filled.
+  syncBlindCount();
   if (!preview) return;
   const zip = document.getElementById("wm-download-all");
   if (zip) zip.hidden = state.layout !== "single";
@@ -1267,12 +1280,12 @@ function setStatus(msg: string): void {
 type BlindOutcome = "off" | "ok" | "unchecked" | "missed" | "memory";
 type Exported = { blob: Blob; blind: BlindOutcome };
 /** Settings frozen when an export starts; the panel may change while a batch runs. */
-type ExportJob = { payload: string; mime: string; quality: number };
+type ExportJob = { payload: BlindPayload | null; mime: string; quality: number };
 
 function exportJob(): ExportJob {
   return {
     // Mosaic mode only redacts; the hidden mark belongs to the watermark tool.
-    payload: state.blind && mode === "watermark" ? blindPayload() : "",
+    payload: state.blind && mode === "watermark" ? blindPayload() : null,
     mime: mimeForFormat(state.format),
     quality: state.quality,
   };
@@ -1289,7 +1302,11 @@ function isOpaque(img: ImageData): boolean {
  * (canvas for PNG, re-decoded file for JPEG / WebP) and corrected up to twice.
  * "missed" returns no blob: the caller re-renders and exports the image untouched.
  */
-async function encodeCanvas(canvas: HTMLCanvasElement, job: ExportJob, payload: string): Promise<Exported | "missed"> {
+async function encodeCanvas(
+  canvas: HTMLCanvasElement,
+  job: ExportJob,
+  payload: BlindPayload | null,
+): Promise<Exported | "missed"> {
   const encode = () => canvasToBlob(canvas, job.mime, job.quality);
   const ctx = canvas.getContext("2d");
   if (ctx && job.mime === "image/jpeg") {
@@ -1323,7 +1340,7 @@ async function encodeCanvas(canvas: HTMLCanvasElement, job: ExportJob, payload: 
       // An opaque PNG stores exactly `img`, which already decoded; with alpha, premultiplication may change it.
       if (png && opaque) return { blob, blind: "ok" };
       const back = png ? ctx.getImageData(0, 0, canvas.width, canvas.height) : await pixelsOf(blob);
-      if (decodeBlind(back)?.text === payload) return { blob, blind: "ok" };
+      if (sameBlind(decodeBlind(back), payload)) return { blob, blind: "ok" };
       if (png || round === 2) return "missed";
       embedBlind(img, payload, { rounds: 1, measure: back, spent, verify: false });
       ctx.putImageData(img, 0, 0);
@@ -1335,12 +1352,12 @@ async function encodeCanvas(canvas: HTMLCanvasElement, job: ExportJob, payload: 
   }
 }
 
-function blindStatus(payload: string, results: { name: string; blind: BlindOutcome }[]): string {
+function blindStatus(payload: BlindPayload | null, results: { name: string; blind: BlindOutcome }[]): string {
   if (!payload) return "";
   const failed = results.filter((r) => r.blind === "missed" || r.blind === "memory");
   if (!failed.length) {
     const unchecked = results.some((r) => r.blind === "unchecked");
-    return t(unchecked ? "watermark.blindUnchecked" : "watermark.blindDone", { text: payload });
+    return t(unchecked ? "watermark.blindUnchecked" : "watermark.blindDone", { text: blindLabel(payload) });
   }
   const key = failed.every((r) => r.blind === "memory") ? "watermark.blindNoMemory" : "watermark.blindFailed";
   return results.length > 1 ? `${t(key)} (${failed.map((r) => r.name).join(", ")})` : t(key);
@@ -1356,7 +1373,7 @@ async function exportSource(
   const out = await encodeCanvas(render(), job, job.payload);
   if (out !== "missed") return out;
   // A mark that cannot be read back is not worth the changed pixels: export the image untouched.
-  const plain = await encodeCanvas(render(), job, "");
+  const plain = await encodeCanvas(render(), job, null);
   return { blob: (plain as Exported).blob, blind: "missed" };
 }
 
