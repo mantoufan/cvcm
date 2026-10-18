@@ -35,8 +35,9 @@ const D = 8;
 const FLAT = 2.5;
 /** Luma at and above which pixels count as blank paper and are never changed. */
 const PAPER = 245;
-/** Largest luma change per canonical pixel per round. */
+/** Largest luma change per canonical pixel per round, and summed over one embed call. */
 const MAX_STEP = 6;
+const MAX_TOTAL = 20;
 const MAGIC = 0xc7;
 const FRAME_BITS = 8 + 8 + BLIND_MAX_BYTES * 8 + 16;
 
@@ -152,8 +153,11 @@ function taps(src: number, dst: number): Taps {
   return { start, idx: Int32Array.from(idx), w: Float32Array.from(w) };
 }
 
+/** Luma as seen flattened onto white (how chat apps show a transparent PNG). */
 function luma(d: Uint8ClampedArray, i: number): number {
-  return 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+  const y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+  const a = d[i + 3];
+  return a === 255 ? y : (y * a + 255 * (255 - a)) / 255;
 }
 
 /** Luma of the whole image on the CANON×CANON grid, row-streamed to keep memory flat. */
@@ -204,6 +208,8 @@ function applyResidual(px: Pixels, res: Float32Array): void {
       for (let k = hx.start[x]; k < hx.start[x + 1]; k++) r += line[hx.idx[k]] * hx.w[k];
       if (r > -0.05 && r < 0.05) continue;
       const i = base + x * 4;
+      // Transparent pixels lose RGB to premultiplication; leave them alone.
+      if (data[i + 3] !== 255) continue;
       // Full-resolution paper gate: one canonical pixel spans several real ones, and the
       // white ones between ink strokes must stay white.
       const paper = (PAPER - luma(data, i)) / 15;
@@ -297,6 +303,7 @@ function soft(s: number): number {
 export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixels, verify = true): boolean {
   const bits = frameBits(text);
   const want = clipUtf8(text);
+  const spent = new Float32Array(CANON * CANON);
   for (let round = 0; round < rounds; round++) {
     const canon = canonical(round === 0 && measure ? measure : px);
     const mask = textureMask(canon);
@@ -330,8 +337,12 @@ export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixel
       for (let r = 0; r < P; r++) {
         const row = (by * P + r) * CANON + bx * P;
         for (let c = 0; c < P; c++) {
-          const d = amp * WIN[r] * WIN[c] * mask[row + c];
-          res[row + c] += Math.max(-MAX_STEP, Math.min(MAX_STEP, d));
+          const j = row + c;
+          const d = Math.max(-MAX_STEP, Math.min(MAX_STEP, amp * WIN[r] * WIN[c] * mask[j]));
+          // Rounds keep pushing pixels that undershoot (e.g. ink next to paper); cap the sum.
+          const next = Math.max(-MAX_TOTAL, Math.min(MAX_TOTAL, spent[j] + d));
+          res[j] += next - spent[j];
+          spent[j] = next;
         }
       }
       moved++;

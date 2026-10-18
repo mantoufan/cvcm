@@ -71,8 +71,14 @@ describe("blind watermark", () => {
     const before = page.data.slice();
     embedBlind(page, TEXT);
     let greyed = 0;
-    for (let i = 0; i < before.length; i += 4) if (before[i] === 255 && page.data[i] !== 255) greyed++;
+    let drift = 0;
+    for (let i = 0; i < before.length; i += 4) {
+      if (before[i] === 255 && page.data[i] !== 255) greyed++;
+      drift = Math.max(drift, Math.abs(page.data[i] - before[i]));
+    }
     expect(greyed).toBe(0);
+    // Ink next to paper undershoots every round; the per-call cap keeps it from creeping.
+    expect(drift).toBeLessThanOrEqual(21);
   });
 
   it("corrects against a lossy copy", async () => {

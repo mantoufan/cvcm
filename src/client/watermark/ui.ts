@@ -451,7 +451,7 @@ function blindFieldset(): HTMLElement {
         type: "text",
         id: "wm-blind-text",
         maxlength: String(BLIND_MAX_BYTES),
-        placeholder: defaultBlindText(),
+        placeholder: t("watermark.blindPlaceholder"),
         value: state.blindText,
         // Clip only once an IME composition ends, or pinyin / kana input breaks near the limit.
         onInput: (e: InputEvent) => {
@@ -462,7 +462,16 @@ function blindFieldset(): HTMLElement {
     ),
     count,
     h("p", { class: "hint" }, t("watermark.blindHint")),
-    h("label", { class: "chip file-chip", for: "wm-blind-detect" }, detect, t("watermark.blindDetect")),
+    h("label", {
+      class: "chip file-chip",
+      for: "wm-blind-detect",
+      onDragover: (e: DragEvent) => e.preventDefault(),
+      onDrop: (e: DragEvent) => {
+        e.preventDefault();
+        const file = e.dataTransfer?.files?.[0];
+        if (file) void detectBlind(file, result);
+      },
+    }, detect, t("watermark.blindDetect")),
     result,
   );
 }
@@ -491,12 +500,15 @@ function blindCount(): string {
   return t("watermark.blindBytes", { n: String(utf8Bytes(blindPayload())), max: String(BLIND_MAX_BYTES) });
 }
 
+/** Decoded pixels for reading a mark. The decoder works on a 384 px grid, so 2048 px is plenty. */
 async function pixelsOf(source: Blob): Promise<Pixels> {
   const { bitmap, width, height } = await decodeImage(source);
   try {
-    const ctx = drawToCanvas(bitmap, width, height).getContext("2d");
+    const scale = Math.min(1, 2048 / Math.max(width, height));
+    const canvas = drawToCanvas(bitmap, width * scale, height * scale);
+    const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("canvas");
-    return ctx.getImageData(0, 0, width, height);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height);
   } finally {
     bitmap.close();
   }
@@ -1253,12 +1265,16 @@ async function blobForSource(
 let blindMissed: string[] = [];
 /** Payload used by the current export (the field may change while it runs). */
 let blindSent = "";
+/** Set when a read-back check could not run (the mark is in the file but unverified). */
+let blindUnchecked = false;
 
 async function encodeCanvas(canvas: HTMLCanvasElement, name: string): Promise<Blob> {
   const mime = mimeForFormat(state.format);
   const encode = () => canvasToBlob(canvas, mime, state.quality);
   const ctx = blindSent ? canvas.getContext("2d") : null;
   if (!ctx) return encode();
+  // Let "Working…" paint before the synchronous embed.
+  await new Promise((resolve) => setTimeout(resolve, 0));
   let img: ImageData;
   try {
     img = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -1288,19 +1304,23 @@ async function encodeCanvas(canvas: HTMLCanvasElement, name: string): Promise<Bl
     }
   } catch {
     // The read-back itself failed (memory); the mark is embedded, only unverified.
+    blindUnchecked = true;
   }
   return blob;
 }
 
 function startBlindExport(): void {
   blindMissed = [];
+  blindUnchecked = false;
   // Mosaic mode only redacts; the hidden mark belongs to the watermark tool.
   blindSent = state.blind && mode === "watermark" ? blindPayload() : "";
 }
 
 function blindStatus(batch: boolean): string {
   if (!blindSent) return "";
-  if (!blindMissed.length) return t("watermark.blindDone", { text: blindSent });
+  if (!blindMissed.length) {
+    return t(blindUnchecked ? "watermark.blindUnchecked" : "watermark.blindDone", { text: blindSent });
+  }
   return batch ? `${t("watermark.blindFailed")} (${blindMissed.join(", ")})` : t("watermark.blindFailed");
 }
 
@@ -1352,6 +1372,7 @@ async function downloadAll(): Promise<void> {
     const entries = [];
     const used = new Set<string>();
     for (const item of ready) {
+      const missed = blindMissed.length;
       const blob = await blobFor(item);
       const buf = new Uint8Array(await blob.arrayBuffer());
       let name = outputFilename(item.file.name, blob.type);
@@ -1362,6 +1383,8 @@ async function downloadAll(): Promise<void> {
         n += 1;
       }
       used.add(name);
+      // Report the name inside the ZIP, not the (possibly duplicated) source name.
+      if (blindMissed.length > missed) blindMissed[blindMissed.length - 1] = name;
       entries.push({ name, data: buf });
     }
     const zip = zipStore(entries);
