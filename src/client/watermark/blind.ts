@@ -6,7 +6,7 @@
  *   aspect changes (screenshots, chat-app downscales). Crops and rotations are not survived.
  * - The grid is cut into 2304 blocks of 8×8. Each block's sin²-windowed mean luma
  *   (a matched filter, ≈ the block's low-frequency DCT energy) is quantized with step D.
- *   A variable-length frame (marker, encoding/length, date, up to 40 bytes of text packed with a
+ *   A variable-length frame (marker, encoding/length, date, up to 24 bytes of text packed with a
  *   watermark-phrase dictionary, CRC-32)
  *   repeats across shuffled blocks, so short text repeats more; decoding is a texture-weighted
  *   soft vote over every frame size, with a brightness/contrast search.
@@ -31,7 +31,7 @@ export interface BlindPayload {
 
 
 /** Encoded text bytes. Preset phrases pack to one byte each; longer text means fewer repeats. */
-export const BLIND_MAX_BYTES = 40;
+export const BLIND_MAX_BYTES = 24;
 
 const CANON = 384;
 /** Side of the grid marks live on; size a shared `spent` buffer as BLIND_GRID². */
@@ -96,9 +96,11 @@ function packTokens(s: string): Token[] {
       i += hit.w.length;
       continue;
     }
-    const c = s.charCodeAt(i);
-    out.push({ text: s[i], bytes: c < 0x80 ? [c] : [ESCAPE, c >> 8, c & 0xff] });
-    i += 1;
+    // Whole code points: an emoji's surrogate pair is one token (two escapes).
+    const ch = String.fromCodePoint(s.codePointAt(i)!);
+    const c = ch.charCodeAt(0);
+    out.push({ text: ch, bytes: c < 0x80 ? [c] : utf16Units(ch).flatMap((u, k, a) => (k % 2 ? [] : [ESCAPE, u, a[k + 1]])) });
+    i += ch.length;
   }
   return out;
 }
@@ -191,9 +193,9 @@ function decodeText(mode: number, data: Uint8Array): string | null {
 }
 
 /** The part of `text` a mark can hold, and its size in bytes. */
-export function fitBlindText(text: string): { text: string; bytes: number } {
+export function fitBlindText(text: string): { text: string; bytes: number; trimmed: boolean } {
   const e = encodeText(text);
-  return { text: e.text, bytes: e.bytes.length };
+  return { text: e.text, bytes: e.bytes.length, trimmed: e.text.length < wellFormed(text).length };
 }
 
 function crc16(bytes: Uint8Array): number {
@@ -627,7 +629,8 @@ function readCanon(canon: Float32Array): BlindPayload | null {
     }
   }
   ranked.sort((a, b) => b.score - a.score);
-  for (const cand of ranked.slice(0, 6)) {
+  // |soft| is the same at shift c and c + D/2 (that twin reads every bit inverted), so keep 12.
+  for (const cand of ranked.slice(0, 12)) {
     const found = readSofts(softs(stats, weights, cand.gain, cand.shift));
     if (found) return found;
   }

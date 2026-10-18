@@ -34,7 +34,9 @@ describe("blind watermark", () => {
     expect(fitBlindText("関係者限り 目的外使用不可").bytes).toBe(3);
     const long = fitBlindText("x".repeat(60));
     expect(long.text.length).toBe(BLIND_MAX_BYTES);
-    expect(blindPayloadOf("一".repeat(30), "2026-10-18").text).toBe("一".repeat(20));
+    expect(blindPayloadOf("一".repeat(30), "2026-10-18").text).toBe("一".repeat(12));
+    // Emoji stay whole in every encoding.
+    expect(fitBlindText("再次复印无效他用无效aaaaa" + "😀".repeat(8)).text).not.toMatch(/[\uD800-\uDBFF]$/);
   });
 
   it("finds nothing in unmarked images", async () => {
@@ -114,8 +116,8 @@ describe("blind watermark", () => {
   });
 
   it("cuts between packed phrases and drops lone surrogates", () => {
-    // 38 bytes of escapes, then a phrase that packs to one byte: it must fit whole.
-    const head = "龘".repeat(12) + "ab";
+    // 23 bytes, then a phrase that packs to one byte: it must fit whole.
+    const head = "龘".repeat(7) + "ab";
     expect(fitBlindText(head + "办理使用").text).toBe(head + "办理使用");
     expect(blindPayloadOf("Bank A \uD83D", "2026-10-18").text).toBe("Bank A ");
   });

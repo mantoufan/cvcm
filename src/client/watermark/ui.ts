@@ -459,7 +459,6 @@ function blindFieldset(): HTMLElement {
       h("input", {
         type: "text",
         id: "wm-blind-text",
-        maxlength: "80",
         placeholder: t("watermark.blindPlaceholder"),
         value: state.blindText,
         onInput: (e: Event) => {
@@ -508,7 +507,7 @@ function blindCount(): string {
   const full = blindText();
   const fit = fitBlindText(full);
   const count = t("watermark.blindBytes", { n: String(fit.bytes), max: String(BLIND_MAX_BYTES) });
-  return fit.text.length < full.length ? `${count} · ${t("watermark.blindTrimmed")}` : count;
+  return fit.trimmed ? `${count} · ${t("watermark.blindTrimmed")}` : count;
 }
 
 function syncBlindCount(): void {
