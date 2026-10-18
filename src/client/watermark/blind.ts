@@ -27,6 +27,8 @@ export interface BlindResult {
 export const BLIND_MAX_BYTES = 16;
 
 const CANON = 384;
+/** Side of the grid marks live on; size a shared `spent` buffer as BLIND_GRID². */
+export const BLIND_GRID = CANON;
 const P = 8;
 const GRID = CANON / P;
 const BLOCKS = GRID * GRID;
@@ -295,15 +297,26 @@ function soft(s: number): number {
 
 // ---------- public API ----------
 
+export interface EmbedOptions {
+  /** Closed-loop rounds (default 4). */
+  rounds?: number;
+  /** Correct against this re-decoded lossy copy (JPEG / WebP) on the first round; any size. */
+  measure?: Pixels;
+  /** Per-pixel change already spent (BLIND_GRID² floats); share it across calls so MAX_TOTAL holds. */
+  spent?: Float32Array;
+  /** Decode the result and report success (default true). */
+  verify?: boolean;
+}
+
 /**
  * Embed `text` (≤ 16 UTF-8 bytes) into `px` in place.
- * `measure` (use with rounds = 1) corrects against a re-decoded lossy copy (JPEG/WebP).
  * Returns true when the result decodes back to `text` (always false with `verify` off).
  */
-export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixels, verify = true): boolean {
+export function embedBlind(px: Pixels, text: string, opts: EmbedOptions = {}): boolean {
+  const { rounds = 4, measure, verify = true } = opts;
   const bits = frameBits(text);
   const want = clipUtf8(text);
-  const spent = new Float32Array(CANON * CANON);
+  const spent = opts.spent ?? new Float32Array(CANON * CANON);
   for (let round = 0; round < rounds; round++) {
     const canon = canonical(round === 0 && measure ? measure : px);
     const mask = textureMask(canon);
@@ -378,7 +391,11 @@ function vote(
  */
 export function decodeBlind(px: Pixels): BlindResult | null {
   if (px.width < 16 || px.height < 16) return null;
-  const canon = canonical(px);
+  const text = readCanon(canonical(px));
+  return text === null ? null : { text };
+}
+
+function readCanon(canon: Float32Array): string | null {
   const stats = new Float64Array(BLOCKS);
   const weights = new Float64Array(BLOCKS);
   for (let i = 0; i < BLOCKS; i++) {
@@ -391,7 +408,7 @@ export function decodeBlind(px: Pixels): BlindResult | null {
   for (let i = 0; i < BLOCKS; i++) total += weights[i];
   const plain = vote(stats, weights, total, 1, 0);
   const direct = parseFrame(plain.bits);
-  if (direct !== null) return { text: direct };
+  if (direct !== null) return direct;
   const ranked: { gain: number; shift: number; score: number }[] = [];
   for (let g = 0; g <= 60; g++) {
     // 1/gain from 0.85 to 1.15 undoes a contrast change of about ±15 %.
@@ -406,7 +423,7 @@ export function decodeBlind(px: Pixels): BlindResult | null {
   for (const cand of ranked.slice(0, 6)) {
     const r = vote(stats, weights, total, cand.gain, cand.shift);
     const text = parseFrame(r.bits);
-    if (text !== null) return { text };
+    if (text !== null) return text;
   }
   return null;
 }

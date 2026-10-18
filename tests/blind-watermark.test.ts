@@ -1,6 +1,6 @@
 import sharp, { type Sharp } from "sharp";
 import { describe, expect, it } from "vitest";
-import { BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels } from "../src/client/watermark/blind";
+import { BLIND_GRID, BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels } from "../src/client/watermark/blind";
 
 async function load(input: Sharp): Promise<Pixels> {
   const { data, info } = await input.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
@@ -79,13 +79,24 @@ describe("blind watermark", () => {
     expect(greyed).toBe(0);
     // Ink next to paper undershoots every round; the per-call cap keeps it from creeping.
     expect(drift).toBeLessThanOrEqual(21);
+    // The export's lossy correction rounds share the same budget.
+    const spent = new Float32Array(BLIND_GRID * BLIND_GRID);
+    const again = await load(sharp(Buffer.from(svg)));
+    embedBlind(again, TEXT, { spent, verify: false });
+    for (let round = 0; round < 2; round++) {
+      embedBlind(again, TEXT, { rounds: 1, measure: await via(again, (x) => x.jpeg({ quality: 92 })), spent, verify: false });
+    }
+    let total = 0;
+    for (let i = 0; i < before.length; i += 4) total = Math.max(total, Math.abs(again.data[i] - before[i]));
+    // MAX_TOTAL (20) plus up to half a level of rounding per write-back.
+    expect(total).toBeLessThanOrEqual(22);
   });
 
   it("corrects against a lossy copy", async () => {
     const px = await load(sharp(PHOTOS[1]));
     embedBlind(px, TEXT);
     const jpeg = await via(px, (s) => s.jpeg({ quality: 40 }));
-    embedBlind(px, TEXT, 1, jpeg);
+    embedBlind(px, TEXT, { rounds: 1, measure: jpeg });
     expect(decodeBlind(await via(px, (s) => s.jpeg({ quality: 40 })))?.text).toBe(TEXT);
   });
 });
