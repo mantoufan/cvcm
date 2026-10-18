@@ -22,8 +22,6 @@ export interface Pixels {
 
 export interface BlindResult {
   text: string;
-  /** 0–1: mean vote agreement across repeated bits. */
-  confidence: number;
 }
 
 export const BLIND_MAX_BYTES = 16;
@@ -316,7 +314,9 @@ export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixel
       if (Math.abs(phase(stat) * D - off) < D * 0.08) continue;
       let target = Math.round((stat - off) / D) * D + off;
       if (target < 0) target += D;
-      // Bright blocks cannot get much brighter; take the cell below instead.
+      // Bright blocks cannot get much brighter; take the cell below. (Lower thresholds force
+      // whole-cell steps on light photos and cost ~2 dB; the few blocks between PAPER and 250
+      // that cannot converge just cast a wrong vote, which the repetition absorbs.)
       if (target > stat && target > 250 && target - D >= 0) target -= D;
       // Shape the bump by the mask: the change lands on texture, not on flat skin or paper.
       let gain = 0;
@@ -348,7 +348,7 @@ function vote(
   total: number,
   gain: number,
   shift: number,
-): { bits: Uint8Array; score: number; confidence: number } {
+): { bits: Uint8Array; score: number } {
   const votes = new Float64Array(FRAME_BITS);
   for (let i = 0; i < BLOCKS; i++) votes[BIT_OF_BLOCK[i]] += weights[i] * soft(stats[i] * gain + shift);
   const bits = new Uint8Array(FRAME_BITS);
@@ -357,7 +357,7 @@ function vote(
     bits[k] = votes[k] > 0 ? 1 : 0;
     score += Math.abs(votes[k]);
   }
-  return { bits, score, confidence: Math.min(1, score / Math.max(1, total)) };
+  return { bits, score: score / Math.max(1, total) };
 }
 
 /**
@@ -380,7 +380,7 @@ export function decodeBlind(px: Pixels): BlindResult | null {
   for (let i = 0; i < BLOCKS; i++) total += weights[i];
   const plain = vote(stats, weights, total, 1, 0);
   const direct = parseFrame(plain.bits);
-  if (direct !== null) return { text: direct, confidence: plain.confidence };
+  if (direct !== null) return { text: direct };
   const ranked: { gain: number; shift: number; score: number }[] = [];
   for (let g = 0; g <= 60; g++) {
     // 1/gain from 0.85 to 1.15 undoes a contrast change of about ±15 %.
@@ -395,7 +395,7 @@ export function decodeBlind(px: Pixels): BlindResult | null {
   for (const cand of ranked.slice(0, 6)) {
     const r = vote(stats, weights, total, cand.gain, cand.shift);
     const text = parseFrame(r.bits);
-    if (text !== null) return { text, confidence: r.confidence };
+    if (text !== null) return { text };
   }
   return null;
 }

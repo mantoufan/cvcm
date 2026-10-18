@@ -62,7 +62,7 @@ describe("blind watermark", () => {
     const blank = await load(sharp({ create: { width: 800, height: 500, channels: 4, background: "#ffffff" } }));
     const before = blank.data.slice();
     expect(embedBlind(blank, TEXT)).toBe(false);
-    expect(blank.data).toEqual(before);
+    expect(blank.data.every((v, i) => v === before[i])).toBe(true);
   });
 
   it("never greys the white paper between ink strokes", async () => {
@@ -70,7 +70,9 @@ describe("blind watermark", () => {
     const page = await load(sharp(Buffer.from(svg)));
     const before = page.data.slice();
     embedBlind(page, TEXT);
-    for (let i = 0; i < before.length; i += 4) if (before[i] === 255) expect(page.data[i]).toBe(255);
+    let greyed = 0;
+    for (let i = 0; i < before.length; i += 4) if (before[i] === 255 && page.data[i] !== 255) greyed++;
+    expect(greyed).toBe(0);
   });
 
   it("corrects against a lossy copy", async () => {
