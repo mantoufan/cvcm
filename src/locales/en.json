@@ -2058,7 +2058,7 @@
     "blindFound": "Hidden mark found: “{text}”",
     "blindNone": "No hidden mark found. Cropping, rotation or heavy color edits can erase it.",
     "blindDone": "Invisible watermark added: “{text}”.",
-    "blindFailed": "This image is mostly blank or flat color, so the invisible watermark could not be hidden. The visible mark is fine. Tile a visible mark first, then export again.",
+    "blindFailed": "The invisible watermark could not be hidden: the image is mostly blank or flat color, or the export quality is too low. The visible mark is fine. Tile a visible mark or raise the quality, then export again.",
     "blindPlaceholder": "Empty = “cv.cm” + export date",
     "blindUnchecked": "Invisible watermark added: “{text}”. This device ran out of memory to double-check it.",
     "blindNoMemory": "This device ran out of memory, so no invisible watermark was added. The visible mark is fine."

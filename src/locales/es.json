@@ -812,7 +812,7 @@
     "blindFound": "Marca invisible encontrada: «{text}»",
     "blindNone": "No se encontró ninguna marca invisible. Recortar, rotar o editar mucho el color puede borrarla.",
     "blindDone": "Marca de agua invisible añadida: «{text}».",
-    "blindFailed": "Esta imagen es casi toda blanca o de un solo color, así que no se pudo ocultar la marca invisible. La marca visible está bien. Repite primero una marca visible y vuelve a exportar.",
+    "blindFailed": "No se pudo ocultar la marca invisible: la imagen es casi toda blanca o de un color, o la calidad de exportación es demasiado baja. La marca visible está bien. Repite una marca visible o sube la calidad y vuelve a exportar.",
     "blindPlaceholder": "Vacío = cv.cm + fecha de exportación",
     "blindUnchecked": "Marca de agua invisible añadida: «{text}», pero el dispositivo no tuvo memoria para comprobarla.",
     "blindNoMemory": "El dispositivo se quedó sin memoria y no se añadió la marca invisible. La marca visible está bien."
