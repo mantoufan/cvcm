@@ -170,7 +170,8 @@ export function t(path: string, vars?: Record<string, string | number>): string 
   let text = typeof node === "string" ? node : path;
   if (vars) {
     for (const [key, value] of Object.entries(vars)) {
-      text = text.replaceAll(`{${key}}`, String(value));
+      // A replacer function keeps "$&" and friends in user text literal.
+      text = text.replaceAll(`{${key}}`, () => String(value));
     }
   }
   return text;

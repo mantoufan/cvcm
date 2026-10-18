@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, image, and PDF tools",
     "titleClip": "Pastebin — online clipboard, no account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
-    "titleWatermark": "Watermark ID copies and photos — free, no upload — cv.cm",
+    "titleWatermark": "Watermark ID copies and photos + invisible watermark — free, no upload — cv.cm",
     "titleCollage": "Photo collage maker — cv.cm",
     "titleConvert": "Image converter — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
@@ -14,7 +14,7 @@
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
     "description": "On-device browser tools. Image and PDF files stay in this tab.",
-    "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
+    "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, add an invisible watermark that tells you which copy leaked, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "Free QR code generator — cv.cm",
     "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
@@ -1636,7 +1636,7 @@
     },
     "watermark": {
       "name": "ID Watermark & Redact",
-      "blurb": "Tile a for-use-only mark on ID copies and drag boxes to black out numbers. Nothing is uploaded."
+      "blurb": "Tile a for-use-only mark on ID copies, add an invisible watermark, and box out numbers. Nothing is uploaded."
     },
     "collage": {
       "name": "Photo collage",
@@ -2047,7 +2047,21 @@
     "redactOn": "Drag on the preview to cover a number, face, or plate.",
     "redactTip": "Use a black box for ID numbers and QR codes. Fine mosaic can sometimes be guessed back.",
     "collageOptional": "Combine into one image (optional)",
-    "redactCollage": "Collage mode: switch to Single photo to draw boxes. Boxes on each photo carry into the collage."
+    "redactCollage": "Collage mode: switch to Single photo to draw boxes. Boxes on each photo carry into the collage.",
+    "blindTitle": "Invisible watermark",
+    "blindOn": "Add an invisible watermark on export",
+    "blindText": "Hidden text",
+    "blindBytes": "{n}/{max} bytes",
+    "blindHint": "The hidden text sits in the image brightness and survives JPEG compression and resizing, such as chat-app resends. Cropping, rotating or a mostly blank page can break it. Put the recipient and date here so a leaked copy tells you which one it was.",
+    "blindDetect": "Check an image for a hidden mark",
+    "blindDetecting": "Checking…",
+    "blindFound": "Hidden mark found: “{text}”",
+    "blindNone": "No hidden mark found. Cropping, rotation or heavy color edits can erase it.",
+    "blindDone": "Invisible watermark added: “{text}”.",
+    "blindFailed": "The invisible watermark could not be hidden: the image is mostly blank or flat color, or the export quality is too low. The visible mark is fine. Tile a visible mark or raise the quality, then export again.",
+    "blindPlaceholder": "Empty = “cv.cm” + export date",
+    "blindUnchecked": "Invisible watermark added: “{text}”. This device ran out of memory to double-check it.",
+    "blindNoMemory": "This device ran out of memory, so no invisible watermark was added. The visible mark is fine."
   },
   "collage": {
     "title": "Photo collage maker",
@@ -2312,14 +2326,14 @@
     "watermark": {
       "q1": "Does adding a watermark upload my photos?",
       "a1": "No. ID copies and photos stay in this tab. The canvas stamps the mark here. Closing the tab discards the files. Export also strips EXIF.",
-      "q2": "Can I watermark many photos at once?",
-      "a2": "Yes. Add a batch, then download one file or a ZIP of PNG or JPEG.",
+      "q2": "What is the invisible watermark, and can it trace a leak?",
+      "a2": "It is a short hidden text (up to 16 bytes) written into the image brightness on export, on by default. Give each recipient different text, such as “Bank A 10-18”. If a copy turns up elsewhere, drop it on “Check an image for a hidden mark” to read it. It survives JPEG compression and resizing; cropping or rotation can break it. It is a lead, not legal proof. By default it holds “cv.cm” and the export date, nothing personal; switch it off under Invisible watermark.",
       "q3": "Can I watermark an ID or passport copy?",
       "a3": "Yes. Use For-use only so a tiled “for [org] use only” line covers the photo. Open Redact to black out the ID number too. Work stays in this tab. A watermark is a deterrent, not a legal guarantee. Some offices still want an unmarked copy.",
       "q4": "Can I remove a watermark?",
       "a4": "No. This tool only adds a mark. It will not erase watermarks from photos.",
       "q5": "Which formats work?",
-      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP. Text, a logo, or both."
+      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP. Text, a logo, or both. Add a batch and download one file or a ZIP."
     },
     "collage": {
       "q1": "Is this a photo collage maker?",
