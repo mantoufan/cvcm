@@ -462,7 +462,6 @@ function blindFieldset(): HTMLElement {
         maxlength: "80",
         placeholder: t("watermark.blindPlaceholder"),
         value: state.blindText,
-        // Clip only once an IME composition ends, or pinyin / kana input breaks near the limit.
         onInput: (e: Event) => {
           state.blindText = (e.target as HTMLInputElement).value;
           syncBlindCount();
@@ -486,11 +485,12 @@ function blindFieldset(): HTMLElement {
   );
 }
 
-/** Hidden text: the field when filled, otherwise the visible text (one line, its date dropped: the date travels separately). */
+/**
+ * Hidden text: the field when filled, otherwise the visible text on one line with any
+ * YYYY-MM-DD dropped (a preset stamped on another day included): the export date travels separately.
+ */
 function blindText(): string {
-  const date = todayStamp();
-  const own = state.blindText.trim();
-  const base = own || state.text.split(date).join(" ");
+  const base = state.blindText.trim() || state.text.replace(/\d{4}-\d{2}-\d{2}/g, " ");
   return base.replace(/\s+/g, " ").trim();
 }
 
@@ -512,7 +512,7 @@ function blindCount(): string {
 }
 
 function syncBlindCount(): void {
-  const el = document.getElementById("wm-blind-count");
+  const el = mode === "watermark" ? document.getElementById("wm-blind-count") : null;
   if (el) el.textContent = blindCount();
 }
 

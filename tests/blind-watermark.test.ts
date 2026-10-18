@@ -112,4 +112,17 @@ describe("blind watermark", () => {
       expect(decodeBlind(await via(px, (s) => s.jpeg({ quality: 70 })))).toEqual(payload);
     }
   });
+
+  it("cuts between packed phrases and drops lone surrogates", () => {
+    // 38 bytes of escapes, then a phrase that packs to one byte: it must fit whole.
+    const head = "龘".repeat(12) + "ab";
+    expect(fitBlindText(head + "办理使用").text).toBe(head + "办理使用");
+    expect(blindPayloadOf("Bank A \uD83D", "2026-10-18").text).toBe("Bank A ");
+  });
+
+  it("still reads marks from the first release", async () => {
+    // tests/fixtures/blind-v1.jpg: 160-bit v1 frame "cv.cm 2026-10-18", 640 px, JPEG q85.
+    expect(decodeBlind(await load(sharp("tests/fixtures/blind-v1.jpg")))).toEqual({ text: "cv.cm 2026-10-18", date: "" });
+  });
 });
+

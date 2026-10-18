@@ -29,7 +29,6 @@ export interface BlindPayload {
   date: string;
 }
 
-export type BlindResult = BlindPayload;
 
 /** Encoded text bytes. Preset phrases pack to one byte each; longer text means fewer repeats. */
 export const BLIND_MAX_BYTES = 40;
@@ -85,22 +84,23 @@ const ESCAPE = 0xfe;
 /** Longest entries first, so greedy matching takes "办理使用" before "办理". */
 const DICT_ORDER = DICT.map((w, i) => ({ w, i })).sort((a, b) => b.w.length - a.w.length);
 
-/** Packed: ASCII as itself, dictionary phrases as one byte, anything else as 0xFE + UTF-16. */
-function packText(s: string): Uint8Array {
-  const out: number[] = [];
+type Token = { text: string; bytes: number[] };
+
+/** Packed tokens: ASCII as itself, dictionary phrases as one byte, anything else as 0xFE + UTF-16. */
+function packTokens(s: string): Token[] {
+  const out: Token[] = [];
   for (let i = 0; i < s.length; ) {
     const hit = DICT_ORDER.find(({ w }) => s.startsWith(w, i));
     if (hit) {
-      out.push(DICT_BASE + hit.i);
+      out.push({ text: hit.w, bytes: [DICT_BASE + hit.i] });
       i += hit.w.length;
       continue;
     }
     const c = s.charCodeAt(i);
-    if (c < 0x80) out.push(c);
-    else out.push(ESCAPE, c >> 8, c & 0xff);
+    out.push({ text: s[i], bytes: c < 0x80 ? [c] : [ESCAPE, c >> 8, c & 0xff] });
     i += 1;
   }
-  return Uint8Array.from(out);
+  return out;
 }
 
 function unpackText(b: Uint8Array): string | null {
@@ -124,35 +124,51 @@ function unpackText(b: Uint8Array): string | null {
   return s;
 }
 
-function utf16Bytes(s: string): Uint8Array {
-  const out = new Uint8Array(s.length * 2);
-  for (let i = 0; i < s.length; i++) {
-    out[2 * i] = s.charCodeAt(i) >> 8;
-    out[2 * i + 1] = s.charCodeAt(i) & 0xff;
-  }
+function utf16Units(ch: string): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < ch.length; i++) out.push(ch.charCodeAt(i) >> 8, ch.charCodeAt(i) & 0xff);
   return out;
 }
 
-const ENCODINGS = [
-  (s: string) => new TextEncoder().encode(s),
-  utf16Bytes,
-  packText,
-] as const;
+/** Per-character tokens (code points stay whole). */
+function charTokens(s: string, enc: (ch: string) => number[]): Token[] {
+  return [...s].map((ch) => ({ text: ch, bytes: enc(ch) }));
+}
 
-/** Text as stored: whichever of UTF-8 / UTF-16 / packed keeps the most text in the fewest bytes. */
-function encodeText(text: string): { bytes: Uint8Array; mode: number; text: string } {
+const TOKENIZERS: ((s: string) => Token[])[] = [
+  (s) => charTokens(s, (ch) => [...new TextEncoder().encode(ch)]),
+  (s) => charTokens(s, utf16Units),
+  packTokens,
+];
+
+/** Lone surrogates would not survive UTF-8 and would never verify; drop them. */
+function wellFormed(text: string): string {
+  return text.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "");
+}
+
+let lastEncoded: { input: string; out: { bytes: Uint8Array; mode: number; text: string } } | null = null;
+
+/**
+ * Text as stored: whichever of UTF-8 / UTF-16 / packed keeps the most text in the fewest bytes.
+ * Cutting happens between tokens, so a phrase that packs to one byte is never split.
+ */
+function encodeText(input: string): { bytes: Uint8Array; mode: number; text: string } {
+  if (lastEncoded?.input === input) return lastEncoded.out;
+  const text = wellFormed(input);
   let best: { bytes: Uint8Array; mode: number; text: string } | null = null;
-  ENCODINGS.forEach((enc, mode) => {
+  TOKENIZERS.forEach((tokenize, mode) => {
     let kept = "";
-    for (const ch of text) {
-      if (enc(kept + ch).length > BLIND_MAX_BYTES) break;
-      kept += ch;
+    const bytes: number[] = [];
+    for (const tok of tokenize(text)) {
+      if (bytes.length + tok.bytes.length > BLIND_MAX_BYTES) break;
+      kept += tok.text;
+      bytes.push(...tok.bytes);
     }
-    const bytes = enc(kept);
     if (!best || kept.length > best.text.length || (kept.length === best.text.length && bytes.length < best.bytes.length)) {
-      best = { bytes, mode, text: kept };
+      best = { bytes: Uint8Array.from(bytes), mode, text: kept };
     }
   });
+  lastEncoded = { input, out: best! };
   return best!;
 }
 
@@ -294,11 +310,15 @@ function parseLegacy(bits: Uint8Array): BlindPayload | null {
   }
 }
 
-/** Every frame size a reader must try, with its parser. */
-const FRAMES: { bits: number; parse: (bits: Uint8Array) => BlindPayload | null }[] = [
-  ...Array.from({ length: BLIND_MAX_BYTES + 1 }, (_, len) => ({ bits: (HEAD + len + 4) * 8, parse: parseFrame })),
-  { bits: LEGACY_BITS, parse: parseLegacy },
-];
+/** Every frame size a reader must try, with its parsers (v2 length 12 and legacy share 160 bits). */
+const FRAMES: { bits: number; parsers: ((bits: Uint8Array) => BlindPayload | null)[] }[] = (() => {
+  const bySize = new Map<number, ((bits: Uint8Array) => BlindPayload | null)[]>();
+  const add = (bits: number, parse: (bits: Uint8Array) => BlindPayload | null) =>
+    bySize.set(bits, [...(bySize.get(bits) ?? []), parse]);
+  for (let len = 0; len <= BLIND_MAX_BYTES; len++) add((HEAD + len + 4) * 8, parseFrame);
+  add(LEGACY_BITS, parseLegacy);
+  return [...bySize].map(([bits, parsers]) => ({ bits, parsers }));
+})();
 
 // ---------- resampling (area when shrinking, bilinear when enlarging) ----------
 
@@ -558,13 +578,16 @@ function softs(stats: Float64Array, weights: Float64Array, gain: number, shift: 
 
 /** Try every frame size against one set of soft bits. */
 function readSofts(sb: Float64Array): BlindPayload | null {
+  const votes = new Float64Array(FRAME_MAX_BITS);
   for (const frame of FRAMES) {
-    const votes = new Float64Array(frame.bits);
+    votes.fill(0, 0, frame.bits);
     for (let i = 0; i < BLOCKS; i++) votes[PERM[i] % frame.bits] += sb[i];
     const bits = new Uint8Array(frame.bits);
     for (let k = 0; k < frame.bits; k++) bits[k] = votes[k] > 0 ? 1 : 0;
-    const found = frame.parse(bits);
-    if (found) return found;
+    for (const parse of frame.parsers) {
+      const found = parse(bits);
+      if (found) return found;
+    }
   }
   return null;
 }
@@ -575,7 +598,7 @@ function readSofts(sb: Float64Array): BlindPayload | null {
  * plain read fails we scan (g, c), rank by how close blocks sit to lattice centres
  * (independent of the frame size), and CRC-check the best few.
  */
-export function decodeBlind(px: Pixels): BlindResult | null {
+export function decodeBlind(px: Pixels): BlindPayload | null {
   if (px.width < 16 || px.height < 16) return null;
   return readCanon(canonical(px));
 }
