@@ -13,6 +13,7 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { zipStore } from "../../shared/zip";
+import { BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels, utf8Length } from "./blind";
 import {
   type Anchor,
   fitExportSize,
@@ -88,6 +89,8 @@ const state = {
   quality: 0.92,
   redactMode: "mosaic" as RedactMode,
   mosaicRatio: 0.03,
+  blind: true,
+  blindText: "",
   drawing: false,
   working: false,
 };
@@ -388,6 +391,7 @@ function controlsRail(): HTMLElement {
       slider("wm-gap", t("watermark.gap"), 0, 0.5, 0.01, state.gap, (v) => { state.gap = v; }),
       positionPad(),
     ),
+    blindFieldset(),
     h("fieldset", null,
       h("legend", null, t("watermark.exportTitle")),
       labeled(t("watermark.format"),
@@ -410,6 +414,95 @@ function controlsRail(): HTMLElement {
       collageOptions(),
     ),
   );
+}
+
+function blindFieldset(): HTMLElement {
+  const count = h("span", { class: "hint", id: "wm-blind-count" }, blindCount());
+  const result = h("p", { class: "status", id: "wm-blind-result", "aria-live": "polite" });
+  const detect = h("input", {
+    type: "file",
+    accept: "image/png,image/jpeg,image/webp,image/*",
+    class: "sr-only",
+    id: "wm-blind-detect",
+    onChange: (e: Event) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) void detectBlind(file, result);
+      (e.target as HTMLInputElement).value = "";
+    },
+  });
+  return h("fieldset", { class: "wm-blind" },
+    h("legend", null, t("watermark.blindTitle")),
+    h("label", { class: "check" },
+      h("input", {
+        id: "wm-blind",
+        type: "checkbox",
+        checked: state.blind,
+        onChange: (e: Event) => {
+          state.blind = (e.target as HTMLInputElement).checked;
+          scheduleSave();
+        },
+      }),
+      t("watermark.blindOn"),
+    ),
+    labeled(t("watermark.blindText"),
+      h("input", {
+        type: "text",
+        id: "wm-blind-text",
+        maxlength: String(BLIND_MAX_BYTES),
+        placeholder: defaultBlindText(),
+        value: state.blindText,
+        onInput: (e: Event) => {
+          const input = e.target as HTMLInputElement;
+          const clipped = clipUtf8(input.value);
+          if (clipped !== input.value) input.value = clipped;
+          state.blindText = clipped;
+          count.textContent = blindCount();
+          scheduleSave();
+        },
+      }),
+    ),
+    count,
+    h("p", { class: "hint" }, t("watermark.blindHint")),
+    h("label", { class: "chip file-chip", for: "wm-blind-detect" }, detect, t("watermark.blindDetect")),
+    result,
+  );
+}
+
+function defaultBlindText(): string {
+  return clipUtf8(`cv.cm ${todayStamp()}`);
+}
+
+function blindPayload(): string {
+  return clipUtf8(state.blindText.trim() || defaultBlindText());
+}
+
+function blindCount(): string {
+  return t("watermark.blindBytes", { n: String(utf8Length(blindPayload())), max: String(BLIND_MAX_BYTES) });
+}
+
+async function pixelsOf(source: Blob): Promise<Pixels> {
+  const bitmap = await createImageBitmap(source);
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) throw new Error("canvas");
+    ctx.drawImage(bitmap, 0, 0);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height);
+  } finally {
+    bitmap.close();
+  }
+}
+
+async function detectBlind(file: File, out: HTMLElement): Promise<void> {
+  out.textContent = t("watermark.blindDetecting");
+  try {
+    const found = decodeBlind(await pixelsOf(file));
+    out.textContent = found ? t("watermark.blindFound", { text: found.text }) : t("watermark.blindNone");
+  } catch {
+    out.textContent = t("watermark.errorDecode");
+  }
 }
 
 function wmLayoutPicker(): HTMLElement {
@@ -1145,10 +1238,44 @@ async function blobForSource(
     fit.width,
     fit.height,
   );
+  return encodeCanvas(canvas);
+}
+
+/** Set when the last export could not hide a readable invisible mark. */
+let blindMissed = 0;
+
+async function encodeCanvas(canvas: HTMLCanvasElement): Promise<Blob> {
   const mime = mimeForFormat(state.format);
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), mime, state.quality);
-  });
+  const encode = () =>
+    new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), mime, state.quality);
+    });
+  if (!state.blind) return encode();
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return encode();
+  const text = blindPayload();
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  let ok = embedBlind(img, text);
+  ctx.putImageData(img, 0, 0);
+  let blob = await encode();
+  if (ok && blob.type !== "image/png") {
+    // JPEG / WebP: read the real file back and correct against it until it decodes.
+    for (let round = 0; ; round++) {
+      const back = await pixelsOf(blob);
+      ok = decodeBlind(back)?.text === text;
+      if (ok || round === 2) break;
+      embedBlind(img, text, 1, back);
+      ctx.putImageData(img, 0, 0);
+      blob = await encode();
+    }
+  }
+  if (!ok) blindMissed += 1;
+  return blob;
+}
+
+function blindStatus(): string {
+  if (!state.blind) return "";
+  return blindMissed ? t("watermark.blindFailed") : t("watermark.blindDone", { text: blindPayload() });
 }
 
 async function blobFor(item: Item): Promise<Blob> {
@@ -1163,11 +1290,12 @@ async function downloadOne(): Promise<void> {
     return;
   }
   state.working = true;
+  blindMissed = 0;
   setStatus(t("watermark.working"));
   try {
     const blob = await blobForSource(source);
     downloadBlob(blob, outputFilename(source.name, blob.type));
-    setStatus("");
+    setStatus(blindStatus());
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {
@@ -1190,6 +1318,7 @@ async function downloadAll(): Promise<void> {
     return;
   }
   state.working = true;
+  blindMissed = 0;
   setStatus(t("watermark.working"));
   try {
     const entries = [];
@@ -1211,7 +1340,7 @@ async function downloadAll(): Promise<void> {
     const packed = new ArrayBuffer(zip.byteLength);
     new Uint8Array(packed).set(zip);
     downloadBlob(new Blob([packed], { type: "application/zip" }), "cvcm-watermark.zip");
-    setStatus("");
+    setStatus(blindStatus());
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {
@@ -1247,6 +1376,8 @@ type WmDraft = {
     preset: WmPreset | null;
     redactMode?: RedactMode;
     mosaicRatio?: number;
+    blind?: boolean;
+    blindText?: string;
   };
   files: { name: string; type: string; blob: Blob; redactions?: Redaction[] }[];
   logo: { name: string; type: string; blob: Blob } | null;
@@ -1282,6 +1413,8 @@ async function persistWatermark(): Promise<void> {
       preset: state.preset,
       redactMode: state.redactMode,
       mosaicRatio: state.mosaicRatio,
+      blind: state.blind,
+      blindText: state.blindText,
     },
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file, redactions: it.redactions })),
     logo: state.logo

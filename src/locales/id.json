@@ -3,7 +3,7 @@
     "title": "cv.cm — papan klip, gambar, dan PDF",
     "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
-    "titleWatermark": "Watermark fotokopi KTP & foto — gratis, tanpa unggah — cv.cm",
+    "titleWatermark": "Watermark fotokopi KTP & foto + watermark tak terlihat — gratis, tanpa unggah — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Alat peramban di perangkat. Gambar dan PDF tetap di tab ini.",
     "titleConvert": "Konverter gambar — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Ubah MP3, M4A, OGG, AAC, FLAC ke WAV di browser. Pilih 44,1 / 48 kHz. Tanpa unggah.",
     "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
-    "descWatermark": "Beri watermark foto dan fotokopi KTP di browser. Ulangi miring “Hanya untuk …” beserta tanggal, sensor NIK, ekspor PNG, JPEG, atau ZIP sekaligus. EXIF dihapus. File tidak keluar dari tab.",
+    "descWatermark": "Beri watermark foto dan fotokopi KTP di browser. Ulangi miring “Hanya untuk …” beserta tanggal, otomatis tambah watermark tak terlihat untuk melacak salinan yang bocor, sensor NIK, ekspor PNG, JPEG, atau ZIP sekaligus. EXIF dihapus. File tidak keluar dari tab.",
     "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
     "titleQr": "Pembuat kode QR gratis — cv.cm",
     "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
@@ -390,7 +390,7 @@
     },
     "watermark": {
       "name": "Watermark & Sensor KTP",
-      "blurb": "Cap hanya untuk pada fotokopi KTP, tarik kotak untuk sensor NIK. Tanpa unggah."
+      "blurb": "Cap hanya untuk pada fotokopi KTP, tambah watermark tak terlihat, tarik kotak untuk sensor NIK. Tanpa unggah."
     },
     "collage": {
       "name": "Kolase foto",
@@ -801,7 +801,18 @@
     "redactOn": "Tarik di pratinjau untuk menutup nomor, wajah, atau pelat.",
     "redactTip": "Pakai kotak hitam untuk NIK, nomor kartu, dan kode QR. Mosaik halus kadang bisa ditebak.",
     "collageOptional": "Gabung jadi satu gambar (opsional)",
-    "redactCollage": "Mode kolase tidak bisa menggambar kotak. Kembali ke Satu foto untuk menyensor tiap foto; sensornya ikut ke kolase."
+    "redactCollage": "Mode kolase tidak bisa menggambar kotak. Kembali ke Satu foto untuk menyensor tiap foto; sensornya ikut ke kolase.",
+    "blindTitle": "Watermark tak terlihat",
+    "blindOn": "Tambahkan watermark tak terlihat saat ekspor",
+    "blindText": "Teks tersembunyi",
+    "blindBytes": "{n}/{max} byte",
+    "blindHint": "Watermark tak terlihat disimpan di kecerahan gambar dan tetap terbaca setelah kompresi JPEG atau ubah ukuran (misalnya dikirim ulang lewat aplikasi chat). Pemotongan, rotasi, atau gambar yang hampir kosong bisa menghapusnya. Tulis penerima dan tanggal agar tahu salinan mana yang bocor.",
+    "blindDetect": "Periksa watermark tersembunyi di gambar",
+    "blindDetecting": "Memeriksa…",
+    "blindFound": "Watermark tersembunyi ditemukan: “{text}”",
+    "blindNone": "Tidak ada watermark tersembunyi. Pemotongan, rotasi, atau edit warna berat bisa menghapusnya.",
+    "blindDone": "Watermark tak terlihat ditambahkan: “{text}”.",
+    "blindFailed": "Gambar ini sebagian besar kosong atau satu warna, jadi watermark tak terlihat tidak bisa disisipkan. Watermark yang terlihat tetap aman. Ulangi watermark terlihat dulu, lalu ekspor lagi."
   },
   "collage": {
     "title": "Pembuat kolase foto",
@@ -1066,8 +1077,8 @@
     "watermark": {
       "q1": "Menambah watermark mengunggah foto?",
       "a1": "Tidak. Salinan identitas juga tetap di tab ini. Kanvas browser yang menandai. Tutup tab, file dibuang. Ekspor juga menghapus EXIF.",
-      "q2": "Bisa banyak foto sekaligus?",
-      "a2": "Ya. Tambah batch, unduh satu atau ZIP PNG/JPEG.",
+      "q2": "Apa itu watermark tak terlihat? Bisakah melacak siapa yang membocorkan?",
+      "a2": "Teks pendek (maks. 16 byte) yang disisipkan ke kecerahan gambar saat ekspor, aktif secara bawaan. Tulis berbeda untuk tiap penerima, misalnya “Bank A 18-10”. Jika salinan muncul di tempat lain, masukkan ke “Periksa watermark tersembunyi di gambar” untuk membacanya. Tahan kompresi JPEG dan ubah ukuran; pemotongan atau rotasi bisa merusaknya. Ini petunjuk, bukan bukti hukum.",
       "q3": "Bisa cap salinan KTP atau paspor?",
       "a3": "Ya. Pakai «Hanya untuk» agar teks tujuan menutupi foto. Tanpa unggah. Ini pencegah, bukan jaminan hukum. Beberapa kantor tetap minta salinan tanpa cap.",
       "q4": "Bisa hapus watermark?",

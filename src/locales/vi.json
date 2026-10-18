@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, ảnh và PDF",
     "titleClip": "Clipboard trực tuyến — chia sẻ chữ không cần tài khoản — cv.cm",
     "descClip": "Clipboard kiểu Pastebin. Chia sẻ chữ, ảnh, tệp bằng liên kết. Không tài khoản. Xóa sau 10 lần xem hoặc 24 giờ.",
-    "titleWatermark": "Đóng dấu bản sao CCCD, ảnh — miễn phí, không tải lên — cv.cm",
+    "titleWatermark": "Đóng dấu bản sao CCCD, ảnh + watermark ẩn — miễn phí, không tải lên — cv.cm",
     "titleCollage": "Ghép ảnh collage — cv.cm",
     "description": "Công cụ trình duyệt trên máy. Ảnh và PDF ở lại tab này.",
     "titleConvert": "Chuyển định dạng ảnh — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Đổi MP3, M4A, OGG, AAC, FLAC thành WAV trên trình duyệt. Chọn 44.1 / 48 kHz. Không tải lên.",
     "titleData": "Định dạng JSON, Base64, CSV sang JSON — cv.cm",
     "descData": "Làm đẹp JSON, CSV ↔ JSON, Base64, URL encode, Markdown sang HTML. Trong tab này.",
-    "descWatermark": "Đóng dấu ảnh và bản sao giấy tờ ngay trong trình duyệt. Lặp chéo dòng “Chỉ dùng cho …” kèm ngày, làm mờ số giấy tờ, xuất hàng loạt PNG, JPEG hoặc ZIP. Xóa EXIF. Tệp không rời tab.",
+    "descWatermark": "Đóng dấu ảnh và bản sao giấy tờ ngay trong trình duyệt. Lặp chéo dòng “Chỉ dùng cho …” kèm ngày, tự thêm watermark ẩn để biết bản nào bị lộ, làm mờ số giấy tờ, xuất hàng loạt PNG, JPEG hoặc ZIP. Xóa EXIF. Tệp không rời tab.",
     "descCollage": "Làm collage trong trình duyệt. Lưới và cỡ Instagram. Không tải lên.",
     "titleQr": "Tạo mã QR miễn phí — cv.cm",
     "descQr": "Tạo mã QR từ URL hoặc chữ trong trình duyệt, tải PNG. Không tải lên.",
@@ -390,7 +390,7 @@
     },
     "watermark": {
       "name": "Đóng dấu & che CCCD",
-      "blurb": "Đóng dấu chỉ dùng cho lên giấy tờ, kéo khung che số. Không tải lên."
+      "blurb": "Đóng dấu chỉ dùng cho lên giấy tờ, thêm watermark ẩn, kéo khung che số. Không tải lên."
     },
     "collage": {
       "name": "Ghép ảnh",
@@ -801,7 +801,18 @@
     "redactOn": "Kéo trên ảnh xem trước để che số, khuôn mặt hoặc biển số.",
     "redactTip": "Dùng ô đen cho số CCCD, số thẻ và mã QR. Mosaic mịn đôi khi có thể bị đoán lại.",
     "collageOptional": "Ghép thành một ảnh (tùy chọn)",
-    "redactCollage": "Chế độ ghép ảnh không vẽ khung được. Về Một ảnh để che từng ảnh; phần che sẽ theo vào ảnh ghép."
+    "redactCollage": "Chế độ ghép ảnh không vẽ khung được. Về Một ảnh để che từng ảnh; phần che sẽ theo vào ảnh ghép.",
+    "blindTitle": "Watermark ẩn",
+    "blindOn": "Thêm watermark ẩn khi xuất (mắt thường không thấy)",
+    "blindText": "Nội dung ẩn",
+    "blindBytes": "{n}/{max} byte",
+    "blindHint": "Watermark ẩn nằm trong độ sáng của ảnh, vẫn đọc được sau khi nén JPEG hoặc đổi kích thước (ví dụ gửi lại qua ứng dụng chat). Cắt, xoay hoặc ảnh gần như trắng trơn có thể làm mất. Ghi bên nhận và ngày để khi bị lộ biết đó là bản nào.",
+    "blindDetect": "Kiểm tra watermark ẩn trong ảnh",
+    "blindDetecting": "Đang kiểm tra…",
+    "blindFound": "Tìm thấy watermark ẩn: “{text}”",
+    "blindNone": "Không tìm thấy watermark ẩn. Ảnh bị cắt, xoay hoặc chỉnh màu mạnh có thể làm mất.",
+    "blindDone": "Đã thêm watermark ẩn “{text}”.",
+    "blindFailed": "Ảnh này phần lớn trống hoặc một màu nên không giấu được watermark ẩn. Dấu nhìn thấy vẫn bình thường. Hãy lặp dấu nhìn thấy trước rồi xuất lại."
   },
   "collage": {
     "title": "Ghép ảnh collage",
@@ -1066,8 +1077,8 @@
     "watermark": {
       "q1": "Thêm watermark có tải ảnh lên không?",
       "a1": "Không. Bản sao giấy tờ cũng ở lại tab này. Canvas đóng dấu tại chỗ. Đóng tab là bỏ. Xuất cũng gỡ EXIF.",
-      "q2": "Làm nhiều ảnh một lúc được không?",
-      "a2": "Được. Thêm hàng loạt rồi tải một ảnh hoặc ZIP PNG/JPEG.",
+      "q2": "Watermark ẩn là gì? Có biết được ai làm lộ ảnh không?",
+      "a2": "Đó là một đoạn chữ ngắn (tối đa 16 byte) giấu vào độ sáng của ảnh khi xuất, bật sẵn. Ghi khác nhau cho từng bên nhận, như “Ngân hàng A 18/10”. Nếu ảnh xuất hiện ở nơi khác, thả vào “Kiểm tra watermark ẩn trong ảnh” để đọc. Chịu được nén JPEG và đổi kích thước; cắt hoặc xoay có thể làm mất. Đây là manh mối, không phải bằng chứng pháp lý.",
       "q3": "Có đóng dấu bản sao CMND hoặc hộ chiếu được không?",
       "a3": "Được. Dùng «Chỉ dùng cho» để lặp dòng mục đích lên ảnh. Không tải lên. Đây là rào cản, không phải bảo đảm pháp lý. Một số nơi vẫn đòi bản không dấu.",
       "q4": "Gỡ watermark được không?",
