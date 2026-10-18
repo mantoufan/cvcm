@@ -1078,13 +1078,13 @@
       "q1": "Thêm watermark có tải ảnh lên không?",
       "a1": "Không. Bản sao giấy tờ cũng ở lại tab này. Canvas đóng dấu tại chỗ. Đóng tab là bỏ. Xuất cũng gỡ EXIF.",
       "q2": "Watermark ẩn là gì? Có biết được ai làm lộ ảnh không?",
-      "a2": "Đó là một đoạn chữ ngắn (tối đa 16 byte) giấu vào độ sáng của ảnh khi xuất, bật sẵn. Ghi khác nhau cho từng bên nhận, như “Ngân hàng A 18/10”. Nếu ảnh xuất hiện ở nơi khác, thả vào “Kiểm tra watermark ẩn trong ảnh” để đọc. Chịu được nén JPEG và đổi kích thước; cắt hoặc xoay có thể làm mất. Đây là manh mối, không phải bằng chứng pháp lý.",
+      "a2": "Đó là một đoạn chữ ngắn (tối đa 16 byte) giấu vào độ sáng của ảnh khi xuất, bật sẵn. Ghi khác nhau cho từng bên nhận, như “Ngân hàng A 18/10”. Nếu ảnh xuất hiện ở nơi khác, thả vào “Kiểm tra watermark ẩn trong ảnh” để đọc. Chịu được nén JPEG và đổi kích thước; cắt hoặc xoay có thể làm mất. Đây là manh mối, không phải bằng chứng pháp lý. Mặc định chỉ chứa “cv.cm” và ngày xuất, không có thông tin cá nhân; có thể tắt ở mục Watermark ẩn.",
       "q3": "Có đóng dấu bản sao CMND hoặc hộ chiếu được không?",
       "a3": "Được. Dùng «Chỉ dùng cho» để lặp dòng mục đích lên ảnh. Không tải lên. Đây là rào cản, không phải bảo đảm pháp lý. Một số nơi vẫn đòi bản không dấu.",
       "q4": "Gỡ watermark được không?",
       "a4": "Không. Công cụ này chỉ thêm dấu, không xóa watermark có sẵn.",
       "q5": "Định dạng nào?",
-      "a5": "Vào PNG, JPEG, WebP, GIF. Ra PNG, JPEG hoặc WebP. Chữ, logo, hoặc cả hai."
+      "a5": "Vào PNG, JPEG, WebP, GIF. Ra PNG, JPEG hoặc WebP. Chữ, logo, hoặc cả hai. Có thể thêm cả lô và tải từng tệp hoặc ZIP."
     },
     "collage": {
       "q1": "Đây là công cụ ghép ảnh?",

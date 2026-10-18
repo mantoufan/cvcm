@@ -1078,13 +1078,13 @@
       "q1": "¿Añadir una marca de agua sube las fotos?",
       "a1": "No. Las copias de identidad también se quedan en esta pestaña. El lienzo pone la marca aquí. Al cerrar se descartan. La exportación también quita el EXIF.",
       "q2": "¿Qué es la marca de agua invisible? ¿Sirve para saber quién filtró una copia?",
-      "a2": "Es un texto corto (hasta 16 bytes) que se oculta en el brillo de la imagen al exportar; viene activada. Escribe uno distinto para cada destinatario, como «Banco A 18-10». Si una copia aparece en otro sitio, suéltala en «Buscar una marca invisible en una imagen» para leerlo. Resiste la compresión JPEG y el cambio de tamaño; recortar o rotar puede romperla. Es una pista, no una prueba legal.",
+      "a2": "Es un texto corto (hasta 16 bytes) que se oculta en el brillo de la imagen al exportar; viene activada. Escribe uno distinto para cada destinatario, como «Banco A 18-10». Si una copia aparece en otro sitio, suéltala en «Buscar una marca invisible en una imagen» para leerlo. Resiste la compresión JPEG y el cambio de tamaño; recortar o rotar puede romperla. Es una pista, no una prueba legal. Por defecto solo lleva «cv.cm» y la fecha de exportación, nada personal; desactívala en Marca de agua invisible.",
       "q3": "¿Puedo marcar una copia de DNI o pasaporte?",
       "a3": "Sí. Usa «Solo para» para teselar “solo para [org]” sobre la foto. Nada se sube. Es un disuasorio, no una garantía legal. Algunas oficinas piden una copia sin marca.",
       "q4": "¿Puedo quitar una marca de agua?",
       "a4": "No. Esta herramienta solo añade marcas; no borra las existentes.",
       "q5": "¿Qué formatos?",
-      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP. Texto, logo, o ambos."
+      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP. Texto, logo, o ambos. Añade un lote y descarga un archivo o un ZIP."
     },
     "collage": {
       "q1": "¿Es un creador de collages?",

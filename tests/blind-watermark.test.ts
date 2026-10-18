@@ -65,6 +65,14 @@ describe("blind watermark", () => {
     expect(blank.data).toEqual(before);
   });
 
+  it("never greys the white paper between ink strokes", async () => {
+    const svg = `<svg width="1200" height="700"><rect width="1200" height="700" fill="#fff"/>${Array.from({ length: 10 }, (_, i) => `<text x="80" y="${80 + i * 60}" font-size="36" fill="#111">NAME ZHANG SAN 110101199001011234</text>`).join("")}</svg>`;
+    const page = await load(sharp(Buffer.from(svg)));
+    const before = page.data.slice();
+    embedBlind(page, TEXT);
+    for (let i = 0; i < before.length; i += 4) if (before[i] === 255) expect(page.data[i]).toBe(255);
+  });
+
   it("corrects against a lossy copy", async () => {
     const px = await load(sharp(PHOTOS[1]));
     embedBlind(px, TEXT);

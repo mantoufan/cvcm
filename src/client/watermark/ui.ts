@@ -13,7 +13,9 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { zipStore } from "../../shared/zip";
-import { BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels, utf8Length } from "./blind";
+import { utf8Bytes } from "../../shared/clip";
+import { canvasToBlob, decodeImage } from "../decode";
+import { BLIND_MAX_BYTES, clipUtf8, decodeBlind, embedBlind, type Pixels } from "./blind";
 import {
   type Anchor,
   fitExportSize,
@@ -451,14 +453,11 @@ function blindFieldset(): HTMLElement {
         maxlength: String(BLIND_MAX_BYTES),
         placeholder: defaultBlindText(),
         value: state.blindText,
-        onInput: (e: Event) => {
-          const input = e.target as HTMLInputElement;
-          const clipped = clipUtf8(input.value);
-          if (clipped !== input.value) input.value = clipped;
-          state.blindText = clipped;
-          count.textContent = blindCount();
-          scheduleSave();
+        // Clip only once an IME composition ends, or pinyin / kana input breaks near the limit.
+        onInput: (e: InputEvent) => {
+          if (!e.isComposing) setBlindText(e.target as HTMLInputElement, count);
         },
+        onCompositionend: (e: Event) => setBlindText(e.target as HTMLInputElement, count),
       }),
     ),
     count,
@@ -466,6 +465,14 @@ function blindFieldset(): HTMLElement {
     h("label", { class: "chip file-chip", for: "wm-blind-detect" }, detect, t("watermark.blindDetect")),
     result,
   );
+}
+
+function setBlindText(input: HTMLInputElement, count: HTMLElement): void {
+  const clipped = clipUtf8(input.value);
+  if (clipped !== input.value) input.value = clipped;
+  state.blindText = clipped;
+  count.textContent = blindCount();
+  scheduleSave();
 }
 
 function defaultBlindText(): string {
@@ -477,19 +484,20 @@ function blindPayload(): string {
 }
 
 function blindCount(): string {
-  return t("watermark.blindBytes", { n: String(utf8Length(blindPayload())), max: String(BLIND_MAX_BYTES) });
+  return t("watermark.blindBytes", { n: String(utf8Bytes(blindPayload())), max: String(BLIND_MAX_BYTES) });
 }
 
 async function pixelsOf(source: Blob): Promise<Pixels> {
-  const bitmap = await createImageBitmap(source);
+  const file = source instanceof File ? source : new File([source], "image", { type: source.type });
+  const { bitmap, width, height } = await decodeImage(file);
   try {
     const canvas = document.createElement("canvas");
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
+    canvas.width = width;
+    canvas.height = height;
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) throw new Error("canvas");
     ctx.drawImage(bitmap, 0, 0);
-    return ctx.getImageData(0, 0, canvas.width, canvas.height);
+    return ctx.getImageData(0, 0, width, height);
   } finally {
     bitmap.close();
   }
@@ -1226,9 +1234,10 @@ function setStatus(msg: string): void {
 }
 
 async function blobForSource(
-  source: { image: CanvasImageSource; width: number; height: number },
+  source: { image: CanvasImageSource; width: number; height: number; name: string },
   redactions: Redaction[] = currentRedactions(),
 ): Promise<Blob> {
+  const { name } = source;
   const fit = fitExportSize(source.width, source.height);
   const canvas = renderWatermark(
     source.image,
@@ -1238,49 +1247,57 @@ async function blobForSource(
     fit.width,
     fit.height,
   );
-  return encodeCanvas(canvas);
+  return encodeCanvas(canvas, name);
 }
 
-/** Set when the last export could not hide a readable invisible mark. */
-let blindMissed = 0;
+/** Files from the current export whose invisible mark could not be made readable. */
+let blindMissed: string[] = [];
+/** Payload used by the current export (the field may change while it runs). */
+let blindSent = "";
 
-async function encodeCanvas(canvas: HTMLCanvasElement): Promise<Blob> {
+async function encodeCanvas(canvas: HTMLCanvasElement, name: string): Promise<Blob> {
   const mime = mimeForFormat(state.format);
-  const encode = () =>
-    new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), mime, state.quality);
-    });
-  if (!state.blind) return encode();
-  const ctx = canvas.getContext("2d");
+  const encode = () => canvasToBlob(canvas, mime, state.quality);
+  const ctx = state.blind ? canvas.getContext("2d") : null;
   if (!ctx) return encode();
-  const text = blindPayload();
+  const text = blindSent || blindPayload();
   const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let ok = embedBlind(img, text);
+  embedBlind(img, text, 4, undefined, false);
   ctx.putImageData(img, 0, 0);
   let blob = await encode();
-  if (ok && blob.type !== "image/png") {
-    // JPEG / WebP: read the real file back and correct against it until it decodes.
+  let ok = false;
+  try {
+    // Check what was really written: the canvas (premultiplied alpha) for PNG,
+    // the re-decoded file for JPEG / WebP, correcting against it up to twice.
     for (let round = 0; ; round++) {
-      const back = await pixelsOf(blob);
+      const back = blob.type === "image/png" ? ctx.getImageData(0, 0, canvas.width, canvas.height) : await pixelsOf(blob);
       ok = decodeBlind(back)?.text === text;
-      if (ok || round === 2) break;
-      embedBlind(img, text, 1, back);
+      if (ok || round === 2 || blob.type === "image/png") break;
+      embedBlind(img, text, 1, back, false);
       ctx.putImageData(img, 0, 0);
       blob = await encode();
     }
+  } catch {
+    // Read-back can run out of canvas memory on phones; the file itself is fine.
   }
-  if (!ok) blindMissed += 1;
+  if (!ok) blindMissed.push(name);
   return blob;
 }
 
-function blindStatus(): string {
-  if (!state.blind) return "";
-  return blindMissed ? t("watermark.blindFailed") : t("watermark.blindDone", { text: blindPayload() });
+function startBlindExport(): void {
+  blindMissed = [];
+  blindSent = state.blind ? blindPayload() : "";
+}
+
+function blindStatus(batch: boolean): string {
+  if (!state.blind || !blindSent) return "";
+  if (!blindMissed.length) return t("watermark.blindDone", { text: blindSent });
+  return batch ? `${t("watermark.blindFailed")} (${blindMissed.join(", ")})` : t("watermark.blindFailed");
 }
 
 async function blobFor(item: Item): Promise<Blob> {
   if (!item.bitmap) throw new Error("decode");
-  return blobForSource({ image: item.bitmap, width: item.width, height: item.height }, item.redactions);
+  return blobForSource({ image: item.bitmap, width: item.width, height: item.height, name: item.file.name }, item.redactions);
 }
 
 async function downloadOne(): Promise<void> {
@@ -1290,12 +1307,12 @@ async function downloadOne(): Promise<void> {
     return;
   }
   state.working = true;
-  blindMissed = 0;
+  startBlindExport();
   setStatus(t("watermark.working"));
   try {
     const blob = await blobForSource(source);
     downloadBlob(blob, outputFilename(source.name, blob.type));
-    setStatus(blindStatus());
+    setStatus(blindStatus(false));
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {
@@ -1318,7 +1335,7 @@ async function downloadAll(): Promise<void> {
     return;
   }
   state.working = true;
-  blindMissed = 0;
+  startBlindExport();
   setStatus(t("watermark.working"));
   try {
     const entries = [];
@@ -1340,7 +1357,7 @@ async function downloadAll(): Promise<void> {
     const packed = new ArrayBuffer(zip.byteLength);
     new Uint8Array(packed).set(zip);
     downloadBlob(new Blob([packed], { type: "application/zip" }), "cvcm-watermark.zip");
-    setStatus(blindStatus());
+    setStatus(blindStatus(true));
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {

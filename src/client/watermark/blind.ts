@@ -35,6 +35,8 @@ const BLOCKS = GRID * GRID;
 const D = 8;
 /** Blocks flatter than this (luma std-dev) are not marked; decoding down-weights them. */
 const FLAT = 2.5;
+/** Luma at and above which pixels count as blank paper and are never changed. */
+const PAPER = 245;
 /** Largest luma change per canonical pixel per round. */
 const MAX_STEP = 6;
 const MAGIC = 0xc7;
@@ -50,10 +52,6 @@ export function clipUtf8(text: string, max = BLIND_MAX_BYTES): string {
     out += ch;
   }
   return out;
-}
-
-export function utf8Length(text: string): number {
-  return new TextEncoder().encode(text).length;
 }
 
 function crc16(bytes: Uint8Array): number {
@@ -189,7 +187,7 @@ function canonical(px: Pixels): Float32Array {
   return canon;
 }
 
-/** Spread a CANON×CANON luma residual over the full image (added equally to R, G, B). */
+/** Spread a CANON×CANON luma residual over the full image (added equally to R, G, B), sparing paper white. */
 function applyResidual(px: Pixels, res: Float32Array): void {
   const { data, width, height } = px;
   const vy = taps(CANON, height);
@@ -208,6 +206,11 @@ function applyResidual(px: Pixels, res: Float32Array): void {
       for (let k = hx.start[x]; k < hx.start[x + 1]; k++) r += line[hx.idx[k]] * hx.w[k];
       if (r > -0.05 && r < 0.05) continue;
       const i = base + x * 4;
+      // Full-resolution paper gate: one canonical pixel spans several real ones, and the
+      // white ones between ink strokes must stay white.
+      const paper = (PAPER - luma(data, i)) / 15;
+      if (paper <= 0) continue;
+      if (paper < 1) r *= paper;
       data[i] = data[i] + r;
       data[i + 1] = data[i + 1] + r;
       data[i + 2] = data[i + 2] + r;
@@ -239,7 +242,8 @@ function blockActivity(canon: Float32Array, bx: number, by: number): number {
 
 /**
  * Per-pixel masking weight on the canonical grid (0.1 flat … 1 textured): local gradient,
- * box-blurred so the weight itself never draws an edge.
+ * box-blurred so the weight itself never draws an edge. Paper-white pixels get 0: a few
+ * levels of grey on white paper is the one place the mark would show.
  */
 function textureMask(canon: Float32Array): Float32Array {
   const g = new Float32Array(CANON * CANON);
@@ -260,7 +264,8 @@ function textureMask(canon: Float32Array): Float32Array {
           const xx = Math.min(CANON - 1, Math.max(0, x + dx));
           s += g[yy * CANON + xx];
         }
-      m[y * CANON + x] = Math.min(1, Math.max(0.1, s / 9 / 3));
+      const paper = Math.min(1, Math.max(0, (PAPER - canon[y * CANON + x]) / 15));
+      m[y * CANON + x] = Math.min(1, Math.max(0.1, s / 9 / 3)) * paper;
     }
   return m;
 }
@@ -289,9 +294,9 @@ function soft(s: number): number {
 /**
  * Embed `text` (≤ 16 UTF-8 bytes) into `px` in place.
  * `measure` (use with rounds = 1) corrects against a re-decoded lossy copy (JPEG/WebP).
- * Returns true when the result decodes back to `text`.
+ * Returns true when the result decodes back to `text` (always false with `verify` off).
  */
-export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixels): boolean {
+export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixels, verify = true): boolean {
   const bits = frameBits(text);
   const want = clipUtf8(text);
   for (let round = 0; round < rounds; round++) {
@@ -302,7 +307,7 @@ export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixel
     for (let i = 0; i < BLOCKS; i++) {
       const bx = i % GRID;
       const by = (i / GRID) | 0;
-      // Texture masking: flat or near-white blocks stay untouched (a change there is visible).
+      // Texture masking: flat blocks stay untouched (a change there is visible); white paper is masked per pixel.
       if (blockActivity(canon, bx, by) < FLAT) continue;
       const stat = blockStat(canon, bx, by);
       const bit = bits[BIT_OF_BLOCK[i]];
@@ -319,6 +324,8 @@ export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixel
         const row = (by * P + r) * CANON + bx * P;
         for (let c = 0; c < P; c++) gain += WIN[r] * WIN[c] * WIN[r] * WIN[c] * mask[row + c];
       }
+      // Nothing here can carry the change (e.g. a text block on white paper with no ink pixels).
+      if (gain < 1e-3) continue;
       const amp = (target - stat) / (gain / WSUM);
       for (let r = 0; r < P; r++) {
         const row = (by * P + r) * CANON + bx * P;
@@ -332,13 +339,17 @@ export function embedBlind(px: Pixels, text: string, rounds = 4, measure?: Pixel
     if (moved === 0) break;
     applyResidual(px, res);
   }
-  return decodeBlind(px)?.text === want;
+  return verify && decodeBlind(px)?.text === want;
 }
 
-function vote(stats: Float64Array, weights: Float64Array, gain: number, shift: number): { bits: Uint8Array; score: number; confidence: number } {
+function vote(
+  stats: Float64Array,
+  weights: Float64Array,
+  total: number,
+  gain: number,
+  shift: number,
+): { bits: Uint8Array; score: number; confidence: number } {
   const votes = new Float64Array(FRAME_BITS);
-  let total = 0;
-  for (let i = 0; i < BLOCKS; i++) total += weights[i];
   for (let i = 0; i < BLOCKS; i++) votes[BIT_OF_BLOCK[i]] += weights[i] * soft(stats[i] * gain + shift);
   const bits = new Uint8Array(FRAME_BITS);
   let score = 0;
@@ -365,21 +376,24 @@ export function decodeBlind(px: Pixels): BlindResult | null {
     stats[i] = blockStat(canon, bx, by);
     weights[i] = Math.min(1, Math.max(0.05, (blockActivity(canon, bx, by) - FLAT / 2) / FLAT));
   }
-  const plain = vote(stats, weights, 1, 0);
+  let total = 0;
+  for (let i = 0; i < BLOCKS; i++) total += weights[i];
+  const plain = vote(stats, weights, total, 1, 0);
   const direct = parseFrame(plain.bits);
   if (direct !== null) return { text: direct, confidence: plain.confidence };
   const ranked: { gain: number; shift: number; score: number }[] = [];
-  for (let g = 0; g <= 120; g++) {
+  for (let g = 0; g <= 60; g++) {
     // 1/gain from 0.85 to 1.15 undoes a contrast change of about ±15 %.
-    const gain = 0.85 + g * 0.0025;
+    // A 0.005 step is off by at most 0.0025 × 255 ≈ 0.6 levels, well inside a D/4 margin.
+    const gain = 0.85 + g * 0.005;
     for (let c = 0; c < 16; c++) {
       const shift = (c * D) / 16;
-      ranked.push({ gain, shift, score: vote(stats, weights, gain, shift).score });
+      ranked.push({ gain, shift, score: vote(stats, weights, total, gain, shift).score });
     }
   }
   ranked.sort((a, b) => b.score - a.score);
   for (const cand of ranked.slice(0, 6)) {
-    const r = vote(stats, weights, cand.gain, cand.shift);
+    const r = vote(stats, weights, total, cand.gain, cand.shift);
     const text = parseFrame(r.bits);
     if (text !== null) return { text, confidence: r.confidence };
   }
