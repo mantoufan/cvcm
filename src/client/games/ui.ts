@@ -19,6 +19,7 @@ import {
 import { gameCheatLabels, gameCopy, gameFaqItems, gameName } from "../../shared/games-i18n";
 import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
 import { gamesHref } from "../../shared/path";
+import { GAME_OFFICIAL, OFFICIAL_CHECKED, type OfficialWay } from "../../shared/game-official";
 import { clearDraft, loadDraft, saveDraft } from "../session";
 
 const GAME_SCROLL_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]);
@@ -172,6 +173,7 @@ export function mountGame(host: HTMLElement, id: GameId): void {
       cheats: emulatorCheats(game),
     }),
     h("p", { class: "lede game-lead" }, copy.lead),
+    ...officialSection(game.id),
     ...(cheats.length
       ? [h("section", { class: "game-section", "aria-labelledby": "cheats-title" },
         h("h2", { id: "cheats-title" }, t("games.cheats")),
@@ -435,6 +437,26 @@ function player(spec: {
     });
   }
   return box;
+}
+
+/** Commercial games are never hosted: point players at stores that sell or stream them today. */
+function officialSection(id: GameId): HTMLElement[] {
+  const ways = GAME_OFFICIAL[id];
+  if (!ways) return [];
+  const item = (way: OfficialWay): HTMLElement =>
+    h("li", null,
+      h("a", { href: way.url, target: "_blank", rel: "noopener noreferrer" }, way.product),
+      ...(way.title ? [` (${way.title})`] : []),
+      ` · ${way.platform} · ${t(`games.official.${way.kind}`)}`,
+      ...(way.edition ? [` · ${t(`games.official.edition.${way.edition}`)}`] : []),
+    );
+  return [h("section", { class: "game-section", "aria-labelledby": "official-title" },
+    h("h2", { id: "official-title" }, t("games.official.title")),
+    ways.length
+      ? h("ul", { class: "game-official" }, ...ways.map(item))
+      : h("p", null, t("games.official.none")),
+    h("p", { class: "game-note muted" }, t("games.official.note", { date: OFFICIAL_CHECKED })),
+  )];
 }
 
 function controls(consoleId: Game["console"]): HTMLElement {
