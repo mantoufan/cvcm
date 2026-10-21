@@ -31,6 +31,7 @@
     "top3": "Your top three",
     "runnerUp": "Also strong",
     "ruledOut": "Ruled out by your answers",
+    "tiedWith": "Tied with",
     "focus": "Area to work on",
     "crisisTitle": "If you are thinking about hurting yourself",
     "crisisBody": "You deserve support right now. If you might act on these thoughts, call your local emergency number or go to the nearest emergency room. You can also reach a free, confidential crisis line: findahelpline.com lists lines in every country.",
@@ -38,19 +39,21 @@
   },
   "hub": {
     "title": "Free personality tests: MBTI, Big Five, love and career — cv.cm",
-    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, love language, attachment, conflict style, career, work style, money, chronotype, pet match, anime, face shape, self-esteem, anxiety and depression. No sign-up; answers stay in your browser.",
+    "description": "Free personality and psychology tests: 16 types (MBTI-style), Big Five, introvert or extrovert, Enneagram, love language, attachment, conflict style, career, work style, money, chronotype, pet match, face shape, self-esteem, anxiety and depression, plus game and anime fan quizzes: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar and anime archetypes. No sign-up; answers stay in your browser.",
     "h1": "Personality and psychology tests",
-    "lede": "Eighteen free tests, from 16 personality types and the Big Five to love languages, career interests, your work style and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
+    "lede": "Twenty-six free tests, from 16 personality types and the Big Five to love languages, career interests, Pokémon and Naruto fan quizzes and quick mental health self-checks. No sign-up, no email. Your answers are scored in your browser and never uploaded.",
     "groups": {
       "personality": "Personality",
       "love": "Love and relationships",
       "career": "Career and money",
       "fun": "Just for fun",
-      "wellbeing": "Wellbeing self-checks"
+      "wellbeing": "Wellbeing self-checks",
+      "games": "Games",
+      "anime": "Anime and animation"
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict."
+      "The wellbeing checks use published screening questionnaires (Rosenberg, GAD-7, PHQ-9). The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game and anime quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -1358,6 +1361,1505 @@
         "moderate": { "name": "Moderate depression (10–14)", "body": "Your symptoms are at a level where seeing a doctor or mental health professional is recommended. Depression is common and treatable." },
         "modsevere": { "name": "Moderately severe depression (15–19)", "body": "Your answers suggest significant symptoms. Please contact a doctor or mental health professional soon. Treatment such as therapy and medication helps most people." },
         "severe": { "name": "Severe depression (20–27)", "body": "Your answers suggest severe symptoms. Please reach out to a doctor or mental health professional as soon as possible, and let someone you trust know how you are feeling." }
+      }
+    },
+    "pokemon": {
+      "title": "Which Pokémon are you? Pokémon type personality quiz — cv.cm",
+      "description": "Free Pokémon personality quiz: answer 12 questions to find your Pokémon type (Fire, Water, Grass, Electric, Psychic, Fairy, Dragon, Ghost, Fighting or Normal) and the partner Pokémon that matches you. No sign-up.",
+      "h1": "Which Pokémon type are you?",
+      "lede": "Are you a Fire-type with a short fuse, a laid-back Normal-type or a mischievous Ghost? Answer 12 everyday questions to find your Pokémon type and a partner Pokémon that shares your personality.",
+      "about": [
+        "Each Pokémon type has a personality fans recognize at once: Fire is bold and passionate, Water goes with the flow, Grass is patient and nurturing, Ghost is mischievous. This quiz looks at how you spend your time, handle stress and treat your friends, and scores ten of the eighteen types.",
+        "Your result names the type you match best, a partner Pokémon to go with it and your scores for every type. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Nintendo, Creatures, GAME FREAK or The Pokémon Company; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "How many Pokémon types are there?",
+          "a": "Eighteen: Normal, Fire, Water, Grass, Electric, Ice, Fighting, Poison, Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, Dark, Steel and Fairy. This quiz uses the ten with the clearest personalities."
+        },
+        {
+          "q": "Which Pokémon am I?",
+          "a": "Your result gives a partner Pokémon for your type, such as Pikachu for Electric or Eevee for Normal, plus two more Pokémon of the same type that fit the same personality."
+        },
+        {
+          "q": "Is this an official Pokémon quiz?",
+          "a": "No. It is a free fan quiz for fun. Nothing you answer is saved or sent anywhere."
+        },
+        {
+          "q": "Why did I get a type I didn't expect?",
+          "a": "The quiz scores how you describe your habits, not your favorite Pokémon. If two types are close, the result also shows the runner-up; retake it on another day and see whether it changes."
+        }
+      ],
+      "items": [
+        {
+          "q": "It's a free Saturday. You…",
+          "options": [
+            "Go for a run or a hike: something that gets your heart pumping",
+            "Stay in with snacks and a long nap",
+            "Head to the beach, a pool or a lake",
+            "Stay up late with a horror movie or a mystery game"
+          ]
+        },
+        {
+          "q": "Pick a place to live:",
+          "options": [
+            "A cabin in a quiet forest",
+            "A neon city that never sleeps",
+            "A mountaintop that looks down on everything",
+            "A cozy cottage with a flower garden"
+          ]
+        },
+        {
+          "q": "Your friends count on you for…",
+          "options": [
+            "Hyping everyone up",
+            "Calm advice when things get messy",
+            "Seeing what's really going on before anyone says it",
+            "Having their back, no matter what"
+          ]
+        },
+        {
+          "q": "You face a big challenge. You…",
+          "options": [
+            "Train, prepare and keep pushing until you win",
+            "Aim even higher than anyone thought possible",
+            "Think it over until you find a clever way around it",
+            "Take it one step at a time and stay steady"
+          ]
+        },
+        {
+          "q": "Your energy on most days:",
+          "options": [
+            "Buzzing. You can't sit still",
+            "Slow and steady, like a growing tree",
+            "Depends entirely on the snacks nearby",
+            "Low by day, wide awake at night"
+          ]
+        },
+        {
+          "q": "Pick the weather:",
+          "options": [
+            "Blazing summer sun",
+            "A thunderstorm with lightning",
+            "Soft rain on the window",
+            "A foggy night under a full moon"
+          ]
+        },
+        {
+          "q": "What do people notice first about you?",
+          "options": [
+            "Your kindness",
+            "Your confidence",
+            "Your pranks and odd sense of humor",
+            "That you're hard to read"
+          ]
+        },
+        {
+          "q": "In a group project, you're the one who…",
+          "options": [
+            "Comes up with the big idea",
+            "Works fastest and finishes first",
+            "Makes sure everyone feels included",
+            "Does whatever needs doing, no fuss"
+          ]
+        },
+        {
+          "q": "Pick a snack:",
+          "options": [
+            "Spicy chips",
+            "Fresh fruit or a salad",
+            "Cake with way too much frosting",
+            "Whatever is in the fridge"
+          ]
+        },
+        {
+          "q": "Your biggest strength:",
+          "options": [
+            "Determination",
+            "Going with the flow",
+            "Ambition",
+            "Intuition"
+          ]
+        },
+        {
+          "q": "Someone is rude to you. You…",
+          "options": [
+            "Fire back right away",
+            "Let it roll off you",
+            "Rise above it: they're not worth your time",
+            "Find it secretly hilarious"
+          ]
+        },
+        {
+          "q": "Your ideal partner on an adventure:",
+          "options": [
+            "A loyal friend who never gives up",
+            "Someone who makes every day fun",
+            "A gentle soul who looks after everyone",
+            "A legendary companion you can ride into the sky"
+          ]
+        }
+      ],
+      "dims": {
+        "fire": "Fire",
+        "water": "Water",
+        "grass": "Grass",
+        "electric": "Electric",
+        "psychic": "Psychic",
+        "fairy": "Fairy",
+        "dragon": "Dragon",
+        "ghost": "Ghost",
+        "fighting": "Fighting",
+        "normal": "Normal"
+      },
+      "results": {
+        "fire": {
+          "name": "Fire type · partner: Charmander",
+          "body": "Passionate, bold and impossible to ignore. You throw yourself into everything and your enthusiasm is contagious, though your temper can flare as fast as it cools. Fellow Fire types: Arcanine and Cyndaquil."
+        },
+        "water": {
+          "name": "Water type · partner: Squirtle",
+          "body": "Calm, adaptable and easy to be around. You go with the flow, smooth over arguments and find a way around obstacles instead of through them. Fellow Water types: Vaporeon and Piplup."
+        },
+        "grass": {
+          "name": "Grass type · partner: Bulbasaur",
+          "body": "Patient, steady and quietly nurturing. You grow slowly but surely, look after the people around you and feel most like yourself outdoors. Fellow Grass types: Leafeon and Rowlet."
+        },
+        "electric": {
+          "name": "Electric type · partner: Pikachu",
+          "body": "Quick, bright and full of energy. You think fast, act faster and bring a spark to every room, but sitting still is hard for you. Fellow Electric types: Jolteon and Pachirisu."
+        },
+        "psychic": {
+          "name": "Psychic type · partner: Espeon",
+          "body": "Intuitive and thoughtful. You read people and situations before anyone speaks, and you prefer a clever plan to brute force. Fellow Psychic types: Gardevoir and Mew."
+        },
+        "fairy": {
+          "name": "Fairy type · partner: Sylveon",
+          "body": "Kind, charming and warm. You make people feel welcome and cared for, and there is more strength behind your gentleness than people expect. Fellow Fairy types: Clefairy and Togepi."
+        },
+        "dragon": {
+          "name": "Dragon type · partner: Dragonite",
+          "body": "Ambitious, proud and determined. You aim higher than anyone else and have the stubbornness to get there, with a soft spot for the few people you trust. Fellow Dragon types: Garchomp and Axew."
+        },
+        "ghost": {
+          "name": "Ghost type · partner: Gengar",
+          "body": "Mysterious and mischievous. You come alive at night, love a good prank and have a sense of humor people either adore or don't get. Fellow Ghost types: Mimikyu and Litwick."
+        },
+        "fighting": {
+          "name": "Fighting type · partner: Lucario",
+          "body": "Disciplined, loyal and protective. You train hard, keep your word and stand up for your friends without being asked. Fellow Fighting types: Riolu and Machop."
+        },
+        "normal": {
+          "name": "Normal type · partner: Eevee",
+          "body": "Easygoing, adaptable and full of potential. You are comfortable with yourself, get along with almost anyone and never say no to a snack or a nap. Fellow Normal types: Snorlax and Jigglypuff."
+        }
+      }
+    },
+    "genshin": {
+      "title": "Which Genshin Impact Vision would you get? Genshin character quiz — cv.cm",
+      "description": "Free Genshin Impact quiz: answer 12 questions to find the Vision (Anemo, Geo, Electro, Dendro, Hydro, Pyro or Cryo) that matches your ideals, and the Genshin characters who share it. No sign-up.",
+      "h1": "Which Genshin Impact Vision would you get?",
+      "lede": "In Teyvat, the gods grant Visions to people with great ambition. Answer 12 questions about what you value and how you act, and find out which of the seven elements would choose you.",
+      "about": [
+        "Each of Teyvat's seven nations follows an Archon and an ideal: freedom in Mondstadt (Anemo), contracts in Liyue (Geo), eternity in Inazuma (Electro), wisdom in Sumeru (Dendro), justice in Fontaine (Hydro), war and courage in Natlan (Pyro) and love in Snezhnaya (Cryo). This quiz matches your answers to those ideals.",
+        "Your result names your element, the ideal behind it and three playable characters who share it, with your scores for all seven. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by HoYoverse; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "What is a Vision in Genshin Impact?",
+          "a": "A Vision is a gem that lets its holder channel one element. The game says the gods grant them to people with great ambition or desire."
+        },
+        {
+          "q": "Which Genshin character am I?",
+          "a": "Your result lists three characters with the same element, for example Venti, Kaedehara Kazuha and Sucrose for Anemo. Pick the one whose story feels closest to yours."
+        },
+        {
+          "q": "Why is there no Traveler result?",
+          "a": "The Traveler can use several elements without a Vision, so the quiz scores the seven elements instead."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "What matters most to you?",
+          "options": [
+            "Freedom to go wherever the wind takes me",
+            "Keeping my word",
+            "Understanding how the world really works",
+            "Fairness for everyone"
+          ]
+        },
+        {
+          "q": "Pick a place to live:",
+          "options": [
+            "A windy town of bards and dandelion fields",
+            "A busy harbor full of merchants and lanterns",
+            "An island of cherry blossoms under a stormy sky",
+            "A palace of ice far in the north"
+          ]
+        },
+        {
+          "q": "A friend is in trouble. You…",
+          "options": [
+            "Charge in to help without a second thought",
+            "Stay by their side, quietly, for as long as it takes",
+            "Draw up a plan that will hold up for the long run",
+            "Make sure whoever caused it answers for it"
+          ]
+        },
+        {
+          "q": "How do you work?",
+          "options": [
+            "Steady and reliable, one stone at a time",
+            "In bursts of inspiration, whenever the mood strikes",
+            "I polish it until it's flawless",
+            "I research everything first"
+          ]
+        },
+        {
+          "q": "You get a windfall of Mora. You spend it on…",
+          "options": [
+            "A sensible investment",
+            "A feast for all your friends",
+            "Books and lessons",
+            "Something beautiful that will last forever"
+          ]
+        },
+        {
+          "q": "How do you show you care?",
+          "options": [
+            "A grand gesture, with an audience",
+            "Quiet sacrifices nobody notices",
+            "Dragging them off on a spontaneous adventure",
+            "Protecting them, whatever it costs"
+          ]
+        },
+        {
+          "q": "People describe you as…",
+          "options": [
+            "Free-spirited",
+            "Dependable",
+            "Determined, maybe stubborn",
+            "Elegant, but a little distant"
+          ]
+        },
+        {
+          "q": "Your ideal evening:",
+          "options": [
+            "A loud festival with fireworks",
+            "A night at the opera or a courtroom drama",
+            "Reading by lamplight",
+            "Stargazing alone on a cold, clear night"
+          ]
+        },
+        {
+          "q": "How do you handle change?",
+          "options": [
+            "Embrace it. The wind always shifts",
+            "Resist it. Some things should never change",
+            "Study it, then adapt",
+            "Flow around it like water"
+          ]
+        },
+        {
+          "q": "Your role in a team fight:",
+          "options": [
+            "Shield up and hold the line",
+            "All-out attack, set everything ablaze",
+            "Heal and keep the team standing",
+            "Precise, graceful strikes"
+          ]
+        },
+        {
+          "q": "What could you never forgive?",
+          "options": [
+            "A broken promise",
+            "An injustice left unpunished",
+            "Betraying the people you love",
+            "Being locked in a cage"
+          ]
+        },
+        {
+          "q": "Pick a power:",
+          "options": [
+            "Command lightning",
+            "Grow a forest in an instant",
+            "Summon fire",
+            "Freeze anything you touch"
+          ]
+        }
+      ],
+      "dims": {
+        "anemo": "Anemo",
+        "geo": "Geo",
+        "electro": "Electro",
+        "dendro": "Dendro",
+        "hydro": "Hydro",
+        "pyro": "Pyro",
+        "cryo": "Cryo"
+      },
+      "results": {
+        "anemo": {
+          "name": "Anemo: the ideal of freedom",
+          "body": "You follow the wind. You value freedom above almost everything, hate being tied down and bring a light, playful energy that lifts the people around you. Anemo characters: Venti, Kaedehara Kazuha and Sucrose."
+        },
+        "geo": {
+          "name": "Geo: the ideal of contracts",
+          "body": "Solid as stone. Your word is your bond, you plan for the long run and people trust you with what matters most. Geo characters: Zhongli, Navia and Noelle."
+        },
+        "electro": {
+          "name": "Electro: the ideal of eternity",
+          "body": "Resolute and exacting. Once you decide on something you see it through, and you want what you build to last forever. Electro characters: Raiden Shogun, Fischl and Yae Miko."
+        },
+        "dendro": {
+          "name": "Dendro: the ideal of wisdom",
+          "body": "Curious and thoughtful. You want to understand how things really work, you read everything and your patience grows into real insight. Dendro characters: Nahida, Tighnari and Alhaitham."
+        },
+        "hydro": {
+          "name": "Hydro: the ideal of justice",
+          "body": "Expressive and principled. You care deeply about fairness, feel things strongly and are not afraid of a dramatic moment when it is deserved. Hydro characters: Furina, Neuvillette and Xingqiu."
+        },
+        "pyro": {
+          "name": "Pyro: the ideal of war and courage",
+          "body": "Brave and warm-hearted. You charge in to protect your friends, light up every celebration and never back down from a fight that matters. Pyro characters: Hu Tao, Diluc and Bennett."
+        },
+        "cryo": {
+          "name": "Cryo: the ideal of love",
+          "body": "Cool on the surface, devoted underneath. You love quietly and loyally, make sacrifices nobody sees and carry yourself with grace. Cryo characters: Ganyu, Kamisato Ayaka and Wriothesley."
+        }
+      }
+    },
+    "sonic": {
+      "title": "Which Sonic character are you? Sonic the Hedgehog quiz — cv.cm",
+      "description": "Free Sonic the Hedgehog quiz: answer 12 questions to see whether you are Sonic, Tails, Knuckles, Amy, Shadow, Rouge, Cream or Silver. No sign-up.",
+      "h1": "Which Sonic character are you?",
+      "lede": "Fast and free like Sonic, clever like Tails or a loner like Shadow? Answer 12 questions about your habits and find your match among eight Sonic the Hedgehog characters.",
+      "about": [
+        "Sonic's friends and rivals each have a clear personality: Sonic lives for freedom and speed, Tails builds machines, Knuckles guards the Master Emerald, Amy never gives up on love, Shadow keeps everyone at a distance, Rouge hunts jewels, Cream minds her manners and Silver came from the future to change it.",
+        "This quiz scores your answers for all eight and shows your match and how close the others came. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by SEGA; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Who are the main Sonic characters?",
+          "a": "Sonic, Tails and Knuckles are the classic trio. Amy Rose, Shadow, Rouge, Cream and Silver joined in later games, and Dr. Eggman is the main villain."
+        },
+        {
+          "q": "Is Shadow a hero or a villain?",
+          "a": "He started as a rival in Sonic Adventure 2 and has fought on both sides since. He is driven by a promise from his past, which is why he often works alone."
+        },
+        {
+          "q": "Why isn't Dr. Eggman a result?",
+          "a": "This quiz sticks to Sonic's friends and rivals. Eggman fans can take it as a challenge to land on Shadow or Rouge."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers are scored in your browser and never saved."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your morning routine:",
+          "options": [
+            "Out the door before breakfast",
+            "Tinkering with a gadget over coffee",
+            "Training. Every single day",
+            "Planning a perfect date, down to the minute"
+          ]
+        },
+        {
+          "q": "Pick a hobby:",
+          "options": [
+            "Collecting jewels",
+            "Baking and tea parties with friends",
+            "Building machines from spare parts",
+            "Riding alone at night"
+          ]
+        },
+        {
+          "q": "A friend asks for help. You…",
+          "options": [
+            "\"On it!\" You're already gone",
+            "Politely ask what they need",
+            "Ask what's in it for you, with a wink, then help anyway",
+            "Help, while thinking about how it could go wrong later"
+          ]
+        },
+        {
+          "q": "Your biggest flaw:",
+          "options": [
+            "Impatience",
+            "You believe what people tell you, a little too easily",
+            "You come on strong when you like someone",
+            "You keep everyone at arm's length"
+          ]
+        },
+        {
+          "q": "Your role on a team:",
+          "options": [
+            "The brains",
+            "The muscle",
+            "The spy",
+            "The one who can see where this is all heading"
+          ]
+        },
+        {
+          "q": "Pick a place:",
+          "options": [
+            "Open roads and green hills",
+            "A floating island with something precious to guard",
+            "A quiet garden full of flowers",
+            "A ruined city you want to rebuild"
+          ]
+        },
+        {
+          "q": "Pick an item:",
+          "options": [
+            "A giant hammer",
+            "A wrench",
+            "A huge diamond",
+            "Gold rings that keep your power in check"
+          ]
+        },
+        {
+          "q": "When you're sad, you…",
+          "options": [
+            "Put on a brave smile and keep chasing your dreams",
+            "Talk it over with your best friend",
+            "Bottle it up and keep moving",
+            "Promise yourself you'll change how things turn out"
+          ]
+        },
+        {
+          "q": "What drives you?",
+          "options": [
+            "Freedom",
+            "Protecting what's yours",
+            "Love",
+            "A promise you made long ago"
+          ]
+        },
+        {
+          "q": "Your style:",
+          "options": [
+            "Sleek and stylish, always",
+            "A cute dress and a neat bow",
+            "Bright, bold and impossible to miss",
+            "Whatever has the most pockets for tools"
+          ]
+        },
+        {
+          "q": "How would people describe your manners?",
+          "options": [
+            "Polite and proper",
+            "Charming, with a lot of teasing",
+            "Blunt",
+            "Earnest and a little naive"
+          ]
+        },
+        {
+          "q": "Pick a power:",
+          "options": [
+            "Super speed",
+            "Flight",
+            "Moving things with your mind",
+            "Stopping time"
+          ]
+        }
+      ],
+      "dims": {
+        "sonic": "Sonic",
+        "tails": "Tails",
+        "knuckles": "Knuckles",
+        "amy": "Amy",
+        "shadow": "Shadow",
+        "rouge": "Rouge",
+        "cream": "Cream",
+        "silver": "Silver"
+      },
+      "results": {
+        "sonic": {
+          "name": "Sonic the Hedgehog",
+          "body": "Free, fast and fearless. You can't stand waiting, you do what feels right and you are first to help when it matters. You might want to slow down once in a while."
+        },
+        "tails": {
+          "name": "Miles \"Tails\" Prower",
+          "body": "Clever, loyal and always building something. You solve problems with your head, stick by your best friend and are braver than you think."
+        },
+        "knuckles": {
+          "name": "Knuckles the Echidna",
+          "body": "Strong, honest and protective. You take your duties seriously and will guard what matters with everything you have, even if you sometimes trust the wrong person."
+        },
+        "amy": {
+          "name": "Amy Rose",
+          "body": "Cheerful, determined and full of heart. You know what you want and chase it without giving up, and you stay optimistic when everyone else has stopped believing."
+        },
+        "shadow": {
+          "name": "Shadow the Hedgehog",
+          "body": "Serious, intense and driven by purpose. You keep your feelings to yourself and work best alone, but you never forget a promise."
+        },
+        "rouge": {
+          "name": "Rouge the Bat",
+          "body": "Stylish, witty and good at getting what you want. You like nice things and a bit of danger, and under the teasing you are a better friend than you let on."
+        },
+        "cream": {
+          "name": "Cream the Rabbit",
+          "body": "Sweet, polite and kind. You treat everyone with good manners, love a quiet afternoon with friends and are steadier than people expect."
+        },
+        "silver": {
+          "name": "Silver the Hedgehog",
+          "body": "Earnest, idealistic and always thinking ahead. You want to fix what is broken and change how the future turns out, even if you are a little naive about how."
+        }
+      }
+    },
+    "dnd-class": {
+      "title": "Which D&D class are you? Dungeons & Dragons class quiz — cv.cm",
+      "description": "Free D&D class quiz: answer 14 questions to see which of the 12 Dungeons & Dragons classes fits you, from barbarian, bard and cleric to rogue, warlock and wizard. No sign-up.",
+      "h1": "Which D&D class are you?",
+      "lede": "Would you rage, sing, pray or cast? Answer 14 questions about how you'd act on an adventure and find which of the 12 Dungeons & Dragons classes fits your personality.",
+      "about": [
+        "Dungeons & Dragons has twelve core classes: barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock and wizard. Each one is a way of solving problems as much as a set of powers, which makes them a good mirror for personality.",
+        "This quiz asks what you'd do in a tavern, at a locked door or in a fight, and scores all twelve classes. Use your result as inspiration for your next character. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Wizards of the Coast; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "What are the 12 D&D classes?",
+          "a": "Barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock and wizard. Some editions and books add more, such as the artificer."
+        },
+        {
+          "q": "What is the difference between a sorcerer, a warlock and a wizard?",
+          "a": "A wizard learns magic through study, a sorcerer is born with it, and a warlock gets it from a pact with a powerful patron."
+        },
+        {
+          "q": "Which D&D class is best for beginners?",
+          "a": "Fighter and barbarian are the simplest to play, and a cleric is a good start if you'd like some spells. Pick the class that sounds fun: you'll learn it faster."
+        },
+        {
+          "q": "Is this an official D&D quiz?",
+          "a": "No. It is a free fan quiz for fun, and your answers never leave your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your party walks into a tavern. You…",
+          "options": [
+            "Order the biggest drink and arm-wrestle a stranger",
+            "Jump on stage and start a song",
+            "Take the corner seat and watch the door",
+            "Ask the barkeep about local legends"
+          ]
+        },
+        {
+          "q": "A locked door blocks the way. You…",
+          "options": [
+            "Kick it down",
+            "Pick the lock",
+            "Read the runes on it and cast the right spell",
+            "Talk whoever has the key into opening it"
+          ]
+        },
+        {
+          "q": "Where does your power come from?",
+          "options": [
+            "Years of study",
+            "It was in my blood from birth",
+            "A deal with a mysterious being",
+            "The god I serve"
+          ]
+        },
+        {
+          "q": "Where do you feel at home?",
+          "options": [
+            "Deep in an ancient forest",
+            "On the wild frontier, following tracks",
+            "In a monastery high in the mountains",
+            "In a temple, among people who need you"
+          ]
+        },
+        {
+          "q": "What do you protect?",
+          "options": [
+            "The innocent",
+            "Nature",
+            "My party, from the front line",
+            "My own freedom"
+          ]
+        },
+        {
+          "q": "In a fight, you…",
+          "options": [
+            "Fly into a rage",
+            "Heal and protect your allies",
+            "Shoot from a distance and never miss",
+            "Move faster than they can follow, fists only"
+          ]
+        },
+        {
+          "q": "Your flaw:",
+          "options": [
+            "Too proud of your natural talent",
+            "You can't resist a secret, or a bargain",
+            "You hold yourself to an oath, even when it hurts",
+            "You rush in without thinking"
+          ]
+        },
+        {
+          "q": "Pick a companion:",
+          "options": [
+            "An animal friend from the wild",
+            "A strange familiar from another plane",
+            "A sword you've carried for years",
+            "Your lute"
+          ]
+        },
+        {
+          "q": "How do you train?",
+          "options": [
+            "Drills, every morning",
+            "Meditation",
+            "Prayer",
+            "I don't. The power just comes out of me"
+          ]
+        },
+        {
+          "q": "How do you solve problems?",
+          "options": [
+            "Charm",
+            "Knowledge",
+            "Patience and balance",
+            "Tactics"
+          ]
+        },
+        {
+          "q": "What are you looking for?",
+          "options": [
+            "Justice",
+            "Forbidden secrets",
+            "Harmony with the natural world",
+            "A way to control the wild power inside you"
+          ]
+        },
+        {
+          "q": "Your gear:",
+          "options": [
+            "Heavy armor and a shield with a holy symbol",
+            "Light leather and a few hidden daggers",
+            "A wooden staff with leaves still growing on it",
+            "Nothing but simple robes"
+          ]
+        },
+        {
+          "q": "The party would call you…",
+          "options": [
+            "The mysterious one",
+            "The healer",
+            "The lone wanderer",
+            "The storyteller"
+          ]
+        },
+        {
+          "q": "Pick a reward:",
+          "options": [
+            "A spellbook no one else can read",
+            "A seed from the oldest tree in the world",
+            "A trophy from the biggest beast you've beaten",
+            "A map of unexplored lands"
+          ]
+        }
+      ],
+      "dims": {
+        "barbarian": "Barbarian",
+        "bard": "Bard",
+        "cleric": "Cleric",
+        "druid": "Druid",
+        "fighter": "Fighter",
+        "monk": "Monk",
+        "paladin": "Paladin",
+        "ranger": "Ranger",
+        "rogue": "Rogue",
+        "sorcerer": "Sorcerer",
+        "warlock": "Warlock",
+        "wizard": "Wizard"
+      },
+      "results": {
+        "barbarian": {
+          "name": "Barbarian",
+          "body": "Bold, direct and full of energy. You act on instinct, say what you think and are the first one through the door. Your strength is real, and so is your loyalty to your party."
+        },
+        "bard": {
+          "name": "Bard",
+          "body": "Charming, creative and the life of the party. You solve problems with words and wit, collect stories everywhere you go and make every group better."
+        },
+        "cleric": {
+          "name": "Cleric",
+          "body": "Caring, faithful and steady. You hold the group together, heal what is hurt and draw strength from something bigger than yourself."
+        },
+        "druid": {
+          "name": "Druid",
+          "body": "Calm, wise and connected to nature. You feel most at home outdoors, think in long cycles and protect the balance others forget about."
+        },
+        "fighter": {
+          "name": "Fighter",
+          "body": "Disciplined, practical and dependable. You train, plan and hold the line. No flash, just reliable skill that keeps everyone alive."
+        },
+        "monk": {
+          "name": "Monk",
+          "body": "Focused, patient and self-disciplined. You value balance and inner calm, and when you do act, you are faster than anyone expects."
+        },
+        "paladin": {
+          "name": "Paladin",
+          "body": "Principled, brave and protective. You live by a code, stand up for people who can't defend themselves and keep your promises even when it costs you."
+        },
+        "ranger": {
+          "name": "Ranger",
+          "body": "Independent, observant and at home in the wild. You notice what others miss, prefer open country to crowded cities and are deadly accurate when it counts."
+        },
+        "rogue": {
+          "name": "Rogue",
+          "body": "Clever, quick and independent. You read a room in seconds, find the back way in and value your freedom more than anyone's rules."
+        },
+        "sorcerer": {
+          "name": "Sorcerer",
+          "body": "Gifted, expressive and a little unpredictable. Your talent comes naturally and runs on emotion, and learning to control it is your life's adventure."
+        },
+        "warlock": {
+          "name": "Warlock",
+          "body": "Mysterious, curious and ambitious. You are drawn to secrets and hidden knowledge, and you're willing to make bold bargains to get what you want."
+        },
+        "wizard": {
+          "name": "Wizard",
+          "body": "Curious, analytical and always studying. You believe the right knowledge solves any problem, and you'll happily spend all night reading to find it."
+        }
+      }
+    },
+    "naruto": {
+      "title": "Which Naruto character are you? Naruto personality quiz — cv.cm",
+      "description": "Free Naruto quiz: answer 12 questions to see whether you are Naruto, Sasuke, Sakura, Kakashi, Hinata, Shikamaru, Gaara, Itachi, Rock Lee or Jiraiya. No sign-up.",
+      "h1": "Which Naruto character are you?",
+      "lede": "Never give up like Naruto, think ten moves ahead like Shikamaru, or stay calm and unreadable like Itachi? Answer 12 questions and find your match among ten characters from Naruto.",
+      "about": [
+        "Naruto's ninja are memorable because each one has a clear way of living: Naruto's refusal to give up, Sasuke's pride, Rock Lee's hard work, Shikamaru's lazy genius, Hinata's quiet courage. This quiz looks at your dreams, your habits and how you treat rivals, and scores ten characters.",
+        "Your result names the character you match best and shows your scores for the others. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Masashi Kishimoto, Shueisha or Studio Pierrot; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Who are the main characters in Naruto?",
+          "a": "Team 7: Naruto Uzumaki, Sasuke Uchiha, Sakura Haruno and their teacher Kakashi Hatake. Hinata, Shikamaru, Gaara, Rock Lee, Itachi and Jiraiya are among the most popular of the rest."
+        },
+        {
+          "q": "Does the quiz contain spoilers?",
+          "a": "Only light ones. The questions and results describe each character's personality, not the plot twists."
+        },
+        {
+          "q": "Why isn't my favorite character a result?",
+          "a": "Ten results keep the quiz short. If you get a close runner-up, that character fits you too."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers are scored in your browser and never saved."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your dream:",
+          "options": [
+            "Be acknowledged by everyone in the village",
+            "Settle a score from your past",
+            "Become as strong as the people you look up to",
+            "See the world and write a best-seller about it"
+          ]
+        },
+        {
+          "q": "How do you study?",
+          "options": [
+            "Hard work beats talent: train until you drop",
+            "Do the bare minimum and still ace it",
+            "Study hard and top the written exam",
+            "Show up late with a book you shouldn't read in public"
+          ]
+        },
+        {
+          "q": "In a fight, you…",
+          "options": [
+            "Never give up, even when it looks hopeless",
+            "Think ten moves ahead",
+            "Put up a defense nothing can break",
+            "End it before it even starts"
+          ]
+        },
+        {
+          "q": "Your personality, in short:",
+          "options": [
+            "Loud and cheerful",
+            "Cool and distant",
+            "Shy, but brave when it counts",
+            "Laid-back and hard to rattle"
+          ]
+        },
+        {
+          "q": "Which story is closest to yours?",
+          "options": [
+            "I was lonely for a long time; now I have people who need me",
+            "I carry a burden I can't share with anyone",
+            "I was always in someone's shadow, so I trained harder",
+            "I've lost people, and it made me who I am"
+          ]
+        },
+        {
+          "q": "Pick a favorite:",
+          "options": [
+            "A big bowl of ramen",
+            "Watching the clouds go by",
+            "Pressing flowers",
+            "A long soak in a hot spring"
+          ]
+        },
+        {
+          "q": "Your role on a team:",
+          "options": [
+            "The strategist",
+            "The medic who can also punch through walls",
+            "The mentor who teaches with stories",
+            "The lone wolf"
+          ]
+        },
+        {
+          "q": "How do you deal with a rival?",
+          "options": [
+            "Challenge them every single day",
+            "Quietly make sure you surpass them",
+            "Cheer them on from a distance",
+            "Try to understand what made them that way"
+          ]
+        },
+        {
+          "q": "Your temper:",
+          "options": [
+            "Calm on the outside, a mean punch when pushed",
+            "Lazy until things get serious",
+            "I never raise my voice",
+            "Hot-blooded, all the time"
+          ]
+        },
+        {
+          "q": "Pick a fighting style:",
+          "options": [
+            "Sand that shields you on its own",
+            "A blade of lightning",
+            "Precise palm strikes",
+            "Illusions the enemy can't escape"
+          ]
+        },
+        {
+          "q": "What do you value most?",
+          "options": [
+            "The people of my village",
+            "My family, above everything",
+            "My own path",
+            "Experience and freedom"
+          ]
+        },
+        {
+          "q": "Your weak spot:",
+          "options": [
+            "Too stubborn to ever quit",
+            "Caring too much what others think",
+            "Self-doubt",
+            "Easily distracted by a good time"
+          ]
+        }
+      ],
+      "dims": {
+        "naruto": "Naruto",
+        "sasuke": "Sasuke",
+        "sakura": "Sakura",
+        "kakashi": "Kakashi",
+        "hinata": "Hinata",
+        "shikamaru": "Shikamaru",
+        "gaara": "Gaara",
+        "itachi": "Itachi",
+        "lee": "Rock Lee",
+        "jiraiya": "Jiraiya"
+      },
+      "results": {
+        "naruto": {
+          "name": "Naruto Uzumaki",
+          "body": "Loud, warm and impossible to discourage. You never give up, you never go back on your word, and you win people over by refusing to give up on them either."
+        },
+        "sasuke": {
+          "name": "Sasuke Uchiha",
+          "body": "Talented, proud and fiercely independent. You keep your feelings close and go your own way, and once you set a goal nothing pulls you off it."
+        },
+        "sakura": {
+          "name": "Sakura Haruno",
+          "body": "Smart, hardworking and stronger than people expect. You study, push yourself to keep up with the people you admire and pack a punch when pushed."
+        },
+        "kakashi": {
+          "name": "Kakashi Hatake",
+          "body": "Relaxed, perceptive and quietly brilliant. You are always a bit late and hard to rattle, but you never let your team down, because you know what losing people costs."
+        },
+        "hinata": {
+          "name": "Hinata Hyuga",
+          "body": "Gentle, shy and braver than anyone realizes. You cheer for others quietly, keep growing in your own way and stand firm when it really counts."
+        },
+        "shikamaru": {
+          "name": "Shikamaru Nara",
+          "body": "A lazy genius. You'd rather watch the clouds than work, but when it matters you see ten moves ahead and come up with the plan everyone else follows."
+        },
+        "gaara": {
+          "name": "Gaara",
+          "body": "Quiet, protective and deeply understanding. You know loneliness from the inside, which is why you look out for others and try to understand people before judging them."
+        },
+        "itachi": {
+          "name": "Itachi Uchiha",
+          "body": "Calm, gifted and hard to read. You never raise your voice, think several moves ahead and keep your feelings to yourself. People rarely see how much you carry."
+        },
+        "lee": {
+          "name": "Rock Lee",
+          "body": "Hardworking, hot-blooded and sincere. You prove that effort beats talent, train harder than anyone and treat every rival as a reason to improve."
+        },
+        "jiraiya": {
+          "name": "Jiraiya",
+          "body": "Free-spirited, funny and wise. You've seen a lot of the world, you teach through stories and you believe in the next generation more than they believe in themselves."
+        }
+      }
+    },
+    "demon-slayer": {
+      "title": "Which Demon Slayer breathing style are you? Demon Slayer quiz — cv.cm",
+      "description": "Free Demon Slayer quiz: answer 12 questions to find your Breathing style (Water, Flame, Thunder, Beast, Insect, Wind, Mist, Love, Sound or Stone) and the Demon Slayer character who shares it. No sign-up.",
+      "h1": "Which Demon Slayer breathing style are you?",
+      "lede": "Would you flow like Water, burn like Flame or strike like Thunder? Answer 12 questions about your personality and find the Breathing style, and the slayer, that matches you.",
+      "about": [
+        "In Demon Slayer: Kimetsu no Yaiba, swordsmen fight with Breathing styles. Water, Flame, Thunder, Wind and Stone are the main styles; others, such as Insect, Mist, Love and Sound, branched off from them, and Inosuke made up Beast Breathing on his own.",
+        "Each style suits a certain temperament, so this quiz looks at how you handle pressure, train and care for people. Your result names the style, the character who uses it and your scores for all ten. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Koyoharu Gotouge, Shueisha, Aniplex or ufotable; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "How many breathing styles are there in Demon Slayer?",
+          "a": "The story shows more than a dozen. Sun Breathing is the original; Water, Flame, Thunder, Wind and Stone are the main styles, and several others branched off from them."
+        },
+        {
+          "q": "Which breathing style does Tanjiro use?",
+          "a": "Tanjiro learns Water Breathing, then also uses Hinokami Kagura, the dance his family passed down, which is tied to Sun Breathing."
+        },
+        {
+          "q": "Why isn't Sun Breathing a result?",
+          "a": "Sun Breathing is the original style and only a few characters ever use it, so the quiz sticks to the styles slayers actually train in."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Under pressure, you…",
+          "options": [
+            "Adapt and flow around the problem",
+            "Panic, then pull off one perfect move",
+            "Charge straight in, yelling",
+            "Stay calm, maybe a little spaced out"
+          ]
+        },
+        {
+          "q": "Your friends describe you as…",
+          "options": [
+            "Warm and encouraging",
+            "Gentle, with a sharp edge",
+            "Rough on the outside, protective underneath",
+            "Flashy"
+          ]
+        },
+        {
+          "q": "How do you train?",
+          "options": [
+            "One move, practiced thousands of times",
+            "In the wild, my own way",
+            "Patiently, for years",
+            "I don't need much: I picked it up in two months"
+          ]
+        },
+        {
+          "q": "Pick a meal:",
+          "options": [
+            "A towering stack of sakura mochi",
+            "Sweet potatoes, with a loud \"Delicious!\" at every bite",
+            "Whatever I caught myself",
+            "Simple rice and a cup of tea"
+          ]
+        },
+        {
+          "q": "How do you show love?",
+          "options": [
+            "Openly, all the time",
+            "By protecting them fiercely and never saying it",
+            "With a big, dramatic gesture",
+            "With quiet prayers and a few tears"
+          ]
+        },
+        {
+          "q": "Your greatest strength:",
+          "options": [
+            "Kindness",
+            "Courage",
+            "Brains",
+            "Raw power"
+          ]
+        },
+        {
+          "q": "Your flaw:",
+          "options": [
+            "A coward until the moment it counts",
+            "You forget names, and sometimes why you came in",
+            "Your smile hides how angry you are",
+            "You can't do anything quietly"
+          ]
+        },
+        {
+          "q": "Where do you feel at home?",
+          "options": [
+            "By a mountain stream",
+            "Deep in the woods",
+            "A garden of wisteria and butterflies",
+            "A quiet mountain temple"
+          ]
+        },
+        {
+          "q": "What keeps you going?",
+          "options": [
+            "Protecting my family",
+            "Living up to the people who believed in me",
+            "Finding someone to love",
+            "Wiping out every last threat"
+          ]
+        },
+        {
+          "q": "Pick an aesthetic:",
+          "options": [
+            "Pink and green, soft as a ribbon",
+            "Yellow, with a lightning pattern",
+            "Gems, gold and a little explosive powder",
+            "Mist over the mountains"
+          ]
+        },
+        {
+          "q": "On a team, you…",
+          "options": [
+            "Shout \"Set your heart ablaze!\" and push everyone forward",
+            "Make the plan, flamboyantly",
+            "Hit harder than anyone else",
+            "Do the research and mix the medicine"
+          ]
+        },
+        {
+          "q": "Your energy is…",
+          "options": [
+            "A sudden flash",
+            "Overflowing with affection",
+            "A storm",
+            "Drifting, like clouds"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Water",
+        "flame": "Flame",
+        "thunder": "Thunder",
+        "beast": "Beast",
+        "insect": "Insect",
+        "wind": "Wind",
+        "mist": "Mist",
+        "love": "Love",
+        "sound": "Sound",
+        "stone": "Stone"
+      },
+      "results": {
+        "water": {
+          "name": "Water Breathing · Tanjiro Kamado, Giyu Tomioka",
+          "body": "Kind, adaptable and calm under pressure. You flow around problems instead of smashing through them, and you'll do anything to protect your family."
+        },
+        "flame": {
+          "name": "Flame Breathing · Kyojuro Rengoku",
+          "body": "Warm, brave and wholehearted. You encourage everyone around you, eat with gusto and live up to the people who believed in you. Set your heart ablaze."
+        },
+        "thunder": {
+          "name": "Thunder Breathing · Zenitsu Agatsuma",
+          "body": "Nervous until the moment it counts, then brilliant. You may doubt yourself out loud, but you have practiced one thing until it's perfect, and it's enough."
+        },
+        "beast": {
+          "name": "Beast Breathing · Inosuke Hashibira",
+          "body": "Wild, competitive and self-taught. You learn by doing, charge straight at every challenge and are more loyal to your friends than you'll ever admit."
+        },
+        "insect": {
+          "name": "Insect Breathing · Shinobu Kocho",
+          "body": "Gentle, clever and sharper than you look. You smile through everything, solve problems with knowledge and care, and keep a quiet fire burning underneath."
+        },
+        "wind": {
+          "name": "Wind Breathing · Sanemi Shinazugawa",
+          "body": "Fierce, blunt and intensely protective. You look rough on the outside, but everything you do is about keeping the people you love safe."
+        },
+        "mist": {
+          "name": "Mist Breathing · Muichiro Tokito",
+          "body": "Calm, gifted and a little dreamy. You pick things up fast, drift off easily and surprise everyone when your focus suddenly sharpens."
+        },
+        "love": {
+          "name": "Love Breathing · Mitsuri Kanroji",
+          "body": "Affectionate, open and stronger than you look. You wear your heart on your sleeve, love good food and good company, and your warmth is your power."
+        },
+        "sound": {
+          "name": "Sound Breathing · Tengen Uzui",
+          "body": "Flashy, confident and full of style. You do everything with flair, plan boldly and protect the people closest to you above all else."
+        },
+        "stone": {
+          "name": "Stone Breathing · Gyomei Himejima",
+          "body": "A gentle giant. You are patient, compassionate and unshakable, and your quiet strength is what everyone leans on when things get hard."
+        }
+      }
+    },
+    "jujutsu-kaisen": {
+      "title": "Which Jujutsu Kaisen character are you? JJK personality quiz — cv.cm",
+      "description": "Free Jujutsu Kaisen (JJK) quiz: answer 12 questions to see whether you are Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Satoru Gojo, Kento Nanami, Maki Zenin, Toge Inumaki or Aoi Todo. No sign-up.",
+      "h1": "Which Jujutsu Kaisen character are you?",
+      "lede": "A kind fighter like Yuji, a careful thinker like Megumi or the strongest, like Gojo? Answer 12 questions and find your match among eight Jujutsu Kaisen sorcerers.",
+      "about": [
+        "Jujutsu Kaisen's sorcerers stand out for their personalities as much as their cursed techniques: Yuji's big heart, Megumi's caution, Nobara's confidence, Gojo's playful arrogance, Nanami's hatred of overtime, Maki's drive to prove herself, Toge's few words and Todo's very specific obsessions.",
+        "This quiz scores all eight and shows your match and the runners-up. It avoids story spoilers. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Gege Akutami, Shueisha or MAPPA; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "Who are the main characters in Jujutsu Kaisen?",
+          "a": "First-years Yuji Itadori, Megumi Fushiguro and Nobara Kugisaki, and their teacher Satoru Gojo. Kento Nanami, Maki Zenin, Toge Inumaki and Aoi Todo are among the most popular sorcerers."
+        },
+        {
+          "q": "Why does Toge Inumaki only say rice ball ingredients?",
+          "a": "He uses Cursed Speech, so anything he says can become a command. He sticks to rice ball fillings such as \"salmon\" and \"bonito flakes\" to talk safely."
+        },
+        {
+          "q": "Does the quiz contain spoilers?",
+          "a": "No. Questions and results describe personality and early-story details only."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and nothing you answer is saved."
+        }
+      ],
+      "items": [
+        {
+          "q": "First day at a new school. You…",
+          "options": [
+            "Make friends with everyone",
+            "Quietly size people up",
+            "Make an entrance they'll remember",
+            "Ask everyone what their type is"
+          ]
+        },
+        {
+          "q": "Your work style:",
+          "options": [
+            "Clock out on time. Overtime is the enemy",
+            "Do the impossible, then brag about it",
+            "Work twice as hard to prove the doubters wrong",
+            "Say little, do a lot"
+          ]
+        },
+        {
+          "q": "Your sense of humor:",
+          "options": [
+            "Playful and a little smug",
+            "Dry and sarcastic",
+            "Built around very specific obsessions",
+            "You can make people laugh with one word"
+          ]
+        },
+        {
+          "q": "Where does your strength come from?",
+          "options": [
+            "The people around me",
+            "Being myself, no apologies",
+            "Proving I don't need what everyone else was born with",
+            "Knowing I'm the strongest"
+          ]
+        },
+        {
+          "q": "Pick a companion:",
+          "options": [
+            "A loyal dog",
+            "A rice ball",
+            "A hammer and a handful of nails",
+            "A good book in a quiet café"
+          ]
+        },
+        {
+          "q": "Your flaw:",
+          "options": [
+            "You put yourself last, every time",
+            "You overthink",
+            "You're a bit too aware of how good you are",
+            "You won't stop talking about your favorite idol"
+          ]
+        },
+        {
+          "q": "In a fight, you…",
+          "options": [
+            "Punch first, ask later",
+            "Grab a weapon. Any weapon",
+            "Call in backup",
+            "Say one word and it's over"
+          ]
+        },
+        {
+          "q": "Who do you save?",
+          "options": [
+            "Everyone I can",
+            "The people I think deserve it",
+            "Whoever the job says, done properly, then I go home",
+            "I do it my way, whatever anyone says"
+          ]
+        },
+        {
+          "q": "Your ideal weekend:",
+          "options": [
+            "Shopping in the big city",
+            "Training outdoors",
+            "Your favorite idol's handshake event",
+            "A tour of every dessert shop in town"
+          ]
+        },
+        {
+          "q": "What kind of leader are you?",
+          "options": [
+            "The teacher everyone looks up to",
+            "The reliable grown-up in the room",
+            "The quiet one who keeps everyone safe",
+            "I'd rather handle it alone"
+          ]
+        },
+        {
+          "q": "Your family story:",
+          "options": [
+            "Complicated. I left to make my own name",
+            "Raised by a grandparent whose last words I'll never forget",
+            "My best friend is my brother, as far as I'm concerned",
+            "My friends are my family"
+          ]
+        },
+        {
+          "q": "Your motto:",
+          "options": [
+            "\"Don't work a minute more than you're paid for\"",
+            "\"Be loud, be proud\"",
+            "\"Prove them wrong\"",
+            "\"Brothers for life\""
+          ]
+        }
+      ],
+      "dims": {
+        "yuji": "Yuji",
+        "megumi": "Megumi",
+        "nobara": "Nobara",
+        "gojo": "Gojo",
+        "nanami": "Nanami",
+        "maki": "Maki",
+        "toge": "Toge",
+        "todo": "Todo"
+      },
+      "results": {
+        "yuji": {
+          "name": "Yuji Itadori",
+          "body": "Kind, brave and incredibly physical. You make friends easily, put others before yourself and try to help everyone you can, just as your grandfather asked."
+        },
+        "megumi": {
+          "name": "Megumi Fushiguro",
+          "body": "Serious, careful and quietly loyal. You think before you act, choose your battles and keep a few people very close, along with your dogs."
+        },
+        "nobara": {
+          "name": "Nobara Kugisaki",
+          "body": "Confident, bold and proudly yourself. You moved to the big city to live your way, you speak your mind and you never shrink to fit in."
+        },
+        "gojo": {
+          "name": "Satoru Gojo",
+          "body": "Playful, brilliant and very sure of yourself. You make the impossible look easy, love sweets and want to raise a stronger generation than the one before."
+        },
+        "nanami": {
+          "name": "Kento Nanami",
+          "body": "Principled, sarcastic and deeply reliable. You do the job properly, hate overtime and are the grown-up everyone quietly depends on."
+        },
+        "maki": {
+          "name": "Maki Zenin",
+          "body": "Tough, determined and impossible to underestimate twice. You had to prove yourself without what others were born with, and you did it with hard work."
+        },
+        "toge": {
+          "name": "Toge Inumaki",
+          "body": "Kind, loyal and a person of few words. You choose your words carefully because they carry weight, and your friends know exactly how much you care."
+        },
+        "todo": {
+          "name": "Aoi Todo",
+          "body": "Eccentric, intense and a great friend once you're in. You have very strong opinions about your type and your idol, and you'd fight beside your \"brother\" forever."
+        }
+      }
+    },
+    "avatar-element": {
+      "title": "Which Avatar element are you? Avatar: The Last Airbender bending quiz — cv.cm",
+      "description": "Free Avatar: The Last Airbender quiz: answer 12 questions to find whether you would be a Waterbender, Earthbender, Firebender or Airbender, and the benders who share your element. No sign-up.",
+      "h1": "Which Avatar element would you bend?",
+      "lede": "Water, Earth, Fire or Air? Answer 12 questions about how you face problems and treat people, and find out which of the four nations you'd belong to in Avatar: The Last Airbender.",
+      "about": [
+        "In Avatar: The Last Airbender, each bending art reflects a way of life: Water is the element of change and community, Earth of strength and endurance, Fire of drive and willpower, and Air of freedom and detachment. This quiz matches your habits to those philosophies.",
+        "Your result names your element, famous benders who share it and your scores for all four. This is an unofficial fan quiz written for cv.cm. It is not affiliated with or endorsed by Nickelodeon or Paramount; the names belong to their owners."
+      ],
+      "faq": [
+        {
+          "q": "What are the four elements in Avatar?",
+          "a": "Water, Earth, Fire and Air, each tied to one nation: the Water Tribes, the Earth Kingdom, the Fire Nation and the Air Nomads. The Avatar is the only one who can bend all four."
+        },
+        {
+          "q": "Which element is the strongest?",
+          "a": "None of them. The show treats them as balanced, each with its own strengths, and the Avatar has to learn all four."
+        },
+        {
+          "q": "Can I be a non-bender?",
+          "a": "In the show, most people can't bend at all, and Sokka proves you don't need to. This quiz always picks the element that suits you best."
+        },
+        {
+          "q": "Is this quiz official?",
+          "a": "No. It is a free fan quiz, and your answers stay in your browser."
+        }
+      ],
+      "items": [
+        {
+          "q": "Your friends come to you for…",
+          "options": [
+            "Comfort when things fall apart",
+            "Straight talk and steady support",
+            "Motivation to go for it",
+            "A fresh way to look at things"
+          ]
+        },
+        {
+          "q": "Pick a place:",
+          "options": [
+            "A great walled city",
+            "A temple high in the mountains",
+            "A village on the ice by the sea",
+            "A volcanic island"
+          ]
+        },
+        {
+          "q": "Facing a problem, you…",
+          "options": [
+            "Attack it head-on",
+            "Stand firm and wait for the right moment",
+            "Avoid the fight if you can and find another way",
+            "Adapt and find a way around it"
+          ]
+        },
+        {
+          "q": "What do you value most?",
+          "options": [
+            "Freedom and peace",
+            "Family and community",
+            "Honesty and loyalty",
+            "Ambition and honor"
+          ]
+        },
+        {
+          "q": "Your biggest flaw:",
+          "options": [
+            "You hold grudges longer than you admit",
+            "A short temper",
+            "You run from responsibility",
+            "Stubborn as a rock"
+          ]
+        },
+        {
+          "q": "Pick a pet:",
+          "options": [
+            "A huge, gentle badger-mole",
+            "A loyal arctic dog",
+            "A dragon",
+            "A flying lemur"
+          ]
+        },
+        {
+          "q": "Your energy is…",
+          "options": [
+            "Intense",
+            "Light and playful",
+            "Calm on the surface, deep underneath",
+            "Grounded and patient"
+          ]
+        },
+        {
+          "q": "A friend lets you down. You…",
+          "options": [
+            "Let it go and move on",
+            "Tell them exactly what they did",
+            "Blow up, then cool off just as fast",
+            "Feel it deeply, then forgive in time"
+          ]
+        },
+        {
+          "q": "Pick a time of day:",
+          "options": [
+            "Night, under a full moon",
+            "Late afternoon, with a breeze",
+            "Midday, feet on solid ground",
+            "Sunrise"
+          ]
+        },
+        {
+          "q": "Your role on a team:",
+          "options": [
+            "The wall that never moves",
+            "The one who drives everyone forward",
+            "The peacemaker",
+            "The healer"
+          ]
+        },
+        {
+          "q": "Pick a hobby:",
+          "options": [
+            "Martial arts",
+            "Swimming or surfing",
+            "Wrestling or rock climbing",
+            "Gliding, or anything with a view"
+          ]
+        },
+        {
+          "q": "What would you fight for?",
+          "options": [
+            "Balance in the world",
+            "Your honor",
+            "The people who depend on you",
+            "Your home"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Water",
+        "earth": "Earth",
+        "fire": "Fire",
+        "air": "Air"
+      },
+      "results": {
+        "water": {
+          "name": "Waterbender",
+          "body": "Adaptable, caring and deeper than you look. You go with the flow until something matters, then you are unstoppable, and you'd do anything for your family and community. Fellow Waterbenders: Katara and Korra."
+        },
+        "earth": {
+          "name": "Earthbender",
+          "body": "Grounded, honest and stubborn in the best way. You wait for the right moment, stand your ground and never pretend to be someone you're not. Fellow Earthbenders: Toph Beifong and King Bumi."
+        },
+        "fire": {
+          "name": "Firebender",
+          "body": "Driven, passionate and full of willpower. You chase your goals hard and feel everything intensely, and you've learned that real strength comes from balance. Fellow Firebenders: Zuko and Uncle Iroh."
+        },
+        "air": {
+          "name": "Airbender",
+          "body": "Free-spirited, playful and peaceful. You'd rather find another way than fight, you value your freedom and you bring lightness to everyone around you. Fellow Airbenders: Aang and Jinora."
+        }
       }
     }
   }

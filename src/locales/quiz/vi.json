@@ -31,6 +31,7 @@
     "top3": "Ba nhóm cao nhất của bạn",
     "runnerUp": "Cũng nổi bật",
     "ruledOut": "Bị loại theo câu trả lời của bạn",
+    "tiedWith": "Đồng hạng với",
     "focus": "Khía cạnh cần cải thiện",
     "crisisTitle": "Nếu bạn đang nghĩ đến việc làm hại bản thân",
     "crisisBody": "Bạn xứng đáng được hỗ trợ ngay lúc này. Nếu bạn có thể hành động theo những suy nghĩ đó, hãy gọi số cấp cứu tại địa phương hoặc đến phòng cấp cứu gần nhất. Bạn cũng có thể liên hệ đường dây hỗ trợ khủng hoảng miễn phí và bảo mật: findahelpline.com liệt kê các đường dây ở mọi quốc gia.",
@@ -38,19 +39,21 @@
   },
   "hub": {
     "title": "Trắc nghiệm tính cách miễn phí: MBTI, Big Five, tình yêu — cv.cm",
-    "description": "Trắc nghiệm tính cách, tâm lý miễn phí: MBTI 16 nhóm, Big Five, hướng nội hướng ngoại, Enneagram, ngôn ngữ tình yêu, kiểu gắn bó, xử lý mâu thuẫn, hướng nghiệp, phong cách làm việc, tiền bạc, nhịp sinh học, thú cưng, anime, khuôn mặt, lòng tự trọng, lo âu, trầm cảm. Không cần đăng ký, câu trả lời chỉ nằm trong trình duyệt.",
+    "description": "Trắc nghiệm tính cách, tâm lý miễn phí: MBTI 16 nhóm, Big Five, hướng nội hướng ngoại, Enneagram, ngôn ngữ tình yêu, kiểu gắn bó, xử lý mâu thuẫn, hướng nghiệp, phong cách làm việc, tiền bạc, nhịp sinh học, thú cưng, khuôn mặt, lòng tự trọng, lo âu, trầm cảm, cùng các trắc nghiệm fan game và anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Kimetsu no Yaiba, Jujutsu Kaisen, Avatar và kiểu nhân vật anime. Không cần đăng ký, câu trả lời chỉ nằm trong trình duyệt.",
     "h1": "Trắc nghiệm tính cách và tâm lý",
-    "lede": "Mười tám bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp, phong cách làm việc và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
+    "lede": "Hai mươi sáu bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp, trắc nghiệm fan Pokémon, Naruto và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
     "groups": {
       "personality": "Tính cách",
       "love": "Tình yêu và các mối quan hệ",
       "career": "Nghề nghiệp và tiền bạc",
       "fun": "Cho vui",
-      "wellbeing": "Tự kiểm tra sức khỏe tinh thần"
+      "wellbeing": "Tự kiểm tra sức khỏe tinh thần",
+      "games": "Game",
+      "anime": "Anime và hoạt hình"
     },
     "about": [
       "Mỗi bài trắc nghiệm hiển thị toàn bộ câu hỏi trên một trang. Trả lời xong, nhấn nút, kết quả sẽ hiện ngay bên dưới kèm lời giải thích ngắn và biểu đồ điểm số.",
-      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết."
+      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game và anime là trắc nghiệm fan không chính thức, chỉ để cho vui."
     ],
     "faq": [
       { "q": "Các bài trắc nghiệm này có miễn phí không?", "a": "Có. Mọi bài đều miễn phí, không cần đăng ký, không cần email và không phải trả tiền để xem kết quả." },
@@ -1358,6 +1361,1505 @@
         "moderate": { "name": "Trầm cảm vừa (10–14)", "body": "Triệu chứng của bạn ở mức nên đi khám bác sĩ hoặc gặp chuyên gia sức khỏe tâm thần. Trầm cảm rất phổ biến và có thể điều trị được." },
         "modsevere": { "name": "Trầm cảm khá nặng (15–19)", "body": "Câu trả lời cho thấy triệu chứng đáng kể. Hãy sớm liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần. Các phương pháp như trị liệu tâm lý và thuốc giúp ích cho hầu hết mọi người." },
         "severe": { "name": "Trầm cảm nặng (20–27)", "body": "Câu trả lời cho thấy triệu chứng nặng. Hãy liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần càng sớm càng tốt, và cho một người bạn tin tưởng biết bạn đang cảm thấy thế nào." }
+      }
+    },
+    "pokemon": {
+      "title": "Bạn là Pokémon nào? Test Pokémon: trắc nghiệm hệ Pokémon — cv.cm",
+      "description": "Test Pokémon miễn phí: trả lời 12 câu hỏi để biết bạn thuộc hệ Pokémon nào (Lửa, Nước, Cỏ, Điện, Siêu linh, Tiên, Rồng, Ma, Giác đấu hay Thường) và Pokémon đồng hành hợp với bạn. Không cần đăng ký.",
+      "h1": "Bạn là Pokémon hệ nào?",
+      "lede": "Bạn là hệ Lửa nóng tính, hệ Thường thong thả hay hệ Ma tinh nghịch? Trả lời 12 câu hỏi đời thường để tìm hệ Pokémon của bạn và một Pokémon đồng hành có cùng tính cách.",
+      "about": [
+        "Mỗi hệ Pokémon có một tính cách mà fan nhận ra ngay: Lửa táo bạo và nhiệt huyết, Nước thuận theo dòng chảy, Cỏ kiên nhẫn và biết chăm sóc, Ma tinh nghịch. Bài trắc nghiệm xem cách bạn dùng thời gian, đối phó với áp lực và đối xử với bạn bè, rồi chấm điểm mười trong mười tám hệ.",
+        "Kết quả cho biết hệ hợp với bạn nhất, một Pokémon đồng hành đi kèm và điểm của bạn ở từng hệ. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Nintendo, Creatures, GAME FREAK hay The Pokémon Company bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Pokémon có bao nhiêu hệ?",
+          "a": "Mười tám: Thường, Lửa, Nước, Cỏ, Điện, Băng, Giác đấu, Độc, Đất, Bay, Siêu linh, Bọ, Đá, Ma, Rồng, Bóng tối, Thép và Tiên. Bài này dùng mười hệ có tính cách rõ nét nhất."
+        },
+        {
+          "q": "Tôi là Pokémon nào?",
+          "a": "Kết quả cho bạn một Pokémon đồng hành theo hệ, như Pikachu cho hệ Điện hay Eevee cho hệ Thường, cùng hai Pokémon khác cùng hệ có tính cách tương tự."
+        },
+        {
+          "q": "Đây có phải bài trắc nghiệm Pokémon chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí cho vui. Câu trả lời của bạn không được lưu hay gửi đi đâu cả."
+        },
+        {
+          "q": "Sao tôi lại ra một hệ không ngờ tới?",
+          "a": "Bài chấm theo cách bạn mô tả thói quen của mình, không theo Pokémon bạn thích. Nếu hai hệ sát điểm nhau, kết quả sẽ hiện cả hệ đứng thứ hai; hãy làm lại vào hôm khác xem có đổi không."
+        }
+      ],
+      "items": [
+        {
+          "q": "Một ngày thứ Bảy rảnh rỗi. Bạn…",
+          "options": [
+            "Chạy bộ hoặc leo núi: thứ gì đó khiến tim đập mạnh",
+            "Ở nhà với đồ ăn vặt và một giấc ngủ trưa thật dài",
+            "Ra biển, hồ bơi hoặc hồ nước",
+            "Thức khuya xem phim kinh dị hoặc chơi game giải đố bí ẩn"
+          ]
+        },
+        {
+          "q": "Chọn một nơi để sống:",
+          "options": [
+            "Căn chòi gỗ trong khu rừng yên tĩnh",
+            "Thành phố đèn neon không bao giờ ngủ",
+            "Đỉnh núi nhìn xuống mọi thứ",
+            "Căn nhà nhỏ ấm cúng có vườn hoa"
+          ]
+        },
+        {
+          "q": "Bạn bè trông cậy vào bạn để…",
+          "options": [
+            "Khuấy động tinh thần cả nhóm",
+            "Cho lời khuyên bình tĩnh khi mọi chuyện rối tung",
+            "Nhìn ra vấn đề thật trước khi ai kịp nói",
+            "Luôn đứng về phía họ, dù có chuyện gì"
+          ]
+        },
+        {
+          "q": "Bạn gặp một thử thách lớn. Bạn…",
+          "options": [
+            "Luyện tập, chuẩn bị và cố đến khi thắng",
+            "Đặt mục tiêu cao hơn cả điều ai cũng nghĩ là có thể",
+            "Suy nghĩ đến khi tìm ra một cách lách thông minh",
+            "Đi từng bước một và giữ vững nhịp"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn phần lớn các ngày:",
+          "options": [
+            "Rần rần. Không ngồi yên nổi",
+            "Chậm mà chắc, như cây đang lớn",
+            "Tùy hoàn toàn vào đồ ăn vặt gần đó",
+            "Ban ngày uể oải, ban đêm tỉnh như sáo"
+          ]
+        },
+        {
+          "q": "Chọn một kiểu thời tiết:",
+          "options": [
+            "Nắng hè chói chang",
+            "Giông bão có sấm chớp",
+            "Mưa nhẹ gõ lên cửa sổ",
+            "Đêm sương mù dưới trăng tròn"
+          ]
+        },
+        {
+          "q": "Người ta để ý điều gì ở bạn đầu tiên?",
+          "options": [
+            "Sự tốt bụng",
+            "Sự tự tin",
+            "Những trò chơi khăm và khiếu hài hước kỳ quặc",
+            "Bạn rất khó đoán"
+          ]
+        },
+        {
+          "q": "Trong dự án nhóm, bạn là người…",
+          "options": [
+            "Nghĩ ra ý tưởng lớn",
+            "Làm nhanh nhất và xong trước tiên",
+            "Đảm bảo ai cũng thấy mình được tham gia",
+            "Làm bất cứ việc gì cần làm, không than vãn"
+          ]
+        },
+        {
+          "q": "Chọn một món ăn vặt:",
+          "options": [
+            "Snack cay",
+            "Trái cây tươi hoặc salad",
+            "Bánh kem phủ kem dày cộp",
+            "Có gì trong tủ lạnh thì ăn nấy"
+          ]
+        },
+        {
+          "q": "Điểm mạnh lớn nhất của bạn:",
+          "options": [
+            "Quyết tâm",
+            "Thuận theo dòng chảy",
+            "Tham vọng",
+            "Trực giác"
+          ]
+        },
+        {
+          "q": "Có người thô lỗ với bạn. Bạn…",
+          "options": [
+            "Đáp trả ngay lập tức",
+            "Để nó trôi qua như nước đổ lá khoai",
+            "Bỏ qua: họ không đáng để bạn bận tâm",
+            "Thầm thấy chuyện này buồn cười hết sức"
+          ]
+        },
+        {
+          "q": "Bạn đồng hành lý tưởng trong một chuyến phiêu lưu:",
+          "options": [
+            "Một người bạn trung thành không bao giờ bỏ cuộc",
+            "Một người khiến ngày nào cũng vui",
+            "Một tâm hồn dịu dàng luôn chăm lo cho mọi người",
+            "Một bạn đồng hành huyền thoại cõng bạn bay lên trời"
+          ]
+        }
+      ],
+      "dims": {
+        "fire": "Lửa",
+        "water": "Nước",
+        "grass": "Cỏ",
+        "electric": "Điện",
+        "psychic": "Siêu linh",
+        "fairy": "Tiên",
+        "dragon": "Rồng",
+        "ghost": "Ma",
+        "fighting": "Giác đấu",
+        "normal": "Thường"
+      },
+      "results": {
+        "fire": {
+          "name": "Hệ Lửa · đồng hành: Charmander",
+          "body": "Nhiệt huyết, táo bạo và không thể bị phớt lờ. Bạn lao vào mọi việc hết mình và sự hăng hái của bạn rất dễ lây, dù cơn nóng giận cũng bùng lên nhanh như khi nguội đi. Cùng hệ Lửa: Arcanine và Cyndaquil."
+        },
+        "water": {
+          "name": "Hệ Nước · đồng hành: Squirtle",
+          "body": "Điềm tĩnh, linh hoạt và dễ gần. Bạn thuận theo dòng chảy, hòa giải những cuộc cãi vã và tìm đường vòng qua chướng ngại thay vì húc thẳng vào. Cùng hệ Nước: Vaporeon và Piplup."
+        },
+        "grass": {
+          "name": "Hệ Cỏ · đồng hành: Bulbasaur",
+          "body": "Kiên nhẫn, vững vàng và lặng lẽ chăm sóc người khác. Bạn lớn lên chậm mà chắc, quan tâm đến những người xung quanh và thấy mình là chính mình nhất khi ở ngoài trời. Cùng hệ Cỏ: Leafeon và Rowlet."
+        },
+        "electric": {
+          "name": "Hệ Điện · đồng hành: Pikachu",
+          "body": "Nhanh nhẹn, sáng dạ và tràn đầy năng lượng. Bạn nghĩ nhanh, làm còn nhanh hơn và mang tia lửa đến mọi căn phòng, nhưng ngồi yên là việc khó với bạn. Cùng hệ Điện: Jolteon và Pachirisu."
+        },
+        "psychic": {
+          "name": "Hệ Siêu linh · đồng hành: Espeon",
+          "body": "Giàu trực giác và chín chắn. Bạn đọc được người khác và tình huống trước khi ai lên tiếng, và thích một kế hoạch khôn khéo hơn là dùng sức. Cùng hệ Siêu linh: Gardevoir và Mew."
+        },
+        "fairy": {
+          "name": "Hệ Tiên · đồng hành: Sylveon",
+          "body": "Tốt bụng, duyên dáng và ấm áp. Bạn khiến người khác thấy được chào đón và quan tâm, và đằng sau sự dịu dàng ấy là sức mạnh lớn hơn người ta tưởng. Cùng hệ Tiên: Clefairy và Togepi."
+        },
+        "dragon": {
+          "name": "Hệ Rồng · đồng hành: Dragonite",
+          "body": "Tham vọng, kiêu hãnh và quyết tâm. Bạn nhắm cao hơn bất kỳ ai và đủ lì để đạt được, nhưng luôn mềm lòng với số ít người bạn tin tưởng. Cùng hệ Rồng: Garchomp và Axew."
+        },
+        "ghost": {
+          "name": "Hệ Ma · đồng hành: Gengar",
+          "body": "Bí ẩn và tinh nghịch. Bạn sống dậy vào ban đêm, mê trò chơi khăm và có khiếu hài hước mà người ta hoặc rất mê hoặc chẳng hiểu gì. Cùng hệ Ma: Mimikyu và Litwick."
+        },
+        "fighting": {
+          "name": "Hệ Giác đấu · đồng hành: Lucario",
+          "body": "Kỷ luật, trung thành và che chở. Bạn tập luyện chăm chỉ, giữ lời hứa và đứng ra bảo vệ bạn bè mà không cần ai nhờ. Cùng hệ Giác đấu: Riolu và Machop."
+        },
+        "normal": {
+          "name": "Hệ Thường · đồng hành: Eevee",
+          "body": "Dễ tính, linh hoạt và đầy tiềm năng. Bạn thoải mái với chính mình, hợp với gần như mọi người và không bao giờ từ chối đồ ăn vặt hay một giấc ngủ trưa. Cùng hệ Thường: Snorlax và Jigglypuff."
+        }
+      }
+    },
+    "genshin": {
+      "title": "Bạn sẽ nhận Vision nào? Test Genshin Impact: bạn là nhân vật nào — cv.cm",
+      "description": "Trắc nghiệm Genshin Impact miễn phí: trả lời 12 câu hỏi để biết Vision (Phong, Nham, Lôi, Thảo, Thủy, Hỏa hay Băng) hợp với lý tưởng của bạn, và các nhân vật Genshin có cùng nguyên tố. Không cần đăng ký.",
+      "h1": "Bạn sẽ nhận Vision nào trong Genshin Impact?",
+      "lede": "Ở Teyvat, thần linh ban Vision cho những người mang khát vọng lớn. Trả lời 12 câu hỏi về điều bạn coi trọng và cách bạn hành động để biết nguyên tố nào trong bảy nguyên tố sẽ chọn bạn.",
+      "about": [
+        "Mỗi quốc gia trong bảy nước của Teyvat theo một vị Thần và một lý tưởng: tự do ở Mondstadt (Phong), khế ước ở Liyue (Nham), vĩnh hằng ở Inazuma (Lôi), trí tuệ ở Sumeru (Thảo), công lý ở Fontaine (Thủy), chiến tranh và lòng can đảm ở Natlan (Hỏa) và tình yêu ở Snezhnaya (Băng). Bài trắc nghiệm ghép câu trả lời của bạn với những lý tưởng đó.",
+        "Kết quả cho biết nguyên tố của bạn, lý tưởng đằng sau nó và ba nhân vật chơi được có cùng nguyên tố, kèm điểm của cả bảy. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được HoYoverse bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Vision trong Genshin Impact là gì?",
+          "a": "Vision là viên ngọc giúp người sở hữu điều khiển một nguyên tố. Theo game, thần linh ban chúng cho những người có khát vọng hoặc mong ước lớn lao."
+        },
+        {
+          "q": "Tôi là nhân vật Genshin nào?",
+          "a": "Kết quả liệt kê ba nhân vật cùng nguyên tố, ví dụ Venti, Kaedehara Kazuha và Sucrose cho hệ Phong. Hãy chọn người có câu chuyện gần với bạn nhất."
+        },
+        {
+          "q": "Sao không có kết quả Nhà Lữ Hành?",
+          "a": "Nhà Lữ Hành dùng được nhiều nguyên tố mà không cần Vision, nên bài trắc nghiệm chấm điểm theo bảy nguyên tố."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Điều gì quan trọng nhất với bạn?",
+          "options": [
+            "Tự do đi bất cứ đâu gió đưa mình tới",
+            "Giữ lời hứa",
+            "Hiểu thế giới thật sự vận hành ra sao",
+            "Công bằng cho tất cả mọi người"
+          ]
+        },
+        {
+          "q": "Chọn một nơi để sống:",
+          "options": [
+            "Thị trấn lộng gió của những thi sĩ và cánh đồng bồ công anh",
+            "Bến cảng nhộn nhịp đầy thương nhân và đèn lồng",
+            "Hòn đảo hoa anh đào dưới bầu trời giông bão",
+            "Cung điện băng giá tận phương bắc"
+          ]
+        },
+        {
+          "q": "Bạn bè gặp rắc rối. Bạn…",
+          "options": [
+            "Lao vào giúp không chút do dự",
+            "Lặng lẽ ở bên họ bao lâu cũng được",
+            "Lập một kế hoạch bền vững lâu dài",
+            "Đảm bảo kẻ gây ra chuyện phải chịu trách nhiệm"
+          ]
+        },
+        {
+          "q": "Bạn làm việc thế nào?",
+          "options": [
+            "Đều đặn và đáng tin, từng viên đá một",
+            "Theo từng cơn cảm hứng, lúc nào hứng thì làm",
+            "Mài giũa đến khi hoàn hảo",
+            "Tìm hiểu kỹ mọi thứ trước đã"
+          ]
+        },
+        {
+          "q": "Bạn bỗng có một khoản Mora lớn. Bạn tiêu vào…",
+          "options": [
+            "Một khoản đầu tư khôn ngoan",
+            "Một bữa tiệc cho tất cả bạn bè",
+            "Sách vở và lớp học",
+            "Một thứ đẹp đẽ sẽ tồn tại mãi mãi"
+          ]
+        },
+        {
+          "q": "Bạn thể hiện sự quan tâm bằng cách nào?",
+          "options": [
+            "Một cử chỉ hoành tráng, có khán giả hẳn hoi",
+            "Những hy sinh thầm lặng không ai thấy",
+            "Kéo họ đi một chuyến phiêu lưu ngẫu hứng",
+            "Bảo vệ họ, bằng bất cứ giá nào"
+          ]
+        },
+        {
+          "q": "Người ta mô tả bạn là…",
+          "options": [
+            "Phóng khoáng",
+            "Đáng tin cậy",
+            "Quyết tâm, có khi hơi cứng đầu",
+            "Thanh lịch, nhưng hơi xa cách"
+          ]
+        },
+        {
+          "q": "Buổi tối lý tưởng của bạn:",
+          "options": [
+            "Một lễ hội ồn ào có pháo hoa",
+            "Một đêm ở nhà hát opera hoặc một phiên tòa đầy kịch tính",
+            "Đọc sách dưới ánh đèn",
+            "Ngắm sao một mình trong đêm lạnh trong vắt"
+          ]
+        },
+        {
+          "q": "Bạn đối mặt với thay đổi thế nào?",
+          "options": [
+            "Đón nhận nó. Gió luôn đổi chiều",
+            "Chống lại nó. Có những thứ không bao giờ nên thay đổi",
+            "Nghiên cứu nó, rồi thích nghi",
+            "Uốn quanh nó như dòng nước"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn khi cả đội giao chiến:",
+          "options": [
+            "Bật khiên và giữ vững trận tuyến",
+            "Tấn công tổng lực, thiêu rụi mọi thứ",
+            "Hồi máu và giữ cả đội trụ vững",
+            "Những đòn đánh chính xác, uyển chuyển"
+          ]
+        },
+        {
+          "q": "Điều gì bạn không bao giờ tha thứ?",
+          "options": [
+            "Một lời hứa bị phá vỡ",
+            "Một bất công không bị trừng phạt",
+            "Phản bội những người mình yêu thương",
+            "Bị nhốt trong lồng"
+          ]
+        },
+        {
+          "q": "Chọn một sức mạnh:",
+          "options": [
+            "Điều khiển sấm sét",
+            "Mọc cả khu rừng trong nháy mắt",
+            "Triệu hồi lửa",
+            "Đóng băng mọi thứ bạn chạm vào"
+          ]
+        }
+      ],
+      "dims": {
+        "anemo": "Phong",
+        "geo": "Nham",
+        "electro": "Lôi",
+        "dendro": "Thảo",
+        "hydro": "Thủy",
+        "pyro": "Hỏa",
+        "cryo": "Băng"
+      },
+      "results": {
+        "anemo": {
+          "name": "Phong: lý tưởng tự do",
+          "body": "Bạn đi theo làn gió. Bạn coi trọng tự do hơn gần như mọi thứ, ghét bị ràng buộc và mang một năng lượng nhẹ nhàng, tinh nghịch khiến người xung quanh vui lên. Nhân vật hệ Phong: Venti, Kaedehara Kazuha và Sucrose."
+        },
+        "geo": {
+          "name": "Nham: lý tưởng khế ước",
+          "body": "Vững như đá. Lời bạn nói là lời cam kết, bạn tính đường dài và người khác tin giao cho bạn những điều quan trọng nhất. Nhân vật hệ Nham: Zhongli, Navia và Noelle."
+        },
+        "electro": {
+          "name": "Lôi: lý tưởng vĩnh hằng",
+          "body": "Kiên định và khắt khe. Đã quyết điều gì là bạn làm đến cùng, và bạn muốn những gì mình xây dựng tồn tại mãi mãi. Nhân vật hệ Lôi: Raiden Shogun, Fischl và Yae Miko."
+        },
+        "dendro": {
+          "name": "Thảo: lý tưởng trí tuệ",
+          "body": "Tò mò và sâu sắc. Bạn muốn hiểu mọi thứ thật sự vận hành ra sao, đọc mọi thứ và sự kiên nhẫn của bạn lớn dần thành hiểu biết thực sự. Nhân vật hệ Thảo: Nahida, Tighnari và Alhaitham."
+        },
+        "hydro": {
+          "name": "Thủy: lý tưởng công lý",
+          "body": "Giàu cảm xúc và có nguyên tắc. Bạn rất coi trọng sự công bằng, cảm nhận mọi thứ mãnh liệt và không ngại một khoảnh khắc kịch tính khi nó xứng đáng. Nhân vật hệ Thủy: Furina, Neuvillette và Xingqiu."
+        },
+        "pyro": {
+          "name": "Hỏa: lý tưởng chiến tranh và lòng can đảm",
+          "body": "Dũng cảm và ấm áp. Bạn lao vào bảo vệ bạn bè, thắp sáng mọi cuộc vui và không bao giờ lùi bước trước trận chiến đáng giá. Nhân vật hệ Hỏa: Hu Tao, Diluc và Bennett."
+        },
+        "cryo": {
+          "name": "Băng: lý tưởng tình yêu",
+          "body": "Lạnh lùng bên ngoài, tận tụy bên trong. Bạn yêu thầm lặng và chung thủy, hy sinh những điều không ai thấy và luôn giữ phong thái thanh lịch. Nhân vật hệ Băng: Ganyu, Kamisato Ayaka và Wriothesley."
+        }
+      }
+    },
+    "sonic": {
+      "title": "Bạn là nhân vật Sonic nào? Trắc nghiệm Sonic the Hedgehog — cv.cm",
+      "description": "Trắc nghiệm Sonic the Hedgehog miễn phí: trả lời 12 câu hỏi để biết bạn là Sonic, Tails, Knuckles, Amy, Shadow, Rouge, Cream hay Silver. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Sonic nào?",
+      "lede": "Nhanh và tự do như Sonic, thông minh như Tails hay sống khép kín như Shadow? Trả lời 12 câu hỏi về thói quen của bạn để tìm nhân vật hợp nhất trong tám nhân vật Sonic the Hedgehog.",
+      "about": [
+        "Bạn bè và đối thủ của Sonic đều có tính cách rõ ràng: Sonic sống vì tự do và tốc độ, Tails chế tạo máy móc, Knuckles canh giữ Master Emerald, Amy không bao giờ từ bỏ tình yêu, Shadow giữ khoảng cách với mọi người, Rouge săn châu báu, Cream luôn lễ phép và Silver từ tương lai trở về để thay đổi nó.",
+        "Bài trắc nghiệm chấm điểm câu trả lời của bạn cho cả tám nhân vật, cho biết nhân vật hợp nhất và mức độ gần của những người còn lại. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được SEGA bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Sonic là ai?",
+          "a": "Sonic, Tails và Knuckles là bộ ba kinh điển. Amy Rose, Shadow, Rouge, Cream và Silver xuất hiện ở các game sau, còn Dr. Eggman là phản diện chính."
+        },
+        {
+          "q": "Shadow là anh hùng hay phản diện?",
+          "a": "Shadow khởi đầu là đối thủ trong Sonic Adventure 2 và từ đó đã chiến đấu ở cả hai phe. Anh bị thôi thúc bởi một lời hứa trong quá khứ, nên thường hành động một mình."
+        },
+        {
+          "q": "Sao không có kết quả Dr. Eggman?",
+          "a": "Bài này chỉ gồm bạn bè và đối thủ của Sonic. Fan của Eggman có thể coi đây là thử thách để ra Shadow hoặc Rouge."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, câu trả lời được chấm điểm trong trình duyệt và không bao giờ được lưu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Buổi sáng của bạn:",
+          "options": [
+            "Ra khỏi nhà trước cả bữa sáng",
+            "Mày mò một món đồ công nghệ bên tách cà phê",
+            "Tập luyện. Ngày nào cũng vậy",
+            "Lên kế hoạch cho buổi hẹn hoàn hảo, tính đến từng phút"
+          ]
+        },
+        {
+          "q": "Chọn một sở thích:",
+          "options": [
+            "Sưu tầm châu báu",
+            "Làm bánh và tiệc trà với bạn bè",
+            "Chế tạo máy móc từ đồ phế liệu",
+            "Một mình chạy xe trong đêm"
+          ]
+        },
+        {
+          "q": "Bạn bè nhờ giúp. Bạn…",
+          "options": [
+            "“Để đó cho tôi!” Rồi đi mất hút",
+            "Lễ phép hỏi họ cần gì",
+            "Nháy mắt hỏi “được gì nào?”, rồi vẫn giúp",
+            "Giúp, nhưng vẫn nghĩ xem sau này chuyện có thể hỏng ra sao"
+          ]
+        },
+        {
+          "q": "Khuyết điểm lớn nhất của bạn:",
+          "options": [
+            "Thiếu kiên nhẫn",
+            "Hơi dễ tin lời người khác",
+            "Quá nhiệt tình khi thích ai đó",
+            "Luôn giữ mọi người ở khoảng cách an toàn"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Bộ não",
+            "Cơ bắp",
+            "Điệp viên",
+            "Người nhìn ra mọi chuyện sẽ đi về đâu"
+          ]
+        },
+        {
+          "q": "Chọn một nơi:",
+          "options": [
+            "Những con đường rộng mở và đồi xanh",
+            "Hòn đảo bay có báu vật cần canh giữ",
+            "Khu vườn yên tĩnh ngập hoa",
+            "Thành phố đổ nát bạn muốn xây dựng lại"
+          ]
+        },
+        {
+          "q": "Chọn một món đồ:",
+          "options": [
+            "Cây búa khổng lồ",
+            "Cờ lê",
+            "Viên kim cương to tướng",
+            "Những chiếc vòng vàng kìm hãm sức mạnh của bạn"
+          ]
+        },
+        {
+          "q": "Khi buồn, bạn…",
+          "options": [
+            "Mỉm cười gan dạ và tiếp tục theo đuổi ước mơ",
+            "Tâm sự với bạn thân",
+            "Giấu kín trong lòng và cứ thế bước tiếp",
+            "Tự hứa sẽ thay đổi kết cục của mọi chuyện"
+          ]
+        },
+        {
+          "q": "Điều gì thôi thúc bạn?",
+          "options": [
+            "Tự do",
+            "Bảo vệ những gì thuộc về mình",
+            "Tình yêu",
+            "Một lời hứa từ rất lâu"
+          ]
+        },
+        {
+          "q": "Phong cách của bạn:",
+          "options": [
+            "Gọn gàng và sành điệu, lúc nào cũng thế",
+            "Váy xinh và chiếc nơ ngay ngắn",
+            "Rực rỡ, nổi bật, không thể không thấy",
+            "Thứ gì có nhiều túi đựng đồ nghề nhất"
+          ]
+        },
+        {
+          "q": "Người ta nhận xét cách cư xử của bạn thế nào?",
+          "options": [
+            "Lễ phép và đúng mực",
+            "Duyên dáng, kèm rất nhiều trêu chọc",
+            "Thẳng thừng",
+            "Chân thành và hơi ngây thơ"
+          ]
+        },
+        {
+          "q": "Chọn một sức mạnh:",
+          "options": [
+            "Siêu tốc độ",
+            "Bay lượn",
+            "Di chuyển đồ vật bằng ý nghĩ",
+            "Dừng thời gian"
+          ]
+        }
+      ],
+      "dims": {
+        "sonic": "Sonic",
+        "tails": "Tails",
+        "knuckles": "Knuckles",
+        "amy": "Amy",
+        "shadow": "Shadow",
+        "rouge": "Rouge",
+        "cream": "Cream",
+        "silver": "Silver"
+      },
+      "results": {
+        "sonic": {
+          "name": "Sonic the Hedgehog",
+          "body": "Tự do, nhanh nhẹn và không biết sợ. Bạn không chịu nổi việc chờ đợi, làm điều mình thấy đúng và luôn là người đầu tiên giúp đỡ khi cần. Thỉnh thoảng có lẽ bạn nên chậm lại một chút."
+        },
+        "tails": {
+          "name": "Miles “Tails” Prower",
+          "body": "Thông minh, trung thành và lúc nào cũng đang chế tạo thứ gì đó. Bạn giải quyết vấn đề bằng cái đầu, luôn sát cánh cùng bạn thân và dũng cảm hơn bạn nghĩ."
+        },
+        "knuckles": {
+          "name": "Knuckles the Echidna",
+          "body": "Mạnh mẽ, thật thà và biết che chở. Bạn coi trọng trách nhiệm và sẽ dốc hết sức bảo vệ điều quan trọng, dù đôi khi lại tin nhầm người."
+        },
+        "amy": {
+          "name": "Amy Rose",
+          "body": "Vui vẻ, quyết tâm và giàu tình cảm. Bạn biết mình muốn gì và theo đuổi đến cùng, và vẫn lạc quan khi những người khác đã thôi tin tưởng."
+        },
+        "shadow": {
+          "name": "Shadow the Hedgehog",
+          "body": "Nghiêm túc, mãnh liệt và sống có mục đích. Bạn giữ cảm xúc cho riêng mình và làm việc một mình hiệu quả nhất, nhưng không bao giờ quên một lời hứa."
+        },
+        "rouge": {
+          "name": "Rouge the Bat",
+          "body": "Sành điệu, dí dỏm và giỏi đạt được điều mình muốn. Bạn thích đồ đẹp và một chút mạo hiểm, và đằng sau những lời trêu chọc là một người bạn tốt hơn bạn chịu thừa nhận."
+        },
+        "cream": {
+          "name": "Cream the Rabbit",
+          "body": "Ngọt ngào, lễ phép và tốt bụng. Bạn cư xử đúng mực với mọi người, thích một buổi chiều yên bình bên bạn bè và vững vàng hơn người ta tưởng."
+        },
+        "silver": {
+          "name": "Silver the Hedgehog",
+          "body": "Chân thành, lý tưởng và luôn nghĩ trước. Bạn muốn sửa những gì đã hỏng và thay đổi tương lai, dù có hơi ngây thơ về cách làm."
+        }
+      }
+    },
+    "dnd-class": {
+      "title": "Bạn hợp class D&D nào? Trắc nghiệm Dungeons & Dragons — cv.cm",
+      "description": "Trắc nghiệm class D&D miễn phí: trả lời 14 câu hỏi để biết bạn hợp class nào trong 12 class của Dungeons & Dragons, từ Barbarian, Bard, Cleric đến Rogue, Warlock và Wizard. Không cần đăng ký.",
+      "h1": "Bạn hợp class D&D nào?",
+      "lede": "Bạn sẽ nổi cơn thịnh nộ, cất tiếng hát, cầu nguyện hay niệm phép? Trả lời 14 câu hỏi về cách bạn hành động trong một chuyến phiêu lưu để biết class nào trong 12 class Dungeons & Dragons hợp với tính cách của bạn.",
+      "about": [
+        "Dungeons & Dragons có mười hai class cốt lõi: Barbarian (chiến binh man rợ), Bard (thi sĩ), Cleric (giáo sĩ), Druid (tu sĩ tự nhiên), Fighter (chiến binh), Monk (võ tăng), Paladin (thánh kỵ sĩ), Ranger (du hiệp), Rogue (đạo tặc), Sorcerer (pháp sư bẩm sinh), Warlock (pháp sư khế ước) và Wizard (pháp sư). Mỗi class là một cách giải quyết vấn đề không kém gì một bộ năng lực, nên chúng phản chiếu tính cách rất tốt.",
+        "Bài trắc nghiệm hỏi bạn sẽ làm gì trong quán rượu, trước cánh cửa khóa hay giữa trận chiến, rồi chấm điểm cả mười hai class. Hãy dùng kết quả làm cảm hứng cho nhân vật tiếp theo của bạn. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Wizards of the Coast bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "12 class trong D&D là gì?",
+          "a": "Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock và Wizard. Một số phiên bản và sách bổ sung thêm class khác, như Artificer."
+        },
+        {
+          "q": "Sorcerer, Warlock và Wizard khác nhau thế nào?",
+          "a": "Wizard học phép thuật qua nghiên cứu, Sorcerer sinh ra đã có sẵn, còn Warlock có được nhờ khế ước với một thế lực bảo trợ hùng mạnh."
+        },
+        {
+          "q": "Class D&D nào hợp cho người mới?",
+          "a": "Fighter và Barbarian dễ chơi nhất, còn Cleric là khởi đầu tốt nếu bạn muốn có vài phép thuật. Hãy chọn class nghe thú vị nhất: bạn sẽ học nhanh hơn."
+        },
+        {
+          "q": "Đây có phải bài trắc nghiệm D&D chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí cho vui, và câu trả lời không bao giờ rời khỏi trình duyệt của bạn."
+        }
+      ],
+      "items": [
+        {
+          "q": "Cả nhóm bước vào quán rượu. Bạn…",
+          "options": [
+            "Gọi cốc to nhất và vật tay với một người lạ",
+            "Nhảy lên sân khấu và cất tiếng hát",
+            "Ngồi ở góc và canh chừng cửa ra vào",
+            "Hỏi chủ quán về những truyền thuyết địa phương"
+          ]
+        },
+        {
+          "q": "Một cánh cửa khóa chặn đường. Bạn…",
+          "options": [
+            "Đạp đổ nó",
+            "Cạy khóa",
+            "Đọc những ký tự cổ trên cửa và niệm đúng câu phép",
+            "Thuyết phục người giữ chìa mở cửa"
+          ]
+        },
+        {
+          "q": "Sức mạnh của bạn đến từ đâu?",
+          "options": [
+            "Nhiều năm học tập",
+            "Có sẵn trong máu từ khi sinh ra",
+            "Giao kèo với một thực thể bí ẩn",
+            "Vị thần mà tôi phụng sự"
+          ]
+        },
+        {
+          "q": "Nơi nào cho bạn cảm giác như ở nhà?",
+          "options": [
+            "Sâu trong khu rừng cổ xưa",
+            "Vùng biên cương hoang dã, lần theo dấu vết",
+            "Tu viện trên núi cao",
+            "Đền thờ, giữa những người cần đến bạn"
+          ]
+        },
+        {
+          "q": "Bạn bảo vệ điều gì?",
+          "options": [
+            "Người vô tội",
+            "Thiên nhiên",
+            "Đồng đội, từ tuyến đầu",
+            "Tự do của chính mình"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Nổi cơn cuồng nộ",
+            "Hồi máu và bảo vệ đồng đội",
+            "Bắn từ xa và không bao giờ trượt",
+            "Di chuyển nhanh đến mức họ không theo kịp, chỉ dùng tay không"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Quá tự hào về tài năng bẩm sinh",
+            "Không cưỡng lại được một bí mật, hay một cuộc giao kèo",
+            "Giữ đúng lời thề, kể cả khi phải chịu thiệt",
+            "Lao vào mà không suy nghĩ"
+          ]
+        },
+        {
+          "q": "Chọn một bạn đồng hành:",
+          "options": [
+            "Một người bạn thú hoang dã",
+            "Một linh thú kỳ lạ từ cõi khác",
+            "Thanh kiếm bạn mang theo nhiều năm",
+            "Cây đàn lute của bạn"
+          ]
+        },
+        {
+          "q": "Bạn rèn luyện thế nào?",
+          "options": [
+            "Tập luyện mỗi sáng",
+            "Thiền định",
+            "Cầu nguyện",
+            "Không cần. Sức mạnh tự tuôn ra"
+          ]
+        },
+        {
+          "q": "Bạn giải quyết vấn đề bằng gì?",
+          "options": [
+            "Sức quyến rũ",
+            "Kiến thức",
+            "Kiên nhẫn và cân bằng",
+            "Chiến thuật"
+          ]
+        },
+        {
+          "q": "Bạn đang tìm kiếm điều gì?",
+          "options": [
+            "Công lý",
+            "Những bí mật bị cấm",
+            "Sự hòa hợp với thế giới tự nhiên",
+            "Cách kiểm soát sức mạnh hoang dã bên trong mình"
+          ]
+        },
+        {
+          "q": "Trang bị của bạn:",
+          "options": [
+            "Giáp nặng và khiên khắc biểu tượng thần thánh",
+            "Giáp da nhẹ và vài con dao găm giấu kín",
+            "Cây gậy gỗ vẫn còn đâm lá",
+            "Chỉ một bộ áo choàng giản dị"
+          ]
+        },
+        {
+          "q": "Cả nhóm sẽ gọi bạn là…",
+          "options": [
+            "Kẻ bí ẩn",
+            "Người chữa lành",
+            "Kẻ lang thang đơn độc",
+            "Người kể chuyện"
+          ]
+        },
+        {
+          "q": "Chọn một phần thưởng:",
+          "options": [
+            "Cuốn sách phép không ai khác đọc được",
+            "Hạt giống từ cái cây cổ nhất thế giới",
+            "Chiến lợi phẩm từ con quái vật lớn nhất bạn từng hạ",
+            "Tấm bản đồ những vùng đất chưa ai khám phá"
+          ]
+        }
+      ],
+      "dims": {
+        "barbarian": "Barbarian",
+        "bard": "Bard",
+        "cleric": "Cleric",
+        "druid": "Druid",
+        "fighter": "Fighter",
+        "monk": "Monk",
+        "paladin": "Paladin",
+        "ranger": "Ranger",
+        "rogue": "Rogue",
+        "sorcerer": "Sorcerer",
+        "warlock": "Warlock",
+        "wizard": "Wizard"
+      },
+      "results": {
+        "barbarian": {
+          "name": "Barbarian (chiến binh man rợ)",
+          "body": "Táo bạo, thẳng thắn và tràn đầy năng lượng. Bạn hành động theo bản năng, nghĩ gì nói nấy và luôn là người đầu tiên xông qua cửa. Sức mạnh của bạn là thật, và lòng trung thành với đồng đội cũng vậy."
+        },
+        "bard": {
+          "name": "Bard (thi sĩ)",
+          "body": "Duyên dáng, sáng tạo và là linh hồn của cả nhóm. Bạn giải quyết vấn đề bằng lời nói và sự dí dỏm, gom góp câu chuyện ở mọi nơi bạn đến và khiến nhóm nào cũng tốt hơn."
+        },
+        "cleric": {
+          "name": "Cleric (giáo sĩ)",
+          "body": "Chu đáo, có đức tin và vững vàng. Bạn giữ cả nhóm gắn kết, chữa lành những gì tổn thương và lấy sức mạnh từ một điều lớn lao hơn bản thân."
+        },
+        "druid": {
+          "name": "Druid (tu sĩ tự nhiên)",
+          "body": "Điềm tĩnh, thông thái và gắn bó với thiên nhiên. Bạn thấy thoải mái nhất khi ở ngoài trời, suy nghĩ theo những chu kỳ dài và bảo vệ sự cân bằng mà người khác hay quên."
+        },
+        "fighter": {
+          "name": "Fighter (chiến binh)",
+          "body": "Kỷ luật, thực tế và đáng tin cậy. Bạn luyện tập, lên kế hoạch và giữ vững trận tuyến. Không phô trương, chỉ có kỹ năng chắc chắn giữ cho mọi người sống sót."
+        },
+        "monk": {
+          "name": "Monk (võ tăng)",
+          "body": "Tập trung, kiên nhẫn và tự giác. Bạn coi trọng sự cân bằng và bình yên nội tâm, và khi đã ra tay thì nhanh hơn bất kỳ ai tưởng."
+        },
+        "paladin": {
+          "name": "Paladin (thánh kỵ sĩ)",
+          "body": "Có nguyên tắc, dũng cảm và biết che chở. Bạn sống theo một quy tắc, đứng ra bảo vệ những người không thể tự vệ và giữ lời hứa kể cả khi phải trả giá."
+        },
+        "ranger": {
+          "name": "Ranger (du hiệp)",
+          "body": "Độc lập, tinh ý và thoải mái giữa thiên nhiên hoang dã. Bạn nhận ra điều người khác bỏ lỡ, thích vùng đất rộng mở hơn thành phố đông đúc và chính xác chết người khi cần."
+        },
+        "rogue": {
+          "name": "Rogue (đạo tặc)",
+          "body": "Lanh lợi, nhanh nhẹn và độc lập. Bạn đọc vị cả căn phòng trong vài giây, tìm ra lối vào cửa sau và coi trọng tự do hơn luật lệ của bất kỳ ai."
+        },
+        "sorcerer": {
+          "name": "Sorcerer (pháp sư bẩm sinh)",
+          "body": "Có thiên phú, giàu cảm xúc và hơi khó đoán. Tài năng đến với bạn một cách tự nhiên và vận hành bằng cảm xúc, và học cách kiểm soát nó là cuộc phiêu lưu cả đời bạn."
+        },
+        "warlock": {
+          "name": "Warlock (pháp sư khế ước)",
+          "body": "Bí ẩn, tò mò và đầy tham vọng. Bạn bị cuốn hút bởi bí mật và tri thức ẩn giấu, và sẵn sàng thực hiện những giao kèo táo bạo để có được điều mình muốn."
+        },
+        "wizard": {
+          "name": "Wizard (pháp sư)",
+          "body": "Tò mò, giỏi phân tích và luôn học hỏi. Bạn tin rằng kiến thức đúng sẽ giải quyết mọi vấn đề, và sẵn lòng thức trắng đêm đọc sách để tìm ra nó."
+        }
+      }
+    },
+    "naruto": {
+      "title": "Bạn là nhân vật Naruto nào? Trắc nghiệm tính cách Naruto — cv.cm",
+      "description": "Trắc nghiệm Naruto miễn phí: trả lời 12 câu hỏi để biết bạn là Naruto, Sasuke, Sakura, Kakashi, Hinata, Shikamaru, Gaara, Itachi, Rock Lee hay Jiraiya. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Naruto nào?",
+      "lede": "Không bao giờ bỏ cuộc như Naruto, tính trước mười nước như Shikamaru hay điềm tĩnh, khó đoán như Itachi? Trả lời 12 câu hỏi để tìm nhân vật hợp với bạn trong mười nhân vật của Naruto.",
+      "about": [
+        "Các ninja trong Naruto đáng nhớ vì mỗi người có một cách sống rõ ràng: Naruto không bao giờ bỏ cuộc, Sasuke kiêu hãnh, Rock Lee chăm chỉ, Shikamaru thiên tài lười biếng, Hinata dũng cảm thầm lặng. Bài trắc nghiệm xem ước mơ, thói quen và cách bạn đối xử với đối thủ, rồi chấm điểm mười nhân vật.",
+        "Kết quả cho biết nhân vật hợp với bạn nhất và điểm của bạn với những nhân vật còn lại. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Masashi Kishimoto, Shueisha hay Studio Pierrot bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Naruto là ai?",
+          "a": "Đội 7: Naruto Uzumaki, Sasuke Uchiha, Sakura Haruno và thầy của họ là Kakashi Hatake. Hinata, Shikamaru, Gaara, Rock Lee, Itachi và Jiraiya là những nhân vật được yêu thích nhất trong số còn lại."
+        },
+        {
+          "q": "Bài trắc nghiệm có tiết lộ nội dung (spoil) không?",
+          "a": "Chỉ một chút. Câu hỏi và kết quả mô tả tính cách nhân vật, không tiết lộ các cú twist trong cốt truyện."
+        },
+        {
+          "q": "Sao nhân vật tôi thích không có trong kết quả?",
+          "a": "Mười kết quả giúp bài trắc nghiệm ngắn gọn. Nếu nhân vật đứng thứ hai sát điểm, nhân vật đó cũng hợp với bạn."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, câu trả lời được chấm điểm trong trình duyệt và không bao giờ được lưu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Ước mơ của bạn:",
+          "options": [
+            "Được mọi người trong làng công nhận",
+            "Thanh toán món nợ từ quá khứ",
+            "Mạnh như những người mình ngưỡng mộ",
+            "Đi khắp thế giới và viết một cuốn sách bán chạy về nó"
+          ]
+        },
+        {
+          "q": "Bạn học thế nào?",
+          "options": [
+            "Chăm chỉ thắng tài năng: luyện đến khi gục",
+            "Làm tối thiểu mà vẫn điểm cao",
+            "Học chăm và đứng đầu bài thi viết",
+            "Đến muộn, tay cầm cuốn sách không nên đọc nơi công cộng"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Không bao giờ bỏ cuộc, kể cả khi tưởng chừng vô vọng",
+            "Tính trước mười nước",
+            "Dựng hàng phòng thủ không gì phá nổi",
+            "Kết thúc trước cả khi nó bắt đầu"
+          ]
+        },
+        {
+          "q": "Tóm gọn tính cách của bạn:",
+          "options": [
+            "Ồn ào và vui vẻ",
+            "Lạnh lùng và xa cách",
+            "Nhút nhát, nhưng dũng cảm khi cần",
+            "Thong thả và khó bị lay động"
+          ]
+        },
+        {
+          "q": "Câu chuyện nào gần với bạn nhất?",
+          "options": [
+            "Tôi từng cô đơn rất lâu; giờ đã có những người cần tôi",
+            "Tôi mang một gánh nặng không thể chia sẻ với ai",
+            "Tôi luôn đứng trong cái bóng của ai đó, nên tôi luyện tập chăm hơn",
+            "Tôi đã mất những người thân yêu, và điều đó tạo nên con người tôi"
+          ]
+        },
+        {
+          "q": "Chọn một thứ bạn thích:",
+          "options": [
+            "Một tô ramen thật to",
+            "Ngắm mây trôi",
+            "Ép hoa khô",
+            "Ngâm mình thật lâu trong suối nước nóng"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Nhà chiến lược",
+            "Ninja y tế đấm vỡ cả tường",
+            "Người thầy dạy bằng những câu chuyện",
+            "Con sói đơn độc"
+          ]
+        },
+        {
+          "q": "Bạn đối phó với đối thủ thế nào?",
+          "options": [
+            "Thách đấu họ mỗi ngày",
+            "Lặng lẽ đảm bảo mình vượt qua họ",
+            "Cổ vũ họ từ xa",
+            "Cố hiểu điều gì đã khiến họ thành ra như vậy"
+          ]
+        },
+        {
+          "q": "Tính khí của bạn:",
+          "options": [
+            "Bên ngoài điềm tĩnh, bị dồn ép thì ra đòn rất đau",
+            "Lười biếng cho đến khi mọi chuyện nghiêm trọng",
+            "Tôi không bao giờ to tiếng",
+            "Lúc nào cũng sôi sục nhiệt huyết"
+          ]
+        },
+        {
+          "q": "Chọn một phong cách chiến đấu:",
+          "options": [
+            "Cát tự che chắn cho bạn",
+            "Lưỡi kiếm sấm sét",
+            "Những đòn chưởng chính xác",
+            "Ảo thuật kẻ thù không thể thoát ra"
+          ]
+        },
+        {
+          "q": "Bạn coi trọng điều gì nhất?",
+          "options": [
+            "Người dân trong làng",
+            "Gia đình, trên hết mọi thứ",
+            "Con đường của riêng mình",
+            "Trải nghiệm và tự do"
+          ]
+        },
+        {
+          "q": "Điểm yếu của bạn:",
+          "options": [
+            "Lì đến mức không bao giờ bỏ cuộc",
+            "Quá để tâm người khác nghĩ gì",
+            "Thiếu tự tin vào bản thân",
+            "Dễ bị cuốn theo cuộc vui"
+          ]
+        }
+      ],
+      "dims": {
+        "naruto": "Naruto",
+        "sasuke": "Sasuke",
+        "sakura": "Sakura",
+        "kakashi": "Kakashi",
+        "hinata": "Hinata",
+        "shikamaru": "Shikamaru",
+        "gaara": "Gaara",
+        "itachi": "Itachi",
+        "lee": "Rock Lee",
+        "jiraiya": "Jiraiya"
+      },
+      "results": {
+        "naruto": {
+          "name": "Naruto Uzumaki",
+          "body": "Ồn ào, ấm áp và không gì làm nản lòng được. Bạn không bao giờ bỏ cuộc, không bao giờ nuốt lời, và chinh phục người khác vì chính bạn cũng không bao giờ từ bỏ họ."
+        },
+        "sasuke": {
+          "name": "Sasuke Uchiha",
+          "body": "Tài năng, kiêu hãnh và cực kỳ độc lập. Bạn giữ kín cảm xúc và đi con đường của riêng mình, và một khi đã đặt mục tiêu thì không gì kéo bạn ra khỏi nó."
+        },
+        "sakura": {
+          "name": "Sakura Haruno",
+          "body": "Thông minh, chăm chỉ và mạnh hơn người ta tưởng. Bạn học hành, ép bản thân theo kịp những người mình ngưỡng mộ và tung cú đấm ra trò khi bị dồn ép."
+        },
+        "kakashi": {
+          "name": "Kakashi Hatake",
+          "body": "Thư thái, tinh ý và tài giỏi một cách lặng lẽ. Bạn luôn đến muộn một chút và khó bị lay động, nhưng không bao giờ bỏ rơi đồng đội, vì bạn biết mất đi người thân đau đớn thế nào."
+        },
+        "hinata": {
+          "name": "Hinata Hyuga",
+          "body": "Dịu dàng, nhút nhát và dũng cảm hơn bất kỳ ai nhận ra. Bạn lặng lẽ cổ vũ người khác, không ngừng trưởng thành theo cách riêng và đứng vững khi thật sự cần."
+        },
+        "shikamaru": {
+          "name": "Shikamaru Nara",
+          "body": "Một thiên tài lười biếng. Bạn thà ngắm mây còn hơn làm việc, nhưng khi cần thì nhìn trước mười nước và nghĩ ra kế hoạch mà cả nhóm làm theo."
+        },
+        "gaara": {
+          "name": "Gaara",
+          "body": "Trầm lặng, biết che chở và rất thấu hiểu. Bạn từng nếm trải cô đơn, nên bạn để ý đến người khác và cố hiểu họ trước khi phán xét."
+        },
+        "itachi": {
+          "name": "Itachi Uchiha",
+          "body": "Điềm tĩnh, tài năng và khó đoán. Bạn không bao giờ to tiếng, luôn tính trước vài nước và giữ cảm xúc cho riêng mình. Ít ai thấy được bạn đang gánh bao nhiêu."
+        },
+        "lee": {
+          "name": "Rock Lee",
+          "body": "Chăm chỉ, sôi nổi và chân thành. Bạn chứng minh rằng nỗ lực thắng tài năng, luyện tập chăm hơn bất kỳ ai và coi mỗi đối thủ là lý do để tiến bộ."
+        },
+        "jiraiya": {
+          "name": "Jiraiya",
+          "body": "Phóng khoáng, hài hước và thông thái. Bạn đã thấy nhiều điều trên đời, dạy bằng những câu chuyện và tin vào thế hệ sau hơn cả chính họ tin vào mình."
+        }
+      }
+    },
+    "demon-slayer": {
+      "title": "Bạn hợp Hơi thở nào? Test Kimetsu no Yaiba (Thanh gươm diệt quỷ) — cv.cm",
+      "description": "Test Kimetsu no Yaiba miễn phí: trả lời 12 câu hỏi để biết Hơi thở hợp với bạn (Nước, Lửa, Sấm, Thú, Côn trùng, Gió, Sương mù, Tình yêu, Âm thanh hay Đá) và nhân vật Thanh gươm diệt quỷ có cùng Hơi thở. Không cần đăng ký.",
+      "h1": "Bạn hợp Hơi thở nào trong Kimetsu no Yaiba?",
+      "lede": "Bạn sẽ uyển chuyển như Nước, rực cháy như Lửa hay đánh nhanh như Sấm? Trả lời 12 câu hỏi về tính cách để tìm Hơi thở, và kiếm sĩ, hợp với bạn.",
+      "about": [
+        "Trong Kimetsu no Yaiba (Thanh gươm diệt quỷ), các kiếm sĩ chiến đấu bằng Hơi thở. Nước, Lửa, Sấm, Gió và Đá là những Hơi thở chính; những Hơi thở khác như Côn trùng, Sương mù, Tình yêu và Âm thanh được phân nhánh từ đó, còn Inosuke tự sáng tạo ra Hơi thở của Thú.",
+        "Mỗi Hơi thở hợp với một khí chất riêng, nên bài trắc nghiệm xem cách bạn đối mặt với áp lực, luyện tập và quan tâm người khác. Kết quả cho biết Hơi thở, nhân vật sử dụng nó và điểm của bạn ở cả mười Hơi thở. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Koyoharu Gotouge, Shueisha, Aniplex hay ufotable bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Kimetsu no Yaiba có bao nhiêu Hơi thở?",
+          "a": "Truyện có hơn một chục Hơi thở. Hơi thở của Mặt Trời là khởi nguồn; Nước, Lửa, Sấm, Gió và Đá là các Hơi thở chính, và nhiều Hơi thở khác được phân nhánh từ đó."
+        },
+        {
+          "q": "Tanjiro dùng Hơi thở nào?",
+          "a": "Tanjiro học Hơi thở của Nước, sau đó dùng thêm Hinokami Kagura (Vũ điệu Thần Lửa), điệu múa gia đình cậu truyền lại, có liên hệ với Hơi thở của Mặt Trời."
+        },
+        {
+          "q": "Sao không có kết quả Hơi thở của Mặt Trời?",
+          "a": "Hơi thở của Mặt Trời là Hơi thở khởi nguồn và chỉ vài nhân vật từng sử dụng, nên bài trắc nghiệm chỉ gồm các Hơi thở mà kiếm sĩ thực sự luyện tập."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Khi bị áp lực, bạn…",
+          "options": [
+            "Thích nghi và uốn lượn quanh vấn đề",
+            "Hoảng loạn, rồi tung ra một đòn hoàn hảo",
+            "Lao thẳng vào, vừa lao vừa hét",
+            "Vẫn bình tĩnh, có khi hơi lơ đãng"
+          ]
+        },
+        {
+          "q": "Bạn bè mô tả bạn là…",
+          "options": [
+            "Ấm áp và hay động viên",
+            "Dịu dàng, nhưng sắc sảo",
+            "Bề ngoài thô ráp, bên trong hết lòng che chở",
+            "Hào nhoáng"
+          ]
+        },
+        {
+          "q": "Bạn luyện tập thế nào?",
+          "options": [
+            "Một chiêu duy nhất, tập hàng nghìn lần",
+            "Giữa núi rừng, theo cách của riêng mình",
+            "Kiên nhẫn, suốt nhiều năm",
+            "Chẳng cần nhiều: tôi học xong trong hai tháng"
+          ]
+        },
+        {
+          "q": "Chọn một bữa ăn:",
+          "options": [
+            "Một chồng bánh mochi anh đào cao ngất",
+            "Khoai lang, mỗi miếng lại hô to “Ngon!”",
+            "Món gì tự tay mình bắt được",
+            "Cơm đơn giản và một tách trà"
+          ]
+        },
+        {
+          "q": "Bạn thể hiện tình yêu thế nào?",
+          "options": [
+            "Công khai, lúc nào cũng thể hiện",
+            "Bảo vệ họ quyết liệt mà không bao giờ nói ra",
+            "Bằng một cử chỉ hoành tráng, đầy kịch tính",
+            "Bằng những lời cầu nguyện thầm lặng và vài giọt nước mắt"
+          ]
+        },
+        {
+          "q": "Điểm mạnh lớn nhất của bạn:",
+          "options": [
+            "Lòng tốt",
+            "Lòng dũng cảm",
+            "Trí tuệ",
+            "Sức mạnh thuần túy"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Nhát gan cho đến đúng lúc quan trọng",
+            "Hay quên tên người, có khi quên cả mình vào đây làm gì",
+            "Nụ cười che giấu cơn giận của bạn",
+            "Không làm được việc gì một cách lặng lẽ"
+          ]
+        },
+        {
+          "q": "Nơi nào cho bạn cảm giác như ở nhà?",
+          "options": [
+            "Bên dòng suối trên núi",
+            "Sâu trong rừng",
+            "Khu vườn hoa tử đằng và bươm bướm",
+            "Ngôi chùa yên tĩnh trên núi"
+          ]
+        },
+        {
+          "q": "Điều gì giúp bạn tiếp tục?",
+          "options": [
+            "Bảo vệ gia đình",
+            "Sống xứng đáng với những người đã tin tưởng mình",
+            "Tìm được người để yêu",
+            "Tiêu diệt đến mối nguy cuối cùng"
+          ]
+        },
+        {
+          "q": "Chọn một phong cách thẩm mỹ:",
+          "options": [
+            "Hồng và xanh lá, mềm mại như dải ruy băng",
+            "Vàng, họa tiết tia chớp",
+            "Đá quý, vàng ròng và một chút thuốc nổ",
+            "Sương mù phủ trên núi"
+          ]
+        },
+        {
+          "q": "Trong đội, bạn…",
+          "options": [
+            "Hô to “Hãy đốt cháy trái tim mình!” và thúc mọi người tiến lên",
+            "Lập kế hoạch, thật hoành tráng",
+            "Đánh mạnh hơn bất kỳ ai",
+            "Nghiên cứu và pha chế thuốc"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn là…",
+          "options": [
+            "Một tia chớp bất chợt",
+            "Tình cảm tràn trề",
+            "Một cơn bão",
+            "Trôi lững lờ, như mây"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Nước",
+        "flame": "Lửa",
+        "thunder": "Sấm",
+        "beast": "Thú",
+        "insect": "Côn trùng",
+        "wind": "Gió",
+        "mist": "Sương mù",
+        "love": "Tình yêu",
+        "sound": "Âm thanh",
+        "stone": "Đá"
+      },
+      "results": {
+        "water": {
+          "name": "Hơi thở của Nước · Tanjiro Kamado, Giyu Tomioka",
+          "body": "Tốt bụng, linh hoạt và bình tĩnh trước áp lực. Bạn uốn quanh vấn đề thay vì đập vỡ nó, và sẽ làm mọi thứ để bảo vệ gia đình."
+        },
+        "flame": {
+          "name": "Hơi thở của Lửa · Kyojuro Rengoku",
+          "body": "Ấm áp, dũng cảm và hết lòng. Bạn động viên mọi người xung quanh, ăn uống ngon lành và sống xứng đáng với những người đã tin tưởng bạn. Hãy đốt cháy trái tim mình."
+        },
+        "thunder": {
+          "name": "Hơi thở của Sấm · Zenitsu Agatsuma",
+          "body": "Run rẩy cho đến đúng lúc quan trọng, rồi tỏa sáng. Bạn có thể nghi ngờ bản thân ra mặt, nhưng bạn đã luyện một thứ đến mức hoàn hảo, và vậy là đủ."
+        },
+        "beast": {
+          "name": "Hơi thở của Thú · Inosuke Hashibira",
+          "body": "Hoang dã, hiếu thắng và tự học. Bạn học bằng cách làm, lao thẳng vào mọi thử thách và trung thành với bạn bè hơn bạn chịu thừa nhận."
+        },
+        "insect": {
+          "name": "Hơi thở của Côn trùng · Shinobu Kocho",
+          "body": "Dịu dàng, thông minh và sắc sảo hơn vẻ ngoài. Bạn mỉm cười trước mọi chuyện, giải quyết vấn đề bằng kiến thức và sự quan tâm, và giữ một ngọn lửa âm thầm cháy bên trong."
+        },
+        "wind": {
+          "name": "Hơi thở của Gió · Sanemi Shinazugawa",
+          "body": "Dữ dội, thẳng thừng và hết mực che chở. Bề ngoài bạn trông thô ráp, nhưng mọi điều bạn làm đều để giữ an toàn cho những người bạn yêu thương."
+        },
+        "mist": {
+          "name": "Hơi thở của Sương mù · Muichiro Tokito",
+          "body": "Điềm tĩnh, tài năng và hơi mơ màng. Bạn học rất nhanh, dễ thả hồn đi đâu đó và khiến mọi người bất ngờ khi bỗng tập trung cao độ."
+        },
+        "love": {
+          "name": "Hơi thở của Tình yêu · Mitsuri Kanroji",
+          "body": "Giàu tình cảm, cởi mở và mạnh hơn vẻ ngoài. Bạn sống thật với cảm xúc, mê đồ ăn ngon và bạn bè vui vẻ, và sự ấm áp chính là sức mạnh của bạn."
+        },
+        "sound": {
+          "name": "Hơi thở của Âm thanh · Tengen Uzui",
+          "body": "Hào nhoáng, tự tin và đầy phong cách. Bạn làm gì cũng phải thật chất, lập kế hoạch táo bạo và bảo vệ những người thân thiết nhất trên hết mọi thứ."
+        },
+        "stone": {
+          "name": "Hơi thở của Đá · Gyomei Himejima",
+          "body": "Một người khổng lồ hiền lành. Bạn kiên nhẫn, giàu lòng trắc ẩn và không gì lay chuyển, và sức mạnh thầm lặng của bạn là chỗ dựa cho mọi người khi khó khăn."
+        }
+      }
+    },
+    "jujutsu-kaisen": {
+      "title": "Test Jujutsu Kaisen: bạn là nhân vật JJK nào? — cv.cm",
+      "description": "Test Jujutsu Kaisen (Chú thuật hồi chiến) miễn phí: trả lời 12 câu hỏi để biết bạn là Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Satoru Gojo, Kento Nanami, Maki Zenin, Toge Inumaki hay Aoi Todo. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Jujutsu Kaisen nào?",
+      "lede": "Một chiến binh tốt bụng như Yuji, người suy tính cẩn trọng như Megumi hay kẻ mạnh nhất như Gojo? Trả lời 12 câu hỏi để tìm nhân vật hợp với bạn trong tám chú thuật sư của Jujutsu Kaisen.",
+      "about": [
+        "Các chú thuật sư trong Jujutsu Kaisen nổi bật nhờ tính cách không kém gì thuật thức: trái tim lớn của Yuji, sự thận trọng của Megumi, sự tự tin của Nobara, vẻ kiêu ngạo tinh nghịch của Gojo, nỗi ghét làm thêm giờ của Nanami, quyết tâm chứng tỏ bản thân của Maki, sự kiệm lời của Toge và những đam mê rất cụ thể của Todo.",
+        "Bài trắc nghiệm chấm điểm cả tám nhân vật, cho biết nhân vật hợp nhất và những người theo sát. Bài không tiết lộ cốt truyện. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Gege Akutami, Shueisha hay MAPPA bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Jujutsu Kaisen là ai?",
+          "a": "Ba học sinh năm nhất Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki và thầy của họ là Satoru Gojo. Kento Nanami, Maki Zenin, Toge Inumaki và Aoi Todo là những chú thuật sư được yêu thích nhất."
+        },
+        {
+          "q": "Sao Toge Inumaki chỉ nói tên nhân cơm nắm?",
+          "a": "Cậu dùng Chú Ngôn, nên bất cứ điều gì cậu nói đều có thể thành mệnh lệnh. Cậu chỉ nói tên nhân cơm nắm như “cá hồi” hay “cá ngừ bào” để trò chuyện an toàn."
+        },
+        {
+          "q": "Bài trắc nghiệm có tiết lộ nội dung (spoil) không?",
+          "a": "Không. Câu hỏi và kết quả chỉ mô tả tính cách và chi tiết ở phần đầu truyện."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn không được lưu lại."
+        }
+      ],
+      "items": [
+        {
+          "q": "Ngày đầu tiên ở trường mới. Bạn…",
+          "options": [
+            "Kết bạn với tất cả mọi người",
+            "Lặng lẽ quan sát từng người",
+            "Xuất hiện thật ấn tượng để ai cũng nhớ",
+            "Hỏi từng người xem họ thích mẫu người thế nào"
+          ]
+        },
+        {
+          "q": "Phong cách làm việc của bạn:",
+          "options": [
+            "Tan làm đúng giờ. Làm thêm giờ là kẻ thù",
+            "Làm điều không thể, rồi khoe khoang về nó",
+            "Làm gấp đôi để chứng minh những kẻ nghi ngờ đã sai",
+            "Nói ít, làm nhiều"
+          ]
+        },
+        {
+          "q": "Khiếu hài hước của bạn:",
+          "options": [
+            "Tinh nghịch và hơi tự mãn",
+            "Khô khan và châm biếm",
+            "Xoay quanh những đam mê rất cụ thể",
+            "Chỉ một từ là đủ khiến người ta bật cười"
+          ]
+        },
+        {
+          "q": "Sức mạnh của bạn đến từ đâu?",
+          "options": [
+            "Những người xung quanh",
+            "Là chính mình, không cần xin lỗi ai",
+            "Chứng minh mình không cần thứ người khác sinh ra đã có",
+            "Biết rằng mình là kẻ mạnh nhất"
+          ]
+        },
+        {
+          "q": "Chọn một bạn đồng hành:",
+          "options": [
+            "Một chú chó trung thành",
+            "Một nắm cơm",
+            "Cây búa và một nắm đinh",
+            "Một cuốn sách hay trong quán cà phê yên tĩnh"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Lúc nào cũng đặt bản thân cuối cùng",
+            "Nghĩ quá nhiều",
+            "Hơi quá ý thức về việc mình giỏi đến đâu",
+            "Không ngừng nói về idol yêu thích"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Đấm trước, hỏi sau",
+            "Vớ lấy vũ khí. Vũ khí gì cũng được",
+            "Gọi viện binh",
+            "Nói một từ là xong"
+          ]
+        },
+        {
+          "q": "Bạn cứu ai?",
+          "options": [
+            "Tất cả những ai tôi cứu được",
+            "Những người tôi thấy xứng đáng",
+            "Ai mà công việc yêu cầu, làm cho đàng hoàng, rồi về nhà",
+            "Tôi làm theo cách của tôi, ai nói gì cũng mặc"
+          ]
+        },
+        {
+          "q": "Cuối tuần lý tưởng của bạn:",
+          "options": [
+            "Mua sắm ở thành phố lớn",
+            "Tập luyện ngoài trời",
+            "Buổi bắt tay fan của idol yêu thích",
+            "Đi một vòng mọi tiệm đồ ngọt trong thành phố"
+          ]
+        },
+        {
+          "q": "Bạn là kiểu người dẫn dắt nào?",
+          "options": [
+            "Người thầy ai cũng ngưỡng mộ",
+            "Người lớn đáng tin cậy trong phòng",
+            "Người trầm lặng giữ an toàn cho mọi người",
+            "Tôi thà tự mình xử lý"
+          ]
+        },
+        {
+          "q": "Chuyện gia đình bạn:",
+          "options": [
+            "Phức tạp. Tôi rời đi để tự tạo dựng tên tuổi",
+            "Được ông bà nuôi lớn, và tôi sẽ không bao giờ quên lời trăng trối",
+            "Bạn thân là anh em ruột của tôi, ít nhất là theo tôi nghĩ",
+            "Bạn bè là gia đình của tôi"
+          ]
+        },
+        {
+          "q": "Phương châm của bạn:",
+          "options": [
+            "“Không làm thêm một phút nào ngoài giờ được trả lương”",
+            "“Cứ ồn ào, cứ tự hào”",
+            "“Chứng minh họ đã sai”",
+            "“Anh em trọn đời”"
+          ]
+        }
+      ],
+      "dims": {
+        "yuji": "Yuji",
+        "megumi": "Megumi",
+        "nobara": "Nobara",
+        "gojo": "Gojo",
+        "nanami": "Nanami",
+        "maki": "Maki",
+        "toge": "Toge",
+        "todo": "Todo"
+      },
+      "results": {
+        "yuji": {
+          "name": "Yuji Itadori",
+          "body": "Tốt bụng, dũng cảm và thể lực phi thường. Bạn dễ kết bạn, đặt người khác lên trước bản thân và cố giúp tất cả những ai có thể, đúng như lời ông bạn dặn."
+        },
+        "megumi": {
+          "name": "Megumi Fushiguro",
+          "body": "Nghiêm túc, cẩn trọng và trung thành một cách lặng lẽ. Bạn nghĩ trước khi làm, biết chọn trận để đánh và giữ một vài người thật gần, cùng mấy chú chó của mình."
+        },
+        "nobara": {
+          "name": "Nobara Kugisaki",
+          "body": "Tự tin, táo bạo và tự hào là chính mình. Bạn lên thành phố lớn để sống theo cách của mình, nghĩ gì nói nấy và không bao giờ thu mình lại để vừa khuôn."
+        },
+        "gojo": {
+          "name": "Satoru Gojo",
+          "body": "Tinh nghịch, xuất chúng và cực kỳ tự tin. Bạn khiến điều không thể trông thật dễ dàng, mê đồ ngọt và muốn đào tạo một thế hệ mạnh hơn thế hệ trước."
+        },
+        "nanami": {
+          "name": "Kento Nanami",
+          "body": "Có nguyên tắc, hay châm biếm và cực kỳ đáng tin. Bạn làm việc đến nơi đến chốn, ghét làm thêm giờ và là người lớn mà ai cũng ngầm dựa vào."
+        },
+        "maki": {
+          "name": "Maki Zenin",
+          "body": "Cứng cỏi, quyết tâm và không ai dám xem thường lần thứ hai. Bạn phải chứng tỏ bản thân mà không có thứ người khác sinh ra đã có, và bạn đã làm được bằng sự chăm chỉ."
+        },
+        "toge": {
+          "name": "Toge Inumaki",
+          "body": "Tốt bụng, trung thành và kiệm lời. Bạn chọn lời cẩn thận vì lời nói của bạn có sức nặng, và bạn bè hiểu rõ bạn quan tâm họ nhiều thế nào."
+        },
+        "todo": {
+          "name": "Aoi Todo",
+          "body": "Lập dị, mãnh liệt và là người bạn tuyệt vời một khi đã thân. Bạn có quan điểm rất rõ về mẫu người mình thích và idol của mình, và sẵn sàng chiến đấu bên “người anh em” mãi mãi."
+        }
+      }
+    },
+    "avatar-element": {
+      "title": "Bạn thuộc nguyên tố nào? Trắc nghiệm Avatar: Tiết khí sư cuối cùng — cv.cm",
+      "description": "Trắc nghiệm Avatar: The Last Airbender (Tiết khí sư cuối cùng) miễn phí: trả lời 12 câu hỏi để biết bạn sẽ điều khiển Nước, Đất, Lửa hay Khí, và những bậc thầy cùng nguyên tố với bạn. Không cần đăng ký.",
+      "h1": "Bạn sẽ điều khiển nguyên tố nào trong Avatar?",
+      "lede": "Nước, Đất, Lửa hay Khí? Trả lời 12 câu hỏi về cách bạn đối mặt với vấn đề và đối xử với mọi người để biết bạn thuộc về quốc gia nào trong bốn quốc gia của Avatar: The Last Airbender.",
+      "about": [
+        "Trong Avatar: The Last Airbender (Tiết khí sư cuối cùng), mỗi môn điều khiển nguyên tố phản ánh một lối sống: Nước là nguyên tố của sự thay đổi và cộng đồng, Đất của sức mạnh và sự bền bỉ, Lửa của động lực và ý chí, Khí của tự do và sự buông bỏ. Bài trắc nghiệm ghép thói quen của bạn với những triết lý đó.",
+        "Kết quả cho biết nguyên tố của bạn, những nhân vật nổi tiếng cùng nguyên tố và điểm của bạn ở cả bốn. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Nickelodeon hay Paramount bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Bốn nguyên tố trong Avatar là gì?",
+          "a": "Nước, Đất, Lửa và Khí, mỗi nguyên tố gắn với một quốc gia: Thủy Tộc, Thổ Quốc, Hỏa Quốc và Khí Tộc du mục. Avatar là người duy nhất điều khiển được cả bốn."
+        },
+        {
+          "q": "Nguyên tố nào mạnh nhất?",
+          "a": "Không nguyên tố nào cả. Bộ phim xem chúng cân bằng nhau, mỗi nguyên tố có thế mạnh riêng, và Avatar phải học cả bốn."
+        },
+        {
+          "q": "Tôi có thể là người không điều khiển được nguyên tố không?",
+          "a": "Trong phim, phần lớn mọi người hoàn toàn không điều khiển được nguyên tố, và Sokka đã chứng minh bạn không cần đến điều đó. Bài trắc nghiệm này luôn chọn nguyên tố hợp với bạn nhất."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Bạn bè tìm đến bạn để…",
+          "options": [
+            "Được an ủi khi mọi thứ đổ vỡ",
+            "Nghe lời thẳng thắn và sự ủng hộ vững vàng",
+            "Có động lực để dám làm",
+            "Có một góc nhìn mới mẻ"
+          ]
+        },
+        {
+          "q": "Chọn một nơi:",
+          "options": [
+            "Thành phố lớn có tường thành bao quanh",
+            "Ngôi đền trên núi cao",
+            "Ngôi làng trên băng bên bờ biển",
+            "Hòn đảo núi lửa"
+          ]
+        },
+        {
+          "q": "Gặp vấn đề, bạn…",
+          "options": [
+            "Tấn công trực diện",
+            "Đứng vững và chờ đúng thời điểm",
+            "Tránh đối đầu nếu được và tìm cách khác",
+            "Thích nghi và tìm đường vòng qua"
+          ]
+        },
+        {
+          "q": "Bạn coi trọng điều gì nhất?",
+          "options": [
+            "Tự do và hòa bình",
+            "Gia đình và cộng đồng",
+            "Sự trung thực và lòng trung thành",
+            "Tham vọng và danh dự"
+          ]
+        },
+        {
+          "q": "Khuyết điểm lớn nhất của bạn:",
+          "options": [
+            "Để bụng lâu hơn bạn chịu thừa nhận",
+            "Nóng tính",
+            "Trốn tránh trách nhiệm",
+            "Cứng đầu như đá"
+          ]
+        },
+        {
+          "q": "Chọn một thú cưng:",
+          "options": [
+            "Con lửng chũi khổng lồ hiền lành",
+            "Chú chó vùng cực trung thành",
+            "Một con rồng",
+            "Con vượn cáo biết bay"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn là…",
+          "options": [
+            "Mãnh liệt",
+            "Nhẹ nhàng và tinh nghịch",
+            "Bề mặt tĩnh lặng, bên dưới sâu thẳm",
+            "Vững chãi và kiên nhẫn"
+          ]
+        },
+        {
+          "q": "Bạn bè làm bạn thất vọng. Bạn…",
+          "options": [
+            "Bỏ qua và bước tiếp",
+            "Nói thẳng cho họ biết họ đã làm gì",
+            "Nổi nóng, rồi nguội đi cũng nhanh như thế",
+            "Đau lòng sâu sắc, rồi dần dần tha thứ"
+          ]
+        },
+        {
+          "q": "Chọn một thời điểm trong ngày:",
+          "options": [
+            "Ban đêm, dưới trăng tròn",
+            "Chiều muộn, có làn gió nhẹ",
+            "Giữa trưa, chân đứng trên đất vững",
+            "Bình minh"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Bức tường không bao giờ lay chuyển",
+            "Người thúc cả đội tiến lên",
+            "Người giảng hòa",
+            "Người chữa lành"
+          ]
+        },
+        {
+          "q": "Chọn một sở thích:",
+          "options": [
+            "Võ thuật",
+            "Bơi lội hoặc lướt sóng",
+            "Vật hoặc leo núi đá",
+            "Bay lượn, hoặc bất cứ thứ gì có tầm nhìn đẹp"
+          ]
+        },
+        {
+          "q": "Bạn sẽ chiến đấu vì điều gì?",
+          "options": [
+            "Sự cân bằng của thế giới",
+            "Danh dự",
+            "Những người dựa vào bạn",
+            "Quê hương"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Nước",
+        "earth": "Đất",
+        "fire": "Lửa",
+        "air": "Khí"
+      },
+      "results": {
+        "water": {
+          "name": "Thủy thuật sư (Waterbender)",
+          "body": "Linh hoạt, chu đáo và sâu sắc hơn vẻ ngoài. Bạn thuận theo dòng chảy cho đến khi có điều quan trọng, lúc đó không gì cản nổi bạn, và bạn sẽ làm mọi thứ vì gia đình và cộng đồng. Cùng điều khiển Nước: Katara và Korra."
+        },
+        "earth": {
+          "name": "Thổ thuật sư (Earthbender)",
+          "body": "Vững chãi, thật thà và cứng đầu theo cách tốt nhất. Bạn chờ đúng thời điểm, giữ vững lập trường và không bao giờ giả vờ là ai khác. Cùng điều khiển Đất: Toph Beifong và Vua Bumi."
+        },
+        "fire": {
+          "name": "Hỏa thuật sư (Firebender)",
+          "body": "Đầy động lực, nhiệt huyết và giàu ý chí. Bạn theo đuổi mục tiêu quyết liệt và cảm nhận mọi thứ mãnh liệt, và bạn đã học được rằng sức mạnh thật sự đến từ sự cân bằng. Cùng điều khiển Lửa: Zuko và chú Iroh."
+        },
+        "air": {
+          "name": "Khí thuật sư (Airbender)",
+          "body": "Phóng khoáng, tinh nghịch và ôn hòa. Bạn thà tìm cách khác còn hơn đánh nhau, coi trọng tự do và mang sự nhẹ nhàng đến cho mọi người xung quanh. Cùng điều khiển Khí: Aang và Jinora."
+        }
       }
     }
   }

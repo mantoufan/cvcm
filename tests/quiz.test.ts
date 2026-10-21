@@ -44,6 +44,20 @@ function lean(id: QuizId, on: string[], top = 4): number[] {
   });
 }
 
+/** Seeded random integers below `n` (mulberry32), so random-answer checks are repeatable. */
+function randomInts(seed: number): (n: number) => number {
+  let state = seed >>> 0;
+  return (n) => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return Math.floor((((t ^ (t >>> 14)) >>> 0) / 4294967296) * n);
+  };
+}
+
+const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "demon-slayer", "jujutsu-kaisen", "avatar-element"] as const;
+
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
     expect(parseAppPath("/en/tests/")).toEqual({ kind: "quiz", locale: "en", quiz: null });
@@ -318,11 +332,7 @@ describe("test pages: scoring", () => {
     // Caged pets, birds and rabbits included, stay possible under a "small caged or tank animals" lease.
     const caged = new Set<string>();
     // Many random answer sets: the limits hold whatever else is picked.
-    let seed = 7;
-    const next = (n: number): number => {
-      seed = (seed * 1103515245 + 12345) % 2147483648;
-      return seed % n;
-    };
+    const next = randomInts(7);
     for (let run = 0; run < 3000; run++) {
       const answers = def.items.map((item) => next(item.options.length));
       const result = scoreQuiz("pet", answers);
@@ -365,7 +375,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet"] as const) {
+    for (const id of ["face-shape", "anime", "pet", ...GAME_ANIME] as const) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -384,5 +394,86 @@ describe("test pages: scoring", () => {
       }
     }
     expect(def.dims).toHaveLength(7);
+  });
+
+  it("gives every game and anime result the same best score and spreads ties evenly", () => {
+    // The tie hash reads which questions scored each result, so it only makes sense on choice quizzes.
+    for (const id of QUIZZES) {
+      const def = QUIZ_DEFS[id];
+      if (def.result.kind === "top" && def.result.tie === "spread") expect(def.type, id).toBe("choice");
+    }
+    for (const id of GAME_ANIME) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      // Highest possible score per result: equal, so no result is easier to reach.
+      const best = def.dims.map((dim) => def.items.reduce((sum, item) => sum + Math.max(0, ...item.options.map((o) => o[dim] ?? 0)), 0));
+      expect(new Set(best).size, id).toBe(1);
+    }
+    // Avatar offers all four elements in every question; each element sits in each position three times.
+    const avatar = QUIZ_DEFS["avatar-element"];
+    if (avatar.type !== "choice") throw new Error();
+    for (const dim of avatar.dims) {
+      for (let position = 0; position < 4; position++) {
+        expect(avatar.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${dim} ${position}`).toHaveLength(3);
+      }
+    }
+    // A water/earth tie is settled by the answers, not by list order: across different tied answer sets both
+    // elements win, and the same answers always give the same result.
+    const pick = (dims: string[]): number[] => avatar.items.map((item, i) => item.options.findIndex((o) => (o[dims[i]] ?? 0) > 0));
+    const winners = new Set<string>();
+    for (let shift = 0; shift < 12; shift++) {
+      const answers = pick(avatar.items.map((_, i) => ((i + shift) % 12 < 6 ? "water" : "earth")));
+      const result = scoreQuiz("avatar-element", answers);
+      expect(result.ranked[0].pct).toBe(result.ranked[1].pct);
+      expect(scoreQuiz("avatar-element", answers).key).toBe(result.key);
+      winners.add(result.key);
+    }
+    expect([...winners].sort()).toEqual(["earth", "water"]);
+    // Changing an answer between the two trailing elements leaves the water/earth tie, and its winner, alone.
+    const before = pick(["water", "water", "water", "water", "water", "earth", "earth", "earth", "earth", "earth", "fire", "air"]);
+    const after = pick(["water", "water", "water", "water", "water", "earth", "earth", "earth", "earth", "earth", "air", "air"]);
+    expect(scoreQuiz("avatar-element", before).key).toBe(scoreQuiz("avatar-element", after).key);
+    // Every way to split the 12 questions 6/6 between two elements ties them; each pair should split about evenly.
+    const halves: number[][] = [];
+    const choose = (start: number, picked: number[]): void => {
+      if (picked.length === 6) halves.push(picked);
+      else for (let i = start; i < 12; i++) choose(i + 1, [...picked, i]);
+    };
+    choose(0, []);
+    for (const [a, b] of [["water", "earth"], ["water", "fire"], ["water", "air"], ["earth", "fire"], ["earth", "air"], ["fire", "air"]]) {
+      const aWins = halves.filter((half) => scoreQuiz("avatar-element", pick(avatar.items.map((_, i) => (half.includes(i) ? a : b)))).key === a).length;
+      expect(aWins / halves.length, `${a}/${b}`).toBeGreaterThan(0.44);
+      expect(aWins / halves.length, `${a}/${b}`).toBeLessThan(0.56);
+    }
+  });
+
+  it("lets no game or anime result dominate random answers", () => {
+    const next = randomInts(42);
+    for (const id of GAME_ANIME) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      const counts = new Map<string, number>();
+      // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
+      const tiedIn = new Map<string, number>();
+      const tiedWon = new Map<string, number>();
+      const runs = 20000;
+      for (let n = 0; n < runs; n++) {
+        const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
+        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+        const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
+        if (tied.length < 2) continue;
+        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
+      }
+      for (const dim of def.dims) {
+        // A fair tie-break wins about as many ties as a coin (or die) would.
+        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
+        const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
+        expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
+        expect(share, `${id} ${dim}`).toBeLessThan(1.2);
+      }
+    }
   });
 });

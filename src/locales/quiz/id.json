@@ -31,6 +31,7 @@
     "top3": "Tiga teratasmu",
     "runnerUp": "Juga menonjol",
     "ruledOut": "Tidak cocok menurut jawabanmu",
+    "tiedWith": "Seri dengan",
     "focus": "Area yang perlu diperkuat",
     "crisisTitle": "Jika kamu berpikir untuk menyakiti diri sendiri",
     "crisisBody": "Kamu layak mendapat dukungan sekarang juga. Jika kamu mungkin bertindak berdasarkan pikiran ini, hubungi nomor darurat setempat atau pergi ke IGD terdekat. Kamu juga bisa menghubungi layanan krisis gratis dan rahasia: findahelpline.com mencantumkan layanan di setiap negara.",
@@ -38,19 +39,21 @@
   },
   "hub": {
     "title": "Tes kepribadian gratis: MBTI, Big Five, cinta & karier — cv.cm",
-    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, introvert ekstrovert, Enneagram, bahasa cinta, kelekatan, gaya konflik, minat bakat, gaya kerja, keuangan, kronotipe, hewan peliharaan, anime, bentuk wajah, harga diri, kecemasan, dan depresi. Tanpa daftar; jawaban tetap di browsermu.",
+    "description": "Tes kepribadian dan psikologi online gratis: MBTI, Big Five, introvert ekstrovert, Enneagram, bahasa cinta, kelekatan, gaya konflik, minat bakat, gaya kerja, keuangan, kronotipe, hewan peliharaan, bentuk wajah, harga diri, kecemasan, dan depresi, plus kuis penggemar game dan anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar, dan arketipe anime. Tanpa daftar; jawaban tetap di browsermu.",
     "h1": "Tes kepribadian dan psikologi",
-    "lede": "Delapan belas tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, gaya kerjamu, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
+    "lede": "Dua puluh enam tes gratis, dari 16 tipe kepribadian dan Big Five hingga bahasa cinta, minat karier, kuis penggemar Pokémon dan Naruto, dan pemeriksaan mandiri kesehatan mental singkat. Tanpa daftar, tanpa email. Jawabanmu dinilai di browser dan tidak pernah diunggah.",
     "groups": {
       "personality": "Kepribadian",
       "love": "Cinta dan hubungan",
       "career": "Karier dan keuangan",
       "fun": "Seru-seruan",
-      "wellbeing": "Cek kesehatan mental"
+      "wellbeing": "Cek kesehatan mental",
+      "games": "Game",
+      "anime": "Anime dan animasi"
     },
     "about": [
       "Setiap tes menampilkan semua pertanyaannya dalam satu halaman. Jawab semuanya, tekan tombol, dan hasilnya muncul di bawah pertanyaan beserta penjelasan singkat dan grafik skormu.",
-      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five dan tes introvert–ekstrovert memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis."
+      "Pemeriksaan kesehatan mental memakai kuesioner skrining yang telah dipublikasikan (Rosenberg, GAD-7, PHQ-9). Big Five dan tes introvert–ekstrovert memakai kumpulan butir IPIP yang berstatus domain publik. Tes lainnya disusun untuk cv.cm berdasarkan model yang dikenal luas, dan hasilnya adalah titik awal untuk refleksi, bukan vonis. Kuis game dan anime adalah kuis penggemar tidak resmi, sekadar untuk seru-seruan."
     ],
     "faq": [
       { "q": "Apakah tes ini gratis?", "a": "Ya. Semua tes gratis, tanpa daftar, tanpa email, dan tanpa bayar untuk melihat hasil." },
@@ -1358,6 +1361,1505 @@
         "moderate": { "name": "Depresi sedang (10–14)", "body": "Gejalamu berada pada tingkat yang disarankan untuk menemui dokter atau tenaga profesional kesehatan mental. Depresi itu umum dan bisa diobati." },
         "modsevere": { "name": "Depresi cukup berat (15–19)", "body": "Jawabanmu menunjukkan gejala yang signifikan. Segera hubungi dokter atau tenaga profesional kesehatan mental. Penanganan seperti terapi dan obat-obatan membantu kebanyakan orang." },
         "severe": { "name": "Depresi berat (20–27)", "body": "Jawabanmu menunjukkan gejala yang berat. Segera hubungi dokter atau tenaga profesional kesehatan mental secepat mungkin, dan beri tahu orang yang kamu percayai tentang apa yang kamu rasakan." }
+      }
+    },
+    "pokemon": {
+      "title": "Kuis Pokémon: kamu Pokémon tipe apa? Tes kepribadian Pokémon — cv.cm",
+      "description": "Kuis Pokémon gratis: jawab 12 soal untuk menemukan tipe Pokémon-mu (Api, Air, Rumput, Listrik, Psikis, Peri, Naga, Hantu, Petarung, atau Normal) dan Pokémon partner yang cocok denganmu. Tanpa daftar.",
+      "h1": "Kuis Pokémon: kamu tipe apa?",
+      "lede": "Kamu tipe Api yang gampang tersulut, tipe Normal yang santai, atau tipe Hantu yang jahil? Jawab 12 pertanyaan sehari-hari untuk menemukan tipe Pokémon-mu dan Pokémon partner yang sekepribadian denganmu.",
+      "about": [
+        "Setiap tipe Pokémon punya kepribadian yang langsung dikenali penggemar: Api berani dan penuh gairah, Air mengikuti arus, Rumput sabar dan suka merawat, Hantu jahil. Kuis ini melihat cara kamu menghabiskan waktu, menghadapi stres, dan memperlakukan teman, lalu menilai sepuluh dari delapan belas tipe.",
+        "Hasilmu menyebut tipe yang paling cocok, Pokémon partner untuk tipe itu, dan skormu untuk setiap tipe. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Nintendo, Creatures, GAME FREAK, atau The Pokémon Company; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Ada berapa tipe Pokémon?",
+          "a": "Delapan belas: Normal, Api, Air, Rumput, Listrik, Es, Petarung, Racun, Tanah, Terbang, Psikis, Serangga, Batu, Hantu, Naga, Kegelapan, Baja, dan Peri. Kuis ini memakai sepuluh tipe yang kepribadiannya paling jelas."
+        },
+        {
+          "q": "Aku Pokémon apa?",
+          "a": "Hasilmu memberi satu Pokémon partner untuk tipemu, misalnya Pikachu untuk Listrik atau Eevee untuk Normal, plus dua Pokémon lain bertipe sama dengan kepribadian yang serupa."
+        },
+        {
+          "q": "Apakah ini kuis Pokémon resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis untuk seru-seruan. Jawabanmu tidak disimpan atau dikirim ke mana pun."
+        },
+        {
+          "q": "Kenapa aku dapat tipe yang tidak kuduga?",
+          "a": "Kuis ini menilai cara kamu menggambarkan kebiasaanmu, bukan Pokémon favoritmu. Kalau dua tipe skornya berdekatan, hasil juga menampilkan tipe kedua; coba ulangi di hari lain dan lihat apakah berubah."
+        }
+      ],
+      "items": [
+        {
+          "q": "Sabtu yang kosong. Kamu…",
+          "options": [
+            "Lari atau mendaki: sesuatu yang bikin jantung berdegup",
+            "Di rumah saja dengan camilan dan tidur siang panjang",
+            "Pergi ke pantai, kolam renang, atau danau",
+            "Begadang dengan film horor atau game misteri"
+          ]
+        },
+        {
+          "q": "Pilih tempat tinggal:",
+          "options": [
+            "Pondok di hutan yang sunyi",
+            "Kota neon yang tak pernah tidur",
+            "Puncak gunung yang memandang ke bawah segalanya",
+            "Rumah mungil dengan taman bunga"
+          ]
+        },
+        {
+          "q": "Teman-temanmu mengandalkanmu untuk…",
+          "options": [
+            "Membakar semangat semua orang",
+            "Nasihat yang tenang saat keadaan kacau",
+            "Melihat apa yang sebenarnya terjadi sebelum ada yang bilang",
+            "Membela mereka, apa pun yang terjadi"
+          ]
+        },
+        {
+          "q": "Kamu menghadapi tantangan besar. Kamu…",
+          "options": [
+            "Berlatih, bersiap, dan terus maju sampai menang",
+            "Membidik lebih tinggi dari yang dikira mungkin oleh siapa pun",
+            "Memikirkannya sampai menemukan jalan pintas yang cerdik",
+            "Melangkah satu per satu dan tetap stabil"
+          ]
+        },
+        {
+          "q": "Energimu di hari biasa:",
+          "options": [
+            "Meletup-letup. Tidak bisa diam",
+            "Pelan tapi pasti, seperti pohon yang tumbuh",
+            "Sepenuhnya tergantung camilan di dekatmu",
+            "Lemas di siang hari, segar bugar di malam hari"
+          ]
+        },
+        {
+          "q": "Pilih cuaca:",
+          "options": [
+            "Terik matahari musim panas",
+            "Badai petir dengan kilat menyambar",
+            "Gerimis lembut di jendela",
+            "Malam berkabut di bawah bulan purnama"
+          ]
+        },
+        {
+          "q": "Apa yang pertama kali orang perhatikan darimu?",
+          "options": [
+            "Kebaikanmu",
+            "Rasa percaya dirimu",
+            "Kejahilan dan selera humormu yang aneh",
+            "Kamu sulit ditebak"
+          ]
+        },
+        {
+          "q": "Di proyek kelompok, kamu yang…",
+          "options": [
+            "Mencetuskan ide besarnya",
+            "Kerja paling cepat dan selesai duluan",
+            "Memastikan semua orang merasa dilibatkan",
+            "Mengerjakan apa pun yang perlu, tanpa banyak drama"
+          ]
+        },
+        {
+          "q": "Pilih camilan:",
+          "options": [
+            "Keripik pedas",
+            "Buah segar atau salad",
+            "Kue dengan krim yang kebanyakan",
+            "Apa saja yang ada di kulkas"
+          ]
+        },
+        {
+          "q": "Kekuatan terbesarmu:",
+          "options": [
+            "Tekad",
+            "Mengikuti arus",
+            "Ambisi",
+            "Intuisi"
+          ]
+        },
+        {
+          "q": "Seseorang bersikap kasar padamu. Kamu…",
+          "options": [
+            "Langsung membalas",
+            "Membiarkannya lewat begitu saja",
+            "Tidak menanggapinya: mereka tidak sepadan dengan waktumu",
+            "Diam-diam merasa itu lucu sekali"
+          ]
+        },
+        {
+          "q": "Partner ideal untuk berpetualang:",
+          "options": [
+            "Teman setia yang tak pernah menyerah",
+            "Seseorang yang membuat setiap hari seru",
+            "Jiwa lembut yang menjaga semua orang",
+            "Rekan legendaris yang bisa kamu tunggangi ke langit"
+          ]
+        }
+      ],
+      "dims": {
+        "fire": "Api",
+        "water": "Air",
+        "grass": "Rumput",
+        "electric": "Listrik",
+        "psychic": "Psikis",
+        "fairy": "Peri",
+        "dragon": "Naga",
+        "ghost": "Hantu",
+        "fighting": "Petarung",
+        "normal": "Normal"
+      },
+      "results": {
+        "fire": {
+          "name": "Tipe Api · partner: Charmander",
+          "body": "Penuh gairah, berani, dan mustahil diabaikan. Kamu terjun total ke segala hal dan antusiasmemu menular, meski emosimu bisa tersulut secepat ia mereda. Sesama tipe Api: Arcanine dan Cyndaquil."
+        },
+        "water": {
+          "name": "Tipe Air · partner: Squirtle",
+          "body": "Tenang, mudah beradaptasi, dan enak diajak bergaul. Kamu mengikuti arus, meredakan pertengkaran, dan mencari jalan memutari rintangan alih-alih menerobosnya. Sesama tipe Air: Vaporeon dan Piplup."
+        },
+        "grass": {
+          "name": "Tipe Rumput · partner: Bulbasaur",
+          "body": "Sabar, stabil, dan diam-diam suka merawat. Kamu tumbuh pelan tapi pasti, menjaga orang-orang di sekitarmu, dan paling merasa jadi diri sendiri di alam terbuka. Sesama tipe Rumput: Leafeon dan Rowlet."
+        },
+        "electric": {
+          "name": "Tipe Listrik · partner: Pikachu",
+          "body": "Cepat, cerdas, dan penuh energi. Kamu berpikir cepat, bertindak lebih cepat lagi, dan membawa percikan ke setiap ruangan, tapi duduk diam itu sulit bagimu. Sesama tipe Listrik: Jolteon dan Pachirisu."
+        },
+        "psychic": {
+          "name": "Tipe Psikis · partner: Espeon",
+          "body": "Intuitif dan penuh pertimbangan. Kamu membaca orang dan situasi sebelum ada yang bicara, dan lebih suka rencana cerdik daripada adu kekuatan. Sesama tipe Psikis: Gardevoir dan Mew."
+        },
+        "fairy": {
+          "name": "Tipe Peri · partner: Sylveon",
+          "body": "Baik hati, menawan, dan hangat. Kamu membuat orang merasa diterima dan diperhatikan, dan di balik kelembutanmu ada kekuatan yang lebih besar dari dugaan orang. Sesama tipe Peri: Clefairy dan Togepi."
+        },
+        "dragon": {
+          "name": "Tipe Naga · partner: Dragonite",
+          "body": "Ambisius, bangga diri, dan bertekad kuat. Kamu membidik lebih tinggi dari siapa pun dan cukup keras kepala untuk sampai ke sana, dengan sisi lembut untuk segelintir orang yang kamu percaya. Sesama tipe Naga: Garchomp dan Axew."
+        },
+        "ghost": {
+          "name": "Tipe Hantu · partner: Gengar",
+          "body": "Misterius dan jahil. Kamu hidup di malam hari, suka iseng, dan punya selera humor yang membuat orang langsung suka atau malah bingung. Sesama tipe Hantu: Mimikyu dan Litwick."
+        },
+        "fighting": {
+          "name": "Tipe Petarung · partner: Lucario",
+          "body": "Disiplin, setia, dan protektif. Kamu berlatih keras, menepati janji, dan membela teman-temanmu tanpa perlu diminta. Sesama tipe Petarung: Riolu dan Machop."
+        },
+        "normal": {
+          "name": "Tipe Normal · partner: Eevee",
+          "body": "Santai, mudah beradaptasi, dan penuh potensi. Kamu nyaman dengan dirimu sendiri, cocok dengan hampir siapa saja, dan tak pernah menolak camilan atau tidur siang. Sesama tipe Normal: Snorlax dan Jigglypuff."
+        }
+      }
+    },
+    "genshin": {
+      "title": "Tes karakter Genshin: kamu dapat Vision apa? Kuis Genshin Impact — cv.cm",
+      "description": "Tes Genshin Impact gratis: jawab 12 soal untuk menemukan Vision (Anemo, Geo, Electro, Dendro, Hydro, Pyro, atau Cryo) yang cocok dengan idealmu, dan karakter Genshin yang punya Vision yang sama. Tanpa daftar.",
+      "h1": "Tes karakter Genshin: kamu dapat Vision apa?",
+      "lede": "Di Teyvat, para dewa menganugerahkan Vision kepada orang yang punya ambisi besar. Jawab 12 pertanyaan tentang apa yang kamu hargai dan bagaimana kamu bertindak, lalu cari tahu elemen mana dari ketujuhnya yang akan memilihmu.",
+      "about": [
+        "Tujuh negara di Teyvat masing-masing mengikuti seorang Archon dan sebuah ideal: kebebasan di Mondstadt (Anemo), kontrak di Liyue (Geo), keabadian di Inazuma (Electro), kebijaksanaan di Sumeru (Dendro), keadilan di Fontaine (Hydro), perang dan keberanian di Natlan (Pyro), serta cinta di Snezhnaya (Cryo). Kuis ini mencocokkan jawabanmu dengan ideal-ideal itu.",
+        "Hasilmu menyebut elemenmu, ideal di baliknya, dan tiga karakter yang bisa dimainkan dengan elemen yang sama, beserta skormu untuk ketujuh elemen. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh HoYoverse; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Apa itu Vision di Genshin Impact?",
+          "a": "Vision adalah permata yang memungkinkan pemiliknya menyalurkan satu elemen. Menurut cerita game-nya, para dewa memberikannya kepada orang yang punya ambisi atau keinginan besar."
+        },
+        {
+          "q": "Aku karakter Genshin yang mana?",
+          "a": "Hasilmu mencantumkan tiga karakter dengan elemen yang sama, misalnya Venti, Kaedehara Kazuha, dan Sucrose untuk Anemo. Pilih yang kisahnya paling mirip dengan kisahmu."
+        },
+        {
+          "q": "Kenapa tidak ada hasil Traveler?",
+          "a": "Traveler bisa memakai beberapa elemen tanpa Vision, jadi kuis ini menilai ketujuh elemen saja."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tetap di browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Apa yang paling penting bagimu?",
+          "options": [
+            "Kebebasan pergi ke mana pun angin membawaku",
+            "Menepati janji",
+            "Memahami cara dunia sebenarnya bekerja",
+            "Keadilan bagi semua orang"
+          ]
+        },
+        {
+          "q": "Pilih tempat tinggal:",
+          "options": [
+            "Kota berangin penuh penyair dan padang dandelion",
+            "Pelabuhan ramai penuh pedagang dan lampion",
+            "Pulau bunga sakura di bawah langit badai",
+            "Istana es jauh di utara"
+          ]
+        },
+        {
+          "q": "Seorang teman dalam masalah. Kamu…",
+          "options": [
+            "Langsung maju menolong tanpa pikir panjang",
+            "Diam-diam menemaninya, selama apa pun yang dibutuhkan",
+            "Menyusun rencana yang bertahan untuk jangka panjang",
+            "Memastikan siapa pun penyebabnya bertanggung jawab"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu bekerja?",
+          "options": [
+            "Stabil dan bisa diandalkan, batu demi batu",
+            "Saat inspirasi datang, kapan pun mood-nya muncul",
+            "Kupoles sampai sempurna tanpa cela",
+            "Kuriset semuanya dulu"
+          ]
+        },
+        {
+          "q": "Kamu dapat rezeki Mora nomplok. Kamu habiskan untuk…",
+          "options": [
+            "Investasi yang masuk akal",
+            "Pesta makan untuk semua temanmu",
+            "Buku dan les",
+            "Sesuatu yang indah dan abadi"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu menunjukkan kepedulian?",
+          "options": [
+            "Gestur besar, di depan banyak orang",
+            "Pengorbanan diam-diam yang tak disadari siapa pun",
+            "Menyeret mereka ke petualangan dadakan",
+            "Melindungi mereka, apa pun taruhannya"
+          ]
+        },
+        {
+          "q": "Orang menggambarkanmu sebagai…",
+          "options": [
+            "Berjiwa bebas",
+            "Bisa diandalkan",
+            "Bertekad kuat, mungkin keras kepala",
+            "Elegan, tapi agak berjarak"
+          ]
+        },
+        {
+          "q": "Malam idealmu:",
+          "options": [
+            "Festival meriah dengan kembang api",
+            "Menonton opera atau drama persidangan",
+            "Membaca di bawah cahaya lampu",
+            "Memandangi bintang sendirian di malam yang dingin dan cerah"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu menghadapi perubahan?",
+          "options": [
+            "Menyambutnya. Angin selalu berganti arah",
+            "Menolaknya. Ada hal yang tak boleh berubah",
+            "Mempelajarinya, lalu beradaptasi",
+            "Mengalir di sekitarnya seperti air"
+          ]
+        },
+        {
+          "q": "Peranmu dalam pertarungan tim:",
+          "options": [
+            "Pasang shield dan tahan barisan",
+            "Serang habis-habisan, bakar semuanya",
+            "Heal dan jaga tim tetap berdiri",
+            "Serangan presisi yang anggun"
+          ]
+        },
+        {
+          "q": "Apa yang tak akan pernah bisa kamu maafkan?",
+          "options": [
+            "Janji yang diingkari",
+            "Ketidakadilan yang dibiarkan tanpa hukuman",
+            "Mengkhianati orang yang kamu cintai",
+            "Dikurung dalam sangkar"
+          ]
+        },
+        {
+          "q": "Pilih satu kekuatan:",
+          "options": [
+            "Mengendalikan petir",
+            "Menumbuhkan hutan dalam sekejap",
+            "Memanggil api",
+            "Membekukan apa pun yang kamu sentuh"
+          ]
+        }
+      ],
+      "dims": {
+        "anemo": "Anemo",
+        "geo": "Geo",
+        "electro": "Electro",
+        "dendro": "Dendro",
+        "hydro": "Hydro",
+        "pyro": "Pyro",
+        "cryo": "Cryo"
+      },
+      "results": {
+        "anemo": {
+          "name": "Anemo: ideal kebebasan",
+          "body": "Kamu mengikuti angin. Kamu menghargai kebebasan di atas hampir segalanya, benci dikekang, dan membawa energi ringan dan jenaka yang mengangkat suasana orang di sekitarmu. Karakter Anemo: Venti, Kaedehara Kazuha, dan Sucrose."
+        },
+        "geo": {
+          "name": "Geo: ideal kontrak",
+          "body": "Kokoh seperti batu. Kata-katamu adalah janji, kamu merencanakan untuk jangka panjang, dan orang memercayakan hal terpenting mereka kepadamu. Karakter Geo: Zhongli, Navia, dan Noelle."
+        },
+        "electro": {
+          "name": "Electro: ideal keabadian",
+          "body": "Teguh dan teliti. Begitu memutuskan sesuatu, kamu menuntaskannya, dan kamu ingin apa yang kamu bangun bertahan selamanya. Karakter Electro: Raiden Shogun, Fischl, dan Yae Miko."
+        },
+        "dendro": {
+          "name": "Dendro: ideal kebijaksanaan",
+          "body": "Penuh rasa ingin tahu dan pemikir. Kamu ingin memahami cara segala sesuatu bekerja, membaca apa saja, dan kesabaranmu tumbuh menjadi wawasan sejati. Karakter Dendro: Nahida, Tighnari, dan Alhaitham."
+        },
+        "hydro": {
+          "name": "Hydro: ideal keadilan",
+          "body": "Ekspresif dan berprinsip. Kamu sangat peduli pada keadilan, merasakan segalanya dengan kuat, dan tidak takut pada momen dramatis kalau memang pantas. Karakter Hydro: Furina, Neuvillette, dan Xingqiu."
+        },
+        "pyro": {
+          "name": "Pyro: ideal perang dan keberanian",
+          "body": "Berani dan berhati hangat. Kamu maju melindungi teman-temanmu, menghidupkan setiap perayaan, dan tak pernah mundur dari pertarungan yang penting. Karakter Pyro: Hu Tao, Diluc, dan Bennett."
+        },
+        "cryo": {
+          "name": "Cryo: ideal cinta",
+          "body": "Dingin di luar, setia sepenuh hati di dalam. Kamu mencintai dengan tenang dan loyal, berkorban tanpa terlihat, dan membawa diri dengan anggun. Karakter Cryo: Ganyu, Kamisato Ayaka, dan Wriothesley."
+        }
+      }
+    },
+    "sonic": {
+      "title": "Kamu karakter Sonic yang mana? Kuis Sonic the Hedgehog — cv.cm",
+      "description": "Kuis Sonic the Hedgehog gratis: jawab 12 soal untuk melihat apakah kamu Sonic, Tails, Knuckles, Amy, Shadow, Rouge, Cream, atau Silver. Tanpa daftar.",
+      "h1": "Kamu karakter Sonic yang mana?",
+      "lede": "Cepat dan bebas seperti Sonic, cerdas seperti Tails, atau penyendiri seperti Shadow? Jawab 12 pertanyaan tentang kebiasaanmu dan temukan pasanganmu di antara delapan karakter Sonic the Hedgehog.",
+      "about": [
+        "Teman dan rival Sonic masing-masing punya kepribadian yang jelas: Sonic hidup untuk kebebasan dan kecepatan, Tails membuat mesin, Knuckles menjaga Master Emerald, Amy tak pernah menyerah soal cinta, Shadow menjaga jarak dari semua orang, Rouge berburu permata, Cream menjaga sopan santun, dan Silver datang dari masa depan untuk mengubahnya.",
+        "Kuis ini menilai jawabanmu untuk kedelapan karakter dan menunjukkan siapa yang paling cocok serta seberapa dekat yang lain. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh SEGA; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Siapa saja karakter utama Sonic?",
+          "a": "Sonic, Tails, dan Knuckles adalah trio klasiknya. Amy Rose, Shadow, Rouge, Cream, dan Silver bergabung di game-game berikutnya, dan Dr. Eggman adalah penjahat utamanya."
+        },
+        {
+          "q": "Shadow itu pahlawan atau penjahat?",
+          "a": "Ia muncul sebagai rival di Sonic Adventure 2 dan sejak itu pernah bertarung di kedua pihak. Ia didorong oleh janji dari masa lalunya, itulah sebabnya ia sering bekerja sendirian."
+        },
+        {
+          "q": "Kenapa Dr. Eggman tidak jadi hasil?",
+          "a": "Kuis ini fokus pada teman dan rival Sonic. Penggemar Eggman bisa menjadikannya tantangan untuk mendapat Shadow atau Rouge."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu dinilai di browser dan tidak pernah disimpan."
+        }
+      ],
+      "items": [
+        {
+          "q": "Rutinitas pagimu:",
+          "options": [
+            "Sudah keluar rumah sebelum sarapan",
+            "Mengutak-atik gadget sambil ngopi",
+            "Latihan. Setiap hari tanpa absen",
+            "Merencanakan kencan sempurna, sampai ke menitnya"
+          ]
+        },
+        {
+          "q": "Pilih hobi:",
+          "options": [
+            "Mengoleksi permata",
+            "Membuat kue dan pesta teh bareng teman",
+            "Merakit mesin dari onderdil bekas",
+            "Berkendara sendirian di malam hari"
+          ]
+        },
+        {
+          "q": "Seorang teman minta tolong. Kamu…",
+          "options": [
+            "\"Siap!\" Kamu sudah melesat duluan",
+            "Dengan sopan bertanya apa yang mereka butuhkan",
+            "Bertanya apa untungnya buatmu sambil mengedipkan mata, lalu tetap menolong",
+            "Menolong, sambil memikirkan bagaimana ini bisa jadi masalah nanti"
+          ]
+        },
+        {
+          "q": "Kekurangan terbesarmu:",
+          "options": [
+            "Tidak sabaran",
+            "Kamu terlalu mudah percaya omongan orang",
+            "Kamu terlalu agresif kalau suka seseorang",
+            "Kamu menjaga jarak dari semua orang"
+          ]
+        },
+        {
+          "q": "Peranmu di tim:",
+          "options": [
+            "Si otak",
+            "Si otot",
+            "Si mata-mata",
+            "Yang bisa melihat ke mana semua ini akan berujung"
+          ]
+        },
+        {
+          "q": "Pilih tempat:",
+          "options": [
+            "Jalan terbuka dan bukit-bukit hijau",
+            "Pulau melayang dengan sesuatu yang berharga untuk dijaga",
+            "Taman sunyi penuh bunga",
+            "Kota runtuh yang ingin kamu bangun kembali"
+          ]
+        },
+        {
+          "q": "Pilih satu benda:",
+          "options": [
+            "Palu raksasa",
+            "Kunci inggris",
+            "Berlian besar",
+            "Cincin emas yang menahan kekuatanmu"
+          ]
+        },
+        {
+          "q": "Saat sedih, kamu…",
+          "options": [
+            "Tetap tersenyum berani dan terus mengejar mimpi",
+            "Curhat ke sahabatmu",
+            "Memendamnya dan terus bergerak",
+            "Berjanji pada diri sendiri untuk mengubah akhir ceritanya"
+          ]
+        },
+        {
+          "q": "Apa yang mendorongmu?",
+          "options": [
+            "Kebebasan",
+            "Melindungi apa yang menjadi milikmu",
+            "Cinta",
+            "Janji yang kamu buat dulu sekali"
+          ]
+        },
+        {
+          "q": "Gayamu:",
+          "options": [
+            "Ramping dan stylish, selalu",
+            "Gaun imut dan pita yang rapi",
+            "Cerah, berani, dan mustahil terlewat",
+            "Apa saja yang kantongnya paling banyak untuk alat"
+          ]
+        },
+        {
+          "q": "Bagaimana orang menggambarkan sopan santunmu?",
+          "options": [
+            "Sopan dan santun",
+            "Menawan, dengan banyak godaan",
+            "Blak-blakan",
+            "Tulus dan agak polos"
+          ]
+        },
+        {
+          "q": "Pilih satu kekuatan:",
+          "options": [
+            "Kecepatan super",
+            "Terbang",
+            "Menggerakkan benda dengan pikiran",
+            "Menghentikan waktu"
+          ]
+        }
+      ],
+      "dims": {
+        "sonic": "Sonic",
+        "tails": "Tails",
+        "knuckles": "Knuckles",
+        "amy": "Amy",
+        "shadow": "Shadow",
+        "rouge": "Rouge",
+        "cream": "Cream",
+        "silver": "Silver"
+      },
+      "results": {
+        "sonic": {
+          "name": "Sonic the Hedgehog",
+          "body": "Bebas, cepat, dan tak kenal takut. Kamu tidak tahan menunggu, melakukan apa yang terasa benar, dan jadi yang pertama menolong saat dibutuhkan. Sesekali mungkin kamu perlu sedikit melambat."
+        },
+        "tails": {
+          "name": "Miles \"Tails\" Prower",
+          "body": "Cerdas, setia, dan selalu sedang merakit sesuatu. Kamu menyelesaikan masalah dengan otak, selalu ada untuk sahabatmu, dan lebih berani dari yang kamu kira."
+        },
+        "knuckles": {
+          "name": "Knuckles the Echidna",
+          "body": "Kuat, jujur, dan protektif. Kamu serius menjalankan tugas dan akan menjaga hal yang penting dengan segenap kekuatanmu, meski kadang kamu memercayai orang yang salah."
+        },
+        "amy": {
+          "name": "Amy Rose",
+          "body": "Ceria, gigih, dan penuh hati. Kamu tahu apa yang kamu mau dan mengejarnya tanpa menyerah, dan tetap optimis saat semua orang sudah berhenti percaya."
+        },
+        "shadow": {
+          "name": "Shadow the Hedgehog",
+          "body": "Serius, intens, dan didorong oleh tujuan. Kamu menyimpan perasaanmu sendiri dan paling baik bekerja sendirian, tapi kamu tak pernah melupakan janji."
+        },
+        "rouge": {
+          "name": "Rouge the Bat",
+          "body": "Stylish, jenaka, dan pandai mendapatkan apa yang kamu mau. Kamu suka barang bagus dan sedikit bahaya, dan di balik godaanmu, kamu teman yang lebih baik dari yang kamu tunjukkan."
+        },
+        "cream": {
+          "name": "Cream the Rabbit",
+          "body": "Manis, sopan, dan baik hati. Kamu memperlakukan semua orang dengan santun, suka sore yang tenang bersama teman, dan lebih tangguh dari dugaan orang."
+        },
+        "silver": {
+          "name": "Silver the Hedgehog",
+          "body": "Tulus, idealis, dan selalu berpikir ke depan. Kamu ingin memperbaiki yang rusak dan mengubah masa depan, meski agak polos soal caranya."
+        }
+      }
+    },
+    "dnd-class": {
+      "title": "Kamu class D&D apa? Tes class Dungeons & Dragons — cv.cm",
+      "description": "Tes class D&D gratis: jawab 14 soal untuk melihat class mana dari 12 class Dungeons & Dragons yang cocok untukmu, dari Barbarian, Bard, dan Cleric sampai Rogue, Warlock, dan Wizard. Tanpa daftar.",
+      "h1": "Kamu class D&D apa?",
+      "lede": "Mengamuk, bernyanyi, berdoa, atau merapal mantra? Jawab 14 pertanyaan tentang caramu bertindak dalam petualangan dan temukan class mana dari 12 class Dungeons & Dragons yang cocok dengan kepribadianmu.",
+      "about": [
+        "Dungeons & Dragons punya dua belas class inti: Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, dan Wizard. Masing-masing adalah cara menyelesaikan masalah sekaligus seperangkat kekuatan, sehingga cocok jadi cermin kepribadian.",
+        "Kuis ini menanyakan apa yang akan kamu lakukan di kedai, di depan pintu terkunci, atau dalam pertarungan, lalu menilai kedua belas class. Jadikan hasilmu inspirasi untuk karakter berikutnya. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Wizards of the Coast; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja 12 class D&D?",
+          "a": "Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, dan Wizard. Beberapa edisi dan buku menambahkan class lain, seperti Artificer."
+        },
+        {
+          "q": "Apa bedanya Sorcerer, Warlock, dan Wizard?",
+          "a": "Wizard mempelajari sihir lewat belajar, Sorcerer terlahir dengan sihir, dan Warlock mendapatkannya dari pakta dengan patron yang kuat."
+        },
+        {
+          "q": "Class D&D mana yang terbaik untuk pemula?",
+          "a": "Fighter dan Barbarian paling mudah dimainkan, dan Cleric pilihan bagus kalau kamu ingin punya beberapa mantra. Pilih class yang kedengarannya seru: kamu akan lebih cepat menguasainya."
+        },
+        {
+          "q": "Apakah ini kuis D&D resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis untuk seru-seruan, dan jawabanmu tidak pernah keluar dari browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Party-mu masuk ke kedai. Kamu…",
+          "options": [
+            "Pesan minuman paling besar dan adu panco dengan orang asing",
+            "Naik ke panggung dan mulai bernyanyi",
+            "Duduk di pojok dan mengawasi pintu",
+            "Bertanya ke pemilik kedai soal legenda setempat"
+          ]
+        },
+        {
+          "q": "Pintu terkunci menghalangi jalan. Kamu…",
+          "options": [
+            "Menendangnya sampai roboh",
+            "Membobol kuncinya",
+            "Membaca rune di pintunya dan merapal mantra yang tepat",
+            "Membujuk siapa pun yang pegang kuncinya untuk membukanya"
+          ]
+        },
+        {
+          "q": "Dari mana kekuatanmu berasal?",
+          "options": [
+            "Bertahun-tahun belajar",
+            "Sudah mengalir di darahku sejak lahir",
+            "Perjanjian dengan makhluk misterius",
+            "Dewa yang kulayani"
+          ]
+        },
+        {
+          "q": "Di mana kamu merasa seperti di rumah?",
+          "options": [
+            "Jauh di dalam hutan purba",
+            "Di perbatasan liar, mengikuti jejak",
+            "Di biara tinggi di pegunungan",
+            "Di kuil, di antara orang-orang yang membutuhkanmu"
+          ]
+        },
+        {
+          "q": "Apa yang kamu lindungi?",
+          "options": [
+            "Orang-orang tak bersalah",
+            "Alam",
+            "Party-ku, dari garis depan",
+            "Kebebasanku sendiri"
+          ]
+        },
+        {
+          "q": "Dalam pertarungan, kamu…",
+          "options": [
+            "Mengamuk membabi buta",
+            "Menyembuhkan dan melindungi sekutumu",
+            "Menembak dari jauh dan tak pernah meleset",
+            "Bergerak lebih cepat dari yang bisa mereka ikuti, hanya dengan tangan kosong"
+          ]
+        },
+        {
+          "q": "Kekuranganmu:",
+          "options": [
+            "Terlalu bangga dengan bakat alamimu",
+            "Tak bisa menolak rahasia, atau tawaran perjanjian",
+            "Kamu memegang sumpahmu, bahkan saat itu menyakitkan",
+            "Kamu menerjang tanpa berpikir"
+          ]
+        },
+        {
+          "q": "Pilih teman seperjalanan:",
+          "options": [
+            "Sahabat hewan dari alam liar",
+            "Familiar aneh dari dimensi lain",
+            "Pedang yang sudah kamu bawa bertahun-tahun",
+            "Kecapimu"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu berlatih?",
+          "options": [
+            "Latihan rutin, setiap pagi",
+            "Meditasi",
+            "Berdoa",
+            "Tidak berlatih. Kekuatannya keluar sendiri dariku"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu menyelesaikan masalah?",
+          "options": [
+            "Pesona",
+            "Pengetahuan",
+            "Kesabaran dan keseimbangan",
+            "Taktik"
+          ]
+        },
+        {
+          "q": "Apa yang kamu cari?",
+          "options": [
+            "Keadilan",
+            "Rahasia terlarang",
+            "Harmoni dengan alam",
+            "Cara mengendalikan kekuatan liar di dalam dirimu"
+          ]
+        },
+        {
+          "q": "Perlengkapanmu:",
+          "options": [
+            "Zirah berat dan perisai bersimbol suci",
+            "Baju kulit ringan dan beberapa belati tersembunyi",
+            "Tongkat kayu yang masih ditumbuhi daun",
+            "Hanya jubah sederhana"
+          ]
+        },
+        {
+          "q": "Party-mu akan menyebutmu…",
+          "options": [
+            "Si misterius",
+            "Si penyembuh",
+            "Si pengembara penyendiri",
+            "Si pencerita"
+          ]
+        },
+        {
+          "q": "Pilih hadiah:",
+          "options": [
+            "Buku mantra yang tak bisa dibaca orang lain",
+            "Benih dari pohon tertua di dunia",
+            "Trofi dari monster terbesar yang pernah kamu kalahkan",
+            "Peta negeri yang belum terjelajahi"
+          ]
+        }
+      ],
+      "dims": {
+        "barbarian": "Barbarian",
+        "bard": "Bard",
+        "cleric": "Cleric",
+        "druid": "Druid",
+        "fighter": "Fighter",
+        "monk": "Monk",
+        "paladin": "Paladin",
+        "ranger": "Ranger",
+        "rogue": "Rogue",
+        "sorcerer": "Sorcerer",
+        "warlock": "Warlock",
+        "wizard": "Wizard"
+      },
+      "results": {
+        "barbarian": {
+          "name": "Barbarian",
+          "body": "Berani, lugas, dan penuh energi. Kamu bertindak berdasarkan insting, mengatakan apa yang kamu pikirkan, dan selalu yang pertama menerobos pintu. Kekuatanmu nyata, begitu juga kesetiaanmu pada party-mu."
+        },
+        "bard": {
+          "name": "Bard",
+          "body": "Menawan, kreatif, dan jiwa dari setiap pesta. Kamu menyelesaikan masalah dengan kata-kata dan kecerdikan, mengumpulkan cerita di mana pun kamu pergi, dan membuat setiap kelompok jadi lebih baik."
+        },
+        "cleric": {
+          "name": "Cleric",
+          "body": "Penuh perhatian, setia, dan stabil. Kamu menyatukan kelompok, menyembuhkan yang terluka, dan menarik kekuatan dari sesuatu yang lebih besar dari dirimu."
+        },
+        "druid": {
+          "name": "Druid",
+          "body": "Tenang, bijak, dan dekat dengan alam. Kamu paling betah di alam terbuka, berpikir dalam siklus panjang, dan menjaga keseimbangan yang dilupakan orang lain."
+        },
+        "fighter": {
+          "name": "Fighter",
+          "body": "Disiplin, praktis, dan bisa diandalkan. Kamu berlatih, merencanakan, dan menahan barisan. Tanpa gaya-gayaan, hanya keterampilan andal yang membuat semua orang tetap hidup."
+        },
+        "monk": {
+          "name": "Monk",
+          "body": "Fokus, sabar, dan disiplin diri. Kamu menghargai keseimbangan dan ketenangan batin, dan saat kamu bertindak, kamu lebih cepat dari dugaan siapa pun."
+        },
+        "paladin": {
+          "name": "Paladin",
+          "body": "Berprinsip, berani, dan protektif. Kamu hidup dengan sebuah kode, membela orang yang tak bisa membela diri, dan menepati janji meski harus membayar mahal."
+        },
+        "ranger": {
+          "name": "Ranger",
+          "body": "Mandiri, jeli, dan betah di alam liar. Kamu melihat apa yang terlewat oleh orang lain, lebih suka padang terbuka daripada kota yang ramai, dan sangat akurat saat dibutuhkan."
+        },
+        "rogue": {
+          "name": "Rogue",
+          "body": "Cerdik, gesit, dan mandiri. Kamu membaca situasi dalam hitungan detik, menemukan jalan masuk lewat belakang, dan menghargai kebebasanmu lebih dari aturan siapa pun."
+        },
+        "sorcerer": {
+          "name": "Sorcerer",
+          "body": "Berbakat, ekspresif, dan agak tak terduga. Bakatmu datang secara alami dan digerakkan oleh emosi, dan belajar mengendalikannya adalah petualangan hidupmu."
+        },
+        "warlock": {
+          "name": "Warlock",
+          "body": "Misterius, penuh rasa ingin tahu, dan ambisius. Kamu tertarik pada rahasia dan pengetahuan tersembunyi, dan bersedia membuat perjanjian berani demi mendapatkan apa yang kamu mau."
+        },
+        "wizard": {
+          "name": "Wizard",
+          "body": "Penuh rasa ingin tahu, analitis, dan selalu belajar. Kamu percaya pengetahuan yang tepat bisa menyelesaikan masalah apa pun, dan rela membaca semalaman untuk menemukannya."
+        }
+      }
+    },
+    "naruto": {
+      "title": "Tes Naruto: kamu karakter Naruto yang mana? Kuis kepribadian — cv.cm",
+      "description": "Tes Naruto gratis: jawab 12 soal untuk melihat apakah kamu Naruto, Sasuke, Sakura, Kakashi, Hinata, Shikamaru, Gaara, Itachi, Rock Lee, atau Jiraiya. Tanpa daftar.",
+      "h1": "Tes Naruto: kamu karakter yang mana?",
+      "lede": "Pantang menyerah seperti Naruto, berpikir sepuluh langkah ke depan seperti Shikamaru, atau tenang dan sulit ditebak seperti Itachi? Jawab 12 soal dan temukan pasanganmu di antara sepuluh karakter Naruto.",
+      "about": [
+        "Para ninja di Naruto mudah diingat karena masing-masing punya cara hidup yang jelas: Naruto yang pantang menyerah, harga diri Sasuke, kerja keras Rock Lee, kejeniusan malas Shikamaru, keberanian diam-diam Hinata. Kuis ini melihat mimpimu, kebiasaanmu, dan caramu memperlakukan rival, lalu menilai sepuluh karakter.",
+        "Hasilmu menyebut karakter yang paling cocok denganmu dan menampilkan skormu untuk karakter lainnya. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Masashi Kishimoto, Shueisha, atau Studio Pierrot; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Siapa saja karakter utama di Naruto?",
+          "a": "Tim 7: Naruto Uzumaki, Sasuke Uchiha, Sakura Haruno, dan guru mereka Kakashi Hatake. Hinata, Shikamaru, Gaara, Rock Lee, Itachi, dan Jiraiya termasuk yang paling populer di antara karakter lainnya."
+        },
+        {
+          "q": "Apakah kuis ini berisi spoiler?",
+          "a": "Hanya sedikit. Pertanyaan dan hasilnya menggambarkan kepribadian tiap karakter, bukan plot twist-nya."
+        },
+        {
+          "q": "Kenapa karakter favoritku tidak ada di hasil?",
+          "a": "Sepuluh hasil membuat kuis tetap singkat. Kalau ada karakter dengan skor kedua yang dekat, karakter itu juga cocok denganmu."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu dinilai di browser dan tidak pernah disimpan."
+        }
+      ],
+      "items": [
+        {
+          "q": "Mimpimu:",
+          "options": [
+            "Diakui oleh semua orang di desa",
+            "Membalas urusan dari masa lalumu",
+            "Menjadi sekuat orang-orang yang kamu kagumi",
+            "Keliling dunia dan menulis buku best-seller tentangnya"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu belajar?",
+          "options": [
+            "Kerja keras mengalahkan bakat: berlatih sampai tumbang",
+            "Usaha seminimal mungkin tapi tetap dapat nilai sempurna",
+            "Belajar giat dan juara di ujian tertulis",
+            "Datang terlambat sambil membawa buku yang tak pantas dibaca di depan umum"
+          ]
+        },
+        {
+          "q": "Dalam pertarungan, kamu…",
+          "options": [
+            "Tak pernah menyerah, bahkan saat tampak tanpa harapan",
+            "Berpikir sepuluh langkah ke depan",
+            "Memasang pertahanan yang tak bisa ditembus",
+            "Mengakhirinya sebelum dimulai"
+          ]
+        },
+        {
+          "q": "Kepribadianmu, singkatnya:",
+          "options": [
+            "Berisik dan ceria",
+            "Cool dan berjarak",
+            "Pemalu, tapi berani saat dibutuhkan",
+            "Santai dan sulit digoyahkan"
+          ]
+        },
+        {
+          "q": "Kisah mana yang paling mirip dengan kisahmu?",
+          "options": [
+            "Lama aku kesepian; sekarang ada orang yang membutuhkanku",
+            "Aku memikul beban yang tak bisa kubagi dengan siapa pun",
+            "Aku selalu berada di bayang-bayang orang lain, jadi aku berlatih lebih keras",
+            "Aku pernah kehilangan orang-orang, dan itu membentukku"
+          ]
+        },
+        {
+          "q": "Pilih favoritmu:",
+          "options": [
+            "Semangkuk besar ramen",
+            "Memandangi awan berlalu",
+            "Mengeringkan bunga",
+            "Berendam lama di pemandian air panas"
+          ]
+        },
+        {
+          "q": "Peranmu di tim:",
+          "options": [
+            "Ahli strategi",
+            "Ninja medis yang juga bisa meninju tembok sampai jebol",
+            "Guru yang mengajar lewat cerita",
+            "Serigala penyendiri"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu menghadapi rival?",
+          "options": [
+            "Menantangnya setiap hari",
+            "Diam-diam memastikan kamu melampauinya",
+            "Menyemangatinya dari jauh",
+            "Mencoba memahami apa yang membuatnya seperti itu"
+          ]
+        },
+        {
+          "q": "Emosimu:",
+          "options": [
+            "Tenang di luar, tapi tinjunya keras kalau didesak",
+            "Malas sampai keadaan jadi serius",
+            "Aku tak pernah meninggikan suara",
+            "Berdarah panas, setiap saat"
+          ]
+        },
+        {
+          "q": "Pilih gaya bertarung:",
+          "options": [
+            "Pasir yang melindungimu dengan sendirinya",
+            "Bilah petir",
+            "Serangan telapak tangan yang presisi",
+            "Ilusi yang tak bisa dihindari musuh"
+          ]
+        },
+        {
+          "q": "Apa yang paling kamu hargai?",
+          "options": [
+            "Orang-orang di desaku",
+            "Keluargaku, di atas segalanya",
+            "Jalanku sendiri",
+            "Pengalaman dan kebebasan"
+          ]
+        },
+        {
+          "q": "Titik lemahmu:",
+          "options": [
+            "Terlalu keras kepala untuk berhenti",
+            "Terlalu memikirkan pendapat orang lain",
+            "Ragu pada diri sendiri",
+            "Gampang teralihkan oleh hal yang menyenangkan"
+          ]
+        }
+      ],
+      "dims": {
+        "naruto": "Naruto",
+        "sasuke": "Sasuke",
+        "sakura": "Sakura",
+        "kakashi": "Kakashi",
+        "hinata": "Hinata",
+        "shikamaru": "Shikamaru",
+        "gaara": "Gaara",
+        "itachi": "Itachi",
+        "lee": "Rock Lee",
+        "jiraiya": "Jiraiya"
+      },
+      "results": {
+        "naruto": {
+          "name": "Naruto Uzumaki",
+          "body": "Berisik, hangat, dan mustahil dipatahkan semangatnya. Kamu tak pernah menyerah, tak pernah menarik kembali kata-katamu, dan memenangkan hati orang karena kamu juga tak pernah menyerah pada mereka."
+        },
+        "sasuke": {
+          "name": "Sasuke Uchiha",
+          "body": "Berbakat, bangga diri, dan sangat mandiri. Kamu menyimpan perasaanmu rapat-rapat dan menempuh jalanmu sendiri, dan begitu menetapkan tujuan, tak ada yang bisa membelokkanmu."
+        },
+        "sakura": {
+          "name": "Sakura Haruno",
+          "body": "Cerdas, pekerja keras, dan lebih kuat dari dugaan orang. Kamu belajar, memacu diri untuk mengimbangi orang-orang yang kamu kagumi, dan pukulanmu keras kalau didesak."
+        },
+        "kakashi": {
+          "name": "Kakashi Hatake",
+          "body": "Santai, peka, dan diam-diam brilian. Kamu selalu agak terlambat dan sulit digoyahkan, tapi tak pernah mengecewakan timmu, karena kamu tahu harga kehilangan orang."
+        },
+        "hinata": {
+          "name": "Hinata Hyuga",
+          "body": "Lembut, pemalu, dan lebih berani dari yang disadari siapa pun. Kamu menyemangati orang lain dengan diam-diam, terus tumbuh dengan caramu sendiri, dan berdiri teguh saat benar-benar dibutuhkan."
+        },
+        "shikamaru": {
+          "name": "Shikamaru Nara",
+          "body": "Jenius pemalas. Kamu lebih suka memandangi awan daripada bekerja, tapi saat penting kamu melihat sepuluh langkah ke depan dan menyusun rencana yang diikuti semua orang."
+        },
+        "gaara": {
+          "name": "Gaara",
+          "body": "Pendiam, protektif, dan sangat pengertian. Kamu tahu rasanya kesepian dari dalam, itulah sebabnya kamu menjaga orang lain dan berusaha memahami mereka sebelum menghakimi."
+        },
+        "itachi": {
+          "name": "Itachi Uchiha",
+          "body": "Tenang, berbakat, dan sulit ditebak. Kamu tak pernah meninggikan suara, berpikir beberapa langkah ke depan, dan menyimpan perasaanmu sendiri. Jarang ada yang tahu seberat apa yang kamu pikul."
+        },
+        "lee": {
+          "name": "Rock Lee",
+          "body": "Pekerja keras, berdarah panas, dan tulus. Kamu membuktikan bahwa usaha mengalahkan bakat, berlatih lebih keras dari siapa pun, dan menjadikan setiap rival alasan untuk berkembang."
+        },
+        "jiraiya": {
+          "name": "Jiraiya",
+          "body": "Berjiwa bebas, lucu, dan bijak. Kamu sudah melihat banyak hal di dunia, mengajar lewat cerita, dan lebih percaya pada generasi berikutnya daripada mereka sendiri."
+        }
+      }
+    },
+    "demon-slayer": {
+      "title": "Tes Demon Slayer: pernapasan apa yang cocok untukmu? Kuis Kimetsu no Yaiba — cv.cm",
+      "description": "Tes Demon Slayer gratis: jawab 12 soal untuk menemukan teknik pernapasanmu (Air, Api, Petir, Binatang Buas, Serangga, Angin, Kabut, Cinta, Suara, atau Batu) dan karakter Demon Slayer yang memakainya. Tanpa daftar.",
+      "h1": "Tes Demon Slayer: pernapasan apa yang cocok untukmu?",
+      "lede": "Mengalir seperti Air, berkobar seperti Api, atau menyambar seperti Petir? Jawab 12 soal tentang kepribadianmu dan temukan teknik pernapasan, serta pemburu iblis, yang cocok denganmu.",
+      "about": [
+        "Di Demon Slayer: Kimetsu no Yaiba, para pendekar pedang bertarung dengan teknik pernapasan. Air, Api, Petir, Angin, dan Batu adalah aliran utamanya; aliran lain seperti Serangga, Kabut, Cinta, dan Suara merupakan turunannya, sedangkan Inosuke menciptakan Pernapasan Binatang Buas sendiri.",
+        "Setiap aliran cocok dengan watak tertentu, jadi kuis ini melihat caramu menghadapi tekanan, berlatih, dan peduli pada orang lain. Hasilmu menyebut aliran pernapasan, karakter yang memakainya, dan skormu untuk kesepuluh aliran. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Koyoharu Gotouge, Shueisha, Aniplex, atau ufotable; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Ada berapa teknik pernapasan di Demon Slayer?",
+          "a": "Ceritanya menampilkan lebih dari selusin. Pernapasan Matahari adalah yang asli; Air, Api, Petir, Angin, dan Batu adalah aliran utama, dan beberapa aliran lain merupakan turunannya."
+        },
+        {
+          "q": "Tanjiro memakai teknik pernapasan apa?",
+          "a": "Tanjiro mempelajari Pernapasan Air, lalu juga memakai Hinokami Kagura, tarian yang diwariskan keluarganya dan berkaitan dengan Pernapasan Matahari."
+        },
+        {
+          "q": "Kenapa Pernapasan Matahari tidak jadi hasil?",
+          "a": "Pernapasan Matahari adalah aliran asli dan hanya segelintir karakter yang pernah memakainya, jadi kuis ini fokus pada aliran yang benar-benar dilatih para pemburu iblis."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tetap di browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Saat di bawah tekanan, kamu…",
+          "options": [
+            "Beradaptasi dan mengalir memutari masalahnya",
+            "Panik, lalu melakukan satu gerakan sempurna",
+            "Menerjang lurus sambil berteriak",
+            "Tetap tenang, mungkin agak melamun"
+          ]
+        },
+        {
+          "q": "Teman-temanmu menggambarkanmu sebagai…",
+          "options": [
+            "Hangat dan suka menyemangati",
+            "Lembut, tapi tajam",
+            "Kasar di luar, protektif di dalam",
+            "Mencolok"
+          ]
+        },
+        {
+          "q": "Bagaimana kamu berlatih?",
+          "options": [
+            "Satu jurus, dilatih ribuan kali",
+            "Di alam liar, dengan caraku sendiri",
+            "Dengan sabar, bertahun-tahun",
+            "Tidak perlu banyak: aku menguasainya dalam dua bulan"
+          ]
+        },
+        {
+          "q": "Pilih makanan:",
+          "options": [
+            "Tumpukan sakura mochi setinggi menara",
+            "Ubi manis, sambil berseru \"Umai!\" di setiap gigitan",
+            "Apa pun yang kutangkap sendiri",
+            "Nasi sederhana dan secangkir teh"
+          ]
+        },
+        {
+          "q": "Bagaimana caramu menunjukkan cinta?",
+          "options": [
+            "Terang-terangan, setiap saat",
+            "Melindungi mereka mati-matian tanpa pernah mengatakannya",
+            "Dengan gestur besar yang dramatis",
+            "Dengan doa diam-diam dan sedikit air mata"
+          ]
+        },
+        {
+          "q": "Kekuatan terbesarmu:",
+          "options": [
+            "Kebaikan hati",
+            "Keberanian",
+            "Kecerdasan",
+            "Kekuatan mentah"
+          ]
+        },
+        {
+          "q": "Kekuranganmu:",
+          "options": [
+            "Penakut sampai saat yang menentukan",
+            "Kamu lupa nama orang, dan kadang lupa kenapa masuk ruangan",
+            "Senyummu menyembunyikan betapa marahnya kamu",
+            "Kamu tidak bisa melakukan apa pun dengan diam-diam"
+          ]
+        },
+        {
+          "q": "Di mana kamu merasa seperti di rumah?",
+          "options": [
+            "Di tepi sungai pegunungan",
+            "Jauh di dalam hutan",
+            "Taman wisteria dan kupu-kupu",
+            "Kuil gunung yang sunyi"
+          ]
+        },
+        {
+          "q": "Apa yang membuatmu terus maju?",
+          "options": [
+            "Melindungi keluargaku",
+            "Membuktikan diri pada orang-orang yang percaya padaku",
+            "Menemukan seseorang untuk dicintai",
+            "Membasmi setiap ancaman sampai habis"
+          ]
+        },
+        {
+          "q": "Pilih estetika:",
+          "options": [
+            "Pink dan hijau, lembut seperti pita",
+            "Kuning, dengan motif petir",
+            "Permata, emas, dan sedikit bubuk peledak",
+            "Kabut di atas pegunungan"
+          ]
+        },
+        {
+          "q": "Dalam tim, kamu…",
+          "options": [
+            "Berseru \"Kobarkan hatimu!\" dan mendorong semua orang maju",
+            "Menyusun rencana, dengan penuh gaya",
+            "Memukul lebih keras dari siapa pun",
+            "Melakukan riset dan meracik obat"
+          ]
+        },
+        {
+          "q": "Energimu itu…",
+          "options": [
+            "Kilatan tiba-tiba",
+            "Meluap-luap penuh kasih sayang",
+            "Badai",
+            "Melayang, seperti awan"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Air",
+        "flame": "Api",
+        "thunder": "Petir",
+        "beast": "Binatang Buas",
+        "insect": "Serangga",
+        "wind": "Angin",
+        "mist": "Kabut",
+        "love": "Cinta",
+        "sound": "Suara",
+        "stone": "Batu"
+      },
+      "results": {
+        "water": {
+          "name": "Pernapasan Air · Tanjiro Kamado, Giyu Tomioka",
+          "body": "Baik hati, mudah beradaptasi, dan tenang di bawah tekanan. Kamu mengalir memutari masalah alih-alih menghantamnya, dan rela melakukan apa saja untuk melindungi keluargamu."
+        },
+        "flame": {
+          "name": "Pernapasan Api · Kyojuro Rengoku",
+          "body": "Hangat, berani, dan sepenuh hati. Kamu menyemangati semua orang di sekitarmu, makan dengan lahap, dan membuktikan diri pada orang-orang yang percaya padamu. Kobarkan hatimu."
+        },
+        "thunder": {
+          "name": "Pernapasan Petir · Zenitsu Agatsuma",
+          "body": "Gugup sampai saat yang menentukan, lalu brilian. Kamu mungkin meragukan diri sendiri keras-keras, tapi kamu sudah melatih satu hal sampai sempurna, dan itu sudah cukup."
+        },
+        "beast": {
+          "name": "Pernapasan Binatang Buas · Inosuke Hashibira",
+          "body": "Liar, kompetitif, dan otodidak. Kamu belajar sambil praktik, menerjang setiap tantangan secara langsung, dan lebih setia pada teman-temanmu daripada yang akan pernah kamu akui."
+        },
+        "insect": {
+          "name": "Pernapasan Serangga · Shinobu Kocho",
+          "body": "Lembut, cerdik, dan lebih tajam dari kelihatannya. Kamu tersenyum menghadapi segalanya, menyelesaikan masalah dengan pengetahuan dan kepedulian, dan menyimpan api yang diam-diam menyala di dalam."
+        },
+        "wind": {
+          "name": "Pernapasan Angin · Sanemi Shinazugawa",
+          "body": "Garang, blak-blakan, dan sangat protektif. Kamu tampak kasar di luar, tapi semua yang kamu lakukan adalah demi menjaga orang yang kamu sayangi tetap aman."
+        },
+        "mist": {
+          "name": "Pernapasan Kabut · Muichiro Tokito",
+          "body": "Tenang, berbakat, dan agak suka melamun. Kamu cepat menguasai sesuatu, gampang hanyut dalam lamunan, dan mengejutkan semua orang saat fokusmu tiba-tiba menajam."
+        },
+        "love": {
+          "name": "Pernapasan Cinta · Mitsuri Kanroji",
+          "body": "Penuh kasih, terbuka, dan lebih kuat dari kelihatannya. Kamu tak menyembunyikan perasaan, suka makanan enak dan teman yang menyenangkan, dan kehangatanmu adalah kekuatanmu."
+        },
+        "sound": {
+          "name": "Pernapasan Suara · Tengen Uzui",
+          "body": "Mencolok, percaya diri, dan penuh gaya. Kamu melakukan segalanya dengan flamboyan, merencanakan dengan berani, dan melindungi orang-orang terdekatmu di atas segalanya."
+        },
+        "stone": {
+          "name": "Pernapasan Batu · Gyomei Himejima",
+          "body": "Raksasa yang lembut. Kamu sabar, penuh welas asih, dan tak tergoyahkan, dan kekuatanmu yang tenang adalah sandaran semua orang saat keadaan sulit."
+        }
+      }
+    },
+    "jujutsu-kaisen": {
+      "title": "Kamu karakter Jujutsu Kaisen yang mana? Tes karakter anime JJK — cv.cm",
+      "description": "Kuis Jujutsu Kaisen (JJK) gratis: jawab 12 soal untuk melihat apakah kamu Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Satoru Gojo, Kento Nanami, Maki Zenin, Toge Inumaki, atau Aoi Todo. Tanpa daftar.",
+      "h1": "Kamu karakter Jujutsu Kaisen yang mana?",
+      "lede": "Petarung baik hati seperti Yuji, pemikir hati-hati seperti Megumi, atau yang terkuat, seperti Gojo? Jawab 12 soal dan temukan pasanganmu di antara delapan penyihir jujutsu dari Jujutsu Kaisen.",
+      "about": [
+        "Para penyihir di Jujutsu Kaisen menonjol karena kepribadiannya sama seperti karena teknik kutukannya: hati besar Yuji, kehati-hatian Megumi, rasa percaya diri Nobara, kesombongan jenaka Gojo, kebencian Nanami pada lembur, tekad Maki untuk membuktikan diri, Toge yang irit bicara, dan obsesi Todo yang sangat spesifik.",
+        "Kuis ini menilai kedelapan karakter dan menampilkan pasanganmu serta yang hampir menyamai. Kuis ini bebas spoiler cerita. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Gege Akutami, Shueisha, atau MAPPA; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Siapa saja karakter utama di Jujutsu Kaisen?",
+          "a": "Murid tahun pertama Yuji Itadori, Megumi Fushiguro, dan Nobara Kugisaki, serta guru mereka Satoru Gojo. Kento Nanami, Maki Zenin, Toge Inumaki, dan Aoi Todo termasuk penyihir paling populer."
+        },
+        {
+          "q": "Kenapa Toge Inumaki hanya menyebut isi onigiri?",
+          "a": "Ia memakai Ucapan Kutukan (Cursed Speech), jadi apa pun yang ia katakan bisa menjadi perintah. Ia hanya menyebut isi onigiri seperti \"salmon\" dan \"okaka\" (serpihan bonito) agar bisa bicara dengan aman."
+        },
+        {
+          "q": "Apakah kuis ini berisi spoiler?",
+          "a": "Tidak. Pertanyaan dan hasilnya hanya menggambarkan kepribadian dan detail awal cerita."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tidak disimpan."
+        }
+      ],
+      "items": [
+        {
+          "q": "Hari pertama di sekolah baru. Kamu…",
+          "options": [
+            "Berteman dengan semua orang",
+            "Diam-diam menilai orang-orang",
+            "Membuat kesan masuk yang tak terlupakan",
+            "Menanyai semua orang apa tipe idealnya"
+          ]
+        },
+        {
+          "q": "Gaya kerjamu:",
+          "options": [
+            "Pulang tepat waktu. Lembur adalah musuh",
+            "Melakukan hal mustahil, lalu menyombongkannya",
+            "Bekerja dua kali lebih keras untuk membuktikan peragu salah",
+            "Sedikit bicara, banyak kerja"
+          ]
+        },
+        {
+          "q": "Selera humormu:",
+          "options": [
+            "Jenaka dan agak sombong",
+            "Datar dan sarkastis",
+            "Berputar di sekitar obsesi yang sangat spesifik",
+            "Bisa bikin orang tertawa dengan satu kata"
+          ]
+        },
+        {
+          "q": "Dari mana kekuatanmu berasal?",
+          "options": [
+            "Orang-orang di sekitarku",
+            "Menjadi diriku sendiri, tanpa minta maaf",
+            "Membuktikan aku tak butuh apa yang orang lain punya sejak lahir",
+            "Tahu bahwa akulah yang terkuat"
+          ]
+        },
+        {
+          "q": "Pilih teman:",
+          "options": [
+            "Anjing yang setia",
+            "Onigiri",
+            "Palu dan segenggam paku",
+            "Buku bagus di kafe yang tenang"
+          ]
+        },
+        {
+          "q": "Kekuranganmu:",
+          "options": [
+            "Kamu selalu menomorduakan dirimu",
+            "Kamu overthinking",
+            "Kamu agak terlalu sadar betapa hebatnya dirimu",
+            "Kamu tak berhenti membicarakan idola favoritmu"
+          ]
+        },
+        {
+          "q": "Dalam pertarungan, kamu…",
+          "options": [
+            "Pukul dulu, tanya belakangan",
+            "Ambil senjata. Senjata apa saja",
+            "Panggil bantuan",
+            "Ucapkan satu kata dan selesai"
+          ]
+        },
+        {
+          "q": "Siapa yang kamu selamatkan?",
+          "options": [
+            "Semua orang yang bisa kuselamatkan",
+            "Orang-orang yang menurutku pantas",
+            "Siapa pun sesuai tugas, dikerjakan dengan benar, lalu aku pulang",
+            "Aku melakukannya dengan caraku, apa pun kata orang"
+          ]
+        },
+        {
+          "q": "Akhir pekan idealmu:",
+          "options": [
+            "Belanja di kota besar",
+            "Latihan di luar ruangan",
+            "Acara jabat tangan idola favoritmu",
+            "Tur ke setiap toko dessert di kota"
+          ]
+        },
+        {
+          "q": "Kamu pemimpin seperti apa?",
+          "options": [
+            "Guru yang dikagumi semua orang",
+            "Orang dewasa yang bisa diandalkan di ruangan",
+            "Si pendiam yang menjaga semua orang tetap aman",
+            "Aku lebih suka menanganinya sendiri"
+          ]
+        },
+        {
+          "q": "Kisah keluargamu:",
+          "options": [
+            "Rumit. Aku pergi untuk membangun namaku sendiri",
+            "Dibesarkan oleh kakek atau nenek yang kata-kata terakhirnya tak akan pernah kulupakan",
+            "Sahabatku adalah saudaraku, menurutku sih",
+            "Teman-temanku adalah keluargaku"
+          ]
+        },
+        {
+          "q": "Mottomu:",
+          "options": [
+            "\"Jangan kerja semenit pun lebih dari yang dibayar\"",
+            "\"Tampil lantang, tampil bangga\"",
+            "\"Buktikan mereka salah\"",
+            "\"Saudara selamanya\""
+          ]
+        }
+      ],
+      "dims": {
+        "yuji": "Yuji",
+        "megumi": "Megumi",
+        "nobara": "Nobara",
+        "gojo": "Gojo",
+        "nanami": "Nanami",
+        "maki": "Maki",
+        "toge": "Toge",
+        "todo": "Todo"
+      },
+      "results": {
+        "yuji": {
+          "name": "Yuji Itadori",
+          "body": "Baik hati, berani, dan luar biasa kuat secara fisik. Kamu mudah berteman, mendahulukan orang lain, dan berusaha menolong semua orang yang kamu bisa, persis seperti pesan kakekmu."
+        },
+        "megumi": {
+          "name": "Megumi Fushiguro",
+          "body": "Serius, hati-hati, dan diam-diam setia. Kamu berpikir sebelum bertindak, memilih pertarunganmu, dan menjaga segelintir orang sangat dekat, bersama anjing-anjingmu."
+        },
+        "nobara": {
+          "name": "Nobara Kugisaki",
+          "body": "Percaya diri, berani, dan bangga jadi diri sendiri. Kamu pindah ke kota besar untuk hidup dengan caramu, mengatakan apa yang kamu pikirkan, dan tak pernah mengecilkan diri demi menyesuaikan."
+        },
+        "gojo": {
+          "name": "Satoru Gojo",
+          "body": "Jenaka, brilian, dan sangat yakin pada diri sendiri. Kamu membuat hal mustahil terlihat mudah, suka makanan manis, dan ingin membesarkan generasi yang lebih kuat dari sebelumnya."
+        },
+        "nanami": {
+          "name": "Kento Nanami",
+          "body": "Berprinsip, sarkastis, dan sangat bisa diandalkan. Kamu mengerjakan tugas dengan benar, benci lembur, dan menjadi orang dewasa yang diam-diam diandalkan semua orang."
+        },
+        "maki": {
+          "name": "Maki Zenin",
+          "body": "Tangguh, gigih, dan mustahil diremehkan dua kali. Kamu harus membuktikan diri tanpa apa yang dimiliki orang lain sejak lahir, dan kamu berhasil lewat kerja keras."
+        },
+        "toge": {
+          "name": "Toge Inumaki",
+          "body": "Baik hati, setia, dan irit bicara. Kamu memilih kata dengan hati-hati karena kata-katamu punya bobot, dan teman-temanmu tahu persis betapa kamu peduli."
+        },
+        "todo": {
+          "name": "Aoi Todo",
+          "body": "Eksentrik, intens, dan sahabat yang luar biasa begitu kamu diterima. Kamu punya pendapat yang sangat kuat soal tipe idealmu dan idolamu, dan akan bertarung di sisi \"saudaramu\" selamanya."
+        }
+      }
+    },
+    "avatar-element": {
+      "title": "Kamu pengendali elemen apa? Kuis Avatar: The Last Airbender — cv.cm",
+      "description": "Kuis Avatar: The Last Airbender (The Legend of Aang) gratis: jawab 12 soal untuk mengetahui apakah kamu pengendali air, pengendali tanah, pengendali api, atau pengendali udara, beserta para pengendali yang punya elemen sama denganmu. Tanpa daftar.",
+      "h1": "Kamu pengendali elemen apa di Avatar?",
+      "lede": "Air, Tanah, Api, atau Udara? Jawab 12 soal tentang caramu menghadapi masalah dan memperlakukan orang, lalu cari tahu dari negara mana kamu berasal di Avatar: The Last Airbender.",
+      "about": [
+        "Di Avatar: The Last Airbender, setiap seni pengendalian mencerminkan cara hidup: Air adalah elemen perubahan dan kebersamaan, Tanah elemen kekuatan dan ketahanan, Api elemen dorongan dan tekad, dan Udara elemen kebebasan dan ketidakterikatan. Kuis ini mencocokkan kebiasaanmu dengan filosofi-filosofi itu.",
+        "Hasilmu menyebut elemenmu, para pengendali terkenal dengan elemen yang sama, dan skormu untuk keempat elemen. Ini kuis penggemar tidak resmi yang dibuat untuk cv.cm. Kuis ini tidak berafiliasi dengan atau didukung oleh Nickelodeon atau Paramount; semua nama adalah milik pemiliknya masing-masing."
+      ],
+      "faq": [
+        {
+          "q": "Apa saja empat elemen di Avatar?",
+          "a": "Air, Tanah, Api, dan Udara, masing-masing terikat dengan satu negara: Suku Air, Kerajaan Bumi, Negara Api, dan Pengembara Udara. Hanya Avatar yang bisa mengendalikan keempatnya."
+        },
+        {
+          "q": "Elemen mana yang paling kuat?",
+          "a": "Tidak ada. Serialnya memperlakukan semuanya seimbang, masing-masing dengan kekuatannya sendiri, dan Avatar harus mempelajari keempatnya."
+        },
+        {
+          "q": "Bisakah aku jadi bukan pengendali?",
+          "a": "Di serialnya, kebanyakan orang sama sekali tidak bisa mengendalikan elemen, dan Sokka membuktikan kamu tidak perlu bisa. Kuis ini selalu memilih elemen yang paling cocok untukmu."
+        },
+        {
+          "q": "Apakah kuis ini resmi?",
+          "a": "Bukan. Ini kuis penggemar gratis, dan jawabanmu tetap di browsermu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Teman-temanmu datang padamu untuk…",
+          "options": [
+            "Dihibur saat semuanya berantakan",
+            "Omongan jujur dan dukungan yang stabil",
+            "Motivasi untuk langsung maju",
+            "Cara pandang baru terhadap sesuatu"
+          ]
+        },
+        {
+          "q": "Pilih tempat:",
+          "options": [
+            "Kota besar bertembok",
+            "Kuil tinggi di pegunungan",
+            "Desa di atas es di tepi laut",
+            "Pulau vulkanik"
+          ]
+        },
+        {
+          "q": "Menghadapi masalah, kamu…",
+          "options": [
+            "Menyerangnya langsung",
+            "Berdiri teguh dan menunggu saat yang tepat",
+            "Menghindari pertarungan kalau bisa dan mencari cara lain",
+            "Beradaptasi dan mencari jalan memutar"
+          ]
+        },
+        {
+          "q": "Apa yang paling kamu hargai?",
+          "options": [
+            "Kebebasan dan kedamaian",
+            "Keluarga dan komunitas",
+            "Kejujuran dan kesetiaan",
+            "Ambisi dan kehormatan"
+          ]
+        },
+        {
+          "q": "Kekurangan terbesarmu:",
+          "options": [
+            "Kamu menyimpan dendam lebih lama dari yang kamu akui",
+            "Gampang naik darah",
+            "Kamu lari dari tanggung jawab",
+            "Keras kepala seperti batu"
+          ]
+        },
+        {
+          "q": "Pilih hewan peliharaan:",
+          "options": [
+            "Tikus mondok-luak raksasa yang lembut",
+            "Anjing kutub yang setia",
+            "Seekor naga",
+            "Lemur terbang"
+          ]
+        },
+        {
+          "q": "Energimu itu…",
+          "options": [
+            "Intens",
+            "Ringan dan jenaka",
+            "Tenang di permukaan, dalam di bawahnya",
+            "Membumi dan sabar"
+          ]
+        },
+        {
+          "q": "Seorang teman mengecewakanmu. Kamu…",
+          "options": [
+            "Melepaskannya dan move on",
+            "Bilang terus terang apa yang sudah mereka lakukan",
+            "Meledak, lalu reda sama cepatnya",
+            "Merasakannya dalam-dalam, lalu memaafkan seiring waktu"
+          ]
+        },
+        {
+          "q": "Pilih waktu:",
+          "options": [
+            "Malam, di bawah bulan purnama",
+            "Sore hari, dengan angin sepoi-sepoi",
+            "Tengah hari, kaki menapak tanah yang kokoh",
+            "Matahari terbit"
+          ]
+        },
+        {
+          "q": "Peranmu di tim:",
+          "options": [
+            "Tembok yang tak pernah bergeser",
+            "Yang mendorong semua orang maju",
+            "Si pendamai",
+            "Si penyembuh"
+          ]
+        },
+        {
+          "q": "Pilih hobi:",
+          "options": [
+            "Bela diri",
+            "Berenang atau berselancar",
+            "Gulat atau panjat tebing",
+            "Gantole, atau apa saja dengan pemandangan bagus"
+          ]
+        },
+        {
+          "q": "Untuk apa kamu akan bertarung?",
+          "options": [
+            "Keseimbangan dunia",
+            "Kehormatanmu",
+            "Orang-orang yang bergantung padamu",
+            "Rumahmu"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Air",
+        "earth": "Tanah",
+        "fire": "Api",
+        "air": "Udara"
+      },
+      "results": {
+        "water": {
+          "name": "Pengendali Air",
+          "body": "Mudah beradaptasi, penuh perhatian, dan lebih dalam dari kelihatannya. Kamu mengikuti arus sampai ada hal yang penting, lalu kamu tak terbendung, dan kamu rela melakukan apa saja demi keluarga dan komunitasmu. Sesama pengendali air: Katara dan Korra."
+        },
+        "earth": {
+          "name": "Pengendali Tanah",
+          "body": "Membumi, jujur, dan keras kepala dalam arti yang baik. Kamu menunggu saat yang tepat, mempertahankan pendirian, dan tak pernah berpura-pura jadi orang lain. Sesama pengendali tanah: Toph Beifong dan Raja Bumi."
+        },
+        "fire": {
+          "name": "Pengendali Api",
+          "body": "Penuh dorongan, bergairah, dan berkemauan kuat. Kamu mengejar tujuanmu habis-habisan dan merasakan segalanya dengan intens, dan kamu sudah belajar bahwa kekuatan sejati datang dari keseimbangan. Sesama pengendali api: Zuko dan Paman Iroh."
+        },
+        "air": {
+          "name": "Pengendali Udara",
+          "body": "Berjiwa bebas, jenaka, dan cinta damai. Kamu lebih suka mencari cara lain daripada bertarung, menghargai kebebasanmu, dan membawa keceriaan bagi semua orang di sekitarmu. Sesama pengendali udara: Aang dan Jinora."
+        }
       }
     }
   }
