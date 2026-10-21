@@ -3841,5 +3841,111 @@
         "body": "MIT。Antoine Boucher、2010 年。https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys は無料のファミコン アクションシューティング。ページを開くと ROM が読み込まれる。各ステージの目標を跳んで撃って達成する。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "始める",
+        "body": "Start を押して Play Game を選び、A で人数・モード・難易度・開始ステージを決める。",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "目標を読む",
+        "body": "ステージ前の画面に「Defeat 5 enemies」のような目標と残機が出る。",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "跳んで撃つ",
+        "body": "A で足場を跳び、B で撃つ。目標を進めると右上の数字が減る。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "zlib。ソースは https://github.com/NovaSquirrel/DABG。市販作は配信しない。"
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit は無料のファミコン シューティング。ページを開くと ROM が読み込まれる。地球を動かし、月を回して敵の波を砕く。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "始める",
+        "body": "タイトルで Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "動かして回す",
+        "body": "方向キーで地球を動かす。A と B で月が地球の周りを回り、当たった敵を壊す。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "波を耐える",
+        "body": "敵は列で来る。その進路に月を置き、左上の残機を守る。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/pubby/lunarlimit。市販作は配信しない。"
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 は無料のファミコン パズル。ページを開くと ROM が読み込まれる。各部屋は小さなマス目で、階段、熊、ときどき宝石がある。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "始める",
+        "body": "タイトルで Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "階段へ",
+        "body": "方向キーで 1 マスずつ階段へ向かう。宝石があれば先に取る。熊に触れるとやり直し。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/pubby/Ralph-4。市販作は配信しない。"
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES は無料のライフゲーム。ページを開くと ROM が読み込まれる。セルを置けば、あとはルールが決める。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "盤面を開く",
+        "body": "盤面にはグライダーが一つ。カーソルは左上にある。",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "セルを置く",
+        "body": "方向キーで動き、A でセルを切り替える。Select で盤面を消す。",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "動かす",
+        "body": "Start を押す。隣が 2〜3 個のセルは生き残り、空きマスの隣がちょうど 3 個なら誕生する。もう一度 Start で止まる。",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "zlib。ソースは https://github.com/NovaSquirrel/NESLife。市販作は配信しない。"
+      }
+    ]
   }
 }

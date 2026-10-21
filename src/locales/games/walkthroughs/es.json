@@ -3841,5 +3841,111 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys es un juego gratuito de plataformas y disparos para NES. El ROM se carga al abrir la página. Cada nivel tiene un objetivo; salta y dispara hasta cumplirlo.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Pulsa Start, elige Play Game y confirma con A: jugadores, modo, dificultad y nivel inicial.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Lee el objetivo",
+        "body": "La pantalla previa a cada nivel dice qué hacer, como \"Defeat 5 enemies\", y cuántas vidas tienes.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Salta y dispara",
+        "body": "A salta entre plataformas y B dispara. El número de arriba a la derecha baja al avanzar en el objetivo.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "zlib. Código: https://github.com/NovaSquirrel/DABG. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit es un shooter arcade gratuito para NES. El ROM se carga al abrir la página. Diriges la Tierra y giras la Luna para destrozar oleadas de enemigos.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Pulsa Start en el título.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Mover y girar",
+        "body": "La cruceta mueve la Tierra. A y B hacen girar la Luna a su alrededor, y lo que toca la Luna se destruye.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Aguanta las oleadas",
+        "body": "Los enemigos llegan en fila. Pon la Luna en su camino y protege tus vidas de arriba a la izquierda.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/pubby/lunarlimit. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 es un puzle gratuito para NES. El ROM se carga al abrir la página. Cada sala es una cuadrícula pequeña con escalera, osos y a veces una gema.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Pulsa Start en el título.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Llega a la escalera",
+        "body": "Avanza casilla a casilla con la cruceta hacia la escalera. Si hay gema, cógela antes. Tocar un oso reinicia la sala.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/pubby/Ralph-4. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES es un sandbox gratuito del juego de la vida. El ROM se carga al abrir la página. Colocas células y las reglas deciden lo que pasa.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Abre la cuadrícula",
+        "body": "La cuadrícula ya tiene un planeador y el cursor está arriba a la izquierda.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Coloca células",
+        "body": "Muévete con la cruceta y pulsa A para cambiar una célula. Select borra toda la cuadrícula.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Ejecuta",
+        "body": "Pulsa Start. Las células con 2 o 3 vecinas sobreviven, y en una casilla vacía con exactamente 3 vecinas nace una célula nueva. Pulsa Start otra vez para parar.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "zlib. Código: https://github.com/NovaSquirrel/NESLife. No se alojan ROM comerciales."
+      }
+    ]
   }
 }

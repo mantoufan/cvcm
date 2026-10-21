@@ -3841,5 +3841,111 @@
         "body": "MIT. Antoine Boucher, 2010. Source: https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys is a free NES platform shooter. The ROM loads when you open the page. Every level has one objective, and you jump and shoot until it is met.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a game",
+        "body": "Press Start, choose Play Game, then confirm each menu with A: players, mode, difficulty, starting level.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Read the objective",
+        "body": "The screen before each level says what to do, such as \"Defeat 5 enemies\", and how many lives you have.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Jump and shoot",
+        "body": "A jumps between platforms and B fires. The counter at the top right drops as you meet the objective.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/NovaSquirrel/DABG. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit is a free NES arcade shooter. The ROM loads when you open the page. You steer the Earth and spin the Moon to smash incoming waves.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Move and spin",
+        "body": "The D-pad moves the Earth. A and B rotate the Moon around it, and the Moon destroys what it hits.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Last through the waves",
+        "body": "Enemies arrive in lines. Keep the Moon in their path and protect your lives at the top left.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/pubby/lunarlimit. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 is a free NES puzzle game. The ROM loads when you open the page. Each room is a small grid with stairs, bears and sometimes a gem.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen to begin.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Reach the stairs",
+        "body": "Step with the D-pad toward the staircase. If there is a gem, take it first. Touching a bear restarts the room.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/pubby/Ralph-4. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES is a free Game of Life sandbox. The ROM loads when you open the page. You place cells and the rules decide what happens next.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Open the grid",
+        "body": "The grid appears with a glider already on it. The cursor sits at the top left.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Place cells",
+        "body": "Move with the D-pad and press A to toggle a cell. Select clears the whole grid.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Run it",
+        "body": "Press Start. Cells with two or three neighbours survive, and an empty cell with three neighbours is born. Press Start again to stop.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/NovaSquirrel/NESLife. Commercial ROMs are not hosted."
+      }
+    ]
   }
 }
