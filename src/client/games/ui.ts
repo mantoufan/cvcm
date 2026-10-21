@@ -19,6 +19,7 @@ import {
 import { gameCheatLabels, gameCopy, gameFaqItems, gameName } from "../../shared/games-i18n";
 import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
 import { gamesHref } from "../../shared/path";
+import { clearDraft, loadDraft, saveDraft } from "../session";
 
 const GAME_SCROLL_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]);
 
@@ -160,6 +161,9 @@ export function mountGame(host: HTMLElement, id: GameId): void {
       h("h1", null, copy.name),
     ),
     player({
+      id: game.id,
+      // Commercial games are never hosted; the player may keep its own dump in this browser.
+      remember: !game.rom,
       console: game.console,
       core: game.core,
       accept: game.accept,
@@ -229,7 +233,11 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   );
 }
 
+type SavedRom = { buffer: ArrayBuffer; name: string };
+
 function player(spec: {
+  id?: GameId;
+  remember?: boolean;
   console: GameConsoleId;
   core: string;
   accept: string;
@@ -290,11 +298,40 @@ function player(spec: {
   }) as HTMLInputElement;
   const openPicker = (): void => { picker.click(); };
   empty.querySelector("button")?.addEventListener("click", openPicker);
+  // Opt-in only: page copy promises a picked file stays in the tab unless the player saves it here.
+  const savedKey = `rom:${spec.id ?? ""}`;
+  let pending: SavedRom | null = null;
+  const rememberBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.rememberRom")) as HTMLButtonElement;
+  const forgetBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.forgetRom")) as HTMLButtonElement;
+  rememberBtn.addEventListener("click", () => {
+    const rom = pending;
+    if (!rom) return;
+    rememberBtn.hidden = true;
+    saveDraft(savedKey, rom).then(() => {
+      status.textContent = t("games.rememberedRom");
+      forgetBtn.hidden = false;
+    }).catch(() => {
+      status.textContent = t("games.rememberFailed");
+    });
+  });
+  forgetBtn.addEventListener("click", () => {
+    forgetBtn.hidden = true;
+    void clearDraft(savedKey).then(() => {
+      status.textContent = t("games.forgotRom");
+      if (pending) rememberBtn.hidden = false;
+    });
+  });
+
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
     status.textContent = t(flash ? "games.flash.needFileBody" : "games.loadRomHint");
     const buffer = await file.arrayBuffer();
+    if (spec.remember && spec.id) {
+      pending = { buffer: buffer.slice(0), name: file.name };
+      rememberBtn.hidden = false;
+      forgetBtn.hidden = true;
+    }
     boot({ buffer, filename: file.name, cheats: spec.cheats });
   });
 
@@ -302,15 +339,15 @@ function player(spec: {
     h("div", { class: "game-stage" }, frame, empty),
     h("div", { class: "game-playbar" },
       h("label", { class: "btn" }, t(flash ? "games.flash.load" : "games.loadRom"), picker),
+      rememberBtn,
+      forgetBtn,
       status,
     ),
     h("p", { class: "game-note muted" }, t(flash ? "games.flash.emulator" : "games.emulator"), " · ", t(flash ? "games.flash.mobile" : "games.mobile")),
     controls(spec.console),
   );
 
-  if (spec.romUrl) {
-    const romUrl = spec.romUrl;
-    queueMicrotask(() => {
+  const tryHosted = (romUrl: string): void => {
       void fetch(romUrl, { method: "HEAD" }).then((res) => {
         if (picker.files?.length) return;
         if (!res.ok) {
@@ -322,6 +359,26 @@ function player(spec: {
       }).catch(() => {
         if (!picker.files?.length) showEmpty();
       });
+  };
+
+  if (spec.romUrl) {
+    const romUrl = spec.romUrl;
+    queueMicrotask(() => {
+      if (!spec.remember || !spec.id || typeof indexedDB === "undefined") {
+        tryHosted(romUrl);
+        return;
+      }
+      loadDraft<SavedRom>(savedKey).then((saved) => {
+        if (picker.files?.length) return;
+        if (!saved || !(saved.buffer instanceof ArrayBuffer)) {
+          tryHosted(romUrl);
+          return;
+        }
+        pending = saved;
+        status.textContent = t("games.savedRomLoaded");
+        forgetBtn.hidden = false;
+        boot({ buffer: saved.buffer.slice(0), filename: saved.name, cheats: spec.cheats });
+      }).catch(() => tryHosted(romUrl));
     });
   }
   return box;
