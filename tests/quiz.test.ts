@@ -447,6 +447,7 @@ describe("test pages: scoring", () => {
     }
   });
 
+  // 160k scorings: about a second locally, more than the default 5 s on a slow CI runner.
   it("lets no game or anime result dominate random answers", () => {
     const next = randomInts(42);
     for (const id of GAME_ANIME) {
@@ -475,5 +476,5 @@ describe("test pages: scoring", () => {
         expect(share, `${id} ${dim}`).toBeLessThan(1.2);
       }
     }
-  });
+  }, 30_000);
 });
