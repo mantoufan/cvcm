@@ -3947,5 +3947,233 @@
         "body": "zlib. Source: https://github.com/NovaSquirrel/NESLife. Commercial ROMs are not hosted."
       }
     ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX is a free SNES action game. The ROM loads when you open the page. You run an elevator by hand and keep every passenger happy.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Read the controls",
+        "body": "The first screen labels the pad: jump, open door, elevator up and elevator down. Press Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Start a shift",
+        "body": "Press Start again on the title screen to begin.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Run the elevator",
+        "body": "Walk to a control panel. Move the car with X and A, stop it at the right floor, and open that floor's door with Y. Don't drive it into the roof or the ground.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/elevator-madness-dx. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave is a free SNES cave flyer. The ROM loads when you open the page. One button keeps the bat in the air.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Fly",
+        "body": "Press Start, then tap B to flap up and let the bat sink between taps. Follow the white tunnel.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Crash and retry",
+        "body": "Touching the brown wall shows GAME OVER with your distance. Press Start to go again.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/bat-cave. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes is a free SNES puzzle. The ROM loads when you open the page. Lay pieces until the pipe runs from start to end.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Read the board",
+        "body": "The board opens empty with the piece queue on the left.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Lay pipe",
+        "body": "Move the cursor with the D-pad and press B to drop the next piece. Join the start and end pieces with one unbroken pipe.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/pipes. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer is a free SNES platformer. The ROM loads when you open the page. Five castle levels end at a door.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Enter the castle",
+        "body": "The first room has two creatures on the floor and the exit door on the right.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Run and jump",
+        "body": "Walk with the D-pad, hold Y to run and press B to jump over the creatures to the door.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/castle_platformer. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets is a free Mega Drive platformer. The ROM loads when you open the page. Every stage is a small planet you run all the way around.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Choose START. PASSWORD takes you to a later stage if you have a code.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Read the stage card",
+        "body": "Each stage opens with its name, such as PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Run around the planet",
+        "body": "The planet turns as you run. Jump with A, B or C and clear the planet before the timer at the top runs out.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/sikthehedgehog/miniplanets. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD is a free Mega Drive chain-reaction game. The ROM loads when you open the page. Fill squares until they burst and take over the board.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Title",
+        "body": "Press any button to reach the main menu.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Set up",
+        "body": "Pick the board width and height, make players human or CPU, then press the green play button.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Place atoms",
+        "body": "Move the cursor and press A to add an atom. Corners burst at 2, edges at 3, middle squares at 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/Nightwolf-47/KleleAtoms-MD. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition is a free roguelike. The ROM loads when you open the page. Each run builds a new dungeon.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a run",
+        "body": "Press Start on the title screen, then choose Random run from the menu.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Choose a class",
+        "body": "Warrior hits hardest, Rogue is stealthy, Hunter fights at range and Mage uses wands. Confirm with Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Explore",
+        "body": "Move with the D-pad and walk into enemies to attack. Pick up items, eat when the Food bar runs low and look for the stairs down.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source of this build: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament is a free GBA puzzle game. The ROM loads when you open the page. You arrange the dungeon; the hero just follows his orders.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Read the level card",
+        "body": "Each level starts with a number and one rule, such as \"Keys open doors\". Press A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Arrange and run",
+        "body": "Check HERO'S ACTIONS, place the items from YOUR ITEMS on the board with A, then press Start to watch him go.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "Code MPL-2.0, art CC BY 4.0, music CC-BY 3.0 by VWolfdog (https://opengameart.org/content/soft-mysterious-harp-loop). Source: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy is a free Game Boy survival game. The ROM loads when you open the page. One day at a time, you decide who eats.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Take cover",
+        "body": "Press A on the title and through the air-raid scene, then choose your starting crate.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Check supplies",
+        "body": "Each day starts with a count of food, water and medkits.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Share them out",
+        "body": "Move to Mike, Rose or Jeff and press A to give food, water or a medkit. Pick OK when you are done.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/UrbanZero/bunkerboy. Commercial ROMs are not hosted."
+      }
+    ]
   }
 }

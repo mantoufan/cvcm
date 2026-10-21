@@ -3947,5 +3947,233 @@
         "body": "zlib。ソースは https://github.com/NovaSquirrel/NESLife。市販作は配信しない。"
       }
     ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX は無料のスーパーファミコン アクション。ページを開くと ROM が読み込まれる。エレベーターを手で動かし、乗客全員を満足させる。",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "操作を確認",
+        "body": "最初の画面に、ジャンプ、ドアを開ける、エレベーター上昇、下降のボタンが書いてある。Start を押す。",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "シフト開始",
+        "body": "タイトル画面でもう一度 Start を押して始める。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "エレベーターを動かす",
+        "body": "操作盤まで歩く。X と A でかごを動かして正しい階で止め、Y でその階のドアを開ける。屋上や地面にぶつけない。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/undisbeliever/elevator-madness-dx。市販作は配信しない。"
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave は無料のスーパーファミコン 洞窟飛行ゲーム。ページを開くと ROM が読み込まれる。ボタン 1 つでコウモリを宙に保つ。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "飛ぶ",
+        "body": "Start を押し、B を押すたびに羽ばたいて上がる。押す合間に沈ませる。白い通路に沿って飛ぶ。",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "ぶつかったらやり直し",
+        "body": "茶色の壁に触れると GAME OVER と距離が出る。Start でもう一度。",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/undisbeliever/bat-cave。市販作は配信しない。"
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes は無料のスーパーファミコン パズル。ページを開くと ROM が読み込まれる。始点から終点までパイプが通るまでピースを置く。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "盤面を見る",
+        "body": "盤面は空の状態で始まり、左にピースの列がある。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "パイプを置く",
+        "body": "方向キーでカーソルを動かし、B で次のピースを置く。始点と終点を途切れない 1 本のパイプでつなぐ。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/undisbeliever/pipes。市販作は配信しない。"
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer は無料のスーパーファミコン アクション。ページを開くと ROM が読み込まれる。城の 5 ステージはどれもドアがゴール。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "城に入る",
+        "body": "最初の部屋には床に生き物が 2 匹いて、出口のドアは右にある。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "走って跳ぶ",
+        "body": "方向キーで歩き、Y を押し続けて走り、B で生き物を跳び越えてドアへ。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/undisbeliever/castle_platformer。市販作は配信しない。"
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets は無料のメガドライブ アクション。ページを開くと ROM が読み込まれる。どのステージも一周走れる小さな惑星。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "始める",
+        "body": "START を選ぶ。コードがあれば PASSWORD で後のステージへ。",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "ステージ名を見る",
+        "body": "各ステージは PLANELAGO 1 · LAFTO のような名前の表示から始まる。",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "惑星を走り回る",
+        "body": "走ると惑星が回る。A、B、C でジャンプし、上のタイマーが切れる前に惑星をクリアする。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "zlib。ソースは https://github.com/sikthehedgehog/miniplanets。市販作は配信しない。"
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD は無料のメガドライブ 連鎖ゲーム。ページを開くと ROM が読み込まれる。マスを満たしてはじけさせ、盤面を奪う。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "タイトル",
+        "body": "好きなボタンを押してメインメニューへ。",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "設定",
+        "body": "盤の幅と高さを選び、プレイヤーを人か CPU にして、緑の再生ボタンを押す。",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "原子を置く",
+        "body": "カーソルを動かし A で原子を 1 つ足す。角は 2 つ、辺は 3 つ、中央のマスは 4 つではじける。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/Nightwolf-47/KleleAtoms-MD。市販作は配信しない。"
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition は無料のローグライク。ページを開くと ROM が読み込まれる。毎回新しいダンジョンができる。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "始める",
+        "body": "タイトル画面で Start を押し、メニューから Random run を選ぶ。",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "職業を選ぶ",
+        "body": "Warrior は一番強く殴り、Rogue は忍び足、Hunter は遠距離で戦い、Mage はワンドを使う。Yes で決定。",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "探索",
+        "body": "方向キーで移動し、敵に向かって歩くと攻撃。アイテムを拾い、Food のバーが減ったら食べ、下り階段を探す。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "GPL-3.0。このビルドのソースは https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip。市販作は配信しない。"
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament は無料のゲームボーイアドバンス パズル。ページを開くと ROM が読み込まれる。ダンジョンを整えるのはあなた、勇者は命令に従うだけ。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "ステージカードを見る",
+        "body": "各ステージは番号と「Keys open doors」のようなルール 1 つで始まる。A を押す。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "配置して出発",
+        "body": "HERO'S ACTIONS を確認し、YOUR ITEMS のアイテムを A で盤面に置き、Start で勇者の動きを見る。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "コード MPL-2.0、グラフィック CC BY 4.0、音楽は VWolfdog の CC-BY 3.0（https://opengameart.org/content/soft-mysterious-harp-loop）。ソースは https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament。市販作は配信しない。"
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy は無料のゲームボーイ サバイバル。ページを開くと ROM が読み込まれる。一日ずつ、誰が食べるかを決める。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "避難する",
+        "body": "タイトルと空襲の場面を A で進め、最初の物資箱を選ぶ。",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "物資を確認",
+        "body": "毎日、食料、水、救急キットの数から始まる。",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "分け与える",
+        "body": "Mike、Rose、Jeff にカーソルを合わせ、A で食料、水、救急キットを渡す。終わったら OK を選ぶ。",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "ライセンス",
+        "body": "MIT。ソースは https://github.com/UrbanZero/bunkerboy。市販作は配信しない。"
+      }
+    ]
   }
 }
