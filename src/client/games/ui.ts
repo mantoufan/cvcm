@@ -445,7 +445,8 @@ function officialSection(id: GameId): HTMLElement[] {
   if (!ways) return [];
   const item = (way: OfficialWay): HTMLElement =>
     h("li", null,
-      h("a", { href: way.url, target: "_blank", rel: "noopener" }, way.product),
+      h("a", { href: way.url, target: "_blank", rel: "noopener noreferrer" }, way.product),
+      ...(way.title ? [` (${way.title})`] : []),
       ` · ${way.platform} · ${t(`games.official.${way.kind}`)}`,
       ...(way.edition ? [` · ${t(`games.official.edition.${way.edition}`)}`] : []),
     );

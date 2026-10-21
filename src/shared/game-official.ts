@@ -8,6 +8,8 @@ export type OfficialWay = {
   platform: string;
   product: string;
   url: string;
+  /** The game's own name inside the product, when the product name does not show it. */
+  title?: string;
   edition?: OfficialEdition;
 };
 
@@ -15,8 +17,8 @@ export type OfficialWay = {
 export const OFFICIAL_CHECKED = "2026-10-22";
 
 const NSO = "https://www.nintendo.com/us/online/nintendo-switch-online/classic-games/";
-const NSO_NES = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online · NES – Nintendo Classics", url: NSO } as const;
-const NSO_SNES = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online · SNES – Nintendo Classics", url: NSO } as const;
+const NSO_NES = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online · Nintendo Entertainment System – Nintendo Classics", url: NSO } as const;
+const NSO_SNES = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online · Super Nintendo Entertainment System – Nintendo Classics", url: NSO } as const;
 const NSO_GB = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online · Game Boy – Nintendo Classics", url: NSO } as const;
 const NSO_GBA = { kind: "sub", platform: "Nintendo Switch", product: "Nintendo Switch Online + Expansion Pack · Game Boy Advance – Nintendo Classics", url: NSO } as const;
 const NSO_MD = {
@@ -33,10 +35,11 @@ const RETRO_BRAWLER: OfficialWay = {
   product: "Double Dragon & Kunio-kun: Retro Brawler Bundle",
   url: eshop("double-dragon-and-kunio-kun-retro-brawler-bundle-switch"),
 };
-const SONIC_ORIGINS: OfficialWay = { kind: "buy", platform: "Steam", product: "Sonic Origins", url: steam(1794960) };
+// Remastered versions, not the Mega Drive originals.
+const SONIC_ORIGINS: OfficialWay = { kind: "buy", platform: "Steam", product: "Sonic Origins", url: steam(1794960), edition: "rerelease" };
 
 /**
- * Official ways to play each commercial game today. An empty list means none was found
+ * Official ways to play each commercial game today (US stores). An empty list means none was found
  * (closed stores such as the Wii Shop and 3DS eShop do not count).
  */
 export const GAME_OFFICIAL: Partial<Record<GameId, readonly OfficialWay[]>> = {
@@ -81,8 +84,8 @@ export const GAME_OFFICIAL: Partial<Record<GameId, readonly OfficialWay[]>> = {
   ],
   "zelda-nes": [NSO_NES],
   "kung-fu": [],
-  "super-mario-world": [NSO_SNES, { ...NSO_GBA, edition: "gba" }],
-  "zelda-alttp": [NSO_SNES, { ...NSO_GBA, edition: "gba" }],
+  "super-mario-world": [NSO_SNES, { ...NSO_GBA, title: "Super Mario World: Super Mario Advance 2", edition: "gba" }],
+  "zelda-alttp": [NSO_SNES, { ...NSO_GBA, title: "The Legend of Zelda: A Link to the Past & Four Swords", edition: "gba" }],
   "street-fighter-ii": [
     { kind: "buy", platform: "Steam", product: "Street Fighter 30th Anniversary Collection", url: steam(586200), edition: "arcade" },
     {
@@ -92,7 +95,7 @@ export const GAME_OFFICIAL: Partial<Record<GameId, readonly OfficialWay[]>> = {
       url: eshop("capcom-arcade-stadiumstreet-fighter-ii-the-world-warrior-70050000025490-switch"),
       edition: "arcade",
     },
-    { ...NSO_MD, edition: "genesis" },
+    { ...NSO_MD, title: "Street Fighter II': Special Champion Edition", edition: "genesis" },
   ],
   "chrono-trigger": [{ kind: "buy", platform: "Steam", product: "CHRONO TRIGGER", url: steam(613830), edition: "pc" }],
   "super-mario-kart": [NSO_SNES],
