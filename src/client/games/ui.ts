@@ -233,7 +233,7 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   );
 }
 
-type SavedRom = { buffer: ArrayBuffer; name: string };
+type SavedRom = { blob: Blob; name: string };
 
 function player(spec: {
   id?: GameId;
@@ -253,7 +253,7 @@ function player(spec: {
     allow: "autoplay; fullscreen; gamepad",
     src: "about:blank",
   }) as HTMLIFrameElement;
-  const status = h("p", { class: "game-note" }, t(flash ? "games.flash.needFileBody" : "games.byoNote"));
+  const status = h("p", { class: "game-note", role: "status" }, t(flash ? "games.flash.needFileBody" : "games.byoNote"));
   const empty = h("div", {
     class: "game-empty",
     role: "status",
@@ -267,16 +267,20 @@ function player(spec: {
   const hideEmpty = (): void => { empty.hidden = true; };
 
   const shellPath = flash ? "/emu/flash" : "/emu/player";
+  // The shell boots once (player.js ignores a second boot), so every later ROM reloads the frame.
+  let started = false;
+  let loads = 0;
   const boot = (payload: Record<string, unknown>): void => {
     hideEmpty();
     const message = { type: "boot", core: spec.core, name: spec.name, ...payload };
     let ready = false;
     try {
       const path = new URL(frame.src, location.origin).pathname.replace(/\/$/, "");
-      ready = path === shellPath && !!frame.contentWindow;
+      ready = !started && path === shellPath && !!frame.contentWindow;
     } catch {
       ready = false;
     }
+    started = true;
     if (ready) {
       frame.contentWindow?.postMessage(message, location.origin);
       return;
@@ -284,7 +288,8 @@ function player(spec: {
     const lang = locale() === "zh-CN" ? "zh-CN" : "en-US";
     const qs = new URLSearchParams({ core: spec.core, name: spec.name, lang });
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
-    frame.src = `${shellPath}?v=${flash ? "1" : "5"}&${qs.toString()}`;
+    loads += 1;
+    frame.src = `${shellPath}?v=${flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`;
     frame.addEventListener("load", () => {
       frame.contentWindow?.postMessage(message, location.origin);
     }, { once: true });
@@ -298,27 +303,56 @@ function player(spec: {
   }) as HTMLInputElement;
   const openPicker = (): void => { picker.click(); };
   empty.querySelector("button")?.addEventListener("click", openPicker);
+
   // Opt-in only: page copy promises a picked file stays in the tab unless the player saves it here.
+  const remember = !!(spec.remember && spec.id);
   const savedKey = `rom:${spec.id ?? ""}`;
-  let pending: SavedRom | null = null;
+  let current: SavedRom | null = null; // local file now playing
+  let stored = false; // a ROM for this game is in IndexedDB
+  let currentStored = false; // ...and it is the one now playing
+  let busy = false;
   const rememberBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.rememberRom")) as HTMLButtonElement;
   const forgetBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.forgetRom")) as HTMLButtonElement;
+  const sync = (): void => {
+    rememberBtn.hidden = !(remember && current && !currentStored);
+    forgetBtn.hidden = !(remember && stored);
+    rememberBtn.disabled = busy;
+    forgetBtn.disabled = busy;
+  };
   rememberBtn.addEventListener("click", () => {
-    const rom = pending;
-    if (!rom) return;
-    rememberBtn.hidden = true;
+    const rom = current;
+    if (!rom || busy) return;
+    busy = true;
+    sync();
+    void navigator.storage?.persist?.().catch(() => false);
     saveDraft(savedKey, rom).then(() => {
-      status.textContent = t("games.rememberedRom");
-      forgetBtn.hidden = false;
+      stored = true;
+      if (current === rom) {
+        currentStored = true;
+        status.textContent = t("games.rememberedRom");
+      }
     }).catch(() => {
-      status.textContent = t("games.rememberFailed");
+      if (current === rom) status.textContent = t("games.rememberFailed");
+    }).finally(() => {
+      busy = false;
+      sync();
+      (forgetBtn.hidden ? rememberBtn : forgetBtn).focus();
     });
   });
   forgetBtn.addEventListener("click", () => {
-    forgetBtn.hidden = true;
-    void clearDraft(savedKey).then(() => {
+    if (busy) return;
+    busy = true;
+    sync();
+    clearDraft(savedKey).then(() => {
+      stored = false;
+      currentStored = false;
       status.textContent = t("games.forgotRom");
-      if (pending) rememberBtn.hidden = false;
+    }).catch(() => {
+      status.textContent = t("games.rememberFailed");
+    }).finally(() => {
+      busy = false;
+      sync();
+      if (!rememberBtn.hidden) rememberBtn.focus();
     });
   });
 
@@ -326,12 +360,13 @@ function player(spec: {
     const file = picker.files?.[0];
     if (!file) return;
     status.textContent = t(flash ? "games.flash.needFileBody" : "games.loadRomHint");
-    const buffer = await file.arrayBuffer();
-    if (spec.remember && spec.id) {
-      pending = { buffer: buffer.slice(0), name: file.name };
-      rememberBtn.hidden = false;
-      forgetBtn.hidden = true;
+    if (remember) {
+      // Keep the File (a Blob) rather than a second ArrayBuffer copy.
+      current = { blob: file, name: file.name };
+      currentStored = false;
+      sync();
     }
+    const buffer = await file.arrayBuffer();
     boot({ buffer, filename: file.name, cheats: spec.cheats });
   });
 
@@ -348,36 +383,40 @@ function player(spec: {
   );
 
   const tryHosted = (romUrl: string): void => {
-      void fetch(romUrl, { method: "HEAD" }).then((res) => {
-        if (picker.files?.length) return;
-        if (!res.ok) {
-          showEmpty();
-          return;
-        }
-        status.textContent = t("games.hostedNote");
-        boot({ rom: romUrl, cheats: spec.cheats });
-      }).catch(() => {
-        if (!picker.files?.length) showEmpty();
-      });
+    void fetch(romUrl, { method: "HEAD" }).then((res) => {
+      if (picker.files?.length) return;
+      if (!res.ok) {
+        showEmpty();
+        return;
+      }
+      status.textContent = t("games.hostedNote");
+      boot({ rom: romUrl, cheats: spec.cheats });
+    }).catch(() => {
+      if (!picker.files?.length) showEmpty();
+    });
   };
 
   if (spec.romUrl) {
     const romUrl = spec.romUrl;
     queueMicrotask(() => {
-      if (!spec.remember || !spec.id || typeof indexedDB === "undefined") {
+      if (!remember || typeof indexedDB === "undefined") {
         tryHosted(romUrl);
         return;
       }
-      loadDraft<SavedRom>(savedKey).then((saved) => {
+      loadDraft<SavedRom>(savedKey).then(async (saved) => {
         if (picker.files?.length) return;
-        if (!saved || !(saved.buffer instanceof ArrayBuffer)) {
+        if (!saved || !(saved.blob instanceof Blob)) {
           tryHosted(romUrl);
           return;
         }
-        pending = saved;
+        const buffer = await saved.blob.arrayBuffer();
+        if (picker.files?.length) return;
+        current = saved;
+        stored = true;
+        currentStored = true;
+        sync();
         status.textContent = t("games.savedRomLoaded");
-        forgetBtn.hidden = false;
-        boot({ buffer: saved.buffer.slice(0), filename: saved.name, cheats: spec.cheats });
+        boot({ buffer, filename: saved.name, cheats: spec.cheats });
       }).catch(() => tryHosted(romUrl));
     });
   }
