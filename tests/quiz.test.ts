@@ -424,6 +424,18 @@ describe("test pages: scoring", () => {
       winners.add(result.key);
     }
     expect([...winners].sort()).toEqual(["earth", "water"]);
+    // Every way to split the 12 questions 6/6 between two elements ties them; each pair should split about evenly.
+    const halves: number[][] = [];
+    const choose = (start: number, picked: number[]): void => {
+      if (picked.length === 6) halves.push(picked);
+      else for (let i = start; i < 12; i++) choose(i + 1, [...picked, i]);
+    };
+    choose(0, []);
+    for (const [a, b] of [["water", "earth"], ["water", "fire"], ["water", "air"], ["earth", "fire"], ["earth", "air"], ["fire", "air"]]) {
+      const aWins = halves.filter((half) => scoreQuiz("avatar-element", pick(avatar.items.map((_, i) => (half.includes(i) ? a : b)))).key === a).length;
+      expect(aWins / halves.length, `${a}/${b}`).toBeGreaterThan(0.44);
+      expect(aWins / halves.length, `${a}/${b}`).toBeLessThan(0.56);
+    }
   });
 
   it("lets no game or anime result dominate random answers", () => {
@@ -432,12 +444,23 @@ describe("test pages: scoring", () => {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const counts = new Map<string, number>();
+      // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
+      const tiedIn = new Map<string, number>();
+      const tiedWon = new Map<string, number>();
       const runs = 20000;
       for (let n = 0; n < runs; n++) {
-        const key = scoreQuiz(id, def.items.map((item) => next(item.options.length))).key;
-        counts.set(key, (counts.get(key) ?? 0) + 1);
+        const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
+        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+        const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
+        if (tied.length < 2) continue;
+        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
       }
       for (const dim of def.dims) {
+        // A fair tie-break wins about as many ties as a coin (or die) would.
+        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
         const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
         expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
         expect(share, `${id} ${dim}`).toBeLessThan(1.2);

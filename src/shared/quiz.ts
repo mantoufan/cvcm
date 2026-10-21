@@ -414,7 +414,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["tsundere", "kuudere", "dandere", "deredere", "genki", "chuuni", "himedere", "senpai"],
     items: ANIME,
-    result: { kind: "top", tie: "spread" },
+    result: { kind: "top" },
   },
   "face-shape": {
     id: "face-shape",
@@ -557,19 +557,23 @@ function pct(raw: number, min: number, max: number): number {
   return max === min ? 0 : Math.round(((raw - min) / (max - min)) * 100);
 }
 
-/** 32-bit FNV-1a, for an even, repeatable tie-break. */
-function fnv1a(text: string): number {
+/** 32-bit FNV-1a with the murmur3 finalizer (without it, ties between two results split about 40/60), for an even, repeatable tie-break. */
+function tieHash(text: string): number {
   let hash = 0x811c9dc5;
-  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 0x01000193) >>> 0;
-  return hash;
+  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 0x01000193);
+  hash ^= hash >>> 16;
+  hash = Math.imul(hash, 0x85ebca6b);
+  hash ^= hash >>> 13;
+  hash = Math.imul(hash, 0xc2b2ae35);
+  hash ^= hash >>> 16;
+  return hash >>> 0;
 }
 
 /** Highest first. A tie goes to the higher hash of `seed` and the dimension when a seed is given (see `top`), else keeps definition order. */
 function rank(scores: DimScore[], seed?: string): DimScore[] {
-  const tie = (s: DimScore): number => (seed === undefined ? 0 : fnv1a(`${seed}|${s.dim}`));
   return scores
-    .map((s, i) => ({ s, i }))
-    .sort((a, b) => b.s.pct - a.s.pct || tie(b.s) - tie(a.s) || a.i - b.i)
+    .map((s, i) => ({ s, i, tie: seed === undefined ? 0 : tieHash(`${seed}|${s.dim}`) }))
+    .sort((a, b) => b.s.pct - a.s.pct || b.tie - a.tie || a.i - b.i)
     .map(({ s }) => s);
 }
 
