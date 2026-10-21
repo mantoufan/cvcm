@@ -3841,5 +3841,111 @@
         "body": "MIT。Antoine Boucher，2010 年。源：https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys 是免费的 FC 平台射击游戏，打开页面就会载入 ROM。每关一个目标，跳跃射击直到完成。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始游戏",
+        "body": "按 Start，选 Play Game，再用 A 依次确认：人数、模式、难度、起始关。",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "看清目标",
+        "body": "每关前的画面写着要做什么，比如“Defeat 5 enemies”，还有剩余命数。",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "跳跃射击",
+        "body": "A 在平台之间跳，B 开火。完成目标时右上角的数字会减少。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "zlib。源码：https://github.com/NovaSquirrel/DABG。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit 是免费的 FC 街机射击游戏，打开页面就会载入 ROM。你操纵地球、转动月球，撞碎一波波敌人。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "标题画面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "移动与旋转",
+        "body": "方向键移动地球。A 和 B 让月球绕地球转，月球撞到的东西都会被消灭。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "撑过每一波",
+        "body": "敌人成排飞来。把月球挡在它们的路线上，保住左上角的命数。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/pubby/lunarlimit。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 是免费的 FC 解谜游戏，打开页面就会载入 ROM。每个房间是一个小网格，有楼梯、熊，有时还有宝石。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "标题画面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "走到楼梯",
+        "body": "用方向键一步步走向楼梯。有宝石就先拿宝石。碰到熊就重来这一间。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/pubby/Ralph-4。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES 是免费的生命游戏沙盒，打开页面就会载入 ROM。你摆放细胞，规则决定接下来发生什么。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "打开网格",
+        "body": "网格上已经有一个滑翔机，光标在左上角。",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "放置细胞",
+        "body": "方向键移动，按 A 切换细胞。Select 清空整个网格。",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "运行",
+        "body": "按 Start。周围有 2 或 3 个邻居的细胞存活，空格周围正好 3 个邻居就诞生新细胞。再按 Start 停止。",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "zlib。源码：https://github.com/NovaSquirrel/NESLife。商业 ROM 不托管。"
+      }
+    ]
   }
 }

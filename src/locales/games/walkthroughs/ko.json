@@ -3841,5 +3841,111 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys는 무료 패미컴 플랫폼 슈팅이다. 페이지를 열면 ROM이 로드된다. 스테이지마다 목표가 하나 있고, 뛰고 쏴서 달성한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "Start를 누르고 Play Game을 고른 뒤 A로 인원, 모드, 난이도, 시작 스테이지를 정한다.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "목표 확인",
+        "body": "스테이지 전 화면에 'Defeat 5 enemies' 같은 목표와 남은 목숨이 나온다.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "뛰고 쏘기",
+        "body": "A로 발판 사이를 뛰고 B로 쏜다. 목표를 채우면 오른쪽 위 숫자가 줄어든다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "zlib. 소스: https://github.com/NovaSquirrel/DABG. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit은 무료 패미컴 아케이드 슈팅이다. 페이지를 열면 ROM이 로드된다. 지구를 움직이고 달을 돌려 적의 물결을 부순다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "타이틀에서 Start.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "움직이고 돌리기",
+        "body": "방향키로 지구를 움직인다. A와 B로 달이 지구 주위를 돌고, 닿은 적을 부순다.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "웨이브 버티기",
+        "body": "적은 줄지어 온다. 그 길목에 달을 두고 왼쪽 위 목숨을 지킨다.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/pubby/lunarlimit. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4는 무료 패미컴 퍼즐이다. 페이지를 열면 ROM이 로드된다. 방마다 작은 칸에 계단, 곰, 가끔 보석이 있다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "타이틀에서 Start.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "계단으로",
+        "body": "방향키로 한 칸씩 계단을 향한다. 보석이 있으면 먼저 줍는다. 곰에 닿으면 다시 한다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/pubby/Ralph-4. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES는 무료 생명 게임 샌드박스다. 페이지를 열면 ROM이 로드된다. 셀을 놓으면 그다음은 규칙이 정한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "판 열기",
+        "body": "판에 글라이더가 하나 있고 커서는 왼쪽 위에 있다.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "셀 놓기",
+        "body": "방향키로 움직이고 A로 셀을 바꾼다. Select로 판 전체를 지운다.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "실행",
+        "body": "Start를 누른다. 이웃이 2~3개인 셀은 살아남고, 빈칸의 이웃이 정확히 3개면 새로 태어난다. 다시 Start로 멈춘다.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "zlib. 소스: https://github.com/NovaSquirrel/NESLife. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
   }
 }

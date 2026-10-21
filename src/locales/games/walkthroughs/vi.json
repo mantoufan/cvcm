@@ -3841,5 +3841,111 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys là game NES đi cảnh bắn súng miễn phí. ROM tải khi bạn mở trang. Mỗi màn có một mục tiêu; nhảy và bắn cho đến khi hoàn thành.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start, chọn Play Game rồi xác nhận bằng A: số người, chế độ, độ khó, màn bắt đầu.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Đọc mục tiêu",
+        "body": "Màn hình trước mỗi màn ghi việc cần làm, ví dụ \"Defeat 5 enemies\", và số mạng.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Nhảy và bắn",
+        "body": "A nhảy giữa các bục, B bắn. Số ở góc phải trên giảm khi bạn tiến gần mục tiêu.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/DABG. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit là game NES bắn súng arcade miễn phí. ROM tải khi bạn mở trang. Bạn lái Trái Đất và quay Mặt Trăng để phá từng đợt địch.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Di chuyển và xoay",
+        "body": "D-pad di chuyển Trái Đất. A và B quay Mặt Trăng quanh nó; thứ gì Mặt Trăng chạm vào đều bị phá.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Trụ qua các đợt",
+        "body": "Địch đến thành hàng. Chặn Mặt Trăng trên đường đi của chúng và giữ số mạng ở góc trái trên.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/lunarlimit. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 là game NES giải đố miễn phí. ROM tải khi bạn mở trang. Mỗi phòng là một lưới nhỏ có cầu thang, gấu và đôi khi có ngọc.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Tới cầu thang",
+        "body": "Đi từng ô bằng D-pad về phía cầu thang. Có ngọc thì lấy trước. Chạm gấu là chơi lại phòng.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/Ralph-4. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES là sandbox trò chơi sự sống miễn phí. ROM tải khi bạn mở trang. Bạn đặt tế bào, luật quyết định điều xảy ra tiếp theo.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mở lưới",
+        "body": "Lưới có sẵn một glider, con trỏ ở góc trái trên.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Đặt tế bào",
+        "body": "Di chuyển bằng D-pad, bấm A để đổi trạng thái tế bào. Select xóa cả lưới.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Chạy",
+        "body": "Bấm Start. Tế bào có 2 hoặc 3 hàng xóm thì sống, ô trống có đúng 3 hàng xóm thì sinh ra tế bào mới. Bấm Start lần nữa để dừng.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/NESLife. Không lưu ROM thương mại."
+      }
+    ]
   }
 }

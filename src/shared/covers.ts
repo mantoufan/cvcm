@@ -243,6 +243,10 @@ export const GAME_COVER: Record<GameId, string> = {
   "detruit-les-ballons": "/covers/games/detruit-les-ballons.jpg?v=1",
   "tag-chase": "/covers/games/tag-chase.jpg?v=1",
   "ricochet-kill": "/covers/games/ricochet-kill.jpg?v=1",
+  "double-action-blaster-guys": "/covers/games/double-action-blaster-guys.jpg?v=1",
+  "lunar-limit": "/covers/games/lunar-limit.jpg?v=1",
+  "ralph-4": "/covers/games/ralph-4.jpg?v=1",
+  "neslife": "/covers/games/neslife.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {
