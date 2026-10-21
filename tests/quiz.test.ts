@@ -412,13 +412,18 @@ describe("test pages: scoring", () => {
         expect(avatar.items.filter((item) => (item.options[position][dim] ?? 0) > 0), `${dim} ${position}`).toHaveLength(3);
       }
     }
-    // A tie is settled by the answers, not by order: the same answers give the same result, and the runner-up ties.
-    const tied = avatar.items.map((item, i) => item.options.findIndex((o) => (o[i < 6 ? "water" : "earth"] ?? 0) > 0));
-    const first = scoreQuiz("avatar-element", tied);
-    expect(first.ranked[0].pct).toBe(first.ranked[1].pct);
-    expect(scoreQuiz("avatar-element", tied).key).toBe(first.key);
-    // Quizzes without `tie: "spread"` keep definition order.
-    expect(QUIZ_DEFS.anime.result).toEqual({ kind: "top" });
+    // A water/earth tie is settled by the answers, not by list order: across different tied answer sets both
+    // elements win, and the same answers always give the same result.
+    const pick = (dims: string[]): number[] => avatar.items.map((item, i) => item.options.findIndex((o) => (o[dims[i]] ?? 0) > 0));
+    const winners = new Set<string>();
+    for (let shift = 0; shift < 12; shift++) {
+      const answers = pick(avatar.items.map((_, i) => ((i + shift) % 12 < 6 ? "water" : "earth")));
+      const result = scoreQuiz("avatar-element", answers);
+      expect(result.ranked[0].pct).toBe(result.ranked[1].pct);
+      expect(scoreQuiz("avatar-element", answers).key).toBe(result.key);
+      winners.add(result.key);
+    }
+    expect([...winners].sort()).toEqual(["earth", "water"]);
   });
 
   it("lets no game or anime result dominate random answers", () => {

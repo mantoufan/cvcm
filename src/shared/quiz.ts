@@ -221,7 +221,7 @@ const PET: ChoiceItem[] = [
 ];
 
 // Game and anime fan quizzes (unofficial). Each option scores 2 for its main result, sometimes 1 for a second;
-// every result in a quiz has the same highest possible score, so none is easier to land on.
+// every result in a quiz has the same highest possible score.
 
 /** Ten of the 18 Pokémon types, each result with a partner Pokémon in the copy. */
 const POKEMON: ChoiceItem[] = [
@@ -414,7 +414,7 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["tsundere", "kuudere", "dandere", "deredere", "genki", "chuuni", "himedere", "senpai"],
     items: ANIME,
-    result: { kind: "top" },
+    result: { kind: "top", tie: "spread" },
   },
   "face-shape": {
     id: "face-shape",
@@ -568,8 +568,8 @@ function fnv1a(text: string): number {
 function rank(scores: DimScore[], seed?: string): DimScore[] {
   const tie = (s: DimScore): number => (seed === undefined ? 0 : fnv1a(`${seed}|${s.dim}`));
   return scores
-    .map((s, i) => ({ s, i, t: tie(s) }))
-    .sort((a, b) => b.s.pct - a.s.pct || b.t - a.t || a.i - b.i)
+    .map((s, i) => ({ s, i }))
+    .sort((a, b) => b.s.pct - a.s.pct || tie(b.s) - tie(a.s) || a.i - b.i)
     .map(({ s }) => s);
 }
 
