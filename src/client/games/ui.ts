@@ -426,7 +426,8 @@ function player(spec: {
         const buffer = await saved.blob.arrayBuffer();
         if (picker.files?.length) return;
         current = saved;
-        currentStored = true;
+        // Forget may have finished while the blob was being read.
+        currentStored = stored;
         sync();
         status.textContent = t("games.savedRomLoaded");
         boot({ buffer, filename: saved.name, cheats: spec.cheats });
