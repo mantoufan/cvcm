@@ -44,6 +44,8 @@ function lean(id: QuizId, on: string[], top = 4): number[] {
   });
 }
 
+const GAME_ANIME = ["pokemon", "genshin", "sonic", "dnd-class", "naruto", "demon-slayer", "jujutsu-kaisen", "avatar-element"] as const;
+
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
     expect(parseAppPath("/en/tests/")).toEqual({ kind: "quiz", locale: "en", quiz: null });
@@ -365,7 +367,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("face-shape", [2, 3, 0, 2, 2, 3]).key).toBe("square");
     expect(scoreQuiz("face-shape", [1, 0, 2, 0, 0, 0]).key).toBe("heart");
     expect(scoreQuiz("face-shape", [0, 3, 0, 2, 2, 3]).key).toBe("oblong");
-    for (const id of ["face-shape", "anime", "pet"] as const) {
+    for (const id of ["face-shape", "anime", "pet", ...GAME_ANIME] as const) {
       const quiz = QUIZ_DEFS[id];
       if (quiz.type !== "choice") throw new Error();
       // For each result, the answers that favor it most must make it win.
@@ -384,5 +386,46 @@ describe("test pages: scoring", () => {
       }
     }
     expect(def.dims).toHaveLength(7);
+  });
+
+  it("breaks a tie on game and anime quizzes in favor of the latest pick", () => {
+    // Avatar: every question offers all four elements, so six water then six earth answers tie at 50%.
+    const waterThenEarth = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1];
+    const tied = scoreQuiz("avatar-element", waterThenEarth);
+    expect(tied.ranked[0].pct).toBe(tied.ranked[1].pct);
+    expect(tied.key).toBe("earth");
+    expect(tied.ranked[1].dim).toBe("water");
+    expect(scoreQuiz("avatar-element", [...waterThenEarth].reverse()).key).toBe("water");
+    // A clear lead still wins, whatever came last.
+    expect(scoreQuiz("avatar-element", [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1]).key).toBe("water");
+    // Quizzes without `tie: "recent"` keep definition order.
+    const anime = QUIZ_DEFS.anime;
+    expect(anime.result).toEqual({ kind: "top" });
+  });
+
+  it("lets no game or anime result dominate random answers", () => {
+    // A seeded generator keeps this deterministic.
+    let seed = 42;
+    const next = (): number => {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      return seed / 2147483648;
+    };
+    for (const id of GAME_ANIME) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      const counts = new Map<string, number>();
+      const runs = 4000;
+      for (let n = 0; n < runs; n++) {
+        const answers = def.items.map((item) => Math.floor(next() * item.options.length));
+        const key = scoreQuiz(id, answers).key;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+      const even = runs / def.dims.length;
+      for (const dim of def.dims) {
+        const share = (counts.get(dim) ?? 0) / even;
+        expect(share, `${id} ${dim}`).toBeGreaterThan(0.5);
+        expect(share, `${id} ${dim}`).toBeLessThan(1.6);
+      }
+    }
   });
 });
