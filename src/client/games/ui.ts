@@ -270,6 +270,7 @@ function player(spec: {
   // The shell boots once (player.js ignores a second boot), so every later ROM reloads the frame.
   let started = false;
   let loads = 0;
+  let onLoad: (() => void) | null = null;
   const boot = (payload: Record<string, unknown>): void => {
     hideEmpty();
     const message = { type: "boot", core: spec.core, name: spec.name, ...payload };
@@ -290,9 +291,14 @@ function player(spec: {
     if (typeof payload.rom === "string") qs.set("rom", payload.rom);
     loads += 1;
     frame.src = `${shellPath}?v=${flash ? "1" : "5"}&${qs.toString()}${loads > 1 ? `&n=${loads}` : ""}`;
-    frame.addEventListener("load", () => {
+    // An aborted navigation never fires load, so drop its listener or the stale ROM boots first.
+    if (onLoad) frame.removeEventListener("load", onLoad);
+    const listener = (): void => {
+      if (onLoad === listener) onLoad = null;
       frame.contentWindow?.postMessage(message, location.origin);
-    }, { once: true });
+    };
+    onLoad = listener;
+    frame.addEventListener("load", listener, { once: true });
   };
 
   const picker = h("input", {
@@ -313,6 +319,11 @@ function player(spec: {
   let busy = false;
   const rememberBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.rememberRom")) as HTMLButtonElement;
   const forgetBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.forgetRom")) as HTMLButtonElement;
+  // Move focus only if the user has not gone elsewhere during a slow save.
+  const refocus = (target: HTMLButtonElement): void => {
+    const active = document.activeElement;
+    if (!target.hidden && (active === document.body || active === rememberBtn || active === forgetBtn)) target.focus();
+  };
   const sync = (): void => {
     rememberBtn.hidden = !(remember && current && !currentStored);
     forgetBtn.hidden = !(remember && stored);
@@ -336,7 +347,7 @@ function player(spec: {
     }).finally(() => {
       busy = false;
       sync();
-      (forgetBtn.hidden ? rememberBtn : forgetBtn).focus();
+      refocus(forgetBtn.hidden ? rememberBtn : forgetBtn);
     });
   });
   forgetBtn.addEventListener("click", () => {
@@ -348,11 +359,11 @@ function player(spec: {
       currentStored = false;
       status.textContent = t("games.forgotRom");
     }).catch(() => {
-      status.textContent = t("games.rememberFailed");
+      /* still stored: Forget stays available to retry */
     }).finally(() => {
       busy = false;
       sync();
-      if (!rememberBtn.hidden) rememberBtn.focus();
+      refocus(rememberBtn.hidden ? forgetBtn : rememberBtn);
     });
   });
 
@@ -409,10 +420,12 @@ function player(spec: {
           tryHosted(romUrl);
           return;
         }
+        // Mark it stored first so an unreadable entry can still be forgotten.
+        stored = true;
+        sync();
         const buffer = await saved.blob.arrayBuffer();
         if (picker.files?.length) return;
         current = saved;
-        stored = true;
         currentStored = true;
         sync();
         status.textContent = t("games.savedRomLoaded");
