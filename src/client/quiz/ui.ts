@@ -303,7 +303,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       // Spread ties: name every result tied with the winner (the hash only picked which one leads).
       const tied = rule.kind === "top" && rule.tie === "spread" ? result.ranked.slice(1).filter((s) => s.raw === first.raw && results[s.dim]) : [];
       if (tied.length) {
-        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(tied.map((s) => results[s.dim].name));
+        const names = listNames(locale, tied.map((s) => results[s.dim].name));
         nodes.push(h("p", { class: "muted" }, `${ui.tiedWith}: ${names}`));
       } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
