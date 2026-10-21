@@ -1,0 +1,169 @@
+{
+  "title": "URL encoding (percent-encoding) explained with examples — cv.cm",
+  "description": "URL encoding swaps unsafe characters for % plus two hex digits: space is %20, & is %26, é is %C3%A9. See which characters to encode and which function to use.",
+  "h1": "What is URL encoding?",
+  "answer": "URL encoding, formally percent-encoding, replaces characters that are not allowed or have a special meaning in a URL with `%` followed by two hexadecimal digits for each byte. A space becomes `%20`, `&` becomes `%26`, and non-ASCII text is first converted to UTF-8, so \"é\" becomes `%C3%A9`. The string \"a b&c\" encodes to `a%20b%26c`.",
+  "sections": [
+    {
+      "h": "Why URLs need encoding",
+      "body": [
+        "RFC 3986 limits URLs to a small set of ASCII characters, and some of those have jobs. `?` starts the query, `&` separates parameters, `=` splits a name from its value, `#` starts the fragment and `/` separates path segments. If a value contains one of those characters, the URL becomes ambiguous.",
+        "Take a search for \"salt & pepper\". Written raw as `?q=salt & pepper`, the server sees a parameter `q` with the value `salt ` and a second, empty parameter called ` pepper`. Encoded as `?q=salt%20%26%20pepper`, it arrives as one value."
+      ]
+    },
+    {
+      "h": "Which characters get encoded",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Group",
+              "Characters",
+              "Rule"
+            ],
+            "rows": [
+              [
+                "Unreserved",
+                "`A–Z a–z 0–9 - . _ ~`",
+                "Never need encoding"
+              ],
+              [
+                "Reserved (gen-delims)",
+                "`: / ? # [ ] @`",
+                "Encode when used inside a value"
+              ],
+              [
+                "Reserved (sub-delims)",
+                "`! $ & ' ( ) * + , ; =`",
+                "Encode when used inside a value"
+              ],
+              [
+                "Everything else",
+                "Space, `\"`, `<`, `>`, `%`, non-ASCII",
+                "Always encode"
+              ]
+            ]
+          }
+        },
+        "Encoding works on bytes, not characters. Non-ASCII text is converted to UTF-8 first, and each byte becomes its own `%XX` triplet:",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "UTF-8 bytes",
+              "Encoded"
+            ],
+            "rows": [
+              [
+                "space",
+                "`20`",
+                "`%20`"
+              ],
+              [
+                "&",
+                "`26`",
+                "`%26`"
+              ],
+              [
+                "%",
+                "`25`",
+                "`%25`"
+              ],
+              [
+                "é",
+                "`C3 A9`",
+                "`%C3%A9`"
+              ],
+              [
+                "日本",
+                "`E6 97 A5 E6 9C AC`",
+                "`%E6%97%A5%E6%9C%AC`"
+              ]
+            ]
+          }
+        },
+        "Hex digits are case-insensitive, so `%c3%a9` and `%C3%A9` mean the same thing, but RFC 3986 recommends uppercase for consistency."
+      ]
+    },
+    {
+      "h": "%20 or +: two rules for spaces",
+      "body": [
+        "Percent-encoding as defined by RFC 3986 always writes a space as `%20`. HTML form submissions use a related format, `application/x-www-form-urlencoded`, in which a space becomes `+` and a literal plus sign becomes `%2B`.",
+        {
+          "ul": [
+            "In a path such as `/files/my report.pdf`, use `%20`. A `+` in a path is a literal plus sign.",
+            "In a query string, servers that parse form encoding read `+` as a space. `%20` is understood by both conventions, so it is the safer choice when unsure.",
+            "If a value can contain a real `+`, for example a phone number like `+84`, it must be sent as `%2B` or it will arrive as a space."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "encodeURIComponent vs encodeURI in JavaScript",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Function",
+              "Leaves unencoded",
+              "Use for"
+            ],
+            "rows": [
+              [
+                "`encodeURIComponent()`",
+                "`A–Z a–z 0–9 - _ . ! ~ * ' ( )`",
+                "A single value: one query parameter or one path segment"
+              ],
+              [
+                "`encodeURI()`",
+                "The above plus `; , / ? : @ & = + $ #`",
+                "A whole URL that is already structured"
+              ],
+              [
+                "`URLSearchParams`",
+                "Form-encoding rules (space becomes `+`)",
+                "Building or reading query strings"
+              ]
+            ]
+          }
+        },
+        "`encodeURIComponent(\"a b&c\")` returns `a%20b%26c`, while `encodeURI(\"a b&c\")` returns `a%20b&c` because it assumes the `&` is a separator. The common bug is calling `encodeURI` on a parameter value, which lets `&`, `=` and `#` through and splits the value.",
+        "`new URLSearchParams({ q: \"a b&c\" }).toString()` gives `q=a+b%26c`. Both forms decode to the same value on a standard server."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ol": [
+            "Double encoding: encoding text that is already encoded turns `%20` into `%2520`, because the `%` itself is encoded as `%25`. Encode each value exactly once, at the moment it is placed into the URL.",
+            "Encoding the whole URL with a component function: `https://` becomes `https%3A%2F%2F` and the link no longer works.",
+            "Decoding before routing: a server that decodes `%2F` into `/` before matching routes can be tricked into reading a different path.",
+            "Assuming a legacy charset: some old systems encoded \"é\" as `%E9` (Latin-1). Modern browsers and the WHATWG URL Standard use UTF-8."
+          ]
+        },
+        {
+          "note": "URL encoding is not encryption or sanitizing. Anyone can decode it, and it does not make input safe to put into HTML or SQL. Escape or parameterize for each context separately."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why is a space %20 in a URL?",
+      "a": "A space is not allowed in a URL, so it is replaced by `%` plus its byte value in hex. The ASCII code for a space is 32 in decimal, which is `20` in hexadecimal."
+    },
+    {
+      "q": "What does %2F mean in a URL?",
+      "a": "`%2F` is an encoded forward slash. It lets a `/` appear inside a value without being read as a path separator."
+    },
+    {
+      "q": "Is URL encoding the same as Base64?",
+      "a": "No. URL encoding only replaces unsafe characters and leaves the rest readable. Base64 converts all bytes into a 64-character alphabet, and its standard `+` and `/` characters themselves need URL encoding unless the URL-safe variant is used."
+    },
+    {
+      "q": "Do I need to encode letters with accents or Chinese characters?",
+      "a": "Yes, in the actual request. Browsers display them readably in the address bar but send the UTF-8 percent-encoded form, such as `%E6%97%A5` for 日."
+    }
+  ]
+}

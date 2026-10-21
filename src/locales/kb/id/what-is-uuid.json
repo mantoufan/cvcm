@@ -1,0 +1,171 @@
+{
+  "title": "Apa itu UUID? Format, versi, dan perbedaan v4 vs v7 — cv.cm",
+  "description": "UUID adalah ID 128-bit sepanjang 36 karakter, seperti f47ac10b-58cc-4372-a567-0e02b2c3d479. Pelajari strukturnya, versi RFC 9562, v4 vs v7, dan peluang collision.",
+  "h1": "Apa itu UUID?",
+  "answer": "UUID (universally unique identifier) adalah angka 128-bit yang dipakai untuk memberi label pada data tanpa perlu otoritas pusat yang membagikan ID. UUID ditulis sebagai 32 digit heksadesimal dalam lima kelompok, misalnya `f47ac10b-58cc-4372-a567-0e02b2c3d479`. Standar terbarunya, RFC 9562, mendefinisikan beberapa versi; versi 4 sepenuhnya acak, sedangkan versi 7 diawali stempel waktu sehingga ID terurut berdasarkan waktu pembuatan.",
+  "sections": [
+    {
+      "h": "Cara membaca UUID",
+      "body": [
+        "Bentuk teksnya terdiri dari 36 karakter: 32 digit hex plus 4 tanda hubung, dikelompokkan 8-4-4-4-12. Dalam bentuk biner, ukurannya 16 byte. Ada dua posisi yang membawa metadata pada setiap UUID:",
+        {
+          "ul": [
+            "Versi: digit pertama kelompok ketiga. Pada `f47ac10b-58cc-4372-a567-0e02b2c3d479`, nilainya `4`.",
+            "Varian: digit pertama kelompok keempat. Untuk UUID standar, nilainya `8`, `9`, `a`, atau `b`; di sini `a`."
+          ]
+        },
+        "GUID, sebutan Microsoft untuk hal yang sama, mengikuti format yang sama. Huruf hex besar dan kecil setara; RFC 9562 menyarankan keluaran huruf kecil dan input yang tidak membedakan huruf besar-kecil. Ada dua nilai khusus: Nil UUID yang seluruhnya nol, dan Max UUID yang seluruhnya `f`."
+      ]
+    },
+    {
+      "h": "Versi-versi UUID",
+      "body": [
+        "RFC 9562, yang terbit pada Mei 2024, menggantikan RFC 4122, mempertahankan versi 1 sampai 5, dan menambahkan versi 6, 7, dan 8.",
+        {
+          "table": {
+            "head": [
+              "Versi",
+              "Dibangun dari",
+              "Terurut menurut waktu",
+              "Penggunaan umum"
+            ],
+            "rows": [
+              [
+                "1",
+                "Stempel waktu (100 ns sejak 1582) + clock sequence + node ID, sering kali alamat MAC",
+                "Tidak dalam bentuk teks",
+                "Sistem lama"
+              ],
+              [
+                "3",
+                "Hash MD5 dari namespace dan nama",
+                "Tidak",
+                "ID deterministik (lebih baik v5)"
+              ],
+              [
+                "4",
+                "122 bit acak",
+                "Tidak",
+                "ID serbaguna"
+              ],
+              [
+                "5",
+                "Hash SHA-1 dari namespace dan nama",
+                "Tidak",
+                "Input yang sama selalu menghasilkan UUID yang sama"
+              ],
+              [
+                "6",
+                "Field versi 1 yang diurutkan ulang, bagian waktu paling signifikan di depan",
+                "Ya",
+                "Migrasi dari v1"
+              ],
+              [
+                "7",
+                "Unix time 48-bit dalam milidetik + bit acak",
+                "Ya",
+                "Key database, log, event"
+              ],
+              [
+                "8",
+                "Tata letak kustom yang ditentukan vendor",
+                "Tergantung",
+                "Eksperimen atau khusus aplikasi"
+              ]
+            ]
+          }
+        },
+        "Versi 3 dan 5 bersifat deterministik: meng-hash namespace untuk nama DNS dengan `example.com` menghasilkan UUID yang sama di setiap mesin. Keduanya memakai MD5 dan SHA-1 hanya sebagai cara menyebarkan bit, bukan untuk keamanan."
+      ]
+    },
+    {
+      "h": "Versi 4 vs versi 7",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bit",
+              "Versi 4",
+              "Versi 7"
+            ],
+            "rows": [
+              [
+                "0–47",
+                "Acak",
+                "Stempel waktu Unix dalam milidetik"
+              ],
+              [
+                "48–51",
+                "Versi `0100` (4)",
+                "Versi `0111` (7)"
+              ],
+              [
+                "52–63",
+                "Acak",
+                "Acak, atau penghitung sub-milidetik"
+              ],
+              [
+                "64–65",
+                "Varian `10`",
+                "Varian `10`"
+              ],
+              [
+                "66–127",
+                "Acak",
+                "Acak"
+              ],
+              [
+                "Bit acak",
+                "122",
+                "Hingga 74"
+              ]
+            ]
+          }
+        },
+        "Contoh versi 7 dalam RFC adalah `017f22e2-79b0-7cc3-98c4-dc0c0c07398f`. 12 digit hex pertamanya, `017f22e279b0`, adalah 1.645.557.742.000 milidetik setelah epoch Unix, yaitu 2022-02-22 19:22:22 UTC.",
+        "Perbedaan praktisnya ada pada performa database. Key v4 yang acak mendarat di posisi acak dalam indeks B-tree, sehingga memecah halaman dan menyebarkan penulisan ke seluruh indeks. Key v7 yang terurut waktu ditambahkan di dekat ujung, mirip integer auto-increment, sehingga insert tetap cepat dan indeks tetap ringkas. Untuk primary key database baru, v7 biasanya pilihan yang lebih baik; untuk token buram yang tidak boleh memperlihatkan waktu pembuatan, gunakan v4."
+      ]
+    },
+    {
+      "h": "Seberapa unik sebenarnya?",
+      "body": [
+        "Dengan 122 bit acak, ada sekitar 5,3 × 10^36 kemungkinan UUID versi 4. Menurut batas ulang tahun (birthday bound), Anda butuh sekitar 2,7 × 10^18 UUID sebelum peluang terjadinya satu collision mencapai 50%. Jika membuat satu miliar per detik, itu butuh sekitar 86 tahun.",
+        "Collision nyata berasal dari keacakan yang buruk, bukan dari matematikanya. Mesin virtual yang dikloning dengan state acak yang sama, atau generator yang dibangun di atas fungsi non-kriptografis seperti `Math.random()`, bisa menghasilkan nilai berulang. Gunakan sumber yang aman secara kriptografis: `crypto.randomUUID()` di browser dan Node.js, `uuid.uuid4()` di Python, atau `gen_random_uuid()` di PostgreSQL.",
+        {
+          "note": "UUID adalah pengenal, bukan rahasia. RFC 9562 memperingatkan agar UUID tidak dipakai sebagai kapabilitas keamanan. Versi 1 bisa membocorkan alamat MAC dan waktu, versi 7 mengungkap kapan sebuah record dibuat, dan UUID apa pun di URL bisa dibagikan atau tercatat di log. Periksa izin akses, jangan mengandalkan UUID yang sulit ditebak."
+        }
+      ]
+    },
+    {
+      "h": "Menyimpan UUID",
+      "body": [
+        {
+          "ul": [
+            "Gunakan tipe bawaan jika tersedia, seperti `uuid` di PostgreSQL: 16 byte, bukan 36 byte untuk teks.",
+            "Di MySQL, simpan sebagai `BINARY(16)`; penyimpanan sebagai teks membuat ukuran indeks lebih dari dua kali lipat.",
+            "Bandingkan UUID tanpa membedakan huruf besar-kecil, atau normalisasikan ke huruf kecil saat input.",
+            "Jangan mengurai makna dari UUID v4. Hanya bit versi dan varian yang membawa informasi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda UUID dan GUID?",
+      "a": "Secara praktis tidak ada. GUID adalah sebutan yang dipakai Microsoft, dan GUID mengikuti format 128-bit serta versi yang sama dengan UUID."
+    },
+    {
+      "q": "Bisakah dua UUID sama persis?",
+      "a": "Secara teori bisa; dalam praktiknya tidak, jika dibuat dengan sumber acak yang aman. Peluang collision tetap bisa diabaikan sampai jumlah UUID versi 4 jauh melampaui satu kuintiliun."
+    },
+    {
+      "q": "Versi UUID mana yang sebaiknya dipakai?",
+      "a": "Versi 7 untuk key database dan apa pun yang diuntungkan oleh urutan waktu, versi 4 jika ID tidak boleh mengungkap apa pun, dan versi 5 jika input yang sama harus selalu menghasilkan ID yang sama."
+    },
+    {
+      "q": "Bagaimana cara membuat UUID di JavaScript?",
+      "a": "Panggil `crypto.randomUUID()`, yang mengembalikan UUID versi 4 dari generator yang aman secara kriptografis. Fungsi ini bekerja di browser modern pada halaman HTTPS dan di Node.js 19 ke atas sebagai fungsi global."
+    }
+  ]
+}

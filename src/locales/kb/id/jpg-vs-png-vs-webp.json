@@ -1,0 +1,157 @@
+{
+  "title": "JPG vs PNG vs WebP: format gambar mana yang dipakai dan kapan — cv.cm",
+  "description": "JPG untuk foto, PNG untuk grafis tajam dan transparansi, WebP bisa keduanya dengan file lebih kecil. Bandingkan kompresi, kualitas, dukungan, dan posisi AVIF.",
+  "h1": "JPG vs PNG vs WebP: format gambar mana yang sebaiknya dipakai?",
+  "answer": "Pakai JPG untuk foto saat ukuran file kecil penting dan transparansi tidak diperlukan. Pakai PNG untuk screenshot, logo, teks, dan apa pun yang butuh piksel persis atau latar transparan. Pakai WebP jika gambar akan dipasang di situs web: format ini mendukung mode lossy dan lossless sekaligus transparansi, dan Google mengukur file WebP lossy 25–34% lebih kecil daripada JPG pada kualitas setara. Semua browser saat ini bisa menampilkan WebP.",
+  "sections": [
+    {
+      "h": "Tiga format berdampingan",
+      "body": [
+        "Setiap format dirancang untuk tugas yang berbeda, dan perbedaannya bermuara pada cara mengompresi piksel serta fitur tambahan yang dibawa.",
+        {
+          "table": {
+            "head": [
+              "",
+              "JPG (JPEG)",
+              "PNG",
+              "WebP"
+            ],
+            "rows": [
+              [
+                "Diperkenalkan",
+                "1992",
+                "1996",
+                "2010"
+              ],
+              [
+                "Kompresi",
+                "Lossy",
+                "Lossless",
+                "Lossy atau lossless"
+              ],
+              [
+                "Transparansi",
+                "Tidak",
+                "Ya, kanal alfa penuh",
+                "Ya, kanal alfa penuh"
+              ],
+              [
+                "Animasi",
+                "Tidak",
+                "Varian APNG",
+                "Ya"
+              ],
+              [
+                "Kedalaman bit",
+                "8 bit per kanal (baseline)",
+                "Hingga 16 bit per kanal",
+                "8 bit per kanal"
+              ],
+              [
+                "Paling cocok untuk",
+                "Foto",
+                "Grafis, screenshot, teks",
+                "Gambar web jenis apa pun"
+              ],
+              [
+                "Celah dukungan umum",
+                "Tidak ada",
+                "Tidak ada",
+                "Sebagian perangkat lunak desktop lama dan formulir unggahan"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Lossy vs lossless: perbedaan yang menentukan",
+      "body": [
+        "Kompresi lossy (JPG, WebP lossy) membuang detail yang kemungkinan tidak tertangkap mata. Cara ini bekerja baik pada foto, yang warnanya berubah secara bertahap, tetapi membuat tepi tajam jadi kabur: teks dan garis tipis di JPG memunculkan lingkaran samar yang disebut ringing atau mosquito noise, dan pada kualitas rendah bisa muncul kotak-kotak 8×8 piksel.",
+        "Kompresi lossless (PNG, WebP lossless) menyimpan setiap piksel secara persis. Kompresi ini sangat efektif untuk area warna rata yang luas, itulah sebabnya screenshot bisa lebih kecil sebagai PNG daripada JPG, tetapi foto yang disimpan sebagai PNG sering 3–5 kali lebih besar daripada JPG yang bagus tanpa manfaat yang terlihat.",
+        {
+          "ul": [
+            "Setiap kali JPG disunting dan disimpan ulang, file itu dikompresi lagi dan kehilangan sedikit detail. Simpan master lossless jika Anda akan menyuntingnya berulang kali.",
+            "Mengonversi JPG ke PNG tidak mengembalikan detail yang hilang; PNG hanya menyimpan piksel yang sudah terkompresi tanpa kehilangan lebih lanjut, dalam file yang lebih besar.",
+            "Pengaturan kualitas JPG sekitar 80–90% adalah titik keseimbangan yang umum antara ukuran dan artefak yang terlihat."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Seberapa lebih kecil WebP?",
+      "body": [
+        "Studi kompresi WebP dari Google membandingkan file pada kemiripan struktural (SSIM) yang sama. WebP lossy 25–34% lebih kecil daripada JPG, dan Google melaporkan WebP lossless sekitar 26% lebih kecil daripada PNG. Penghematan sebenarnya bergantung pada gambar, encoder, dan pengaturan kualitas.",
+        "Contoh perhitungan: foto hero 400 KB yang disimpan sebagai JPG biasanya menjadi sekitar 265–300 KB sebagai WebP lossy dengan kualitas serupa. Pada halaman berisi dua puluh gambar, selisih itu mempercepat waktu muat di koneksi seluler.",
+        {
+          "note": "WebP dibatasi 16.383 × 16.383 piksel dan warna 8-bit, sehingga kurang cocok sebagai format arsip untuk foto asli beresolusi tinggi atau HDR. Simpan file asli kamera dan ekspor salinan WebP untuk web."
+        }
+      ]
+    },
+    {
+      "h": "Posisi AVIF",
+      "body": [
+        "AVIF adalah format yang lebih baru yang menyimpan gambar terkompresi AV1 dalam kontainer bergaya HEIF. Untuk foto, ukurannya biasanya lebih kecil daripada WebP, mendukung warna 10- dan 12-bit serta HDR, dan mendukung transparansi. Chrome menambahkan dukungan di versi 85, Firefox di versi 93, dan Safari di versi 16.",
+        "Kekurangannya: encoding lebih lambat, dukungan lebih lemah di perangkat lunak desktop lama, dan sesekali tekstur halus hilang pada kualitas sangat rendah. Banyak situs menyajikan AVIF lebih dulu, WebP kedua, dan JPG sebagai cadangan dengan elemen HTML `<picture>`."
+      ]
+    },
+    {
+      "h": "Panduan cepat memilih format",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "Format yang disarankan"
+            ],
+            "rows": [
+              [
+                "Foto kamera atau ponsel untuk situs web",
+                "WebP atau AVIF, dengan cadangan JPG bila perlu"
+              ],
+              [
+                "Foto untuk email, percetakan, atau formulir unggahan",
+                "JPG"
+              ],
+              [
+                "Logo, ikon, atau diagram dengan transparansi",
+                "PNG, atau SVG jika berupa gambar vektor"
+              ],
+              [
+                "Screenshot berisi teks",
+                "PNG atau WebP lossless"
+              ],
+              [
+                "Animasi pendek yang berulang",
+                "WebP animasi atau file video, bukan GIF"
+              ],
+              [
+                "Salinan master yang akan disunting lagi",
+                "PNG, TIFF, atau format asli kamera"
+              ]
+            ]
+          }
+        },
+        "Jika sebuah formulir menolak WebP, konversi salinannya ke JPG untuk foto atau PNG untuk grafis. Mengonversi file lossy ke lossless tidak memberi manfaat apa pun selain kompatibilitas."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah kualitas PNG lebih tinggi daripada JPG?",
+      "a": "PNG bersifat lossless, jadi setiap piksel tersimpan persis, sedangkan JPG membuang sebagian detail. Untuk foto, perbedaannya pada kualitas JPG tinggi biasanya tidak terlihat; untuk teks dan tepi tajam, PNG tampak jelas lebih bersih."
+    },
+    {
+      "q": "Mengapa PNG saya jauh lebih besar daripada JPG-nya?",
+      "a": "Kompresi lossless tidak bisa membuang noise halus dan gradasi yang ada pada foto, sehingga PNG berisi foto sering berukuran beberapa kali lipat. Gunakan JPG atau WebP untuk foto."
+    },
+    {
+      "q": "Apakah semua browser mendukung WebP?",
+      "a": "Ya. Chrome, Edge, Firefox, dan Opera sudah mendukungnya bertahun-tahun, dan Safari menambahkannya di versi 14 pada tahun 2020. Sebagian program desktop lama dan formulir unggahan masih menolaknya."
+    },
+    {
+      "q": "Apakah konversi PNG ke JPG menghilangkan transparansi?",
+      "a": "Ya. JPG tidak punya kanal alfa, sehingga area transparan diisi warna solid, biasanya putih atau hitam. Gunakan WebP atau tetap pakai PNG jika butuh transparansi."
+    }
+  ]
+}

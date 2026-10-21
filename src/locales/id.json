@@ -3,7 +3,7 @@
     "title": "cv.cm — papan klip, gambar, dan PDF",
     "titleClip": "Papan klip daring — bagikan teks tanpa akun — cv.cm",
     "descClip": "Papan klip gaya Pastebin. Bagikan teks, gambar, file lewat tautan. Tanpa akun. Dihapus setelah 10 kali dilihat atau 24 jam.",
-    "titleWatermark": "Watermark fotokopi KTP & foto — gratis, tanpa unggah — cv.cm",
+    "titleWatermark": "Watermark fotokopi KTP & foto + watermark tak terlihat — gratis, tanpa unggah — cv.cm",
     "titleCollage": "Pembuat kolase foto — cv.cm",
     "description": "Alat peramban di perangkat. Gambar dan PDF tetap di tab ini.",
     "titleConvert": "Konverter gambar — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Ubah MP3, M4A, OGG, AAC, FLAC ke WAV di browser. Pilih 44,1 / 48 kHz. Tanpa unggah.",
     "titleData": "Pemformat JSON, Base64, CSV ke JSON — cv.cm",
     "descData": "Rapikan JSON, CSV ↔ JSON, Base64, URL encode, Markdown ke HTML. Di tab ini.",
-    "descWatermark": "Beri watermark foto dan fotokopi KTP di browser. Ulangi miring “Hanya untuk …” beserta tanggal, sensor NIK, ekspor PNG, JPEG, atau ZIP sekaligus. EXIF dihapus. File tidak keluar dari tab.",
+    "descWatermark": "Beri watermark foto dan fotokopi KTP di browser. Ulangi miring “Hanya untuk …” beserta tanggal, otomatis tambah watermark tak terlihat untuk melacak salinan yang bocor, sensor NIK, ekspor PNG, JPEG, atau ZIP sekaligus. EXIF dihapus. File tidak keluar dari tab.",
     "descCollage": "Buat kolase di browser. Grid dan ukuran Instagram. Tanpa unggah.",
     "titleQr": "Pembuat kode QR gratis — cv.cm",
     "descQr": "Buat kode QR dari URL atau teks di browser, unduh PNG. Tanpa unggah.",
@@ -349,7 +349,8 @@
     "games": "Game",
     "device": "Perangkat",
     "assets": "Aset",
-    "tests": "Tes"
+    "tests": "Tes",
+    "data": "Data"
   },
   "lang": {
     "label": "Bahasa",
@@ -389,7 +390,7 @@
     },
     "watermark": {
       "name": "Watermark & Sensor KTP",
-      "blurb": "Cap hanya untuk pada fotokopi KTP, tarik kotak untuk sensor NIK. Tanpa unggah."
+      "blurb": "Cap hanya untuk pada fotokopi KTP, tambah watermark tak terlihat, tarik kotak untuk sensor NIK. Tanpa unggah."
     },
     "collage": {
       "name": "Kolase foto",
@@ -800,7 +801,22 @@
     "redactOn": "Tarik di pratinjau untuk menutup nomor, wajah, atau pelat.",
     "redactTip": "Pakai kotak hitam untuk NIK, nomor kartu, dan kode QR. Mosaik halus kadang bisa ditebak.",
     "collageOptional": "Gabung jadi satu gambar (opsional)",
-    "redactCollage": "Mode kolase tidak bisa menggambar kotak. Kembali ke Satu foto untuk menyensor tiap foto; sensornya ikut ke kolase."
+    "redactCollage": "Mode kolase tidak bisa menggambar kotak. Kembali ke Satu foto untuk menyensor tiap foto; sensornya ikut ke kolase.",
+    "blindTitle": "Watermark tak terlihat",
+    "blindOn": "Tambahkan watermark tak terlihat saat ekspor",
+    "blindText": "Teks tersembunyi",
+    "blindBytes": "{n}/{max} byte",
+    "blindHint": "Saat ekspor disisipkan: teks watermark yang terlihat (atau isi kolom ini), plus “cv.cm” dan tanggal ekspor. Disimpan di kecerahan gambar dan tetap terbaca setelah kompresi JPEG atau ubah ukuran (misalnya dikirim ulang lewat aplikasi chat). Pemotongan, rotasi, atau gambar yang hampir kosong bisa menghapusnya.",
+    "blindDetect": "Periksa watermark tersembunyi di gambar",
+    "blindDetecting": "Memeriksa…",
+    "blindFound": "Watermark tersembunyi ditemukan: “{text}”",
+    "blindNone": "Tidak ada watermark tersembunyi. Pemotongan, rotasi, atau edit warna berat bisa menghapusnya.",
+    "blindDone": "Watermark tak terlihat ditambahkan: “{text}”.",
+    "blindFailed": "Watermark tak terlihat tidak bisa disisipkan: gambar sebagian besar kosong atau satu warna, atau kualitas ekspor terlalu rendah. Watermark yang terlihat tetap aman. Ulangi watermark terlihat atau naikkan kualitas, lalu ekspor lagi.",
+    "blindPlaceholder": "Kosong = sama dengan watermark terlihat",
+    "blindUnchecked": "Watermark tak terlihat ditambahkan: “{text}”, tetapi memori perangkat tidak cukup untuk memeriksanya ulang.",
+    "blindNoMemory": "Memori perangkat tidak cukup, jadi watermark tak terlihat tidak ditambahkan. Watermark yang terlihat tetap aman.",
+    "blindTrimmed": "sisanya tidak disimpan"
   },
   "collage": {
     "title": "Pembuat kolase foto",
@@ -1065,14 +1081,14 @@
     "watermark": {
       "q1": "Menambah watermark mengunggah foto?",
       "a1": "Tidak. Salinan identitas juga tetap di tab ini. Kanvas browser yang menandai. Tutup tab, file dibuang. Ekspor juga menghapus EXIF.",
-      "q2": "Bisa banyak foto sekaligus?",
-      "a2": "Ya. Tambah batch, unduh satu atau ZIP PNG/JPEG.",
+      "q2": "Apa itu watermark tak terlihat? Bisakah melacak siapa yang membocorkan?",
+      "a2": "Saat ekspor, alat ini menyembunyikan teks yang sama dengan watermark terlihat (atau teks Anda sendiri, misalnya “Bank A”), plus “cv.cm” dan tanggal ekspor, di kecerahan gambar. Aktif secara bawaan dan bisa dimatikan di bagian Watermark tak terlihat. Jika salinan muncul di tempat lain, masukkan ke “Periksa watermark tersembunyi di gambar” untuk membacanya, meski watermark terlihat sudah dihapus. Tahan kompresi JPEG dan ubah ukuran; pemotongan atau rotasi bisa merusaknya. Teks pendek paling awet. Ini petunjuk, bukan bukti hukum.",
       "q3": "Bisa cap salinan KTP atau paspor?",
       "a3": "Ya. Pakai «Hanya untuk» agar teks tujuan menutupi foto. Tanpa unggah. Ini pencegah, bukan jaminan hukum. Beberapa kantor tetap minta salinan tanpa cap.",
       "q4": "Bisa hapus watermark?",
       "a4": "Tidak. Alat ini hanya menambah tanda, tidak menghapus watermark yang ada.",
       "q5": "Format apa?",
-      "a5": "Masuk PNG, JPEG, WebP, GIF. Keluar PNG, JPEG, atau WebP. Teks, logo, atau keduanya."
+      "a5": "Masuk PNG, JPEG, WebP, GIF. Keluar PNG, JPEG, atau WebP. Teks, logo, atau keduanya. Tambahkan banyak gambar lalu unduh satu per satu atau ZIP."
     },
     "collage": {
       "q1": "Ini pembuat kolase foto?",
@@ -5711,6 +5727,134 @@
     "depression": {
       "name": "Tes depresi (PHQ-9)",
       "blurb": "Skrining depresi 9 soal, skor 0 sampai 27."
+    }
+  },
+  "dataset": {
+    "all": "Semua data",
+    "population": {
+      "name": "Populasi dunia menurut negara",
+      "blurb": "Populasi 217 negara dan wilayah, berperingkat, dengan pangsa dunia."
+    },
+    "gdp": {
+      "name": "PDB menurut negara",
+      "blurb": "PDB nominal dalam dolar AS untuk setiap ekonomi, berperingkat."
+    },
+    "gdp-per-capita": {
+      "name": "PDB per kapita menurut negara",
+      "blurb": "PDB per orang, dari tertinggi ke terendah."
+    },
+    "life-expectancy": {
+      "name": "Angka harapan hidup menurut negara",
+      "blurb": "Harapan hidup saat lahir di tiap negara."
+    },
+    "fertility-rate": {
+      "name": "Angka kelahiran menurut negara",
+      "blurb": "Kelahiran per perempuan, dari tertinggi ke terendah."
+    },
+    "internet-users": {
+      "name": "Pengguna internet menurut negara",
+      "blurb": "Persentase penduduk yang memakai internet."
+    },
+    "country-codes": {
+      "name": "Kode negara ISO 3166",
+      "blurb": "Kode alpha-2, alpha-3 dan numerik 249 negara dan wilayah."
+    },
+    "calling-codes": {
+      "name": "Kode telepon internasional",
+      "blurb": "Kode + untuk menelepon setiap negara."
+    },
+    "currency-codes": {
+      "name": "Kode mata uang ISO 4217",
+      "blurb": "Kode, simbol, dan negara pengguna tiap mata uang."
+    },
+    "time-zones": {
+      "name": "Zona waktu dan selisih UTC",
+      "blurb": "Semua zona waktu IANA dengan selisih UTC musim dingin dan panas."
+    },
+    "paper-sizes": {
+      "name": "Ukuran kertas",
+      "blurb": "A4, A3, B5, Letter dan lainnya dalam mm, inci, dan piksel."
+    },
+    "ascii": {
+      "name": "Tabel ASCII",
+      "blurb": "Semua 128 kode dalam desimal, heksa, oktal, dan biner."
+    }
+  },
+  "kb": {
+    "label": "Pengetahuan",
+    "all": "Semua artikel pengetahuan",
+    "lead": "Arti format, encoding, dan rumus, lengkap dengan sumbernya.",
+    "what-is-heic": {
+      "name": "Apa itu HEIC?",
+      "blurb": "Format foto iPhone, bedanya dengan JPG, dan kapan perlu dikonversi."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Format gambar mana untuk foto, screenshot, dan web."
+    },
+    "what-is-exif": {
+      "name": "Apa itu data EXIF?",
+      "blurb": "Info kamera, waktu, dan GPS yang tersembunyi di foto, serta cara menghapusnya."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Piksel, ukuran cetak, dan mengapa 300 DPI hanya penting di kertas."
+    },
+    "aspect-ratios": {
+      "name": "Penjelasan rasio aspek",
+      "blurb": "16:9, 4:3, 1:1, 9:16 dan ukuran piksel yang sesuai."
+    },
+    "why-pdf-files-are-large": {
+      "name": "Kenapa file PDF begitu besar?",
+      "blurb": "Gambar, font, dan hasil scan yang membengkakkan PDF, serta efek kompresinya."
+    },
+    "what-is-base64": {
+      "name": "Apa itu Base64?",
+      "blurb": "Cara Base64 mengubah byte menjadi teks, mengapa ukurannya naik 33%, dan mengapa bukan enkripsi."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode dan UTF-8",
+      "blurb": "Code point, byte, dan mengapa teks berubah menjadi karakter kacau."
+    },
+    "url-encoding": {
+      "name": "URL encoding (percent-encoding)",
+      "blurb": "Mengapa spasi menjadi %20 dan karakter mana yang harus di-encode."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Sintaks, kelebihan, dan jebakan ketiga format data."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "Apa itu hash, mana yang sudah jebol, dan apa yang dipakai untuk kata sandi."
+    },
+    "password-strength": {
+      "name": "Seperti apa kata sandi yang kuat?",
+      "blurb": "Panjang, keacakan, dan entropi, sesuai pedoman NIST terbaru."
+    },
+    "what-is-uuid": {
+      "name": "Apa itu UUID?",
+      "blurb": "UUID versi 4 dan 7, peluang collision, dan kapan memakai masing-masing."
+    },
+    "unix-timestamp": {
+      "name": "Apa itu Unix timestamp?",
+      "blurb": "Detik sejak 1970, milidetik di JavaScript, dan masalah tahun 2038."
+    },
+    "iso-8601": {
+      "name": "Tanggal ISO 8601 dan nomor minggu",
+      "blurb": "YYYY-MM-DD, minggu ke-1, durasi, dan profil RFC 3339."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT, dan zona waktu",
+      "blurb": "Offset, waktu musim panas, dan mengapa nama zona lebih baik daripada offset."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Bunga sederhana vs majemuk, rumusnya, dan contoh perhitungan."
+    },
+    "margin-vs-markup": {
+      "name": "Margin vs markup",
+      "blurb": "Dua cara menyatakan laba, cara mengonversinya, dan tabel ringkas."
     }
   }
 }

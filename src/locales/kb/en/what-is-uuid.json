@@ -1,0 +1,171 @@
+{
+  "title": "What is a UUID? Format, versions, and v4 vs v7 explained — cv.cm",
+  "description": "A UUID is a 128-bit ID written as 36 characters, like f47ac10b-58cc-4372-a567-0e02b2c3d479. Learn the layout, RFC 9562 versions, v4 vs v7 and collision odds.",
+  "h1": "What is a UUID?",
+  "answer": "A UUID (universally unique identifier) is a 128-bit number used to label data without a central authority handing out IDs. It is written as 32 hexadecimal digits in five groups, such as `f47ac10b-58cc-4372-a567-0e02b2c3d479`. The current standard, RFC 9562, defines several versions; version 4 is fully random and version 7 starts with a timestamp so IDs sort by creation time.",
+  "sections": [
+    {
+      "h": "Reading a UUID",
+      "body": [
+        "The text form has 36 characters: 32 hex digits plus 4 hyphens, grouped 8-4-4-4-12. In binary it is 16 bytes. Two positions carry metadata for every UUID:",
+        {
+          "ul": [
+            "Version: the first digit of the third group. In `f47ac10b-58cc-4372-a567-0e02b2c3d479` it is `4`.",
+            "Variant: the first digit of the fourth group. For standard UUIDs it is `8`, `9`, `a` or `b`; here it is `a`."
+          ]
+        },
+        "GUID, Microsoft's name for the same thing, follows the same format. Uppercase and lowercase hex are equivalent; RFC 9562 recommends lowercase output and case-insensitive input. Two special values exist: the Nil UUID, all zeros, and the Max UUID, all `f`."
+      ]
+    },
+    {
+      "h": "UUID versions",
+      "body": [
+        "RFC 9562, published in May 2024, replaced RFC 4122, kept versions 1 to 5 and added 6, 7 and 8.",
+        {
+          "table": {
+            "head": [
+              "Version",
+              "Built from",
+              "Sortable by time",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "1",
+                "Timestamp (100 ns since 1582) + clock sequence + node ID, often a MAC address",
+                "Not as text",
+                "Legacy systems"
+              ],
+              [
+                "3",
+                "MD5 hash of a namespace and a name",
+                "No",
+                "Deterministic IDs (prefer v5)"
+              ],
+              [
+                "4",
+                "122 random bits",
+                "No",
+                "General-purpose IDs"
+              ],
+              [
+                "5",
+                "SHA-1 hash of a namespace and a name",
+                "No",
+                "Same input always gives the same UUID"
+              ],
+              [
+                "6",
+                "Version 1 fields reordered, most significant time first",
+                "Yes",
+                "Migrating from v1"
+              ],
+              [
+                "7",
+                "48-bit Unix time in milliseconds + random bits",
+                "Yes",
+                "Database keys, logs, events"
+              ],
+              [
+                "8",
+                "Custom, vendor-defined layout",
+                "Depends",
+                "Experimental or application-specific"
+              ]
+            ]
+          }
+        },
+        "Versions 3 and 5 are deterministic: hashing the namespace for DNS names with `example.com` gives the same UUID on every machine. They use MD5 and SHA-1 only as a way to spread bits, not for security."
+      ]
+    },
+    {
+      "h": "Version 4 vs version 7",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bits",
+              "Version 4",
+              "Version 7"
+            ],
+            "rows": [
+              [
+                "0–47",
+                "Random",
+                "Unix timestamp in milliseconds"
+              ],
+              [
+                "48–51",
+                "Version `0100` (4)",
+                "Version `0111` (7)"
+              ],
+              [
+                "52–63",
+                "Random",
+                "Random, or a sub-millisecond counter"
+              ],
+              [
+                "64–65",
+                "Variant `10`",
+                "Variant `10`"
+              ],
+              [
+                "66–127",
+                "Random",
+                "Random"
+              ],
+              [
+                "Random bits",
+                "122",
+                "Up to 74"
+              ]
+            ]
+          }
+        },
+        "The RFC's version 7 example is `017f22e2-79b0-7cc3-98c4-dc0c0c07398f`. Its first 12 hex digits, `017f22e279b0`, are 1,645,557,742,000 milliseconds after the Unix epoch, which is 2022-02-22 19:22:22 UTC.",
+        "The practical difference is database performance. Random v4 keys land at random spots in a B-tree index, which splits pages and spreads writes across the whole index. Time-ordered v7 keys append near the end, much like an auto-increment integer, which keeps inserts fast and the index compact. For new database primary keys, v7 is usually the better choice; for opaque tokens where creation time should not be visible, use v4."
+      ]
+    },
+    {
+      "h": "How unique is unique?",
+      "body": [
+        "With 122 random bits there are about 5.3 × 10^36 possible version 4 UUIDs. By the birthday bound, you would need about 2.7 × 10^18 of them before the chance of a single collision reaches 50%. Generating one billion per second, that takes around 86 years.",
+        "Real collisions come from bad randomness, not from the math. A virtual machine cloned with the same random state, or a generator built on a non-cryptographic function like `Math.random()`, can repeat values. Use a cryptographically secure source: `crypto.randomUUID()` in browsers and Node.js, `uuid.uuid4()` in Python, or `gen_random_uuid()` in PostgreSQL.",
+        {
+          "note": "UUIDs are identifiers, not secrets. RFC 9562 warns against using them as security capabilities. Version 1 can expose a MAC address and time, version 7 reveals when a record was created, and any UUID in a URL can be shared or logged. Check access permissions instead of relying on a UUID being hard to guess."
+        }
+      ]
+    },
+    {
+      "h": "Storing UUIDs",
+      "body": [
+        {
+          "ul": [
+            "Use a native type where one exists, such as `uuid` in PostgreSQL: 16 bytes instead of 36 for text.",
+            "In MySQL, store as `BINARY(16)`; text storage more than doubles index size.",
+            "Compare UUIDs case-insensitively, or normalize to lowercase on input.",
+            "Do not parse meaning out of v4 UUIDs. Only the version and variant bits carry information."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a UUID and a GUID?",
+      "a": "None in practice. GUID is the name used by Microsoft, and GUIDs follow the same 128-bit format and versions as UUIDs."
+    },
+    {
+      "q": "Can two UUIDs ever be the same?",
+      "a": "In theory, yes; in practice, not when generated with a secure random source. The chance of any collision stays negligible until well over a quintillion version 4 UUIDs exist."
+    },
+    {
+      "q": "Which UUID version should I use?",
+      "a": "Version 7 for database keys and anything that benefits from time ordering, version 4 when the ID should reveal nothing, and version 5 when the same input must always produce the same ID."
+    },
+    {
+      "q": "How do I generate a UUID in JavaScript?",
+      "a": "Call `crypto.randomUUID()`, which returns a version 4 UUID from a cryptographically secure generator. It works in modern browsers on HTTPS pages and in Node.js 19 and later as a global."
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "title": "Apa itu Base64? Cara kerja encoding Base64 dan contohnya — cv.cm",
+  "description": "Base64 mengubah data biner menjadi 64 karakter teks, 3 byte menjadi 4. Lihat bagaimana \"Man\" menjadi TWFu, mengapa hasilnya 33% lebih besar, dan di mana dipakai.",
+  "h1": "Apa itu encoding Base64?",
+  "answer": "Base64 adalah cara merepresentasikan data biner hanya dengan 64 karakter yang bisa dicetak: A–Z, a–z, 0–9, + dan /, dengan = sebagai padding. Setiap 3 byte dipecah menjadi empat kelompok 6 bit, lalu setiap kelompok dipetakan ke satu karakter, sehingga \"Man\" menjadi \"TWFu\". Base64 membuat data biner aman dikirim lewat saluran yang hanya menerima teks, seperti email, JSON, dan URL, dengan konsekuensi ukurannya bertambah sekitar 33%. Ini encoding, bukan enkripsi.",
+  "sections": [
+    {
+      "h": "Cara kerja Base64, langkah demi langkah",
+      "body": [
+        "Base64 didefinisikan dalam RFC 4648. Karena 64 = 2⁶, setiap karakter keluaran membawa tepat 6 bit, dan 3 byte (24 bit) pas dipetakan ke 4 karakter.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "M",
+              "a",
+              "n"
+            ],
+            "rows": [
+              [
+                "Kode ASCII",
+                "77",
+                "97",
+                "110"
+              ],
+              [
+                "Biner (masing-masing 8 bit)",
+                "01001101",
+                "01100001",
+                "01101110"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Gabungkan 24 bitnya: `010011010110000101101110`.",
+            "Pecah menjadi empat kelompok 6 bit: `010011` `010110` `000101` `101110`.",
+            "Ubah menjadi angka: 19, 22, 5, 46.",
+            "Cari masing-masing di alfabetnya (0 = A, 25 = Z, 26 = a, 51 = z, 52 = 0, 61 = 9, 62 = +, 63 = /): T, W, F, u.",
+            "Hasil: `TWFu`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Padding dengan =",
+      "body": [
+        "Jika panjang input bukan kelipatan 3, kelompok terakhir diisi bit nol dan `=` menandai byte yang kurang, sehingga panjang keluaran selalu kelipatan 4.",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "Byte",
+              "Base64"
+            ],
+            "rows": [
+              [
+                "`M`",
+                "1",
+                "`TQ==`"
+              ],
+              [
+                "`Ma`",
+                "2",
+                "`TWE=`"
+              ],
+              [
+                "`Man`",
+                "3",
+                "`TWFu`"
+              ],
+              [
+                "`Hello`",
+                "5",
+                "`SGVsbG8=`"
+              ],
+              [
+                "`é` (byte UTF-8 C3 A9)",
+                "2",
+                "`w6k=`"
+              ]
+            ]
+          }
+        },
+        "Panjang hasil encoding adalah `4 × ceil(n ÷ 3)` karakter untuk n byte. File 1 MB menjadi sekitar 1,33 MB teks, dan email MIME menambahkan baris baru setiap 76 karakter, sehingga overhead-nya sedikit lebih tinggi."
+      ]
+    },
+    {
+      "h": "Di mana Base64 dipakai",
+      "body": [
+        {
+          "ul": [
+            "Lampiran email: MIME meng-encode file sebagai Base64 karena sistem email awal hanya mengangkut teks 7-bit.",
+            "Data URL: gambar kecil yang disisipkan langsung di HTML atau CSS, ditulis sebagai `data:image/png;base64,iVBORw0KGgo...`.",
+            "API JSON dan XML yang perlu mengangkut data biner seperti gambar, kunci, atau sertifikat.",
+            "JSON Web Token (JWT), yang header dan payload-nya berupa JSON yang di-encode dengan Base64url.",
+            "File PEM untuk sertifikat dan kunci TLS, yang membungkus Base64 di antara baris `-----BEGIN CERTIFICATE-----`.",
+            "Autentikasi HTTP Basic, yang mengirim `username:password` dalam bentuk Base64."
+          ]
+        },
+        "Menyisipkan gambar sebagai data URL menghemat satu permintaan jaringan, tetapi menambah ukurannya 33% dan mencegah cache terpisah, sehingga biasanya hanya layak untuk gambar yang sangat kecil."
+      ]
+    },
+    {
+      "h": "Base64 vs Base64url dan encoding lainnya",
+      "body": [
+        "Base64 standar memakai `+` dan `/`, yang punya arti khusus di URL dan nama file. Varian aman-URL dalam RFC yang sama menggantinya dengan `-` dan `_`, dan sering menghilangkan padding `=`.",
+        {
+          "table": {
+            "head": [
+              "Encoding",
+              "Karakter",
+              "Overhead ukuran",
+              "Contoh penggunaan"
+            ],
+            "rows": [
+              [
+                "Base16 (hex)",
+                "0–9, A–F",
+                "100%",
+                "Hash, kode warna"
+              ],
+              [
+                "Base32",
+                "A–Z, 2–7",
+                "60%",
+                "Kunci rahasia autentikasi dua faktor"
+              ],
+              [
+                "Base64",
+                "A–Z, a–z, 0–9, +, /",
+                "33%",
+                "Email, data URL, PEM"
+              ],
+              [
+                "Base64url",
+                "A–Z, a–z, 0–9, -, _",
+                "33%",
+                "JWT, parameter URL"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "note": "Base64 bukan enkripsi. Siapa pun bisa men-decode-nya seketika, jadi kata sandi atau API key dalam Base64 di URL, file konfigurasi, atau payload JWT pada dasarnya sama dengan teks biasa."
+        },
+        {
+          "ul": [
+            "Teks harus diubah menjadi byte terlebih dahulu, biasanya sebagai UTF-8. Di JavaScript, `btoa()` memunculkan error pada karakter di luar Latin-1 seperti emoji atau aksara Tionghoa kecuali string-nya di-encode ke UTF-8 terlebih dahulu.",
+            "Mencampur alfabet standar dan aman-URL menyebabkan error saat decode; ganti `-` dan `_` dengan `+` dan `/` sebelum memakai decoder standar.",
+            "Padding yang hilang bisa membuat decoder yang ketat gagal; tambahkan `=` sampai panjangnya kelipatan 4.",
+            "Baris baru dari encoding gaya email harus dihapus sebelum sebagian decoder mau menerima string-nya."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa Base64 membuat data lebih besar?",
+      "a": "Setiap 3 byte menjadi 4 karakter, dan setiap karakter disimpan sebagai satu byte utuh, sehingga keluarannya sekitar 33% lebih besar daripada input."
+    },
+    {
+      "q": "Apakah Base64 aman?",
+      "a": "Tidak. Base64 tidak menyembunyikan apa pun; decode tidak memerlukan kunci. Gunakan enkripsi sungguhan seperti AES untuk melindungi data, dan Base64 hanya untuk mengangkut hasilnya sebagai teks."
+    },
+    {
+      "q": "Apa arti tanda = di akhir Base64?",
+      "a": "Itu padding. Satu `=` berarti kelompok terakhir berisi 2 byte, dan `==` berarti hanya berisi 1 byte."
+    },
+    {
+      "q": "Bagaimana cara mengenali string Base64?",
+      "a": "Isinya hanya huruf, angka, + dan / (atau - dan _), panjangnya biasanya kelipatan 4, dan bisa diakhiri satu atau dua tanda =. String yang diawali `eyJ` sering kali berupa JSON yang di-encode Base64, karena teks JSON yang diawali `{\"` menghasilkan string yang diawali `eyJ`."
+    }
+  ]
+}

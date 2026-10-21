@@ -3,7 +3,7 @@
     "title": "cv.cm — 剪切板、图片、PDF 工具",
     "titleClip": "在线剪贴板 — 无需登录分享文字 — cv.cm",
     "descClip": "类似 Pastebin 的云剪切板。用链接分享文字、图片和文件。无需账号。查看 10 次或 24 小时后删除。",
-    "titleWatermark": "身份证加水印、证件照防盗用水印在线工具，免费不上传 — cv.cm",
+    "titleWatermark": "身份证加水印、暗水印在线工具，证件照防盗用，免费不上传 — cv.cm",
     "titleCollage": "在线图片拼图 — cv.cm",
     "titleConvert": "图片格式转换 — HEIC、WebP、PNG、JPG — cv.cm",
     "descConvert": "浏览器互转 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可缩小边长。文件不上传。",
@@ -14,7 +14,7 @@
     "titleData": "JSON 格式化、Base64、CSV 转 JSON — cv.cm",
     "descData": "JSON 美化、CSV ↔ JSON、Base64、URL 编码、Markdown 转 HTML。只在当前标签页。",
     "description": "浏览器本地工具。图片和 PDF 留在当前标签页。",
-    "descWatermark": "免费在线给身份证复印件、证件照和图片加水印。一键斜铺「仅供XX办理使用，他用无效」和日期，可拖框给证件号打马赛克，批量导出 PNG、JPEG 或 ZIP，自动去掉 EXIF。全程浏览器本地处理，不上传。",
+    "descWatermark": "免费在线给身份证复印件、证件照和图片加水印。一键斜铺「仅供XX办理使用，他用无效」和日期，默认再加肉眼看不见的暗水印，泄露后能查出是哪一份；可拖框给证件号打马赛克，批量导出 PNG、JPEG 或 ZIP，自动去掉 EXIF。全程浏览器本地处理，不上传。",
     "descCollage": "浏览器里做照片拼图。宫格布局和 Instagram 尺寸。文件不上传。",
     "titleQr": "免费二维码生成器 — cv.cm",
     "descQr": "在浏览器里把网址或文字生成二维码，下载 PNG。不上传。",
@@ -349,7 +349,8 @@
     "games": "游戏",
     "device": "设备",
     "assets": "资产",
-    "tests": "测试"
+    "tests": "测试",
+    "data": "数据"
   },
   "lang": {
     "label": "语言",
@@ -389,7 +390,7 @@
     },
     "watermark": {
       "name": "身份证水印打码",
-      "blurb": "证件防盗用：斜铺「仅供XX使用」，拖框给证件号打码。文件不上传。"
+      "blurb": "证件防盗用：斜铺「仅供XX使用」，加暗水印，拖框给证件号打码。文件不上传。"
     },
     "collage": {
       "name": "图片拼图",
@@ -800,7 +801,22 @@
     "redactOn": "在预览上拖出方框，遮住证件号、人脸或车牌。",
     "redactTip": "证件号、银行卡号、二维码建议用黑块：颗粒细的马赛克有可能被猜回来。",
     "collageOptional": "拼成一张（可选）",
-    "redactCollage": "拼图模式下不能直接画框：先切回「单张」给每张图打码，打码会带进拼图。"
+    "redactCollage": "拼图模式下不能直接画框：先切回「单张」给每张图打码，打码会带进拼图。",
+    "blindTitle": "暗水印",
+    "blindOn": "导出时加暗水印（肉眼看不见）",
+    "blindText": "暗水印内容",
+    "blindBytes": "{n}/{max} 字节",
+    "blindHint": "导出时写入：明水印的文字（或这里填的内容）+「cv.cm」和导出日期。暗水印藏在画面亮度里，经过 JPEG 压缩、缩放（比如聊天软件转发）仍能读出；裁剪、旋转或大片空白的图可能读不出。",
+    "blindDetect": "检测图片里的暗水印",
+    "blindDetecting": "正在检测…",
+    "blindFound": "检测到暗水印：「{text}」",
+    "blindNone": "没有检测到暗水印。图片被裁剪、旋转或大幅调色后可能读不出。",
+    "blindDone": "已加暗水印「{text}」。",
+    "blindFailed": "暗水印没能写进去：图片大多是空白或纯色，或者导出质量太低。可见水印不受影响。可以先斜铺可见水印或调高质量再导出。",
+    "blindPlaceholder": "留空则与明水印一致",
+    "blindUnchecked": "已加暗水印「{text}」，但这台设备内存不足，没能回读校验。",
+    "blindNoMemory": "这台设备内存不足，没有加暗水印；可见水印不受影响。",
+    "blindTrimmed": "超出部分不写入"
   },
   "collage": {
     "title": "图片拼图",
@@ -1065,14 +1081,14 @@
     "watermark": {
       "q1": "加水印会上传照片吗？",
       "a1": "不会。证件和照片都留在当前标签页。浏览器画布完成本地盖印。关闭即丢弃。导出时还会去掉 EXIF。",
-      "q2": "能一次给很多张图加水印吗？",
-      "a2": "可以。批量加入后下载单张，或打包 PNG / JPEG 的 ZIP。",
+      "q2": "什么是暗水印？能查出是谁泄露的吗？",
+      "a2": "导出时，工具会把和明水印相同的文字（也可以自己填，如「给招行」）连同「cv.cm」和导出日期，藏进画面亮度里，肉眼看不见，默认开启，可在「暗水印」里关掉。之后把流出的图拖进「检测图片里的暗水印」就能读出来，哪怕明水印被涂掉了。经得起 JPEG 压缩和缩放；裁剪、旋转后可能读不出。文字越短越稳。它是追查线索，不是法律证明。",
       "q3": "身份证或证件复印件能加水印吗？",
       "a3": "能。点「证件防盗用」，斜铺「仅供XX办理使用，他用无效」和当天日期；再打开「打码」拖框遮住证件号。全程不上传。水印能降低盗用，但不是法律保证。有的窗口仍要无水印件。",
       "q4": "能去水印吗？",
       "a4": "不能。这个工具只负责加水印，不会擦除已有水印。",
       "q5": "支持哪些格式？",
-      "a5": "可导入 PNG、JPEG、WebP、GIF。导出 PNG、JPEG 或 WebP。文字、Logo 或两者一起。"
+      "a5": "可导入 PNG、JPEG、WebP、GIF。导出 PNG、JPEG 或 WebP。文字、Logo 或两者一起。可批量加入，下载单张或打包 ZIP。"
     },
     "collage": {
       "q1": "这是在线拼图工具吗？",
@@ -5711,6 +5727,134 @@
     "depression": {
       "name": "抑郁自评量表（PHQ-9）",
       "blurb": "医生常用的 9 题抑郁筛查，0–27 分。"
+    }
+  },
+  "dataset": {
+    "all": "全部数据",
+    "population": {
+      "name": "世界各国人口",
+      "blurb": "217 个国家和地区人口排名及占世界比例。"
+    },
+    "gdp": {
+      "name": "世界各国 GDP",
+      "blurb": "各经济体名义 GDP（美元）排名。"
+    },
+    "gdp-per-capita": {
+      "name": "各国人均 GDP",
+      "blurb": "人均国内生产总值，从高到低排名。"
+    },
+    "life-expectancy": {
+      "name": "各国人均预期寿命",
+      "blurb": "各国出生时预期寿命排名。"
+    },
+    "fertility-rate": {
+      "name": "各国生育率",
+      "blurb": "每名妇女平均生育子女数，从高到低。"
+    },
+    "internet-users": {
+      "name": "各国互联网普及率",
+      "blurb": "各国上网人口占总人口的比例。"
+    },
+    "country-codes": {
+      "name": "国家代码 ISO 3166",
+      "blurb": "249 个国家和地区的二字母、三字母和数字代码。"
+    },
+    "calling-codes": {
+      "name": "国际电话区号",
+      "blurb": "拨打各国家和地区的 + 号国际区号。"
+    },
+    "currency-codes": {
+      "name": "货币代码 ISO 4217",
+      "blurb": "货币代码、符号及使用国家和地区。"
+    },
+    "time-zones": {
+      "name": "时区与 UTC 时差",
+      "blurb": "全部 IANA 时区及冬季、夏季 UTC 偏移。"
+    },
+    "paper-sizes": {
+      "name": "纸张尺寸",
+      "blurb": "A4、A3、B5、Letter 等的毫米、英寸和像素尺寸。"
+    },
+    "ascii": {
+      "name": "ASCII 码表",
+      "blurb": "全部 128 个字符的十进制、十六进制、八进制和二进制。"
+    }
+  },
+  "kb": {
+    "label": "知识库",
+    "all": "全部知识文章",
+    "lead": "各种格式、编码和公式是什么意思，附参考出处。",
+    "what-is-heic": {
+      "name": "HEIC 是什么格式？",
+      "blurb": "iPhone 照片格式，与 JPG 有何不同，什么时候需要转换。"
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG、PNG、WebP 与 AVIF 的区别",
+      "blurb": "照片、截图和网页图片分别该用哪种格式。"
+    },
+    "what-is-exif": {
+      "name": "EXIF 是什么？",
+      "blurb": "照片中隐藏的相机、时间和 GPS 信息，以及如何删除。"
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI 和 PPI 的区别",
+      "blurb": "像素、打印尺寸，以及为什么 300 DPI 只对打印有意义。"
+    },
+    "aspect-ratios": {
+      "name": "宽高比详解",
+      "blurb": "16:9、4:3、1:1、9:16 及对应的像素尺寸。"
+    },
+    "why-pdf-files-are-large": {
+      "name": "PDF 为什么这么大？",
+      "blurb": "让 PDF 变大的图片、字体和扫描页，以及压缩能改变什么。"
+    },
+    "what-is-base64": {
+      "name": "Base64 是什么？",
+      "blurb": "Base64 如何把字节变成文本，为什么体积大 33%，为什么它不是加密。"
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode 和 UTF-8",
+      "blurb": "码点、字节，以及文字为什么会变成乱码。"
+    },
+    "url-encoding": {
+      "name": "URL 编码（百分号编码）",
+      "blurb": "为什么空格会变成 %20，哪些字符必须转义。"
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON、YAML 与 XML 的区别",
+      "blurb": "三种数据格式的语法、优势和常见陷阱。"
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 和 SHA-256 的区别",
+      "blurb": "什么是哈希，哪些已被攻破，密码该用什么存储。"
+    },
+    "password-strength": {
+      "name": "怎样的密码才算强？",
+      "blurb": "依据最新 NIST 指南，讲清长度、随机性和熵。"
+    },
+    "what-is-uuid": {
+      "name": "UUID 是什么？",
+      "blurb": "UUID 版本 4 和 7、碰撞概率，以及各自的适用场景。"
+    },
+    "unix-timestamp": {
+      "name": "Unix 时间戳是什么？",
+      "blurb": "1970 年以来的秒数、JavaScript 中的毫秒，以及 2038 年问题。"
+    },
+    "iso-8601": {
+      "name": "ISO 8601 日期与周数",
+      "blurb": "YYYY-MM-DD、第 1 周、时长写法，以及 RFC 3339 子集。"
+    },
+    "utc-and-time-zones": {
+      "name": "UTC、GMT 与时区",
+      "blurb": "时区偏移、夏令时，以及为什么时区名比偏移更可靠。"
+    },
+    "apr-vs-apy": {
+      "name": "APR 和 APY 的区别",
+      "blurb": "单利与复利年化利率、换算公式和计算示例。"
+    },
+    "margin-vs-markup": {
+      "name": "毛利率和加价率的区别",
+      "blurb": "两种表示利润的方式、如何换算，附速查表。"
     }
   }
 }

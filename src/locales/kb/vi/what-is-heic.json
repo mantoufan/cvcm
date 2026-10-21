@@ -1,0 +1,137 @@
+{
+  "title": "File HEIC là gì? So sánh HEIC và JPG, cách mở file HEIC — cv.cm",
+  "description": "HEIC là tên Apple đặt cho ảnh HEIF nén bằng HEVC: dung lượng chỉ khoảng một nửa JPG mà chất lượng tương đương. Tìm hiểu HEIC chứa gì, mở bằng gì và khi nào nên chuyển đổi.",
+  "h1": "File HEIC là gì?",
+  "answer": "HEIC là ảnh được lưu theo định dạng High Efficiency Image File Format (HEIF), với điểm ảnh được nén bằng HEVC, chuẩn nén video còn gọi là H.265. iPhone và iPad dùng HEIC làm mặc định từ iOS 11 vì nó giữ chất lượng tương đương nhưng dung lượng chỉ khoảng một nửa JPG. File HEIC mở được trực tiếp trên thiết bị Apple và các bản Windows, Android gần đây, nhưng nhiều trang web và phần mềm cũ vẫn chỉ nhận JPG.",
+  "sections": [
+    {
+      "h": "HEIF, HEIC và HEVC: ba cái tên, một file",
+      "body": [
+        "HEIF là chuẩn định dạng vỏ chứa (ISO/IEC 23008-12). Nó quy định cách đóng gói ảnh, ảnh thu nhỏ, bản đồ độ sâu và siêu dữ liệu vào một file, và dùng chung cấu trúc box với video MP4.",
+        "HEVC là codec nén điểm ảnh. File HEIF có ảnh nén bằng HEVC sẽ mang brand `heic` và thường có phần mở rộng `.heic`. Cùng một vỏ chứa có thể đựng codec khác: bên trong là AV1 thì thành AVIF.",
+        {
+          "table": {
+            "head": [
+              "Thuật ngữ",
+              "Là gì",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "HEIF",
+                "Định dạng vỏ chứa cho ảnh và chuỗi ảnh",
+                "Cấu trúc file"
+              ],
+              [
+                "HEVC (H.265)",
+                "Phương pháp nén điểm ảnh",
+                "Codec bên trong"
+              ],
+              [
+                "HEIC",
+                "HEIF + HEVC, file bạn nhận được từ iPhone",
+                "IMG_0042.HEIC"
+              ],
+              [
+                "AVIF",
+                "Vỏ chứa kiểu HEIF + codec AV1",
+                "photo.avif"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Vì sao điện thoại lưu HEIC thay vì JPG",
+      "body": [
+        "JPEG ra đời từ năm 1992. HEVC dùng khối lớn hơn, linh hoạt hơn và dự đoán tốt hơn, nên ảnh HEIC thường nhỏ hơn khoảng 40–50% so với ảnh JPG có chất lượng hiển thị tương đương. Trên một chiếc điện thoại có hàng nghìn ảnh, khoản tiết kiệm đó lên tới hàng gigabyte.",
+        "HEIC còn làm được những điều JPG không làm được:",
+        {
+          "ul": [
+            "Độ sâu màu 16 bit và gam màu rộng (Display P3) không bị phân dải, trong khi JPG cơ bản chỉ dừng ở 8 bit.",
+            "Độ trong suốt, bản đồ độ sâu cho hiệu ứng xóa phông ở chế độ Chân dung, và nhiều ảnh trong một file (ảnh tĩnh của Live Photo, ảnh chụp liên tục).",
+            "Các chỉnh sửa như xoay ảnh được lưu dưới dạng chỉ dẫn, nên điểm ảnh gốc vẫn được giữ nguyên."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "HEIC mở được ở đâu, không mở được ở đâu",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Nền tảng",
+              "Mở được HEIC?"
+            ],
+            "rows": [
+              [
+                "iPhone, iPad, Mac",
+                "Có, hỗ trợ sẵn"
+              ],
+              [
+                "Windows 10/11",
+                "Được, sau khi cài tiện ích mở rộng HEIF và HEVC từ Microsoft Store"
+              ],
+              [
+                "Android",
+                "Phần lớn điện thoại từ Android 10 trở lên xem được; khả năng chỉnh sửa tùy máy"
+              ],
+              [
+                "Trình duyệt web",
+                "Safari 17+ hiển thị được; đa số trình duyệt khác thì không, nên website hiếm khi chấp nhận"
+              ],
+              [
+                "Biểu mẫu tải lên và phần mềm cũ",
+                "Thường bị từ chối; JPG là lựa chọn an toàn"
+              ]
+            ]
+          }
+        },
+        "Khi bạn chia sẻ ảnh HEIC qua Mail, Tin nhắn hoặc AirDrop, iPhone thường tự động chuyển sang JPG. Còn sao chép file qua cáp hoặc thư mục đám mây thì vẫn giữ nguyên bản HEIC gốc."
+      ]
+    },
+    {
+      "h": "Khi nào nên chuyển HEIC sang JPG",
+      "body": [
+        "Hãy giữ HEIC làm bản lưu trữ: nó nhỏ hơn và chứa nhiều màu hơn. Chỉ chuyển một bản sao khi nơi nhận nằm ngoài tầm kiểm soát của bạn:",
+        {
+          "ul": [
+            "Biểu mẫu tải lên khi xin visa, nộp hồ sơ xin việc hay dịch vụ công, thường chỉ chấp nhận JPG hoặc PNG.",
+            "Website và blog, vì trình duyệt của phần lớn người xem không hiển thị được HEIC.",
+            "Phần mềm chỉnh ảnh cũ, máy in ảnh tự phục vụ ở tiệm và phần mềm văn phòng."
+          ]
+        },
+        "Chuyển sang JPG sẽ nén lại ảnh một lần, vì vậy hãy chọn chất lượng khoảng 85–92% để mắt thường không thấy khác biệt. Nếu cần nền trong suốt, hãy chuyển sang PNG."
+      ]
+    },
+    {
+      "h": "Đổi định dạng mặc định trên iPhone",
+      "body": [
+        "Để camera lưu ảnh JPG từ giờ trở đi, mở Cài đặt › Camera › Định dạng và chọn Tương thích nhất. Ảnh đã chụp trước đó vẫn là HEIC. Chọn Tương thích nhất cũng khiến video được quay bằng H.264 thay vì HEVC, nên file sẽ nặng hơn.",
+        {
+          "note": "Ảnh HEIC vẫn chứa siêu dữ liệu EXIF, kể cả vị trí GPS nếu Dịch vụ định vị đang bật cho Camera. Việc chuyển đổi không tự xóa thông tin này; hãy gỡ nó trước khi đăng ảnh công khai."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "HEIC có chất lượng tốt hơn JPG không?",
+      "a": "Ở cùng dung lượng thì có: nén HEVC giữ được nhiều chi tiết hơn và hỗ trợ màu 10 bit. Ở cùng chất lượng, HEIC nhỏ chỉ khoảng một nửa."
+    },
+    {
+      "q": "Chuyển HEIC sang JPG có bị giảm chất lượng không?",
+      "a": "Có giảm chút ít, vì JPG bị nén thêm một lần. Với mức chất lượng 85–92%, khi xem bình thường bạn sẽ không nhận ra khác biệt."
+    },
+    {
+      "q": "Có mở được file HEIC trên Windows không?",
+      "a": "Được. Windows 10 và 11 mở được HEIC sau khi bạn cài HEIF Image Extensions và HEVC Video Extensions từ Microsoft Store, hoặc bạn có thể chuyển file sang JPG ngay trên trình duyệt."
+    },
+    {
+      "q": "HEIC có giống HEIF không?",
+      "a": "HEIC là một loại file HEIF: vỏ chứa HEIF với ảnh nén bằng HEVC. Hai cái tên này thường được dùng thay cho nhau."
+    }
+  ]
+}

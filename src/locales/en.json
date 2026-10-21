@@ -3,7 +3,7 @@
     "title": "cv.cm — clipboard, image, and PDF tools",
     "titleClip": "Pastebin — online clipboard, no account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
-    "titleWatermark": "Watermark ID copies and photos — free, no upload — cv.cm",
+    "titleWatermark": "Watermark ID copies and photos + invisible watermark — free, no upload — cv.cm",
     "titleCollage": "Photo collage maker — cv.cm",
     "titleConvert": "Image converter — HEIC, WebP, PNG, JPG — cv.cm",
     "descConvert": "Convert HEIC, WebP, PNG, JPG, SVG, AVIF, GIF, BMP, and ICO in the browser. Optional resize. No upload.",
@@ -14,7 +14,7 @@
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
     "description": "On-device browser tools. Image and PDF files stay in this tab.",
-    "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
+    "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, add an invisible watermark that tells you which copy leaked, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "Free QR code generator — cv.cm",
     "descQr": "Create a QR code from a URL or text in the browser. Download a PNG. Nothing is uploaded.",
@@ -349,7 +349,8 @@
     "games": "Games",
     "device": "Device",
     "assets": "Assets",
-    "tests": "Tests"
+    "tests": "Tests",
+    "data": "Data"
   },
   "lang": {
     "label": "Language",
@@ -1635,7 +1636,7 @@
     },
     "watermark": {
       "name": "ID Watermark & Redact",
-      "blurb": "Tile a for-use-only mark on ID copies and drag boxes to black out numbers. Nothing is uploaded."
+      "blurb": "Tile a for-use-only mark on ID copies, add an invisible watermark, and box out numbers. Nothing is uploaded."
     },
     "collage": {
       "name": "Photo collage",
@@ -2046,7 +2047,22 @@
     "redactOn": "Drag on the preview to cover a number, face, or plate.",
     "redactTip": "Use a black box for ID numbers and QR codes. Fine mosaic can sometimes be guessed back.",
     "collageOptional": "Combine into one image (optional)",
-    "redactCollage": "Collage mode: switch to Single photo to draw boxes. Boxes on each photo carry into the collage."
+    "redactCollage": "Collage mode: switch to Single photo to draw boxes. Boxes on each photo carry into the collage.",
+    "blindTitle": "Invisible watermark",
+    "blindOn": "Add an invisible watermark on export",
+    "blindText": "Hidden text",
+    "blindBytes": "{n}/{max} bytes",
+    "blindHint": "Hidden on export: the visible text (or what you type here), plus “cv.cm” and the export date. It sits in the image brightness and survives JPEG compression and resizing, such as chat-app resends. Cropping, rotating or a mostly blank page can break it.",
+    "blindDetect": "Check an image for a hidden mark",
+    "blindDetecting": "Checking…",
+    "blindFound": "Hidden mark found: “{text}”",
+    "blindNone": "No hidden mark found. Cropping, rotation or heavy color edits can erase it.",
+    "blindDone": "Invisible watermark added: “{text}”.",
+    "blindFailed": "The invisible watermark could not be hidden: the image is mostly blank or flat color, or the export quality is too low. The visible mark is fine. Tile a visible mark or raise the quality, then export again.",
+    "blindPlaceholder": "Empty = same as the visible mark",
+    "blindUnchecked": "Invisible watermark added: “{text}”. This device ran out of memory to double-check it.",
+    "blindNoMemory": "This device ran out of memory, so no invisible watermark was added. The visible mark is fine.",
+    "blindTrimmed": "the rest won't fit"
   },
   "collage": {
     "title": "Photo collage maker",
@@ -2311,14 +2327,14 @@
     "watermark": {
       "q1": "Does adding a watermark upload my photos?",
       "a1": "No. ID copies and photos stay in this tab. The canvas stamps the mark here. Closing the tab discards the files. Export also strips EXIF.",
-      "q2": "Can I watermark many photos at once?",
-      "a2": "Yes. Add a batch, then download one file or a ZIP of PNG or JPEG.",
+      "q2": "What is the invisible watermark, and can it trace a leak?",
+      "a2": "On export the tool hides the same text as the visible mark (or your own, such as “Bank A”), plus “cv.cm” and the export date, in the image brightness. It is on by default and can be switched off under Invisible watermark. If a copy turns up elsewhere, drop it on “Check an image for a hidden mark” to read it, even after the visible mark was painted over. It survives JPEG compression and resizing; cropping or rotation can break it. Short text holds up best. It is a lead, not legal proof.",
       "q3": "Can I watermark an ID or passport copy?",
       "a3": "Yes. Use For-use only so a tiled “for [org] use only” line covers the photo. Open Redact to black out the ID number too. Work stays in this tab. A watermark is a deterrent, not a legal guarantee. Some offices still want an unmarked copy.",
       "q4": "Can I remove a watermark?",
       "a4": "No. This tool only adds a mark. It will not erase watermarks from photos.",
       "q5": "Which formats work?",
-      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP. Text, a logo, or both."
+      "a5": "PNG, JPEG, WebP, and GIF in. Export PNG, JPEG, or WebP. Text, a logo, or both. Add a batch and download one file or a ZIP."
     },
     "collage": {
       "q1": "Is this a photo collage maker?",
@@ -5711,6 +5727,134 @@
     "depression": {
       "name": "Depression test (PHQ-9)",
       "blurb": "The 9-question depression screening, scored 0 to 27."
+    }
+  },
+  "dataset": {
+    "all": "All data",
+    "population": {
+      "name": "World population by country",
+      "blurb": "Population of 217 countries, ranked, with share of the world."
+    },
+    "gdp": {
+      "name": "GDP by country",
+      "blurb": "Nominal GDP in US dollars for every economy, ranked."
+    },
+    "gdp-per-capita": {
+      "name": "GDP per capita by country",
+      "blurb": "Average output per person, richest to poorest."
+    },
+    "life-expectancy": {
+      "name": "Life expectancy by country",
+      "blurb": "Years a newborn can expect to live, by country."
+    },
+    "fertility-rate": {
+      "name": "Fertility rate by country",
+      "blurb": "Births per woman, from highest to lowest."
+    },
+    "internet-users": {
+      "name": "Internet users by country",
+      "blurb": "Share of each country's people who go online."
+    },
+    "country-codes": {
+      "name": "ISO country codes",
+      "blurb": "Alpha-2, alpha-3 and numeric codes for 249 countries."
+    },
+    "calling-codes": {
+      "name": "International calling codes",
+      "blurb": "The +code to dial for every country."
+    },
+    "currency-codes": {
+      "name": "ISO currency codes",
+      "blurb": "ISO 4217 codes, symbols and where each currency is used."
+    },
+    "time-zones": {
+      "name": "Time zones and UTC offsets",
+      "blurb": "Every IANA time zone with its winter and summer offset."
+    },
+    "paper-sizes": {
+      "name": "Paper sizes",
+      "blurb": "A4, A3, B5, Letter and more in mm, inches and pixels."
+    },
+    "ascii": {
+      "name": "ASCII table",
+      "blurb": "All 128 codes in decimal, hex, octal and binary."
+    }
+  },
+  "kb": {
+    "label": "Knowledge",
+    "all": "All knowledge articles",
+    "lead": "What formats, encodings and formulas mean, with sources.",
+    "what-is-heic": {
+      "name": "What is HEIC?",
+      "blurb": "iPhone photo format, how it differs from JPG, and when to convert."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Which image format to use for photos, screenshots and the web."
+    },
+    "what-is-exif": {
+      "name": "What is EXIF data?",
+      "blurb": "Camera, time and GPS details hidden in photos, and how to remove them."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Pixels, print size and why 300 DPI only matters on paper."
+    },
+    "aspect-ratios": {
+      "name": "Aspect ratios explained",
+      "blurb": "16:9, 4:3, 1:1, 9:16 and the pixel sizes that go with them."
+    },
+    "why-pdf-files-are-large": {
+      "name": "Why are PDF files so large?",
+      "blurb": "Images, fonts and scans that bloat a PDF, and what compression changes."
+    },
+    "what-is-base64": {
+      "name": "What is Base64?",
+      "blurb": "How Base64 turns bytes into text, why it grows 33%, and why it is not encryption."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode and UTF-8",
+      "blurb": "Code points, bytes, and why text turns into garbled characters."
+    },
+    "url-encoding": {
+      "name": "URL encoding (percent-encoding)",
+      "blurb": "Why spaces become %20 and which characters must be escaped."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Syntax, strengths and pitfalls of the three data formats."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "What a hash is, which ones are broken, and what to use for passwords."
+    },
+    "password-strength": {
+      "name": "What makes a password strong?",
+      "blurb": "Length, randomness and entropy, following current NIST guidance."
+    },
+    "what-is-uuid": {
+      "name": "What is a UUID?",
+      "blurb": "UUID versions 4 and 7, collision odds and when to use each."
+    },
+    "unix-timestamp": {
+      "name": "What is a Unix timestamp?",
+      "blurb": "Seconds since 1970, milliseconds in JavaScript and the 2038 problem."
+    },
+    "iso-8601": {
+      "name": "ISO 8601 dates and week numbers",
+      "blurb": "YYYY-MM-DD, week 1, durations and the RFC 3339 profile."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT and time zones",
+      "blurb": "Offsets, daylight saving time and why zone names beat offsets."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Simple vs compounded rates, the formula and a worked example."
+    },
+    "margin-vs-markup": {
+      "name": "Margin vs markup",
+      "blurb": "Two ways to state profit, how to convert them and a quick table."
     }
   }
 }

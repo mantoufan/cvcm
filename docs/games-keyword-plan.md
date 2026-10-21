@@ -45,6 +45,10 @@ Each row is one URL. Title is the query to rank.
 | alter-ego | FC | Alter Ego 在线玩 | Alter Ego NES homebrew |
 | lawn-mower | FC | Lawn Mower NES | Lawn Mower NES homebrew |
 
+Hosted FC homebrew picked from the FC图库 catalog (fcpic.nesbbs.com, "版权：其他", 2026-10-21). Only titles whose own release grants commercial redistribution; ROMs come from the author's repo or site, never from fcpic:
+`double-action-blaster-guys` (zlib, NovaSquirrel/DABG), `neslife` (zlib, NovaSquirrel/NESLife 64x32), `lunar-limit` (MIT, pubby/lunarlimit), `ralph-4` (MIT, pubby/Ralph-4).
+Skipped: hacks of commercial games (most of the catalog), Mojon Twins (CC BY-NC-SA), Nova the Squirrel (assets CC BY-NC-SA), CROSS-LIB (non-commercial), nesdoug / Johnybot / CutterCross / Minekart (no license), Witch n' Wiz (full game sold), Chase (code-only public domain), Russian Roulette (Zapper tech demo).
+
 ## Flash hub (2026-09-23)
 
 One URL, not a pile of commercial SWF pages. Title is the query.

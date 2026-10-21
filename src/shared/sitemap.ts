@@ -2,7 +2,9 @@ import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
-import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, learnHref, legalHref, quizHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { KB_ARTICLES, type KbId } from "./kb";
+import { DATASETS, type DatasetId } from "./datasets";
+import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -27,7 +29,9 @@ export type SitemapPage =
   | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null }
   | { locale: Locale; kind: "device"; page: DevicePageId }
   | { locale: Locale; kind: "legal"; page: LegalPageId }
-  | { locale: Locale; kind: "quiz"; quiz: QuizId | null };
+  | { locale: Locale; kind: "quiz"; quiz: QuizId | null }
+  | { locale: Locale; kind: "dataset"; dataset: DatasetId | null }
+  | { locale: Locale; kind: "kb"; article: KbId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -38,6 +42,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const job of RESIZE_JOBS) pages.push({ locale, kind: "resize-job", job });
     pages.push({ locale, kind: "learn", tutorial: null });
     for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
+    pages.push({ locale, kind: "kb", article: null });
+    for (const article of KB_ARTICLES) pages.push({ locale, kind: "kb", article });
     pages.push({ locale, kind: "games", console: null, game: null });
     for (const consoleId of GAME_CONSOLES) {
       pages.push({ locale, kind: "games", console: consoleId, game: null });
@@ -48,6 +54,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const page of DEVICE_PAGES) pages.push({ locale, kind: "device", page });
     pages.push({ locale, kind: "quiz", quiz: null });
     for (const quiz of QUIZZES) pages.push({ locale, kind: "quiz", quiz });
+    pages.push({ locale, kind: "dataset", dataset: null });
+    for (const dataset of DATASETS) pages.push({ locale, kind: "dataset", dataset });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -62,6 +70,8 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(page.locale, page.page)}`;
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(page.locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(page.locale, page.quiz)}`;
+  if (page.kind === "dataset") return `${SITE_ORIGIN}${datasetHref(page.locale, page.dataset)}`;
+  if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(page.locale, page.article)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -78,6 +88,8 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(locale, page.page)}`;
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(locale, page.quiz)}`;
+  if (page.kind === "dataset") return `${SITE_ORIGIN}${datasetHref(locale, page.dataset)}`;
+  if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(locale, page.article)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 

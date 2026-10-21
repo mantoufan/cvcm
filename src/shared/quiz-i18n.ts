@@ -1,4 +1,5 @@
 import type { Locale } from "./locale";
+import { fill } from "./fill";
 import { escapeHtml } from "./device-i18n";
 import { messages, quizMessages, type QuizMessages } from "./messages";
 import { appHref, quizHref } from "./path";
@@ -50,11 +51,7 @@ export function quizItemText(item: string | QuizChoice): string {
   return typeof item === "string" ? item : item.q;
 }
 
-export function fill(text: string, vars: Record<string, string | number>): string {
-  let out = text;
-  for (const [key, value] of Object.entries(vars)) out = out.replaceAll(`{${key}}`, String(value));
-  return out;
-}
+export { fill };
 
 export function quizFaqItems(locale: Locale, id: QuizId | null): { q: string; a: string }[] {
   return id ? quizCopy(locale, id).faq : quizHub(locale).faq;

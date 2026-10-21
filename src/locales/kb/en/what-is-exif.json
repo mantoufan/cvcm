@@ -1,0 +1,128 @@
+{
+  "title": "What is EXIF data? What photos reveal and how to remove it — cv.cm",
+  "description": "EXIF is metadata stored inside photos: camera model, settings, date and often GPS location. See which tags exist, who strips them, and how to remove them.",
+  "h1": "What is EXIF data in a photo?",
+  "answer": "EXIF (Exchangeable Image File Format) is a standard for metadata that cameras and phones write into each photo. It records the device make and model, exposure settings, the date and time the photo was taken, the image orientation and, when location is enabled, GPS coordinates precise enough to identify a home. It is invisible in the picture itself but readable by anyone who has the file.",
+  "sections": [
+    {
+      "h": "What EXIF stores",
+      "body": [
+        "EXIF was created by the Japanese electronics association JEIDA in 1995 and is now maintained by CIPA and JEITA. It reuses the tag structure of the TIFF format, so every piece of data is a numbered tag with a name and a value.",
+        {
+          "table": {
+            "head": [
+              "Tag",
+              "Example value",
+              "What it reveals"
+            ],
+            "rows": [
+              [
+                "`Make` / `Model`",
+                "Apple / iPhone 15",
+                "The device used"
+              ],
+              [
+                "`DateTimeOriginal`",
+                "2026:09:12 18:42:07",
+                "When the photo was taken"
+              ],
+              [
+                "`ExposureTime`, `FNumber`, `ISOSpeedRatings`",
+                "1/120, f/1.8, 64",
+                "Camera settings"
+              ],
+              [
+                "`FocalLength`",
+                "6.9 mm",
+                "Lens and zoom"
+              ],
+              [
+                "`Orientation`",
+                "6 (rotate 90° clockwise)",
+                "How the image should be displayed"
+              ],
+              [
+                "`GPSLatitude` / `GPSLongitude`",
+                "48° 51' 29.6\" N, 2° 17' 40.2\" E",
+                "Where the photo was taken"
+              ],
+              [
+                "`BodySerialNumber`",
+                "Camera-specific",
+                "Can link photos to one camera"
+              ],
+              [
+                "`Software`",
+                "Editor name and version",
+                "How the file was processed"
+              ]
+            ]
+          }
+        },
+        "Many files also carry a small embedded thumbnail, maker notes in a manufacturer's private format, and separate XMP or IPTC blocks with captions, keywords and copyright."
+      ]
+    },
+    {
+      "h": "Where EXIF lives in a file",
+      "body": [
+        "In a JPG, EXIF sits in an `APP1` segment near the start of the file, beginning with the bytes `Exif` followed by two zero bytes, and is limited to 64 KB. HEIC, WebP, TIFF and many camera raw formats carry EXIF too, and PNG gained an official `eXIf` chunk in 2017.",
+        "Because the metadata is separate from the pixels, it can be read or deleted without touching image quality. A screenshot of a photo does not copy the original's EXIF, though the screenshot gets its own minimal metadata."
+      ]
+    },
+    {
+      "h": "Why EXIF matters for privacy",
+      "body": [
+        "GPS tags are the main risk. A phone camera with location access records latitude and longitude to within a few meters, so a photo taken at home and shared as an original file can reveal the address. The timestamp and device model add context, and a serial number can tie several anonymous photos to the same camera.",
+        {
+          "ul": [
+            "Large social networks generally strip EXIF from public uploads, but policies change and are not guaranteed.",
+            "Email attachments, cloud-drive links, forums, marketplaces and messaging apps that send a photo as a file usually keep the full metadata.",
+            "Photos sent to official forms or employers may be passed on and stored for years."
+          ]
+        },
+        {
+          "note": "Removing EXIF does not remove what is visible in the picture. Street signs, house numbers, reflections and document details can still identify a place or person, so check the image itself before posting."
+        }
+      ]
+    },
+    {
+      "h": "How to view and remove EXIF",
+      "body": [
+        "On a computer, file properties show basic EXIF: Get Info or Preview's Inspector on a Mac, Properties › Details on Windows. For full detail, use a metadata viewer or a tool that runs in the browser so the photo is not uploaded.",
+        {
+          "ol": [
+            "Open the photo in a metadata viewer and check for GPS tags first.",
+            "Remove all metadata, or only location if you want to keep camera settings.",
+            "Save as a new file and keep the original privately.",
+            "Re-open the new file to confirm the GPS fields are gone."
+          ]
+        },
+        "On phones, both iOS and Android let you turn off location in the share sheet or camera settings. iPhone's share sheet has an Options link with a Location switch; on Android, camera apps have a location tag setting."
+      ]
+    },
+    {
+      "h": "The orientation trap",
+      "body": [
+        "Phones often store the image sideways and set the `Orientation` tag (values 1 to 8) to tell viewers how to rotate it. If a tool deletes EXIF without first applying that rotation to the pixels, the cleaned photo can appear sideways or upside down. A good metadata remover rotates the pixels before stripping the tag."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can someone find my location from a photo?",
+      "a": "Yes, if the original file still contains GPS tags. Anyone who downloads it can read the coordinates with a free viewer and paste them into a map."
+    },
+    {
+      "q": "Does removing EXIF reduce image quality?",
+      "a": "No. Metadata is stored separately from the pixels, so a proper metadata remover leaves the image data untouched. Some tools re-save the image while stripping, which can add slight JPG compression."
+    },
+    {
+      "q": "Do screenshots have EXIF data?",
+      "a": "Screenshots carry little metadata, usually dimensions, the creation date and sometimes the device, but not GPS location. They do not inherit the original photo's EXIF."
+    },
+    {
+      "q": "Does WhatsApp or Instagram remove EXIF?",
+      "a": "Their photo-sharing paths generally strip most metadata when they compress images, but sending a photo as a document or file keeps the original metadata. Check the specific app's current behavior if location privacy matters."
+    }
+  ]
+}

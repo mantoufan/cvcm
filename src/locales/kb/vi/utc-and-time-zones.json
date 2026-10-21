@@ -1,0 +1,154 @@
+{
+  "title": "UTC và múi giờ là gì? Độ lệch, GMT, tên IANA và giờ mùa hè — cv.cm",
+  "description": "UTC là đồng hồ chuẩn của thế giới; múi giờ là độ lệch so với UTC cộng quy tắc giờ mùa hè. UTC khác GMT ra sao, vì sao Europe/London tốt hơn +00:00 và các độ lệch như +05:45.",
+  "h1": "UTC và múi giờ hoạt động thế nào",
+  "answer": "UTC (Coordinated Universal Time, Giờ Phối hợp Quốc tế) là đồng hồ chuẩn mà mọi múi giờ dân sự đều được định nghĩa dựa theo. Múi giờ là một vùng dùng chung một giờ địa phương, được viết dưới dạng độ lệch so với UTC như `-05:00` hoặc `+05:30`, cùng các quy tắc về thời điểm bắt đầu và kết thúc giờ mùa hè. Độ lệch trải từ `-12:00` đến `+14:00`, và một số không phải số giờ tròn. Việt Nam dùng UTC+07:00 quanh năm.",
+  "sections": [
+    {
+      "h": "UTC là gì",
+      "body": [
+        "UTC do Văn phòng Cân đo Quốc tế (BIPM) tính toán từ hàng trăm đồng hồ nguyên tử khắp thế giới. Nó chạy theo giây SI, giống Giờ Nguyên tử Quốc tế (TAI), nhưng thỉnh thoảng được điều chỉnh bằng giây nhuận để không lệch quá 0,9 giây so với chuyển động quay của Trái Đất. Từ năm 2017, UTC chậm hơn TAI 37 giây.",
+        "UTC không áp dụng giờ mùa hè và không bao giờ thay đổi theo mùa. Sự ổn định đó là lý do máy chủ, log, ngành hàng không và cơ sở dữ liệu đều chạy theo UTC."
+      ]
+    },
+    {
+      "h": "UTC và GMT",
+      "body": [
+        "Trong đời thường, GMT và UTC hiển thị cùng một giờ, nhưng chúng không phải là một:",
+        {
+          "table": {
+            "head": [
+              "",
+              "UTC",
+              "GMT"
+            ],
+            "rows": [
+              [
+                "Là gì",
+                "Chuẩn thời gian dựa trên đồng hồ nguyên tử",
+                "Trong lịch sử là giờ thiên văn tại Greenwich; ngày nay là tên một múi giờ"
+              ],
+              [
+                "Độ lệch",
+                "Theo định nghĩa là điểm 0",
+                "UTC+00:00"
+              ],
+              [
+                "Giờ mùa hè",
+                "Không bao giờ",
+                "Bản thân GMT thì không, nhưng Vương quốc Anh chuyển từ GMT sang BST (UTC+01:00) vào mùa hè"
+              ],
+              [
+                "Dùng trong phần mềm",
+                "Mốc tham chiếu chuẩn",
+                "Chủ yếu làm nhãn; nên dùng UTC"
+              ]
+            ]
+          }
+        },
+        "Cái bẫy thực tế: \"giờ London\" chỉ bằng GMT vào mùa đông. Từ Chủ nhật cuối cùng của tháng 3 đến Chủ nhật cuối cùng của tháng 10, London đi trước UTC một giờ."
+      ]
+    },
+    {
+      "h": "Độ lệch không phải là múi giờ",
+      "body": [
+        "Độ lệch như `+01:00` mô tả một thời điểm. Múi giờ mô tả một địa điểm theo thời gian: độ lệch, quy tắc giờ mùa hè và mọi thay đổi trong lịch sử của chúng. Cơ sở dữ liệu múi giờ IANA, được Linux, macOS, Android, Java và mọi trình duyệt lớn sử dụng, đặt tên múi giờ theo khu vực và thành phố, như `Europe/London`, `America/New_York` và `Asia/Kolkata`.",
+        "`Europe/London` tốt hơn `+00:00` cho mọi thứ trong tương lai hoặc quá khứ vì nó biết độ lệch là `+00:00` vào tháng 1 và `+01:00` vào tháng 7. Một cuộc họp định kỳ lưu dạng `+00:00` sẽ lệch một giờ trong nửa năm.",
+        {
+          "ul": [
+            "Lưu các thời điểm đã qua theo UTC (hoặc dưới dạng Unix timestamp).",
+            "Lưu sự kiện địa phương trong tương lai dưới dạng giờ địa phương kèm tên múi giờ IANA, rồi tính thời điểm UTC khi cần, vì chính phủ có thể đổi quy tắc giờ mùa hè mà chỉ báo trước rất ngắn.",
+            "Tránh các chữ viết tắt như `CST` hay `IST`: `CST` có thể là Central Standard Time (UTC-6) hoặc China Standard Time (UTC+8), còn `IST` được dùng cho Ấn Độ, Ireland và Israel."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Giờ mùa hè",
+      "body": [
+        "Giờ mùa hè (daylight saving time, DST) chỉnh đồng hồ nhanh lên, thường là một giờ, trong một phần của năm. Ngày chuyển đổi khác nhau theo khu vực: Hoa Kỳ chuyển vào Chủ nhật thứ hai của tháng 3 và chuyển lại vào Chủ nhật đầu tiên của tháng 11, còn Liên minh châu Âu chuyển vào Chủ nhật cuối cùng của tháng 3 và tháng 10, đồng loạt lúc 01:00 UTC. Phần lớn các nước châu Á và châu Phi, gồm Trung Quốc, Nhật Bản và Ấn Độ, không dùng giờ mùa hè. Ở Nam bán cầu, giờ mùa hè kéo dài khoảng từ tháng 10 đến tháng 4.",
+        "Mỗi lần chuyển đổi tạo ra hai trường hợp biên:",
+        {
+          "ul": [
+            "Khoảng trống: khi đồng hồ nhảy lên, các giờ địa phương như 02:30 ngày hôm đó không tồn tại ở những múi giờ nhảy từ 02:00 sang 03:00.",
+            "Khoảng chồng lấn: khi đồng hồ lùi lại, một giờ như 01:30 xảy ra hai lần, nên chỉ có giờ địa phương mà không có độ lệch thì không rõ ràng."
+          ]
+        },
+        {
+          "note": "Ngày có chuyển đổi giờ mùa hè dài 23 hoặc 25 giờ theo giờ địa phương. Vào những ngày đó, cộng 24 giờ và cộng một ngày theo lịch sẽ cho kết quả khác nhau."
+        }
+      ]
+    },
+    {
+      "h": "Những độ lệch khác thường",
+      "body": [
+        "Không phải múi giờ nào cũng lệch UTC một số giờ tròn. Tất cả các độ lệch sau đều đang được sử dụng:",
+        {
+          "table": {
+            "head": [
+              "Độ lệch",
+              "Múi giờ ví dụ",
+              "Khu vực"
+            ],
+            "rows": [
+              [
+                "`-12:00`",
+                "Etc/GMT+12",
+                "Đảo Baker và Howland không có người ở; độ lệch sớm nhất"
+              ],
+              [
+                "`-03:30`",
+                "America/St_Johns",
+                "Newfoundland, Canada (giờ chuẩn)"
+              ],
+              [
+                "`+05:30`",
+                "Asia/Kolkata",
+                "Ấn Độ và Sri Lanka"
+              ],
+              [
+                "`+05:45`",
+                "Asia/Kathmandu",
+                "Nepal"
+              ],
+              [
+                "`+09:30`",
+                "Australia/Darwin",
+                "Lãnh thổ Bắc Úc, Australia"
+              ],
+              [
+                "`+12:45`",
+                "Pacific/Chatham",
+                "Quần đảo Chatham, New Zealand (giờ chuẩn)"
+              ],
+              [
+                "`+14:00`",
+                "Pacific/Kiritimati",
+                "Quần đảo Line, Kiribati; nơi đầu tiên bước sang mỗi ngày mới"
+              ]
+            ]
+          }
+        },
+        "Vì các độ lệch trải dài 26 giờ, cùng một ngày theo lịch tồn tại ở đâu đó trên Trái Đất trong khoảng tối đa 50 giờ. \"Cuối ngày 14\" cần có múi giờ mới mang nghĩa chính xác."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "UTC có giống GMT không?",
+      "a": "Chúng hiển thị cùng giờ, nhưng UTC là chuẩn thời gian nguyên tử còn GMT là một múi giờ. Vương quốc Anh chỉ dùng GMT vào mùa đông và BST (UTC+01:00) vào mùa hè."
+    },
+    {
+      "q": "UTC có thay đổi theo giờ mùa hè không?",
+      "a": "Không. UTC giữ nguyên quanh năm; chỉ các múi giờ địa phương thay đổi độ lệch so với UTC khi giờ mùa hè bắt đầu hoặc kết thúc."
+    },
+    {
+      "q": "Vì sao Ấn Độ dùng UTC+05:30?",
+      "a": "Ấn Độ dùng một múi giờ duy nhất lấy kinh tuyến 82,5° Đông làm trung tâm, cách Greenwich năm tiếng rưỡi. Các độ lệch nửa giờ và một phần tư giờ được chọn để khớp sát hơn với kinh độ của một quốc gia."
+    },
+    {
+      "q": "Dấu trong Etc/GMT+12 có nghĩa là gì?",
+      "a": "Trong các tên `Etc/GMT` của IANA, dấu bị đảo ngược để tương thích với POSIX, nên `Etc/GMT+12` là UTC-12:00. Với địa điểm thực, hãy dùng tên theo thành phố như `Asia/Tokyo`."
+    }
+  ]
+}

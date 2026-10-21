@@ -1,0 +1,156 @@
+{
+  "title": "Kenapa ukuran file PDF besar? Penyebab dan cara mengecilkannya — cv.cm",
+  "description": "PDF besar biasanya berasal dari gambar beresolusi tinggi, hasil scan, font tertanam, atau riwayat suntingan. Lihat apa yang memakan ruang dan cara mengecilkannya.",
+  "h1": "Kenapa file PDF saya begitu besar?",
+  "answer": "Sebagian besar PDF yang terlalu besar disebabkan oleh gambar: foto beresolusi penuh atau halaman hasil scan yang disimpan dengan kompresi lemah. Penyebab lainnya adalah font yang tertanam utuh, terutama font Tionghoa, Jepang, dan Korea, riwayat suntingan dari penyimpanan inkremental, gambar duplikat, dan file lampiran. Melakukan downsampling gambar ke 150 PPI untuk dibaca di layar, mengompresinya ulang, dan menyimpan salinan bersih biasanya memangkas ukuran hingga separuh atau lebih.",
+  "sections": [
+    {
+      "h": "Apa yang sebenarnya memakan ruang di PDF",
+      "body": [
+        "PDF, yang distandarkan sebagai ISO 32000, adalah kumpulan objek: deskripsi halaman, font, gambar, dan metadata, yang masing-masing bisa dikompresi. Teks dan gambar vektor sangat kecil; satu halaman penuh teks sering hanya butuh beberapa kilobyte. Masalah ukuran berasal dari objek yang berat.",
+        {
+          "table": {
+            "head": [
+              "Penyebab",
+              "Dampak umum",
+              "Mengapa terjadi"
+            ],
+            "rows": [
+              [
+                "Foto beresolusi kamera",
+                "1–10 MB per gambar",
+                "Foto 12 megapiksel ditempatkan di halaman yang hanya butuh sebagian kecil pikselnya"
+              ],
+              [
+                "Halaman hasil scan",
+                "0,5–5 MB per halaman",
+                "Setiap halaman berupa gambar penuh warna, meskipun isinya hanya teks hitam"
+              ],
+              [
+                "Font tertanam",
+                "Puluhan KB hingga 20+ MB",
+                "Seluruh file font ditanam, bukan hanya karakter yang dipakai"
+              ],
+              [
+                "Penyimpanan inkremental",
+                "Bertambah di setiap suntingan",
+                "Perubahan ditambahkan di akhir; versi lama objek tetap ada di file"
+              ],
+              [
+                "Gambar duplikat",
+                "Melipatgandakan ukuran gambar",
+                "Logo disimpan sekali per halaman, bukan dipakai bersama"
+              ],
+              [
+                "Lampiran, layer, formulir",
+                "Bervariasi",
+                "File tertanam, layer tersembunyi, dan skrip formulir"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Halaman hasil scan: hitungannya",
+      "body": [
+        "Halaman A4 yang di-scan pada 300 PPI berukuran 2480 × 3508 = 8.699.840 piksel. Dalam warna dengan 3 byte per piksel, itu sekitar 26,1 MB per halaman sebelum dikompresi.",
+        {
+          "ul": [
+            "Dalam grayscale (1 byte per piksel), halaman yang sama sekitar 8,7 MB sebelum dikompresi.",
+            "Dalam hitam-putih (1 bit per piksel), ukurannya turun menjadi sekitar 1,09 MB, dan kompresi bilevel seperti CCITT Group 4 atau JBIG2 sering menekan halaman teks hingga puluhan kilobyte.",
+            "Kompresi JPG pada versi berwarna biasanya menghasilkan 1–3 MB per halaman, sehingga scan berwarna 20 halaman dengan mudah melampaui 20 MB."
+          ]
+        },
+        "Men-scan dokumen teks dalam grayscale atau hitam-putih pada 300 PPI, alih-alih berwarna pada 600, adalah penghematan terbesar untuk hasil scan."
+      ]
+    },
+    {
+      "h": "Cara kerja kompresi PDF",
+      "body": [
+        "Setiap stream PDF menyatakan sebuah filter yang menunjukkan cara stream itu dikompresi. Memilih filter yang lebih baik, atau mengompresi ulang dengan pengaturan lebih kuat, adalah cara alat kompresi mengecilkan file.",
+        {
+          "table": {
+            "head": [
+              "Filter",
+              "Metode",
+              "Dipakai untuk"
+            ],
+            "rows": [
+              [
+                "`FlateDecode`",
+                "Lossless (zlib/deflate, seperti pada PNG dan ZIP)",
+                "Teks, grafis vektor, gambar lossless"
+              ],
+              [
+                "`DCTDecode`",
+                "JPEG lossy",
+                "Foto"
+              ],
+              [
+                "`JPXDecode`",
+                "JPEG 2000",
+                "Gambar berkualitas tinggi, scan arsip"
+              ],
+              [
+                "`JBIG2Decode`",
+                "Bilevel, lossless atau lossy",
+                "Scan hitam-putih"
+              ],
+              [
+                "`CCITTFaxDecode`",
+                "Kompresi faks bilevel",
+                "Scan hitam-putih lama"
+              ]
+            ]
+          }
+        },
+        "PDF 1.5 juga memperkenalkan object stream dan cross-reference stream, yang mengompresi struktur internal file. Menyimpan dengan versi PDF modern akan mengaktifkannya."
+      ]
+    },
+    {
+      "h": "Cara mengecilkan PDF",
+      "body": [
+        {
+          "ol": [
+            "Lakukan downsampling gambar: 150 PPI cukup untuk dibaca di layar dan dikirim lewat email, 300 PPI untuk dicetak.",
+            "Kompresi ulang foto sebagai JPG dengan kualitas sedang; ubah scan teks menjadi grayscale atau hitam-putih.",
+            "Gunakan \"Simpan Sebagai\" atau perintah optimasi, bukan \"Simpan\", agar file ditulis ulang dan pembaruan inkremental lama dibuang.",
+            "Tanam subset font (hanya karakter yang dipakai), bukan font lengkap.",
+            "Hapus lampiran, layer tersembunyi, thumbnail, dan data formulir yang tidak diperlukan.",
+            "Jika satu file masih terlalu besar, pecah menjadi beberapa bagian, atau kirim hanya halaman yang diperlukan."
+          ]
+        },
+        "Contoh perhitungan: laporan 30 halaman dengan sepuluh foto ponsel berukuran 4 MB besarnya sekitar 40 MB. Melakukan downsampling foto-foto itu ke 150 PPI pada ukuran cetaknya yang sekitar 6 inci lebar (900 piksel) dan menyimpannya sebagai JPG berkualitas 80% biasanya membuat setiap foto di bawah 200 KB, dan seluruh file sekitar 2–3 MB."
+      ]
+    },
+    {
+      "h": "Yang perlu diwaspadai",
+      "body": [
+        "Kompresi agresif ada harganya. Downsampling di bawah 150 PPI membuat teks kecil di dalam gambar sulit dibaca, dan JBIG2 lossy di masa lalu pernah menukar angka yang mirip pada hasil scan, sehingga mode lossless lebih aman untuk faktur dan kontrak.",
+        {
+          "note": "PDF sering berisi data pribadi atau rahasia. Kompresor yang berjalan di browser memproses file secara lokal; layanan online yang mengunggah file mengirimkannya ke server pihak lain. Periksa jenis alat yang Anda pakai sebelum mengompresi kontrak, KTP, atau rekam medis."
+        },
+        "Banyak layanan email membatasi lampiran sekitar 20–25 MB, dan sebagian formulir unggahan hanya menerima 2–5 MB, jadi periksa batasnya sebelum memutuskan seberapa jauh harus mengompresi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah mengompresi PDF menurunkan kualitas?",
+      "a": "Optimasi lossless seperti menghapus objek lama dan mengompresi struktur tidak menurunkan kualitas. Downsampling dan kompresi ulang gambar memang mengurangi detail gambar, yang biasanya tidak terlihat pada 150 PPI di layar."
+    },
+    {
+      "q": "Kenapa PDF yang hanya beberapa halaman bisa begitu besar?",
+      "a": "Hampir pasti isinya gambar besar, halaman hasil scan yang disimpan berwarna penuh, atau font yang tertanam utuh. Teks saja hanya memakan sedikit ruang."
+    },
+    {
+      "q": "Kenapa PDF saya makin besar setiap kali disimpan?",
+      "a": "Banyak editor memakai penyimpanan inkremental, yaitu menambahkan perubahan di akhir file sambil tetap menyimpan objek lama. Menyimpan salinan baru dengan Simpan Sebagai atau opsi optimasi akan membuangnya."
+    },
+    {
+      "q": "Berapa resolusi yang tepat untuk gambar di PDF?",
+      "a": "Sekitar 150 PPI untuk dokumen yang dibaca di layar atau dikirim lewat email, dan 300 PPI untuk cetak profesional. Nilai yang lebih tinggi sebagian besar hanya menambah ukuran."
+    }
+  ]
+}

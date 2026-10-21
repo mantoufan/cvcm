@@ -3841,5 +3841,111 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys adalah game NES platform tembak gratis. ROM dimuat saat halaman dibuka. Tiap level punya satu tujuan; lompat dan tembak sampai tercapai.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start, pilih Play Game, lalu konfirmasi dengan A: pemain, mode, kesulitan, level awal.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Baca tujuan",
+        "body": "Layar sebelum level menulis tugasnya, misalnya \"Defeat 5 enemies\", dan jumlah nyawa.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Lompat dan tembak",
+        "body": "A melompat antar platform, B menembak. Angka di kanan atas turun saat tujuan terpenuhi.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "zlib. Sumber: https://github.com/NovaSquirrel/DABG. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit adalah game NES tembak arcade gratis. ROM dimuat saat halaman dibuka. Kamu mengemudikan Bumi dan memutar Bulan untuk menghancurkan gelombang musuh.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Gerak dan putar",
+        "body": "D-pad menggerakkan Bumi. A dan B memutar Bulan di sekitarnya, dan apa pun yang ditabrak Bulan hancur.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Bertahan tiap gelombang",
+        "body": "Musuh datang berbaris. Hadang jalurnya dengan Bulan dan jaga nyawa di kiri atas.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/pubby/lunarlimit. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 adalah game NES teka-teki gratis. ROM dimuat saat halaman dibuka. Tiap ruangan berupa grid kecil dengan tangga, beruang, dan kadang permata.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Capai tangga",
+        "body": "Melangkah dengan D-pad menuju tangga. Kalau ada permata, ambil dulu. Menyentuh beruang mengulang ruangan.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/pubby/Ralph-4. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES adalah sandbox Game of Life gratis. ROM dimuat saat halaman dibuka. Kamu menaruh sel, aturan menentukan kelanjutannya.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Buka grid",
+        "body": "Grid sudah berisi satu glider, kursor di kiri atas.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Taruh sel",
+        "body": "Bergerak dengan D-pad dan tekan A untuk mengganti sel. Select mengosongkan seluruh grid.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Jalankan",
+        "body": "Tekan Start. Sel dengan 2 atau 3 tetangga bertahan, dan sel kosong dengan tepat 3 tetangga lahir. Tekan Start lagi untuk berhenti.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "zlib. Sumber: https://github.com/NovaSquirrel/NESLife. ROM komersial tidak di-host."
+      }
+    ]
   }
 }

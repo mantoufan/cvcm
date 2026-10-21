@@ -1,0 +1,188 @@
+{
+  "title": "Margin vs markup: perbedaan, rumus, dan tabel konversi — cv.cm",
+  "description": "Margin adalah laba dibagi harga jual; markup adalah laba dibagi biaya. Pelajari kedua rumusnya, cara konversinya, dan mengapa markup 25% hanya setara margin 20%.",
+  "h1": "Margin vs markup: apa bedanya?",
+  "answer": "Margin dan markup mengukur laba yang sama terhadap dasar yang berbeda. Margin adalah laba sebagai persentase dari harga jual: `(price − cost) / price`. Markup adalah laba sebagai persentase dari biaya: `(price − cost) / cost`. Barang dengan biaya $60 yang dijual $100 menghasilkan laba $40, margin 40%, dan markup 66,7%. Markup selalu merupakan angka yang lebih besar.",
+  "sections": [
+    {
+      "h": "Dua rumusnya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "Margin",
+              "Markup"
+            ],
+            "rows": [
+              [
+                "Rumus",
+                "`(price − cost) / price`",
+                "`(price − cost) / cost`"
+              ],
+              [
+                "Dasar",
+                "Harga jual (pendapatan)",
+                "Biaya"
+              ],
+              [
+                "Rentang",
+                "Di bawah 100% (kecuali biayanya nol)",
+                "0% hingga tak terbatas"
+              ],
+              [
+                "Menjawab",
+                "Berapa bagian dari setiap penjualan yang menjadi laba?",
+                "Berapa banyak yang ditambahkan di atas biaya?"
+              ],
+              [
+                "Umum dipakai oleh",
+                "Keuangan, akuntansi, investor",
+                "Penetapan harga ritel dan grosir"
+              ]
+            ]
+          }
+        },
+        "Contoh dengan biaya $60 dan harga $100: labanya `100 − 60 = 40`. Margin adalah `40 / 100 = 40%`. Markup adalah `40 / 60 = 66.7%`.",
+        "Dalam akuntansi, \"margin kotor\" (gross margin) memakai harga pokok penjualan. Margin operasional dan margin bersih mengurangkan lebih banyak biaya, seperti sewa, gaji, dan pajak, sehingga nilainya lebih rendah daripada margin kotor untuk produk yang sama."
+      ]
+    },
+    {
+      "h": "Konversi antara margin dan markup",
+      "body": [
+        "Karena keduanya memakai laba yang sama, yang satu bisa langsung dikonversi menjadi yang lain. Tulis persentase sebagai desimal:",
+        {
+          "ul": [
+            "`markup = margin / (1 − margin)`. Margin 40% adalah `0.4 / 0.6 = 0.667`, atau markup 66,7%.",
+            "`margin = markup / (1 + markup)`. Markup 50% adalah `0.5 / 1.5 = 0.333`, atau margin 33,3%."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Margin",
+              "Markup setara"
+            ],
+            "rows": [
+              [
+                "10%",
+                "11,11%"
+              ],
+              [
+                "15%",
+                "17,65%"
+              ],
+              [
+                "20%",
+                "25%"
+              ],
+              [
+                "25%",
+                "33,33%"
+              ],
+              [
+                "30%",
+                "42,86%"
+              ],
+              [
+                "33,33%",
+                "50%"
+              ],
+              [
+                "40%",
+                "66,67%"
+              ],
+              [
+                "50%",
+                "100%"
+              ],
+              [
+                "60%",
+                "150%"
+              ],
+              [
+                "75%",
+                "300%"
+              ]
+            ]
+          }
+        },
+        "Selisihnya membesar dengan cepat: pada margin 50%, markup-nya sudah 100%, artinya harga jual dua kali biaya (penetapan harga \"keystone\" di ritel)."
+      ]
+    },
+    {
+      "h": "Menetapkan harga dari target",
+      "body": [
+        "Rumus yang dipakai tergantung angka mana yang menjadi target Anda:",
+        {
+          "table": {
+            "head": [
+              "Target",
+              "Rumus",
+              "Contoh biaya $60"
+            ],
+            "rows": [
+              [
+                "Target markup 25%",
+                "`price = cost × (1 + markup)`",
+                "`60 × 1.25 = $75`"
+              ],
+              [
+                "Target margin 25%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.75 = $80`"
+              ],
+              [
+                "Target margin 40%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.6 = $100`"
+              ]
+            ]
+          }
+        },
+        "Perhatikan selisih $5 antara dua baris pertama. Keduanya sama-sama \"25%\", tetapi yang satu dihitung dari biaya dan yang lain dari harga."
+      ]
+    },
+    {
+      "h": "Kesalahan penetapan harga yang paling umum",
+      "body": [
+        "Sebuah bisnis menginginkan margin 30%, lalu menambahkan 30% ke biaya. Dengan biaya $100, harga menjadi $130 dan labanya $30. Marginnya `30 / 130 = 23.1%`, bukan 30%. Untuk mencapai margin 30% yang sebenarnya, harganya harus `100 / 0.7 = $142.86`.",
+        "Kebingungan yang sama muncul pada diskon. Markup 25% yang diikuti diskon 25% tidak kembali ke biaya: `100 × 1.25 = 125`, lalu `125 × 0.75 = 93.75`, rugi $6,25 per unit. Harga promo sebaiknya langsung dicek terhadap biaya.",
+        {
+          "note": "Saat pemasok, pembeli, atau mitra menyebut sebuah persentase, tanyakan apakah itu margin atau markup. Istilah yang sama, \"persen untung\", bisa berarti keduanya, dan selisihnya bisa mencapai ribuan pada pesanan besar."
+        }
+      ]
+    },
+    {
+      "h": "Mana yang sebaiknya dipantau?",
+      "body": [
+        {
+          "ul": [
+            "Gunakan markup saat menetapkan harga per barang dari biayanya, misalnya menambahkan markup standar ke setiap produk dalam satu kategori.",
+            "Gunakan margin untuk pelaporan dan perbandingan. Margin adalah angka yang tercantum di laporan laba rugi, sehingga selaras dengan total pendapatan, anggaran, dan tolok ukur industri.",
+            "Gunakan margin untuk menentukan seberapa besar diskon yang bisa diberikan: barang dengan margin 20% tidak bisa didiskon lebih dari 20% sebelum terjual di bawah biaya.",
+            "Jaga agar inputnya konsisten. Masukkan ongkos kirim, biaya pembayaran, dan kemasan ke dalam biaya, kalau tidak kedua persentase akan tampak lebih baik daripada kenyataannya."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah markup 50% sama dengan margin 50%?",
+      "a": "Tidak. Markup 50% pada biaya $100 menghasilkan harga $150 dan margin 33,3%. Margin 50% membutuhkan harga $200, yang berarti markup 100%."
+    },
+    {
+      "q": "Bisakah margin lebih dari 100%?",
+      "a": "Tidak, karena laba tidak pernah bisa melebihi harga jual jika biayanya positif. Markup tidak punya batas atas, sehingga nilai seperti 300% umum untuk barang berbiaya rendah."
+    },
+    {
+      "q": "Bagaimana cara menghitung harga jual dari margin?",
+      "a": "Bagi biaya dengan `1 − margin`. Untuk biaya $45 dan margin 40%, harganya `45 / 0.6 = $75`."
+    },
+    {
+      "q": "Berapa margin laba yang bagus?",
+      "a": "Tergantung industrinya: peritel bahan makanan sering hanya punya margin bersih beberapa persen, sedangkan perusahaan perangkat lunak bisa melampaui 20%. Bandingkan dengan bisnis yang struktur biayanya serupa, bukan dengan satu target tunggal."
+    }
+  ]
+}

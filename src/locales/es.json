@@ -3,7 +3,7 @@
     "title": "cv.cm — portapapeles, imagen y PDF",
     "titleClip": "Portapapeles en línea — comparte texto sin cuenta — cv.cm",
     "descClip": "Portapapeles al estilo Pastebin. Comparte texto, imágenes y archivos con un enlace. Sin cuenta. Se borra a las 10 vistas o a las 24 horas.",
-    "titleWatermark": "Marca de agua para copia de DNI y fotos — gratis, sin subir — cv.cm",
+    "titleWatermark": "Marca de agua para DNI y fotos + marca invisible — gratis, sin subir — cv.cm",
     "titleCollage": "Creador de collages de fotos — cv.cm",
     "description": "Herramientas en el navegador. Las imágenes y los PDF se quedan en esta pestaña.",
     "titleConvert": "Convertidor de imágenes — HEIC, WebP, PNG, JPG — cv.cm",
@@ -14,7 +14,7 @@
     "descAudio": "Pasa MP3, M4A, OGG, AAC y FLAC a WAV en el navegador. Elige 44,1 o 48 kHz. Nada se sube.",
     "titleData": "Formateador JSON, Base64, CSV a JSON — cv.cm",
     "descData": "JSON bonito, CSV ↔ JSON, Base64, URL encode, Markdown a HTML. En esta pestaña.",
-    "descWatermark": "Pon marca de agua a fotos y copias de DNI en el navegador. Repite en diagonal “Solo para …” con la fecha, pixela el número y exporta PNG, JPEG o ZIP. Sin EXIF. Los archivos no salen de la pestaña.",
+    "descWatermark": "Pon marca de agua a fotos y copias de DNI en el navegador. Repite en diagonal “Solo para …” con la fecha, añade una marca de agua invisible que revela qué copia se filtró, pixela el número y exporta PNG, JPEG o ZIP. Sin EXIF. Los archivos no salen de la pestaña.",
     "descCollage": "Haz un collage en el navegador. Cuadrículas y tamaños de Instagram. Nada se sube.",
     "titleQr": "Generador de códigos QR gratis — cv.cm",
     "descQr": "Crea un código QR de una URL o texto en el navegador y descarga PNG. Nada se sube.",
@@ -349,7 +349,8 @@
     "games": "Juegos",
     "device": "Dispositivo",
     "assets": "Activos",
-    "tests": "Tests"
+    "tests": "Tests",
+    "data": "Datos"
   },
   "lang": {
     "label": "Idioma",
@@ -389,7 +390,7 @@
     },
     "watermark": {
       "name": "Marca de agua y censura de DNI",
-      "blurb": "Marca solo para un uso en copias de DNI y tapa números con una caja. Nada se sube."
+      "blurb": "Marca solo para un uso en copias de DNI, añade una marca invisible y tapa números con una caja. Nada se sube."
     },
     "collage": {
       "name": "Collage",
@@ -800,7 +801,22 @@
     "redactOn": "Arrastra en la vista previa para tapar un número, una cara o una matrícula.",
     "redactTip": "Usa caja negra para números de DNI, tarjetas y códigos QR. Un pixelado fino a veces se puede adivinar.",
     "collageOptional": "Unir en una imagen (opcional)",
-    "redactCollage": "En modo collage no se dibujan cajas. Vuelve a Una foto para censurar cada imagen; la censura pasa al collage."
+    "redactCollage": "En modo collage no se dibujan cajas. Vuelve a Una foto para censurar cada imagen; la censura pasa al collage.",
+    "blindTitle": "Marca de agua invisible",
+    "blindOn": "Añadir marca de agua invisible al exportar",
+    "blindText": "Texto oculto",
+    "blindBytes": "{n}/{max} bytes",
+    "blindHint": "Al exportar se oculta el texto de la marca visible (o lo que escribas aquí), más «cv.cm» y la fecha de exportación. Va en el brillo de la imagen y resiste la compresión JPEG y el cambio de tamaño, como al reenviar por un chat. Recortar, rotar o una página casi en blanco pueden borrarlo.",
+    "blindDetect": "Buscar una marca invisible en una imagen",
+    "blindDetecting": "Buscando…",
+    "blindFound": "Marca invisible encontrada: «{text}»",
+    "blindNone": "No se encontró ninguna marca invisible. Recortar, rotar o editar mucho el color puede borrarla.",
+    "blindDone": "Marca de agua invisible añadida: «{text}».",
+    "blindFailed": "No se pudo ocultar la marca invisible: la imagen es casi toda blanca o de un color, o la calidad de exportación es demasiado baja. La marca visible está bien. Repite una marca visible o sube la calidad y vuelve a exportar.",
+    "blindPlaceholder": "Vacío = igual que la marca visible",
+    "blindUnchecked": "Marca de agua invisible añadida: «{text}», pero el dispositivo no tuvo memoria para comprobarla.",
+    "blindNoMemory": "El dispositivo se quedó sin memoria y no se añadió la marca invisible. La marca visible está bien.",
+    "blindTrimmed": "lo que sobra no se guarda"
   },
   "collage": {
     "title": "Creador de collages de fotos",
@@ -1065,14 +1081,14 @@
     "watermark": {
       "q1": "¿Añadir una marca de agua sube las fotos?",
       "a1": "No. Las copias de identidad también se quedan en esta pestaña. El lienzo pone la marca aquí. Al cerrar se descartan. La exportación también quita el EXIF.",
-      "q2": "¿Puedo marcar muchas fotos a la vez?",
-      "a2": "Sí. Añade un lote y descarga una o un ZIP de PNG/JPEG.",
+      "q2": "¿Qué es la marca de agua invisible? ¿Sirve para saber quién filtró una copia?",
+      "a2": "Al exportar, la herramienta oculta en el brillo de la imagen el mismo texto que la marca visible (o el tuyo, como «Banco A»), más «cv.cm» y la fecha de exportación. Viene activada y se puede desactivar en Marca de agua invisible. Si una copia aparece en otro sitio, suéltala en «Buscar una marca invisible en una imagen» para leerlo, aunque hayan borrado la marca visible. Resiste la compresión JPEG y el cambio de tamaño; recortar o rotar puede romperla. Cuanto más corto el texto, más resistente. Es una pista, no una prueba legal.",
       "q3": "¿Puedo marcar una copia de DNI o pasaporte?",
       "a3": "Sí. Usa «Solo para» para teselar “solo para [org]” sobre la foto. Nada se sube. Es un disuasorio, no una garantía legal. Algunas oficinas piden una copia sin marca.",
       "q4": "¿Puedo quitar una marca de agua?",
       "a4": "No. Esta herramienta solo añade marcas; no borra las existentes.",
       "q5": "¿Qué formatos?",
-      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP. Texto, logo, o ambos."
+      "a5": "Entrada PNG, JPEG, WebP, GIF. Salida PNG, JPEG o WebP. Texto, logo, o ambos. Añade un lote y descarga un archivo o un ZIP."
     },
     "collage": {
       "q1": "¿Es un creador de collages?",
@@ -5711,6 +5727,134 @@
     "depression": {
       "name": "Test de depresión (PHQ-9)",
       "blurb": "El cribado de depresión de 9 preguntas, de 0 a 27."
+    }
+  },
+  "dataset": {
+    "all": "Todos los datos",
+    "population": {
+      "name": "Población mundial por país",
+      "blurb": "Población de 217 países y territorios, ordenada, con su peso mundial."
+    },
+    "gdp": {
+      "name": "PIB por país",
+      "blurb": "PIB nominal en dólares de cada economía, ordenado."
+    },
+    "gdp-per-capita": {
+      "name": "PIB per cápita por país",
+      "blurb": "PIB por persona, de mayor a menor."
+    },
+    "life-expectancy": {
+      "name": "Esperanza de vida por país",
+      "blurb": "Años que se espera viva un recién nacido en cada país."
+    },
+    "fertility-rate": {
+      "name": "Tasa de fecundidad por país",
+      "blurb": "Hijos por mujer, de mayor a menor."
+    },
+    "internet-users": {
+      "name": "Usuarios de internet por país",
+      "blurb": "Porcentaje de la población que usa internet."
+    },
+    "country-codes": {
+      "name": "Códigos de país ISO 3166",
+      "blurb": "Códigos alfa-2, alfa-3 y numéricos de 249 países y territorios."
+    },
+    "calling-codes": {
+      "name": "Prefijos telefónicos internacionales",
+      "blurb": "El prefijo + para llamar a cada país."
+    },
+    "currency-codes": {
+      "name": "Códigos de moneda ISO 4217",
+      "blurb": "Códigos, símbolos y dónde se usa cada moneda."
+    },
+    "time-zones": {
+      "name": "Husos horarios y diferencia UTC",
+      "blurb": "Todas las zonas IANA con su desfase UTC en invierno y verano."
+    },
+    "paper-sizes": {
+      "name": "Tamaños de papel",
+      "blurb": "A4, A3, B5, Carta y más en mm, pulgadas y píxeles."
+    },
+    "ascii": {
+      "name": "Tabla ASCII",
+      "blurb": "Los 128 códigos en decimal, hexadecimal, octal y binario."
+    }
+  },
+  "kb": {
+    "label": "Conocimientos",
+    "all": "Todos los artículos",
+    "lead": "Qué significan los formatos, las codificaciones y las fórmulas, con fuentes.",
+    "what-is-heic": {
+      "name": "¿Qué es HEIC?",
+      "blurb": "El formato de fotos del iPhone, en qué se diferencia de JPG y cuándo convertirlo."
+    },
+    "jpg-vs-png-vs-webp": {
+      "name": "JPG vs PNG vs WebP vs AVIF",
+      "blurb": "Qué formato de imagen usar para fotos, capturas de pantalla y la web."
+    },
+    "what-is-exif": {
+      "name": "¿Qué son los datos EXIF?",
+      "blurb": "Cámara, hora y GPS ocultos en las fotos, y cómo eliminarlos."
+    },
+    "dpi-vs-ppi": {
+      "name": "DPI vs PPI",
+      "blurb": "Píxeles, tamaño de impresión y por qué 300 DPI solo importa en papel."
+    },
+    "aspect-ratios": {
+      "name": "Relación de aspecto",
+      "blurb": "16:9, 4:3, 1:1, 9:16 y los tamaños en píxeles que les corresponden."
+    },
+    "why-pdf-files-are-large": {
+      "name": "¿Por qué un PDF pesa tanto?",
+      "blurb": "Imágenes, fuentes y escaneos que inflan un PDF, y qué cambia al comprimirlo."
+    },
+    "what-is-base64": {
+      "name": "¿Qué es Base64?",
+      "blurb": "Cómo Base64 convierte bytes en texto, por qué crece un 33 % y por qué no es cifrado."
+    },
+    "unicode-and-utf-8": {
+      "name": "Unicode y UTF-8",
+      "blurb": "Puntos de código, bytes y por qué el texto aparece con caracteres ilegibles."
+    },
+    "url-encoding": {
+      "name": "Codificación URL (percent-encoding)",
+      "blurb": "Por qué los espacios se convierten en %20 y qué caracteres hay que escapar."
+    },
+    "json-vs-yaml-vs-xml": {
+      "name": "JSON vs YAML vs XML",
+      "blurb": "Sintaxis, ventajas y trampas de los tres formatos de datos."
+    },
+    "md5-vs-sha-256": {
+      "name": "MD5 vs SHA-256",
+      "blurb": "Qué es un hash, cuáles están rotos y qué usar para las contraseñas."
+    },
+    "password-strength": {
+      "name": "¿Qué hace segura una contraseña?",
+      "blurb": "Longitud, aleatoriedad y entropía, según las recomendaciones actuales de NIST."
+    },
+    "what-is-uuid": {
+      "name": "¿Qué es un UUID?",
+      "blurb": "Las versiones 4 y 7 de UUID, la probabilidad de colisión y cuándo usar cada una."
+    },
+    "unix-timestamp": {
+      "name": "¿Qué es un timestamp Unix?",
+      "blurb": "Segundos desde 1970, milisegundos en JavaScript y el problema del año 2038."
+    },
+    "iso-8601": {
+      "name": "Fechas ISO 8601 y números de semana",
+      "blurb": "YYYY-MM-DD, la semana 1, las duraciones y el perfil RFC 3339."
+    },
+    "utc-and-time-zones": {
+      "name": "UTC, GMT y zonas horarias",
+      "blurb": "Desfases, horario de verano y por qué los nombres de zona son mejores que los desfases."
+    },
+    "apr-vs-apy": {
+      "name": "APR vs APY",
+      "blurb": "Tasa simple frente a tasa capitalizada, la fórmula y un ejemplo práctico."
+    },
+    "margin-vs-markup": {
+      "name": "Margen vs markup",
+      "blurb": "Dos formas de expresar la ganancia, cómo convertirlas y una tabla rápida."
     }
   }
 }

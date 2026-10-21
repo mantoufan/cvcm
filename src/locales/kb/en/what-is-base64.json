@@ -1,0 +1,182 @@
+{
+  "title": "What is Base64? How Base64 encoding works, with examples — cv.cm",
+  "description": "Base64 turns binary data into 64 safe text characters, 3 bytes into 4. See how \"Man\" becomes TWFu, why output is 33% larger, and where Base64 is used.",
+  "h1": "What is Base64 encoding?",
+  "answer": "Base64 is a way to represent binary data using only 64 printable characters: A–Z, a–z, 0–9, + and /, with = as padding. It splits every 3 bytes into four 6-bit groups and maps each group to one character, so \"Man\" becomes \"TWFu\". It makes binary data safe for text-only channels such as email, JSON and URLs, at the cost of about 33% more size. It is an encoding, not encryption.",
+  "sections": [
+    {
+      "h": "How Base64 works, step by step",
+      "body": [
+        "Base64 is defined in RFC 4648. Because 64 = 2⁶, each output character carries exactly 6 bits, and 3 bytes (24 bits) map neatly onto 4 characters.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "M",
+              "a",
+              "n"
+            ],
+            "rows": [
+              [
+                "ASCII code",
+                "77",
+                "97",
+                "110"
+              ],
+              [
+                "Binary (8 bits each)",
+                "01001101",
+                "01100001",
+                "01101110"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Join the 24 bits: `010011010110000101101110`.",
+            "Split into four 6-bit groups: `010011` `010110` `000101` `101110`.",
+            "Convert to numbers: 19, 22, 5, 46.",
+            "Look each up in the alphabet (0 = A, 25 = Z, 26 = a, 51 = z, 52 = 0, 61 = 9, 62 = +, 63 = /): T, W, F, u.",
+            "Result: `TWFu`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Padding with =",
+      "body": [
+        "When the input length is not a multiple of 3, the last group is filled with zero bits and `=` marks the missing bytes, so the output length is always a multiple of 4.",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "Bytes",
+              "Base64"
+            ],
+            "rows": [
+              [
+                "`M`",
+                "1",
+                "`TQ==`"
+              ],
+              [
+                "`Ma`",
+                "2",
+                "`TWE=`"
+              ],
+              [
+                "`Man`",
+                "3",
+                "`TWFu`"
+              ],
+              [
+                "`Hello`",
+                "5",
+                "`SGVsbG8=`"
+              ],
+              [
+                "`é` (UTF-8 bytes C3 A9)",
+                "2",
+                "`w6k=`"
+              ]
+            ]
+          }
+        },
+        "Encoded length is `4 × ceil(n ÷ 3)` characters for n bytes. A 1 MB file becomes about 1.33 MB of text, and MIME email adds line breaks every 76 characters, pushing the overhead slightly higher."
+      ]
+    },
+    {
+      "h": "Where Base64 is used",
+      "body": [
+        {
+          "ul": [
+            "Email attachments: MIME encodes files as Base64 because the original mail system carried only 7-bit text.",
+            "Data URLs: small images inlined in HTML or CSS, written as `data:image/png;base64,iVBORw0KGgo...`.",
+            "JSON and XML APIs that need to carry binary data such as images, keys or certificates.",
+            "JSON Web Tokens (JWTs), whose header and payload are Base64url-encoded JSON.",
+            "PEM files for TLS certificates and keys, which wrap Base64 between `-----BEGIN CERTIFICATE-----` lines.",
+            "HTTP Basic authentication, which sends `username:password` Base64-encoded."
+          ]
+        },
+        "Inlining images as data URLs saves a network request but adds 33% to their size and prevents separate caching, so it is usually worthwhile only for very small images."
+      ]
+    },
+    {
+      "h": "Base64 vs Base64url and other encodings",
+      "body": [
+        "Standard Base64 uses `+` and `/`, which have special meaning in URLs and file names. The URL-safe variant in the same RFC replaces them with `-` and `_` and often omits the `=` padding.",
+        {
+          "table": {
+            "head": [
+              "Encoding",
+              "Characters",
+              "Size overhead",
+              "Example use"
+            ],
+            "rows": [
+              [
+                "Base16 (hex)",
+                "0–9, A–F",
+                "100%",
+                "Hashes, color codes"
+              ],
+              [
+                "Base32",
+                "A–Z, 2–7",
+                "60%",
+                "Two-factor authentication secrets"
+              ],
+              [
+                "Base64",
+                "A–Z, a–z, 0–9, +, /",
+                "33%",
+                "Email, data URLs, PEM"
+              ],
+              [
+                "Base64url",
+                "A–Z, a–z, 0–9, -, _",
+                "33%",
+                "JWTs, URL parameters"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "note": "Base64 is not encryption. Anyone can decode it instantly, so a Base64 password or API key in a URL, config file or JWT payload is effectively plain text."
+        },
+        {
+          "ul": [
+            "Text must be converted to bytes first, normally as UTF-8. In JavaScript, `btoa()` throws an error on characters outside Latin-1 such as emoji or Chinese unless the string is UTF-8-encoded first.",
+            "Mixing the standard and URL-safe alphabets causes decode errors; replace `-` and `_` with `+` and `/` before using a standard decoder.",
+            "Missing padding can make strict decoders fail; add `=` until the length is a multiple of 4.",
+            "Line breaks from email-style encoding must be removed before some decoders accept the string."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why does Base64 make data bigger?",
+      "a": "Every 3 bytes become 4 characters, and each character is stored as a full byte, so the output is about 33% larger than the input."
+    },
+    {
+      "q": "Is Base64 secure?",
+      "a": "No. It hides nothing; decoding requires no key. Use real encryption such as AES to protect data, and Base64 only to transport the result as text."
+    },
+    {
+      "q": "What does the = at the end of Base64 mean?",
+      "a": "It is padding. One `=` means the last group held 2 bytes, and `==` means it held only 1 byte."
+    },
+    {
+      "q": "How do I recognize a Base64 string?",
+      "a": "It contains only letters, digits, + and / (or - and _), its length is usually a multiple of 4, and it may end in one or two = signs. Strings starting with `eyJ` are often Base64-encoded JSON, because JSON text beginning with `{\"` encodes to a string beginning with `eyJ`."
+    }
+  ]
+}

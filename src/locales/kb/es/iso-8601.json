@@ -1,0 +1,186 @@
+{
+  "title": "Formato de fecha ISO 8601: fechas, horas, semanas y duraciones — cv.cm",
+  "description": "ISO 8601 escribe las fechas como YYYY-MM-DD y las horas con desfase UTC. Formas de fecha, hora, semana y duración, y cómo RFC 3339 lo acota para la web.",
+  "h1": "¿Qué es el formato de fecha ISO 8601?",
+  "answer": "ISO 8601 es el estándar internacional para escribir fechas y horas como texto. Su forma básica ordena las unidades de mayor a menor: `2026-10-14` para una fecha y `2026-10-14T09:30:00+02:00` para un instante con su desfase respecto a UTC. También define fechas de semana como `2026-W42-3`, fechas ordinales y duraciones como `P3DT4H`. Como es inequívoco y se ordena alfabéticamente en orden cronológico, la mayoría de las API y formatos de datos lo usan.",
+  "sections": [
+    {
+      "h": "Por qué YYYY-MM-DD",
+      "body": [
+        "`03/04/2026` es el 3 de abril en la mayor parte del mundo y el 4 de marzo en Estados Unidos. ISO 8601 elimina la duda fijando un único orden, año, luego mes y luego día, con un año de cuatro dígitos y mes y día de dos dígitos rellenados con ceros.",
+        "Una segunda ventaja es la ordenación: las cadenas con la forma `YYYY-MM-DD` se ordenan alfabéticamente en el mismo orden que las propias fechas, así que nombres de archivo como `2026-10-14-report.pdf` quedan bien alineados en cualquier carpeta.",
+        {
+          "table": {
+            "head": [
+              "Forma",
+              "Extendida (con separadores)",
+              "Básica (compacta)"
+            ],
+            "rows": [
+              [
+                "Fecha de calendario",
+                "`2026-10-14`",
+                "`20261014`"
+              ],
+              [
+                "Fecha ordinal (día del año)",
+                "`2026-287`",
+                "`2026287`"
+              ],
+              [
+                "Fecha de semana",
+                "`2026-W42-3`",
+                "`2026W423`"
+              ],
+              [
+                "Hora del día",
+                "`09:30:00`",
+                "`093000`"
+              ],
+              [
+                "Fecha y hora en UTC",
+                "`2026-10-14T09:30:00Z`",
+                "`20261014T093000Z`"
+              ],
+              [
+                "Fecha y hora con desfase",
+                "`2026-10-14T11:30:00+02:00`",
+                "`20261014T113000+0200`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Horas, zonas horarias y la letra Z",
+      "body": [
+        "La hora va tras la fecha, después de una `T`. Las horas usan el reloj de 24 horas, y las fracciones de segundo van tras un punto decimal: `09:30:00.250`.",
+        {
+          "ul": [
+            "`Z` (se lee «Zulu») indica que la hora está en UTC: `2026-10-14T09:30:00Z`.",
+            "Un desfase como `+02:00` o `-05:00` da la hora local y su distancia respecto a UTC. `2026-10-14T11:30:00+02:00` es el mismo instante que el ejemplo en UTC anterior.",
+            "Una hora sin `Z` ni desfase es una hora local de zona desconocida. Es ISO 8601 válido, pero otros sistemas no pueden saber a qué instante se refiere."
+          ]
+        },
+        "Un desfase no es una zona horaria. `+01:00` puede ser París en invierno o Lagos todo el año. ISO 8601 solo registra el desfase; las reglas de la zona vienen de otra fuente, como la base de datos de zonas horarias de IANA."
+      ]
+    },
+    {
+      "h": "Fechas de semana y números de semana",
+      "body": [
+        "Las semanas ISO empiezan el lunes, y la semana 1 es la que contiene el primer jueves del año (o, lo que es lo mismo, la que contiene el 4 de enero). Una fecha de semana se escribe con el año, `W`, el número de semana y luego el día de la semana del 1 (lunes) al 7 (domingo).",
+        "Como las semanas no se parten entre años, el año de numeración de semanas ISO puede diferir del año de calendario en los extremos:",
+        {
+          "table": {
+            "head": [
+              "Fecha de calendario",
+              "Fecha de semana ISO",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "2021-01-01 (viernes)",
+                "`2020-W53-5`",
+                "Pertenece a la semana que empezó el lunes 28 dic 2020"
+              ],
+              [
+                "2024-12-30 (lunes)",
+                "`2025-W01-1`",
+                "La semana contiene el jueves 2 ene 2025"
+              ],
+              [
+                "2026-01-01 (jueves)",
+                "`2026-W01-4`",
+                "El 1 de enero es jueves"
+              ],
+              [
+                "2027-01-01 (viernes)",
+                "`2026-W53-5`",
+                "2026 empieza en jueves, así que tiene 53 semanas"
+              ]
+            ]
+          }
+        },
+        "Un año tiene 52 o 53 semanas ISO. Los números de semana de los calendarios estadounidenses, que a menudo empiezan en domingo y ponen siempre el 1 de enero en la semana 1, pueden diferir en uno de los números ISO."
+      ]
+    },
+    {
+      "h": "Duraciones e intervalos",
+      "body": [
+        "Una duración empieza por `P` (periodo). Primero van las partes de fecha, luego una `T` y después las partes de hora. Las partes con valor cero se pueden omitir.",
+        {
+          "table": {
+            "head": [
+              "Duración",
+              "Significado"
+            ],
+            "rows": [
+              [
+                "`P3DT4H`",
+                "3 días y 4 horas"
+              ],
+              [
+                "`PT30M`",
+                "30 minutos"
+              ],
+              [
+                "`P30M`",
+                "30 meses, no minutos: la `T` importa"
+              ],
+              [
+                "`P1Y2M10D`",
+                "1 año, 2 meses y 10 días"
+              ],
+              [
+                "`P2W`",
+                "2 semanas"
+              ],
+              [
+                "`PT0.5S`",
+                "Medio segundo"
+              ]
+            ]
+          }
+        },
+        "Un intervalo une dos partes con una barra: `2026-10-14/2026-10-20` (inicio y fin), `2026-10-14T09:00Z/PT2H` (inicio y duración) o `P1D/2026-10-14` (duración y fin). Las duraciones en años y meses no tienen una longitud fija en segundos, así que el software las suma sobre un calendario, no como un número fijo de segundos."
+      ]
+    },
+    {
+      "h": "RFC 3339: el perfil estricto de la web",
+      "body": [
+        "ISO 8601 admite muchas variantes, lo que complica los analizadores completos. RFC 3339 elige un perfil para los protocolos de internet, y la mayoría de las API JSON, los feeds Atom y los formatos de log lo siguen.",
+        {
+          "ul": [
+            "Se exige fecha y hora completas, siempre en formato extendido: `2026-10-14T09:30:00Z`.",
+            "Todo timestamp debe llevar `Z` o un desfase numérico como `+02:00`; no se permiten horas locales sin desfase.",
+            "Las fechas de semana, las fechas ordinales y las duraciones no forman parte del perfil.",
+            "`-00:00` indica que la hora está en UTC pero se desconoce el desfase local original.",
+            "El RFC señala que se puede usar un espacio en lugar de la `T` para mejorar la legibilidad, una forma que muestran muchas bases de datos."
+          ]
+        },
+        {
+          "note": "Para generar una cadena RFC 3339 en JavaScript, usa `new Date().toISOString()`. Siempre devuelve UTC con milisegundos, por ejemplo `2026-10-14T09:30:00.000Z`."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué significa la T en una fecha ISO 8601?",
+      "a": "La `T` separa la fecha de la hora, como en `2026-10-14T09:30:00`. RFC 3339 también acepta un espacio en esa posición para mejorar la legibilidad."
+    },
+    {
+      "q": "¿Qué significa la Z al final de un timestamp?",
+      "a": "`Z` indica que la hora está en UTC, con desfase cero. `09:30:00Z` y `09:30:00+00:00` describen el mismo instante."
+    },
+    {
+      "q": "¿ISO 8601 es lo mismo que RFC 3339?",
+      "a": "RFC 3339 es un subconjunto más estricto de ISO 8601 para uso en internet. Todo timestamp RFC 3339 es ISO 8601 válido, pero ISO 8601 también admite formas que RFC 3339 no, como las fechas de semana y las duraciones."
+    },
+    {
+      "q": "¿Cuál es la semana 1 en ISO 8601?",
+      "a": "La semana 1 es la semana de lunes a domingo que contiene el primer jueves del año. Por eso el 1 de enero puede caer en la semana 52 o 53 del año anterior."
+    }
+  ]
+}

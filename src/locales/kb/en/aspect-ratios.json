@@ -1,0 +1,168 @@
+{
+  "title": "Aspect ratios explained: 16:9, 4:3, 1:1, 9:16 and how to calculate — cv.cm",
+  "description": "An aspect ratio is width to height, written like 16:9. See common ratios for photos, video and screens, and how to compute sizes and crop without stretching.",
+  "h1": "What is an aspect ratio?",
+  "answer": "An aspect ratio is the proportion between an image's width and its height, written as two numbers such as 16:9 or 4:3. It describes shape, not size: 1920 × 1080 and 1280 × 720 are both 16:9. To keep the ratio when resizing, compute the new height as new width × height ÷ width; for 16:9 at 1200 pixels wide, that is 675 pixels high.",
+  "sections": [
+    {
+      "h": "Common aspect ratios and where they are used",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ratio",
+              "Decimal",
+              "Example size (px)",
+              "Typical use"
+            ],
+            "rows": [
+              [
+                "1:1",
+                "1.00",
+                "1080 × 1080",
+                "Square social posts, profile pictures"
+              ],
+              [
+                "4:5",
+                "0.80",
+                "1080 × 1350",
+                "Portrait social feed posts"
+              ],
+              [
+                "4:3",
+                "1.33",
+                "1600 × 1200",
+                "Phone camera photos, older TVs, tablets"
+              ],
+              [
+                "3:2",
+                "1.50",
+                "6000 × 4000",
+                "DSLR and mirrorless photos, 4 × 6 prints"
+              ],
+              [
+                "16:9",
+                "1.78",
+                "1920 × 1080",
+                "HD and 4K video, monitors, presentations"
+              ],
+              [
+                "9:16",
+                "0.56",
+                "1080 × 1920",
+                "Vertical video, stories, short-form clips"
+              ],
+              [
+                "21:9 (marketed)",
+                "about 2.37",
+                "2560 × 1080",
+                "Ultrawide monitors"
+              ],
+              [
+                "2.39:1",
+                "2.39",
+                "4096 × 1716",
+                "Widescreen cinema"
+              ],
+              [
+                "1:√2",
+                "0.71",
+                "2480 × 3508",
+                "ISO paper sizes such as A4"
+              ]
+            ]
+          }
+        },
+        "The 16:9 ratio became the HDTV standard through ITU-R BT.709, which defines 1920 × 1080 and 1280 × 720 pictures. 3:2 comes from the 36 × 24 mm frame of 35 mm film."
+      ]
+    },
+    {
+      "h": "How to find the ratio of any image",
+      "body": [
+        "Divide width and height by their greatest common divisor (GCD).",
+        {
+          "ol": [
+            "Take the pixel size, for example 1920 × 1080.",
+            "Find the largest number that divides both: 120.",
+            "Divide: 1920 ÷ 120 = 16 and 1080 ÷ 120 = 9, so the ratio is 16:9."
+          ]
+        },
+        "Some sizes only approximate a named ratio. A 1366 × 768 laptop screen reduces to 683:384, which is 1.779 and is sold as 16:9. A 2560 × 1080 \"21:9\" monitor is exactly 64:27. Comparing decimals (width ÷ height) is often easier than comparing fractions."
+      ]
+    },
+    {
+      "h": "Calculating a new size without distortion",
+      "body": [
+        "Keep the ratio by scaling both sides by the same factor. Two formulas cover every case:",
+        {
+          "ul": [
+            "`new height = new width × original height ÷ original width`",
+            "`new width = new height × original width ÷ original height`"
+          ]
+        },
+        "Example: a 4032 × 3024 photo (4:3) resized to 1600 pixels wide becomes 1600 × 3024 ÷ 4032 = 1200 pixels high. For a 9:16 video at 720 pixels wide, the height is 720 × 16 ÷ 9 = 1280.",
+        "When the result is not a whole number, round to the nearest pixel. Video encoders usually require even dimensions, so round to an even number for video."
+      ]
+    },
+    {
+      "h": "Changing the ratio: crop, pad or stretch",
+      "body": [
+        "Turning a 4:3 photo into a 16:9 frame or a 1:1 post cannot be done by resizing alone. There are three choices:",
+        {
+          "table": {
+            "head": [
+              "Method",
+              "What happens",
+              "When to use it"
+            ],
+            "rows": [
+              [
+                "Crop",
+                "Cuts away part of the image",
+                "Most photos; keep the subject inside the frame"
+              ],
+              [
+                "Pad (letterbox or pillarbox)",
+                "Adds bars or a blurred background",
+                "When nothing may be cut, such as documents or art"
+              ],
+              [
+                "Stretch",
+                "Scales width and height unequally",
+                "Almost never; faces and circles look distorted"
+              ]
+            ]
+          }
+        },
+        "Cropping a 4000 × 3000 image to 16:9 keeps the full width and cuts the height to 4000 × 9 ÷ 16 = 2250 pixels, discarding 25% of the picture. Cropping the same image to 1:1 keeps 3000 × 3000."
+      ]
+    },
+    {
+      "h": "Aspect ratio on the web",
+      "body": [
+        "CSS has an `aspect-ratio` property, for example `aspect-ratio: 16 / 9`, which reserves the right amount of space before an image or video loads. Setting it, or giving images `width` and `height` attributes, prevents the page from jumping as media arrives, which improves the Cumulative Layout Shift score.",
+        {
+          "note": "Platforms change their recommended upload sizes over time. Check the current help page of the service before preparing a large batch of images or a video."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What aspect ratio is 1920 × 1080?",
+      "a": "16:9. Both numbers divide by 120, giving 16 and 9."
+    },
+    {
+      "q": "Is 4K 16:9?",
+      "a": "Consumer 4K UHD is 3840 × 2160, exactly 16:9. Cinema 4K (DCI) is 4096 × 2160, about 1.90:1."
+    },
+    {
+      "q": "What is the aspect ratio of a phone photo?",
+      "a": "Most phone cameras shoot 4:3 by default, such as 4032 × 3024. Many also offer 16:9 and 1:1 modes, which crop the sensor image."
+    },
+    {
+      "q": "Does changing the aspect ratio reduce quality?",
+      "a": "Cropping removes pixels but does not blur the rest. Stretching distorts shapes, and enlarging after a heavy crop can make the image look soft."
+    }
+  ]
+}
