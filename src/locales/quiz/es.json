@@ -30,6 +30,7 @@
     "score": "Puntuación",
     "top3": "Tus tres principales",
     "runnerUp": "También destaca",
+    "ruledOut": "Descartados por tus respuestas",
     "focus": "Área para trabajar",
     "crisisTitle": "Si estás pensando en hacerte daño",
     "crisisBody": "Mereces apoyo ahora mismo. Si crees que podrías actuar según estos pensamientos, llama al número de emergencias local o acude al servicio de urgencias más cercano. También puedes contactar con una línea de crisis gratuita y confidencial: findahelpline.com recoge líneas de todos los países.",
@@ -37,9 +38,9 @@
   },
   "hub": {
     "title": "Tests de personalidad gratis: MBTI, Big Five, amor — cv.cm",
-    "description": "Tests de personalidad gratis: MBTI, Big Five, eneagrama, lenguajes del amor, apego, vocacional, autoestima, ansiedad y depresión. Sin registro ni subir datos.",
+    "description": "Tests de personalidad gratis: MBTI, Big Five, introvertido o extrovertido, eneagrama, lenguajes del amor, apego, conflicto, vocacional, estilo de trabajo, dinero, cronotipo, mascota, anime, forma de cara, autoestima, ansiedad y depresión. Sin registro; tus respuestas no salen del navegador.",
     "h1": "Tests de personalidad y psicología",
-    "lede": "Trece tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "lede": "Dieciocho tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales, tu estilo de trabajo y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
     "groups": {
       "personality": "Personalidad",
       "love": "Amor y relaciones",
@@ -49,7 +50,7 @@
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five usa el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto."
+      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -232,6 +233,72 @@
           "low": "Tienes estabilidad emocional y mantienes la calma bajo presión. Los contratiempos rara vez te afectan por mucho tiempo.",
           "mid": "Sientes estrés y preocupación en niveles normales y sueles recuperarte en un tiempo razonable.",
           "high": "Vives las emociones con intensidad y puedes tender a la preocupación, el estrés o el bajo estado de ánimo. Descansar, hacer ejercicio y hablar las cosas ayuda."
+        }
+      }
+    },
+    "introvert": {
+      "title": "Test de introvertido o extrovertido gratis (IPIP, 20 preguntas) — cv.cm",
+      "description": "¿Eres introvertido, ambivertido o extrovertido? Valora 20 afirmaciones IPIP de dominio público y obtén una puntuación sobre 80 con consejos. Gratis, sin registro.",
+      "h1": "Test de introvertido o extrovertido",
+      "scoreLabel": "Puntuación de extraversión",
+      "lede": "Descubre dónde te sitúas entre la introversión y la extroversión. 20 afirmaciones breves de un cuestionario de investigación, una puntuación sobre 80 y lo que significa para tu energía, tu trabajo y tus amistades.",
+      "about": [
+        "La extraversión es uno de los rasgos del Big Five. Quienes puntúan alto se cargan de energía con la compañía, hablan con soltura y disfrutan de ser vistos. Quienes puntúan bajo, los introvertidos, prefieren grupos pequeños y momentos de calma, y piensan antes de hablar. La mayoría de la gente queda en algún punto intermedio: son ambivertidos.",
+        "Las 20 afirmaciones forman la escala de extraversión de los 100 marcadores de los cinco grandes factores del International Personality Item Pool (IPIP), desarrollados por Lewis Goldberg y de dominio público. La mitad puntúa a la inversa. Los cortes están en el 40 % y el 60 % del rango de la escala (menos del 40 %, introvertido; 40–60 %, ambivertido; más del 60 %, extrovertido); no son normas de población.",
+        "Introversión no es timidez. La timidez es miedo a que te juzguen; la introversión tiene que ver con de dónde sacas la energía. Una persona introvertida puede tener seguridad y habilidad social, y una extrovertida puede ser tímida."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué es una persona ambivertida?",
+          "a": "Alguien en el centro de la escala: sociable en unos ambientes y feliz a solas en otros. La mayoría de la gente es ambivertida."
+        },
+        {
+          "q": "¿Es mejor ser extrovertido?",
+          "a": "No. A los extrovertidos suele resultarles más fácil hacer contactos y trabajar en grupo; los introvertidos suelen destacar en el trabajo profundo y concentrado y en la escucha de tú a tú. Ambos pueden aprender las habilidades del otro."
+        },
+        {
+          "q": "¿De dónde salen las preguntas?",
+          "a": "De los 100 marcadores IPIP de los cinco grandes factores de Lewis Goldberg, un banco de ítems de dominio público muy usado en investigación. Este test usa sus 20 ítems de extraversión."
+        },
+        {
+          "q": "¿Puede cambiar mi resultado?",
+          "a": "Tu nivel básico de extraversión es bastante estable en la edad adulta, pero varía un poco con la edad, tu rol y tu estado de ánimo. Repite el test dentro de unos meses y compara."
+        }
+      ],
+      "items": [
+        "Soy el alma de la fiesta.",
+        "No hablo mucho.",
+        "Me siento a gusto con la gente.",
+        "Me mantengo en segundo plano.",
+        "Inicio conversaciones.",
+        "Tengo poco que decir.",
+        "En las fiestas hablo con mucha gente distinta.",
+        "No me gusta llamar la atención.",
+        "No me importa ser el centro de atención.",
+        "Hablo poco con desconocidos.",
+        "Hago amigos con facilidad.",
+        "Me cuesta acercarme a los demás.",
+        "Tomo las riendas.",
+        "A menudo me siento incómodo con los demás.",
+        "Sé cómo cautivar a la gente.",
+        "Me guardo lo que siento.",
+        "Me siento cómodo con la gente.",
+        "Soy una persona muy reservada.",
+        "Me desenvuelvo bien en situaciones sociales.",
+        "Espero a que otros tomen la iniciativa."
+      ],
+      "results": {
+        "introvert": {
+          "name": "Introvertido",
+          "body": "Recargas energía a solas o con una o dos personas cercanas, y los ratos sociales largos te agotan. Fortalezas: concentración, escucha atenta y pensar antes de hablar. Consejos: planifica tiempo tranquilo después de días intensos en lugar de sentirte culpable; en los eventos, ponte una meta (dos conversaciones de verdad) y vete cuando la cumplas; ofrece compartir ideas por escrito o de tú a tú, donde brillas."
+        },
+        "ambivert": {
+          "name": "Ambivertido",
+          "body": "Estás en el punto medio: sociable cuando el ambiente acompaña y feliz a solas cuando no. Esa flexibilidad es una fortaleza: sabes leer el ambiente y cambiar de modo. Consejo: fíjate en qué situaciones te dan energía y cuáles te la quitan, y organiza tu semana para que ninguna de las dos se acumule demasiado tiempo."
+        },
+        "extrovert": {
+          "name": "Extrovertido",
+          "body": "La gente te da energía, piensas las ideas en voz alta y disfrutas de un ritmo animado. Fortalezas: crear redes de contactos, iniciar conversaciones y animar a un grupo. Consejos: en las reuniones, deja espacio para que hablen las personas más calladas; cuando necesites concentración profunda, organiza sesiones cortas con un amigo o compañero cerca; antes de decir que sí a cada invitación, pregúntate cómo estás."
         }
       }
     },
@@ -464,6 +531,85 @@
         "future": "Escriban por separado dónde quieren estar dentro de cinco años (casa, hijos, carreras) y luego comparen para encontrar los puntos en común."
       }
     },
+    "conflict-style": {
+      "title": "Test de estilo de conflicto gratis: ¿cómo manejas los desacuerdos? — cv.cm",
+      "description": "Test de estilo de conflicto gratis: valora 20 afirmaciones y descubre si tiendes a competir, colaborar, transigir, evitar o complacer, y cuándo ayuda cada uno.",
+      "h1": "Test de estilo de conflicto",
+      "lede": "Todos tenemos una reacción por defecto cuando empieza un desacuerdo. Descubre la tuya entre los cinco estilos de conflicto clásicos, cuánto usas los demás y cuándo conviene cambiar.",
+      "about": [
+        "Los investigadores describen cinco formas de gestionar el conflicto según dos preguntas: cuánto defiendes tus propias necesidades (asertividad) y cuánto te importan las de la otra persona (cooperación). Competir es alto en lo primero, complacer es alto en lo segundo, colaborar es alto en ambas, evitar es bajo en ambas, y transigir queda en el medio.",
+        "Las afirmaciones de esta página se escribieron para cv.cm; no proceden de ningún instrumento comercial. Cada estilo es útil en el momento adecuado. El objetivo no es encontrar el estilo \"correcto\", sino darte cuenta de tu hábito y elegir a propósito."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los cinco estilos de conflicto?",
+          "a": "Competir (mantenerte firme), colaborar (resolverlo juntos para que ganen ambos), transigir (encontrarse a medio camino), evitar (apartarte) y complacer (darle a la otra persona lo que quiere)."
+        },
+        {
+          "q": "¿Qué estilo de conflicto es el mejor?",
+          "a": "Ninguno sirve para todo. Colaborar va bien en temas importantes con tiempo para hablar; competir, en emergencias; transigir, en los bloqueos; evitar, en asuntos triviales o momentos tensos; complacer, cuando el tema importa más a la otra parte."
+        },
+        {
+          "q": "¿Es el instrumento Thomas-Kilmann?",
+          "a": "No. Usa el mismo modelo de cinco estilos que se enseña ampliamente, pero las preguntas y los resultados son originales de cv.cm, y las puntuaciones no son comparables con ningún test comercial."
+        },
+        {
+          "q": "¿Puedo hacerlo con mi pareja o mi equipo?",
+          "a": "Sí. Que cada persona lo haga por separado; después, comparen los gráficos y hablen de a qué estilos recurre cada uno bajo estrés. Conocer la reacción habitual del otro hace más fácil no tomárselo como algo personal."
+        }
+      ],
+      "items": [
+        "En un desacuerdo, defiendo mi postura con firmeza hasta que la otra persona la ve como yo.",
+        "Intento que todos pongan sus inquietudes sobre la mesa antes de decidir nada.",
+        "Me parece bien ceder a medias para poder pasar página.",
+        "Prefiero dejar un tema delicado antes que arriesgarme a una discusión.",
+        "Suelo ceder si el tema le importa más a la otra persona que a mí.",
+        "Cuando estoy seguro de tener razón, no me echo atrás solo por mantener la paz.",
+        "Busco una solución que funcione del todo para ambos, aunque lleve más tiempo.",
+        "Un intercambio justo, en el que cada parte renuncia a algo, me parece un buen resultado.",
+        "Cuando empieza un conflicto, a menudo cambio de tema o me voy de la habitación.",
+        "Mantener la relación en buenos términos me importa más que ganar la discusión.",
+        "Veo un debate como algo que hay que ganar.",
+        "Hago muchas preguntas para entender qué necesita de verdad la otra persona.",
+        "Cuando estamos atascados, propongo partir la diferencia.",
+        "Aplazo las conversaciones difíciles con la esperanza de que las cosas se arreglen solas.",
+        "A menudo pongo los deseos de los demás por delante de los míos para no disgustarlos.",
+        "Si una decisión me importa, presiono mucho por ella, aunque genere algo de tensión.",
+        "Prefiero resolver un desacuerdo juntos que zanjarlo deprisa.",
+        "Renuncio a parte de lo que quiero si la otra persona hace lo mismo.",
+        "Muchos desacuerdos no merecen el esfuerzo, así que los dejo pasar.",
+        "Me resulta fácil decir \"Está bien, hagámoslo a tu manera\"."
+      ],
+      "dims": {
+        "compete": "Competir",
+        "collab": "Colaborar",
+        "compromise": "Transigir",
+        "avoid": "Evitar",
+        "accommodate": "Complacer"
+      },
+      "results": {
+        "compete": {
+          "name": "Competir",
+          "body": "Defiendes tu postura y no te doblegas bajo presión. Ayuda en: emergencias, decisiones impopulares pero necesarias y para evitar que se aprovechen de ti. Perjudica cuando se convierte en tu único recurso: la gente deja de contarte cosas y se resiente en silencio de tus decisiones. Prueba: antes de discutir, haz una pregunta sincera sobre lo que necesita la otra persona, y guarda toda tu fuerza para los temas que de verdad importan."
+        },
+        "collab": {
+          "name": "Colaborar",
+          "body": "Quieres una solución que funcione del todo para ambas partes, y profundizas en los intereses reales detrás de cada postura. Ayuda en: decisiones importantes, relaciones a largo plazo y problemas con margen para respuestas creativas. Perjudica porque exige tiempo y energía, y no todo asunto menor merece un taller. Prueba: decide de antemano si un tema vale el proceso completo; para los menores, un acuerdo rápido a medio camino basta."
+        },
+        "compromise": {
+          "name": "Transigir",
+          "body": "Buscas un punto medio justo para que todos puedan pasar página. Ayuda en: bloqueos, igualdad de poder entre ambas partes y presión de tiempo. Perjudica cuando partir la diferencia demasiado rápido deja a ambos medio satisfechos y se pierde una solución mejor. Prueba: antes de ofrecer el punto medio, pregunta \"¿Qué es lo que más te importa aquí?\"; quizá encuentres un intercambio en el que cada parte consiga lo que más valora."
+        },
+        "avoid": {
+          "name": "Evitar",
+          "body": "Te apartas del conflicto y se te da bien no hacer grandes las cosas pequeñas. Ayuda en: asuntos triviales, momentos tensos que necesitan enfriarse y peleas que no puedes ganar o que no hace falta dar. Perjudica porque los problemas importantes crecen mientras esperan, y los demás pueden interpretar tu silencio como acuerdo. Prueba: cuando evites, fija un momento para volver al tema (\"¿Lo hablamos mañana por la tarde?\") y apunta la idea principal que necesitas decir."
+        },
+        "accommodate": {
+          "name": "Complacer",
+          "body": "Proteges la relación y dejas que los demás se salgan con la suya. Ayuda en: temas que les importan más a ellos, cuando te das cuenta de que estás equivocado y para generar buena voluntad. Perjudica si es tu reacción por defecto: tus propias necesidades desaparecen y la frustración se acumula. Prueba: antes de decir que sí, puntúa del 1 al 10 cuánto te importa el tema; si pasa de 6, di lo que quieres, con amabilidad y claridad."
+        }
+      }
+    },
     "career": {
       "title": "Test vocacional Holland (RIASEC) gratis — cv.cm",
       "description": "Test vocacional gratis basado en el modelo RIASEC de Holland. Valora 36 actividades, obtén tu código Holland de tres letras y profesiones afines. Sin registro.",
@@ -535,6 +681,84 @@
         "C": { "name": "Convencional (organizador)", "body": "Te gustan el orden, la precisión y los procedimientos claros con datos. Profesiones para explorar: contable, auditor, administrativo, coordinador de logística, empleado de banca, administrador de bases de datos." }
       }
     },
+    "work-style": {
+      "title": "Test de estilo de trabajo gratis: ¿remoto, híbrido u oficina? ¿Solo o en equipo? — cv.cm",
+      "description": "Test de estilo de trabajo gratis: valora 20 afirmaciones y descubre si te va el remoto, el híbrido o la oficina, y cuánto equipo, estructura y variedad necesitas.",
+      "h1": "Test de estilo de trabajo",
+      "lede": "¿Dónde y cómo das lo mejor de ti? Puntúa cuatro preferencias, casa u oficina, solo o en equipo, estructura o libertad, concentración o variedad, y recibe un consejo para cada una.",
+      "about": [
+        "La satisfacción laboral no depende solo de lo que haces, sino de cómo está organizado el trabajo. Este test, escrito para cv.cm, mide cuatro preferencias cotidianas: dónde te gusta trabajar, cuánto te gusta trabajar con otros, cuánta estructura quieres y si prefieres variedad o largos ratos de concentración.",
+        "Cada puntuación va de 0 a 100. Por debajo de 40 te inclinas hacia un lado, por encima de 60 hacia el otro, y el centro es una mezcla. Usa el resultado para hacer mejores preguntas en las entrevistas de trabajo (\"¿Cuántos días hay que ir a la oficina?\", \"¿Cómo se fijan las prioridades?\") y para adaptar el trabajo que ya tienes."
+      ],
+      "faq": [
+        {
+          "q": "¿Me dice qué carrera elegir?",
+          "a": "No. Describe condiciones de trabajo, no campos profesionales. Para eso, haz el test vocacional del código Holland y luego usa este para elegir entre trabajos parecidos."
+        },
+        {
+          "q": "Mi puntuación de trabajo remoto está en el medio. ¿Qué significa?",
+          "a": "Probablemente serás más feliz con un modelo híbrido: días de oficina para reuniones y trato con la gente, y días en casa para el trabajo concentrado."
+        },
+        {
+          "q": "¿Y si mi trabajo no encaja con mi resultado?",
+          "a": "Los pequeños cambios ayudan: bloquea tiempo de concentración en tu calendario, pide un día de teletrabajo, acuerda prioridades más claras con tu responsable o intercambia tareas con un compañero al que le guste lo que a ti no."
+        },
+        {
+          "q": "¿Hay un estilo de trabajo mejor que otro?",
+          "a": "No. Los equipos necesitan tanto a quienes les gusta la estructura como a quienes prefieren la libertad, tanto solistas como conectores. Lo que importa es el encaje."
+        }
+      ],
+      "items": [
+        "En casa rindo más que en una oficina.",
+        "Doy lo mejor de mí cuando puedo intercambiar ideas con otras personas.",
+        "Me gusta saber exactamente qué se espera de mí y para cuándo.",
+        "Un día lleno de tareas distintas me da más energía que una sola tarea larga.",
+        "Necesito el ambiente de una oficina para mantenerme motivado.",
+        "Prefiero encargarme yo solo de un trabajo de principio a fin.",
+        "Trabajo mejor cuando decido yo cómo y cuándo hacer las cosas.",
+        "Soy más feliz si puedo dedicarme a una sola tarea durante horas sin cambiar.",
+        "El trayecto al trabajo me parece tiempo perdido.",
+        "Las reuniones y los seguimientos periódicos me ayudan más de lo que me frenan.",
+        "Los procesos y rutinas claros hacen que el trabajo me estrese menos.",
+        "Disfruto de un ritmo rápido con problemas nuevos cada día.",
+        "Aprendo mucho solo con estar cerca de mis compañeros y oír cómo trabajan.",
+        "Los chats de grupo y las reuniones constantes me agotan.",
+        "Las normas rígidas y los horarios fijos me inquietan.",
+        "Las interrupciones frecuentes arruinan mi mejor trabajo.",
+        "Puedo mantener una rutina estable en casa sin que nadie me controle.",
+        "Los logros compartidos significan más para mí que los personales.",
+        "Me gusta tener un responsable que me marque prioridades claras.",
+        "Me aburro enseguida cuando un trabajo se vuelve rutinario."
+      ],
+      "dims": {
+        "remote": "Trabajo desde casa",
+        "team": "Trabajo en equipo",
+        "structure": "Estructura",
+        "variety": "Variedad"
+      },
+      "levels": {
+        "remote": {
+          "low": "Oficina: estar rodeado de compañeros te da energía, concentración y aprendizaje. Busca puestos con una cultura de oficina real y, si trabajas en remoto, usa un coworking o ve a la oficina un día fijo para no aislarte.",
+          "mid": "Híbrido: días de oficina para reuniones y trato con la gente, días en casa para el trabajo concentrado. Pregunta a las empresas cómo funciona el modelo híbrido en la práctica y planifica qué tareas van en qué días.",
+          "high": "Remoto: trabajas bien con tu propio horario y no echas de menos el trayecto. Busca equipos que prioricen el trabajo remoto y comuniquen bien por escrito, y respeta una hora de inicio y de fin para que el trabajo no ocupe todo el día."
+        },
+        "team": {
+          "low": "Solo: prefieres encargarte de un trabajo de principio a fin. Te encajan puestos como especialista, analista, redactor o desarrollador con responsabilidades claras. Acuerda unos pocos seguimientos fijos para estar al día sin reuniones constantes.",
+          "mid": "Mixto: te gusta tener tiempo a solas para hacer el trabajo y tiempo en común para planificarlo y revisarlo. Agrupa las reuniones en una parte del día y deja el resto para concentrarte.",
+          "high": "Equipo: piensas mejor en voz alta y disfrutas de los objetivos compartidos. Busca puestos colaborativos como proyectos, ventas, docencia o equipos de producto y, en las tareas individuales, trabaja en pareja o haz seguimientos breves para mantener la motivación."
+        },
+        "structure": {
+          "low": "Libertad: quieres decidir cómo y cuándo trabajar. Te encajan las startups, el trabajo freelance y los puestos que se evalúan por resultados. Fíjate tus propios plazos y compártelos, para que la libertad no acabe en estrés de última hora.",
+          "mid": "Equilibrio: te gustan los objetivos claros, pero también opinar sobre cómo alcanzarlos. Pide a tus responsables el \"qué\" y el \"para cuándo\", y propón tú el \"cómo\".",
+          "high": "Estructura: las expectativas, los procesos y las prioridades claros te dan calma y te ayudan a hacer un trabajo excelente. Te encajan las organizaciones grandes y los puestos basados en procesos; cuando algo sea ambiguo, pide pronto una lista de comprobación o una definición de \"terminado\"."
+        },
+        "variety": {
+          "low": "Concentración profunda: das lo mejor de ti en bloques largos y sin interrupciones. Reserva bloques de concentración de dos o tres horas, desactiva las notificaciones y busca puestos que valoren la profundidad, como investigación, ingeniería o edición.",
+          "mid": "Equilibrio: algo de variedad te mantiene fresco, pero cambiar demasiado de tarea te desgasta. Agrupa las tareas parecidas y dale a cada día un foco principal.",
+          "high": "Variedad: los problemas nuevos y el ritmo rápido te dan energía, y la rutina te aburre. Encajas en operaciones, atención a clientes, eventos o startups; lleva una lista sencilla para que no se te escape ninguno de tus muchos frentes."
+        }
+      }
+    },
     "money": {
       "title": "Test de personalidad financiera: ¿qué tipo eres? — cv.cm",
       "description": "Test de personalidad financiera gratis: valora 20 afirmaciones y descubre si eres ahorrador, gastador, inversor, evitador o generoso, con fortalezas y un consejo.",
@@ -585,6 +809,365 @@
         "investor": { "name": "El Inversor", "body": "Fortaleza: detectas oportunidades y haces que el dinero trabaje para ti. Punto ciego: perseguir grandes ganancias puede suponer demasiado riesgo en un solo sitio. Consejo: ten primero un fondo de emergencia, y nunca apuestes a una sola carta más de lo que puedas permitirte perder." },
         "avoider": { "name": "El Evitador", "body": "Fortaleza: el dinero no gobierna tu vida. Punto ciego: facturas sin abrir, recargos por demora y oportunidades perdidas porque mirar te estresa. Consejo: reserva cada semana una cita de 15 minutos con tu dinero para revisar el saldo y pagar facturas; se vuelve fácil enseguida." },
         "giver": { "name": "El Generoso", "body": "Fortaleza: generosidad y relaciones sólidas. Punto ciego: regalar lo que necesitas para tu propia seguridad. Consejo: decide de antemano un presupuesto para dar, así podrás ser generoso sin poner en riesgo tu futuro." }
+      }
+    },
+    "chronotype": {
+      "title": "Test de cronotipo gratis: ¿eres alondra o búho? — cv.cm",
+      "description": "Test de cronotipo gratis: responde 14 preguntas sobre tu ritmo natural de sueño y energía y descubre si eres alondra, búho o intermedio, con consejos de horario.",
+      "h1": "Test de cronotipo: ¿alondra o búho?",
+      "lede": "Tu cronotipo es el horario natural de tu reloj biológico: cuándo te entra sueño, cuándo te despiertas y cuándo piensas mejor. Responde 14 preguntas sobre cómo vives cuando nadie te pone el despertador.",
+      "about": [
+        "El cronotipo es en parte genético y cambia con la edad: los adolescentes y adultos jóvenes tienden a ser más tardíos, y la mayoría se vuelve más madrugadora a partir de los veinticinco años, aproximadamente. Las alondras están más despiertas por la mañana; los búhos rinden al máximo por la noche; la mayoría queda en algún punto intermedio.",
+        "Estas preguntas se escribieron para cv.cm y no son un cuestionario clínico. El resultado es una autorreflexión, no un diagnóstico. Si a menudo no puedes dormirte, te despiertas agotado tras una noche completa o tienes mucho sueño durante el día, habla con un médico: pueden ser señales de un problema de sueño que no tiene nada que ver con ser búho."
+      ],
+      "faq": [
+        {
+          "q": "¿Puede un búho volverse madrugador?",
+          "a": "En parte. Tu tendencia de fondo se mantiene, pero puedes adelantar tu horario con hábitos constantes: luz intensa nada más despertarte, luz tenue por la noche y la misma hora de despertar cada día, adelantándola 15 minutos cada vez."
+        },
+        {
+          "q": "¿Hay un cronotipo más sano?",
+          "a": "Ningún cronotipo es malo para la salud por sí mismo. Los problemas vienen del desajuste: un búho obligado a madrugar acumula deuda de sueño. Lo más importante es ajustar tu horario a tu reloj cuando puedas y mantenerlo regular."
+        },
+        {
+          "q": "¿Por qué se pregunta por los fines de semana?",
+          "a": "Dormir mucho más tarde los días libres que los laborables, lo que a veces se llama jet lag social, es una señal habitual de que tu reloj natural va más tarde que tu horario."
+        },
+        {
+          "q": "¿Es un test de trastornos del sueño?",
+          "a": "No. Describe tu horario natural. No puede detectar insomnio, apnea del sueño ni otros trastornos; consulta a un médico si los problemas de sueño afectan a tu día a día."
+        }
+      ],
+      "items": [
+        {
+          "q": "Sin despertador ni planes, ¿a qué hora te despertarías de forma natural?",
+          "options": [
+            "Antes de las 6:30",
+            "Entre las 6:30 y las 8:00",
+            "Entre las 8:00 y las 9:30",
+            "Después de las 9:30"
+          ]
+        },
+        {
+          "q": "Una noche libre sin nada al día siguiente, ¿a qué hora empiezas a tener sueño?",
+          "options": [
+            "Antes de las 22:00",
+            "Entre las 22:00 y las 23:30",
+            "Entre las 23:30 y la 1:00",
+            "Después de la 1:00"
+          ]
+        },
+        {
+          "q": "¿Cómo te sientes en la primera media hora después de despertarte?",
+          "options": [
+            "Despierto y con ganas de empezar",
+            "Bien al cabo de unos minutos",
+            "Aturdido durante un buen rato",
+            "Como un zombi hasta media mañana"
+          ]
+        },
+        {
+          "q": "¿Cuándo haces tu mejor trabajo concentrado?",
+          "options": [
+            "A primera hora de la mañana",
+            "A media mañana",
+            "Por la tarde",
+            "Por la noche"
+          ]
+        },
+        {
+          "q": "Un amigo te propone salir a correr a las 7:00. Piensas…",
+          "options": [
+            "Genial, es mi hora favorita",
+            "Vale, si me acuesto temprano",
+            "Iré, pero me costará",
+            "Ni hablar"
+          ]
+        },
+        {
+          "q": "Una noche de juegos o una fiesta empieza a las 23:00. Tú…",
+          "options": [
+            "Ya estarías apagándote",
+            "Aguantarías una hora más o menos",
+            "Estarías bien",
+            "Apenas estarías arrancando"
+          ]
+        },
+        {
+          "q": "¿Cuánto más tarde te despiertas los días libres que los laborables?",
+          "options": [
+            "Más o menos a la misma hora",
+            "Menos de una hora más tarde",
+            "Entre una y dos horas más tarde",
+            "Más de dos horas más tarde"
+          ]
+        },
+        {
+          "q": "Puedes elegir la hora de un examen o una entrevista importante. Eliges…",
+          "options": [
+            "Las 8:00",
+            "Las 11:00",
+            "Las 15:00",
+            "Las 19:00"
+          ]
+        },
+        {
+          "q": "¿Cuánta hambre tienes a la hora del desayuno?",
+          "options": [
+            "Tengo hambre nada más despertarme",
+            "Me entra hambre en menos de una hora",
+            "No hasta media mañana",
+            "Suelo saltármelo"
+          ]
+        },
+        {
+          "q": "Si esta noche tuvieras que apagar la luz a las 22:00…",
+          "options": [
+            "Me dormiría sin problema",
+            "Me dormiría al cabo de un rato",
+            "Estaría despierto una hora o más",
+            "Me resultaría casi imposible"
+          ]
+        },
+        {
+          "q": "En un día normal, ¿cuándo sueles tener menos energía?",
+          "options": [
+            "Al caer la tarde",
+            "Justo después de comer",
+            "A media mañana",
+            "Nada más levantarme"
+          ]
+        },
+        {
+          "q": "¿Cuándo suelen llegarte las mejores ideas?",
+          "options": [
+            "Por la mañana",
+            "Hacia el mediodía",
+            "Por la noche",
+            "Pasada la medianoche"
+          ]
+        },
+        {
+          "q": "Si tu horario de trabajo dependiera totalmente de ti, trabajarías…",
+          "options": [
+            "De 6:00 a 14:00",
+            "De 8:00 a 16:00",
+            "De 10:00 a 18:00",
+            "De 13:00 a 21:00 o más tarde"
+          ]
+        },
+        {
+          "q": "¿Qué te describe mejor?",
+          "options": [
+            "Claramente una persona de mañanas",
+            "Más de mañanas que de noches",
+            "Más de noches que de mañanas",
+            "Claramente una persona nocturna"
+          ]
+        }
+      ],
+      "scoreLabel": "Puntuación de búho (0 = lo más madrugador)",
+      "results": {
+        "lark": {
+          "name": "Alondra",
+          "body": "Tu reloj biológico va temprano: te despiertas con facilidad y piensas mejor antes de comer. Consejos: reserva el trabajo más difícil para entre las 8:00 y las 12:00, más o menos, y deja las tardes para reuniones y tareas rutinarias; protege tu hora de acostarte cuando salgas, o planea una siesta corta en lugar de quedarte en la cama hasta tarde; baja el brillo de las pantallas una hora antes de dormir para no despertarte a las 4:00. A las alondras les suele cansar la vida social nocturna: no pasa nada por proponer un brunch en lugar de unas copas."
+        },
+        "between": {
+          "name": "Intermedio",
+          "body": "Tu reloj está en el punto medio, como el de la mayoría, así que te adaptas con bastante facilidad a los horarios normales. Consejos: despiértate a la misma hora todos los días, fines de semana incluidos, con un margen de una hora; toma luz natural por la mañana; y detecta tu pico de rendimiento, normalmente a media mañana, para las tareas exigentes. Una rutina estable importa más que la hora que elijas."
+        },
+        "owl": {
+          "name": "Búho",
+          "body": "Tu reloj biológico va tarde: las mañanas te cuestan y cobras vida por la noche. Consejos: toma luz intensa, al aire libre si puedes, en la primera hora después de despertarte, y mantén por la noche una luz tenue y cálida; los fines de semana no te despiertes más de una hora más tarde de lo habitual para limitar el jet lag social; deja la cafeína unas ocho horas antes de acostarte; para adelantar tu horario, mueve la hora de acostarte y de despertar 15 minutos cada pocos días. Pide reuniones más tarde cuando puedas, y deja el trabajo exigente para última hora de la tarde."
+        }
+      }
+    },
+    "pet": {
+      "title": "Test de qué mascota es para ti: descubre tu mascota ideal gratis — cv.cm",
+      "description": "Test de mascota gratis: 14 preguntas sobre tu tiempo, casa, presupuesto y alergias para saber si te va un gato, perro, conejo, peces, pájaro, hámster o reptil.",
+      "h1": "¿Qué mascota es para ti?",
+      "lede": "Una buena elección te mejora la vida a ti y al animal. Responde con sinceridad 14 preguntas sobre tu tiempo, espacio, dinero y hábitos, y descubre qué mascota encaja con tu vida ahora mismo.",
+      "about": [
+        "Este test, escrito para cv.cm, sopesa los aspectos prácticos que deciden si un animal va a estar bien contigo: tiempo diario, tamaño de la casa, horas fuera, viajes, alergias, presupuesto, ruido, esperanza de vida y las tareas que estás dispuesto a asumir. Es un punto de partida, no una garantía: cada animal y cada raza varían mucho.",
+        "Antes de llevar un animal a casa: infórmate sobre las necesidades de la especie, calcula el coste total incluido el veterinario, revisa tu contrato de alquiler y la normativa local, y piensa quién lo cuidará cuando viajes. Plantéate adoptar en una protectora o refugio, y acoger primero si tienes dudas. Una mascota es un compromiso para toda su vida, que puede durar décadas."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuál es la mascota más fácil para principiantes?",
+          "a": "No hay mascota que no dé trabajo. Para personas ocupadas, lo que mejor suele encajar es un gato o un acuario bien montado; para familias con tiempo y espacio, un perro. Los animales pequeños, como hámsteres y conejos, necesitan cuidados más especializados de lo que se suele pensar."
+        },
+        {
+          "q": "Tengo alergia. ¿Puedo tener mascota?",
+          "a": "Los peces y los reptiles no sueltan pelo ni caspa, así que son las opciones más seguras. Ningún gato ni perro es realmente hipoalergénico; si quieres uno, pasa tiempo con ese animal antes de adoptarlo y consulta a un médico."
+        },
+        {
+          "q": "¿Cuánto cuesta una mascota?",
+          "a": "Depende de la especie y de dónde vivas. Además de la comida, cuenta con el equipo inicial (jaula, acuario, lámparas), las vacunas, la esterilización y un fondo para urgencias veterinarias. Montar un terrario o un acuario cuesta al principio más de lo que mucha gente espera."
+        },
+        {
+          "q": "¿Debería tener una mascota para mi hijo?",
+          "a": "Solo si un adulto está dispuesto a ser quien la cuide de verdad. Los niños pueden ayudar, pero los hámsteres y los conejos son frágiles y a menudo no les gusta que los levanten en brazos, así que supervisa cada interacción."
+        }
+      ],
+      "items": [
+        {
+          "q": "¿Cuánto tiempo puedes dedicar cada día a una mascota, entre cuidados y juego?",
+          "options": [
+            "Menos de 15 minutos",
+            "De 15 a 45 minutos",
+            "De una a dos horas",
+            "Dos horas o más, paseos incluidos"
+          ]
+        },
+        {
+          "q": "¿Dónde vives?",
+          "options": [
+            "En una habitación pequeña, un estudio o una residencia",
+            "En un apartamento de tamaño medio",
+            "En un apartamento amplio o una casa",
+            "En una casa con jardín"
+          ]
+        },
+        {
+          "q": "En un día normal, ¿cuánto tiempo pasa sin nadie en casa?",
+          "options": [
+            "Diez horas o más",
+            "Una jornada laboral normal, ocho o nueve horas",
+            "Casi siempre hay alguien en casa"
+          ]
+        },
+        {
+          "q": "¿Con qué frecuencia te ausentas varios días?",
+          "options": [
+            "A menudo, por trabajo o viajes",
+            "Unas cuantas veces al año, y alguien puede cuidar de la mascota",
+            "Rara vez"
+          ]
+        },
+        {
+          "q": "¿Hay alergias en tu casa?",
+          "options": [
+            "Ninguna que yo sepa",
+            "Sí, al pelo o la caspa de animales",
+            "No estoy seguro"
+          ]
+        },
+        {
+          "q": "¿Cuánto puedes gastar al mes en comida, accesorios y un fondo para el veterinario?",
+          "options": [
+            "Lo mínimo posible",
+            "Una cantidad moderada",
+            "Lo suficiente para veterinario y buena comida"
+          ]
+        },
+        {
+          "q": "¿Cómo quieres disfrutar de tu mascota?",
+          "options": [
+            "Mirándola; me relaja",
+            "Mimos de vez en cuando de un compañero independiente",
+            "Jugando, entrenando y haciendo cosas juntos cada día",
+            "Compañía tranquila y algo de contacto suave por la noche"
+          ]
+        },
+        {
+          "q": "¿Cómo llevas el ruido?",
+          "options": [
+            "Necesito una casa tranquila",
+            "Un poco de ruido por la noche no me importa",
+            "Los ladridos o el parloteo no me molestan"
+          ]
+        },
+        {
+          "q": "¿Para cuántos años estás dispuesto a comprometerte?",
+          "options": [
+            "Dos o tres años",
+            "Unos diez años",
+            "Quince años o más",
+            "Décadas, incluso más de 30 años"
+          ]
+        },
+        {
+          "q": "¿Qué tarea te parece menos pesada?",
+          "options": [
+            "Pasear haga el tiempo que haga",
+            "Limpiar un arenero",
+            "Cambiar y analizar el agua cada semana",
+            "Limpiar una jaula y cambiar el lecho",
+            "Controlar lámparas de calor y comida viva o congelada"
+          ]
+        },
+        {
+          "q": "¿Con quién vives?",
+          "options": [
+            "Solo",
+            "Con mi pareja o otros adultos con quienes comparto vivienda",
+            "Con niños pequeños"
+          ]
+        },
+        {
+          "q": "¿Qué permite tu contrato de alquiler o las normas de tu edificio?",
+          "options": [
+            "Solo animales pequeños en jaula o acuario",
+            "Gatos y animales pequeños, pero no perros",
+            "Cualquier mascota, o la casa es mía"
+          ]
+        },
+        {
+          "q": "¿Qué te parecería una mascota que te sigue a todas partes y reclama tu atención?",
+          "options": [
+            "Me encantaría",
+            "Bien, en pequeñas dosis",
+            "Prefiero una mascota que esté a gusto por su cuenta"
+          ]
+        },
+        {
+          "q": "¿Qué tarde con tu mascota te apetece más?",
+          "options": [
+            "Ver a un animalito inquieto escarbar y correr en su rueda",
+            "Rato libre con un conejo correteando o un pájaro charlando conmigo",
+            "Ver a un lagarto tomar el sol bajo su lámpara o a los peces deslizarse",
+            "Un paseo juntos y luego acurrucarnos en el sofá"
+          ]
+        }
+      ],
+      "dims": {
+        "cat": "Gato",
+        "dog": "Perro",
+        "rabbit": "Conejo",
+        "fish": "Peces",
+        "bird": "Pájaro",
+        "hamster": "Hámster",
+        "reptile": "Reptil"
+      },
+      "results": {
+        "cat": {
+          "name": "Gato",
+          "body": "Un gato encaja con una vida ocupada y un espacio moderado: es independiente pero cariñoso, se queda bien solo durante una jornada laboral y no necesita paseos. Cuenta con: 15 años o más, un arenero limpio (uno por gato más uno), rascadores, juego todos los días, revisiones veterinarias anuales y esterilización. Los gatos de interior viven más; un catio o una repisa junto a la ventana los mantiene entretenidos."
+        },
+        "dog": {
+          "name": "Perro",
+          "body": "Tienes el tiempo, el espacio y la energía que necesita un perro, y quieres un compañero que comparta tus días. Cuenta con: de 10 a 15 años, paseos y juego a diario, educación desde el primer día, alguien en casa o un paseador los días largos, y un presupuesto mayor para comida, peluquería y veterinario. Elige el nivel de energía y el tamaño según tu vida, y mira primero en protectoras y asociaciones de rescate de razas."
+        },
+        "rabbit": {
+          "name": "Conejo",
+          "body": "Un conejo encaja en un hogar tranquilo con espacio en el suelo y alguien en casa buena parte del día. Los conejos son sociables, así que la mayoría vive más feliz en pareja, y necesitan horas sueltos en una habitación preparada para ellos, no una conejera pequeña. Cuenta con: de 8 a 12 años, heno ilimitado, un veterinario que conozca conejos y esterilización. Rara vez les gusta que los levanten; disfruta de ellos a su altura."
+        },
+        "fish": {
+          "name": "Peces",
+          "body": "Un acuario encaja con espacios pequeños, agendas apretadas y alergias, y verlo relaja de verdad. Olvídate de la pecera: empieza con un acuario con filtro y calentador de al menos 40 litros, y deja que madure varias semanas antes de añadir peces. Cuenta con: cambios parciales de agua semanales, kits de análisis y elegir especies adecuadas al tamaño del acuario y compatibles entre sí."
+        },
+        "bird": {
+          "name": "Pájaro",
+          "body": "Un pájaro encaja con alguien que pasa mucho tiempo en casa, disfruta de la interacción y no le importa el ruido. Los loros, incluso los pequeños, son listos, sociables y necesitan horas fuera de la jaula, juguetes para morder y adiestramiento. Cuenta con: una vida larga (periquitos de 5 a 10 años, loros grandes 30 o más), un veterinario de aves y una dieta fresca más allá de las semillas. Si pasas el día fuera, una pareja de pájaros pequeños puede ser mejor que uno solo."
+        },
+        "hamster": {
+          "name": "Hámster",
+          "body": "Un hámster encaja con un espacio pequeño, un presupuesto modesto y una rutina tranquila por la noche. Son solitarios y nocturnos, así que estarán despiertos cuando tú te relajes, y su rueda puede chirriar de noche. Cuenta con: un recinto grande (al menos 100 × 50 cm de suelo), un lecho profundo para excavar, una rueda maciza del tamaño adecuado y una vida de 2 a 3 años. Manéjalo con suavidad; no es ideal para niños pequeños."
+        },
+        "reptile": {
+          "name": "Reptil",
+          "body": "Un reptil encaja con alguien curioso, paciente, alérgico al pelo o que viaja a menudo. Muchas especies son tranquilas y pueden quedarse solas uno o dos días cuando su instalación funciona bien. Cuenta con: un terrario adecuado con calor e iluminación UVB con temporizador, comida viva o congelada para muchas especies, un veterinario de exóticos y una vida larga (geckos leopardo de 15 a 20 años, tortugas mucho más). Elige animales criados en cautividad e infórmate antes sobre la especie."
+        }
       }
     },
     "anime": {
