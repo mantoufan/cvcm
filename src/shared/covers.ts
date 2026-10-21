@@ -247,6 +247,15 @@ export const GAME_COVER: Record<GameId, string> = {
   "lunar-limit": "/covers/games/lunar-limit.jpg?v=1",
   "ralph-4": "/covers/games/ralph-4.jpg?v=1",
   "neslife": "/covers/games/neslife.jpg?v=1",
+  "elevator-madness-dx": "/covers/games/elevator-madness-dx.jpg?v=1",
+  "bat-cave": "/covers/games/bat-cave.jpg?v=1",
+  "pipes-snes": "/covers/games/pipes-snes.jpg?v=1",
+  "castle-platformer": "/covers/games/castle-platformer.jpg?v=1",
+  "miniplanets": "/covers/games/miniplanets.jpg?v=1",
+  "kleleatoms-md": "/covers/games/kleleatoms-md.jpg?v=1",
+  "pixel-dungeon-md": "/covers/games/pixel-dungeon-md.jpg?v=1",
+  "dungeon-puzzlers-lament": "/covers/games/dungeon-puzzlers-lament.jpg?v=1",
+  "bunkerboy": "/covers/games/bunkerboy.jpg?v=1",
 };
 
 export const LEARN_COVER: Record<TutorialId, string> = {

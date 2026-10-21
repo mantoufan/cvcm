@@ -3947,5 +3947,233 @@
         "body": "zlib. Código: https://github.com/NovaSquirrel/NESLife. No se alojan ROM comerciales."
       }
     ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX es un juego de acción gratuito para SNES. El ROM se carga al abrir la página. Manejas un ascensor a mano y mantienes contentos a todos los pasajeros.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Lee los controles",
+        "body": "La primera pantalla etiqueta el pad: saltar, abrir puerta, subir y bajar el ascensor. Pulsa Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Empieza el turno",
+        "body": "Pulsa Start otra vez en la pantalla de título para empezar.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Maneja el ascensor",
+        "body": "Camina hasta un panel. Mueve la cabina con X y A, párala en la planta correcta y abre su puerta con Y. No la estrelles contra el techo ni el suelo.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/undisbeliever/elevator-madness-dx. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave es un juego gratuito de vuelo por cuevas para SNES. El ROM se carga al abrir la página. Un botón mantiene al murciélago en el aire.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Vuela",
+        "body": "Pulsa Start y luego toca o mantén B para subir; suelta para bajar. Sigue el túnel blanco.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Choca y repite",
+        "body": "Tocar la pared marrón muestra GAME OVER con tu distancia. Pulsa Start para volver a jugar.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/undisbeliever/bat-cave. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes es un puzle gratuito para SNES. El ROM se carga al abrir la página. Coloca piezas hasta que la tubería vaya del inicio al final.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mira el tablero",
+        "body": "El tablero empieza vacío, con la cola de piezas a la izquierda.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Coloca tubería",
+        "body": "Mueve el cursor con la cruceta y pulsa B para soltar la siguiente pieza. Une la pieza inicial y la final con una tubería sin cortes.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/undisbeliever/pipes. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer es un juego de plataformas gratuito para SNES. El ROM se carga al abrir la página. Cinco niveles de castillo que terminan en una puerta.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Entra en el castillo",
+        "body": "La primera sala tiene dos criaturas en el suelo y la puerta de salida a la derecha.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Corre y salta",
+        "body": "Camina con la cruceta, mantén Y para correr y pulsa B para saltar sobre las criaturas hasta la puerta.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/undisbeliever/castle_platformer. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets es un juego de plataformas gratuito para Mega Drive. El ROM se carga al abrir la página. Cada fase es un pequeño planeta que recorres entero.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empezar",
+        "body": "Elige START. PASSWORD te lleva a una fase posterior si tienes un código.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Lee el cartel de la fase",
+        "body": "Cada fase empieza con su nombre, como PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Corre alrededor del planeta",
+        "body": "El planeta gira mientras corres. Salta con A, B o C y supera el planeta antes de que se agote el temporizador de arriba.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "zlib. Código: https://github.com/sikthehedgehog/miniplanets. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD es un juego gratuito de reacción en cadena para Mega Drive. El ROM se carga al abrir la página. Llena casillas hasta que estallen y domina el tablero.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Título",
+        "body": "Pulsa cualquier botón para llegar al menú principal.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Configura",
+        "body": "Elige el ancho y el alto del tablero, haz que cada jugador sea humano o CPU y pulsa el botón verde de play.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Coloca átomos",
+        "body": "Mueve el cursor y pulsa A para añadir un átomo. Las esquinas estallan con 2, los bordes con 3 y las casillas centrales con 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/Nightwolf-47/KleleAtoms-MD. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition es un roguelike gratuito. El ROM se carga al abrir la página. Cada partida genera una mazmorra nueva de 25 pisos.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Empieza una partida",
+        "body": "Pulsa Start en la pantalla de título y elige Random run en el menú.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Elige una clase",
+        "body": "Warrior golpea más fuerte, Rogue es sigiloso, Hunter lucha a distancia y Mage usa varitas. Confirma con Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Explora",
+        "body": "Muévete con la cruceta y camina hacia los enemigos para atacar. Recoge objetos, come cuando la barra Food esté baja y busca la escalera de bajada.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "GPL-3.0. Código de esta versión: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament es un puzle gratuito para GBA. El ROM se carga al abrir la página. Tú preparas la mazmorra; el héroe solo cumple órdenes.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Lee el cartel del nivel",
+        "body": "Cada nivel empieza con un número y una regla, como \"Keys open doors\". Pulsa A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Coloca y lanza",
+        "body": "Revisa HERO'S ACTIONS, coloca con A los objetos de YOUR ITEMS en el tablero y pulsa Start para verlo avanzar.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MPL-2.0; música CC-BY 3.0 de VWolfdog. Código: https://github.com/agbrs/agb/tree/master/examples/the-dungeon-puzzlers-lament. No se alojan ROM comerciales."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy es un juego de supervivencia gratuito para Game Boy. El ROM se carga al abrir la página. Día a día, tú decides quién come.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Ponte a cubierto",
+        "body": "Pulsa A en el título y durante la escena del bombardeo, y elige tu caja inicial.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Revisa los suministros",
+        "body": "Cada día empieza con el recuento de comida, agua y botiquines.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Repártelos",
+        "body": "Ve a Mike, Rose o Jeff y pulsa A para darle comida, agua o un botiquín. Elige OK cuando termines.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "Licencia",
+        "body": "MIT. Código: https://github.com/UrbanZero/bunkerboy. No se alojan ROM comerciales."
+      }
+    ]
   }
 }
