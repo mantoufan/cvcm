@@ -299,12 +299,14 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     case "top": {
       const [first, second] = result.ranked;
       const nodes = [...headline(results[first.dim])];
-      // Name every result tied with the winner, else the runner-up when it is close.
-      const tied = result.ranked.slice(1).filter((s) => s.pct === first.pct && results[s.dim]);
-      const close = tied.length ? tied : second && first.pct - second.pct <= 10 && results[second.dim] ? [second] : [];
-      if (close.length) {
-        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(close.map((s) => results[s.dim].name));
-        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${names}`));
+      const rule = QUIZ_DEFS[id].result;
+      // Spread ties: name every result tied with the winner (the hash only picked which one leads).
+      const tied = rule.kind === "top" && rule.tie === "spread" ? result.ranked.slice(1).filter((s) => s.raw === first.raw && results[s.dim]) : [];
+      if (tied.length) {
+        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(tied.map((s) => results[s.dim].name));
+        nodes.push(h("p", { class: "muted" }, `${ui.tiedWith}: ${names}`));
+      } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
+        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
       if (result.excluded.length) {
         const names = listNames(locale, result.excluded.map((dim) => label(dim)));

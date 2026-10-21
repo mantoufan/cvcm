@@ -123,7 +123,7 @@ describe("test page UI", () => {
     const main = mount("avatar-element");
     answer(main, (i) => def.items[i].options.findIndex((o) => (o[order[i % 4]] ?? 0) > 0));
     submit(main);
-    const line = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Also strong"));
+    const line = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Tied with"));
     const named = ["Waterbender", "Earthbender", "Firebender", "Airbender"].filter((name) => line?.includes(name));
     expect(named).toHaveLength(3);
   });

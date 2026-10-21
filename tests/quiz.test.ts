@@ -397,6 +397,11 @@ describe("test pages: scoring", () => {
   });
 
   it("gives every game and anime result the same best score and spreads ties evenly", () => {
+    // The tie hash reads which questions scored each result, so it only makes sense on choice quizzes.
+    for (const id of QUIZZES) {
+      const def = QUIZ_DEFS[id];
+      if (def.result.kind === "top" && def.result.tie === "spread") expect(def.type, id).toBe("choice");
+    }
     for (const id of GAME_ANIME) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();

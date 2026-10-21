@@ -57,7 +57,7 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
 export type ResultRule =
   | { kind: "profile" }
   | { kind: "types" }
-  | { kind: "top"; tie?: "spread" }
+  | { kind: "top"; /** Choice quizzes only. */ tie?: "spread" }
   | { kind: "code" }
   | { kind: "quadrant"; x: string; y: string; results: { lowLow: string; highLow: string; lowHigh: string; highHigh: string } }
   | { kind: "areas"; bands: readonly { min: number; key: string; floor?: number }[] }
@@ -575,11 +575,13 @@ function tieHash(text: string): number {
  * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
  */
 function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
-  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || a.i - b.i).map(({ s }) => s);
+  // With hits, compare exact shares: two results whose percentages only round to the same number are not tied.
+  const exact = (a: DimScore, b: DimScore): number => (hits ? b.raw * a.max - a.raw * b.max : 0);
+  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || exact(a.s, b.s) || a.i - b.i).map(({ s }) => s);
   if (!hits) return ranked;
   for (let start = 0; start < ranked.length; ) {
     let end = start + 1;
-    while (end < ranked.length && ranked[end].pct === ranked[start].pct) end++;
+    while (end < ranked.length && exact(ranked[start], ranked[end]) === 0) end++;
     if (end - start > 1) {
       const group = ranked.slice(start, end);
       const seed = group.map((g) => `${g.dim}=${(hits.get(g.dim) ?? []).join(".")}`).join(";");
@@ -609,8 +611,9 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const byDim = new Map(scores.map((s) => [s.dim, s]));
   let total = 0;
   const excluded = new Set<string>();
-  // Choice quizzes: which questions (and weights) scored each dimension, for `tie: "spread"`.
-  const hits = new Map<string, string[]>();
+  const rule = def.result;
+  // `tie: "spread"` (choice quizzes): which questions, and weights, scored each dimension.
+  const hits = rule.kind === "top" && rule.tie === "spread" && def.type === "choice" ? new Map<string, string[]>() : undefined;
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -634,7 +637,11 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         if (!s) continue;
         s.raw += weight;
         total += weight;
-        if (weight > 0) hits.set(dim, [...(hits.get(dim) ?? []), `${i}:${weight}`]);
+        if (hits && weight > 0) {
+          const list = hits.get(dim) ?? [];
+          list.push(`${i}:${weight}`);
+          hits.set(dim, list);
+        }
       }
       for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
@@ -642,9 +649,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
-  const rule = def.result;
-  const spread = rule.kind === "top" && rule.tie === "spread";
-  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), spread ? hits : undefined);
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), hits);
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
