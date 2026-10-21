@@ -424,6 +424,10 @@ describe("test pages: scoring", () => {
       winners.add(result.key);
     }
     expect([...winners].sort()).toEqual(["earth", "water"]);
+    // Changing an answer between the two trailing elements leaves the water/earth tie, and its winner, alone.
+    const before = pick(["water", "water", "water", "water", "water", "earth", "earth", "earth", "earth", "earth", "fire", "air"]);
+    const after = pick(["water", "water", "water", "water", "water", "earth", "earth", "earth", "earth", "earth", "air", "air"]);
+    expect(scoreQuiz("avatar-element", before).key).toBe(scoreQuiz("avatar-element", after).key);
     // Every way to split the 12 questions 6/6 between two elements ties them; each pair should split about evenly.
     const halves: number[][] = [];
     const choose = (start: number, picked: number[]): void => {

@@ -299,8 +299,12 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     case "top": {
       const [first, second] = result.ranked;
       const nodes = [...headline(results[first.dim])];
-      if (second && first.pct - second.pct <= 10 && results[second.dim]) {
-        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
+      // Name every result tied with the winner, else the runner-up when it is close.
+      const tied = result.ranked.slice(1).filter((s) => s.pct === first.pct && results[s.dim]);
+      const close = tied.length ? tied : second && first.pct - second.pct <= 10 && results[second.dim] ? [second] : [];
+      if (close.length) {
+        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(close.map((s) => results[s.dim].name));
+        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${names}`));
       }
       if (result.excluded.length) {
         const names = listNames(locale, result.excluded.map((dim) => label(dim)));

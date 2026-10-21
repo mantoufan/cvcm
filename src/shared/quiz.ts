@@ -44,8 +44,9 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  * profile  — every dimension as a percentage with a low / mid / high reading (Big Five).
  * types    — four opposite pairs; dims are pairs like "EI", agree scores the first letter (16 types).
  * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension, or with
- *            `tie: "spread"` to one picked by a hash of the answers: with many results scored by small whole numbers,
- *            ties are common, and any fixed order would favor some results. The same answers always give the same result.
+ *            `tie: "spread"` to one picked by a hash of the answers that scored the tied results: with many results
+ *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
+ *            answers always give the same result.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
@@ -569,12 +570,26 @@ function tieHash(text: string): number {
   return hash >>> 0;
 }
 
-/** Highest first. A tie goes to the higher hash of `seed` and the dimension when a seed is given (see `top`), else keeps definition order. */
-function rank(scores: DimScore[], seed?: string): DimScore[] {
-  return scores
-    .map((s, i) => ({ s, i, tie: seed === undefined ? 0 : tieHash(`${seed}|${s.dim}`) }))
-    .sort((a, b) => b.s.pct - a.s.pct || b.tie - a.tie || a.i - b.i)
-    .map(({ s }) => s);
+/**
+ * Highest first; a tie keeps definition order. With `hits` (see `top`), each group of tied results is reordered by a
+ * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
+ */
+function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
+  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || a.i - b.i).map(({ s }) => s);
+  if (!hits) return ranked;
+  for (let start = 0; start < ranked.length; ) {
+    let end = start + 1;
+    while (end < ranked.length && ranked[end].pct === ranked[start].pct) end++;
+    if (end - start > 1) {
+      const group = ranked.slice(start, end);
+      const seed = group.map((g) => `${g.dim}=${(hits.get(g.dim) ?? []).join(".")}`).join(";");
+      const order = new Map(group.map((g) => [g.dim, tieHash(`${seed}|${g.dim}`)]));
+      group.sort((a, b) => order.get(b.dim)! - order.get(a.dim)!);
+      ranked.splice(start, group.length, ...group);
+    }
+    start = end;
+  }
+  return ranked;
 }
 
 /** Every item answered with a valid option index. */
@@ -594,6 +609,8 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const byDim = new Map(scores.map((s) => [s.dim, s]));
   let total = 0;
   const excluded = new Set<string>();
+  // Choice quizzes: which questions (and weights) scored each dimension, for `tie: "spread"`.
+  const hits = new Map<string, string[]>();
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -617,6 +634,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         if (!s) continue;
         s.raw += weight;
         total += weight;
+        if (weight > 0) hits.set(dim, [...(hits.get(dim) ?? []), `${i}:${weight}`]);
       }
       for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
@@ -625,8 +643,8 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
   const rule = def.result;
-  const seed = rule.kind === "top" && rule.tie === "spread" ? answers.join(",") : undefined;
-  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), seed);
+  const spread = rule.kind === "top" && rule.tie === "spread";
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), spread ? hits : undefined);
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
