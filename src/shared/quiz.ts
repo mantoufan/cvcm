@@ -44,8 +44,8 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  * profile  — every dimension as a percentage with a low / mid / high reading (Big Five).
  * types    — four opposite pairs; dims are pairs like "EI", agree scores the first letter (16 types).
  * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension, or with
- *            `tie: "recent"` (choice quizzes) to the one the latest answers picked: with many results scored by
- *            small whole numbers, ties are common and definition order would favor the first few.
+ *            `tie: "spread"` to one picked by a hash of the answers: with many results scored by small whole numbers,
+ *            ties are common, and any fixed order would favor some results. The same answers always give the same result.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
@@ -56,7 +56,7 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
 export type ResultRule =
   | { kind: "profile" }
   | { kind: "types" }
-  | { kind: "top"; tie?: "recent" }
+  | { kind: "top"; tie?: "spread" }
   | { kind: "code" }
   | { kind: "quadrant"; x: string; y: string; results: { lowLow: string; highLow: string; lowHigh: string; highHigh: string } }
   | { kind: "areas"; bands: readonly { min: number; key: string; floor?: number }[] }
@@ -220,37 +220,38 @@ const PET: ChoiceItem[] = [
   { options: [{ hamster: 2 }, { rabbit: 2, bird: 2 }, { reptile: 2, fish: 1 }, { dog: 2, cat: 1 }] },
 ];
 
-// Game and anime fan quizzes (unofficial). Each option scores 2 for its main result, sometimes 1 for a second.
+// Game and anime fan quizzes (unofficial). Each option scores 2 for its main result, sometimes 1 for a second;
+// every result in a quiz has the same highest possible score, so none is easier to land on.
 
 /** Ten of the 18 Pokémon types, each result with a partner Pokémon in the copy. */
 const POKEMON: ChoiceItem[] = [
   { options: [{ fighting: 2, fire: 1 }, { normal: 2 }, { water: 2 }, { ghost: 2 }] },
-  { options: [{ grass: 2 }, { electric: 2 }, { dragon: 2 }, { fairy: 2 }] },
-  { options: [{ fire: 2 }, { water: 2 }, { psychic: 2 }, { fighting: 2 }] },
-  { options: [{ fighting: 2 }, { dragon: 2 }, { psychic: 2 }, { grass: 2 }] },
+  { options: [{ grass: 2 }, { electric: 2, ghost: 1 }, { dragon: 2 }, { fairy: 2 }] },
+  { options: [{ fire: 2 }, { water: 2, fairy: 1 }, { psychic: 2 }, { fighting: 2 }] },
+  { options: [{ fighting: 2 }, { dragon: 2 }, { psychic: 2, water: 1 }, { grass: 2 }] },
   { options: [{ electric: 2 }, { grass: 2 }, { normal: 2 }, { ghost: 2 }] },
-  { options: [{ fire: 2 }, { electric: 2 }, { water: 2 }, { ghost: 2, psychic: 1 }] },
-  { options: [{ fairy: 2 }, { fire: 2, dragon: 1 }, { ghost: 2 }, { psychic: 2 }] },
-  { options: [{ psychic: 2 }, { electric: 2 }, { fairy: 2 }, { normal: 2, water: 1 }] },
+  { options: [{ fire: 2 }, { electric: 2 }, { water: 2, grass: 1 }, { ghost: 2, psychic: 1 }] },
+  { options: [{ fairy: 2, grass: 1 }, { fire: 2, dragon: 1 }, { ghost: 2 }, { psychic: 2 }] },
+  { options: [{ psychic: 2 }, { electric: 2, fighting: 1 }, { fairy: 2 }, { normal: 2, water: 1 }] },
   { options: [{ fire: 2 }, { grass: 2 }, { fairy: 2 }, { normal: 2 }] },
   { options: [{ fighting: 2 }, { water: 2 }, { dragon: 2 }, { psychic: 2 }] },
   { options: [{ fire: 2, electric: 1 }, { normal: 2, water: 1 }, { dragon: 2 }, { ghost: 2 }] },
-  { options: [{ fighting: 2 }, { electric: 2 }, { fairy: 2, grass: 1 }, { dragon: 2 }] },
+  { options: [{ fighting: 2 }, { electric: 2, normal: 1 }, { fairy: 2, grass: 1 }, { dragon: 2 }] },
 ];
 
 /** Genshin Impact's seven elements, one per nation and its ideal (freedom, contracts, eternity, wisdom, justice, war, love). */
 const GENSHIN: ChoiceItem[] = [
-  { options: [{ anemo: 2 }, { geo: 2 }, { dendro: 2 }, { hydro: 2 }] },
-  { options: [{ anemo: 2 }, { geo: 2 }, { electro: 2 }, { cryo: 2 }] },
-  { options: [{ pyro: 2 }, { cryo: 2 }, { geo: 2 }, { hydro: 2 }] },
-  { options: [{ geo: 2 }, { anemo: 2 }, { electro: 2 }, { dendro: 2 }] },
-  { options: [{ geo: 2 }, { pyro: 2 }, { dendro: 2 }, { electro: 2 }] },
-  { options: [{ hydro: 2 }, { cryo: 2 }, { anemo: 2 }, { pyro: 2 }] },
-  { options: [{ anemo: 2 }, { geo: 2 }, { electro: 2 }, { cryo: 2 }] },
+  { options: [{ anemo: 2 }, { geo: 2, electro: 1 }, { dendro: 2 }, { hydro: 2 }] },
+  { options: [{ anemo: 2, dendro: 1 }, { geo: 2, hydro: 1, pyro: 1 }, { electro: 2 }, { cryo: 2 }] },
+  { options: [{ pyro: 2, anemo: 1 }, { cryo: 2 }, { geo: 2, dendro: 1 }, { hydro: 2, electro: 1 }] },
+  { options: [{ geo: 2 }, { anemo: 2, pyro: 1 }, { electro: 2 }, { dendro: 2 }] },
+  { options: [{ geo: 2 }, { pyro: 2, anemo: 1 }, { dendro: 2 }, { electro: 2 }] },
+  { options: [{ hydro: 2 }, { cryo: 2, dendro: 1 }, { anemo: 2 }, { pyro: 2, electro: 1 }] },
+  { options: [{ anemo: 2 }, { geo: 2 }, { electro: 2, pyro: 1 }, { cryo: 2, hydro: 1 }] },
   { options: [{ pyro: 2 }, { hydro: 2 }, { dendro: 2 }, { cryo: 2 }] },
   { options: [{ anemo: 2 }, { electro: 2 }, { dendro: 2 }, { hydro: 2 }] },
-  { options: [{ geo: 2 }, { pyro: 2 }, { hydro: 2 }, { cryo: 2 }] },
-  { options: [{ geo: 2 }, { hydro: 2 }, { cryo: 2 }, { anemo: 2 }] },
+  { options: [{ geo: 2 }, { pyro: 2, electro: 1 }, { hydro: 2, dendro: 1 }, { cryo: 2 }] },
+  { options: [{ geo: 2 }, { hydro: 2 }, { cryo: 2, pyro: 1 }, { anemo: 2 }] },
   { options: [{ electro: 2 }, { dendro: 2 }, { pyro: 2 }, { cryo: 2 }] },
 ];
 
@@ -272,19 +273,19 @@ const SONIC: ChoiceItem[] = [
 
 /** The 12 Dungeons & Dragons classes of the 5th-edition SRD. */
 const DND: ChoiceItem[] = [
-  { options: [{ barbarian: 2 }, { bard: 2 }, { rogue: 2 }, { wizard: 2 }] },
+  { options: [{ barbarian: 2, fighter: 1 }, { bard: 2, sorcerer: 1 }, { rogue: 2 }, { wizard: 2 }] },
   { options: [{ barbarian: 2, fighter: 1 }, { rogue: 2 }, { wizard: 2 }, { bard: 2 }] },
   { options: [{ wizard: 2 }, { sorcerer: 2 }, { warlock: 2 }, { cleric: 2 }] },
-  { options: [{ druid: 2 }, { ranger: 2 }, { monk: 2 }, { cleric: 2 }] },
+  { options: [{ druid: 2 }, { ranger: 2 }, { monk: 2 }, { cleric: 2, paladin: 1 }] },
   { options: [{ paladin: 2 }, { druid: 2 }, { fighter: 2 }, { rogue: 2 }] },
-  { options: [{ barbarian: 2 }, { cleric: 2 }, { ranger: 2 }, { monk: 2 }] },
+  { options: [{ barbarian: 2 }, { cleric: 2, paladin: 1 }, { ranger: 2 }, { monk: 2 }] },
   { options: [{ sorcerer: 2 }, { warlock: 2 }, { paladin: 2 }, { barbarian: 2 }] },
   { options: [{ ranger: 2 }, { warlock: 2 }, { fighter: 2 }, { bard: 2 }] },
   { options: [{ fighter: 2 }, { monk: 2 }, { cleric: 2 }, { sorcerer: 2 }] },
-  { options: [{ bard: 2 }, { wizard: 2 }, { monk: 2 }, { fighter: 2 }] },
+  { options: [{ bard: 2, rogue: 1 }, { wizard: 2 }, { monk: 2 }, { fighter: 2 }] },
   { options: [{ paladin: 2 }, { warlock: 2 }, { druid: 2 }, { sorcerer: 2 }] },
   { options: [{ paladin: 2 }, { rogue: 2 }, { druid: 2 }, { monk: 2 }] },
-  { options: [{ warlock: 2 }, { cleric: 2 }, { ranger: 2, rogue: 1 }, { bard: 2 }] },
+  { options: [{ warlock: 2, sorcerer: 1 }, { cleric: 2 }, { ranger: 2, rogue: 1 }, { bard: 2 }] },
   { options: [{ wizard: 2 }, { druid: 2 }, { barbarian: 2 }, { ranger: 2 }] },
 ];
 
@@ -292,11 +293,11 @@ const DND: ChoiceItem[] = [
 const NARUTO: ChoiceItem[] = [
   { options: [{ naruto: 2 }, { sasuke: 2 }, { sakura: 2 }, { jiraiya: 2 }] },
   { options: [{ lee: 2 }, { shikamaru: 2 }, { sakura: 2 }, { kakashi: 2 }] },
-  { options: [{ naruto: 2 }, { shikamaru: 2 }, { gaara: 2 }, { itachi: 2 }] },
-  { options: [{ naruto: 2 }, { sasuke: 2 }, { hinata: 2 }, { kakashi: 2, shikamaru: 1 }] },
+  { options: [{ naruto: 2 }, { shikamaru: 2 }, { gaara: 2 }, { itachi: 2, kakashi: 1 }] },
+  { options: [{ naruto: 2 }, { sasuke: 2 }, { hinata: 2 }, { kakashi: 2 }] },
   { options: [{ gaara: 2, naruto: 1 }, { itachi: 2 }, { lee: 2 }, { kakashi: 2 }] },
   { options: [{ naruto: 2 }, { shikamaru: 2 }, { hinata: 2 }, { jiraiya: 2 }] },
-  { options: [{ shikamaru: 2 }, { sakura: 2 }, { jiraiya: 2 }, { sasuke: 2 }] },
+  { options: [{ shikamaru: 2 }, { sakura: 2 }, { jiraiya: 2, kakashi: 1 }, { sasuke: 2 }] },
   { options: [{ lee: 2, naruto: 1 }, { sasuke: 2 }, { hinata: 2 }, { gaara: 2 }] },
   { options: [{ sakura: 2 }, { shikamaru: 2 }, { itachi: 2 }, { lee: 2 }] },
   { options: [{ gaara: 2 }, { kakashi: 2 }, { hinata: 2 }, { itachi: 2 }] },
@@ -306,17 +307,17 @@ const NARUTO: ChoiceItem[] = [
 
 /** Ten Demon Slayer Breathing styles (Sun left out: hardly anyone uses it). */
 const DEMON_SLAYER: ChoiceItem[] = [
-  { options: [{ water: 2 }, { thunder: 2 }, { beast: 2 }, { mist: 2 }] },
-  { options: [{ flame: 2 }, { insect: 2 }, { wind: 2 }, { sound: 2 }] },
+  { options: [{ water: 2 }, { thunder: 2 }, { beast: 2 }, { mist: 2, stone: 1 }] },
+  { options: [{ flame: 2 }, { insect: 2 }, { wind: 2, beast: 1 }, { sound: 2 }] },
   { options: [{ thunder: 2 }, { beast: 2 }, { stone: 2 }, { mist: 2 }] },
   { options: [{ love: 2 }, { flame: 2 }, { beast: 2 }, { water: 2 }] },
   { options: [{ love: 2 }, { wind: 2 }, { sound: 2 }, { stone: 2 }] },
   { options: [{ water: 2 }, { flame: 2 }, { insect: 2 }, { stone: 2 }] },
   { options: [{ thunder: 2 }, { mist: 2 }, { insect: 2 }, { sound: 2 }] },
   { options: [{ water: 2 }, { beast: 2 }, { insect: 2 }, { stone: 2 }] },
-  { options: [{ water: 2 }, { flame: 2 }, { love: 2 }, { wind: 2 }] },
+  { options: [{ water: 2 }, { flame: 2 }, { love: 2 }, { wind: 2, beast: 1 }] },
   { options: [{ love: 2 }, { thunder: 2 }, { sound: 2 }, { mist: 2 }] },
-  { options: [{ flame: 2 }, { sound: 2 }, { wind: 2 }, { insect: 2 }] },
+  { options: [{ flame: 2 }, { sound: 2 }, { wind: 2, stone: 1 }, { insect: 2 }] },
   { options: [{ thunder: 2 }, { love: 2 }, { wind: 2 }, { mist: 2 }] },
 ];
 
@@ -336,20 +337,20 @@ const JJK: ChoiceItem[] = [
   { options: [{ nanami: 2 }, { nobara: 2 }, { maki: 2 }, { todo: 2 }] },
 ];
 
-/** Avatar: The Last Airbender's four bending elements; every question offers all four. */
+/** Avatar: The Last Airbender's four bending elements; every question offers all four, each element three times in each position. */
 const AVATAR: ChoiceItem[] = [
   { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
-  { options: [{ water: 2 }, { earth: 2 }, { fire: 2 }, { air: 2 }] },
+  { options: [{ earth: 2 }, { air: 2 }, { water: 2 }, { fire: 2 }] },
+  { options: [{ fire: 2 }, { earth: 2 }, { air: 2 }, { water: 2 }] },
+  { options: [{ air: 2 }, { water: 2 }, { earth: 2 }, { fire: 2 }] },
+  { options: [{ water: 2 }, { fire: 2 }, { air: 2 }, { earth: 2 }] },
+  { options: [{ earth: 2 }, { water: 2 }, { fire: 2 }, { air: 2 }] },
+  { options: [{ fire: 2 }, { air: 2 }, { water: 2 }, { earth: 2 }] },
+  { options: [{ air: 2 }, { earth: 2 }, { fire: 2 }, { water: 2 }] },
+  { options: [{ water: 2 }, { air: 2 }, { earth: 2 }, { fire: 2 }] },
+  { options: [{ earth: 2 }, { fire: 2 }, { air: 2 }, { water: 2 }] },
+  { options: [{ fire: 2 }, { water: 2 }, { earth: 2 }, { air: 2 }] },
+  { options: [{ air: 2 }, { fire: 2 }, { water: 2 }, { earth: 2 }] },
 ];
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
@@ -454,56 +455,56 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["fire", "water", "grass", "electric", "psychic", "fairy", "dragon", "ghost", "fighting", "normal"],
     items: POKEMON,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   genshin: {
     id: "genshin",
     type: "choice",
     dims: ["anemo", "geo", "electro", "dendro", "hydro", "pyro", "cryo"],
     items: GENSHIN,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   sonic: {
     id: "sonic",
     type: "choice",
     dims: ["sonic", "tails", "knuckles", "amy", "shadow", "rouge", "cream", "silver"],
     items: SONIC,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   "dnd-class": {
     id: "dnd-class",
     type: "choice",
     dims: ["barbarian", "bard", "cleric", "druid", "fighter", "monk", "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"],
     items: DND,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   naruto: {
     id: "naruto",
     type: "choice",
     dims: ["naruto", "sasuke", "sakura", "kakashi", "hinata", "shikamaru", "gaara", "itachi", "lee", "jiraiya"],
     items: NARUTO,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   "demon-slayer": {
     id: "demon-slayer",
     type: "choice",
     dims: ["water", "flame", "thunder", "beast", "insect", "wind", "mist", "love", "sound", "stone"],
     items: DEMON_SLAYER,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   "jujutsu-kaisen": {
     id: "jujutsu-kaisen",
     type: "choice",
     dims: ["yuji", "megumi", "nobara", "gojo", "nanami", "maki", "toge", "todo"],
     items: JJK,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
   "avatar-element": {
     id: "avatar-element",
     type: "choice",
     dims: ["water", "earth", "fire", "air"],
     items: AVATAR,
-    result: { kind: "top", tie: "recent" },
+    result: { kind: "top", tie: "spread" },
   },
 };
 
@@ -556,12 +557,19 @@ function pct(raw: number, min: number, max: number): number {
   return max === min ? 0 : Math.round(((raw - min) / (max - min)) * 100);
 }
 
-/** Highest first. A tie goes to the later `recent` value when given (see `top`), then keeps definition order. */
-function rank(scores: DimScore[], recent?: ReadonlyMap<string, number>): DimScore[] {
-  const last = (s: DimScore): number => recent?.get(s.dim) ?? -1;
+/** 32-bit FNV-1a, for an even, repeatable tie-break. */
+function fnv1a(text: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 0x01000193) >>> 0;
+  return hash;
+}
+
+/** Highest first. A tie goes to the higher hash of `seed` and the dimension when a seed is given (see `top`), else keeps definition order. */
+function rank(scores: DimScore[], seed?: string): DimScore[] {
+  const tie = (s: DimScore): number => (seed === undefined ? 0 : fnv1a(`${seed}|${s.dim}`));
   return scores
-    .map((s, i) => ({ s, i }))
-    .sort((a, b) => b.s.pct - a.s.pct || last(b.s) - last(a.s) || a.i - b.i)
+    .map((s, i) => ({ s, i, t: tie(s) }))
+    .sort((a, b) => b.s.pct - a.s.pct || b.t - a.t || a.i - b.i)
     .map(({ s }) => s);
 }
 
@@ -582,8 +590,6 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   const byDim = new Map(scores.map((s) => [s.dim, s]));
   let total = 0;
   const excluded = new Set<string>();
-  // Choice quizzes: the last question whose picked option scored each dimension.
-  const picked = new Map<string, number>();
 
   if (def.type === "likert") {
     const top = SCALE_POINTS[def.scale] - 1;
@@ -607,7 +613,6 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
         if (!s) continue;
         s.raw += weight;
         total += weight;
-        if (weight > 0) picked.set(dim, i);
       }
       for (const dim of item.exclude?.[answer] ?? []) excluded.add(dim);
     });
@@ -616,8 +621,8 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
   const rule = def.result;
-  const recent = rule.kind === "top" && rule.tie === "recent" ? picked : undefined;
-  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), recent);
+  const seed = rule.kind === "top" && rule.tie === "spread" ? answers.join(",") : undefined;
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), seed);
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
