@@ -293,6 +293,10 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
+      if (result.excluded.length) {
+        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(result.excluded.map((dim) => label(dim)));
+        nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
+      }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       return { nodes, summary: results[first.dim]?.name ?? first.dim };
     }

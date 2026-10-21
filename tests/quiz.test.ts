@@ -340,6 +340,15 @@ describe("test pages: scoring", () => {
     expect([...caged]).toEqual(expect.arrayContaining(["bird", "rabbit", "hamster", "fish", "reptile"]));
   });
 
+  it("rules out hamsters and rabbits with young children", () => {
+    // The answers that suit a hamster best, but with young children at home.
+    const hamsterish = [1, 0, 0, 1, 0, 0, 3, 1, 0, 3, 2, 0, 1, 0];
+    const result = scoreQuiz("pet", hamsterish);
+    expect(result.excluded).toEqual(expect.arrayContaining(["rabbit", "hamster"]));
+    expect(["rabbit", "hamster"]).not.toContain(result.key);
+    expect(scoreQuiz("pet", hamsterish.map((a, i) => (i === 10 ? 0 : a))).key).toBe("hamster");
+  });
+
   it("keeps birds and rabbits possible under a caged-animals-only lease", () => {
     expect(scoreQuiz("pet", [2, 2, 2, 2, 0, 2, 2, 2, 3, 3, 1, 0, 0, 1]).key).toBe("bird");
     expect(scoreQuiz("pet", [2, 2, 2, 1, 0, 1, 3, 0, 1, 1, 1, 0, 1, 1]).key).toBe("rabbit");
@@ -362,11 +371,12 @@ describe("test pages: scoring", () => {
       // For each result, the answers that favor it most must make it win.
       for (const dim of quiz.dims) {
         const answers = quiz.items.map((item) => {
+          // Never an option that rules the result out.
+          const value = (i: number): number =>
+            (item.exclude?.[i]?.includes(dim) ? -1000 : 0) + (item.options[i][dim] ?? 0) * 10 - Object.keys(item.options[i]).length;
           let best = 0;
-          item.options.forEach((o, i) => {
-            const score = (o[dim] ?? 0) * 10 - Object.keys(o).length;
-            const prev = item.options[best];
-            if (score > (prev[dim] ?? 0) * 10 - Object.keys(prev).length) best = i;
+          item.options.forEach((_, i) => {
+            if (value(i) > value(best)) best = i;
           });
           return best;
         });

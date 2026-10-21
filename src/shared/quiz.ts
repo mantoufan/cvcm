@@ -180,8 +180,8 @@ const PET: ChoiceItem[] = [
   { options: [{ fish: 2, reptile: 1 }, { cat: 2, hamster: 2, reptile: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2, bird: 2 }] },
   // Living space.
   { options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, reptile: 1, bird: 1 }, { rabbit: 2, cat: 1, bird: 1 }, { dog: 2 }] },
-  // Hours away from home.
-  { options: [{ fish: 2, reptile: 2 }, { cat: 2, hamster: 1, fish: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
+  // Hours away from home (hamsters sleep through the day).
+  { options: [{ fish: 2, reptile: 2, hamster: 1 }, { cat: 2, hamster: 1, fish: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
   // Travel.
   { options: [{ reptile: 2, fish: 1 }, { cat: 2, hamster: 1, rabbit: 1 }, { dog: 2, bird: 2, rabbit: 1 }] },
   // Allergies: a fur or dander allergy leaves only fish and reptiles (feather dust is a common allergen too).
@@ -192,19 +192,22 @@ const PET: ChoiceItem[] = [
   // Monthly budget.
   { options: [{ fish: 2, hamster: 2 }, { cat: 2, rabbit: 1, bird: 1, reptile: 1 }, { dog: 2, rabbit: 1, bird: 1, reptile: 1 }] },
   // How you want to interact.
-  { options: [{ fish: 2, reptile: 1 }, { cat: 2 }, { dog: 2, bird: 2 }, { hamster: 2, rabbit: 1, reptile: 1 }] },
+  { options: [{ fish: 2, reptile: 1, hamster: 1 }, { cat: 2 }, { dog: 2, bird: 2 }, { hamster: 2, rabbit: 1, reptile: 1 }] },
   // Noise.
   { options: [{ fish: 2, reptile: 2, rabbit: 1 }, { cat: 2, hamster: 1 }, { dog: 2, bird: 2 }] },
   // Years of commitment.
   { options: [{ hamster: 2, fish: 1 }, { rabbit: 2, dog: 1, fish: 1 }, { cat: 2, dog: 1, bird: 1, reptile: 1 }, { bird: 2, reptile: 2 }] },
   // Least bad chore.
   { options: [{ dog: 2 }, { cat: 2, rabbit: 1 }, { fish: 2 }, { hamster: 2, rabbit: 1, bird: 1 }, { reptile: 2 }] },
-  // Who lives with you.
-  { options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }] },
-  // Rental or building rules: "small caged or tank animals only" (birds and rabbits live in cages too) and "no dogs"
-  // are hard limits.
+  // Who lives with you. Hamsters and rabbits are fragile and easily dropped: not with young children.
   {
-    options: [{ fish: 2, hamster: 2, reptile: 1 }, { cat: 2, rabbit: 1, bird: 1 }, { dog: 2, rabbit: 1, bird: 1 }],
+    options: [{ cat: 1, reptile: 1, fish: 1, hamster: 1 }, { rabbit: 1, bird: 1, dog: 1, cat: 1 }, { dog: 2, fish: 2, cat: 1 }],
+    exclude: [undefined, undefined, ["rabbit", "hamster"]],
+  },
+  // Rental or building rules: "small caged or tank animals only" (birds and rabbits live in cages too) and "no dogs"
+  // are hard limits. No points: what a lease allows says nothing about which pet suits you.
+  {
+    options: [{}, {}, {}],
     exclude: [["dog", "cat"], ["dog"]],
   },
   // A pet that follows you everywhere.

@@ -105,6 +105,16 @@ describe("test page UI", () => {
     expect(work.querySelectorAll("#result .quiz-trait")).toHaveLength(4);
   });
 
+  it("names the pets the answers ruled out", () => {
+    const main = mount("pet");
+    // Fur allergy (question 5, option 2): only fish and reptiles stay possible.
+    answer(main, (i) => (i === 4 ? 1 : 0));
+    submit(main);
+    const note = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Ruled out"));
+    expect(note).toContain("Dog");
+    expect(note).toContain("Cat");
+  });
+
   it("lists every test on the hub", () => {
     document.body.innerHTML = "<main></main>";
     const main = document.querySelector("main")!;
