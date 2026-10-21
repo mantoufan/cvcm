@@ -247,6 +247,15 @@ function crisisBox(locale: Locale): HTMLElement {
 }
 
 /** The result block for one test, plus a one-line summary for "Copy result". */
+/** "A, B and C" in the page language; plain commas where Intl.ListFormat is missing (Safari before 14.1). */
+function listNames(locale: Locale, names: string[]): string {
+  try {
+    return new Intl.ListFormat(locale, { type: "conjunction" }).format(names);
+  } catch {
+    return names.join(", ");
+  }
+}
+
 function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResult): { nodes: HTMLElement[]; summary: string } {
   const ui = quizUi(locale);
   const def = QUIZ_DEFS[id];
@@ -294,7 +303,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
       if (result.excluded.length) {
-        const names = new Intl.ListFormat(locale, { type: "conjunction" }).format(result.excluded.map((dim) => label(dim)));
+        const names = listNames(locale, result.excluded.map((dim) => label(dim)));
         nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
