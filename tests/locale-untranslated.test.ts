@@ -9,10 +9,10 @@ import zhCN from "../src/locales/zh-CN.json";
 import zhTW from "../src/locales/zh-TW.json";
 import allowed from "./fixtures/locale-same-as-en.json";
 
-/** Dotted paths whose text in `other` is still exactly the English text (and contains a word). */
+/** Dotted paths whose text in `other` is still exactly the English text (and contains Latin letters). */
 function sameAsEnglish(base: unknown, other: unknown, prefix = ""): string[] {
   if (typeof base === "string") {
-    return base === other && /[a-z]{3}/.test(base) ? [prefix] : [];
+    return base === other && /[A-Za-z]{2}/.test(base) ? [prefix] : [];
   }
   if (typeof base !== "object" || base === null || typeof other !== "object" || other === null) return [];
   return Object.entries(base as Record<string, unknown>).flatMap(([k, v]) =>
@@ -28,5 +28,10 @@ describe("untranslated strings", () => {
   it.each(Object.keys(tables) as (keyof typeof tables)[])("has no new English leftovers in %s", (name) => {
     const extra = sameAsEnglish(en, tables[name]).filter((path) => !allowed[name].includes(path));
     expect(extra).toEqual([]);
+  });
+
+  it.each(Object.keys(tables) as (keyof typeof tables)[])("keeps the %s allowlist current", (name) => {
+    const same = new Set(sameAsEnglish(en, tables[name]));
+    expect(allowed[name].filter((path) => !same.has(path))).toEqual([]);
   });
 });

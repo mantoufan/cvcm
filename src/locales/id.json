@@ -561,8 +561,8 @@
       "blurb": "Bilangan bulat Web Crypto. Tanpa unggah."
     },
     "html": {
-      "name": "Encode HTML",
-      "blurb": "Encode/decode entitas. Tanpa unggah."
+      "name": "Enkode HTML",
+      "blurb": "Enkode/dekode entitas. Tanpa unggah."
     },
     "cron": {
       "name": "Penjelas cron",
@@ -629,8 +629,8 @@
       "blurb": "Balik dan palindrom. Tidak diunggah."
     },
     "url-encode": {
-      "name": "URL encode",
-      "blurb": "Percent encode. Tidak diunggah."
+      "name": "Enkode URL",
+      "blurb": "Enkode/dekode percent-encoding. Tidak diunggah."
     },
     "text-hex": {
       "name": "Hex",
@@ -2178,7 +2178,7 @@
       "q2": "Apakah teksnya diunggah?",
       "a2": "Tidak. Hash dibuat di tab ini. Menutup tab membuang masukan.",
       "q3": "Bisa hash berkas?",
-      "a3": "Bisa. Buka berkas membacanya secara lokal dan meng-hash byte-nya.",
+      "a3": "Bisa. Hash berkas membacanya secara lokal dan meng-hash byte-nya.",
       "q4": "Apakah MD5 aman untuk kata sandi?",
       "a4": "Tidak. MD5 dan SHA-1 sudah rusak untuk keamanan. Pakai untuk checksum, bukan menyimpan kata sandi.",
       "q5": "Apa yang disalin oleh Salin?",
@@ -2258,7 +2258,7 @@
     },
     "html": {
       "q1": "Bisa encode HTML di sini?",
-      "a1": "Bisa. Tempel teks. Encode mengubah <>&\"' menjadi entitas. Decode membalik kode bernama dan numerik.",
+      "a1": "Bisa. Tempel teks. Enkode mengubah <>&\"' menjadi entitas. Dekode membalik kode bernama dan numerik.",
       "q2": "Apakah teksnya diunggah?",
       "a2": "Tidak. Konversi berjalan di tab ini.",
       "q3": "Entitas bernama apa saja?",
@@ -2473,15 +2473,15 @@
       "a5": "Bisa. Salin menaruh teks terbalik ke clipboard."
     },
     "url-encode": {
-      "q1": "Bisa URL-encode teks di sini?",
-      "a1": "Bisa. Encode memakai percent-encoding (encodeURIComponent). Decode mengubah urutan % kembali menjadi teks.",
+      "q1": "Bisa enkode URL teks di sini?",
+      "a1": "Bisa. Enkode memakai percent-encoding (encodeURIComponent). Dekode mengubah urutan % kembali menjadi teks.",
       "q2": "Apakah ini diunggah?",
-      "a2": "Tidak. Encoding tetap di tab ini.",
+      "a2": "Tidak. Enkode tetap di tab ini.",
       "q3": "Bagaimana dengan tanda plus?",
-      "a3": "Saat decode, + menjadi spasi, seperti lazimnya query string.",
+      "a3": "Saat dekode, + menjadi spasi, seperti lazimnya query string.",
       "q4": "Apakah ini pengurai URL lengkap?",
-      "a4": "Bukan. Alat ini meng-encode atau men-decode string yang Anda tempel. URL tidak dipecah menjadi bagian.",
-      "q5": "Bagaimana jika decode gagal?",
+      "a4": "Bukan. Alat ini mengenkode atau mendekode string yang Anda tempel. URL tidak dipecah menjadi bagian.",
+      "q5": "Bagaimana jika dekode gagal?",
       "a5": "Urutan % yang rusak memunculkan galat. Perbaiki pasangan hex dan coba lagi."
     },
     "text-hex": {
@@ -2498,7 +2498,7 @@
     },
     "json": {
       "q1": "Bisa merapikan JSON di sini?",
-      "a1": "Bisa. Tempel JSON lalu rapikan dengan indentasi, atau minify menjadi satu baris.",
+      "a1": "Bisa. Tempel JSON lalu rapikan dengan indentasi, atau Perkecil menjadi satu baris.",
       "q2": "Apakah ini diunggah?",
       "a2": "Tidak. Pemformatan tetap di tab ini.",
       "q3": "Bagaimana jika JSON tidak valid?",
@@ -2510,7 +2510,7 @@
     },
     "base64": {
       "q1": "Bisa encode Base64 di sini?",
-      "a1": "Bisa. Encode teks menjadi Base64, atau decode Base64 kembali menjadi teks. Memakai UTF-8.",
+      "a1": "Bisa. Enkode teks menjadi Base64, atau dekode Base64 kembali menjadi teks. Memakai UTF-8.",
       "q2": "Apakah ini diunggah?",
       "a2": "Tidak. Encoding tetap di tab ini.",
       "q3": "Bagaimana dengan berkas?",
@@ -2534,7 +2534,7 @@
     },
     "sort": {
       "q1": "Bisa mengurutkan baris di sini?",
-      "a1": "Bisa. Tempel satu item per baris. Urutkan A→Z, Z→A, atau simpan salinan pertama tiap baris.",
+      "a1": "Bisa. Tempel satu item per baris. Urutkan A→Z, Z→A, atau hapus baris duplikat dan simpan yang pertama.",
       "q2": "Apakah ini diunggah?",
       "a2": "Tidak. Pengurutan tetap di tab ini.",
       "q3": "Apakah unik termasuk pengurutan?",
@@ -2973,7 +2973,7 @@
     "copyHex": "Salin hex",
     "copyRgb": "Salin RGB",
     "copied": "Tersalin",
-    "dropper": "Eyedropper",
+    "dropper": "Pipet warna",
     "noDropper": "Eyedropper butuh browser Chromium.",
     "contrast": "Kontras vs putih {white}:1 · vs hitam {black}:1"
   },
@@ -4317,7 +4317,7 @@
     "options": "Opsi",
     "kind": "Jenis",
     "kindPerson": "Nama orang",
-    "kindUser": "Username",
+    "kindUser": "Nama pengguna",
     "count": "Jumlah",
     "generate": "Buat",
     "copy": "Salin daftar",
@@ -4458,7 +4458,7 @@
     "toName": "Nama klien",
     "toAddress": "Alamat klien",
     "meta": "Faktur",
-    "sheetTitle": "INVOICE",
+    "sheetTitle": "FAKTUR",
     "number": "Nomor",
     "date": "Tanggal",
     "due": "Jatuh tempo",
@@ -4480,7 +4480,7 @@
     "title": "Pembuat tanda tangan",
     "back": "Semua alat",
     "privacyNote": "Goresan tetap di tab ini. Tidak diunggah. Bukan e-sign legal.",
-    "pad": "Pad",
+    "pad": "Area tanda tangan",
     "hint": "Gambar dengan mouse, stylus, atau jari. Unduh PNG.",
     "options": "Pena",
     "color": "Warna",
@@ -4674,7 +4674,7 @@
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Warna",
     "input": "HEX, RGB, atau HSL",
-    "placeholder": "#f7b6cb or rgb(247, 182, 203)",
+    "placeholder": "#f7b6cb atau rgb(247, 182, 203)",
     "result": "Hasil konversi",
     "hex": "HEX",
     "rgb": "RGB",
@@ -4711,8 +4711,8 @@
     "b64": "Base64",
     "copy": "Salin hex",
     "copied": "Tersalin",
-    "openFile": "Hash file",
-    "fileMeta": "File: {name}",
+    "openFile": "Hash berkas",
+    "fileMeta": "Berkas: {name}",
     "error": "Masukan itu tidak bisa di-hash."
   },
   "yamlJson": {
@@ -4777,7 +4777,7 @@
     "dropTypes": "PNG, JPG, WebP, GIF",
     "hint": "Seret untuk menggambar. Teks menaruh label di titik klik.",
     "options": "Tanda",
-    "rect": "Box",
+    "rect": "Kotak",
     "arrow": "Panah",
     "text": "Teks",
     "color": "Warna",
@@ -4799,20 +4799,20 @@
     "result": "Hasil",
     "copy": "Salin hasil",
     "copied": "Tersalin",
-    "of": "A% of B",
+    "of": "A% dari B",
     "what": "A berapa % dari B",
     "plus": "B ditambah A%",
     "delta": "Perubahan B → A",
-    "ofWord": "of",
-    "is": "is"
+    "ofLine": "{a}% dari {b} = {r}",
+    "whatLine": "{a} adalah {r} dari {b}"
   },
   "random": {
     "title": "Generator angka acak",
     "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Rentang",
-    "min": "Min",
-    "max": "Max",
+    "min": "Minimum",
+    "max": "Maksimum",
     "count": "Berapa banyak",
     "result": "Angka",
     "roll": "Acak",
@@ -4820,7 +4820,7 @@
     "copied": "Tersalin"
   },
   "html": {
-    "title": "Encode HTML",
+    "title": "Enkode HTML",
     "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Arah",
@@ -4927,7 +4927,7 @@
       "uv": "UV",
       "nd3": "ND 3 stop",
       "nd6": "ND 6 stop",
-      "cpl": "Polarizer",
+      "cpl": "Filter polarisasi",
       "soft": "Difusi",
       "warm": "Hangat",
       "cool": "Dingin"
@@ -4956,7 +4956,7 @@
     "options": "Tanggal",
     "birth": "Tanggal lahir",
     "on": "Pada tanggal",
-    "result": "Age",
+    "result": "Usia",
     "copy": "Salin",
     "copied": "Tersalin",
     "years": "Tahun",
@@ -5037,7 +5037,7 @@
     "from": "Romawi → angka",
     "input": "Masukan",
     "output": "Keluaran",
-    "placeholder": "2026 or MMXXVI",
+    "placeholder": "2026 atau MMXXVI",
     "copy": "Salin hasil",
     "copied": "Tersalin",
     "invalidTo": "Isi bilangan bulat dari 1 sampai 3999.",
@@ -5049,7 +5049,7 @@
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Harga",
     "price": "Harga asli",
-    "pct": "Off %",
+    "pct": "Diskon %",
     "result": "Harga diskon",
     "copy": "Salin",
     "copied": "Tersalin",
@@ -5129,8 +5129,8 @@
     "result": "Rincian",
     "copy": "Salin",
     "copied": "Tersalin",
-    "net": "Net",
-    "tax": "Tax",
+    "net": "Neto",
+    "tax": "Pajak",
     "gross": "Kotor",
     "invalid": "Isi jumlah 0 atau lebih dan tarif 0 atau lebih."
   },
@@ -5139,7 +5139,7 @@
     "play": "Main",
     "loadRom": "Pilih ROM",
     "loadRomHint": "Berkas tetap di tab ini. ROM yang di-host di S3 langsung jalan bila tersedia.",
-    "hostedNote": "ROM yang di-host dimuat dari S3. Anda tetap bisa memilih berkas lokal.",
+    "hostedNote": "ROM yang di-host dimuat dari S3. Kamu tetap bisa memilih berkas lokal.",
     "rememberRom": "Ingat di browser ini",
     "forgetRom": "Lupakan ROM ini",
     "rememberedRom": "Disimpan hanya di browser ini. Kunjungan berikutnya dimuat otomatis sampai kamu menghapus data situs ini. Tidak pernah diunggah.",
@@ -5153,13 +5153,13 @@
     "year": "{n}",
     "emulator": "EmulatorJS (sumber terbuka, GitHub)",
     "mobile": "Tombol sentuh di ponsel. Gamepad Bluetooth lebih enak untuk game tarung dan balap.",
-    "legal": "Inti emulator ada di S3. Game dimulai dari ROM yang di-host bila berkasnya ada, atau dari berkas lokal yang Anda pilih. Berkas lokal tidak diunggah.",
-    "filterAll": "All",
+    "legal": "Inti emulator ada di S3. Game dimulai dari ROM yang di-host bila berkasnya ada, atau dari berkas lokal yang kamu pilih. Berkas lokal tidak diunggah.",
+    "filterAll": "Semua",
     "empty": "Tidak ada game di filter ini.",
     "hub": {
       "kicker": "Retro · Browser · Ponsel",
       "title": "Main FC, SFC, GB, GBA, dan Flash di browser",
-      "lead": "Cheat, panduan, dan emulator sumber terbuka. Homebrew langsung main. Game komersial memakai ROM Anda. Flash membuka SWF dengan Ruffle. Tidak ada unggahan.",
+      "lead": "Cheat, panduan, dan emulator sumber terbuka. Homebrew langsung main. Game komersial memakai ROM kamu. Flash membuka SWF dengan Ruffle. Tidak ada unggahan.",
       "menu": "Semua game",
       "blurb": "Game emulator retro dengan cheat dan panduan.",
       "all": "Lihat semua"
@@ -5204,8 +5204,8 @@
     "flash": {
       "kicker": "Flash · SWF · Browser",
       "title": "Main game Flash di browser",
-      "lead": "Buka SWF di tab ini dengan Ruffle. Tanpa plugin Flash. Jika pemutar kosong, pilih SWF Anda. Berkas tidak keluar dari tab.",
-      "catalog": "Game Flash yang boleh disebar ulang akan tercantum di sini. Untuk sekarang, pilih SWF yang Anda punya.",
+      "lead": "Buka SWF di tab ini dengan Ruffle. Tanpa plugin Flash. Jika pemutar kosong, pilih SWF kamu. Berkas tidak keluar dari tab.",
+      "catalog": "Game Flash yang boleh disebar ulang akan tercantum di sini. Untuk sekarang, pilih SWF yang kamu punya.",
       "load": "Pilih SWF",
       "needFile": "Tidak ada SWF",
       "needFileBody": "Unggah sendiri. Berkas tetap di tab ini dan tidak dikirim ke server.",
@@ -5213,15 +5213,15 @@
       "emulator": "Ruffle (sumber terbuka, GitHub)",
       "mobile": "Sentuhan dihitung sebagai klik. Game yang butuh keyboard lebih enak di komputer.",
       "s1t": "Pilih SWF",
-      "s1b": "Tekan Pilih SWF dan pilih berkas .swf. Jika layar kosong, halaman meminta Anda mengunggah sendiri. Berkas tetap di tab ini.",
+      "s1b": "Tekan Pilih SWF dan pilih berkas .swf. Jika layar kosong, halaman meminta kamu mengunggah sendiri. Berkas tetap di tab ini.",
       "s2t": "Satu berkas",
       "s2b": "Halaman ini untuk SWF yang bisa jalan sendiri. Game yang memuat SWF lain, XML, atau situs asalnya berhenti di pemuatan.",
       "s3t": "Mouse",
       "s3b": "Sebagian besar game Flash memakai klik kiri. Sentuhan di ponsel adalah klik. Tombol panah dipakai jika game meminta keyboard.",
       "s4t": "Suara",
       "s4b": "Browser menahan suara yang otomatis. Klik gambar sekali, lalu suara keluar.",
-      "s5t": "Berkas Anda",
-      "s5b": "Game Flash komersial tidak disimpan di sini. Pakai SWF yang sudah Anda punya. Hanya karya yang lisensinya mengizinkan sebar ulang yang masuk daftar."
+      "s5t": "Berkas kamu",
+      "s5b": "Game Flash komersial tidak disimpan di sini. Pakai SWF yang sudah kamu punya. Hanya karya yang lisensinya mengizinkan sebar ulang yang masuk daftar."
     },
     "official": {
       "title": "Main versi resmi",
@@ -5253,7 +5253,7 @@
     "no": "Palindrom: tidak"
   },
   "url-encode": {
-    "title": "URL encode",
+    "title": "Enkode URL",
     "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
@@ -5314,7 +5314,7 @@
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "from": "Dari",
-    "to": "To",
+    "to": "Sampai",
     "result": "Selisih",
     "diff": "Hari (bertanda)",
     "abs": "Hari (absolut)",
@@ -5870,7 +5870,7 @@
       "blurb": "Code point, byte, dan mengapa teks berubah menjadi karakter kacau."
     },
     "url-encoding": {
-      "name": "URL encoding (percent-encoding)",
+      "name": "Encoding URL (percent-encoding)",
       "blurb": "Mengapa spasi menjadi %20 dan karakter mana yang harus di-encode."
     },
     "json-vs-yaml-vs-xml": {

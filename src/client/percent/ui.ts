@@ -68,8 +68,9 @@ function paint(): void {
   const up = changeByPercent(b, a);
   const delta = percentChange(b, a);
   const rows = [
-    [t("percent.of"), `${formatNum(a)}% ${t("percent.ofWord")} ${formatNum(b)} = ${formatNum(of)}`],
-    [t("percent.what"), `${formatNum(a)} ${t("percent.is")} ${what == null ? "—" : `${formatNum(what)}%`} ${t("percent.ofWord")} ${formatNum(b)}`],
+    // Whole-sentence templates: word order differs by language (e.g. zh "{b} 的 {a}%").
+    [t("percent.of"), t("percent.ofLine", { a: formatNum(a), b: formatNum(b), r: formatNum(of) })],
+    [t("percent.what"), t("percent.whatLine", { a: formatNum(a), b: formatNum(b), r: what == null ? "—" : `${formatNum(what)}%` })],
     [t("percent.plus"), `${formatNum(b)} + ${formatNum(a)}% = ${formatNum(up)}`],
     [t("percent.delta"), `${formatNum(b)} → ${formatNum(a)} = ${delta == null ? "—" : `${formatNum(delta)}%`}`],
   ];
