@@ -4,6 +4,7 @@ import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, type KbId } from "./kb";
 import { DATASETS, type DatasetId } from "./datasets";
+import { KB_UPDATED } from "../locales/kb/meta";
 import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -103,16 +104,55 @@ function alternateLinks(page: SitemapPage): string {
   return links.join("\n");
 }
 
-export function buildSitemapXml(lastmod = new Date().toISOString().slice(0, 10)): string {
-  const blocks = sitemapPages().map((page) => {
+/** Child sitemaps listed by `/sitemap.xml`, so Search Console reports indexing per section. */
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
+export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
+
+export function sitemapSection(page: SitemapPage): SitemapSection {
+  if (page.kind === "learn" || page.kind === "kb") return "learn";
+  if (page.kind === "games") return "games";
+  if (page.kind === "quiz") return "tests";
+  if (page.kind === "dataset") return "datasets";
+  return "pages";
+}
+
+export function sitemapSectionUrl(section: SitemapSection): string {
+  return `${SITE_ORIGIN}/sitemaps/${section}.xml`;
+}
+
+/**
+ * Only knowledge articles carry `<lastmod>`: their per-locale edit dates come from git (`npm run kb:sync`).
+ * Other pages have no tracked edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
+ */
+function pageLastmod(page: SitemapPage): string | null {
+  if (page.kind === "kb" && page.article) return KB_UPDATED[page.article][page.locale];
+  return null;
+}
+
+/** A `<urlset>` of every page, or of one section. */
+export function buildSitemapXml(section: SitemapSection | null = null): string {
+  const pages = sitemapPages().filter((page) => !section || sitemapSection(page) === section);
+  const blocks = pages.map((page) => {
     const loc = xmlAttr(pageUrl(page));
-    return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternateLinks(page)}\n  </url>`;
+    const lastmod = pageLastmod(page);
+    return `  <url>\n    <loc>${loc}</loc>\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ""}${alternateLinks(page)}\n  </url>`;
   });
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...blocks,
     "</urlset>",
+    "",
+  ].join("\n");
+}
+
+/** `/sitemap.xml`: an index of the section sitemaps. */
+export function buildSitemapIndexXml(): string {
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...SITEMAP_SECTIONS.map((section) => `  <sitemap>\n    <loc>${sitemapSectionUrl(section)}</loc>\n  </sitemap>`),
+    "</sitemapindex>",
     "",
   ].join("\n");
 }

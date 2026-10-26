@@ -88,7 +88,7 @@ describe("test pages: routes", () => {
   });
 
   it("lists every test in every locale in the sitemap", () => {
-    const xml = buildSitemapXml("2026-10-13");
+    const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${quizHref(locale)}</loc>`);
       for (const id of QUIZZES) expect(xml).toContain(`<loc>https://cv.cm${quizHref(locale, id)}</loc>`);

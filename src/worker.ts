@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, deviceHref, gamesHref, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, datasetHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, deviceHref, gamesHref, isPublishedTutorial, kbHref, learnHref, legacyLocalePath, legalHref, parseAppPath, quizHref, datasetHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -150,6 +150,8 @@ export default {
         return redirectTo(kbHref(locale, parsed.article), url, 302);
       }
       if (parsed.kind === "unknown") {
+        const legacy = legacyLocalePath(path);
+        if (legacy) return redirectTo(legacy, url, 301);
         return withHeaders(notFound(locale, request.method), path);
       }
       if (parsed.kind === "app") {

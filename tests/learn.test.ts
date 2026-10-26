@@ -169,7 +169,7 @@ describe("learn SEO", () => {
 
 describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
-    const xml = buildSitemapXml("2026-09-16");
+    const xml = buildSitemapXml();
     const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 1 + KB_ARTICLES.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");

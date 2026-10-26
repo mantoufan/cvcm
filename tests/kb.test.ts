@@ -68,7 +68,7 @@ describe("knowledge: routes", () => {
   });
 
   it("lists the hub and every article in every locale in the sitemap", () => {
-    const xml = buildSitemapXml("2026-10-14");
+    const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale)}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);

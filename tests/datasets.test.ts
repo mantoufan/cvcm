@@ -51,7 +51,7 @@ describe("data pages: routes", () => {
   });
 
   it("lists the hub and every table in every locale in the sitemap", () => {
-    const xml = buildSitemapXml("2026-10-14");
+    const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale)}</loc>`);
       for (const id of DATASETS) expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale, id)}</loc>`);
