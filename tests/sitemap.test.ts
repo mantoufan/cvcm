@@ -2,12 +2,11 @@ import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
-import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref } from "../src/shared/path";
+import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, kbHref, learnHref, parseAppPath } from "../src/shared/path";
 import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
 import { KB_UPDATED } from "../src/locales/kb/meta";
-import { kbHref, parseAppPath } from "../src/shared/path";
 import { QUIZZES } from "../src/shared/quiz";
-import { DATASETS } from "../src/shared/datasets";
+import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
 import { KB_ARTICLES } from "../src/shared/kb";
 
 describe("sitemap", () => {
@@ -40,8 +39,11 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    // Only knowledge articles have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * KB_ARTICLES.length);
+    // Only knowledge pages and data tables have real edit dates.
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 1 + DATASETS.length + 1));
+    expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
+    const newest = KB_ARTICLES.map((id) => KB_UPDATED[id].en).sort().at(-1);
+    expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", KB_ARTICLES[0])}</loc>\n    <lastmod>${KB_UPDATED[KB_ARTICLES[0]].en}</lastmod>`);
     expect(xml).toContain(`<loc>https://cv.cm${appHref("en", null)}</loc>\n    <xhtml:link`);
     expect(xml).not.toContain("<changefreq>");

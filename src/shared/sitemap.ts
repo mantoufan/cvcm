@@ -3,9 +3,9 @@ import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, type KbId } from "./kb";
-import { DATASETS, type DatasetId } from "./datasets";
+import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
 import { KB_UPDATED } from "../locales/kb/meta";
-import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -104,8 +104,7 @@ function alternateLinks(page: SitemapPage): string {
   return links.join("\n");
 }
 
-/** Child sitemaps listed by `/sitemap.xml`, so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
+export { SITEMAP_SECTIONS };
 export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
 
 export function sitemapSection(page: SitemapPage): SitemapSection {
@@ -121,11 +120,16 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 }
 
 /**
- * Only knowledge articles carry `<lastmod>`: their per-locale edit dates come from git (`npm run kb:sync`).
- * Other pages have no tracked edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
+ * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
+ * `npm run kb:sync`), their hub (newest article), and data tables (snapshot date). Other pages have no tracked
+ * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
-  if (page.kind === "kb" && page.article) return KB_UPDATED[page.article][page.locale];
+  if (page.kind === "kb") {
+    if (page.article) return KB_UPDATED[page.article][page.locale];
+    return KB_ARTICLES.map((id) => KB_UPDATED[id][page.locale]).sort().at(-1) ?? null;
+  }
+  if (page.kind === "dataset") return DATASET_SNAPSHOT;
   return null;
 }
 
