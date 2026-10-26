@@ -3,8 +3,9 @@ import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, type KbId } from "./kb";
-import { DATASETS, type DatasetId } from "./datasets";
-import { CONVERT_JOBS, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
+import { KB_UPDATED } from "../locales/kb/meta";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -103,16 +104,65 @@ function alternateLinks(page: SitemapPage): string {
   return links.join("\n");
 }
 
-export function buildSitemapXml(lastmod = new Date().toISOString().slice(0, 10)): string {
-  const blocks = sitemapPages().map((page) => {
+export { SITEMAP_SECTIONS };
+export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
+
+export function sitemapSection(page: SitemapPage): SitemapSection {
+  if (page.kind === "learn" || page.kind === "kb") return "learn";
+  if (page.kind === "games") return "games";
+  if (page.kind === "quiz") return "tests";
+  if (page.kind === "dataset") return "datasets";
+  return "pages";
+}
+
+export function sitemapSectionUrl(section: SitemapSection): string {
+  return `${SITE_ORIGIN}/sitemaps/${section}.xml`;
+}
+
+/**
+ * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
+ * `npm run kb:sync`), their hub (newest article), and data tables (snapshot date). Other pages have no tracked
+ * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
+ */
+function pageLastmod(page: SitemapPage): string | null {
+  if (page.kind === "kb") {
+    if (page.article) return KB_UPDATED[page.article][page.locale];
+    return KB_ARTICLES.map((id) => KB_UPDATED[id][page.locale]).sort().at(-1) ?? null;
+  }
+  if (page.kind === "dataset") return DATASET_SNAPSHOT;
+  return null;
+}
+
+/** A `<urlset>` of the given pages (default: every page). */
+export function buildSitemapXml(pages: SitemapPage[] = sitemapPages()): string {
+  const blocks = pages.map((page) => {
     const loc = xmlAttr(pageUrl(page));
-    return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternateLinks(page)}\n  </url>`;
+    const lastmod = pageLastmod(page);
+    return `  <url>\n    <loc>${loc}</loc>\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ""}${alternateLinks(page)}\n  </url>`;
   });
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...blocks,
     "</urlset>",
+    "",
+  ].join("\n");
+}
+
+/** One `<urlset>` per section. */
+export function buildSectionSitemaps(): Record<SitemapSection, string> {
+  const groups = Object.fromEntries(SITEMAP_SECTIONS.map((section) => [section, [] as SitemapPage[]])) as Record<SitemapSection, SitemapPage[]>;
+  for (const page of sitemapPages()) groups[sitemapSection(page)].push(page);
+  return Object.fromEntries(SITEMAP_SECTIONS.map((section) => [section, buildSitemapXml(groups[section])])) as Record<SitemapSection, string>;
+}
+
+/** `/sitemap.xml`: an index of the section sitemaps. */
+export function buildSitemapIndexXml(): string {
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...SITEMAP_SECTIONS.map((section) => `  <sitemap>\n    <loc>${sitemapSectionUrl(section)}</loc>\n  </sitemap>`),
+    "</sitemapindex>",
     "",
   ].join("\n");
 }

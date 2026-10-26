@@ -2,15 +2,16 @@ import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
-import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref } from "../src/shared/path";
-import { buildSitemapXml, HREFLANG, pageUrl, sitemapPages } from "../src/shared/sitemap";
+import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, kbHref, learnHref, parseAppPath } from "../src/shared/path";
+import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
+import { KB_UPDATED } from "../src/locales/kb/meta";
 import { QUIZZES } from "../src/shared/quiz";
-import { DATASETS } from "../src/shared/datasets";
+import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
 import { KB_ARTICLES } from "../src/shared/kb";
 
 describe("sitemap", () => {
   it("lists every locale home and tool with reciprocal hreflang", () => {
-    const xml = buildSitemapXml("2026-09-13");
+    const xml = buildSitemapXml();
     expect(xml.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")).toBe(true);
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
@@ -38,8 +39,31 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    expect(xml).toContain("<lastmod>2026-09-13</lastmod>");
+    // Only knowledge pages and data tables have real edit dates.
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 1 + DATASETS.length + 1));
+    expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
+    const newest = KB_ARTICLES.map((id) => KB_UPDATED[id].en).sort().at(-1);
+    expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);
+    expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", KB_ARTICLES[0])}</loc>\n    <lastmod>${KB_UPDATED[KB_ARTICLES[0]].en}</lastmod>`);
+    expect(xml).toContain(`<loc>https://cv.cm${appHref("en", null)}</loc>\n    <xhtml:link`);
     expect(xml).not.toContain("<changefreq>");
     expect(xml).not.toContain("<priority>");
+  });
+
+  it("splits pages into section sitemaps listed by the index", () => {
+    const index = buildSitemapIndexXml();
+    expect(index).toContain('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+    for (const section of SITEMAP_SECTIONS) {
+      expect(index).toContain(`<loc>${sitemapSectionUrl(section)}</loc>`);
+      expect(parseAppPath(new URL(sitemapSectionUrl(section)).pathname)).toEqual({ kind: "static" });
+    }
+    const sections = buildSectionSitemaps();
+    const counts = SITEMAP_SECTIONS.map((section) => sections[section].match(/<loc>/g)?.length ?? 0);
+    expect(counts.every((count) => count > 0)).toBe(true);
+    expect(counts.reduce((a, b) => a + b, 0)).toBe(sitemapPages().length);
+    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "fc", "contra")}`);
+    expect(sections.games).not.toContain(`https://cv.cm${appHref("en", "qr")}`);
+    expect(sections.learn).toContain(`https://cv.cm${kbHref("ja", null)}`);
+    expect(parseAppPath("/sitemaps/nope.xml")).toEqual({ kind: "unknown" });
   });
 });

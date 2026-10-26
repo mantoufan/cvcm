@@ -13,8 +13,12 @@ import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
 import { KB_SEGMENT, isKbId, type KbId } from "./kb";
 import { localePath, parseLocale, type Locale } from "./locale";
 
-export const STATIC_FILE =
-  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)/;
+/** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
+
+export const STATIC_FILE = new RegExp(
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+);
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
 export const QUIZ_SEGMENT = "tests";
@@ -319,6 +323,16 @@ function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: strin
   return "unknown";
 }
 
+/**
+ * Locale prefixes from the old site that Google still crawls (`/zh/terms`). They parse as the current locale,
+ * so the Worker's canonical check sends one 301 to the real page (`/zh-cn/terms/`).
+ */
+const LEGACY_LOCALES = new Map<string, Locale>([
+  ["zh", "zh-CN"],
+  ["zh-hans", "zh-CN"],
+  ["zh-hant", "zh-TW"],
+]);
+
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
   if (STATIC_FILE.test(raw)) return { kind: "static" };
@@ -331,7 +345,7 @@ export function parseAppPath(pathname: string): AppPath {
     return { kind: "clip", id: second };
   }
 
-  const locale = parseLocale(first);
+  const locale = parseLocale(first) ?? LEGACY_LOCALES.get(first) ?? null;
   if (locale) {
     if (!second) {
       if (rest.length > 0) return { kind: "unknown" };
