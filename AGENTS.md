@@ -116,6 +116,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es` (tool how-tos in `guides/`)
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
+- `public/sitemap.xml` — index of `public/sitemaps/{pages,learn,games,tests,datasets}.xml` (from `src/shared/sitemap.ts`; `npm run build` regenerates them). `<lastmod>` only where a real edit date exists (knowledge articles). A new section needs its name in `STATIC_FILE`
 
 ## Deploy
 

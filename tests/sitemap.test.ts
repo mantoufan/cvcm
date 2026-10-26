@@ -3,7 +3,7 @@ import { LOCALES } from "../src/shared/locale";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
 import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, learnHref } from "../src/shared/path";
-import { buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
+import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
 import { KB_UPDATED } from "../src/locales/kb/meta";
 import { kbHref, parseAppPath } from "../src/shared/path";
 import { QUIZZES } from "../src/shared/quiz";
@@ -55,11 +55,13 @@ describe("sitemap", () => {
       expect(index).toContain(`<loc>${sitemapSectionUrl(section)}</loc>`);
       expect(parseAppPath(new URL(sitemapSectionUrl(section)).pathname)).toEqual({ kind: "static" });
     }
-    const counts = SITEMAP_SECTIONS.map((section) => buildSitemapXml(section).match(/<loc>/g)?.length ?? 0);
+    const sections = buildSectionSitemaps();
+    const counts = SITEMAP_SECTIONS.map((section) => sections[section].match(/<loc>/g)?.length ?? 0);
     expect(counts.every((count) => count > 0)).toBe(true);
     expect(counts.reduce((a, b) => a + b, 0)).toBe(sitemapPages().length);
-    expect(buildSitemapXml("games")).toContain(`https://cv.cm${gamesHref("en", "fc", "contra")}`);
-    expect(buildSitemapXml("games")).not.toContain(`https://cv.cm${appHref("en", "qr")}`);
-    expect(buildSitemapXml("learn")).toContain(`https://cv.cm${kbHref("ja", null)}`);
+    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "fc", "contra")}`);
+    expect(sections.games).not.toContain(`https://cv.cm${appHref("en", "qr")}`);
+    expect(sections.learn).toContain(`https://cv.cm${kbHref("ja", null)}`);
+    expect(parseAppPath("/sitemaps/nope.xml")).toEqual({ kind: "unknown" });
   });
 });

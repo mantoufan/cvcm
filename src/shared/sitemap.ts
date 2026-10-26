@@ -129,9 +129,8 @@ function pageLastmod(page: SitemapPage): string | null {
   return null;
 }
 
-/** A `<urlset>` of every page, or of one section. */
-export function buildSitemapXml(section: SitemapSection | null = null): string {
-  const pages = sitemapPages().filter((page) => !section || sitemapSection(page) === section);
+/** A `<urlset>` of the given pages (default: every page). */
+export function buildSitemapXml(pages: SitemapPage[] = sitemapPages()): string {
   const blocks = pages.map((page) => {
     const loc = xmlAttr(pageUrl(page));
     const lastmod = pageLastmod(page);
@@ -144,6 +143,13 @@ export function buildSitemapXml(section: SitemapSection | null = null): string {
     "</urlset>",
     "",
   ].join("\n");
+}
+
+/** One `<urlset>` per section. */
+export function buildSectionSitemaps(): Record<SitemapSection, string> {
+  const groups = Object.fromEntries(SITEMAP_SECTIONS.map((section) => [section, [] as SitemapPage[]])) as Record<SitemapSection, SitemapPage[]>;
+  for (const page of sitemapPages()) groups[sitemapSection(page)].push(page);
+  return Object.fromEntries(SITEMAP_SECTIONS.map((section) => [section, buildSitemapXml(groups[section])])) as Record<SitemapSection, string>;
 }
 
 /** `/sitemap.xml`: an index of the section sitemaps. */

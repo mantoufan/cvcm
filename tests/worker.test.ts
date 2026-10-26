@@ -116,13 +116,15 @@ it("moves old /zh URLs Google still crawls to their zh-cn pages", async () => {
     ["https://cv.cm/zh/terms", "https://cv.cm/zh-cn/terms/"],
     ["https://cv.cm/zh/privacy/", "https://cv.cm/zh-cn/privacy/"],
     ["https://cv.cm/zh-Hant/qr", "https://cv.cm/zh-tw/qr/"],
+    // One hop straight to the canonical page, not via /zh-cn/games/contra/.
+    ["https://cv.cm/zh/games/contra", "https://cv.cm/zh-cn/games/fc/contra/"],
   ];
   for (const [from, to] of cases) {
     const res = await worker.fetch(new Request(from), { ASSETS: assets });
     expect(res.status).toBe(301);
     expect(res.headers.get("Location")).toBe(to);
   }
-  for (const gone of ["https://cv.cm/zh/pricing", "https://cv.cm/zh/register?next=%2Fzh", "https://cv.cm/pt"]) {
+  for (const gone of ["https://cv.cm/zh/pricing", "https://cv.cm/zh/register?next=%2Fzh", "https://cv.cm/pt", "https://cv.cm/constructor", "https://cv.cm/__proto__/x"]) {
     expect((await worker.fetch(new Request(gone), { ASSETS: assets })).status).toBe(404);
   }
 });

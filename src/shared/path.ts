@@ -14,7 +14,7 @@ import { KB_SEGMENT, isKbId, type KbId } from "./kb";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 export const STATIC_FILE =
-  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/[a-z]+\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)/;
+  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(pages|learn|games|tests|datasets)\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)/;
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
 export const QUIZ_SEGMENT = "tests";
@@ -319,22 +319,15 @@ function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: strin
   return "unknown";
 }
 
-/** Locale prefixes from the old site that Google still crawls (`/zh/terms`). */
-const LEGACY_LOCALE_PREFIXES: Record<string, Locale> = {
-  zh: "zh-CN",
-  "zh-hans": "zh-CN",
-  "zh-hant": "zh-TW",
-};
-
-/** Where an old-locale URL now lives (`/zh/terms` → `/zh-cn/terms/`), or null if no current page matches. */
-export function legacyLocalePath(pathname: string): string | null {
-  const [first, ...tail] = pathname.split("/").filter(Boolean);
-  const locale = first ? LEGACY_LOCALE_PREFIXES[first.toLowerCase()] : undefined;
-  if (!locale) return null;
-  const candidate = `/${[localePath(locale), ...tail].join("/")}/`;
-  const kind = parseAppPath(candidate).kind;
-  return kind === "unknown" || kind === "static" ? null : candidate.toLowerCase();
-}
+/**
+ * Locale prefixes from the old site that Google still crawls (`/zh/terms`). They parse as the current locale,
+ * so the Worker's canonical check sends one 301 to the real page (`/zh-cn/terms/`).
+ */
+const LEGACY_LOCALES = new Map<string, Locale>([
+  ["zh", "zh-CN"],
+  ["zh-hans", "zh-CN"],
+  ["zh-hant", "zh-TW"],
+]);
 
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
@@ -348,7 +341,7 @@ export function parseAppPath(pathname: string): AppPath {
     return { kind: "clip", id: second };
   }
 
-  const locale = parseLocale(first);
+  const locale = parseLocale(first) ?? LEGACY_LOCALES.get(first) ?? null;
   if (locale) {
     if (!second) {
       if (rest.length > 0) return { kind: "unknown" };
