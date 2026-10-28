@@ -19,8 +19,10 @@ let running = false;
 let timer = 0;
 let endsAt = 0;
 let pageTitle = "";
-/** True until the current phase starts counting, so edited lengths apply to it. */
-let fresh = true;
+let noteEl: HTMLElement | null = null;
+let audio: AudioContext | null = null;
+let deadline = 0;
+const onVisible = (): void => { if (running && document.visibilityState === "visible") tick(); };
 
 export function mountPomodoro(host: HTMLElement): void {
   focusEl = numberInput("focus", DEFAULT_POMODORO.focus, 180);
@@ -30,6 +32,7 @@ export function mountPomodoro(host: HTMLElement): void {
   phaseEl = h("p", { class: "muted", "data-field": "phase" });
   displayEl = h("p", { class: "timestamp-out pomodoro-clock", "aria-live": "polite" });
   roundEl = h("p", { class: "muted" });
+  noteEl = h("p", { class: "muted", "data-field": "note" });
   startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => toggle() }, t("pomodoro.start"));
   host.append(
     h("header", { class: "tool-head" },
@@ -52,15 +55,20 @@ export function mountPomodoro(host: HTMLElement): void {
           h("button", { type: "button", class: "btn ghost", "data-action": "reset", onClick: () => reset() }, t("pomodoro.reset")),
         ),
       ),
-      h("div", { class: "rail" }, h("h2", null, t("pomodoro.result")), phaseEl, displayEl, roundEl),
+      h("div", { class: "rail" }, h("h2", null, t("pomodoro.result")), phaseEl, displayEl, roundEl, noteEl),
     ),
   );
   pageTitle = document.title;
+  document.addEventListener("visibilitychange", onVisible);
   reset();
 }
 
 export function unmountPomodoro(): void {
   stop();
+  document.removeEventListener("visibilitychange", onVisible);
+  if (audio) void audio.close().catch(() => undefined);
+  audio = null;
+  noteEl = null;
   if (pageTitle) document.title = pageTitle;
   pageTitle = "";
   focusEl = shortEl = longEl = roundsEl = null;
@@ -89,12 +97,12 @@ function readSettings(): PomodoroSettings | null {
   });
 }
 
+/** Edited lengths are kept for the next phase (or Reset); an out-of-range field is flagged and ignored. */
 function onSettingsInput(): void {
   const next = readSettings();
+  if (noteEl) noteEl.textContent = next ? "" : t("pomodoro.invalid");
   if (!next) return;
   settings = next;
-  // A phase that has not started ticking yet takes the new length right away.
-  if (!running && fresh) left = phaseSeconds(settings, phase);
   paint();
 }
 
@@ -105,10 +113,13 @@ function toggle(): void {
   }
   if (left <= 0) left = phaseSeconds(settings, phase);
   running = true;
-  fresh = false;
   endsAt = Date.now() + left * 1000;
   if (startBtn) startBtn.textContent = t("pomodoro.pause");
+  // Start is a user gesture: create (or resume) the AudioContext here so the chime can play later on iOS.
+  armAudio();
+  // The interval repaints the clock; the timeout lands on the deadline even when a hidden tab throttles intervals.
   timer = window.setInterval(tick, 250);
+  deadline = window.setTimeout(tick, left * 1000 + 20);
   paint();
 }
 
@@ -126,6 +137,8 @@ function stop(): void {
   running = false;
   if (timer) window.clearInterval(timer);
   timer = 0;
+  if (deadline) window.clearTimeout(deadline);
+  deadline = 0;
   if (startBtn) startBtn.textContent = t("pomodoro.start");
 }
 
@@ -133,7 +146,6 @@ function advance(): void {
   if (phase === "focus") completed += 1;
   phase = nextPhase(phase, completed, settings.rounds);
   left = phaseSeconds(settings, phase);
-  fresh = true;
   paint();
 }
 
@@ -144,11 +156,12 @@ function skip(): void {
 
 function reset(): void {
   stop();
-  settings = readSettings() ?? DEFAULT_POMODORO;
+  const next = readSettings();
+  if (noteEl) noteEl.textContent = next ? "" : t("pomodoro.invalid");
+  if (next) settings = next;
   phase = "focus";
   completed = 0;
   left = phaseSeconds(settings, phase);
-  fresh = true;
   paint();
 }
 
@@ -163,12 +176,20 @@ function paint(): void {
   if (pageTitle) document.title = running ? `${clock} ${label} · ${pageTitle}` : pageTitle;
 }
 
-/** Two short tones from the Web Audio API. Silently skipped where audio is blocked. */
-function chime(): void {
+function armAudio(): void {
   try {
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctx) return;
-    const ctx = new Ctx();
+    if (!audio) audio = new Ctx();
+    if (audio.state === "suspended") void audio.resume().catch(() => undefined);
+  } catch { /* ignore */ }
+}
+
+/** Two short tones on the context armed by Start. Silently skipped where audio is blocked. */
+function chime(): void {
+  const ctx = audio;
+  if (!ctx) return;
+  try {
     for (const [at, freq] of [[0, 880], [0.25, 1175]] as const) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -181,6 +202,5 @@ function chime(): void {
       osc.start(ctx.currentTime + at);
       osc.stop(ctx.currentTime + at + 0.22);
     }
-    window.setTimeout(() => void ctx.close(), 800);
   } catch { /* ignore */ }
 }

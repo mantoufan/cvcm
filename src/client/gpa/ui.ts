@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { GRADES, gpaOf, isGrade, type Grade, type GpaRow } from "../../shared/gpa";
+import { GRADES, MAX_CREDITS, gpaOf, isGrade, type Grade, type GpaRow } from "../../shared/gpa";
 
 type RowEls = { wrap: HTMLElement; grade: HTMLSelectElement; credits: HTMLInputElement };
 
@@ -66,7 +66,7 @@ function addRow(initial: GpaRow): void {
   // happy-dom ignores a `selected` attribute set before the option joins the select; set the value explicitly.
   grade.value = initial.grade;
   const credits = h("input", {
-    type: "number", min: "0", max: "30", step: "0.5", value: String(initial.credits),
+    type: "number", min: "0", max: String(MAX_CREDITS), step: "0.5", value: String(initial.credits),
     "data-field": "credits", "aria-label": t("gpa.credits"), onInput: () => paint(),
   });
   const row: RowEls = { wrap: h("div", { class: "row gpa-row" }), grade, credits };

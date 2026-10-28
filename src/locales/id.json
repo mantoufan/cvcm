@@ -2910,7 +2910,7 @@
       "q3": "Apa itu teknik Pomodoro?",
       "a3": "Bekerja dalam blok fokus, biasanya 25 menit, lalu istirahat 5 menit. Setelah empat blok, ambil jeda panjang 15 menit. Tiap blok adalah satu pomodoro.",
       "q4": "Bisa mengubah durasinya?",
-      "a4": "Bisa. Atur fokus, jeda pendek, dan jeda panjang 1 sampai 180 menit, serta jumlah putaran sebelum jeda panjang. Atur ulang menerapkannya.",
+      "a4": "Bisa. Atur fokus, jeda pendek, dan jeda panjang 1 sampai 180 menit, serta jumlah putaran sebelum jeda panjang. Fase berikutnya memakai durasi baru; Atur ulang memulai dari awal.",
       "q5": "Apa yang terjadi jika pindah tab?",
       "a5": "Timer terus menghitung dari jam, dan judul tab menampilkan sisa waktu. Biarkan tab terbuka agar bunyinya terdengar."
     }
@@ -6025,6 +6025,7 @@
     "phase_short": "Jeda pendek",
     "phase_long": "Jeda panjang",
     "round": "Putaran",
-    "done": "Selesai"
+    "done": "Selesai",
+    "invalid": "Menit harus 1 sampai 180 dan putaran 1 sampai 12."
   }
 }

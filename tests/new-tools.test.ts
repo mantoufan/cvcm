@@ -775,6 +775,7 @@ describe("gpa", () => {
     expect(out?.gpa).toBeCloseTo((12 + 9.9 + 14.8 + 9) / 13, 10);
     expect(gpaOf([{ grade: "A", credits: 0 }, { grade: "B", credits: NaN }])).toBeNull();
     expect(gpaOf([{ grade: "A", credits: 3 }, { grade: "B", credits: -1 }])?.gpa).toBe(4);
+    expect(gpaOf([{ grade: "A", credits: 3 }, { grade: "F", credits: 999 }])?.gpa).toBe(4);
   });
 });
 

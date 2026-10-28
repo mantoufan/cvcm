@@ -9,6 +9,9 @@ const POINTS: Record<Grade, number> = {
   F: 0,
 };
 
+/** Credits per course above this are treated as a typo and skipped. */
+export const MAX_CREDITS = 30;
+
 export type GpaRow = { grade: Grade; credits: number };
 export type GpaResult = { gpa: number; credits: number; points: number; courses: number };
 
@@ -22,13 +25,13 @@ export function gradePoints(grade: Grade, plusAbove4 = false): number {
   return POINTS[grade];
 }
 
-/** Credit-weighted GPA. Rows with zero, negative, or non-numeric credits are skipped. Null when nothing counts. */
+/** Credit-weighted GPA. Rows with zero, negative, non-numeric, or > MAX_CREDITS credits are skipped. Null when nothing counts. */
 export function gpaOf(rows: GpaRow[], plusAbove4 = false): GpaResult | null {
   let credits = 0;
   let points = 0;
   let courses = 0;
   for (const row of rows) {
-    if (!Number.isFinite(row.credits) || row.credits <= 0 || !isGrade(row.grade)) continue;
+    if (!Number.isFinite(row.credits) || row.credits <= 0 || row.credits > MAX_CREDITS || !isGrade(row.grade)) continue;
     credits += row.credits;
     points += row.credits * gradePoints(row.grade, plusAbove4);
     courses += 1;

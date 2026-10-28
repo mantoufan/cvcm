@@ -16,6 +16,7 @@ export function mountDice(host: HTMLElement): void {
   sidesEl = h("select", { "data-field": "sides" },
     ...DICE_SIDES.map((n) => h("option", { value: String(n), selected: n === 6 }, `d${n}`)),
   );
+  sidesEl.value = "6";
   coinsEl = h("input", { type: "number", min: "1", max: String(MAX_COINS), step: "1", value: "1", "data-field": "coins" });
   facesEl = h("p", { class: "dice-faces", "aria-live": "polite" });
   outEl = h("dl", { class: "stats-grid timestamp-out" });
