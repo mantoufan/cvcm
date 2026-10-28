@@ -1,0 +1,128 @@
+{
+  "title": "¿Qué son los datos EXIF? Qué revelan tus fotos y cómo borrarlos — cv.cm",
+  "description": "EXIF son los metadatos ocultos en las fotos: cámara, ajustes, fecha y a menudo la ubicación GPS. Qué etiquetas existen, quién las elimina y cómo borrarlas.",
+  "h1": "¿Qué son los datos EXIF de una foto?",
+  "answer": "EXIF (Exchangeable Image File Format) es un estándar de metadatos que cámaras y teléfonos escriben en cada foto. Registra la marca y el modelo del dispositivo, los ajustes de exposición, la fecha y hora de la toma, la orientación de la imagen y, si la ubicación está activada, coordenadas GPS lo bastante precisas como para identificar una vivienda. No se ve en la imagen, pero cualquiera que tenga el archivo puede leerlo.",
+  "sections": [
+    {
+      "h": "Qué guarda EXIF",
+      "body": [
+        "EXIF lo creó la asociación japonesa de electrónica JEIDA en 1995 y hoy lo mantienen CIPA y JEITA. Reutiliza la estructura de etiquetas del formato TIFF, así que cada dato es una etiqueta numerada con un nombre y un valor.",
+        {
+          "table": {
+            "head": [
+              "Etiqueta",
+              "Valor de ejemplo",
+              "Qué revela"
+            ],
+            "rows": [
+              [
+                "`Make` / `Model`",
+                "Apple / iPhone 15",
+                "El dispositivo usado"
+              ],
+              [
+                "`DateTimeOriginal`",
+                "2026:09:12 18:42:07",
+                "Cuándo se tomó la foto"
+              ],
+              [
+                "`ExposureTime`, `FNumber`, `ISOSpeedRatings`",
+                "1/120, f/1.8, 64",
+                "Ajustes de la cámara"
+              ],
+              [
+                "`FocalLength`",
+                "6.9 mm",
+                "Objetivo y zoom"
+              ],
+              [
+                "`Orientation`",
+                "6 (girar 90° en sentido horario)",
+                "Cómo debe mostrarse la imagen"
+              ],
+              [
+                "`GPSLatitude` / `GPSLongitude`",
+                "48° 51' 29.6\" N, 2° 17' 40.2\" E",
+                "Dónde se tomó la foto"
+              ],
+              [
+                "`BodySerialNumber`",
+                "Propio de cada cámara",
+                "Puede vincular fotos a una misma cámara"
+              ],
+              [
+                "`Software`",
+                "Nombre y versión del editor",
+                "Cómo se procesó el archivo"
+              ]
+            ]
+          }
+        },
+        "Muchos archivos incluyen además una pequeña miniatura incrustada, notas del fabricante (maker notes) en un formato privado y bloques XMP o IPTC aparte con pies de foto, palabras clave y derechos de autor."
+      ]
+    },
+    {
+      "h": "Dónde se guarda EXIF dentro del archivo",
+      "body": [
+        "En un JPG, EXIF se encuentra en un segmento `APP1` cerca del inicio del archivo, que empieza con los bytes `Exif` seguidos de dos bytes cero, y está limitado a 64 KB. HEIC, WebP, TIFF y muchos formatos RAW de cámara también llevan EXIF, y PNG incorporó un chunk oficial `eXIf` en 2017.",
+        "Como los metadatos están separados de los píxeles, se pueden leer o borrar sin afectar a la calidad de la imagen. Una captura de pantalla de una foto no copia el EXIF del original, aunque la captura recibe sus propios metadatos mínimos."
+      ]
+    },
+    {
+      "h": "Por qué EXIF importa para la privacidad",
+      "body": [
+        "Las etiquetas GPS son el riesgo principal. La cámara de un teléfono con acceso a la ubicación registra latitud y longitud con un margen de pocos metros, así que una foto tomada en casa y compartida como archivo original puede revelar la dirección. La fecha y el modelo del dispositivo aportan contexto, y un número de serie puede vincular varias fotos anónimas a la misma cámara.",
+        {
+          "ul": [
+            "Las grandes redes sociales suelen eliminar el EXIF de las publicaciones públicas, pero las políticas cambian y no está garantizado.",
+            "Los adjuntos de correo, los enlaces de almacenamiento en la nube, los foros, los sitios de compraventa y las apps de mensajería que envían la foto como archivo suelen conservar todos los metadatos.",
+            "Las fotos enviadas a formularios oficiales o a empleadores pueden reenviarse y guardarse durante años."
+          ]
+        },
+        {
+          "note": "Borrar el EXIF no elimina lo que se ve en la imagen. Letreros de calles, números de portal, reflejos y detalles de documentos pueden seguir identificando un lugar o a una persona, así que revisa la propia imagen antes de publicarla."
+        }
+      ]
+    },
+    {
+      "h": "Cómo ver y borrar el EXIF",
+      "body": [
+        "En una computadora, las propiedades del archivo muestran el EXIF básico: Obtener información o el Inspector de Vista Previa en Mac, Propiedades › Detalles en Windows. Para ver todos los detalles, usa un visor de metadatos o una herramienta que funcione en el navegador para no subir la foto.",
+        {
+          "ol": [
+            "Abre la foto en un visor de metadatos y busca primero las etiquetas GPS.",
+            "Elimina todos los metadatos, o solo la ubicación si quieres conservar los ajustes de la cámara.",
+            "Guárdala como un archivo nuevo y conserva el original en privado.",
+            "Vuelve a abrir el archivo nuevo para confirmar que los campos GPS han desaparecido."
+          ]
+        },
+        "En los teléfonos, tanto iOS como Android permiten desactivar la ubicación en la hoja de compartir o en los ajustes de la cámara. La hoja de compartir del iPhone tiene un enlace Opciones con un interruptor Ubicación; en Android, las apps de cámara tienen un ajuste de etiqueta de ubicación."
+      ]
+    },
+    {
+      "h": "La trampa de la orientación",
+      "body": [
+        "Los teléfonos suelen guardar la imagen de lado y establecer la etiqueta `Orientation` (valores del 1 al 8) para indicar a los visores cómo girarla. Si una herramienta borra el EXIF sin aplicar antes esa rotación a los píxeles, la foto limpia puede aparecer de lado o al revés. Un buen eliminador de metadatos gira los píxeles antes de quitar la etiqueta."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Alguien puede averiguar mi ubicación a partir de una foto?",
+      "a": "Sí, si el archivo original aún contiene etiquetas GPS. Cualquiera que lo descargue puede leer las coordenadas con un visor gratuito y pegarlas en un mapa."
+    },
+    {
+      "q": "¿Borrar el EXIF reduce la calidad de la imagen?",
+      "a": "No. Los metadatos se guardan aparte de los píxeles, así que un eliminador de metadatos bien hecho deja intactos los datos de la imagen. Algunas herramientas vuelven a guardar la imagen al limpiarla, lo que puede añadir una ligera compresión JPG."
+    },
+    {
+      "q": "¿Las capturas de pantalla tienen datos EXIF?",
+      "a": "Las capturas llevan pocos metadatos, normalmente las dimensiones, la fecha de creación y a veces el dispositivo, pero no la ubicación GPS. No heredan el EXIF de la foto original."
+    },
+    {
+      "q": "¿WhatsApp o Instagram eliminan el EXIF?",
+      "a": "Por lo general sus flujos para compartir fotos eliminan la mayoría de los metadatos al comprimir las imágenes, pero enviar una foto como documento o archivo conserva los metadatos originales. Comprueba el comportamiento actual de cada app si te importa la privacidad de tu ubicación."
+    }
+  ]
+}

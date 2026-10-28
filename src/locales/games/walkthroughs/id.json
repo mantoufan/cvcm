@@ -3841,5 +3841,540 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys adalah game NES platform tembak gratis. ROM dimuat saat halaman dibuka. Tiap level punya satu tujuan; lompat dan tembak sampai tercapai.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start, pilih Play Game, lalu konfirmasi dengan A: pemain, mode, kesulitan, level awal.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Baca tujuan",
+        "body": "Layar sebelum level menulis tugasnya, misalnya \"Defeat 5 enemies\", dan jumlah nyawa.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Lompat dan tembak",
+        "body": "A melompat antar platform, B menembak. Angka di kanan atas turun saat tujuan terpenuhi.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "zlib. Sumber: https://github.com/NovaSquirrel/DABG. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit adalah game NES tembak arcade gratis. ROM dimuat saat halaman dibuka. Kamu mengemudikan Bumi dan memutar Bulan untuk menghancurkan gelombang musuh.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Gerak dan putar",
+        "body": "D-pad menggerakkan Bumi. A dan B memutar Bulan di sekitarnya, dan apa pun yang ditabrak Bulan hancur.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Bertahan tiap gelombang",
+        "body": "Musuh datang berbaris. Hadang jalurnya dengan Bulan dan jaga nyawa di kiri atas.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/pubby/lunarlimit. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 adalah game NES teka-teki gratis. ROM dimuat saat halaman dibuka. Tiap ruangan berupa grid kecil dengan tangga, beruang, dan kadang permata.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Capai tangga",
+        "body": "Melangkah dengan D-pad menuju tangga. Kalau ada permata, ambil dulu. Menyentuh beruang mengulang ruangan.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/pubby/Ralph-4. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES adalah sandbox Game of Life gratis. ROM dimuat saat halaman dibuka. Kamu menaruh sel, aturan menentukan kelanjutannya.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Buka grid",
+        "body": "Grid sudah berisi satu glider, kursor di kiri atas.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Taruh sel",
+        "body": "Bergerak dengan D-pad dan tekan A untuk mengganti sel. Select mengosongkan seluruh grid.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Jalankan",
+        "body": "Tekan Start. Sel dengan 2 atau 3 tetangga bertahan, dan sel kosong dengan tepat 3 tetangga lahir. Tekan Start lagi untuk berhenti.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "zlib. Sumber: https://github.com/NovaSquirrel/NESLife. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX adalah game aksi SNES gratis. ROM dimuat saat halaman dibuka. Kamu menjalankan lift secara manual dan menjaga setiap penumpang tetap senang.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Baca kontrol",
+        "body": "Layar pertama memberi label tombol: lompat, buka pintu, lift naik dan lift turun. Tekan Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Mulai shift",
+        "body": "Tekan Start lagi di layar judul untuk mulai.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Jalankan lift",
+        "body": "Jalan ke panel kontrol. Gerakkan kabin dengan X dan A, hentikan di lantai yang benar, lalu buka pintu lantai itu dengan Y. Jangan tabrakkan ke atap atau tanah.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/undisbeliever/elevator-madness-dx. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave adalah game SNES terbang di gua yang gratis. ROM dimuat saat halaman dibuka. Satu tombol menjaga kelelawar tetap di udara.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Terbang",
+        "body": "Tekan Start, lalu ketuk B untuk mengepak naik dan biarkan kelelawar turun di antara ketukan. Ikuti terowongan putih.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Menabrak dan ulangi",
+        "body": "Menyentuh dinding cokelat memunculkan GAME OVER beserta jaraknya. Tekan Start untuk main lagi.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/undisbeliever/bat-cave. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes adalah game teka-teki SNES gratis. ROM dimuat saat halaman dibuka. Pasang potongan sampai pipa mengalir dari awal ke akhir.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Lihat papan",
+        "body": "Papan dibuka kosong dengan antrean potongan di kiri.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Pasang pipa",
+        "body": "Gerakkan kursor dengan D-pad dan tekan B untuk memasang potongan berikutnya. Sambungkan potongan awal dan akhir dengan satu pipa tanpa putus.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/undisbeliever/pipes. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer adalah game SNES platformer gratis. ROM dimuat saat halaman dibuka. Lima level kastel berakhir di sebuah pintu.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Masuk kastel",
+        "body": "Ruangan pertama punya dua makhluk di lantai dan pintu keluar di kanan.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Lari dan lompat",
+        "body": "Berjalan dengan D-pad, tahan Y untuk lari, dan tekan B untuk melompati makhluk menuju pintu.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/undisbeliever/castle_platformer. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets adalah game Mega Drive platformer gratis. ROM dimuat saat halaman dibuka. Tiap stage adalah planet kecil yang kamu kelilingi penuh.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Pilih START. PASSWORD membawamu ke stage berikutnya kalau punya kode.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Baca kartu stage",
+        "body": "Tiap stage dibuka dengan namanya, misalnya PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Kelilingi planet",
+        "body": "Planet berputar saat kamu berlari. Lompat dengan A, B, atau C dan selesaikan planet sebelum timer di atas habis.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "zlib. Sumber: https://github.com/sikthehedgehog/miniplanets. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD adalah game reaksi berantai Mega Drive gratis. ROM dimuat saat halaman dibuka. Isi kotak sampai meledak dan kuasai papan.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Judul",
+        "body": "Tekan tombol apa saja untuk masuk ke menu utama.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Atur",
+        "body": "Pilih lebar dan tinggi papan, jadikan pemain manusia atau CPU, lalu tekan tombol play hijau.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Taruh atom",
+        "body": "Gerakkan kursor dan tekan A untuk menambah atom. Kotak sudut meledak di 2, tepi di 3, tengah di 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/Nightwolf-47/KleleAtoms-MD. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition adalah roguelike gratis. ROM dimuat saat halaman dibuka. Tiap percobaan membangun dungeon baru.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai percobaan",
+        "body": "Tekan Start di layar judul, lalu pilih Random run dari menu.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Pilih kelas",
+        "body": "Warrior memukul paling keras, Rogue mengendap-endap, Hunter bertarung dari jauh, dan Mage memakai tongkat sihir. Konfirmasi dengan Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Jelajahi",
+        "body": "Bergerak dengan D-pad dan jalan ke arah musuh untuk menyerang. Ambil item, makan saat bar Food menipis, dan cari tangga turun.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "GPL-3.0. Sumber build ini: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament adalah game teka-teki GBA gratis. ROM dimuat saat halaman dibuka. Kamu yang menata dungeon; pahlawan hanya menuruti perintah.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Baca kartu level",
+        "body": "Tiap level dimulai dengan nomor dan satu aturan, misalnya \"Keys open doors\". Tekan A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Tata dan jalankan",
+        "body": "Periksa HERO'S ACTIONS, taruh item dari YOUR ITEMS ke papan dengan A, lalu tekan Start untuk melihatnya berjalan.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "Kode MPL-2.0, grafis CC BY 4.0, musik CC-BY 3.0 oleh VWolfdog (https://opengameart.org/content/soft-mysterious-harp-loop). Sumber: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy adalah game bertahan hidup Game Boy gratis. ROM dimuat saat halaman dibuka. Hari demi hari, kamu yang memutuskan siapa yang makan.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Berlindung",
+        "body": "Tekan A di layar judul dan sepanjang adegan serangan udara, lalu pilih peti awal.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Cek persediaan",
+        "body": "Tiap hari dimulai dengan jumlah makanan, air, dan kotak P3K.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Bagikan",
+        "body": "Pindah ke Mike, Rose, atau Jeff dan tekan A untuk memberi makanan, air, atau kotak P3K. Pilih OK kalau sudah selesai.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/UrbanZero/bunkerboy. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II adalah battle royale NES berupa perangkat lunak bebas. ROM dimuat saat halaman dibuka. Dua puluh ayam masuk arena berpagar dan hanya satu yang keluar.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai ronde",
+        "body": "Pilih 1 PLAYERS dan tekan Start. Baris kredit di bawah menyebut Rodrigo Dornelles dan Psywave Games.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Temukan ayammu",
+        "body": "Angka 1 kecil melayang di atas ayammu. Berjalan dengan D-pad, patuk dengan A atau B. Ayam lain juga saling serang.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Ayam terakhir",
+        "body": "Angka di kanan atas turun dari 20. Jauhi kerumunan, incar yang sendirian, dan terus bergerak sampai tinggal kamu.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "GPL-3.0. Sumber: https://github.com/psywave-games/coco-battle-royale-2. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl adalah game kata Game Boy sumber terbuka yang boleh disebarluaskan. ROM dimuat saat halaman dibuka. Kamu punya enam kesempatan untuk menemukan kata bahasa Inggris lima huruf.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul. Dua layar bantuan menjelaskan warna dan pintasan menu; tombol apa saja untuk lanjut.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Ketik tebakan",
+        "body": "Gerakkan kursor di keyboard layar dengan D-pad dan tekan A untuk tiap huruf. B menghapus. Setelah lima huruf, tekan Start.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "Baca warnanya",
+        "body": "Abu-abu: huruf tidak ada di kata. Kuning: ada di kata tapi di posisi lain. Hijau: huruf benar, posisi benar.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "Persempit",
+        "body": "Keyboard di bawah ikut menyimpan warna. Di sini WRITE mencoret W, R, T, dan E serta menunjukkan I ada di kata, hanya bukan di tengah. Pakai petunjuk sampai kelima kotak hijau.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "GPL-3.0. Sumber: https://github.com/bbbbbr/gb-wordyl. ROM komersial tidak di-host."
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch adalah game aksi Game Boy berlisensi 0BSD yang boleh disebarluaskan. ROM dimuat saat halaman dibuka. Terbang melintasi langit malam dan tembus kelelawar dengan dash.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mulai",
+        "body": "Tekan Start di layar judul bulan. Pembuka ditutup dengan petunjuk: tahan B dan D-pad untuk dash ke musuh.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Terbang",
+        "body": "D-pad bergerak ke atas, bawah, kiri, kanan. Terus maju dan bar GOAL di bawah akan terisi.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "Dash",
+        "body": "Saat kelelawar datang, tahan B dan arahkan D-pad ke sana. Tiap dash memakai sebagian bar DASH, jadi jangan dibuang.",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "0BSD. Halaman: https://voxel.itch.io/dashy-no-witch. ROM komersial tidak di-host.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism adalah game kartu Game Boy Color sumber terbuka yang boleh disebarluaskan. ROM dimuat saat halaman dibuka. Ke-52 kartu tertutup; ingat letak tiap kartu dan ambil pasangannya.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Pilih permainan",
+        "body": "Tekan tombol apa saja di judul. Di GAME SELECT biarkan PELMANISM dan tekan A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "Pilih tingkat",
+        "body": "Pilih EASY, NORMAL, atau HARD dengan D-pad lalu tekan A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "Buka satu kartu",
+        "body": "Arahkan tangan ke sebuah kartu dan tekan A. Kartu yang dibuka tampil di kotak kiri bawah.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Cari pasangan",
+        "body": "Buka kartu kedua. Pasangan diangkat dan LEFT turun 2; kalau meleset, keduanya tertutup lagi. Ingat kartu yang sudah terlihat dan kosongkan meja.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://gitlab.com/teamknox/gbccardgame. ROM komersial tidak di-host.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 adalah puzzle Game Boy Advance sumber terbuka yang boleh disebarluaskan. ROM dimuat saat halaman dibuka. Jatuhkan cakram bernomor 1 sampai 7 dan hapus saat jumlahnya cocok.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Jatuhkan cakram",
+        "body": "Cakram berikutnya menunggu di atas papan. Geser kiri atau kanan dan tekan A untuk menjatuhkan.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "Hapus menurut jumlah",
+        "body": "Cakram 3 hilang saat baris atau kolomnya berisi tepat 3 cakram. Satu hapusan bisa memicu hapusan berikutnya; itulah rantai, dan nilainya lebih besar.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "Awasi kenaikan",
+        "body": "RISE menghitung sisa jatuhan sebelum satu baris cakram kosong terdorong naik dari bawah. Cakram kosong retak pada hapusan pertama di sebelahnya dan menjadi angka pada yang kedua. Jaga kolom tetap rendah.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "MIT. Sumber: https://github.com/mick-schroeder/gba-cascade7. Layar About di menu jeda mencantumkan Mick Schroeder.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending dibuka dengan tiga ikon. Tekan putar, pilih level, lalu bergerak dengan tombol panah. Setiap langkahmu dijawab satu langkah oleh seluruh ruangan.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Tekan putar",
+        "body": "Segitiga putar membuka daftar level. Ikon labirin dan palu adalah mode lainnya.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "Pilih level",
+        "body": "Level 00 sampai 19 tersusun dalam kisi. Mulai dari 00 lalu naik bertahap.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "Baca ruangan",
+        "body": "Spiral itu kamu. Kotak putih adalah balok yang bisa dihancurkan, kotak abu-abu menghalangi, dan pintu keluar ada di tepi dinding.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "Hancurkan balok",
+        "body": "Melangkah ke balok putih untuk menghancurkannya. Balok lain bergerak setelahmu, jadi pikirkan satu langkah ke depan.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "Capai pintu keluar",
+        "body": "Memutari kotak abu-abu dan injak pintu keluar.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "Level berikutnya",
+        "body": "Ruangan meredup dan nomor level berikutnya muncul.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "Lisensi",
+        "body": "GPL-2.0. Aaron Steed, 2013. Sumber: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

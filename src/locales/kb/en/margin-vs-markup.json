@@ -1,0 +1,188 @@
+{
+  "title": "Margin vs markup: the difference, formulas and conversion table — cv.cm",
+  "description": "Margin is profit divided by price; markup is profit divided by cost. Learn both formulas, convert between them, and see why a 25% markup is only a 20% margin.",
+  "h1": "Margin vs markup: what is the difference?",
+  "answer": "Margin and markup measure the same profit against different bases. Margin is profit as a percentage of the selling price: `(price − cost) / price`. Markup is profit as a percentage of the cost: `(price − cost) / cost`. An item that costs $60 and sells for $100 has a $40 profit, a 40% margin and a 66.7% markup. Markup is always the larger number.",
+  "sections": [
+    {
+      "h": "The two formulas",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "Margin",
+              "Markup"
+            ],
+            "rows": [
+              [
+                "Formula",
+                "`(price − cost) / price`",
+                "`(price − cost) / cost`"
+              ],
+              [
+                "Base",
+                "Selling price (revenue)",
+                "Cost"
+              ],
+              [
+                "Range",
+                "Below 100% (unless cost is zero)",
+                "0% to unlimited"
+              ],
+              [
+                "Answers",
+                "How much of each sale is profit?",
+                "How much was added on top of cost?"
+              ],
+              [
+                "Common users",
+                "Finance, accounting, investors",
+                "Retail and wholesale pricing"
+              ]
+            ]
+          }
+        },
+        "Example with a cost of $60 and a price of $100: profit is `100 − 60 = 40`. Margin is `40 / 100 = 40%`. Markup is `40 / 60 = 66.7%`.",
+        "In accounting, \"gross margin\" uses the cost of goods sold. Operating and net margin subtract more costs, such as rent, salaries and tax, so they are lower than gross margin for the same product."
+      ]
+    },
+    {
+      "h": "Converting between margin and markup",
+      "body": [
+        "Because both use the same profit, one converts directly into the other. Write percentages as decimals:",
+        {
+          "ul": [
+            "`markup = margin / (1 − margin)`. A 40% margin is `0.4 / 0.6 = 0.667`, a 66.7% markup.",
+            "`margin = markup / (1 + markup)`. A 50% markup is `0.5 / 1.5 = 0.333`, a 33.3% margin."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Margin",
+              "Equivalent markup"
+            ],
+            "rows": [
+              [
+                "10%",
+                "11.11%"
+              ],
+              [
+                "15%",
+                "17.65%"
+              ],
+              [
+                "20%",
+                "25%"
+              ],
+              [
+                "25%",
+                "33.33%"
+              ],
+              [
+                "30%",
+                "42.86%"
+              ],
+              [
+                "33.33%",
+                "50%"
+              ],
+              [
+                "40%",
+                "66.67%"
+              ],
+              [
+                "50%",
+                "100%"
+              ],
+              [
+                "60%",
+                "150%"
+              ],
+              [
+                "75%",
+                "300%"
+              ]
+            ]
+          }
+        },
+        "The gap grows fast: at a 50% margin, the markup is already 100%, meaning the price is double the cost (\"keystone\" pricing in retail)."
+      ]
+    },
+    {
+      "h": "Setting a price from a target",
+      "body": [
+        "The formula you use depends on which number you are aiming for:",
+        {
+          "table": {
+            "head": [
+              "Goal",
+              "Formula",
+              "Cost $60 example"
+            ],
+            "rows": [
+              [
+                "Target markup of 25%",
+                "`price = cost × (1 + markup)`",
+                "`60 × 1.25 = $75`"
+              ],
+              [
+                "Target margin of 25%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.75 = $80`"
+              ],
+              [
+                "Target margin of 40%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.6 = $100`"
+              ]
+            ]
+          }
+        },
+        "Note the $5 difference between the first two rows. Both say \"25%\", but one is calculated on cost and the other on price."
+      ]
+    },
+    {
+      "h": "The most common pricing mistake",
+      "body": [
+        "A business wants a 30% margin, so it adds 30% to cost. With a cost of $100, the price becomes $130 and the profit $30. The margin is `30 / 130 = 23.1%`, not 30%. To reach a true 30% margin the price must be `100 / 0.7 = $142.86`.",
+        "The same confusion appears with discounts. A 25% markup followed by a 25% discount does not return to cost: `100 × 1.25 = 125`, then `125 × 0.75 = 93.75`, a loss of $6.25 per unit. Sale prices should be checked against cost directly.",
+        {
+          "note": "When a supplier, buyer or partner quotes a percentage, ask whether it is margin or markup. The same word \"percent profit\" can describe both, and the difference can be thousands on a large order."
+        }
+      ]
+    },
+    {
+      "h": "Which one should you track?",
+      "body": [
+        {
+          "ul": [
+            "Use markup when pricing individual items from their cost, for example adding a standard markup to every product in a category.",
+            "Use margin for reporting and comparisons. It is the figure on income statements, so it lines up with revenue totals, budgets and industry benchmarks.",
+            "Use margin to decide how deep a discount can go: an item with a 20% margin cannot be discounted by more than 20% before it sells below cost.",
+            "Keep the inputs consistent. Include shipping, payment fees and packaging in cost, or both percentages will look better than reality."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is a 50% markup the same as a 50% margin?",
+      "a": "No. A 50% markup on a $100 cost gives a $150 price and a 33.3% margin. A 50% margin needs a $200 price, which is a 100% markup."
+    },
+    {
+      "q": "Can margin be more than 100%?",
+      "a": "No, because profit can never exceed the selling price when cost is positive. Markup has no upper limit, so values like 300% are common for low-cost items."
+    },
+    {
+      "q": "How do I calculate selling price from margin?",
+      "a": "Divide the cost by `1 − margin`. For a cost of $45 and a 40% margin, the price is `45 / 0.6 = $75`."
+    },
+    {
+      "q": "What is a good profit margin?",
+      "a": "It depends on the industry: grocery retailers often run net margins of a few percent, while software companies can exceed 20%. Compare against businesses with a similar cost structure rather than a single target."
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "title": "URL encoding (percent-encoding): penjelasan dan contohnya — cv.cm",
+  "description": "URL encoding mengganti karakter tidak aman dengan % plus dua digit hex: spasi jadi %20, & jadi %26, é jadi %C3%A9. Lihat aturan dan fungsi yang tepat.",
+  "h1": "Apa itu URL encoding?",
+  "answer": "URL encoding, yang secara resmi disebut percent-encoding, mengganti karakter yang tidak diizinkan atau punya arti khusus di URL dengan `%` diikuti dua digit heksadesimal untuk setiap byte. Spasi menjadi `%20`, `&` menjadi `%26`, dan teks non-ASCII diubah dulu ke UTF-8, sehingga \"é\" menjadi `%C3%A9`. String \"a b&c\" di-encode menjadi `a%20b%26c`.",
+  "sections": [
+    {
+      "h": "Mengapa URL perlu di-encode",
+      "body": [
+        "RFC 3986 membatasi URL pada sekumpulan kecil karakter ASCII, dan sebagian di antaranya punya tugas khusus. `?` mengawali query, `&` memisahkan parameter, `=` memisahkan nama dari nilainya, `#` mengawali fragmen, dan `/` memisahkan segmen path. Jika sebuah nilai berisi salah satu karakter itu, URL menjadi ambigu.",
+        "Ambil contoh pencarian \"salt & pepper\". Jika ditulis mentah sebagai `?q=salt & pepper`, server melihat parameter `q` dengan nilai `salt ` dan parameter kedua yang kosong bernama ` pepper`. Jika di-encode menjadi `?q=salt%20%26%20pepper`, nilainya sampai sebagai satu kesatuan."
+      ]
+    },
+    {
+      "h": "Karakter mana yang di-encode",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kelompok",
+              "Karakter",
+              "Aturan"
+            ],
+            "rows": [
+              [
+                "Unreserved",
+                "`A–Z a–z 0–9 - . _ ~`",
+                "Tidak pernah perlu di-encode"
+              ],
+              [
+                "Reserved (gen-delims)",
+                "`: / ? # [ ] @`",
+                "Encode jika dipakai di dalam nilai"
+              ],
+              [
+                "Reserved (sub-delims)",
+                "`! $ & ' ( ) * + , ; =`",
+                "Encode jika dipakai di dalam nilai"
+              ],
+              [
+                "Semua karakter lain",
+                "Spasi, `\"`, `<`, `>`, `%`, non-ASCII",
+                "Selalu di-encode"
+              ]
+            ]
+          }
+        },
+        "Encoding bekerja pada byte, bukan karakter. Teks non-ASCII diubah dulu ke UTF-8, lalu setiap byte menjadi triplet `%XX` tersendiri:",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "Byte UTF-8",
+              "Hasil encode"
+            ],
+            "rows": [
+              [
+                "spasi",
+                "`20`",
+                "`%20`"
+              ],
+              [
+                "&",
+                "`26`",
+                "`%26`"
+              ],
+              [
+                "%",
+                "`25`",
+                "`%25`"
+              ],
+              [
+                "é",
+                "`C3 A9`",
+                "`%C3%A9`"
+              ],
+              [
+                "日本",
+                "`E6 97 A5 E6 9C AC`",
+                "`%E6%97%A5%E6%9C%AC`"
+              ]
+            ]
+          }
+        },
+        "Digit heksadesimal tidak membedakan huruf besar-kecil, jadi `%c3%a9` dan `%C3%A9` berarti sama, tetapi RFC 3986 menyarankan huruf besar demi konsistensi."
+      ]
+    },
+    {
+      "h": "%20 atau +: dua aturan untuk spasi",
+      "body": [
+        "Percent-encoding menurut RFC 3986 selalu menulis spasi sebagai `%20`. Pengiriman formulir HTML memakai format terkait, `application/x-www-form-urlencoded`, yang mengubah spasi menjadi `+` dan tanda plus asli menjadi `%2B`.",
+        {
+          "ul": [
+            "Di path seperti `/files/my report.pdf`, gunakan `%20`. Tanda `+` di path adalah tanda plus apa adanya.",
+            "Di query string, server yang mem-parsing encoding formulir membaca `+` sebagai spasi. `%20` dipahami oleh kedua konvensi, jadi itu pilihan yang lebih aman jika ragu.",
+            "Jika sebuah nilai bisa berisi `+` sungguhan, misalnya nomor telepon seperti `+84`, nilai itu harus dikirim sebagai `%2B`, kalau tidak akan sampai sebagai spasi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "encodeURIComponent vs encodeURI di JavaScript",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Fungsi",
+              "Tidak di-encode",
+              "Dipakai untuk"
+            ],
+            "rows": [
+              [
+                "`encodeURIComponent()`",
+                "`A–Z a–z 0–9 - _ . ! ~ * ' ( )`",
+                "Satu nilai: satu parameter query atau satu segmen path"
+              ],
+              [
+                "`encodeURI()`",
+                "Semua di atas ditambah `; , / ? : @ & = + $ #`",
+                "URL utuh yang strukturnya sudah jadi"
+              ],
+              [
+                "`URLSearchParams`",
+                "Aturan encoding formulir (spasi menjadi `+`)",
+                "Membuat atau membaca query string"
+              ]
+            ]
+          }
+        },
+        "`encodeURIComponent(\"a b&c\")` menghasilkan `a%20b%26c`, sedangkan `encodeURI(\"a b&c\")` menghasilkan `a%20b&c` karena fungsi itu menganggap `&` sebagai pemisah. Bug yang umum adalah memanggil `encodeURI` pada nilai parameter, sehingga `&`, `=`, dan `#` lolos dan memecah nilai tersebut.",
+        "`new URLSearchParams({ q: \"a b&c\" }).toString()` menghasilkan `q=a+b%26c`. Kedua bentuk di-decode menjadi nilai yang sama di server standar."
+      ]
+    },
+    {
+      "h": "Kesalahan umum",
+      "body": [
+        {
+          "ol": [
+            "Double encoding: meng-encode teks yang sudah ter-encode mengubah `%20` menjadi `%2520`, karena `%` itu sendiri di-encode menjadi `%25`. Encode setiap nilai tepat satu kali, pada saat nilai itu dimasukkan ke URL.",
+            "Meng-encode seluruh URL dengan fungsi untuk komponen: `https://` menjadi `https%3A%2F%2F` dan tautannya tidak lagi berfungsi.",
+            "Decode sebelum routing: server yang men-decode `%2F` menjadi `/` sebelum mencocokkan rute bisa dikelabui untuk membaca path yang berbeda.",
+            "Menganggap charset lama: sebagian sistem lama meng-encode \"é\" sebagai `%E9` (Latin-1). Browser modern dan WHATWG URL Standard memakai UTF-8."
+          ]
+        },
+        {
+          "note": "URL encoding bukan enkripsi atau sanitasi. Siapa pun bisa men-decode-nya, dan encoding ini tidak membuat input aman untuk dimasukkan ke HTML atau SQL. Lakukan escape atau parameterisasi secara terpisah untuk setiap konteks."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa spasi menjadi %20 di URL?",
+      "a": "Spasi tidak diizinkan di URL, jadi spasi diganti dengan `%` plus nilai byte-nya dalam heksadesimal. Kode ASCII untuk spasi adalah 32 dalam desimal, yaitu `20` dalam heksadesimal."
+    },
+    {
+      "q": "Apa arti %2F di URL?",
+      "a": "`%2F` adalah garis miring yang di-encode. Dengan begitu, `/` bisa muncul di dalam nilai tanpa dibaca sebagai pemisah path."
+    },
+    {
+      "q": "Apakah URL encoding sama dengan Base64?",
+      "a": "Tidak. URL encoding hanya mengganti karakter yang tidak aman dan membiarkan sisanya tetap terbaca. Base64 mengubah semua byte ke alfabet 64 karakter, dan karakter standarnya `+` dan `/` justru perlu di-URL-encode kecuali memakai varian aman-URL."
+    },
+    {
+      "q": "Apakah huruf beraksen atau aksara Tionghoa perlu di-encode?",
+      "a": "Ya, dalam request yang sebenarnya. Browser menampilkannya dengan rapi di bilah alamat tetapi mengirim bentuk percent-encoding UTF-8-nya, misalnya `%E6%97%A5` untuk 日."
+    }
+  ]
+}

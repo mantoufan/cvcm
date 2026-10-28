@@ -3841,5 +3841,540 @@
         "body": "MIT。Antoine Boucher，2010 年。源：https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys 是免費的 FC 平台射擊遊戲，打開頁面就會載入 ROM。每關一個目標，跳躍射擊直到完成。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始遊戲",
+        "body": "按 Start，選 Play Game，再用 A 依序確認：人數、模式、難度、起始關。",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "看清目標",
+        "body": "每關前的畫面寫著要做什麼，例如「Defeat 5 enemies」，還有剩餘命數。",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "跳躍射擊",
+        "body": "A 在平台之間跳，B 開火。完成目標時右上角的數字會減少。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "zlib。原始碼：https://github.com/NovaSquirrel/DABG。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit 是免費的 FC 街機射擊遊戲，打開頁面就會載入 ROM。你操縱地球、轉動月球，撞碎一波波敵人。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始",
+        "body": "標題畫面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "移動與旋轉",
+        "body": "方向鍵移動地球。A 和 B 讓月球繞地球轉，月球撞到的東西都會被消滅。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "撐過每一波",
+        "body": "敵人成排飛來。把月球擋在它們的路線上，保住左上角的命數。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/pubby/lunarlimit。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 是免費的 FC 解謎遊戲，打開頁面就會載入 ROM。每個房間是一個小網格，有樓梯、熊，有時還有寶石。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始",
+        "body": "標題畫面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "走到樓梯",
+        "body": "用方向鍵一步步走向樓梯。有寶石就先拿寶石。碰到熊就重來這一間。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/pubby/Ralph-4。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES 是免費的生命遊戲沙盒，打開頁面就會載入 ROM。你擺放細胞，規則決定接下來發生什麼。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "打開網格",
+        "body": "網格上已經有一個滑翔機，游標在左上角。",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "放置細胞",
+        "body": "方向鍵移動，按 A 切換細胞。Select 清空整個網格。",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "執行",
+        "body": "按 Start。周圍有 2 或 3 個鄰居的細胞存活，空格周圍正好 3 個鄰居就誕生新細胞。再按 Start 停止。",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "zlib。原始碼：https://github.com/NovaSquirrel/NESLife。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX 是免費的 SFC 動作遊戲，打開頁面就會載入 ROM。你手動開電梯，讓每位乘客滿意。",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "看按鍵說明",
+        "body": "第一個畫面標出了跳、開門、電梯上行和電梯下行。按 Start。",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "開始上班",
+        "body": "標題畫面再按一次 Start 開始。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "開電梯",
+        "body": "走到控制台，用 X 和 A 上下移動車廂，停在對的樓層，再按 Y 開那一層的門。別讓電梯撞上樓頂或地面。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/undisbeliever/elevator-madness-dx。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave 是免費的 SFC 洞穴飛行遊戲，打開頁面就會載入 ROM。一個鍵讓蝙蝠留在空中。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "起飛",
+        "body": "按 Start，點 B 往上拍翅，兩次點按之間讓它下沉。沿著白色通道飛。",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "撞牆再來",
+        "body": "碰到棕色洞壁會顯示 GAME OVER 和距離。按 Start 再來一局。",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/undisbeliever/bat-cave。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes 是免費的 SFC 解謎遊戲，打開頁面就會載入 ROM。把管子鋪到起點和終點連通為止。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "看棋盤",
+        "body": "開局棋盤是空的，左邊是管子佇列。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "鋪管子",
+        "body": "方向鍵移動游標，按 B 放下下一塊。用一條不中斷的管道連起起點和終點。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/undisbeliever/pipes。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer 是免費的 SFC 平台跳躍遊戲，打開頁面就會載入 ROM。五個城堡關卡，終點都是一扇門。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "進入城堡",
+        "body": "第一個房間地上有兩隻小怪，出口門在右邊。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "跑和跳",
+        "body": "方向鍵走，按住 Y 跑，按 B 跳過小怪走到門口。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/undisbeliever/castle_platformer。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets 是免費的 MD 平台動作遊戲，打開頁面就會載入 ROM。每一關都是一顆能繞著跑一圈的小星球。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始",
+        "body": "選 START。有密碼的話選 PASSWORD 去後面的關卡。",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "關卡標題",
+        "body": "每關開頭會顯示關卡名，例如 PLANELAGO 1 · LAFTO。",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "繞星球跑",
+        "body": "你一跑星球就轉。用 A、B 或 C 跳，在頂部倒數計時結束前通過這顆星球。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "zlib。原始碼：https://github.com/sikthehedgehog/miniplanets。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD 是免費的 MD 連鎖反應遊戲，打開頁面就會載入 ROM。把格子裝滿到炸開，佔領整個棋盤。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "標題畫面",
+        "body": "按任意鍵進入主選單。",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "設定",
+        "body": "選棋盤寬高，把玩家設為人或電腦，然後按綠色播放鍵。",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "放原子",
+        "body": "移動游標，按 A 加一個原子。角落的格子 2 個就炸，邊上 3 個，中間 4 個。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/Nightwolf-47/KleleAtoms-MD。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition 是免費的 Roguelike，打開頁面就會載入 ROM。每一局都會生成新地牢。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開一局",
+        "body": "標題畫面按 Start，選單裡選 Random run。",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "選職業",
+        "body": "戰士最耐打，盜賊擅長潛行，獵人遠程攻擊，法師用法杖。選 Yes 確認。",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "探索",
+        "body": "方向鍵移動，走向敵人就是攻擊。撿道具，Food 條低了就吃東西，找到下樓的樓梯。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "GPL-3.0。這一版的原始碼：https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament 是免費的 GBA 解謎遊戲，打開頁面就會載入 ROM。你來布置地牢，勇者只管照指令走。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "看關卡卡片",
+        "body": "每關開頭是編號和一條規則，例如「Keys open doors」。按 A。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "布置並出發",
+        "body": "看 HERO'S ACTIONS，用 A 把 YOUR ITEMS 裡的道具擺到地圖上，再按 Start 看他走。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "程式碼 MPL-2.0，美術 CC BY 4.0，音樂 VWolfdog CC-BY 3.0（https://opengameart.org/content/soft-mysterious-harp-loop）。原始碼：https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy 是免費的 GB 生存遊戲，打開頁面就會載入 ROM。一天一天地決定誰能吃上飯。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "躲進地堡",
+        "body": "標題畫面和空襲場景一路按 A，然後選起始物資箱。",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "清點物資",
+        "body": "每天開始會顯示食物、水和醫療包的數量。",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "分配物資",
+        "body": "移到 Mike、Rose 或 Jeff，按 A 給他食物、水或醫療包。分完選 OK。",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "授權",
+        "body": "MIT。原始碼：https://github.com/UrbanZero/bunkerboy。商業 ROM 不託管。"
+      }
+    ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II 是一款自由軟體 FC 大逃殺。ROM 已託管，打開頁面就會載入。二十隻小雞在圍牆裡開打，只有一隻能走出來。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開一局",
+        "body": "選 1 PLAYERS 按 Start。畫面底部的署名是 Rodrigo Dornelles 和 Psywave Games。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "找到你的小雞",
+        "body": "你的小雞頭上飄著一個小 1。方向鍵走，A 或 B 啄。其他小雞之間也會互相打。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "活到最後",
+        "body": "右上角的數字從 20 往下掉。別往雞群裡鑽，專挑落單的下手，一直走動，直到只剩你一隻。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "許可 GPL-3.0。原始碼在 https://github.com/psywave-games/coco-battle-royale-2。商業遊戲不會這樣託管。"
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl 是可再散布的開源 Game Boy 猜字遊戲。ROM 已託管，打開頁面就會載入。你有六次機會猜出一個五個字母的英文單字。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始",
+        "body": "標題畫面按 Start。接下來兩頁說明顏色含義和選單快速鍵，按任意鍵翻過去。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "輸入猜測",
+        "body": "用方向鍵在螢幕鍵盤上移動游標，每個字母按一次 A。B 刪除，湊滿五個字母按 Start 送出。",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "看顏色",
+        "body": "灰色：單字裡沒有這個字母。黃色：有，但在別的位置。綠色：字母和位置都對。",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "縮小範圍",
+        "body": "下方的鍵盤也會記住顏色。這裡猜 WRITE 排除了 W、R、T、E，並且知道 I 在單字裡，只是不在中間。照著線索繼續猜，直到五格全綠。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "許可 GPL-3.0。原始碼在 https://github.com/bbbbbr/gb-wordyl。商業遊戲不會這樣託管。"
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch 是以 0BSD 發布、可再散布的 Game Boy 動作遊戲。ROM 已託管，打開頁面就會載入。騎掃帚飛過夜空，衝刺撞開蝙蝠。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "開始",
+        "body": "在月亮標題畫面按 Start。開場最後會提示：按住 B 加方向鍵衝向敵人。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "飛行",
+        "body": "方向鍵上下左右移動。一直往前飛，底部的 GOAL 條會慢慢填滿。",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "衝刺",
+        "body": "蝙蝠飛過來時，按住 B，方向鍵指向牠。每次衝刺都會用掉一截 DASH 條，別亂用。",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "許可 0BSD。頁面在 https://voxel.itch.io/dashy-no-witch。商業遊戲不會這樣託管。",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism 是可再散布的開源 Game Boy Color 翻牌遊戲。ROM 已託管，打開頁面就會載入。52 張牌全部蓋著，記住每張的位置，把成對的牌找出來。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "選遊戲",
+        "body": "標題畫面按任意鍵。GAME SELECT 裡保持 PELMANISM，按 A。",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "選難度",
+        "body": "用方向鍵選 EASY、NORMAL 或 HARD，按 A。",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "翻一張",
+        "body": "把手移到一張牌上按 A，翻開的牌顯示在下方左邊的框裡。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "配對",
+        "body": "再翻第二張。成對就拿走，LEFT 減 2；不成對兩張都翻回去。記住看過的牌，清空牌桌。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "許可 MIT。原始碼在 https://gitlab.com/teamknox/gbccardgame。商業遊戲不會這樣託管。",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 是可再散布的開源 GBA 益智遊戲。ROM 已託管，打開頁面就會載入。投下寫著 1 到 7 的圓片，數量對上就會消除。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "投下圓片",
+        "body": "下一枚圓片停在棋盤上方。左右移動，按 A 投下去。",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "按數量消除",
+        "body": "數字 3 所在的行或列剛好有 3 枚圓片時，它就會消掉。一次消除可能引發下一次，這就是連鎖，分數更高。",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "留意上升",
+        "body": "RISE 是離下一次上升還剩幾次投放，到 0 時底部會推上一排空白圓片。空白圓片旁邊第一次消除時裂開，第二次變成數字。盡量讓每列保持低。",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "許可 MIT。原始碼在 https://github.com/mick-schroeder/gba-cascade7。暫停選單的 About 頁寫著作者 Mick Schroeder。",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending 開場是三個圖示。點播放、選關卡，然後用方向鍵移動。你每走一步，整個房間都會跟著回應一步。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "點播放",
+        "body": "播放三角進入關卡列表。迷宮圖示和鎚子圖示是另外兩種模式。",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "選關卡",
+        "body": "00 到 19 關排成一格一格。從 00 開始，一關一關往上打。",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "看清房間",
+        "body": "螺旋符號就是你。白色方塊可以打碎，灰色方塊擋路，出口在牆邊。",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "打碎方塊",
+        "body": "走進白色方塊把它打碎。其他方塊會在你之後移動，多看一步。",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "走到出口",
+        "body": "繞開灰色方塊，踩上出口。",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "下一關",
+        "body": "房間漸暗，出現下一關的編號。",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "許可",
+        "body": "GPL-2.0。Aaron Steed，2013 年。原始碼：https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

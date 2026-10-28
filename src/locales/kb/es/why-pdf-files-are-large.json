@@ -1,0 +1,156 @@
+{
+  "title": "¿Por qué un PDF pesa tanto? Causas y cómo reducirlo — cv.cm",
+  "description": "Un PDF pesado suele deberse a imágenes de alta resolución, escaneos, fuentes incrustadas o historial de edición. Qué ocupa espacio y cómo reducirlo.",
+  "h1": "¿Por qué mi archivo PDF pesa tanto?",
+  "answer": "La mayoría de los PDF demasiado grandes lo son por las imágenes: fotos a resolución completa o páginas escaneadas guardadas con poca compresión. Otras causas son las fuentes incrustadas completas, sobre todo las de chino, japonés y coreano, el historial de edición que dejan los guardados incrementales, las imágenes duplicadas y los archivos adjuntos. Reducir las imágenes a 150 PPI para lectura en pantalla, volver a comprimirlas y guardar una copia limpia suele reducir el tamaño a la mitad o más.",
+  "sections": [
+    {
+      "h": "Qué ocupa realmente espacio en un PDF",
+      "body": [
+        "Un PDF, estandarizado como ISO 32000, es un conjunto de objetos: descripciones de página, fuentes, imágenes y metadatos, cada uno opcionalmente comprimido. El texto y los dibujos vectoriales son diminutos; una página entera de texto suele necesitar solo unos pocos kilobytes. Los problemas de tamaño vienen de los objetos pesados.",
+        {
+          "table": {
+            "head": [
+              "Causa",
+              "Impacto típico",
+              "Por qué ocurre"
+            ],
+            "rows": [
+              [
+                "Fotos a resolución de cámara",
+                "1–10 MB por imagen",
+                "Una foto de 12 megapíxeles se coloca en una página que necesita una fracción de esos píxeles"
+              ],
+              [
+                "Páginas escaneadas",
+                "0.5–5 MB por página",
+                "Cada página es una imagen a todo color, aunque solo contenga texto negro"
+              ],
+              [
+                "Fuentes incrustadas",
+                "De decenas de KB a más de 20 MB",
+                "Se incrustan archivos de fuente completos en lugar de solo los caracteres usados"
+              ],
+              [
+                "Guardados incrementales",
+                "Crece con cada edición",
+                "Los cambios se añaden al final; las versiones antiguas de los objetos siguen en el archivo"
+              ],
+              [
+                "Imágenes duplicadas",
+                "Multiplica el tamaño de las imágenes",
+                "Un logotipo guardado una vez por página en lugar de compartido"
+              ],
+              [
+                "Adjuntos, capas, formularios",
+                "Variable",
+                "Archivos incrustados, capas ocultas y scripts de formulario"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Páginas escaneadas: las cuentas",
+      "body": [
+        "Una página A4 escaneada a 300 PPI tiene 2480 × 3508 = 8,699,840 píxeles. En color, a 3 bytes por píxel, son unos 26.1 MB sin comprimir por página.",
+        {
+          "ul": [
+            "En escala de grises (1 byte por píxel) la misma página ocupa unos 8.7 MB sin comprimir.",
+            "En blanco y negro (1 bit por píxel) baja a unos 1.09 MB, y la compresión binivel como CCITT Group 4 o JBIG2 suele dejar una página de texto en decenas de kilobytes.",
+            "La compresión JPG en la versión a color suele dar 1–3 MB por página, así que un escaneo a color de 20 páginas supera fácilmente los 20 MB."
+          ]
+        },
+        "Escanear documentos de texto en escala de grises o en blanco y negro a 300 PPI, en lugar de a color a 600, es el mayor ahorro posible en los escaneos."
+      ]
+    },
+    {
+      "h": "Cómo funciona la compresión en PDF",
+      "body": [
+        "Los streams de un PDF declaran un filtro que indica cómo están comprimidos. Elegir un filtro mejor, o volver a comprimir con ajustes más agresivos, es como las herramientas de compresión reducen los archivos.",
+        {
+          "table": {
+            "head": [
+              "Filtro",
+              "Método",
+              "Se usa para"
+            ],
+            "rows": [
+              [
+                "`FlateDecode`",
+                "Sin pérdida (zlib/deflate, como en PNG y ZIP)",
+                "Texto, gráficos vectoriales, imágenes sin pérdida"
+              ],
+              [
+                "`DCTDecode`",
+                "JPEG con pérdida",
+                "Fotos"
+              ],
+              [
+                "`JPXDecode`",
+                "JPEG 2000",
+                "Imágenes de alta calidad, escaneos de archivo"
+              ],
+              [
+                "`JBIG2Decode`",
+                "Binivel, con o sin pérdida",
+                "Escaneos en blanco y negro"
+              ],
+              [
+                "`CCITTFaxDecode`",
+                "Compresión binivel de fax",
+                "Escaneos antiguos en blanco y negro"
+              ]
+            ]
+          }
+        },
+        "PDF 1.5 introdujo además los object streams y los cross-reference streams, que comprimen la estructura interna del archivo. Guardar con una versión moderna de PDF los activa."
+      ]
+    },
+    {
+      "h": "Cómo reducir el tamaño de un PDF",
+      "body": [
+        {
+          "ol": [
+            "Reduce la resolución de las imágenes: 150 PPI basta para leer en pantalla y enviar por correo, 300 PPI para imprimir.",
+            "Vuelve a comprimir las fotos como JPG con calidad moderada; convierte los escaneos de texto a escala de grises o a blanco y negro.",
+            "Usa «Guardar como» o un comando de optimización en lugar de «Guardar», que reescribe el archivo y descarta las actualizaciones incrementales antiguas.",
+            "Incrusta subconjuntos de fuentes (solo los caracteres usados) en lugar de fuentes completas.",
+            "Elimina adjuntos, capas ocultas, miniaturas y datos de formulario que no necesites.",
+            "Si un archivo sigue siendo demasiado grande, divídelo en partes o envía solo las páginas necesarias."
+          ]
+        },
+        "Ejemplo práctico: un informe de 30 páginas con diez fotos de teléfono de 4 MB ocupa unos 40 MB. Reducir esas fotos a 150 PPI para su tamaño impreso de unas 6 pulgadas de ancho (900 píxeles) y guardarlas como JPG al 80 % de calidad suele dejar cada una por debajo de 200 KB, y el archivo completo en unos 2–3 MB."
+      ]
+    },
+    {
+      "h": "Qué tener en cuenta",
+      "body": [
+        "La compresión agresiva tiene sus costos. Bajar de 150 PPI hace difícil leer el texto pequeño de las imágenes, y JBIG2 con pérdida ha llegado a sustituir dígitos de aspecto parecido en números escaneados, así que los modos sin pérdida son más seguros para facturas y contratos.",
+        {
+          "note": "Los PDF suelen contener datos personales o confidenciales. Un compresor que funciona en tu navegador procesa el archivo localmente; un servicio en línea que sube el archivo lo envía al servidor de otra persona. Comprueba cuál estás usando antes de comprimir contratos, documentos de identidad o historiales médicos."
+        },
+        "Muchos servicios de correo limitan los adjuntos a unos 20–25 MB, y algunos formularios de subida solo aceptan 2–5 MB, así que comprueba el límite antes de decidir cuánto comprimir."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Comprimir un PDF reduce la calidad?",
+      "a": "Las optimizaciones sin pérdida, como eliminar objetos antiguos y comprimir la estructura, no. Reducir la resolución y volver a comprimir las imágenes sí reduce su detalle, aunque a 150 PPI en pantalla normalmente no se nota."
+    },
+    {
+      "q": "¿Por qué un PDF de pocas páginas pesa tanto?",
+      "a": "Casi seguro contiene imágenes grandes, una página escaneada guardada a todo color o una fuente incrustada completa. El texto por sí solo ocupa muy poco."
+    },
+    {
+      "q": "¿Por qué mi PDF crece cada vez que lo guardo?",
+      "a": "Muchos editores usan guardados incrementales, que añaden los cambios al final del archivo y conservan los objetos antiguos. Guardar una copia nueva con «Guardar como» o una opción de optimización los elimina."
+    },
+    {
+      "q": "¿Qué resolución deben tener las imágenes de un PDF?",
+      "a": "Unos 150 PPI para documentos que se leen en pantalla o se envían por correo, y 300 PPI para impresión profesional. Valores más altos sobre todo añaden peso."
+    }
+  ]
+}

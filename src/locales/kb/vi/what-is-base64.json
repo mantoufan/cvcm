@@ -1,0 +1,182 @@
+{
+  "title": "Base64 là gì? Cách mã hóa Base64 hoạt động, kèm ví dụ — cv.cm",
+  "description": "Base64 chuyển dữ liệu nhị phân thành 64 ký tự văn bản an toàn, cứ 3 byte thành 4 ký tự. Xem \"Man\" biến thành TWFu ra sao, vì sao kết quả lớn hơn 33% và Base64 được dùng ở đâu.",
+  "h1": "Mã hóa Base64 là gì?",
+  "answer": "Base64 là cách biểu diễn dữ liệu nhị phân chỉ bằng 64 ký tự in được: A–Z, a–z, 0–9, + và /, với = làm ký tự đệm. Nó chia mỗi 3 byte thành bốn nhóm 6 bit và ánh xạ mỗi nhóm thành một ký tự, nên \"Man\" trở thành \"TWFu\". Base64 giúp dữ liệu nhị phân đi qua an toàn các kênh chỉ hỗ trợ văn bản như email, JSON và URL, đổi lại dung lượng tăng khoảng 33%. Đây là mã hóa ký tự (encoding), không phải mã hóa bảo mật (encryption).",
+  "sections": [
+    {
+      "h": "Base64 hoạt động thế nào, từng bước một",
+      "body": [
+        "Base64 được định nghĩa trong RFC 4648. Vì 64 = 2⁶, mỗi ký tự đầu ra mang đúng 6 bit, và 3 byte (24 bit) khớp gọn vào 4 ký tự.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "M",
+              "a",
+              "n"
+            ],
+            "rows": [
+              [
+                "Mã ASCII",
+                "77",
+                "97",
+                "110"
+              ],
+              [
+                "Nhị phân (mỗi ký tự 8 bit)",
+                "01001101",
+                "01100001",
+                "01101110"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Ghép 24 bit lại: `010011010110000101101110`.",
+            "Chia thành bốn nhóm 6 bit: `010011` `010110` `000101` `101110`.",
+            "Đổi sang số: 19, 22, 5, 46.",
+            "Tra từng số trong bảng chữ cái (0 = A, 25 = Z, 26 = a, 51 = z, 52 = 0, 61 = 9, 62 = +, 63 = /): T, W, F, u.",
+            "Kết quả: `TWFu`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ký tự đệm =",
+      "body": [
+        "Khi độ dài đầu vào không phải bội số của 3, nhóm cuối được bù bằng các bit 0 và dấu `=` đánh dấu các byte còn thiếu, nhờ vậy độ dài đầu ra luôn là bội số của 4.",
+        {
+          "table": {
+            "head": [
+              "Đầu vào",
+              "Số byte",
+              "Base64"
+            ],
+            "rows": [
+              [
+                "`M`",
+                "1",
+                "`TQ==`"
+              ],
+              [
+                "`Ma`",
+                "2",
+                "`TWE=`"
+              ],
+              [
+                "`Man`",
+                "3",
+                "`TWFu`"
+              ],
+              [
+                "`Hello`",
+                "5",
+                "`SGVsbG8=`"
+              ],
+              [
+                "`é` (byte UTF-8 C3 A9)",
+                "2",
+                "`w6k=`"
+              ]
+            ]
+          }
+        },
+        "Với n byte, độ dài sau mã hóa là `4 × ceil(n ÷ 3)` ký tự. Một file 1 MB trở thành khoảng 1,33 MB văn bản, và email MIME còn chèn ngắt dòng sau mỗi 76 ký tự, khiến phần tăng thêm nhỉnh hơn một chút."
+      ]
+    },
+    {
+      "h": "Base64 được dùng ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Tệp đính kèm email: MIME mã hóa file bằng Base64 vì hệ thống thư ban đầu chỉ truyền được văn bản 7 bit.",
+            "Data URL: ảnh nhỏ nhúng thẳng vào HTML hoặc CSS, viết dạng `data:image/png;base64,iVBORw0KGgo...`.",
+            "API JSON và XML cần truyền dữ liệu nhị phân như ảnh, khóa hoặc chứng chỉ.",
+            "JSON Web Token (JWT), có phần header và payload là JSON được mã hóa Base64url.",
+            "File PEM cho chứng chỉ và khóa TLS, bọc chuỗi Base64 giữa các dòng `-----BEGIN CERTIFICATE-----`.",
+            "Xác thực HTTP Basic, gửi `username:password` dưới dạng mã hóa Base64."
+          ]
+        },
+        "Nhúng ảnh dưới dạng data URL tiết kiệm được một yêu cầu mạng nhưng làm ảnh nặng thêm 33% và không thể lưu cache riêng, nên thường chỉ đáng dùng cho ảnh rất nhỏ."
+      ]
+    },
+    {
+      "h": "Base64, Base64url và các kiểu mã hóa khác",
+      "body": [
+        "Base64 chuẩn dùng `+` và `/`, vốn có ý nghĩa đặc biệt trong URL và tên file. Biến thể an toàn cho URL trong cùng RFC thay chúng bằng `-` và `_`, và thường bỏ ký tự đệm `=`.",
+        {
+          "table": {
+            "head": [
+              "Kiểu mã hóa",
+              "Bộ ký tự",
+              "Dung lượng tăng thêm",
+              "Ví dụ sử dụng"
+            ],
+            "rows": [
+              [
+                "Base16 (hex)",
+                "0–9, A–F",
+                "100%",
+                "Mã băm, mã màu"
+              ],
+              [
+                "Base32",
+                "A–Z, 2–7",
+                "60%",
+                "Khóa bí mật xác thực hai yếu tố"
+              ],
+              [
+                "Base64",
+                "A–Z, a–z, 0–9, +, /",
+                "33%",
+                "Email, data URL, PEM"
+              ],
+              [
+                "Base64url",
+                "A–Z, a–z, 0–9, -, _",
+                "33%",
+                "JWT, tham số URL"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp",
+      "body": [
+        {
+          "note": "Base64 không phải mã hóa bảo mật. Ai cũng giải mã được ngay lập tức, nên mật khẩu hay API key dạng Base64 trong URL, file cấu hình hoặc payload JWT thực chất vẫn là văn bản thuần."
+        },
+        {
+          "ul": [
+            "Văn bản phải được chuyển thành byte trước, thường theo UTF-8. Trong JavaScript, `btoa()` báo lỗi với các ký tự ngoài Latin-1 như emoji, chữ Hán hay các chữ tiếng Việt như ư, ơ, ạ, trừ khi chuỗi đã được mã hóa UTF-8 trước.",
+            "Trộn lẫn bảng chữ cái chuẩn và bảng an toàn cho URL gây lỗi giải mã; hãy thay `-` và `_` bằng `+` và `/` trước khi dùng bộ giải mã chuẩn.",
+            "Thiếu ký tự đệm có thể khiến các bộ giải mã chặt chẽ thất bại; hãy thêm `=` cho tới khi độ dài là bội số của 4.",
+            "Cần xóa các ngắt dòng của kiểu mã hóa email thì một số bộ giải mã mới chấp nhận chuỗi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao Base64 làm dữ liệu lớn hơn?",
+      "a": "Mỗi 3 byte trở thành 4 ký tự, và mỗi ký tự được lưu bằng nguyên một byte, nên đầu ra lớn hơn đầu vào khoảng 33%."
+    },
+    {
+      "q": "Base64 có an toàn không?",
+      "a": "Không. Nó chẳng che giấu gì cả; giải mã không cần khóa. Hãy dùng mã hóa thật sự như AES để bảo vệ dữ liệu, và chỉ dùng Base64 để truyền kết quả dưới dạng văn bản."
+    },
+    {
+      "q": "Dấu = ở cuối chuỗi Base64 có nghĩa là gì?",
+      "a": "Đó là ký tự đệm. Một dấu `=` nghĩa là nhóm cuối có 2 byte, còn `==` nghĩa là nhóm cuối chỉ có 1 byte."
+    },
+    {
+      "q": "Làm sao nhận ra một chuỗi Base64?",
+      "a": "Nó chỉ chứa chữ cái, chữ số, + và / (hoặc - và _), độ dài thường là bội số của 4 và có thể kết thúc bằng một hoặc hai dấu =. Chuỗi bắt đầu bằng `eyJ` thường là JSON được mã hóa Base64, vì văn bản JSON bắt đầu bằng `{\"` sẽ mã hóa thành chuỗi bắt đầu bằng `eyJ`."
+    }
+  ]
+}

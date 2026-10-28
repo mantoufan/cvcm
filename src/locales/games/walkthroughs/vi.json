@@ -3841,5 +3841,540 @@
         "body": "MIT. Antoine Boucher, 2010. https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys là game NES đi cảnh bắn súng miễn phí. ROM tải khi bạn mở trang. Mỗi màn có một mục tiêu; nhảy và bắn cho đến khi hoàn thành.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start, chọn Play Game rồi xác nhận bằng A: số người, chế độ, độ khó, màn bắt đầu.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Đọc mục tiêu",
+        "body": "Màn hình trước mỗi màn ghi việc cần làm, ví dụ \"Defeat 5 enemies\", và số mạng.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Nhảy và bắn",
+        "body": "A nhảy giữa các bục, B bắn. Số ở góc phải trên giảm khi bạn tiến gần mục tiêu.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/DABG. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit là game NES bắn súng arcade miễn phí. ROM tải khi bạn mở trang. Bạn lái Trái Đất và quay Mặt Trăng để phá từng đợt địch.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Di chuyển và xoay",
+        "body": "D-pad di chuyển Trái Đất. A và B quay Mặt Trăng quanh nó; thứ gì Mặt Trăng chạm vào đều bị phá.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Trụ qua các đợt",
+        "body": "Địch đến thành hàng. Đặt Mặt Trăng chắn đường đi của chúng và giữ số mạng ở góc trái trên.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/lunarlimit. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 là game NES giải đố miễn phí. ROM tải khi bạn mở trang. Mỗi phòng là một lưới nhỏ có cầu thang, gấu và đôi khi có ngọc.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Tới cầu thang",
+        "body": "Đi từng ô bằng D-pad về phía cầu thang. Có ngọc thì lấy trước. Chạm gấu là chơi lại phòng.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/Ralph-4. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES là sandbox trò chơi sự sống miễn phí. ROM tải khi bạn mở trang. Bạn đặt tế bào, luật quyết định điều xảy ra tiếp theo.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mở lưới",
+        "body": "Lưới có sẵn một glider, con trỏ ở góc trái trên.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Đặt tế bào",
+        "body": "Di chuyển bằng D-pad, bấm A để đổi trạng thái tế bào. Select xóa cả lưới.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Chạy",
+        "body": "Bấm Start. Tế bào có 2 hoặc 3 hàng xóm thì sống, ô trống có đúng 3 hàng xóm thì sinh ra tế bào mới. Bấm Start lần nữa để dừng.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/NESLife. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX là game hành động SNES miễn phí. Mở trang là ROM chạy ngay. Bạn tự tay vận hành thang máy và giữ cho mọi hành khách hài lòng.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Đọc hướng dẫn nút",
+        "body": "Màn hình đầu ghi rõ các nút: nhảy, mở cửa, thang lên và thang xuống. Bấm Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Bắt đầu ca làm",
+        "body": "Bấm Start lần nữa ở màn hình tiêu đề để bắt đầu.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Vận hành thang",
+        "body": "Đi tới một bảng điều khiển. Di chuyển buồng thang bằng X và A, dừng ở đúng tầng rồi mở cửa tầng đó bằng Y. Đừng để thang đâm vào mái hay mặt đất.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/elevator-madness-dx. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave là game SNES bay trong hang miễn phí. Mở trang là ROM chạy ngay. Một nút giữ con dơi trên không.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Bay",
+        "body": "Bấm Start, rồi nhấp B để vỗ cánh bay lên và để dơi chìm xuống giữa các lần nhấp. Bay theo đường hầm màu trắng.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Đâm và chơi lại",
+        "body": "Chạm vách màu nâu sẽ hiện GAME OVER kèm quãng đường. Bấm Start để chơi lại.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/bat-cave. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes là game giải đố SNES miễn phí. Mở trang là ROM chạy ngay. Đặt ống cho tới khi đường ống chạy từ đầu tới cuối.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Xem bảng",
+        "body": "Bảng mở ra trống, hàng chờ ống nằm bên trái.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Lắp ống",
+        "body": "Di chuyển con trỏ bằng D-pad và bấm B để đặt đoạn kế tiếp. Nối đoạn đầu và đoạn cuối bằng một đường ống không đứt.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/pipes. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer là game SNES đi cảnh miễn phí. Mở trang là ROM chạy ngay. Năm màn lâu đài, màn nào cũng kết thúc ở một cánh cửa.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Vào lâu đài",
+        "body": "Phòng đầu tiên có hai sinh vật dưới sàn và cửa ra ở bên phải.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Chạy và nhảy",
+        "body": "Đi bằng D-pad, giữ Y để chạy và bấm B để nhảy qua các sinh vật tới cửa.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/castle_platformer. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets là game Mega Drive đi cảnh miễn phí. Mở trang là ROM chạy ngay. Mỗi màn là một hành tinh nhỏ bạn chạy trọn một vòng.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Chọn START. Nếu có mã, PASSWORD đưa bạn tới màn sau.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Xem thẻ màn",
+        "body": "Mỗi màn mở đầu bằng tên màn, ví dụ PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Chạy quanh hành tinh",
+        "body": "Hành tinh xoay khi bạn chạy. Nhảy bằng A, B hoặc C và vượt qua hành tinh trước khi đồng hồ ở trên hết giờ.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/sikthehedgehog/miniplanets. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD là game Mega Drive phản ứng dây chuyền miễn phí. Mở trang là ROM chạy ngay. Lấp đầy các ô cho tới khi chúng nổ và chiếm cả bàn.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Tiêu đề",
+        "body": "Bấm nút bất kỳ để vào menu chính.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Thiết lập",
+        "body": "Chọn chiều rộng và chiều cao bàn, đặt người chơi là người hoặc máy, rồi bấm nút play màu xanh lá.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Đặt nguyên tử",
+        "body": "Di chuyển con trỏ và bấm A để thêm một nguyên tử. Ô góc nổ ở 2, ô cạnh ở 3, ô giữa ở 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/Nightwolf-47/KleleAtoms-MD. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition là game roguelike miễn phí. Mở trang là ROM chạy ngay. Mỗi lượt tạo một hầm ngục mới.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu lượt",
+        "body": "Bấm Start ở màn hình tiêu đề, rồi chọn Random run trong menu.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Chọn lớp nhân vật",
+        "body": "Warrior đánh mạnh nhất, Rogue lén lút, Hunter đánh từ xa và Mage dùng đũa phép. Xác nhận bằng Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Khám phá",
+        "body": "Đi bằng D-pad và bước vào kẻ địch để tấn công. Nhặt vật phẩm, ăn khi thanh Food xuống thấp và tìm cầu thang đi xuống.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "GPL-3.0. Mã nguồn của bản build này: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament là game GBA giải đố miễn phí. Mở trang là ROM chạy ngay. Bạn sắp xếp hầm ngục; người hùng chỉ làm theo lệnh.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Đọc thẻ màn",
+        "body": "Mỗi màn bắt đầu bằng một số thứ tự và một luật, ví dụ \"Keys open doors\". Bấm A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Sắp xếp và chạy",
+        "body": "Xem HERO'S ACTIONS, đặt vật phẩm từ YOUR ITEMS lên bàn bằng A, rồi bấm Start để xem anh ta đi.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "Mã MPL-2.0, hình ảnh CC BY 4.0, nhạc CC-BY 3.0 của VWolfdog (https://opengameart.org/content/soft-mysterious-harp-loop). Mã nguồn: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy là game sinh tồn Game Boy miễn phí. Mở trang là ROM chạy ngay. Từng ngày một, bạn quyết định ai được ăn.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Trú ẩn",
+        "body": "Bấm A ở màn hình tiêu đề và qua cảnh không kích, rồi chọn thùng đồ ban đầu.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Kiểm tra đồ tiếp tế",
+        "body": "Mỗi ngày bắt đầu bằng số lượng thức ăn, nước và hộp cứu thương.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Chia phần",
+        "body": "Di chuyển tới Mike, Rose hoặc Jeff và bấm A để đưa thức ăn, nước hoặc hộp cứu thương. Xong thì chọn OK.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/UrbanZero/bunkerboy. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II là game battle royale NES, phần mềm tự do. Mở trang là ROM được tải. Hai mươi con gà vào sân có rào và chỉ một con bước ra.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu ván",
+        "body": "Chọn 1 PLAYERS và bấm Start. Dòng ghi công ở cuối màn hình nêu tên Rodrigo Dornelles và Psywave Games.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Tìm gà của bạn",
+        "body": "Số 1 nhỏ lơ lửng trên gà của bạn. Đi bằng D-pad, mổ bằng A hoặc B. Các con gà khác cũng đánh nhau.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Con gà cuối cùng",
+        "body": "Số ở góc trên bên phải giảm dần từ 20. Tránh chỗ đông, nhắm vào con lẻ loi và luôn di chuyển cho tới khi chỉ còn bạn.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "GPL-3.0. Mã nguồn: https://github.com/psywave-games/coco-battle-royale-2. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl là game chữ Game Boy mã nguồn mở, được phép phân phối lại. Mở trang là ROM được tải. Bạn có sáu lượt để tìm một từ tiếng Anh năm chữ cái.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề. Hai trang hướng dẫn giải thích màu và phím tắt menu; bấm phím bất kỳ để qua.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Nhập từ đoán",
+        "body": "Dùng D-pad di chuyển trên bàn phím ảo và bấm A cho mỗi chữ. B để xóa. Đủ năm chữ thì bấm Start.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "Đọc màu",
+        "body": "Xám: chữ không có trong từ. Vàng: có trong từ nhưng ở chỗ khác. Xanh lá: đúng chữ, đúng chỗ.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "Thu hẹp",
+        "body": "Bàn phím bên dưới cũng giữ màu. Ở đây WRITE loại W, R, T, E và cho biết I có trong từ nhưng không ở giữa. Dùng gợi ý cho tới khi cả năm ô xanh lá.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "GPL-3.0. Mã nguồn: https://github.com/bbbbbr/gb-wordyl. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch là game hành động Game Boy theo 0BSD, được phép phân phối lại. Mở trang là ROM được tải. Bay qua bầu trời đêm và lao xuyên qua lũ dơi.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình mặt trăng. Cuối đoạn mở đầu có gợi ý: giữ B và D-pad để lao vào kẻ địch.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Bay",
+        "body": "D-pad di chuyển lên, xuống, trái, phải. Bay tiếp thì thanh GOAL bên dưới đầy dần.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "Lao",
+        "body": "Khi dơi tới, giữ B và hướng D-pad về phía nó. Mỗi lần lao tốn một phần thanh DASH, đừng phí.",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "0BSD. Trang: https://voxel.itch.io/dashy-no-witch. Không lưu ROM thương mại.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism là game lật bài Game Boy Color mã nguồn mở, được phép phân phối lại. Mở trang là ROM được tải. 52 lá úp xuống; nhớ vị trí từng lá và tìm ra các cặp.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Chọn trò",
+        "body": "Bấm phím bất kỳ ở tiêu đề. Ở GAME SELECT giữ PELMANISM và bấm A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "Chọn độ khó",
+        "body": "Chọn EASY, NORMAL hoặc HARD bằng D-pad rồi bấm A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "Lật một lá",
+        "body": "Đưa bàn tay tới một lá và bấm A. Lá vừa lật hiện ở ô bên trái phía dưới.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Tìm cặp",
+        "body": "Lật lá thứ hai. Đúng cặp thì bị bỏ đi và LEFT giảm 2; sai thì cả hai úp lại. Nhớ những lá đã thấy và dọn sạch bàn.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://gitlab.com/teamknox/gbccardgame. Không lưu ROM thương mại.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 là game giải đố Game Boy Advance mã nguồn mở, được phép phân phối lại. Mở trang là ROM được tải. Thả đĩa số 1 đến 7 và xóa chúng khi số lượng khớp.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Thả đĩa",
+        "body": "Đĩa tiếp theo chờ phía trên bảng. Di chuyển trái phải và bấm A để thả.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "Xóa theo số lượng",
+        "body": "Đĩa số 3 biến mất khi hàng hoặc cột của nó có đúng 3 đĩa. Một lần xóa có thể kéo theo lần khác; đó là chuỗi và được nhiều điểm hơn.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "Coi chừng hàng trồi",
+        "body": "RISE là số lượt thả còn lại trước khi một hàng đĩa trống bị đẩy lên từ dưới. Đĩa trống nứt ở lần xóa đầu bên cạnh và thành số ở lần thứ hai. Giữ các cột thấp.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/mick-schroeder/gba-cascade7. Màn About trong menu tạm dừng ghi tên Mick Schroeder.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending mở ra với ba biểu tượng. Bấm phát, chọn màn, rồi di chuyển bằng phím mũi tên. Mỗi bước bạn đi, cả căn phòng đáp lại một bước.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bấm phát",
+        "body": "Tam giác phát mở danh sách màn. Biểu tượng mê cung và cái búa là các chế độ khác.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "Chọn màn",
+        "body": "Các màn 00 đến 19 xếp thành lưới. Bắt đầu từ 00 rồi đi lên dần.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "Đọc căn phòng",
+        "body": "Hình xoắn ốc là bạn. Ô vuông trắng là khối phá được, ô xám chắn đường, lối ra nằm ở mép tường.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "Phá khối",
+        "body": "Đi vào khối trắng để phá nó. Các khối khác di chuyển sau bạn, nên nhìn trước một bước.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "Tới lối ra",
+        "body": "Vòng qua các ô xám và bước lên lối ra.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "Màn tiếp theo",
+        "body": "Căn phòng tối dần và số màn tiếp theo hiện ra.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "GPL-2.0. Aaron Steed, 2013. Mã nguồn: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

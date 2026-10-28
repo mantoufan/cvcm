@@ -37,7 +37,7 @@
       "s3t": "Ketik cap",
       "s3b": "Identitas: ubin “hanya untuk [org]”. Foto toko: nama atau logo.",
       "s4t": "Periksa pratinjau lalu ekspor",
-      "s4b": "Jika cap di tempat yang diinginkan, unduh satu berkas atau ZIP seluruh batch."
+      "s4b": "Jika cap di tempat yang diinginkan, unduh satu berkas atau ZIP seluruh batch. Watermark tak terlihat ditambahkan secara bawaan; ubah teks atau periksa gambar di bagian Watermark tak terlihat."
     },
     "collage": {
       "lead": "Gabungkan foto jadi satu gambar. Tata letak dan ukuran Instagram tetap di tab ini.",
@@ -715,6 +715,51 @@
       "s3t": "Salin durasinya",
       "s3b": "Salin menaruh hasil jam:menit:detik dan total detik di papan klip."
     },
+    "tdee": {
+      "lead": "Perkirakan berapa kalori yang Anda bakar sehari dari usia, tinggi, berat, dan aktivitas. Ini bukan saran medis.",
+      "s1t": "Pilih satuan dan isi data",
+      "s1b": "Pilih metrik atau imperial, lalu isi jenis kelamin, usia, berat, dan tinggi. Saat satuan diganti, angka yang sudah diisi ikut dikonversi.",
+      "s2t": "Pilih tingkat aktivitas",
+      "s2b": "Pilih dengan jujur: pekerja kantoran yang olahraga beberapa kali seminggu biasanya ringan atau sedang. BMR dan TDEE langsung diperbarui.",
+      "s3t": "Baca kalori jaga, turun, dan naik",
+      "s3b": "Makan sesuai TDEE menjaga berat; −500 kkal menurunkan sekitar 0,5 kg seminggu, +300 kkal menaikkan perlahan. Salin menyalin keempat angka itu."
+    },
+    "cidr": {
+      "lead": "Hitung subnet IPv4 dari notasi CIDR, atau ubah rentang alamat menjadi blok CIDR.",
+      "s1t": "Ketik alamat dengan prefix",
+      "s1b": "Masukkan 192.168.1.10/24, atau alamat dan netmask dipisah spasi. Bloknya dirapikan ke alamat jaringan.",
+      "s2t": "Baca detail subnet",
+      "s2b": "Alamat jaringan, broadcast, mask, wildcard, host pertama dan terakhir, total alamat, serta host yang bisa dipakai muncul saat Anda mengetik.",
+      "s3t": "Ubah rentang ke CIDR",
+      "s3b": "Isi alamat pertama dan terakhir di sebelah kanan untuk mendapatkan daftar blok CIDR terpendek yang menutup rentang itu dengan tepat, siap disalin."
+    },
+    "chmod": {
+      "lead": "Ubah izin Unix antara kotak centang, digit oktal, dan string rwx, lalu dapatkan perintah chmod.",
+      "s1t": "Centang izinnya",
+      "s1b": "Setiap baris adalah pemilik, grup, atau lainnya; setiap kolom adalah baca, tulis, atau eksekusi. Tambahkan setuid, setgid, atau sticky jika perlu.",
+      "s2t": "Atau ketik oktal atau rwx",
+      "s2b": "Ketik 644 atau 4755, atau tempel rwxr-xr-x dari ls -l. Kolom lain ikut menyesuaikan.",
+      "s3t": "Salin perintahnya",
+      "s3b": "Isi nama file atau folder, centang -R untuk seluruh folder, lalu salin baris chmod dan jalankan di terminal."
+    },
+    "typing": {
+      "lead": "Ukur kecepatan dan akurasi mengetik dalam 30 atau 60 detik. Hasil tetap di halaman.",
+      "s1t": "Pilih waktu dan teks",
+      "s1b": "Pilih 30 atau 60 detik dan salah satu teks contoh dalam bahasa Anda.",
+      "s2t": "Ketik teksnya",
+      "s2b": "Klik kotak lalu mulai mengetik; timer mulai dari tombol pertama. Karakter benar menjadi gelap, yang salah menjadi merah muda.",
+      "s3t": "Lihat skor Anda",
+      "s3b": "Saat waktu habis atau teks selesai, Anda melihat kecepatan (WPM bersih, atau karakter per menit untuk CJK) dan akurasi. Klik Ulangi untuk mencoba lagi."
+    },
+    "image-colors": {
+      "lead": "Ambil palet warna dari gambar apa pun dan salin kode HEX-nya tanpa mengunggah.",
+      "s1t": "Tambahkan gambar",
+      "s1b": "Letakkan foto atau tangkapan layar di kiri, klik untuk memilih, atau tempel.",
+      "s2t": "Atur jumlah warna",
+      "s2b": "Geser dari 2 sampai 12. Palet langsung dihitung ulang dan diurutkan dari warna yang paling banyak.",
+      "s3t": "Salin warnanya",
+      "s3b": "Klik contoh warna untuk menyalin kode HEX-nya, atau Salin semua HEX untuk seluruh palet."
+    },
     "gold": {
       "lead": "Ubah berat emas di tab ini. Tidak diunggah.",
       "s1t": "Buka berat emas",
@@ -777,6 +822,33 @@
       "s2b": "Kotak hitam untuk NIK, mosaik untuk wajah. Urungkan menghapus kotak terakhir.",
       "s3t": "Unduh",
       "s3b": "Unduh satu gambar atau ZIP. Ekspor menghapus EXIF."
+    },
+    "dice": {
+      "lead": "Lempar dadu atau lempar koin di tab ini. Tidak ada unggahan.",
+      "s1t": "Buka Lempar dadu",
+      "s1b": "Dua dadu enam sisi sudah diatur. Ubah jumlahnya atau pilih d4 sampai d100.",
+      "s2t": "Tekan Lempar",
+      "s2b": "Tiap mata, total, serta dadu tertinggi dan terendah muncul di kanan.",
+      "s3t": "Lempar koin",
+      "s3b": "Atur jumlah koin dan tekan Lempar koin untuk melihat kepala dan ekor. Salin menaruh hasil di papan klip."
+    },
+    "gpa": {
+      "lead": "Ubah nilai huruf dan SKS menjadi GPA skala 4.0 di tab ini. Tidak ada unggahan.",
+      "s1t": "Buka Kalkulator GPA",
+      "s1b": "Empat mata kuliah contoh sudah terisi. GPA, SKS, dan total poin ada di kanan.",
+      "s2t": "Masukkan mata kuliah Anda",
+      "s2b": "Pilih nilai dan SKS per baris. Tambah mata kuliah menambah baris; × menghapusnya. Centang A+ dihitung 4.3 jika kampus Anda memakainya.",
+      "s3t": "Salin hasil",
+      "s3b": "Salin menaruh GPA, total SKS, dan total poin di papan klip."
+    },
+    "pomodoro": {
+      "lead": "Jalankan sesi fokus dan jeda dengan bunyi di tab ini. Tidak ada unggahan.",
+      "s1t": "Buka Timer Pomodoro",
+      "s1b": "Fokus 25 menit, jeda pendek 5 menit, jeda panjang 15 menit, dan 4 putaran sudah diatur.",
+      "s2t": "Tekan Mulai",
+      "s2b": "Jam menghitung mundur dan judul tab menampilkan sisa waktu. Jeda menghentikannya; Lewati melompat ke fase berikutnya.",
+      "s3t": "Ubah durasi",
+      "s3b": "Ubah menit atau putaran saat jam berhenti dan fase saat ini langsung memakainya. Atur ulang memulai lagi dari putaran 1."
     },
     "remove-background": {
       "lead": "Potong orang, produk, atau hewan dari foto di tab ini, lalu unduh PNG transparan.",

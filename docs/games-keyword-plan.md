@@ -45,6 +45,14 @@ Each row is one URL. Title is the query to rank.
 | alter-ego | FC | Alter Ego 在线玩 | Alter Ego NES homebrew |
 | lawn-mower | FC | Lawn Mower NES | Lawn Mower NES homebrew |
 
+Hosted FC homebrew picked from the FC图库 catalog (fcpic.nesbbs.com, "版权：其他", 2026-10-21). Only titles whose own release grants commercial redistribution; ROMs come from the author's repo or site, never from fcpic:
+`double-action-blaster-guys` (zlib, NovaSquirrel/DABG), `neslife` (zlib, NovaSquirrel/NESLife 64x32), `lunar-limit` (MIT, pubby/lunarlimit), `ralph-4` (MIT, pubby/Ralph-4).
+Skipped: hacks of commercial games (most of the catalog), Mojon Twins (CC BY-NC-SA), Nova the Squirrel (assets CC BY-NC-SA), CROSS-LIB (non-commercial), nesdoug / Johnybot / CutterCross / Minekart (no license), Witch n' Wiz (full game sold), Chase (code-only public domain), Russian Roulette (Zapper tech demo).
+
+Hosted SFC / MD / GBA / GB homebrew (2026-10-22), each from the author's own repo or itch page, license allowing commercial redistribution:
+SFC `elevator-madness-dx`, `bat-cave`, `pipes-snes`, `castle-platformer` (MIT, undisbeliever; art CC0); MD `miniplanets` (zlib, Sik), `kleleatoms-md` (MIT, Nightwolf-47), `pixel-dungeon-md` (GPL-3.0 per the LICENSE in the ROM and source zips, though the itch metadata says LGPL-3.0; 2 Drinks In Games after Watabou — source mirrored at `files/games/src/pixel-dungeon-md-source.zip`); GBA `dungeon-puzzlers-lament` (code MPL-2.0, art CC BY 4.0, music CC-BY 3.0 VWolfdog; 2023 jam build, so the source link is pinned to agb f4214b5, the last commit with that music); GB `bunkerboy` (MIT, UrbanZero).
+Skipped: Memory Game (dupes pelmanism), Horizontal Shooter (demo), Retail Clerk '89, Lock and Toad (title font), RC Shuriken (boss crash), and NC / unlicensed / third-party-IP titles.
+
 ## Flash hub (2026-09-23)
 
 One URL, not a pile of commercial SWF pages. Title is the query.
@@ -56,6 +64,8 @@ One URL, not a pile of commercial SWF pages. Title is the query.
 Ruffle (MIT or Apache-2.0) runs in `/emu/flash`. The runtime is on S3 at `files/games/emu/ruffle/`, proxied as `/emu/assets/ruffle/`. The player asks for a manual upload when no file is present. Host a SWF only when its license allows redistribution. Single-file SWFs only; multi-file games and sitelocks stay off this page.
 
 Hosted MIT titles from Antoine Boucher, 2010 (`antoinebou12/FlashGames`): `detruit-les-ballons`, `tag-chase`, `ricochet-kill`.
+
+Hosted GPL-2.0 title from Aaron Steed, 2013 (`st33d/Ending`, `bin/game.swf`): `ending`.
 
 ## Emulator
 

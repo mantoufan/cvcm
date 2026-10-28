@@ -3841,5 +3841,540 @@
         "body": "MIT. Antoine Boucher, 2010. Source: https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys is a free NES platform shooter. The ROM loads when you open the page. Every level has one objective, and you jump and shoot until it is met.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a game",
+        "body": "Press Start, choose Play Game, then confirm each menu with A: players, mode, difficulty, starting level.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Read the objective",
+        "body": "The screen before each level says what to do, such as \"Defeat 5 enemies\", and how many lives you have.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Jump and shoot",
+        "body": "A jumps between platforms and B fires. The counter at the top right drops as you meet the objective.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/NovaSquirrel/DABG. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit is a free NES arcade shooter. The ROM loads when you open the page. You steer the Earth and spin the Moon to smash incoming waves.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Move and spin",
+        "body": "The D-pad moves the Earth. A and B rotate the Moon around it, and the Moon destroys what it hits.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Last through the waves",
+        "body": "Enemies arrive in lines. Keep the Moon in their path and protect your lives at the top left.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/pubby/lunarlimit. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 is a free NES puzzle game. The ROM loads when you open the page. Each room is a small grid with stairs, bears and sometimes a gem.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen to begin.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Reach the stairs",
+        "body": "Step with the D-pad toward the staircase. If there is a gem, take it first. Touching a bear restarts the room.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/pubby/Ralph-4. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES is a free Game of Life sandbox. The ROM loads when you open the page. You place cells and the rules decide what happens next.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Open the grid",
+        "body": "The grid appears with a glider already on it. The cursor sits at the top left.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Place cells",
+        "body": "Move with the D-pad and press A to toggle a cell. Select clears the whole grid.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Run it",
+        "body": "Press Start. Cells with two or three neighbours survive, and an empty cell with three neighbours is born. Press Start again to stop.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/NovaSquirrel/NESLife. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX is a free SNES action game. The ROM loads when you open the page. You run an elevator by hand and keep every passenger happy.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Read the controls",
+        "body": "The first screen labels the pad: jump, open door, elevator up and elevator down. Press Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Start a shift",
+        "body": "Press Start again on the title screen to begin.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Run the elevator",
+        "body": "Walk to a control panel. Move the car with X and A, stop it at the right floor, and open that floor's door with Y. Don't drive it into the roof or the ground.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/elevator-madness-dx. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave is a free SNES cave flyer. The ROM loads when you open the page. One button keeps the bat in the air.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Fly",
+        "body": "Press Start, then tap B to flap up and let the bat sink between taps. Follow the white tunnel.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Crash and retry",
+        "body": "Touching the brown wall shows GAME OVER with your distance. Press Start to go again.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/bat-cave. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes is a free SNES puzzle. The ROM loads when you open the page. Lay pieces until the pipe runs from start to end.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Read the board",
+        "body": "The board opens empty with the piece queue on the left.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Lay pipe",
+        "body": "Move the cursor with the D-pad and press B to drop the next piece. Join the start and end pieces with one unbroken pipe.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/pipes. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer is a free SNES platformer. The ROM loads when you open the page. Five castle levels end at a door.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Enter the castle",
+        "body": "The first room has two creatures on the floor and the exit door on the right.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Run and jump",
+        "body": "Walk with the D-pad, hold Y to run and press B to jump over the creatures to the door.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/undisbeliever/castle_platformer. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets is a free Mega Drive platformer. The ROM loads when you open the page. Every stage is a small planet you run all the way around.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Choose START. PASSWORD takes you to a later stage if you have a code.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Read the stage card",
+        "body": "Each stage opens with its name, such as PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Run around the planet",
+        "body": "The planet turns as you run. Jump with A, B or C and clear the planet before the timer at the top runs out.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "zlib. Source: https://github.com/sikthehedgehog/miniplanets. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD is a free Mega Drive chain-reaction game. The ROM loads when you open the page. Fill squares until they burst and take over the board.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Title",
+        "body": "Press any button to reach the main menu.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Set up",
+        "body": "Pick the board width and height, make players human or CPU, then press the green play button.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Place atoms",
+        "body": "Move the cursor and press A to add an atom. Corners burst at 2, edges at 3, middle squares at 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/Nightwolf-47/KleleAtoms-MD. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition is a free roguelike. The ROM loads when you open the page. Each run builds a new dungeon.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a run",
+        "body": "Press Start on the title screen, then choose Random run from the menu.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Choose a class",
+        "body": "Warrior hits hardest, Rogue is stealthy, Hunter fights at range and Mage uses wands. Confirm with Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Explore",
+        "body": "Move with the D-pad and walk into enemies to attack. Pick up items, eat when the Food bar runs low and look for the stairs down.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source of this build: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament is a free GBA puzzle game. The ROM loads when you open the page. You arrange the dungeon; the hero just follows his orders.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Read the level card",
+        "body": "Each level starts with a number and one rule, such as \"Keys open doors\". Press A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Arrange and run",
+        "body": "Check HERO'S ACTIONS, place the items from YOUR ITEMS on the board with A, then press Start to watch him go.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "Code MPL-2.0, art CC BY 4.0, music CC-BY 3.0 by VWolfdog (https://opengameart.org/content/soft-mysterious-harp-loop). Source: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy is a free Game Boy survival game. The ROM loads when you open the page. One day at a time, you decide who eats.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Take cover",
+        "body": "Press A on the title and through the air-raid scene, then choose your starting crate.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Check supplies",
+        "body": "Each day starts with a count of food, water and medkits.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Share them out",
+        "body": "Move to Mike, Rose or Jeff and press A to give food, water or a medkit. Pick OK when you are done.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/UrbanZero/bunkerboy. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II is a free-software NES battle royale. The ROM loads when you open the page. Twenty chickens start in a walled arena and only one walks out.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a round",
+        "body": "Choose 1 PLAYERS and press Start. The credit line at the bottom names Rodrigo Dornelles and Psywave Games.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Find your chicken",
+        "body": "A small 1 floats over your chicken. Walk with the D-pad and peck with A or B. The other chickens fight each other too.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Last chicken standing",
+        "body": "The counter at the top right drops from 20 as chickens fall. Stay out of crowds, pick off stragglers, and keep moving until you are the last one.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source: https://github.com/psywave-games/coco-battle-royale-2. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl is a redistributable open-source Game Boy word game. The ROM loads when you open the page. You get six tries to find a five-letter English word.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen. Two help screens show the color key and the menu shortcuts; any key moves on.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Type a guess",
+        "body": "Move the cursor over the on-screen keyboard with the D-pad and press A for each letter. B deletes. Start submits all five letters.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "Read the colors",
+        "body": "Gray: the letter is not in the word. Yellow: it is in the word in another spot. Green: right letter, right spot.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "Narrow it down",
+        "body": "The keyboard keeps the colors too. Here WRITE ruled out W, R, T and E and showed that I is in the word, just not in the middle. Use the clues until all five tiles turn green.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source: https://github.com/bbbbbr/gb-wordyl. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch is a redistributable Game Boy action game under 0BSD. The ROM loads when you open the page. Fly a witch across the night sky and dash through the bats.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the moon title. The intro ends with a hint: hold B and the D-pad to dash at enemies.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Fly",
+        "body": "Move up, down, left and right with the D-pad. The GOAL bar at the bottom fills as you keep going.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "Dash",
+        "body": "When a bat comes in, hold B and point the D-pad at it. Each dash spends part of the DASH bar, so do not waste it.",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "0BSD. Page: https://voxel.itch.io/dashy-no-witch. Commercial ROMs are not hosted.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism is a redistributable open-source Game Boy Color card game. The ROM loads when you open the page. All 52 cards lie face down; remember where each one is and pick up the pairs.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Pick the game",
+        "body": "Press any key on the title. On GAME SELECT, keep PELMANISM and press A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "Pick a level",
+        "body": "Choose EASY, NORMAL or HARD with the D-pad and press A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "Turn a card",
+        "body": "Move the hand over a card and press A. The card shows in the left box at the bottom.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Find pairs",
+        "body": "Turn a second card. A pair is removed and LEFT drops by two; a miss turns both back. Remember what you saw and clear the table.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://gitlab.com/teamknox/gbccardgame. Commercial ROMs are not hosted.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 is a redistributable open-source Game Boy Advance puzzle. The ROM loads when you open the page. Drop discs numbered 1 to 7 and clear them by matching counts.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Drop a disc",
+        "body": "The next disc waits above the board. Move it left or right and press A to drop it.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "Clear by count",
+        "body": "A 3 clears when its row or its column holds 3 discs. One clear can set off the next; that chain is a cascade and scores more.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "Watch the rise",
+        "body": "RISE counts down the drops left before a row of blank discs pushes up from the bottom. Blank discs crack on the first clear beside them and turn into numbers on the second. Keep the columns low.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/mick-schroeder/gba-cascade7. The About screen in the pause menu credits Mick Schroeder.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending opens on three icons. Press play, pick a level, then move with the arrow keys. Every move you make, the board answers.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Press play",
+        "body": "The play triangle opens the levels. The maze icon and the hammer icon are the other modes.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "Pick a level",
+        "body": "Levels 00 to 19 sit in a grid. Start at 00 and work up.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "Read the room",
+        "body": "The spiral is you. White squares are blocks you can break, grey squares are in the way, and the exit sits on the edge of the wall.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "Break a block",
+        "body": "Walk into a white block to break it. The other blocks move after you, so look one step ahead.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "Reach the exit",
+        "body": "Go around the grey squares and step onto the exit.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "Next level",
+        "body": "The room fades and the next level number appears.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-2.0. Aaron Steed, 2013. Source: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }

@@ -30,15 +30,28 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
+function runWrite(db: IDBDatabase, op: (store: IDBObjectStore) => void): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      const tx = db.transaction(STORE, "readwrite");
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      // Quota failures often only abort the transaction.
+      tx.onabort = () => reject(tx.error ?? new Error("IndexedDB transaction aborted"));
+      op(tx.objectStore(STORE));
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 export async function saveDraft(key: string, value: unknown): Promise<void> {
   const db = await openDb();
-  await new Promise<void>((resolve, reject) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-    tx.objectStore(STORE).put(value, key);
-  });
-  db.close();
+  try {
+    await runWrite(db, (store) => store.put(value, key));
+  } finally {
+    db.close();
+  }
 }
 
 /** Null when there is no draft or IndexedDB is unavailable (some private modes): a tool must still open. */
@@ -66,13 +79,11 @@ export async function clearDraft(key: string): Promise<void> {
   } catch {
     return;
   }
-  await new Promise<void>((resolve, reject) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-    tx.objectStore(STORE).delete(key);
-  });
-  db.close();
+  try {
+    await runWrite(db, (store) => store.delete(key));
+  } finally {
+    db.close();
+  }
 }
 
 export function debounce(fn: () => void, ms: number): () => void {

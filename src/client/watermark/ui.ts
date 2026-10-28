@@ -13,6 +13,18 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 import { zipStore } from "../../shared/zip";
+import { canvasToBlob, decodeImage } from "../decode";
+import {
+  BLIND_GRID,
+  BLIND_MAX_BYTES,
+  type BlindPayload,
+  blindPayloadOf,
+  decodeBlind,
+  embedBlind,
+  fitBlindText,
+  type Pixels,
+  sameBlind,
+} from "./blind";
 import {
   type Anchor,
   fitExportSize,
@@ -88,6 +100,8 @@ const state = {
   quality: 0.92,
   redactMode: "mosaic" as RedactMode,
   mosaicRatio: 0.03,
+  blind: true,
+  blindText: "",
   drawing: false,
   working: false,
 };
@@ -388,6 +402,7 @@ function controlsRail(): HTMLElement {
       slider("wm-gap", t("watermark.gap"), 0, 0.5, 0.01, state.gap, (v) => { state.gap = v; }),
       positionPad(),
     ),
+    ...(mode === "watermark" ? [blindFieldset()] : []),
     h("fieldset", null,
       h("legend", null, t("watermark.exportTitle")),
       labeled(t("watermark.format"),
@@ -410,6 +425,128 @@ function controlsRail(): HTMLElement {
       collageOptions(),
     ),
   );
+}
+
+function blindFieldset(): HTMLElement {
+  const count = h("span", { class: "hint", id: "wm-blind-count" }, blindCount());
+  const result = h("p", { class: "status", id: "wm-blind-result", "aria-live": "polite" });
+  const detect = h("input", {
+    type: "file",
+    accept: "image/png,image/jpeg,image/webp,image/*",
+    class: "sr-only",
+    id: "wm-blind-detect",
+    onChange: (e: Event) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) void detectBlind(file, result);
+      (e.target as HTMLInputElement).value = "";
+    },
+  });
+  return h("fieldset", { class: "wm-blind" },
+    h("legend", null, t("watermark.blindTitle")),
+    h("label", { class: "check" },
+      h("input", {
+        id: "wm-blind",
+        type: "checkbox",
+        checked: state.blind,
+        onChange: (e: Event) => {
+          state.blind = (e.target as HTMLInputElement).checked;
+          scheduleSave();
+        },
+      }),
+      t("watermark.blindOn"),
+    ),
+    labeled(t("watermark.blindText"),
+      h("input", {
+        type: "text",
+        id: "wm-blind-text",
+        placeholder: t("watermark.blindPlaceholder"),
+        value: state.blindText,
+        onInput: (e: Event) => {
+          state.blindText = (e.target as HTMLInputElement).value;
+          syncBlindCount();
+          scheduleSave();
+        },
+      }),
+    ),
+    count,
+    h("p", { class: "hint" }, t("watermark.blindHint")),
+    h("label", {
+      class: "chip file-chip",
+      for: "wm-blind-detect",
+      onDragover: (e: DragEvent) => e.preventDefault(),
+      onDrop: (e: DragEvent) => {
+        e.preventDefault();
+        const file = e.dataTransfer?.files?.[0];
+        if (file) void detectBlind(file, result);
+      },
+    }, detect, t("watermark.blindDetect")),
+    result,
+  );
+}
+
+/**
+ * Hidden text: the field when filled, otherwise the visible text on one line with any
+ * YYYY-MM-DD dropped (a preset stamped on another day included): the export date travels separately.
+ */
+function blindText(): string {
+  const base = state.blindText.trim() || state.text.replace(/\d{4}-\d{2}-\d{2}/g, " ");
+  return base.replace(/\s+/g, " ").trim();
+}
+
+function blindPayload(): BlindPayload {
+  return blindPayloadOf(blindText(), todayStamp());
+}
+
+/** "仅供XX办理使用 他用无效 · cv.cm 2026-10-18" */
+function blindLabel(p: BlindPayload): string {
+  const tail = p.date ? `cv.cm ${p.date}` : "";
+  return [p.text, tail].filter(Boolean).join(" · ");
+}
+
+function blindCount(): string {
+  const full = blindText();
+  const fit = fitBlindText(full);
+  const count = t("watermark.blindBytes", { n: String(fit.bytes), max: String(BLIND_MAX_BYTES) });
+  return fit.trimmed ? `${count} · ${t("watermark.blindTrimmed")}` : count;
+}
+
+function syncBlindCount(): void {
+  const el = mode === "watermark" ? document.getElementById("wm-blind-count") : null;
+  if (el) el.textContent = blindCount();
+}
+
+/** Decoded pixels for reading a mark. The decoder works on a 384 px grid, so 2048 px is plenty. */
+async function pixelsOf(source: Blob): Promise<Pixels> {
+  const { bitmap, width, height } = await decodeImage(source);
+  try {
+    const scale = Math.min(1, 2048 / Math.max(width, height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(width * scale));
+    canvas.height = Math.max(1, Math.round(height * scale));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("canvas");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height);
+  } finally {
+    bitmap.close();
+  }
+}
+
+let detectRun = 0;
+
+async function detectBlind(file: File, out: HTMLElement): Promise<void> {
+  const run = ++detectRun;
+  out.textContent = t("watermark.blindDetecting");
+  let msg: string;
+  try {
+    const found = decodeBlind(await pixelsOf(file));
+    msg = found ? t("watermark.blindFound", { text: blindLabel(found) }) : t("watermark.blindNone");
+  } catch {
+    msg = t("watermark.errorDecode");
+  }
+  // A slower, earlier check must not overwrite the newer result.
+  if (run === detectRun) out.textContent = msg;
 }
 
 function wmLayoutPicker(): HTMLElement {
@@ -686,6 +823,8 @@ async function addSample(): Promise<void> {
 }
 
 function removeItem(id: string): void {
+  // An export in progress still draws these bitmaps.
+  if (state.working) return;
   const idx = state.items.findIndex((it) => it.id === id);
   if (idx < 0) return;
   const [item] = state.items.splice(idx, 1);
@@ -698,6 +837,7 @@ function removeItem(id: string): void {
 }
 
 function clearItems(): void {
+  if (state.working) return;
   for (const item of state.items) {
     item.bitmap?.close();
     URL.revokeObjectURL(item.url);
@@ -711,6 +851,7 @@ function clearItems(): void {
 }
 
 async function setLogo(file: File): Promise<void> {
+  if (state.working) return;
   clearLogo();
   try {
     const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -730,7 +871,8 @@ async function setLogo(file: File): Promise<void> {
 }
 
 function clearLogo(): void {
-  if (!state.logo) return;
+  // The running export's frozen spec still draws this bitmap.
+  if (!state.logo || state.working) return;
   state.logo.bitmap.close();
   URL.revokeObjectURL(state.logo.url);
   state.logo = null;
@@ -1014,6 +1156,8 @@ function composeSource(): { image: CanvasImageSource; width: number; height: num
 
 function redraw(): void {
   if (!restoring) scheduleSave();
+  // The hidden text follows the visible one unless the field is filled.
+  syncBlindCount();
   if (!preview) return;
   const zip = document.getElementById("wm-download-all");
   if (zip) zip.hidden = state.layout !== "single";
@@ -1132,42 +1276,121 @@ function setStatus(msg: string): void {
   if (statusEl) statusEl.textContent = msg;
 }
 
-async function blobForSource(
-  source: { image: CanvasImageSource; width: number; height: number },
-  redactions: Redaction[] = currentRedactions(),
-): Promise<Blob> {
-  const fit = fitExportSize(source.width, source.height);
-  const canvas = renderWatermark(
-    source.image,
-    source.width,
-    source.height,
-    specFor(redactions),
-    fit.width,
-    fit.height,
-  );
-  const mime = mimeForFormat(state.format);
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), mime, state.quality);
-  });
+type BlindOutcome = "off" | "ok" | "unchecked" | "missed" | "memory";
+type Exported = { blob: Blob; blind: BlindOutcome };
+/** Settings frozen when an export starts; the panel may change while a batch runs. */
+type ExportJob = { payload: BlindPayload | null; mime: string; quality: number };
+
+function exportJob(): ExportJob {
+  return {
+    // Mosaic mode only redacts; the hidden mark belongs to the watermark tool.
+    payload: state.blind && mode === "watermark" ? blindPayload() : null,
+    mime: mimeForFormat(state.format),
+    quality: state.quality,
+  };
 }
 
-async function blobFor(item: Item): Promise<Blob> {
-  if (!item.bitmap) throw new Error("decode");
-  return blobForSource({ image: item.bitmap, width: item.width, height: item.height }, item.redactions);
+function isOpaque(img: ImageData): boolean {
+  const d = img.data;
+  for (let i = 3; i < d.length; i += 4) if (d[i] !== 255) return false;
+  return true;
+}
+
+/**
+ * Encode the export canvas, hiding `payload` first when it is set. The file is read back
+ * (canvas for PNG, re-decoded file for JPEG / WebP) and corrected up to twice.
+ * "missed" returns no blob: the caller re-renders and exports the image untouched.
+ */
+async function encodeCanvas(
+  canvas: HTMLCanvasElement,
+  job: ExportJob,
+  payload: BlindPayload | null,
+): Promise<Exported | "missed"> {
+  const encode = () => canvasToBlob(canvas, job.mime, job.quality);
+  const ctx = canvas.getContext("2d");
+  if (ctx && job.mime === "image/jpeg") {
+    // JPEG has no alpha: flatten onto white (browsers would use black), before any mark is planned.
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+  }
+  if (!payload) return { blob: await encode(), blind: "off" };
+  if (!ctx) return { blob: await encode(), blind: "memory" };
+  // Let "Working…" paint before the synchronous embed.
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  let img: ImageData;
+  const spent = new Float32Array(BLIND_GRID * BLIND_GRID);
+  try {
+    img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // Unreadable even before encoding (blank or flat image): no point writing it.
+    if (!embedBlind(img, payload, { spent })) return "missed";
+    ctx.putImageData(img, 0, 0);
+  } catch {
+    // Out of canvas memory on a phone: the export goes out with the visible mark only.
+    return { blob: await encode(), blind: "memory" };
+  }
+  let blob = await encode();
+  try {
+    const opaque = isOpaque(img);
+    for (let round = 0; ; round++) {
+      const png = blob.type === "image/png";
+      // An opaque PNG stores exactly `img`, which already decoded; with alpha, premultiplication may change it.
+      if (png && opaque) return { blob, blind: "ok" };
+      const back = png ? ctx.getImageData(0, 0, canvas.width, canvas.height) : await pixelsOf(blob);
+      if (sameBlind(decodeBlind(back), payload)) return { blob, blind: "ok" };
+      if (png || round === 2) return "missed";
+      embedBlind(img, payload, { rounds: 1, measure: back, spent, verify: false });
+      ctx.putImageData(img, 0, 0);
+      blob = await encode();
+    }
+  } catch {
+    // The read-back itself failed (memory); the mark is embedded, only unverified.
+    return { blob, blind: "unchecked" };
+  }
+}
+
+function blindStatus(payload: BlindPayload | null, results: { name: string; blind: BlindOutcome }[]): string {
+  if (!payload) return "";
+  const failed = results.filter((r) => r.blind === "missed" || r.blind === "memory");
+  if (!failed.length) {
+    const unchecked = results.some((r) => r.blind === "unchecked");
+    return t(unchecked ? "watermark.blindUnchecked" : "watermark.blindDone", { text: blindLabel(payload) });
+  }
+  const key = failed.every((r) => r.blind === "memory") ? "watermark.blindNoMemory" : "watermark.blindFailed";
+  return results.length > 1 ? `${t(key)} (${failed.map((r) => r.name).join(", ")})` : t(key);
+}
+
+async function exportSource(
+  source: { image: CanvasImageSource; width: number; height: number },
+  job: ExportJob,
+  spec: WatermarkSpec,
+): Promise<Exported> {
+  const fit = fitExportSize(source.width, source.height);
+  const render = () => renderWatermark(source.image, source.width, source.height, spec, fit.width, fit.height);
+  const out = await encodeCanvas(render(), job, job.payload);
+  if (out !== "missed") return out;
+  // A mark that cannot be read back is not worth the changed pixels: export the image untouched.
+  const plain = await encodeCanvas(render(), job, null);
+  return { blob: (plain as Exported).blob, blind: "missed" };
 }
 
 async function downloadOne(): Promise<void> {
+  if (state.working) return;
   const source = composeSource();
   if (!source) {
     setStatus(t("watermark.emptyDownload"));
     return;
   }
   state.working = true;
+  const job = exportJob();
   setStatus(t("watermark.working"));
   try {
-    const blob = await blobForSource(source);
-    downloadBlob(blob, outputFilename(source.name, blob.type));
-    setStatus("");
+    const { blob, blind } = await exportSource(source, job, specFor());
+    const name = outputFilename(source.name, blob.type);
+    downloadBlob(blob, name);
+    setStatus(blindStatus(job.payload, [{ name, blind }]));
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {
@@ -1176,11 +1399,12 @@ async function downloadOne(): Promise<void> {
 }
 
 async function downloadAll(): Promise<void> {
+  if (state.working) return;
   if (state.layout !== "single") {
     await downloadOne();
     return;
   }
-  const ready = state.items.filter((it) => it.bitmap);
+  const ready = state.items.filter((it): it is Item & { bitmap: ImageBitmap } => it.bitmap !== null);
   if (ready.length === 0) {
     setStatus(t("watermark.emptyDownload"));
     return;
@@ -1190,12 +1414,20 @@ async function downloadAll(): Promise<void> {
     return;
   }
   state.working = true;
+  const job = exportJob();
   setStatus(t("watermark.working"));
   try {
     const entries = [];
+    const results: { name: string; blind: BlindOutcome }[] = [];
+    // Freeze each file's visible mark now; the panel stays live while the batch runs.
+    const specs = ready.map((item) => specFor(item.redactions));
     const used = new Set<string>();
-    for (const item of ready) {
-      const blob = await blobFor(item);
+    for (const [i, item] of ready.entries()) {
+      const { blob, blind } = await exportSource(
+        { image: item.bitmap, width: item.width, height: item.height },
+        job,
+        specs[i],
+      );
       const buf = new Uint8Array(await blob.arrayBuffer());
       let name = outputFilename(item.file.name, blob.type);
       let n = 1;
@@ -1205,13 +1437,14 @@ async function downloadAll(): Promise<void> {
         n += 1;
       }
       used.add(name);
+      results.push({ name, blind });
       entries.push({ name, data: buf });
     }
     const zip = zipStore(entries);
     const packed = new ArrayBuffer(zip.byteLength);
     new Uint8Array(packed).set(zip);
     downloadBlob(new Blob([packed], { type: "application/zip" }), "cvcm-watermark.zip");
-    setStatus("");
+    setStatus(blindStatus(job.payload, results));
   } catch {
     setStatus(t("watermark.errorDecode"));
   } finally {
@@ -1247,6 +1480,8 @@ type WmDraft = {
     preset: WmPreset | null;
     redactMode?: RedactMode;
     mosaicRatio?: number;
+    blind?: boolean;
+    blindText?: string;
   };
   files: { name: string; type: string; blob: Blob; redactions?: Redaction[] }[];
   logo: { name: string; type: string; blob: Blob } | null;
@@ -1282,6 +1517,8 @@ async function persistWatermark(): Promise<void> {
       preset: state.preset,
       redactMode: state.redactMode,
       mosaicRatio: state.mosaicRatio,
+      blind: state.blind,
+      blindText: state.blindText,
     },
     files: state.items.map((it) => ({ name: it.file.name, type: it.file.type || "image/png", blob: it.file, redactions: it.redactions })),
     logo: state.logo

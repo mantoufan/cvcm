@@ -37,7 +37,7 @@
       "s3t": "Gõ dấu",
       "s3b": "Giấy tờ: lặp “chỉ dùng cho [tổ chức]”. Ảnh cửa hàng: tên hoặc logo.",
       "s4t": "Kiểm tra xem trước rồi xuất",
-      "s4b": "Khi dấu đúng chỗ, tải một tệp hoặc ZIP cả lô."
+      "s4b": "Khi dấu đúng chỗ, tải một tệp hoặc ZIP cả lô. Watermark ẩn được thêm sẵn; đổi nội dung hoặc kiểm tra ảnh ở mục Watermark ẩn."
     },
     "collage": {
       "lead": "Ghép ảnh thành một tấm. Bố cục và cỡ Instagram ở lại thẻ này.",
@@ -715,6 +715,51 @@
       "s3t": "Sao chép thời lượng",
       "s3b": "Sao chép đưa giờ:phút:giây và tổng giây vào bộ nhớ tạm."
     },
+    "tdee": {
+      "lead": "Ước tính mỗi ngày bạn đốt bao nhiêu calo từ tuổi, chiều cao, cân nặng và mức vận động. Không phải lời khuyên y tế.",
+      "s1t": "Chọn đơn vị và nhập thông tin",
+      "s1b": "Chọn hệ mét hoặc hệ Anh, rồi nhập giới tính, tuổi, cân nặng và chiều cao. Đổi đơn vị thì các số đã nhập được quy đổi luôn.",
+      "s2t": "Chọn mức vận động",
+      "s2b": "Hãy chọn thật lòng: dân văn phòng tập vài buổi mỗi tuần thường ở mức nhẹ hoặc vừa. BMR và TDEE cập nhật ngay.",
+      "s3t": "Xem calo duy trì, giảm và tăng cân",
+      "s3b": "Ăn bằng TDEE thì cân nặng gần như giữ nguyên; −500 kcal giảm khoảng 0,5 kg mỗi tuần, +300 kcal tăng chậm. Nút Sao chép lấy cả bốn con số."
+    },
+    "cidr": {
+      "lead": "Tính subnet IPv4 từ ký hiệu CIDR, hoặc chia một dải địa chỉ thành các khối CIDR.",
+      "s1t": "Nhập địa chỉ kèm prefix",
+      "s1b": "Nhập 192.168.1.10/24, hoặc địa chỉ và subnet mask cách nhau bằng dấu cách. Khối được quy về địa chỉ mạng.",
+      "s2t": "Xem chi tiết subnet",
+      "s2b": "Địa chỉ mạng, broadcast, mask, wildcard, host đầu và cuối, tổng số địa chỉ và số host dùng được hiện ra ngay khi gõ.",
+      "s3t": "Chuyển dải IP sang CIDR",
+      "s3b": "Nhập địa chỉ đầu và cuối ở bên phải để có danh sách khối CIDR ngắn nhất phủ đúng dải đó, sẵn sàng sao chép."
+    },
+    "chmod": {
+      "lead": "Chuyển quyền Unix giữa ô đánh dấu, dạng số và chuỗi rwx, kèm lệnh chmod.",
+      "s1t": "Đánh dấu quyền",
+      "s1b": "Mỗi hàng là chủ sở hữu, nhóm hoặc người khác; mỗi cột là đọc, ghi hoặc thực thi. Thêm setuid, setgid hoặc sticky nếu cần.",
+      "s2t": "Hoặc gõ dạng số hay rwx",
+      "s2b": "Gõ 644 hoặc 4755, hay dán rwxr-xr-x từ ls -l. Các ô khác tự cập nhật theo.",
+      "s3t": "Sao chép lệnh",
+      "s3b": "Nhập tên file hoặc thư mục, đánh dấu -R nếu áp dụng cho cả thư mục, rồi sao chép lệnh chmod và chạy trong terminal."
+    },
+    "typing": {
+      "lead": "Đo tốc độ và độ chính xác khi gõ phím trong 30 hoặc 60 giây. Kết quả chỉ nằm trên trang.",
+      "s1t": "Chọn thời gian và đoạn văn",
+      "s1b": "Chọn 30 hoặc 60 giây và một trong các đoạn văn mẫu bằng ngôn ngữ của bạn.",
+      "s2t": "Gõ đoạn văn",
+      "s2b": "Bấm vào ô và bắt đầu gõ; đồng hồ chạy từ phím đầu tiên. Ký tự đúng chuyển sang màu đậm, ký tự sai chuyển hồng.",
+      "s3t": "Xem kết quả",
+      "s3b": "Khi hết giờ hoặc gõ xong đoạn văn, bạn sẽ thấy tốc độ (WPM thực, hoặc ký tự mỗi phút với tiếng Trung, Nhật, Hàn) và độ chính xác. Bấm Làm lại để thử tiếp."
+    },
+    "image-colors": {
+      "lead": "Lấy bảng màu từ bất kỳ bức ảnh nào và sao chép mã HEX mà không cần tải ảnh lên.",
+      "s1t": "Thêm ảnh",
+      "s1b": "Thả ảnh chụp hoặc ảnh màn hình vào bên trái, bấm để chọn, hoặc dán vào.",
+      "s2t": "Chọn số màu",
+      "s2b": "Kéo thanh trượt từ 2 đến 12. Bảng màu được tính lại ngay và xếp từ màu phổ biến nhất.",
+      "s3t": "Sao chép màu",
+      "s3b": "Bấm vào ô màu để sao chép mã HEX của nó, hoặc Sao chép tất cả HEX để lấy cả bảng màu."
+    },
     "gold": {
       "lead": "Đổi khối lượng vàng trong trang này. Không tải lên.",
       "s1t": "Mở khối lượng vàng",
@@ -777,6 +822,33 @@
       "s2b": "Ô đen cho số giấy tờ, mosaic cho khuôn mặt. Hoàn tác bỏ khung cuối.",
       "s3t": "Tải xuống",
       "s3b": "Tải một ảnh hoặc ZIP. Xuất ảnh sẽ xóa EXIF."
+    },
+    "dice": {
+      "lead": "Tung xúc xắc hoặc tung đồng xu trong thẻ này. Không tải lên.",
+      "s1t": "Mở Tung xúc xắc",
+      "s1b": "Hai xúc xắc sáu mặt đã được đặt sẵn. Đổi số lượng hoặc chọn d4 đến d100.",
+      "s2t": "Bấm Tung",
+      "s2b": "Từng mặt, tổng, mặt cao nhất và thấp nhất hiện ở bên phải.",
+      "s3t": "Tung đồng xu",
+      "s3b": "Đặt số đồng xu rồi bấm Tung xu để xem sấp ngửa. Sao chép đưa kết quả vào bộ nhớ tạm."
+    },
+    "gpa": {
+      "lead": "Đổi điểm chữ và tín chỉ thành GPA thang 4.0 trong thẻ này. Không tải lên.",
+      "s1t": "Mở Máy tính GPA",
+      "s1b": "Bốn môn mẫu đã được điền. GPA, tín chỉ và tổng điểm nằm bên phải.",
+      "s2t": "Nhập môn của bạn",
+      "s2b": "Chọn điểm và tín chỉ cho từng dòng. Thêm môn thêm một dòng; × xóa một dòng. Tích A+ tính 4.3 nếu trường bạn dùng.",
+      "s3t": "Sao chép kết quả",
+      "s3b": "Sao chép đưa GPA, tổng tín chỉ và tổng điểm vào bộ nhớ tạm."
+    },
+    "pomodoro": {
+      "lead": "Chạy các phiên tập trung và nghỉ có chuông trong thẻ này. Không tải lên.",
+      "s1t": "Mở Đồng hồ Pomodoro",
+      "s1b": "Đã đặt sẵn tập trung 25 phút, nghỉ ngắn 5 phút, nghỉ dài 15 phút và 4 vòng.",
+      "s2t": "Bấm Bắt đầu",
+      "s2b": "Đồng hồ đếm ngược và tiêu đề thẻ hiện thời gian còn lại. Tạm dừng để dừng; Bỏ qua để sang giai đoạn kế.",
+      "s3t": "Đổi độ dài",
+      "s3b": "Sửa số phút hoặc số vòng khi đồng hồ đang dừng, giai đoạn hiện tại áp dụng ngay. Đặt lại bắt đầu lại từ vòng 1."
     },
     "remove-background": {
       "lead": "Tách người, sản phẩm hoặc thú cưng ra khỏi ảnh ngay trong tab này, rồi tải PNG trong suốt.",

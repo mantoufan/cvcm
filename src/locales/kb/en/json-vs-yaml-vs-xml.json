@@ -1,0 +1,152 @@
+{
+  "title": "JSON vs YAML vs XML: differences and when to use each — cv.cm",
+  "description": "JSON, YAML and XML all describe structured data. Compare syntax, types, comments, schemas and security pitfalls, and see which suits APIs or config files.",
+  "h1": "JSON vs YAML vs XML: which format should you use?",
+  "answer": "JSON, YAML and XML are text formats for structured data. JSON is compact and strict, with six value types, and dominates web APIs. YAML is indentation-based, allows comments and is popular for configuration files. XML uses tags and attributes, supports namespaces and formal schemas, and remains common in documents, enterprise systems and feeds. All three can represent the same nested data.",
+  "sections": [
+    {
+      "h": "The same data in three formats",
+      "body": [
+        "A user with a name, an active flag and two roles looks like this in each format:",
+        {
+          "table": {
+            "head": [
+              "Format",
+              "Example"
+            ],
+            "rows": [
+              [
+                "JSON",
+                "`{\"name\": \"Ana\", \"active\": true, \"roles\": [\"admin\", \"editor\"]}`"
+              ],
+              [
+                "YAML",
+                "`name: Ana` / `active: true` / `roles: [admin, editor]` (one key per line)"
+              ],
+              [
+                "XML",
+                "`<user active=\"true\"><name>Ana</name><role>admin</role><role>editor</role></user>`"
+              ]
+            ]
+          }
+        },
+        "JSON and YAML map directly onto objects, lists and scalars in most programming languages. XML describes a tree of elements, and the mapping to objects is a convention: here the active flag could be an attribute or a child element, and nothing in XML itself says the value is a boolean rather than the text `true`."
+      ]
+    },
+    {
+      "h": "Side-by-side comparison",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "JSON",
+              "YAML",
+              "XML"
+            ],
+            "rows": [
+              [
+                "Specification",
+                "RFC 8259, ECMA-404",
+                "YAML 1.2.2 (2021)",
+                "W3C XML 1.0, Fifth Edition"
+              ],
+              [
+                "Structure",
+                "Braces and brackets",
+                "Indentation",
+                "Opening and closing tags"
+              ],
+              [
+                "Comments",
+                "Not allowed",
+                "`# comment`",
+                "`<!-- comment -->`"
+              ],
+              [
+                "Built-in types",
+                "Object, array, string, number, boolean, null",
+                "Maps, sequences, scalars resolved to types",
+                "Text only, unless a schema assigns types"
+              ],
+              [
+                "Schema languages",
+                "JSON Schema",
+                "Usually JSON Schema",
+                "XSD, DTD, RELAX NG"
+              ],
+              [
+                "Extras",
+                "None",
+                "Anchors and aliases, multiple documents per file",
+                "Attributes, namespaces, mixed content"
+              ],
+              [
+                "Typical use",
+                "Web APIs, browser data, logs",
+                "Config: Kubernetes, CI pipelines, Docker Compose",
+                "Office files, SVG, RSS, SOAP, Android layouts"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "JSON: strict and predictable",
+      "body": [
+        "JSON's grammar is small enough to fit on a page, which is why parsers in every language agree on it. The strictness also causes the most common errors:",
+        {
+          "ul": [
+            "Keys and strings need double quotes; single quotes are invalid.",
+            "No trailing comma after the last item in an object or array.",
+            "No comments, so configuration written in JSON cannot explain itself. Variants such as JSONC and JSON5 add comments but are not standard JSON.",
+            "RFC 8259 requires UTF-8 for JSON exchanged between systems."
+          ]
+        },
+        "Numbers have no size limit in the grammar, but RFC 8259 notes that most software uses IEEE 754 doubles. In JavaScript, integers above `9007199254740992` (2^53) lose precision, so large IDs are safer sent as strings."
+      ]
+    },
+    {
+      "h": "YAML: readable, with sharp edges",
+      "body": [
+        "YAML is designed for humans to read and edit, and YAML 1.2 is close to a superset of JSON, so most JSON files are also valid YAML. Its flexibility has costs:",
+        {
+          "ul": [
+            "Indentation is structure. One misplaced space changes nesting, and tabs are not allowed for indentation.",
+            "Unquoted values are type-guessed. Under YAML 1.1 rules, still used by many parsers, `no`, `off` and `yes` become booleans, so a country code `NO` turns into `false`. YAML 1.2's core schema only treats `true` and `false` as booleans, but check which version your parser implements.",
+            "Values like `1.10` may become the number `1.1`, and `012` may become an octal number. Quote strings that only look like numbers, such as version numbers and ZIP codes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "XML: verbose, but built for documents",
+      "body": [
+        "XML is heavier than JSON for plain data, but it handles things the others cannot: mixed content (text with inline markup, as in `<p>Hello <b>world</b></p>`), namespaces that let vocabularies from different sources coexist in one file, and mature validation through XSD. Formats such as DOCX, XLSX, SVG and RSS are XML underneath.",
+        "Converting XML to JSON is lossy by nature. Attributes, element order, repeated elements and mixed content have no single JSON equivalent, so converters choose conventions such as `@` prefixes for attributes or forcing repeated elements into arrays.",
+        {
+          "note": "Parsing untrusted input has format-specific risks. XML parsers that resolve external entities are open to XXE attacks that read local files; disable DTD and external entity processing. YAML loaders that construct arbitrary objects can run code; use safe loaders such as PyYAML's `yaml.safe_load`."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is YAML a superset of JSON?",
+      "a": "YAML 1.2 was revised to be almost a strict superset of JSON, so nearly every JSON document parses as YAML. A few edge cases differ, and YAML 1.1 parsers are less compatible."
+    },
+    {
+      "q": "Why doesn't JSON allow comments?",
+      "a": "Its author left comments out so they could not be used to carry parsing directives that would break interoperability. Tools that need comments in config use JSONC, JSON5 or YAML instead."
+    },
+    {
+      "q": "Which is faster to parse, JSON or XML?",
+      "a": "JSON is usually faster and smaller for the same data, because its grammar is simpler and has no closing tags, attributes or namespaces. The difference matters mainly at high volume."
+    },
+    {
+      "q": "Can I convert YAML to JSON without losing anything?",
+      "a": "The data survives, but comments, anchors and key formatting do not, because JSON has no place for them. Converting JSON to YAML is lossless."
+    }
+  ]
+}

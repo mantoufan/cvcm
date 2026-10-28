@@ -1,0 +1,186 @@
+{
+  "title": "Format tanggal ISO 8601: tanggal, waktu, minggu, dan durasi — cv.cm",
+  "description": "ISO 8601 menulis tanggal sebagai YYYY-MM-DD dan waktu dengan offset UTC. Pelajari bentuk tanggal, waktu, minggu, dan durasi, serta profil ketat RFC 3339 untuk web.",
+  "h1": "Apa itu format tanggal ISO 8601?",
+  "answer": "ISO 8601 adalah standar internasional untuk menulis tanggal dan waktu sebagai teks. Bentuk intinya mengurutkan satuan dari yang terbesar ke terkecil: `2026-10-14` untuk tanggal dan `2026-10-14T09:30:00+02:00` untuk sebuah momen beserta offset UTC-nya. Standar ini juga mendefinisikan tanggal minggu seperti `2026-W42-3`, tanggal ordinal, dan durasi seperti `P3DT4H`. Karena tidak ambigu dan urutan alfabetisnya sama dengan urutan waktu, sebagian besar API dan format data memakainya.",
+  "sections": [
+    {
+      "h": "Mengapa YYYY-MM-DD",
+      "body": [
+        "`03/04/2026` berarti 3 April di sebagian besar dunia, tetapi 4 Maret di Amerika Serikat. ISO 8601 menghilangkan tebak-tebakan itu dengan menetapkan satu urutan, yaitu tahun, bulan, lalu hari, dengan tahun empat digit serta bulan dan hari dua digit yang diberi nol di depan.",
+        "Manfaat lainnya adalah pengurutan: string berbentuk `YYYY-MM-DD` terurut secara alfabetis sama persis dengan urutan tanggalnya, sehingga nama file seperti `2026-10-14-report.pdf` tersusun dengan benar di folder mana pun.",
+        {
+          "table": {
+            "head": [
+              "Bentuk",
+              "Extended (dengan pemisah)",
+              "Basic (ringkas)"
+            ],
+            "rows": [
+              [
+                "Tanggal kalender",
+                "`2026-10-14`",
+                "`20261014`"
+              ],
+              [
+                "Tanggal ordinal (hari ke-n dalam tahun)",
+                "`2026-287`",
+                "`2026287`"
+              ],
+              [
+                "Tanggal minggu",
+                "`2026-W42-3`",
+                "`2026W423`"
+              ],
+              [
+                "Waktu",
+                "`09:30:00`",
+                "`093000`"
+              ],
+              [
+                "Tanggal dan waktu dalam UTC",
+                "`2026-10-14T09:30:00Z`",
+                "`20261014T093000Z`"
+              ],
+              [
+                "Tanggal dan waktu dengan offset",
+                "`2026-10-14T11:30:00+02:00`",
+                "`20261014T113000+0200`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Waktu, zona waktu, dan huruf Z",
+      "body": [
+        "Waktu ditulis setelah tanggal, diawali `T`. Jam memakai format 24 jam, dan pecahan detik ditulis setelah titik desimal: `09:30:00.250`.",
+        {
+          "ul": [
+            "`Z` (dibaca \"Zulu\") berarti waktunya dalam UTC: `2026-10-14T09:30:00Z`.",
+            "Offset seperti `+02:00` atau `-05:00` menunjukkan waktu lokal dan selisihnya dari UTC. `2026-10-14T11:30:00+02:00` adalah momen yang sama dengan contoh UTC di atas.",
+            "Waktu tanpa `Z` dan tanpa offset adalah waktu lokal dengan zona yang tidak diketahui. Bentuk ini valid menurut ISO 8601, tetapi sistem lain tidak bisa tahu momen mana yang dimaksud."
+          ]
+        },
+        "Offset bukan zona waktu. `+01:00` bisa berarti Paris di musim dingin atau Lagos sepanjang tahun. ISO 8601 hanya mencatat offset; aturan zonanya berasal dari sumber lain, seperti IANA time zone database."
+      ]
+    },
+    {
+      "h": "Tanggal minggu dan nomor minggu",
+      "body": [
+        "Minggu ISO dimulai hari Senin, dan minggu ke-1 adalah minggu yang memuat hari Kamis pertama dalam tahun itu (sama dengan minggu yang memuat tanggal 4 Januari). Tanggal minggu ditulis tahun, `W`, nomor minggu, lalu hari dalam minggu dari 1 (Senin) sampai 7 (Minggu).",
+        "Karena satu minggu tidak terbelah di dua tahun, tahun penomoran minggu ISO bisa berbeda dari tahun kalender di sekitar pergantian tahun:",
+        {
+          "table": {
+            "head": [
+              "Tanggal kalender",
+              "Tanggal minggu ISO",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "2021-01-01 (Jumat)",
+                "`2020-W53-5`",
+                "Termasuk minggu yang dimulai Senin 28 Des 2020"
+              ],
+              [
+                "2024-12-30 (Senin)",
+                "`2025-W01-1`",
+                "Minggu itu memuat Kamis 2 Jan 2025"
+              ],
+              [
+                "2026-01-01 (Kamis)",
+                "`2026-W01-4`",
+                "1 Januari sendiri jatuh pada hari Kamis"
+              ],
+              [
+                "2027-01-01 (Jumat)",
+                "`2026-W53-5`",
+                "2026 dimulai pada hari Kamis, sehingga punya 53 minggu"
+              ]
+            ]
+          }
+        },
+        "Satu tahun punya 52 atau 53 minggu ISO. Nomor minggu di kalender AS, yang sering dimulai hari Minggu dan selalu menempatkan 1 Januari di minggu ke-1, bisa berbeda satu dari nomor ISO."
+      ]
+    },
+    {
+      "h": "Durasi dan interval",
+      "body": [
+        "Durasi diawali `P` (period). Bagian tanggal ditulis lebih dulu, lalu `T`, lalu bagian waktu. Bagian yang bernilai nol boleh dihilangkan.",
+        {
+          "table": {
+            "head": [
+              "Durasi",
+              "Arti"
+            ],
+            "rows": [
+              [
+                "`P3DT4H`",
+                "3 hari dan 4 jam"
+              ],
+              [
+                "`PT30M`",
+                "30 menit"
+              ],
+              [
+                "`P30M`",
+                "30 bulan, bukan menit: `T` itu penting"
+              ],
+              [
+                "`P1Y2M10D`",
+                "1 tahun, 2 bulan, dan 10 hari"
+              ],
+              [
+                "`P2W`",
+                "2 minggu"
+              ],
+              [
+                "`PT0.5S`",
+                "Setengah detik"
+              ]
+            ]
+          }
+        },
+        "Interval menggabungkan dua bagian dengan garis miring: `2026-10-14/2026-10-20` (awal dan akhir), `2026-10-14T09:00Z/PT2H` (awal dan durasi), atau `P1D/2026-10-14` (durasi dan akhir). Durasi dalam tahun dan bulan tidak punya panjang tetap dalam detik, sehingga perangkat lunak menambahkannya pada kalender, bukan sebagai jumlah detik yang tetap."
+      ]
+    },
+    {
+      "h": "RFC 3339: profil ketat untuk web",
+      "body": [
+        "ISO 8601 mengizinkan banyak varian, sehingga parser lengkapnya rumit. RFC 3339 memilih satu profil untuk protokol internet, dan sebagian besar API JSON, feed Atom, serta format log mengikutinya.",
+        {
+          "ul": [
+            "Tanggal dan waktu lengkap wajib ada, selalu dalam format extended: `2026-10-14T09:30:00Z`.",
+            "Setiap timestamp wajib memakai `Z` atau offset numerik seperti `+02:00`; waktu lokal tanpa offset tidak diizinkan.",
+            "Tanggal minggu, tanggal ordinal, dan durasi bukan bagian dari profil ini.",
+            "`-00:00` menandakan bahwa waktunya dalam UTC tetapi offset lokal aslinya tidak diketahui.",
+            "RFC ini mencatat bahwa spasi boleh menggantikan `T` agar lebih mudah dibaca, bentuk yang dicetak oleh banyak database."
+          ]
+        },
+        {
+          "note": "Untuk menghasilkan string RFC 3339 di JavaScript, gunakan `new Date().toISOString()`. Fungsi ini selalu mengembalikan UTC dengan milidetik, misalnya `2026-10-14T09:30:00.000Z`."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa arti huruf T pada tanggal ISO 8601?",
+      "a": "`T` memisahkan tanggal dari waktu, seperti pada `2026-10-14T09:30:00`. RFC 3339 juga menerima spasi di posisi itu agar lebih mudah dibaca."
+    },
+    {
+      "q": "Apa arti Z di akhir timestamp?",
+      "a": "`Z` berarti waktunya dalam UTC, dengan offset nol. `09:30:00Z` dan `09:30:00+00:00` menggambarkan momen yang sama."
+    },
+    {
+      "q": "Apakah ISO 8601 sama dengan RFC 3339?",
+      "a": "RFC 3339 adalah subset ISO 8601 yang lebih ketat untuk penggunaan di internet. Setiap timestamp RFC 3339 valid sebagai ISO 8601, tetapi ISO 8601 juga mengizinkan bentuk yang tidak diizinkan RFC 3339, seperti tanggal minggu dan durasi."
+    },
+    {
+      "q": "Minggu mana yang menjadi minggu ke-1 dalam ISO 8601?",
+      "a": "Minggu ke-1 adalah minggu Senin–Minggu yang memuat hari Kamis pertama dalam tahun itu. Jadi 1 Januari bisa jatuh di minggu ke-52 atau ke-53 tahun sebelumnya."
+    }
+  ]
+}

@@ -37,7 +37,7 @@
       "s3t": "Type the mark",
       "s3b": "For an ID copy, tile “for [org] use only”. For a shop photo, a name or logo is enough.",
       "s4t": "Check the preview and export",
-      "s4b": "When the mark sits where you want, download one file or a ZIP of the batch."
+      "s4b": "When the mark sits where you want, download one file or a ZIP of the batch. An invisible watermark is added by default; change its text or check a file under Invisible watermark."
     },
     "collage": {
       "lead": "Combine photos into one picture. Layouts and Instagram sizes stay in this tab.",
@@ -715,6 +715,51 @@
       "s3t": "Copy the duration",
       "s3b": "Copy puts the H:MM:SS result and the total seconds on the clipboard."
     },
+    "tdee": {
+      "lead": "Estimate how many calories you burn a day from age, height, weight and activity. This is not medical advice.",
+      "s1t": "Choose units and enter your details",
+      "s1b": "Pick metric or imperial, then sex, age, weight and height. Switching units converts the numbers you already typed.",
+      "s2t": "Pick an activity level",
+      "s2b": "Be honest: most office workers who train a few times a week are light or moderate. BMR and TDEE update as you change it.",
+      "s3t": "Read maintenance, cut and bulk",
+      "s3b": "TDEE keeps weight steady; −500 kcal loses about 0.5 kg a week, +300 kcal gains slowly. Copy puts all four numbers on the clipboard."
+    },
+    "cidr": {
+      "lead": "Work out an IPv4 subnet from CIDR notation, or turn an address range into CIDR blocks.",
+      "s1t": "Type an address with a prefix",
+      "s1b": "Enter 192.168.1.10/24, or an address and a netmask separated by a space. The block is normalised to its network address.",
+      "s2t": "Read the subnet details",
+      "s2b": "Network, broadcast, mask, wildcard, first and last host, total and usable host counts appear as you type.",
+      "s3t": "Convert a range to CIDR",
+      "s3b": "Enter the first and last address on the right to get the smallest list of CIDR blocks that covers exactly that range, ready to copy."
+    },
+    "chmod": {
+      "lead": "Turn Unix permissions between checkboxes, octal digits and the rwx string, and get the chmod command.",
+      "s1t": "Tick the permissions",
+      "s1b": "Each row is owner, group or others; each column is read, write or execute. Add setuid, setgid or sticky if you need them.",
+      "s2t": "Or type octal or rwx",
+      "s2b": "Type 644 or 4755, or paste rwxr-xr-x from ls -l. The other fields follow.",
+      "s3t": "Copy the command",
+      "s3b": "Enter a file or folder name, tick -R for a whole folder, then copy the chmod line and run it in your terminal."
+    },
+    "typing": {
+      "lead": "Measure your typing speed and accuracy in 30 or 60 seconds. Results stay in the page.",
+      "s1t": "Choose a time and a passage",
+      "s1b": "Pick 30 or 60 seconds and one of the sample passages in your language.",
+      "s2t": "Type the text",
+      "s2b": "Click the box and start typing; the timer starts with the first key. Correct characters turn dark, mistakes turn pink.",
+      "s3t": "Read your score",
+      "s3b": "When time runs out or the passage is done you see speed (net WPM, or characters per minute for CJK) and accuracy. Restart to try again."
+    },
+    "image-colors": {
+      "lead": "Pull a color palette out of any picture and copy the HEX codes, without uploading it.",
+      "s1t": "Add an image",
+      "s1b": "Drop a photo or screenshot on the left, click to choose one, or paste it.",
+      "s2t": "Set the number of colors",
+      "s2b": "Slide from 2 to 12. The palette is recalculated straight away and sorted from the most common color.",
+      "s3t": "Copy the colors",
+      "s3b": "Click a swatch to copy its HEX code, or Copy all HEX for the whole palette."
+    },
     "gold": {
       "lead": "Convert a gold weight in this tab. Nothing is uploaded.",
       "s1t": "Open Gold weight",
@@ -777,6 +822,33 @@
       "s2b": "Black box for ID numbers, mosaic for faces. Undo removes the last box.",
       "s3t": "Download",
       "s3b": "Download one image or a ZIP. Export drops EXIF."
+    },
+    "dice": {
+      "lead": "Roll dice or flip coins in this tab. Nothing is uploaded.",
+      "s1t": "Open Dice roller",
+      "s1b": "Two six-sided dice are set. Change the count or pick d4 to d100.",
+      "s2t": "Press Roll",
+      "s2b": "Each face, the total, and the highest and lowest die appear on the right.",
+      "s3t": "Flip a coin",
+      "s3b": "Set a number of coins and press Flip to see heads and tails. Copy puts the result on the clipboard."
+    },
+    "gpa": {
+      "lead": "Turn letter grades and credits into a 4.0-scale GPA in this tab. Nothing is uploaded.",
+      "s1t": "Open GPA calculator",
+      "s1b": "Four sample courses are filled. The GPA, credits, and quality points sit on the right.",
+      "s2t": "Enter your courses",
+      "s2b": "Pick a grade and credits per row. Add course adds a row; × removes one. Tick A+ = 4.3 if your school uses it.",
+      "s3t": "Copy the result",
+      "s3b": "Copy puts the GPA, total credits, and quality points on the clipboard."
+    },
+    "pomodoro": {
+      "lead": "Run focus sessions and breaks with a chime in this tab. Nothing is uploaded.",
+      "s1t": "Open Pomodoro timer",
+      "s1b": "25-minute focus, 5-minute short break, 15-minute long break, and 4 rounds are set.",
+      "s2t": "Press Start",
+      "s2b": "The clock counts down and the tab title shows the time left. Pause stops it; Skip jumps to the next phase.",
+      "s3t": "Change the lengths",
+      "s3b": "Edit the minutes or rounds while the clock is stopped and the current phase takes them right away. Reset starts over from round 1."
     },
     "remove-background": {
       "lead": "Cut people, products or pets out of a photo in this tab, then download a transparent PNG.",

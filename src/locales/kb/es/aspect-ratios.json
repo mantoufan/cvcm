@@ -1,0 +1,168 @@
+{
+  "title": "Relación de aspecto: 16:9, 4:3, 1:1, 9:16 y cómo calcularla — cv.cm",
+  "description": "La relación de aspecto es ancho entre alto, como 16:9. Relaciones habituales en fotos, video y pantallas, y cómo calcular tamaños y recortar sin deformar.",
+  "h1": "¿Qué es la relación de aspecto?",
+  "answer": "La relación de aspecto es la proporción entre el ancho y el alto de una imagen, escrita con dos números como 16:9 o 4:3. Describe la forma, no el tamaño: 1920 × 1080 y 1280 × 720 son ambos 16:9. Para mantener la proporción al redimensionar, calcula el nuevo alto como nuevo ancho × alto ÷ ancho; en 16:9 con 1200 píxeles de ancho, salen 675 píxeles de alto.",
+  "sections": [
+    {
+      "h": "Relaciones de aspecto habituales y dónde se usan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Relación",
+              "Decimal",
+              "Tamaño de ejemplo (px)",
+              "Uso típico"
+            ],
+            "rows": [
+              [
+                "1:1",
+                "1.00",
+                "1080 × 1080",
+                "Publicaciones cuadradas en redes, fotos de perfil"
+              ],
+              [
+                "4:5",
+                "0.80",
+                "1080 × 1350",
+                "Publicaciones verticales en el feed de redes sociales"
+              ],
+              [
+                "4:3",
+                "1.33",
+                "1600 × 1200",
+                "Fotos de cámara de teléfono, televisores antiguos, tabletas"
+              ],
+              [
+                "3:2",
+                "1.50",
+                "6000 × 4000",
+                "Fotos de réflex y sin espejo, copias de 4 × 6"
+              ],
+              [
+                "16:9",
+                "1.78",
+                "1920 × 1080",
+                "Video HD y 4K, monitores, presentaciones"
+              ],
+              [
+                "9:16",
+                "0.56",
+                "1080 × 1920",
+                "Video vertical, historias, clips cortos"
+              ],
+              [
+                "21:9 (comercial)",
+                "aprox. 2.37",
+                "2560 × 1080",
+                "Monitores ultrapanorámicos"
+              ],
+              [
+                "2.39:1",
+                "2.39",
+                "4096 × 1716",
+                "Cine panorámico"
+              ],
+              [
+                "1:√2",
+                "0.71",
+                "2480 × 3508",
+                "Tamaños de papel ISO como A4"
+              ]
+            ]
+          }
+        },
+        "La relación 16:9 se convirtió en el estándar de la HDTV a través de ITU-R BT.709, que define imágenes de 1920 × 1080 y 1280 × 720. La 3:2 procede del fotograma de 36 × 24 mm de la película de 35 mm."
+      ]
+    },
+    {
+      "h": "Cómo averiguar la relación de cualquier imagen",
+      "body": [
+        "Divide el ancho y el alto entre su máximo común divisor (MCD).",
+        {
+          "ol": [
+            "Toma el tamaño en píxeles, por ejemplo 1920 × 1080.",
+            "Busca el mayor número que divide a ambos: 120.",
+            "Divide: 1920 ÷ 120 = 16 y 1080 ÷ 120 = 9, así que la relación es 16:9."
+          ]
+        },
+        "Algunos tamaños solo se aproximan a una relación conocida. Una pantalla de portátil de 1366 × 768 se reduce a 683:384, que es 1.779, y se vende como 16:9. Un monitor «21:9» de 2560 × 1080 es exactamente 64:27. Comparar decimales (ancho ÷ alto) suele ser más fácil que comparar fracciones."
+      ]
+    },
+    {
+      "h": "Calcular un nuevo tamaño sin deformar",
+      "body": [
+        "Mantén la proporción escalando ambos lados por el mismo factor. Dos fórmulas cubren todos los casos:",
+        {
+          "ul": [
+            "`nuevo alto = nuevo ancho × alto original ÷ ancho original`",
+            "`nuevo ancho = nuevo alto × ancho original ÷ alto original`"
+          ]
+        },
+        "Ejemplo: una foto de 4032 × 3024 (4:3) redimensionada a 1600 píxeles de ancho queda en 1600 × 3024 ÷ 4032 = 1200 píxeles de alto. Para un video 9:16 de 720 píxeles de ancho, el alto es 720 × 16 ÷ 9 = 1280.",
+        "Si el resultado no es un número entero, redondea al píxel más cercano. Los codificadores de video suelen exigir dimensiones pares, así que en video redondea a un número par."
+      ]
+    },
+    {
+      "h": "Cambiar la relación: recortar, rellenar o estirar",
+      "body": [
+        "Convertir una foto 4:3 en un encuadre 16:9 o en una publicación 1:1 no se puede hacer solo redimensionando. Hay tres opciones:",
+        {
+          "table": {
+            "head": [
+              "Método",
+              "Qué ocurre",
+              "Cuándo usarlo"
+            ],
+            "rows": [
+              [
+                "Recortar",
+                "Elimina parte de la imagen",
+                "La mayoría de las fotos; mantén el sujeto dentro del encuadre"
+              ],
+              [
+                "Rellenar (letterbox o pillarbox)",
+                "Añade franjas o un fondo desenfocado",
+                "Cuando no se puede cortar nada, como en documentos u obras de arte"
+              ],
+              [
+                "Estirar",
+                "Escala ancho y alto de forma desigual",
+                "Casi nunca; las caras y los círculos se ven deformados"
+              ]
+            ]
+          }
+        },
+        "Recortar una imagen de 4000 × 3000 a 16:9 conserva todo el ancho y reduce el alto a 4000 × 9 ÷ 16 = 2250 píxeles, descartando el 25 % de la imagen. Recortar la misma imagen a 1:1 conserva 3000 × 3000."
+      ]
+    },
+    {
+      "h": "La relación de aspecto en la web",
+      "body": [
+        "CSS tiene una propiedad `aspect-ratio`, por ejemplo `aspect-ratio: 16 / 9`, que reserva el espacio adecuado antes de que cargue una imagen o un video. Definirla, o dar a las imágenes atributos `width` y `height`, evita que la página salte al llegar el contenido multimedia, lo que mejora la puntuación de Cumulative Layout Shift.",
+        {
+          "note": "Las plataformas cambian con el tiempo sus tamaños de subida recomendados. Consulta la página de ayuda actual del servicio antes de preparar un lote grande de imágenes o un video."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué relación de aspecto tiene 1920 × 1080?",
+      "a": "16:9. Ambos números son divisibles entre 120, lo que da 16 y 9."
+    },
+    {
+      "q": "¿El 4K es 16:9?",
+      "a": "El 4K UHD doméstico es 3840 × 2160, exactamente 16:9. El 4K de cine (DCI) es 4096 × 2160, aproximadamente 1.90:1."
+    },
+    {
+      "q": "¿Qué relación de aspecto tiene una foto de teléfono?",
+      "a": "La mayoría de las cámaras de teléfono disparan en 4:3 por defecto, por ejemplo 4032 × 3024. Muchas ofrecen también modos 16:9 y 1:1, que recortan la imagen del sensor."
+    },
+    {
+      "q": "¿Cambiar la relación de aspecto reduce la calidad?",
+      "a": "Recortar elimina píxeles pero no desenfoca el resto. Estirar deforma las formas, y ampliar tras un recorte fuerte puede hacer que la imagen pierda nitidez."
+    }
+  ]
+}

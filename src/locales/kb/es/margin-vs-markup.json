@@ -1,0 +1,188 @@
+{
+  "title": "Margen vs markup: diferencia, fórmulas y tabla de conversión — cv.cm",
+  "description": "El margen es la ganancia entre el precio; el markup, la ganancia entre el costo. Fórmulas, conversión y por qué un markup del 25 % es solo un margen del 20 %.",
+  "h1": "Margen vs markup: ¿cuál es la diferencia?",
+  "answer": "El margen y el markup (recargo sobre el costo) miden la misma ganancia con bases distintas. El margen es la ganancia como porcentaje del precio de venta: `(precio − costo) / precio`. El markup es la ganancia como porcentaje del costo: `(precio − costo) / costo`. Un artículo que cuesta $60 y se vende a $100 tiene una ganancia de $40, un margen del 40 % y un markup del 66.7 %. El markup siempre es el número mayor.",
+  "sections": [
+    {
+      "h": "Las dos fórmulas",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "Margen",
+              "Markup"
+            ],
+            "rows": [
+              [
+                "Fórmula",
+                "`(precio − costo) / precio`",
+                "`(precio − costo) / costo`"
+              ],
+              [
+                "Base",
+                "Precio de venta (ingresos)",
+                "Costo"
+              ],
+              [
+                "Rango",
+                "Menos del 100 % (salvo que el costo sea cero)",
+                "De 0 % a ilimitado"
+              ],
+              [
+                "Responde a",
+                "¿Qué parte de cada venta es ganancia?",
+                "¿Cuánto se añadió sobre el costo?"
+              ],
+              [
+                "Quién lo usa",
+                "Finanzas, contabilidad, inversores",
+                "Fijación de precios en comercio minorista y mayorista"
+              ]
+            ]
+          }
+        },
+        "Ejemplo con un costo de $60 y un precio de $100: la ganancia es `100 − 60 = 40`. El margen es `40 / 100 = 40%`. El markup es `40 / 60 = 66.7%`.",
+        "En contabilidad, el «margen bruto» usa el costo de las mercancías vendidas. El margen operativo y el margen neto restan más costos, como alquiler, salarios e impuestos, así que son menores que el margen bruto para el mismo producto."
+      ]
+    },
+    {
+      "h": "Convertir entre margen y markup",
+      "body": [
+        "Como ambos usan la misma ganancia, uno se convierte directamente en el otro. Escribe los porcentajes en decimal:",
+        {
+          "ul": [
+            "`markup = margen / (1 − margen)`. Un margen del 40 % es `0.4 / 0.6 = 0.667`, un markup del 66.7 %.",
+            "`margen = markup / (1 + markup)`. Un markup del 50 % es `0.5 / 1.5 = 0.333`, un margen del 33.3 %."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Margen",
+              "Markup equivalente"
+            ],
+            "rows": [
+              [
+                "10%",
+                "11.11%"
+              ],
+              [
+                "15%",
+                "17.65%"
+              ],
+              [
+                "20%",
+                "25%"
+              ],
+              [
+                "25%",
+                "33.33%"
+              ],
+              [
+                "30%",
+                "42.86%"
+              ],
+              [
+                "33.33%",
+                "50%"
+              ],
+              [
+                "40%",
+                "66.67%"
+              ],
+              [
+                "50%",
+                "100%"
+              ],
+              [
+                "60%",
+                "150%"
+              ],
+              [
+                "75%",
+                "300%"
+              ]
+            ]
+          }
+        },
+        "La diferencia crece rápido: con un margen del 50 %, el markup ya es del 100 %, es decir, el precio es el doble del costo (el llamado precio «keystone» en el comercio minorista)."
+      ]
+    },
+    {
+      "h": "Fijar un precio a partir de un objetivo",
+      "body": [
+        "La fórmula que uses depende del número que quieras alcanzar:",
+        {
+          "table": {
+            "head": [
+              "Objetivo",
+              "Fórmula",
+              "Ejemplo con costo de $60"
+            ],
+            "rows": [
+              [
+                "Markup objetivo del 25 %",
+                "`precio = costo × (1 + markup)`",
+                "`60 × 1.25 = $75`"
+              ],
+              [
+                "Margen objetivo del 25 %",
+                "`precio = costo / (1 − margen)`",
+                "`60 / 0.75 = $80`"
+              ],
+              [
+                "Margen objetivo del 40 %",
+                "`precio = costo / (1 − margen)`",
+                "`60 / 0.6 = $100`"
+              ]
+            ]
+          }
+        },
+        "Observa la diferencia de $5 entre las dos primeras filas. Ambas dicen «25 %», pero una se calcula sobre el costo y la otra sobre el precio."
+      ]
+    },
+    {
+      "h": "El error de precios más común",
+      "body": [
+        "Una empresa quiere un margen del 30 %, así que suma un 30 % al costo. Con un costo de $100, el precio pasa a $130 y la ganancia a $30. El margen es `30 / 130 = 23.1%`, no 30 %. Para lograr un margen real del 30 %, el precio debe ser `100 / 0.7 = $142.86`.",
+        "La misma confusión aparece con los descuentos. Un markup del 25 % seguido de un descuento del 25 % no devuelve al costo: `100 × 1.25 = 125`, luego `125 × 0.75 = 93.75`, una pérdida de $6.25 por unidad. Los precios de oferta deben comprobarse directamente contra el costo.",
+        {
+          "note": "Cuando un proveedor, comprador o socio te dé un porcentaje, pregunta si es margen o markup. La misma expresión «porcentaje de ganancia» puede describir ambos, y la diferencia puede ser de miles en un pedido grande."
+        }
+      ]
+    },
+    {
+      "h": "¿Cuál conviene seguir?",
+      "body": [
+        {
+          "ul": [
+            "Usa el markup al fijar el precio de artículos individuales a partir de su costo, por ejemplo al aplicar un markup estándar a todos los productos de una categoría.",
+            "Usa el margen para informes y comparaciones. Es la cifra que aparece en el estado de resultados, así que cuadra con los ingresos totales, los presupuestos y las referencias del sector.",
+            "Usa el margen para decidir hasta dónde puede llegar un descuento: un artículo con un margen del 20 % no admite un descuento superior al 20 % sin venderse por debajo del costo.",
+            "Mantén coherentes los datos de partida. Incluye el envío, las comisiones de pago y el embalaje en el costo, o ambos porcentajes parecerán mejores de lo que son."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Un markup del 50 % es lo mismo que un margen del 50 %?",
+      "a": "No. Un markup del 50 % sobre un costo de $100 da un precio de $150 y un margen del 33.3 %. Un margen del 50 % requiere un precio de $200, que es un markup del 100 %."
+    },
+    {
+      "q": "¿El margen puede superar el 100 %?",
+      "a": "No, porque la ganancia nunca puede superar el precio de venta cuando el costo es positivo. El markup no tiene límite superior, así que valores como el 300 % son habituales en artículos de bajo costo."
+    },
+    {
+      "q": "¿Cómo calculo el precio de venta a partir del margen?",
+      "a": "Divide el costo entre `1 − margen`. Para un costo de $45 y un margen del 40 %, el precio es `45 / 0.6 = $75`."
+    },
+    {
+      "q": "¿Qué es un buen margen de ganancia?",
+      "a": "Depende del sector: los supermercados suelen tener márgenes netos de pocos puntos porcentuales, mientras que las empresas de software pueden superar el 20 %. Compara con negocios de estructura de costos similar en lugar de fijar un único objetivo."
+    }
+  ]
+}

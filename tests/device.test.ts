@@ -142,7 +142,7 @@ describe("device worker", () => {
 
 describe("device sitemap", () => {
   it("points hreflang at the same device page", () => {
-    const xml = buildSitemapXml("2026-09-22");
+    const xml = buildSitemapXml();
     expect(xml).not.toContain("/api/device/ip");
     for (const page of DEVICE_PAGES) {
       const loc = `https://cv.cm${deviceHref("zh-CN", page)}`;

@@ -62,7 +62,7 @@ describe("legal pages", () => {
     const home = applyHtmlSeo(SHELL, "en", { tool: null });
     expect(home).toContain('href="/en/privacy/"');
     expect(home).toContain('href="/en/terms/"');
-    const xml = buildSitemapXml("2026-10-09");
+    const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       for (const page of LEGAL_PAGES) expect(xml).toContain(`https://cv.cm${legalHref(locale, page)}`);
     }

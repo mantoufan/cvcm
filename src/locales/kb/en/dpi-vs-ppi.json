@@ -1,0 +1,142 @@
+{
+  "title": "DPI vs PPI: what the numbers mean for screens and print — cv.cm",
+  "description": "PPI counts pixels per inch in an image or screen; DPI counts printer ink dots. Learn what 300 DPI means, how to size images for print, and why 72 DPI is a myth.",
+  "h1": "DPI vs PPI: what is the difference?",
+  "answer": "PPI (pixels per inch) describes how densely pixels are packed in an image when printed or on a display. DPI (dots per inch) describes how many ink dots a printer places per inch. In everyday use the terms are swapped freely. For a digital image only the pixel dimensions matter; the PPI value just sets the print size, so 3000 pixels at 300 PPI prints 10 inches wide.",
+  "sections": [
+    {
+      "h": "Two different measurements",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Term",
+              "Measures",
+              "Where it applies",
+              "Typical values"
+            ],
+            "rows": [
+              [
+                "PPI",
+                "Image pixels per inch of output",
+                "Image files, screens",
+                "300 for print, 400–500+ on phone screens"
+              ],
+              [
+                "DPI",
+                "Ink or toner dots per inch",
+                "Printers",
+                "600–2400 for laser, up to 4800 × 1200 for inkjet"
+              ],
+              [
+                "LPI",
+                "Halftone lines per inch",
+                "Offset printing",
+                "133–175 for magazines"
+              ]
+            ]
+          }
+        },
+        "A printer needs several ink dots to reproduce one pixel's color, which is why printer DPI is much higher than image PPI. Software such as Photoshop labels the image setting \"Resolution\" in pixels per inch, while many upload forms ask for \"300 DPI\" when they mean 300 PPI."
+      ]
+    },
+    {
+      "h": "The formula: pixels, inches and PPI",
+      "body": [
+        "Print size, pixel count and PPI are tied by one equation: `pixels = inches × PPI`. Rearranged, `inches = pixels ÷ PPI`.",
+        {
+          "table": {
+            "head": [
+              "Pixel size",
+              "At 300 PPI",
+              "At 150 PPI",
+              "At 72 PPI"
+            ],
+            "rows": [
+              [
+                "1200 × 1800",
+                "4 × 6 in",
+                "8 × 12 in",
+                "16.7 × 25 in"
+              ],
+              [
+                "2480 × 3508",
+                "A4 (8.27 × 11.69 in)",
+                "16.5 × 23.4 in",
+                "34.4 × 48.7 in"
+              ],
+              [
+                "3000 × 2000",
+                "10 × 6.67 in",
+                "20 × 13.3 in",
+                "41.7 × 27.8 in"
+              ],
+              [
+                "600 × 600",
+                "2 × 2 in",
+                "4 × 4 in",
+                "8.3 × 8.3 in"
+              ]
+            ]
+          }
+        },
+        "Worked example: to print an 8 × 10 inch photo at 300 PPI you need 8 × 300 = 2400 by 10 × 300 = 3000 pixels. A 1200 × 1500 pixel image would print at that size at only 150 PPI and look soft up close."
+      ]
+    },
+    {
+      "h": "Why changing DPI alone does nothing on screen",
+      "body": [
+        "The PPI value is a single number stored in the file's metadata. Changing it from 72 to 300 without resampling does not add a single pixel; the image looks identical on screen and simply prints smaller. Only resampling, which changes the pixel dimensions, alters quality.",
+        {
+          "ul": [
+            "Upscaling a small image to reach 300 PPI invents pixels by interpolation; it gets bigger, not sharper.",
+            "Downscaling to a smaller pixel size throws detail away permanently, so keep the original.",
+            "When a form demands \"300 DPI\", check whether it also lists pixel dimensions. Those are what actually matter."
+          ]
+        },
+        {
+          "note": "The often-quoted \"72 DPI for the web\" comes from the 1984 Macintosh, whose screen showed 72 pixels per inch so that one pixel matched one typographic point. Browsers ignore an image's PPI value entirely."
+        }
+      ]
+    },
+    {
+      "h": "How screens use pixel density",
+      "body": [
+        "CSS defines its own unit: 1 CSS inch equals 96 CSS pixels, and 1 point is 1/72 inch. Modern displays pack more physical pixels into each CSS pixel; the ratio is exposed to web pages as `window.devicePixelRatio`.",
+        "A phone with a ratio of 3 draws each CSS pixel with a 3 × 3 block of physical pixels. An image displayed 400 CSS pixels wide therefore needs about 1200 pixels of width to look fully sharp on that screen, which is why sites serve several sizes with `srcset`."
+      ]
+    },
+    {
+      "h": "How much PPI do you need?",
+      "body": [
+        "Required density falls as viewing distance grows. Hold a photo print at arm's length and 300 PPI is near the limit of what most people can resolve; a poster viewed from two meters looks fine at 100–150 PPI, and billboards are printed at around 10–30.",
+        {
+          "ul": [
+            "Photo prints, brochures, books: 300 PPI.",
+            "Posters and large prints: 150–200 PPI.",
+            "Banners and signs seen from far away: 30–100 PPI.",
+            "Screens: ignore PPI; size the image in pixels for the display."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is 72 DPI or 300 DPI better for the web?",
+      "a": "Neither: browsers ignore the DPI value and display images by pixel dimensions. A 1200-pixel-wide image looks the same online whether its metadata says 72 or 300."
+    },
+    {
+      "q": "How do I make an image 300 DPI?",
+      "a": "Set the resolution to 300 in an image editor without resampling; the print size shrinks to match. If the resulting print size is too small, the image does not have enough pixels for 300 PPI at that size."
+    },
+    {
+      "q": "How many pixels is a 4 × 6 photo at 300 DPI?",
+      "a": "1200 × 1800 pixels, because 4 × 300 = 1200 and 6 × 300 = 1800."
+    },
+    {
+      "q": "Does a higher DPI scan give better quality?",
+      "a": "Up to a point. Scanning at 300 DPI suits documents and prints; 600 DPI or more helps for small photos you want to enlarge, but files grow fourfold each time the DPI doubles."
+    }
+  ]
+}

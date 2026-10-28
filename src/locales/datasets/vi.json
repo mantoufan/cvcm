@@ -1,0 +1,364 @@
+{
+  "crumbHome": "Trang chủ",
+  "hub": {
+    "title": "Bảng dữ liệu mở miễn phí: dân số, GDP, mã quốc gia | cv.cm",
+    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số thế giới, GDP các nước, tuổi thọ, tỷ suất sinh, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại quốc tế, múi giờ, khổ giấy và bảng mã ASCII.",
+    "h1": "Dữ liệu mở",
+    "lede": "Dữ liệu công khai từ Ngân hàng Thế giới, ISO và IANA, trình bày thành bảng đơn giản. Bạn có thể tìm kiếm, sắp xếp theo cột bất kỳ hoặc tải file CSV. Mỗi bảng đều ghi rõ nguồn và giấy phép.",
+    "groups": {
+      "world": "Các nước và kinh tế thế giới",
+      "codes": "Mã và tiêu chuẩn",
+      "reference": "Tra cứu nhanh"
+    },
+    "about": [
+      "Mỗi bảng là bản chụp từ nguồn chính thức, được cập nhật từ nguồn đó và ghi ngày trên trang. Số liệu các nước lấy từ Chỉ số Phát triển Thế giới của Ngân hàng Thế giới (CC BY 4.0). Các mã lấy từ danh sách ISO 3166, ISO 4217 và cơ sở dữ liệu múi giờ IANA.",
+      "Số trên trang hiển thị theo ngôn ngữ của bạn, còn file CSV giữ giá trị gốc và mã ISO, nên mở được ngay bằng Excel, Google Trang tính hoặc trong code."
+    ],
+    "faq": [
+      { "q": "Dữ liệu này lấy từ đâu?", "a": "Số liệu thống kê các nước lấy từ Chỉ số Phát triển Thế giới của Ngân hàng Thế giới. Mã quốc gia, mã tiền tệ và mã vùng điện thoại theo ISO 3166, ISO 4217 và danh sách của Liên minh Viễn thông Quốc tế (ITU). Múi giờ lấy từ cơ sở dữ liệu tz của IANA. Khổ giấy theo ISO 216, ISO 269, JIS P 0138 và ANSI." },
+      { "q": "Tôi có thể dùng các bảng này miễn phí không?", "a": "Có. Dữ liệu của Ngân hàng Thế giới theo giấy phép CC BY 4.0, nên khi dùng lại hãy ghi nguồn là Ngân hàng Thế giới. Các bảng mã và bảng tra cứu là thông tin công khai, bạn có thể dùng tự do." },
+      { "q": "Số liệu mới đến mức nào?", "a": "Mỗi trang ghi ngày chụp dữ liệu và năm của từng giá trị. Ngân hàng Thế giới công bố phần lớn chỉ số chậm một đến hai năm, nên giá trị mới nhất của một số nước có thể thuộc năm trước đó." }
+    ]
+  },
+  "ui": {
+    "all": "Tất cả dữ liệu",
+    "search": "Lọc dòng",
+    "searchPlaceholder": "Nhập tên nước, mã hoặc giá trị",
+    "rows": "{n} dòng",
+    "shown": "{shown} / {n} dòng",
+    "noMatch": "Không có dòng nào khớp.",
+    "download": "Tải CSV",
+    "sortHint": "Chọn tiêu đề cột để sắp xếp.",
+    "facts": "Thông tin chính",
+    "about": "Về dữ liệu này",
+    "faq": "Câu hỏi thường gặp",
+    "related": "Thêm dữ liệu",
+    "tools": "Công cụ liên quan",
+    "source": "Nguồn",
+    "license": "Giấy phép",
+    "snapshot": "Dữ liệu ngày {date}",
+    "rank": "#",
+    "country": "Quốc gia/vùng lãnh thổ",
+    "year": "Năm",
+    "share": "Tỷ trọng thế giới",
+    "continents": {
+      "AF": "Châu Phi",
+      "AN": "Châu Nam Cực",
+      "AS": "Châu Á",
+      "EU": "Châu Âu",
+      "NA": "Bắc Mỹ",
+      "OC": "Châu Đại Dương",
+      "SA": "Nam Mỹ"
+    },
+    "series": {
+      "A": "ISO A",
+      "B": "ISO B",
+      "C": "ISO C (phong bì)",
+      "JIS": "JIS B (Nhật Bản)",
+      "US": "Mỹ / ANSI"
+    }
+  },
+  "sets": {
+    "population": {
+      "name": "Dân số các nước",
+      "title": "Dân số thế giới theo quốc gia năm {to} ({rows} nước) | cv.cm",
+      "description": "Dân số của {rows} quốc gia và vùng lãnh thổ, xếp hạng kèm tỷ trọng so với thế giới. Dân số thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Dân số thế giới theo quốc gia năm {to}",
+      "lede": "Tổng dân số của {rows} quốc gia và vùng lãnh thổ, xếp từ đông nhất đến ít nhất, kèm tỷ trọng của từng nơi so với thế giới. Nguồn: Ngân hàng Thế giới.",
+      "value": "Dân số",
+      "facts": [
+        "Dân số thế giới: {world} ({worldYear}).",
+        "Đông dân nhất: {top1} ({v1}), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+        "Ít dân nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tổng dân số tính mọi cư dân, không phân biệt tình trạng pháp lý hay quốc tịch. Giá trị là ước tính giữa năm dựa trên tổng điều tra dân số các nước và Ban Dân số Liên Hợp Quốc, do Ngân hàng Thế giới công bố.",
+        "Danh sách gồm 217 nền kinh tế mà Ngân hàng Thế giới thống kê. Một số vùng lãnh thổ được liệt kê riêng với quốc gia mà chúng thuộc về."
+      ],
+      "faq": [
+        { "q": "Nước nào đông dân nhất thế giới?", "a": "{top1}, với {v1} người vào năm {year1}. {top2} đứng thứ hai với {v2} người." },
+        { "q": "Dân số thế giới là bao nhiêu?", "a": "Theo Ngân hàng Thế giới, dân số thế giới năm {worldYear} là {world} người." },
+        { "q": "Nước nào ít dân nhất?", "a": "Trong danh sách này là {last}, với {vlast} người. Những nơi Ngân hàng Thế giới không thống kê, như Thành Vatican, không có trong bảng." }
+      ]
+    },
+    "gdp": {
+      "name": "GDP các nước",
+      "title": "GDP các nước năm {to}: xếp hạng {rows} nền kinh tế (USD) | cv.cm",
+      "description": "Tổng sản phẩm quốc nội của {rows} nền kinh tế theo giá USD hiện hành, xếp hạng kèm tỷ trọng so với GDP thế giới. GDP thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "GDP các nước năm {to} (USD hiện hành)",
+      "lede": "GDP danh nghĩa của {rows} nền kinh tế theo USD hiện hành, xếp hạng kèm tỷ trọng của từng nước so với tổng thế giới. Nguồn: Ngân hàng Thế giới.",
+      "value": "GDP (USD)",
+      "facts": [
+        "GDP thế giới: {world} ({worldYear}).",
+        "Các nền kinh tế lớn nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "GDP là giá trị của mọi hàng hóa và dịch vụ cuối cùng mà một nước sản xuất trong một năm. Số liệu được quy đổi sang USD theo tỷ giá chính thức, nên tỷ giá biến động cũng làm số liệu thay đổi dù sản lượng không đổi.",
+        "Để so sánh mức sống, hãy xem GDP bình quân đầu người, hoặc GDP theo sức mua tương đương (PPP), vốn đã điều chỉnh theo mặt bằng giá."
+      ],
+      "faq": [
+        { "q": "Nước nào có GDP lớn nhất?", "a": "{top1}, với GDP {v1} năm {year1}. {top2} đứng thứ hai với {v2}." },
+        { "q": "GDP thế giới là bao nhiêu?", "a": "GDP thế giới năm {worldYear} là {world}, theo USD hiện hành." },
+        { "q": "Vì sao một số nước hiển thị năm cũ hơn?", "a": "Ngân hàng Thế giới chỉ công bố số liệu khi một nước báo cáo. Mỗi dòng hiển thị năm mới nhất hiện có, nên một vài nước bị chậm hơn." }
+      ]
+    },
+    "gdp-per-capita": {
+      "name": "GDP bình quân đầu người các nước",
+      "title": "GDP bình quân đầu người các nước năm {to}: {rows} nước | cv.cm",
+      "description": "GDP bình quân đầu người của {rows} quốc gia theo USD hiện hành, xếp từ cao đến thấp. Trung bình thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "GDP bình quân đầu người các nước năm {to} (USD hiện hành)",
+      "lede": "GDP chia cho dân số của {rows} quốc gia và vùng lãnh thổ, theo USD hiện hành, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "GDP bình quân đầu người (USD)",
+      "facts": [
+        "GDP bình quân đầu người thế giới: {world} ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "GDP bình quân đầu người là tổng sản phẩm quốc nội chia cho dân số giữa năm. Đây là thước đo phổ biến và tương đối thô về thu nhập trung bình, nhưng không cho biết thu nhập được phân phối thế nào.",
+        "Các trung tâm tài chính nhỏ và nước xuất khẩu tài nguyên thường đứng đầu, vì một nền kinh tế lớn được chia cho ít cư dân."
+      ],
+      "faq": [
+        { "q": "Nước nào có GDP bình quân đầu người cao nhất?", "a": "{top1}, với {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "GDP bình quân đầu người trung bình của thế giới là bao nhiêu?", "a": "{world} năm {worldYear}, theo USD hiện hành." },
+        { "q": "Nước nào có GDP bình quân đầu người thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} mỗi người." }
+      ]
+    },
+    "life-expectancy": {
+      "name": "Tuổi thọ trung bình các nước",
+      "title": "Tuổi thọ trung bình các nước năm {to} ({rows} nước) | cv.cm",
+      "description": "Tuổi thọ trung bình khi sinh của {rows} quốc gia, xếp hạng. Trung bình thế giới {world} tuổi ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tuổi thọ trung bình khi sinh các nước năm {to}",
+      "lede": "Số năm một trẻ sơ sinh sẽ sống nếu tỷ lệ tử vong hiện tại không đổi, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "Tuổi thọ (năm)",
+      "facts": [
+        "Tuổi thọ trung bình thế giới: {world} tuổi ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tuổi thọ trung bình khi sinh là số năm trung bình một trẻ sơ sinh sẽ sống nếu tỷ lệ tử vong của năm sinh giữ nguyên suốt cuộc đời. Đây là bức tranh tóm tắt về sức khỏe hiện tại, không phải dự báo.",
+        "Giá trị tính chung cả hai giới. Ở hầu hết các nước, phụ nữ sống lâu hơn nam giới."
+      ],
+      "faq": [
+        { "q": "Nước nào có tuổi thọ trung bình cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tuổi thọ trung bình của thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}, tính chung cả hai giới." },
+        { "q": "Nước nào có tuổi thọ trung bình thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+      ]
+    },
+    "fertility-rate": {
+      "name": "Tỷ suất sinh các nước",
+      "title": "Tỷ suất sinh các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Tổng tỷ suất sinh (số con trung bình mỗi phụ nữ) của {rows} quốc gia, xếp hạng. Trung bình thế giới {world} ({worldYear}). Mức sinh thay thế khoảng 2,1. Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ suất sinh các nước năm {to} (số con mỗi phụ nữ)",
+      "lede": "Số con trung bình một phụ nữ sẽ sinh theo mức sinh hiện tại, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "Số con mỗi phụ nữ",
+      "facts": [
+        "Tỷ suất sinh thế giới: {world} con mỗi phụ nữ ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tổng tỷ suất sinh là số con một phụ nữ sẽ có nếu sống hết độ tuổi sinh đẻ và sinh con ở mỗi độ tuổi theo tỷ suất của năm đó.",
+        "Khoảng 2,1 con mỗi phụ nữ giúp dân số ổn định khi không có di cư. Phần lớn Đông Á và châu Âu thấp hơn nhiều so với mức này."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ suất sinh cao nhất?", "a": "{top1}, với {v1} con mỗi phụ nữ năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Nước nào có tỷ suất sinh thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} con mỗi phụ nữ." },
+        { "q": "Mức sinh thay thế là bao nhiêu?", "a": "Khoảng 2,1 con mỗi phụ nữ ở các nước có tỷ lệ tử vong trẻ em thấp. Trung bình thế giới là {world} ({worldYear})." }
+      ]
+    },
+    "internet-users": {
+      "name": "Tỷ lệ dùng internet các nước",
+      "title": "Tỷ lệ người dùng internet các nước năm {to} ({rows} nước) | cv.cm",
+      "description": "Tỷ lệ người dùng internet ở {rows} quốc gia, xếp hạng. Trung bình thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / ITU, tải CSV.",
+      "h1": "Tỷ lệ người dùng internet các nước năm {to} (% dân số)",
+      "lede": "Tỷ lệ dân số đã dùng internet trong ba tháng gần nhất, cho {rows} quốc gia và vùng lãnh thổ, xếp hạng. Nguồn: Ngân hàng Thế giới, từ dữ liệu ITU.",
+      "value": "Người dùng internet (%)",
+      "facts": [
+        "Thế giới: {world}% dân số dùng internet ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Người dùng internet là bất kỳ ai đã lên mạng trong ba tháng gần nhất, từ bất kỳ thiết bị hay địa điểm nào. Liên minh Viễn thông Quốc tế (ITU) tổng hợp số liệu từ khảo sát và ước tính của các nước.",
+        "Một số nước vài năm mới báo cáo một lần, nên hãy xem cột năm trước khi so sánh hai dòng."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ người dùng internet cao nhất?", "a": "{top1}, nơi {v1}% dân số lên mạng vào năm {year1}." },
+        { "q": "Bao nhiêu phần trăm dân số thế giới dùng internet?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
+        { "q": "Nước nào có ít người dùng internet nhất?", "a": "Trong danh sách này là {last}, với {vlast}% dân số." }
+      ]
+    },
+    "country-codes": {
+      "name": "Mã quốc gia (ISO 3166)",
+      "title": "Bảng mã quốc gia ISO 3166 alpha-2, alpha-3 ({rows} nước) | cv.cm",
+      "description": "Toàn bộ {rows} mã quốc gia ISO 3166-1: mã hai chữ (alpha-2), ba chữ (alpha-3) và mã số, kèm tên miền internet và châu lục. Tìm kiếm được, tải CSV.",
+      "h1": "Mã quốc gia ISO 3166",
+      "lede": "Mã hai chữ, ba chữ và mã số của toàn bộ {rows} quốc gia và vùng lãnh thổ trong ISO 3166-1, kèm tên miền internet và châu lục của từng nơi.",
+      "cols": {
+        "name": "Quốc gia/vùng lãnh thổ",
+        "alpha2": "Alpha-2",
+        "alpha3": "Alpha-3",
+        "numeric": "Mã số",
+        "tld": "Tên miền",
+        "continent": "Châu lục"
+      },
+      "facts": [
+        "{rows} quốc gia và vùng lãnh thổ có mã ISO 3166-1.",
+        "Mã alpha-2 được dùng cho tên miền internet (.vn, .jp) và thẻ ngôn ngữ (vi-VN).",
+        "Mã alpha-3 xuất hiện trên hộ chiếu; mã số lấy từ tiêu chuẩn M49 của Liên Hợp Quốc."
+      ],
+      "about": [
+        "ISO 3166-1 cấp cho mỗi quốc gia và nhiều vùng lãnh thổ phụ thuộc ba loại mã. Alpha-2 (VN, US) là loại hầu hết hệ thống sử dụng. Alpha-3 (VNM, USA) dễ đọc hơn. Mã số (704, 840) dùng được ở nơi không dùng chữ Latinh.",
+        "Vương quốc Anh dùng tên miền .uk dù mã ISO là GB. Tên trong bảng hiển thị theo ngôn ngữ của bạn."
+      ],
+      "faq": [
+        { "q": "Mã alpha-2 và alpha-3 khác nhau thế nào?", "a": "Mã alpha-2 có hai chữ cái (VN), dùng trong tên miền, thẻ ngôn ngữ và hầu hết phần mềm. Mã alpha-3 có ba chữ cái (VNM), dùng trên hộ chiếu và trong thống kê." },
+        { "q": "Có bao nhiêu mã quốc gia ISO?", "a": "ISO 3166-1 liệt kê {rows} quốc gia và vùng lãnh thổ, mỗi nơi có một mã alpha-2, alpha-3 và mã số." },
+        { "q": "Mã quốc gia của Việt Nam là gì?", "a": "VN (alpha-2), VNM (alpha-3) và 704 (mã số). Tên miền internet là .vn." }
+      ]
+    },
+    "calling-codes": {
+      "name": "Mã vùng điện thoại quốc tế",
+      "title": "Mã vùng điện thoại quốc tế các nước ({rows} nước) | cv.cm",
+      "description": "Mã vùng điện thoại quốc tế của {rows} quốc gia và vùng lãnh thổ, từ +1 đến +998. Tìm theo tên nước hoặc mã, kèm mã ISO. Tải CSV.",
+      "h1": "Mã vùng điện thoại quốc tế theo quốc gia",
+      "lede": "Số cần bấm sau tiền tố quốc tế (+) để gọi đến từng nơi trong {rows} quốc gia và vùng lãnh thổ.",
+      "cols": {
+        "name": "Quốc gia/vùng lãnh thổ",
+        "dial": "Mã quốc gia",
+        "alpha2": "Mã ISO"
+      },
+      "facts": [
+        "Bấm + (hoặc mã gọi quốc tế, ở Việt Nam là 00), rồi mã quốc gia, rồi số điện thoại đã bỏ số 0 ở đầu.",
+        "+1 dùng chung cho Mỹ, Canada và nhiều đảo vùng Caribe, sau đó thêm mã vùng 3 chữ số.",
+        "+7 dùng chung cho Nga và Kazakhstan."
+      ],
+      "about": [
+        "Mã điện thoại quốc tế do Liên minh Viễn thông Quốc tế (ITU-T E.164) cấp. Mã dài từ một đến ba chữ số, và một số nhóm nước dùng chung một mã.",
+        "Trên điện thoại di động, giữ phím 0 để nhập dấu +. Cách này dùng được ở mọi nước, nên bạn không cần biết mã gọi quốc tế tại chỗ."
+      ],
+      "faq": [
+        { "q": "Làm sao gọi điện ra nước ngoài?", "a": "Bấm + (hoặc mã gọi quốc tế, ở Việt Nam là 00, ở Mỹ là 011), mã quốc gia, rồi số máy đã bỏ số 0 ở đầu. Từ điện thoại di động, bấm + là được. Gọi về Việt Nam từ nước ngoài: bấm +84 rồi bỏ số 0 ở đầu (09x… → +84 9x…)." },
+        { "q": "+84 là nước nào?", "a": "+84 là Việt Nam. Ngoài ra, +86 là Trung Quốc." },
+        { "q": "Vì sao nhiều nước dùng chung +1?", "a": "Các nước này thuộc Kế hoạch Đánh số Bắc Mỹ (NANP). Mã vùng 3 chữ số sau +1 cho biết đó là nước nào." }
+      ]
+    },
+    "currency-codes": {
+      "name": "Mã tiền tệ (ISO 4217)",
+      "title": "Mã tiền tệ ISO 4217: {rows} loại tiền và ký hiệu | cv.cm",
+      "description": "Toàn bộ {rows} mã tiền tệ ISO 4217 đang dùng, kèm mã số, ký hiệu, số chữ số thập phân và các nước sử dụng. Tìm kiếm được, tải CSV.",
+      "h1": "Mã tiền tệ ISO 4217",
+      "lede": "Mã ba chữ, mã số, ký hiệu và số chữ số thập phân của {rows} loại tiền trong ISO 4217, cùng nơi sử dụng từng loại.",
+      "cols": {
+        "code": "Mã",
+        "name": "Tiền tệ",
+        "symbol": "Ký hiệu",
+        "numeric": "Mã số",
+        "minor": "Số thập phân",
+        "used": "Nơi sử dụng"
+      },
+      "facts": [
+        "ISO 4217 có {rows} mã tiền tệ đang dùng, gồm cả quỹ và kim loại quý.",
+        "Hai chữ đầu thường là mã quốc gia ISO: VND là đồng Việt Nam, JPY là yên Nhật.",
+        "Mã bắt đầu bằng X không gắn với quốc gia nào: XAU là vàng, XDR là quyền rút vốn đặc biệt của IMF."
+      ],
+      "about": [
+        "Ngân hàng, hệ thống thanh toán và phần mềm kế toán dùng mã ISO 4217 vì ký hiệu dễ gây nhầm lẫn: ký hiệu $ được hơn 20 loại tiền sử dụng.",
+        "Số thập phân là số chữ số của đơn vị phụ (xu). JPY, KRW và VND không có, còn một số đồng tiền vùng Vịnh có ba chữ số."
+      ],
+      "faq": [
+        { "q": "Mã tiền tệ của đồng Việt Nam là gì?", "a": "VND, mã số 704. Theo ISO 4217, VND có 0 chữ số thập phân." },
+        { "q": "Có bao nhiêu loại tiền tệ?", "a": "ISO 4217 liệt kê {rows} mã đang dùng, gồm cả một số mã quỹ, kim loại quý và mã dùng để thử nghiệm." },
+        { "q": "Vì sao đồng euro chỉ có một mã cho nhiều nước?", "a": "EUR là một loại tiền dùng chung trong khu vực đồng euro, nên chỉ có một mã. Cột Nơi sử dụng liệt kê mọi quốc gia và vùng lãnh thổ dùng đồng tiền này." }
+      ]
+    },
+    "time-zones": {
+      "name": "Múi giờ (IANA)",
+      "title": "Danh sách {rows} múi giờ IANA và độ lệch UTC ({year}) | cv.cm",
+      "description": "Toàn bộ {rows} múi giờ IANA (Asia/Ho_Chi_Minh, America/New_York…) với độ lệch UTC vào tháng 1 và tháng 7 năm {year}, để biết nơi nào dùng giờ mùa hè. Tải CSV.",
+      "h1": "Múi giờ và độ lệch UTC",
+      "lede": "Mọi múi giờ IANA với độ lệch UTC vào tháng 1 và tháng 7 năm {year}. Nếu hai giá trị khác nhau, múi giờ đó có giờ mùa hè.",
+      "cols": {
+        "id": "ID múi giờ",
+        "name": "Tên",
+        "jan": "Độ lệch UTC (tháng 1)",
+        "jul": "Độ lệch UTC (tháng 7)"
+      },
+      "facts": [
+        "{rows} ID múi giờ IANA, sắp xếp từ tây ({west}) sang đông ({east}).",
+        "Múi giờ có độ lệch tháng 1 và tháng 7 khác nhau là múi giờ áp dụng giờ mùa hè.",
+        "Một số múi giờ lệch 30 hoặc 45 phút, như Ấn Độ (UTC+05:30) và Nepal (UTC+05:45)."
+      ],
+      "about": [
+        "Điện thoại, máy tính và ngôn ngữ lập trình đều dùng ID múi giờ IANA như Europe/London. Danh sách này theo tệp zone.tab của IANA: mỗi quốc gia và múi giờ một dòng, kèm quy tắc giờ mùa hè của khu vực đó.",
+        "Độ lệch được tính cho ngày 15 tháng 1 và 15 tháng 7 năm {year} theo cơ sở dữ liệu tz phiên bản {tz}. Đôi khi chính phủ các nước thay đổi quy tắc chỉ với thông báo ngắn."
+      ],
+      "faq": [
+        { "q": "Việt Nam dùng múi giờ nào?", "a": "Việt Nam dùng UTC+07:00 quanh năm, không có giờ mùa hè. ID IANA là Asia/Ho_Chi_Minh (Asia/Bangkok có cùng độ lệch)." },
+        { "q": "UTC và GMT khác nhau thế nào?", "a": "Trong đời sống hằng ngày, hai giờ này như nhau. UTC là chuẩn thời gian nguyên tử; GMT là múi giờ tại kinh tuyến 0°, nước Anh dùng vào mùa đông." },
+        { "q": "Có bao nhiêu múi giờ?", "a": "Cơ sở dữ liệu IANA dùng ở đây có {rows} ID múi giờ. Chúng chỉ dùng chưa đến 40 mức lệch UTC khác nhau." }
+      ]
+    },
+    "paper-sizes": {
+      "name": "Khổ giấy",
+      "title": "Bảng khổ giấy: A4, A3, B5, Letter theo mm, inch và pixel | cv.cm",
+      "description": "Kích thước của {rows} khổ giấy (A0–A10, B, C, JIS B, Letter, Legal) theo milimét, inch và pixel ở 300 và 96 DPI. Tải CSV.",
+      "h1": "Khổ giấy theo mm, inch và pixel",
+      "lede": "Rộng × cao của các khổ ISO A, B, C, khổ JIS B của Nhật Bản và khổ Bắc Mỹ, kèm kích thước pixel để in (300 DPI) và hiển thị trên màn hình (96 DPI).",
+      "cols": {
+        "size": "Khổ",
+        "series": "Dòng",
+        "mm": "Milimét",
+        "in": "Inch",
+        "px300": "Pixel ở 300 DPI",
+        "px96": "Pixel ở 96 DPI"
+      },
+      "facts": [
+        "A4 là 210 × 297 mm (8,27 × 11,69 inch), tức 2480 × 3508 px ở 300 DPI.",
+        "Letter của Mỹ là 215,9 × 279,4 mm (8,5 × 11 inch).",
+        "Mỗi khổ A bằng một nửa khổ trước: hai tờ A4 ghép thành một tờ A3."
+      ],
+      "about": [
+        "Các khổ ISO 216 có cùng tỷ lệ 1:√2, nên trang giấy phóng to từ A4 lên A3 hoặc thu nhỏ xuống A5 mà không bị cắt. A0 có diện tích đúng một mét vuông.",
+        "Khổ JIS B, phổ biến ở Nhật Bản và Trung Quốc cho vở và sách, lớn hơn một chút so với ISO B. JIS B5 là 182 × 257 mm, còn ISO B5 là 176 × 250 mm."
+      ],
+      "faq": [
+        { "q": "Khổ giấy A4 kích thước bao nhiêu?", "a": "210 × 297 mm, tức 8,27 × 11,69 inch. Ở 300 DPI là 2480 × 3508 pixel." },
+        { "q": "A4 và Letter khác nhau thế nào?", "a": "A4 (210 × 297 mm) hẹp hơn và dài hơn Letter của Mỹ (215,9 × 279,4 mm). Phần lớn thế giới, trong đó có Việt Nam, dùng A4; Mỹ, Canada và Mexico dùng Letter." },
+        { "q": "In A4 cần bao nhiêu pixel?", "a": "2480 × 3508 px để in sắc nét ở 300 DPI. 1240 × 1754 px (150 DPI) là đủ cho bản nháp." }
+      ]
+    },
+    "ascii": {
+      "name": "Bảng mã ASCII",
+      "title": "Bảng mã ASCII: 128 mã thập phân, hex, bát phân, nhị phân | cv.cm",
+      "description": "Bảng mã ASCII đầy đủ 128 ký tự với giá trị thập phân, thập lục phân, bát phân, nhị phân và tên ký tự điều khiển. Tải CSV.",
+      "h1": "Bảng mã ASCII",
+      "lede": "Toàn bộ 128 mã ASCII với giá trị thập phân, hex, bát phân và nhị phân, ký tự tương ứng và tên của từng ký tự điều khiển.",
+      "cols": {
+        "dec": "Thập phân",
+        "hex": "Hex",
+        "oct": "Bát phân",
+        "bin": "Nhị phân",
+        "char": "Ký tự",
+        "name": "Tên"
+      },
+      "facts": [
+        "Mã 0–31 và 127 là ký tự điều khiển; 32–126 là ký tự in được.",
+        "A là 65 (0x41) và a là 97 (0x61): chữ hoa và chữ thường cách nhau 32.",
+        "Các chữ số 0–9 có mã 48–57."
+      ],
+      "about": [
+        "ASCII (American Standard Code for Information Interchange, 1963) dùng 7 bit để gán 128 mã cho chữ cái tiếng Anh, chữ số, dấu câu và tín hiệu điều khiển.",
+        "UTF-8 mã hóa 128 ký tự này giống hệt ASCII, nên mọi file ASCII cũng là file UTF-8 hợp lệ. Tên ký tự điều khiển giữ nguyên tiếng Anh."
+      ],
+      "faq": [
+        { "q": "Mã ASCII của chữ A là bao nhiêu?", "a": "Chữ A hoa là 65 ở hệ thập phân, 0x41 ở hệ hex và 1000001 ở hệ nhị phân. Chữ a thường là 97 (0x61)." },
+        { "q": "Mã ASCII của dấu cách là bao nhiêu?", "a": "32 ở hệ thập phân, 0x20 ở hệ hex." },
+        { "q": "LF và CR khác nhau thế nào?", "a": "LF (10, xuống dòng) bắt đầu dòng mới trên Linux và macOS. File văn bản Windows kết thúc dòng bằng CR LF (13 rồi 10)." }
+      ]
+    }
+  }
+}

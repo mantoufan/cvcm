@@ -1,0 +1,169 @@
+{
+  "title": "Mã hóa URL (percent-encoding) là gì? Giải thích kèm ví dụ — cv.cm",
+  "description": "Mã hóa URL thay ký tự không an toàn bằng % và hai chữ số hex: dấu cách là %20, & là %26, é là %C3%A9. Xem ký tự nào cần mã hóa và nên dùng hàm nào trong JavaScript.",
+  "h1": "Mã hóa URL là gì?",
+  "answer": "Mã hóa URL, tên chính thức là percent-encoding, thay các ký tự không được phép hoặc có ý nghĩa đặc biệt trong URL bằng `%` kèm hai chữ số thập lục phân cho mỗi byte. Dấu cách thành `%20`, `&` thành `%26`, còn văn bản ngoài ASCII được chuyển sang UTF-8 trước, nên \"é\" thành `%C3%A9`. Chuỗi \"a b&c\" được mã hóa thành `a%20b%26c`.",
+  "sections": [
+    {
+      "h": "Vì sao URL cần mã hóa",
+      "body": [
+        "RFC 3986 giới hạn URL trong một tập nhỏ ký tự ASCII, và một số ký tự trong đó có nhiệm vụ riêng. `?` mở đầu chuỗi truy vấn, `&` phân tách các tham số, `=` tách tên khỏi giá trị, `#` mở đầu phân đoạn (fragment) và `/` phân tách các đoạn đường dẫn. Nếu một giá trị chứa một trong các ký tự đó, URL sẽ trở nên mơ hồ.",
+        "Lấy ví dụ tìm kiếm \"salt & pepper\". Viết nguyên dạng `?q=salt & pepper`, máy chủ sẽ thấy tham số `q` có giá trị `salt ` và một tham số thứ hai rỗng tên là ` pepper`. Mã hóa thành `?q=salt%20%26%20pepper` thì nó đến nơi như một giá trị duy nhất."
+      ]
+    },
+    {
+      "h": "Những ký tự nào cần mã hóa",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Nhóm",
+              "Ký tự",
+              "Quy tắc"
+            ],
+            "rows": [
+              [
+                "Không dành riêng (unreserved)",
+                "`A–Z a–z 0–9 - . _ ~`",
+                "Không bao giờ cần mã hóa"
+              ],
+              [
+                "Dành riêng (gen-delims)",
+                "`: / ? # [ ] @`",
+                "Mã hóa khi xuất hiện trong giá trị"
+              ],
+              [
+                "Dành riêng (sub-delims)",
+                "`! $ & ' ( ) * + , ; =`",
+                "Mã hóa khi xuất hiện trong giá trị"
+              ],
+              [
+                "Mọi ký tự khác",
+                "Dấu cách, `\"`, `<`, `>`, `%`, ký tự ngoài ASCII",
+                "Luôn mã hóa"
+              ]
+            ]
+          }
+        },
+        "Mã hóa hoạt động trên byte chứ không phải ký tự. Văn bản ngoài ASCII được chuyển sang UTF-8 trước, rồi mỗi byte trở thành một bộ ba `%XX` riêng:",
+        {
+          "table": {
+            "head": [
+              "Đầu vào",
+              "Byte UTF-8",
+              "Sau mã hóa"
+            ],
+            "rows": [
+              [
+                "dấu cách",
+                "`20`",
+                "`%20`"
+              ],
+              [
+                "&",
+                "`26`",
+                "`%26`"
+              ],
+              [
+                "%",
+                "`25`",
+                "`%25`"
+              ],
+              [
+                "é",
+                "`C3 A9`",
+                "`%C3%A9`"
+              ],
+              [
+                "日本",
+                "`E6 97 A5 E6 9C AC`",
+                "`%E6%97%A5%E6%9C%AC`"
+              ]
+            ]
+          }
+        },
+        "Chữ số hex không phân biệt hoa thường, nên `%c3%a9` và `%C3%A9` có cùng nghĩa, nhưng RFC 3986 khuyến nghị dùng chữ hoa cho thống nhất."
+      ]
+    },
+    {
+      "h": "%20 hay +: hai quy tắc cho dấu cách",
+      "body": [
+        "Percent-encoding theo định nghĩa của RFC 3986 luôn viết dấu cách là `%20`. Khi gửi biểu mẫu HTML, trình duyệt dùng một định dạng gần giống là `application/x-www-form-urlencoded`, trong đó dấu cách thành `+` và dấu cộng thật thành `%2B`.",
+        {
+          "ul": [
+            "Trong đường dẫn như `/files/my report.pdf`, hãy dùng `%20`. Dấu `+` trong đường dẫn là dấu cộng thật.",
+            "Trong chuỗi truy vấn, máy chủ phân tích theo kiểu biểu mẫu sẽ đọc `+` là dấu cách. `%20` được cả hai quy ước hiểu, nên là lựa chọn an toàn hơn khi không chắc chắn.",
+            "Nếu giá trị có thể chứa dấu `+` thật, ví dụ số điện thoại như `+84`, nó phải được gửi dưới dạng `%2B`, nếu không sẽ đến nơi thành dấu cách."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "encodeURIComponent và encodeURI trong JavaScript",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Hàm",
+              "Giữ nguyên không mã hóa",
+              "Dùng cho"
+            ],
+            "rows": [
+              [
+                "`encodeURIComponent()`",
+                "`A–Z a–z 0–9 - _ . ! ~ * ' ( )`",
+                "Một giá trị đơn lẻ: một tham số truy vấn hoặc một đoạn đường dẫn"
+              ],
+              [
+                "`encodeURI()`",
+                "Các ký tự trên cộng thêm `; , / ? : @ & = + $ #`",
+                "Cả một URL đã có cấu trúc sẵn"
+              ],
+              [
+                "`URLSearchParams`",
+                "Quy tắc mã hóa biểu mẫu (dấu cách thành `+`)",
+                "Tạo hoặc đọc chuỗi truy vấn"
+              ]
+            ]
+          }
+        },
+        "`encodeURIComponent(\"a b&c\")` trả về `a%20b%26c`, còn `encodeURI(\"a b&c\")` trả về `a%20b&c` vì nó coi `&` là dấu phân tách. Lỗi hay gặp là gọi `encodeURI` cho giá trị tham số, khiến `&`, `=` và `#` lọt qua và cắt đôi giá trị.",
+        "`new URLSearchParams({ q: \"a b&c\" }).toString()` cho ra `q=a+b%26c`. Cả hai dạng đều được máy chủ tiêu chuẩn giải mã thành cùng một giá trị."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp",
+      "body": [
+        {
+          "ol": [
+            "Mã hóa hai lần: mã hóa văn bản đã được mã hóa sẽ biến `%20` thành `%2520`, vì chính dấu `%` bị mã hóa thành `%25`. Hãy mã hóa mỗi giá trị đúng một lần, vào lúc đưa nó vào URL.",
+            "Mã hóa cả URL bằng hàm dành cho thành phần: `https://` thành `https%3A%2F%2F` và liên kết không còn hoạt động.",
+            "Giải mã trước khi định tuyến: máy chủ giải mã `%2F` thành `/` trước khi khớp route có thể bị lừa đọc một đường dẫn khác.",
+            "Giả định bảng mã cũ: một số hệ thống cũ mã hóa \"é\" thành `%E9` (Latin-1). Trình duyệt hiện đại và WHATWG URL Standard dùng UTF-8."
+          ]
+        },
+        {
+          "note": "Mã hóa URL không phải mã hóa bảo mật hay làm sạch dữ liệu. Ai cũng giải mã được, và nó không khiến dữ liệu đầu vào an toàn khi đưa vào HTML hay SQL. Hãy escape hoặc tham số hóa riêng cho từng ngữ cảnh."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao dấu cách trong URL là %20?",
+      "a": "Dấu cách không được phép có trong URL, nên nó được thay bằng `%` cộng giá trị byte ở dạng hex. Mã ASCII của dấu cách là 32 ở hệ thập phân, tức `20` ở hệ thập lục phân."
+    },
+    {
+      "q": "%2F trong URL nghĩa là gì?",
+      "a": "`%2F` là dấu gạch chéo đã được mã hóa. Nó cho phép `/` xuất hiện bên trong một giá trị mà không bị hiểu là dấu phân tách đường dẫn."
+    },
+    {
+      "q": "Mã hóa URL có giống Base64 không?",
+      "a": "Không. Mã hóa URL chỉ thay các ký tự không an toàn và giữ phần còn lại dễ đọc. Base64 chuyển toàn bộ byte sang bảng 64 ký tự, và chính các ký tự `+` và `/` của Base64 chuẩn cũng cần mã hóa URL, trừ khi dùng biến thể an toàn cho URL."
+    },
+    {
+      "q": "Có cần mã hóa chữ có dấu tiếng Việt hay chữ Hán không?",
+      "a": "Có, trong yêu cầu gửi đi thực tế. Trình duyệt hiển thị chúng dễ đọc trên thanh địa chỉ nhưng gửi đi dạng percent-encoding UTF-8, ví dụ `%E6%97%A5` cho 日."
+    }
+  ]
+}
