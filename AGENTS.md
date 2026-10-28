@@ -78,6 +78,9 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/margin/` — profit margin and markup from cost and price
 - `src/client/radix/` — integer base converter, bases 2–36
 - `src/client/duration/` — add or subtract H:MM:SS durations
+- `src/client/dice/` — dice roller (d4–d100) and coin flip
+- `src/client/gpa/` — GPA calculator, 4.0 scale weighted by credits
+- `src/client/pomodoro/` — Pomodoro timer with breaks and a chime
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

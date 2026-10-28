@@ -560,3 +560,12 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-about { margin-top: 2rem; color: var(--ink-soft); }
 .game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }
 .game-official li { margin: 0.3rem 0; }
+
+/* Dice roller, GPA calculator, Pomodoro timer */
+.dice-faces { margin: 0 0 0.6rem; font-family: var(--mono); font-size: 1.4rem; font-weight: 700; color: var(--pink-deep); word-break: break-word; }
+.gpa-rows { display: grid; gap: 0.45rem; margin-bottom: 0.6rem; }
+.gpa-head { font-size: 0.8rem; color: var(--ink-soft); }
+.gpa-head span, .gpa-row select, .gpa-row input { flex: 1 1 0; min-width: 0; }
+.gpa-row .chip { flex: 0 0 auto; min-height: 44px; }
+.gpa-check { display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; }
+.pomodoro-clock { font-size: 2.6rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0; }

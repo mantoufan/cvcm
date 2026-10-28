@@ -335,7 +335,13 @@
     "titleMosaicPhoto": "Cara mosaik foto: sensor NIK, wajah, pelat | cv.cm",
     "descMosaicPhoto": "Tutup hitam nomor, mosaik wajah, cek di 100% sebelum dibagikan. Gratis di browser, tanpa unggah.",
     "titleWatermarkIdCopy": "Cara watermark fotokopi KTP (tujuan + tanggal) | cv.cm",
-    "descWatermarkIdCopy": "Tulis penerima dan tujuan, ulangi miring dengan tanggal hari ini di seluruh kartu, tutup hitam kolom yang tidak perlu. Di browser, tanpa unggah."
+    "descWatermarkIdCopy": "Tulis penerima dan tujuan, ulangi miring dengan tanggal hari ini di seluruh kartu, tutup hitam kolom yang tidak perlu. Di browser, tanpa unggah.",
+    "titleDice": "Lempar dadu dan lempar koin — d4 sampai d100 — cv.cm",
+    "descDice": "Lempar hingga 50 dadu dari d4 sampai d100 atau lempar koin di browser. Total, tertinggi, dan terendah. Tidak ada unggahan.",
+    "titleGpa": "Kalkulator GPA (IPK) — skala 4.0, berbobot SKS — cv.cm",
+    "descGpa": "Masukkan nilai huruf dan SKS untuk mendapatkan GPA skala 4.0 berbobot SKS di browser. Tidak ada unggahan.",
+    "titlePomodoro": "Timer Pomodoro — fokus 25 menit dengan jeda — cv.cm",
+    "descPomodoro": "Timer Pomodoro gratis di browser: sesi fokus 25 menit, jeda pendek dan panjang, serta bunyi setiap pergantian. Tidak ada unggahan."
   },
   "brand": "cv.cm",
   "nav": {
@@ -723,6 +729,18 @@
     "mosaic": {
       "name": "Mosaik foto",
       "blurb": "Sensor nomor KTP, wajah, dan pelat dengan mosaik atau kotak hitam. Tanpa unggah."
+    },
+    "dice": {
+      "name": "Lempar dadu",
+      "blurb": "Lempar dadu atau lempar koin. Tidak ada unggahan."
+    },
+    "gpa": {
+      "name": "Kalkulator GPA",
+      "blurb": "Nilai huruf dan SKS menjadi GPA 4.0. Tidak ada unggahan."
+    },
+    "pomodoro": {
+      "name": "Timer Pomodoro",
+      "blurb": "Fokus 25 menit dan jeda dengan bunyi. Tidak ada unggahan."
     }
   },
   "watermark": {
@@ -2859,6 +2877,42 @@
       "a4": "Bisa. Di halaman yang sama, tambah “Hanya untuk …”. Sensor dulu, lalu watermark di atasnya.",
       "q5": "Bisa menghapus mosaik?",
       "a5": "Tidak. Alat ini hanya menutup, tidak memulihkan sensor orang lain. Di hasil ekspor, piksel yang ditutup sudah diganti."
+    },
+    "dice": {
+      "q1": "Bisa lempar dadu di sini?",
+      "a1": "Bisa. Pilih jumlah dan jenis dadu, lalu tekan Lempar. Setiap mata dan totalnya muncul di kanan.",
+      "q2": "Apakah diunggah?",
+      "a2": "Tidak. Lemparan terjadi di tab ini.",
+      "q3": "Dadu apa saja yang didukung?",
+      "a3": "d4, d6, d8, d10, d12, d20, dan d100, hingga 50 dadu sekaligus. 2d6 berarti dua dadu enam sisi.",
+      "q4": "Apakah hasilnya acak?",
+      "a4": "Setiap lemparan memakai pembangkit acak kriptografis browser, jadi setiap sisi berpeluang sama. Tidak ada seed atau penyimpanan.",
+      "q5": "Bisa lempar koin?",
+      "a5": "Bisa. Atur jumlah koin dan tekan Lempar koin. Tab menampilkan tiap sisi serta jumlah kepala dan ekor."
+    },
+    "gpa": {
+      "q1": "Bisa menghitung GPA di sini?",
+      "a1": "Bisa. Pilih nilai huruf dan SKS untuk tiap mata kuliah. GPA diperbarui saat Anda mengetik.",
+      "q2": "Apakah diunggah?",
+      "a2": "Tidak. Perhitungan tetap di tab ini.",
+      "q3": "Bagaimana GPA dihitung?",
+      "a3": "Tiap nilai menjadi poin: A 4.0, A- 3.7, B+ 3.3, B 3.0, sampai F 0. Poin dikali SKS dijumlahkan lalu dibagi total SKS.",
+      "q4": "Apakah A+ dihitung 4.3?",
+      "a4": "Secara bawaan A+ adalah 4.0. Centang A+ = 4.3 jika kampus Anda memakai skala itu.",
+      "q5": "Bagaimana mata kuliah tanpa SKS?",
+      "a5": "Mata kuliah dengan SKS 0 atau kosong dilewati. Mata kuliah lulus/gagal biasanya tidak dihitung ke GPA."
+    },
+    "pomodoro": {
+      "q1": "Bisa memakai timer Pomodoro di sini?",
+      "a1": "Bisa. Tekan Mulai. Tab menghitung mundur sesi fokus, berbunyi, lalu pindah ke jeda dengan sendirinya.",
+      "q2": "Ada yang diunggah?",
+      "a2": "Tidak. Timer berjalan di tab ini. Tidak ada yang dikirim atau disimpan.",
+      "q3": "Apa itu teknik Pomodoro?",
+      "a3": "Bekerja dalam blok fokus, biasanya 25 menit, lalu istirahat 5 menit. Setelah empat blok, ambil jeda panjang 15 menit. Tiap blok adalah satu pomodoro.",
+      "q4": "Bisa mengubah durasinya?",
+      "a4": "Bisa. Atur fokus, jeda pendek, dan jeda panjang 1 sampai 180 menit, serta jumlah putaran sebelum jeda panjang. Saat jam berhenti, fase saat ini langsung memakai durasi baru; Atur ulang memulai dari putaran 1.",
+      "q5": "Apa yang terjadi jika pindah tab?",
+      "a5": "Timer terus menghitung dari jam, dan judul tab menampilkan sisa waktu. Biarkan tab terbuka agar bunyinya terdengar."
     }
   },
   "qr": {
@@ -5909,5 +5963,69 @@
       "name": "Margin vs markup",
       "blurb": "Dua cara menyatakan laba, cara mengonversinya, dan tabel ringkas."
     }
+  },
+  "dice": {
+    "title": "Lempar dadu",
+    "back": "Semua alat",
+    "privacyNote": "Lemparan terjadi di tab ini. Tidak ada unggahan.",
+    "options": "Dadu",
+    "count": "Jumlah dadu",
+    "sides": "Jenis dadu",
+    "roll": "Lempar",
+    "coinOptions": "Koin",
+    "coins": "Jumlah koin",
+    "flip": "Lempar koin",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "result": "Hasil",
+    "hint": "Tekan Lempar atau Lempar koin.",
+    "invalid": "Masukkan 1 sampai 50 dadu.",
+    "invalidCoins": "Masukkan 1 sampai 50 koin.",
+    "dice": "Dadu",
+    "total": "Total",
+    "high": "Tertinggi",
+    "low": "Terendah",
+    "heads": "Kepala",
+    "tails": "Ekor"
+  },
+  "gpa": {
+    "title": "Kalkulator GPA",
+    "back": "Semua alat",
+    "privacyNote": "Perhitungan tetap di tab ini. Tidak ada unggahan.",
+    "options": "Mata kuliah",
+    "grade": "Nilai",
+    "credits": "SKS",
+    "add": "Tambah mata kuliah",
+    "remove": "Hapus mata kuliah",
+    "plusAbove4": "A+ dihitung 4.3",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "result": "Hasil GPA",
+    "gpa": "GPA",
+    "totalCredits": "Total SKS",
+    "points": "Total poin",
+    "courses": "Mata kuliah dihitung",
+    "invalid": "Tambahkan minimal satu mata kuliah dengan SKS di atas 0."
+  },
+  "pomodoro": {
+    "title": "Timer Pomodoro",
+    "back": "Semua alat",
+    "privacyNote": "Timer berjalan di tab ini. Tidak ada unggahan.",
+    "options": "Durasi",
+    "focus": "Fokus (menit)",
+    "short": "Jeda pendek (menit)",
+    "long": "Jeda panjang (menit)",
+    "rounds": "Putaran sebelum jeda panjang",
+    "start": "Mulai",
+    "pause": "Jeda",
+    "skip": "Lewati",
+    "reset": "Atur ulang",
+    "result": "Timer",
+    "phase_focus": "Fokus",
+    "phase_short": "Jeda pendek",
+    "phase_long": "Jeda panjang",
+    "round": "Putaran",
+    "done": "Selesai",
+    "invalid": "Menit harus 1 sampai 180 dan putaran 1 sampai 12."
   }
 }

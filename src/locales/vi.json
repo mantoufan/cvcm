@@ -335,7 +335,13 @@
     "titleMosaicPhoto": "Cách làm mờ ảnh: che số CCCD, khuôn mặt, biển số | cv.cm",
     "descMosaicPhoto": "Che đen số, làm mờ khuôn mặt, kiểm tra ở 100% trước khi chia sẻ. Miễn phí trong trình duyệt, không tải lên.",
     "titleWatermarkIdCopy": "Cách đóng dấu bản sao CCCD (mục đích + ngày) | cv.cm",
-    "descWatermarkIdCopy": "Ghi nơi nhận và mục đích, lặp chéo kèm ngày hôm nay kín thẻ, che đen phần không cần. Trong trình duyệt, không tải lên."
+    "descWatermarkIdCopy": "Ghi nơi nhận và mục đích, lặp chéo kèm ngày hôm nay kín thẻ, che đen phần không cần. Trong trình duyệt, không tải lên.",
+    "titleDice": "Tung xúc xắc và tung đồng xu — d4 đến d100 — cv.cm",
+    "descDice": "Tung tới 50 xúc xắc từ d4 đến d100 hoặc tung đồng xu ngay trong trình duyệt. Có tổng, cao nhất và thấp nhất. Không tải lên.",
+    "titleGpa": "Máy tính GPA — thang 4.0, theo tín chỉ — cv.cm",
+    "descGpa": "Nhập điểm chữ và số tín chỉ để tính GPA thang 4.0 có trọng số tín chỉ ngay trong trình duyệt. Không tải lên.",
+    "titlePomodoro": "Đồng hồ Pomodoro — 25 phút tập trung và nghỉ — cv.cm",
+    "descPomodoro": "Đồng hồ Pomodoro miễn phí trong trình duyệt: 25 phút tập trung, nghỉ ngắn và nghỉ dài, có chuông mỗi lần đổi. Không tải lên."
   },
   "brand": "cv.cm",
   "nav": {
@@ -723,6 +729,18 @@
     "mosaic": {
       "name": "Làm mờ ảnh (mosaic)",
       "blurb": "Che số giấy tờ, khuôn mặt, biển số bằng mosaic hoặc ô đen. Không tải lên."
+    },
+    "dice": {
+      "name": "Tung xúc xắc",
+      "blurb": "Tung xúc xắc hoặc tung đồng xu. Không tải lên."
+    },
+    "gpa": {
+      "name": "Máy tính GPA",
+      "blurb": "Điểm chữ và tín chỉ thành GPA thang 4.0. Không tải lên."
+    },
+    "pomodoro": {
+      "name": "Đồng hồ Pomodoro",
+      "blurb": "25 phút tập trung và nghỉ, có chuông. Không tải lên."
     }
   },
   "watermark": {
@@ -2859,6 +2877,42 @@
       "a4": "Có. Ngay trang này, thêm dòng “Chỉ dùng cho …”. Che trước, dấu đè sau.",
       "q5": "Có gỡ được mosaic không?",
       "a5": "Không. Công cụ chỉ che, không khôi phục phần người khác đã che. Trong ảnh xuất ra, điểm ảnh bị che đã được thay thế."
+    },
+    "dice": {
+      "q1": "Tôi có thể tung xúc xắc ở đây không?",
+      "a1": "Có. Chọn số xúc xắc và loại xúc xắc rồi bấm Tung. Từng mặt và tổng hiện ở bên phải.",
+      "q2": "Có tải lên không?",
+      "a2": "Không. Việc tung diễn ra trong thẻ này.",
+      "q3": "Hỗ trợ loại xúc xắc nào?",
+      "a3": "d4, d6, d8, d10, d12, d20 và d100, tối đa 50 xúc xắc một lần. 2d6 nghĩa là hai xúc xắc sáu mặt.",
+      "q4": "Kết quả có ngẫu nhiên không?",
+      "a4": "Mỗi lần tung dùng bộ sinh số ngẫu nhiên mật mã của trình duyệt nên mọi mặt có xác suất như nhau. Không đặt seed, không lưu.",
+      "q5": "Có tung đồng xu được không?",
+      "a5": "Có. Đặt số đồng xu rồi bấm Tung xu. Thẻ hiện từng mặt và số lần sấp, ngửa."
+    },
+    "gpa": {
+      "q1": "Tôi có thể tính GPA ở đây không?",
+      "a1": "Có. Chọn điểm chữ và số tín chỉ cho từng môn. GPA cập nhật khi bạn nhập.",
+      "q2": "Có tải lên không?",
+      "a2": "Không. Phép tính nằm trong thẻ này.",
+      "q3": "GPA tính thế nào?",
+      "a3": "Mỗi điểm chữ thành điểm số: A 4.0, A- 3.7, B+ 3.3, B 3.0, xuống tới F 0. Điểm nhân tín chỉ cộng lại rồi chia cho tổng tín chỉ.",
+      "q4": "A+ có tính 4.3 không?",
+      "a4": "Mặc định A+ là 4.0. Tích A+ = 4.3 nếu trường bạn dùng thang đó.",
+      "q5": "Môn không có tín chỉ thì sao?",
+      "a5": "Môn có tín chỉ 0 hoặc để trống sẽ bị bỏ qua. Môn đạt/không đạt thường không tính vào GPA."
+    },
+    "pomodoro": {
+      "q1": "Tôi có thể dùng đồng hồ Pomodoro ở đây không?",
+      "a1": "Có. Bấm Bắt đầu. Thẻ đếm ngược phiên tập trung, rung chuông rồi tự chuyển sang nghỉ.",
+      "q2": "Có tải gì lên không?",
+      "a2": "Không. Đồng hồ chạy trong thẻ này. Không gửi, không lưu.",
+      "q3": "Kỹ thuật Pomodoro là gì?",
+      "a3": "Làm việc theo từng khối tập trung, thường 25 phút, rồi nghỉ 5 phút. Sau bốn khối thì nghỉ dài 15 phút. Mỗi khối là một pomodoro.",
+      "q4": "Đổi độ dài được không?",
+      "a4": "Được. Đặt tập trung, nghỉ ngắn, nghỉ dài từ 1 đến 180 phút và số vòng trước khi nghỉ dài. Khi đồng hồ đang dừng, giai đoạn hiện tại áp dụng độ dài mới ngay; Đặt lại bắt đầu lại từ vòng 1.",
+      "q5": "Chuyển thẻ thì sao?",
+      "a5": "Đồng hồ vẫn đếm theo giờ hệ thống và tiêu đề thẻ hiện thời gian còn lại. Giữ thẻ mở để nghe chuông."
     }
   },
   "qr": {
@@ -5909,5 +5963,69 @@
       "name": "Biên lợi nhuận và markup",
       "blurb": "Hai cách tính lợi nhuận, cách quy đổi và bảng tra nhanh."
     }
+  },
+  "dice": {
+    "title": "Tung xúc xắc",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Tung trong thẻ này. Không tải lên.",
+    "options": "Xúc xắc",
+    "count": "Số xúc xắc",
+    "sides": "Loại",
+    "roll": "Tung",
+    "coinOptions": "Đồng xu",
+    "coins": "Số đồng xu",
+    "flip": "Tung xu",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "result": "Kết quả",
+    "hint": "Bấm Tung hoặc Tung xu.",
+    "invalid": "Nhập từ 1 đến 50 xúc xắc.",
+    "invalidCoins": "Nhập từ 1 đến 50 đồng xu.",
+    "dice": "Xúc xắc",
+    "total": "Tổng",
+    "high": "Cao nhất",
+    "low": "Thấp nhất",
+    "heads": "Ngửa",
+    "tails": "Sấp"
+  },
+  "gpa": {
+    "title": "Máy tính GPA",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Phép tính nằm trong thẻ này. Không tải lên.",
+    "options": "Môn học",
+    "grade": "Điểm",
+    "credits": "Tín chỉ",
+    "add": "Thêm môn",
+    "remove": "Xóa môn",
+    "plusAbove4": "A+ tính 4.3",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "result": "Kết quả GPA",
+    "gpa": "GPA",
+    "totalCredits": "Tổng tín chỉ",
+    "points": "Tổng điểm",
+    "courses": "Số môn được tính",
+    "invalid": "Thêm ít nhất một môn có tín chỉ lớn hơn 0."
+  },
+  "pomodoro": {
+    "title": "Đồng hồ Pomodoro",
+    "back": "Tất cả công cụ",
+    "privacyNote": "Đồng hồ chạy trong thẻ này. Không tải lên.",
+    "options": "Độ dài",
+    "focus": "Tập trung (phút)",
+    "short": "Nghỉ ngắn (phút)",
+    "long": "Nghỉ dài (phút)",
+    "rounds": "Số vòng trước nghỉ dài",
+    "start": "Bắt đầu",
+    "pause": "Tạm dừng",
+    "skip": "Bỏ qua",
+    "reset": "Đặt lại",
+    "result": "Đồng hồ",
+    "phase_focus": "Tập trung",
+    "phase_short": "Nghỉ ngắn",
+    "phase_long": "Nghỉ dài",
+    "round": "Vòng",
+    "done": "Đã xong",
+    "invalid": "Số phút phải từ 1 đến 180 và số vòng từ 1 đến 12."
   }
 }
