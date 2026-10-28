@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { DICE_SIDES, MAX_COINS, MAX_DICE, flipCoins, rollDice, secureRandom } from "../../shared/dice";
+import { DICE_SIDES, MAX_COINS, MAX_DICE, flipCoins, rollDice } from "../../shared/dice";
 
 let countEl: HTMLInputElement | null = null;
 let sidesEl: HTMLSelectElement | null = null;
@@ -74,7 +74,7 @@ function paintEmpty(): void {
 
 function roll(): void {
   if (!countEl || !sidesEl || !facesEl || !outEl) return;
-  const out = rollDice(Number(countEl.value), Number(sidesEl.value), secureRandom);
+  const out = rollDice(Number(countEl.value), Number(sidesEl.value));
   if (!out) {
     last = "";
     facesEl.textContent = "";
@@ -95,7 +95,7 @@ function roll(): void {
 
 function flip(): void {
   if (!coinsEl || !facesEl || !outEl) return;
-  const faces = flipCoins(Number(coinsEl.value), secureRandom);
+  const faces = flipCoins(Number(coinsEl.value));
   if (!faces) {
     last = "";
     facesEl.textContent = "";

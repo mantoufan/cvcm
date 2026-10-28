@@ -1,7 +1,10 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { DEFAULT_POMODORO, mmss, nextPhase, normalizeSettings, phaseSeconds, type Phase, type PomodoroSettings } from "../../shared/pomodoro";
+import {
+  DEFAULT_POMODORO, MAX_MINUTES, MAX_ROUNDS, mmss, nextPhase, normalizeSettings, phaseSeconds,
+  type Phase, type PomodoroSettings,
+} from "../../shared/pomodoro";
 
 let focusEl: HTMLInputElement | null = null;
 let shortEl: HTMLInputElement | null = null;
@@ -10,25 +13,26 @@ let roundsEl: HTMLInputElement | null = null;
 let phaseEl: HTMLElement | null = null;
 let displayEl: HTMLElement | null = null;
 let roundEl: HTMLElement | null = null;
+let noteEl: HTMLElement | null = null;
 let startBtn: HTMLButtonElement | null = null;
 let settings: PomodoroSettings = DEFAULT_POMODORO;
 let phase: Phase = "focus";
-let left = 0;
+/** Milliseconds left in the current phase while paused; while running the deadline is `endsAt`. */
+let remainingMs = 0;
+let endsAt = 0;
 let completed = 0;
 let running = false;
 let timer = 0;
-let endsAt = 0;
-let pageTitle = "";
-let noteEl: HTMLElement | null = null;
-let audio: AudioContext | null = null;
 let deadline = 0;
-const onVisible = (): void => { if (running && document.visibilityState === "visible") tick(); };
+let audio: AudioContext | null = null;
+let pageTitle = "";
+const resync = (): void => { if (running) tick(); };
 
 export function mountPomodoro(host: HTMLElement): void {
-  focusEl = numberInput("focus", DEFAULT_POMODORO.focus, 180);
-  shortEl = numberInput("short", DEFAULT_POMODORO.short, 180);
-  longEl = numberInput("long", DEFAULT_POMODORO.long, 180);
-  roundsEl = numberInput("rounds", DEFAULT_POMODORO.rounds, 12);
+  focusEl = numberInput("focus", DEFAULT_POMODORO.focus, MAX_MINUTES);
+  shortEl = numberInput("short", DEFAULT_POMODORO.short, MAX_MINUTES);
+  longEl = numberInput("long", DEFAULT_POMODORO.long, MAX_MINUTES);
+  roundsEl = numberInput("rounds", DEFAULT_POMODORO.rounds, MAX_ROUNDS);
   phaseEl = h("p", { class: "muted", "data-field": "phase" });
   displayEl = h("p", { class: "timestamp-out pomodoro-clock", "aria-live": "polite" });
   roundEl = h("p", { class: "muted" });
@@ -59,24 +63,25 @@ export function mountPomodoro(host: HTMLElement): void {
     ),
   );
   pageTitle = document.title;
-  document.addEventListener("visibilitychange", onVisible);
+  document.addEventListener("visibilitychange", resync);
+  window.addEventListener("focus", resync);
   reset();
 }
 
 export function unmountPomodoro(): void {
-  stop();
-  document.removeEventListener("visibilitychange", onVisible);
-  if (audio) void audio.close().catch(() => undefined);
-  audio = null;
-  noteEl = null;
+  pause();
+  document.removeEventListener("visibilitychange", resync);
+  window.removeEventListener("focus", resync);
   if (pageTitle) document.title = pageTitle;
   pageTitle = "";
+  if (audio) void audio.close().catch(() => undefined);
+  audio = null;
   focusEl = shortEl = longEl = roundsEl = null;
-  phaseEl = displayEl = roundEl = null;
+  phaseEl = displayEl = roundEl = noteEl = null;
   startBtn = null;
   settings = DEFAULT_POMODORO;
   phase = "focus";
-  left = 0;
+  remainingMs = 0;
   completed = 0;
 }
 
@@ -97,43 +102,53 @@ function readSettings(): PomodoroSettings | null {
   });
 }
 
-/** Edited lengths are kept for the next phase (or Reset); an out-of-range field is flagged and ignored. */
+/** While the clock is not running, an edited length replaces the current phase; a running phase keeps its deadline. */
 function onSettingsInput(): void {
   const next = readSettings();
   if (noteEl) noteEl.textContent = next ? "" : t("pomodoro.invalid");
   if (!next) return;
   settings = next;
+  if (!running) remainingMs = phaseSeconds(settings, phase) * 1000;
   paint();
 }
 
 function toggle(): void {
   if (running) {
-    stop();
+    pause();
+    paint();
     return;
   }
-  if (left <= 0) left = phaseSeconds(settings, phase);
-  running = true;
-  endsAt = Date.now() + left * 1000;
-  if (startBtn) startBtn.textContent = t("pomodoro.pause");
   // Start is a user gesture: create (or resume) the AudioContext here so the chime can play later on iOS.
   armAudio();
+  run();
+}
+
+function run(): void {
+  if (remainingMs <= 0) remainingMs = phaseSeconds(settings, phase) * 1000;
+  running = true;
+  endsAt = Date.now() + remainingMs;
+  if (startBtn) startBtn.textContent = t("pomodoro.pause");
   // The interval repaints the clock; the timeout lands on the deadline even when a hidden tab throttles intervals.
   timer = window.setInterval(tick, 250);
-  deadline = window.setTimeout(tick, left * 1000 + 20);
+  deadline = window.setTimeout(tick, remainingMs + 20);
   paint();
 }
 
 function tick(): void {
-  left = Math.max(0, Math.round((endsAt - Date.now()) / 1000));
-  paint();
-  if (left <= 0) {
-    stop();
-    chime();
-    advance();
+  if (!running) return;
+  remainingMs = Math.max(0, endsAt - Date.now());
+  if (remainingMs > 0) {
+    paint();
+    return;
   }
+  pause();
+  chime();
+  advance(true);
+  run();
 }
 
-function stop(): void {
+function pause(): void {
+  if (running) remainingMs = Math.max(0, endsAt - Date.now());
   running = false;
   if (timer) window.clearInterval(timer);
   timer = 0;
@@ -142,32 +157,33 @@ function stop(): void {
   if (startBtn) startBtn.textContent = t("pomodoro.start");
 }
 
-function advance(): void {
-  if (phase === "focus") completed += 1;
+/** Moves to the next phase. Only a focus session that ran to the end counts toward the long break. */
+function advance(finished: boolean): void {
+  if (phase === "focus" && finished) completed += 1;
   phase = nextPhase(phase, completed, settings.rounds);
-  left = phaseSeconds(settings, phase);
-  paint();
+  remainingMs = phaseSeconds(settings, phase) * 1000;
 }
 
 function skip(): void {
-  stop();
-  advance();
+  pause();
+  advance(false);
+  paint();
 }
 
 function reset(): void {
-  stop();
+  pause();
   const next = readSettings();
   if (noteEl) noteEl.textContent = next ? "" : t("pomodoro.invalid");
   if (next) settings = next;
   phase = "focus";
   completed = 0;
-  left = phaseSeconds(settings, phase);
+  remainingMs = phaseSeconds(settings, phase) * 1000;
   paint();
 }
 
 function paint(): void {
   if (!phaseEl || !displayEl || !roundEl) return;
-  const clock = mmss(left);
+  const clock = mmss(Math.ceil(remainingMs / 1000));
   const label = t(`pomodoro.phase_${phase}`);
   phaseEl.textContent = label;
   displayEl.textContent = clock;

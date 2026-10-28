@@ -1453,6 +1453,47 @@ async function runTool(send, id, fx) {
     return;
   }
 
+  if (id === "dice") {
+    await snap(1);
+    await evalValue(send, `(() => { const b = document.querySelector("[data-action=roll]"); if (b) b.click(); return true; })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => { const b = document.querySelector("[data-action=flip]"); if (b) b.click(); return true; })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "gpa") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const grade = document.querySelector("[data-field=grade]");
+      if (grade) { grade.value = "B-"; grade.dispatchEvent(new Event("change", { bubbles: true })); }
+      const b = document.querySelector("[data-action=add]"); if (b) b.click();
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "pomodoro") {
+    await snap(1);
+    await evalValue(send, `(() => { const b = document.querySelector("[data-action=start]"); if (b) b.click(); return true; })()`);
+    await sleep(1500);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const b = document.querySelector("[data-action=reset]"); if (b) b.click();
+      const f = document.querySelector("[data-field=focus]");
+      if (f) { f.value = "50"; f.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
   if (id === "duration") {
     await snap(1);
     await evalValue(send, `(() => {

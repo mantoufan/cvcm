@@ -5,8 +5,8 @@ export type PomodoroSettings = { focus: number; short: number; long: number; rou
 
 export const DEFAULT_POMODORO: PomodoroSettings = { focus: 25, short: 5, long: 15, rounds: 4 };
 
-const MAX_MINUTES = 180;
-const MAX_ROUNDS = 12;
+export const MAX_MINUTES = 180;
+export const MAX_ROUNDS = 12;
 
 /** Whole minutes 1–180 and rounds 1–12, or null when any field is out of range. */
 export function normalizeSettings(input: Partial<Record<keyof PomodoroSettings, number>>): PomodoroSettings | null {
