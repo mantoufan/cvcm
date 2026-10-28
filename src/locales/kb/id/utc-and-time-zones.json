@@ -1,0 +1,154 @@
+{
+  "title": "UTC dan zona waktu: offset, GMT, nama IANA, dan DST — cv.cm",
+  "description": "UTC adalah jam acuan dunia; zona waktu adalah offset darinya plus aturan DST. Beda UTC dan GMT, mengapa Europe/London lebih baik daripada +00:00, dan offset +05:45.",
+  "h1": "UTC dan zona waktu: cara kerjanya",
+  "answer": "UTC (Coordinated Universal Time) adalah jam acuan yang menjadi dasar setiap zona waktu sipil. Zona waktu adalah wilayah yang memakai waktu lokal yang sama, ditulis sebagai offset dari UTC seperti `-05:00` atau `+05:30`, beserta aturan kapan waktu musim panas (DST) dimulai dan berakhir. Offset berkisar dari `-12:00` sampai `+14:00`, dan sebagian tidak berupa jam bulat.",
+  "sections": [
+    {
+      "h": "Apa itu UTC",
+      "body": [
+        "UTC dihitung oleh International Bureau of Weights and Measures (BIPM) dari ratusan jam atom di seluruh dunia. UTC berdetak dalam detik SI, sama seperti International Atomic Time (TAI), tetapi sesekali disesuaikan dengan detik kabisat agar selisihnya dengan rotasi Bumi tetap di bawah 0,9 detik. Sejak 2017, UTC tertinggal 37 detik dari TAI.",
+        "UTC tidak mengenal waktu musim panas dan tidak pernah berubah mengikuti musim. Kestabilan itulah alasan server, log, penerbangan, dan database berjalan dengan UTC."
+      ]
+    },
+    {
+      "h": "UTC vs GMT",
+      "body": [
+        "Dalam penggunaan sehari-hari, GMT dan UTC menunjukkan waktu yang sama, tetapi keduanya bukan hal yang sama:",
+        {
+          "table": {
+            "head": [
+              "",
+              "UTC",
+              "GMT"
+            ],
+            "rows": [
+              [
+                "Apa itu",
+                "Standar waktu berbasis jam atom",
+                "Secara historis waktu astronomis di Greenwich; kini nama zona waktu"
+              ],
+              [
+                "Offset",
+                "Titik nol menurut definisi",
+                "UTC+00:00"
+              ],
+              [
+                "Waktu musim panas",
+                "Tidak pernah",
+                "GMT sendiri tidak, tetapi Inggris beralih dari GMT ke BST (UTC+01:00) di musim panas"
+              ],
+              [
+                "Penggunaan di perangkat lunak",
+                "Acuan standar",
+                "Umumnya hanya sebagai label; utamakan UTC"
+              ]
+            ]
+          }
+        },
+        "Jebakan praktisnya: \"waktu London\" sama dengan GMT hanya di musim dingin. Dari Minggu terakhir bulan Maret hingga Minggu terakhir bulan Oktober, London satu jam lebih cepat daripada UTC."
+      ]
+    },
+    {
+      "h": "Offset bukan zona waktu",
+      "body": [
+        "Offset seperti `+01:00` menggambarkan satu momen. Zona waktu menggambarkan suatu tempat sepanjang waktu: offset-nya, aturan waktu musim panasnya, dan setiap perubahan historis pada aturan tersebut. IANA Time Zone Database, yang dipakai Linux, macOS, Android, Java, dan semua browser utama, menamai zona berdasarkan wilayah dan kota, seperti `Europe/London`, `America/New_York`, dan `Asia/Kolkata`.",
+        "`Europe/London` lebih baik daripada `+00:00` untuk apa pun di masa depan atau masa lalu karena zona itu tahu bahwa offset-nya `+00:00` di bulan Januari dan `+01:00` di bulan Juli. Rapat berulang yang disimpan sebagai `+00:00` akan meleset satu jam selama separuh tahun.",
+        {
+          "ul": [
+            "Simpan momen di masa lalu dalam UTC (atau sebagai Unix timestamp).",
+            "Simpan acara lokal di masa depan sebagai waktu lokal plus nama zona IANA, lalu hitung momen UTC-nya saat dibutuhkan, karena pemerintah bisa mengubah aturan DST dengan pemberitahuan singkat.",
+            "Hindari singkatan seperti `CST` atau `IST`: `CST` bisa berarti Central Standard Time (UTC-6) atau China Standard Time (UTC+8), dan `IST` dipakai untuk India, Irlandia, dan Israel."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Waktu musim panas (DST)",
+      "body": [
+        "Daylight saving time (DST) memajukan jam, biasanya satu jam, selama sebagian tahun. Tanggalnya berbeda per wilayah: Amerika Serikat beralih pada Minggu kedua bulan Maret dan kembali pada Minggu pertama bulan November, sedangkan Uni Eropa beralih pada Minggu terakhir bulan Maret dan Oktober, pukul 01:00 UTC di semua negara anggotanya. Sebagian besar negara di Asia dan Afrika, termasuk Tiongkok, Jepang, dan India, tidak memakai DST. Di belahan bumi selatan, DST berlaku kira-kira dari Oktober sampai April.",
+        "Setiap peralihan menimbulkan dua kasus tepi:",
+        {
+          "ul": [
+            "Celah: saat jam dimajukan, waktu lokal seperti 02:30 pada hari itu tidak ada di zona yang melompat dari 02:00 ke 03:00.",
+            "Tumpang tindih: saat jam dimundurkan, jam seperti 01:30 terjadi dua kali, sehingga waktu lokal saja ambigu tanpa offset."
+          ]
+        },
+        {
+          "note": "Hari yang memuat peralihan DST punya 23 atau 25 jam waktu lokal. Menambahkan 24 jam dan menambahkan satu hari kalender memberi hasil berbeda pada hari-hari tersebut."
+        }
+      ]
+    },
+    {
+      "h": "Offset yang tidak biasa",
+      "body": [
+        "Tidak setiap zona berselisih jam bulat dari UTC. Semua offset berikut masih dipakai saat ini:",
+        {
+          "table": {
+            "head": [
+              "Offset",
+              "Contoh zona",
+              "Wilayah"
+            ],
+            "rows": [
+              [
+                "`-12:00`",
+                "Etc/GMT+12",
+                "Pulau Baker dan Howland yang tak berpenghuni; offset paling awal"
+              ],
+              [
+                "`-03:30`",
+                "America/St_Johns",
+                "Newfoundland, Kanada (waktu standar)"
+              ],
+              [
+                "`+05:30`",
+                "Asia/Kolkata",
+                "India dan Sri Lanka"
+              ],
+              [
+                "`+05:45`",
+                "Asia/Kathmandu",
+                "Nepal"
+              ],
+              [
+                "`+09:30`",
+                "Australia/Darwin",
+                "Northern Territory, Australia"
+              ],
+              [
+                "`+12:45`",
+                "Pacific/Chatham",
+                "Kepulauan Chatham, Selandia Baru (waktu standar)"
+              ],
+              [
+                "`+14:00`",
+                "Pacific/Kiritimati",
+                "Kepulauan Line, Kiribati; tempat pertama yang memasuki hari baru"
+              ]
+            ]
+          }
+        },
+        "Karena offset membentang 26 jam, tanggal kalender yang sama berlaku di suatu tempat di Bumi hingga sekitar 50 jam. \"Akhir hari tanggal 14\" baru bermakna presisi jika disertai zona."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah UTC sama dengan GMT?",
+      "a": "Keduanya menunjukkan jam yang sama, tetapi UTC adalah standar waktu atom dan GMT adalah zona waktu. Inggris memakai GMT hanya di musim dingin dan BST (UTC+01:00) di musim panas."
+    },
+    {
+      "q": "Apakah UTC berubah karena waktu musim panas?",
+      "a": "Tidak. UTC sama sepanjang tahun; hanya zona waktu lokal yang menggeser offset-nya dari UTC saat DST dimulai atau berakhir."
+    },
+    {
+      "q": "Mengapa India memakai UTC+05:30?",
+      "a": "India memakai satu zona yang berpusat pada meridian 82,5° BT, yang berselisih lima setengah jam dari Greenwich. Offset setengah jam dan seperempat jam dipilih agar lebih sesuai dengan garis bujur suatu negara."
+    },
+    {
+      "q": "Apa arti tanda pada Etc/GMT+12?",
+      "a": "Pada nama `Etc/GMT` di IANA, tandanya dibalik demi kompatibilitas POSIX, jadi `Etc/GMT+12` adalah UTC-12:00. Untuk tempat nyata, utamakan nama berbasis kota seperti `Asia/Tokyo`."
+    }
+  ]
+}

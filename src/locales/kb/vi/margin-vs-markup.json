@@ -1,0 +1,188 @@
+{
+  "title": "Biên lợi nhuận (margin) và markup: khác nhau thế nào, công thức — cv.cm",
+  "description": "Margin (biên lợi nhuận) là lợi nhuận chia giá bán; markup là lợi nhuận chia giá vốn. Hai công thức, cách quy đổi và vì sao markup 25% chỉ tương đương margin 20%.",
+  "h1": "Biên lợi nhuận và markup khác nhau thế nào?",
+  "answer": "Biên lợi nhuận (margin) và tỷ lệ cộng thêm trên giá vốn (markup) đo cùng một khoản lợi nhuận nhưng so với hai mốc khác nhau. Margin là lợi nhuận tính theo phần trăm giá bán: `(price − cost) / price`. Markup là lợi nhuận tính theo phần trăm giá vốn: `(price − cost) / cost`. Một món hàng giá vốn $60, bán $100 có lợi nhuận $40, margin 40% và markup 66,7%. Markup luôn là con số lớn hơn.",
+  "sections": [
+    {
+      "h": "Hai công thức",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "Margin (biên lợi nhuận)",
+              "Markup"
+            ],
+            "rows": [
+              [
+                "Công thức",
+                "`(price − cost) / price`",
+                "`(price − cost) / cost`"
+              ],
+              [
+                "Mốc so sánh",
+                "Giá bán (doanh thu)",
+                "Giá vốn"
+              ],
+              [
+                "Phạm vi",
+                "Dưới 100% (trừ khi giá vốn bằng 0)",
+                "Từ 0% đến không giới hạn"
+              ],
+              [
+                "Trả lời câu hỏi",
+                "Mỗi lần bán, bao nhiêu phần là lợi nhuận?",
+                "Đã cộng thêm bao nhiêu lên giá vốn?"
+              ],
+              [
+                "Thường được dùng bởi",
+                "Tài chính, kế toán, nhà đầu tư",
+                "Định giá bán lẻ và bán buôn"
+              ]
+            ]
+          }
+        },
+        "Ví dụ với giá vốn $60 và giá bán $100: lợi nhuận là `100 − 60 = 40`. Margin là `40 / 100 = 40%`. Markup là `40 / 60 = 66.7%`.",
+        "Trong kế toán, \"biên lợi nhuận gộp\" (gross margin) dùng giá vốn hàng bán. Biên lợi nhuận hoạt động và biên lợi nhuận ròng trừ thêm nhiều chi phí khác, như tiền thuê mặt bằng, lương và thuế, nên thấp hơn biên lợi nhuận gộp của cùng một sản phẩm."
+      ]
+    },
+    {
+      "h": "Quy đổi giữa margin và markup",
+      "body": [
+        "Vì cả hai dùng chung một khoản lợi nhuận, có thể quy đổi trực tiếp từ cái này sang cái kia. Viết phần trăm dưới dạng thập phân:",
+        {
+          "ul": [
+            "`markup = margin / (1 − margin)`. Margin 40% là `0.4 / 0.6 = 0.667`, tức markup 66,7%.",
+            "`margin = markup / (1 + markup)`. Markup 50% là `0.5 / 1.5 = 0.333`, tức margin 33,3%."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Margin",
+              "Markup tương đương"
+            ],
+            "rows": [
+              [
+                "10%",
+                "11,11%"
+              ],
+              [
+                "15%",
+                "17,65%"
+              ],
+              [
+                "20%",
+                "25%"
+              ],
+              [
+                "25%",
+                "33,33%"
+              ],
+              [
+                "30%",
+                "42,86%"
+              ],
+              [
+                "33,33%",
+                "50%"
+              ],
+              [
+                "40%",
+                "66,67%"
+              ],
+              [
+                "50%",
+                "100%"
+              ],
+              [
+                "60%",
+                "150%"
+              ],
+              [
+                "75%",
+                "300%"
+              ]
+            ]
+          }
+        },
+        "Khoảng cách tăng rất nhanh: ở margin 50%, markup đã là 100%, nghĩa là giá bán gấp đôi giá vốn (cách định giá \"keystone\" trong bán lẻ)."
+      ]
+    },
+    {
+      "h": "Định giá bán từ mục tiêu",
+      "body": [
+        "Công thức bạn dùng phụ thuộc vào con số bạn đang nhắm tới:",
+        {
+          "table": {
+            "head": [
+              "Mục tiêu",
+              "Công thức",
+              "Ví dụ giá vốn $60"
+            ],
+            "rows": [
+              [
+                "Markup mục tiêu 25%",
+                "`price = cost × (1 + markup)`",
+                "`60 × 1.25 = $75`"
+              ],
+              [
+                "Margin mục tiêu 25%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.75 = $80`"
+              ],
+              [
+                "Margin mục tiêu 40%",
+                "`price = cost / (1 − margin)`",
+                "`60 / 0.6 = $100`"
+              ]
+            ]
+          }
+        },
+        "Hãy để ý khoản chênh $5 giữa hai dòng đầu. Cả hai đều là \"25%\", nhưng một bên tính trên giá vốn, bên kia tính trên giá bán."
+      ]
+    },
+    {
+      "h": "Sai lầm định giá phổ biến nhất",
+      "body": [
+        "Một doanh nghiệp muốn margin 30%, nên cộng 30% vào giá vốn. Với giá vốn $100, giá bán thành $130 và lợi nhuận $30. Margin là `30 / 130 = 23.1%`, không phải 30%. Để đạt đúng margin 30%, giá bán phải là `100 / 0.7 = $142.86`.",
+        "Nhầm lẫn tương tự xuất hiện với giảm giá. Markup 25% rồi giảm giá 25% không đưa giá về bằng giá vốn: `100 × 1.25 = 125`, rồi `125 × 0.75 = 93.75`, lỗ $6,25 mỗi đơn vị. Giá khuyến mãi nên được đối chiếu trực tiếp với giá vốn.",
+        {
+          "note": "Khi nhà cung cấp, người mua hay đối tác đưa ra một tỷ lệ phần trăm, hãy hỏi đó là margin hay markup. Cùng cụm từ \"phần trăm lợi nhuận\" có thể chỉ cả hai, và chênh lệch có thể lên tới hàng nghìn với một đơn hàng lớn."
+        }
+      ]
+    },
+    {
+      "h": "Nên theo dõi chỉ số nào?",
+      "body": [
+        {
+          "ul": [
+            "Dùng markup khi định giá từng mặt hàng dựa trên giá vốn, ví dụ cộng một mức markup chuẩn cho mọi sản phẩm trong một danh mục.",
+            "Dùng margin để báo cáo và so sánh. Đó là con số trên báo cáo kết quả kinh doanh, nên khớp với tổng doanh thu, ngân sách và chuẩn so sánh của ngành.",
+            "Dùng margin để quyết định có thể giảm giá sâu đến đâu: một món hàng có margin 20% không thể giảm quá 20% nếu không muốn bán dưới giá vốn.",
+            "Giữ dữ liệu đầu vào nhất quán. Hãy tính phí vận chuyển, phí thanh toán và bao bì vào giá vốn, nếu không cả hai tỷ lệ đều trông đẹp hơn thực tế."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Markup 50% có giống margin 50% không?",
+      "a": "Không. Markup 50% trên giá vốn $100 cho giá bán $150 và margin 33,3%. Margin 50% cần giá bán $200, tức markup 100%."
+    },
+    {
+      "q": "Margin có thể vượt quá 100% không?",
+      "a": "Không, vì khi giá vốn dương, lợi nhuận không bao giờ vượt quá giá bán. Markup không có giới hạn trên, nên các giá trị như 300% rất phổ biến với hàng giá vốn thấp."
+    },
+    {
+      "q": "Tính giá bán từ margin thế nào?",
+      "a": "Chia giá vốn cho `1 − margin`. Với giá vốn $45 và margin 40%, giá bán là `45 / 0.6 = $75`."
+    },
+    {
+      "q": "Biên lợi nhuận bao nhiêu là tốt?",
+      "a": "Tùy ngành: chuỗi bán lẻ thực phẩm thường có biên lợi nhuận ròng chỉ vài phần trăm, trong khi công ty phần mềm có thể vượt 20%. Hãy so với doanh nghiệp có cấu trúc chi phí tương tự thay vì một mục tiêu duy nhất."
+    }
+  ]
+}

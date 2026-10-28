@@ -1,0 +1,157 @@
+{
+  "title": "JPG, PNG o WebP: qué formato de imagen usar y cuándo — cv.cm",
+  "description": "JPG para fotos, PNG para gráficos nítidos y transparencia, WebP para ambos con menos peso. Compara compresión, calidad, compatibilidad y cuándo usar AVIF.",
+  "h1": "JPG vs PNG vs WebP: ¿qué formato de imagen conviene usar?",
+  "answer": "Usa JPG para fotografías cuando importe el tamaño del archivo y no la transparencia. Usa PNG para capturas de pantalla, logotipos, texto y todo lo que necesite píxeles exactos o un fondo transparente. Usa WebP cuando la imagen vaya en un sitio web: admite modos con y sin pérdida, además de transparencia, y Google midió archivos WebP con pérdida entre un 25 y un 34 % más pequeños que JPG a igual calidad. Todos los navegadores actuales muestran WebP.",
+  "sections": [
+    {
+      "h": "Los tres formatos, lado a lado",
+      "body": [
+        "Cada formato se diseñó para una tarea distinta, y las diferencias se reducen a cómo comprimen los píxeles y qué funciones adicionales incluyen.",
+        {
+          "table": {
+            "head": [
+              "",
+              "JPG (JPEG)",
+              "PNG",
+              "WebP"
+            ],
+            "rows": [
+              [
+                "Año de creación",
+                "1992",
+                "1996",
+                "2010"
+              ],
+              [
+                "Compresión",
+                "Con pérdida",
+                "Sin pérdida",
+                "Con o sin pérdida"
+              ],
+              [
+                "Transparencia",
+                "No",
+                "Sí, canal alfa completo",
+                "Sí, canal alfa completo"
+              ],
+              [
+                "Animación",
+                "No",
+                "Variante APNG",
+                "Sí"
+              ],
+              [
+                "Profundidad de bits",
+                "8 bits por canal (básico)",
+                "Hasta 16 bits por canal",
+                "8 bits por canal"
+              ],
+              [
+                "Ideal para",
+                "Fotos",
+                "Gráficos, capturas, texto",
+                "Imágenes web de cualquier tipo"
+              ],
+              [
+                "Problemas de compatibilidad habituales",
+                "Ninguno",
+                "Ninguno",
+                "Algún software de escritorio antiguo y formularios de subida"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Con pérdida vs sin pérdida: la diferencia decisiva",
+      "body": [
+        "La compresión con pérdida (JPG, WebP con pérdida) descarta detalles que el ojo difícilmente notará. Funciona bien en fotos, donde los colores cambian de forma gradual, pero emborrona los bordes nítidos: el texto y las líneas finas de un JPG adquieren halos tenues llamados ringing o ruido de mosquito, y con calidad baja pueden aparecer bloques de 8×8 píxeles.",
+        "La compresión sin pérdida (PNG, WebP sin pérdida) guarda cada píxel exactamente. Reduce muy bien las grandes zonas de color plano, por eso una captura de pantalla puede ocupar menos en PNG que en JPG, pero una foto guardada como PNG suele ser de 3 a 5 veces más grande que un buen JPG sin ninguna ventaja visible.",
+        {
+          "ul": [
+            "Cada vez que se edita y se vuelve a guardar un JPG, se comprime de nuevo y pierde un poco más de detalle. Conserva un original sin pérdida si vas a editar varias veces.",
+            "Convertir un JPG a PNG no recupera el detalle perdido; solo guarda los píxeles ya comprimidos sin más pérdida, en un archivo más grande.",
+            "Una calidad JPG de entre el 80 y el 90 % es un equilibrio habitual entre tamaño y artefactos visibles."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "¿Cuánto más pequeño es WebP?",
+      "body": [
+        "El estudio de compresión de WebP de Google comparó archivos con igual similitud estructural (SSIM). WebP con pérdida resultó entre un 25 y un 34 % más pequeño que JPG, y Google indica que WebP sin pérdida ocupa alrededor de un 26 % menos que PNG. El ahorro real depende de la imagen, del codificador y de la calidad elegida.",
+        "Un ejemplo práctico: una foto de portada de 400 KB guardada como JPG quedaría normalmente en unos 265–300 KB como WebP con pérdida de calidad similar. En una página con veinte imágenes, esa diferencia acorta el tiempo de carga en conexiones móviles.",
+        {
+          "note": "WebP está limitado a 16,383 × 16,383 píxeles y color de 8 bits, así que no es un buen formato de archivo para originales de alta resolución o HDR. Conserva el original de la cámara y exporta copias WebP para la web."
+        }
+      ]
+    },
+    {
+      "h": "Dónde encaja AVIF",
+      "body": [
+        "AVIF es un formato más reciente que guarda imágenes comprimidas con AV1 en un contenedor tipo HEIF. En fotos suele superar a WebP en tamaño de archivo, admite color de 10 y 12 bits y HDR, y maneja transparencia. Chrome lo incorporó en la versión 85, Firefox en la 93 y Safari en la 16.",
+        "Sus inconvenientes son una codificación más lenta, menor compatibilidad con software de escritorio antiguo y, a veces, pérdida de texturas finas con calidad muy baja. Muchos sitios sirven primero AVIF, luego WebP y JPG como respaldo usando el elemento HTML `<picture>`."
+      ]
+    },
+    {
+      "h": "Guía rápida para decidir",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situación",
+              "Formato recomendado"
+            ],
+            "rows": [
+              [
+                "Foto de cámara o teléfono para un sitio web",
+                "WebP o AVIF, con JPG de respaldo si hace falta"
+              ],
+              [
+                "Foto para correo, una imprenta o un formulario de subida",
+                "JPG"
+              ],
+              [
+                "Logotipo, icono o diagrama con transparencia",
+                "PNG, o SVG si es arte vectorial"
+              ],
+              [
+                "Captura de pantalla con texto",
+                "PNG o WebP sin pérdida"
+              ],
+              [
+                "Animación corta en bucle",
+                "WebP animado o un archivo de video en lugar de GIF"
+              ],
+              [
+                "Copia maestra que volverás a editar",
+                "PNG, TIFF o el formato original de la cámara"
+              ]
+            ]
+          }
+        },
+        "Si un formulario rechaza WebP, convierte una copia a JPG para fotos o a PNG para gráficos. Convertir un archivo con pérdida a uno sin pérdida no aporta nada más allá de la compatibilidad."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿PNG tiene más calidad que JPG?",
+      "a": "PNG es sin pérdida, así que conserva cada píxel exactamente, mientras que JPG descarta algo de detalle. En fotos, con una calidad JPG alta la diferencia suele ser invisible; en texto y bordes nítidos, PNG se ve claramente más limpio."
+    },
+    {
+      "q": "¿Por qué mi PNG es mucho más grande que el JPG?",
+      "a": "La compresión sin pérdida no puede descartar el ruido fino ni los degradados de las fotos, así que un PNG fotográfico suele ser varias veces más grande. Usa JPG o WebP para fotos."
+    },
+    {
+      "q": "¿Todos los navegadores admiten WebP?",
+      "a": "Sí. Chrome, Edge, Firefox y Opera lo admiten desde hace años, y Safari lo añadió en la versión 14, en 2020. Algunos programas de escritorio antiguos y formularios de subida todavía lo rechazan."
+    },
+    {
+      "q": "¿Convertir PNG a JPG elimina la transparencia?",
+      "a": "Sí. JPG no tiene canal alfa, así que las zonas transparentes se rellenan con un color sólido, normalmente blanco o negro. Usa WebP o mantén PNG si necesitas transparencia."
+    }
+  ]
+}

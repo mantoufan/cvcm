@@ -1,0 +1,128 @@
+{
+  "title": "Dữ liệu EXIF là gì? Ảnh tiết lộ gì và cách xóa EXIF — cv.cm",
+  "description": "EXIF là siêu dữ liệu nằm trong ảnh: đời máy, thông số chụp, ngày giờ và thường cả vị trí GPS. Xem có những thẻ nào, nền tảng nào tự xóa và cách xóa thông tin EXIF khỏi ảnh.",
+  "h1": "Dữ liệu EXIF trong ảnh là gì?",
+  "answer": "EXIF (Exchangeable Image File Format) là tiêu chuẩn siêu dữ liệu mà máy ảnh và điện thoại ghi vào từng bức ảnh. Nó lưu hãng và đời thiết bị, thông số phơi sáng, ngày giờ chụp, hướng ảnh và, khi bật định vị, tọa độ GPS đủ chính xác để xác định một ngôi nhà. Thông tin này không hiện trên ảnh nhưng ai có file đều đọc được.",
+  "sections": [
+    {
+      "h": "EXIF lưu những gì",
+      "body": [
+        "EXIF do hiệp hội điện tử Nhật Bản JEIDA tạo ra năm 1995, hiện do CIPA và JEITA duy trì. Nó dùng lại cấu trúc thẻ của định dạng TIFF, nên mỗi mẩu dữ liệu là một thẻ được đánh số, có tên và giá trị.",
+        {
+          "table": {
+            "head": [
+              "Thẻ",
+              "Giá trị ví dụ",
+              "Tiết lộ điều gì"
+            ],
+            "rows": [
+              [
+                "`Make` / `Model`",
+                "Apple / iPhone 15",
+                "Thiết bị đã dùng"
+              ],
+              [
+                "`DateTimeOriginal`",
+                "2026:09:12 18:42:07",
+                "Thời điểm chụp ảnh"
+              ],
+              [
+                "`ExposureTime`, `FNumber`, `ISOSpeedRatings`",
+                "1/120, f/1.8, 64",
+                "Thông số máy ảnh"
+              ],
+              [
+                "`FocalLength`",
+                "6,9 mm",
+                "Ống kính và mức zoom"
+              ],
+              [
+                "`Orientation`",
+                "6 (xoay 90° theo chiều kim đồng hồ)",
+                "Cách hiển thị ảnh"
+              ],
+              [
+                "`GPSLatitude` / `GPSLongitude`",
+                "48° 51' 29,6\" N, 2° 17' 40,2\" E",
+                "Nơi chụp ảnh"
+              ],
+              [
+                "`BodySerialNumber`",
+                "Riêng cho từng máy",
+                "Có thể liên kết các ảnh với cùng một máy ảnh"
+              ],
+              [
+                "`Software`",
+                "Tên và phiên bản phần mềm chỉnh sửa",
+                "File đã được xử lý thế nào"
+              ]
+            ]
+          }
+        },
+        "Nhiều file còn mang theo một ảnh thu nhỏ nhúng sẵn, phần ghi chú của nhà sản xuất (maker notes) theo định dạng riêng, cùng các khối XMP hoặc IPTC chứa chú thích, từ khóa và thông tin bản quyền."
+      ]
+    },
+    {
+      "h": "EXIF nằm ở đâu trong file",
+      "body": [
+        "Trong file JPG, EXIF nằm ở phân đoạn `APP1` gần đầu file, bắt đầu bằng các byte `Exif` theo sau là hai byte 0, và bị giới hạn ở 64 KB. HEIC, WebP, TIFF và nhiều định dạng RAW của máy ảnh cũng chứa EXIF, còn PNG có chunk `eXIf` chính thức từ năm 2017.",
+        "Vì siêu dữ liệu tách biệt với điểm ảnh, nó có thể được đọc hoặc xóa mà không ảnh hưởng chất lượng ảnh. Chụp màn hình một bức ảnh không sao chép EXIF của ảnh gốc, dù ảnh chụp màn hình vẫn có một ít siêu dữ liệu riêng."
+      ]
+    },
+    {
+      "h": "Vì sao EXIF ảnh hưởng tới quyền riêng tư",
+      "body": [
+        "Thẻ GPS là rủi ro lớn nhất. Camera điện thoại được cấp quyền vị trí sẽ ghi vĩ độ và kinh độ chính xác tới vài mét, nên một bức ảnh chụp ở nhà rồi chia sẻ dưới dạng file gốc có thể làm lộ địa chỉ. Dấu thời gian và đời máy bổ sung thêm bối cảnh, còn số sê-ri có thể gắn nhiều ảnh ẩn danh với cùng một máy ảnh.",
+        {
+          "ul": [
+            "Các mạng xã hội lớn thường xóa EXIF khỏi ảnh đăng công khai, nhưng chính sách có thể thay đổi và không có gì bảo đảm.",
+            "Tệp đính kèm email, liên kết ổ đĩa đám mây, diễn đàn, chợ mua bán và ứng dụng nhắn tin gửi ảnh dưới dạng file thường giữ nguyên toàn bộ siêu dữ liệu.",
+            "Ảnh nộp cho biểu mẫu của cơ quan hay nhà tuyển dụng có thể bị chuyển tiếp và lưu trữ nhiều năm."
+          ]
+        },
+        {
+          "note": "Xóa EXIF không xóa được những gì hiện trong ảnh. Biển tên đường, số nhà, hình phản chiếu và chi tiết giấy tờ vẫn có thể giúp nhận ra một địa điểm hay một người, vì vậy hãy kiểm tra chính bức ảnh trước khi đăng."
+        }
+      ]
+    },
+    {
+      "h": "Cách xem và xóa EXIF",
+      "body": [
+        "Trên máy tính, phần thuộc tính file hiển thị EXIF cơ bản: Lấy thông tin hoặc Trình kiểm tra của ứng dụng Xem trước trên Mac, Thuộc tính › Chi tiết trên Windows. Để xem đầy đủ, hãy dùng trình xem siêu dữ liệu hoặc công cụ chạy trên trình duyệt để ảnh không bị tải lên máy chủ.",
+        {
+          "ol": [
+            "Mở ảnh bằng trình xem siêu dữ liệu và kiểm tra thẻ GPS trước tiên.",
+            "Xóa toàn bộ siêu dữ liệu, hoặc chỉ xóa vị trí nếu muốn giữ thông số máy ảnh.",
+            "Lưu thành file mới và cất giữ bản gốc ở nơi riêng tư.",
+            "Mở lại file mới để chắc chắn các trường GPS đã biến mất."
+          ]
+        },
+        "Trên điện thoại, cả iOS và Android đều cho phép tắt vị trí trong bảng chia sẻ hoặc cài đặt camera. Bảng chia sẻ của iPhone có liên kết Tùy chọn với công tắc Vị trí; trên Android, ứng dụng camera có cài đặt gắn thẻ vị trí."
+      ]
+    },
+    {
+      "h": "Cái bẫy về hướng ảnh",
+      "body": [
+        "Điện thoại thường lưu ảnh nằm ngang rồi đặt thẻ `Orientation` (giá trị từ 1 đến 8) để báo cho trình xem cách xoay ảnh. Nếu công cụ xóa EXIF mà không áp dụng phép xoay đó vào điểm ảnh trước, ảnh đã làm sạch có thể bị nằm ngang hoặc lộn ngược. Một công cụ xóa siêu dữ liệu tốt sẽ xoay điểm ảnh trước khi gỡ thẻ."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Người khác có thể tìm ra vị trí của tôi từ một bức ảnh không?",
+      "a": "Có, nếu file gốc vẫn còn thẻ GPS. Ai tải ảnh về cũng có thể đọc tọa độ bằng một trình xem miễn phí và dán vào bản đồ."
+    },
+    {
+      "q": "Xóa EXIF có làm giảm chất lượng ảnh không?",
+      "a": "Không. Siêu dữ liệu được lưu tách khỏi điểm ảnh, nên công cụ xóa siêu dữ liệu đúng cách sẽ giữ nguyên dữ liệu ảnh. Một số công cụ lưu lại ảnh trong lúc xóa, việc này có thể nén JPG thêm một chút."
+    },
+    {
+      "q": "Ảnh chụp màn hình có dữ liệu EXIF không?",
+      "a": "Ảnh chụp màn hình chứa rất ít siêu dữ liệu, thường là kích thước, ngày tạo và đôi khi là thiết bị, nhưng không có vị trí GPS. Chúng không kế thừa EXIF của ảnh gốc."
+    },
+    {
+      "q": "WhatsApp hay Instagram có xóa EXIF không?",
+      "a": "Khi nén ảnh, các kênh chia sẻ ảnh của chúng thường xóa phần lớn siêu dữ liệu, nhưng gửi ảnh dưới dạng tài liệu hoặc file thì vẫn giữ nguyên siêu dữ liệu gốc. Hãy kiểm tra cách hoạt động hiện tại của từng ứng dụng nếu bạn quan tâm đến quyền riêng tư vị trí."
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "title": "Vì sao file PDF nặng? Nguyên nhân và cách giảm dung lượng PDF — cv.cm",
+  "description": "File PDF nặng thường do ảnh độ phân giải cao, trang scan, font nhúng hoặc lịch sử chỉnh sửa được lưu lại. Xem thứ gì chiếm dung lượng và cách giảm dung lượng PDF an toàn.",
+  "h1": "Vì sao file PDF của tôi nặng như vậy?",
+  "answer": "Phần lớn file PDF quá nặng là do ảnh: ảnh chụp ở độ phân giải đầy đủ hoặc trang scan được lưu với mức nén yếu. Các nguyên nhân khác gồm font được nhúng toàn bộ, đặc biệt là font tiếng Trung, Nhật và Hàn, lịch sử chỉnh sửa do lưu tăng dần, ảnh bị trùng lặp và file đính kèm. Giảm độ phân giải ảnh xuống 150 PPI để đọc trên màn hình, nén lại ảnh và lưu một bản sạch thường giúp giảm dung lượng từ một nửa trở lên.",
+  "sections": [
+    {
+      "h": "Thứ gì thực sự chiếm dung lượng trong PDF",
+      "body": [
+        "PDF, được chuẩn hóa thành ISO 32000, là tập hợp các đối tượng: mô tả trang, font, ảnh và siêu dữ liệu, mỗi đối tượng có thể được nén hoặc không. Chữ và hình vẽ vector rất nhẹ; một trang toàn chữ thường chỉ cần vài kilobyte. Vấn đề dung lượng đến từ các đối tượng nặng.",
+        {
+          "table": {
+            "head": [
+              "Nguyên nhân",
+              "Mức ảnh hưởng thường gặp",
+              "Vì sao xảy ra"
+            ],
+            "rows": [
+              [
+                "Ảnh ở độ phân giải gốc của máy ảnh",
+                "1–10 MB mỗi ảnh",
+                "Ảnh 12 megapixel được đặt vào trang chỉ cần một phần nhỏ số điểm ảnh đó"
+              ],
+              [
+                "Trang scan",
+                "0,5–5 MB mỗi trang",
+                "Mỗi trang là một ảnh màu đầy đủ, kể cả khi chỉ có chữ đen"
+              ],
+              [
+                "Font nhúng",
+                "Vài chục KB đến hơn 20 MB",
+                "Nhúng cả file font thay vì chỉ các ký tự được dùng"
+              ],
+              [
+                "Lưu tăng dần",
+                "Lớn thêm sau mỗi lần sửa",
+                "Thay đổi được nối thêm vào cuối; phiên bản cũ của đối tượng vẫn nằm trong file"
+              ],
+              [
+                "Ảnh trùng lặp",
+                "Nhân dung lượng ảnh lên nhiều lần",
+                "Logo được lưu riêng cho từng trang thay vì dùng chung"
+              ],
+              [
+                "File đính kèm, lớp, biểu mẫu",
+                "Tùy trường hợp",
+                "File nhúng, lớp ẩn và script của biểu mẫu"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Trang scan: làm phép tính",
+      "body": [
+        "Một trang A4 quét ở 300 PPI có 2480 × 3508 = 8.699.840 điểm ảnh. Ở chế độ màu với 3 byte mỗi điểm ảnh, mỗi trang chưa nén nặng khoảng 26,1 MB.",
+        {
+          "ul": [
+            "Ở thang xám (1 byte mỗi điểm ảnh), cùng trang đó chưa nén nặng khoảng 8,7 MB.",
+            "Ở chế độ đen trắng (1 bit mỗi điểm ảnh), nó giảm xuống khoảng 1,09 MB, và kiểu nén hai mức như CCITT Group 4 hay JBIG2 thường đưa một trang chữ xuống chỉ còn vài chục kilobyte.",
+            "Nén JPG cho bản màu thường cho ra 1–3 MB mỗi trang, nên một bản scan màu 20 trang dễ dàng vượt quá 20 MB."
+          ]
+        },
+        "Quét tài liệu chữ ở thang xám hoặc đen trắng với 300 PPI, thay vì quét màu ở 600, là cách tiết kiệm dung lượng hiệu quả nhất với bản scan."
+      ]
+    },
+    {
+      "h": "Cách nén trong PDF hoạt động",
+      "body": [
+        "Mỗi luồng dữ liệu (stream) trong PDF khai báo một bộ lọc (filter) cho biết nó được nén thế nào. Chọn bộ lọc tốt hơn, hoặc nén lại với thiết lập mạnh hơn, là cách các công cụ nén PDF giảm dung lượng file.",
+        {
+          "table": {
+            "head": [
+              "Bộ lọc",
+              "Phương pháp",
+              "Dùng cho"
+            ],
+            "rows": [
+              [
+                "`FlateDecode`",
+                "Không mất dữ liệu (zlib/deflate, như PNG và ZIP)",
+                "Chữ, đồ họa vector, ảnh không mất dữ liệu"
+              ],
+              [
+                "`DCTDecode`",
+                "JPEG có mất dữ liệu",
+                "Ảnh chụp"
+              ],
+              [
+                "`JPXDecode`",
+                "JPEG 2000",
+                "Ảnh chất lượng cao, bản scan lưu trữ"
+              ],
+              [
+                "`JBIG2Decode`",
+                "Hai mức, có hoặc không mất dữ liệu",
+                "Bản scan đen trắng"
+              ],
+              [
+                "`CCITTFaxDecode`",
+                "Nén fax hai mức",
+                "Bản scan đen trắng đời cũ"
+              ]
+            ]
+          }
+        },
+        "PDF 1.5 còn giới thiệu object stream và cross-reference stream, giúp nén cấu trúc bên trong của file. Lưu file với phiên bản PDF hiện đại sẽ bật các tính năng này."
+      ]
+    },
+    {
+      "h": "Cách giảm dung lượng file PDF",
+      "body": [
+        {
+          "ol": [
+            "Giảm độ phân giải ảnh: 150 PPI là đủ để đọc trên màn hình và gửi email, 300 PPI để in.",
+            "Nén lại ảnh chụp dưới dạng JPG ở chất lượng vừa phải; chuyển bản scan chữ sang thang xám hoặc đen trắng.",
+            "Dùng \"Lưu thành\" (Save As) hoặc lệnh tối ưu hóa thay vì \"Lưu\" (Save), để file được ghi lại từ đầu và bỏ các bản cập nhật tăng dần cũ.",
+            "Nhúng tập con font (chỉ các ký tự được dùng) thay vì toàn bộ font.",
+            "Xóa file đính kèm, lớp ẩn, ảnh thu nhỏ và dữ liệu biểu mẫu không dùng tới.",
+            "Nếu file vẫn quá lớn, hãy tách thành nhiều phần, hoặc chỉ gửi những trang cần thiết."
+          ]
+        },
+        "Ví dụ: một báo cáo 30 trang có mười ảnh điện thoại 4 MB nặng khoảng 40 MB. Giảm độ phân giải các ảnh đó xuống 150 PPI theo kích thước in khoảng 6 inch chiều rộng (900 điểm ảnh) và lưu JPG ở chất lượng 80% thường đưa mỗi ảnh xuống dưới 200 KB, và cả file còn khoảng 2–3 MB."
+      ]
+    },
+    {
+      "h": "Những điều cần lưu ý",
+      "body": [
+        "Nén quá mạnh cũng có cái giá của nó. Giảm độ phân giải xuống dưới 150 PPI khiến chữ nhỏ trong ảnh khó đọc, và JBIG2 có mất dữ liệu từng thay nhầm các chữ số trông giống nhau trong số liệu được scan, nên chế độ không mất dữ liệu an toàn hơn cho hóa đơn và hợp đồng.",
+        {
+          "note": "File PDF thường chứa dữ liệu cá nhân hoặc bí mật. Công cụ nén chạy trên trình duyệt xử lý file ngay trên máy bạn; còn dịch vụ trực tuyến tải file lên sẽ gửi nó tới máy chủ của người khác. Hãy kiểm tra bạn đang dùng loại nào trước khi nén hợp đồng, giấy tờ tùy thân hay hồ sơ y tế."
+        },
+        "Nhiều dịch vụ email giới hạn tệp đính kèm khoảng 20–25 MB, và một số biểu mẫu tải lên chỉ nhận 2–5 MB, nên hãy kiểm tra giới hạn trước khi quyết định nén đến mức nào."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Nén PDF có làm giảm chất lượng không?",
+      "a": "Các tối ưu hóa không mất dữ liệu như xóa đối tượng cũ và nén cấu trúc thì không. Giảm độ phân giải và nén lại ảnh có làm giảm chi tiết ảnh, nhưng ở 150 PPI trên màn hình thường không nhìn thấy được."
+    },
+    {
+      "q": "Vì sao PDF chỉ có vài trang mà nặng vậy?",
+      "a": "Gần như chắc chắn nó chứa ảnh lớn, trang scan lưu ở chế độ màu đầy đủ, hoặc font được nhúng toàn bộ. Riêng phần chữ chiếm rất ít dung lượng."
+    },
+    {
+      "q": "Vì sao mỗi lần lưu, file PDF lại nặng thêm?",
+      "a": "Nhiều trình chỉnh sửa dùng chế độ lưu tăng dần, nối thay đổi vào cuối file mà vẫn giữ các đối tượng cũ. Lưu một bản mới bằng Lưu thành hoặc tùy chọn tối ưu hóa sẽ loại bỏ chúng."
+    },
+    {
+      "q": "Ảnh trong PDF nên có độ phân giải bao nhiêu?",
+      "a": "Khoảng 150 PPI cho tài liệu đọc trên màn hình hoặc gửi email, và 300 PPI để in chuyên nghiệp. Cao hơn nữa chủ yếu chỉ làm tăng dung lượng."
+    }
+  ]
+}

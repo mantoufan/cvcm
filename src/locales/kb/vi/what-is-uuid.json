@@ -1,0 +1,171 @@
+{
+  "title": "UUID là gì? Định dạng, các phiên bản và so sánh v4 với v7 — cv.cm",
+  "description": "UUID là mã định danh 128 bit viết thành 36 ký tự, như f47ac10b-58cc-4372-a567-0e02b2c3d479. Tìm hiểu cấu trúc, các phiên bản theo RFC 9562, v4 với v7 và xác suất trùng lặp.",
+  "h1": "UUID là gì?",
+  "answer": "UUID (universally unique identifier, mã định danh duy nhất toàn cầu) là một số 128 bit dùng để gắn nhãn dữ liệu mà không cần một cơ quan trung tâm cấp phát ID. Nó được viết thành 32 chữ số thập lục phân chia làm năm nhóm, ví dụ `f47ac10b-58cc-4372-a567-0e02b2c3d479`. Tiêu chuẩn hiện hành, RFC 9562, định nghĩa nhiều phiên bản; phiên bản 4 hoàn toàn ngẫu nhiên, còn phiên bản 7 bắt đầu bằng dấu thời gian để ID sắp xếp được theo thời điểm tạo.",
+  "sections": [
+    {
+      "h": "Cách đọc một UUID",
+      "body": [
+        "Dạng văn bản có 36 ký tự: 32 chữ số hex cộng 4 dấu gạch ngang, chia nhóm 8-4-4-4-12. Ở dạng nhị phân, nó dài 16 byte. Hai vị trí mang siêu dữ liệu trong mọi UUID:",
+        {
+          "ul": [
+            "Phiên bản (version): chữ số đầu tiên của nhóm thứ ba. Trong `f47ac10b-58cc-4372-a567-0e02b2c3d479`, đó là `4`.",
+            "Biến thể (variant): chữ số đầu tiên của nhóm thứ tư. Với UUID chuẩn, nó là `8`, `9`, `a` hoặc `b`; ở đây là `a`."
+          ]
+        },
+        "GUID, tên gọi của Microsoft cho cùng khái niệm, dùng cùng định dạng. Chữ hex hoa và thường là tương đương; RFC 9562 khuyến nghị xuất ra chữ thường và nhận đầu vào không phân biệt hoa thường. Có hai giá trị đặc biệt: Nil UUID, toàn số 0, và Max UUID, toàn chữ `f`."
+      ]
+    },
+    {
+      "h": "Các phiên bản UUID",
+      "body": [
+        "RFC 9562, công bố tháng 5 năm 2024, thay thế RFC 4122, giữ lại các phiên bản 1 đến 5 và bổ sung 6, 7 và 8.",
+        {
+          "table": {
+            "head": [
+              "Phiên bản",
+              "Tạo từ",
+              "Sắp xếp được theo thời gian",
+              "Ứng dụng điển hình"
+            ],
+            "rows": [
+              [
+                "1",
+                "Dấu thời gian (đơn vị 100 ns kể từ 1582) + chuỗi đồng hồ + ID nút, thường là địa chỉ MAC",
+                "Không, khi ở dạng văn bản",
+                "Hệ thống cũ"
+              ],
+              [
+                "3",
+                "Mã băm MD5 của một namespace và một tên",
+                "Không",
+                "ID tất định (nên dùng v5)"
+              ],
+              [
+                "4",
+                "122 bit ngẫu nhiên",
+                "Không",
+                "ID đa dụng"
+              ],
+              [
+                "5",
+                "Mã băm SHA-1 của một namespace và một tên",
+                "Không",
+                "Cùng đầu vào luôn cho cùng UUID"
+              ],
+              [
+                "6",
+                "Các trường của phiên bản 1 sắp xếp lại, phần thời gian quan trọng nhất đứng đầu",
+                "Có",
+                "Chuyển đổi từ v1"
+              ],
+              [
+                "7",
+                "Unix time 48 bit tính bằng mili giây + các bit ngẫu nhiên",
+                "Có",
+                "Khóa cơ sở dữ liệu, log, sự kiện"
+              ],
+              [
+                "8",
+                "Cấu trúc tùy chỉnh do nhà cung cấp định nghĩa",
+                "Tùy trường hợp",
+                "Thử nghiệm hoặc riêng cho ứng dụng"
+              ]
+            ]
+          }
+        },
+        "Phiên bản 3 và 5 là tất định: băm namespace dành cho tên DNS cùng `example.com` cho ra cùng một UUID trên mọi máy. Chúng dùng MD5 và SHA-1 chỉ để phân tán bit, không nhằm mục đích bảo mật."
+      ]
+    },
+    {
+      "h": "Phiên bản 4 và phiên bản 7",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bit",
+              "Phiên bản 4",
+              "Phiên bản 7"
+            ],
+            "rows": [
+              [
+                "0–47",
+                "Ngẫu nhiên",
+                "Unix timestamp tính bằng mili giây"
+              ],
+              [
+                "48–51",
+                "Phiên bản `0100` (4)",
+                "Phiên bản `0111` (7)"
+              ],
+              [
+                "52–63",
+                "Ngẫu nhiên",
+                "Ngẫu nhiên, hoặc bộ đếm dưới mili giây"
+              ],
+              [
+                "64–65",
+                "Biến thể `10`",
+                "Biến thể `10`"
+              ],
+              [
+                "66–127",
+                "Ngẫu nhiên",
+                "Ngẫu nhiên"
+              ],
+              [
+                "Số bit ngẫu nhiên",
+                "122",
+                "Tối đa 74"
+              ]
+            ]
+          }
+        },
+        "Ví dụ phiên bản 7 trong RFC là `017f22e2-79b0-7cc3-98c4-dc0c0c07398f`. 12 chữ số hex đầu tiên, `017f22e279b0`, là 1.645.557.742.000 mili giây sau mốc Unix epoch, tức 2022-02-22 19:22:22 UTC.",
+        "Khác biệt thực tế nằm ở hiệu năng cơ sở dữ liệu. Khóa v4 ngẫu nhiên rơi vào vị trí bất kỳ trong chỉ mục B-tree, gây tách trang và rải thao tác ghi khắp chỉ mục. Khóa v7 sắp theo thời gian được nối gần cuối, giống số nguyên tự tăng, giúp thao tác chèn nhanh và chỉ mục gọn. Với khóa chính mới trong cơ sở dữ liệu, v7 thường là lựa chọn tốt hơn; với token không nên để lộ thời điểm tạo, hãy dùng v4."
+      ]
+    },
+    {
+      "h": "Duy nhất đến mức nào?",
+      "body": [
+        "Với 122 bit ngẫu nhiên, có khoảng 5,3 × 10^36 UUID phiên bản 4 khả dĩ. Theo giới hạn ngày sinh (birthday bound), bạn cần khoảng 2,7 × 10^18 UUID thì xác suất có một lần trùng lặp mới đạt 50%. Nếu tạo một tỷ UUID mỗi giây, việc đó mất khoảng 86 năm.",
+        "Trùng lặp thực tế đến từ nguồn ngẫu nhiên kém, không phải từ toán học. Một máy ảo được nhân bản với cùng trạng thái ngẫu nhiên, hoặc trình tạo dựa trên hàm không dùng cho mật mã như `Math.random()`, có thể lặp lại giá trị. Hãy dùng nguồn ngẫu nhiên an toàn về mật mã: `crypto.randomUUID()` trong trình duyệt và Node.js, `uuid.uuid4()` trong Python, hoặc `gen_random_uuid()` trong PostgreSQL.",
+        {
+          "note": "UUID là mã định danh, không phải bí mật. RFC 9562 cảnh báo không nên dùng chúng làm cơ chế bảo mật. Phiên bản 1 có thể lộ địa chỉ MAC và thời gian, phiên bản 7 cho biết bản ghi được tạo khi nào, và mọi UUID nằm trong URL đều có thể bị chia sẻ hoặc ghi vào log. Hãy kiểm tra quyền truy cập thay vì trông cậy vào việc UUID khó đoán."
+        }
+      ]
+    },
+    {
+      "h": "Lưu trữ UUID",
+      "body": [
+        {
+          "ul": [
+            "Dùng kiểu dữ liệu gốc nếu có, như `uuid` trong PostgreSQL: 16 byte thay vì 36 byte dạng văn bản.",
+            "Trong MySQL, lưu dưới dạng `BINARY(16)`; lưu dạng văn bản làm kích thước chỉ mục tăng hơn gấp đôi.",
+            "So sánh UUID không phân biệt hoa thường, hoặc chuẩn hóa về chữ thường khi nhận đầu vào.",
+            "Đừng suy diễn ý nghĩa từ UUID v4. Chỉ các bit phiên bản và biến thể mang thông tin."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "UUID và GUID khác nhau thế nào?",
+      "a": "Trên thực tế không khác gì. GUID là tên gọi mà Microsoft dùng, và GUID tuân theo cùng định dạng 128 bit và các phiên bản như UUID."
+    },
+    {
+      "q": "Hai UUID có bao giờ trùng nhau không?",
+      "a": "Về lý thuyết là có; trên thực tế thì không, khi được tạo bằng nguồn ngẫu nhiên an toàn. Xác suất trùng lặp vẫn không đáng kể cho tới khi có hơn một tỷ tỷ UUID phiên bản 4."
+    },
+    {
+      "q": "Nên dùng phiên bản UUID nào?",
+      "a": "Phiên bản 7 cho khóa cơ sở dữ liệu và mọi thứ có lợi khi sắp theo thời gian, phiên bản 4 khi ID không được để lộ gì, và phiên bản 5 khi cùng một đầu vào phải luôn cho cùng một ID."
+    },
+    {
+      "q": "Tạo UUID trong JavaScript thế nào?",
+      "a": "Gọi `crypto.randomUUID()`, hàm trả về UUID phiên bản 4 từ trình tạo số ngẫu nhiên an toàn về mật mã. Nó hoạt động trên trình duyệt hiện đại ở trang HTTPS và có sẵn dưới dạng hàm toàn cục trong Node.js 19 trở lên."
+    }
+  ]
+}

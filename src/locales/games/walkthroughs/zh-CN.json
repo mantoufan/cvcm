@@ -3841,5 +3841,339 @@
         "body": "MIT。Antoine Boucher，2010 年。源：https://github.com/antoinebou12/FlashGames"
       }
     ]
+  },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys 是免费的 FC 平台射击游戏，打开页面就会载入 ROM。每关一个目标，跳跃射击直到完成。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始游戏",
+        "body": "按 Start，选 Play Game，再用 A 依次确认：人数、模式、难度、起始关。",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "看清目标",
+        "body": "每关前的画面写着要做什么，比如“Defeat 5 enemies”，还有剩余命数。",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "跳跃射击",
+        "body": "A 在平台之间跳，B 开火。完成目标时右上角的数字会减少。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "zlib。源码：https://github.com/NovaSquirrel/DABG。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit 是免费的 FC 街机射击游戏，打开页面就会载入 ROM。你操纵地球、转动月球，撞碎一波波敌人。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "标题画面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "移动与旋转",
+        "body": "方向键移动地球。A 和 B 让月球绕地球转，月球撞到的东西都会被消灭。",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "撑过每一波",
+        "body": "敌人成排飞来。把月球挡在它们的路线上，保住左上角的命数。",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/pubby/lunarlimit。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 是免费的 FC 解谜游戏，打开页面就会载入 ROM。每个房间是一个小网格，有楼梯、熊，有时还有宝石。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "标题画面按 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "走到楼梯",
+        "body": "用方向键一步步走向楼梯。有宝石就先拿宝石。碰到熊就重来这一间。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/pubby/Ralph-4。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES 是免费的生命游戏沙盒，打开页面就会载入 ROM。你摆放细胞，规则决定接下来发生什么。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "打开网格",
+        "body": "网格上已经有一个滑翔机，光标在左上角。",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "放置细胞",
+        "body": "方向键移动，按 A 切换细胞。Select 清空整个网格。",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "运行",
+        "body": "按 Start。周围有 2 或 3 个邻居的细胞存活，空格周围正好 3 个邻居就诞生新细胞。再按 Start 停止。",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "zlib。源码：https://github.com/NovaSquirrel/NESLife。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX 是免费的 SFC 动作游戏，打开页面就会载入 ROM。你手动开电梯，让每位乘客满意。",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "看按键说明",
+        "body": "第一屏标出了跳、开门、电梯上行和电梯下行。按 Start。",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "开始上班",
+        "body": "标题画面再按一次 Start。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "开电梯",
+        "body": "走到控制台，用 X 和 A 上下移动轿厢，停在对的楼层，再按 Y 开那一层的门。别让电梯撞上楼顶或地面。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/undisbeliever/elevator-madness-dx。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave 是免费的 SFC 洞穴飞行游戏，打开页面就会载入 ROM。一个键让蝙蝠留在空中。",
+    "steps": [
+      {
+        "id": "play",
+        "title": "起飞",
+        "body": "按 Start，点 B 往上扑，两次点击之间让它下沉。沿着白色通道飞。",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "撞墙再来",
+        "body": "碰到棕色洞壁会显示 GAME OVER 和距离。按 Start 再来一局。",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/undisbeliever/bat-cave。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes 是免费的 SFC 解谜游戏，打开页面就会载入 ROM。把管子铺到起点和终点连通为止。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "看棋盘",
+        "body": "开局棋盘是空的，左边是管子队列。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "铺管子",
+        "body": "方向键移动光标，按 B 放下下一块。用一条不断的管道连起起点和终点。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/undisbeliever/pipes。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer 是免费的 SFC 平台跳跃游戏，打开页面就会载入 ROM。五个城堡关卡，终点都是一扇门。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "进入城堡",
+        "body": "第一个房间地上有两只小怪，出口门在右边。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "跑和跳",
+        "body": "方向键走，按住 Y 跑，按 B 跳过小怪走到门口。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/undisbeliever/castle_platformer。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets 是免费的 MD 平台动作游戏，打开页面就会载入 ROM。每一关都是一颗能绕着跑一圈的小星球。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开始",
+        "body": "选 START。有密码的话选 PASSWORD 去后面的关卡。",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "关卡标题",
+        "body": "每关开头会显示关卡名，比如 PLANELAGO 1 · LAFTO。",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "绕星球跑",
+        "body": "你一跑星球就转。用 A、B 或 C 跳，在顶部倒计时结束前通过这颗星球。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "zlib。源码：https://github.com/sikthehedgehog/miniplanets。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD 是免费的 MD 连锁反应游戏，打开页面就会载入 ROM。把格子装满到炸开，占领整个棋盘。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "标题画面",
+        "body": "按任意键进入主菜单。",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "设置",
+        "body": "选棋盘宽高，把玩家设为人或电脑，然后按绿色播放键。",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "放原子",
+        "body": "移动光标，按 A 加一个原子。角上的格子 2 个就炸，边上 3 个，中间 4 个。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/Nightwolf-47/KleleAtoms-MD。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition 是免费的 Roguelike，打开页面就会载入 ROM。每一局都会生成新地牢。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "开一局",
+        "body": "标题画面按 Start，菜单里选 Random run。",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "选职业",
+        "body": "战士最耐打，盗贼擅长潜行，猎人远程，法师用法杖。选 Yes 确认。",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "探索",
+        "body": "方向键移动，走向敌人就是攻击。捡道具，Food 条低了就吃东西，找到下楼的楼梯。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "GPL-3.0。这一版的源码：https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament 是免费的 GBA 解谜游戏，打开页面就会载入 ROM。你来布置地牢，勇者只管照指令走。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "看关卡卡片",
+        "body": "每关开头是编号和一条规则，比如“Keys open doors”。按 A。",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "布置并出发",
+        "body": "看 HERO'S ACTIONS，用 A 把 YOUR ITEMS 里的道具摆到地图上，再按 Start 看他走。",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "代码 MPL-2.0，美术 CC BY 4.0，音乐 VWolfdog CC-BY 3.0（https://opengameart.org/content/soft-mysterious-harp-loop）。源码：https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament。商业 ROM 不托管。"
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy 是免费的 GB 生存游戏，打开页面就会载入 ROM。一天一天地决定谁能吃上饭。",
+    "steps": [
+      {
+        "id": "start",
+        "title": "躲进地堡",
+        "body": "标题画面和空袭场景一路按 A，然后选起始物资箱。",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "清点物资",
+        "body": "每天开始会显示食物、水和医疗包的数量。",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "分配物资",
+        "body": "移到 Mike、Rose 或 Jeff，按 A 给他食物、水或医疗包。分完选 OK。",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "许可",
+        "body": "MIT。源码：https://github.com/UrbanZero/bunkerboy。商业 ROM 不托管。"
+      }
+    ]
   }
 }

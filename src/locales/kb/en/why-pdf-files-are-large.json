@@ -1,0 +1,156 @@
+{
+  "title": "Why are PDF files so large? Causes and how to shrink them — cv.cm",
+  "description": "Big PDFs usually come from high-resolution images, scanned pages, embedded fonts or saved edit history. See what takes the space and how to reduce it safely.",
+  "h1": "Why is my PDF file so large?",
+  "answer": "Most oversized PDFs are large because of images: full-resolution photos or scanned pages stored with weak compression. Other causes are fully embedded fonts, especially Chinese, Japanese and Korean fonts, edit history kept by incremental saves, duplicated images, and attached files. Downsampling images to 150 PPI for screen reading, recompressing them, and saving a clean copy usually cuts the size by half or more.",
+  "sections": [
+    {
+      "h": "What actually takes up space in a PDF",
+      "body": [
+        "A PDF, standardized as ISO 32000, is a collection of objects: page descriptions, fonts, images and metadata, each optionally compressed. Text and vector drawings are tiny; a full page of text often needs only a few kilobytes. Size problems come from the heavy objects.",
+        {
+          "table": {
+            "head": [
+              "Cause",
+              "Typical impact",
+              "Why it happens"
+            ],
+            "rows": [
+              [
+                "Photos at camera resolution",
+                "1–10 MB per image",
+                "A 12-megapixel photo is placed on a page that needs a fraction of those pixels"
+              ],
+              [
+                "Scanned pages",
+                "0.5–5 MB per page",
+                "Each page is a full-color image, even if it holds only black text"
+              ],
+              [
+                "Embedded fonts",
+                "Tens of KB to 20+ MB",
+                "Whole font files embedded instead of just the used characters"
+              ],
+              [
+                "Incremental saves",
+                "Grows with every edit",
+                "Changes are appended; old versions of objects stay in the file"
+              ],
+              [
+                "Duplicate images",
+                "Multiplies image size",
+                "A logo stored once per page instead of shared"
+              ],
+              [
+                "Attachments, layers, forms",
+                "Varies",
+                "Embedded files, hidden layers and form scripts"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Scanned pages: the arithmetic",
+      "body": [
+        "An A4 page scanned at 300 PPI is 2480 × 3508 = 8,699,840 pixels. In color at 3 bytes per pixel, that is about 26.1 MB uncompressed per page.",
+        {
+          "ul": [
+            "In grayscale (1 byte per pixel) the same page is about 8.7 MB uncompressed.",
+            "In black and white (1 bit per pixel) it drops to about 1.09 MB, and bilevel compression such as CCITT Group 4 or JBIG2 often brings a text page down to tens of kilobytes.",
+            "JPG compression on the color version typically yields 1–3 MB per page, so a 20-page color scan easily exceeds 20 MB."
+          ]
+        },
+        "Scanning text documents in grayscale or black and white at 300 PPI, rather than color at 600, is the single biggest saving for scans."
+      ]
+    },
+    {
+      "h": "How PDF compression works",
+      "body": [
+        "PDF streams declare a filter that says how they are compressed. Choosing a better filter, or recompressing with stronger settings, is how compression tools shrink files.",
+        {
+          "table": {
+            "head": [
+              "Filter",
+              "Method",
+              "Used for"
+            ],
+            "rows": [
+              [
+                "`FlateDecode`",
+                "Lossless (zlib/deflate, as in PNG and ZIP)",
+                "Text, vector graphics, lossless images"
+              ],
+              [
+                "`DCTDecode`",
+                "Lossy JPEG",
+                "Photos"
+              ],
+              [
+                "`JPXDecode`",
+                "JPEG 2000",
+                "High-quality images, archival scans"
+              ],
+              [
+                "`JBIG2Decode`",
+                "Bilevel, lossless or lossy",
+                "Black-and-white scans"
+              ],
+              [
+                "`CCITTFaxDecode`",
+                "Bilevel fax compression",
+                "Older black-and-white scans"
+              ]
+            ]
+          }
+        },
+        "PDF 1.5 also introduced object streams and cross-reference streams, which compress the file's internal structure. Saving with a modern PDF version enables them."
+      ]
+    },
+    {
+      "h": "How to make a PDF smaller",
+      "body": [
+        {
+          "ol": [
+            "Downsample images: 150 PPI is enough for on-screen reading and email, 300 PPI for print.",
+            "Recompress photos as JPG at a moderate quality; convert text scans to grayscale or black and white.",
+            "Use \"Save As\" or an optimize command instead of \"Save\", which rewrites the file and drops old incremental updates.",
+            "Embed font subsets (only the characters used) rather than complete fonts.",
+            "Remove attachments, hidden layers, thumbnails and unused form data you do not need.",
+            "If one file is still too big, split it into parts, or send only the pages required."
+          ]
+        },
+        "Worked example: a 30-page report with ten 4 MB phone photos is about 40 MB. Downsampling those photos to 150 PPI at their printed size of about 6 inches wide (900 pixels) and saving as JPG at 80% quality typically brings each under 200 KB, and the whole file to around 2–3 MB."
+      ]
+    },
+    {
+      "h": "What to watch out for",
+      "body": [
+        "Aggressive compression has costs. Downsampling below 150 PPI makes small text in images hard to read, and lossy JBIG2 has in the past substituted similar-looking digits in scanned numbers, so lossless modes are safer for invoices and contracts.",
+        {
+          "note": "PDFs often contain personal or confidential data. A compressor that runs in your browser processes the file locally; an online service that uploads the file sends it to someone else's server. Check which kind you are using before compressing contracts, IDs or medical records."
+        },
+        "Many email services cap attachments at around 20–25 MB, and some upload forms accept only 2–5 MB, so check the limit before deciding how far to compress."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Does compressing a PDF reduce quality?",
+      "a": "Lossless optimizations such as removing old objects and compressing structure do not. Downsampling and recompressing images does reduce image detail, which is usually invisible at 150 PPI on screen."
+    },
+    {
+      "q": "Why is a PDF with only a few pages so big?",
+      "a": "It almost certainly contains large images, a scanned page saved in full color, or a fully embedded font. Text alone takes very little space."
+    },
+    {
+      "q": "Why does my PDF get bigger every time I save?",
+      "a": "Many editors use incremental saves, appending changes to the end of the file while keeping the old objects. Saving a fresh copy with Save As or an optimize option removes them."
+    },
+    {
+      "q": "What resolution should images in a PDF be?",
+      "a": "Around 150 PPI for documents read on screen or emailed, and 300 PPI for professional printing. Higher values mostly add size."
+    }
+  ]
+}

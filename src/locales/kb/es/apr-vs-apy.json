@@ -1,0 +1,180 @@
+{
+  "title": "APR vs APY (TAN vs TAE): diferencia, fórmula y ejemplos — cv.cm",
+  "description": "La APR no incluye capitalización; la APY sí. Fórmula APY = (1 + APR/n)^n − 1, por qué un 5 % APR mensual es 5.116 % APY y cómo la APR suma comisiones.",
+  "h1": "APR vs APY: ¿cuál es la diferencia?",
+  "answer": "La APR (tasa de porcentaje anual, similar a la TAN o tasa nominal anual) es una tasa anual que no incluye la capitalización. La APY (rendimiento porcentual anual, similar a la TAE o tasa efectiva anual) es la tasa que realmente ganas o pagas en un año una vez que los intereses se suman al saldo y empiezan a generar intereses a su vez. La conversión es `APY = (1 + APR/n)^n − 1`, donde `n` es el número de periodos de capitalización al año, así que un 5 % APR con capitalización mensual equivale a un 5.116 % APY aproximadamente.",
+  "sections": [
+    {
+      "h": "Las dos tasas, lado a lado",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "APR",
+              "APY"
+            ],
+            "rows": [
+              [
+                "Significado",
+                "Annual percentage rate (tasa de porcentaje anual)",
+                "Annual percentage yield (también llamada tasa efectiva anual)"
+              ],
+              [
+                "Incluye capitalización",
+                "No",
+                "Sí"
+              ],
+              [
+                "Se suele indicar en",
+                "Préstamos, hipotecas, tarjetas de crédito",
+                "Cuentas de ahorro, certificados de depósito, depósitos"
+              ],
+              [
+                "Incluye comisiones",
+                "En préstamos, incluye ciertas comisiones del prestamista",
+                "No; refleja solo los intereses"
+              ],
+              [
+                "Relación",
+                "Menor o igual",
+                "Igual cuando los intereses se capitalizan una vez al año; mayor en los demás casos"
+              ]
+            ]
+          }
+        },
+        "Los prestamistas suelen anunciar la APR, que parece más baja, y los bancos la APY, que parece más alta. Ninguna engaña por sí sola, pero comparar una APR con una APY es comparar medidas distintas."
+      ]
+    },
+    {
+      "h": "La fórmula y un ejemplo práctico",
+      "body": [
+        "Con `n` periodos de capitalización al año, cada periodo genera `APR/n`. Al cabo de un año, cada unidad de dinero ha crecido `(1 + APR/n)^n`. Resta 1 para obtener el rendimiento:",
+        {
+          "ol": [
+            "Escribe la APR en decimal: 5 % es `0.05`.",
+            "Divide entre el número de periodos: mensual es `0.05 / 12 = 0.0041667`.",
+            "Suma 1 y eleva a la cantidad de periodos: `1.0041667^12 = 1.0511619`.",
+            "Resta 1: `0.0511619`, o un 5.116 % APY."
+          ]
+        },
+        "Sobre un depósito de $10,000, eso son $511.62 de intereses en un año en lugar de los $500 que daría un 5 % simple. Para la conversión inversa, `APR = n × ((1 + APY)^(1/n) − 1)`: un 5 % APY con capitalización mensual corresponde a un 4.889 % APR aproximadamente."
+      ]
+    },
+    {
+      "h": "Cómo cambia el rendimiento según la frecuencia de capitalización",
+      "body": [
+        "Cuanto más a menudo se capitalizan los intereses, mayor es la APY, pero la ganancia se reduce rápidamente:",
+        {
+          "table": {
+            "head": [
+              "APR",
+              "Capitalización",
+              "`n`",
+              "APY"
+            ],
+            "rows": [
+              [
+                "5%",
+                "Anual",
+                "1",
+                "5.000%"
+              ],
+              [
+                "5%",
+                "Semestral",
+                "2",
+                "5.063%"
+              ],
+              [
+                "5%",
+                "Trimestral",
+                "4",
+                "5.095%"
+              ],
+              [
+                "5%",
+                "Mensual",
+                "12",
+                "5.116%"
+              ],
+              [
+                "5%",
+                "Diaria",
+                "365",
+                "5.127%"
+              ],
+              [
+                "5%",
+                "Continua",
+                "∞",
+                "5.127% (`e^0.05 − 1`)"
+              ],
+              [
+                "12%",
+                "Mensual",
+                "12",
+                "12.683%"
+              ],
+              [
+                "24%",
+                "Mensual",
+                "12",
+                "26.824%"
+              ]
+            ]
+          }
+        },
+        "Con las tasas de una cuenta de ahorro, la diferencia entre capitalización mensual y diaria es de alrededor de una centésima de punto porcentual. Con las tasas de una tarjeta de crédito es grande: una tarjeta con un 24 % APR que capitaliza mensualmente cuesta casi un 27 % al año sobre un saldo que nunca se amortiza."
+      ]
+    },
+    {
+      "h": "La APR de un préstamo también incluye comisiones",
+      "body": [
+        "En los préstamos, la APR es más amplia que la tasa de interés. La Oficina de Protección Financiera del Consumidor de EE. UU. (CFPB) describe la APR como la tasa de interés más otros costos del préstamo, como comisiones de corretaje, puntos de descuento y algunos gastos de cierre, expresada como porcentaje anual. Según la ley estadounidense Truth in Lending Act, los prestamistas deben informarla para que los prestatarios puedan comparar ofertas.",
+        {
+          "ul": [
+            "Una hipoteca al 6.5 % de interés con $6,000 en puntos y comisiones mostrará una APR superior al 6.5 %.",
+            "Dos préstamos con la misma tasa de interés pueden tener APR distintas porque sus comisiones son diferentes.",
+            "Qué comisiones se incluyen lo fija la normativa, y algunos costos, como la tasación o los gastos de título en muchas hipotecas, quedan fuera."
+          ]
+        },
+        "La APR de una tarjeta de crédito funciona de otra forma: es la tasa de interés anual, que normalmente se aplica como tasa diaria (APR dividida entre 365) sobre el saldo, y no incluye cuotas anuales ni recargos por pago tardío."
+      ]
+    },
+    {
+      "h": "Comparar ofertas de forma justa",
+      "body": [
+        {
+          "ul": [
+            "Compara APR con APR, o APY con APY. Si dos ofertas usan medidas distintas, convierte una en la otra con la fórmula anterior.",
+            "Revisa la frecuencia de capitalización; forma parte de las condiciones y cambia la tasa efectiva.",
+            "En los préstamos, compara también el importe total a devolver y el plazo. Un plazo más largo puede bajar la cuota mensual y a la vez aumentar el total de intereses.",
+            "Las tasas promocionales y variables pueden cambiar. La APR o APY indicada solo se aplica mientras la tasa no cambie."
+          ]
+        },
+        {
+          "note": "Esta página explica cómo se calculan las tasas. No es asesoramiento financiero; lee la información oficial de cualquier producto y considera consultar a un asesor cualificado antes de decidir."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es mejor una APY más alta?",
+      "a": "Para el dinero que depositas, sí: una APY más alta significa más intereses ganados al año, siempre que la tasa no sea promocional y la cuenta no tenga comisiones que la compensen. En una deuda, el costo anual equivalente debe ser lo más bajo posible."
+    },
+    {
+      "q": "¿La APR y la APY pueden ser iguales?",
+      "a": "Sí, cuando los intereses se capitalizan una vez al año y, en los préstamos, no hay comisiones adicionales. Con una capitalización más frecuente, la APY siempre es mayor que la APR."
+    },
+    {
+      "q": "¿Por qué los bancos anuncian la APY y los prestamistas la APR?",
+      "a": "Las normas de EE. UU. exigen que las cuentas de depósito informen la APY y los préstamos la APR. Además, así el ahorro parece más rentable y el crédito más barato."
+    },
+    {
+      "q": "¿Cuál es la tasa mensual de un 24 % APR?",
+      "a": "La tasa periódica es `24% / 12 = 2%` al mes. Capitalizada durante doce meses es `1.02^12 − 1`, alrededor de un 26.8 % al año."
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "title": "ISO 8601 là gì? Định dạng ngày, giờ, số tuần và khoảng thời gian — cv.cm",
+  "description": "ISO 8601 viết ngày theo dạng YYYY-MM-DD và giờ kèm độ lệch UTC. Tìm hiểu các dạng ngày, giờ, ngày theo tuần, khoảng thời gian, và cách RFC 3339 thu hẹp chuẩn này cho web.",
+  "h1": "Định dạng ngày ISO 8601 là gì?",
+  "answer": "ISO 8601 là tiêu chuẩn quốc tế để viết ngày giờ dưới dạng văn bản. Dạng cốt lõi sắp các đơn vị từ lớn đến nhỏ: `2026-10-14` cho một ngày và `2026-10-14T09:30:00+02:00` cho một thời điểm kèm độ lệch so với UTC. Chuẩn này còn định nghĩa ngày theo tuần như `2026-W42-3`, ngày thứ tự trong năm và khoảng thời gian như `P3DT4H`. Vì rõ ràng, không thể hiểu nhầm và sắp xếp theo bảng chữ cái cũng đúng thứ tự thời gian, hầu hết API và định dạng dữ liệu đều dùng nó.",
+  "sections": [
+    {
+      "h": "Vì sao là YYYY-MM-DD",
+      "body": [
+        "`03/04/2026` là ngày 3 tháng 4 ở phần lớn thế giới, kể cả Việt Nam, nhưng lại là ngày 4 tháng 3 ở Hoa Kỳ. ISO 8601 loại bỏ việc phải đoán bằng cách cố định một thứ tự, năm rồi tháng rồi ngày, với năm bốn chữ số, tháng và ngày hai chữ số có thêm số 0 ở đầu.",
+        "Lợi ích thứ hai là sắp xếp: chuỗi dạng `YYYY-MM-DD` sắp theo bảng chữ cái cũng đúng thứ tự của chính các ngày đó, nên tên file như `2026-10-14-report.pdf` luôn xếp đúng thứ tự trong mọi thư mục.",
+        {
+          "table": {
+            "head": [
+              "Dạng",
+              "Mở rộng (có dấu phân cách)",
+              "Cơ bản (rút gọn)"
+            ],
+            "rows": [
+              [
+                "Ngày theo lịch",
+                "`2026-10-14`",
+                "`20261014`"
+              ],
+              [
+                "Ngày thứ tự (ngày thứ mấy trong năm)",
+                "`2026-287`",
+                "`2026287`"
+              ],
+              [
+                "Ngày theo tuần",
+                "`2026-W42-3`",
+                "`2026W423`"
+              ],
+              [
+                "Giờ trong ngày",
+                "`09:30:00`",
+                "`093000`"
+              ],
+              [
+                "Ngày giờ theo UTC",
+                "`2026-10-14T09:30:00Z`",
+                "`20261014T093000Z`"
+              ],
+              [
+                "Ngày giờ kèm độ lệch",
+                "`2026-10-14T11:30:00+02:00`",
+                "`20261014T113000+0200`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Giờ, múi giờ và chữ Z",
+      "body": [
+        "Phần giờ đứng sau ngày, cách nhau bằng chữ `T`. Giờ dùng định dạng 24 giờ, và phần lẻ của giây đứng sau dấu chấm thập phân: `09:30:00.250`.",
+        {
+          "ul": [
+            "`Z` (đọc là \"Zulu\") nghĩa là giờ theo UTC: `2026-10-14T09:30:00Z`.",
+            "Độ lệch như `+02:00` hoặc `-05:00` cho biết giờ địa phương và khoảng cách của nó so với UTC. `2026-10-14T11:30:00+02:00` là cùng thời điểm với ví dụ UTC ở trên.",
+            "Giờ không có `Z` và không có độ lệch là giờ địa phương của một múi giờ không xác định. Nó vẫn là ISO 8601 hợp lệ, nhưng hệ thống khác không thể biết nó chỉ thời điểm nào."
+          ]
+        },
+        "Độ lệch không phải là múi giờ. `+01:00` có thể là Paris vào mùa đông hoặc Lagos quanh năm. ISO 8601 chỉ ghi độ lệch; quy tắc múi giờ đến từ nguồn khác, như cơ sở dữ liệu múi giờ IANA."
+      ]
+    },
+    {
+      "h": "Ngày theo tuần và số tuần",
+      "body": [
+        "Tuần ISO bắt đầu từ thứ Hai, và tuần 1 là tuần chứa ngày thứ Năm đầu tiên của năm (tương đương với tuần chứa ngày 4 tháng 1). Ngày theo tuần được viết là năm, `W`, số tuần, rồi thứ trong tuần từ 1 (thứ Hai) đến 7 (Chủ nhật).",
+        "Vì tuần không bị chia cắt giữa hai năm, năm đánh số tuần ISO có thể khác năm dương lịch ở các ngày giáp ranh:",
+        {
+          "table": {
+            "head": [
+              "Ngày dương lịch",
+              "Ngày theo tuần ISO",
+              "Vì sao"
+            ],
+            "rows": [
+              [
+                "2021-01-01 (thứ Sáu)",
+                "`2020-W53-5`",
+                "Thuộc tuần bắt đầu từ thứ Hai 28/12/2020"
+              ],
+              [
+                "2024-12-30 (thứ Hai)",
+                "`2025-W01-1`",
+                "Tuần đó chứa thứ Năm 2/1/2025"
+              ],
+              [
+                "2026-01-01 (thứ Năm)",
+                "`2026-W01-4`",
+                "Chính ngày 1 tháng 1 là thứ Năm"
+              ],
+              [
+                "2027-01-01 (thứ Sáu)",
+                "`2026-W53-5`",
+                "Năm 2026 bắt đầu vào thứ Năm nên có 53 tuần"
+              ]
+            ]
+          }
+        },
+        "Một năm có 52 hoặc 53 tuần ISO. Số tuần trong lịch kiểu Mỹ, thường bắt đầu từ Chủ nhật và luôn xếp ngày 1 tháng 1 vào tuần 1, có thể lệch một so với số tuần ISO."
+      ]
+    },
+    {
+      "h": "Khoảng thời gian và khoảng ngày",
+      "body": [
+        "Một khoảng thời gian (duration) bắt đầu bằng `P` (period). Phần ngày đứng trước, sau đó là `T`, rồi đến phần giờ. Các phần bằng 0 có thể bỏ qua.",
+        {
+          "table": {
+            "head": [
+              "Khoảng thời gian",
+              "Ý nghĩa"
+            ],
+            "rows": [
+              [
+                "`P3DT4H`",
+                "3 ngày 4 giờ"
+              ],
+              [
+                "`PT30M`",
+                "30 phút"
+              ],
+              [
+                "`P30M`",
+                "30 tháng, không phải phút: chữ `T` rất quan trọng"
+              ],
+              [
+                "`P1Y2M10D`",
+                "1 năm, 2 tháng và 10 ngày"
+              ],
+              [
+                "`P2W`",
+                "2 tuần"
+              ],
+              [
+                "`PT0.5S`",
+                "Nửa giây"
+              ]
+            ]
+          }
+        },
+        "Một khoảng (interval) nối hai phần bằng dấu gạch chéo: `2026-10-14/2026-10-20` (bắt đầu và kết thúc), `2026-10-14T09:00Z/PT2H` (bắt đầu và độ dài), hoặc `P1D/2026-10-14` (độ dài và kết thúc). Khoảng thời gian tính bằng năm và tháng không có độ dài cố định tính bằng giây, nên phần mềm cộng chúng theo lịch chứ không theo một số giây cố định."
+      ]
+    },
+    {
+      "h": "RFC 3339: hồ sơ chặt chẽ dành cho web",
+      "body": [
+        "ISO 8601 cho phép rất nhiều biến thể, khiến trình phân tích đầy đủ trở nên phức tạp. RFC 3339 chọn ra một hồ sơ (profile) cho các giao thức Internet, và phần lớn API JSON, feed Atom và định dạng log đều tuân theo nó.",
+        {
+          "ul": [
+            "Bắt buộc có đầy đủ ngày và giờ, luôn ở dạng mở rộng: `2026-10-14T09:30:00Z`.",
+            "Mọi timestamp phải có `Z` hoặc độ lệch dạng số như `+02:00`; không cho phép giờ địa phương không có độ lệch.",
+            "Ngày theo tuần, ngày thứ tự và khoảng thời gian không thuộc hồ sơ này.",
+            "`-00:00` cho biết thời gian theo UTC nhưng không rõ độ lệch địa phương ban đầu.",
+            "RFC lưu ý có thể dùng dấu cách thay cho `T` để dễ đọc, một dạng mà nhiều cơ sở dữ liệu hiển thị."
+          ]
+        },
+        {
+          "note": "Để tạo chuỗi RFC 3339 trong JavaScript, dùng `new Date().toISOString()`. Hàm này luôn trả về giờ UTC kèm mili giây, ví dụ `2026-10-14T09:30:00.000Z`."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Chữ T trong ngày ISO 8601 nghĩa là gì?",
+      "a": "Chữ `T` ngăn cách ngày với giờ, như trong `2026-10-14T09:30:00`. RFC 3339 cũng chấp nhận dấu cách ở vị trí đó để dễ đọc."
+    },
+    {
+      "q": "Chữ Z ở cuối timestamp nghĩa là gì?",
+      "a": "`Z` nghĩa là giờ theo UTC, độ lệch bằng 0. `09:30:00Z` và `09:30:00+00:00` mô tả cùng một thời điểm."
+    },
+    {
+      "q": "ISO 8601 có giống RFC 3339 không?",
+      "a": "RFC 3339 là tập con chặt chẽ hơn của ISO 8601 dành cho Internet. Mọi timestamp RFC 3339 đều là ISO 8601 hợp lệ, nhưng ISO 8601 còn cho phép những dạng RFC 3339 không có, như ngày theo tuần và khoảng thời gian."
+    },
+    {
+      "q": "Tuần 1 trong ISO 8601 là tuần nào?",
+      "a": "Tuần 1 là tuần từ thứ Hai đến Chủ nhật có chứa ngày thứ Năm đầu tiên của năm. Vì vậy ngày 1 tháng 1 có thể rơi vào tuần 52 hoặc 53 của năm trước."
+    }
+  ]
+}

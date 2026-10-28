@@ -1,0 +1,137 @@
+{
+  "title": "¿Qué es HEIC? Diferencias con JPG y cómo abrir archivos HEIC — cv.cm",
+  "description": "HEIC es el formato de fotos del iPhone: HEIF comprimido con HEVC, la mitad de peso que un JPG con calidad similar. Quién puede abrirlo y cuándo convertirlo.",
+  "h1": "¿Qué es un archivo HEIC?",
+  "answer": "HEIC es una foto guardada en el formato High Efficiency Image File Format (HEIF) cuyos píxeles se comprimen con HEVC, el códec de video también llamado H.265. iPhone y iPad lo usan por defecto desde iOS 11 porque mantiene una calidad similar ocupando aproximadamente la mitad que un JPG. Se abre de forma nativa en dispositivos Apple y en versiones recientes de Windows y Android, pero muchos sitios web y programas antiguos siguen esperando un JPG.",
+  "sections": [
+    {
+      "h": "HEIF, HEIC y HEVC: tres nombres, un archivo",
+      "body": [
+        "HEIF es el estándar del contenedor (ISO/IEC 23008-12). Define cómo se empaquetan en un solo archivo las imágenes, miniaturas, mapas de profundidad y metadatos, y se basa en la misma estructura de cajas (boxes) que el video MP4.",
+        "HEVC es el códec que comprime los píxeles. Un archivo HEIF cuyas imágenes usan HEVC recibe la marca `heic` y normalmente la extensión `.heic`. El mismo contenedor admite otros códecs: con AV1 dentro se convierte en AVIF.",
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Qué es",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "HEIF",
+                "Formato contenedor para imágenes y secuencias de imágenes",
+                "La estructura del archivo"
+              ],
+              [
+                "HEVC (H.265)",
+                "Método de compresión de los píxeles",
+                "El códec que lleva dentro"
+              ],
+              [
+                "HEIC",
+                "HEIF + HEVC, el archivo que genera un iPhone",
+                "IMG_0042.HEIC"
+              ],
+              [
+                "AVIF",
+                "Contenedor tipo HEIF + códec AV1",
+                "photo.avif"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Por qué los teléfonos guardan HEIC en lugar de JPG",
+      "body": [
+        "JPEG data de 1992. HEVC usa bloques más grandes y adaptables y una mejor predicción, así que una foto HEIC suele ocupar entre un 40 y un 50 % menos que un JPG de calidad visual similar. En un teléfono con miles de fotos, ese ahorro se mide en gigabytes.",
+        "HEIC también permite cosas que JPG no puede:",
+        {
+          "ul": [
+            "Profundidad de color de 16 bits y gama amplia (Display P3) sin bandas, mientras que el JPG básico se queda en 8 bits.",
+            "Transparencia, mapas de profundidad para el desenfoque del modo Retrato y varias imágenes en un solo archivo (fotogramas de Live Photos, ráfagas).",
+            "Ediciones como la rotación guardadas como instrucciones, de modo que los píxeles originales quedan intactos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Dónde se abre HEIC y dónde no",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Plataforma",
+              "¿Abre HEIC?"
+            ],
+            "rows": [
+              [
+                "iPhone, iPad, Mac",
+                "Sí, de forma nativa"
+              ],
+              [
+                "Windows 10/11",
+                "Con las extensiones HEIF y HEVC de Microsoft Store"
+              ],
+              [
+                "Android",
+                "La mayoría de los teléfonos con Android 10 o posterior pueden mostrarlo; la edición varía"
+              ],
+              [
+                "Navegadores web",
+                "Safari 17+ lo muestra; la mayoría de los demás navegadores no, por eso los sitios web rara vez lo aceptan"
+              ],
+              [
+                "Formularios de subida y software antiguo",
+                "Suelen rechazarlo; JPG es la opción segura"
+              ]
+            ]
+          }
+        },
+        "Cuando compartes una foto HEIC por Mail, Mensajes o AirDrop, el iPhone a menudo la convierte a JPG automáticamente. Copiar los archivos por cable o desde una carpeta en la nube conserva el HEIC original."
+      ]
+    },
+    {
+      "h": "Cuándo convertir HEIC a JPG",
+      "body": [
+        "Conserva HEIC como archivo maestro: ocupa menos y guarda más color. Convierte una copia cuando el destino no dependa de ti:",
+        {
+          "ul": [
+            "Formularios de subida para visados, solicitudes de empleo y sitios del gobierno, que suelen admitir solo JPG o PNG.",
+            "Sitios web y blogs, donde los navegadores de la mayoría de los visitantes no pueden mostrar HEIC.",
+            "Editores de fotos antiguos, quioscos de impresión y software de oficina."
+          ]
+        },
+        "Al convertir a JPG la imagen se vuelve a comprimir una vez, así que elige una calidad de entre el 85 y el 92 % para que se vea idéntica. Si necesitas transparencia, convierte a PNG."
+      ]
+    },
+    {
+      "h": "Cambiar el formato predeterminado en un iPhone",
+      "body": [
+        "Para que la cámara guarde JPG a partir de ahora, abre Ajustes › Cámara › Formatos y elige Más compatible. Las fotos ya tomadas siguen en HEIC. Con Más compatible el video también se graba en H.264 en lugar de HEVC, así que los archivos ocupan más.",
+        {
+          "note": "Las fotos HEIC conservan los metadatos EXIF, incluida la ubicación GPS si Localización está activada para la Cámara. Convertir el archivo no los elimina automáticamente; bórralos antes de publicar una foto."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿HEIC tiene mejor calidad que JPG?",
+      "a": "Con el mismo tamaño de archivo, sí: la compresión HEVC conserva más detalle y admite color de 10 bits. Con la misma calidad, HEIC ocupa aproximadamente la mitad."
+    },
+    {
+      "q": "¿Se pierde calidad al convertir HEIC a JPG?",
+      "a": "Un poco, porque el JPG se vuelve a comprimir. Con una calidad del 85–92 % la diferencia no se aprecia en una visualización normal."
+    },
+    {
+      "q": "¿Se puede abrir HEIC en Windows?",
+      "a": "Sí. Windows 10 y 11 abren HEIC tras instalar Extensiones de imagen HEIF y Extensiones de vídeo HEVC desde Microsoft Store; también puedes convertir el archivo a JPG en el navegador."
+    },
+    {
+      "q": "¿HEIC es lo mismo que HEIF?",
+      "a": "HEIC es un tipo de archivo HEIF: el contenedor HEIF con imágenes comprimidas con HEVC. Los dos nombres se suelen usar indistintamente."
+    }
+  ]
+}

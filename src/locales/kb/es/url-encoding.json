@@ -1,0 +1,169 @@
+{
+  "title": "Codificación URL (percent-encoding) explicada con ejemplos — cv.cm",
+  "description": "La codificación URL cambia caracteres no seguros por % y dos dígitos hex: espacio es %20, & es %26, é es %C3%A9. Qué codificar y qué función usar.",
+  "h1": "¿Qué es la codificación URL?",
+  "answer": "La codificación URL, formalmente percent-encoding o codificación por porcentaje, sustituye los caracteres no permitidos o con significado especial en una URL por `%` seguido de dos dígitos hexadecimales por cada byte. Un espacio se convierte en `%20`, `&` en `%26`, y el texto no ASCII se convierte primero a UTF-8, de modo que «é» pasa a `%C3%A9`. La cadena «a b&c» se codifica como `a%20b%26c`.",
+  "sections": [
+    {
+      "h": "Por qué las URL necesitan codificación",
+      "body": [
+        "RFC 3986 limita las URL a un pequeño conjunto de caracteres ASCII, y algunos de ellos tienen una función. `?` inicia la consulta, `&` separa parámetros, `=` separa un nombre de su valor, `#` inicia el fragmento y `/` separa los segmentos de la ruta. Si un valor contiene uno de esos caracteres, la URL se vuelve ambigua.",
+        "Supongamos una búsqueda de «salt & pepper». Escrita tal cual como `?q=salt & pepper`, el servidor ve un parámetro `q` con el valor `salt ` y un segundo parámetro vacío llamado ` pepper`. Codificada como `?q=salt%20%26%20pepper`, llega como un único valor."
+      ]
+    },
+    {
+      "h": "Qué caracteres se codifican",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Grupo",
+              "Caracteres",
+              "Regla"
+            ],
+            "rows": [
+              [
+                "No reservados",
+                "`A–Z a–z 0–9 - . _ ~`",
+                "Nunca necesitan codificación"
+              ],
+              [
+                "Reservados (gen-delims)",
+                "`: / ? # [ ] @`",
+                "Codificar cuando se usan dentro de un valor"
+              ],
+              [
+                "Reservados (sub-delims)",
+                "`! $ & ' ( ) * + , ; =`",
+                "Codificar cuando se usan dentro de un valor"
+              ],
+              [
+                "Todo lo demás",
+                "Espacio, `\"`, `<`, `>`, `%`, no ASCII",
+                "Codificar siempre"
+              ]
+            ]
+          }
+        },
+        "La codificación trabaja con bytes, no con caracteres. El texto no ASCII se convierte primero a UTF-8, y cada byte se convierte en su propio triplete `%XX`:",
+        {
+          "table": {
+            "head": [
+              "Entrada",
+              "Bytes UTF-8",
+              "Codificado"
+            ],
+            "rows": [
+              [
+                "espacio",
+                "`20`",
+                "`%20`"
+              ],
+              [
+                "&",
+                "`26`",
+                "`%26`"
+              ],
+              [
+                "%",
+                "`25`",
+                "`%25`"
+              ],
+              [
+                "é",
+                "`C3 A9`",
+                "`%C3%A9`"
+              ],
+              [
+                "日本",
+                "`E6 97 A5 E6 9C AC`",
+                "`%E6%97%A5%E6%9C%AC`"
+              ]
+            ]
+          }
+        },
+        "Los dígitos hexadecimales no distinguen mayúsculas de minúsculas, así que `%c3%a9` y `%C3%A9` significan lo mismo, pero RFC 3986 recomienda las mayúsculas por coherencia."
+      ]
+    },
+    {
+      "h": "%20 o +: dos reglas para los espacios",
+      "body": [
+        "La codificación por porcentaje definida en RFC 3986 siempre escribe un espacio como `%20`. Los envíos de formularios HTML usan un formato relacionado, `application/x-www-form-urlencoded`, en el que un espacio se convierte en `+` y un signo más literal en `%2B`.",
+        {
+          "ul": [
+            "En una ruta como `/files/my report.pdf`, usa `%20`. Un `+` en una ruta es un signo más literal.",
+            "En una query string, los servidores que interpretan la codificación de formularios leen `+` como espacio. `%20` lo entienden ambas convenciones, así que es la opción más segura en caso de duda.",
+            "Si un valor puede contener un `+` real, por ejemplo un número de teléfono como `+84`, hay que enviarlo como `%2B` o llegará como un espacio."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "encodeURIComponent vs encodeURI en JavaScript",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Función",
+              "Deja sin codificar",
+              "Se usa para"
+            ],
+            "rows": [
+              [
+                "`encodeURIComponent()`",
+                "`A–Z a–z 0–9 - _ . ! ~ * ' ( )`",
+                "Un único valor: un parámetro de consulta o un segmento de ruta"
+              ],
+              [
+                "`encodeURI()`",
+                "Lo anterior más `; , / ? : @ & = + $ #`",
+                "Una URL completa que ya está estructurada"
+              ],
+              [
+                "`URLSearchParams`",
+                "Reglas de codificación de formularios (el espacio pasa a `+`)",
+                "Construir o leer query strings"
+              ]
+            ]
+          }
+        },
+        "`encodeURIComponent(\"a b&c\")` devuelve `a%20b%26c`, mientras que `encodeURI(\"a b&c\")` devuelve `a%20b&c` porque asume que `&` es un separador. El error típico es llamar a `encodeURI` sobre el valor de un parámetro, lo que deja pasar `&`, `=` y `#` y parte el valor.",
+        "`new URLSearchParams({ q: \"a b&c\" }).toString()` da `q=a+b%26c`. Ambas formas se decodifican al mismo valor en un servidor estándar."
+      ]
+    },
+    {
+      "h": "Errores comunes",
+      "body": [
+        {
+          "ol": [
+            "Doble codificación: codificar un texto ya codificado convierte `%20` en `%2520`, porque el propio `%` se codifica como `%25`. Codifica cada valor exactamente una vez, en el momento de colocarlo en la URL.",
+            "Codificar la URL completa con una función de componente: `https://` se convierte en `https%3A%2F%2F` y el enlace deja de funcionar.",
+            "Decodificar antes de enrutar: un servidor que decodifica `%2F` como `/` antes de buscar la ruta puede ser engañado para leer una ruta distinta.",
+            "Suponer un juego de caracteres heredado: algunos sistemas antiguos codificaban «é» como `%E9` (Latin-1). Los navegadores modernos y el WHATWG URL Standard usan UTF-8."
+          ]
+        },
+        {
+          "note": "La codificación URL no es cifrado ni saneamiento. Cualquiera puede decodificarla, y no hace que una entrada sea segura para insertarla en HTML o SQL. Escapa o parametriza por separado para cada contexto."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué un espacio es %20 en una URL?",
+      "a": "Un espacio no está permitido en una URL, así que se sustituye por `%` más el valor de su byte en hexadecimal. El código ASCII del espacio es 32 en decimal, que es `20` en hexadecimal."
+    },
+    {
+      "q": "¿Qué significa %2F en una URL?",
+      "a": "`%2F` es una barra codificada. Permite que aparezca una `/` dentro de un valor sin que se lea como separador de ruta."
+    },
+    {
+      "q": "¿La codificación URL es lo mismo que Base64?",
+      "a": "No. La codificación URL solo sustituye los caracteres no seguros y deja el resto legible. Base64 convierte todos los bytes a un alfabeto de 64 caracteres, y sus caracteres estándar `+` y `/` necesitan a su vez codificación URL salvo que se use la variante segura para URL."
+    },
+    {
+      "q": "¿Hay que codificar las letras con tilde o los caracteres chinos?",
+      "a": "Sí, en la petición real. Los navegadores los muestran de forma legible en la barra de direcciones, pero envían la forma UTF-8 codificada por porcentaje, como `%E6%97%A5` para 日."
+    }
+  ]
+}

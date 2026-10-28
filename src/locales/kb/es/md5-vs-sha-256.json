@@ -1,0 +1,170 @@
+{
+  "title": "MD5 vs SHA-256: diferencias, colisiones y cuál usar — cv.cm",
+  "description": "MD5 da un hash de 128 bits con colisiones prácticas; SHA-256, uno de 256 bits sin colisiones conocidas. Cuándo sirve cada uno y por qué no para contraseñas.",
+  "h1": "MD5 vs SHA-256: ¿cuál es la diferencia?",
+  "answer": "MD5 y SHA-256 son funciones hash que convierten cualquier entrada en una huella de longitud fija: 128 bits en MD5 y 256 bits en SHA-256. MD5 está roto en cuanto a seguridad porque un atacante puede crear dos archivos distintos con el mismo hash. SHA-256 no tiene ataques prácticos conocidos y es la opción por defecto para firmas y comprobaciones de integridad. MD5 sigue siendo aceptable para detectar corrupción accidental, y ninguno de los dos debe guardar contraseñas directamente.",
+  "sections": [
+    {
+      "h": "Qué hace una función hash",
+      "body": [
+        "Un hash criptográfico toma una entrada de cualquier tamaño y devuelve un resumen (digest) de tamaño fijo. La misma entrada siempre da el mismo resumen, un cambio de un solo carácter da uno completamente distinto, y el resumen no se puede convertir de vuelta en la entrada.",
+        {
+          "table": {
+            "head": [
+              "Entrada",
+              "MD5",
+              "SHA-256"
+            ],
+            "rows": [
+              [
+                "`abc`",
+                "`900150983cd24fb0d6963f7d28e17f72`",
+                "`ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`"
+              ],
+              [
+                "Cadena vacía",
+                "`d41d8cd98f00b204e9800998ecf8427e`",
+                "`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`"
+              ]
+            ]
+          }
+        },
+        "Un hash seguro debe resistir tres ataques: encontrar una entrada para un resumen dado (preimagen), encontrar una segunda entrada con el mismo resumen que una dada (segunda preimagen) y encontrar dos entradas cualesquiera con el mismo resumen (colisión). Las colisiones son las más fáciles; para un hash ideal de n bits requieren unos 2^(n/2) intentos debido a la paradoja del cumpleaños."
+      ]
+    },
+    {
+      "h": "MD5, SHA-1, SHA-256 y SHA-3 comparados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Tamaño del resumen",
+              "Longitud hex",
+              "Estado"
+            ],
+            "rows": [
+              [
+                "MD5 (1992)",
+                "128 bits",
+                "32",
+                "Colisiones prácticas desde 2004; roto para seguridad"
+              ],
+              [
+                "SHA-1 (1995)",
+                "160 bits",
+                "40",
+                "Primera colisión pública en 2017; NIST prevé retirarlo antes de 2030"
+              ],
+              [
+                "SHA-256 (SHA-2, 2001)",
+                "256 bits",
+                "64",
+                "Seguro; estandarizado en FIPS 180-4"
+              ],
+              [
+                "SHA-512 (SHA-2)",
+                "512 bits",
+                "128",
+                "Seguro; a menudo más rápido que SHA-256 en CPU de 64 bits"
+              ],
+              [
+                "SHA3-256 (2015)",
+                "256 bits",
+                "64",
+                "Seguro; diseño interno distinto, estandarizado en FIPS 202"
+              ]
+            ]
+          }
+        },
+        "SHA-256 es un miembro de la familia SHA-2. «SHA-2» y «SHA-256» se usan a menudo como sinónimos, pero SHA-224, SHA-384 y SHA-512 también son funciones SHA-2."
+      ]
+    },
+    {
+      "h": "Cómo se rompieron MD5 y SHA-1",
+      "body": [
+        "En 2004 Xiaoyun Wang y sus colegas publicaron colisiones de MD5 encontradas en horas. Trabajos posteriores lograron colisiones de prefijo elegido, en las que el atacante parte de dos archivos distintos con sentido y añade datos hasta que los hashes coinciden. En 2008 unos investigadores lo usaron para crear un certificado de autoridad de certificación fraudulento, y el malware Flame, descubierto en 2012, usó una colisión de MD5 para falsificar un certificado de firma de código de Microsoft. RFC 6151 establece que MD5 no debe usarse donde se requiera resistencia a colisiones, como en las firmas digitales.",
+        "Después cayó SHA-1. En 2017 el proyecto SHAttered de Google y el CWI de Ámsterdam publicó dos archivos PDF distintos con el mismo hash SHA-1, y en 2020 se demostró una colisión de prefijo elegido en SHA-1. Git, los certificados TLS y la firma de código ya han migrado o están migrando a SHA-256.",
+        "Los ataques de preimagen contra MD5 siguen sin ser prácticos. Que esté roto significa que un atacante puede fabricar pares de archivos que colisionan, no que se pueda revertir cualquier MD5 existente."
+      ]
+    },
+    {
+      "h": "Cuándo MD5 sigue valiendo y cuándo no",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Uso",
+              "¿Es aceptable MD5?",
+              "Por qué"
+            ],
+            "rows": [
+              [
+                "Detectar corrupción accidental en una descarga o copia",
+                "Sí",
+                "Los errores aleatorios de bits no producen colisiones"
+              ],
+              [
+                "Deduplicación o claves de caché dentro de tu propio sistema",
+                "Normalmente",
+                "Vale, salvo que un atacante controle las entradas"
+              ],
+              [
+                "Verificar una descarga frente a un mirror malicioso",
+                "No",
+                "Un atacante puede preparar un archivo que colisione; usa SHA-256"
+              ],
+              [
+                "Firmas digitales y certificados",
+                "No",
+                "Los ataques de colisión falsifican firmas"
+              ],
+              [
+                "Guardar contraseñas",
+                "No",
+                "Se calcula demasiado rápido; lo mismo vale para SHA-256"
+              ]
+            ]
+          }
+        },
+        "Si puedes elegir, elige SHA-256. Está disponible en todas partes, tiene aceleración por hardware en las CPU modernas y evita tener que discutir si un uso concreto es sensible a colisiones."
+      ]
+    },
+    {
+      "h": "Las contraseñas necesitan hashes lentos y con sal",
+      "body": [
+        "Los hashes de uso general están diseñados para ser rápidos. Una sola GPU moderna puede calcular miles de millones de hashes MD5 o SHA-256 por segundo, así que una tabla filtrada de hashes SHA-256 de contraseñas sin sal puede atacarse con enormes listas de palabras, y las contraseñas idénticas aparecen como hashes idénticos.",
+        "Las funciones de hash de contraseñas resuelven ambos problemas. Añaden una sal aleatoria única por usuario para que contraseñas idénticas den hashes distintos, y son deliberadamente lentas y, en los diseños más recientes, exigentes en memoria (memory-hard), de modo que las GPU ganan poco:",
+        {
+          "ul": [
+            "Argon2id: ganador de la Password Hashing Competition de 2015 y la primera opción habitual para sistemas nuevos.",
+            "scrypt: memory-hard y ampliamente disponible.",
+            "bcrypt: décadas de uso; ten en cuenta que solo lee los primeros 72 bytes de una contraseña.",
+            "PBKDF2 con un número de iteraciones alto: aceptable donde se exigen algoritmos validados por FIPS."
+          ]
+        },
+        {
+          "note": "SHA-256 a secas tampoco sirve como código de autenticación de mensajes: `SHA-256(secret + message)` es vulnerable a ataques de extensión de longitud. Usa HMAC-SHA-256 cuando un hash deba demostrar que un mensaje procede de alguien que posee una clave."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Se puede descifrar un hash MD5?",
+      "a": "No. Un hash no es cifrado y no tiene ninguna clave para revertirlo. Los «descifradores de MD5» en línea buscan el hash en tablas de cadenas comunes ya calculadas, por eso las entradas cortas o comunes se encuentran enseguida."
+    },
+    {
+      "q": "¿SHA-256 es seguro en 2026?",
+      "a": "Sí. No se conoce ningún ataque práctico de colisión ni de preimagen contra SHA-256, y NIST lo sigue aprobando. Su resistencia a colisiones de 2^128 está muy por encima de la capacidad de cálculo actual."
+    },
+    {
+      "q": "¿Por qué los sitios web siguen publicando sumas MD5?",
+      "a": "Detectan descargas incompletas o dañadas, que es el problema más habitual. Frente a un archivo manipulado solo sirven si la suma de verificación procede de una fuente de confianza y usa SHA-256 o algo mejor."
+    },
+    {
+      "q": "¿SHA-256 sirve para hashear contraseñas?",
+      "a": "Por sí solo, no. Es rápido y no lleva sal por defecto, así que los hashes filtrados pueden romperse a miles de millones de intentos por segundo. Usa Argon2id, scrypt o bcrypt."
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "title": "JSON vs YAML vs XML: diferencias y cuándo usar cada uno — cv.cm",
+  "description": "JSON, YAML y XML describen datos estructurados. Compara sintaxis, tipos, comentarios, esquemas y riesgos de seguridad para API o configuración.",
+  "h1": "JSON vs YAML vs XML: ¿qué formato conviene usar?",
+  "answer": "JSON, YAML y XML son formatos de texto para datos estructurados. JSON es compacto y estricto, con seis tipos de valor, y domina las API web. YAML se basa en la sangría, admite comentarios y es popular en archivos de configuración. XML usa etiquetas y atributos, admite espacios de nombres y esquemas formales, y sigue siendo habitual en documentos, sistemas empresariales y feeds. Los tres pueden representar los mismos datos anidados.",
+  "sections": [
+    {
+      "h": "Los mismos datos en tres formatos",
+      "body": [
+        "Un usuario con nombre, un indicador de activo y dos roles se ve así en cada formato:",
+        {
+          "table": {
+            "head": [
+              "Formato",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "JSON",
+                "`{\"name\": \"Ana\", \"active\": true, \"roles\": [\"admin\", \"editor\"]}`"
+              ],
+              [
+                "YAML",
+                "`name: Ana` / `active: true` / `roles: [admin, editor]` (una clave por línea)"
+              ],
+              [
+                "XML",
+                "`<user active=\"true\"><name>Ana</name><role>admin</role><role>editor</role></user>`"
+              ]
+            ]
+          }
+        },
+        "JSON y YAML se corresponden directamente con objetos, listas y valores escalares en la mayoría de los lenguajes de programación. XML describe un árbol de elementos, y su correspondencia con objetos es una convención: aquí el indicador de activo podría ser un atributo o un elemento hijo, y nada en el propio XML dice que el valor sea un booleano y no el texto `true`."
+      ]
+    },
+    {
+      "h": "Comparación lado a lado",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "JSON",
+              "YAML",
+              "XML"
+            ],
+            "rows": [
+              [
+                "Especificación",
+                "RFC 8259, ECMA-404",
+                "YAML 1.2.2 (2021)",
+                "W3C XML 1.0, quinta edición"
+              ],
+              [
+                "Estructura",
+                "Llaves y corchetes",
+                "Sangría",
+                "Etiquetas de apertura y cierre"
+              ],
+              [
+                "Comentarios",
+                "No permitidos",
+                "`# comment`",
+                "`<!-- comment -->`"
+              ],
+              [
+                "Tipos integrados",
+                "Objeto, array, cadena, número, booleano, null",
+                "Mapas, secuencias, escalares resueltos a tipos",
+                "Solo texto, salvo que un esquema asigne tipos"
+              ],
+              [
+                "Lenguajes de esquema",
+                "JSON Schema",
+                "Normalmente JSON Schema",
+                "XSD, DTD, RELAX NG"
+              ],
+              [
+                "Extras",
+                "Ninguno",
+                "Anclas y alias, varios documentos por archivo",
+                "Atributos, espacios de nombres, contenido mixto"
+              ],
+              [
+                "Uso típico",
+                "API web, datos del navegador, logs",
+                "Configuración: Kubernetes, pipelines de CI, Docker Compose",
+                "Archivos de Office, SVG, RSS, SOAP, layouts de Android"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "JSON: estricto y predecible",
+      "body": [
+        "La gramática de JSON cabe en una página, por eso los analizadores de todos los lenguajes coinciden en ella. Esa rigidez también causa los errores más comunes:",
+        {
+          "ul": [
+            "Las claves y las cadenas necesitan comillas dobles; las comillas simples no son válidas.",
+            "No se admite una coma final tras el último elemento de un objeto o array.",
+            "No hay comentarios, así que una configuración escrita en JSON no puede explicarse a sí misma. Variantes como JSONC y JSON5 añaden comentarios, pero no son JSON estándar.",
+            "RFC 8259 exige UTF-8 para el JSON intercambiado entre sistemas."
+          ]
+        },
+        "La gramática no limita el tamaño de los números, pero RFC 8259 señala que la mayoría del software usa dobles IEEE 754. En JavaScript, los enteros por encima de `9007199254740992` (2^53) pierden precisión, así que es más seguro enviar los ID grandes como cadenas."
+      ]
+    },
+    {
+      "h": "YAML: legible, pero con aristas",
+      "body": [
+        "YAML está pensado para que las personas lo lean y editen, y YAML 1.2 es casi un superconjunto de JSON, así que la mayoría de los archivos JSON también son YAML válido. Su flexibilidad tiene un precio:",
+        {
+          "ul": [
+            "La sangría es estructura. Un espacio mal puesto cambia el anidamiento, y no se permiten tabulaciones para sangrar.",
+            "Los valores sin comillas se interpretan por tipo. Con las reglas de YAML 1.1, que aún usan muchos analizadores, `no`, `off` y `yes` se convierten en booleanos, así que el código de país `NO` pasa a ser `false`. El esquema core de YAML 1.2 solo trata `true` y `false` como booleanos, pero comprueba qué versión implementa tu analizador.",
+            "Valores como `1.10` pueden convertirse en el número `1.1`, y `012` en un número octal. Pon entre comillas las cadenas que solo parecen números, como números de versión y códigos postales."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "XML: verboso, pero hecho para documentos",
+      "body": [
+        "XML es más pesado que JSON para datos simples, pero resuelve cosas que los otros no pueden: contenido mixto (texto con marcado en línea, como en `<p>Hello <b>world</b></p>`), espacios de nombres que permiten que vocabularios de distintas fuentes convivan en un archivo y una validación madura mediante XSD. Formatos como DOCX, XLSX, SVG y RSS son XML por dentro.",
+        "Convertir XML a JSON implica pérdidas por naturaleza. Los atributos, el orden de los elementos, los elementos repetidos y el contenido mixto no tienen un único equivalente en JSON, así que los conversores eligen convenciones como prefijos `@` para los atributos o forzar los elementos repetidos a arrays.",
+        {
+          "note": "Analizar entradas no confiables tiene riesgos propios de cada formato. Los analizadores XML que resuelven entidades externas son vulnerables a ataques XXE que leen archivos locales; desactiva el procesamiento de DTD y de entidades externas. Los cargadores YAML que construyen objetos arbitrarios pueden ejecutar código; usa cargadores seguros como `yaml.safe_load` de PyYAML."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿YAML es un superconjunto de JSON?",
+      "a": "YAML 1.2 se revisó para ser casi un superconjunto estricto de JSON, así que prácticamente cualquier documento JSON se puede analizar como YAML. Difieren algunos casos límite, y los analizadores YAML 1.1 son menos compatibles."
+    },
+    {
+      "q": "¿Por qué JSON no admite comentarios?",
+      "a": "Su autor los dejó fuera para que no pudieran usarse para incluir directivas de análisis que rompieran la interoperabilidad. Las herramientas que necesitan comentarios en la configuración usan JSONC, JSON5 o YAML."
+    },
+    {
+      "q": "¿Qué se analiza más rápido, JSON o XML?",
+      "a": "JSON suele ser más rápido y ocupar menos con los mismos datos, porque su gramática es más simple y no tiene etiquetas de cierre, atributos ni espacios de nombres. La diferencia importa sobre todo con grandes volúmenes."
+    },
+    {
+      "q": "¿Puedo convertir YAML a JSON sin perder nada?",
+      "a": "Los datos se conservan, pero los comentarios, las anclas y el formato de las claves no, porque JSON no tiene dónde guardarlos. Convertir JSON a YAML no pierde nada."
+    }
+  ]
+}

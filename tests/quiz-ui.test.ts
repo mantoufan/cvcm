@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from "vitest";
 import { mountQuiz, mountQuizHub } from "../src/client/quiz/ui";
-import { QUIZZES } from "../src/shared/quiz";
+import { QUIZ_DEFS, QUIZZES } from "../src/shared/quiz";
 
 function mount(id: Parameters<typeof mountQuiz>[2], locale: Parameters<typeof mountQuiz>[1] = "en"): HTMLElement {
   document.body.innerHTML = "";
@@ -88,6 +88,44 @@ describe("test page UI", () => {
       expect(result.hidden, id).toBe(true);
       expect(main.querySelectorAll(".quiz-q.done").length, id).toBe(0);
     }
+  });
+
+  it("shows the extraversion band with its score and the work style profile", () => {
+    const main = mount("introvert", "zh-CN");
+    answer(main, () => 2);
+    submit(main);
+    const result = main.querySelector<HTMLElement>("#result")!;
+    expect(result.textContent).toContain("40 / 80");
+    expect(result.querySelector(".quiz-crisis")).toBeNull();
+    // Not a wellbeing check: no "not a diagnosis" line.
+    expect(result.querySelector("p.muted")).toBeNull();
+    const work = mount("work-style");
+    answer(work, () => 2);
+    submit(work);
+    expect(work.querySelectorAll("#result .quiz-trait")).toHaveLength(4);
+  });
+
+  it("names the pets the answers ruled out", () => {
+    const main = mount("pet");
+    // Fur allergy (question 5, option 2): only fish and reptiles stay possible.
+    answer(main, (i) => (i === 4 ? 1 : 0));
+    submit(main);
+    const note = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Ruled out"));
+    expect(note).toContain("Dog");
+    expect(note).toContain("Cat");
+  });
+
+  it("names every result tied with the winner", () => {
+    // Each element picked three times: a four-way tie, so the other three are all named.
+    const def = QUIZ_DEFS["avatar-element"];
+    if (def.type !== "choice") throw new Error();
+    const order = ["water", "earth", "fire", "air"];
+    const main = mount("avatar-element");
+    answer(main, (i) => def.items[i].options.findIndex((o) => (o[order[i % 4]] ?? 0) > 0));
+    submit(main);
+    const line = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Tied with"));
+    const named = ["Waterbender", "Earthbender", "Firebender", "Airbender"].filter((name) => line?.includes(name));
+    expect(named).toHaveLength(3);
   });
 
   it("lists every test on the hub", () => {

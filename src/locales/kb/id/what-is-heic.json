@@ -1,0 +1,137 @@
+{
+  "title": "Apa itu HEIC? Beda HEIC dan JPG, serta cara membukanya — cv.cm",
+  "description": "HEIC adalah format foto iPhone (HEIF + HEVC), sekitar separuh ukuran JPG dengan kualitas setara. Pelajari isinya, cara membukanya, dan kapan perlu dikonversi.",
+  "h1": "Apa itu file HEIC?",
+  "answer": "HEIC adalah foto yang disimpan dalam High Efficiency Image File Format (HEIF) dengan piksel yang dikompresi menggunakan HEVC, codec video yang juga disebut H.265. iPhone dan iPad memakainya secara default sejak iOS 11 karena kualitasnya setara dengan ukuran kira-kira separuh JPG. File ini bisa dibuka langsung di perangkat Apple serta Windows dan Android versi baru, tetapi banyak situs web dan program lama masih mengharapkan JPG.",
+  "sections": [
+    {
+      "h": "HEIF, HEIC, dan HEVC: tiga nama, satu file",
+      "body": [
+        "HEIF adalah standar kontainernya (ISO/IEC 23008-12). Standar ini mengatur cara gambar, thumbnail, peta kedalaman, dan metadata dikemas dalam satu file, dan dibangun di atas struktur box yang sama dengan video MP4.",
+        "HEVC adalah codec yang mengompresi pikselnya. File HEIF yang gambarnya memakai HEVC mendapat brand `heic` dan biasanya berekstensi `.heic`. Kontainer yang sama bisa memuat codec lain: jika isinya AV1, jadilah AVIF.",
+        {
+          "table": {
+            "head": [
+              "Istilah",
+              "Apa itu",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "HEIF",
+                "Format kontainer untuk gambar dan urutan gambar",
+                "Struktur file"
+              ],
+              [
+                "HEVC (H.265)",
+                "Metode kompresi untuk piksel",
+                "Codec di dalamnya"
+              ],
+              [
+                "HEIC",
+                "HEIF + HEVC, file yang Anda dapat dari iPhone",
+                "IMG_0042.HEIC"
+              ],
+              [
+                "AVIF",
+                "Kontainer bergaya HEIF + codec AV1",
+                "photo.avif"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Mengapa ponsel menyimpan HEIC, bukan JPG",
+      "body": [
+        "JPEG berasal dari tahun 1992. HEVC memakai blok yang lebih besar dan adaptif serta prediksi yang lebih baik, sehingga foto HEIC biasanya sekitar 40–50% lebih kecil daripada JPG dengan kualitas visual serupa. Di ponsel berisi ribuan foto, penghematan itu mencapai gigabyte.",
+        "HEIC juga bisa melakukan hal yang tidak bisa dilakukan JPG:",
+        {
+          "ul": [
+            "Kedalaman warna 16-bit dan warna luas (Display P3) tanpa banding, sedangkan JPG baseline berhenti di 8 bit.",
+            "Transparansi, peta kedalaman untuk efek blur mode potret, dan beberapa gambar dalam satu file (still Live Photo, foto burst).",
+            "Suntingan seperti rotasi disimpan sebagai instruksi, sehingga piksel aslinya tetap utuh."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Di mana HEIC bisa dibuka, dan di mana tidak",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Platform",
+              "Bisa membuka HEIC?"
+            ],
+            "rows": [
+              [
+                "iPhone, iPad, Mac",
+                "Ya, secara bawaan"
+              ],
+              [
+                "Windows 10/11",
+                "Dengan ekstensi HEIF dan HEVC dari Microsoft Store"
+              ],
+              [
+                "Android",
+                "Sebagian besar ponsel Android 10 ke atas bisa menampilkannya; dukungan penyuntingan bervariasi"
+              ],
+              [
+                "Browser web",
+                "Safari 17+ menampilkannya; sebagian besar browser lain tidak, sehingga situs web jarang menerimanya"
+              ],
+              [
+                "Formulir unggahan dan perangkat lunak lama",
+                "Sering ditolak; JPG adalah pilihan aman"
+              ]
+            ]
+          }
+        },
+        "Saat Anda membagikan foto HEIC lewat Mail, Pesan, atau AirDrop, iPhone sering mengonversinya ke JPG secara otomatis. Menyalin file lewat kabel atau folder cloud tetap mempertahankan HEIC aslinya."
+      ]
+    },
+    {
+      "h": "Kapan perlu mengonversi HEIC ke JPG",
+      "body": [
+        "Simpan HEIC sebagai arsip: ukurannya lebih kecil dan warnanya lebih kaya. Konversi salinannya saat tujuan file tidak berada dalam kendali Anda:",
+        {
+          "ul": [
+            "Formulir unggahan untuk visa, lamaran kerja, dan situs pemerintah, yang biasanya hanya menerima JPG atau PNG.",
+            "Situs web dan blog, karena browser sebagian besar pengunjung tidak bisa menampilkan HEIC.",
+            "Editor foto lama, kios cetak foto, dan perangkat lunak perkantoran."
+          ]
+        },
+        "Konversi ke JPG mengompresi ulang gambar satu kali, jadi pilih kualitas sekitar 85–92% agar hasilnya tampak identik. Jika butuh transparansi, konversi ke PNG."
+      ]
+    },
+    {
+      "h": "Mengubah format default di iPhone",
+      "body": [
+        "Agar kamera menyimpan JPG mulai sekarang, buka Pengaturan › Kamera › Format, lalu pilih Paling Kompatibel. Foto yang sudah diambil tetap HEIC. Memilih Paling Kompatibel juga merekam video dalam H.264, bukan HEVC, sehingga ukuran file menjadi lebih besar.",
+        {
+          "note": "Foto HEIC menyimpan metadata EXIF, termasuk lokasi GPS jika Layanan Lokasi aktif untuk Kamera. Konversi tidak menghapusnya secara otomatis; hapus metadata itu sebelum mengunggah foto ke publik."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah kualitas HEIC lebih bagus daripada JPG?",
+      "a": "Pada ukuran file yang sama, ya: kompresi HEVC mempertahankan lebih banyak detail dan mendukung warna 10-bit. Pada kualitas yang sama, ukuran HEIC kira-kira separuhnya."
+    },
+    {
+      "q": "Apakah konversi HEIC ke JPG menurunkan kualitas?",
+      "a": "Sedikit, karena JPG dikompresi ulang. Dengan pengaturan kualitas 85–92%, perbedaannya tidak terlihat saat dilihat secara normal."
+    },
+    {
+      "q": "Bisakah HEIC dibuka di Windows?",
+      "a": "Bisa. Windows 10 dan 11 dapat membuka HEIC setelah Anda memasang HEIF Image Extensions dan HEVC Video Extensions dari Microsoft Store, atau Anda bisa mengonversi file ke JPG di browser."
+    },
+    {
+      "q": "Apakah HEIC sama dengan HEIF?",
+      "a": "HEIC adalah salah satu jenis file HEIF: kontainer HEIF dengan gambar yang dikompresi HEVC. Kedua nama ini sering dipakai bergantian."
+    }
+  ]
+}

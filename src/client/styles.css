@@ -427,7 +427,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .game-stage { position: relative; }
 .game-frame { width: 100%; height: calc(100dvh - 11.25rem); min-height: 260px; max-height: 720px; border: 1px solid var(--line); border-radius: 12px; background: #1a1020; overscroll-behavior: none; }
 .game-empty { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; padding: 1.4rem; text-align: center; color: var(--gray); background: #1a1020; border: 1px solid var(--line); border-radius: 12px; }
-.game-empty[hidden] { display: none !important; }
+.game-empty[hidden], .game-playbar .btn[hidden] { display: none !important; }
 .game-empty-title { margin: 0; font-size: clamp(1.25rem, 3vw, 1.7rem); font-weight: 750; }
 .game-empty p { margin: 0; max-width: 26rem; line-height: 1.65; }
 .game-empty p:not(.game-empty-title) { color: #f6d5e4; }
@@ -523,3 +523,72 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
   .quiz-scale.n5 { gap: 0.25rem; }
   .quiz-scale .quiz-opt { font-size: 0.7rem; padding: 0.3rem 0.2rem; }
 }
+
+/* Data tables (/datasets/): a plain sortable table that scrolls sideways on phones, never the page. */
+.data-facts { margin: 0 0 1.25rem; }
+.data-facts > h2 { margin: 0 0 0.35rem; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.data-facts ul { margin: 0; padding-left: 1.2rem; line-height: 1.7; }
+.data-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; }
+.data-tools .data-search { flex: 1 1 14rem; width: auto; min-height: 42px; padding: 0.5rem 0.65rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font: inherit; }
+.data-tools .data-search:focus { outline: none; border-color: var(--pink-deep); }
+.data-count { margin: 0 0 0.4rem; color: var(--ink-soft); font-size: 0.85rem; }
+.data-empty { margin: 0.75rem 0; color: var(--ink-soft); }
+.data-wrap { max-height: 75vh; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+.data-wrap table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+.data-wrap caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.data-wrap th, .data-wrap td { padding: 0.45rem 0.7rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.data-wrap tbody th { font-weight: 600; }
+.data-wrap thead th { position: sticky; top: 0; z-index: 1; padding: 0; background: var(--pink-soft); white-space: nowrap; }
+.data-wrap tbody tr:last-child > * { border-bottom: 0; }
+.data-wrap tbody tr:hover { background: var(--gray); }
+.data-wrap .num { text-align: right; white-space: nowrap; }
+/* Long country lists (currencies): wide enough that a row stays a few lines tall; the table scrolls sideways instead. */
+.data-wrap .wide { min-width: 18rem; }
+.data-wrap .mono { font-family: var(--mono); font-size: 0.84rem; white-space: nowrap; }
+.data-sort { width: 100%; min-height: 40px; padding: 0.45rem 0.7rem; border: 0; background: none; color: var(--ink); font: inherit; font-weight: 600; text-align: inherit; cursor: pointer; }
+.data-sort::after { content: "↕"; margin-left: 0.3rem; color: var(--ink-soft); font-weight: 400; }
+[aria-sort="ascending"] > .data-sort::after { content: "↑"; color: var(--pink-deep); }
+[aria-sort="descending"] > .data-sort::after { content: "↓"; color: var(--pink-deep); }
+.data-sort:hover, .data-sort:focus-visible { color: var(--pink-deep); outline: none; }
+.data-source { margin: 0.6rem 0 0; }
+.data-source a { color: inherit; }
+@media (max-width: 640px) {
+  .data-wrap { max-height: 70vh; }
+  .data-wrap table { font-size: 0.82rem; }
+  .data-wrap th, .data-wrap td { padding: 0.4rem 0.5rem; }
+}
+
+/* Knowledge articles (/learn/knowledge/): readable measure, plain tables, one callout style. */
+.kb { max-width: 46rem; }
+.kb-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0; color: var(--ink-soft); font-size: 0.82rem; }
+.kb-answer { margin: 1rem 0 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-left: 3px solid var(--pink-deep); border-radius: var(--radius); background: var(--pink-soft); }
+.kb-answer h2 { margin: 0 0 0.3rem; font-size: 0.8rem; color: var(--pink-deep); text-transform: uppercase; letter-spacing: 0.04em; }
+.kb-answer p { margin: 0 0 0.75rem; }
+.kb-toc { margin-top: 1.5rem; font-size: 0.92rem; }
+.kb-toc h2 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+.kb-toc ol { margin: 0; padding-left: 1.3rem; }
+.kb-section { margin-top: 2rem; scroll-margin-top: 1rem; }
+.kb-section h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.kb-section p, .kb-section li { overflow-wrap: anywhere; }
+.kb code { font-family: var(--mono); font-size: 0.88em; padding: 0.05em 0.3em; border-radius: 4px; background: var(--gray); border: 1px solid var(--line); }
+.kb-table { overflow-x: auto; margin: 0.75rem 0; border: 1px solid var(--line); border-radius: var(--radius); }
+.kb-table table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.kb-table th, .kb-table td { padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.kb-table thead th { background: var(--pink-soft); font-weight: 600; white-space: nowrap; }
+.kb-table tbody th { font-weight: 600; }
+.kb-table tbody tr:last-child > * { border-bottom: 0; }
+.kb-note { margin: 0.75rem 0; padding: 0.7rem 0.9rem; border-radius: var(--radius); background: var(--gray); border: 1px solid var(--line); font-size: 0.92rem; }
+.kb-note p { margin: 0; }
+.kb-sources li { font-size: 0.9rem; }
+.kb-about { margin-top: 2rem; color: var(--ink-soft); }
+.game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }
+.game-official li { margin: 0.3rem 0; }
+
+/* Dice roller, GPA calculator, Pomodoro timer */
+.dice-faces { margin: 0 0 0.6rem; font-family: var(--mono); font-size: 1.4rem; font-weight: 700; color: var(--pink-deep); word-break: break-word; }
+.gpa-rows { display: grid; gap: 0.45rem; margin-bottom: 0.6rem; }
+.gpa-head { font-size: 0.8rem; color: var(--ink-soft); }
+.gpa-head span, .gpa-row select, .gpa-row input { flex: 1 1 0; min-width: 0; }
+.gpa-row .chip { flex: 0 0 auto; min-height: 44px; }
+.gpa-check { display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; }
+.pomodoro-clock { font-size: 2.6rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0; }
