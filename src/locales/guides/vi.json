@@ -849,6 +849,42 @@
       "s2b": "Đồng hồ đếm ngược và tiêu đề thẻ hiện thời gian còn lại. Tạm dừng để dừng; Bỏ qua để sang giai đoạn kế.",
       "s3t": "Đổi độ dài",
       "s3b": "Sửa số phút hoặc số vòng khi đồng hồ đang dừng, giai đoạn hiện tại áp dụng ngay. Đặt lại bắt đầu lại từ vòng 1."
+    },
+    "remove-background": {
+      "lead": "Tách người, sản phẩm hoặc thú cưng ra khỏi ảnh ngay trong tab này, rồi tải PNG trong suốt.",
+      "s1t": "Thêm ảnh",
+      "s1b": "Thả hoặc dán một hay nhiều ảnh. Lần đầu sẽ tải mô hình AI một lần.",
+      "s2t": "Chọn nền",
+      "s2b": "Giữ trong suốt, hoặc đổi nền trắng, màu, làm mờ. Giữ nút so sánh để kiểm tra viền.",
+      "s3t": "Tải xuống",
+      "s3b": "Lưu PNG hoặc WebP trong suốt, JPG nền trắng, hoặc tất cả thành ZIP."
+    },
+    "image-upscaler": {
+      "lead": "Phóng to ảnh nhỏ hoặc mờ 2× hay 4× bằng AI, rồi tải bản nét.",
+      "s1t": "Thêm ảnh",
+      "s1b": "Thả hoặc dán ảnh. Việc phóng to bắt đầu ngay trên GPU hoặc CPU.",
+      "s2t": "Chọn tỉ lệ và loại ảnh",
+      "s2b": "Chọn 2× hoặc 4×, Ảnh chụp hoặc Anime / tranh vẽ, rồi phóng to lại. Kéo thanh trượt để so sánh.",
+      "s3t": "Tải xuống",
+      "s3b": "Lưu dạng PNG, JPG hoặc WebP."
+    },
+    "speech-to-text": {
+      "lead": "Chuyển bản ghi âm hoặc video thành văn bản và phụ đề ngay trong tab này.",
+      "s1t": "Thêm audio",
+      "s1b": "Thả tệp audio, video hoặc ghi âm từ micro.",
+      "s2t": "Kiểm tra tùy chọn",
+      "s2b": "Để ngôn ngữ tự nhận diện hoặc chọn, rồi chọn Nhanh hay Chính xác. Chữ hiện dần khi nhận dạng.",
+      "s3t": "Xuất",
+      "s3b": "Sao chép văn bản, hoặc tải TXT, phụ đề SRT, VTT có mốc thời gian."
+    },
+    "depth-map": {
+      "lead": "Tạo bản đồ độ sâu từ một ảnh ngay trong tab này.",
+      "s1t": "Thêm ảnh",
+      "s1b": "Thả hoặc dán ảnh. Mô hình tải một lần, sau đó chỉ vài giây.",
+      "s2t": "Chọn kiểu",
+      "s2b": "Xám cho công cụ 3D, Turbo hoặc Magma để nhìn xa gần nhanh. Đảo ngược nếu công cụ cần gần = tối.",
+      "s3t": "Tải xuống",
+      "s3b": "Lưu PNG cùng kích thước ảnh gốc."
     }
   }
 }

@@ -8,6 +8,7 @@ import {
   CATEGORIES,
   appHref,
   gamesHref,
+  isAiToolPath,
   isPublishedTutorial,
   kbHref,
   learnHref,
@@ -251,6 +252,8 @@ function onClick(e: MouseEvent): void {
   // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
   // and gtag's automatic history tracking never sees the URL.
   if (analyticsActive() && !isTrackedPath(a.pathname)) return;
+  // AI tool pages are cross-origin isolated by their response headers: entering or leaving one loads a new document.
+  if (isAiToolPath(a.pathname) !== isAiToolPath(location.pathname)) return;
   if (parseAppPath(a.pathname).kind === "static") return;
   e.preventDefault();
   history.pushState(null, "", a.href);

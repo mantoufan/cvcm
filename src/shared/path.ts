@@ -17,7 +17,7 @@ import { localePath, parseLocale, type Locale } from "./locale";
 export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
 
 export const STATIC_FILE = new RegExp(
-  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
 );
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
@@ -25,6 +25,8 @@ export const QUIZ_SEGMENT = "tests";
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
+  // In-browser AI (Transformers.js / ONNX Runtime): models download once from /ai/models/ and run on the GPU or CPU.
+  { id: "ai", tools: ["remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
   { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro"] },
@@ -127,6 +129,10 @@ export const TOOLS = [
   "palladium",
   "oil",
   "stocks",
+  "remove-background",
+  "image-upscaler",
+  "speech-to-text",
+  "depth-map",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -251,6 +257,14 @@ export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap
 
 export function isPublishedTutorial(id: TutorialId): boolean {
   return FEATURED_TUTORIALS.includes(id);
+}
+
+/** AI tools: their pages are cross-origin isolated (threaded WebAssembly), so links into or out of them load a fresh document. */
+export const AI_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(CATEGORIES.find((c) => c.id === "ai")!.tools);
+
+export function isAiToolPath(pathname: string): boolean {
+  const parsed = parseAppPath(pathname);
+  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && AI_TOOLS.has(parsed.tool);
 }
 
 export function categoryOf(tool: ToolId): CategoryId {

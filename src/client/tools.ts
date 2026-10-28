@@ -550,6 +550,30 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountPortraitSim(host);
     return m.unmountPortraitSim;
   },
+  "remove-background": async (host, ctx) => {
+    const m = await import("./remove-background/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountRemoveBackground(host);
+    return m.unmountRemoveBackground;
+  },
+  "image-upscaler": async (host, ctx) => {
+    const m = await import("./image-upscaler/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountImageUpscaler(host);
+    return m.unmountImageUpscaler;
+  },
+  "speech-to-text": async (host, ctx) => {
+    const m = await import("./speech-to-text/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountSpeechToText(host);
+    return m.unmountSpeechToText;
+  },
+  "depth-map": async (host, ctx) => {
+    const m = await import("./depth-map/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountDepthMap(host);
+    return m.unmountDepthMap;
+  },
   "dice": async (host, ctx) => {
     const m = await import("./dice/ui");
     if (!ctx.alive()) return undefined;

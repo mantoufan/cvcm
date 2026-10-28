@@ -351,7 +351,15 @@
     "titleGpa": "Kalkulator GPA (IPK) — skala 4.0, berbobot SKS — cv.cm",
     "descGpa": "Masukkan nilai huruf dan SKS untuk mendapatkan GPA skala 4.0 berbobot SKS di browser. Tidak ada unggahan.",
     "titlePomodoro": "Timer Pomodoro — fokus 25 menit dengan jeda — cv.cm",
-    "descPomodoro": "Timer Pomodoro gratis di browser: sesi fokus 25 menit, jeda pendek dan panjang, serta bunyi setiap pergantian. Tidak ada unggahan."
+    "descPomodoro": "Timer Pomodoro gratis di browser: sesi fokus 25 menit, jeda pendek dan panjang, serta bunyi setiap pergantian. Tidak ada unggahan.",
+    "titleRemoveBg": "Hapus background foto dengan AI — gratis, tanpa upload — cv.cm",
+    "descRemoveBg": "Hapus background foto dengan AI langsung di browser. Orang, produk, hewan jadi PNG transparan, ganti latar putih, warna atau blur, unduh massal ZIP. Foto tidak diunggah.",
+    "titleUpscaler": "AI upscale gambar — perbesar 2× / 4× jadi HD, gratis tanpa upload — cv.cm",
+    "descUpscaler": "Perbesar gambar 2× atau 4× dengan Real-ESRGAN di browser. Foto buram dan gambar anime jadi tajam, hingga 16 MP. Gratis, tanpa daftar, tanpa upload.",
+    "titleStt": "Ubah suara jadi teks — transkrip audio & video, subtitle SRT gratis — cv.cm",
+    "descStt": "Transkrip rekaman, rapat, dan video jadi teks dengan Whisper AI di browser. 99 bahasa termasuk Bahasa Indonesia, deteksi bahasa otomatis, subtitle SRT/VTT, rekam mikrofon. Audio tidak diunggah.",
+    "titleDepthMap": "Pembuat depth map — kedalaman AI dari foto — cv.cm",
+    "descDepthMap": "Buat depth map dari foto dengan Depth Anything V2 di browser. PNG grayscale atau berwarna untuk 3D, parallax, Blender, dan ControlNet. Foto tidak diunggah."
   },
   "brand": "cv.cm",
   "nav": {
@@ -366,7 +374,8 @@
     "device": "Perangkat",
     "assets": "Aset",
     "tests": "Tes",
-    "data": "Data"
+    "data": "Data",
+    "ai": "AI"
   },
   "lang": {
     "label": "Bahasa",
@@ -771,6 +780,22 @@
     "pomodoro": {
       "name": "Timer Pomodoro",
       "blurb": "Fokus 25 menit dan jeda dengan bunyi. Tidak ada unggahan."
+    },
+    "remove-background": {
+      "name": "Hapus background",
+      "blurb": "Potong orang, produk, hewan dengan AI. PNG transparan. Diproses di browser."
+    },
+    "image-upscaler": {
+      "name": "AI upscale gambar",
+      "blurb": "Perbesar foto dan gambar anime 2× atau 4× jadi HD. Tanpa upload."
+    },
+    "speech-to-text": {
+      "name": "Ubah suara jadi teks",
+      "blurb": "Transkrip audio dan video dengan Whisper. TXT, SRT, VTT. Tanpa upload."
+    },
+    "depth-map": {
+      "name": "Pembuat depth map",
+      "blurb": "Ubah foto jadi depth map AI untuk 3D, parallax, ControlNet."
     }
   },
   "watermark": {
@@ -3003,6 +3028,54 @@
       "a4": "Bisa. Atur fokus, jeda pendek, dan jeda panjang 1 sampai 180 menit, serta jumlah putaran sebelum jeda panjang. Saat jam berhenti, fase saat ini langsung memakai durasi baru; Atur ulang memulai dari putaran 1.",
       "q5": "Apa yang terjadi jika pindah tab?",
       "a5": "Timer terus menghitung dari jam, dan judul tab menampilkan sisa waktu. Biarkan tab terbuka agar bunyinya terdengar."
+    },
+    "remove-background": {
+      "q1": "Apakah hapus background ini gratis?",
+      "a1": "Ya. Tanpa daftar, tanpa watermark, tanpa batas. Model AI diunduh sekali lalu berjalan di perangkat Anda sendiri.",
+      "q2": "Apakah foto saya diunggah?",
+      "a2": "Tidak. Model berjalan di tab ini dengan WebGPU atau WebAssembly. Foto tidak keluar dari perangkat dan hilang saat tab ditutup.",
+      "q3": "Foto seperti apa yang hasilnya paling bagus?",
+      "a3": "Objek yang jelas: orang, produk, hewan, mobil, furnitur. Rambut halus dan kaca lebih sulit; latar polos yang kontras membantu.",
+      "q4": "Bisa hapus background banyak foto sekaligus?",
+      "a4": "Bisa. Taruh beberapa foto, diproses satu per satu, lalu Unduh semua menyimpan file ZIP.",
+      "q5": "Bisa ganti latar baru?",
+      "a5": "Pilih transparan, putih, warna apa saja, atau versi blur dari foto asli. Transparan perlu PNG atau WebP; JPG diberi putih."
+    },
+    "image-upscaler": {
+      "q1": "Bagaimana AI upscale bekerja?",
+      "a1": "Halaman ini menjalankan Real-ESRGAN, jaringan super-resolusi, di GPU atau CPU Anda. Gambar diperbesar 4× sambil menggambar ulang tepi dan tekstur; 2× diperkecil dari hasil itu agar lebih bersih.",
+      "q2": "Apakah gambar saya diunggah?",
+      "a2": "Tidak. Model 2–5 MB diunduh sekali; gambar diproses di tab ini dan tidak keluar dari perangkat.",
+      "q3": "Berapa ukuran hasil terbesar?",
+      "a3": "Sekitar 16 megapiksel (misalnya 4096 × 4096), batas yang bisa digambar Safari. Gambar yang lebih besar diperkecil dulu.",
+      "q4": "Foto atau Anime / ilustrasi?",
+      "a4": "Foto untuk hasil kamera dan tangkapan layar. Anime / ilustrasi untuk gambar ilustrasi, komik, dan game, menjaga warna rata dan garis.",
+      "q5": "Bisa memulihkan detail yang tidak ada?",
+      "a5": "Tidak ada upscaler yang bisa. Gambar jadi lebih tajam dan bersih, tapi teks kecil atau wajah yang tak terlihat hanya ditebak, bukan dipulihkan."
+    },
+    "speech-to-text": {
+      "q1": "Apakah ubah suara jadi teks ini gratis?",
+      "a1": "Ya, tanpa daftar dan tanpa batas menit. Memakai model terbuka Whisper dari OpenAI yang diunduh sekali lalu berjalan di perangkat Anda.",
+      "q2": "Apakah audio saya diunggah?",
+      "a2": "Tidak. Audio dan video didekode dan ditranskrip di tab ini, tidak dikirim ke server, cocok untuk rapat dan wawancara pribadi.",
+      "q3": "Bahasa apa saja yang didukung?",
+      "a3": "Whisper mendukung 99 bahasa, termasuk Indonesia, Inggris, Mandarin, Jepang, Korea, Vietnam, dan Spanyol. Bisa deteksi bahasa otomatis atau menerjemahkan ke Inggris.",
+      "q4": "Bisa membuat subtitle?",
+      "a4": "Bisa. Unduh SRT atau VTT dengan timestamp untuk YouTube, Premiere, CapCut, atau pemutar video, atau TXT biasa.",
+      "q5": "Seberapa panjang file-nya?",
+      "a5": "Berjam-jam pun bisa; audio dibaca per 30 detik. Kecepatan tergantung perangkat: dengan GPU, satu jam audio biasanya selesai dalam beberapa menit."
+    },
+    "depth-map": {
+      "q1": "Apa itu depth map?",
+      "a1": "Gambar grayscale yang memakai kecerahan untuk jarak: dekat putih, jauh hitam. Alat 3D memakainya untuk parallax, depth of field, dan pencahayaan ulang.",
+      "q2": "Model AI apa yang dipakai?",
+      "a2": "Depth Anything V2 Small (Apache-2.0). Diunduh sekali (sekitar 25–100 MB tergantung perangkat) dan berjalan di tab ini.",
+      "q3": "Apakah foto saya diunggah?",
+      "a3": "Tidak. Foto diproses di browser dan tidak keluar dari perangkat.",
+      "q4": "Bisa dipakai dengan ControlNet atau Blender?",
+      "a4": "Bisa. Unduh PNG grayscale untuk input depth ControlNet, displacement map Blender, atau efek foto 3D.",
+      "q5": "Apakah kedalamannya dalam meter?",
+      "a5": "Tidak. Ini kedalaman relatif: urutan mana yang lebih dekat atau jauh, bukan jarak terukur."
     }
   },
   "qr": {
@@ -6255,5 +6328,127 @@
     "round": "Putaran",
     "done": "Selesai",
     "invalid": "Menit harus 1 sampai 180 dan putaran 1 sampai 12."
+  },
+  "ai": {
+    "gpu": "GPU (WebGPU)",
+    "cpu": "CPU (WebAssembly)",
+    "size": "{size}, diunduh sekali",
+    "cached": "tersimpan di browser ini, bisa offline",
+    "downloading": "Mengunduh model AI… {pct}% ({done} dari {total})",
+    "starting": "Menyiapkan model AI…",
+    "running": "Memproses di {device}…",
+    "runningPart": "Memproses di {device}… {done}/{total}",
+    "doneIn": "Selesai dalam {s} detik di {device}.",
+    "errorRun": "Pemrosesan gagal. Muat ulang halaman lalu coba lagi, atau pakai file yang lebih kecil."
+  },
+  "removeBg": {
+    "back": "Semua alat",
+    "title": "Hapus background",
+    "privacyNote": "AI berjalan di tab ini. Foto Anda tidak pernah diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Taruh foto di sini",
+    "dropHint": "Atau tempel. Beberapa sekaligus juga bisa.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Orang, produk, hewan, dan benda. Pertama kali, model diunduh sekali.",
+    "compare": "Tahan untuk lihat aslinya",
+    "download": "Unduh",
+    "downloadAll": "Unduh semua (ZIP)",
+    "background": "Latar",
+    "bg_transparent": "Transparan",
+    "bg_white": "Putih",
+    "bg_color": "Warna",
+    "bg_blur": "Buram",
+    "export": "Ekspor",
+    "format": "Format",
+    "formatNote": "PNG dan WebP tetap transparan. JPG diberi latar putih.",
+    "state_queued": "Menunggu",
+    "state_running": "Menghapus background…",
+    "state_done": "Selesai",
+    "state_error": "Gagal",
+    "remove": "Hapus",
+    "emptyDownload": "Tambahkan foto dan tunggu hasil potongannya dulu.",
+    "errorDecode": "Gambar tidak bisa dibaca."
+  },
+  "upscaler": {
+    "back": "Semua alat",
+    "title": "AI upscale gambar",
+    "privacyNote": "AI berjalan di tab ini. Gambar Anda tidak pernah diunggah.",
+    "filesTitle": "Gambar",
+    "dropTitle": "Taruh gambar di sini",
+    "dropHint": "Atau tempel. Langsung diperbesar.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Gambar kecil, buram, atau terkompres paling terasa bedanya.",
+    "compare": "Sebelum / sesudah",
+    "actual": "Piksel asli",
+    "run": "Perbesar lagi",
+    "download": "Unduh",
+    "scale": "Skala",
+    "style": "Jenis",
+    "style_photo": "Foto",
+    "style_anime": "Anime / ilustrasi",
+    "styleNote": "Anime / ilustrasi menjaga warna rata dan garis tetap bersih.",
+    "export": "Ekspor",
+    "format": "Format",
+    "sizes": "{from} → {to}",
+    "capped": "(maks. 16 MP)",
+    "empty": "Tambahkan gambar dulu.",
+    "errorDecode": "Gambar tidak bisa dibaca."
+  },
+  "stt": {
+    "back": "Semua alat",
+    "title": "Ubah suara jadi teks",
+    "privacyNote": "Whisper AI berjalan di tab ini. Audio Anda tidak pernah diunggah.",
+    "filesTitle": "Audio atau video",
+    "dropTitle": "Taruh audio atau video",
+    "dropHint": "Rekaman, podcast, rapat, klip MP4.",
+    "dropTypes": "MP3, WAV, M4A, OGG, WebM, MP4, MOV",
+    "record": "Rekam dari mikrofon",
+    "stop": "Berhenti merekam ({time})",
+    "recordingName": "rekaman",
+    "placeholder": "Transkrip muncul di sini saat ditulis.",
+    "outputLabel": "Transkrip",
+    "hint": "File panjang juga bisa: dibaca per 30 detik.",
+    "run": "Transkrip ulang",
+    "copy": "Salin teks",
+    "copied": "Tersalin.",
+    "autoDetect": "Deteksi otomatis",
+    "common": "Umum",
+    "more": "Bahasa lain",
+    "model": "Model",
+    "model_fast": "Cepat",
+    "model_accurate": "Akurat",
+    "modelSizes": "Cepat: Whisper base, {fast}. Akurat: Whisper small, {accurate}, lebih baik untuk Mandarin, Jepang, dan Korea.",
+    "options": "Opsi",
+    "language": "Bahasa yang diucapkan",
+    "task": "Hasil",
+    "task_transcribe": "Bahasa yang sama",
+    "task_translate": "Terjemahkan ke Inggris",
+    "script": "Aksara Mandarin",
+    "scriptAsIs": "Apa adanya",
+    "decoding": "Membaca audio…",
+    "doneIn": "Audio {len} selesai dalam {s} detik di {device}.",
+    "empty": "Tambahkan file audio atau video, atau rekam.",
+    "errorDecode": "Browser ini tidak bisa membaca audio file itu. Coba MP3, WAV, atau M4A.",
+    "errorMic": "Mikrofon tidak tersedia. Izinkan di browser, atau taruh file saja."
+  },
+  "depthMap": {
+    "back": "Semua alat",
+    "title": "Pembuat depth map",
+    "privacyNote": "AI berjalan di tab ini. Foto Anda tidak pernah diunggah.",
+    "filesTitle": "Foto",
+    "dropTitle": "Taruh foto di sini",
+    "dropHint": "Atau tempel. Depth map jadi dalam hitungan detik.",
+    "dropTypes": "JPG, PNG, WebP, HEIC",
+    "hint": "Dekat terang, jauh gelap.",
+    "download": "Unduh PNG",
+    "style": "Gaya",
+    "palette_gray": "Skala abu-abu",
+    "palette_turbo": "Turbo",
+    "palette_magma": "Magma",
+    "invert": "Balik (dekat = gelap)",
+    "side": "Tampilkan foto di sampingnya",
+    "note": "Kedalaman relatif, bukan meter. PNG seukuran foto.",
+    "empty": "Tambahkan foto dulu.",
+    "errorDecode": "Gambar tidak bisa dibaca."
   }
 }

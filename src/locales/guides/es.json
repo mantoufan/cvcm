@@ -849,6 +849,42 @@
       "s2b": "El reloj cuenta atrás y el título de la pestaña muestra el tiempo restante. Pausar lo detiene; Saltar pasa a la siguiente fase.",
       "s3t": "Cambia las duraciones",
       "s3b": "Edita los minutos o las rondas con el reloj parado y la fase actual los toma al instante. Reiniciar vuelve a empezar desde la ronda 1."
+    },
+    "remove-background": {
+      "lead": "Recorta personas, productos o mascotas de una foto en esta pestaña y descarga un PNG transparente.",
+      "s1t": "Añade fotos",
+      "s1b": "Suelta o pega una o varias imágenes. La primera vez se descarga el modelo de IA una sola vez.",
+      "s2t": "Elige el fondo",
+      "s2b": "Déjalo transparente o rellénalo de blanco, un color o una copia desenfocada. Mantén pulsado comparar para revisar bordes.",
+      "s3t": "Descarga",
+      "s3b": "Guarda PNG o WebP con transparencia, JPG sobre blanco o todas las fotos en un ZIP."
+    },
+    "image-upscaler": {
+      "lead": "Amplía 2× o 4× una imagen pequeña o borrosa con IA y descarga la copia nítida.",
+      "s1t": "Añade una imagen",
+      "s1b": "Suelta o pega una imagen. La ampliación empieza al momento en tu GPU o CPU.",
+      "s2t": "Elige escala y tipo",
+      "s2b": "Elige 2× o 4×, Foto o Anime / ilustración, y amplía de nuevo. Arrastra el control para comparar.",
+      "s3t": "Descarga",
+      "s3b": "Guarda el resultado en PNG, JPG o WebP."
+    },
+    "speech-to-text": {
+      "lead": "Convierte una grabación o un vídeo en texto y subtítulos en esta pestaña.",
+      "s1t": "Añade audio",
+      "s1b": "Suelta un archivo de audio o vídeo, o graba con el micrófono.",
+      "s2t": "Revisa las opciones",
+      "s2b": "Deja el idioma en automático o elígelo, y escoge Rápido o Preciso. El texto aparece a medida que se escribe.",
+      "s3t": "Exporta",
+      "s3b": "Copia el texto o descarga TXT, subtítulos SRT o VTT con marcas de tiempo."
+    },
+    "depth-map": {
+      "lead": "Crea un mapa de profundidad a partir de una foto en esta pestaña.",
+      "s1t": "Añade una foto",
+      "s1b": "Suelta o pega una imagen. El modelo se descarga una vez y luego tarda segundos.",
+      "s2t": "Elige un estilo",
+      "s2b": "Grises para herramientas 3D, Turbo o Magma para ver la profundidad de un vistazo. Invierte si tu herramienta espera cerca = oscuro.",
+      "s3t": "Descarga",
+      "s3b": "Guarda un PNG del mismo tamaño que tu foto."
     }
   }
 }

@@ -180,6 +180,23 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
 }
 
 /* Tools */
+/* AI tools: model line, one progress bar, transcript */
+.ai-panel { display: grid; gap: 0.35rem; }
+.ai-model { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+.ai-model strong { color: var(--ink); font-weight: 600; }
+.ai-bar { width: 100%; height: 6px; border: 0; border-radius: 999px; background: var(--pink-soft); accent-color: var(--pink-deep); overflow: hidden; }
+.ai-bar::-webkit-progress-bar { background: var(--pink-soft); }
+.ai-bar::-webkit-progress-value { background: var(--pink-deep); }
+.ai-bar::-moz-progress-bar { background: var(--pink-deep); }
+.ai-bar[hidden] { display: none; }
+.stt-output { min-height: 14rem; line-height: 1.7; background: var(--white); }
+.stt-segments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; max-height: 22rem; overflow: auto; font-size: 0.88rem; }
+.stt-segments:empty { display: none; }
+.stt-segments time { margin-right: 0.35rem; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
+.stt-record { width: 100%; }
+.preview.actual { max-width: none; max-height: none; }
+.field.grow { flex: 1; min-width: 12rem; }
+.field[hidden] { display: none; }
 .clip.solo { grid-template-columns: minmax(0, 1fr); }
 .clip-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-right: 0.25rem; }
 .clip-seg .seg { border: 0; background: transparent; padding: 0.3rem 0.75rem; font: inherit; font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
