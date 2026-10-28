@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/write-sitemap.mjs && vite build && node scripts/prerender.mjs && node scripts/build-worker.mjs",
+    "build": "node scripts/write-sitemap.mjs && vite build && node --max-old-space-size=6144 scripts/prerender.mjs && node scripts/build-worker.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
     "kb:sync": "node scripts/kb-sync.mjs",

@@ -4175,5 +4175,206 @@
         "body": "MIT. Source: https://github.com/UrbanZero/bunkerboy. Commercial ROMs are not hosted."
       }
     ]
+  },
+  "coco-battle-royale-2": {
+    "intro": "Coco Battle Royale II is a free-software NES battle royale. The ROM loads when you open the page. Twenty chickens start in a walled arena and only one walks out.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start a round",
+        "body": "Choose 1 PLAYERS and press Start. The credit line at the bottom names Rodrigo Dornelles and Psywave Games.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Find your chicken",
+        "body": "A small 1 floats over your chicken. Walk with the D-pad and peck with A or B. The other chickens fight each other too.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Last chicken standing",
+        "body": "The counter at the top right drops from 20 as chickens fall. Stay out of crowds, pick off stragglers, and keep moving until you are the last one.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source: https://github.com/psywave-games/coco-battle-royale-2. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "gb-wordyl": {
+    "intro": "GB-Wordyl is a redistributable open-source Game Boy word game. The ROM loads when you open the page. You get six tries to find a five-letter English word.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the title screen. Two help screens show the color key and the menu shortcuts; any key moves on.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Type a guess",
+        "body": "Move the cursor over the on-screen keyboard with the D-pad and press A for each letter. B deletes. Start submits all five letters.",
+        "image": "play"
+      },
+      {
+        "id": "colors",
+        "title": "Read the colors",
+        "body": "Gray: the letter is not in the word. Yellow: it is in the word in another spot. Green: right letter, right spot.",
+        "image": "colors"
+      },
+      {
+        "id": "goal",
+        "title": "Narrow it down",
+        "body": "The keyboard keeps the colors too. Here WRITE ruled out W, R, T and E and showed that I is in the word, just not in the middle. Use the clues until all five tiles turn green.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-3.0. Source: https://github.com/bbbbbr/gb-wordyl. Commercial ROMs are not hosted."
+      }
+    ]
+  },
+  "dashy-no-witch": {
+    "intro": "Dashy no Witch is a redistributable Game Boy action game under 0BSD. The ROM loads when you open the page. Fly a witch across the night sky and dash through the bats.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Start",
+        "body": "Press Start on the moon title. The intro ends with a hint: hold B and the D-pad to dash at enemies.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Fly",
+        "body": "Move up, down, left and right with the D-pad. The GOAL bar at the bottom fills as you keep going.",
+        "image": "play"
+      },
+      {
+        "id": "dash",
+        "title": "Dash",
+        "body": "When a bat comes in, hold B and point the D-pad at it. Each dash spends part of the DASH bar, so do not waste it.",
+        "image": "dash-2"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "0BSD. Page: https://voxel.itch.io/dashy-no-witch. Commercial ROMs are not hosted.",
+        "image": "license"
+      }
+    ]
+  },
+  "pelmanism": {
+    "intro": "Pelmanism is a redistributable open-source Game Boy Color card game. The ROM loads when you open the page. All 52 cards lie face down; remember where each one is and pick up the pairs.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Pick the game",
+        "body": "Press any key on the title. On GAME SELECT, keep PELMANISM and press A.",
+        "image": "start"
+      },
+      {
+        "id": "level",
+        "title": "Pick a level",
+        "body": "Choose EASY, NORMAL or HARD with the D-pad and press A.",
+        "image": "level"
+      },
+      {
+        "id": "play",
+        "title": "Turn a card",
+        "body": "Move the hand over a card and press A. The card shows in the left box at the bottom.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Find pairs",
+        "body": "Turn a second card. A pair is removed and LEFT drops by two; a miss turns both back. Remember what you saw and clear the table.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://gitlab.com/teamknox/gbccardgame. Commercial ROMs are not hosted.",
+        "image": "license"
+      }
+    ]
+  },
+  "cascade7": {
+    "intro": "CASCADE7 is a redistributable open-source Game Boy Advance puzzle. The ROM loads when you open the page. Drop discs numbered 1 to 7 and clear them by matching counts.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Drop a disc",
+        "body": "The next disc waits above the board. Move it left or right and press A to drop it.",
+        "image": "play"
+      },
+      {
+        "id": "clear",
+        "title": "Clear by count",
+        "body": "A 3 clears when its row or its column holds 3 discs. One clear can set off the next; that chain is a cascade and scores more.",
+        "image": "clear"
+      },
+      {
+        "id": "rise",
+        "title": "Watch the rise",
+        "body": "RISE counts down the drops left before a row of blank discs pushes up from the bottom. Blank discs crack on the first clear beside them and turn into numbers on the second. Keep the columns low.",
+        "image": "rise"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "MIT. Source: https://github.com/mick-schroeder/gba-cascade7. The About screen in the pause menu credits Mick Schroeder.",
+        "image": "license"
+      }
+    ]
+  },
+  "ending": {
+    "intro": "Ending opens on three icons. Press play, pick a level, then move with the arrow keys. Every move you make, the board answers.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Press play",
+        "body": "The play triangle opens the levels. The maze icon and the hammer icon are the other modes.",
+        "image": "start"
+      },
+      {
+        "id": "levels",
+        "title": "Pick a level",
+        "body": "Levels 00 to 19 sit in a grid. Start at 00 and work up.",
+        "image": "levels"
+      },
+      {
+        "id": "play",
+        "title": "Read the room",
+        "body": "The spiral is you. White squares are blocks you can break, grey squares are in the way, and the exit sits on the edge of the wall.",
+        "image": "play"
+      },
+      {
+        "id": "fight",
+        "title": "Break a block",
+        "body": "Walk into a white block to break it. The other blocks move after you, so look one step ahead.",
+        "image": "fight"
+      },
+      {
+        "id": "exit",
+        "title": "Reach the exit",
+        "body": "Go around the grey squares and step onto the exit.",
+        "image": "exit"
+      },
+      {
+        "id": "next",
+        "title": "Next level",
+        "body": "The room fades and the next level number appears.",
+        "image": "next"
+      },
+      {
+        "id": "license",
+        "title": "License",
+        "body": "GPL-2.0. Aaron Steed, 2013. Source: https://github.com/st33d/Ending"
+      }
+    ]
   }
 }
