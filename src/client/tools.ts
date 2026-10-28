@@ -406,6 +406,36 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountDuration(host);
     return m.unmountDuration;
   },
+  "tdee": async (host, ctx) => {
+    const m = await import("./tdee/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTdee(host);
+    return m.unmountTdee;
+  },
+  "cidr": async (host, ctx) => {
+    const m = await import("./cidr/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCidr(host);
+    return m.unmountCidr;
+  },
+  "chmod": async (host, ctx) => {
+    const m = await import("./chmod/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChmod(host);
+    return m.unmountChmod;
+  },
+  "typing": async (host, ctx) => {
+    const m = await import("./typing/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTyping(host);
+    return m.unmountTyping;
+  },
+  "image-colors": async (host, ctx) => {
+    const m = await import("./image-colors/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountImageColors(host);
+    return m.unmountImageColors;
+  },
   "oil": async (host, ctx) => {
     const m = await import("./assets/ui");
     if (!ctx.alive()) return undefined;
@@ -519,5 +549,23 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     if (!ctx.alive()) return undefined;
     await m.mountPortraitSim(host);
     return m.unmountPortraitSim;
+  },
+  "dice": async (host, ctx) => {
+    const m = await import("./dice/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDice(host);
+    return m.unmountDice;
+  },
+  "gpa": async (host, ctx) => {
+    const m = await import("./gpa/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGpa(host);
+    return m.unmountGpa;
+  },
+  "pomodoro": async (host, ctx) => {
+    const m = await import("./pomodoro/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPomodoro(host);
+    return m.unmountPomodoro;
   },
 };

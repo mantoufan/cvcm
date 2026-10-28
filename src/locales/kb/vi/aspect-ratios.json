@@ -1,0 +1,168 @@
+{
+  "title": "Tỷ lệ khung hình là gì? 16:9, 4:3, 1:1, 9:16 và cách tính — cv.cm",
+  "description": "Tỷ lệ khung hình là tỷ lệ giữa chiều rộng và chiều cao, viết như 16:9. Xem các tỷ lệ phổ biến cho ảnh, video, màn hình và cách tính kích thước, cắt ảnh mà không bị méo.",
+  "h1": "Tỷ lệ khung hình là gì?",
+  "answer": "Tỷ lệ khung hình (aspect ratio) là tỷ lệ giữa chiều rộng và chiều cao của ảnh, viết bằng hai số như 16:9 hoặc 4:3. Nó mô tả hình dạng chứ không phải kích thước: 1920 × 1080 và 1280 × 720 đều là 16:9. Để giữ tỷ lệ khi thay đổi kích thước, tính chiều cao mới bằng chiều rộng mới × chiều cao ÷ chiều rộng; với 16:9 rộng 1200 điểm ảnh, chiều cao là 675 điểm ảnh.",
+  "sections": [
+    {
+      "h": "Các tỷ lệ khung hình phổ biến và nơi sử dụng",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tỷ lệ",
+              "Dạng thập phân",
+              "Kích thước ví dụ (px)",
+              "Ứng dụng thường gặp"
+            ],
+            "rows": [
+              [
+                "1:1",
+                "1,00",
+                "1080 × 1080",
+                "Bài đăng mạng xã hội hình vuông, ảnh đại diện"
+              ],
+              [
+                "4:5",
+                "0,80",
+                "1080 × 1350",
+                "Bài đăng dọc trên bảng tin mạng xã hội"
+              ],
+              [
+                "4:3",
+                "1,33",
+                "1600 × 1200",
+                "Ảnh chụp điện thoại, TV đời cũ, máy tính bảng"
+              ],
+              [
+                "3:2",
+                "1,50",
+                "6000 × 4000",
+                "Ảnh máy DSLR và mirrorless, ảnh in 4 × 6"
+              ],
+              [
+                "16:9",
+                "1,78",
+                "1920 × 1080",
+                "Video HD và 4K, màn hình máy tính, bài thuyết trình"
+              ],
+              [
+                "9:16",
+                "0,56",
+                "1080 × 1920",
+                "Video dọc, story, video ngắn"
+              ],
+              [
+                "21:9 (tên thương mại)",
+                "khoảng 2,37",
+                "2560 × 1080",
+                "Màn hình siêu rộng"
+              ],
+              [
+                "2.39:1",
+                "2,39",
+                "4096 × 1716",
+                "Điện ảnh màn ảnh rộng"
+              ],
+              [
+                "1:√2",
+                "0,71",
+                "2480 × 3508",
+                "Khổ giấy ISO như A4"
+              ]
+            ]
+          }
+        },
+        "Tỷ lệ 16:9 trở thành chuẩn HDTV thông qua ITU-R BT.709, tiêu chuẩn quy định hình ảnh 1920 × 1080 và 1280 × 720. Tỷ lệ 3:2 bắt nguồn từ khung hình 36 × 24 mm của phim 35 mm."
+      ]
+    },
+    {
+      "h": "Cách tìm tỷ lệ của một ảnh bất kỳ",
+      "body": [
+        "Chia chiều rộng và chiều cao cho ước chung lớn nhất (ƯCLN) của chúng.",
+        {
+          "ol": [
+            "Lấy kích thước điểm ảnh, ví dụ 1920 × 1080.",
+            "Tìm số lớn nhất chia hết cho cả hai: 120.",
+            "Chia: 1920 ÷ 120 = 16 và 1080 ÷ 120 = 9, vậy tỷ lệ là 16:9."
+          ]
+        },
+        "Một số kích thước chỉ xấp xỉ tỷ lệ được gọi tên. Màn hình laptop 1366 × 768 rút gọn thành 683:384, tức 1,779, và được bán như màn 16:9. Màn hình \"21:9\" 2560 × 1080 thực ra đúng bằng 64:27. So sánh dạng thập phân (rộng ÷ cao) thường dễ hơn so sánh phân số."
+      ]
+    },
+    {
+      "h": "Tính kích thước mới mà không bị méo",
+      "body": [
+        "Giữ tỷ lệ bằng cách nhân cả hai cạnh với cùng một hệ số. Hai công thức sau áp dụng cho mọi trường hợp:",
+        {
+          "ul": [
+            "`new height = new width × original height ÷ original width` (chiều cao mới = chiều rộng mới × chiều cao gốc ÷ chiều rộng gốc)",
+            "`new width = new height × original width ÷ original height` (chiều rộng mới = chiều cao mới × chiều rộng gốc ÷ chiều cao gốc)"
+          ]
+        },
+        "Ví dụ: ảnh 4032 × 3024 (4:3) thu về rộng 1600 điểm ảnh sẽ cao 1600 × 3024 ÷ 4032 = 1200 điểm ảnh. Với video 9:16 rộng 720 điểm ảnh, chiều cao là 720 × 16 ÷ 9 = 1280.",
+        "Khi kết quả không phải số nguyên, hãy làm tròn tới điểm ảnh gần nhất. Bộ mã hóa video thường yêu cầu kích thước chẵn, nên với video hãy làm tròn tới số chẵn."
+      ]
+    },
+    {
+      "h": "Đổi tỷ lệ: cắt, thêm viền hay kéo giãn",
+      "body": [
+        "Không thể biến một ảnh 4:3 thành khung 16:9 hay bài đăng 1:1 chỉ bằng cách đổi kích thước. Có ba lựa chọn:",
+        {
+          "table": {
+            "head": [
+              "Cách làm",
+              "Điều gì xảy ra",
+              "Khi nào dùng"
+            ],
+            "rows": [
+              [
+                "Cắt (crop)",
+                "Cắt bỏ một phần ảnh",
+                "Hầu hết ảnh chụp; giữ chủ thể trong khung"
+              ],
+              [
+                "Thêm viền (letterbox hoặc pillarbox)",
+                "Thêm dải màu hoặc nền làm mờ",
+                "Khi không được cắt gì, như tài liệu hoặc tác phẩm nghệ thuật"
+              ],
+              [
+                "Kéo giãn",
+                "Phóng chiều rộng và chiều cao không đều nhau",
+                "Gần như không bao giờ; khuôn mặt và hình tròn sẽ bị méo"
+              ]
+            ]
+          }
+        },
+        "Cắt ảnh 4000 × 3000 về 16:9 sẽ giữ nguyên chiều rộng và giảm chiều cao xuống 4000 × 9 ÷ 16 = 2250 điểm ảnh, bỏ đi 25% bức ảnh. Cắt cùng ảnh đó về 1:1 sẽ giữ lại 3000 × 3000."
+      ]
+    },
+    {
+      "h": "Tỷ lệ khung hình trên web",
+      "body": [
+        "CSS có thuộc tính `aspect-ratio`, ví dụ `aspect-ratio: 16 / 9`, giúp giữ sẵn đúng khoảng trống trước khi ảnh hoặc video tải xong. Đặt thuộc tính này, hoặc khai báo thuộc tính `width` và `height` cho ảnh, sẽ ngăn trang bị giật khi nội dung đa phương tiện tải về, nhờ đó cải thiện điểm Cumulative Layout Shift (CLS).",
+        {
+          "note": "Các nền tảng thay đổi kích thước tải lên được khuyến nghị theo thời gian. Hãy xem trang trợ giúp hiện hành của dịch vụ trước khi chuẩn bị một loạt ảnh hoặc video."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "1920 × 1080 là tỷ lệ bao nhiêu?",
+      "a": "16:9. Cả hai số đều chia hết cho 120, được 16 và 9."
+    },
+    {
+      "q": "4K có phải 16:9 không?",
+      "a": "4K UHD dân dụng là 3840 × 2160, đúng tỷ lệ 16:9. 4K điện ảnh (DCI) là 4096 × 2160, khoảng 1,90:1."
+    },
+    {
+      "q": "Ảnh chụp điện thoại có tỷ lệ bao nhiêu?",
+      "a": "Phần lớn camera điện thoại mặc định chụp 4:3, ví dụ 4032 × 3024. Nhiều máy còn có chế độ 16:9 và 1:1, thực chất là cắt bớt ảnh từ cảm biến."
+    },
+    {
+      "q": "Đổi tỷ lệ khung hình có làm giảm chất lượng không?",
+      "a": "Cắt ảnh loại bỏ điểm ảnh nhưng không làm nhòe phần còn lại. Kéo giãn làm méo hình dạng, còn phóng to sau khi cắt mạnh có thể khiến ảnh trông mờ."
+    }
+  ]
+}

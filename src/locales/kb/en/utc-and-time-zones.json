@@ -1,0 +1,154 @@
+{
+  "title": "UTC and time zones explained: offsets, GMT, IANA names and DST — cv.cm",
+  "description": "UTC is the world's reference clock; time zones are offsets from it plus rules for DST. See UTC vs GMT, why Europe/London beats +00:00, and offsets like +05:45.",
+  "h1": "UTC and time zones: how they work",
+  "answer": "UTC (Coordinated Universal Time) is the reference clock that every civil time zone is defined against. A time zone is a region that shares the same local time, written as an offset from UTC such as `-05:00` or `+05:30`, together with rules for when daylight saving time starts and ends. Offsets range from `-12:00` to `+14:00`, and some are not whole hours.",
+  "sections": [
+    {
+      "h": "What UTC is",
+      "body": [
+        "UTC is computed by the International Bureau of Weights and Measures (BIPM) from hundreds of atomic clocks around the world. It ticks in SI seconds, the same as International Atomic Time (TAI), but is occasionally adjusted with leap seconds to stay within 0.9 seconds of the Earth's rotation. Since 2017, UTC has been 37 seconds behind TAI.",
+        "UTC does not observe daylight saving time and never changes with the seasons. That stability is why servers, logs, aircraft and databases run on it."
+      ]
+    },
+    {
+      "h": "UTC vs GMT",
+      "body": [
+        "In everyday use, GMT and UTC show the same time, but they are not the same thing:",
+        {
+          "table": {
+            "head": [
+              "",
+              "UTC",
+              "GMT"
+            ],
+            "rows": [
+              [
+                "What it is",
+                "A time standard based on atomic clocks",
+                "Historically an astronomical time at Greenwich; today a time zone name"
+              ],
+              [
+                "Offset",
+                "The zero point by definition",
+                "UTC+00:00"
+              ],
+              [
+                "Daylight saving",
+                "Never",
+                "Not itself, but the UK switches from GMT to BST (UTC+01:00) in summer"
+              ],
+              [
+                "Use in software",
+                "The standard reference",
+                "Mostly as a label; prefer UTC"
+              ]
+            ]
+          }
+        },
+        "The practical trap: \"London time\" equals GMT only in winter. From the last Sunday in March to the last Sunday in October, London is one hour ahead of UTC."
+      ]
+    },
+    {
+      "h": "Offsets are not time zones",
+      "body": [
+        "An offset such as `+01:00` describes one moment. A time zone describes a place over time: its offset, its daylight saving rules and every historical change to them. The IANA Time Zone Database, used by Linux, macOS, Android, Java and every major browser, names zones by region and city, such as `Europe/London`, `America/New_York` and `Asia/Kolkata`.",
+        "`Europe/London` is better than `+00:00` for anything in the future or the past because it knows the offset is `+00:00` in January and `+01:00` in July. A recurring meeting saved as `+00:00` will be an hour off for half the year.",
+        {
+          "ul": [
+            "Store past instants in UTC (or as a Unix timestamp).",
+            "Store future local events as local time plus an IANA zone name, and compute the UTC moment when needed, because governments change DST rules with little notice.",
+            "Avoid abbreviations such as `CST` or `IST`: `CST` can mean Central Standard Time (UTC-6) or China Standard Time (UTC+8), and `IST` is used for India, Ireland and Israel."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Daylight saving time",
+      "body": [
+        "Daylight saving time (DST) moves clocks forward, usually by one hour, for part of the year. Dates differ by region: the United States switches on the second Sunday in March and back on the first Sunday in November, while the European Union switches on the last Sunday in March and October, at 01:00 UTC everywhere. Most countries in Asia and Africa, including China, Japan and India, do not use DST. In the southern hemisphere, DST runs roughly from October to April.",
+        "Each switch creates two edge cases:",
+        {
+          "ul": [
+            "A gap: when clocks spring forward, local times such as 02:30 on that day do not exist in zones that jump from 02:00 to 03:00.",
+            "An overlap: when clocks fall back, an hour such as 01:30 happens twice, so a local time alone is ambiguous without the offset."
+          ]
+        },
+        {
+          "note": "A day containing a DST change has 23 or 25 hours of local time. Adding 24 hours and adding one calendar day give different results on those days."
+        }
+      ]
+    },
+    {
+      "h": "Unusual offsets",
+      "body": [
+        "Not every zone is a whole number of hours from UTC. These are all in current use:",
+        {
+          "table": {
+            "head": [
+              "Offset",
+              "Example zone",
+              "Region"
+            ],
+            "rows": [
+              [
+                "`-12:00`",
+                "Etc/GMT+12",
+                "Uninhabited Baker and Howland Islands; the earliest offset"
+              ],
+              [
+                "`-03:30`",
+                "America/St_Johns",
+                "Newfoundland, Canada (standard time)"
+              ],
+              [
+                "`+05:30`",
+                "Asia/Kolkata",
+                "India and Sri Lanka"
+              ],
+              [
+                "`+05:45`",
+                "Asia/Kathmandu",
+                "Nepal"
+              ],
+              [
+                "`+09:30`",
+                "Australia/Darwin",
+                "Northern Territory, Australia"
+              ],
+              [
+                "`+12:45`",
+                "Pacific/Chatham",
+                "Chatham Islands, New Zealand (standard time)"
+              ],
+              [
+                "`+14:00`",
+                "Pacific/Kiritimati",
+                "Line Islands, Kiribati; the first place to reach each new day"
+              ]
+            ]
+          }
+        },
+        "Because offsets span 26 hours, the same calendar date exists somewhere on Earth for up to about 50 hours. \"End of day on the 14th\" needs a zone to mean anything precise."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is UTC the same as GMT?",
+      "a": "They show the same clock time, but UTC is an atomic time standard and GMT is a time zone. The UK uses GMT only in winter and BST (UTC+01:00) in summer."
+    },
+    {
+      "q": "Does UTC change for daylight saving time?",
+      "a": "No. UTC is the same all year; only local time zones move their offset from UTC when DST starts or ends."
+    },
+    {
+      "q": "Why does India use UTC+05:30?",
+      "a": "India uses a single zone centered on a meridian at 82.5° E, which is five and a half hours from Greenwich. Half-hour and quarter-hour offsets are chosen to match a country's longitude more closely."
+    },
+    {
+      "q": "What does the Etc/GMT+12 sign mean?",
+      "a": "In IANA `Etc/GMT` names the sign is inverted for POSIX compatibility, so `Etc/GMT+12` is UTC-12:00. Prefer city-based names like `Asia/Tokyo` for real places."
+    }
+  ]
+}

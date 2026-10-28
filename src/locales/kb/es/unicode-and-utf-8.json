@@ -1,0 +1,175 @@
+{
+  "title": "Unicode vs UTF-8: en qué se diferencian, con ejemplos de bytes — cv.cm",
+  "description": "Unicode asigna un número a cada carácter; UTF-8 lo guarda en 1 a 4 bytes. Ejemplos de bytes, UTF-16 y BOM, y por qué el texto aparece como Ã©.",
+  "h1": "¿Cuál es la diferencia entre Unicode y UTF-8?",
+  "answer": "Unicode es un juego de caracteres: asigna a cada carácter un número llamado punto de código, como U+00E9 para «é». UTF-8 es una codificación: una regla para guardar esos números como bytes. Usa 1 byte para ASCII y de 2 a 4 bytes para todo lo demás, así que «é» se convierte en `C3 A9`. Unicode dice qué carácter es; UTF-8 dice cómo se escribe en disco o se envía por la red.",
+  "sections": [
+    {
+      "h": "Primero los puntos de código, después los bytes",
+      "body": [
+        "Unicode define un espacio de códigos de U+0000 a U+10FFFF, con cabida para 1,114,112 puntos de código repartidos en 17 planos de 65,536 cada uno. Más de 150,000 están asignados a caracteres, que abarcan escrituras modernas e históricas, símbolos y emojis. Un punto de código se escribe como `U+` seguido de al menos cuatro dígitos hexadecimales.",
+        "Un punto de código es solo un número. Para guardar o transmitir texto hay que convertirlo en bytes, y hay varias formas de hacerlo: UTF-8, UTF-16 y UTF-32 son codificaciones de los mismos caracteres Unicode.",
+        {
+          "table": {
+            "head": [
+              "Carácter",
+              "Punto de código",
+              "Bytes UTF-8",
+              "UTF-16 (big-endian)"
+            ],
+            "rows": [
+              [
+                "A",
+                "U+0041",
+                "`41`",
+                "`00 41`"
+              ],
+              [
+                "é",
+                "U+00E9",
+                "`C3 A9`",
+                "`00 E9`"
+              ],
+              [
+                "€",
+                "U+20AC",
+                "`E2 82 AC`",
+                "`20 AC`"
+              ],
+              [
+                "日",
+                "U+65E5",
+                "`E6 97 A5`",
+                "`65 E5`"
+              ],
+              [
+                "😀",
+                "U+1F600",
+                "`F0 9F 98 80`",
+                "`D8 3D DE 00`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cómo elige UTF-8 entre 1, 2, 3 o 4 bytes",
+      "body": [
+        "UTF-8, especificado en RFC 3629, es una codificación de ancho variable. Los bits iniciales del primer byte indican cuántos bytes siguen, y todos los bytes de continuación empiezan por los bits `10`. Eso hace que el flujo se autosincronice: un decodificador que cae en medio de un carácter puede avanzar hasta el siguiente byte inicial.",
+        {
+          "table": {
+            "head": [
+              "Rango de puntos de código",
+              "Bytes",
+              "Patrón de bits"
+            ],
+            "rows": [
+              [
+                "U+0000 – U+007F",
+                "1",
+                "`0xxxxxxx`"
+              ],
+              [
+                "U+0080 – U+07FF",
+                "2",
+                "`110xxxxx 10xxxxxx`"
+              ],
+              [
+                "U+0800 – U+FFFF",
+                "3",
+                "`1110xxxx 10xxxxxx 10xxxxxx`"
+              ],
+              [
+                "U+10000 – U+10FFFF",
+                "4",
+                "`11110xxx 10xxxxxx 10xxxxxx 10xxxxxx`"
+              ]
+            ]
+          }
+        },
+        "Ejemplo práctico: «é» es U+00E9, en binario `000 1110 1001`. Necesita el patrón de 2 bytes. Los 5 bits superiores `00011` van en `110xxxxx` y dan `11000011` (`C3`), y los 6 bits inferiores `101001` van en `10xxxxxx` y dan `10101001` (`A9`).",
+        "Como los primeros 128 puntos de código se codifican con los mismos bytes únicos que ASCII, cualquier archivo ASCII válido ya es UTF-8 válido. Esa compatibilidad hacia atrás es la razón principal por la que UTF-8 se convirtió en el estándar de la web, donde lo usa alrededor del 98 % de los sitios."
+      ]
+    },
+    {
+      "h": "UTF-8 vs UTF-16 vs UTF-32",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Codificación",
+              "Tamaño de unidad",
+              "Bytes por carácter",
+              "Habitual en"
+            ],
+            "rows": [
+              [
+                "UTF-8",
+                "8 bits",
+                "1–4",
+                "Páginas web, JSON, archivos de Linux y macOS, la mayoría de las API"
+              ],
+              [
+                "UTF-16",
+                "16 bits",
+                "2 o 4",
+                "Cadenas de JavaScript, Java, API de Windows"
+              ],
+              [
+                "UTF-32",
+                "32 bits",
+                "Siempre 4",
+                "Procesamiento interno donde ayuda el ancho fijo"
+              ]
+            ]
+          }
+        },
+        "UTF-16 guarda los caracteres por encima de U+FFFF como un par sustituto (surrogate pair) de dos unidades de 16 bits. Por eso `\"😀\".length` vale `2` en JavaScript: el lenguaje cuenta unidades UTF-16, no caracteres. Iterar con `[...\"😀\"].length` devuelve `1`.",
+        "Para texto en inglés UTF-8 es lo más compacto. Para texto mayoritariamente en chino, japonés o coreano, UTF-16 puede ocupar menos, ya que esos caracteres ocupan 3 bytes en UTF-8 pero 2 en UTF-16."
+      ]
+    },
+    {
+      "h": "La marca de orden de bytes (BOM)",
+      "body": [
+        "Un BOM es el carácter U+FEFF colocado al principio de un archivo. En UTF-16 y UTF-32 indica al lector si los bytes son big-endian o little-endian. En UTF-8 se codifica como `EF BB BF` y solo sirve como firma, ya que UTF-8 no tiene orden de bytes.",
+        "Las preguntas frecuentes de Unicode indican que el BOM en UTF-8 no es necesario ni recomendable. Algunos editores de Windows lo añaden de todos modos, y entonces rompe scripts de shell (la línea `#!` deja de ser la primera), encabezados CSV y analizadores JSON que no lo esperan. Si un archivo muestra `ï»¿` al principio, es un BOM de UTF-8 leído como Windows-1252."
+      ]
+    },
+    {
+      "h": "Por qué el texto aparece como Ã© o ���",
+      "body": [
+        "El texto ilegible, llamado mojibake, aparece cuando los bytes se decodifican con una codificación distinta de la que se usó para escribirlos:",
+        {
+          "ul": [
+            "`Ã©` en lugar de `é`: los bytes UTF-8 `C3 A9` leídos como Windows-1252 o Latin-1, que asigna `C3` a `Ã` y `A9` a `©`.",
+            "`�` (U+FFFD, el carácter de sustitución): el decodificador encontró bytes que no son UTF-8 válido, a menudo texto Latin-1 leído como UTF-8.",
+            "Signos de interrogación en una base de datos: la columna o la conexión usaba un juego de caracteres que no puede contener ese carácter, así que se sustituyó al escribir y se ha perdido."
+          ]
+        },
+        "La solución es declarar la codificación en cada frontera: `<meta charset=\"utf-8\">` en HTML, `Content-Type: text/html; charset=utf-8` en las cabeceras HTTP, y UTF-8 en las columnas y conexiones de la base de datos. En MySQL, usa `utf8mb4`; el antiguo juego `utf8` guarda como máximo 3 bytes por carácter y rechaza los emojis.",
+        {
+          "note": "El mojibake causado por una decodificación errónea es reversible si todavía tienes los bytes originales. El texto que se volvió a guardar tras leerse mal, o que perdió caracteres convertidos en `?` al escribirse, normalmente no se puede recuperar."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿UTF-8 es lo mismo que Unicode?",
+      "a": "No. Unicode es la lista de caracteres y sus números; UTF-8 es una forma de guardar esos números como bytes. A menudo se dice «Unicode» cuando se quiere decir texto en UTF-8."
+    },
+    {
+      "q": "¿Cuántos bytes ocupa un carácter en UTF-8?",
+      "a": "Entre 1 y 4. Las letras ASCII ocupan 1 byte, la mayoría de las letras acentuadas europeas 2, la mayoría de los caracteres chinos, japoneses y coreanos 3, y los emojis 4."
+    },
+    {
+      "q": "¿UTF-8 puede representar cualquier carácter?",
+      "a": "Sí. UTF-8 puede codificar todos los puntos de código Unicode de U+0000 a U+10FFFF, así que cualquier carácter definido por Unicode se puede escribir en UTF-8."
+    },
+    {
+      "q": "¿Debo guardar los archivos con BOM?",
+      "a": "En UTF-8, normalmente no. Es opcional, no aporta nada en cuanto al orden de bytes y confunde a las herramientas que esperan que los primeros bytes sean contenido. Algunas versiones antiguas de Excel lo necesitan para abrir correctamente archivos CSV en UTF-8."
+    }
+  ]
+}

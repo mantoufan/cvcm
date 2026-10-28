@@ -1,0 +1,175 @@
+{
+  "title": "Unicode và UTF-8 khác nhau thế nào? Kèm ví dụ theo byte — cv.cm",
+  "description": "Unicode gán cho mỗi ký tự một con số; UTF-8 biến con số đó thành 1 đến 4 byte. Xem ví dụ chi tiết theo byte, UTF-16, BOM và vì sao chữ bị lỗi font thành Ã©.",
+  "h1": "Unicode và UTF-8 khác nhau thế nào?",
+  "answer": "Unicode là một bộ ký tự: nó gán cho mỗi ký tự một con số gọi là điểm mã (code point), ví dụ U+00E9 cho \"é\". UTF-8 là một bảng mã (encoding): quy tắc lưu các con số đó thành byte. Nó dùng 1 byte cho ASCII và 2 đến 4 byte cho mọi ký tự khác, nên \"é\" trở thành `C3 A9`. Unicode cho biết đó là ký tự nào; UTF-8 cho biết ký tự ấy được ghi xuống đĩa hay gửi qua mạng như thế nào.",
+  "sections": [
+    {
+      "h": "Điểm mã trước, byte sau",
+      "body": [
+        "Unicode định nghĩa không gian mã từ U+0000 đến U+10FFFF, đủ chỗ cho 1.114.112 điểm mã, chia thành 17 mặt phẳng (plane), mỗi mặt phẳng 65.536 điểm. Hơn 150.000 điểm mã đã được gán cho ký tự, bao gồm các hệ chữ hiện đại và cổ, ký hiệu và emoji. Điểm mã được viết là `U+` theo sau là ít nhất bốn chữ số thập lục phân.",
+        "Điểm mã chỉ là một con số. Để lưu hoặc truyền văn bản, nó phải được chuyển thành byte, và có nhiều cách làm việc đó: UTF-8, UTF-16 và UTF-32 đều là các bảng mã cho cùng những ký tự Unicode.",
+        {
+          "table": {
+            "head": [
+              "Ký tự",
+              "Điểm mã",
+              "Byte UTF-8",
+              "UTF-16 (big-endian)"
+            ],
+            "rows": [
+              [
+                "A",
+                "U+0041",
+                "`41`",
+                "`00 41`"
+              ],
+              [
+                "é",
+                "U+00E9",
+                "`C3 A9`",
+                "`00 E9`"
+              ],
+              [
+                "€",
+                "U+20AC",
+                "`E2 82 AC`",
+                "`20 AC`"
+              ],
+              [
+                "日",
+                "U+65E5",
+                "`E6 97 A5`",
+                "`65 E5`"
+              ],
+              [
+                "😀",
+                "U+1F600",
+                "`F0 9F 98 80`",
+                "`D8 3D DE 00`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "UTF-8 chọn 1, 2, 3 hay 4 byte thế nào",
+      "body": [
+        "UTF-8, được đặc tả trong RFC 3629, là bảng mã có độ dài thay đổi. Các bit đầu của byte đầu tiên cho biết có bao nhiêu byte theo sau, và mọi byte tiếp nối đều bắt đầu bằng các bit `10`. Nhờ vậy luồng dữ liệu tự đồng bộ: bộ giải mã rơi vào giữa một ký tự có thể bỏ qua để tới byte bắt đầu kế tiếp.",
+        {
+          "table": {
+            "head": [
+              "Khoảng điểm mã",
+              "Số byte",
+              "Mẫu bit"
+            ],
+            "rows": [
+              [
+                "U+0000 – U+007F",
+                "1",
+                "`0xxxxxxx`"
+              ],
+              [
+                "U+0080 – U+07FF",
+                "2",
+                "`110xxxxx 10xxxxxx`"
+              ],
+              [
+                "U+0800 – U+FFFF",
+                "3",
+                "`1110xxxx 10xxxxxx 10xxxxxx`"
+              ],
+              [
+                "U+10000 – U+10FFFF",
+                "4",
+                "`11110xxx 10xxxxxx 10xxxxxx 10xxxxxx`"
+              ]
+            ]
+          }
+        },
+        "Ví dụ: \"é\" là U+00E9, nhị phân `000 1110 1001`. Nó cần mẫu 2 byte. 5 bit cao `00011` được đặt vào `110xxxxx` để thành `11000011` (`C3`), và 6 bit thấp `101001` được đặt vào `10xxxxxx` để thành `10101001` (`A9`).",
+        "Vì 128 điểm mã đầu tiên được mã hóa thành đúng một byte giống hệt ASCII, mọi file ASCII hợp lệ đều đã là UTF-8 hợp lệ. Khả năng tương thích ngược này là lý do chính khiến UTF-8 trở thành mặc định trên web, nơi khoảng 98% website sử dụng nó."
+      ]
+    },
+    {
+      "h": "UTF-8, UTF-16 và UTF-32",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bảng mã",
+              "Kích thước đơn vị",
+              "Số byte mỗi ký tự",
+              "Thường dùng trong"
+            ],
+            "rows": [
+              [
+                "UTF-8",
+                "8 bit",
+                "1–4",
+                "Trang web, JSON, file trên Linux và macOS, đa số API"
+              ],
+              [
+                "UTF-16",
+                "16 bit",
+                "2 hoặc 4",
+                "Chuỗi JavaScript, Java, API của Windows"
+              ],
+              [
+                "UTF-32",
+                "32 bit",
+                "Luôn là 4",
+                "Xử lý nội bộ khi độ dài cố định có lợi"
+              ]
+            ]
+          }
+        },
+        "UTF-16 lưu các ký tự trên U+FFFF dưới dạng cặp thay thế (surrogate pair) gồm hai đơn vị 16 bit. Đó là lý do `\"😀\".length` trong JavaScript bằng `2`: ngôn ngữ này đếm đơn vị UTF-16 chứ không đếm ký tự. Duyệt bằng `[...\"😀\"].length` sẽ trả về `1`.",
+        "Với văn bản tiếng Anh, UTF-8 gọn nhất. Với văn bản chủ yếu là tiếng Trung, Nhật hoặc Hàn, UTF-16 có thể nhỏ hơn, vì các ký tự này chiếm 3 byte trong UTF-8 nhưng chỉ 2 byte trong UTF-16."
+      ]
+    },
+    {
+      "h": "Dấu thứ tự byte (BOM)",
+      "body": [
+        "BOM là ký tự U+FEFF đặt ở ngay đầu file. Trong UTF-16 và UTF-32, nó cho trình đọc biết các byte là big-endian hay little-endian. Trong UTF-8, nó được mã hóa thành `EF BB BF` và chỉ đóng vai trò chữ ký, vì UTF-8 không có thứ tự byte.",
+        "Phần FAQ của Unicode cho biết BOM trong UTF-8 không bắt buộc cũng không được khuyến nghị. Một số trình soạn thảo trên Windows vẫn tự thêm vào, và nó làm hỏng shell script (dòng `#!` không còn đứng đầu), tiêu đề CSV và các trình phân tích JSON không lường trước nó. Nếu đầu file hiện `ï»¿`, đó là BOM UTF-8 bị đọc theo Windows-1252."
+      ]
+    },
+    {
+      "h": "Vì sao chữ bị lỗi thành Ã© hoặc ���",
+      "body": [
+        "Chữ bị lỗi font, gọi là mojibake, xuất hiện khi các byte được giải mã bằng một bảng mã khác với bảng mã đã dùng để ghi chúng:",
+        {
+          "ul": [
+            "`Ã©` thay vì `é`: byte UTF-8 `C3 A9` bị đọc theo Windows-1252 hoặc Latin-1, vốn ánh xạ `C3` thành `Ã` và `A9` thành `©`.",
+            "`�` (U+FFFD, ký tự thay thế): bộ giải mã gặp các byte không phải UTF-8 hợp lệ, thường là văn bản Latin-1 bị đọc như UTF-8.",
+            "Dấu chấm hỏi trong cơ sở dữ liệu: cột hoặc kết nối dùng bộ ký tự không chứa được ký tự đó, nên nó đã bị thay thế khi ghi và mất hẳn."
+          ]
+        },
+        "Cách khắc phục là khai báo bảng mã ở mọi điểm giao tiếp: `<meta charset=\"utf-8\">` trong HTML, `Content-Type: text/html; charset=utf-8` trong header HTTP, và UTF-8 cho cột cùng kết nối cơ sở dữ liệu. Trong MySQL, hãy dùng `utf8mb4`; bộ ký tự `utf8` cũ chỉ lưu tối đa 3 byte mỗi ký tự và từ chối emoji.",
+        {
+          "note": "Mojibake do giải mã sai có thể khôi phục nếu bạn vẫn còn byte gốc. Văn bản đã bị lưu lại sau khi đọc sai, hoặc đã mất ký tự thành `?` khi ghi, thường không thể khôi phục."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "UTF-8 có giống Unicode không?",
+      "a": "Không. Unicode là danh sách ký tự cùng con số của chúng; UTF-8 là một cách lưu những con số đó thành byte. Người ta hay nói \"Unicode\" khi thực ra ý là văn bản UTF-8."
+    },
+    {
+      "q": "Một ký tự trong UTF-8 chiếm bao nhiêu byte?",
+      "a": "Từ 1 đến 4. Chữ cái ASCII chiếm 1 byte, phần lớn chữ có dấu của châu Âu chiếm 2, phần lớn ký tự tiếng Trung, Nhật, Hàn chiếm 3 và emoji chiếm 4."
+    },
+    {
+      "q": "UTF-8 có biểu diễn được mọi ký tự không?",
+      "a": "Có. UTF-8 mã hóa được mọi điểm mã Unicode từ U+0000 đến U+10FFFF, nên bất kỳ ký tự nào Unicode định nghĩa đều viết được bằng UTF-8."
+    },
+    {
+      "q": "Có nên lưu file kèm BOM không?",
+      "a": "Với UTF-8 thì thường là không. BOM là tùy chọn, chẳng giúp gì về thứ tự byte và gây rối cho các công cụ mong đợi byte đầu tiên là nội dung. Một số phiên bản Excel cũ cần BOM để mở đúng file CSV UTF-8."
+    }
+  ]
+}

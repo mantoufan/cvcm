@@ -3842,6 +3842,340 @@
       }
     ]
   },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys là game NES đi cảnh bắn súng miễn phí. ROM tải khi bạn mở trang. Mỗi màn có một mục tiêu; nhảy và bắn cho đến khi hoàn thành.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start, chọn Play Game rồi xác nhận bằng A: số người, chế độ, độ khó, màn bắt đầu.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "Đọc mục tiêu",
+        "body": "Màn hình trước mỗi màn ghi việc cần làm, ví dụ \"Defeat 5 enemies\", và số mạng.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "Nhảy và bắn",
+        "body": "A nhảy giữa các bục, B bắn. Số ở góc phải trên giảm khi bạn tiến gần mục tiêu.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/DABG. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit là game NES bắn súng arcade miễn phí. ROM tải khi bạn mở trang. Bạn lái Trái Đất và quay Mặt Trăng để phá từng đợt địch.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Di chuyển và xoay",
+        "body": "D-pad di chuyển Trái Đất. A và B quay Mặt Trăng quanh nó; thứ gì Mặt Trăng chạm vào đều bị phá.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "Trụ qua các đợt",
+        "body": "Địch đến thành hàng. Đặt Mặt Trăng chắn đường đi của chúng và giữ số mạng ở góc trái trên.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/lunarlimit. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4 là game NES giải đố miễn phí. ROM tải khi bạn mở trang. Mỗi phòng là một lưới nhỏ có cầu thang, gấu và đôi khi có ngọc.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Bấm Start ở màn hình tiêu đề.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Tới cầu thang",
+        "body": "Đi từng ô bằng D-pad về phía cầu thang. Có ngọc thì lấy trước. Chạm gấu là chơi lại phòng.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/pubby/Ralph-4. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES là sandbox trò chơi sự sống miễn phí. ROM tải khi bạn mở trang. Bạn đặt tế bào, luật quyết định điều xảy ra tiếp theo.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Mở lưới",
+        "body": "Lưới có sẵn một glider, con trỏ ở góc trái trên.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "Đặt tế bào",
+        "body": "Di chuyển bằng D-pad, bấm A để đổi trạng thái tế bào. Select xóa cả lưới.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "Chạy",
+        "body": "Bấm Start. Tế bào có 2 hoặc 3 hàng xóm thì sống, ô trống có đúng 3 hàng xóm thì sinh ra tế bào mới. Bấm Start lần nữa để dừng.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/NovaSquirrel/NESLife. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX là game hành động SNES miễn phí. Mở trang là ROM chạy ngay. Bạn tự tay vận hành thang máy và giữ cho mọi hành khách hài lòng.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "Đọc hướng dẫn nút",
+        "body": "Màn hình đầu ghi rõ các nút: nhảy, mở cửa, thang lên và thang xuống. Bấm Start.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "Bắt đầu ca làm",
+        "body": "Bấm Start lần nữa ở màn hình tiêu đề để bắt đầu.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Vận hành thang",
+        "body": "Đi tới một bảng điều khiển. Di chuyển buồng thang bằng X và A, dừng ở đúng tầng rồi mở cửa tầng đó bằng Y. Đừng để thang đâm vào mái hay mặt đất.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/elevator-madness-dx. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave là game SNES bay trong hang miễn phí. Mở trang là ROM chạy ngay. Một nút giữ con dơi trên không.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "Bay",
+        "body": "Bấm Start, rồi nhấp B để vỗ cánh bay lên và để dơi chìm xuống giữa các lần nhấp. Bay theo đường hầm màu trắng.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "Đâm và chơi lại",
+        "body": "Chạm vách màu nâu sẽ hiện GAME OVER kèm quãng đường. Bấm Start để chơi lại.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/bat-cave. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes là game giải đố SNES miễn phí. Mở trang là ROM chạy ngay. Đặt ống cho tới khi đường ống chạy từ đầu tới cuối.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Xem bảng",
+        "body": "Bảng mở ra trống, hàng chờ ống nằm bên trái.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Lắp ống",
+        "body": "Di chuyển con trỏ bằng D-pad và bấm B để đặt đoạn kế tiếp. Nối đoạn đầu và đoạn cuối bằng một đường ống không đứt.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/pipes. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer là game SNES đi cảnh miễn phí. Mở trang là ROM chạy ngay. Năm màn lâu đài, màn nào cũng kết thúc ở một cánh cửa.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Vào lâu đài",
+        "body": "Phòng đầu tiên có hai sinh vật dưới sàn và cửa ra ở bên phải.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Chạy và nhảy",
+        "body": "Đi bằng D-pad, giữ Y để chạy và bấm B để nhảy qua các sinh vật tới cửa.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/undisbeliever/castle_platformer. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets là game Mega Drive đi cảnh miễn phí. Mở trang là ROM chạy ngay. Mỗi màn là một hành tinh nhỏ bạn chạy trọn một vòng.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu",
+        "body": "Chọn START. Nếu có mã, PASSWORD đưa bạn tới màn sau.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "Xem thẻ màn",
+        "body": "Mỗi màn mở đầu bằng tên màn, ví dụ PLANELAGO 1 · LAFTO.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "Chạy quanh hành tinh",
+        "body": "Hành tinh xoay khi bạn chạy. Nhảy bằng A, B hoặc C và vượt qua hành tinh trước khi đồng hồ ở trên hết giờ.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "zlib. Mã nguồn: https://github.com/sikthehedgehog/miniplanets. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD là game Mega Drive phản ứng dây chuyền miễn phí. Mở trang là ROM chạy ngay. Lấp đầy các ô cho tới khi chúng nổ và chiếm cả bàn.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Tiêu đề",
+        "body": "Bấm nút bất kỳ để vào menu chính.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "Thiết lập",
+        "body": "Chọn chiều rộng và chiều cao bàn, đặt người chơi là người hoặc máy, rồi bấm nút play màu xanh lá.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "Đặt nguyên tử",
+        "body": "Di chuyển con trỏ và bấm A để thêm một nguyên tử. Ô góc nổ ở 2, ô cạnh ở 3, ô giữa ở 4.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/Nightwolf-47/KleleAtoms-MD. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition là game roguelike miễn phí. Mở trang là ROM chạy ngay. Mỗi lượt tạo một hầm ngục mới.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Bắt đầu lượt",
+        "body": "Bấm Start ở màn hình tiêu đề, rồi chọn Random run trong menu.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "Chọn lớp nhân vật",
+        "body": "Warrior đánh mạnh nhất, Rogue lén lút, Hunter đánh từ xa và Mage dùng đũa phép. Xác nhận bằng Yes.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "Khám phá",
+        "body": "Đi bằng D-pad và bước vào kẻ địch để tấn công. Nhặt vật phẩm, ăn khi thanh Food xuống thấp và tìm cầu thang đi xuống.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "GPL-3.0. Mã nguồn của bản build này: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament là game GBA giải đố miễn phí. Mở trang là ROM chạy ngay. Bạn sắp xếp hầm ngục; người hùng chỉ làm theo lệnh.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Đọc thẻ màn",
+        "body": "Mỗi màn bắt đầu bằng một số thứ tự và một luật, ví dụ \"Keys open doors\". Bấm A.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "Sắp xếp và chạy",
+        "body": "Xem HERO'S ACTIONS, đặt vật phẩm từ YOUR ITEMS lên bàn bằng A, rồi bấm Start để xem anh ta đi.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "Mã MPL-2.0, hình ảnh CC BY 4.0, nhạc CC-BY 3.0 của VWolfdog (https://opengameart.org/content/soft-mysterious-harp-loop). Mã nguồn: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. Không lưu ROM thương mại."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy là game sinh tồn Game Boy miễn phí. Mở trang là ROM chạy ngay. Từng ngày một, bạn quyết định ai được ăn.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "Trú ẩn",
+        "body": "Bấm A ở màn hình tiêu đề và qua cảnh không kích, rồi chọn thùng đồ ban đầu.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "Kiểm tra đồ tiếp tế",
+        "body": "Mỗi ngày bắt đầu bằng số lượng thức ăn, nước và hộp cứu thương.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "Chia phần",
+        "body": "Di chuyển tới Mike, Rose hoặc Jeff và bấm A để đưa thức ăn, nước hoặc hộp cứu thương. Xong thì chọn OK.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "Giấy phép",
+        "body": "MIT. Mã nguồn: https://github.com/UrbanZero/bunkerboy. Không lưu ROM thương mại."
+      }
+    ]
+  },
   "coco-battle-royale-2": {
     "intro": "Coco Battle Royale II là game battle royale NES, phần mềm tự do. Mở trang là ROM được tải. Hai mươi con gà vào sân có rào và chỉ một con bước ra.",
     "steps": [

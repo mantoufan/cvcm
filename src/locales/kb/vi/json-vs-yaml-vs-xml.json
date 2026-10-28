@@ -1,0 +1,152 @@
+{
+  "title": "JSON, YAML và XML: khác nhau thế nào, khi nào dùng loại nào — cv.cm",
+  "description": "JSON, YAML và XML đều mô tả dữ liệu có cấu trúc. So sánh cú pháp, kiểu dữ liệu, chú thích, schema và lỗ hổng bảo mật, để biết định dạng nào hợp với API hay file cấu hình.",
+  "h1": "JSON, YAML hay XML: nên dùng định dạng nào?",
+  "answer": "JSON, YAML và XML là các định dạng văn bản cho dữ liệu có cấu trúc. JSON gọn và chặt chẽ, có sáu kiểu giá trị, và thống trị các API web. YAML dựa trên thụt lề, cho phép chú thích và được ưa chuộng cho file cấu hình. XML dùng thẻ và thuộc tính, hỗ trợ namespace và schema chính thức, và vẫn phổ biến trong tài liệu, hệ thống doanh nghiệp và feed. Cả ba đều biểu diễn được cùng một dữ liệu lồng nhau.",
+  "sections": [
+    {
+      "h": "Cùng một dữ liệu ở ba định dạng",
+      "body": [
+        "Một người dùng có tên, cờ đang hoạt động và hai vai trò trông như sau ở từng định dạng:",
+        {
+          "table": {
+            "head": [
+              "Định dạng",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "JSON",
+                "`{\"name\": \"Ana\", \"active\": true, \"roles\": [\"admin\", \"editor\"]}`"
+              ],
+              [
+                "YAML",
+                "`name: Ana` / `active: true` / `roles: [admin, editor]` (mỗi khóa một dòng)"
+              ],
+              [
+                "XML",
+                "`<user active=\"true\"><name>Ana</name><role>admin</role><role>editor</role></user>`"
+              ]
+            ]
+          }
+        },
+        "JSON và YAML ánh xạ trực tiếp sang object, list và giá trị đơn (scalar) trong hầu hết ngôn ngữ lập trình. XML mô tả một cây phần tử, và cách ánh xạ sang object chỉ là quy ước: ở đây cờ active có thể là thuộc tính hoặc phần tử con, và bản thân XML không cho biết giá trị đó là boolean chứ không phải văn bản `true`."
+      ]
+    },
+    {
+      "h": "So sánh song song",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "JSON",
+              "YAML",
+              "XML"
+            ],
+            "rows": [
+              [
+                "Đặc tả",
+                "RFC 8259, ECMA-404",
+                "YAML 1.2.2 (2021)",
+                "W3C XML 1.0, Fifth Edition"
+              ],
+              [
+                "Cấu trúc",
+                "Ngoặc nhọn và ngoặc vuông",
+                "Thụt lề",
+                "Thẻ mở và thẻ đóng"
+              ],
+              [
+                "Chú thích",
+                "Không cho phép",
+                "`# comment`",
+                "`<!-- comment -->`"
+              ],
+              [
+                "Kiểu dữ liệu có sẵn",
+                "Object, array, string, number, boolean, null",
+                "Map, sequence, scalar được suy ra kiểu",
+                "Chỉ có văn bản, trừ khi schema gán kiểu"
+              ],
+              [
+                "Ngôn ngữ schema",
+                "JSON Schema",
+                "Thường là JSON Schema",
+                "XSD, DTD, RELAX NG"
+              ],
+              [
+                "Tính năng thêm",
+                "Không có",
+                "Anchor và alias, nhiều tài liệu trong một file",
+                "Thuộc tính, namespace, nội dung hỗn hợp"
+              ],
+              [
+                "Ứng dụng điển hình",
+                "API web, dữ liệu trình duyệt, log",
+                "Cấu hình: Kubernetes, pipeline CI, Docker Compose",
+                "File Office, SVG, RSS, SOAP, layout Android"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "JSON: chặt chẽ và dễ đoán",
+      "body": [
+        "Ngữ pháp của JSON nhỏ đến mức vừa một trang giấy, nên trình phân tích ở mọi ngôn ngữ đều thống nhất với nhau. Chính sự chặt chẽ đó cũng gây ra những lỗi hay gặp nhất:",
+        {
+          "ul": [
+            "Khóa và chuỗi phải dùng dấu ngoặc kép; dấu nháy đơn là không hợp lệ.",
+            "Không có dấu phẩy thừa sau phần tử cuối cùng của object hoặc array.",
+            "Không có chú thích, nên cấu hình viết bằng JSON không thể tự giải thích. Các biến thể như JSONC và JSON5 có thêm chú thích nhưng không phải JSON chuẩn.",
+            "RFC 8259 yêu cầu JSON trao đổi giữa các hệ thống phải dùng UTF-8."
+          ]
+        },
+        "Ngữ pháp không giới hạn kích thước số, nhưng RFC 8259 lưu ý rằng phần lớn phần mềm dùng số thực double IEEE 754. Trong JavaScript, số nguyên lớn hơn `9007199254740992` (2^53) bị mất độ chính xác, nên ID lớn gửi dưới dạng chuỗi sẽ an toàn hơn."
+      ]
+    },
+    {
+      "h": "YAML: dễ đọc nhưng nhiều cạm bẫy",
+      "body": [
+        "YAML được thiết kế để con người đọc và sửa, và YAML 1.2 gần như là tập cha của JSON, nên hầu hết file JSON cũng là YAML hợp lệ. Sự linh hoạt của nó có cái giá:",
+        {
+          "ul": [
+            "Thụt lề chính là cấu trúc. Lệch một dấu cách là thay đổi cấp lồng nhau, và không được dùng tab để thụt lề.",
+            "Giá trị không đặt trong ngoặc sẽ bị đoán kiểu. Theo quy tắc YAML 1.1, vẫn được nhiều trình phân tích dùng, `no`, `off` và `yes` thành boolean, nên mã quốc gia `NO` biến thành `false`. Schema lõi của YAML 1.2 chỉ coi `true` và `false` là boolean, nhưng hãy kiểm tra trình phân tích của bạn theo phiên bản nào.",
+            "Giá trị như `1.10` có thể thành số `1.1`, và `012` có thể thành số bát phân. Hãy đặt trong ngoặc những chuỗi chỉ trông giống số, như số phiên bản và mã bưu chính."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "XML: dài dòng nhưng sinh ra cho tài liệu",
+      "body": [
+        "Với dữ liệu thuần túy, XML nặng hơn JSON, nhưng nó xử lý được những thứ hai định dạng kia không làm được: nội dung hỗn hợp (văn bản có markup xen giữa, như `<p>Hello <b>world</b></p>`), namespace cho phép các bộ từ vựng từ nhiều nguồn cùng tồn tại trong một file, và kiểm tra hợp lệ trưởng thành qua XSD. Các định dạng như DOCX, XLSX, SVG và RSS bên dưới đều là XML.",
+        "Chuyển XML sang JSON về bản chất là mất mát. Thuộc tính, thứ tự phần tử, phần tử lặp lại và nội dung hỗn hợp không có tương đương duy nhất trong JSON, nên các công cụ chuyển đổi phải chọn quy ước, chẳng hạn tiền tố `@` cho thuộc tính hoặc ép phần tử lặp lại thành array.",
+        {
+          "note": "Phân tích dữ liệu đầu vào không đáng tin có những rủi ro riêng theo định dạng. Trình phân tích XML giải quyết thực thể bên ngoài (external entity) dễ bị tấn công XXE đọc file cục bộ; hãy tắt xử lý DTD và thực thể bên ngoài. Trình nạp YAML có thể tạo object tùy ý thì có thể chạy mã; hãy dùng trình nạp an toàn như `yaml.safe_load` của PyYAML."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "YAML có phải là tập cha của JSON không?",
+      "a": "YAML 1.2 được sửa đổi để gần như là tập cha chặt chẽ của JSON, nên hầu hết tài liệu JSON đều phân tích được như YAML. Vẫn có vài trường hợp đặc biệt khác nhau, và trình phân tích YAML 1.1 kém tương thích hơn."
+    },
+    {
+      "q": "Vì sao JSON không cho phép chú thích?",
+      "a": "Tác giả của JSON đã bỏ chú thích ra để không ai dùng chúng mang theo chỉ thị phân tích, vốn sẽ phá vỡ khả năng tương thích. Công cụ nào cần chú thích trong cấu hình thì dùng JSONC, JSON5 hoặc YAML."
+    },
+    {
+      "q": "JSON hay XML phân tích nhanh hơn?",
+      "a": "Với cùng dữ liệu, JSON thường nhanh hơn và nhỏ hơn, vì ngữ pháp đơn giản hơn và không có thẻ đóng, thuộc tính hay namespace. Khác biệt chủ yếu đáng kể khi khối lượng lớn."
+    },
+    {
+      "q": "Chuyển YAML sang JSON có mất gì không?",
+      "a": "Dữ liệu được giữ nguyên, nhưng chú thích, anchor và định dạng khóa thì không, vì JSON không có chỗ cho chúng. Chuyển JSON sang YAML thì không mất gì."
+    }
+  ]
+}

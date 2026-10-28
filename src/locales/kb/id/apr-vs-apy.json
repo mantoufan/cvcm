@@ -1,0 +1,180 @@
+{
+  "title": "APR vs APY: perbedaan, rumus, dan contoh perhitungannya — cv.cm",
+  "description": "APR adalah bunga tahunan tanpa bunga majemuk; APY sudah memperhitungkannya. Rumus APY = (1 + APR/n)^n − 1, mengapa APR 5% bulanan = APY 5,116%, dan biaya dalam APR.",
+  "h1": "APR vs APY: apa bedanya?",
+  "answer": "APR (annual percentage rate) adalah suku bunga tahunan yang tidak memperhitungkan bunga majemuk. APY (annual percentage yield) adalah tingkat yang benar-benar Anda terima atau bayar dalam setahun setelah bunga ditambahkan ke saldo dan ikut berbunga. Konversinya `APY = (1 + APR/n)^n − 1`, dengan `n` adalah jumlah periode pemajemukan per tahun, sehingga APR 5% yang dimajemukkan bulanan setara dengan APY sekitar 5,116%.",
+  "sections": [
+    {
+      "h": "Kedua tingkat berdampingan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "",
+              "APR",
+              "APY"
+            ],
+            "rows": [
+              [
+                "Kepanjangan",
+                "Annual percentage rate",
+                "Annual percentage yield (disebut juga suku bunga efektif tahunan)"
+              ],
+              [
+                "Memperhitungkan bunga majemuk",
+                "Tidak",
+                "Ya"
+              ],
+              [
+                "Biasanya dipakai untuk",
+                "Pinjaman, KPR, kartu kredit",
+                "Tabungan, deposito (CD), simpanan"
+              ],
+              [
+                "Memuat biaya",
+                "Untuk pinjaman, memuat biaya tertentu dari pemberi pinjaman",
+                "Tidak; hanya mencerminkan bunga"
+              ],
+              [
+                "Hubungan",
+                "Lebih rendah atau sama",
+                "Sama jika bunga dimajemukkan sekali setahun, selain itu lebih tinggi"
+              ]
+            ]
+          }
+        },
+        "Pemberi pinjaman cenderung mencantumkan APR yang tampak lebih rendah, sedangkan bank mencantumkan APY yang tampak lebih tinggi. Masing-masing tidak menyesatkan, tetapi membandingkan APR dengan APY berarti membandingkan dua ukuran yang berbeda."
+      ]
+    },
+    {
+      "h": "Rumus dan contoh perhitungan",
+      "body": [
+        "Dengan `n` periode pemajemukan per tahun, setiap periode menghasilkan `APR/n`. Setelah setahun, setiap satuan uang tumbuh sebesar `(1 + APR/n)^n`. Kurangi 1 untuk mendapatkan yield:",
+        {
+          "ol": [
+            "Tulis APR sebagai desimal: 5% menjadi `0.05`.",
+            "Bagi dengan jumlah periode: bulanan berarti `0.05 / 12 = 0.0041667`.",
+            "Tambahkan 1 lalu pangkatkan dengan jumlah periode: `1.0041667^12 = 1.0511619`.",
+            "Kurangi 1: `0.0511619`, atau APY 5,116%."
+          ]
+        },
+        "Untuk simpanan $10.000, itu berarti bunga $511,62 dalam setahun, bukan $500 seperti pada bunga sederhana 5%. Untuk arah sebaliknya, `APR = n × ((1 + APY)^(1/n) − 1)`: APY 5% yang dimajemukkan bulanan setara dengan APR sekitar 4,889%."
+      ]
+    },
+    {
+      "h": "Bagaimana frekuensi pemajemukan mengubah yield",
+      "body": [
+        "Makin sering bunga dimajemukkan, makin tinggi APY-nya, tetapi tambahannya cepat mengecil:",
+        {
+          "table": {
+            "head": [
+              "APR",
+              "Pemajemukan",
+              "`n`",
+              "APY"
+            ],
+            "rows": [
+              [
+                "5%",
+                "Tahunan",
+                "1",
+                "5,000%"
+              ],
+              [
+                "5%",
+                "Semesteran",
+                "2",
+                "5,063%"
+              ],
+              [
+                "5%",
+                "Kuartalan",
+                "4",
+                "5,095%"
+              ],
+              [
+                "5%",
+                "Bulanan",
+                "12",
+                "5,116%"
+              ],
+              [
+                "5%",
+                "Harian",
+                "365",
+                "5,127%"
+              ],
+              [
+                "5%",
+                "Kontinu",
+                "∞",
+                "5,127% (`e^0.05 − 1`)"
+              ],
+              [
+                "12%",
+                "Bulanan",
+                "12",
+                "12,683%"
+              ],
+              [
+                "24%",
+                "Bulanan",
+                "12",
+                "26,824%"
+              ]
+            ]
+          }
+        },
+        "Pada suku bunga tabungan, selisih antara pemajemukan bulanan dan harian hanya sekitar seperseratus persen. Pada suku bunga kartu kredit, selisihnya besar: kartu dengan APR 24% yang dimajemukkan bulanan memakan biaya hampir 27% setahun untuk saldo yang tidak pernah dilunasi."
+      ]
+    },
+    {
+      "h": "APR pinjaman juga memuat biaya",
+      "body": [
+        "Untuk pinjaman, APR lebih luas daripada suku bunga. Consumer Financial Protection Bureau AS menggambarkan APR sebagai suku bunga ditambah biaya pinjaman lainnya, seperti biaya broker, discount point, dan sebagian biaya penutupan, yang dinyatakan sebagai persentase tahunan. Berdasarkan Truth in Lending Act di AS, pemberi pinjaman wajib mengungkapkannya agar peminjam bisa membandingkan penawaran.",
+        {
+          "ul": [
+            "KPR dengan bunga 6,5% dan biaya point serta biaya lain sebesar $6.000 akan menampilkan APR di atas 6,5%.",
+            "Dua pinjaman dengan suku bunga yang sama bisa punya APR berbeda karena biayanya berbeda.",
+            "Biaya mana yang dimasukkan diatur oleh regulasi, dan sebagian biaya, seperti biaya appraisal atau title pada banyak KPR, tidak dimasukkan."
+          ]
+        },
+        "APR kartu kredit bekerja berbeda: itu adalah suku bunga tahunan, yang biasanya diterapkan sebagai suku bunga harian (APR dibagi 365) pada saldo Anda, dan tidak memuat iuran tahunan atau denda keterlambatan."
+      ]
+    },
+    {
+      "h": "Membandingkan penawaran secara adil",
+      "body": [
+        {
+          "ul": [
+            "Bandingkan APR dengan APR, atau APY dengan APY. Konversikan salah satunya dengan rumus di atas jika dua penawaran memakai ukuran yang berbeda.",
+            "Periksa frekuensi pemajemukan; itu bagian dari ketentuan dan mengubah tingkat efektifnya.",
+            "Untuk pinjaman, bandingkan juga total jumlah yang dibayar kembali dan tenornya. Tenor yang lebih panjang bisa menurunkan cicilan bulanan sekaligus menaikkan total bunga.",
+            "Suku bunga promo dan suku bunga mengambang bisa berubah. APR atau APY yang dicantumkan hanya berlaku selama suku bunganya tidak berubah."
+          ]
+        },
+        {
+          "note": "Halaman ini menjelaskan cara tingkat bunga dihitung. Ini bukan nasihat keuangan; bacalah dokumen keterbukaan resmi setiap produk dan pertimbangkan untuk berkonsultasi dengan penasihat yang berkualifikasi sebelum memutuskan."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah APY yang lebih tinggi lebih baik?",
+      "a": "Untuk uang yang Anda simpan, ya: APY lebih tinggi berarti bunga yang diperoleh per tahun lebih banyak, selama suku bunganya bukan promo dan rekeningnya tidak punya biaya yang mengimbanginya. Untuk utang, biaya tahunan setaranya justru harus serendah mungkin."
+    },
+    {
+      "q": "Bisakah APR dan APY sama?",
+      "a": "Bisa, jika bunga dimajemukkan sekali setahun dan, untuk pinjaman, tidak ada biaya tambahan. Dengan pemajemukan yang lebih sering, APY selalu lebih tinggi daripada APR."
+    },
+    {
+      "q": "Mengapa bank mengiklankan APY dan pemberi pinjaman mengiklankan APR?",
+      "a": "Aturan di AS mewajibkan rekening simpanan mengungkapkan APY dan pinjaman mengungkapkan APR. Kebetulan, hal itu juga membuat tabungan tampak lebih menguntungkan dan pinjaman tampak lebih murah."
+    },
+    {
+      "q": "Berapa suku bunga bulanan untuk APR 24%?",
+      "a": "Suku bunga periodiknya `24% / 12 = 2%` per bulan. Jika dimajemukkan selama dua belas bulan, hasilnya `1.02^12 − 1`, sekitar 26,8% per tahun."
+    }
+  ]
+}

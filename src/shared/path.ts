@@ -9,19 +9,25 @@ import {
 } from "./games";
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
+import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
+import { KB_SEGMENT, isKbId, type KbId } from "./kb";
 import { localePath, parseLocale, type Locale } from "./locale";
 
-export const STATIC_FILE =
-  /^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$)/;
+/** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
+
+export const STATIC_FILE = new RegExp(
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+);
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
 export const QUIZ_SEGMENT = "tests";
 
 export const CATEGORIES = [
   { id: "share", tools: ["clip", "qr", "barcode"] },
-  { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot"] },
+  { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors"] },
   { id: "convert", tools: ["convert", "image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "data", "xml-json", "yaml-json", "json", "base64"] },
-  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration"] },
+  { id: "text", tools: ["password", "word-count", "color", "hex-rgb", "names", "timezone", "timestamp", "lorem", "units", "text-to-speech", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random", "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan", "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "days", "sort", "replace", "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee", "cidr", "chmod", "typing", "dice", "gpa", "pomodoro"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
 
@@ -107,6 +113,14 @@ export const TOOLS = [
   "margin",
   "radix",
   "duration",
+  "tdee",
+  "cidr",
+  "chmod",
+  "typing",
+  "image-colors",
+  "dice",
+  "gpa",
+  "pomodoro",
   "gold",
   "silver",
   "platinum",
@@ -275,6 +289,8 @@ export type AppPath =
   | { kind: "bare-device"; page: DevicePageId }
   | { kind: "bare-legal"; page: LegalPageId }
   | { kind: "bare-quiz"; quiz: QuizId | null }
+  | { kind: "bare-dataset"; dataset: DatasetId | null }
+  | { kind: "bare-kb"; article: KbId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -282,6 +298,8 @@ export type AppPath =
   | { kind: "device"; locale: Locale; page: DevicePageId }
   | { kind: "legal"; locale: Locale; page: LegalPageId }
   | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
+  | { kind: "dataset"; locale: Locale; dataset: DatasetId | null }
+  | { kind: "kb"; locale: Locale; article: KbId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -313,6 +331,16 @@ function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: strin
   return "unknown";
 }
 
+/**
+ * Locale prefixes from the old site that Google still crawls (`/zh/terms`). They parse as the current locale,
+ * so the Worker's canonical check sends one 301 to the real page (`/zh-cn/terms/`).
+ */
+const LEGACY_LOCALES = new Map<string, Locale>([
+  ["zh", "zh-CN"],
+  ["zh-hans", "zh-CN"],
+  ["zh-hant", "zh-TW"],
+]);
+
 export function parseAppPath(pathname: string): AppPath {
   const raw = pathname.split("?")[0] || "/";
   if (STATIC_FILE.test(raw)) return { kind: "static" };
@@ -325,13 +353,19 @@ export function parseAppPath(pathname: string): AppPath {
     return { kind: "clip", id: second };
   }
 
-  const locale = parseLocale(first);
+  const locale = parseLocale(first) ?? LEGACY_LOCALES.get(first) ?? null;
   if (locale) {
     if (!second) {
       if (rest.length > 0) return { kind: "unknown" };
       return { kind: "app", locale, tool: null };
     }
     if (second === "learn") {
+      if (third === KB_SEGMENT) {
+        if (rest.length > 1) return { kind: "unknown" };
+        if (!rest[0]) return { kind: "kb", locale, article: null };
+        if (isKbId(rest[0])) return { kind: "kb", locale, article: rest[0] };
+        return { kind: "unknown" };
+      }
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "learn", locale, tutorial: null };
       if (isTutorialId(third)) return { kind: "learn", locale, tutorial: third };
@@ -358,6 +392,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isQuizId(third)) return { kind: "quiz", locale, quiz: third };
       return { kind: "unknown" };
     }
+    if (second === DATASET_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "dataset", locale, dataset: null };
+      if (isDatasetId(third)) return { kind: "dataset", locale, dataset: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -378,6 +418,12 @@ export function parseAppPath(pathname: string): AppPath {
   }
 
   if (first === "learn") {
+    if (second === KB_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "bare-kb", article: null };
+      if (isKbId(third)) return { kind: "bare-kb", article: third };
+      return { kind: "unknown" };
+    }
     if (!second) return { kind: "bare-learn", tutorial: null };
     if (isTutorialId(second) && !third) return { kind: "bare-learn", tutorial: second };
     return { kind: "unknown" };
@@ -401,6 +447,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === QUIZ_SEGMENT) {
     if (!second) return { kind: "bare-quiz", quiz: null };
     if (isQuizId(second) && !third) return { kind: "bare-quiz", quiz: second };
+    return { kind: "unknown" };
+  }
+  if (first === DATASET_SEGMENT) {
+    if (!second) return { kind: "bare-dataset", dataset: null };
+    if (isDatasetId(second) && !third) return { kind: "bare-dataset", dataset: second };
     return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
@@ -447,6 +498,11 @@ export function quizHref(locale: Locale, quiz: QuizId | null = null): string {
   return quiz ? `${base}/${quiz}/` : `${base}/`;
 }
 
+export function datasetHref(locale: Locale, dataset: DatasetId | null = null): string {
+  const base = `/${localePath(locale)}/${DATASET_SEGMENT}`;
+  return dataset ? `${base}/${dataset}/` : `${base}/`;
+}
+
 export function legalHref(locale: Locale, page: LegalPageId): string {
   return `/${localePath(locale)}/${page}/`;
 }
@@ -454,6 +510,12 @@ export function legalHref(locale: Locale, page: LegalPageId): string {
 export function learnHref(locale: Locale, tutorial: TutorialId | null = null): string {
   const base = `/${localePath(locale)}/learn`;
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
+}
+
+/** Knowledge articles sit under the tutorials: `/{locale}/learn/knowledge/{id}/`. */
+export function kbHref(locale: Locale, article: KbId | null = null): string {
+  const base = `/${localePath(locale)}/learn/${KB_SEGMENT}`;
+  return article ? `${base}/${article}/` : `${base}/`;
 }
 
 export function marketsHref(locale: Locale, market: MarketId | null = null): string {

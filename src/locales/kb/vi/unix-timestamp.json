@@ -1,0 +1,147 @@
+{
+  "title": "Unix timestamp là gì? Giải thích epoch time kèm ví dụ — cv.cm",
+  "description": "Unix timestamp đếm số giây kể từ 1970-01-01 00:00:00 UTC. Xem cách tính, khác biệt giữa giây và mili giây, giây nhuận và sự cố năm 2038 với timestamp 32 bit.",
+  "h1": "Unix timestamp là gì?",
+  "answer": "Unix timestamp là số giây đã trôi qua kể từ 00:00:00 UTC ngày 1 tháng 1 năm 1970, gọi là Unix epoch, không tính giây nhuận. Đó là một số nguyên duy nhất không gắn múi giờ, nên `1700000000` chỉ cùng một thời điểm ở mọi nơi: 22:13:20 UTC ngày 14 tháng 11 năm 2023. JavaScript và nhiều API dùng mili giây, khiến con số dài thêm ba chữ số.",
+  "sections": [
+    {
+      "h": "Con số được định nghĩa thế nào",
+      "body": [
+        "POSIX định nghĩa \"số giây kể từ epoch\" bằng một công thức cố định: mỗi ngày được tính đúng 86.400 giây, và việc đếm bắt đầu từ `1970-01-01T00:00:00Z`. Các thời điểm trước epoch mang giá trị âm, nên `-1` là `1969-12-31T23:59:59Z`.",
+        "Vì giá trị được đo theo UTC, nó không mang múi giờ cũng không có giờ mùa hè. Chuyển nó sang giờ địa phương là một bước riêng cần có múi giờ, ví dụ `Asia/Tokyo` hoặc `America/New_York`.",
+        {
+          "table": {
+            "head": [
+              "Timestamp (giây)",
+              "Ngày giờ UTC",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`0`",
+                "1970-01-01T00:00:00Z",
+                "Unix epoch"
+              ],
+              [
+                "`1000000000`",
+                "2001-09-09T01:46:40Z",
+                "Giá trị 10 chữ số đầu tiên"
+              ],
+              [
+                "`1234567890`",
+                "2009-02-13T23:31:30Z",
+                "Một cột mốc nổi tiếng"
+              ],
+              [
+                "`1700000000`",
+                "2023-11-14T22:13:20Z",
+                "Số tròn gần đây"
+              ],
+              [
+                "`1791936000`",
+                "2026-10-14T00:00:00Z",
+                "Nửa đêm UTC, 14/10/2026"
+              ],
+              [
+                "`2147483647`",
+                "2038-01-19T03:14:07Z",
+                "Giá trị lớn nhất của số nguyên có dấu 32 bit"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Giây, mili giây và các đơn vị khác",
+      "body": [
+        "Unix timestamp kinh điển tính bằng giây, nhưng nhiều hệ thống lưu đơn vị nhỏ hơn. Với các ngày hiện tại, số chữ số là cách nhanh nhất để phân biệt:",
+        {
+          "table": {
+            "head": [
+              "Đơn vị",
+              "Số chữ số hiện nay",
+              "Ví dụ cho cùng một thời điểm",
+              "Thường gặp trong"
+            ],
+            "rows": [
+              [
+                "Giây",
+                "10",
+                "`1700000000`",
+                "Công cụ Unix, PHP `time()`, Python `time.time()` (dạng số thực), claim `exp` của JWT"
+              ],
+              [
+                "Mili giây",
+                "13",
+                "`1700000000000`",
+                "JavaScript `Date.now()`, Java `System.currentTimeMillis()`"
+              ],
+              [
+                "Micro giây",
+                "16",
+                "`1700000000000000`",
+                "Bên trong PostgreSQL, một số hệ thống ghi log"
+              ],
+              [
+                "Nano giây",
+                "19",
+                "`1700000000000000000`",
+                "Go `time.UnixNano()`, tracing độ phân giải cao"
+              ]
+            ]
+          }
+        },
+        "Lẫn lộn đơn vị là lỗi timestamp phổ biến nhất. Truyền giá trị tính bằng giây vào `new Date()` của JavaScript sẽ ra một ngày trong tháng 1 năm 1970; đọc giá trị mili giây như giây sẽ ra một ngày cách hàng chục nghìn năm trong tương lai. Trong JavaScript, dùng `Math.floor(Date.now() / 1000)` để lấy giây, và `new Date(seconds * 1000)` để chuyển ngược lại."
+      ]
+    },
+    {
+      "h": "Giây nhuận không được tính",
+      "body": [
+        "Thỉnh thoảng UTC chèn thêm một giây nhuận để khớp với chuyển động quay của Trái Đất; từ năm 1972 đã có 27 giây nhuận được thêm vào. Unix time bỏ qua chúng: công thức POSIX giả định mỗi ngày có 86.400 giây, nên giây nhuận hoặc bị lặp lại, hoặc được dàn trải (smear) trong một khoảng thời gian dài hơn, tùy hệ thống.",
+        "Trên thực tế, điều này nghĩa là lấy hai timestamp trừ nhau sẽ ra khoảng thời gian có thể lệch đúng bằng số giây nhuận ở giữa. Với việc lên lịch hằng ngày, sai số này không đáng kể; với đo thời gian trong khoa học hay tài chính, các hệ thống dùng TAI hoặc giờ GPS. Năm 2022, các tổ chức đo lường thời gian quốc tế đã biểu quyết ngừng thêm giây nhuận chậm nhất vào năm 2035."
+      ]
+    },
+    {
+      "h": "Sự cố năm 2038",
+      "body": [
+        "Phần mềm cũ lưu Unix time trong số nguyên có dấu 32 bit, có giá trị tối đa là `2147483647`. Giá trị đó đạt tới vào `2038-01-19T03:14:07Z`. Một giây sau, bộ đếm bị tràn thành `-2147483648`, được đọc thành `1901-12-13T20:45:52Z`.",
+        {
+          "ul": [
+            "Hệ điều hành, ngôn ngữ lập trình và cơ sở dữ liệu 64 bit hiện đại dùng `time_t` 64 bit, đủ dùng trong khoảng 292 tỷ năm.",
+            "Rủi ro vẫn còn ở thiết bị nhúng, định dạng file cũ, cột cơ sở dữ liệu 32 bit như `TIMESTAMP` của MySQL, và các giao thức nhị phân chỉ dành bốn byte cho thời gian.",
+            "Các giá trị dài hạn như chứng chỉ 20 năm, khoản vay thế chấp và ngày hết hạn đã vượt qua năm 2038, nên lỗi có thể xuất hiện từ rất lâu trước thời điểm đó."
+          ]
+        },
+        {
+          "note": "JavaScript không bị ảnh hưởng theo cách tương tự: một `Date` lưu mili giây dưới dạng số thực 64 bit và hợp lệ tới năm 275760."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng timestamp, khi nào dùng chuỗi ngày",
+      "body": [
+        "Hãy lưu các thời điểm (khi một sự kiện xảy ra, khi token hết hạn) dưới dạng Unix timestamp hoặc chuỗi ngày UTC. Cả hai đều rõ ràng và sắp xếp đúng.",
+        "Dùng chuỗi ISO 8601 dễ đọc như `2026-10-14T09:30:00Z` trong log, API và file mà con người sẽ đọc, vì nhìn qua thì `1791970200` chẳng nói lên điều gì. Với sự kiện địa phương trong tương lai, như cuộc họp lúc 09:00 ở Paris vào mùa xuân tới, hãy lưu giờ địa phương kèm tên múi giờ IANA: quy tắc giờ mùa hè có thể thay đổi trước ngày đó, và một timestamp tính sẵn khi ấy sẽ bị sai."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Unix timestamp có luôn theo UTC không?",
+      "a": "Có. Việc đếm được định nghĩa từ nửa đêm UTC ngày 1 tháng 1 năm 1970, nên bản thân con số không có múi giờ. Chỉ khi chuyển sang giờ địa phương dễ đọc mới cần đến múi giờ."
+    },
+    {
+      "q": "Làm sao lấy Unix timestamp hiện tại?",
+      "a": "Chạy `date +%s` trong terminal Linux hoặc macOS, `Math.floor(Date.now() / 1000)` trong JavaScript, hoặc `int(time.time())` trong Python. Tất cả đều trả về số giây kể từ epoch."
+    },
+    {
+      "q": "Vì sao timestamp của tôi chuyển ra một ngày năm 1970?",
+      "a": "Gần như chắc chắn giá trị tính bằng giây nhưng bị đọc như mili giây. Hãy nhân nó với 1.000 trước khi truyền vào hàm nhận mili giây, như `new Date()` của JavaScript."
+    },
+    {
+      "q": "Unix timestamp có thể âm không?",
+      "a": "Có. Giá trị âm đếm ngược từ epoch, nên `-86400` là 00:00 UTC ngày 31 tháng 12 năm 1969. Một số hệ thống cũ từ chối giá trị âm, vì vậy hãy kiểm tra trước khi lưu ngày trước năm 1970 theo cách này."
+    }
+  ]
+}

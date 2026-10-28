@@ -37,7 +37,7 @@
       "s3t": "Escribe la marca",
       "s3b": "En un DNI, tesela “solo para [org]”. En una foto de tienda, un nombre o logo.",
       "s4t": "Revisa y exporta",
-      "s4b": "Cuando la marca esté donde quieres, descarga un archivo o un ZIP del lote."
+      "s4b": "Cuando la marca esté donde quieres, descarga un archivo o un ZIP del lote. La marca invisible se añade por defecto; cambia su texto o revisa una imagen en Marca de agua invisible."
     },
     "collage": {
       "lead": "Junta fotos en una sola imagen. Las plantillas y tamaños de Instagram se quedan en esta pestaña.",
@@ -715,6 +715,51 @@
       "s3t": "Copia la duración",
       "s3b": "Copiar pone el resultado H:MM:SS y los segundos totales en el portapapeles."
     },
+    "tdee": {
+      "lead": "Calcula cuántas calorías gastas al día según tu edad, altura, peso y actividad. No es un consejo médico.",
+      "s1t": "Elige las unidades y escribe tus datos",
+      "s1b": "Elige métrico o imperial y luego sexo, edad, peso y altura. Al cambiar de unidades, los números que ya escribiste se convierten.",
+      "s2t": "Elige el nivel de actividad",
+      "s2b": "Sé sincero: quien trabaja en oficina y entrena unas pocas veces por semana suele estar en ligero o moderado. El BMR y el TDEE se actualizan al momento.",
+      "s3t": "Lee mantener, perder y ganar",
+      "s3b": "Comer el TDEE mantiene el peso; −500 kcal hace perder unos 0,5 kg por semana y +300 kcal sube poco a poco. Copiar lleva las cuatro cifras al portapapeles."
+    },
+    "cidr": {
+      "lead": "Calcula una subred IPv4 a partir de la notación CIDR o convierte un rango de direcciones en bloques CIDR.",
+      "s1t": "Escribe una dirección con prefijo",
+      "s1b": "Escribe 192.168.1.10/24, o una dirección y una máscara separadas por un espacio. El bloque se ajusta a su dirección de red.",
+      "s2t": "Lee los datos de la subred",
+      "s2b": "Red, broadcast, máscara, wildcard, primer y último host y el total de direcciones y hosts utilizables aparecen mientras escribes.",
+      "s3t": "Convierte un rango a CIDR",
+      "s3b": "Escribe la primera y la última dirección a la derecha para obtener la lista más corta de bloques CIDR que cubre justo ese rango, lista para copiar."
+    },
+    "chmod": {
+      "lead": "Pasa permisos de Unix entre casillas, dígitos octales y la cadena rwx, y obtén el comando chmod.",
+      "s1t": "Marca los permisos",
+      "s1b": "Cada fila es propietario, grupo u otros; cada columna es lectura, escritura o ejecución. Añade setuid, setgid o sticky si los necesitas.",
+      "s2t": "O escribe el octal o rwx",
+      "s2b": "Escribe 644 o 4755, o pega rwxr-xr-x desde ls -l. Los demás campos se ajustan solos.",
+      "s3t": "Copia el comando",
+      "s3b": "Escribe el nombre del archivo o carpeta, marca -R para toda una carpeta y copia la línea de chmod para ejecutarla en tu terminal."
+    },
+    "typing": {
+      "lead": "Mide tu velocidad y precisión al escribir en 30 o 60 segundos. Los resultados se quedan en la página.",
+      "s1t": "Elige el tiempo y el texto",
+      "s1b": "Elige 30 o 60 segundos y uno de los textos de práctica en tu idioma.",
+      "s2t": "Escribe el texto",
+      "s2b": "Haz clic en el cuadro y empieza a escribir; el cronómetro arranca con la primera tecla. Los caracteres correctos se oscurecen y los errores se ponen rosas.",
+      "s3t": "Mira tu puntuación",
+      "s3b": "Cuando se acaba el tiempo o terminas el texto, verás la velocidad (PPM netas, o caracteres por minuto en chino, japonés y coreano) y la precisión. Pulsa Reiniciar para repetir."
+    },
+    "image-colors": {
+      "lead": "Saca una paleta de colores de cualquier imagen y copia los códigos HEX sin subirla.",
+      "s1t": "Añade una imagen",
+      "s1b": "Suelta una foto o captura de pantalla a la izquierda, haz clic para elegirla o pégala.",
+      "s2t": "Elige cuántos colores",
+      "s2b": "Desliza de 2 a 12. La paleta se recalcula al momento y se ordena del color más frecuente al menos.",
+      "s3t": "Copia los colores",
+      "s3b": "Haz clic en una muestra para copiar su código HEX, o en Copiar todos los HEX para la paleta completa."
+    },
     "gold": {
       "lead": "Convierte un peso de oro en esta pestaña. No se sube nada.",
       "s1t": "Abrir peso de oro",
@@ -777,6 +822,33 @@
       "s2b": "Caja negra para números, pixelado para caras. Deshacer quita la última caja.",
       "s3t": "Descarga",
       "s3b": "Una imagen o un ZIP. La exportación quita el EXIF."
+    },
+    "dice": {
+      "lead": "Tira dados o lanza monedas en esta pestaña. No se sube nada.",
+      "s1t": "Abre Tirar dados",
+      "s1b": "Hay dos dados de seis caras listos. Cambia la cantidad o elige de d4 a d100.",
+      "s2t": "Pulsa Tirar",
+      "s2b": "Cada cara, el total y el dado más alto y más bajo aparecen a la derecha.",
+      "s3t": "Lanza una moneda",
+      "s3b": "Indica un número de monedas y pulsa Lanzar para ver caras y cruces. Copiar deja el resultado en el portapapeles."
+    },
+    "gpa": {
+      "lead": "Convierte letras y créditos en un GPA de escala 4.0 en esta pestaña. No se sube nada.",
+      "s1t": "Abre Calculadora de GPA",
+      "s1b": "Hay cuatro asignaturas de ejemplo. El GPA, los créditos y los puntos están a la derecha.",
+      "s2t": "Introduce tus asignaturas",
+      "s2b": "Elige nota y créditos por fila. Añadir asignatura agrega una fila; × la quita. Marca A+ vale 4.3 si tu centro lo usa.",
+      "s3t": "Copia el resultado",
+      "s3b": "Copiar deja el GPA, los créditos totales y los puntos en el portapapeles."
+    },
+    "pomodoro": {
+      "lead": "Encadena sesiones de enfoque y pausas con aviso sonoro en esta pestaña. No se sube nada.",
+      "s1t": "Abre Temporizador Pomodoro",
+      "s1b": "Enfoque de 25 minutos, pausa corta de 5, pausa larga de 15 y 4 rondas ya están puestos.",
+      "s2t": "Pulsa Iniciar",
+      "s2b": "El reloj cuenta atrás y el título de la pestaña muestra el tiempo restante. Pausar lo detiene; Saltar pasa a la siguiente fase.",
+      "s3t": "Cambia las duraciones",
+      "s3b": "Edita los minutos o las rondas con el reloj parado y la fase actual los toma al instante. Reiniciar vuelve a empezar desde la ronda 1."
     }
   }
 }

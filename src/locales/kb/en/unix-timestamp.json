@@ -1,0 +1,147 @@
+{
+  "title": "What is a Unix timestamp? Epoch time explained with examples — cv.cm",
+  "description": "A Unix timestamp counts seconds since 1970-01-01 00:00:00 UTC. See how it is calculated, seconds vs milliseconds, leap seconds and the 2038 problem.",
+  "h1": "What is a Unix timestamp?",
+  "answer": "A Unix timestamp is the number of seconds that have passed since 00:00:00 UTC on 1 January 1970, called the Unix epoch, not counting leap seconds. It is a single integer with no time zone attached, so `1700000000` means the same instant everywhere: 14 November 2023, 22:13:20 UTC. JavaScript and many APIs use milliseconds instead, which makes the number three digits longer.",
+  "sections": [
+    {
+      "h": "How the number is defined",
+      "body": [
+        "POSIX defines \"seconds since the epoch\" with a fixed formula: every day counts as exactly 86,400 seconds, and the count starts at `1970-01-01T00:00:00Z`. Moments before the epoch are negative, so `-1` is `1969-12-31T23:59:59Z`.",
+        "Because the value is measured in UTC, it carries no time zone and no daylight saving time. Converting it to a wall-clock time is a separate step that needs a zone, for example `Asia/Tokyo` or `America/New_York`.",
+        {
+          "table": {
+            "head": [
+              "Timestamp (seconds)",
+              "UTC date and time",
+              "Note"
+            ],
+            "rows": [
+              [
+                "`0`",
+                "1970-01-01T00:00:00Z",
+                "The Unix epoch"
+              ],
+              [
+                "`1000000000`",
+                "2001-09-09T01:46:40Z",
+                "First 10-digit value"
+              ],
+              [
+                "`1234567890`",
+                "2009-02-13T23:31:30Z",
+                "A well-known milestone"
+              ],
+              [
+                "`1700000000`",
+                "2023-11-14T22:13:20Z",
+                "Recent round number"
+              ],
+              [
+                "`1791936000`",
+                "2026-10-14T00:00:00Z",
+                "Midnight UTC, 14 Oct 2026"
+              ],
+              [
+                "`2147483647`",
+                "2038-01-19T03:14:07Z",
+                "Largest signed 32-bit value"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Seconds, milliseconds and other units",
+      "body": [
+        "The classic Unix timestamp is in seconds, but many systems store finer units. The digit count is the quickest way to tell them apart for current dates:",
+        {
+          "table": {
+            "head": [
+              "Unit",
+              "Digits today",
+              "Example for the same instant",
+              "Common in"
+            ],
+            "rows": [
+              [
+                "Seconds",
+                "10",
+                "`1700000000`",
+                "Unix tools, PHP `time()`, Python `time.time()` (as a float), JWT `exp` claims"
+              ],
+              [
+                "Milliseconds",
+                "13",
+                "`1700000000000`",
+                "JavaScript `Date.now()`, Java `System.currentTimeMillis()`"
+              ],
+              [
+                "Microseconds",
+                "16",
+                "`1700000000000000`",
+                "PostgreSQL internals, some logging systems"
+              ],
+              [
+                "Nanoseconds",
+                "19",
+                "`1700000000000000000`",
+                "Go `time.UnixNano()`, high-resolution tracing"
+              ]
+            ]
+          }
+        },
+        "Mixing units is the most common timestamp bug. A seconds value passed to JavaScript's `new Date()` lands in January 1970; a milliseconds value read as seconds lands tens of thousands of years in the future. In JavaScript, convert with `Math.floor(Date.now() / 1000)` to get seconds, and `new Date(seconds * 1000)` to go back."
+      ]
+    },
+    {
+      "h": "Leap seconds are not counted",
+      "body": [
+        "UTC occasionally inserts a leap second to stay in step with the Earth's rotation; 27 have been added since 1972. Unix time ignores them: the POSIX formula assumes every day has 86,400 seconds, so a leap second is either repeated or smeared across a longer period, depending on the system.",
+        "In practice this means subtracting two timestamps gives elapsed time that can be off by the number of leap seconds in between. For everyday scheduling that error does not matter; for scientific or financial timing, systems use TAI or GPS time instead. International timekeeping bodies voted in 2022 to stop adding leap seconds by 2035."
+      ]
+    },
+    {
+      "h": "The year 2038 problem",
+      "body": [
+        "Older software stores Unix time in a signed 32-bit integer, whose maximum is `2147483647`. That value is reached at `2038-01-19T03:14:07Z`. One second later the counter overflows to `-2147483648`, which reads as `1901-12-13T20:45:52Z`.",
+        {
+          "ul": [
+            "Modern 64-bit operating systems, languages and databases use a 64-bit `time_t`, which lasts for about 292 billion years.",
+            "Risk remains in embedded devices, old file formats, 32-bit database columns such as MySQL `TIMESTAMP`, and binary protocols that reserve only four bytes for a time.",
+            "Long-dated values such as 20-year certificates, mortgages and expiry dates already cross 2038, so the bug can appear well before that date."
+          ]
+        },
+        {
+          "note": "JavaScript is not affected in the same way: a `Date` holds milliseconds in a 64-bit float and is valid up to the year 275760."
+        }
+      ]
+    },
+    {
+      "h": "When to use a timestamp and when to use a date string",
+      "body": [
+        "Store instants (when an event happened, when a token expires) as a Unix timestamp or as a UTC date string. Both are unambiguous and sort correctly.",
+        "Use a human-readable ISO 8601 string such as `2026-10-14T09:30:00Z` in logs, APIs and files that people will read, because `1791970200` means nothing at a glance. Keep future local events, like a meeting at 09:00 in Paris next spring, as a local time plus an IANA zone name: daylight saving rules can change before the date arrives, and a precomputed timestamp would then be wrong."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is a Unix timestamp always in UTC?",
+      "a": "Yes. The count is defined from midnight UTC on 1 January 1970, so the number itself has no time zone. Only the conversion to a readable local time depends on a zone."
+    },
+    {
+      "q": "How do I get the current Unix timestamp?",
+      "a": "Run `date +%s` in a Linux or macOS terminal, `Math.floor(Date.now() / 1000)` in JavaScript, or `int(time.time())` in Python. All return seconds since the epoch."
+    },
+    {
+      "q": "Why does my timestamp convert to a date in 1970?",
+      "a": "The value is almost certainly in seconds but was read as milliseconds. Multiply it by 1,000 before passing it to a function that expects milliseconds, such as JavaScript's `new Date()`."
+    },
+    {
+      "q": "Can a Unix timestamp be negative?",
+      "a": "Yes. Negative values count backwards from the epoch, so `-86400` is 31 December 1969 at 00:00 UTC. Some older systems reject them, so test before storing pre-1970 dates this way."
+    }
+  ]
+}

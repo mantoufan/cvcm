@@ -1,5 +1,5 @@
 export async function decodeImage(
-  file: File,
+  file: Blob,
 ): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   try {
     const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });

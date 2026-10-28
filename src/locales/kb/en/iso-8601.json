@@ -1,0 +1,186 @@
+{
+  "title": "ISO 8601 date format explained: dates, times, weeks, durations — cv.cm",
+  "description": "ISO 8601 writes dates as YYYY-MM-DD and times with a UTC offset. Learn its date, time, week-date and duration forms, and how RFC 3339 narrows it for the web.",
+  "h1": "What is the ISO 8601 date format?",
+  "answer": "ISO 8601 is the international standard for writing dates and times as text. Its core form orders units from largest to smallest: `2026-10-14` for a date and `2026-10-14T09:30:00+02:00` for a moment with its UTC offset. It also defines week dates such as `2026-W42-3`, ordinal dates and durations like `P3DT4H`. Because it is unambiguous and sorts alphabetically in time order, most APIs and data formats use it.",
+  "sections": [
+    {
+      "h": "Why YYYY-MM-DD",
+      "body": [
+        "`03/04/2026` is 3 April in most of the world and March 4 in the United States. ISO 8601 removes the guess by fixing one order, year then month then day, with a four-digit year and two-digit month and day padded with zeros.",
+        "A second benefit is sorting: strings in the form `YYYY-MM-DD` sort alphabetically in the same order as the dates themselves, so file names like `2026-10-14-report.pdf` line up correctly in any folder.",
+        {
+          "table": {
+            "head": [
+              "Form",
+              "Extended (with separators)",
+              "Basic (compact)"
+            ],
+            "rows": [
+              [
+                "Calendar date",
+                "`2026-10-14`",
+                "`20261014`"
+              ],
+              [
+                "Ordinal date (day of year)",
+                "`2026-287`",
+                "`2026287`"
+              ],
+              [
+                "Week date",
+                "`2026-W42-3`",
+                "`2026W423`"
+              ],
+              [
+                "Time of day",
+                "`09:30:00`",
+                "`093000`"
+              ],
+              [
+                "Date and time in UTC",
+                "`2026-10-14T09:30:00Z`",
+                "`20261014T093000Z`"
+              ],
+              [
+                "Date and time with offset",
+                "`2026-10-14T11:30:00+02:00`",
+                "`20261014T113000+0200`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Times, time zones and the letter Z",
+      "body": [
+        "A time follows the date after a `T`. Hours use the 24-hour clock, and fractions of a second follow a decimal point: `09:30:00.250`.",
+        {
+          "ul": [
+            "`Z` (spoken \"Zulu\") means the time is in UTC: `2026-10-14T09:30:00Z`.",
+            "An offset such as `+02:00` or `-05:00` gives the local time and how far it is from UTC. `2026-10-14T11:30:00+02:00` is the same instant as the UTC example above.",
+            "A time with no `Z` and no offset is local time with an unknown zone. It is valid ISO 8601, but other systems cannot tell which instant it refers to."
+          ]
+        },
+        "An offset is not a time zone. `+01:00` might be Paris in winter or Lagos all year. ISO 8601 records only the offset; the zone rules come from elsewhere, such as the IANA time zone database."
+      ]
+    },
+    {
+      "h": "Week dates and week numbers",
+      "body": [
+        "ISO weeks start on Monday, and week 1 is the week that contains the year's first Thursday (equivalently, the week containing 4 January). A week date is written year, `W`, week number, then the weekday from 1 (Monday) to 7 (Sunday).",
+        "Because weeks do not split across years, the ISO week-numbering year can differ from the calendar year at the edges:",
+        {
+          "table": {
+            "head": [
+              "Calendar date",
+              "ISO week date",
+              "Why"
+            ],
+            "rows": [
+              [
+                "2021-01-01 (Friday)",
+                "`2020-W53-5`",
+                "Belongs to the week that started on Monday 28 Dec 2020"
+              ],
+              [
+                "2024-12-30 (Monday)",
+                "`2025-W01-1`",
+                "The week contains Thursday 2 Jan 2025"
+              ],
+              [
+                "2026-01-01 (Thursday)",
+                "`2026-W01-4`",
+                "1 January is itself a Thursday"
+              ],
+              [
+                "2027-01-01 (Friday)",
+                "`2026-W53-5`",
+                "2026 starts on a Thursday, so it has 53 weeks"
+              ]
+            ]
+          }
+        },
+        "A year has 52 or 53 ISO weeks. Week numbers in US calendars, which often start on Sunday with 1 January always in week 1, can differ from ISO numbers by one."
+      ]
+    },
+    {
+      "h": "Durations and intervals",
+      "body": [
+        "A duration starts with `P` (period). Date parts come first, then a `T`, then time parts. Zero parts can be left out.",
+        {
+          "table": {
+            "head": [
+              "Duration",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "`P3DT4H`",
+                "3 days and 4 hours"
+              ],
+              [
+                "`PT30M`",
+                "30 minutes"
+              ],
+              [
+                "`P30M`",
+                "30 months, not minutes: the `T` matters"
+              ],
+              [
+                "`P1Y2M10D`",
+                "1 year, 2 months and 10 days"
+              ],
+              [
+                "`P2W`",
+                "2 weeks"
+              ],
+              [
+                "`PT0.5S`",
+                "Half a second"
+              ]
+            ]
+          }
+        },
+        "An interval joins two parts with a slash: `2026-10-14/2026-10-20` (start and end), `2026-10-14T09:00Z/PT2H` (start and duration), or `P1D/2026-10-14` (duration and end). Durations in years and months have no fixed length in seconds, so software adds them on a calendar, not as a fixed number of seconds."
+      ]
+    },
+    {
+      "h": "RFC 3339: the web's strict profile",
+      "body": [
+        "ISO 8601 allows many variants, which makes full parsers complicated. RFC 3339 picks one profile for internet protocols, and most JSON APIs, Atom feeds and log formats follow it.",
+        {
+          "ul": [
+            "A full date and time is required, always in extended format: `2026-10-14T09:30:00Z`.",
+            "Every timestamp must carry `Z` or a numeric offset such as `+02:00`; local times without an offset are not allowed.",
+            "Week dates, ordinal dates and durations are not part of the profile.",
+            "`-00:00` signals that the time is in UTC but the original local offset is unknown.",
+            "The RFC notes that a space may replace the `T` for readability, a form many databases print."
+          ]
+        },
+        {
+          "note": "To produce an RFC 3339 string in JavaScript, use `new Date().toISOString()`. It always returns UTC with milliseconds, for example `2026-10-14T09:30:00.000Z`."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does the T mean in an ISO 8601 date?",
+      "a": "The `T` separates the date from the time, as in `2026-10-14T09:30:00`. RFC 3339 also accepts a space in that position for readability."
+    },
+    {
+      "q": "What does Z mean at the end of a timestamp?",
+      "a": "`Z` means the time is in UTC, an offset of zero. `09:30:00Z` and `09:30:00+00:00` describe the same instant."
+    },
+    {
+      "q": "Is ISO 8601 the same as RFC 3339?",
+      "a": "RFC 3339 is a stricter subset of ISO 8601 for internet use. Every RFC 3339 timestamp is valid ISO 8601, but ISO 8601 also allows forms RFC 3339 does not, such as week dates and durations."
+    },
+    {
+      "q": "Which week is week 1 in ISO 8601?",
+      "a": "Week 1 is the Monday-to-Sunday week that contains the year's first Thursday. So 1 January can fall in week 52 or 53 of the previous year."
+    }
+  ]
+}

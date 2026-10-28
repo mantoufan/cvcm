@@ -1,0 +1,364 @@
+{
+  "crumbHome": "Home",
+  "hub": {
+    "title": "Free Public Data Tables: Population, GDP, Country Codes and More | cv.cm",
+    "description": "Open data tables you can search, sort and download as CSV: world population, GDP, life expectancy, fertility, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
+    "h1": "Public data",
+    "lede": "Plain tables of public data from the World Bank, ISO and IANA. Search, sort by any column, or download the CSV. Every table names its source and licence.",
+    "groups": {
+      "world": "Countries and the world economy",
+      "codes": "Codes and standards",
+      "reference": "Quick reference"
+    },
+    "about": [
+      "Each table is a snapshot of an official source, refreshed from that source and dated on the page. Country figures come from the World Bank World Development Indicators (CC BY 4.0). Codes come from the ISO 3166 and ISO 4217 lists and the IANA time zone database.",
+      "Numbers are shown in your language, but the CSV files keep raw values and ISO codes, so they open cleanly in Excel, Google Sheets or code."
+    ],
+    "faq": [
+      { "q": "Where does this data come from?", "a": "Country statistics are from the World Bank World Development Indicators. Country, currency and dialing codes follow ISO 3166, ISO 4217 and the ITU list. Time zones are from the IANA tz database. Paper sizes follow ISO 216, ISO 269, JIS P 0138 and ANSI." },
+      { "q": "Can I use these tables for free?", "a": "Yes. World Bank data is licensed CC BY 4.0, so credit the World Bank when you reuse it. Codes and reference tables are public facts you can reuse freely." },
+      { "q": "How current are the numbers?", "a": "Each page shows the date of its snapshot and the year of every value. The World Bank publishes most indicators a year or two after the fact, so a country's latest value can be from an earlier year." }
+    ]
+  },
+  "ui": {
+    "all": "All data",
+    "search": "Filter rows",
+    "searchPlaceholder": "Type a country, code or value",
+    "rows": "{n} rows",
+    "shown": "{shown} of {n} rows",
+    "noMatch": "No rows match.",
+    "download": "Download CSV",
+    "sortHint": "Select a column heading to sort.",
+    "facts": "Key facts",
+    "about": "About this data",
+    "faq": "FAQ",
+    "related": "More data",
+    "tools": "Related tools",
+    "source": "Source",
+    "license": "Licence",
+    "snapshot": "Snapshot {date}",
+    "rank": "#",
+    "country": "Country or area",
+    "year": "Year",
+    "share": "Share of world",
+    "continents": {
+      "AF": "Africa",
+      "AN": "Antarctica",
+      "AS": "Asia",
+      "EU": "Europe",
+      "NA": "North America",
+      "OC": "Oceania",
+      "SA": "South America"
+    },
+    "series": {
+      "A": "ISO A",
+      "B": "ISO B",
+      "C": "ISO C (envelopes)",
+      "JIS": "JIS B (Japan)",
+      "US": "US / ANSI"
+    }
+  },
+  "sets": {
+    "population": {
+      "name": "Population by country",
+      "title": "World Population by Country {to} (List of {rows} Countries) | cv.cm",
+      "description": "Population of {rows} countries and areas, ranked, with share of the world total. World population {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "World population by country, {to}",
+      "lede": "Total population of {rows} countries and areas, ranked from largest to smallest, with each one's share of the world. Source: World Bank.",
+      "value": "Population",
+      "facts": [
+        "World population: {world} ({worldYear}).",
+        "Largest: {top1} ({v1}), then {top2} ({v2}) and {top3} ({v3}).",
+        "Smallest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Total population counts all residents regardless of legal status or citizenship. Values are mid-year estimates from national censuses and the UN Population Division, published by the World Bank.",
+        "The list covers the 217 economies the World Bank reports on. Some territories are listed separately from the country they belong to."
+      ],
+      "faq": [
+        { "q": "Which country has the largest population?", "a": "{top1}, with {v1} people in {year1}. {top2} is second with {v2}." },
+        { "q": "What is the population of the world?", "a": "The World Bank puts the world population at {world} in {worldYear}." },
+        { "q": "Which country has the smallest population?", "a": "In this list it is {last}, with {vlast} people. Areas the World Bank does not report on, such as Vatican City, are not included." }
+      ]
+    },
+    "gdp": {
+      "name": "GDP by country",
+      "title": "GDP by Country {to}: Ranking of {rows} Economies in US$ | cv.cm",
+      "description": "Gross domestic product of {rows} economies in current US dollars, ranked, with share of world GDP. World GDP {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "GDP by country, {to} (current US$)",
+      "lede": "Nominal GDP of {rows} economies in current US dollars, ranked, with each one's share of the world total. Source: World Bank.",
+      "value": "GDP (US$)",
+      "facts": [
+        "World GDP: {world} ({worldYear}).",
+        "Largest economies: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Smallest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "GDP is the value of all final goods and services produced in a country in a year. These figures are converted to US dollars at official exchange rates, so currency swings move them even when output does not.",
+        "For living standards, compare GDP per capita, or GDP at purchasing power parity, which adjusts for price levels."
+      ],
+      "faq": [
+        { "q": "Which country has the largest GDP?", "a": "{top1}, with a GDP of {v1} in {year1}. {top2} is second with {v2}." },
+        { "q": "What is world GDP?", "a": "World GDP was {world} in {worldYear}, in current US dollars." },
+        { "q": "Why do some countries show an older year?", "a": "The World Bank only publishes a figure once a country reports it. Each row shows the latest year available, so a few countries lag behind." }
+      ]
+    },
+    "gdp-per-capita": {
+      "name": "GDP per capita by country",
+      "title": "GDP per Capita by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "GDP per person of {rows} countries in current US dollars, ranked from richest to poorest. World average {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "GDP per capita by country, {to} (current US$)",
+      "lede": "GDP divided by population for {rows} countries and areas, in current US dollars, ranked from highest to lowest. Source: World Bank.",
+      "value": "GDP per capita (US$)",
+      "facts": [
+        "World GDP per capita: {world} ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "GDP per capita is gross domestic product divided by mid-year population. It is a common, rough measure of average income, but it says nothing about how income is shared.",
+        "Small financial centres and resource exporters often top the list because a large economy is divided among few residents."
+      ],
+      "faq": [
+        { "q": "Which country has the highest GDP per capita?", "a": "{top1}, at {v1} per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world average GDP per capita?", "a": "{world} in {worldYear}, in current US dollars." },
+        { "q": "Which country has the lowest GDP per capita?", "a": "In this list, {last}, at {vlast} per person." }
+      ]
+    },
+    "life-expectancy": {
+      "name": "Life expectancy by country",
+      "title": "Life Expectancy by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Life expectancy at birth for {rows} countries, ranked. World average {world} years ({worldYear}). World Bank data, CSV download.",
+      "h1": "Life expectancy at birth by country, {to}",
+      "lede": "How many years a newborn would live if current death rates held, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank.",
+      "value": "Life expectancy (years)",
+      "facts": [
+        "World life expectancy: {world} years ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Life expectancy at birth is the average number of years a newborn would live if the death rates of the year it was born stayed the same for its whole life. It is a summary of current health, not a forecast.",
+        "Values are for both sexes. Women live longer than men in almost every country."
+      ],
+      "faq": [
+        { "q": "Which country has the highest life expectancy?", "a": "{top1}, at {v1} years in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the average life expectancy in the world?", "a": "{world} years in {worldYear}, for both sexes." },
+        { "q": "Which country has the lowest life expectancy?", "a": "In this list, {last}, at {vlast} years." }
+      ]
+    },
+    "fertility-rate": {
+      "name": "Fertility rate by country",
+      "title": "Fertility Rate by Country {to}: Births per Woman in {rows} Countries | cv.cm",
+      "description": "Total fertility rate (births per woman) for {rows} countries, ranked. World average {world} ({worldYear}). Replacement level is about 2.1. World Bank data, CSV download.",
+      "h1": "Fertility rate by country, {to} (births per woman)",
+      "lede": "Average number of children a woman would have at current birth rates, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank.",
+      "value": "Births per woman",
+      "facts": [
+        "World fertility rate: {world} births per woman ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "The total fertility rate is the number of children a woman would have if she lived to the end of her childbearing years and had children at each age at that year's rates.",
+        "About 2.1 births per woman keeps a population stable without migration. Most of East Asia and Europe is well below it."
+      ],
+      "faq": [
+        { "q": "Which country has the highest fertility rate?", "a": "{top1}, at {v1} births per woman in {year1}, followed by {top2} ({v2})." },
+        { "q": "Which country has the lowest fertility rate?", "a": "In this list, {last}, at {vlast} births per woman." },
+        { "q": "What is the replacement fertility rate?", "a": "About 2.1 births per woman in countries with low child mortality. The world average is {world} ({worldYear})." }
+      ]
+    },
+    "internet-users": {
+      "name": "Internet users by country",
+      "title": "Internet Users by Country {to}: % of Population Online in {rows} Countries | cv.cm",
+      "description": "Share of people using the internet in {rows} countries, ranked. World average {world}% ({worldYear}). World Bank / ITU data, CSV download.",
+      "h1": "Internet users by country, {to} (% of population)",
+      "lede": "Share of the population that used the internet in the last three months, for {rows} countries and areas, ranked. Source: World Bank, from ITU data.",
+      "value": "Internet users (%)",
+      "facts": [
+        "World: {world}% of people use the internet ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "An internet user is anyone who went online in the last three months from any device or place. The International Telecommunication Union (ITU) collects the figures from national surveys and estimates.",
+        "Several countries report every few years, so check the year column before comparing two rows."
+      ],
+      "faq": [
+        { "q": "Which country has the highest share of internet users?", "a": "{top1}, where {v1}% of people were online in {year1}." },
+        { "q": "What share of the world uses the internet?", "a": "{world}% of the world's population in {worldYear}." },
+        { "q": "Which country has the fewest internet users?", "a": "In this list, {last}, at {vlast}% of the population." }
+      ]
+    },
+    "country-codes": {
+      "name": "Country codes (ISO 3166)",
+      "title": "ISO 3166 Country Codes: Alpha-2, Alpha-3 and Numeric List of {rows} Countries | cv.cm",
+      "description": "All {rows} ISO 3166-1 country codes: two-letter (alpha-2), three-letter (alpha-3) and numeric codes, plus internet domain and continent. Searchable, CSV download.",
+      "h1": "ISO 3166 country codes",
+      "lede": "Two-letter, three-letter and numeric codes for all {rows} countries and territories in ISO 3166-1, with each one's internet domain and continent.",
+      "cols": {
+        "name": "Country or area",
+        "alpha2": "Alpha-2",
+        "alpha3": "Alpha-3",
+        "numeric": "Numeric",
+        "tld": "Domain",
+        "continent": "Continent"
+      },
+      "facts": [
+        "{rows} countries and territories have an ISO 3166-1 code.",
+        "Alpha-2 codes are used for internet domains (.jp, .de) and in language tags (en-US).",
+        "Alpha-3 codes appear on passports; numeric codes come from the UN M49 standard."
+      ],
+      "about": [
+        "ISO 3166-1 gives every country and many dependent territories three codes. Alpha-2 (US, CN) is the one most systems use. Alpha-3 (USA, CHN) is easier to read. The numeric code (840, 156) works where Latin letters do not.",
+        "The UK uses .uk for its internet domain although its ISO code is GB. Names here are in your language."
+      ],
+      "faq": [
+        { "q": "What is the difference between alpha-2 and alpha-3 codes?", "a": "Alpha-2 codes have two letters (JP) and are used in domains, language tags and most software. Alpha-3 codes have three letters (JPN) and are used on passports and in statistics." },
+        { "q": "How many ISO country codes are there?", "a": "ISO 3166-1 lists {rows} countries and territories, each with an alpha-2, alpha-3 and numeric code." },
+        { "q": "What is the country code for the United Kingdom?", "a": "GB (alpha-2), GBR (alpha-3) and 826 (numeric). Its internet domain is .uk." }
+      ]
+    },
+    "calling-codes": {
+      "name": "International calling codes",
+      "title": "International Calling Codes: Country Dialing Code List ({rows} Countries) | cv.cm",
+      "description": "Country calling codes for {rows} countries and territories, from +1 to +998. Search by country or code, with ISO codes. CSV download.",
+      "h1": "International calling codes by country",
+      "lede": "The number to dial after the international prefix (+) to reach each of {rows} countries and territories.",
+      "cols": {
+        "name": "Country or area",
+        "dial": "Calling code",
+        "alpha2": "ISO code"
+      },
+      "facts": [
+        "Dial + (or your country's exit code, such as 00 or 011), then the country code, then the number without its leading 0.",
+        "+1 is shared by the US, Canada and many Caribbean islands, which add a 3-digit area code.",
+        "+7 is shared by Russia and Kazakhstan."
+      ],
+      "about": [
+        "Calling codes are assigned by the International Telecommunication Union (ITU-T E.164). Codes are one to three digits long, and some groups of countries share one code.",
+        "On a mobile phone, hold 0 to type +. It works from any country, so you do not need to know the local exit code."
+      ],
+      "faq": [
+        { "q": "How do I call another country?", "a": "Type + (or your exit code, such as 00 in most countries or 011 in the US), the country code, then the local number without its leading 0." },
+        { "q": "Which country is +86?", "a": "+86 is China. +852 is Hong Kong, +853 Macao and +886 Taiwan." },
+        { "q": "Why do several countries share +1?", "a": "They are in the North American Numbering Plan. The 3-digit area code after +1 tells you the country." }
+      ]
+    },
+    "currency-codes": {
+      "name": "Currency codes (ISO 4217)",
+      "title": "ISO 4217 Currency Codes: List of {rows} Currencies with Symbols | cv.cm",
+      "description": "All {rows} active ISO 4217 currency codes with numeric code, symbol, decimal places and the countries that use each one. Searchable, CSV download.",
+      "h1": "ISO 4217 currency codes",
+      "lede": "Three-letter codes, numeric codes, symbols and decimal places for the {rows} currencies in ISO 4217, and where each one is used.",
+      "cols": {
+        "code": "Code",
+        "name": "Currency",
+        "symbol": "Symbol",
+        "numeric": "Numeric",
+        "minor": "Decimals",
+        "used": "Used in"
+      },
+      "facts": [
+        "ISO 4217 lists {rows} active currency codes, including funds and precious metals.",
+        "The first two letters are usually the ISO country code: JPY is Japan's yen.",
+        "Codes starting with X are not tied to a country: XAU is gold, XDR is the IMF's special drawing right."
+      ],
+      "about": [
+        "Banks, payment systems and accounting software use ISO 4217 codes because symbols are ambiguous: $ is used by more than 20 currencies.",
+        "Decimals is the number of minor-unit digits (cents). JPY and KRW have none, and some Gulf currencies have three."
+      ],
+      "faq": [
+        { "q": "What is the currency code for the Chinese yuan?", "a": "CNY, numeric code 156. Offshore yuan is often quoted as CNH, but that is a market convention, not an ISO code." },
+        { "q": "How many currencies are there?", "a": "ISO 4217 lists {rows} active codes, including a few funds, precious metals and testing codes." },
+        { "q": "Why does the euro have one code for many countries?", "a": "EUR is one currency shared by the euro area, so it has one code. The Used in column lists every country and territory that uses it." }
+      ]
+    },
+    "time-zones": {
+      "name": "Time zones (IANA)",
+      "title": "List of Time Zones with UTC Offsets ({rows} IANA Time Zones, {year}) | cv.cm",
+      "description": "All {rows} IANA time zones (Asia/Shanghai, America/New_York) with their UTC offsets in January and July {year}, so you can see daylight saving time. CSV download.",
+      "h1": "Time zones and UTC offsets",
+      "lede": "Every IANA time zone with its UTC offset in January and July {year}. Where the two differ, the zone uses daylight saving time.",
+      "cols": {
+        "id": "Time zone ID",
+        "name": "Name",
+        "jan": "UTC offset (Jan)",
+        "jul": "UTC offset (Jul)"
+      },
+      "facts": [
+        "{rows} IANA time zone IDs, sorted from west ({west}) to east ({east}).",
+        "A zone whose January and July offsets differ observes daylight saving time.",
+        "Some zones are offset by 30 or 45 minutes, such as India (UTC+05:30) and Nepal (UTC+05:45)."
+      ],
+      "about": [
+        "IANA time zone IDs such as Europe/London are what phones, computers and programming languages use. This list follows IANA's zone.tab: one row per country and zone, each carrying that area's daylight saving rules.",
+        "Offsets are calculated for 15 January and 15 July {year} from the {tz} tz database. Governments sometimes change their rules at short notice."
+      ],
+      "faq": [
+        { "q": "What time zone is China in?", "a": "All of China uses China Standard Time, UTC+08:00, all year. The IANA ID is Asia/Shanghai." },
+        { "q": "What is the difference between UTC and GMT?", "a": "For everyday use they are the same time. UTC is the atomic time standard; GMT is the time zone at 0° longitude, which the UK uses in winter." },
+        { "q": "How many time zones are there?", "a": "The IANA database used here has {rows} zone IDs. They use fewer than 40 distinct UTC offsets." }
+      ]
+    },
+    "paper-sizes": {
+      "name": "Paper sizes",
+      "title": "Paper Sizes Chart: A4, A3, B5, Letter in mm, Inches and Pixels | cv.cm",
+      "description": "Dimensions of {rows} paper sizes (A0–A10, B, C, JIS B, Letter, Legal) in millimetres, inches and pixels at 300 and 96 DPI. CSV download.",
+      "h1": "Paper sizes in mm, inches and pixels",
+      "lede": "Width × height of ISO A, B and C sizes, Japanese JIS B sizes and North American sizes, with pixel sizes for printing (300 DPI) and screens (96 DPI).",
+      "cols": {
+        "size": "Size",
+        "series": "Series",
+        "mm": "Millimetres",
+        "in": "Inches",
+        "px300": "Pixels at 300 DPI",
+        "px96": "Pixels at 96 DPI"
+      },
+      "facts": [
+        "A4 is 210 × 297 mm (8.27 × 11.69 in), 2480 × 3508 px at 300 DPI.",
+        "US Letter is 215.9 × 279.4 mm (8.5 × 11 in).",
+        "Each A size is half the one before it: two A4 sheets make one A3."
+      ],
+      "about": [
+        "ISO 216 sizes keep the same 1:√2 shape, so a page scales from A4 to A3 or A5 without cropping. A0 has an area of one square metre.",
+        "JIS B sizes, common in Japan and China for notebooks and books, are slightly larger than ISO B. JIS B5 is 182 × 257 mm, while ISO B5 is 176 × 250 mm."
+      ],
+      "faq": [
+        { "q": "What is the size of A4 paper?", "a": "210 × 297 mm, or 8.27 × 11.69 inches. At 300 DPI that is 2480 × 3508 pixels." },
+        { "q": "What is the difference between A4 and Letter?", "a": "A4 (210 × 297 mm) is narrower and taller than US Letter (215.9 × 279.4 mm). Most of the world uses A4; the US, Canada and Mexico use Letter." },
+        { "q": "How many pixels do I need to print A4?", "a": "2480 × 3508 px for sharp prints at 300 DPI. 1240 × 1754 px (150 DPI) is enough for drafts." }
+      ]
+    },
+    "ascii": {
+      "name": "ASCII table",
+      "title": "ASCII Table: All 128 Codes in Decimal, Hex, Octal and Binary | cv.cm",
+      "description": "Complete ASCII table of all 128 characters with decimal, hexadecimal, octal and binary values and control character names. CSV download.",
+      "h1": "ASCII table",
+      "lede": "All 128 ASCII codes with their decimal, hex, octal and binary values, the character, and the name of each control character.",
+      "cols": {
+        "dec": "Decimal",
+        "hex": "Hex",
+        "oct": "Octal",
+        "bin": "Binary",
+        "char": "Character",
+        "name": "Name"
+      },
+      "facts": [
+        "Codes 0–31 and 127 are control characters; 32–126 are printable.",
+        "A is 65 (0x41) and a is 97 (0x61): upper and lower case differ by 32.",
+        "The digits 0–9 are codes 48–57."
+      ],
+      "about": [
+        "ASCII (American Standard Code for Information Interchange, 1963) assigns 128 codes to English letters, digits, punctuation and control signals, using 7 bits.",
+        "UTF-8 encodes these 128 characters exactly as ASCII does, so every ASCII file is also valid UTF-8."
+      ],
+      "faq": [
+        { "q": "What is the ASCII code for A?", "a": "Capital A is 65 in decimal, 0x41 in hex and 1000001 in binary. Lowercase a is 97 (0x61)." },
+        { "q": "What is the ASCII code for a space?", "a": "32 in decimal, 0x20 in hex." },
+        { "q": "What is the difference between LF and CR?", "a": "LF (10, line feed) starts a new line on Linux and macOS. Windows text files end lines with CR LF (13 then 10)." }
+      ]
+    }
+  }
+}

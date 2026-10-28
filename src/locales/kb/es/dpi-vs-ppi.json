@@ -1,0 +1,142 @@
+{
+  "title": "DPI vs PPI: qué significan para pantallas e impresión — cv.cm",
+  "description": "PPI son píxeles por pulgada; DPI, puntos de tinta de una impresora. Qué significa 300 DPI, cómo preparar imágenes para imprimir y por qué 72 DPI es un mito.",
+  "h1": "DPI vs PPI: ¿cuál es la diferencia?",
+  "answer": "PPI (píxeles por pulgada) describe la densidad de píxeles de una imagen al imprimirse o en una pantalla. DPI (puntos por pulgada) describe cuántos puntos de tinta coloca una impresora por pulgada. En el uso cotidiano ambos términos se intercambian. En una imagen digital solo importan las dimensiones en píxeles; el valor PPI solo fija el tamaño de impresión, así que 3000 píxeles a 300 PPI se imprimen con 10 pulgadas de ancho.",
+  "sections": [
+    {
+      "h": "Dos medidas diferentes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Término",
+              "Mide",
+              "Dónde se aplica",
+              "Valores habituales"
+            ],
+            "rows": [
+              [
+                "PPI",
+                "Píxeles de la imagen por pulgada de salida",
+                "Archivos de imagen, pantallas",
+                "300 para impresión, 400–500+ en pantallas de teléfono"
+              ],
+              [
+                "DPI",
+                "Puntos de tinta o tóner por pulgada",
+                "Impresoras",
+                "600–2400 en láser, hasta 4800 × 1200 en inyección de tinta"
+              ],
+              [
+                "LPI",
+                "Líneas de semitono por pulgada",
+                "Impresión offset",
+                "133–175 en revistas"
+              ]
+            ]
+          }
+        },
+        "Una impresora necesita varios puntos de tinta para reproducir el color de un píxel, por eso los DPI de una impresora son mucho más altos que los PPI de la imagen. Programas como Photoshop llaman a este ajuste «Resolución» en píxeles por pulgada, mientras que muchos formularios de subida piden «300 DPI» cuando en realidad quieren decir 300 PPI."
+      ]
+    },
+    {
+      "h": "La fórmula: píxeles, pulgadas y PPI",
+      "body": [
+        "Tamaño de impresión, número de píxeles y PPI están ligados por una sola ecuación: `píxeles = pulgadas × PPI`. Despejando, `pulgadas = píxeles ÷ PPI`.",
+        {
+          "table": {
+            "head": [
+              "Tamaño en píxeles",
+              "A 300 PPI",
+              "A 150 PPI",
+              "A 72 PPI"
+            ],
+            "rows": [
+              [
+                "1200 × 1800",
+                "4 × 6 in",
+                "8 × 12 in",
+                "16.7 × 25 in"
+              ],
+              [
+                "2480 × 3508",
+                "A4 (8.27 × 11.69 in)",
+                "16.5 × 23.4 in",
+                "34.4 × 48.7 in"
+              ],
+              [
+                "3000 × 2000",
+                "10 × 6.67 in",
+                "20 × 13.3 in",
+                "41.7 × 27.8 in"
+              ],
+              [
+                "600 × 600",
+                "2 × 2 in",
+                "4 × 4 in",
+                "8.3 × 8.3 in"
+              ]
+            ]
+          }
+        },
+        "Ejemplo práctico: para imprimir una foto de 8 × 10 pulgadas a 300 PPI necesitas 8 × 300 = 2400 por 10 × 300 = 3000 píxeles. Una imagen de 1200 × 1500 píxeles se imprimiría a ese tamaño a solo 150 PPI y se vería poco nítida de cerca."
+      ]
+    },
+    {
+      "h": "Por qué cambiar solo los DPI no cambia nada en pantalla",
+      "body": [
+        "El valor PPI es un único número guardado en los metadatos del archivo. Cambiarlo de 72 a 300 sin remuestrear no añade ni un píxel; la imagen se ve idéntica en pantalla y simplemente se imprime más pequeña. Solo el remuestreo, que cambia las dimensiones en píxeles, altera la calidad.",
+        {
+          "ul": [
+            "Ampliar una imagen pequeña para llegar a 300 PPI inventa píxeles por interpolación; la imagen crece, pero no gana nitidez.",
+            "Reducir a un tamaño en píxeles menor descarta detalle para siempre, así que conserva el original.",
+            "Cuando un formulario exige «300 DPI», comprueba si también indica dimensiones en píxeles. Eso es lo que de verdad importa."
+          ]
+        },
+        {
+          "note": "El tan repetido «72 DPI para la web» viene del Macintosh de 1984, cuya pantalla mostraba 72 píxeles por pulgada para que un píxel equivaliera a un punto tipográfico. Los navegadores ignoran por completo el valor PPI de una imagen."
+        }
+      ]
+    },
+    {
+      "h": "Cómo usan las pantallas la densidad de píxeles",
+      "body": [
+        "CSS define su propia unidad: 1 pulgada CSS equivale a 96 píxeles CSS, y 1 punto es 1/72 de pulgada. Las pantallas modernas meten más píxeles físicos en cada píxel CSS; esa proporción está disponible para las páginas web como `window.devicePixelRatio`.",
+        "Un teléfono con una proporción de 3 dibuja cada píxel CSS con un bloque de 3 × 3 píxeles físicos. Por tanto, una imagen mostrada con 400 píxeles CSS de ancho necesita unos 1200 píxeles de ancho para verse totalmente nítida en esa pantalla; por eso los sitios sirven varios tamaños con `srcset`."
+      ]
+    },
+    {
+      "h": "¿Cuántos PPI necesitas?",
+      "body": [
+        "La densidad necesaria disminuye a medida que aumenta la distancia de visión. Con una foto impresa a la distancia del brazo, 300 PPI está cerca del límite de lo que la mayoría de la gente puede distinguir; un póster visto a dos metros se ve bien a 100–150 PPI, y las vallas publicitarias se imprimen a unos 10–30.",
+        {
+          "ul": [
+            "Fotos impresas, folletos, libros: 300 PPI.",
+            "Pósteres e impresiones grandes: 150–200 PPI.",
+            "Pancartas y carteles que se ven de lejos: 30–100 PPI.",
+            "Pantallas: ignora los PPI; dimensiona la imagen en píxeles para la pantalla."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es mejor para la web, 72 DPI o 300 DPI?",
+      "a": "Ninguno: los navegadores ignoran el valor DPI y muestran las imágenes según sus dimensiones en píxeles. Una imagen de 1200 píxeles de ancho se ve igual en línea tanto si sus metadatos dicen 72 como 300."
+    },
+    {
+      "q": "¿Cómo pongo una imagen a 300 DPI?",
+      "a": "Ajusta la resolución a 300 en un editor de imágenes sin remuestrear; el tamaño de impresión se reduce en consecuencia. Si el tamaño resultante es demasiado pequeño, la imagen no tiene suficientes píxeles para 300 PPI a ese tamaño."
+    },
+    {
+      "q": "¿Cuántos píxeles tiene una foto de 4 × 6 a 300 DPI?",
+      "a": "1200 × 1800 píxeles, porque 4 × 300 = 1200 y 6 × 300 = 1800."
+    },
+    {
+      "q": "¿Escanear con más DPI da mejor calidad?",
+      "a": "Hasta cierto punto. Escanear a 300 DPI basta para documentos y fotos impresas; 600 DPI o más ayuda con fotos pequeñas que quieras ampliar, pero el archivo se multiplica por cuatro cada vez que se duplican los DPI."
+    }
+  ]
+}

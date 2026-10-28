@@ -247,6 +247,15 @@ function crisisBox(locale: Locale): HTMLElement {
 }
 
 /** The result block for one test, plus a one-line summary for "Copy result". */
+/** "A, B and C" in the page language; plain commas where Intl.ListFormat is missing (Safari before 14.1). */
+function listNames(locale: Locale, names: string[]): string {
+  try {
+    return new Intl.ListFormat(locale, { type: "conjunction" }).format(names);
+  } catch {
+    return names.join(", ");
+  }
+}
+
 function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResult): { nodes: HTMLElement[]; summary: string } {
   const ui = quizUi(locale);
   const def = QUIZ_DEFS[id];
@@ -290,8 +299,18 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     case "top": {
       const [first, second] = result.ranked;
       const nodes = [...headline(results[first.dim])];
-      if (second && first.pct - second.pct <= 10 && results[second.dim]) {
+      const rule = QUIZ_DEFS[id].result;
+      // Spread ties: name every result tied with the winner (the hash only picked which one leads).
+      const tied = rule.kind === "top" && rule.tie === "spread" ? result.ranked.slice(1).filter((s) => s.raw === first.raw && results[s.dim]) : [];
+      if (tied.length) {
+        const names = listNames(locale, tied.map((s) => results[s.dim].name));
+        nodes.push(h("p", { class: "muted" }, `${ui.tiedWith}: ${names}`));
+      } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
+      }
+      if (result.excluded.length) {
+        const names = listNames(locale, result.excluded.map((dim) => label(dim)));
+        nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       return { nodes, summary: results[first.dim]?.name ?? first.dim };
@@ -328,7 +347,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const max = maxTotal(id);
       const nodes = [
         ...headline(results[result.key]),
-        bar(ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
+        bar(copy.scoreLabel ?? ui.score, (result.total / max) * 100, `${result.total} / ${max}`),
       ];
       if (quizGroupOf(id) === "wellbeing") nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       if (result.safety) nodes.unshift(crisisBox(locale));

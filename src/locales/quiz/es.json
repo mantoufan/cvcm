@@ -30,6 +30,8 @@
     "score": "Puntuación",
     "top3": "Tus tres principales",
     "runnerUp": "También destaca",
+    "ruledOut": "Descartados por tus respuestas",
+    "tiedWith": "Empatado con",
     "focus": "Área para trabajar",
     "crisisTitle": "Si estás pensando en hacerte daño",
     "crisisBody": "Mereces apoyo ahora mismo. Si crees que podrías actuar según estos pensamientos, llama al número de emergencias local o acude al servicio de urgencias más cercano. También puedes contactar con una línea de crisis gratuita y confidencial: findahelpline.com recoge líneas de todos los países.",
@@ -37,19 +39,21 @@
   },
   "hub": {
     "title": "Tests de personalidad gratis: MBTI, Big Five, amor — cv.cm",
-    "description": "Tests de personalidad gratis: MBTI, Big Five, eneagrama, lenguajes del amor, apego, vocacional, autoestima, ansiedad y depresión. Sin registro ni subir datos.",
+    "description": "Tests de personalidad gratis: MBTI, Big Five, introvertido o extrovertido, eneagrama, lenguajes del amor, apego, conflicto, vocacional, estilo de trabajo, dinero, cronotipo, mascota, forma de cara, autoestima, ansiedad y depresión, además de tests de fans de videojuegos y anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Demon Slayer, Jujutsu Kaisen, Avatar y arquetipos de anime. Sin registro; tus respuestas no salen del navegador.",
     "h1": "Tests de personalidad y psicología",
-    "lede": "Trece tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
+    "lede": "Veintiséis tests gratuitos, desde los 16 tipos de personalidad y el Big Five hasta los lenguajes del amor, los intereses profesionales, tests de fans de Pokémon y Naruto y breves autoevaluaciones de salud mental. Sin registro ni correo. Tus respuestas se puntúan en tu navegador y nunca se suben.",
     "groups": {
       "personality": "Personalidad",
       "love": "Amor y relaciones",
       "career": "Carrera y dinero",
       "fun": "Por diversión",
-      "wellbeing": "Autoevaluaciones de bienestar"
+      "wellbeing": "Autoevaluaciones de bienestar",
+      "games": "Videojuegos",
+      "anime": "Anime y animación"
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five usa el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto."
+      "Las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (Rosenberg, GAD-7, PHQ-9). El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos y anime son tests de fans no oficiales, solo por diversión."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -232,6 +236,72 @@
           "low": "Tienes estabilidad emocional y mantienes la calma bajo presión. Los contratiempos rara vez te afectan por mucho tiempo.",
           "mid": "Sientes estrés y preocupación en niveles normales y sueles recuperarte en un tiempo razonable.",
           "high": "Vives las emociones con intensidad y puedes tender a la preocupación, el estrés o el bajo estado de ánimo. Descansar, hacer ejercicio y hablar las cosas ayuda."
+        }
+      }
+    },
+    "introvert": {
+      "title": "Test de introvertido o extrovertido gratis (IPIP, 20 preguntas) — cv.cm",
+      "description": "¿Eres introvertido, ambivertido o extrovertido? Valora 20 afirmaciones IPIP de dominio público y obtén una puntuación sobre 80 con consejos. Gratis, sin registro.",
+      "h1": "Test de introvertido o extrovertido",
+      "scoreLabel": "Puntuación de extraversión",
+      "lede": "Descubre dónde te sitúas entre la introversión y la extroversión. 20 afirmaciones breves de un cuestionario de investigación, una puntuación sobre 80 y lo que significa para tu energía, tu trabajo y tus amistades.",
+      "about": [
+        "La extraversión es uno de los rasgos del Big Five. Quienes puntúan alto se cargan de energía con la compañía, hablan con soltura y disfrutan de ser vistos. Quienes puntúan bajo, los introvertidos, prefieren grupos pequeños y momentos de calma, y piensan antes de hablar. La mayoría de la gente queda en algún punto intermedio: son ambivertidos.",
+        "Las 20 afirmaciones forman la escala de extraversión de los 100 marcadores de los cinco grandes factores del International Personality Item Pool (IPIP), desarrollados por Lewis Goldberg y de dominio público. La mitad puntúa a la inversa. Los cortes están en el 40 % y el 60 % del rango de la escala (menos del 40 %, introvertido; 40–60 %, ambivertido; más del 60 %, extrovertido); no son normas de población.",
+        "Introversión no es timidez. La timidez es miedo a que te juzguen; la introversión tiene que ver con de dónde sacas la energía. Una persona introvertida puede tener seguridad y habilidad social, y una extrovertida puede ser tímida."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué es una persona ambivertida?",
+          "a": "Alguien en el centro de la escala: sociable en unos ambientes y feliz a solas en otros. La mayoría de la gente es ambivertida."
+        },
+        {
+          "q": "¿Es mejor ser extrovertido?",
+          "a": "No. A los extrovertidos suele resultarles más fácil hacer contactos y trabajar en grupo; los introvertidos suelen destacar en el trabajo profundo y concentrado y en la escucha de tú a tú. Ambos pueden aprender las habilidades del otro."
+        },
+        {
+          "q": "¿De dónde salen las preguntas?",
+          "a": "De los 100 marcadores IPIP de los cinco grandes factores de Lewis Goldberg, un banco de ítems de dominio público muy usado en investigación. Este test usa sus 20 ítems de extraversión."
+        },
+        {
+          "q": "¿Puede cambiar mi resultado?",
+          "a": "Tu nivel básico de extraversión es bastante estable en la edad adulta, pero varía un poco con la edad, tu rol y tu estado de ánimo. Repite el test dentro de unos meses y compara."
+        }
+      ],
+      "items": [
+        "Soy el alma de la fiesta.",
+        "No hablo mucho.",
+        "Me siento a gusto con la gente.",
+        "Me mantengo en segundo plano.",
+        "Inicio conversaciones.",
+        "Tengo poco que decir.",
+        "En las fiestas hablo con mucha gente distinta.",
+        "No me gusta llamar la atención.",
+        "No me importa ser el centro de atención.",
+        "Hablo poco con desconocidos.",
+        "Hago amigos con facilidad.",
+        "Me cuesta acercarme a los demás.",
+        "Tomo las riendas.",
+        "A menudo me siento incómodo con los demás.",
+        "Sé cómo cautivar a la gente.",
+        "Me guardo lo que siento.",
+        "Me siento cómodo con la gente.",
+        "Soy una persona muy reservada.",
+        "Me desenvuelvo bien en situaciones sociales.",
+        "Espero a que otros tomen la iniciativa."
+      ],
+      "results": {
+        "introvert": {
+          "name": "Introvertido",
+          "body": "Recargas energía a solas o con una o dos personas cercanas, y los ratos sociales largos te agotan. Fortalezas: concentración, escucha atenta y pensar antes de hablar. Consejos: planifica tiempo tranquilo después de días intensos en lugar de sentirte culpable; en los eventos, ponte una meta (dos conversaciones de verdad) y vete cuando la cumplas; ofrece compartir ideas por escrito o de tú a tú, donde brillas."
+        },
+        "ambivert": {
+          "name": "Ambivertido",
+          "body": "Estás en el punto medio: sociable cuando el ambiente acompaña y feliz a solas cuando no. Esa flexibilidad es una fortaleza: sabes leer el ambiente y cambiar de modo. Consejo: fíjate en qué situaciones te dan energía y cuáles te la quitan, y organiza tu semana para que ninguna de las dos se acumule demasiado tiempo."
+        },
+        "extrovert": {
+          "name": "Extrovertido",
+          "body": "La gente te da energía, piensas las ideas en voz alta y disfrutas de un ritmo animado. Fortalezas: crear redes de contactos, iniciar conversaciones y animar a un grupo. Consejos: en las reuniones, deja espacio para que hablen las personas más calladas; cuando necesites concentración profunda, organiza sesiones cortas con un amigo o compañero cerca; antes de decir que sí a cada invitación, pregúntate cómo estás."
         }
       }
     },
@@ -464,6 +534,85 @@
         "future": "Escriban por separado dónde quieren estar dentro de cinco años (casa, hijos, carreras) y luego comparen para encontrar los puntos en común."
       }
     },
+    "conflict-style": {
+      "title": "Test de estilo de conflicto gratis: ¿cómo manejas los desacuerdos? — cv.cm",
+      "description": "Test de estilo de conflicto gratis: valora 20 afirmaciones y descubre si tiendes a competir, colaborar, transigir, evitar o complacer, y cuándo ayuda cada uno.",
+      "h1": "Test de estilo de conflicto",
+      "lede": "Todos tenemos una reacción por defecto cuando empieza un desacuerdo. Descubre la tuya entre los cinco estilos de conflicto clásicos, cuánto usas los demás y cuándo conviene cambiar.",
+      "about": [
+        "Los investigadores describen cinco formas de gestionar el conflicto según dos preguntas: cuánto defiendes tus propias necesidades (asertividad) y cuánto te importan las de la otra persona (cooperación). Competir es alto en lo primero, complacer es alto en lo segundo, colaborar es alto en ambas, evitar es bajo en ambas, y transigir queda en el medio.",
+        "Las afirmaciones de esta página se escribieron para cv.cm; no proceden de ningún instrumento comercial. Cada estilo es útil en el momento adecuado. El objetivo no es encontrar el estilo \"correcto\", sino darte cuenta de tu hábito y elegir a propósito."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los cinco estilos de conflicto?",
+          "a": "Competir (mantenerte firme), colaborar (resolverlo juntos para que ganen ambos), transigir (encontrarse a medio camino), evitar (apartarte) y complacer (darle a la otra persona lo que quiere)."
+        },
+        {
+          "q": "¿Qué estilo de conflicto es el mejor?",
+          "a": "Ninguno sirve para todo. Colaborar va bien en temas importantes con tiempo para hablar; competir, en emergencias; transigir, en los bloqueos; evitar, en asuntos triviales o momentos tensos; complacer, cuando el tema importa más a la otra parte."
+        },
+        {
+          "q": "¿Es el instrumento Thomas-Kilmann?",
+          "a": "No. Usa el mismo modelo de cinco estilos que se enseña ampliamente, pero las preguntas y los resultados son originales de cv.cm, y las puntuaciones no son comparables con ningún test comercial."
+        },
+        {
+          "q": "¿Puedo hacerlo con mi pareja o mi equipo?",
+          "a": "Sí. Que cada persona lo haga por separado; después, comparen los gráficos y hablen de a qué estilos recurre cada uno bajo estrés. Conocer la reacción habitual del otro hace más fácil no tomárselo como algo personal."
+        }
+      ],
+      "items": [
+        "En un desacuerdo, defiendo mi postura con firmeza hasta que la otra persona la ve como yo.",
+        "Intento que todos pongan sus inquietudes sobre la mesa antes de decidir nada.",
+        "Me parece bien ceder a medias para poder pasar página.",
+        "Prefiero dejar un tema delicado antes que arriesgarme a una discusión.",
+        "Suelo ceder si el tema le importa más a la otra persona que a mí.",
+        "Cuando estoy seguro de tener razón, no me echo atrás solo por mantener la paz.",
+        "Busco una solución que funcione del todo para ambos, aunque lleve más tiempo.",
+        "Un intercambio justo, en el que cada parte renuncia a algo, me parece un buen resultado.",
+        "Cuando empieza un conflicto, a menudo cambio de tema o me voy de la habitación.",
+        "Mantener la relación en buenos términos me importa más que ganar la discusión.",
+        "Veo un debate como algo que hay que ganar.",
+        "Hago muchas preguntas para entender qué necesita de verdad la otra persona.",
+        "Cuando estamos atascados, propongo partir la diferencia.",
+        "Aplazo las conversaciones difíciles con la esperanza de que las cosas se arreglen solas.",
+        "A menudo pongo los deseos de los demás por delante de los míos para no disgustarlos.",
+        "Si una decisión me importa, presiono mucho por ella, aunque genere algo de tensión.",
+        "Prefiero resolver un desacuerdo juntos que zanjarlo deprisa.",
+        "Renuncio a parte de lo que quiero si la otra persona hace lo mismo.",
+        "Muchos desacuerdos no merecen el esfuerzo, así que los dejo pasar.",
+        "Me resulta fácil decir \"Está bien, hagámoslo a tu manera\"."
+      ],
+      "dims": {
+        "compete": "Competir",
+        "collab": "Colaborar",
+        "compromise": "Transigir",
+        "avoid": "Evitar",
+        "accommodate": "Complacer"
+      },
+      "results": {
+        "compete": {
+          "name": "Competir",
+          "body": "Defiendes tu postura y no te doblegas bajo presión. Ayuda en: emergencias, decisiones impopulares pero necesarias y para evitar que se aprovechen de ti. Perjudica cuando se convierte en tu único recurso: la gente deja de contarte cosas y se resiente en silencio de tus decisiones. Prueba: antes de discutir, haz una pregunta sincera sobre lo que necesita la otra persona, y guarda toda tu fuerza para los temas que de verdad importan."
+        },
+        "collab": {
+          "name": "Colaborar",
+          "body": "Quieres una solución que funcione del todo para ambas partes, y profundizas en los intereses reales detrás de cada postura. Ayuda en: decisiones importantes, relaciones a largo plazo y problemas con margen para respuestas creativas. Perjudica porque exige tiempo y energía, y no todo asunto menor merece un taller. Prueba: decide de antemano si un tema vale el proceso completo; para los menores, un acuerdo rápido a medio camino basta."
+        },
+        "compromise": {
+          "name": "Transigir",
+          "body": "Buscas un punto medio justo para que todos puedan pasar página. Ayuda en: bloqueos, igualdad de poder entre ambas partes y presión de tiempo. Perjudica cuando partir la diferencia demasiado rápido deja a ambos medio satisfechos y se pierde una solución mejor. Prueba: antes de ofrecer el punto medio, pregunta \"¿Qué es lo que más te importa aquí?\"; quizá encuentres un intercambio en el que cada parte consiga lo que más valora."
+        },
+        "avoid": {
+          "name": "Evitar",
+          "body": "Te apartas del conflicto y se te da bien no hacer grandes las cosas pequeñas. Ayuda en: asuntos triviales, momentos tensos que necesitan enfriarse y peleas que no puedes ganar o que no hace falta dar. Perjudica porque los problemas importantes crecen mientras esperan, y los demás pueden interpretar tu silencio como acuerdo. Prueba: cuando evites, fija un momento para volver al tema (\"¿Lo hablamos mañana por la tarde?\") y apunta la idea principal que necesitas decir."
+        },
+        "accommodate": {
+          "name": "Complacer",
+          "body": "Proteges la relación y dejas que los demás se salgan con la suya. Ayuda en: temas que les importan más a ellos, cuando te das cuenta de que estás equivocado y para generar buena voluntad. Perjudica si es tu reacción por defecto: tus propias necesidades desaparecen y la frustración se acumula. Prueba: antes de decir que sí, puntúa del 1 al 10 cuánto te importa el tema; si pasa de 6, di lo que quieres, con amabilidad y claridad."
+        }
+      }
+    },
     "career": {
       "title": "Test vocacional Holland (RIASEC) gratis — cv.cm",
       "description": "Test vocacional gratis basado en el modelo RIASEC de Holland. Valora 36 actividades, obtén tu código Holland de tres letras y profesiones afines. Sin registro.",
@@ -535,6 +684,84 @@
         "C": { "name": "Convencional (organizador)", "body": "Te gustan el orden, la precisión y los procedimientos claros con datos. Profesiones para explorar: contable, auditor, administrativo, coordinador de logística, empleado de banca, administrador de bases de datos." }
       }
     },
+    "work-style": {
+      "title": "Test de estilo de trabajo gratis: ¿remoto, híbrido u oficina? ¿Solo o en equipo? — cv.cm",
+      "description": "Test de estilo de trabajo gratis: valora 20 afirmaciones y descubre si te va el remoto, el híbrido o la oficina, y cuánto equipo, estructura y variedad necesitas.",
+      "h1": "Test de estilo de trabajo",
+      "lede": "¿Dónde y cómo das lo mejor de ti? Puntúa cuatro preferencias, casa u oficina, solo o en equipo, estructura o libertad, concentración o variedad, y recibe un consejo para cada una.",
+      "about": [
+        "La satisfacción laboral no depende solo de lo que haces, sino de cómo está organizado el trabajo. Este test, escrito para cv.cm, mide cuatro preferencias cotidianas: dónde te gusta trabajar, cuánto te gusta trabajar con otros, cuánta estructura quieres y si prefieres variedad o largos ratos de concentración.",
+        "Cada puntuación va de 0 a 100. Por debajo de 40 te inclinas hacia un lado, por encima de 60 hacia el otro, y el centro es una mezcla. Usa el resultado para hacer mejores preguntas en las entrevistas de trabajo (\"¿Cuántos días hay que ir a la oficina?\", \"¿Cómo se fijan las prioridades?\") y para adaptar el trabajo que ya tienes."
+      ],
+      "faq": [
+        {
+          "q": "¿Me dice qué carrera elegir?",
+          "a": "No. Describe condiciones de trabajo, no campos profesionales. Para eso, haz el test vocacional del código Holland y luego usa este para elegir entre trabajos parecidos."
+        },
+        {
+          "q": "Mi puntuación de trabajo remoto está en el medio. ¿Qué significa?",
+          "a": "Probablemente serás más feliz con un modelo híbrido: días de oficina para reuniones y trato con la gente, y días en casa para el trabajo concentrado."
+        },
+        {
+          "q": "¿Y si mi trabajo no encaja con mi resultado?",
+          "a": "Los pequeños cambios ayudan: bloquea tiempo de concentración en tu calendario, pide un día de teletrabajo, acuerda prioridades más claras con tu responsable o intercambia tareas con un compañero al que le guste lo que a ti no."
+        },
+        {
+          "q": "¿Hay un estilo de trabajo mejor que otro?",
+          "a": "No. Los equipos necesitan tanto a quienes les gusta la estructura como a quienes prefieren la libertad, tanto solistas como conectores. Lo que importa es el encaje."
+        }
+      ],
+      "items": [
+        "En casa rindo más que en una oficina.",
+        "Doy lo mejor de mí cuando puedo intercambiar ideas con otras personas.",
+        "Me gusta saber exactamente qué se espera de mí y para cuándo.",
+        "Un día lleno de tareas distintas me da más energía que una sola tarea larga.",
+        "Necesito el ambiente de una oficina para mantenerme motivado.",
+        "Prefiero encargarme yo solo de un trabajo de principio a fin.",
+        "Trabajo mejor cuando decido yo cómo y cuándo hacer las cosas.",
+        "Soy más feliz si puedo dedicarme a una sola tarea durante horas sin cambiar.",
+        "El trayecto al trabajo me parece tiempo perdido.",
+        "Las reuniones y los seguimientos periódicos me ayudan más de lo que me frenan.",
+        "Los procesos y rutinas claros hacen que el trabajo me estrese menos.",
+        "Disfruto de un ritmo rápido con problemas nuevos cada día.",
+        "Aprendo mucho solo con estar cerca de mis compañeros y oír cómo trabajan.",
+        "Los chats de grupo y las reuniones constantes me agotan.",
+        "Las normas rígidas y los horarios fijos me inquietan.",
+        "Las interrupciones frecuentes arruinan mi mejor trabajo.",
+        "Puedo mantener una rutina estable en casa sin que nadie me controle.",
+        "Los logros compartidos significan más para mí que los personales.",
+        "Me gusta tener un responsable que me marque prioridades claras.",
+        "Me aburro enseguida cuando un trabajo se vuelve rutinario."
+      ],
+      "dims": {
+        "remote": "Trabajo desde casa",
+        "team": "Trabajo en equipo",
+        "structure": "Estructura",
+        "variety": "Variedad"
+      },
+      "levels": {
+        "remote": {
+          "low": "Oficina: estar rodeado de compañeros te da energía, concentración y aprendizaje. Busca puestos con una cultura de oficina real y, si trabajas en remoto, usa un coworking o ve a la oficina un día fijo para no aislarte.",
+          "mid": "Híbrido: días de oficina para reuniones y trato con la gente, días en casa para el trabajo concentrado. Pregunta a las empresas cómo funciona el modelo híbrido en la práctica y planifica qué tareas van en qué días.",
+          "high": "Remoto: trabajas bien con tu propio horario y no echas de menos el trayecto. Busca equipos que prioricen el trabajo remoto y comuniquen bien por escrito, y respeta una hora de inicio y de fin para que el trabajo no ocupe todo el día."
+        },
+        "team": {
+          "low": "Solo: prefieres encargarte de un trabajo de principio a fin. Te encajan puestos como especialista, analista, redactor o desarrollador con responsabilidades claras. Acuerda unos pocos seguimientos fijos para estar al día sin reuniones constantes.",
+          "mid": "Mixto: te gusta tener tiempo a solas para hacer el trabajo y tiempo en común para planificarlo y revisarlo. Agrupa las reuniones en una parte del día y deja el resto para concentrarte.",
+          "high": "Equipo: piensas mejor en voz alta y disfrutas de los objetivos compartidos. Busca puestos colaborativos como proyectos, ventas, docencia o equipos de producto y, en las tareas individuales, trabaja en pareja o haz seguimientos breves para mantener la motivación."
+        },
+        "structure": {
+          "low": "Libertad: quieres decidir cómo y cuándo trabajar. Te encajan las startups, el trabajo freelance y los puestos que se evalúan por resultados. Fíjate tus propios plazos y compártelos, para que la libertad no acabe en estrés de última hora.",
+          "mid": "Equilibrio: te gustan los objetivos claros, pero también opinar sobre cómo alcanzarlos. Pide a tus responsables el \"qué\" y el \"para cuándo\", y propón tú el \"cómo\".",
+          "high": "Estructura: las expectativas, los procesos y las prioridades claros te dan calma y te ayudan a hacer un trabajo excelente. Te encajan las organizaciones grandes y los puestos basados en procesos; cuando algo sea ambiguo, pide pronto una lista de comprobación o una definición de \"terminado\"."
+        },
+        "variety": {
+          "low": "Concentración profunda: das lo mejor de ti en bloques largos y sin interrupciones. Reserva bloques de concentración de dos o tres horas, desactiva las notificaciones y busca puestos que valoren la profundidad, como investigación, ingeniería o edición.",
+          "mid": "Equilibrio: algo de variedad te mantiene fresco, pero cambiar demasiado de tarea te desgasta. Agrupa las tareas parecidas y dale a cada día un foco principal.",
+          "high": "Variedad: los problemas nuevos y el ritmo rápido te dan energía, y la rutina te aburre. Encajas en operaciones, atención a clientes, eventos o startups; lleva una lista sencilla para que no se te escape ninguno de tus muchos frentes."
+        }
+      }
+    },
     "money": {
       "title": "Test de personalidad financiera: ¿qué tipo eres? — cv.cm",
       "description": "Test de personalidad financiera gratis: valora 20 afirmaciones y descubre si eres ahorrador, gastador, inversor, evitador o generoso, con fortalezas y un consejo.",
@@ -585,6 +812,365 @@
         "investor": { "name": "El Inversor", "body": "Fortaleza: detectas oportunidades y haces que el dinero trabaje para ti. Punto ciego: perseguir grandes ganancias puede suponer demasiado riesgo en un solo sitio. Consejo: ten primero un fondo de emergencia, y nunca apuestes a una sola carta más de lo que puedas permitirte perder." },
         "avoider": { "name": "El Evitador", "body": "Fortaleza: el dinero no gobierna tu vida. Punto ciego: facturas sin abrir, recargos por demora y oportunidades perdidas porque mirar te estresa. Consejo: reserva cada semana una cita de 15 minutos con tu dinero para revisar el saldo y pagar facturas; se vuelve fácil enseguida." },
         "giver": { "name": "El Generoso", "body": "Fortaleza: generosidad y relaciones sólidas. Punto ciego: regalar lo que necesitas para tu propia seguridad. Consejo: decide de antemano un presupuesto para dar, así podrás ser generoso sin poner en riesgo tu futuro." }
+      }
+    },
+    "chronotype": {
+      "title": "Test de cronotipo gratis: ¿eres alondra o búho? — cv.cm",
+      "description": "Test de cronotipo gratis: responde 14 preguntas sobre tu ritmo natural de sueño y energía y descubre si eres alondra, búho o intermedio, con consejos de horario.",
+      "h1": "Test de cronotipo: ¿alondra o búho?",
+      "lede": "Tu cronotipo es el horario natural de tu reloj biológico: cuándo te entra sueño, cuándo te despiertas y cuándo piensas mejor. Responde 14 preguntas sobre cómo vives cuando nadie te pone el despertador.",
+      "about": [
+        "El cronotipo es en parte genético y cambia con la edad: los adolescentes y adultos jóvenes tienden a ser más tardíos, y la mayoría se vuelve más madrugadora a partir de los veinticinco años, aproximadamente. Las alondras están más despiertas por la mañana; los búhos rinden al máximo por la noche; la mayoría queda en algún punto intermedio.",
+        "Estas preguntas se escribieron para cv.cm y no son un cuestionario clínico. El resultado es una autorreflexión, no un diagnóstico. Si a menudo no puedes dormirte, te despiertas agotado tras una noche completa o tienes mucho sueño durante el día, habla con un médico: pueden ser señales de un problema de sueño que no tiene nada que ver con ser búho."
+      ],
+      "faq": [
+        {
+          "q": "¿Puede un búho volverse madrugador?",
+          "a": "En parte. Tu tendencia de fondo se mantiene, pero puedes adelantar tu horario con hábitos constantes: luz intensa nada más despertarte, luz tenue por la noche y la misma hora de despertar cada día, adelantándola 15 minutos cada vez."
+        },
+        {
+          "q": "¿Hay un cronotipo más sano?",
+          "a": "Ningún cronotipo es malo para la salud por sí mismo. Los problemas vienen del desajuste: un búho obligado a madrugar acumula deuda de sueño. Lo más importante es ajustar tu horario a tu reloj cuando puedas y mantenerlo regular."
+        },
+        {
+          "q": "¿Por qué se pregunta por los fines de semana?",
+          "a": "Dormir mucho más tarde los días libres que los laborables, lo que a veces se llama jet lag social, es una señal habitual de que tu reloj natural va más tarde que tu horario."
+        },
+        {
+          "q": "¿Es un test de trastornos del sueño?",
+          "a": "No. Describe tu horario natural. No puede detectar insomnio, apnea del sueño ni otros trastornos; consulta a un médico si los problemas de sueño afectan a tu día a día."
+        }
+      ],
+      "items": [
+        {
+          "q": "Sin despertador ni planes, ¿a qué hora te despertarías de forma natural?",
+          "options": [
+            "Antes de las 6:30",
+            "Entre las 6:30 y las 8:00",
+            "Entre las 8:00 y las 9:30",
+            "Después de las 9:30"
+          ]
+        },
+        {
+          "q": "Una noche libre sin nada al día siguiente, ¿a qué hora empiezas a tener sueño?",
+          "options": [
+            "Antes de las 22:00",
+            "Entre las 22:00 y las 23:30",
+            "Entre las 23:30 y la 1:00",
+            "Después de la 1:00"
+          ]
+        },
+        {
+          "q": "¿Cómo te sientes en la primera media hora después de despertarte?",
+          "options": [
+            "Despierto y con ganas de empezar",
+            "Bien al cabo de unos minutos",
+            "Aturdido durante un buen rato",
+            "Como un zombi hasta media mañana"
+          ]
+        },
+        {
+          "q": "¿Cuándo haces tu mejor trabajo concentrado?",
+          "options": [
+            "A primera hora de la mañana",
+            "A media mañana",
+            "Por la tarde",
+            "Por la noche"
+          ]
+        },
+        {
+          "q": "Un amigo te propone salir a correr a las 7:00. Piensas…",
+          "options": [
+            "Genial, es mi hora favorita",
+            "Vale, si me acuesto temprano",
+            "Iré, pero me costará",
+            "Ni hablar"
+          ]
+        },
+        {
+          "q": "Una noche de juegos o una fiesta empieza a las 23:00. Tú…",
+          "options": [
+            "Ya estarías apagándote",
+            "Aguantarías una hora más o menos",
+            "Estarías bien",
+            "Apenas estarías arrancando"
+          ]
+        },
+        {
+          "q": "¿Cuánto más tarde te despiertas los días libres que los laborables?",
+          "options": [
+            "Más o menos a la misma hora",
+            "Menos de una hora más tarde",
+            "Entre una y dos horas más tarde",
+            "Más de dos horas más tarde"
+          ]
+        },
+        {
+          "q": "Puedes elegir la hora de un examen o una entrevista importante. Eliges…",
+          "options": [
+            "Las 8:00",
+            "Las 11:00",
+            "Las 15:00",
+            "Las 19:00"
+          ]
+        },
+        {
+          "q": "¿Cuánta hambre tienes a la hora del desayuno?",
+          "options": [
+            "Tengo hambre nada más despertarme",
+            "Me entra hambre en menos de una hora",
+            "No hasta media mañana",
+            "Suelo saltármelo"
+          ]
+        },
+        {
+          "q": "Si esta noche tuvieras que apagar la luz a las 22:00…",
+          "options": [
+            "Me dormiría sin problema",
+            "Me dormiría al cabo de un rato",
+            "Estaría despierto una hora o más",
+            "Me resultaría casi imposible"
+          ]
+        },
+        {
+          "q": "En un día normal, ¿cuándo sueles tener menos energía?",
+          "options": [
+            "Al caer la tarde",
+            "Justo después de comer",
+            "A media mañana",
+            "Nada más levantarme"
+          ]
+        },
+        {
+          "q": "¿Cuándo suelen llegarte las mejores ideas?",
+          "options": [
+            "Por la mañana",
+            "Hacia el mediodía",
+            "Por la noche",
+            "Pasada la medianoche"
+          ]
+        },
+        {
+          "q": "Si tu horario de trabajo dependiera totalmente de ti, trabajarías…",
+          "options": [
+            "De 6:00 a 14:00",
+            "De 8:00 a 16:00",
+            "De 10:00 a 18:00",
+            "De 13:00 a 21:00 o más tarde"
+          ]
+        },
+        {
+          "q": "¿Qué te describe mejor?",
+          "options": [
+            "Claramente una persona de mañanas",
+            "Más de mañanas que de noches",
+            "Más de noches que de mañanas",
+            "Claramente una persona nocturna"
+          ]
+        }
+      ],
+      "scoreLabel": "Puntuación de búho (0 = lo más madrugador)",
+      "results": {
+        "lark": {
+          "name": "Alondra",
+          "body": "Tu reloj biológico va temprano: te despiertas con facilidad y piensas mejor antes de comer. Consejos: reserva el trabajo más difícil para entre las 8:00 y las 12:00, más o menos, y deja las tardes para reuniones y tareas rutinarias; protege tu hora de acostarte cuando salgas, o planea una siesta corta en lugar de quedarte en la cama hasta tarde; baja el brillo de las pantallas una hora antes de dormir para no despertarte a las 4:00. A las alondras les suele cansar la vida social nocturna: no pasa nada por proponer un brunch en lugar de unas copas."
+        },
+        "between": {
+          "name": "Intermedio",
+          "body": "Tu reloj está en el punto medio, como el de la mayoría, así que te adaptas con bastante facilidad a los horarios normales. Consejos: despiértate a la misma hora todos los días, fines de semana incluidos, con un margen de una hora; toma luz natural por la mañana; y detecta tu pico de rendimiento, normalmente a media mañana, para las tareas exigentes. Una rutina estable importa más que la hora que elijas."
+        },
+        "owl": {
+          "name": "Búho",
+          "body": "Tu reloj biológico va tarde: las mañanas te cuestan y cobras vida por la noche. Consejos: toma luz intensa, al aire libre si puedes, en la primera hora después de despertarte, y mantén por la noche una luz tenue y cálida; los fines de semana no te despiertes más de una hora más tarde de lo habitual para limitar el jet lag social; deja la cafeína unas ocho horas antes de acostarte; para adelantar tu horario, mueve la hora de acostarte y de despertar 15 minutos cada pocos días. Pide reuniones más tarde cuando puedas, y deja el trabajo exigente para última hora de la tarde."
+        }
+      }
+    },
+    "pet": {
+      "title": "Test de qué mascota es para ti: descubre tu mascota ideal gratis — cv.cm",
+      "description": "Test de mascota gratis: 14 preguntas sobre tu tiempo, casa, presupuesto y alergias para saber si te va un gato, perro, conejo, peces, pájaro, hámster o reptil.",
+      "h1": "¿Qué mascota es para ti?",
+      "lede": "Una buena elección te mejora la vida a ti y al animal. Responde con sinceridad 14 preguntas sobre tu tiempo, espacio, dinero y hábitos, y descubre qué mascota encaja con tu vida ahora mismo.",
+      "about": [
+        "Este test, escrito para cv.cm, sopesa los aspectos prácticos que deciden si un animal va a estar bien contigo: tiempo diario, tamaño de la casa, horas fuera, viajes, alergias, presupuesto, ruido, esperanza de vida y las tareas que estás dispuesto a asumir. Es un punto de partida, no una garantía: cada animal y cada raza varían mucho.",
+        "Antes de llevar un animal a casa: infórmate sobre las necesidades de la especie, calcula el coste total incluido el veterinario, revisa tu contrato de alquiler y la normativa local, y piensa quién lo cuidará cuando viajes. Plantéate adoptar en una protectora o refugio, y acoger primero si tienes dudas. Una mascota es un compromiso para toda su vida, que puede durar décadas."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuál es la mascota más fácil para principiantes?",
+          "a": "No hay mascota que no dé trabajo. Para personas ocupadas, lo que mejor suele encajar es un gato o un acuario bien montado; para familias con tiempo y espacio, un perro. Los animales pequeños, como hámsteres y conejos, necesitan cuidados más especializados de lo que se suele pensar."
+        },
+        {
+          "q": "Tengo alergia. ¿Puedo tener mascota?",
+          "a": "Los peces y los reptiles no sueltan pelo ni caspa, así que son las opciones más seguras. Ningún gato ni perro es realmente hipoalergénico; si quieres uno, pasa tiempo con ese animal antes de adoptarlo y consulta a un médico."
+        },
+        {
+          "q": "¿Cuánto cuesta una mascota?",
+          "a": "Depende de la especie y de dónde vivas. Además de la comida, cuenta con el equipo inicial (jaula, acuario, lámparas), las vacunas, la esterilización y un fondo para urgencias veterinarias. Montar un terrario o un acuario cuesta al principio más de lo que mucha gente espera."
+        },
+        {
+          "q": "¿Debería tener una mascota para mi hijo?",
+          "a": "Solo si un adulto está dispuesto a ser quien la cuide de verdad. Los niños pueden ayudar, pero los hámsteres y los conejos son frágiles y a menudo no les gusta que los levanten en brazos, así que supervisa cada interacción."
+        }
+      ],
+      "items": [
+        {
+          "q": "¿Cuánto tiempo puedes dedicar cada día a una mascota, entre cuidados y juego?",
+          "options": [
+            "Menos de 15 minutos",
+            "De 15 a 45 minutos",
+            "De una a dos horas",
+            "Dos horas o más, paseos incluidos"
+          ]
+        },
+        {
+          "q": "¿Dónde vives?",
+          "options": [
+            "En una habitación pequeña, un estudio o una residencia",
+            "En un apartamento de tamaño medio",
+            "En un apartamento amplio o una casa",
+            "En una casa con jardín"
+          ]
+        },
+        {
+          "q": "En un día normal, ¿cuánto tiempo pasa sin nadie en casa?",
+          "options": [
+            "Diez horas o más",
+            "Una jornada laboral normal, ocho o nueve horas",
+            "Casi siempre hay alguien en casa"
+          ]
+        },
+        {
+          "q": "¿Con qué frecuencia te ausentas varios días?",
+          "options": [
+            "A menudo, por trabajo o viajes",
+            "Unas cuantas veces al año, y alguien puede cuidar de la mascota",
+            "Rara vez"
+          ]
+        },
+        {
+          "q": "¿Hay alergias en tu casa?",
+          "options": [
+            "Ninguna que yo sepa",
+            "Sí, al pelo o la caspa de animales",
+            "No estoy seguro"
+          ]
+        },
+        {
+          "q": "¿Cuánto puedes gastar al mes en comida, accesorios y un fondo para el veterinario?",
+          "options": [
+            "Lo mínimo posible",
+            "Una cantidad moderada",
+            "Lo suficiente para veterinario y buena comida"
+          ]
+        },
+        {
+          "q": "¿Cómo quieres disfrutar de tu mascota?",
+          "options": [
+            "Mirándola; me relaja",
+            "Mimos de vez en cuando de un compañero independiente",
+            "Jugando, entrenando y haciendo cosas juntos cada día",
+            "Compañía tranquila y algo de contacto suave por la noche"
+          ]
+        },
+        {
+          "q": "¿Cómo llevas el ruido?",
+          "options": [
+            "Necesito una casa tranquila",
+            "Un poco de ruido por la noche no me importa",
+            "Los ladridos o el parloteo no me molestan"
+          ]
+        },
+        {
+          "q": "¿Para cuántos años estás dispuesto a comprometerte?",
+          "options": [
+            "Dos o tres años",
+            "Unos diez años",
+            "Quince años o más",
+            "Décadas, incluso más de 30 años"
+          ]
+        },
+        {
+          "q": "¿Qué tarea te parece menos pesada?",
+          "options": [
+            "Pasear haga el tiempo que haga",
+            "Limpiar un arenero",
+            "Cambiar y analizar el agua cada semana",
+            "Limpiar una jaula y cambiar el lecho",
+            "Controlar lámparas de calor y comida viva o congelada"
+          ]
+        },
+        {
+          "q": "¿Con quién vives?",
+          "options": [
+            "Solo",
+            "Con mi pareja o otros adultos con quienes comparto vivienda",
+            "Con niños pequeños"
+          ]
+        },
+        {
+          "q": "¿Qué permite tu contrato de alquiler o las normas de tu edificio?",
+          "options": [
+            "Solo animales pequeños en jaula o acuario",
+            "Gatos y animales pequeños, pero no perros",
+            "Cualquier mascota, o la casa es mía"
+          ]
+        },
+        {
+          "q": "¿Qué te parecería una mascota que te sigue a todas partes y reclama tu atención?",
+          "options": [
+            "Me encantaría",
+            "Bien, en pequeñas dosis",
+            "Prefiero una mascota que esté a gusto por su cuenta"
+          ]
+        },
+        {
+          "q": "¿Qué tarde con tu mascota te apetece más?",
+          "options": [
+            "Ver a un animalito inquieto escarbar y correr en su rueda",
+            "Rato libre con un conejo correteando o un pájaro charlando conmigo",
+            "Ver a un lagarto tomar el sol bajo su lámpara o a los peces deslizarse",
+            "Un paseo juntos y luego acurrucarnos en el sofá"
+          ]
+        }
+      ],
+      "dims": {
+        "cat": "Gato",
+        "dog": "Perro",
+        "rabbit": "Conejo",
+        "fish": "Peces",
+        "bird": "Pájaro",
+        "hamster": "Hámster",
+        "reptile": "Reptil"
+      },
+      "results": {
+        "cat": {
+          "name": "Gato",
+          "body": "Un gato encaja con una vida ocupada y un espacio moderado: es independiente pero cariñoso, se queda bien solo durante una jornada laboral y no necesita paseos. Cuenta con: 15 años o más, un arenero limpio (uno por gato más uno), rascadores, juego todos los días, revisiones veterinarias anuales y esterilización. Los gatos de interior viven más; un catio o una repisa junto a la ventana los mantiene entretenidos."
+        },
+        "dog": {
+          "name": "Perro",
+          "body": "Tienes el tiempo, el espacio y la energía que necesita un perro, y quieres un compañero que comparta tus días. Cuenta con: de 10 a 15 años, paseos y juego a diario, educación desde el primer día, alguien en casa o un paseador los días largos, y un presupuesto mayor para comida, peluquería y veterinario. Elige el nivel de energía y el tamaño según tu vida, y mira primero en protectoras y asociaciones de rescate de razas."
+        },
+        "rabbit": {
+          "name": "Conejo",
+          "body": "Un conejo encaja en un hogar tranquilo con espacio en el suelo y alguien en casa buena parte del día. Los conejos son sociables, así que la mayoría vive más feliz en pareja, y necesitan horas sueltos en una habitación preparada para ellos, no una conejera pequeña. Cuenta con: de 8 a 12 años, heno ilimitado, un veterinario que conozca conejos y esterilización. Rara vez les gusta que los levanten; disfruta de ellos a su altura."
+        },
+        "fish": {
+          "name": "Peces",
+          "body": "Un acuario encaja con espacios pequeños, agendas apretadas y alergias, y verlo relaja de verdad. Olvídate de la pecera: empieza con un acuario con filtro y calentador de al menos 40 litros, y deja que madure varias semanas antes de añadir peces. Cuenta con: cambios parciales de agua semanales, kits de análisis y elegir especies adecuadas al tamaño del acuario y compatibles entre sí."
+        },
+        "bird": {
+          "name": "Pájaro",
+          "body": "Un pájaro encaja con alguien que pasa mucho tiempo en casa, disfruta de la interacción y no le importa el ruido. Los loros, incluso los pequeños, son listos, sociables y necesitan horas fuera de la jaula, juguetes para morder y adiestramiento. Cuenta con: una vida larga (periquitos de 5 a 10 años, loros grandes 30 o más), un veterinario de aves y una dieta fresca más allá de las semillas. Si pasas el día fuera, una pareja de pájaros pequeños puede ser mejor que uno solo."
+        },
+        "hamster": {
+          "name": "Hámster",
+          "body": "Un hámster encaja con un espacio pequeño, un presupuesto modesto y una rutina tranquila por la noche. Son solitarios y nocturnos, así que estarán despiertos cuando tú te relajes, y su rueda puede chirriar de noche. Cuenta con: un recinto grande (al menos 100 × 50 cm de suelo), un lecho profundo para excavar, una rueda maciza del tamaño adecuado y una vida de 2 a 3 años. Manéjalo con suavidad; no es ideal para niños pequeños."
+        },
+        "reptile": {
+          "name": "Reptil",
+          "body": "Un reptil encaja con alguien curioso, paciente, alérgico al pelo o que viaja a menudo. Muchas especies son tranquilas y pueden quedarse solas uno o dos días cuando su instalación funciona bien. Cuenta con: un terrario adecuado con calor e iluminación UVB con temporizador, comida viva o congelada para muchas especies, un veterinario de exóticos y una vida larga (geckos leopardo de 15 a 20 años, tortugas mucho más). Elige animales criados en cautividad e infórmate antes sobre la especie."
+        }
       }
     },
     "anime": {
@@ -775,6 +1361,1505 @@
         "moderate": { "name": "Depresión moderada (10–14)", "body": "Tus síntomas están en un nivel en el que se recomienda acudir a un médico o a un profesional de la salud mental. La depresión es frecuente y tiene tratamiento." },
         "modsevere": { "name": "Depresión moderadamente grave (15–19)", "body": "Tus respuestas sugieren síntomas importantes. Por favor, contacta pronto con un médico o un profesional de la salud mental. Tratamientos como la terapia y la medicación ayudan a la mayoría de las personas." },
         "severe": { "name": "Depresión grave (20–27)", "body": "Tus respuestas sugieren síntomas graves. Por favor, contacta cuanto antes con un médico o un profesional de la salud mental, y cuéntale a alguien de confianza cómo te sientes." }
+      }
+    },
+    "pokemon": {
+      "title": "¿Qué Pokémon eres? Test Pokémon de personalidad por tipo — cv.cm",
+      "description": "Test Pokémon de personalidad gratis: responde 12 preguntas y descubre tu tipo de Pokémon (Fuego, Agua, Planta, Eléctrico, Psíquico, Hada, Dragón, Fantasma, Lucha o Normal) y el Pokémon compañero que va contigo. Sin registro.",
+      "h1": "¿Qué tipo de Pokémon eres?",
+      "lede": "¿Eres de tipo Fuego y de mecha corta, un tipo Normal relajado o un Fantasma travieso? Responde 12 preguntas cotidianas y descubre tu tipo de Pokémon y un Pokémon compañero con tu misma personalidad.",
+      "about": [
+        "Cada tipo de Pokémon tiene una personalidad que los fans reconocen al instante: Fuego es audaz y apasionado, Agua se deja llevar por la corriente, Planta es paciente y protector, Fantasma es travieso. Este test analiza cómo pasas tu tiempo, cómo manejas el estrés y cómo tratas a tus amigos, y puntúa diez de los dieciocho tipos.",
+        "Tu resultado indica el tipo que más encaja contigo, un Pokémon compañero que va con él y tus puntuaciones en todos los tipos. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Nintendo, Creatures, GAME FREAK ni The Pokémon Company, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuántos tipos de Pokémon hay?",
+          "a": "Dieciocho: Normal, Fuego, Agua, Planta, Eléctrico, Hielo, Lucha, Veneno, Tierra, Volador, Psíquico, Bicho, Roca, Fantasma, Dragón, Siniestro, Acero y Hada. Este test usa los diez con la personalidad más marcada."
+        },
+        {
+          "q": "¿Qué Pokémon soy?",
+          "a": "Tu resultado te da un Pokémon compañero para tu tipo, como Pikachu para Eléctrico o Eevee para Normal, más otros dos Pokémon del mismo tipo con la misma personalidad."
+        },
+        {
+          "q": "¿Es un test oficial de Pokémon?",
+          "a": "No. Es un test de fans gratuito, solo por diversión. Nada de lo que respondes se guarda ni se envía a ningún sitio."
+        },
+        {
+          "q": "¿Por qué me salió un tipo que no esperaba?",
+          "a": "El test puntúa cómo describes tus hábitos, no tu Pokémon favorito. Si dos tipos quedan cerca, el resultado también muestra el segundo; repítelo otro día y mira si cambia."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tienes un sábado libre. Tú…",
+          "options": [
+            "Sales a correr o de excursión: algo que te acelere el corazón",
+            "Te quedas en casa con botanas y una siesta larga",
+            "Te vas a la playa, a una alberca o a un lago",
+            "Te desvelas con una película de terror o un juego de misterio"
+          ]
+        },
+        {
+          "q": "Elige dónde vivir:",
+          "options": [
+            "Una cabaña en un bosque tranquilo",
+            "Una ciudad de neón que nunca duerme",
+            "La cima de una montaña que lo domina todo",
+            "Una casita acogedora con jardín de flores"
+          ]
+        },
+        {
+          "q": "Tus amigos cuentan contigo para…",
+          "options": [
+            "Animar a todo el mundo",
+            "Dar consejos con calma cuando todo se complica",
+            "Ver lo que de verdad pasa antes de que nadie lo diga",
+            "Apoyarlos pase lo que pase"
+          ]
+        },
+        {
+          "q": "Te enfrentas a un gran reto. Tú…",
+          "options": [
+            "Entrenas, te preparas y no paras hasta ganar",
+            "Apuntas aún más alto de lo que nadie creía posible",
+            "Le das vueltas hasta encontrar una forma ingeniosa de esquivarlo",
+            "Vas paso a paso y sin perder la calma"
+          ]
+        },
+        {
+          "q": "Tu energía casi todos los días:",
+          "options": [
+            "A tope. No puedes quedarte quieto",
+            "Lenta pero constante, como un árbol que crece",
+            "Depende totalmente de las botanas que haya cerca",
+            "Baja de día, bien despierto de noche"
+          ]
+        },
+        {
+          "q": "Elige un clima:",
+          "options": [
+            "Un sol abrasador de verano",
+            "Una tormenta con relámpagos",
+            "Lluvia suave en la ventana",
+            "Una noche de niebla bajo la luna llena"
+          ]
+        },
+        {
+          "q": "¿Qué es lo primero que la gente nota de ti?",
+          "options": [
+            "Tu amabilidad",
+            "Tu seguridad",
+            "Tus bromas y tu humor raro",
+            "Que es difícil saber qué piensas"
+          ]
+        },
+        {
+          "q": "En un trabajo en grupo, eres quien…",
+          "options": [
+            "Tiene la gran idea",
+            "Trabaja más rápido y termina primero",
+            "Se asegura de que nadie se quede fuera",
+            "Hace lo que haga falta, sin dramas"
+          ]
+        },
+        {
+          "q": "Elige un antojo:",
+          "options": [
+            "Papitas picantes",
+            "Fruta fresca o una ensalada",
+            "Pastel con demasiado betún",
+            "Lo que haya en el refri"
+          ]
+        },
+        {
+          "q": "Tu mayor fortaleza:",
+          "options": [
+            "La determinación",
+            "Dejarte llevar por la corriente",
+            "La ambición",
+            "La intuición"
+          ]
+        },
+        {
+          "q": "Alguien es grosero contigo. Tú…",
+          "options": [
+            "Le contestas al instante",
+            "Te resbala",
+            "Lo ignoras: no vale tu tiempo",
+            "En secreto te parece graciosísimo"
+          ]
+        },
+        {
+          "q": "Tu compañero ideal de aventuras:",
+          "options": [
+            "Un amigo leal que nunca se rinde",
+            "Alguien que hace divertido cada día",
+            "Un alma tierna que cuida de todos",
+            "Un compañero legendario que te lleve volando al cielo"
+          ]
+        }
+      ],
+      "dims": {
+        "fire": "Fuego",
+        "water": "Agua",
+        "grass": "Planta",
+        "electric": "Eléctrico",
+        "psychic": "Psíquico",
+        "fairy": "Hada",
+        "dragon": "Dragón",
+        "ghost": "Fantasma",
+        "fighting": "Lucha",
+        "normal": "Normal"
+      },
+      "results": {
+        "fire": {
+          "name": "Tipo Fuego · compañero: Charmander",
+          "body": "Apasionado, audaz e imposible de ignorar. Te entregas a todo y tu entusiasmo es contagioso, aunque tu carácter se enciende tan rápido como se apaga. Otros Pokémon de tipo Fuego: Arcanine y Cyndaquil."
+        },
+        "water": {
+          "name": "Tipo Agua · compañero: Squirtle",
+          "body": "Tranquilo, adaptable y fácil de tratar. Te dejas llevar por la corriente, calmas las discusiones y rodeas los obstáculos en vez de atravesarlos. Otros Pokémon de tipo Agua: Vaporeon y Piplup."
+        },
+        "grass": {
+          "name": "Tipo Planta · compañero: Bulbasaur",
+          "body": "Paciente, constante y protector a tu manera tranquila. Creces despacio pero seguro, cuidas de quienes te rodean y te sientes más tú al aire libre. Otros Pokémon de tipo Planta: Leafeon y Rowlet."
+        },
+        "electric": {
+          "name": "Tipo Eléctrico · compañero: Pikachu",
+          "body": "Rápido, brillante y lleno de energía. Piensas rápido, actúas aún más rápido y le das chispa a cualquier lugar, pero quedarte quieto te cuesta. Otros Pokémon de tipo Eléctrico: Jolteon y Pachirisu."
+        },
+        "psychic": {
+          "name": "Tipo Psíquico · compañero: Espeon",
+          "body": "Intuitivo y reflexivo. Lees a las personas y las situaciones antes de que nadie hable, y prefieres un plan ingenioso a la fuerza bruta. Otros Pokémon de tipo Psíquico: Gardevoir y Mew."
+        },
+        "fairy": {
+          "name": "Tipo Hada · compañero: Sylveon",
+          "body": "Amable, encantador y cálido. Haces que la gente se sienta bienvenida y cuidada, y detrás de tu dulzura hay más fuerza de la que imaginan. Otros Pokémon de tipo Hada: Clefairy y Togepi."
+        },
+        "dragon": {
+          "name": "Tipo Dragón · compañero: Dragonite",
+          "body": "Ambicioso, orgulloso y decidido. Apuntas más alto que nadie y tienes la terquedad necesaria para llegar, con debilidad por las pocas personas en las que confías. Otros Pokémon de tipo Dragón: Garchomp y Axew."
+        },
+        "ghost": {
+          "name": "Tipo Fantasma · compañero: Gengar",
+          "body": "Misterioso y travieso. Cobras vida de noche, te encanta una buena broma y tienes un humor que la gente adora o no entiende. Otros Pokémon de tipo Fantasma: Mimikyu y Litwick."
+        },
+        "fighting": {
+          "name": "Tipo Lucha · compañero: Lucario",
+          "body": "Disciplinado, leal y protector. Entrenas duro, cumples tu palabra y defiendes a tus amigos sin que te lo pidan. Otros Pokémon de tipo Lucha: Riolu y Machop."
+        },
+        "normal": {
+          "name": "Tipo Normal · compañero: Eevee",
+          "body": "Relajado, adaptable y lleno de potencial. Estás a gusto contigo, te llevas bien con casi todo el mundo y nunca le dices que no a un antojo o una siesta. Otros Pokémon de tipo Normal: Snorlax y Jigglypuff."
+        }
+      }
+    },
+    "genshin": {
+      "title": "¿Qué Visión de Genshin Impact tendrías? Test de personajes de Genshin — cv.cm",
+      "description": "Test de Genshin Impact gratis: responde 12 preguntas y descubre la Visión (Anemo, Geo, Electro, Dendro, Hydro, Pyro o Cryo) que encaja con tus ideales y los personajes de Genshin que la comparten. Sin registro.",
+      "h1": "¿Qué Visión de Genshin Impact tendrías?",
+      "lede": "En Teyvat, los dioses conceden Visiones a las personas con grandes ambiciones. Responde 12 preguntas sobre lo que valoras y cómo actúas, y descubre cuál de los siete elementos te elegiría.",
+      "about": [
+        "Cada una de las siete naciones de Teyvat sigue a un Arconte y un ideal: la libertad en Mondstadt (Anemo), los contratos en Liyue (Geo), la eternidad en Inazuma (Electro), la sabiduría en Sumeru (Dendro), la justicia en Fontaine (Hydro), la guerra y el valor en Natlan (Pyro) y el amor en Snezhnaya (Cryo). Este test relaciona tus respuestas con esos ideales.",
+        "Tu resultado indica tu elemento, el ideal que lo sostiene y tres personajes jugables que lo comparten, con tus puntuaciones en los siete. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a HoYoverse ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Qué es una Visión en Genshin Impact?",
+          "a": "Una Visión es una gema que permite a su portador canalizar un elemento. Según el juego, los dioses las conceden a personas con una gran ambición o un gran deseo."
+        },
+        {
+          "q": "¿Qué personaje de Genshin soy?",
+          "a": "Tu resultado muestra tres personajes del mismo elemento, por ejemplo Venti, Kaedehara Kazuha y Sacarosa para Anemo. Elige aquel cuya historia se parezca más a la tuya."
+        },
+        {
+          "q": "¿Por qué no hay un resultado de Viajero?",
+          "a": "El Viajero puede usar varios elementos sin una Visión, así que el test puntúa los siete elementos."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito y tus respuestas no salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "¿Qué es lo que más te importa?",
+          "options": [
+            "La libertad de ir adonde me lleve el viento",
+            "Cumplir mi palabra",
+            "Entender cómo funciona el mundo de verdad",
+            "Que haya justicia para todos"
+          ]
+        },
+        {
+          "q": "Elige dónde vivir:",
+          "options": [
+            "Una ciudad ventosa de bardos y campos de dientes de león",
+            "Un puerto bullicioso lleno de mercaderes y faroles",
+            "Una isla de cerezos en flor bajo un cielo de tormenta",
+            "Un palacio de hielo en el lejano norte"
+          ]
+        },
+        {
+          "q": "Un amigo está en problemas. Tú…",
+          "options": [
+            "Te lanzas a ayudar sin pensarlo dos veces",
+            "Te quedas a su lado, en silencio, el tiempo que haga falta",
+            "Trazas un plan que aguante a largo plazo",
+            "Te aseguras de que el culpable rinda cuentas"
+          ]
+        },
+        {
+          "q": "¿Cómo trabajas?",
+          "options": [
+            "Constante y fiable, piedra a piedra",
+            "A ráfagas de inspiración, cuando me da la gana",
+            "Lo pulo hasta que queda perfecto",
+            "Primero lo investigo todo"
+          ]
+        },
+        {
+          "q": "Te cae un montón de Mora. Lo gastas en…",
+          "options": [
+            "Una inversión sensata",
+            "Un banquete para todos tus amigos",
+            "Libros y clases",
+            "Algo hermoso que dure para siempre"
+          ]
+        },
+        {
+          "q": "¿Cómo demuestras que te importa alguien?",
+          "options": [
+            "Con un gran gesto, y con público",
+            "Con sacrificios silenciosos que nadie nota",
+            "Llevándolo a una aventura improvisada",
+            "Protegiéndolo, cueste lo que cueste"
+          ]
+        },
+        {
+          "q": "La gente te describe como…",
+          "options": [
+            "Espíritu libre",
+            "De fiar",
+            "Decidido, quizá terco",
+            "Elegante, pero algo distante"
+          ]
+        },
+        {
+          "q": "Tu noche ideal:",
+          "options": [
+            "Un festival ruidoso con fuegos artificiales",
+            "Una noche en la ópera o un drama en los tribunales",
+            "Leer a la luz de una lámpara",
+            "Mirar las estrellas a solas en una noche fría y despejada"
+          ]
+        },
+        {
+          "q": "¿Cómo llevas los cambios?",
+          "options": [
+            "Los acepto. El viento siempre cambia",
+            "Me resisto. Hay cosas que nunca deberían cambiar",
+            "Los estudio y luego me adapto",
+            "Los rodeo como el agua"
+          ]
+        },
+        {
+          "q": "Tu papel en un combate en equipo:",
+          "options": [
+            "Escudo arriba y aguantar la línea",
+            "Ataque total, prenderle fuego a todo",
+            "Curar y mantener al equipo en pie",
+            "Golpes precisos y elegantes"
+          ]
+        },
+        {
+          "q": "¿Qué no podrías perdonar nunca?",
+          "options": [
+            "Una promesa rota",
+            "Una injusticia sin castigo",
+            "Traicionar a quienes amas",
+            "Que te encierren en una jaula"
+          ]
+        },
+        {
+          "q": "Elige un poder:",
+          "options": [
+            "Dominar el rayo",
+            "Hacer crecer un bosque en un instante",
+            "Invocar el fuego",
+            "Congelar todo lo que tocas"
+          ]
+        }
+      ],
+      "dims": {
+        "anemo": "Anemo",
+        "geo": "Geo",
+        "electro": "Electro",
+        "dendro": "Dendro",
+        "hydro": "Hydro",
+        "pyro": "Pyro",
+        "cryo": "Cryo"
+      },
+      "results": {
+        "anemo": {
+          "name": "Anemo: el ideal de la libertad",
+          "body": "Sigues al viento. Valoras la libertad casi por encima de todo, odias que te aten y tienes una energía ligera y juguetona que anima a quienes te rodean. Personajes Anemo: Venti, Kaedehara Kazuha y Sacarosa."
+        },
+        "geo": {
+          "name": "Geo: el ideal de los contratos",
+          "body": "Firme como la roca. Tu palabra es sagrada, planeas a largo plazo y la gente te confía lo que más le importa. Personajes Geo: Zhongli, Navia y Noelle."
+        },
+        "electro": {
+          "name": "Electro: el ideal de la eternidad",
+          "body": "Resuelto y exigente. Cuando decides algo, lo llevas hasta el final, y quieres que lo que construyes dure para siempre. Personajes Electro: Raiden Shogun, Fischl y Yae Miko."
+        },
+        "dendro": {
+          "name": "Dendro: el ideal de la sabiduría",
+          "body": "Curioso y reflexivo. Quieres entender cómo funcionan las cosas de verdad, lo lees todo y tu paciencia se convierte en auténtica sabiduría. Personajes Dendro: Nahida, Tighnari y Alhaitham."
+        },
+        "hydro": {
+          "name": "Hydro: el ideal de la justicia",
+          "body": "Expresivo y con principios. Te importa mucho la justicia, sientes las cosas con intensidad y no temes un momento dramático cuando se lo merece. Personajes Hydro: Furina, Neuvillette y Xingqiu."
+        },
+        "pyro": {
+          "name": "Pyro: el ideal de la guerra y el valor",
+          "body": "Valiente y de buen corazón. Te lanzas a proteger a tus amigos, animas cada celebración y nunca te echas atrás en una pelea que importa. Personajes Pyro: Hu Tao, Diluc y Bennett."
+        },
+        "cryo": {
+          "name": "Cryo: el ideal del amor",
+          "body": "Frío por fuera, entregado por dentro. Amas en silencio y con lealtad, haces sacrificios que nadie ve y te comportas con elegancia. Personajes Cryo: Ganyu, Kamisato Ayaka y Wriothesley."
+        }
+      }
+    },
+    "sonic": {
+      "title": "¿Qué personaje de Sonic eres? Test de Sonic the Hedgehog — cv.cm",
+      "description": "Test de Sonic the Hedgehog gratis: responde 12 preguntas y descubre si eres Sonic, Tails, Knuckles, Amy, Shadow, Rouge, Cream o Silver. Sin registro.",
+      "h1": "¿Qué personaje de Sonic eres?",
+      "lede": "¿Rápido y libre como Sonic, listo como Tails o solitario como Shadow? Responde 12 preguntas sobre tus hábitos y encuentra tu personaje entre ocho de Sonic the Hedgehog.",
+      "about": [
+        "Los amigos y rivales de Sonic tienen cada uno una personalidad muy clara: Sonic vive para la libertad y la velocidad, Tails construye máquinas, Knuckles protege la Esmeralda Maestra, Amy nunca se rinde en el amor, Shadow mantiene a todos a distancia, Rouge caza joyas, Cream cuida sus modales y Silver vino del futuro para cambiarlo.",
+        "Este test puntúa tus respuestas para los ocho y muestra tu personaje y qué tan cerca quedaron los demás. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a SEGA ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Quiénes son los personajes principales de Sonic?",
+          "a": "Sonic, Tails y Knuckles son el trío clásico. Amy Rose, Shadow, Rouge, Cream y Silver llegaron en juegos posteriores, y el Dr. Eggman es el villano principal."
+        },
+        {
+          "q": "¿Shadow es héroe o villano?",
+          "a": "Empezó como rival en Sonic Adventure 2 y desde entonces ha luchado en ambos bandos. Lo mueve una promesa de su pasado, y por eso suele actuar solo."
+        },
+        {
+          "q": "¿Por qué el Dr. Eggman no es un resultado?",
+          "a": "Este test se centra en los amigos y rivales de Sonic. Los fans de Eggman pueden tomárselo como un reto para que les salga Shadow o Rouge."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito; tus respuestas se puntúan en tu navegador y nunca se guardan."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tu rutina de la mañana:",
+          "options": [
+            "Sales por la puerta antes de desayunar",
+            "Arreglas algún aparato con un café",
+            "Entrenar. Todos y cada uno de los días",
+            "Planear la cita perfecta, minuto a minuto"
+          ]
+        },
+        {
+          "q": "Elige un pasatiempo:",
+          "options": [
+            "Coleccionar joyas",
+            "Hornear y tomar el té con amigos",
+            "Construir máquinas con piezas sueltas",
+            "Rodar a solas de noche"
+          ]
+        },
+        {
+          "q": "Un amigo te pide ayuda. Tú…",
+          "options": [
+            "«¡Voy!» Y ya te fuiste",
+            "Le preguntas con educación qué necesita",
+            "Preguntas qué ganas tú, guiñando un ojo, y ayudas igual",
+            "Ayudas, mientras piensas cómo podría salir mal más adelante"
+          ]
+        },
+        {
+          "q": "Tu mayor defecto:",
+          "options": [
+            "La impaciencia",
+            "Te crees lo que te dicen con demasiada facilidad",
+            "Eres demasiado intenso cuando alguien te gusta",
+            "Mantienes a todos a distancia"
+          ]
+        },
+        {
+          "q": "Tu papel en un equipo:",
+          "options": [
+            "El cerebro",
+            "El músculo",
+            "El espía",
+            "Quien ve hacia dónde va todo esto"
+          ]
+        },
+        {
+          "q": "Elige un lugar:",
+          "options": [
+            "Caminos abiertos y colinas verdes",
+            "Una isla flotante con algo valioso que proteger",
+            "Un jardín tranquilo lleno de flores",
+            "Una ciudad en ruinas que quieres reconstruir"
+          ]
+        },
+        {
+          "q": "Elige un objeto:",
+          "options": [
+            "Un martillo gigante",
+            "Una llave inglesa",
+            "Un diamante enorme",
+            "Anillos de oro que mantienen tu poder bajo control"
+          ]
+        },
+        {
+          "q": "Cuando estás triste, tú…",
+          "options": [
+            "Pones tu mejor sonrisa y sigues persiguiendo tus sueños",
+            "Lo hablas con tu mejor amigo",
+            "Te lo guardas y sigues adelante",
+            "Te prometes cambiar cómo terminan las cosas"
+          ]
+        },
+        {
+          "q": "¿Qué te mueve?",
+          "options": [
+            "La libertad",
+            "Proteger lo que es tuyo",
+            "El amor",
+            "Una promesa que hiciste hace mucho"
+          ]
+        },
+        {
+          "q": "Tu estilo:",
+          "options": [
+            "Elegante y con estilo, siempre",
+            "Un vestido lindo y un moño bien hecho",
+            "Brillante, atrevido e imposible de ignorar",
+            "Lo que tenga más bolsillos para herramientas"
+          ]
+        },
+        {
+          "q": "¿Cómo describiría la gente tus modales?",
+          "options": [
+            "Educados y correctos",
+            "Encantadores, con muchas bromas",
+            "Directos",
+            "Sinceros y algo ingenuos"
+          ]
+        },
+        {
+          "q": "Elige un poder:",
+          "options": [
+            "Supervelocidad",
+            "Volar",
+            "Mover cosas con la mente",
+            "Detener el tiempo"
+          ]
+        }
+      ],
+      "dims": {
+        "sonic": "Sonic",
+        "tails": "Tails",
+        "knuckles": "Knuckles",
+        "amy": "Amy",
+        "shadow": "Shadow",
+        "rouge": "Rouge",
+        "cream": "Cream",
+        "silver": "Silver"
+      },
+      "results": {
+        "sonic": {
+          "name": "Sonic the Hedgehog",
+          "body": "Libre, rápido y sin miedo. No soportas esperar, haces lo que te parece correcto y eres el primero en ayudar cuando importa. Quizá te convenga frenar de vez en cuando."
+        },
+        "tails": {
+          "name": "Miles «Tails» Prower",
+          "body": "Listo, leal y siempre construyendo algo. Resuelves los problemas con la cabeza, no te separas de tu mejor amigo y eres más valiente de lo que crees."
+        },
+        "knuckles": {
+          "name": "Knuckles the Echidna",
+          "body": "Fuerte, honesto y protector. Te tomas tus deberes en serio y protegerás lo que importa con todo lo que tienes, aunque a veces confíes en la persona equivocada."
+        },
+        "amy": {
+          "name": "Amy Rose",
+          "body": "Alegre, decidida y con un gran corazón. Sabes lo que quieres y lo persigues sin rendirte, y sigues siendo optimista cuando todos los demás han dejado de creer."
+        },
+        "shadow": {
+          "name": "Shadow the Hedgehog",
+          "body": "Serio, intenso y movido por un propósito. Te guardas lo que sientes y trabajas mejor solo, pero nunca olvidas una promesa."
+        },
+        "rouge": {
+          "name": "Rouge the Bat",
+          "body": "Con estilo, ingeniosa y hábil para conseguir lo que quieres. Te gustan las cosas bonitas y un poco de peligro, y detrás de las bromas eres mejor amiga de lo que dejas ver."
+        },
+        "cream": {
+          "name": "Cream the Rabbit",
+          "body": "Dulce, educada y amable. Tratas a todos con buenos modales, te encanta una tarde tranquila con amigos y eres más firme de lo que la gente espera."
+        },
+        "silver": {
+          "name": "Silver the Hedgehog",
+          "body": "Sincero, idealista y siempre pensando en lo que viene. Quieres arreglar lo que está roto y cambiar cómo será el futuro, aunque seas un poco ingenuo sobre cómo hacerlo."
+        }
+      }
+    },
+    "dnd-class": {
+      "title": "¿Qué clase de D&D eres? Test de clases de Dungeons & Dragons — cv.cm",
+      "description": "Test de clases de D&D gratis: responde 14 preguntas y descubre cuál de las 12 clases de Dungeons & Dragons va contigo, del bárbaro, el bardo y el clérigo al pícaro, el brujo y el mago. Sin registro.",
+      "h1": "¿Qué clase de D&D eres?",
+      "lede": "¿Entrarías en furia, cantarías, rezarías o lanzarías conjuros? Responde 14 preguntas sobre cómo actuarías en una aventura y descubre cuál de las 12 clases de Dungeons & Dragons encaja con tu personalidad.",
+      "about": [
+        "Dungeons & Dragons tiene doce clases básicas: bárbaro, bardo, clérigo, druida, guerrero, monje, paladín, explorador, pícaro, hechicero, brujo y mago. Cada una es tanto una forma de resolver problemas como un conjunto de poderes, lo que las convierte en un buen espejo de la personalidad.",
+        "Este test pregunta qué harías en una taberna, ante una puerta cerrada o en un combate, y puntúa las doce clases. Usa tu resultado como inspiración para tu próximo personaje. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Wizards of the Coast ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son las 12 clases de D&D?",
+          "a": "Bárbaro, bardo, clérigo, druida, guerrero, monje, paladín, explorador, pícaro, hechicero, brujo y mago. Algunas ediciones y libros añaden más, como el artífice."
+        },
+        {
+          "q": "¿Qué diferencia hay entre hechicero, brujo y mago?",
+          "a": "El mago aprende la magia estudiando, el hechicero nace con ella y el brujo la obtiene de un pacto con un patrón poderoso."
+        },
+        {
+          "q": "¿Qué clase de D&D es mejor para principiantes?",
+          "a": "El guerrero y el bárbaro son los más sencillos de jugar, y el clérigo es un buen comienzo si quieres algunos conjuros. Elige la clase que te parezca divertida: la aprenderás más rápido."
+        },
+        {
+          "q": "¿Es un test oficial de D&D?",
+          "a": "No. Es un test de fans gratuito, solo por diversión, y tus respuestas nunca salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tu grupo entra en una taberna. Tú…",
+          "options": [
+            "Pides la bebida más grande y echas unas vencidas con un desconocido",
+            "Te subes al escenario y empiezas a cantar",
+            "Te sientas en la esquina y vigilas la puerta",
+            "Le preguntas al tabernero por las leyendas del lugar"
+          ]
+        },
+        {
+          "q": "Una puerta cerrada bloquea el paso. Tú…",
+          "options": [
+            "La tiras abajo de una patada",
+            "Fuerzas la cerradura",
+            "Lees sus runas y lanzas el conjuro adecuado",
+            "Convences a quien tenga la llave de que la abra"
+          ]
+        },
+        {
+          "q": "¿De dónde viene tu poder?",
+          "options": [
+            "De años de estudio",
+            "Lo llevo en la sangre desde que nací",
+            "De un trato con un ser misterioso",
+            "Del dios al que sirvo"
+          ]
+        },
+        {
+          "q": "¿Dónde te sientes en casa?",
+          "options": [
+            "En lo profundo de un bosque antiguo",
+            "En la frontera salvaje, siguiendo rastros",
+            "En un monasterio en lo alto de las montañas",
+            "En un templo, entre gente que te necesita"
+          ]
+        },
+        {
+          "q": "¿Qué proteges?",
+          "options": [
+            "A los inocentes",
+            "La naturaleza",
+            "A mi grupo, desde primera línea",
+            "Mi propia libertad"
+          ]
+        },
+        {
+          "q": "En combate, tú…",
+          "options": [
+            "Entras en furia",
+            "Curas y proteges a tus aliados",
+            "Disparas a distancia y nunca fallas",
+            "Te mueves más rápido de lo que pueden seguirte, solo con los puños"
+          ]
+        },
+        {
+          "q": "Tu defecto:",
+          "options": [
+            "Demasiado orgullo por tu talento natural",
+            "No puedes resistirte a un secreto, ni a un trato",
+            "Te atas a un juramento, aunque duela",
+            "Te lanzas sin pensar"
+          ]
+        },
+        {
+          "q": "Elige un compañero:",
+          "options": [
+            "Un animal amigo de la naturaleza",
+            "Un extraño familiar de otro plano",
+            "Una espada que llevas desde hace años",
+            "Tu laúd"
+          ]
+        },
+        {
+          "q": "¿Cómo entrenas?",
+          "options": [
+            "Ejercicios, cada mañana",
+            "Meditación",
+            "Oración",
+            "No entreno. El poder simplemente sale de mí"
+          ]
+        },
+        {
+          "q": "¿Cómo resuelves los problemas?",
+          "options": [
+            "Con encanto",
+            "Con conocimiento",
+            "Con paciencia y equilibrio",
+            "Con táctica"
+          ]
+        },
+        {
+          "q": "¿Qué buscas?",
+          "options": [
+            "Justicia",
+            "Secretos prohibidos",
+            "Armonía con la naturaleza",
+            "Una forma de controlar el poder salvaje que llevas dentro"
+          ]
+        },
+        {
+          "q": "Tu equipo:",
+          "options": [
+            "Armadura pesada y un escudo con un símbolo sagrado",
+            "Cuero ligero y unas cuantas dagas escondidas",
+            "Un bastón de madera al que aún le crecen hojas",
+            "Nada más que una túnica sencilla"
+          ]
+        },
+        {
+          "q": "Tu grupo te llamaría…",
+          "options": [
+            "El misterioso",
+            "El sanador",
+            "El vagabundo solitario",
+            "El cuentacuentos"
+          ]
+        },
+        {
+          "q": "Elige una recompensa:",
+          "options": [
+            "Un libro de conjuros que nadie más puede leer",
+            "Una semilla del árbol más antiguo del mundo",
+            "Un trofeo de la bestia más grande que has vencido",
+            "Un mapa de tierras inexploradas"
+          ]
+        }
+      ],
+      "dims": {
+        "barbarian": "Bárbaro",
+        "bard": "Bardo",
+        "cleric": "Clérigo",
+        "druid": "Druida",
+        "fighter": "Guerrero",
+        "monk": "Monje",
+        "paladin": "Paladín",
+        "ranger": "Explorador",
+        "rogue": "Pícaro",
+        "sorcerer": "Hechicero",
+        "warlock": "Brujo",
+        "wizard": "Mago"
+      },
+      "results": {
+        "barbarian": {
+          "name": "Bárbaro",
+          "body": "Audaz, directo y lleno de energía. Actúas por instinto, dices lo que piensas y eres el primero en cruzar la puerta. Tu fuerza es real, y también tu lealtad a tu grupo."
+        },
+        "bard": {
+          "name": "Bardo",
+          "body": "Encantador, creativo y el alma de la fiesta. Resuelves los problemas con palabras e ingenio, coleccionas historias allá donde vas y mejoras cualquier grupo."
+        },
+        "cleric": {
+          "name": "Clérigo",
+          "body": "Atento, fiel y estable. Mantienes unido al grupo, curas lo que está herido y sacas fuerzas de algo más grande que tú."
+        },
+        "druid": {
+          "name": "Druida",
+          "body": "Tranquilo, sabio y conectado con la naturaleza. Te sientes en casa al aire libre, piensas en ciclos largos y proteges el equilibrio que otros olvidan."
+        },
+        "fighter": {
+          "name": "Guerrero",
+          "body": "Disciplinado, práctico y de fiar. Entrenas, planeas y aguantas la línea. Sin alardes, solo una habilidad fiable que mantiene a todos con vida."
+        },
+        "monk": {
+          "name": "Monje",
+          "body": "Concentrado, paciente y disciplinado. Valoras el equilibrio y la calma interior, y cuando actúas eres más rápido de lo que nadie espera."
+        },
+        "paladin": {
+          "name": "Paladín",
+          "body": "Con principios, valiente y protector. Vives según un código, defiendes a quienes no pueden defenderse y cumples tus promesas aunque te cueste caro."
+        },
+        "ranger": {
+          "name": "Explorador",
+          "body": "Independiente, observador y en tu elemento en la naturaleza. Notas lo que otros pasan por alto, prefieres el campo abierto a las ciudades llenas de gente y tienes una puntería letal cuando cuenta."
+        },
+        "rogue": {
+          "name": "Pícaro",
+          "body": "Listo, rápido e independiente. Lees un lugar en segundos, encuentras la entrada trasera y valoras tu libertad más que las reglas de nadie."
+        },
+        "sorcerer": {
+          "name": "Hechicero",
+          "body": "Talentoso, expresivo y algo impredecible. Tu don te sale de forma natural y se alimenta de tus emociones, y aprender a controlarlo es la aventura de tu vida."
+        },
+        "warlock": {
+          "name": "Brujo",
+          "body": "Misterioso, curioso y ambicioso. Te atraen los secretos y el conocimiento oculto, y estás dispuesto a hacer tratos arriesgados para conseguir lo que quieres."
+        },
+        "wizard": {
+          "name": "Mago",
+          "body": "Curioso, analítico y siempre estudiando. Crees que el conocimiento adecuado resuelve cualquier problema, y pasarías la noche entera leyendo para encontrarlo."
+        }
+      }
+    },
+    "naruto": {
+      "title": "Naruto test: ¿qué personaje de Naruto eres? — cv.cm",
+      "description": "Test de Naruto gratis: responde 12 preguntas y descubre si eres Naruto, Sasuke, Sakura, Kakashi, Hinata, Shikamaru, Gaara, Itachi, Rock Lee o Jiraiya. Sin registro.",
+      "h1": "¿Qué personaje de Naruto eres?",
+      "lede": "¿Nunca te rindes como Naruto, piensas diez jugadas por delante como Shikamaru o eres sereno e indescifrable como Itachi? Responde 12 preguntas y encuentra tu personaje entre diez de Naruto.",
+      "about": [
+        "Los ninjas de Naruto son inolvidables porque cada uno tiene una forma clara de vivir: la negativa de Naruto a rendirse, el orgullo de Sasuke, el esfuerzo de Rock Lee, la genialidad perezosa de Shikamaru, el valor silencioso de Hinata. Este test analiza tus sueños, tus hábitos y cómo tratas a tus rivales, y puntúa diez personajes.",
+        "Tu resultado indica el personaje que más encaja contigo y muestra tus puntuaciones en los demás. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Masashi Kishimoto, Shueisha ni Studio Pierrot, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Quiénes son los personajes principales de Naruto?",
+          "a": "El Equipo 7: Naruto Uzumaki, Sasuke Uchiha, Sakura Haruno y su maestro Kakashi Hatake. Hinata, Shikamaru, Gaara, Rock Lee, Itachi y Jiraiya están entre los más populares del resto."
+        },
+        {
+          "q": "¿El test tiene spoilers?",
+          "a": "Solo algunos leves. Las preguntas y los resultados describen la personalidad de cada personaje, no los giros de la trama."
+        },
+        {
+          "q": "¿Por qué mi personaje favorito no es un resultado?",
+          "a": "Diez resultados mantienen el test corto. Si te sale un segundo personaje muy cerca, ese también va contigo."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito; tus respuestas se puntúan en tu navegador y nunca se guardan."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tu sueño:",
+          "options": [
+            "Que todos en la aldea te reconozcan",
+            "Saldar una cuenta pendiente de tu pasado",
+            "Ser tan fuerte como las personas que admiras",
+            "Recorrer el mundo y escribir un best seller sobre ello"
+          ]
+        },
+        {
+          "q": "¿Cómo estudias?",
+          "options": [
+            "El trabajo duro supera al talento: entrenar hasta caer rendido",
+            "Hacer lo mínimo y aun así sacar la mejor nota",
+            "Estudiar duro y sacar el primer puesto en el examen escrito",
+            "Llegar tarde con un libro que no deberías leer en público"
+          ]
+        },
+        {
+          "q": "En combate, tú…",
+          "options": [
+            "Nunca te rindes, aunque parezca imposible",
+            "Piensas diez jugadas por delante",
+            "Levantas una defensa que nada puede romper",
+            "Lo terminas antes de que empiece"
+          ]
+        },
+        {
+          "q": "Tu personalidad, en pocas palabras:",
+          "options": [
+            "Ruidosa y alegre",
+            "Fría y distante",
+            "Tímida, pero valiente cuando importa",
+            "Relajada y difícil de alterar"
+          ]
+        },
+        {
+          "q": "¿Qué historia se parece más a la tuya?",
+          "options": [
+            "Estuve solo mucho tiempo; ahora tengo gente que me necesita",
+            "Cargo con un peso que no puedo compartir con nadie",
+            "Siempre estuve a la sombra de alguien, así que entrené más",
+            "He perdido a gente, y eso me hizo quien soy"
+          ]
+        },
+        {
+          "q": "Elige un favorito:",
+          "options": [
+            "Un gran tazón de ramen",
+            "Ver pasar las nubes",
+            "Prensar flores",
+            "Un largo baño en aguas termales"
+          ]
+        },
+        {
+          "q": "Tu papel en un equipo:",
+          "options": [
+            "El estratega",
+            "El ninja médico que también atraviesa muros a puñetazos",
+            "El maestro que enseña con historias",
+            "El lobo solitario"
+          ]
+        },
+        {
+          "q": "¿Cómo tratas a un rival?",
+          "options": [
+            "Lo retas todos los días",
+            "Te aseguras en silencio de superarlo",
+            "Lo animas desde lejos",
+            "Intentas entender qué lo hizo así"
+          ]
+        },
+        {
+          "q": "Tu carácter:",
+          "options": [
+            "Tranquilo por fuera, con un golpe tremendo si te provocan",
+            "Flojo hasta que la cosa se pone seria",
+            "Nunca levanto la voz",
+            "Apasionado, todo el tiempo"
+          ]
+        },
+        {
+          "q": "Elige un estilo de combate:",
+          "options": [
+            "Arena que te protege por sí sola",
+            "Una hoja de relámpago",
+            "Golpes de palma precisos",
+            "Ilusiones de las que el enemigo no puede escapar"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más valoras?",
+          "options": [
+            "La gente de mi aldea",
+            "Mi familia, por encima de todo",
+            "Mi propio camino",
+            "La experiencia y la libertad"
+          ]
+        },
+        {
+          "q": "Tu punto débil:",
+          "options": [
+            "Demasiado terco para rendirte nunca",
+            "Importarte demasiado lo que piensan los demás",
+            "Dudar de ti mismo",
+            "Distraerte fácilmente con un buen rato"
+          ]
+        }
+      ],
+      "dims": {
+        "naruto": "Naruto",
+        "sasuke": "Sasuke",
+        "sakura": "Sakura",
+        "kakashi": "Kakashi",
+        "hinata": "Hinata",
+        "shikamaru": "Shikamaru",
+        "gaara": "Gaara",
+        "itachi": "Itachi",
+        "lee": "Rock Lee",
+        "jiraiya": "Jiraiya"
+      },
+      "results": {
+        "naruto": {
+          "name": "Naruto Uzumaki",
+          "body": "Ruidoso, cálido e imposible de desanimar. Nunca te rindes, nunca te retractas de tu palabra y te ganas a la gente porque tampoco te rindes con ellos."
+        },
+        "sasuke": {
+          "name": "Sasuke Uchiha",
+          "body": "Talentoso, orgulloso y ferozmente independiente. Te guardas lo que sientes y sigues tu propio camino, y cuando te fijas una meta nada te aparta de ella."
+        },
+        "sakura": {
+          "name": "Sakura Haruno",
+          "body": "Inteligente, trabajadora y más fuerte de lo que la gente espera. Estudias, te exiges para estar a la altura de quienes admiras y das un buen golpe si te provocan."
+        },
+        "kakashi": {
+          "name": "Kakashi Hatake",
+          "body": "Relajado, perspicaz y brillante sin hacer ruido. Siempre llegas un poco tarde y nada te altera, pero nunca le fallas a tu equipo, porque sabes lo que cuesta perder a alguien."
+        },
+        "hinata": {
+          "name": "Hinata Hyuga",
+          "body": "Dulce, tímida y más valiente de lo que nadie cree. Animas a los demás en silencio, sigues creciendo a tu manera y te mantienes firme cuando de verdad importa."
+        },
+        "shikamaru": {
+          "name": "Shikamaru Nara",
+          "body": "Un genio perezoso. Prefieres mirar las nubes a trabajar, pero cuando importa ves diez jugadas por delante y das con el plan que todos siguen."
+        },
+        "gaara": {
+          "name": "Gaara",
+          "body": "Callado, protector y muy comprensivo. Conoces la soledad desde dentro, por eso cuidas de los demás e intentas entender a la gente antes de juzgarla."
+        },
+        "itachi": {
+          "name": "Itachi Uchiha",
+          "body": "Sereno, talentoso y difícil de descifrar. Nunca levantas la voz, piensas varias jugadas por delante y te guardas lo que sientes. Pocos ven todo lo que cargas."
+        },
+        "lee": {
+          "name": "Rock Lee",
+          "body": "Trabajador, apasionado y sincero. Demuestras que el esfuerzo supera al talento, entrenas más que nadie y ves a cada rival como una razón para mejorar."
+        },
+        "jiraiya": {
+          "name": "Jiraiya",
+          "body": "Espíritu libre, divertido y sabio. Has visto mucho mundo, enseñas con historias y crees en la nueva generación más de lo que ella cree en sí misma."
+        }
+      }
+    },
+    "demon-slayer": {
+      "title": "¿Qué respiración de Demon Slayer eres? Test de Kimetsu no Yaiba — cv.cm",
+      "description": "Test de Demon Slayer gratis: responde 12 preguntas y descubre tu respiración (Agua, Llama, Trueno, Bestia, Insecto, Viento, Niebla, Amor, Sonido o Piedra) y el personaje de Kimetsu no Yaiba que la comparte. Sin registro.",
+      "h1": "¿Qué respiración de Demon Slayer eres?",
+      "lede": "¿Fluirías como el Agua, arderías como la Llama o atacarías como el Trueno? Responde 12 preguntas sobre tu personalidad y descubre la respiración, y el cazador, que van contigo.",
+      "about": [
+        "En Demon Slayer: Kimetsu no Yaiba, los espadachines luchan con estilos de respiración. Agua, Llama, Trueno, Viento y Piedra son los estilos principales; otros, como Insecto, Niebla, Amor y Sonido, derivan de ellos, e Inosuke inventó por su cuenta la Respiración de la Bestia.",
+        "Cada estilo encaja con un temperamento, así que este test analiza cómo manejas la presión, cómo entrenas y cómo cuidas a la gente. Tu resultado indica el estilo, el personaje que lo usa y tus puntuaciones en los diez. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Koyoharu Gotouge, Shueisha, Aniplex ni ufotable, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuántas respiraciones hay en Demon Slayer?",
+          "a": "La historia muestra más de una docena. La Respiración del Sol es la original; Agua, Llama, Trueno, Viento y Piedra son los estilos principales, y varios más derivan de ellos."
+        },
+        {
+          "q": "¿Qué respiración usa Tanjiro?",
+          "a": "Tanjiro aprende la Respiración del Agua y después usa también la Hinokami Kagura, la danza que su familia transmitió de generación en generación, ligada a la Respiración del Sol."
+        },
+        {
+          "q": "¿Por qué la Respiración del Sol no es un resultado?",
+          "a": "La Respiración del Sol es el estilo original y muy pocos personajes llegan a usarla, así que el test se centra en los estilos que los cazadores entrenan de verdad."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito y tus respuestas no salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "Bajo presión, tú…",
+          "options": [
+            "Te adaptas y rodeas el problema",
+            "Entras en pánico y luego haces un movimiento perfecto",
+            "Cargas de frente, gritando",
+            "Mantienes la calma, quizá un poco en las nubes"
+          ]
+        },
+        {
+          "q": "Tus amigos te describen como…",
+          "options": [
+            "Cálido y alentador",
+            "Dulce, pero con filo",
+            "Rudo por fuera, protector por dentro",
+            "Llamativo"
+          ]
+        },
+        {
+          "q": "¿Cómo entrenas?",
+          "options": [
+            "Un solo movimiento, practicado miles de veces",
+            "En la naturaleza, a mi manera",
+            "Con paciencia, durante años",
+            "No necesito mucho: lo aprendí en dos meses"
+          ]
+        },
+        {
+          "q": "Elige una comida:",
+          "options": [
+            "Una torre gigante de sakura mochi",
+            "Camotes, con un «¡Delicioso!» bien fuerte en cada bocado",
+            "Lo que yo mismo haya cazado",
+            "Arroz sencillo y una taza de té"
+          ]
+        },
+        {
+          "q": "¿Cómo demuestras amor?",
+          "options": [
+            "Abiertamente, todo el tiempo",
+            "Protegiendo con fiereza sin decirlo nunca",
+            "Con un gesto grande y dramático",
+            "Con oraciones silenciosas y algunas lágrimas"
+          ]
+        },
+        {
+          "q": "Tu mayor fortaleza:",
+          "options": [
+            "La bondad",
+            "El valor",
+            "La inteligencia",
+            "La fuerza bruta"
+          ]
+        },
+        {
+          "q": "Tu defecto:",
+          "options": [
+            "Cobarde hasta el momento en que importa",
+            "Olvidas nombres, y a veces a qué viniste",
+            "Tu sonrisa esconde lo enojado que estás",
+            "No puedes hacer nada en silencio"
+          ]
+        },
+        {
+          "q": "¿Dónde te sientes en casa?",
+          "options": [
+            "Junto a un arroyo de montaña",
+            "En lo profundo del bosque",
+            "En un jardín de glicinas y mariposas",
+            "En un tranquilo templo de montaña"
+          ]
+        },
+        {
+          "q": "¿Qué te hace seguir adelante?",
+          "options": [
+            "Proteger a mi familia",
+            "Estar a la altura de quienes creyeron en mí",
+            "Encontrar a alguien a quien amar",
+            "Acabar con hasta la última amenaza"
+          ]
+        },
+        {
+          "q": "Elige una estética:",
+          "options": [
+            "Rosa y verde, suave como un listón",
+            "Amarillo, con estampado de rayos",
+            "Gemas, oro y un poco de pólvora",
+            "Niebla sobre las montañas"
+          ]
+        },
+        {
+          "q": "En un equipo, tú…",
+          "options": [
+            "Gritas «¡Enciende tu corazón!» y empujas a todos hacia delante",
+            "Haces el plan, con mucha extravagancia",
+            "Golpeas más fuerte que nadie",
+            "Investigas y preparas la medicina"
+          ]
+        },
+        {
+          "q": "Tu energía es…",
+          "options": [
+            "Un destello repentino",
+            "Desbordante de cariño",
+            "Una tormenta",
+            "A la deriva, como las nubes"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Agua",
+        "flame": "Llama",
+        "thunder": "Trueno",
+        "beast": "Bestia",
+        "insect": "Insecto",
+        "wind": "Viento",
+        "mist": "Niebla",
+        "love": "Amor",
+        "sound": "Sonido",
+        "stone": "Piedra"
+      },
+      "results": {
+        "water": {
+          "name": "Respiración del Agua · Tanjiro Kamado, Giyu Tomioka",
+          "body": "Amable, adaptable y sereno bajo presión. Rodeas los problemas en vez de romperlos a golpes, y harías cualquier cosa por proteger a tu familia."
+        },
+        "flame": {
+          "name": "Respiración de la Llama · Kyojuro Rengoku",
+          "body": "Cálido, valiente y entregado. Animas a todos a tu alrededor, comes con ganas y estás a la altura de quienes creyeron en ti. Enciende tu corazón."
+        },
+        "thunder": {
+          "name": "Respiración del Trueno · Zenitsu Agatsuma",
+          "body": "Nervioso hasta el momento clave, y entonces brillante. Puede que dudes de ti en voz alta, pero has practicado una sola cosa hasta hacerla perfecta, y con eso basta."
+        },
+        "beast": {
+          "name": "Respiración de la Bestia · Inosuke Hashibira",
+          "body": "Salvaje, competitivo y autodidacta. Aprendes haciendo, te lanzas de frente a cada reto y eres más leal a tus amigos de lo que nunca admitirás."
+        },
+        "insect": {
+          "name": "Respiración del Insecto · Shinobu Kocho",
+          "body": "Dulce, lista y más afilada de lo que aparentas. Sonríes ante todo, resuelves los problemas con conocimiento y cuidado, y guardas un fuego silencioso por dentro."
+        },
+        "wind": {
+          "name": "Respiración del Viento · Sanemi Shinazugawa",
+          "body": "Feroz, directo y muy protector. Pareces rudo por fuera, pero todo lo que haces es para mantener a salvo a quienes quieres."
+        },
+        "mist": {
+          "name": "Respiración de la Niebla · Muichiro Tokito",
+          "body": "Sereno, talentoso y algo soñador. Aprendes rápido, te distraes con facilidad y sorprendes a todos cuando de pronto te concentras al máximo."
+        },
+        "love": {
+          "name": "Respiración del Amor · Mitsuri Kanroji",
+          "body": "Cariñosa, abierta y más fuerte de lo que aparentas. Llevas el corazón en la mano, te encantan la buena comida y la buena compañía, y tu calidez es tu poder."
+        },
+        "sound": {
+          "name": "Respiración del Sonido · Tengen Uzui",
+          "body": "Llamativo, seguro de ti y con mucho estilo. Lo haces todo con espectacularidad, planeas a lo grande y proteges ante todo a las personas más cercanas."
+        },
+        "stone": {
+          "name": "Respiración de la Piedra · Gyomei Himejima",
+          "body": "Un gigante bondadoso. Eres paciente, compasivo e inquebrantable, y tu fuerza tranquila es en lo que todos se apoyan cuando las cosas se ponen difíciles."
+        }
+      }
+    },
+    "jujutsu-kaisen": {
+      "title": "¿Qué personaje de Jujutsu Kaisen eres? Test de anime JJK — cv.cm",
+      "description": "Test de Jujutsu Kaisen (JJK) gratis: responde 12 preguntas y descubre si eres Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Satoru Gojo, Kento Nanami, Maki Zenin, Toge Inumaki o Aoi Todo. Sin registro.",
+      "h1": "¿Qué personaje de Jujutsu Kaisen eres?",
+      "lede": "¿Un luchador de buen corazón como Yuji, un pensador cauteloso como Megumi o el más fuerte, como Gojo? Responde 12 preguntas y encuentra tu personaje entre ocho hechiceros de Jujutsu Kaisen.",
+      "about": [
+        "Los hechiceros de Jujutsu Kaisen destacan tanto por su personalidad como por sus técnicas malditas: el gran corazón de Yuji, la cautela de Megumi, la seguridad de Nobara, la arrogancia juguetona de Gojo, el odio de Nanami a las horas extra, las ganas de Maki de demostrar lo que vale, las pocas palabras de Toge y las obsesiones muy concretas de Todo.",
+        "Este test puntúa a los ocho y muestra tu personaje y los que le siguen. Evita los spoilers de la historia. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Gege Akutami, Shueisha ni MAPPA, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Quiénes son los personajes principales de Jujutsu Kaisen?",
+          "a": "Los estudiantes de primer año Yuji Itadori, Megumi Fushiguro y Nobara Kugisaki, y su maestro Satoru Gojo. Kento Nanami, Maki Zenin, Toge Inumaki y Aoi Todo están entre los hechiceros más populares."
+        },
+        {
+          "q": "¿Por qué Toge Inumaki solo dice ingredientes de onigiri?",
+          "a": "Usa el Habla Maldita, así que cualquier cosa que diga puede convertirse en una orden. Se limita a rellenos de onigiri como «salmón» u «hojuelas de bonito» para hablar sin peligro."
+        },
+        {
+          "q": "¿El test tiene spoilers?",
+          "a": "No. Las preguntas y los resultados solo describen la personalidad y detalles del inicio de la historia."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito y nada de lo que respondes se guarda."
+        }
+      ],
+      "items": [
+        {
+          "q": "Primer día en una escuela nueva. Tú…",
+          "options": [
+            "Te haces amigo de todos",
+            "Analizas a la gente en silencio",
+            "Haces una entrada que nadie olvidará",
+            "Le preguntas a todo el mundo cuál es su tipo"
+          ]
+        },
+        {
+          "q": "Tu forma de trabajar:",
+          "options": [
+            "Salir a la hora. Las horas extra son el enemigo",
+            "Hacer lo imposible y luego presumirlo",
+            "Trabajar el doble para callar a quienes dudan de ti",
+            "Hablar poco y hacer mucho"
+          ]
+        },
+        {
+          "q": "Tu sentido del humor:",
+          "options": [
+            "Juguetón y un poco presumido",
+            "Seco y sarcástico",
+            "Basado en obsesiones muy concretas",
+            "Haces reír a la gente con una sola palabra"
+          ]
+        },
+        {
+          "q": "¿De dónde viene tu fuerza?",
+          "options": [
+            "De la gente que me rodea",
+            "De ser yo, sin pedir perdón",
+            "De demostrar que no necesito lo que los demás traen de nacimiento",
+            "De saber que soy el más fuerte"
+          ]
+        },
+        {
+          "q": "Elige un compañero:",
+          "options": [
+            "Un perro leal",
+            "Un onigiri",
+            "Un martillo y un puñado de clavos",
+            "Un buen libro en un café tranquilo"
+          ]
+        },
+        {
+          "q": "Tu defecto:",
+          "options": [
+            "Te pones en último lugar, siempre",
+            "Le das demasiadas vueltas a todo",
+            "Eres demasiado consciente de lo bueno que eres",
+            "No paras de hablar de tu idol favorita"
+          ]
+        },
+        {
+          "q": "En combate, tú…",
+          "options": [
+            "Golpeas primero y preguntas después",
+            "Agarras un arma. La que sea",
+            "Pides refuerzos",
+            "Dices una palabra y se acabó"
+          ]
+        },
+        {
+          "q": "¿A quién salvas?",
+          "options": [
+            "A todos los que pueda",
+            "A quienes creo que lo merecen",
+            "A quien diga el trabajo, bien hecho, y luego me voy a casa",
+            "Lo hago a mi manera, diga lo que diga la gente"
+          ]
+        },
+        {
+          "q": "Tu fin de semana ideal:",
+          "options": [
+            "Ir de compras a la gran ciudad",
+            "Entrenar al aire libre",
+            "El evento de apretón de manos de tu idol favorita",
+            "Recorrer todas las pastelerías de la ciudad"
+          ]
+        },
+        {
+          "q": "¿Qué tipo de líder eres?",
+          "options": [
+            "El maestro al que todos admiran",
+            "El adulto responsable del lugar",
+            "El callado que mantiene a todos a salvo",
+            "Prefiero encargarme yo solo"
+          ]
+        },
+        {
+          "q": "Tu historia familiar:",
+          "options": [
+            "Complicada. Me fui para hacerme un nombre propio",
+            "Me crió un abuelo cuyas últimas palabras nunca olvidaré",
+            "Mi mejor amigo es mi hermano, por lo que a mí respecta",
+            "Mis amigos son mi familia"
+          ]
+        },
+        {
+          "q": "Tu lema:",
+          "options": [
+            "«No trabajes ni un minuto más de lo que te pagan»",
+            "«Ruidoso y orgulloso»",
+            "«Demuéstrales que se equivocan»",
+            "«Hermanos para toda la vida»"
+          ]
+        }
+      ],
+      "dims": {
+        "yuji": "Yuji",
+        "megumi": "Megumi",
+        "nobara": "Nobara",
+        "gojo": "Gojo",
+        "nanami": "Nanami",
+        "maki": "Maki",
+        "toge": "Toge",
+        "todo": "Todo"
+      },
+      "results": {
+        "yuji": {
+          "name": "Yuji Itadori",
+          "body": "Amable, valiente y con una fuerza física increíble. Haces amigos con facilidad, pones a los demás antes que a ti e intentas ayudar a todos los que puedes, tal como te pidió tu abuelo."
+        },
+        "megumi": {
+          "name": "Megumi Fushiguro",
+          "body": "Serio, cuidadoso y leal sin hacer ruido. Piensas antes de actuar, eliges tus batallas y mantienes muy cerca a unas pocas personas, además de a tus perros."
+        },
+        "nobara": {
+          "name": "Nobara Kugisaki",
+          "body": "Segura, audaz y orgullosa de ser quien eres. Te mudaste a la gran ciudad para vivir a tu manera, dices lo que piensas y nunca te achicas para encajar."
+        },
+        "gojo": {
+          "name": "Satoru Gojo",
+          "body": "Juguetón, brillante y muy seguro de ti. Haces que lo imposible parezca fácil, te encantan los dulces y quieres formar una generación más fuerte que la anterior."
+        },
+        "nanami": {
+          "name": "Kento Nanami",
+          "body": "Con principios, sarcástico y muy confiable. Haces el trabajo bien, odias las horas extra y eres el adulto en quien todos se apoyan sin decirlo."
+        },
+        "maki": {
+          "name": "Maki Zenin",
+          "body": "Dura, decidida e imposible de subestimar dos veces. Tuviste que demostrar lo que vales sin lo que otros traen de nacimiento, y lo lograste con trabajo duro."
+        },
+        "toge": {
+          "name": "Toge Inumaki",
+          "body": "Amable, leal y de pocas palabras. Eliges tus palabras con cuidado porque tienen peso, y tus amigos saben exactamente cuánto te importan."
+        },
+        "todo": {
+          "name": "Aoi Todo",
+          "body": "Excéntrico, intenso y un gran amigo una vez que entras en su círculo. Tienes opiniones muy firmes sobre tu tipo y tu idol, y lucharías para siempre junto a tu «hermano»."
+        }
+      }
+    },
+    "avatar-element": {
+      "title": "¿Qué elemento de Avatar controlarías? Test de Avatar: La leyenda de Aang — cv.cm",
+      "description": "Test de Avatar: La leyenda de Aang gratis: responde 12 preguntas y descubre si serías Maestro Agua, Maestro Tierra, Maestro Fuego o Maestro Aire, y qué maestros comparten tu elemento. Sin registro.",
+      "h1": "¿Qué elemento de Avatar controlarías?",
+      "lede": "¿Agua, Tierra, Fuego o Aire? Responde 12 preguntas sobre cómo enfrentas los problemas y cómo tratas a la gente, y descubre a cuál de las cuatro naciones pertenecerías en Avatar: La leyenda de Aang.",
+      "about": [
+        "En Avatar: La leyenda de Aang, cada arte de control refleja una forma de vida: el Agua es el elemento del cambio y la comunidad; la Tierra, de la fuerza y la resistencia; el Fuego, del empuje y la fuerza de voluntad; y el Aire, de la libertad y el desapego. Este test relaciona tus hábitos con esas filosofías.",
+        "Tu resultado indica tu elemento, maestros famosos que lo comparten y tus puntuaciones en los cuatro. Este es un test de fans no oficial escrito para cv.cm. No está afiliado a Nickelodeon ni a Paramount, ni cuenta con su respaldo; los nombres pertenecen a sus respectivos dueños."
+      ],
+      "faq": [
+        {
+          "q": "¿Cuáles son los cuatro elementos de Avatar?",
+          "a": "Agua, Tierra, Fuego y Aire, cada uno ligado a una nación: las Tribus Agua, el Reino Tierra, la Nación del Fuego y los Nómadas Aire. El Avatar es el único que puede controlar los cuatro."
+        },
+        {
+          "q": "¿Qué elemento es el más fuerte?",
+          "a": "Ninguno. La serie los presenta en equilibrio, cada uno con sus propias fortalezas, y el Avatar tiene que aprender los cuatro."
+        },
+        {
+          "q": "¿Puedo no ser maestro de ningún elemento?",
+          "a": "En la serie, la mayoría de la gente no puede controlar ningún elemento, y Sokka demuestra que no hace falta. Este test siempre elige el elemento que mejor va contigo."
+        },
+        {
+          "q": "¿Es un test oficial?",
+          "a": "No. Es un test de fans gratuito y tus respuestas no salen de tu navegador."
+        }
+      ],
+      "items": [
+        {
+          "q": "Tus amigos acuden a ti para…",
+          "options": [
+            "Recibir consuelo cuando todo se derrumba",
+            "Hablar claro y tener un apoyo firme",
+            "Motivarse a ir por todo",
+            "Ver las cosas de otra manera"
+          ]
+        },
+        {
+          "q": "Elige un lugar:",
+          "options": [
+            "Una gran ciudad amurallada",
+            "Un templo en lo alto de las montañas",
+            "Una aldea sobre el hielo junto al mar",
+            "Una isla volcánica"
+          ]
+        },
+        {
+          "q": "Ante un problema, tú…",
+          "options": [
+            "Lo atacas de frente",
+            "Te mantienes firme y esperas el momento justo",
+            "Evitas la pelea si puedes y buscas otro camino",
+            "Te adaptas y encuentras cómo rodearlo"
+          ]
+        },
+        {
+          "q": "¿Qué es lo que más valoras?",
+          "options": [
+            "La libertad y la paz",
+            "La familia y la comunidad",
+            "La honestidad y la lealtad",
+            "La ambición y el honor"
+          ]
+        },
+        {
+          "q": "Tu mayor defecto:",
+          "options": [
+            "Guardas rencor más tiempo del que admites",
+            "Mal genio",
+            "Huyes de las responsabilidades",
+            "Terco como una roca"
+          ]
+        },
+        {
+          "q": "Elige una mascota:",
+          "options": [
+            "Un tejón-topo enorme y tranquilo",
+            "Un leal perro del Ártico",
+            "Un dragón",
+            "Un lémur volador"
+          ]
+        },
+        {
+          "q": "Tu energía es…",
+          "options": [
+            "Intensa",
+            "Ligera y juguetona",
+            "Tranquila en la superficie, profunda por dentro",
+            "Centrada y paciente"
+          ]
+        },
+        {
+          "q": "Un amigo te decepciona. Tú…",
+          "options": [
+            "Lo dejas pasar y sigues adelante",
+            "Le dices exactamente lo que hizo",
+            "Explotas y te calmas igual de rápido",
+            "Te duele mucho, pero con el tiempo perdonas"
+          ]
+        },
+        {
+          "q": "Elige un momento del día:",
+          "options": [
+            "La noche, bajo la luna llena",
+            "La tarde, con una brisa",
+            "El mediodía, con los pies en tierra firme",
+            "El amanecer"
+          ]
+        },
+        {
+          "q": "Tu papel en un equipo:",
+          "options": [
+            "El muro que nunca se mueve",
+            "Quien impulsa a todos hacia delante",
+            "El pacificador",
+            "El sanador"
+          ]
+        },
+        {
+          "q": "Elige un pasatiempo:",
+          "options": [
+            "Artes marciales",
+            "Nadar o surfear",
+            "Lucha o escalada",
+            "Volar en planeador, o cualquier cosa con buena vista"
+          ]
+        },
+        {
+          "q": "¿Por qué lucharías?",
+          "options": [
+            "Por el equilibrio del mundo",
+            "Por tu honor",
+            "Por la gente que depende de ti",
+            "Por tu hogar"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Agua",
+        "earth": "Tierra",
+        "fire": "Fuego",
+        "air": "Aire"
+      },
+      "results": {
+        "water": {
+          "name": "Maestro Agua",
+          "body": "Adaptable, atento y más profundo de lo que aparentas. Te dejas llevar por la corriente hasta que algo importa, y entonces nadie te detiene; harías cualquier cosa por tu familia y tu comunidad. Otros Maestros Agua: Katara y Korra."
+        },
+        "earth": {
+          "name": "Maestro Tierra",
+          "body": "Centrado, honesto y terco en el mejor sentido. Esperas el momento justo, no cedes terreno y nunca finges ser quien no eres. Otros Maestros Tierra: Toph Beifong y el rey Bumi."
+        },
+        "fire": {
+          "name": "Maestro Fuego",
+          "body": "Decidido, apasionado y lleno de fuerza de voluntad. Persigues tus metas con todo y lo sientes todo con intensidad, y has aprendido que la verdadera fuerza nace del equilibrio. Otros Maestros Fuego: Zuko y el tío Iroh."
+        },
+        "air": {
+          "name": "Maestro Aire",
+          "body": "Espíritu libre, juguetón y pacífico. Prefieres buscar otro camino antes que pelear, valoras tu libertad y llevas ligereza a todos los que te rodean. Otros Maestros Aire: Aang y Jinora."
+        }
       }
     }
   }

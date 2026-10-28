@@ -1,0 +1,170 @@
+{
+  "title": "MD5 vs SHA-256: differences, collisions and which to use — cv.cm",
+  "description": "MD5 makes a 128-bit hash with practical collisions; SHA-256 makes a 256-bit hash with none known. When each is fine, and why neither should store passwords.",
+  "h1": "MD5 vs SHA-256: what is the difference?",
+  "answer": "MD5 and SHA-256 are hash functions that turn any input into a fixed-length fingerprint: 128 bits for MD5, 256 bits for SHA-256. MD5 is broken for security because attackers can create two different files with the same hash. SHA-256 has no known practical attacks and is the default for signatures and integrity checks. MD5 is still acceptable for detecting accidental corruption, and neither should store passwords directly.",
+  "sections": [
+    {
+      "h": "What a hash function does",
+      "body": [
+        "A cryptographic hash takes input of any size and returns a fixed-size digest. The same input always gives the same digest, a one-character change gives a completely different one, and the digest cannot be turned back into the input.",
+        {
+          "table": {
+            "head": [
+              "Input",
+              "MD5",
+              "SHA-256"
+            ],
+            "rows": [
+              [
+                "`abc`",
+                "`900150983cd24fb0d6963f7d28e17f72`",
+                "`ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`"
+              ],
+              [
+                "Empty string",
+                "`d41d8cd98f00b204e9800998ecf8427e`",
+                "`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`"
+              ]
+            ]
+          }
+        },
+        "A secure hash must resist three attacks: finding an input for a given digest (preimage), finding a second input with the same digest as a given one (second preimage), and finding any two inputs with the same digest (collision). Collisions are the easiest; for an ideal n-bit hash they take about 2^(n/2) tries because of the birthday paradox."
+      ]
+    },
+    {
+      "h": "MD5, SHA-1, SHA-256 and SHA-3 compared",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Digest size",
+              "Hex length",
+              "Status"
+            ],
+            "rows": [
+              [
+                "MD5 (1992)",
+                "128 bits",
+                "32",
+                "Collisions practical since 2004; broken for security"
+              ],
+              [
+                "SHA-1 (1995)",
+                "160 bits",
+                "40",
+                "First public collision 2017; NIST plans to retire it by 2030"
+              ],
+              [
+                "SHA-256 (SHA-2, 2001)",
+                "256 bits",
+                "64",
+                "Secure; standardized in FIPS 180-4"
+              ],
+              [
+                "SHA-512 (SHA-2)",
+                "512 bits",
+                "128",
+                "Secure; often faster than SHA-256 on 64-bit CPUs"
+              ],
+              [
+                "SHA3-256 (2015)",
+                "256 bits",
+                "64",
+                "Secure; different internal design, standardized in FIPS 202"
+              ]
+            ]
+          }
+        },
+        "SHA-256 is one member of the SHA-2 family. \"SHA-2\" and \"SHA-256\" are often used interchangeably, but SHA-224, SHA-384 and SHA-512 are SHA-2 functions too."
+      ]
+    },
+    {
+      "h": "How MD5 and SHA-1 broke",
+      "body": [
+        "In 2004 Xiaoyun Wang and colleagues published MD5 collisions found in hours. Later work produced chosen-prefix collisions, where an attacker starts from two different meaningful files and appends data until the hashes match. In 2008 researchers used this to create a rogue certificate authority certificate, and the Flame malware discovered in 2012 used an MD5 collision to forge a Microsoft code-signing certificate. RFC 6151 states that MD5 must not be used where collision resistance is required, such as digital signatures.",
+        "SHA-1 followed. In 2017 the SHAttered project from Google and CWI Amsterdam published two different PDF files with the same SHA-1 hash, and a chosen-prefix SHA-1 collision was demonstrated in 2020. Git, TLS certificates and code signing have since moved or are moving to SHA-256.",
+        "Preimage attacks on MD5 remain impractical. Broken here means an attacker can craft pairs of colliding files, not that any existing MD5 can be reversed."
+      ]
+    },
+    {
+      "h": "When MD5 is still fine, and when it is not",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Use",
+              "MD5 acceptable?",
+              "Why"
+            ],
+            "rows": [
+              [
+                "Detecting accidental corruption in a download or copy",
+                "Yes",
+                "Random bit errors do not produce collisions"
+              ],
+              [
+                "Deduplication or cache keys within your own system",
+                "Usually",
+                "Fine unless an attacker controls the inputs"
+              ],
+              [
+                "Verifying a download against a malicious mirror",
+                "No",
+                "An attacker can prepare a colliding file; use SHA-256"
+              ],
+              [
+                "Digital signatures and certificates",
+                "No",
+                "Collision attacks forge signatures"
+              ],
+              [
+                "Storing passwords",
+                "No",
+                "Too fast to compute; the same is true of SHA-256"
+              ]
+            ]
+          }
+        },
+        "If you get to choose, choose SHA-256. It is supported everywhere, hardware-accelerated on modern CPUs, and avoids having to argue whether a given use is collision-sensitive."
+      ]
+    },
+    {
+      "h": "Passwords need slow, salted hashes",
+      "body": [
+        "General-purpose hashes are designed to be fast. A single modern GPU can compute billions of MD5 or SHA-256 hashes per second, so a leaked table of unsalted SHA-256 password hashes can be attacked with huge wordlists, and identical passwords show up as identical hashes.",
+        "Password hashing functions fix both problems. They add a unique random salt per user so identical passwords hash differently, and they are deliberately slow and, in the newer designs, memory-hard so GPUs gain little:",
+        {
+          "ul": [
+            "Argon2id: winner of the 2015 Password Hashing Competition and the usual first choice for new systems.",
+            "scrypt: memory-hard, widely available.",
+            "bcrypt: decades of use; note that it only reads the first 72 bytes of a password.",
+            "PBKDF2 with a high iteration count: acceptable where FIPS-validated algorithms are required."
+          ]
+        },
+        {
+          "note": "Plain SHA-256 is also unsuitable as a message authentication code: `SHA-256(secret + message)` is open to length-extension attacks. Use HMAC-SHA-256 when a hash must prove a message came from someone holding a key."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can an MD5 hash be decrypted?",
+      "a": "No. A hash is not encryption and has no key to reverse it. Online \"MD5 decrypters\" look the hash up in tables of previously hashed common strings, which is why short or common inputs are found quickly."
+    },
+    {
+      "q": "Is SHA-256 secure in 2026?",
+      "a": "Yes. No practical collision or preimage attack on SHA-256 is known, and NIST continues to approve it. Its 2^128 collision resistance is far beyond current computing."
+    },
+    {
+      "q": "Why do websites still publish MD5 checksums?",
+      "a": "They catch incomplete or corrupted downloads, which is the common problem. Against a tampered file they only help if the checksum comes from a trusted source and uses SHA-256 or better."
+    },
+    {
+      "q": "Is SHA-256 good for hashing passwords?",
+      "a": "Not on its own. It is fast and unsalted by default, so leaked hashes can be cracked at billions of guesses per second. Use Argon2id, scrypt or bcrypt instead."
+    }
+  ]
+}

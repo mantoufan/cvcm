@@ -1,0 +1,147 @@
+{
+  "title": "¿Qué es un timestamp Unix? Tiempo epoch explicado con ejemplos — cv.cm",
+  "description": "Un timestamp Unix cuenta los segundos desde el 1970-01-01 00:00:00 UTC. Cómo se calcula, segundos vs milisegundos, segundos intercalares y el problema de 2038.",
+  "h1": "¿Qué es un timestamp Unix?",
+  "answer": "Un timestamp Unix (marca de tiempo Unix) es el número de segundos transcurridos desde las 00:00:00 UTC del 1 de enero de 1970, la llamada época Unix, sin contar los segundos intercalares. Es un único entero sin zona horaria, así que `1700000000` significa el mismo instante en todas partes: el 14 de noviembre de 2023 a las 22:13:20 UTC. JavaScript y muchas API usan milisegundos, lo que añade tres dígitos al número.",
+  "sections": [
+    {
+      "h": "Cómo se define el número",
+      "body": [
+        "POSIX define los «segundos desde la época» con una fórmula fija: cada día cuenta exactamente 86,400 segundos, y la cuenta empieza en `1970-01-01T00:00:00Z`. Los instantes anteriores a la época son negativos, así que `-1` es `1969-12-31T23:59:59Z`.",
+        "Como el valor se mide en UTC, no lleva zona horaria ni horario de verano. Convertirlo a una hora local es un paso aparte que necesita una zona, por ejemplo `Asia/Tokyo` o `America/New_York`.",
+        {
+          "table": {
+            "head": [
+              "Timestamp (segundos)",
+              "Fecha y hora UTC",
+              "Nota"
+            ],
+            "rows": [
+              [
+                "`0`",
+                "1970-01-01T00:00:00Z",
+                "La época Unix"
+              ],
+              [
+                "`1000000000`",
+                "2001-09-09T01:46:40Z",
+                "Primer valor de 10 dígitos"
+              ],
+              [
+                "`1234567890`",
+                "2009-02-13T23:31:30Z",
+                "Un hito muy conocido"
+              ],
+              [
+                "`1700000000`",
+                "2023-11-14T22:13:20Z",
+                "Número redondo reciente"
+              ],
+              [
+                "`1791936000`",
+                "2026-10-14T00:00:00Z",
+                "Medianoche UTC, 14 oct 2026"
+              ],
+              [
+                "`2147483647`",
+                "2038-01-19T03:14:07Z",
+                "Mayor valor con signo de 32 bits"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Segundos, milisegundos y otras unidades",
+      "body": [
+        "El timestamp Unix clásico está en segundos, pero muchos sistemas guardan unidades más finas. El número de dígitos es la forma más rápida de distinguirlas para fechas actuales:",
+        {
+          "table": {
+            "head": [
+              "Unidad",
+              "Dígitos hoy",
+              "Ejemplo para el mismo instante",
+              "Habitual en"
+            ],
+            "rows": [
+              [
+                "Segundos",
+                "10",
+                "`1700000000`",
+                "Herramientas Unix, `time()` de PHP, `time.time()` de Python (como float), claims `exp` de JWT"
+              ],
+              [
+                "Milisegundos",
+                "13",
+                "`1700000000000`",
+                "`Date.now()` de JavaScript, `System.currentTimeMillis()` de Java"
+              ],
+              [
+                "Microsegundos",
+                "16",
+                "`1700000000000000`",
+                "Internos de PostgreSQL, algunos sistemas de logs"
+              ],
+              [
+                "Nanosegundos",
+                "19",
+                "`1700000000000000000`",
+                "`time.UnixNano()` de Go, trazas de alta resolución"
+              ]
+            ]
+          }
+        },
+        "Mezclar unidades es el error más común con timestamps. Un valor en segundos pasado a `new Date()` de JavaScript cae en enero de 1970; un valor en milisegundos leído como segundos cae decenas de miles de años en el futuro. En JavaScript, convierte con `Math.floor(Date.now() / 1000)` para obtener segundos, y con `new Date(seconds * 1000)` para volver."
+      ]
+    },
+    {
+      "h": "Los segundos intercalares no se cuentan",
+      "body": [
+        "UTC inserta de vez en cuando un segundo intercalar para mantenerse acompasado con la rotación de la Tierra; se han añadido 27 desde 1972. El tiempo Unix los ignora: la fórmula POSIX supone que todos los días tienen 86,400 segundos, así que un segundo intercalar se repite o se reparte a lo largo de un periodo más largo, según el sistema.",
+        "En la práctica, restar dos timestamps da un tiempo transcurrido que puede desviarse en tantos segundos como intercalares haya entre ellos. Para la planificación cotidiana ese error no importa; para mediciones científicas o financieras, los sistemas usan TAI o la hora GPS. Los organismos internacionales de medición del tiempo votaron en 2022 dejar de añadir segundos intercalares antes de 2035."
+      ]
+    },
+    {
+      "h": "El problema del año 2038",
+      "body": [
+        "El software antiguo guarda el tiempo Unix en un entero con signo de 32 bits, cuyo máximo es `2147483647`. Ese valor se alcanza el `2038-01-19T03:14:07Z`. Un segundo después el contador se desborda a `-2147483648`, que se interpreta como `1901-12-13T20:45:52Z`.",
+        {
+          "ul": [
+            "Los sistemas operativos, lenguajes y bases de datos modernos de 64 bits usan un `time_t` de 64 bits, que dura unos 292 mil millones de años.",
+            "El riesgo persiste en dispositivos embebidos, formatos de archivo antiguos, columnas de base de datos de 32 bits como `TIMESTAMP` de MySQL y protocolos binarios que reservan solo cuatro bytes para la hora.",
+            "Los valores a largo plazo, como certificados a 20 años, hipotecas y fechas de vencimiento, ya superan 2038, así que el fallo puede aparecer mucho antes de esa fecha."
+          ]
+        },
+        {
+          "note": "JavaScript no se ve afectado de la misma manera: un `Date` guarda milisegundos en un float de 64 bits y es válido hasta el año 275760."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar un timestamp y cuándo una cadena de fecha",
+      "body": [
+        "Guarda los instantes (cuándo ocurrió un evento, cuándo caduca un token) como timestamp Unix o como cadena de fecha en UTC. Ambos son inequívocos y se ordenan correctamente.",
+        "Usa una cadena ISO 8601 legible, como `2026-10-14T09:30:00Z`, en logs, API y archivos que vayan a leer personas, porque `1791970200` no dice nada a simple vista. Guarda los eventos locales futuros, como una reunión a las 09:00 en París la próxima primavera, como hora local más un nombre de zona IANA: las reglas del horario de verano pueden cambiar antes de esa fecha, y un timestamp calculado de antemano sería entonces incorrecto."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Un timestamp Unix siempre está en UTC?",
+      "a": "Sí. La cuenta se define desde la medianoche UTC del 1 de enero de 1970, así que el número en sí no tiene zona horaria. Solo la conversión a una hora local legible depende de una zona."
+    },
+    {
+      "q": "¿Cómo obtengo el timestamp Unix actual?",
+      "a": "Ejecuta `date +%s` en una terminal de Linux o macOS, `Math.floor(Date.now() / 1000)` en JavaScript o `int(time.time())` en Python. Todos devuelven los segundos desde la época."
+    },
+    {
+      "q": "¿Por qué mi timestamp se convierte en una fecha de 1970?",
+      "a": "Casi seguro el valor está en segundos pero se leyó como milisegundos. Multiplícalo por 1,000 antes de pasarlo a una función que espera milisegundos, como `new Date()` de JavaScript."
+    },
+    {
+      "q": "¿Un timestamp Unix puede ser negativo?",
+      "a": "Sí. Los valores negativos cuentan hacia atrás desde la época, así que `-86400` es el 31 de diciembre de 1969 a las 00:00 UTC. Algunos sistemas antiguos los rechazan, así que haz pruebas antes de guardar así fechas anteriores a 1970."
+    }
+  ]
+}

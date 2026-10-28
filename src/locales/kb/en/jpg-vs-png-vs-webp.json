@@ -1,0 +1,157 @@
+{
+  "title": "JPG vs PNG vs WebP: which image format to use, and when — cv.cm",
+  "description": "JPG suits photos, PNG suits sharp graphics and transparency, WebP does both in smaller files. Compare compression, quality, support and when to use AVIF.",
+  "h1": "JPG vs PNG vs WebP: which image format should you use?",
+  "answer": "Use JPG for photographs where small files matter and transparency does not. Use PNG for screenshots, logos, text and anything that needs exact pixels or a transparent background. Use WebP when the image goes on a website: it supports both lossy and lossless modes plus transparency, and Google measured lossy WebP files 25–34% smaller than JPG at equal quality. Every current browser displays WebP.",
+  "sections": [
+    {
+      "h": "The three formats side by side",
+      "body": [
+        "Each format was designed for a different job, and the differences come down to how they compress pixels and what extra features they carry.",
+        {
+          "table": {
+            "head": [
+              "",
+              "JPG (JPEG)",
+              "PNG",
+              "WebP"
+            ],
+            "rows": [
+              [
+                "Introduced",
+                "1992",
+                "1996",
+                "2010"
+              ],
+              [
+                "Compression",
+                "Lossy",
+                "Lossless",
+                "Lossy or lossless"
+              ],
+              [
+                "Transparency",
+                "No",
+                "Yes, full alpha channel",
+                "Yes, full alpha channel"
+              ],
+              [
+                "Animation",
+                "No",
+                "APNG variant",
+                "Yes"
+              ],
+              [
+                "Bit depth",
+                "8 bits per channel (baseline)",
+                "Up to 16 bits per channel",
+                "8 bits per channel"
+              ],
+              [
+                "Best for",
+                "Photos",
+                "Graphics, screenshots, text",
+                "Web images of any kind"
+              ],
+              [
+                "Typical support gap",
+                "None",
+                "None",
+                "Some older desktop software and upload forms"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Lossy vs lossless: the deciding difference",
+      "body": [
+        "Lossy compression (JPG, lossy WebP) throws away detail the eye is unlikely to notice. It works well on photos, where colors change gradually, but it smears hard edges: text and thin lines in a JPG pick up faint halos called ringing or mosquito noise, and blocks of 8×8 pixels can appear at low quality.",
+        "Lossless compression (PNG, lossless WebP) stores every pixel exactly. It shrinks large areas of flat color very well, which is why a screenshot can be smaller as PNG than as JPG, but a photo saved as PNG is often 3–5 times larger than a good JPG with no visible benefit.",
+        {
+          "ul": [
+            "Each time a JPG is edited and saved again, it is compressed again and loses a little more detail. Keep a lossless master if you will edit repeatedly.",
+            "Converting a JPG to PNG does not restore lost detail; it only stores the already-compressed pixels without further loss, in a bigger file.",
+            "A JPG quality setting of about 80–90% is a common balance between size and visible artifacts."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "How much smaller is WebP?",
+      "body": [
+        "Google's WebP compression study compared files at equal structural similarity (SSIM). Lossy WebP came out 25–34% smaller than JPG, and Google reports lossless WebP about 26% smaller than PNG. Actual savings depend on the image, the encoder and the quality setting.",
+        "A worked example: a 400 KB hero photo saved as JPG would typically land around 265–300 KB as lossy WebP at similar quality. Across a page with twenty images, that difference shortens load time on mobile connections.",
+        {
+          "note": "WebP is limited to 16,383 × 16,383 pixels and 8-bit color, so it is not a good archive format for high-resolution or HDR originals. Keep the camera original and export WebP copies for the web."
+        }
+      ]
+    },
+    {
+      "h": "Where AVIF fits",
+      "body": [
+        "AVIF is a newer format that stores AV1-compressed images in a HEIF-style container. It usually beats WebP on file size for photos, supports 10- and 12-bit color and HDR, and handles transparency. Chrome added support in version 85, Firefox in 93 and Safari in 16.",
+        "Its trade-offs are slower encoding, weaker support in older desktop software, and occasional loss of fine texture at very low quality. Many sites serve AVIF first, WebP second and JPG as a fallback using the HTML `<picture>` element."
+      ]
+    },
+    {
+      "h": "A quick decision guide",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "Recommended format"
+            ],
+            "rows": [
+              [
+                "Camera or phone photo for a website",
+                "WebP or AVIF, with JPG fallback if needed"
+              ],
+              [
+                "Photo for email, a print shop or an upload form",
+                "JPG"
+              ],
+              [
+                "Logo, icon or diagram with transparency",
+                "PNG, or SVG if it is vector art"
+              ],
+              [
+                "Screenshot with text",
+                "PNG or lossless WebP"
+              ],
+              [
+                "Short looping animation",
+                "Animated WebP or a video file rather than GIF"
+              ],
+              [
+                "Master copy you will edit again",
+                "PNG, TIFF or the camera's original format"
+              ]
+            ]
+          }
+        },
+        "If a form rejects WebP, convert a copy to JPG for photos or PNG for graphics. Nothing is gained by converting a lossy file to a lossless one beyond compatibility."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is PNG higher quality than JPG?",
+      "a": "PNG is lossless, so it keeps every pixel exactly, while JPG discards some detail. For photos the difference at high JPG quality is usually invisible; for text and sharp edges PNG looks clearly cleaner."
+    },
+    {
+      "q": "Why is my PNG so much bigger than the JPG?",
+      "a": "Lossless compression cannot discard the fine noise and gradients found in photos, so a photographic PNG is often several times larger. Use JPG or WebP for photos."
+    },
+    {
+      "q": "Do all browsers support WebP?",
+      "a": "Yes. Chrome, Edge, Firefox and Opera have supported it for years, and Safari added it in version 14 in 2020. Some older desktop programs and upload forms still reject it."
+    },
+    {
+      "q": "Does converting PNG to JPG remove transparency?",
+      "a": "Yes. JPG has no alpha channel, so transparent areas are filled with a solid color, usually white or black. Use WebP or keep PNG if you need transparency."
+    }
+  ]
+}

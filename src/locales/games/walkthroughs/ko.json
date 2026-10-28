@@ -3842,6 +3842,340 @@
       }
     ]
   },
+  "double-action-blaster-guys": {
+    "intro": "Double Action Blaster Guys는 무료 패미컴 플랫폼 슈팅이다. 페이지를 열면 ROM이 로드된다. 스테이지마다 목표가 하나 있고, 뛰고 쏴서 달성한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "Start를 누르고 Play Game을 고른 뒤 A로 인원, 모드, 난이도, 시작 스테이지를 정한다.",
+        "image": "start"
+      },
+      {
+        "id": "goal",
+        "title": "목표 확인",
+        "body": "스테이지 전 화면에 'Defeat 5 enemies' 같은 목표와 남은 목숨이 나온다.",
+        "image": "goal"
+      },
+      {
+        "id": "play",
+        "title": "뛰고 쏘기",
+        "body": "A로 발판 사이를 뛰고 B로 쏜다. 목표를 채우면 오른쪽 위 숫자가 줄어든다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "zlib. 소스: https://github.com/NovaSquirrel/DABG. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "lunar-limit": {
+    "intro": "Lunar Limit은 무료 패미컴 아케이드 슈팅이다. 페이지를 열면 ROM이 로드된다. 지구를 움직이고 달을 돌려 적의 물결을 부순다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "타이틀에서 Start.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "움직이고 돌리기",
+        "body": "방향키로 지구를 움직인다. A와 B로 달이 지구 주위를 돌고, 닿은 적을 부순다.",
+        "image": "play"
+      },
+      {
+        "id": "goal",
+        "title": "웨이브 버티기",
+        "body": "적은 줄지어 온다. 그 길목에 달을 두고 왼쪽 위 목숨을 지킨다.",
+        "image": "goal"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/pubby/lunarlimit. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "ralph-4": {
+    "intro": "Ralph 4는 무료 패미컴 퍼즐이다. 페이지를 열면 ROM이 로드된다. 방마다 작은 칸에 계단, 곰, 가끔 보석이 있다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "타이틀에서 Start.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "계단으로",
+        "body": "방향키로 한 칸씩 계단을 향한다. 보석이 있으면 먼저 줍는다. 곰에 닿으면 다시 한다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/pubby/Ralph-4. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "neslife": {
+    "intro": "Conway's Life for NES는 무료 생명 게임 샌드박스다. 페이지를 열면 ROM이 로드된다. 셀을 놓으면 그다음은 규칙이 정한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "판 열기",
+        "body": "판에 글라이더가 하나 있고 커서는 왼쪽 위에 있다.",
+        "image": "start"
+      },
+      {
+        "id": "draw",
+        "title": "셀 놓기",
+        "body": "방향키로 움직이고 A로 셀을 바꾼다. Select로 판 전체를 지운다.",
+        "image": "draw"
+      },
+      {
+        "id": "run",
+        "title": "실행",
+        "body": "Start를 누른다. 이웃이 2~3개인 셀은 살아남고, 빈칸의 이웃이 정확히 3개면 새로 태어난다. 다시 Start로 멈춘다.",
+        "image": "run"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "zlib. 소스: https://github.com/NovaSquirrel/NESLife. 상용 ROM은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "elevator-madness-dx": {
+    "intro": "Elevator Madness DX는 무료 SFC 액션 게임이다. 페이지를 열면 ROM이 로드된다. 엘리베이터를 직접 운전해 승객 모두를 만족시킨다.",
+    "steps": [
+      {
+        "id": "controls",
+        "title": "조작 확인",
+        "body": "첫 화면에 점프, 문 열기, 엘리베이터 위, 엘리베이터 아래 버튼이 표시된다. Start를 누른다.",
+        "image": "controls"
+      },
+      {
+        "id": "start",
+        "title": "근무 시작",
+        "body": "타이틀 화면에서 Start를 한 번 더 눌러 시작한다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "엘리베이터 운전",
+        "body": "제어판으로 걸어간다. X와 A로 칸을 움직여 맞는 층에 세우고, Y로 그 층 문을 연다. 옥상이나 바닥에 부딪히지 않게 한다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/undisbeliever/elevator-madness-dx. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "bat-cave": {
+    "intro": "Bat Cave는 무료 SFC 동굴 비행 게임이다. 페이지를 열면 ROM이 로드된다. 버튼 하나로 박쥐를 공중에 띄운다.",
+    "steps": [
+      {
+        "id": "play",
+        "title": "비행",
+        "body": "Start를 누른 뒤 B를 톡톡 눌러 날갯짓해 올라가고, 누르는 사이에 가라앉게 둔다. 흰 통로를 따라간다.",
+        "image": "play"
+      },
+      {
+        "id": "over",
+        "title": "부딪히면 다시",
+        "body": "갈색 벽에 닿으면 GAME OVER와 거리가 나온다. Start로 다시 한다.",
+        "image": "over"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/undisbeliever/bat-cave. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "pipes-snes": {
+    "intro": "Pipes는 무료 SFC 퍼즐이다. 페이지를 열면 ROM이 로드된다. 시작점에서 끝점까지 파이프가 이어질 때까지 조각을 놓는다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "판 확인",
+        "body": "판은 빈 상태로 시작하고 왼쪽에 조각 대기열이 있다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "파이프 놓기",
+        "body": "방향키로 커서를 옮기고 B로 다음 조각을 놓는다. 끊기지 않는 파이프 하나로 시작점과 끝점을 잇는다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/undisbeliever/pipes. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "castle-platformer": {
+    "intro": "Castle Platformer는 무료 SFC 플랫포머다. 페이지를 열면 ROM이 로드된다. 성 스테이지 다섯 개는 문에서 끝난다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "성에 들어가기",
+        "body": "첫 방에는 바닥에 생물 두 마리가 있고 출구 문은 오른쪽에 있다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "달리고 점프",
+        "body": "방향키로 걷고, Y를 누르고 달리며, B로 생물을 뛰어넘어 문까지 간다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/undisbeliever/castle_platformer. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "miniplanets": {
+    "intro": "Miniplanets는 무료 메가드라이브 플랫포머다. 페이지를 열면 ROM이 로드된다. 스테이지마다 한 바퀴 달려 도는 작은 행성이다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "시작",
+        "body": "START를 고른다. 코드가 있으면 PASSWORD로 뒤 스테이지에 간다.",
+        "image": "start"
+      },
+      {
+        "id": "intro",
+        "title": "스테이지 카드 보기",
+        "body": "스테이지마다 PLANELAGO 1 · LAFTO 같은 이름으로 시작한다.",
+        "image": "intro"
+      },
+      {
+        "id": "play",
+        "title": "행성 달리기",
+        "body": "달리면 행성이 돈다. A, B, C로 점프하고 위쪽 타이머가 다 되기 전에 행성을 클리어한다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "zlib. 소스: https://github.com/sikthehedgehog/miniplanets. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "kleleatoms-md": {
+    "intro": "KłełeAtoms MD는 무료 메가드라이브 연쇄 반응 게임이다. 페이지를 열면 ROM이 로드된다. 칸을 채워 터뜨리고 판을 차지한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "타이틀",
+        "body": "아무 버튼이나 눌러 메인 메뉴로 간다.",
+        "image": "start"
+      },
+      {
+        "id": "menu",
+        "title": "설정",
+        "body": "판의 가로세로를 고르고 플레이어를 사람이나 CPU로 정한 뒤 초록색 재생 버튼을 누른다.",
+        "image": "menu"
+      },
+      {
+        "id": "play",
+        "title": "원자 놓기",
+        "body": "커서를 옮기고 A로 원자를 하나 더한다. 모서리는 2개, 가장자리는 3개, 가운데 칸은 4개에서 터진다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/Nightwolf-47/KleleAtoms-MD. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "pixel-dungeon-md": {
+    "intro": "Pixel Dungeon: Mega Drive Edition은 무료 로그라이크다. 페이지를 열면 ROM이 로드된다. 판마다 새 던전이 만들어진다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "새 판 시작",
+        "body": "타이틀 화면에서 Start를 누르고 메뉴에서 Random run을 고른다.",
+        "image": "start"
+      },
+      {
+        "id": "class",
+        "title": "직업 고르기",
+        "body": "Warrior는 가장 세게 치고, Rogue는 은신에 능하며, Hunter는 원거리에서 싸우고, Mage는 완드를 쓴다. Yes로 확정한다.",
+        "image": "class"
+      },
+      {
+        "id": "play",
+        "title": "탐험",
+        "body": "방향키로 움직이고 적에게 걸어가면 공격한다. 아이템을 줍고, Food 바가 낮아지면 먹고, 내려가는 계단을 찾는다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "GPL-3.0. 이 빌드의 소스: https://s3.cv.cm/files/games/src/pixel-dungeon-md-source.zip. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "dungeon-puzzlers-lament": {
+    "intro": "The Dungeon Puzzler's Lament는 무료 게임보이 어드밴스 퍼즐 게임이다. 페이지를 열면 ROM이 로드된다. 던전은 내가 꾸미고, 영웅은 명령대로 움직일 뿐이다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "스테이지 카드 보기",
+        "body": "스테이지마다 번호와 \"Keys open doors\" 같은 규칙 하나로 시작한다. A를 누른다.",
+        "image": "start"
+      },
+      {
+        "id": "play",
+        "title": "배치하고 출발",
+        "body": "HERO'S ACTIONS를 확인하고, YOUR ITEMS의 아이템을 A로 판에 놓은 뒤 Start를 눌러 영웅이 가는 것을 본다.",
+        "image": "play"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "코드 MPL-2.0, 그래픽 CC BY 4.0, 음악은 VWolfdog의 CC-BY 3.0 (https://opengameart.org/content/soft-mysterious-harp-loop). 소스: https://github.com/agbrs/agb/tree/f4214b5da8a4a2d08f6ed7bd56cbbd147586a493/examples/the-dungeon-puzzlers-lament. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
+  "bunkerboy": {
+    "intro": "BunkerBoy는 무료 게임보이 서바이벌 게임이다. 페이지를 열면 ROM이 로드된다. 하루하루 누가 먹을지 정한다.",
+    "steps": [
+      {
+        "id": "start",
+        "title": "대피",
+        "body": "타이틀과 공습 장면에서 A를 누르며 넘어간 뒤 시작 상자를 고른다.",
+        "image": "start"
+      },
+      {
+        "id": "day",
+        "title": "물자 확인",
+        "body": "매일 음식, 물, 구급상자 수량으로 시작한다.",
+        "image": "day"
+      },
+      {
+        "id": "ration",
+        "title": "나눠 주기",
+        "body": "Mike, Rose, Jeff로 옮겨 A를 눌러 음식, 물, 구급상자를 준다. 다 됐으면 OK를 고른다.",
+        "image": "ration"
+      },
+      {
+        "id": "license",
+        "title": "라이선스",
+        "body": "MIT. 소스: https://github.com/UrbanZero/bunkerboy. 상용 게임은 호스팅하지 않는다."
+      }
+    ]
+  },
   "coco-battle-royale-2": {
     "intro": "Coco Battle Royale II는 자유 소프트웨어 패미컴 배틀로얄이다. 페이지를 열면 ROM이 로드된다. 울타리 안에서 닭 20마리가 싸우고 한 마리만 살아 나간다.",
     "steps": [

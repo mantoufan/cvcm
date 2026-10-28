@@ -6,6 +6,7 @@ import playerJs from "../public/emu/player.js?raw";
 import gamesUi from "../src/client/games/ui.ts?raw";
 import { GAME_COVER } from "../src/shared/covers";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
+import { GAME_OFFICIAL } from "../src/shared/game-official";
 import {
   GAME_CONSOLES,
   GAMES,
@@ -184,6 +185,12 @@ describe("games worker", () => {
     expect(html.headers.get("Content-Security-Policy")).toContain("frame-src 'self'");
   });
 
+  it("uses EmulatorJS system ids that map to hosted cores", () => {
+    // Unknown ids (e.g. "gbc") make EmulatorJS fetch a missing {id}-legacy-wasm.data.
+    const systems = new Set(["nes", "snes", "gb", "gba", "segaMD", "ruffle"]);
+    for (const game of GAMES) expect(systems.has(game.core), game.id).toBe(true);
+  });
+
   it("boots the emulator from an external script so CSP can block inline JS", () => {
     expect(playerHtml).not.toMatch(/<script>/);
     expect(playerHtml).toContain('src="/emu/player.js?v=3"');
@@ -258,5 +265,22 @@ describe("games sitemap", () => {
     expect(pages.filter((page) => page.console && !page.game)).toHaveLength(GAME_CONSOLES.length);
     expect(pages.filter((page) => page.game)).toHaveLength(GAMES.length);
     expect(LOCALES.length).toBeGreaterThan(1);
+  });
+
+  it("lists official ways to play for every commercial game, and only for those", () => {
+    for (const game of GAMES) {
+      const ways = GAME_OFFICIAL[game.id];
+      if (game.rom) {
+        expect(ways, game.id).toBeUndefined();
+        continue;
+      }
+      expect(ways, game.id).toBeDefined();
+      for (const way of ways ?? []) {
+        const host = new URL(way.url).host;
+        expect(["www.nintendo.com", "store.steampowered.com"], `${game.id} ${way.url}`).toContain(host);
+        expect(way.url.startsWith("https://"), way.url).toBe(true);
+        expect(way.product.length, game.id).toBeGreaterThan(0);
+      }
+    }
   });
 });

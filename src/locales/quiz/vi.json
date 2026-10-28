@@ -30,6 +30,8 @@
     "score": "Điểm",
     "top3": "Ba nhóm cao nhất của bạn",
     "runnerUp": "Cũng nổi bật",
+    "ruledOut": "Bị loại theo câu trả lời của bạn",
+    "tiedWith": "Đồng hạng với",
     "focus": "Khía cạnh cần cải thiện",
     "crisisTitle": "Nếu bạn đang nghĩ đến việc làm hại bản thân",
     "crisisBody": "Bạn xứng đáng được hỗ trợ ngay lúc này. Nếu bạn có thể hành động theo những suy nghĩ đó, hãy gọi số cấp cứu tại địa phương hoặc đến phòng cấp cứu gần nhất. Bạn cũng có thể liên hệ đường dây hỗ trợ khủng hoảng miễn phí và bảo mật: findahelpline.com liệt kê các đường dây ở mọi quốc gia.",
@@ -37,19 +39,21 @@
   },
   "hub": {
     "title": "Trắc nghiệm tính cách miễn phí: MBTI, Big Five, tình yêu — cv.cm",
-    "description": "Trắc nghiệm tính cách và tâm lý miễn phí: MBTI 16 nhóm, Big Five, Enneagram, ngôn ngữ tình yêu, hướng nghiệp Holland, test lo âu, trầm cảm. Không cần đăng ký.",
+    "description": "Trắc nghiệm tính cách, tâm lý miễn phí: MBTI 16 nhóm, Big Five, hướng nội hướng ngoại, Enneagram, ngôn ngữ tình yêu, kiểu gắn bó, xử lý mâu thuẫn, hướng nghiệp, phong cách làm việc, tiền bạc, nhịp sinh học, thú cưng, khuôn mặt, lòng tự trọng, lo âu, trầm cảm, cùng các trắc nghiệm fan game và anime: Pokémon, Genshin Impact, Sonic, D&D, Naruto, Kimetsu no Yaiba, Jujutsu Kaisen, Avatar và kiểu nhân vật anime. Không cần đăng ký, câu trả lời chỉ nằm trong trình duyệt.",
     "h1": "Trắc nghiệm tính cách và tâm lý",
-    "lede": "Mười ba bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
+    "lede": "Hai mươi sáu bài trắc nghiệm miễn phí, từ 16 nhóm tính cách và Big Five đến ngôn ngữ tình yêu, sở thích nghề nghiệp, trắc nghiệm fan Pokémon, Naruto và bài tự kiểm tra sức khỏe tinh thần nhanh. Không cần đăng ký, không cần email. Câu trả lời được chấm điểm trong trình duyệt và không bao giờ được tải lên.",
     "groups": {
       "personality": "Tính cách",
       "love": "Tình yêu và các mối quan hệ",
       "career": "Nghề nghiệp và tiền bạc",
       "fun": "Cho vui",
-      "wellbeing": "Tự kiểm tra sức khỏe tinh thần"
+      "wellbeing": "Tự kiểm tra sức khỏe tinh thần",
+      "games": "Game",
+      "anime": "Anime và hoạt hình"
     },
     "about": [
       "Mỗi bài trắc nghiệm hiển thị toàn bộ câu hỏi trên một trang. Trả lời xong, nhấn nút, kết quả sẽ hiện ngay bên dưới kèm lời giải thích ngắn và biểu đồ điểm số.",
-      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết."
+      "Các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (Rosenberg, GAD-7, PHQ-9). Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game và anime là trắc nghiệm fan không chính thức, chỉ để cho vui."
     ],
     "faq": [
       { "q": "Các bài trắc nghiệm này có miễn phí không?", "a": "Có. Mọi bài đều miễn phí, không cần đăng ký, không cần email và không phải trả tiền để xem kết quả." },
@@ -232,6 +236,72 @@
           "low": "Bạn ổn định về cảm xúc và điềm tĩnh trước áp lực. Thất bại hiếm khi làm bạn chao đảo lâu.",
           "mid": "Bạn cảm thấy căng thẳng và lo lắng ở mức bình thường và thường hồi phục trong thời gian hợp lý.",
           "high": "Bạn cảm nhận cảm xúc rất mạnh và có thể dễ lo âu, căng thẳng hoặc tâm trạng đi xuống. Nghỉ ngơi đều đặn, vận động và tâm sự với người khác sẽ giúp ích."
+        }
+      }
+    },
+    "introvert": {
+      "title": "Trắc nghiệm hướng nội hay hướng ngoại miễn phí (IPIP, 20 câu) — cv.cm",
+      "description": "Bạn hướng nội, hướng trung hay hướng ngoại? Đánh giá 20 câu IPIP công khai, nhận điểm trên thang 80 kèm lời khuyên thiết thực. Miễn phí, không cần đăng ký.",
+      "h1": "Trắc nghiệm hướng nội hay hướng ngoại",
+      "scoreLabel": "Điểm hướng ngoại",
+      "lede": "Xem bạn nằm ở đâu giữa hướng nội và hướng ngoại. 20 câu ngắn từ một bảng hỏi nghiên cứu, điểm số trên thang 80 và ý nghĩa của nó với năng lượng, công việc và tình bạn của bạn.",
+      "about": [
+        "Hướng ngoại là một trong năm đặc điểm Big Five. Người hướng ngoại cao có thêm năng lượng khi ở cạnh người khác, nói chuyện dễ dàng và thích được chú ý. Người hướng ngoại thấp, tức người hướng nội, thích nhóm nhỏ và thời gian yên tĩnh, suy nghĩ trước khi nói. Phần lớn mọi người nằm đâu đó ở giữa: người hướng trung.",
+        "20 câu này là thang đo Hướng ngoại trong bộ 100 câu Big-Five Factor Markers từ Kho câu hỏi tính cách quốc tế (IPIP), do Lewis Goldberg phát triển và công bố vào phạm vi công cộng. Một nửa số câu được tính điểm đảo. Các ngưỡng nằm ở 40% và 60% của thang đo (dưới 40% là hướng nội, 40–60% là hướng trung, trên 60% là hướng ngoại), không phải chuẩn so với mẫu dân số.",
+        "Hướng nội không phải là nhút nhát. Nhút nhát là nỗi lo bị người khác đánh giá; hướng nội là chuyện bạn lấy năng lượng từ đâu. Người hướng nội vẫn có thể tự tin và giỏi giao tiếp, còn người hướng ngoại vẫn có thể nhút nhát."
+      ],
+      "faq": [
+        {
+          "q": "Người hướng trung là gì?",
+          "a": "Là người nằm ở giữa thang đo: hòa đồng trong một số hoàn cảnh, nhưng cũng vui vẻ khi ở một mình trong những lúc khác. Phần lớn mọi người là người hướng trung."
+        },
+        {
+          "q": "Hướng ngoại có tốt hơn không?",
+          "a": "Không. Người hướng ngoại thường thấy việc kết nối và làm việc nhóm dễ hơn; người hướng nội thường giỏi công việc cần tập trung sâu và lắng nghe trực tiếp từng người. Cả hai đều có thể học kỹ năng của nhau."
+        },
+        {
+          "q": "Các câu hỏi lấy từ đâu?",
+          "a": "Từ bộ 100 câu IPIP Big-Five Factor Markers của Lewis Goldberg, một kho câu hỏi thuộc phạm vi công cộng được dùng rộng rãi trong nghiên cứu. Bài này dùng 20 câu đo Hướng ngoại."
+        },
+        {
+          "q": "Kết quả của tôi có thể thay đổi không?",
+          "a": "Mức hướng ngoại cơ bản khá ổn định ở tuổi trưởng thành, nhưng vẫn dịch chuyển chút ít theo tuổi tác, vai trò và tâm trạng. Hãy làm lại sau vài tháng và so sánh."
+        }
+      ],
+      "items": [
+        "Tôi là tâm điểm của các bữa tiệc.",
+        "Tôi không nói nhiều.",
+        "Tôi cảm thấy thoải mái khi ở gần mọi người.",
+        "Tôi thích đứng ở phía sau.",
+        "Tôi là người mở lời bắt chuyện.",
+        "Tôi ít có điều gì để nói.",
+        "Tôi trò chuyện với nhiều người khác nhau trong các bữa tiệc.",
+        "Tôi không thích thu hút sự chú ý về mình.",
+        "Tôi không ngại trở thành trung tâm của sự chú ý.",
+        "Tôi ít nói khi ở cạnh người lạ.",
+        "Tôi dễ kết bạn.",
+        "Tôi thấy khó chủ động tiếp cận người khác.",
+        "Tôi hay đứng ra dẫn dắt.",
+        "Tôi thường thấy không thoải mái khi ở cạnh người khác.",
+        "Tôi biết cách thu hút mọi người.",
+        "Tôi hay giữ kín cảm xúc trong lòng.",
+        "Tôi thấy dễ chịu khi ở cùng mọi người.",
+        "Tôi là người rất kín đáo.",
+        "Tôi giỏi ứng xử trong các tình huống giao tiếp.",
+        "Tôi chờ người khác dẫn dắt."
+      ],
+      "results": {
+        "introvert": {
+          "name": "Hướng nội",
+          "body": "Bạn nạp lại năng lượng khi ở một mình hoặc với một, hai người thân thiết, và những buổi giao tiếp kéo dài khiến bạn kiệt sức. Điểm mạnh: tập trung, biết lắng nghe và suy nghĩ trước khi nói. Lời khuyên: hãy lên lịch thời gian yên tĩnh sau những ngày bận rộn thay vì thấy áy náy; khi đi sự kiện, đặt mục tiêu (hai cuộc trò chuyện thật sự) rồi về khi đã xong; đề nghị chia sẻ ý tưởng bằng văn bản hoặc nói chuyện riêng, nơi bạn tỏa sáng."
+        },
+        "ambivert": {
+          "name": "Hướng trung",
+          "body": "Bạn nằm ở giữa: hòa đồng khi hoàn cảnh phù hợp, vui vẻ một mình khi không. Sự linh hoạt đó là điểm mạnh: bạn biết đọc không khí và chuyển chế độ. Lời khuyên: để ý tình huống nào tiếp thêm năng lượng và tình huống nào rút cạn năng lượng của bạn, rồi sắp xếp tuần sao cho không loại nào dồn lại quá lâu."
+        },
+        "extrovert": {
+          "name": "Hướng ngoại",
+          "body": "Bạn có thêm năng lượng từ mọi người, thích nói ra để suy nghĩ và ưa nhịp sống sôi động. Điểm mạnh: xây dựng mạng lưới quan hệ, mở lời bắt chuyện và khuấy động không khí nhóm. Lời khuyên: trong cuộc họp, chừa chỗ cho người trầm tính lên tiếng; khi cần tập trung sâu, hẹn những buổi làm việc ngắn có bạn bè hoặc đồng nghiệp ngồi gần; tự hỏi lại mình trước khi nhận lời mọi lời mời."
         }
       }
     },
@@ -464,6 +534,85 @@
         "future": "Mỗi người viết ra mình muốn ở đâu sau năm năm (nhà cửa, con cái, sự nghiệp), rồi so sánh và tìm điểm chung."
       }
     },
+    "conflict-style": {
+      "title": "Trắc nghiệm phong cách xử lý mâu thuẫn: bạn ứng xử thế nào khi bất đồng? — cv.cm",
+      "description": "Trắc nghiệm xử lý mâu thuẫn miễn phí: 20 câu cho biết bạn thiên về cạnh tranh, hợp tác, thỏa hiệp, né tránh hay nhượng bộ, và khi nào mỗi kiểu có lợi, có hại.",
+      "h1": "Trắc nghiệm phong cách xử lý mâu thuẫn",
+      "lede": "Ai cũng có một phản ứng quen thuộc khi bất đồng nổ ra. Hãy tìm phản ứng của bạn trong năm phong cách xử lý mâu thuẫn kinh điển, xem bạn dùng các kiểu còn lại nhiều đến đâu và học cách đổi kiểu đúng lúc.",
+      "about": [
+        "Các nhà nghiên cứu mô tả năm cách xử lý mâu thuẫn dựa trên hai câu hỏi: bạn đòi hỏi nhu cầu của mình mạnh đến đâu (tính quyết đoán) và bạn quan tâm đến nhu cầu của người kia nhiều đến đâu (tính hợp tác). Cạnh tranh cao ở chiều thứ nhất, nhượng bộ cao ở chiều thứ hai, hợp tác cao ở cả hai, né tránh thấp ở cả hai, còn thỏa hiệp nằm ở giữa.",
+        "Các câu trong trang này do cv.cm biên soạn, không lấy từ bất kỳ công cụ thương mại nào. Kiểu nào cũng hữu ích vào đúng thời điểm. Mục đích không phải là tìm ra kiểu “đúng”, mà là nhận ra thói quen của mình và chủ động lựa chọn."
+      ],
+      "faq": [
+        {
+          "q": "Năm phong cách xử lý mâu thuẫn là gì?",
+          "a": "Cạnh tranh (giữ vững lập trường), hợp tác (cùng giải quyết để cả hai cùng thắng), thỏa hiệp (mỗi bên nhường một bước), né tránh (lùi lại) và nhượng bộ (để người kia được như ý)."
+        },
+        {
+          "q": "Phong cách nào là tốt nhất?",
+          "a": "Không kiểu nào tốt trong mọi trường hợp. Hợp tác hợp với vấn đề quan trọng và có thời gian bàn bạc; cạnh tranh hợp với tình huống khẩn cấp; thỏa hiệp hợp khi bế tắc; né tránh hợp với chuyện nhỏ hoặc lúc đang nóng giận; nhượng bộ hợp khi vấn đề quan trọng với bên kia hơn."
+        },
+        {
+          "q": "Đây có phải là công cụ Thomas-Kilmann không?",
+          "a": "Không. Bài này dùng cùng mô hình năm phong cách được giảng dạy rộng rãi, nhưng câu hỏi và kết quả do cv.cm tự biên soạn, và điểm số không so sánh được với bất kỳ bài trắc nghiệm thương mại nào."
+        },
+        {
+          "q": "Tôi có thể làm cùng người yêu hoặc đồng đội không?",
+          "a": "Có. Hãy làm riêng, so sánh biểu đồ và nói chuyện về kiểu mà mỗi người hay quay về khi căng thẳng. Biết phản ứng quen thuộc của người kia giúp bạn bớt để bụng hơn."
+        }
+      ],
+      "items": [
+        "Khi bất đồng, tôi kiên quyết bảo vệ quan điểm cho đến khi người kia nhìn nhận theo cách của tôi.",
+        "Tôi cố gắng để mọi người nói hết những băn khoăn của mình trước khi quyết định bất cứ điều gì.",
+        "Tôi sẵn lòng mỗi bên nhường một nửa để mọi chuyện tiếp tục.",
+        "Tôi thà bỏ qua một chủ đề nhạy cảm còn hơn có nguy cơ cãi nhau.",
+        "Tôi thường nhường nếu vấn đề quan trọng với người kia hơn với tôi.",
+        "Khi chắc mình đúng, tôi không lùi bước chỉ để giữ hòa khí.",
+        "Tôi tìm giải pháp thực sự ổn cho cả hai, dù mất nhiều thời gian hơn.",
+        "Một sự trao đổi công bằng, khi mỗi bên đều nhường một phần, với tôi là kết quả tốt.",
+        "Khi mâu thuẫn bắt đầu, tôi thường lảng sang chuyện khác hoặc rời khỏi phòng.",
+        "Giữ cho mối quan hệ êm đẹp quan trọng với tôi hơn là thắng lý.",
+        "Với tôi, tranh luận là để giành phần thắng.",
+        "Tôi đặt nhiều câu hỏi để hiểu người kia thực sự cần gì.",
+        "Khi bế tắc, tôi đề nghị mỗi bên nhường một nửa.",
+        "Tôi trì hoãn những cuộc nói chuyện khó, mong mọi chuyện tự lắng xuống.",
+        "Tôi thường đặt mong muốn của người khác lên trên mong muốn của mình để không làm họ phật lòng.",
+        "Nếu một quyết định quan trọng với tôi, tôi sẽ đấu tranh hết sức cho nó, dù có gây chút căng thẳng.",
+        "Tôi thà cùng nhau gỡ rối bất đồng còn hơn giải quyết cho nhanh.",
+        "Tôi sẽ bớt một phần mong muốn của mình nếu người kia cũng làm vậy.",
+        "Nhiều bất đồng không đáng để tốn sức, nên tôi bỏ qua.",
+        "Tôi dễ dàng nói “Thôi được, làm theo ý bạn đi.”"
+      ],
+      "dims": {
+        "compete": "Cạnh tranh",
+        "collab": "Hợp tác",
+        "compromise": "Thỏa hiệp",
+        "avoid": "Né tránh",
+        "accommodate": "Nhượng bộ"
+      },
+      "results": {
+        "compete": {
+          "name": "Cạnh tranh",
+          "body": "Bạn bảo vệ lập trường của mình và không gục ngã trước áp lực. Có lợi khi: gặp tình huống khẩn cấp, cần ra quyết định khó nghe nhưng cần thiết, cần tự bảo vệ để không bị lợi dụng. Có hại khi: nó trở thành cách duy nhất bạn dùng, mọi người sẽ thôi chia sẻ với bạn và âm thầm bất mãn với các quyết định. Hãy thử: trước khi tranh luận, hỏi một câu thật lòng về điều người kia cần, và chỉ dồn toàn lực cho những vấn đề thực sự quan trọng."
+        },
+        "collab": {
+          "name": "Hợp tác",
+          "body": "Bạn muốn một giải pháp thực sự ổn cho cả hai bên, và bạn đào sâu vào lợi ích thật đằng sau mỗi lập trường. Có lợi khi: ra quyết định quan trọng, giữ quan hệ lâu dài, giải những vấn đề có chỗ cho ý tưởng sáng tạo. Có hại khi: cách này tốn thời gian và công sức, mà không phải chuyện nhỏ nào cũng đáng một buổi họp bàn. Hãy thử: xác định ngay từ đầu chủ đề nào đáng làm đến nơi đến chốn; với chuyện nhỏ, một thỏa hiệp nhanh là đủ."
+        },
+        "compromise": {
+          "name": "Thỏa hiệp",
+          "body": "Bạn tìm điểm giữa công bằng để mọi người cùng bước tiếp. Có lợi khi: bế tắc, hai bên ngang quyền nhau, bị áp lực thời gian. Có hại khi: chia đôi quá nhanh có thể khiến cả hai chỉ hài lòng một nửa và bỏ lỡ một giải pháp tốt hơn. Hãy thử: trước khi đề nghị chia đôi, hãy hỏi “Điều gì quan trọng nhất với bạn ở đây?”; có thể bạn sẽ tìm ra cách trao đổi để mỗi bên đều có được thứ mình coi trọng nhất."
+        },
+        "avoid": {
+          "name": "Né tránh",
+          "body": "Bạn lùi lại trước mâu thuẫn, và bạn giỏi không để chuyện nhỏ bị đẩy lên to. Có lợi khi: gặp chuyện vặt, lúc nóng giận cần thời gian hạ nhiệt, những cuộc chiến không thể thắng hoặc không cần thắng. Có hại khi: vấn đề quan trọng lớn dần trong lúc chờ đợi, và người khác có thể hiểu sự im lặng là đồng ý. Hãy thử: khi né tránh, hẹn thời điểm quay lại (“Tối mai mình nói chuyện được không?”), và ghi ra điều quan trọng nhất bạn cần nói."
+        },
+        "accommodate": {
+          "name": "Nhượng bộ",
+          "body": "Bạn bảo vệ mối quan hệ và để người khác được như ý. Có lợi khi: vấn đề quan trọng với họ hơn, khi bạn nhận ra mình sai, khi cần vun đắp thiện cảm. Có hại khi: nếu đó là phản xạ mặc định, nhu cầu của chính bạn sẽ biến mất và bức bối tích tụ dần. Hãy thử: trước khi đồng ý, chấm xem vấn đề quan trọng với bạn bao nhiêu trên thang 1 đến 10; trên 6 thì hãy nói ra điều bạn muốn, nhẹ nhàng và rõ ràng."
+        }
+      }
+    },
     "career": {
       "title": "Trắc nghiệm hướng nghiệp Holland (RIASEC) miễn phí — cv.cm",
       "description": "Trắc nghiệm hướng nghiệp Holland miễn phí theo mô hình RIASEC. Đánh giá 36 hoạt động để nhận mã Holland 3 chữ cái và gợi ý nghề phù hợp. Không cần đăng ký.",
@@ -535,6 +684,84 @@
         "C": { "name": "Nghiệp vụ (người tổ chức)", "body": "Bạn thích sự trật tự, chính xác và quy trình rõ ràng với dữ liệu. Nghề nên khám phá: kế toán, kiểm toán viên, nhân viên hành chính, điều phối viên logistics, nhân viên ngân hàng, quản trị cơ sở dữ liệu." }
       }
     },
+    "work-style": {
+      "title": "Trắc nghiệm phong cách làm việc: từ xa, kết hợp hay văn phòng? Một mình hay theo nhóm? — cv.cm",
+      "description": "Trắc nghiệm phong cách làm việc miễn phí: 20 câu cho biết bạn hợp làm từ xa, kết hợp hay ở văn phòng, cần bao nhiêu teamwork, khuôn khổ và đa dạng, kèm lời khuyên.",
+      "h1": "Trắc nghiệm phong cách làm việc",
+      "lede": "Bạn làm việc tốt nhất ở đâu và theo cách nào? Chấm điểm bốn xu hướng: ở nhà hay văn phòng, một mình hay theo nhóm, khuôn khổ hay tự do, tập trung hay đa dạng, kèm một lời khuyên cho mỗi xu hướng.",
+      "about": [
+        "Sự hài lòng trong công việc không chỉ phụ thuộc vào việc bạn làm gì mà còn vào cách công việc được tổ chức. Bài trắc nghiệm này do cv.cm biên soạn, đo bốn xu hướng hằng ngày: bạn thích làm việc ở đâu, thích làm cùng người khác đến mức nào, cần bao nhiêu khuôn khổ, và bạn thích sự đa dạng hay những khoảng tập trung dài.",
+        "Mỗi điểm số chạy từ 0 đến 100. Dưới 40 nghiêng về một phía, trên 60 nghiêng về phía kia, còn ở giữa là sự pha trộn. Hãy dùng kết quả để đặt câu hỏi tốt hơn khi phỏng vấn xin việc (“Mỗi tuần lên văn phòng mấy ngày?”, “Thứ tự ưu tiên được đặt ra thế nào?”) và để điều chỉnh công việc hiện tại."
+      ],
+      "faq": [
+        {
+          "q": "Bài này có cho tôi biết nên chọn nghề nào không?",
+          "a": "Không. Bài này mô tả điều kiện làm việc, không phải lĩnh vực. Để chọn lĩnh vực, hãy làm trắc nghiệm hướng nghiệp Holland, rồi dùng bài này để chọn giữa những công việc tương tự nhau."
+        },
+        {
+          "q": "Điểm làm từ xa của tôi ở mức giữa. Điều đó có nghĩa là gì?",
+          "a": "Có lẽ bạn sẽ thấy hài lòng nhất với mô hình kết hợp: ngày ở văn phòng dành cho họp hành và gặp gỡ, ngày ở nhà dành cho công việc cần tập trung."
+        },
+        {
+          "q": "Nếu công việc hiện tại không khớp với kết quả thì sao?",
+          "a": "Những thay đổi nhỏ cũng có ích: chặn thời gian tập trung trên lịch, xin một ngày làm từ xa, thống nhất thứ tự ưu tiên rõ hơn với quản lý, hoặc đổi việc với đồng đội thích phần việc bạn không thích."
+        },
+        {
+          "q": "Có phong cách làm việc nào tốt hơn không?",
+          "a": "Không. Một đội cần cả người thích khuôn khổ lẫn người thích tự do, cả người làm việc độc lập lẫn người kết nối. Điều quan trọng là sự phù hợp."
+        }
+      ],
+      "items": [
+        "Tôi làm được nhiều việc ở nhà hơn ở văn phòng.",
+        "Tôi làm việc tốt nhất khi có thể trao đổi ý tưởng qua lại với người khác.",
+        "Tôi thích biết chính xác mình cần làm gì và hạn chót là khi nào.",
+        "Một ngày đầy những việc khác nhau tiếp thêm năng lượng cho tôi hơn là một việc kéo dài.",
+        "Tôi cần không khí nhộn nhịp của văn phòng để có động lực.",
+        "Tôi thích tự mình đảm nhận một phần việc từ đầu đến cuối.",
+        "Tôi làm việc tốt nhất khi được tự quyết định làm thế nào và khi nào.",
+        "Tôi thấy vui nhất khi được ở yên với một việc hàng giờ liền mà không phải chuyển đổi.",
+        "Với tôi, thời gian đi lại đến chỗ làm là lãng phí.",
+        "Các cuộc họp và buổi cập nhật định kỳ giúp ích cho tôi nhiều hơn là làm tôi chậm lại.",
+        "Quy trình và nếp làm việc rõ ràng giúp tôi bớt căng thẳng trong công việc.",
+        "Tôi thích nhịp độ nhanh với những vấn đề mới mỗi ngày.",
+        "Tôi học được rất nhiều chỉ nhờ ở gần đồng nghiệp và nghe họ làm việc ra sao.",
+        "Những nhóm chat và cuộc họp liên miên khiến tôi kiệt sức.",
+        "Quy định cứng nhắc và lịch cố định khiến tôi bứt rứt.",
+        "Bị ngắt quãng thường xuyên làm hỏng những phần việc tốt nhất của tôi.",
+        "Tôi có thể giữ nếp làm việc đều đặn ở nhà mà không cần ai kiểm tra.",
+        "Thành công chung có ý nghĩa với tôi hơn thành công cá nhân.",
+        "Tôi thích có một người quản lý đặt ra thứ tự ưu tiên rõ ràng cho mình.",
+        "Tôi nhanh chán khi công việc trở nên lặp đi lặp lại."
+      ],
+      "dims": {
+        "remote": "Làm việc tại nhà",
+        "team": "Làm việc nhóm",
+        "structure": "Khuôn khổ",
+        "variety": "Đa dạng"
+      },
+      "levels": {
+        "remote": {
+          "low": "Văn phòng: bạn có năng lượng, sự tập trung và học hỏi nhờ ở gần đồng nghiệp. Hãy tìm vị trí có văn hóa văn phòng thực sự, và nếu làm từ xa, hãy dùng không gian làm việc chung hoặc lên văn phòng định kỳ để không bị cô lập.",
+          "mid": "Kết hợp: ngày ở văn phòng dành cho họp hành và gặp gỡ, ngày ở nhà dành cho việc cần tập trung. Hãy hỏi nhà tuyển dụng mô hình kết hợp vận hành thực tế ra sao, và lên kế hoạch việc nào làm vào ngày nào.",
+          "high": "Từ xa: bạn làm việc tốt theo lịch của riêng mình và chẳng nhớ gì cảnh đi lại. Hãy tìm những đội ưu tiên làm từ xa và giao tiếp bằng văn bản tốt, đồng thời giữ giờ bắt đầu và kết thúc cố định để công việc không chiếm trọn cả ngày."
+        },
+        "team": {
+          "low": "Độc lập: bạn thích tự đảm nhận công việc từ đầu đến cuối. Những vai trò như chuyên gia, chuyên viên phân tích, người viết hay lập trình viên với trách nhiệm rõ ràng hợp với bạn. Hãy thống nhất vài buổi cập nhật cố định để vẫn nắm tình hình mà không phải họp liên tục.",
+          "mid": "Pha trộn: bạn thích có thời gian một mình để làm việc và thời gian cùng nhau để lên kế hoạch và rà soát. Hãy gom các cuộc họp vào một khoảng trong ngày và dành phần còn lại để tập trung.",
+          "high": "Theo nhóm: bạn suy nghĩ tốt nhất khi nói ra và thích mục tiêu chung. Hãy tìm vai trò cần cộng tác như làm dự án, bán hàng, giảng dạy hay đội sản phẩm; với việc phải làm một mình, hãy làm theo cặp hoặc cập nhật ngắn để giữ động lực."
+        },
+        "structure": {
+          "low": "Tự do: bạn muốn tự quyết định làm thế nào và khi nào. Startup, làm tự do và những vai trò được đánh giá theo kết quả hợp với bạn. Hãy tự đặt hạn chót và chia sẻ chúng, để tự do không biến thành căng thẳng phút chót.",
+          "mid": "Cân bằng: bạn thích mục tiêu rõ ràng nhưng muốn có tiếng nói trong cách đạt được. Hãy hỏi quản lý về “làm gì” và “hạn khi nào”, rồi tự đề xuất “làm thế nào”.",
+          "high": "Khuôn khổ: kỳ vọng, quy trình và thứ tự ưu tiên rõ ràng giúp bạn yên tâm và làm việc xuất sắc. Tổ chức lớn và các vai trò vận hành theo quy trình hợp với bạn; khi mọi thứ còn mơ hồ, hãy sớm xin một danh sách kiểm tra hoặc tiêu chí thế nào là hoàn thành."
+        },
+        "variety": {
+          "low": "Tập trung sâu: bạn làm tốt nhất trong những khoảng dài không bị ngắt quãng. Hãy đặt lịch các khối tập trung hai đến ba tiếng, tắt thông báo, và tìm vai trò coi trọng chiều sâu như nghiên cứu, kỹ thuật hay biên tập.",
+          "mid": "Cân bằng: một chút đa dạng giúp bạn luôn tươi mới, nhưng chuyển việc quá nhiều sẽ làm bạn mệt. Hãy gom các việc giống nhau lại và cho mỗi ngày một trọng tâm chính.",
+          "high": "Đa dạng: vấn đề mới và nhịp độ nhanh tiếp thêm năng lượng cho bạn, còn sự lặp lại khiến bạn chán. Các vai trò vận hành, làm việc với khách hàng, tổ chức sự kiện hay startup rất hợp; hãy giữ một danh sách việc đơn giản để không sót đầu việc nào."
+        }
+      }
+    },
     "money": {
       "title": "Trắc nghiệm tính cách tài chính: bạn thuộc kiểu nào? — cv.cm",
       "description": "Trắc nghiệm tính cách tài chính miễn phí. Đánh giá 20 câu để biết bạn là người tiết kiệm, chi tiêu, đầu tư, né tránh hay cho đi, kèm điểm mạnh và lời khuyên.",
@@ -585,6 +812,365 @@
         "investor": { "name": "Nhà đầu tư", "body": "Điểm mạnh: bạn nhìn ra cơ hội và để tiền làm việc cho mình. Điểm mù: chạy theo thắng lớn có thể dồn quá nhiều rủi ro vào một chỗ. Lời khuyên: lập quỹ khẩn cấp trước, và đừng bao giờ dồn vào một canh bạc nhiều hơn số tiền bạn chấp nhận mất." },
         "avoider": { "name": "Người né tránh", "body": "Điểm mạnh: tiền không chi phối cuộc sống của bạn. Điểm mù: hóa đơn chưa mở, phí trả chậm và cơ hội bị bỏ lỡ vì nhìn vào khiến bạn căng thẳng. Lời khuyên: hẹn một buổi 15 phút với tiền bạc mỗi tuần để kiểm tra số dư và thanh toán hóa đơn; mọi thứ sẽ dễ dần rất nhanh." },
         "giver": { "name": "Người cho đi", "body": "Điểm mạnh: sự hào phóng và các mối quan hệ bền chặt. Điểm mù: cho đi cả những gì bạn cần cho sự an toàn của chính mình. Lời khuyên: định trước một ngân sách cho đi, để bạn có thể hào phóng mà không đặt tương lai của mình vào rủi ro." }
+      }
+    },
+    "chronotype": {
+      "title": "Trắc nghiệm nhịp sinh học: bạn là người dậy sớm hay cú đêm? — cv.cm",
+      "description": "Trắc nghiệm nhịp sinh học miễn phí: 14 câu về nhịp ngủ và năng lượng để biết bạn là người dậy sớm, cú đêm hay ở giữa, kèm lời khuyên sắp xếp lịch.",
+      "h1": "Trắc nghiệm nhịp sinh học: người dậy sớm hay cú đêm?",
+      "lede": "Nhịp sinh học (chronotype) là thời gian biểu tự nhiên của đồng hồ cơ thể: khi nào bạn buồn ngủ, khi nào thức dậy và khi nào đầu óc minh mẫn nhất. Hãy trả lời 14 câu về cách bạn sống khi không có ai đặt báo thức.",
+      "about": [
+        "Nhịp sinh học một phần do di truyền và thay đổi theo tuổi: thanh thiếu niên và người trẻ thường ngủ dậy muộn, còn phần lớn mọi người chuyển dần sang sớm hơn sau tuổi 25. Người dậy sớm minh mẫn nhất vào buổi sáng; cú đêm vào guồng lúc chiều tối; phần lớn mọi người nằm đâu đó ở giữa.",
+        "Các câu hỏi ở đây do cv.cm biên soạn, không phải bảng hỏi lâm sàng. Kết quả là để tự suy ngẫm, không phải chẩn đoán. Nếu bạn thường khó ngủ, ngủ đủ giấc vẫn dậy mệt rã rời, hoặc rất buồn ngủ vào ban ngày, hãy hỏi ý kiến bác sĩ: đó có thể là dấu hiệu của vấn đề giấc ngủ, chẳng liên quan gì đến việc bạn là cú đêm."
+      ],
+      "faq": [
+        {
+          "q": "Cú đêm có thể trở thành người dậy sớm không?",
+          "a": "Được một phần. Khuynh hướng gốc vẫn còn, nhưng bạn có thể dời lịch sớm hơn bằng thói quen đều đặn: ra chỗ sáng ngay sau khi dậy, để đèn mờ vào buổi tối, và dậy cùng một giờ mỗi ngày, mỗi lần dời sớm 15 phút."
+        },
+        {
+          "q": "Có nhịp sinh học nào tốt cho sức khỏe hơn không?",
+          "a": "Không nhịp sinh học nào tự nó có hại. Vấn đề đến từ sự lệch pha: một cú đêm buộc phải bắt đầu ngày quá sớm sẽ tích nợ ngủ. Điều quan trọng nhất là cố gắng khớp lịch với đồng hồ cơ thể khi có thể, và giữ lịch đều đặn."
+        },
+        {
+          "q": "Sao lại hỏi về cuối tuần?",
+          "a": "Ngày nghỉ ngủ muộn hơn hẳn ngày đi làm, đôi khi gọi là lệch múi giờ xã hội (social jet lag), là dấu hiệu phổ biến cho thấy đồng hồ tự nhiên của bạn chạy muộn hơn lịch sinh hoạt."
+        },
+        {
+          "q": "Đây có phải bài kiểm tra rối loạn giấc ngủ không?",
+          "a": "Không. Bài này mô tả nhịp tự nhiên của bạn. Nó không thể phát hiện mất ngủ, ngưng thở khi ngủ hay các bệnh lý khác; hãy đi khám nếu vấn đề giấc ngủ ảnh hưởng đến cuộc sống hằng ngày."
+        }
+      ],
+      "items": [
+        {
+          "q": "Không báo thức, không kế hoạch gì, bạn sẽ tự nhiên thức dậy lúc mấy giờ?",
+          "options": [
+            "Trước 6:30",
+            "Từ 6:30 đến 8:00",
+            "Từ 8:00 đến 9:30",
+            "Sau 9:30"
+          ]
+        },
+        {
+          "q": "Vào một buổi tối rảnh rỗi, hôm sau không có việc gì, bạn bắt đầu buồn ngủ lúc nào?",
+          "options": [
+            "Trước 22:00",
+            "Từ 22:00 đến 23:30",
+            "Từ 23:30 đến 1:00",
+            "Sau 1:00"
+          ]
+        },
+        {
+          "q": "Nửa tiếng đầu sau khi thức dậy, bạn thấy thế nào?",
+          "options": [
+            "Tỉnh táo, sẵn sàng bắt đầu",
+            "Ổn sau vài phút",
+            "Lơ mơ một lúc khá lâu",
+            "Như người mất hồn đến tận gần trưa"
+          ]
+        },
+        {
+          "q": "Bạn làm việc tập trung tốt nhất vào lúc nào?",
+          "options": [
+            "Sáng sớm",
+            "Cuối buổi sáng",
+            "Buổi chiều",
+            "Buổi tối hoặc đêm"
+          ]
+        },
+        {
+          "q": "Một người bạn rủ bạn đi chạy bộ lúc 7:00. Bạn nghĩ…",
+          "options": [
+            "Tuyệt, đúng giờ mình thích",
+            "Được, nếu tối đó ngủ sớm",
+            "Sẽ đi, nhưng sẽ vất vả",
+            "Không đời nào"
+          ]
+        },
+        {
+          "q": "Một buổi chơi game hay bữa tiệc bắt đầu lúc 23:00. Bạn…",
+          "options": [
+            "Đã đuối sẵn rồi",
+            "Trụ được chừng một tiếng",
+            "Vẫn ổn",
+            "Mới bắt đầu vào guồng"
+          ]
+        },
+        {
+          "q": "Ngày nghỉ bạn dậy muộn hơn ngày đi làm bao lâu?",
+          "options": [
+            "Gần như cùng giờ",
+            "Muộn hơn chưa đến một tiếng",
+            "Muộn hơn một đến hai tiếng",
+            "Muộn hơn trên hai tiếng"
+          ]
+        },
+        {
+          "q": "Bạn được chọn giờ cho một kỳ thi hoặc buổi phỏng vấn quan trọng. Bạn chọn…",
+          "options": [
+            "8:00",
+            "11:00",
+            "15:00",
+            "19:00"
+          ]
+        },
+        {
+          "q": "Bạn có thấy đói bữa sáng không?",
+          "options": [
+            "Đói ngay khi vừa dậy",
+            "Đói trong vòng một tiếng",
+            "Phải đến giữa buổi sáng mới đói",
+            "Tôi thường bỏ bữa sáng"
+          ]
+        },
+        {
+          "q": "Nếu tối nay phải tắt đèn đi ngủ lúc 22:00, bạn sẽ…",
+          "options": [
+            "Ngủ ngay dễ dàng",
+            "Một lúc sau mới ngủ được",
+            "Nằm trằn trọc từ một tiếng trở lên",
+            "Gần như không thể ngủ được"
+          ]
+        },
+        {
+          "q": "Trong một ngày bình thường, năng lượng của bạn thường thấp nhất vào lúc nào?",
+          "options": [
+            "Đầu buổi tối",
+            "Ngay sau bữa trưa",
+            "Cuối buổi sáng",
+            "Ngay khi vừa ngủ dậy"
+          ]
+        },
+        {
+          "q": "Ý tưởng hay nhất của bạn thường đến vào lúc nào?",
+          "options": [
+            "Buổi sáng",
+            "Khoảng giữa trưa",
+            "Buổi tối",
+            "Sau nửa đêm"
+          ]
+        },
+        {
+          "q": "Nếu được hoàn toàn tự chọn giờ làm việc, bạn sẽ làm…",
+          "options": [
+            "Từ 6:00 đến 14:00",
+            "Từ 8:00 đến 16:00",
+            "Từ 10:00 đến 18:00",
+            "Từ 13:00 đến 21:00 hoặc muộn hơn"
+          ]
+        },
+        {
+          "q": "Câu nào mô tả đúng nhất về bạn?",
+          "options": [
+            "Rõ ràng là người của buổi sáng",
+            "Thiên về buổi sáng hơn buổi tối",
+            "Thiên về buổi tối hơn buổi sáng",
+            "Rõ ràng là người của ban đêm"
+          ]
+        }
+      ],
+      "scoreLabel": "Điểm cú đêm (0 = sớm nhất)",
+      "results": {
+        "lark": {
+          "name": "Người dậy sớm",
+          "body": "Đồng hồ cơ thể của bạn chạy sớm: bạn dậy dễ dàng và minh mẫn nhất trước bữa trưa. Lời khuyên: dành việc khó nhất cho khoảng 8:00 đến 12:00, để buổi chiều cho họp hành và việc thường ngày; giữ giờ đi ngủ cả khi đi chơi tối, hoặc ngủ trưa ngắn thay vì ngủ nướng; giảm độ sáng màn hình một tiếng trước khi ngủ để không bị tỉnh giấc lúc 4:00. Người dậy sớm thường thấy các cuộc vui khuya rất mệt: rủ bạn bè đi ăn sáng muộn thay vì đi nhậu cũng chẳng sao."
+        },
+        "between": {
+          "name": "Ở giữa",
+          "body": "Đồng hồ cơ thể của bạn nằm ở giữa, như phần lớn mọi người, nên bạn khá dễ thích nghi với lịch sinh hoạt thông thường. Lời khuyên: dậy cùng một giờ mỗi ngày, kể cả cuối tuần, chênh không quá khoảng một tiếng; đón ánh sáng ban ngày vào buổi sáng; và để ý thời điểm đỉnh cao của mình, thường là cuối buổi sáng, cho những việc đòi hỏi cao. Một nếp sinh hoạt đều đặn quan trọng hơn việc bạn chọn giờ nào."
+        },
+        "owl": {
+          "name": "Cú đêm",
+          "body": "Đồng hồ cơ thể của bạn chạy muộn: buổi sáng thật khó khăn và bạn tỉnh táo hẳn vào buổi tối. Lời khuyên: đón ánh sáng mạnh, tốt nhất là ngoài trời, trong vòng một tiếng sau khi dậy, và để ánh sáng buổi tối dịu, ấm; cuối tuần dậy chênh không quá một tiếng để hạn chế lệch múi giờ xã hội; ngừng caffeine khoảng tám tiếng trước khi ngủ; muốn dời lịch sớm hơn, hãy dời giờ ngủ và giờ dậy 15 phút mỗi vài ngày. Khi có thể, hãy xin xếp họp muộn hơn và dành việc khó cho cuối buổi chiều."
+        }
+      }
+    },
+    "pet": {
+      "title": "Tôi hợp nuôi con gì? Trắc nghiệm chọn thú cưng miễn phí — cv.cm",
+      "description": "Trắc nghiệm chọn thú cưng miễn phí: 14 câu về thời gian, nhà ở, ngân sách, dị ứng và lối sống để biết bạn hợp nuôi mèo, chó, thỏ, cá, chim, hamster hay bò sát.",
+      "h1": "Bạn hợp nuôi thú cưng nào?",
+      "lede": "Chọn đúng thú cưng giúp cuộc sống tốt hơn cho cả bạn và con vật. Hãy trả lời thật lòng 14 câu về thời gian, không gian, tiền bạc và thói quen của bạn, để xem thú cưng nào hợp với cuộc sống hiện tại của bạn.",
+      "about": [
+        "Bài trắc nghiệm này do cv.cm biên soạn, cân nhắc những yếu tố thực tế quyết định một con vật có sống khỏe mạnh bên bạn hay không: thời gian mỗi ngày, diện tích nhà, số giờ vắng nhà, việc đi xa, dị ứng, ngân sách, tiếng ồn, tuổi thọ và những việc chăm sóc bạn chấp nhận được. Đây là điểm khởi đầu, không phải lời bảo đảm: mỗi con vật và mỗi giống rất khác nhau.",
+        "Trước khi đón bất kỳ con vật nào về nhà: tìm hiểu nhu cầu của loài đó, tính đủ mọi chi phí kể cả thú y, xem hợp đồng thuê nhà và quy định địa phương, và nghĩ xem ai sẽ chăm sóc nó khi bạn đi xa. Hãy cân nhắc nhận nuôi từ trạm cứu hộ, và nhận nuôi tạm trước nếu chưa chắc chắn. Nuôi thú cưng là cam kết suốt đời con vật, có khi kéo dài hàng chục năm."
+      ],
+      "faq": [
+        {
+          "q": "Thú cưng nào dễ nuôi nhất cho người mới?",
+          "a": "Không có thú cưng nào không tốn công. Với người bận rộn, mèo hoặc một bể cá được thiết lập đúng cách thường hợp nhất; với gia đình có thời gian và không gian, hãy nuôi chó. Thú nhỏ như hamster và thỏ cần chăm sóc chuyên biệt hơn nhiều người nghĩ."
+        },
+        {
+          "q": "Tôi bị dị ứng. Tôi vẫn nuôi thú cưng được chứ?",
+          "a": "Cá và bò sát không rụng lông hay vảy da, nên là lựa chọn an toàn nhất. Không có giống chó mèo nào thực sự không gây dị ứng; nếu muốn nuôi, hãy dành thời gian ở cạnh chính con vật đó trước khi nhận nuôi và hỏi ý kiến bác sĩ."
+        },
+        {
+          "q": "Nuôi thú cưng tốn bao nhiêu tiền?",
+          "a": "Tùy loài và nơi bạn sống. Ngoài thức ăn, hãy tính cả chi phí trang bị ban đầu (lồng, bể, đèn), tiêm phòng, triệt sản và một quỹ thú y khẩn cấp. Trang bị cho bò sát và bể cá tốn nhiều tiền ban đầu hơn nhiều người nghĩ."
+        },
+        {
+          "q": "Có nên nuôi thú cưng cho con không?",
+          "a": "Chỉ khi có một người lớn sẵn sàng làm người chăm sóc chính. Trẻ có thể phụ giúp, nhưng hamster và thỏ rất mỏng manh và thường không thích bị bế, nên hãy giám sát mọi lần trẻ chơi với chúng."
+        }
+      ],
+      "items": [
+        {
+          "q": "Mỗi ngày bạn có thể dành bao nhiêu thời gian cho thú cưng, kể cả chăm sóc và chơi đùa?",
+          "options": [
+            "Dưới 15 phút",
+            "Từ 15 đến 45 phút",
+            "Một đến hai tiếng",
+            "Từ hai tiếng trở lên, kể cả dắt đi dạo"
+          ]
+        },
+        {
+          "q": "Bạn đang sống ở đâu?",
+          "options": [
+            "Phòng nhỏ, căn hộ studio hoặc ký túc xá",
+            "Căn hộ bình thường",
+            "Căn hộ rộng hoặc nhà riêng",
+            "Nhà có sân vườn"
+          ]
+        },
+        {
+          "q": "Một ngày bình thường, nhà vắng người bao lâu?",
+          "options": [
+            "Từ mười tiếng trở lên",
+            "Một ngày làm việc bình thường, tám chín tiếng",
+            "Gần như cả ngày có người ở nhà"
+          ]
+        },
+        {
+          "q": "Bạn có hay đi xa vài ngày không?",
+          "options": [
+            "Thường xuyên, vì công việc hoặc du lịch",
+            "Vài lần một năm, và có người trông giúp thú cưng",
+            "Hiếm khi"
+          ]
+        },
+        {
+          "q": "Nhà bạn có ai bị dị ứng không?",
+          "options": [
+            "Không, theo những gì tôi biết",
+            "Có, dị ứng lông hoặc vảy da động vật",
+            "Không chắc"
+          ]
+        },
+        {
+          "q": "Mỗi tháng bạn có thể chi bao nhiêu cho thức ăn, đồ dùng và quỹ thú y?",
+          "options": [
+            "Càng ít càng tốt",
+            "Một khoản vừa phải",
+            "Đủ cho tiền khám chữa và thức ăn tốt"
+          ]
+        },
+        {
+          "q": "Bạn muốn tận hưởng thú cưng theo cách nào?",
+          "options": [
+            "Ngắm nhìn nó; việc đó giúp tôi thư thái",
+            "Thỉnh thoảng được âu yếm một người bạn độc lập",
+            "Chơi đùa, huấn luyện và làm mọi thứ cùng nhau mỗi ngày",
+            "Có bạn đồng hành yên lặng và vuốt ve nhẹ nhàng vào buổi tối"
+          ]
+        },
+        {
+          "q": "Bạn thấy thế nào về tiếng ồn?",
+          "options": [
+            "Tôi cần nhà yên tĩnh",
+            "Ban đêm hơi ồn một chút cũng không sao",
+            "Tiếng sủa hay ríu rít không làm phiền tôi"
+          ]
+        },
+        {
+          "q": "Bạn sẵn sàng cam kết bao nhiêu năm?",
+          "options": [
+            "Hai đến ba năm",
+            "Khoảng mười năm",
+            "Từ mười lăm năm trở lên",
+            "Hàng chục năm, thậm chí hơn 30 năm"
+          ]
+        },
+        {
+          "q": "Việc chăm sóc nào nghe đỡ ngại nhất?",
+          "options": [
+            "Dắt đi dạo bất kể thời tiết",
+            "Xúc cát vệ sinh",
+            "Thay nước và kiểm tra nước hằng tuần",
+            "Dọn lồng và thay lót chuồng",
+            "Lo đèn sưởi và thức ăn sống hoặc đông lạnh"
+          ]
+        },
+        {
+          "q": "Ai sống cùng bạn?",
+          "options": [
+            "Chỉ mình tôi",
+            "Người yêu hoặc bạn cùng phòng đã trưởng thành",
+            "Trẻ nhỏ"
+          ]
+        },
+        {
+          "q": "Hợp đồng thuê nhà hoặc nội quy tòa nhà cho phép nuôi gì?",
+          "options": [
+            "Chỉ thú nhỏ nuôi trong lồng hoặc bể",
+            "Mèo và thú nhỏ, không được nuôi chó",
+            "Nuôi gì cũng được, hoặc nhà của tôi"
+          ]
+        },
+        {
+          "q": "Bạn thấy sao về một thú cưng đi theo bạn khắp nơi và luôn muốn được chú ý?",
+          "options": [
+            "Tôi sẽ rất thích",
+            "Thỉnh thoảng thì dễ thương",
+            "Tôi thích thú cưng tự chơi một mình được hơn"
+          ]
+        },
+        {
+          "q": "Buổi tối nào bên thú cưng nghe hấp dẫn nhất?",
+          "options": [
+            "Ngắm một con vật nhỏ xíu, bận rộn đào bới và chạy bánh xe",
+            "Thả rông cho thỏ chạy nhảy khắp nơi hoặc chim ríu rít trò chuyện với mình",
+            "Ngắm thằn lằn sưởi nắng dưới đèn hoặc cá lững lờ bơi",
+            "Cùng nhau đi dạo, rồi cuộn tròn trên ghế sofa"
+          ]
+        }
+      ],
+      "dims": {
+        "cat": "Mèo",
+        "dog": "Chó",
+        "rabbit": "Thỏ",
+        "fish": "Cá",
+        "bird": "Chim",
+        "hamster": "Hamster",
+        "reptile": "Bò sát"
+      },
+      "results": {
+        "cat": {
+          "name": "Mèo",
+          "body": "Mèo hợp với cuộc sống bận rộn và không gian vừa phải: độc lập nhưng tình cảm, ở nhà một mình suốt ngày làm việc vẫn ổn, không cần dắt đi dạo. Cần chuẩn bị: 15 năm trở lên, khay cát sạch sẽ (mỗi mèo một khay, cộng thêm một), trụ cào móng, chơi đùa mỗi ngày, khám thú y hằng năm và triệt sản. Mèo nuôi trong nhà sống lâu hơn; một chuồng lưới ngoài ban công hoặc chỗ ngồi bên cửa sổ giúp chúng không thấy chán."
+        },
+        "dog": {
+          "name": "Chó",
+          "body": "Bạn có thời gian, không gian và năng lượng mà một chú chó cần, và bạn muốn có người bạn đồng hành mỗi ngày. Cần chuẩn bị: 10 đến 15 năm, dắt đi dạo và chơi đùa mỗi ngày, huấn luyện ngay từ ngày đầu, có người ở nhà hoặc thuê người dắt chó vào những ngày dài, và ngân sách lớn hơn cho thức ăn, chải chuốt và thú y. Hãy chọn mức năng động và kích cỡ hợp với cuộc sống của bạn, và ưu tiên tìm ở trạm cứu hộ và các nhóm cứu hộ theo giống trước."
+        },
+        "rabbit": {
+          "name": "Thỏ",
+          "body": "Thỏ hợp với một ngôi nhà yên tĩnh, có diện tích sàn và có người ở nhà phần lớn thời gian. Thỏ sống theo bầy, nên phần lớn vui nhất khi được nuôi thành cặp đã quen nhau, và chúng cần hàng giờ chạy tự do trong một căn phòng đã được bảo vệ khỏi việc gặm phá, chứ không phải chuồng nhỏ. Cần chuẩn bị: 8 đến 12 năm, cỏ khô không giới hạn, bác sĩ thú y am hiểu về thỏ và triệt sản. Thỏ hiếm khi thích bị bế lên; hãy ngồi xuống ngang tầm để chơi với chúng."
+        },
+        "fish": {
+          "name": "Cá",
+          "body": "Bể cá hợp với không gian nhỏ, lịch kín và người bị dị ứng, mà ngắm cá cũng thật sự giúp thư giãn. Đừng nuôi trong bể tròn nhỏ: hãy bắt đầu với bể có lọc và sưởi, dung tích ít nhất 40 lít, và chạy vi sinh vài tuần trước khi thả cá. Cần chuẩn bị: thay một phần nước mỗi tuần, bộ kiểm tra nước, và chọn loài cá hợp với kích thước bể và hợp với nhau."
+        },
+        "bird": {
+          "name": "Chim",
+          "body": "Chim hợp với người hay ở nhà, thích tương tác và không ngại ồn. Vẹt, kể cả loài nhỏ, thông minh, thích giao tiếp và cần hàng giờ ra ngoài lồng, đồ chơi để gặm và được huấn luyện. Cần chuẩn bị: tuổi thọ dài (vẹt yến phụng 5 đến 10 năm, vẹt lớn từ 30 năm trở lên), bác sĩ thú y chuyên về chim, và chế độ ăn tươi ngoài hạt. Nếu bạn vắng nhà cả ngày, nuôi một cặp chim nhỏ có thể tốt hơn nuôi một con."
+        },
+        "hamster": {
+          "name": "Hamster",
+          "body": "Hamster hợp với không gian nhỏ, ngân sách khiêm tốn và nếp sinh hoạt buổi tối yên tĩnh. Chúng sống đơn độc và hoạt động về đêm, nên sẽ thức đúng lúc bạn chuẩn bị nghỉ ngơi, và bánh xe có thể kêu cót két ban đêm. Cần chuẩn bị: chuồng rộng (sàn ít nhất 100 × 50 cm), lớp lót dày để đào hang, bánh xe mặt kín đúng kích cỡ, và tuổi thọ 2 đến 3 năm. Hãy cầm nắm nhẹ nhàng; hamster không lý tưởng cho trẻ nhỏ."
+        },
+        "reptile": {
+          "name": "Bò sát",
+          "body": "Bò sát hợp với người tò mò, kiên nhẫn, dị ứng lông hoặc hay đi vắng. Nhiều loài yên lặng và tự ổn một hai ngày khi chuồng đã vận hành tốt. Cần chuẩn bị: chuồng đúng chuẩn với đèn sưởi và đèn UVB hẹn giờ, thức ăn sống hoặc đông lạnh với nhiều loài, bác sĩ thú y chuyên động vật ngoại lai, và tuổi thọ dài (tắc kè da báo 15 đến 20 năm, rùa cạn còn lâu hơn nhiều). Hãy chọn con sinh sản trong môi trường nuôi nhốt và tìm hiểu kỹ về loài trước."
+        }
       }
     },
     "anime": {
@@ -775,6 +1361,1505 @@
         "moderate": { "name": "Trầm cảm vừa (10–14)", "body": "Triệu chứng của bạn ở mức nên đi khám bác sĩ hoặc gặp chuyên gia sức khỏe tâm thần. Trầm cảm rất phổ biến và có thể điều trị được." },
         "modsevere": { "name": "Trầm cảm khá nặng (15–19)", "body": "Câu trả lời cho thấy triệu chứng đáng kể. Hãy sớm liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần. Các phương pháp như trị liệu tâm lý và thuốc giúp ích cho hầu hết mọi người." },
         "severe": { "name": "Trầm cảm nặng (20–27)", "body": "Câu trả lời cho thấy triệu chứng nặng. Hãy liên hệ bác sĩ hoặc chuyên gia sức khỏe tâm thần càng sớm càng tốt, và cho một người bạn tin tưởng biết bạn đang cảm thấy thế nào." }
+      }
+    },
+    "pokemon": {
+      "title": "Bạn là Pokémon nào? Test Pokémon: trắc nghiệm hệ Pokémon — cv.cm",
+      "description": "Test Pokémon miễn phí: trả lời 12 câu hỏi để biết bạn thuộc hệ Pokémon nào (Lửa, Nước, Cỏ, Điện, Siêu linh, Tiên, Rồng, Ma, Giác đấu hay Thường) và Pokémon đồng hành hợp với bạn. Không cần đăng ký.",
+      "h1": "Bạn là Pokémon hệ nào?",
+      "lede": "Bạn là hệ Lửa nóng tính, hệ Thường thong thả hay hệ Ma tinh nghịch? Trả lời 12 câu hỏi đời thường để tìm hệ Pokémon của bạn và một Pokémon đồng hành có cùng tính cách.",
+      "about": [
+        "Mỗi hệ Pokémon có một tính cách mà fan nhận ra ngay: Lửa táo bạo và nhiệt huyết, Nước thuận theo dòng chảy, Cỏ kiên nhẫn và biết chăm sóc, Ma tinh nghịch. Bài trắc nghiệm xem cách bạn dùng thời gian, đối phó với áp lực và đối xử với bạn bè, rồi chấm điểm mười trong mười tám hệ.",
+        "Kết quả cho biết hệ hợp với bạn nhất, một Pokémon đồng hành đi kèm và điểm của bạn ở từng hệ. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Nintendo, Creatures, GAME FREAK hay The Pokémon Company bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Pokémon có bao nhiêu hệ?",
+          "a": "Mười tám: Thường, Lửa, Nước, Cỏ, Điện, Băng, Giác đấu, Độc, Đất, Bay, Siêu linh, Bọ, Đá, Ma, Rồng, Bóng tối, Thép và Tiên. Bài này dùng mười hệ có tính cách rõ nét nhất."
+        },
+        {
+          "q": "Tôi là Pokémon nào?",
+          "a": "Kết quả cho bạn một Pokémon đồng hành theo hệ, như Pikachu cho hệ Điện hay Eevee cho hệ Thường, cùng hai Pokémon khác cùng hệ có tính cách tương tự."
+        },
+        {
+          "q": "Đây có phải bài trắc nghiệm Pokémon chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí cho vui. Câu trả lời của bạn không được lưu hay gửi đi đâu cả."
+        },
+        {
+          "q": "Sao tôi lại ra một hệ không ngờ tới?",
+          "a": "Bài chấm theo cách bạn mô tả thói quen của mình, không theo Pokémon bạn thích. Nếu hai hệ sát điểm nhau, kết quả sẽ hiện cả hệ đứng thứ hai; hãy làm lại vào hôm khác xem có đổi không."
+        }
+      ],
+      "items": [
+        {
+          "q": "Một ngày thứ Bảy rảnh rỗi. Bạn…",
+          "options": [
+            "Chạy bộ hoặc leo núi: thứ gì đó khiến tim đập mạnh",
+            "Ở nhà với đồ ăn vặt và một giấc ngủ trưa thật dài",
+            "Ra biển, hồ bơi hoặc hồ nước",
+            "Thức khuya xem phim kinh dị hoặc chơi game giải đố bí ẩn"
+          ]
+        },
+        {
+          "q": "Chọn một nơi để sống:",
+          "options": [
+            "Căn chòi gỗ trong khu rừng yên tĩnh",
+            "Thành phố đèn neon không bao giờ ngủ",
+            "Đỉnh núi nhìn xuống mọi thứ",
+            "Căn nhà nhỏ ấm cúng có vườn hoa"
+          ]
+        },
+        {
+          "q": "Bạn bè trông cậy vào bạn để…",
+          "options": [
+            "Khuấy động tinh thần cả nhóm",
+            "Cho lời khuyên bình tĩnh khi mọi chuyện rối tung",
+            "Nhìn ra vấn đề thật trước khi ai kịp nói",
+            "Luôn đứng về phía họ, dù có chuyện gì"
+          ]
+        },
+        {
+          "q": "Bạn gặp một thử thách lớn. Bạn…",
+          "options": [
+            "Luyện tập, chuẩn bị và cố đến khi thắng",
+            "Đặt mục tiêu cao hơn cả điều ai cũng nghĩ là có thể",
+            "Suy nghĩ đến khi tìm ra một cách lách thông minh",
+            "Đi từng bước một và giữ vững nhịp"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn phần lớn các ngày:",
+          "options": [
+            "Rần rần. Không ngồi yên nổi",
+            "Chậm mà chắc, như cây đang lớn",
+            "Tùy hoàn toàn vào đồ ăn vặt gần đó",
+            "Ban ngày uể oải, ban đêm tỉnh như sáo"
+          ]
+        },
+        {
+          "q": "Chọn một kiểu thời tiết:",
+          "options": [
+            "Nắng hè chói chang",
+            "Giông bão có sấm chớp",
+            "Mưa nhẹ gõ lên cửa sổ",
+            "Đêm sương mù dưới trăng tròn"
+          ]
+        },
+        {
+          "q": "Người ta để ý điều gì ở bạn đầu tiên?",
+          "options": [
+            "Sự tốt bụng",
+            "Sự tự tin",
+            "Những trò chơi khăm và khiếu hài hước kỳ quặc",
+            "Bạn rất khó đoán"
+          ]
+        },
+        {
+          "q": "Trong dự án nhóm, bạn là người…",
+          "options": [
+            "Nghĩ ra ý tưởng lớn",
+            "Làm nhanh nhất và xong trước tiên",
+            "Đảm bảo ai cũng thấy mình được tham gia",
+            "Làm bất cứ việc gì cần làm, không than vãn"
+          ]
+        },
+        {
+          "q": "Chọn một món ăn vặt:",
+          "options": [
+            "Snack cay",
+            "Trái cây tươi hoặc salad",
+            "Bánh kem phủ kem dày cộp",
+            "Có gì trong tủ lạnh thì ăn nấy"
+          ]
+        },
+        {
+          "q": "Điểm mạnh lớn nhất của bạn:",
+          "options": [
+            "Quyết tâm",
+            "Thuận theo dòng chảy",
+            "Tham vọng",
+            "Trực giác"
+          ]
+        },
+        {
+          "q": "Có người thô lỗ với bạn. Bạn…",
+          "options": [
+            "Đáp trả ngay lập tức",
+            "Để nó trôi qua như nước đổ lá khoai",
+            "Bỏ qua: họ không đáng để bạn bận tâm",
+            "Thầm thấy chuyện này buồn cười hết sức"
+          ]
+        },
+        {
+          "q": "Bạn đồng hành lý tưởng trong một chuyến phiêu lưu:",
+          "options": [
+            "Một người bạn trung thành không bao giờ bỏ cuộc",
+            "Một người khiến ngày nào cũng vui",
+            "Một tâm hồn dịu dàng luôn chăm lo cho mọi người",
+            "Một bạn đồng hành huyền thoại cõng bạn bay lên trời"
+          ]
+        }
+      ],
+      "dims": {
+        "fire": "Lửa",
+        "water": "Nước",
+        "grass": "Cỏ",
+        "electric": "Điện",
+        "psychic": "Siêu linh",
+        "fairy": "Tiên",
+        "dragon": "Rồng",
+        "ghost": "Ma",
+        "fighting": "Giác đấu",
+        "normal": "Thường"
+      },
+      "results": {
+        "fire": {
+          "name": "Hệ Lửa · đồng hành: Charmander",
+          "body": "Nhiệt huyết, táo bạo và không thể bị phớt lờ. Bạn lao vào mọi việc hết mình và sự hăng hái của bạn rất dễ lây, dù cơn nóng giận cũng bùng lên nhanh như khi nguội đi. Cùng hệ Lửa: Arcanine và Cyndaquil."
+        },
+        "water": {
+          "name": "Hệ Nước · đồng hành: Squirtle",
+          "body": "Điềm tĩnh, linh hoạt và dễ gần. Bạn thuận theo dòng chảy, hòa giải những cuộc cãi vã và tìm đường vòng qua chướng ngại thay vì húc thẳng vào. Cùng hệ Nước: Vaporeon và Piplup."
+        },
+        "grass": {
+          "name": "Hệ Cỏ · đồng hành: Bulbasaur",
+          "body": "Kiên nhẫn, vững vàng và lặng lẽ chăm sóc người khác. Bạn lớn lên chậm mà chắc, quan tâm đến những người xung quanh và thấy mình là chính mình nhất khi ở ngoài trời. Cùng hệ Cỏ: Leafeon và Rowlet."
+        },
+        "electric": {
+          "name": "Hệ Điện · đồng hành: Pikachu",
+          "body": "Nhanh nhẹn, sáng dạ và tràn đầy năng lượng. Bạn nghĩ nhanh, làm còn nhanh hơn và mang tia lửa đến mọi căn phòng, nhưng ngồi yên là việc khó với bạn. Cùng hệ Điện: Jolteon và Pachirisu."
+        },
+        "psychic": {
+          "name": "Hệ Siêu linh · đồng hành: Espeon",
+          "body": "Giàu trực giác và chín chắn. Bạn đọc được người khác và tình huống trước khi ai lên tiếng, và thích một kế hoạch khôn khéo hơn là dùng sức. Cùng hệ Siêu linh: Gardevoir và Mew."
+        },
+        "fairy": {
+          "name": "Hệ Tiên · đồng hành: Sylveon",
+          "body": "Tốt bụng, duyên dáng và ấm áp. Bạn khiến người khác thấy được chào đón và quan tâm, và đằng sau sự dịu dàng ấy là sức mạnh lớn hơn người ta tưởng. Cùng hệ Tiên: Clefairy và Togepi."
+        },
+        "dragon": {
+          "name": "Hệ Rồng · đồng hành: Dragonite",
+          "body": "Tham vọng, kiêu hãnh và quyết tâm. Bạn nhắm cao hơn bất kỳ ai và đủ lì để đạt được, nhưng luôn mềm lòng với số ít người bạn tin tưởng. Cùng hệ Rồng: Garchomp và Axew."
+        },
+        "ghost": {
+          "name": "Hệ Ma · đồng hành: Gengar",
+          "body": "Bí ẩn và tinh nghịch. Bạn sống dậy vào ban đêm, mê trò chơi khăm và có khiếu hài hước mà người ta hoặc rất mê hoặc chẳng hiểu gì. Cùng hệ Ma: Mimikyu và Litwick."
+        },
+        "fighting": {
+          "name": "Hệ Giác đấu · đồng hành: Lucario",
+          "body": "Kỷ luật, trung thành và che chở. Bạn tập luyện chăm chỉ, giữ lời hứa và đứng ra bảo vệ bạn bè mà không cần ai nhờ. Cùng hệ Giác đấu: Riolu và Machop."
+        },
+        "normal": {
+          "name": "Hệ Thường · đồng hành: Eevee",
+          "body": "Dễ tính, linh hoạt và đầy tiềm năng. Bạn thoải mái với chính mình, hợp với gần như mọi người và không bao giờ từ chối đồ ăn vặt hay một giấc ngủ trưa. Cùng hệ Thường: Snorlax và Jigglypuff."
+        }
+      }
+    },
+    "genshin": {
+      "title": "Bạn sẽ nhận Vision nào? Test Genshin Impact: bạn là nhân vật nào — cv.cm",
+      "description": "Trắc nghiệm Genshin Impact miễn phí: trả lời 12 câu hỏi để biết Vision (Phong, Nham, Lôi, Thảo, Thủy, Hỏa hay Băng) hợp với lý tưởng của bạn, và các nhân vật Genshin có cùng nguyên tố. Không cần đăng ký.",
+      "h1": "Bạn sẽ nhận Vision nào trong Genshin Impact?",
+      "lede": "Ở Teyvat, thần linh ban Vision cho những người mang khát vọng lớn. Trả lời 12 câu hỏi về điều bạn coi trọng và cách bạn hành động để biết nguyên tố nào trong bảy nguyên tố sẽ chọn bạn.",
+      "about": [
+        "Mỗi quốc gia trong bảy nước của Teyvat theo một vị Thần và một lý tưởng: tự do ở Mondstadt (Phong), khế ước ở Liyue (Nham), vĩnh hằng ở Inazuma (Lôi), trí tuệ ở Sumeru (Thảo), công lý ở Fontaine (Thủy), chiến tranh và lòng can đảm ở Natlan (Hỏa) và tình yêu ở Snezhnaya (Băng). Bài trắc nghiệm ghép câu trả lời của bạn với những lý tưởng đó.",
+        "Kết quả cho biết nguyên tố của bạn, lý tưởng đằng sau nó và ba nhân vật chơi được có cùng nguyên tố, kèm điểm của cả bảy. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được HoYoverse bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Vision trong Genshin Impact là gì?",
+          "a": "Vision là viên ngọc giúp người sở hữu điều khiển một nguyên tố. Theo game, thần linh ban chúng cho những người có khát vọng hoặc mong ước lớn lao."
+        },
+        {
+          "q": "Tôi là nhân vật Genshin nào?",
+          "a": "Kết quả liệt kê ba nhân vật cùng nguyên tố, ví dụ Venti, Kaedehara Kazuha và Sucrose cho hệ Phong. Hãy chọn người có câu chuyện gần với bạn nhất."
+        },
+        {
+          "q": "Sao không có kết quả Nhà Lữ Hành?",
+          "a": "Nhà Lữ Hành dùng được nhiều nguyên tố mà không cần Vision, nên bài trắc nghiệm chấm điểm theo bảy nguyên tố."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Điều gì quan trọng nhất với bạn?",
+          "options": [
+            "Tự do đi bất cứ đâu gió đưa mình tới",
+            "Giữ lời hứa",
+            "Hiểu thế giới thật sự vận hành ra sao",
+            "Công bằng cho tất cả mọi người"
+          ]
+        },
+        {
+          "q": "Chọn một nơi để sống:",
+          "options": [
+            "Thị trấn lộng gió của những thi sĩ và cánh đồng bồ công anh",
+            "Bến cảng nhộn nhịp đầy thương nhân và đèn lồng",
+            "Hòn đảo hoa anh đào dưới bầu trời giông bão",
+            "Cung điện băng giá tận phương bắc"
+          ]
+        },
+        {
+          "q": "Bạn bè gặp rắc rối. Bạn…",
+          "options": [
+            "Lao vào giúp không chút do dự",
+            "Lặng lẽ ở bên họ bao lâu cũng được",
+            "Lập một kế hoạch bền vững lâu dài",
+            "Đảm bảo kẻ gây ra chuyện phải chịu trách nhiệm"
+          ]
+        },
+        {
+          "q": "Bạn làm việc thế nào?",
+          "options": [
+            "Đều đặn và đáng tin, từng viên đá một",
+            "Theo từng cơn cảm hứng, lúc nào hứng thì làm",
+            "Mài giũa đến khi hoàn hảo",
+            "Tìm hiểu kỹ mọi thứ trước đã"
+          ]
+        },
+        {
+          "q": "Bạn bỗng có một khoản Mora lớn. Bạn tiêu vào…",
+          "options": [
+            "Một khoản đầu tư khôn ngoan",
+            "Một bữa tiệc cho tất cả bạn bè",
+            "Sách vở và lớp học",
+            "Một thứ đẹp đẽ sẽ tồn tại mãi mãi"
+          ]
+        },
+        {
+          "q": "Bạn thể hiện sự quan tâm bằng cách nào?",
+          "options": [
+            "Một cử chỉ hoành tráng, có khán giả hẳn hoi",
+            "Những hy sinh thầm lặng không ai thấy",
+            "Kéo họ đi một chuyến phiêu lưu ngẫu hứng",
+            "Bảo vệ họ, bằng bất cứ giá nào"
+          ]
+        },
+        {
+          "q": "Người ta mô tả bạn là…",
+          "options": [
+            "Phóng khoáng",
+            "Đáng tin cậy",
+            "Quyết tâm, có khi hơi cứng đầu",
+            "Thanh lịch, nhưng hơi xa cách"
+          ]
+        },
+        {
+          "q": "Buổi tối lý tưởng của bạn:",
+          "options": [
+            "Một lễ hội ồn ào có pháo hoa",
+            "Một đêm ở nhà hát opera hoặc một phiên tòa đầy kịch tính",
+            "Đọc sách dưới ánh đèn",
+            "Ngắm sao một mình trong đêm lạnh trong vắt"
+          ]
+        },
+        {
+          "q": "Bạn đối mặt với thay đổi thế nào?",
+          "options": [
+            "Đón nhận nó. Gió luôn đổi chiều",
+            "Chống lại nó. Có những thứ không bao giờ nên thay đổi",
+            "Nghiên cứu nó, rồi thích nghi",
+            "Uốn quanh nó như dòng nước"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn khi cả đội giao chiến:",
+          "options": [
+            "Bật khiên và giữ vững trận tuyến",
+            "Tấn công tổng lực, thiêu rụi mọi thứ",
+            "Hồi máu và giữ cả đội trụ vững",
+            "Những đòn đánh chính xác, uyển chuyển"
+          ]
+        },
+        {
+          "q": "Điều gì bạn không bao giờ tha thứ?",
+          "options": [
+            "Một lời hứa bị phá vỡ",
+            "Một bất công không bị trừng phạt",
+            "Phản bội những người mình yêu thương",
+            "Bị nhốt trong lồng"
+          ]
+        },
+        {
+          "q": "Chọn một sức mạnh:",
+          "options": [
+            "Điều khiển sấm sét",
+            "Mọc cả khu rừng trong nháy mắt",
+            "Triệu hồi lửa",
+            "Đóng băng mọi thứ bạn chạm vào"
+          ]
+        }
+      ],
+      "dims": {
+        "anemo": "Phong",
+        "geo": "Nham",
+        "electro": "Lôi",
+        "dendro": "Thảo",
+        "hydro": "Thủy",
+        "pyro": "Hỏa",
+        "cryo": "Băng"
+      },
+      "results": {
+        "anemo": {
+          "name": "Phong: lý tưởng tự do",
+          "body": "Bạn đi theo làn gió. Bạn coi trọng tự do hơn gần như mọi thứ, ghét bị ràng buộc và mang một năng lượng nhẹ nhàng, tinh nghịch khiến người xung quanh vui lên. Nhân vật hệ Phong: Venti, Kaedehara Kazuha và Sucrose."
+        },
+        "geo": {
+          "name": "Nham: lý tưởng khế ước",
+          "body": "Vững như đá. Lời bạn nói là lời cam kết, bạn tính đường dài và người khác tin giao cho bạn những điều quan trọng nhất. Nhân vật hệ Nham: Zhongli, Navia và Noelle."
+        },
+        "electro": {
+          "name": "Lôi: lý tưởng vĩnh hằng",
+          "body": "Kiên định và khắt khe. Đã quyết điều gì là bạn làm đến cùng, và bạn muốn những gì mình xây dựng tồn tại mãi mãi. Nhân vật hệ Lôi: Raiden Shogun, Fischl và Yae Miko."
+        },
+        "dendro": {
+          "name": "Thảo: lý tưởng trí tuệ",
+          "body": "Tò mò và sâu sắc. Bạn muốn hiểu mọi thứ thật sự vận hành ra sao, đọc mọi thứ và sự kiên nhẫn của bạn lớn dần thành hiểu biết thực sự. Nhân vật hệ Thảo: Nahida, Tighnari và Alhaitham."
+        },
+        "hydro": {
+          "name": "Thủy: lý tưởng công lý",
+          "body": "Giàu cảm xúc và có nguyên tắc. Bạn rất coi trọng sự công bằng, cảm nhận mọi thứ mãnh liệt và không ngại một khoảnh khắc kịch tính khi nó xứng đáng. Nhân vật hệ Thủy: Furina, Neuvillette và Xingqiu."
+        },
+        "pyro": {
+          "name": "Hỏa: lý tưởng chiến tranh và lòng can đảm",
+          "body": "Dũng cảm và ấm áp. Bạn lao vào bảo vệ bạn bè, thắp sáng mọi cuộc vui và không bao giờ lùi bước trước trận chiến đáng giá. Nhân vật hệ Hỏa: Hu Tao, Diluc và Bennett."
+        },
+        "cryo": {
+          "name": "Băng: lý tưởng tình yêu",
+          "body": "Lạnh lùng bên ngoài, tận tụy bên trong. Bạn yêu thầm lặng và chung thủy, hy sinh những điều không ai thấy và luôn giữ phong thái thanh lịch. Nhân vật hệ Băng: Ganyu, Kamisato Ayaka và Wriothesley."
+        }
+      }
+    },
+    "sonic": {
+      "title": "Bạn là nhân vật Sonic nào? Trắc nghiệm Sonic the Hedgehog — cv.cm",
+      "description": "Trắc nghiệm Sonic the Hedgehog miễn phí: trả lời 12 câu hỏi để biết bạn là Sonic, Tails, Knuckles, Amy, Shadow, Rouge, Cream hay Silver. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Sonic nào?",
+      "lede": "Nhanh và tự do như Sonic, thông minh như Tails hay sống khép kín như Shadow? Trả lời 12 câu hỏi về thói quen của bạn để tìm nhân vật hợp nhất trong tám nhân vật Sonic the Hedgehog.",
+      "about": [
+        "Bạn bè và đối thủ của Sonic đều có tính cách rõ ràng: Sonic sống vì tự do và tốc độ, Tails chế tạo máy móc, Knuckles canh giữ Master Emerald, Amy không bao giờ từ bỏ tình yêu, Shadow giữ khoảng cách với mọi người, Rouge săn châu báu, Cream luôn lễ phép và Silver từ tương lai trở về để thay đổi nó.",
+        "Bài trắc nghiệm chấm điểm câu trả lời của bạn cho cả tám nhân vật, cho biết nhân vật hợp nhất và mức độ gần của những người còn lại. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được SEGA bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Sonic là ai?",
+          "a": "Sonic, Tails và Knuckles là bộ ba kinh điển. Amy Rose, Shadow, Rouge, Cream và Silver xuất hiện ở các game sau, còn Dr. Eggman là phản diện chính."
+        },
+        {
+          "q": "Shadow là anh hùng hay phản diện?",
+          "a": "Shadow khởi đầu là đối thủ trong Sonic Adventure 2 và từ đó đã chiến đấu ở cả hai phe. Anh bị thôi thúc bởi một lời hứa trong quá khứ, nên thường hành động một mình."
+        },
+        {
+          "q": "Sao không có kết quả Dr. Eggman?",
+          "a": "Bài này chỉ gồm bạn bè và đối thủ của Sonic. Fan của Eggman có thể coi đây là thử thách để ra Shadow hoặc Rouge."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, câu trả lời được chấm điểm trong trình duyệt và không bao giờ được lưu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Buổi sáng của bạn:",
+          "options": [
+            "Ra khỏi nhà trước cả bữa sáng",
+            "Mày mò một món đồ công nghệ bên tách cà phê",
+            "Tập luyện. Ngày nào cũng vậy",
+            "Lên kế hoạch cho buổi hẹn hoàn hảo, tính đến từng phút"
+          ]
+        },
+        {
+          "q": "Chọn một sở thích:",
+          "options": [
+            "Sưu tầm châu báu",
+            "Làm bánh và tiệc trà với bạn bè",
+            "Chế tạo máy móc từ đồ phế liệu",
+            "Một mình chạy xe trong đêm"
+          ]
+        },
+        {
+          "q": "Bạn bè nhờ giúp. Bạn…",
+          "options": [
+            "“Để đó cho tôi!” Rồi đi mất hút",
+            "Lễ phép hỏi họ cần gì",
+            "Nháy mắt hỏi “được gì nào?”, rồi vẫn giúp",
+            "Giúp, nhưng vẫn nghĩ xem sau này chuyện có thể hỏng ra sao"
+          ]
+        },
+        {
+          "q": "Khuyết điểm lớn nhất của bạn:",
+          "options": [
+            "Thiếu kiên nhẫn",
+            "Hơi dễ tin lời người khác",
+            "Quá nhiệt tình khi thích ai đó",
+            "Luôn giữ mọi người ở khoảng cách an toàn"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Bộ não",
+            "Cơ bắp",
+            "Điệp viên",
+            "Người nhìn ra mọi chuyện sẽ đi về đâu"
+          ]
+        },
+        {
+          "q": "Chọn một nơi:",
+          "options": [
+            "Những con đường rộng mở và đồi xanh",
+            "Hòn đảo bay có báu vật cần canh giữ",
+            "Khu vườn yên tĩnh ngập hoa",
+            "Thành phố đổ nát bạn muốn xây dựng lại"
+          ]
+        },
+        {
+          "q": "Chọn một món đồ:",
+          "options": [
+            "Cây búa khổng lồ",
+            "Cờ lê",
+            "Viên kim cương to tướng",
+            "Những chiếc vòng vàng kìm hãm sức mạnh của bạn"
+          ]
+        },
+        {
+          "q": "Khi buồn, bạn…",
+          "options": [
+            "Mỉm cười gan dạ và tiếp tục theo đuổi ước mơ",
+            "Tâm sự với bạn thân",
+            "Giấu kín trong lòng và cứ thế bước tiếp",
+            "Tự hứa sẽ thay đổi kết cục của mọi chuyện"
+          ]
+        },
+        {
+          "q": "Điều gì thôi thúc bạn?",
+          "options": [
+            "Tự do",
+            "Bảo vệ những gì thuộc về mình",
+            "Tình yêu",
+            "Một lời hứa từ rất lâu"
+          ]
+        },
+        {
+          "q": "Phong cách của bạn:",
+          "options": [
+            "Gọn gàng và sành điệu, lúc nào cũng thế",
+            "Váy xinh và chiếc nơ ngay ngắn",
+            "Rực rỡ, nổi bật, không thể không thấy",
+            "Thứ gì có nhiều túi đựng đồ nghề nhất"
+          ]
+        },
+        {
+          "q": "Người ta nhận xét cách cư xử của bạn thế nào?",
+          "options": [
+            "Lễ phép và đúng mực",
+            "Duyên dáng, kèm rất nhiều trêu chọc",
+            "Thẳng thừng",
+            "Chân thành và hơi ngây thơ"
+          ]
+        },
+        {
+          "q": "Chọn một sức mạnh:",
+          "options": [
+            "Siêu tốc độ",
+            "Bay lượn",
+            "Di chuyển đồ vật bằng ý nghĩ",
+            "Dừng thời gian"
+          ]
+        }
+      ],
+      "dims": {
+        "sonic": "Sonic",
+        "tails": "Tails",
+        "knuckles": "Knuckles",
+        "amy": "Amy",
+        "shadow": "Shadow",
+        "rouge": "Rouge",
+        "cream": "Cream",
+        "silver": "Silver"
+      },
+      "results": {
+        "sonic": {
+          "name": "Sonic the Hedgehog",
+          "body": "Tự do, nhanh nhẹn và không biết sợ. Bạn không chịu nổi việc chờ đợi, làm điều mình thấy đúng và luôn là người đầu tiên giúp đỡ khi cần. Thỉnh thoảng có lẽ bạn nên chậm lại một chút."
+        },
+        "tails": {
+          "name": "Miles “Tails” Prower",
+          "body": "Thông minh, trung thành và lúc nào cũng đang chế tạo thứ gì đó. Bạn giải quyết vấn đề bằng cái đầu, luôn sát cánh cùng bạn thân và dũng cảm hơn bạn nghĩ."
+        },
+        "knuckles": {
+          "name": "Knuckles the Echidna",
+          "body": "Mạnh mẽ, thật thà và biết che chở. Bạn coi trọng trách nhiệm và sẽ dốc hết sức bảo vệ điều quan trọng, dù đôi khi lại tin nhầm người."
+        },
+        "amy": {
+          "name": "Amy Rose",
+          "body": "Vui vẻ, quyết tâm và giàu tình cảm. Bạn biết mình muốn gì và theo đuổi đến cùng, và vẫn lạc quan khi những người khác đã thôi tin tưởng."
+        },
+        "shadow": {
+          "name": "Shadow the Hedgehog",
+          "body": "Nghiêm túc, mãnh liệt và sống có mục đích. Bạn giữ cảm xúc cho riêng mình và làm việc một mình hiệu quả nhất, nhưng không bao giờ quên một lời hứa."
+        },
+        "rouge": {
+          "name": "Rouge the Bat",
+          "body": "Sành điệu, dí dỏm và giỏi đạt được điều mình muốn. Bạn thích đồ đẹp và một chút mạo hiểm, và đằng sau những lời trêu chọc là một người bạn tốt hơn bạn chịu thừa nhận."
+        },
+        "cream": {
+          "name": "Cream the Rabbit",
+          "body": "Ngọt ngào, lễ phép và tốt bụng. Bạn cư xử đúng mực với mọi người, thích một buổi chiều yên bình bên bạn bè và vững vàng hơn người ta tưởng."
+        },
+        "silver": {
+          "name": "Silver the Hedgehog",
+          "body": "Chân thành, lý tưởng và luôn nghĩ trước. Bạn muốn sửa những gì đã hỏng và thay đổi tương lai, dù có hơi ngây thơ về cách làm."
+        }
+      }
+    },
+    "dnd-class": {
+      "title": "Bạn hợp class D&D nào? Trắc nghiệm Dungeons & Dragons — cv.cm",
+      "description": "Trắc nghiệm class D&D miễn phí: trả lời 14 câu hỏi để biết bạn hợp class nào trong 12 class của Dungeons & Dragons, từ Barbarian, Bard, Cleric đến Rogue, Warlock và Wizard. Không cần đăng ký.",
+      "h1": "Bạn hợp class D&D nào?",
+      "lede": "Bạn sẽ nổi cơn thịnh nộ, cất tiếng hát, cầu nguyện hay niệm phép? Trả lời 14 câu hỏi về cách bạn hành động trong một chuyến phiêu lưu để biết class nào trong 12 class Dungeons & Dragons hợp với tính cách của bạn.",
+      "about": [
+        "Dungeons & Dragons có mười hai class cốt lõi: Barbarian (chiến binh man rợ), Bard (thi sĩ), Cleric (giáo sĩ), Druid (tu sĩ tự nhiên), Fighter (chiến binh), Monk (võ tăng), Paladin (thánh kỵ sĩ), Ranger (du hiệp), Rogue (đạo tặc), Sorcerer (pháp sư bẩm sinh), Warlock (pháp sư khế ước) và Wizard (pháp sư). Mỗi class là một cách giải quyết vấn đề không kém gì một bộ năng lực, nên chúng phản chiếu tính cách rất tốt.",
+        "Bài trắc nghiệm hỏi bạn sẽ làm gì trong quán rượu, trước cánh cửa khóa hay giữa trận chiến, rồi chấm điểm cả mười hai class. Hãy dùng kết quả làm cảm hứng cho nhân vật tiếp theo của bạn. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Wizards of the Coast bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "12 class trong D&D là gì?",
+          "a": "Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock và Wizard. Một số phiên bản và sách bổ sung thêm class khác, như Artificer."
+        },
+        {
+          "q": "Sorcerer, Warlock và Wizard khác nhau thế nào?",
+          "a": "Wizard học phép thuật qua nghiên cứu, Sorcerer sinh ra đã có sẵn, còn Warlock có được nhờ khế ước với một thế lực bảo trợ hùng mạnh."
+        },
+        {
+          "q": "Class D&D nào hợp cho người mới?",
+          "a": "Fighter và Barbarian dễ chơi nhất, còn Cleric là khởi đầu tốt nếu bạn muốn có vài phép thuật. Hãy chọn class nghe thú vị nhất: bạn sẽ học nhanh hơn."
+        },
+        {
+          "q": "Đây có phải bài trắc nghiệm D&D chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí cho vui, và câu trả lời không bao giờ rời khỏi trình duyệt của bạn."
+        }
+      ],
+      "items": [
+        {
+          "q": "Cả nhóm bước vào quán rượu. Bạn…",
+          "options": [
+            "Gọi cốc to nhất và vật tay với một người lạ",
+            "Nhảy lên sân khấu và cất tiếng hát",
+            "Ngồi ở góc và canh chừng cửa ra vào",
+            "Hỏi chủ quán về những truyền thuyết địa phương"
+          ]
+        },
+        {
+          "q": "Một cánh cửa khóa chặn đường. Bạn…",
+          "options": [
+            "Đạp đổ nó",
+            "Cạy khóa",
+            "Đọc những ký tự cổ trên cửa và niệm đúng câu phép",
+            "Thuyết phục người giữ chìa mở cửa"
+          ]
+        },
+        {
+          "q": "Sức mạnh của bạn đến từ đâu?",
+          "options": [
+            "Nhiều năm học tập",
+            "Có sẵn trong máu từ khi sinh ra",
+            "Giao kèo với một thực thể bí ẩn",
+            "Vị thần mà tôi phụng sự"
+          ]
+        },
+        {
+          "q": "Nơi nào cho bạn cảm giác như ở nhà?",
+          "options": [
+            "Sâu trong khu rừng cổ xưa",
+            "Vùng biên cương hoang dã, lần theo dấu vết",
+            "Tu viện trên núi cao",
+            "Đền thờ, giữa những người cần đến bạn"
+          ]
+        },
+        {
+          "q": "Bạn bảo vệ điều gì?",
+          "options": [
+            "Người vô tội",
+            "Thiên nhiên",
+            "Đồng đội, từ tuyến đầu",
+            "Tự do của chính mình"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Nổi cơn cuồng nộ",
+            "Hồi máu và bảo vệ đồng đội",
+            "Bắn từ xa và không bao giờ trượt",
+            "Di chuyển nhanh đến mức họ không theo kịp, chỉ dùng tay không"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Quá tự hào về tài năng bẩm sinh",
+            "Không cưỡng lại được một bí mật, hay một cuộc giao kèo",
+            "Giữ đúng lời thề, kể cả khi phải chịu thiệt",
+            "Lao vào mà không suy nghĩ"
+          ]
+        },
+        {
+          "q": "Chọn một bạn đồng hành:",
+          "options": [
+            "Một người bạn thú hoang dã",
+            "Một linh thú kỳ lạ từ cõi khác",
+            "Thanh kiếm bạn mang theo nhiều năm",
+            "Cây đàn lute của bạn"
+          ]
+        },
+        {
+          "q": "Bạn rèn luyện thế nào?",
+          "options": [
+            "Tập luyện mỗi sáng",
+            "Thiền định",
+            "Cầu nguyện",
+            "Không cần. Sức mạnh tự tuôn ra"
+          ]
+        },
+        {
+          "q": "Bạn giải quyết vấn đề bằng gì?",
+          "options": [
+            "Sức quyến rũ",
+            "Kiến thức",
+            "Kiên nhẫn và cân bằng",
+            "Chiến thuật"
+          ]
+        },
+        {
+          "q": "Bạn đang tìm kiếm điều gì?",
+          "options": [
+            "Công lý",
+            "Những bí mật bị cấm",
+            "Sự hòa hợp với thế giới tự nhiên",
+            "Cách kiểm soát sức mạnh hoang dã bên trong mình"
+          ]
+        },
+        {
+          "q": "Trang bị của bạn:",
+          "options": [
+            "Giáp nặng và khiên khắc biểu tượng thần thánh",
+            "Giáp da nhẹ và vài con dao găm giấu kín",
+            "Cây gậy gỗ vẫn còn đâm lá",
+            "Chỉ một bộ áo choàng giản dị"
+          ]
+        },
+        {
+          "q": "Cả nhóm sẽ gọi bạn là…",
+          "options": [
+            "Kẻ bí ẩn",
+            "Người chữa lành",
+            "Kẻ lang thang đơn độc",
+            "Người kể chuyện"
+          ]
+        },
+        {
+          "q": "Chọn một phần thưởng:",
+          "options": [
+            "Cuốn sách phép không ai khác đọc được",
+            "Hạt giống từ cái cây cổ nhất thế giới",
+            "Chiến lợi phẩm từ con quái vật lớn nhất bạn từng hạ",
+            "Tấm bản đồ những vùng đất chưa ai khám phá"
+          ]
+        }
+      ],
+      "dims": {
+        "barbarian": "Barbarian",
+        "bard": "Bard",
+        "cleric": "Cleric",
+        "druid": "Druid",
+        "fighter": "Fighter",
+        "monk": "Monk",
+        "paladin": "Paladin",
+        "ranger": "Ranger",
+        "rogue": "Rogue",
+        "sorcerer": "Sorcerer",
+        "warlock": "Warlock",
+        "wizard": "Wizard"
+      },
+      "results": {
+        "barbarian": {
+          "name": "Barbarian (chiến binh man rợ)",
+          "body": "Táo bạo, thẳng thắn và tràn đầy năng lượng. Bạn hành động theo bản năng, nghĩ gì nói nấy và luôn là người đầu tiên xông qua cửa. Sức mạnh của bạn là thật, và lòng trung thành với đồng đội cũng vậy."
+        },
+        "bard": {
+          "name": "Bard (thi sĩ)",
+          "body": "Duyên dáng, sáng tạo và là linh hồn của cả nhóm. Bạn giải quyết vấn đề bằng lời nói và sự dí dỏm, gom góp câu chuyện ở mọi nơi bạn đến và khiến nhóm nào cũng tốt hơn."
+        },
+        "cleric": {
+          "name": "Cleric (giáo sĩ)",
+          "body": "Chu đáo, có đức tin và vững vàng. Bạn giữ cả nhóm gắn kết, chữa lành những gì tổn thương và lấy sức mạnh từ một điều lớn lao hơn bản thân."
+        },
+        "druid": {
+          "name": "Druid (tu sĩ tự nhiên)",
+          "body": "Điềm tĩnh, thông thái và gắn bó với thiên nhiên. Bạn thấy thoải mái nhất khi ở ngoài trời, suy nghĩ theo những chu kỳ dài và bảo vệ sự cân bằng mà người khác hay quên."
+        },
+        "fighter": {
+          "name": "Fighter (chiến binh)",
+          "body": "Kỷ luật, thực tế và đáng tin cậy. Bạn luyện tập, lên kế hoạch và giữ vững trận tuyến. Không phô trương, chỉ có kỹ năng chắc chắn giữ cho mọi người sống sót."
+        },
+        "monk": {
+          "name": "Monk (võ tăng)",
+          "body": "Tập trung, kiên nhẫn và tự giác. Bạn coi trọng sự cân bằng và bình yên nội tâm, và khi đã ra tay thì nhanh hơn bất kỳ ai tưởng."
+        },
+        "paladin": {
+          "name": "Paladin (thánh kỵ sĩ)",
+          "body": "Có nguyên tắc, dũng cảm và biết che chở. Bạn sống theo một quy tắc, đứng ra bảo vệ những người không thể tự vệ và giữ lời hứa kể cả khi phải trả giá."
+        },
+        "ranger": {
+          "name": "Ranger (du hiệp)",
+          "body": "Độc lập, tinh ý và thoải mái giữa thiên nhiên hoang dã. Bạn nhận ra điều người khác bỏ lỡ, thích vùng đất rộng mở hơn thành phố đông đúc và chính xác chết người khi cần."
+        },
+        "rogue": {
+          "name": "Rogue (đạo tặc)",
+          "body": "Lanh lợi, nhanh nhẹn và độc lập. Bạn đọc vị cả căn phòng trong vài giây, tìm ra lối vào cửa sau và coi trọng tự do hơn luật lệ của bất kỳ ai."
+        },
+        "sorcerer": {
+          "name": "Sorcerer (pháp sư bẩm sinh)",
+          "body": "Có thiên phú, giàu cảm xúc và hơi khó đoán. Tài năng đến với bạn một cách tự nhiên và vận hành bằng cảm xúc, và học cách kiểm soát nó là cuộc phiêu lưu cả đời bạn."
+        },
+        "warlock": {
+          "name": "Warlock (pháp sư khế ước)",
+          "body": "Bí ẩn, tò mò và đầy tham vọng. Bạn bị cuốn hút bởi bí mật và tri thức ẩn giấu, và sẵn sàng thực hiện những giao kèo táo bạo để có được điều mình muốn."
+        },
+        "wizard": {
+          "name": "Wizard (pháp sư)",
+          "body": "Tò mò, giỏi phân tích và luôn học hỏi. Bạn tin rằng kiến thức đúng sẽ giải quyết mọi vấn đề, và sẵn lòng thức trắng đêm đọc sách để tìm ra nó."
+        }
+      }
+    },
+    "naruto": {
+      "title": "Bạn là nhân vật Naruto nào? Trắc nghiệm tính cách Naruto — cv.cm",
+      "description": "Trắc nghiệm Naruto miễn phí: trả lời 12 câu hỏi để biết bạn là Naruto, Sasuke, Sakura, Kakashi, Hinata, Shikamaru, Gaara, Itachi, Rock Lee hay Jiraiya. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Naruto nào?",
+      "lede": "Không bao giờ bỏ cuộc như Naruto, tính trước mười nước như Shikamaru hay điềm tĩnh, khó đoán như Itachi? Trả lời 12 câu hỏi để tìm nhân vật hợp với bạn trong mười nhân vật của Naruto.",
+      "about": [
+        "Các ninja trong Naruto đáng nhớ vì mỗi người có một cách sống rõ ràng: Naruto không bao giờ bỏ cuộc, Sasuke kiêu hãnh, Rock Lee chăm chỉ, Shikamaru thiên tài lười biếng, Hinata dũng cảm thầm lặng. Bài trắc nghiệm xem ước mơ, thói quen và cách bạn đối xử với đối thủ, rồi chấm điểm mười nhân vật.",
+        "Kết quả cho biết nhân vật hợp với bạn nhất và điểm của bạn với những nhân vật còn lại. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Masashi Kishimoto, Shueisha hay Studio Pierrot bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Naruto là ai?",
+          "a": "Đội 7: Naruto Uzumaki, Sasuke Uchiha, Sakura Haruno và thầy của họ là Kakashi Hatake. Hinata, Shikamaru, Gaara, Rock Lee, Itachi và Jiraiya là những nhân vật được yêu thích nhất trong số còn lại."
+        },
+        {
+          "q": "Bài trắc nghiệm có tiết lộ nội dung (spoil) không?",
+          "a": "Chỉ một chút. Câu hỏi và kết quả mô tả tính cách nhân vật, không tiết lộ các cú twist trong cốt truyện."
+        },
+        {
+          "q": "Sao nhân vật tôi thích không có trong kết quả?",
+          "a": "Mười kết quả giúp bài trắc nghiệm ngắn gọn. Nếu nhân vật đứng thứ hai sát điểm, nhân vật đó cũng hợp với bạn."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, câu trả lời được chấm điểm trong trình duyệt và không bao giờ được lưu."
+        }
+      ],
+      "items": [
+        {
+          "q": "Ước mơ của bạn:",
+          "options": [
+            "Được mọi người trong làng công nhận",
+            "Thanh toán món nợ từ quá khứ",
+            "Mạnh như những người mình ngưỡng mộ",
+            "Đi khắp thế giới và viết một cuốn sách bán chạy về nó"
+          ]
+        },
+        {
+          "q": "Bạn học thế nào?",
+          "options": [
+            "Chăm chỉ thắng tài năng: luyện đến khi gục",
+            "Làm tối thiểu mà vẫn điểm cao",
+            "Học chăm và đứng đầu bài thi viết",
+            "Đến muộn, tay cầm cuốn sách không nên đọc nơi công cộng"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Không bao giờ bỏ cuộc, kể cả khi tưởng chừng vô vọng",
+            "Tính trước mười nước",
+            "Dựng hàng phòng thủ không gì phá nổi",
+            "Kết thúc trước cả khi nó bắt đầu"
+          ]
+        },
+        {
+          "q": "Tóm gọn tính cách của bạn:",
+          "options": [
+            "Ồn ào và vui vẻ",
+            "Lạnh lùng và xa cách",
+            "Nhút nhát, nhưng dũng cảm khi cần",
+            "Thong thả và khó bị lay động"
+          ]
+        },
+        {
+          "q": "Câu chuyện nào gần với bạn nhất?",
+          "options": [
+            "Tôi từng cô đơn rất lâu; giờ đã có những người cần tôi",
+            "Tôi mang một gánh nặng không thể chia sẻ với ai",
+            "Tôi luôn đứng trong cái bóng của ai đó, nên tôi luyện tập chăm hơn",
+            "Tôi đã mất những người thân yêu, và điều đó tạo nên con người tôi"
+          ]
+        },
+        {
+          "q": "Chọn một thứ bạn thích:",
+          "options": [
+            "Một tô ramen thật to",
+            "Ngắm mây trôi",
+            "Ép hoa khô",
+            "Ngâm mình thật lâu trong suối nước nóng"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Nhà chiến lược",
+            "Ninja y tế đấm vỡ cả tường",
+            "Người thầy dạy bằng những câu chuyện",
+            "Con sói đơn độc"
+          ]
+        },
+        {
+          "q": "Bạn đối phó với đối thủ thế nào?",
+          "options": [
+            "Thách đấu họ mỗi ngày",
+            "Lặng lẽ đảm bảo mình vượt qua họ",
+            "Cổ vũ họ từ xa",
+            "Cố hiểu điều gì đã khiến họ thành ra như vậy"
+          ]
+        },
+        {
+          "q": "Tính khí của bạn:",
+          "options": [
+            "Bên ngoài điềm tĩnh, bị dồn ép thì ra đòn rất đau",
+            "Lười biếng cho đến khi mọi chuyện nghiêm trọng",
+            "Tôi không bao giờ to tiếng",
+            "Lúc nào cũng sôi sục nhiệt huyết"
+          ]
+        },
+        {
+          "q": "Chọn một phong cách chiến đấu:",
+          "options": [
+            "Cát tự che chắn cho bạn",
+            "Lưỡi kiếm sấm sét",
+            "Những đòn chưởng chính xác",
+            "Ảo thuật kẻ thù không thể thoát ra"
+          ]
+        },
+        {
+          "q": "Bạn coi trọng điều gì nhất?",
+          "options": [
+            "Người dân trong làng",
+            "Gia đình, trên hết mọi thứ",
+            "Con đường của riêng mình",
+            "Trải nghiệm và tự do"
+          ]
+        },
+        {
+          "q": "Điểm yếu của bạn:",
+          "options": [
+            "Lì đến mức không bao giờ bỏ cuộc",
+            "Quá để tâm người khác nghĩ gì",
+            "Thiếu tự tin vào bản thân",
+            "Dễ bị cuốn theo cuộc vui"
+          ]
+        }
+      ],
+      "dims": {
+        "naruto": "Naruto",
+        "sasuke": "Sasuke",
+        "sakura": "Sakura",
+        "kakashi": "Kakashi",
+        "hinata": "Hinata",
+        "shikamaru": "Shikamaru",
+        "gaara": "Gaara",
+        "itachi": "Itachi",
+        "lee": "Rock Lee",
+        "jiraiya": "Jiraiya"
+      },
+      "results": {
+        "naruto": {
+          "name": "Naruto Uzumaki",
+          "body": "Ồn ào, ấm áp và không gì làm nản lòng được. Bạn không bao giờ bỏ cuộc, không bao giờ nuốt lời, và chinh phục người khác vì chính bạn cũng không bao giờ từ bỏ họ."
+        },
+        "sasuke": {
+          "name": "Sasuke Uchiha",
+          "body": "Tài năng, kiêu hãnh và cực kỳ độc lập. Bạn giữ kín cảm xúc và đi con đường của riêng mình, và một khi đã đặt mục tiêu thì không gì kéo bạn ra khỏi nó."
+        },
+        "sakura": {
+          "name": "Sakura Haruno",
+          "body": "Thông minh, chăm chỉ và mạnh hơn người ta tưởng. Bạn học hành, ép bản thân theo kịp những người mình ngưỡng mộ và tung cú đấm ra trò khi bị dồn ép."
+        },
+        "kakashi": {
+          "name": "Kakashi Hatake",
+          "body": "Thư thái, tinh ý và tài giỏi một cách lặng lẽ. Bạn luôn đến muộn một chút và khó bị lay động, nhưng không bao giờ bỏ rơi đồng đội, vì bạn biết mất đi người thân đau đớn thế nào."
+        },
+        "hinata": {
+          "name": "Hinata Hyuga",
+          "body": "Dịu dàng, nhút nhát và dũng cảm hơn bất kỳ ai nhận ra. Bạn lặng lẽ cổ vũ người khác, không ngừng trưởng thành theo cách riêng và đứng vững khi thật sự cần."
+        },
+        "shikamaru": {
+          "name": "Shikamaru Nara",
+          "body": "Một thiên tài lười biếng. Bạn thà ngắm mây còn hơn làm việc, nhưng khi cần thì nhìn trước mười nước và nghĩ ra kế hoạch mà cả nhóm làm theo."
+        },
+        "gaara": {
+          "name": "Gaara",
+          "body": "Trầm lặng, biết che chở và rất thấu hiểu. Bạn từng nếm trải cô đơn, nên bạn để ý đến người khác và cố hiểu họ trước khi phán xét."
+        },
+        "itachi": {
+          "name": "Itachi Uchiha",
+          "body": "Điềm tĩnh, tài năng và khó đoán. Bạn không bao giờ to tiếng, luôn tính trước vài nước và giữ cảm xúc cho riêng mình. Ít ai thấy được bạn đang gánh bao nhiêu."
+        },
+        "lee": {
+          "name": "Rock Lee",
+          "body": "Chăm chỉ, sôi nổi và chân thành. Bạn chứng minh rằng nỗ lực thắng tài năng, luyện tập chăm hơn bất kỳ ai và coi mỗi đối thủ là lý do để tiến bộ."
+        },
+        "jiraiya": {
+          "name": "Jiraiya",
+          "body": "Phóng khoáng, hài hước và thông thái. Bạn đã thấy nhiều điều trên đời, dạy bằng những câu chuyện và tin vào thế hệ sau hơn cả chính họ tin vào mình."
+        }
+      }
+    },
+    "demon-slayer": {
+      "title": "Bạn hợp Hơi thở nào? Test Kimetsu no Yaiba (Thanh gươm diệt quỷ) — cv.cm",
+      "description": "Test Kimetsu no Yaiba miễn phí: trả lời 12 câu hỏi để biết Hơi thở hợp với bạn (Nước, Lửa, Sấm, Thú, Côn trùng, Gió, Sương mù, Tình yêu, Âm thanh hay Đá) và nhân vật Thanh gươm diệt quỷ có cùng Hơi thở. Không cần đăng ký.",
+      "h1": "Bạn hợp Hơi thở nào trong Kimetsu no Yaiba?",
+      "lede": "Bạn sẽ uyển chuyển như Nước, rực cháy như Lửa hay đánh nhanh như Sấm? Trả lời 12 câu hỏi về tính cách để tìm Hơi thở, và kiếm sĩ, hợp với bạn.",
+      "about": [
+        "Trong Kimetsu no Yaiba (Thanh gươm diệt quỷ), các kiếm sĩ chiến đấu bằng Hơi thở. Nước, Lửa, Sấm, Gió và Đá là những Hơi thở chính; những Hơi thở khác như Côn trùng, Sương mù, Tình yêu và Âm thanh được phân nhánh từ đó, còn Inosuke tự sáng tạo ra Hơi thở của Thú.",
+        "Mỗi Hơi thở hợp với một khí chất riêng, nên bài trắc nghiệm xem cách bạn đối mặt với áp lực, luyện tập và quan tâm người khác. Kết quả cho biết Hơi thở, nhân vật sử dụng nó và điểm của bạn ở cả mười Hơi thở. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Koyoharu Gotouge, Shueisha, Aniplex hay ufotable bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Kimetsu no Yaiba có bao nhiêu Hơi thở?",
+          "a": "Truyện có hơn một chục Hơi thở. Hơi thở của Mặt Trời là khởi nguồn; Nước, Lửa, Sấm, Gió và Đá là các Hơi thở chính, và nhiều Hơi thở khác được phân nhánh từ đó."
+        },
+        {
+          "q": "Tanjiro dùng Hơi thở nào?",
+          "a": "Tanjiro học Hơi thở của Nước, sau đó dùng thêm Hinokami Kagura (Vũ điệu Thần Lửa), điệu múa gia đình cậu truyền lại, có liên hệ với Hơi thở của Mặt Trời."
+        },
+        {
+          "q": "Sao không có kết quả Hơi thở của Mặt Trời?",
+          "a": "Hơi thở của Mặt Trời là Hơi thở khởi nguồn và chỉ vài nhân vật từng sử dụng, nên bài trắc nghiệm chỉ gồm các Hơi thở mà kiếm sĩ thực sự luyện tập."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Khi bị áp lực, bạn…",
+          "options": [
+            "Thích nghi và uốn lượn quanh vấn đề",
+            "Hoảng loạn, rồi tung ra một đòn hoàn hảo",
+            "Lao thẳng vào, vừa lao vừa hét",
+            "Vẫn bình tĩnh, có khi hơi lơ đãng"
+          ]
+        },
+        {
+          "q": "Bạn bè mô tả bạn là…",
+          "options": [
+            "Ấm áp và hay động viên",
+            "Dịu dàng, nhưng sắc sảo",
+            "Bề ngoài thô ráp, bên trong hết lòng che chở",
+            "Hào nhoáng"
+          ]
+        },
+        {
+          "q": "Bạn luyện tập thế nào?",
+          "options": [
+            "Một chiêu duy nhất, tập hàng nghìn lần",
+            "Giữa núi rừng, theo cách của riêng mình",
+            "Kiên nhẫn, suốt nhiều năm",
+            "Chẳng cần nhiều: tôi học xong trong hai tháng"
+          ]
+        },
+        {
+          "q": "Chọn một bữa ăn:",
+          "options": [
+            "Một chồng bánh mochi anh đào cao ngất",
+            "Khoai lang, mỗi miếng lại hô to “Ngon!”",
+            "Món gì tự tay mình bắt được",
+            "Cơm đơn giản và một tách trà"
+          ]
+        },
+        {
+          "q": "Bạn thể hiện tình yêu thế nào?",
+          "options": [
+            "Công khai, lúc nào cũng thể hiện",
+            "Bảo vệ họ quyết liệt mà không bao giờ nói ra",
+            "Bằng một cử chỉ hoành tráng, đầy kịch tính",
+            "Bằng những lời cầu nguyện thầm lặng và vài giọt nước mắt"
+          ]
+        },
+        {
+          "q": "Điểm mạnh lớn nhất của bạn:",
+          "options": [
+            "Lòng tốt",
+            "Lòng dũng cảm",
+            "Trí tuệ",
+            "Sức mạnh thuần túy"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Nhát gan cho đến đúng lúc quan trọng",
+            "Hay quên tên người, có khi quên cả mình vào đây làm gì",
+            "Nụ cười che giấu cơn giận của bạn",
+            "Không làm được việc gì một cách lặng lẽ"
+          ]
+        },
+        {
+          "q": "Nơi nào cho bạn cảm giác như ở nhà?",
+          "options": [
+            "Bên dòng suối trên núi",
+            "Sâu trong rừng",
+            "Khu vườn hoa tử đằng và bươm bướm",
+            "Ngôi chùa yên tĩnh trên núi"
+          ]
+        },
+        {
+          "q": "Điều gì giúp bạn tiếp tục?",
+          "options": [
+            "Bảo vệ gia đình",
+            "Sống xứng đáng với những người đã tin tưởng mình",
+            "Tìm được người để yêu",
+            "Tiêu diệt đến mối nguy cuối cùng"
+          ]
+        },
+        {
+          "q": "Chọn một phong cách thẩm mỹ:",
+          "options": [
+            "Hồng và xanh lá, mềm mại như dải ruy băng",
+            "Vàng, họa tiết tia chớp",
+            "Đá quý, vàng ròng và một chút thuốc nổ",
+            "Sương mù phủ trên núi"
+          ]
+        },
+        {
+          "q": "Trong đội, bạn…",
+          "options": [
+            "Hô to “Hãy đốt cháy trái tim mình!” và thúc mọi người tiến lên",
+            "Lập kế hoạch, thật hoành tráng",
+            "Đánh mạnh hơn bất kỳ ai",
+            "Nghiên cứu và pha chế thuốc"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn là…",
+          "options": [
+            "Một tia chớp bất chợt",
+            "Tình cảm tràn trề",
+            "Một cơn bão",
+            "Trôi lững lờ, như mây"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Nước",
+        "flame": "Lửa",
+        "thunder": "Sấm",
+        "beast": "Thú",
+        "insect": "Côn trùng",
+        "wind": "Gió",
+        "mist": "Sương mù",
+        "love": "Tình yêu",
+        "sound": "Âm thanh",
+        "stone": "Đá"
+      },
+      "results": {
+        "water": {
+          "name": "Hơi thở của Nước · Tanjiro Kamado, Giyu Tomioka",
+          "body": "Tốt bụng, linh hoạt và bình tĩnh trước áp lực. Bạn uốn quanh vấn đề thay vì đập vỡ nó, và sẽ làm mọi thứ để bảo vệ gia đình."
+        },
+        "flame": {
+          "name": "Hơi thở của Lửa · Kyojuro Rengoku",
+          "body": "Ấm áp, dũng cảm và hết lòng. Bạn động viên mọi người xung quanh, ăn uống ngon lành và sống xứng đáng với những người đã tin tưởng bạn. Hãy đốt cháy trái tim mình."
+        },
+        "thunder": {
+          "name": "Hơi thở của Sấm · Zenitsu Agatsuma",
+          "body": "Run rẩy cho đến đúng lúc quan trọng, rồi tỏa sáng. Bạn có thể nghi ngờ bản thân ra mặt, nhưng bạn đã luyện một thứ đến mức hoàn hảo, và vậy là đủ."
+        },
+        "beast": {
+          "name": "Hơi thở của Thú · Inosuke Hashibira",
+          "body": "Hoang dã, hiếu thắng và tự học. Bạn học bằng cách làm, lao thẳng vào mọi thử thách và trung thành với bạn bè hơn bạn chịu thừa nhận."
+        },
+        "insect": {
+          "name": "Hơi thở của Côn trùng · Shinobu Kocho",
+          "body": "Dịu dàng, thông minh và sắc sảo hơn vẻ ngoài. Bạn mỉm cười trước mọi chuyện, giải quyết vấn đề bằng kiến thức và sự quan tâm, và giữ một ngọn lửa âm thầm cháy bên trong."
+        },
+        "wind": {
+          "name": "Hơi thở của Gió · Sanemi Shinazugawa",
+          "body": "Dữ dội, thẳng thừng và hết mực che chở. Bề ngoài bạn trông thô ráp, nhưng mọi điều bạn làm đều để giữ an toàn cho những người bạn yêu thương."
+        },
+        "mist": {
+          "name": "Hơi thở của Sương mù · Muichiro Tokito",
+          "body": "Điềm tĩnh, tài năng và hơi mơ màng. Bạn học rất nhanh, dễ thả hồn đi đâu đó và khiến mọi người bất ngờ khi bỗng tập trung cao độ."
+        },
+        "love": {
+          "name": "Hơi thở của Tình yêu · Mitsuri Kanroji",
+          "body": "Giàu tình cảm, cởi mở và mạnh hơn vẻ ngoài. Bạn sống thật với cảm xúc, mê đồ ăn ngon và bạn bè vui vẻ, và sự ấm áp chính là sức mạnh của bạn."
+        },
+        "sound": {
+          "name": "Hơi thở của Âm thanh · Tengen Uzui",
+          "body": "Hào nhoáng, tự tin và đầy phong cách. Bạn làm gì cũng phải thật chất, lập kế hoạch táo bạo và bảo vệ những người thân thiết nhất trên hết mọi thứ."
+        },
+        "stone": {
+          "name": "Hơi thở của Đá · Gyomei Himejima",
+          "body": "Một người khổng lồ hiền lành. Bạn kiên nhẫn, giàu lòng trắc ẩn và không gì lay chuyển, và sức mạnh thầm lặng của bạn là chỗ dựa cho mọi người khi khó khăn."
+        }
+      }
+    },
+    "jujutsu-kaisen": {
+      "title": "Test Jujutsu Kaisen: bạn là nhân vật JJK nào? — cv.cm",
+      "description": "Test Jujutsu Kaisen (Chú thuật hồi chiến) miễn phí: trả lời 12 câu hỏi để biết bạn là Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Satoru Gojo, Kento Nanami, Maki Zenin, Toge Inumaki hay Aoi Todo. Không cần đăng ký.",
+      "h1": "Bạn là nhân vật Jujutsu Kaisen nào?",
+      "lede": "Một chiến binh tốt bụng như Yuji, người suy tính cẩn trọng như Megumi hay kẻ mạnh nhất như Gojo? Trả lời 12 câu hỏi để tìm nhân vật hợp với bạn trong tám chú thuật sư của Jujutsu Kaisen.",
+      "about": [
+        "Các chú thuật sư trong Jujutsu Kaisen nổi bật nhờ tính cách không kém gì thuật thức: trái tim lớn của Yuji, sự thận trọng của Megumi, sự tự tin của Nobara, vẻ kiêu ngạo tinh nghịch của Gojo, nỗi ghét làm thêm giờ của Nanami, quyết tâm chứng tỏ bản thân của Maki, sự kiệm lời của Toge và những đam mê rất cụ thể của Todo.",
+        "Bài trắc nghiệm chấm điểm cả tám nhân vật, cho biết nhân vật hợp nhất và những người theo sát. Bài không tiết lộ cốt truyện. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Gege Akutami, Shueisha hay MAPPA bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Các nhân vật chính trong Jujutsu Kaisen là ai?",
+          "a": "Ba học sinh năm nhất Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki và thầy của họ là Satoru Gojo. Kento Nanami, Maki Zenin, Toge Inumaki và Aoi Todo là những chú thuật sư được yêu thích nhất."
+        },
+        {
+          "q": "Sao Toge Inumaki chỉ nói tên nhân cơm nắm?",
+          "a": "Cậu dùng Chú Ngôn, nên bất cứ điều gì cậu nói đều có thể thành mệnh lệnh. Cậu chỉ nói tên nhân cơm nắm như “cá hồi” hay “cá ngừ bào” để trò chuyện an toàn."
+        },
+        {
+          "q": "Bài trắc nghiệm có tiết lộ nội dung (spoil) không?",
+          "a": "Không. Câu hỏi và kết quả chỉ mô tả tính cách và chi tiết ở phần đầu truyện."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn không được lưu lại."
+        }
+      ],
+      "items": [
+        {
+          "q": "Ngày đầu tiên ở trường mới. Bạn…",
+          "options": [
+            "Kết bạn với tất cả mọi người",
+            "Lặng lẽ quan sát từng người",
+            "Xuất hiện thật ấn tượng để ai cũng nhớ",
+            "Hỏi từng người xem họ thích mẫu người thế nào"
+          ]
+        },
+        {
+          "q": "Phong cách làm việc của bạn:",
+          "options": [
+            "Tan làm đúng giờ. Làm thêm giờ là kẻ thù",
+            "Làm điều không thể, rồi khoe khoang về nó",
+            "Làm gấp đôi để chứng minh những kẻ nghi ngờ đã sai",
+            "Nói ít, làm nhiều"
+          ]
+        },
+        {
+          "q": "Khiếu hài hước của bạn:",
+          "options": [
+            "Tinh nghịch và hơi tự mãn",
+            "Khô khan và châm biếm",
+            "Xoay quanh những đam mê rất cụ thể",
+            "Chỉ một từ là đủ khiến người ta bật cười"
+          ]
+        },
+        {
+          "q": "Sức mạnh của bạn đến từ đâu?",
+          "options": [
+            "Những người xung quanh",
+            "Là chính mình, không cần xin lỗi ai",
+            "Chứng minh mình không cần thứ người khác sinh ra đã có",
+            "Biết rằng mình là kẻ mạnh nhất"
+          ]
+        },
+        {
+          "q": "Chọn một bạn đồng hành:",
+          "options": [
+            "Một chú chó trung thành",
+            "Một nắm cơm",
+            "Cây búa và một nắm đinh",
+            "Một cuốn sách hay trong quán cà phê yên tĩnh"
+          ]
+        },
+        {
+          "q": "Khuyết điểm của bạn:",
+          "options": [
+            "Lúc nào cũng đặt bản thân cuối cùng",
+            "Nghĩ quá nhiều",
+            "Hơi quá ý thức về việc mình giỏi đến đâu",
+            "Không ngừng nói về idol yêu thích"
+          ]
+        },
+        {
+          "q": "Trong trận chiến, bạn…",
+          "options": [
+            "Đấm trước, hỏi sau",
+            "Vớ lấy vũ khí. Vũ khí gì cũng được",
+            "Gọi viện binh",
+            "Nói một từ là xong"
+          ]
+        },
+        {
+          "q": "Bạn cứu ai?",
+          "options": [
+            "Tất cả những ai tôi cứu được",
+            "Những người tôi thấy xứng đáng",
+            "Ai mà công việc yêu cầu, làm cho đàng hoàng, rồi về nhà",
+            "Tôi làm theo cách của tôi, ai nói gì cũng mặc"
+          ]
+        },
+        {
+          "q": "Cuối tuần lý tưởng của bạn:",
+          "options": [
+            "Mua sắm ở thành phố lớn",
+            "Tập luyện ngoài trời",
+            "Buổi bắt tay fan của idol yêu thích",
+            "Đi một vòng mọi tiệm đồ ngọt trong thành phố"
+          ]
+        },
+        {
+          "q": "Bạn là kiểu người dẫn dắt nào?",
+          "options": [
+            "Người thầy ai cũng ngưỡng mộ",
+            "Người lớn đáng tin cậy trong phòng",
+            "Người trầm lặng giữ an toàn cho mọi người",
+            "Tôi thà tự mình xử lý"
+          ]
+        },
+        {
+          "q": "Chuyện gia đình bạn:",
+          "options": [
+            "Phức tạp. Tôi rời đi để tự tạo dựng tên tuổi",
+            "Được ông bà nuôi lớn, và tôi sẽ không bao giờ quên lời trăng trối",
+            "Bạn thân là anh em ruột của tôi, ít nhất là theo tôi nghĩ",
+            "Bạn bè là gia đình của tôi"
+          ]
+        },
+        {
+          "q": "Phương châm của bạn:",
+          "options": [
+            "“Không làm thêm một phút nào ngoài giờ được trả lương”",
+            "“Cứ ồn ào, cứ tự hào”",
+            "“Chứng minh họ đã sai”",
+            "“Anh em trọn đời”"
+          ]
+        }
+      ],
+      "dims": {
+        "yuji": "Yuji",
+        "megumi": "Megumi",
+        "nobara": "Nobara",
+        "gojo": "Gojo",
+        "nanami": "Nanami",
+        "maki": "Maki",
+        "toge": "Toge",
+        "todo": "Todo"
+      },
+      "results": {
+        "yuji": {
+          "name": "Yuji Itadori",
+          "body": "Tốt bụng, dũng cảm và thể lực phi thường. Bạn dễ kết bạn, đặt người khác lên trước bản thân và cố giúp tất cả những ai có thể, đúng như lời ông bạn dặn."
+        },
+        "megumi": {
+          "name": "Megumi Fushiguro",
+          "body": "Nghiêm túc, cẩn trọng và trung thành một cách lặng lẽ. Bạn nghĩ trước khi làm, biết chọn trận để đánh và giữ một vài người thật gần, cùng mấy chú chó của mình."
+        },
+        "nobara": {
+          "name": "Nobara Kugisaki",
+          "body": "Tự tin, táo bạo và tự hào là chính mình. Bạn lên thành phố lớn để sống theo cách của mình, nghĩ gì nói nấy và không bao giờ thu mình lại để vừa khuôn."
+        },
+        "gojo": {
+          "name": "Satoru Gojo",
+          "body": "Tinh nghịch, xuất chúng và cực kỳ tự tin. Bạn khiến điều không thể trông thật dễ dàng, mê đồ ngọt và muốn đào tạo một thế hệ mạnh hơn thế hệ trước."
+        },
+        "nanami": {
+          "name": "Kento Nanami",
+          "body": "Có nguyên tắc, hay châm biếm và cực kỳ đáng tin. Bạn làm việc đến nơi đến chốn, ghét làm thêm giờ và là người lớn mà ai cũng ngầm dựa vào."
+        },
+        "maki": {
+          "name": "Maki Zenin",
+          "body": "Cứng cỏi, quyết tâm và không ai dám xem thường lần thứ hai. Bạn phải chứng tỏ bản thân mà không có thứ người khác sinh ra đã có, và bạn đã làm được bằng sự chăm chỉ."
+        },
+        "toge": {
+          "name": "Toge Inumaki",
+          "body": "Tốt bụng, trung thành và kiệm lời. Bạn chọn lời cẩn thận vì lời nói của bạn có sức nặng, và bạn bè hiểu rõ bạn quan tâm họ nhiều thế nào."
+        },
+        "todo": {
+          "name": "Aoi Todo",
+          "body": "Lập dị, mãnh liệt và là người bạn tuyệt vời một khi đã thân. Bạn có quan điểm rất rõ về mẫu người mình thích và idol của mình, và sẵn sàng chiến đấu bên “người anh em” mãi mãi."
+        }
+      }
+    },
+    "avatar-element": {
+      "title": "Bạn thuộc nguyên tố nào? Trắc nghiệm Avatar: Tiết khí sư cuối cùng — cv.cm",
+      "description": "Trắc nghiệm Avatar: The Last Airbender (Tiết khí sư cuối cùng) miễn phí: trả lời 12 câu hỏi để biết bạn sẽ điều khiển Nước, Đất, Lửa hay Khí, và những bậc thầy cùng nguyên tố với bạn. Không cần đăng ký.",
+      "h1": "Bạn sẽ điều khiển nguyên tố nào trong Avatar?",
+      "lede": "Nước, Đất, Lửa hay Khí? Trả lời 12 câu hỏi về cách bạn đối mặt với vấn đề và đối xử với mọi người để biết bạn thuộc về quốc gia nào trong bốn quốc gia của Avatar: The Last Airbender.",
+      "about": [
+        "Trong Avatar: The Last Airbender (Tiết khí sư cuối cùng), mỗi môn điều khiển nguyên tố phản ánh một lối sống: Nước là nguyên tố của sự thay đổi và cộng đồng, Đất của sức mạnh và sự bền bỉ, Lửa của động lực và ý chí, Khí của tự do và sự buông bỏ. Bài trắc nghiệm ghép thói quen của bạn với những triết lý đó.",
+        "Kết quả cho biết nguyên tố của bạn, những nhân vật nổi tiếng cùng nguyên tố và điểm của bạn ở cả bốn. Đây là bài trắc nghiệm fan không chính thức do cv.cm biên soạn. Bài không liên kết với, cũng không được Nickelodeon hay Paramount bảo trợ; các tên gọi thuộc về chủ sở hữu tương ứng."
+      ],
+      "faq": [
+        {
+          "q": "Bốn nguyên tố trong Avatar là gì?",
+          "a": "Nước, Đất, Lửa và Khí, mỗi nguyên tố gắn với một quốc gia: Thủy Tộc, Thổ Quốc, Hỏa Quốc và Khí Tộc du mục. Avatar là người duy nhất điều khiển được cả bốn."
+        },
+        {
+          "q": "Nguyên tố nào mạnh nhất?",
+          "a": "Không nguyên tố nào cả. Bộ phim xem chúng cân bằng nhau, mỗi nguyên tố có thế mạnh riêng, và Avatar phải học cả bốn."
+        },
+        {
+          "q": "Tôi có thể là người không điều khiển được nguyên tố không?",
+          "a": "Trong phim, phần lớn mọi người hoàn toàn không điều khiển được nguyên tố, và Sokka đã chứng minh bạn không cần đến điều đó. Bài trắc nghiệm này luôn chọn nguyên tố hợp với bạn nhất."
+        },
+        {
+          "q": "Bài trắc nghiệm này có chính thức không?",
+          "a": "Không. Đây là bài trắc nghiệm fan miễn phí, và câu trả lời của bạn chỉ nằm trong trình duyệt."
+        }
+      ],
+      "items": [
+        {
+          "q": "Bạn bè tìm đến bạn để…",
+          "options": [
+            "Được an ủi khi mọi thứ đổ vỡ",
+            "Nghe lời thẳng thắn và sự ủng hộ vững vàng",
+            "Có động lực để dám làm",
+            "Có một góc nhìn mới mẻ"
+          ]
+        },
+        {
+          "q": "Chọn một nơi:",
+          "options": [
+            "Thành phố lớn có tường thành bao quanh",
+            "Ngôi đền trên núi cao",
+            "Ngôi làng trên băng bên bờ biển",
+            "Hòn đảo núi lửa"
+          ]
+        },
+        {
+          "q": "Gặp vấn đề, bạn…",
+          "options": [
+            "Tấn công trực diện",
+            "Đứng vững và chờ đúng thời điểm",
+            "Tránh đối đầu nếu được và tìm cách khác",
+            "Thích nghi và tìm đường vòng qua"
+          ]
+        },
+        {
+          "q": "Bạn coi trọng điều gì nhất?",
+          "options": [
+            "Tự do và hòa bình",
+            "Gia đình và cộng đồng",
+            "Sự trung thực và lòng trung thành",
+            "Tham vọng và danh dự"
+          ]
+        },
+        {
+          "q": "Khuyết điểm lớn nhất của bạn:",
+          "options": [
+            "Để bụng lâu hơn bạn chịu thừa nhận",
+            "Nóng tính",
+            "Trốn tránh trách nhiệm",
+            "Cứng đầu như đá"
+          ]
+        },
+        {
+          "q": "Chọn một thú cưng:",
+          "options": [
+            "Con lửng chũi khổng lồ hiền lành",
+            "Chú chó vùng cực trung thành",
+            "Một con rồng",
+            "Con vượn cáo biết bay"
+          ]
+        },
+        {
+          "q": "Năng lượng của bạn là…",
+          "options": [
+            "Mãnh liệt",
+            "Nhẹ nhàng và tinh nghịch",
+            "Bề mặt tĩnh lặng, bên dưới sâu thẳm",
+            "Vững chãi và kiên nhẫn"
+          ]
+        },
+        {
+          "q": "Bạn bè làm bạn thất vọng. Bạn…",
+          "options": [
+            "Bỏ qua và bước tiếp",
+            "Nói thẳng cho họ biết họ đã làm gì",
+            "Nổi nóng, rồi nguội đi cũng nhanh như thế",
+            "Đau lòng sâu sắc, rồi dần dần tha thứ"
+          ]
+        },
+        {
+          "q": "Chọn một thời điểm trong ngày:",
+          "options": [
+            "Ban đêm, dưới trăng tròn",
+            "Chiều muộn, có làn gió nhẹ",
+            "Giữa trưa, chân đứng trên đất vững",
+            "Bình minh"
+          ]
+        },
+        {
+          "q": "Vai trò của bạn trong đội:",
+          "options": [
+            "Bức tường không bao giờ lay chuyển",
+            "Người thúc cả đội tiến lên",
+            "Người giảng hòa",
+            "Người chữa lành"
+          ]
+        },
+        {
+          "q": "Chọn một sở thích:",
+          "options": [
+            "Võ thuật",
+            "Bơi lội hoặc lướt sóng",
+            "Vật hoặc leo núi đá",
+            "Bay lượn, hoặc bất cứ thứ gì có tầm nhìn đẹp"
+          ]
+        },
+        {
+          "q": "Bạn sẽ chiến đấu vì điều gì?",
+          "options": [
+            "Sự cân bằng của thế giới",
+            "Danh dự",
+            "Những người dựa vào bạn",
+            "Quê hương"
+          ]
+        }
+      ],
+      "dims": {
+        "water": "Nước",
+        "earth": "Đất",
+        "fire": "Lửa",
+        "air": "Khí"
+      },
+      "results": {
+        "water": {
+          "name": "Thủy thuật sư (Waterbender)",
+          "body": "Linh hoạt, chu đáo và sâu sắc hơn vẻ ngoài. Bạn thuận theo dòng chảy cho đến khi có điều quan trọng, lúc đó không gì cản nổi bạn, và bạn sẽ làm mọi thứ vì gia đình và cộng đồng. Cùng điều khiển Nước: Katara và Korra."
+        },
+        "earth": {
+          "name": "Thổ thuật sư (Earthbender)",
+          "body": "Vững chãi, thật thà và cứng đầu theo cách tốt nhất. Bạn chờ đúng thời điểm, giữ vững lập trường và không bao giờ giả vờ là ai khác. Cùng điều khiển Đất: Toph Beifong và Vua Bumi."
+        },
+        "fire": {
+          "name": "Hỏa thuật sư (Firebender)",
+          "body": "Đầy động lực, nhiệt huyết và giàu ý chí. Bạn theo đuổi mục tiêu quyết liệt và cảm nhận mọi thứ mãnh liệt, và bạn đã học được rằng sức mạnh thật sự đến từ sự cân bằng. Cùng điều khiển Lửa: Zuko và chú Iroh."
+        },
+        "air": {
+          "name": "Khí thuật sư (Airbender)",
+          "body": "Phóng khoáng, tinh nghịch và ôn hòa. Bạn thà tìm cách khác còn hơn đánh nhau, coi trọng tự do và mang sự nhẹ nhàng đến cho mọi người xung quanh. Cùng điều khiển Khí: Aang và Jinora."
+        }
       }
     }
   }
