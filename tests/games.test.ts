@@ -185,6 +185,12 @@ describe("games worker", () => {
     expect(html.headers.get("Content-Security-Policy")).toContain("frame-src 'self'");
   });
 
+  it("uses EmulatorJS system ids that map to hosted cores", () => {
+    // Unknown ids (e.g. "gbc") make EmulatorJS fetch a missing {id}-legacy-wasm.data.
+    const systems = new Set(["nes", "snes", "gb", "gba", "segaMD", "ruffle"]);
+    for (const game of GAMES) expect(systems.has(game.core), game.id).toBe(true);
+  });
+
   it("boots the emulator from an external script so CSP can block inline JS", () => {
     expect(playerHtml).not.toMatch(/<script>/);
     expect(playerHtml).toContain('src="/emu/player.js?v=3"');
