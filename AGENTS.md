@@ -4,7 +4,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 
 ## Hard rules
 
-1. Image and PDF tools (watermark, mosaic, collage, portrait-sim, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts. Site analytics (GA4 `G-5X2J6QT5KK`, `src/shared/analytics.ts`) skips them, the audio tools (audio, audio-cutter, audio-joiner) and clip notes: those pages get a CSP without the GA hosts and send no hits. Add new file tools to `UNTRACKED_TOOLS`.
+1. Image and PDF tools (watermark, mosaic, collage, portrait-sim, convert, image-pdf, resize, crop, rotate, exif, meme, signature, favicon, screenshot, image-colors, pdf-jpg, merge-pdf, compress-pdf, split-pdf, invoice) process files in the page. Do not add upload APIs for those tools, analytics beacons, or extra third-party `connect-src` hosts. Site analytics (GA4 `G-5X2J6QT5KK`, `src/shared/analytics.ts`) skips them, the audio tools (audio, audio-cutter, audio-joiner) and clip notes: those pages get a CSP without the GA hosts and send no hits. Add new file tools to `UNTRACKED_TOOLS`.
 2. Clipboard text lives in D1 (`cvcm` / binding `DB`, table `clips`). Non-text files go to s3.cv.cm bucket `files` via Worker-presigned PUT. No KV or R2.
 3. The Worker serves static files, locale redirects, security headers, `/api/clip`, and `/api/clip/upload`. Reject other `POST` / `PUT` / `PATCH` / `DELETE` with 405.
 4. Clipboard notes: no login; auto-delete after 10 views or 24 hours. Text max 64 KB, files max 32 MB. No listing endpoint.
@@ -78,6 +78,10 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/margin/` — profit margin and markup from cost and price
 - `src/client/radix/` — integer base converter, bases 2–36
 - `src/client/duration/` — add or subtract H:MM:SS durations
+- `src/client/tdee/` — BMR (Mifflin–St Jeor) and TDEE, metric / imperial, maintain / cut / bulk (not medical advice)
+- `src/client/cidr/` — IPv4 subnet calculator and IP range → CIDR list
+- `src/client/chmod/` — Unix permissions: checkboxes ↔ octal ↔ rwx, special bits, chmod command
+- `src/client/typing/` — typing speed test (net WPM; CJK locales count correct characters per minute). Passages in `src/shared/typing-passages.ts`; results stay in the page
 - `src/client/dice/` — dice roller (d4–d100) and coin flip
 - `src/client/gpa/` — GPA calculator, 4.0 scale weighted by credits
 - `src/client/pomodoro/` — Pomodoro timer with breaks and a chime
@@ -85,6 +89,7 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images
 - `src/client/exif/` — strip photo EXIF / GPS metadata
+- `src/client/image-colors/` — dominant color palette from a local image (median cut + k-means), copy HEX
 - `src/client/meme/` — meme generator (top/bottom captions)
 - `src/client/signature/` — signature pad (PNG, not a legal e-sign)
 - `src/client/favicon/` — favicon ICO / PNG generator

@@ -715,6 +715,51 @@
       "s3t": "Copia la duración",
       "s3b": "Copiar pone el resultado H:MM:SS y los segundos totales en el portapapeles."
     },
+    "tdee": {
+      "lead": "Calcula cuántas calorías gastas al día según tu edad, altura, peso y actividad. No es un consejo médico.",
+      "s1t": "Elige las unidades y escribe tus datos",
+      "s1b": "Elige métrico o imperial y luego sexo, edad, peso y altura. Al cambiar de unidades, los números que ya escribiste se convierten.",
+      "s2t": "Elige el nivel de actividad",
+      "s2b": "Sé sincero: quien trabaja en oficina y entrena unas pocas veces por semana suele estar en ligero o moderado. El BMR y el TDEE se actualizan al momento.",
+      "s3t": "Lee mantener, perder y ganar",
+      "s3b": "Comer el TDEE mantiene el peso; −500 kcal hace perder unos 0,5 kg por semana y +300 kcal sube poco a poco. Copiar lleva las cuatro cifras al portapapeles."
+    },
+    "cidr": {
+      "lead": "Calcula una subred IPv4 a partir de la notación CIDR o convierte un rango de direcciones en bloques CIDR.",
+      "s1t": "Escribe una dirección con prefijo",
+      "s1b": "Escribe 192.168.1.10/24, o una dirección y una máscara separadas por un espacio. El bloque se ajusta a su dirección de red.",
+      "s2t": "Lee los datos de la subred",
+      "s2b": "Red, broadcast, máscara, wildcard, primer y último host y el total de direcciones y hosts utilizables aparecen mientras escribes.",
+      "s3t": "Convierte un rango a CIDR",
+      "s3b": "Escribe la primera y la última dirección a la derecha para obtener la lista más corta de bloques CIDR que cubre justo ese rango, lista para copiar."
+    },
+    "chmod": {
+      "lead": "Pasa permisos de Unix entre casillas, dígitos octales y la cadena rwx, y obtén el comando chmod.",
+      "s1t": "Marca los permisos",
+      "s1b": "Cada fila es propietario, grupo u otros; cada columna es lectura, escritura o ejecución. Añade setuid, setgid o sticky si los necesitas.",
+      "s2t": "O escribe el octal o rwx",
+      "s2b": "Escribe 644 o 4755, o pega rwxr-xr-x desde ls -l. Los demás campos se ajustan solos.",
+      "s3t": "Copia el comando",
+      "s3b": "Escribe el nombre del archivo o carpeta, marca -R para toda una carpeta y copia la línea de chmod para ejecutarla en tu terminal."
+    },
+    "typing": {
+      "lead": "Mide tu velocidad y precisión al escribir en 30 o 60 segundos. Los resultados se quedan en la página.",
+      "s1t": "Elige el tiempo y el texto",
+      "s1b": "Elige 30 o 60 segundos y uno de los textos de práctica en tu idioma.",
+      "s2t": "Escribe el texto",
+      "s2b": "Haz clic en el cuadro y empieza a escribir; el cronómetro arranca con la primera tecla. Los caracteres correctos se oscurecen y los errores se ponen rosas.",
+      "s3t": "Mira tu puntuación",
+      "s3b": "Cuando se acaba el tiempo o terminas el texto, verás la velocidad (PPM netas, o caracteres por minuto en chino, japonés y coreano) y la precisión. Pulsa Reiniciar para repetir."
+    },
+    "image-colors": {
+      "lead": "Saca una paleta de colores de cualquier imagen y copia los códigos HEX sin subirla.",
+      "s1t": "Añade una imagen",
+      "s1b": "Suelta una foto o captura de pantalla a la izquierda, haz clic para elegirla o pégala.",
+      "s2t": "Elige cuántos colores",
+      "s2b": "Desliza de 2 a 12. La paleta se recalcula al momento y se ordena del color más frecuente al menos.",
+      "s3t": "Copia los colores",
+      "s3b": "Haz clic en una muestra para copiar su código HEX, o en Copiar todos los HEX para la paleta completa."
+    },
     "gold": {
       "lead": "Convierte un peso de oro en esta pestaña. No se sube nada.",
       "s1t": "Abrir peso de oro",
