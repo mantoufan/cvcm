@@ -335,7 +335,13 @@
     "titleMosaicPhoto": "Cómo pixelar una foto: oculta DNI, caras y matrículas | cv.cm",
     "descMosaicPhoto": "Tapa números en negro, pixela caras y revisa al 100% antes de compartir. Gratis en el navegador, sin subir nada.",
     "titleWatermarkIdCopy": "Cómo poner marca de agua a una copia del DNI (uso + fecha) | cv.cm",
-    "descWatermarkIdCopy": "Escribe destinatario y fin, repítelo en diagonal con la fecha de hoy y tapa en negro lo innecesario. En el navegador, sin subir nada."
+    "descWatermarkIdCopy": "Escribe destinatario y fin, repítelo en diagonal con la fecha de hoy y tapa en negro lo innecesario. En el navegador, sin subir nada.",
+    "titleDice": "Tirar dados y lanzar moneda — d4 a d100 — cv.cm",
+    "descDice": "Tira hasta 50 dados de d4 a d100 o lanza monedas en el navegador. Total, máximo y mínimo. No se sube nada.",
+    "titleGpa": "Calculadora de GPA — escala 4.0, ponderada por créditos — cv.cm",
+    "descGpa": "Introduce calificaciones con letra y créditos para obtener un GPA en escala 4.0 ponderado por créditos en el navegador. No se sube nada.",
+    "titlePomodoro": "Temporizador Pomodoro — 25 minutos de enfoque con pausas — cv.cm",
+    "descPomodoro": "Temporizador Pomodoro gratis en el navegador: sesiones de 25 minutos, pausas cortas y largas, y un aviso sonoro en cada cambio. No se sube nada."
   },
   "brand": "cv.cm",
   "nav": {
@@ -723,6 +729,18 @@
     "mosaic": {
       "name": "Pixelar foto",
       "blurb": "Pixela o tapa en negro números de DNI, caras y matrículas. Sin subir nada."
+    },
+    "dice": {
+      "name": "Tirar dados",
+      "blurb": "Tira dados o lanza una moneda. No se sube nada."
+    },
+    "gpa": {
+      "name": "Calculadora de GPA",
+      "blurb": "Letras y créditos a un GPA 4.0. No se sube nada."
+    },
+    "pomodoro": {
+      "name": "Temporizador Pomodoro",
+      "blurb": "25 minutos de enfoque y pausas con aviso sonoro. No se sube nada."
     }
   },
   "watermark": {
@@ -2859,6 +2877,42 @@
       "a4": "Sí. En la misma página añade “Solo para …”. Primero se censura y luego va la marca encima.",
       "q5": "¿Puede quitar un pixelado?",
       "a5": "No. Solo tapa; no recupera lo que otra persona censuró. En tu exportación los píxeles tapados quedan reemplazados."
+    },
+    "dice": {
+      "q1": "¿Puedo tirar dados aquí?",
+      "a1": "Sí. Elige cuántos dados y cuál, y pulsa Tirar. Cada cara y el total aparecen a la derecha.",
+      "q2": "¿Se sube algo?",
+      "a2": "No. Las tiradas ocurren en esta pestaña.",
+      "q3": "¿Qué dados admite?",
+      "a3": "d4, d6, d8, d10, d12, d20 y d100, hasta 50 dados a la vez. 2d6 son dos dados de seis caras.",
+      "q4": "¿Las tiradas son aleatorias?",
+      "a4": "Cada tirada usa el generador aleatorio criptográfico del navegador, así que cada cara tiene la misma probabilidad. No hay semilla ni se guarda nada.",
+      "q5": "¿Puedo lanzar una moneda?",
+      "a5": "Sí. Indica un número de monedas y pulsa Lanzar. La pestaña muestra cada cara y cuántas caras y cruces salieron."
+    },
+    "gpa": {
+      "q1": "¿Puedo calcular mi GPA aquí?",
+      "a1": "Sí. Elige una letra y los créditos de cada asignatura. El GPA se actualiza mientras escribes.",
+      "q2": "¿Se sube algo?",
+      "a2": "No. El cálculo se queda en esta pestaña.",
+      "q3": "¿Cómo se calcula el GPA?",
+      "a3": "Cada letra vale puntos: A 4.0, A- 3.7, B+ 3.3, B 3.0, hasta F 0. Se suman los puntos por créditos y se dividen entre el total de créditos.",
+      "q4": "¿A+ cuenta como 4.3?",
+      "a4": "Por defecto A+ es 4.0. Marca A+ = 4.3 si tu centro usa esa escala.",
+      "q5": "¿Y las asignaturas sin créditos?",
+      "a5": "Una asignatura con 0 créditos o en blanco se omite. Las de apto/no apto normalmente no cuentan para el GPA."
+    },
+    "pomodoro": {
+      "q1": "¿Puedo usar un temporizador Pomodoro aquí?",
+      "a1": "Sí. Pulsa Iniciar. La pestaña cuenta atrás una sesión de enfoque, suena y pasa sola a la pausa.",
+      "q2": "¿Se sube algo?",
+      "a2": "No. El temporizador corre en esta pestaña. No se envía ni se guarda nada.",
+      "q3": "¿Qué es la técnica Pomodoro?",
+      "a3": "Trabajar en bloques de enfoque, normalmente 25 minutos, y descansar 5. Tras cuatro bloques, una pausa larga de 15 minutos. Cada bloque es un pomodoro.",
+      "q4": "¿Puedo cambiar las duraciones?",
+      "a4": "Sí. Ajusta enfoque, pausa corta y pausa larga de 1 a 180 minutos, y las rondas antes de la pausa larga. Reiniciar las aplica.",
+      "q5": "¿Qué pasa si cambio de pestaña?",
+      "a5": "El temporizador sigue contando con el reloj y el título de la pestaña muestra el tiempo restante. Mantén la pestaña abierta para oír el aviso."
     }
   },
   "qr": {
@@ -5909,5 +5963,68 @@
       "name": "Margen vs markup",
       "blurb": "Dos formas de expresar la ganancia, cómo convertirlas y una tabla rápida."
     }
+  },
+  "dice": {
+    "title": "Tirar dados",
+    "back": "Todas las herramientas",
+    "privacyNote": "Las tiradas ocurren en esta pestaña. No se sube nada.",
+    "options": "Dados",
+    "count": "Número de dados",
+    "sides": "Dado",
+    "roll": "Tirar",
+    "coinOptions": "Moneda",
+    "coins": "Monedas",
+    "flip": "Lanzar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "result": "Resultado",
+    "hint": "Pulsa Tirar o Lanzar.",
+    "invalid": "Introduce de 1 a 50 dados.",
+    "invalidCoins": "Introduce de 1 a 50 monedas.",
+    "dice": "Dados",
+    "total": "Total",
+    "high": "Máximo",
+    "low": "Mínimo",
+    "heads": "Cara",
+    "tails": "Cruz"
+  },
+  "gpa": {
+    "title": "Calculadora de GPA",
+    "back": "Todas las herramientas",
+    "privacyNote": "El cálculo se queda en esta pestaña. No se sube nada.",
+    "options": "Asignaturas",
+    "grade": "Nota",
+    "credits": "Créditos",
+    "add": "Añadir asignatura",
+    "remove": "Quitar asignatura",
+    "plusAbove4": "A+ vale 4.3",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "result": "Resultado GPA",
+    "gpa": "GPA",
+    "totalCredits": "Créditos totales",
+    "points": "Puntos totales",
+    "courses": "Asignaturas contadas",
+    "invalid": "Añade al menos una asignatura con más de 0 créditos."
+  },
+  "pomodoro": {
+    "title": "Temporizador Pomodoro",
+    "back": "Todas las herramientas",
+    "privacyNote": "El temporizador corre en esta pestaña. No se sube nada.",
+    "options": "Duraciones",
+    "focus": "Enfoque (minutos)",
+    "short": "Pausa corta (minutos)",
+    "long": "Pausa larga (minutos)",
+    "rounds": "Rondas antes de la pausa larga",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "skip": "Saltar",
+    "reset": "Reiniciar",
+    "result": "Temporizador",
+    "phase_focus": "Enfoque",
+    "phase_short": "Pausa corta",
+    "phase_long": "Pausa larga",
+    "round": "Ronda",
+    "done": "Completados"
   }
 }

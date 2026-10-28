@@ -124,3 +124,15 @@ Same character and room. Two small pink hourglasses tied with a ribbon. No numer
 ## Mosaic / redact (2026-10-08)
 
 Codex (`codex exec`, built-in image tool), refs `watermark-sweet.jpg` + `qr-sweet.jpg`. Same character and room. She holds up an instant photo of a plush teddy bear whose face is a pastel pink pixel-mosaic grid, and a small pink heart wand trailing square pixel sparkles. On the desk: a closed pink card with a black rounded bar over one line, and a heart padlock. No words, letters, numbers, logo or watermark. Saved `public/covers/mosaic-sweet.jpg` via `sips -z 720 1280`.
+
+## Dice roller (2026-10-28)
+
+Codex (`codex exec`, built-in image tool), refs `qr-sweet.jpg` + `password-sweet.jpg`. Same character and room. She cups two plump cream dice with pink heart pips in both hands, a small pink coin with a heart on the desk. No numerals, letters, logo or watermark. Save `public/covers/dice-sweet.jpg`, `sips -z 720 1280`.
+
+## GPA calculator (2026-10-28)
+
+Same character and room. She holds a cream report card tied with a pink ribbon, blank lines and heart stamps, a tiny pink graduation cap on the desk. No letters or numerals. Save `public/covers/gpa-sweet.jpg`, `sips -z 720 1280`.
+
+## Pomodoro timer (2026-10-28)
+
+Same character and room. She holds a round pink tomato-shaped kitchen timer with a blank face and a cream dial, a small cup of tea on the desk. No numerals. Save `public/covers/pomodoro-sweet.jpg`, `sips -z 720 1280`.

@@ -520,4 +520,22 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountPortraitSim(host);
     return m.unmountPortraitSim;
   },
+  "dice": async (host, ctx) => {
+    const m = await import("./dice/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDice(host);
+    return m.unmountDice;
+  },
+  "gpa": async (host, ctx) => {
+    const m = await import("./gpa/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGpa(host);
+    return m.unmountGpa;
+  },
+  "pomodoro": async (host, ctx) => {
+    const m = await import("./pomodoro/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPomodoro(host);
+    return m.unmountPomodoro;
+  },
 };

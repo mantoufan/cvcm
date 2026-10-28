@@ -60,6 +60,9 @@ import { payFromAnnual, payFromHourly } from "../src/shared/hourly";
 import { marginOf } from "../src/shared/margin";
 import { convertRadix } from "../src/shared/radix";
 import { durationBetween, parseDuration } from "../src/shared/duration";
+import { flipCoins, rollDice } from "../src/shared/dice";
+import { gpaOf, gradePoints } from "../src/shared/gpa";
+import { mmss, nextPhase, normalizeSettings, phaseSeconds } from "../src/shared/pomodoro";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -737,6 +740,64 @@ describe("duration", () => {
   });
 });
 
+describe("dice", () => {
+  it("rolls dice and flips coins with a seeded rng", () => {
+    const seq = [0, 0.5, 0.999];
+    let i = 0;
+    const rng = () => seq[i++ % seq.length];
+    expect(rollDice(3, 6, rng)).toEqual({ sides: 6, rolls: [1, 4, 6], total: 11 });
+    i = 0;
+    expect(rollDice(2, 20, rng)?.rolls).toEqual([1, 11]);
+    expect(rollDice(0, 6)).toBeNull();
+    expect(rollDice(51, 6)).toBeNull();
+    expect(rollDice(2, 1)).toBeNull();
+    expect(rollDice(1.5, 6)).toBeNull();
+    i = 0;
+    expect(flipCoins(3, rng)).toEqual(["heads", "tails", "tails"]);
+    expect(flipCoins(0)).toBeNull();
+    for (let n = 0; n < 200; n++) {
+      const out = rollDice(5, 4);
+      expect(out?.rolls.every((r) => r >= 1 && r <= 4)).toBe(true);
+    }
+  });
+});
+
+describe("gpa", () => {
+  it("weights grade points by credits", () => {
+    expect(gradePoints("A")).toBe(4);
+    expect(gradePoints("A+")).toBe(4);
+    expect(gradePoints("A+", true)).toBe(4.3);
+    expect(gradePoints("B+")).toBe(3.3);
+    expect(gradePoints("F")).toBe(0);
+    const out = gpaOf([{ grade: "A", credits: 3 }, { grade: "B+", credits: 3 }, { grade: "A-", credits: 4 }, { grade: "B", credits: 3 }]);
+    expect(out?.credits).toBe(13);
+    expect(out?.courses).toBe(4);
+    expect(out?.gpa).toBeCloseTo((12 + 9.9 + 14.8 + 9) / 13, 10);
+    expect(gpaOf([{ grade: "A", credits: 0 }, { grade: "B", credits: NaN }])).toBeNull();
+    expect(gpaOf([{ grade: "A", credits: 3 }, { grade: "B", credits: -1 }])?.gpa).toBe(4);
+  });
+});
+
+describe("pomodoro", () => {
+  it("validates settings and orders phases", () => {
+    expect(normalizeSettings({})).toEqual({ focus: 25, short: 5, long: 15, rounds: 4 });
+    expect(normalizeSettings({ focus: 50.9, rounds: 2 })).toEqual({ focus: 50, short: 5, long: 15, rounds: 2 });
+    expect(normalizeSettings({ focus: 0 })).toBeNull();
+    expect(normalizeSettings({ long: 181 })).toBeNull();
+    expect(normalizeSettings({ rounds: 13 })).toBeNull();
+    expect(normalizeSettings({ short: NaN })).toBeNull();
+    expect(phaseSeconds({ focus: 25, short: 5, long: 15, rounds: 4 }, "focus")).toBe(1500);
+    expect(nextPhase("focus", 1, 4)).toBe("short");
+    expect(nextPhase("focus", 4, 4)).toBe("long");
+    expect(nextPhase("focus", 8, 4)).toBe("long");
+    expect(nextPhase("short", 1, 4)).toBe("focus");
+    expect(nextPhase("long", 4, 4)).toBe("focus");
+    expect(mmss(1500)).toBe("25:00");
+    expect(mmss(59)).toBe("00:59");
+    expect(mmss(-3)).toBe("00:00");
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -814,6 +875,9 @@ describe("new routes", () => {
     expect(parseAppPath("/en/margin/")).toEqual({ kind: "app", locale: "en", tool: "margin" });
     expect(parseAppPath("/en/radix/")).toEqual({ kind: "app", locale: "en", tool: "radix" });
     expect(parseAppPath("/en/duration/")).toEqual({ kind: "app", locale: "en", tool: "duration" });
+    expect(parseAppPath("/en/dice/")).toEqual({ kind: "app", locale: "en", tool: "dice" });
+    expect(parseAppPath("/en/gpa/")).toEqual({ kind: "app", locale: "en", tool: "gpa" });
+    expect(parseAppPath("/en/pomodoro/")).toEqual({ kind: "app", locale: "en", tool: "pomodoro" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -866,6 +930,9 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "margin")).toBe("/zh-cn/margin/");
     expect(appHref("zh-CN", "radix")).toBe("/zh-cn/radix/");
     expect(appHref("zh-CN", "duration")).toBe("/zh-cn/duration/");
+    expect(appHref("zh-CN", "dice")).toBe("/zh-cn/dice/");
+    expect(appHref("zh-CN", "gpa")).toBe("/zh-cn/gpa/");
+    expect(appHref("zh-CN", "pomodoro")).toBe("/zh-cn/pomodoro/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

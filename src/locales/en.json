@@ -335,7 +335,13 @@
     "titleMosaicPhoto": "How to pixelate a photo: hide ID numbers, faces, plates | cv.cm",
     "descMosaicPhoto": "Black out numbers, pixelate faces, check at 100% before you share. Free, in the browser, nothing uploaded.",
     "titleWatermarkIdCopy": "How to watermark an ID copy (for-use-only + date) | cv.cm",
-    "descWatermarkIdCopy": "Write the receiver and purpose, tile it with today's date across the card, black out unneeded fields. In the browser, nothing uploaded."
+    "descWatermarkIdCopy": "Write the receiver and purpose, tile it with today's date across the card, black out unneeded fields. In the browser, nothing uploaded.",
+    "titleDice": "Dice roller and coin flip — d4 to d100 — cv.cm",
+    "descDice": "Roll up to 50 dice from d4 to d100 or flip coins in the browser. Totals, highest, and lowest. Nothing is uploaded.",
+    "titleGpa": "GPA calculator — 4.0 scale, weighted by credits — cv.cm",
+    "descGpa": "Enter letter grades and credits to get a credit-weighted GPA on the 4.0 scale in the browser. Nothing is uploaded.",
+    "titlePomodoro": "Pomodoro timer — 25-minute focus with breaks — cv.cm",
+    "descPomodoro": "Free Pomodoro timer in the browser: 25-minute focus sessions, short and long breaks, and a chime at each change. Nothing is uploaded."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1969,6 +1975,18 @@
     "mosaic": {
       "name": "Photo mosaic & redact",
       "blurb": "Pixelate or black out ID numbers, faces, and plates. Nothing is uploaded."
+    },
+    "dice": {
+      "name": "Dice roller",
+      "blurb": "Roll dice or flip a coin. Nothing is uploaded."
+    },
+    "gpa": {
+      "name": "GPA calculator",
+      "blurb": "Letter grades and credits to a 4.0 GPA. Nothing is uploaded."
+    },
+    "pomodoro": {
+      "name": "Pomodoro timer",
+      "blurb": "25-minute focus and breaks with a chime. Nothing is uploaded."
     }
   },
   "watermark": {
@@ -4105,6 +4123,42 @@
       "a4": "Yes. On the same page, add a “for [org] use only” mark. Redaction is applied first, then the mark.",
       "q5": "Can it remove a mosaic?",
       "a5": "No. This only covers areas. It cannot restore pixels someone else covered. In your export the covered pixels are replaced, not hidden."
+    },
+    "dice": {
+      "q1": "Can I roll dice here?",
+      "a1": "Yes. Pick how many dice and which die, then press Roll. Each face and the total appear on the right.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The rolls happen in this tab.",
+      "q3": "Which dice are supported?",
+      "a3": "d4, d6, d8, d10, d12, d20, and d100, up to 50 dice at once. 2d6 means two six-sided dice.",
+      "q4": "Are the rolls random?",
+      "a4": "Each roll uses the browser's cryptographic random generator, so every face has the same chance. Nothing is seeded or stored.",
+      "q5": "Can I flip a coin?",
+      "a5": "Yes. Set a number of coins and press Flip. The tab shows each face and the heads and tails counts."
+    },
+    "gpa": {
+      "q1": "Can I calculate my GPA here?",
+      "a1": "Yes. Pick a letter grade and credits for each course. The GPA updates as you type.",
+      "q2": "Is this uploaded?",
+      "a2": "No. The math stays in this tab.",
+      "q3": "How is GPA calculated?",
+      "a3": "Each grade becomes points: A 4.0, A- 3.7, B+ 3.3, B 3.0, down to F 0. Points times credits are added up and divided by the total credits.",
+      "q4": "Does A+ count as 4.3?",
+      "a4": "By default A+ is 4.0. Tick A+ = 4.3 if your school uses that scale.",
+      "q5": "What about courses without credits?",
+      "a5": "A course with 0 or blank credits is skipped. Pass/fail courses usually do not count toward GPA."
+    },
+    "pomodoro": {
+      "q1": "Can I run a Pomodoro timer here?",
+      "a1": "Yes. Press Start. The tab counts down a focus session, chimes, and moves to a break by itself.",
+      "q2": "Is anything uploaded?",
+      "a2": "No. The timer runs in this tab. Nothing is sent or stored.",
+      "q3": "What is the Pomodoro technique?",
+      "a3": "Work in focused blocks, usually 25 minutes, then rest 5 minutes. After four blocks take a longer 15-minute break. Each block is one pomodoro.",
+      "q4": "Can I change the lengths?",
+      "a4": "Yes. Set focus, short break, and long break in minutes from 1 to 180, and the number of rounds before a long break. Reset applies them.",
+      "q5": "What happens if I switch tabs?",
+      "a5": "The timer keeps counting from the clock, and the tab title shows the time left. Keep the tab open to hear the chime."
     }
   },
   "qr": {
@@ -5909,5 +5963,68 @@
       "name": "Margin vs markup",
       "blurb": "Two ways to state profit, how to convert them and a quick table."
     }
+  },
+  "dice": {
+    "title": "Dice roller",
+    "back": "All tools",
+    "privacyNote": "Rolls happen in this tab. Nothing is uploaded.",
+    "options": "Dice",
+    "count": "Number of dice",
+    "sides": "Die",
+    "roll": "Roll",
+    "coinOptions": "Coin",
+    "coins": "Coins",
+    "flip": "Flip",
+    "copy": "Copy",
+    "copied": "Copied",
+    "result": "Result",
+    "hint": "Press Roll or Flip.",
+    "invalid": "Enter 1 to 50 dice.",
+    "invalidCoins": "Enter 1 to 50 coins.",
+    "dice": "Dice",
+    "total": "Total",
+    "high": "Highest",
+    "low": "Lowest",
+    "heads": "Heads",
+    "tails": "Tails"
+  },
+  "gpa": {
+    "title": "GPA calculator",
+    "back": "All tools",
+    "privacyNote": "The math stays in this tab. Nothing is uploaded.",
+    "options": "Courses",
+    "grade": "Grade",
+    "credits": "Credits",
+    "add": "Add course",
+    "remove": "Remove course",
+    "plusAbove4": "A+ = 4.3",
+    "copy": "Copy",
+    "copied": "Copied",
+    "result": "GPA",
+    "gpa": "GPA",
+    "totalCredits": "Total credits",
+    "points": "Quality points",
+    "courses": "Courses counted",
+    "invalid": "Add at least one course with credits above 0."
+  },
+  "pomodoro": {
+    "title": "Pomodoro timer",
+    "back": "All tools",
+    "privacyNote": "The timer runs in this tab. Nothing is uploaded.",
+    "options": "Lengths",
+    "focus": "Focus (minutes)",
+    "short": "Short break (minutes)",
+    "long": "Long break (minutes)",
+    "rounds": "Rounds before a long break",
+    "start": "Start",
+    "pause": "Pause",
+    "skip": "Skip",
+    "reset": "Reset",
+    "result": "Timer",
+    "phase_focus": "Focus",
+    "phase_short": "Short break",
+    "phase_long": "Long break",
+    "round": "Round",
+    "done": "Completed"
   }
 }
