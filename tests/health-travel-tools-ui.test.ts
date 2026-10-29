@@ -22,7 +22,7 @@ describe("due date, fuel cost and reading time UI", () => {
     change(dist, "0.33", "input");
     const before = dds(host)[0];
     for (let i = 0; i < 5; i++) { change(du, "mi"); change(du, "km"); }
-    expect(dist.value).toBe("0.3");
+    expect(dist.value).toBe("0.33");
     expect(dds(host)[0]).toBe(before);
     change(eu, "mpg"); change(pu, "gal");
     expect(dds(host)[0]).toBe(before);
@@ -57,6 +57,10 @@ describe("due date, fuel cost and reading time UI", () => {
     expect(dds(host)[0]).toBe(due);
     // Blank cycle outside LMP mode: results stay, the LMP row is not guessed.
     expect(dds(host)[5]).toBe("—");
+    // An out-of-range cycle is blanked the same way.
+    change(cycle, "50", "input");
+    expect(dds(host)[5]).toBe("—");
+    expect(dds(host)[0]).toBe(due);
     unmountDueDate();
   });
 

@@ -72,6 +72,7 @@ import { finalGrade, neededOnFinal } from "../src/shared/grade";
 import { dueDate, isoOf } from "../src/shared/due-date";
 import { healthyBmiRange, idealWeights } from "../src/shared/ideal-weight";
 import { waterIntake } from "../src/shared/water-intake";
+import { feetInchesToCm as ftInToCm, lbToKg } from "../src/shared/tdee";
 import { fuelCost, toL100km } from "../src/shared/fuel-cost";
 import { readingTime, splitSec } from "../src/shared/reading-time";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
@@ -967,6 +968,9 @@ describe("ideal-weight", () => {
     expect(f!.hamwi).toBeCloseTo(45.5 + 2.2 * 4, 6);
     expect(idealWeights("male", 150)!.devine).toBeCloseTo(50 - 2.3 * (2.4 / 2.54), 6);
     expect(idealWeights("male", 139)).toBeNull();
+    // The limits quoted in the imperial error message are accepted.
+    expect(idealWeights("male", ftInToCm(4, 7.2))).not.toBeNull();
+    expect(idealWeights("male", ftInToCm(8, 2.4))).not.toBeNull();
     expect(idealWeights("male", NaN)).toBeNull();
     const r = healthyBmiRange(170);
     expect(r!.low).toBeCloseTo(53.465, 3);
@@ -985,6 +989,9 @@ describe("water-intake", () => {
     expect(waterIntake(10, 0)).toBeNull();
     expect(waterIntake(70, 601)).toBeNull();
     expect(waterIntake(70, -1)).toBeNull();
+    // The limits quoted in the lb error message are accepted.
+    expect(waterIntake(lbToKg(44.1))).not.toBeNull();
+    expect(waterIntake(lbToKg(661.3))).not.toBeNull();
   });
 });
 

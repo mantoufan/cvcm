@@ -114,7 +114,7 @@ function remember(field: string): void {
 function convertDistance(): void {
   if (!distanceEl || !distanceUnitEl) return;
   prevDistanceUnit = distanceUnitEl.value;
-  if (kmCanon > 0) distanceEl.value = round(prevDistanceUnit === "mi" ? kmCanon / KM_PER_MI : kmCanon, 1);
+  if (kmCanon > 0) distanceEl.value = round(prevDistanceUnit === "mi" ? kmCanon / KM_PER_MI : kmCanon, 2);
   paint();
 }
 
@@ -122,22 +122,20 @@ function convertEconomy(): void {
   if (!economyEl || !economyUnitEl) return;
   prevEconomyUnit = economyUnitEl.value as EconomyUnit;
   // toL100km is its own inverse for km/L and mpg: both are distance per volume.
-  if (l100Canon > 0) economyEl.value = round(prevEconomyUnit === "l100km" ? l100Canon : toL100km(l100Canon, prevEconomyUnit), 1);
+  if (l100Canon > 0) economyEl.value = round(prevEconomyUnit === "l100km" ? l100Canon : toL100km(l100Canon, prevEconomyUnit), 2);
   paint();
 }
 
 function convertPrice(): void {
   if (!priceEl || !priceUnitEl) return;
   prevPriceUnit = priceUnitEl.value;
-  if (perLitreCanon >= 0) priceEl.value = round(prevPriceUnit === "gal" ? perLitreCanon * L_PER_US_GAL : perLitreCanon, 2);
+  if (perLitreCanon >= 0) priceEl.value = round(prevPriceUnit === "gal" ? perLitreCanon * L_PER_US_GAL : perLitreCanon, 3);
   paint();
 }
 
-/** A whole-number price of 10 or more (yen, won, dong) gets whole-number totals; anything else keeps cents. */
+/** Fuel at 10 or more per litre (yen, won, dong, rupiah, rupees…) gets whole-number totals; cheaper units keep cents. Based on the stored per-litre price, so a per-gallon switch does not change it. */
 function moneyDecimals(): number {
-  const raw = priceEl?.value.trim() ?? "";
-  const n = Number(raw);
-  return raw !== "" && Number.isInteger(n) && n >= 10 ? 0 : 2;
+  return perLitreCanon >= 10 ? 0 : 2;
 }
 
 function paint(): void {

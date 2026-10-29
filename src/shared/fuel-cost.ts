@@ -28,7 +28,8 @@ export function toL100km(economy: number, unit: EconomyUnit): number {
 export function fuelCost(input: FuelInput): FuelResult | null {
   const { distance, economy, price } = input;
   if (![distance, economy, price].every(Number.isFinite) || distance <= 0 || economy <= 0 || price < 0) return null;
-  if (distance > 100000 || economy > 1000) return null;
+  // Converted to km below; 200000 km keeps any distance under 100000 typed in miles valid.
+  if (distance > 200000 || economy > 1000) return null;
   const people = input.people ?? 1;
   if (!Number.isInteger(people) || people < 1 || people > 100) return null;
   let km = input.distanceUnit === "mi" ? distance * KM_PER_MI : distance;
