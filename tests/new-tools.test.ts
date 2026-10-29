@@ -948,6 +948,9 @@ describe("due-date", () => {
     expect(dueDate("lmp", "2026-01-01", 28, "2026-07-15")!.trimester).toBe(3);
     expect(dueDate("lmp", "2026-01-01", 19)).toBeNull();
     expect(dueDate("lmp", "nope", 28)).toBeNull();
+    // Early and far-future years keep their digits.
+    expect(isoOf(dueDate("due", "0100-03-01", 28, "0100-01-01")!.lmp)).toBe("0099-05-25");
+    expect(isoOf(dueDate("lmp", "9999-06-01", 28, "9999-06-02")!.due)).toBe("10000-03-07");
   });
 });
 

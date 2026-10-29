@@ -1625,13 +1625,15 @@ async function runTool(send, id, fx) {
     await evalValue(send, `(() => {
       const s = document.querySelector("[data-field=sex]");
       if (s) { s.value = "female"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      const c = document.querySelector("[data-field=cm]");
+      if (c) { c.value = "160"; c.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);
     await snap(2);
     await evalValue(send, `(() => {
-      const u = document.querySelector("[data-field=units]");
-      if (u) { u.value = "imperial"; u.dispatchEvent(new Event("change", { bubbles: true })); }
+      const c = document.querySelector("[data-field=cm]");
+      if (c) { c.value = "175"; c.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);
@@ -1661,13 +1663,17 @@ async function runTool(send, id, fx) {
   if (id === "fuel-cost") {
     await snap(1);
     await evalValue(send, `(() => {
-      const r = document.querySelector("[data-field=roundTrip]");
-      if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }
+      const d = document.querySelector("[data-field=distance]");
+      if (d) { d.value = "450"; d.dispatchEvent(new Event("input", { bubbles: true })); }
+      const e = document.querySelector("[data-field=economy]");
+      if (e) { e.value = "6.5"; e.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);
     await snap(2);
     await evalValue(send, `(() => {
+      const r = document.querySelector("[data-field=roundTrip]");
+      if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }
       const p = document.querySelector("[data-field=people]");
       if (p) { p.value = "3"; p.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
@@ -1680,15 +1686,15 @@ async function runTool(send, id, fx) {
   if (id === "reading-time") {
     await snap(1);
     await evalValue(send, `(() => {
-      const s = document.querySelector("[data-field=speed]");
-      if (s) { s.value = "fast"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      const t = document.querySelector("[data-field=text]");
+      if (t) { t.value = t.value + " " + t.value + " " + t.value; t.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);
     await snap(2);
     await evalValue(send, `(() => {
-      const t = document.querySelector("[data-field=text]");
-      if (t) { t.value = "Short note."; t.dispatchEvent(new Event("input", { bubbles: true })); }
+      const s = document.querySelector("[data-field=speed]");
+      if (s) { s.value = "fast"; s.dispatchEvent(new Event("change", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);

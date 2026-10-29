@@ -1,7 +1,7 @@
 export type Climate = "temperate" | "hot";
 /** Common rule of thumb for healthy adults: about 35 ml per kg of body weight a day. */
 export const ML_PER_KG = 35;
-/** Roughly 12 ml per minute of exercise (about 350 ml per 30 minutes). */
+/** Roughly 12 ml per minute of exercise (360 ml per 30 minutes). */
 export const ML_PER_EXERCISE_MIN = 12;
 /** Hot or humid weather adds about half a litre. */
 export const HOT_EXTRA_ML = 500;

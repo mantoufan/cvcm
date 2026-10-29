@@ -834,7 +834,7 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   ],
   "daily-water": [
     { step: 1, src: "/covers/tutorials/daily-water-rule.svg" },
-    { step: 5, src: "/covers/tutorials/daily-water-example.svg" },
+    { step: 4, src: "/covers/tutorials/daily-water-example.svg" },
   ],
   "trip-fuel-cost": [
     { step: 1, src: "/covers/tutorials/trip-fuel-cost-formula.svg" },

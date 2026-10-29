@@ -79,4 +79,4 @@ def main(src: Path) -> None:
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else Path(__file__).resolve().parents[1] / "tmp-learn")
+    main(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else Path(__file__).resolve().parents[1] / "scripts/learn-src/batch14")

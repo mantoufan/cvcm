@@ -57,4 +57,4 @@ def inject(src: Path) -> None:
 
 
 if __name__ == "__main__":
-    inject(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else ROOT / "tmp-learn")
+    inject(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else ROOT / "scripts/learn-src/batch14")

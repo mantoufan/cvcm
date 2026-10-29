@@ -36,5 +36,5 @@ export function fuelCost(input: FuelInput): FuelResult | null {
   const litres = (km / 100) * toL100km(economy, input.economyUnit);
   const pricePerL = input.pricePerGallon ? price / L_PER_US_GAL : price;
   const cost = litres * pricePerL;
-  return { km, litres, cost, perPerson: cost / people, costPer100km: km > 0 ? (cost / km) * 100 : 0 };
+  return { km, litres, cost, perPerson: cost / people, costPer100km: (cost / km) * 100 };
 }
