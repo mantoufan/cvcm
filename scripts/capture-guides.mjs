@@ -111,6 +111,11 @@ const STEPS = {
   "water-intake": 3,
   "fuel-cost": 3,
   "reading-time": 3,
+  "time-card": 3,
+  "electricity": 3,
+  "ovulation": 3,
+  "macro": 3,
+  "calories-burned": 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1695,6 +1700,91 @@ async function runTool(send, id, fx) {
     await evalValue(send, `(() => {
       const s = document.querySelector("[data-field=speed]");
       if (s) { s.value = "fast"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "time-card") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=break]"); if (e) { e.value = "45"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=rate]"); if (e) { e.value = "25"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "electricity") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=hours]"); if (e) { e.value = "4"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=price]"); if (e) { e.value = "0.30"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "ovulation") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=cycle]"); if (e) { e.value = "32"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=cycle]"); if (e) { e.value = "26"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "macro") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=goal]"); if (e) { e.value = "lose"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=split]"); if (e) { e.value = "highprotein"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "calories-burned") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=minutes]"); if (e) { e.value = "60"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=activity]"); if (e) { e.value = "run10"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
       return true;
     })()`);
     await sleep(200);

@@ -940,6 +940,51 @@
       "s3t": "Elige una velocidad",
       "s3b": "Elige Lenta para texto técnico o Rápida para lectura ligera. El tiempo hablado se queda en 130 palabras por minuto. Copiar pone los números en el portapapeles."
     },
+    "time-card": {
+      "lead": "Suma una semana de turnos, descansos y horas extra. No se sube nada.",
+      "s1t": "Abre Calculadora de horas trabajadas",
+      "s1b": "Hay cinco turnos de 09:00 a 17:30 con 30 minutos de descanso: 40 horas. Cada fila muestra sus horas a la derecha.",
+      "s2t": "Introduce tus turnos",
+      "s2b": "Cambia la entrada, la salida y los minutos de descanso de cada fila. Añadir turno añade una fila; × la quita. Una salida anterior a la entrada pasa la medianoche.",
+      "s3t": "Añade tu tarifa",
+      "s3b": "Escribe la tarifa por hora para ver el sueldo bruto. Las horas por encima del umbral se pagan con el multiplicador. Copiar lleva los totales al portapapeles."
+    },
+    "electricity": {
+      "lead": "Calcula cuánto cuesta usar un aparato. No se sube nada.",
+      "s1t": "Abre Calculadora de consumo eléctrico",
+      "s1b": "Hay un aire acondicionado de 1000 W, 8 horas al día, 30 días, a 0,15 el kWh. El coste está a la derecha.",
+      "s2t": "Elige un aparato o escribe los vatios",
+      "s2b": "Elige uno predefinido o escribe los vatios de la etiqueta. Ajusta las horas al día, los días y cuántos funcionan.",
+      "s3t": "Introduce tu precio",
+      "s3b": "Escribe el precio por kWh de tu factura. Se actualizan el coste del periodo, por día y por año. Copiar los lleva al portapapeles."
+    },
+    "ovulation": {
+      "lead": "Mira los días fértiles, la ovulación probable y la próxima regla de tres ciclos. No se sube nada.",
+      "s1t": "Abre Calculadora de ovulación",
+      "s1b": "Hay una última regla de ejemplo hace 10 días y un ciclo de 28 días. Los tres ciclos están a la derecha.",
+      "s2t": "Introduce tu última regla",
+      "s2b": "Escribe el primer día de tu última regla. Las fechas solo están en esta pestaña.",
+      "s3t": "Ajusta la duración del ciclo",
+      "s3b": "Escribe la duración media de tu ciclo, de 21 a 45 días. Las fechas se mueven con ella. Copiar las lleva al portapapeles."
+    },
+    "macro": {
+      "lead": "Convierte un objetivo de calorías en gramos de proteínas, grasas y carbohidratos. No se sube nada.",
+      "s1t": "Abre Calculadora de macros",
+      "s1b": "Hay 2500 kcal, mantener el peso y un reparto equilibrado. Los gramos están a la derecha.",
+      "s2t": "Introduce tus calorías y tu objetivo",
+      "s2b": "Escribe tus calorías de mantenimiento (la calculadora de TDEE las estima) y elige perder, mantener o ganar peso.",
+      "s3t": "Elige un reparto",
+      "s3b": "Elige equilibrado, bajo en carbohidratos o alto en proteínas. Añade tu peso para ver la proteína por kg. Copiar lleva los gramos al portapapeles."
+    },
+    "calories-burned": {
+      "lead": "Estima las calorías quemadas en una actividad y compáralas con otras. No se sube nada.",
+      "s1t": "Abre Calculadora de calorías quemadas",
+      "s1b": "Hay caminar a paso ligero, 70 kg y 30 minutos. Las calorías y una lista de otras actividades están a la derecha.",
+      "s2t": "Introduce tu peso y los minutos",
+      "s2b": "Escribe tu peso en kg o cambia a lb, y los minutos de actividad.",
+      "s3t": "Elige la actividad",
+      "s3b": "Elige entre 16 actividades. La lista compara el mismo tiempo en todas. Copiar lleva el resultado al portapapeles."
+    },
     "remove-background": {
       "lead": "Recorta personas, productos o mascotas de una foto en esta pestaña y descarga un PNG transparente.",
       "s1t": "Añade fotos",

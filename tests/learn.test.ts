@@ -170,6 +170,14 @@ describe("learn SEO", () => {
     expect(lessonsForTool("diff")).toEqual(["compare-text"]);
     expect(lessonsForTool("hash")).toEqual(["hash-text"]);
     expect(lessonsForTool("uuid")).toEqual(["generate-uuid"]);
+    expect(lessonsForTool("time-card")).toEqual(["calculate-work-hours"]);
+    expect(lessonsForTool("electricity")).toEqual(["electricity-cost"]);
+    expect(lessonsForTool("ovulation")).toEqual(["find-fertile-window"]);
+    expect(lessonsForTool("macro")).toEqual(["calculate-macros"]);
+    expect(lessonsForTool("calories-burned")).toEqual(["calories-burned-exercise"]);
+    expect(lessonsForTool("compound")).toEqual(["compound-interest"]);
+    expect(lessonsForTool("remove-background")).toEqual(["remove-photo-background"]);
+    expect(lessonsForTool("regex")).toEqual(["test-regex"]);
     expect(lessonsForTool("mosaic")).toEqual(["mosaic-photo"]);
     expect(lessonsForTool("watermark")).toEqual(["add-watermark", "watermark-id-copy"]);
     expect(pageTitle("zh-CN", { learn: true, tutorial: "mosaic-photo" })).toMatch(/马赛克/);
@@ -196,7 +204,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
     expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
-    expect(FEATURED_TUTORIALS).toHaveLength(71);
+    expect(FEATURED_TUTORIALS).toHaveLength(79);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");

@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "titleCalculateWorkHours": "Cómo calcular las horas trabajadas en una hoja de horas | cv.cm",
+    "descCalculateWorkHours": "Escriba la entrada, la salida y el descanso no pagado de cada turno. 09:00–17:30 con 30 minutos de pausa son 8 horas; cinco días, 40. Lo que pase de 40 son horas extra a 1,5×. No se sube nada.",
+    "titleElectricityCost": "Cómo calcular el coste eléctrico de un aparato | cv.cm",
+    "descElectricityCost": "Vatios × horas ÷ 1000 = kWh; kWh × precio = coste. Un aire acondicionado de 1000 W, 8 horas al día durante 30 días, gasta 240 kWh: 36,00 a 0,15 el kWh. No se sube nada.",
+    "titleFindFertileWindow": "Cómo calcular los días fértiles y la ovulación | cv.cm",
+    "descFindFertileWindow": "La ovulación ocurre unos 14 días antes de la próxima regla. Con una regla que empieza el 1 de enero y un ciclo de 28 días, la ovulación cae el 15 de enero y los días fértiles van del 10 al 16. No se sube nada.",
+    "titleCalculateMacros": "Cómo calcular tus macros en gramos | cv.cm",
+    "descCalculateMacros": "Reparta un objetivo de calorías en proteínas, grasas y carbohidratos: gramos = calorías × proporción ÷ 4 (proteínas, carbohidratos) o ÷ 9 (grasas). 2500 kcal en 30/30/40 son 188 g, 83 g y 250 g. No se sube nada.",
+    "titleCaloriesBurnedExercise": "Cómo calcular las calorías quemadas al hacer ejercicio | cv.cm",
+    "descCaloriesBurnedExercise": "Calorías = MET × kg × horas. 30 minutos corriendo a 10 km/h con 70 kg queman unas 343 kcal; saltar a la comba 413, yoga 88. No se sube nada.",
+    "titleCompoundInterest": "Cómo calcular el interés compuesto | cv.cm",
+    "descCompoundInterest": "Valor futuro = capital × (1 + tipo ÷ n)^(n × años). 1000 al 5% durante 10 años con capitalización mensual llegan a 1647,01. No se sube nada.",
+    "titleRemovePhotoBackground": "Cómo quitar el fondo de una foto gratis | cv.cm",
+    "descRemovePhotoBackground": "Suelte fotos JPG, PNG, WebP o HEIC, deje que la IA recorte el sujeto en su navegador, elija fondo transparente, blanco, de color o desenfocado y descargue PNG o un ZIP. Las fotos nunca se suben.",
+    "titleTestRegex": "Cómo probar una expresión regular | cv.cm",
+    "descTestRegex": "Escriba un patrón, active los flags g, i, m, s y u, pegue texto y vea cada coincidencia y grupo de captura, con una vista previa del reemplazo con $& y $1. No se sube nada."
+  },
+  "lessons": {
+    "calculate-work-hours": {
+      "copy": {
+        "name": "Cómo calcular las horas trabajadas en una hoja de horas",
+        "blurb": "Escriba la entrada, la salida y el descanso no pagado de cada turno. 09:00–17:30 con 30 minutos de pausa son 8 horas, cinco días 40, y un sábado de 09:00 a 14:00 suma 5 horas extra: 950,00 a 20 la hora con horas extra a 1,5×.",
+        "title": "Cómo calcular las horas trabajadas en una hoja de horas",
+        "lead": "Tiene las horas de entrada y salida de una semana y quiere saber las horas, las horas extra y el sueldo. Escribirá cada turno una vez y leerá los totales. Cinco turnos de 09:00 a 17:30 con 30 minutos de descanso son 40 horas; con un sábado por la mañana son 45, de ellas 5 extra. Nada sale de esta pestaña.",
+        "result": "Las horas de cada turno, el total de la semana en horas:minutos y en horas decimales, las horas normales, las extra y el sueldo bruto si escribe una tarifa.",
+        "note": "Abra Calculadora de horas trabajadas con sus horarios a mano. Escriba solo los descansos no pagados; los pagados cuentan como trabajo. Las horas extra cambian según el país y el contrato, así que ajuste el umbral y el multiplicador. No se sube nada.",
+        "s1t": "Reúna entrada, salida y descanso",
+        "s1b": "Para cada día necesita la hora de entrada, la de salida y los minutos de descanso no pagado. Un turno = salida − entrada − descanso: de 09:00 a 17:30 son 8 horas y 30 minutos; menos 30 minutos, 8 horas.",
+        "s2t": "Abra Calculadora de horas trabajadas en cv.cm",
+        "s2b": "Hay cinco turnos de 09:00 a 17:30 con 30 minutos de descanso: 40:00 horas. Cada fila muestra sus horas a la derecha. No se sube nada.",
+        "s3t": "Escriba cada turno",
+        "s3b": "Cambie Entrada, Salida y Descanso (min) en cada fila. Añadir turno agrega un sexto día; × quita una fila. Una fila con ! tiene una hora vacía o un descanso más largo que el turno.",
+        "s4t": "Turnos de noche",
+        "s4b": "Si la salida es anterior a la entrada, el turno pasa la medianoche: de 22:00 a 06:00 son 8 horas y aparece un ☾. No lo divida en dos días.",
+        "s5t": "Lea las horas extra y el sueldo",
+        "s5b": "Añada el sábado de 09:00 a 14:00 sin descanso: total 45:00, normales 40:00, extra 5:00. Con una Tarifa por hora de 20 y el 1,5 predeterminado, el sueldo bruto es 800 + 150 = 950,00.",
+        "s6t": "Pase a horas decimales y copie",
+        "s6b": "Las nóminas suelen pedir horas decimales: divida los minutos entre 60, así 7:45 son 7,75. Los totales muestran las dos formas. Copiar los lleva al portapapeles.",
+        "diagram1": "Un turno = salida − entrada − descanso no pagado: 09:00–17:30 menos 30 minutos son 8 horas.",
+        "diagram2": "45 horas en la semana con un umbral de 40: 40 normales + 5 extra a 1,5×."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular las horas trabajadas gratis en línea?",
+        "a1": "Sí. cv.cm suma los turnos en esta pestaña. No se sube nada.",
+        "q2": "¿Cuántas horas son de 9 a 17:30 con 30 minutos de descanso?",
+        "a2": "8 horas. 8,5 horas de reloj menos el descanso no pagado.",
+        "q3": "¿Cómo paso 7 horas y 45 minutos a decimal?",
+        "a3": "Divida los minutos entre 60: 45 ÷ 60 = 0,75, así que 7,75 horas.",
+        "q4": "¿Sirve para turnos de noche?",
+        "a4": "Sí. Una salida anterior a la entrada pasa la medianoche: de 22:00 a 06:00 son 8 horas.",
+        "q5": "¿La regla de horas extra vale para mi trabajo?",
+        "a5": "Por defecto son las horas por encima de 40 semanales a 1,5×. En algunos sitios se cuentan por día o se pagan a 2×; ajuste el umbral y el multiplicador a sus normas."
+      }
+    },
+    "electricity-cost": {
+      "copy": {
+        "name": "Cómo calcular el coste eléctrico de un aparato",
+        "blurb": "Vatios × horas ÷ 1000 = kWh; kWh × su precio = coste. Un aire acondicionado de 1000 W, 8 horas al día durante 30 días, gasta 240 kWh: 36,00 a 0,15 el kWh y 438,00 al año.",
+        "title": "Cómo calcular el coste eléctrico de un aparato",
+        "lead": "Quiere saber cuánto suma un aparato a la factura. Leerá sus vatios, estimará cuánto tiempo funciona y lo multiplicará por su precio del kWh. Un aire acondicionado de 1000 W que funciona 8 horas al día durante un mes gasta 240 kWh; a 0,15 son 36,00. Nada sale de esta pestaña.",
+        "result": "El coste del periodo, la energía en kWh, el coste y los kWh por día y el coste por año, en la moneda que escriba.",
+        "note": "Abra Calculadora de consumo eléctrico con la etiqueta del aparato y su última factura a mano. Neveras y aires acondicionados se encienden y apagan solos, así que su consumo real es menor que la etiqueta. No se sube nada.",
+        "s1t": "Conozca la fórmula",
+        "s1b": "Energía en kWh = vatios × horas ÷ 1000. Coste = kWh × precio del kWh. Una estufa de 1000 W encendida una hora gasta exactamente 1 kWh.",
+        "s2t": "Abra Calculadora de consumo eléctrico en cv.cm",
+        "s2b": "Aparece un aire acondicionado de 1000 W, 8 horas al día, 30 días a 0,15 el kWh. El coste está a la derecha. No se sube nada.",
+        "s3t": "Busque los vatios",
+        "s3b": "Elija en Aparato o escriba la Potencia (vatios) de la etiqueta o del manual. Si la etiqueta da amperios, multiplique por la tensión: 5 A × 220 V = 1100 W.",
+        "s4t": "Escriba horas, días y precio",
+        "s4b": "Escriba las Horas al día y los Días. Tome el Precio por kWh de su factura: término de energía ÷ kWh consumidos. Si hay varios aparatos iguales, ajuste la Cantidad.",
+        "s5t": "Lea el resultado",
+        "s5b": "El aire acondicionado: 240 kWh, 36,00 al mes, 1,20 al día, 438,00 al año. Una bombilla LED de 10 W encendida 5 horas al día gasta 1,5 kWh al mes: 0,30 a 0,20 el kWh.",
+        "s6t": "Tenga en cuenta los ciclos y el modo espera, y copie",
+        "s6b": "Una nevera de 150 W con 24 horas muestra 3,6 kWh al día, pero el compresor funciona más o menos un tercio del tiempo, así que la cifra real ronda 1,2. Unos vatios en espera todo el año suman decenas de kWh. Copiar lleva las cifras al portapapeles.",
+        "diagram1": "kWh = vatios × horas ÷ 1000; coste = kWh × precio del kWh.",
+        "diagram2": "1000 W × 8 h × 30 días = 240 kWh; a 0,15 son 36,00 al mes."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular el coste eléctrico de un aparato gratis en línea?",
+        "a1": "Sí. cv.cm hace las cuentas en esta pestaña. No se sube nada.",
+        "q2": "¿Cuánto cuesta por hora un aparato de 1000 W?",
+        "a2": "Gasta 1 kWh por hora, así que cuesta lo mismo que su precio del kWh, por ejemplo 0,15.",
+        "q3": "¿Cómo paso amperios a vatios?",
+        "a3": "Multiplique amperios por voltios: 5 A a 220 V son 1100 W; a 120 V, 600 W.",
+        "q4": "¿Por qué mi nevera gasta menos de lo que indica?",
+        "a4": "El compresor solo funciona parte del tiempo, a menudo un tercio, así que los vatios de la etiqueta exageran el consumo diario.",
+        "q5": "¿Qué moneda usa?",
+        "a5": "La que escriba en el precio. El resultado sale en esa misma moneda."
+      }
+    },
+    "find-fertile-window": {
+      "copy": {
+        "name": "Cómo calcular los días fértiles y la ovulación",
+        "blurb": "La ovulación ocurre unos 14 días antes de la próxima regla. Con una regla que empieza el 1 de enero y un ciclo de 28 días, la ovulación es el 15 de enero, los días fértiles del 10 al 16 de enero y la próxima regla el 29 de enero.",
+        "title": "Cómo calcular los días fértiles y la ovulación",
+        "lead": "Sabe cuándo empezó su última regla y más o menos cuánto dura su ciclo. Hallará el día probable de ovulación, los seis días fértiles y la próxima regla de los tres ciclos siguientes. Con inicio el 1 de enero y 28 días, la ovulación cae el 15 de enero. Nada sale de esta pestaña.",
+        "result": "Para cada uno de los tres ciclos siguientes: los días fértiles, la ovulación probable y la próxima regla.",
+        "note": "Abra Calculadora de ovulación con las fechas de sus reglas a mano. Use la media de sus últimos ciclos. Es una estimación, no un anticonceptivo ni consejo médico. No se sube nada.",
+        "s1t": "Sepa cuándo se ovula",
+        "s1b": "El tiempo entre la ovulación y la siguiente regla, la fase lútea, es de unos 14 días en la mayoría de las personas. Lo que varía es la parte anterior, así que ovulación = próxima regla − 14 días.",
+        "s2t": "Abra Calculadora de ovulación en cv.cm",
+        "s2b": "Aparecen una última regla de ejemplo y un ciclo de 28 días. Los tres ciclos están a la derecha. No se sube nada.",
+        "s3t": "Escriba su última regla",
+        "s3b": "Escriba el Primer día de la última regla, el primer día de sangrado. Con el 1 de enero y 28 días, la próxima regla es el 29 de enero.",
+        "s4t": "Ajuste la duración del ciclo",
+        "s4b": "Cuente desde el primer día de una regla hasta el día anterior a la siguiente, haga la media de varios ciclos y escríbala en Duración del ciclo (días). Un ciclo de 32 días mueve la ovulación del 15 al 19 de enero.",
+        "s5t": "Lea los días fértiles",
+        "s5b": "Son los cinco días anteriores a la ovulación y el día siguiente: del 10 al 16 de enero. Los espermatozoides viven hasta cinco días y el óvulo alrededor de uno, así que estos seis días concentran la mayor probabilidad.",
+        "s6t": "Tómelo como estimación y copie",
+        "s6b": "Los ciclos se mueven unos días de un mes a otro y el cálculo por calendario falla muchas ovulaciones. Los test de ovulación dan una señal mejor. Copiar lleva las fechas al portapapeles.",
+        "diagram1": "Ovulación ≈ próxima regla − 14 días; días fértiles de 5 días antes a 1 día después.",
+        "diagram2": "Regla el 1 de enero, 28 días: fértiles 10–16 de enero, ovulación el 15, próxima regla el 29."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular mi ovulación gratis en línea?",
+        "a1": "Sí. cv.cm la estima en esta pestaña. No se sube ni se guarda nada.",
+        "q2": "¿Cuándo ovulo con un ciclo de 28 días?",
+        "a2": "Hacia el día 14, contando el primer día de la regla como día 1.",
+        "q3": "¿Cuánto duran los días fértiles?",
+        "a3": "Unos seis días: los cinco anteriores a la ovulación y el siguiente.",
+        "q4": "¿Puedo usarlo para evitar un embarazo?",
+        "a4": "No. El cálculo por calendario no es un anticonceptivo fiable. Use un método adecuado y consulte a un médico.",
+        "q5": "Mi ciclo es irregular. ¿Qué escribo?",
+        "a5": "La media de sus seis últimos ciclos. Un ciclo irregular hace la estimación menos precisa; los test de ovulación ayudan."
+      }
+    },
+    "calculate-macros": {
+      "copy": {
+        "name": "Cómo calcular tus macros en gramos",
+        "blurb": "Reparta un objetivo de calorías en proteínas, grasas y carbohidratos. Gramos = calorías × proporción ÷ 4 para proteínas y carbohidratos, ÷ 9 para grasas. 2500 kcal en 30/30/40 son 188 g de proteínas, 83 g de grasas y 250 g de carbohidratos.",
+        "title": "Cómo calcular tus macros en gramos",
+        "lead": "Sabe más o menos cuántas calorías necesita y quiere pasarlas a los gramos de las etiquetas. Elegirá un objetivo y un reparto y leerá proteínas, grasas y carbohidratos en gramos. 2500 kcal con el reparto equilibrado 30/30/40 son 188 g de proteínas, 83 g de grasas y 250 g de carbohidratos. Nada sale de esta pestaña.",
+        "result": "Un objetivo diario de calorías y los gramos de proteínas, grasas y carbohidratos, más la proteína por kg si escribe su peso.",
+        "note": "Abra Calculadora de macros con sus calorías de mantenimiento a mano; la Calculadora de TDEE las estima. Un punto de partida para adultos sanos, no consejo médico. No se sube nada.",
+        "s1t": "Conozca las calorías por gramo",
+        "s1b": "Proteínas y carbohidratos aportan 4 kcal por gramo; las grasas, 9. Así que gramos = calorías de ese macro ÷ 4 o ÷ 9. 750 kcal de proteínas son 187,5 g.",
+        "s2t": "Abra Calculadora de macros en cv.cm",
+        "s2b": "Aparecen 2500 kcal, Mantener el peso y el reparto equilibrado. Los gramos están a la derecha. No se sube nada.",
+        "s3t": "Escriba calorías y objetivo",
+        "s3b": "Escriba las Calorías de mantenimiento (kcal/día). Perder peso resta 500 kcal; Ganar peso suma 300. 2500 de mantenimiento pasan a 2000 para perder peso.",
+        "s4t": "Elija un reparto",
+        "s4b": "Equilibrado es 30/30/40 (% proteínas/grasas/carbohidratos), Alto en proteínas 40/30/30 y Bajo en carbohidratos 35/45/20. 2000 kcal altas en proteínas son 200 g de proteínas, 67 g de grasas y 150 g de carbohidratos.",
+        "s5t": "Revise la proteína por kg",
+        "s5b": "Escriba su peso. 200 g con 70 kg son 2,9 g por kg; los adultos activos suelen buscar 1,6–2,2. Si se pasa mucho, elija un reparto con menos proteína.",
+        "s6t": "Pase los gramos a comidas y copie",
+        "s6b": "Divida entre el número de comidas: 200 g de proteínas en cuatro comidas son 50 g en cada una. Copiar lleva el objetivo y los gramos al portapapeles.",
+        "diagram1": "Gramos = calorías × proporción ÷ 4 para proteínas y carbohidratos, ÷ 9 para grasas.",
+        "diagram2": "2500 kcal en 30/30/40: 188 g de proteínas, 83 g de grasas, 250 g de carbohidratos."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular mis macros gratis en línea?",
+        "a1": "Sí. cv.cm hace las cuentas en esta pestaña. No se sube nada.",
+        "q2": "¿Cuántos gramos de proteína son el 30% de 2000 kcal?",
+        "a2": "600 kcal ÷ 4 = 150 g de proteínas.",
+        "q3": "¿Por qué la grasa se divide entre 9?",
+        "a3": "Un gramo de grasa aporta 9 kcal; proteínas y carbohidratos, 4.",
+        "q4": "¿Qué reparto es mejor?",
+        "a4": "El equilibrado sirve a la mayoría. El alto en proteínas ayuda a conservar músculo al perder peso; el bajo en carbohidratos, a quien prefiere comer menos.",
+        "q5": "¿De dónde saco mis calorías?",
+        "a5": "De la Calculadora de TDEE, que estima las calorías de mantenimiento según edad, tamaño y actividad."
+      }
+    },
+    "calories-burned-exercise": {
+      "copy": {
+        "name": "Cómo calcular las calorías quemadas al hacer ejercicio",
+        "blurb": "Calorías = MET × peso en kg × horas. 30 minutos con 70 kg: correr a 10 km/h unas 343 kcal, saltar a la comba 413, bicicleta 280, natación 203, yoga 88.",
+        "title": "Cómo calcular las calorías quemadas al hacer ejercicio",
+        "lead": "Quiere saber cuánto quema un entrenamiento. Elegirá una actividad, escribirá su peso y los minutos y leerá las calorías a partir de su valor MET. 30 minutos corriendo a 10 km/h con 70 kg queman unas 343 kcal. Nada sale de esta pestaña.",
+        "result": "Las calorías quemadas, las calorías por minuto, el valor MET, el equivalente en grasa y los mismos minutos para otras 15 actividades.",
+        "note": "Abra Calculadora de calorías quemadas después de entrenar o al planificar. Los valores MET son medias; el gasto real puede variar un 20% o más. No se sube nada.",
+        "s1t": "Sepa qué es un MET",
+        "s1b": "Un MET es la energía que gasta sentado sin moverse, más o menos 1 kcal por kg y hora. Correr a 10 km/h son 9,8 MET, casi diez veces el reposo. Calorías = MET × kg × horas.",
+        "s2t": "Abra Calculadora de calorías quemadas en cv.cm",
+        "s2b": "Aparecen caminar a paso ligero, 70 kg y 30 minutos. El resultado y una lista comparativa están a la derecha. No se sube nada.",
+        "s3t": "Escriba peso y minutos",
+        "s3b": "Escriba el Peso corporal en kg o cambie a lb, y los Minutos. Quien pesa más quema más con la misma actividad, porque la fórmula crece con el peso.",
+        "s4t": "Elija la actividad",
+        "s4b": "Elija entre 16 actividades con valores MET del Compendium of Physical Activities de 2011. Correr (10 km/h) 30 minutos con 70 kg: 9,8 × 70 × 0,5 = 343 kcal.",
+        "s5t": "Compare actividades",
+        "s5b": "La lista Mismo tiempo, otras actividades muestra los mismos 30 minutos para todas, de mayor a menor: saltar a la comba 413, correr 343, bicicleta 280, natación 203, yoga 88.",
+        "s6t": "Reste el reposo si solo quiere lo extra, y copie",
+        "s6b": "El MET incluye la energía que gastaría de todos modos. Para ver solo lo que añade el ejercicio, reste alrededor de 1 kcal por kg y hora: 35 kcal en 30 minutos con 70 kg. Copiar lleva el resultado al portapapeles.",
+        "diagram1": "Calorías = MET × kg × horas; un MET ≈ 1 kcal por kg y hora en reposo.",
+        "diagram2": "30 minutos con 70 kg: comba 413, correr 343, bicicleta 280, natación 203, yoga 88 kcal."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular las calorías quemadas gratis en línea?",
+        "a1": "Sí. cv.cm hace las cuentas en esta pestaña. No se sube nada.",
+        "q2": "¿Cuántas calorías quema correr 30 minutos?",
+        "a2": "Unas 343 kcal a 10 km/h para una persona de 70 kg; unas 290 con 60 kg.",
+        "q3": "¿Qué es un MET?",
+        "a3": "La energía de una actividad comparada con estar sentado. 1 MET equivale a cerca de 1 kcal por kg y hora.",
+        "q4": "¿Qué precisión tiene?",
+        "a4": "Alrededor de un 20% para la mayoría. La forma física, el esfuerzo y el terreno cambian la cifra real.",
+        "q5": "¿De dónde salen los valores?",
+        "a5": "Del Compendium of Physical Activities de 2011 de Ainsworth y colaboradores."
+      }
+    },
+    "compound-interest": {
+      "copy": {
+        "name": "Cómo calcular el interés compuesto",
+        "blurb": "Valor futuro = capital × (1 + tipo ÷ n)^(n × años). 1000 al 5% durante 10 años llegan a 1628,89 con capitalización anual, 1647,01 mensual y 1648,66 diaria.",
+        "title": "Cómo calcular el interés compuesto",
+        "lead": "Tiene un depósito o una inversión y un tipo anual. Verá cuánto crece cuando los intereses generan intereses y cómo cambia el resultado según la frecuencia de capitalización. 1000 al 5% durante 10 años con capitalización mensual llegan a 1647,01, de los que 647,01 son intereses. Nada sale de esta pestaña.",
+        "result": "El valor futuro y los intereses totales para su capital, tipo, años y frecuencia de capitalización.",
+        "note": "Abra Interés compuesto con el capital, el tipo anual y el plazo a mano. Supone que no hay aportaciones, retiradas ni impuestos por el camino. No se sube nada.",
+        "s1t": "Conozca la fórmula",
+        "s1b": "Valor futuro = capital × (1 + tipo ÷ n)^(n × años), donde n es cuántas veces al año se suman intereses. Los intereses de cada periodo se suman al saldo, así que el siguiente periodo también rinde sobre ellos.",
+        "s2t": "Abra Interés compuesto en cv.cm",
+        "s2b": "Aparecen 1000, 5% anual, 10 años y capitalización mensual. El valor futuro está a la derecha. No se sube nada.",
+        "s3t": "Escriba capital, tipo y años",
+        "s3b": "Escriba el Capital, el % anual y los Años. Use el tipo nominal (TIN) que indica el banco, no la TAE.",
+        "s4t": "Elija la frecuencia de capitalización",
+        "s4b": "En Capitalización: Anual da 1628,89, Trimestral 1643,62, Mensual 1647,01 y Diaria 1648,66. Capitalizar más a menudo suma un poco en cada paso, cada vez menos.",
+        "s5t": "Compare con el interés simple",
+        "s5b": "El interés simple pagaría el 5% de 1000 cada año, 500 en 10 años. El compuesto añade 147,01 más. La diferencia crece con tipos más altos y plazos más largos.",
+        "s6t": "Estime cuándo se duplica y copie",
+        "s6b": "La regla del 72: años para duplicar ≈ 72 ÷ tipo. Al 5% son unos 14,4 años. Copiar lleva el valor futuro y los intereses al portapapeles.",
+        "diagram1": "Valor futuro = capital × (1 + tipo ÷ n)^(n × años).",
+        "diagram2": "1000 al 5% durante 10 años: anual 1628,89, mensual 1647,01, diaria 1648,66."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular el interés compuesto gratis en línea?",
+        "a1": "Sí. cv.cm hace las cuentas en esta pestaña. No se sube nada.",
+        "q2": "¿En cuánto se convierten 1000 al 5% durante 10 años?",
+        "a2": "En 1647,01 con capitalización mensual y 1628,89 con capitalización anual.",
+        "q3": "¿En qué se diferencia del interés simple?",
+        "a3": "El interés simple solo paga sobre el capital inicial; el compuesto también paga sobre los intereses ya sumados.",
+        "q4": "¿Cuánto tarda en duplicarse?",
+        "a4": "Unos 72 ÷ el tipo, en años: 14,4 años al 5%, 9 años al 8%.",
+        "q5": "¿Incluye aportaciones periódicas?",
+        "a5": "No. Muestra un único capital inicial que crece sin aportaciones, retiradas ni impuestos."
+      }
+    },
+    "remove-photo-background": {
+      "copy": {
+        "name": "Cómo quitar el fondo de una foto gratis",
+        "blurb": "Suelte fotos JPG, PNG, WebP o HEIC y un modelo de IA recorta el sujeto en su navegador. Elija fondo transparente, blanco, de color o desenfocado y descargue PNG, WebP o JPG, o todas a la vez en un ZIP.",
+        "title": "Cómo quitar el fondo de una foto gratis",
+        "lead": "Tiene una foto de una persona, un producto o una mascota y la quiere sobre un fondo limpio. Soltará la foto, dejará que un modelo de IA recorte el sujeto en esta pestaña y descargará el resultado. Las fotos nunca salen de su dispositivo.",
+        "result": "Un recorte con fondo transparente, blanco, de color o desenfocado, descargado como PNG, WebP o JPG, o varios en un solo ZIP.",
+        "note": "Abra Quitar fondo en un ordenador o un móvil reciente. La primera vez descarga el modelo una sola vez; después empieza al instante. Sus fotos nunca se suben.",
+        "s1t": "Elija una foto clara",
+        "s1b": "El sujeto debe estar enfocado y destacar sobre el fondo. El pelo sobre un fondo recargado es lo más difícil; una pared lisa o el cielo dan el borde más limpio.",
+        "s2t": "Abra Quitar fondo en cv.cm",
+        "s2b": "La zona de soltar admite JPG, PNG, WebP y HEIC. El modelo funciona en esta pestaña con la tarjeta gráfica cuando puede y, si no, con el procesador.",
+        "s3t": "Suelte o pegue las fotos",
+        "s3b": "Suelte una o varias fotos, o pegue una. Cada una muestra En cola, luego Quitando fondo… y luego Listo. La primera vez tarda más mientras se descarga el modelo.",
+        "s4t": "Revise el borde",
+        "s4b": "La indicación Mantén pulsado para ver el original le deja comparar el contorno. El pelo fino y los objetos transparentes como el cristal pueden necesitar otra foto con un fondo más liso.",
+        "s5t": "Elija el fondo",
+        "s5b": "Transparente deja solo el sujeto. Blanco sirve para fichas de producto y fotos tipo carné. Color rellena con el color que quiera; Desenfoque deja la escena suavemente borrosa detrás.",
+        "s6t": "Elija formato y descargue",
+        "s6b": "PNG y WebP conservan la transparencia; JPG lleva fondo blanco. Descargar guarda una foto; Descargar todo (ZIP) guarda todas las terminadas a la vez.",
+        "diagram1": "El modelo funciona en su navegador: entra la foto, sale la máscara del sujeto, sin subir nada.",
+        "diagram2": "PNG y WebP conservan la transparencia; JPG va en blanco; el ZIP guarda todas."
+      },
+      "faq": {
+        "q1": "¿Puedo quitar el fondo de una foto gratis?",
+        "a1": "Sí. cv.cm ejecuta el modelo de IA en su navegador sin coste, sin registro y sin marca de agua.",
+        "q2": "¿Se suben mis fotos?",
+        "a2": "No. El modelo se descarga a su navegador y las fotos se quedan en su dispositivo.",
+        "q3": "¿Por qué la primera vez va lenta?",
+        "a3": "El modelo se descarga una vez. Las siguientes usan la copia guardada.",
+        "q4": "¿Qué formato conserva la transparencia?",
+        "a4": "PNG y WebP. JPG no admite transparencia, así que lleva fondo blanco.",
+        "q5": "¿Puedo procesar varias fotos a la vez?",
+        "a5": "Sí. Suelte varias y use Descargar todo (ZIP)."
+      }
+    },
+    "test-regex": {
+      "copy": {
+        "name": "Cómo probar una expresión regular",
+        "blurb": "Escriba un patrón, active los flags g, i, m, s y u y pegue texto para ver cada coincidencia con sus grupos de captura. Un reemplazo como [$&] o $1 muestra el resultado antes de usarlo en código.",
+        "title": "Cómo probar una expresión regular",
+        "lead": "Está escribiendo un patrón para código, un buscador o una hoja de cálculo y quiere ver qué encuentra antes de usarlo. Escribirá el patrón, pegará texto de ejemplo y leerá cada coincidencia. \\b\\w+@\\w+\\.\\w+\\b encuentra direcciones de correo sencillas. Nada sale de esta pestaña.",
+        "result": "El número de coincidencias, cada una con su posición y sus grupos de captura, y una vista previa opcional del reemplazo, con expresiones regulares de JavaScript.",
+        "note": "Abra Probador de regex con unas líneas de texto real, incluidas algunas que no deban coincidir. Usa la variante de JavaScript, la misma de los navegadores y Node.js. No se sube nada.",
+        "s1t": "Conozca las piezas básicas",
+        "s1b": "\\d es un dígito, \\w una letra, dígito o guion bajo, \\s un espacio, . cualquier carácter. + significa uno o más, * cero o más, ? opcional. ( ) captura un grupo; \\b es un límite de palabra.",
+        "s2t": "Abra Probador de regex en cv.cm",
+        "s2b": "La casilla Expresión regular, los flags y el Texto de prueba están listos. No se sube nada.",
+        "s3t": "Escriba el patrón y pegue texto",
+        "s3b": "Escriba el patrón sin barras, por ejemplo \\d{4}-\\d{2}-\\d{2} para fechas como 2026-10-29. Pegue texto con líneas que deban coincidir y otras que no.",
+        "s4t": "Active los flags",
+        "s4b": "g busca todas las coincidencias en vez de la primera; i ignora mayúsculas; m hace que ^ y $ funcionen por línea; s deja que . coincida con saltos de línea; u activa Unicode completo. La línea del recuento muestra los flags activos.",
+        "s5t": "Lea coincidencias y grupos",
+        "s5b": "Cada coincidencia muestra su texto y sus grupos de captura. (\\d{4})-(\\d{2}) sobre 2026-10 da el grupo 1 = 2026 y el grupo 2 = 10. Un patrón que coincide de más suele necesitar \\b o una clase más estrecha.",
+        "s6t": "Previsualice un reemplazo",
+        "s6b": "Escriba en Reemplazo (opcional): $& es la coincidencia entera, $1 el primer grupo. [$&] envuelve cada coincidencia entre corchetes. Copiar coincidencias las lleva todas al portapapeles.",
+        "diagram1": "\\d dígito, \\w carácter de palabra, \\s espacio, + uno o más, ( ) grupo de captura, \\b límite de palabra.",
+        "diagram2": "Flags: g todas, i sin mayúsculas, m por línea, s el punto cruza líneas, u Unicode."
+      },
+      "faq": {
+        "q1": "¿Puedo probar una regex gratis en línea?",
+        "a1": "Sí. cv.cm la ejecuta en esta pestaña. No se sube nada.",
+        "q2": "¿Qué variante de regex usa?",
+        "a2": "JavaScript, la misma de los navegadores y Node.js. La mayoría de los patrones sencillos funcionan igual en Python y Java.",
+        "q3": "¿Por qué solo obtengo una coincidencia?",
+        "a3": "Active el flag g para encontrarlas todas.",
+        "q4": "¿Cómo uso un grupo de captura en el reemplazo?",
+        "a4": "$1 es el primer grupo, $2 el segundo y $& la coincidencia entera.",
+        "q5": "¿Escribo las barras?",
+        "a5": "No. Escriba solo el patrón; los flags son casillas."
+      }
+    }
+  },
+  "svg": {
+    "calculate-work-hours": {
+      "title": "Cómo calcular horas trabajadas",
+      "a": "Salida − entrada − descanso",
+      "b": "45 h = 40 normales + 5 extra",
+      "cap": "09:00–17:30 menos 30 min son 8 horas."
+    },
+    "electricity-cost": {
+      "title": "Cómo calcular el coste eléctrico",
+      "a": "kWh = W × horas ÷ 1000",
+      "b": "1000 W × 8 h × 30 días = 240 kWh",
+      "cap": "Coste = kWh × precio del kWh."
+    },
+    "find-fertile-window": {
+      "title": "Cómo calcular los días fértiles",
+      "a": "Ovulación ≈ próxima regla − 14",
+      "b": "Fértiles 10–16 ene, ovulación 15 ene",
+      "cap": "De 5 días antes a 1 día después."
+    },
+    "calculate-macros": {
+      "title": "Cómo calcular tus macros",
+      "a": "g = kcal × proporción ÷ 4 o ÷ 9",
+      "b": "2500 kcal: 188 g, 83 g y 250 g",
+      "cap": "Proteínas y carbos 4 kcal/g, grasas 9."
+    },
+    "calories-burned-exercise": {
+      "title": "Cómo calcular calorías quemadas",
+      "a": "kcal = MET × kg × horas",
+      "b": "Correr 30 min con 70 kg = 343 kcal",
+      "cap": "1 MET ≈ 1 kcal por kg y hora en reposo."
+    },
+    "compound-interest": {
+      "title": "Cómo calcular el interés compuesto",
+      "a": "Fórmula: C × (1 + r ÷ n)^(n × t)",
+      "b": "1000 al 5%, 10 años = 1647,01",
+      "cap": "Mensual; la anual da 1628,89."
+    },
+    "remove-photo-background": {
+      "title": "Cómo quitar el fondo de una foto",
+      "a": "La IA funciona en su navegador",
+      "b": "PNG / WebP conservan transparencia",
+      "cap": "Las fotos no salen de su dispositivo."
+    },
+    "test-regex": {
+      "title": "Cómo probar una expresión regular",
+      "a": "Piezas: \\d \\w \\s + * ? ( ) \\b",
+      "b": "Flags g i m s u",
+      "cap": "Variante JavaScript, la del navegador."
+    }
+  }
+}

@@ -75,6 +75,11 @@ import { waterIntake } from "../src/shared/water-intake";
 import { feetInchesToCm as ftInToCm, lbToKg } from "../src/shared/tdee";
 import { fuelCost, toL100km } from "../src/shared/fuel-cost";
 import { readingTime, splitSec } from "../src/shared/reading-time";
+import { clockMinutes, hhmm, shiftMinutes, timeCard } from "../src/shared/time-card";
+import { electricityCost } from "../src/shared/electricity";
+import { ovulationCycles } from "../src/shared/ovulation";
+import { macros } from "../src/shared/macro";
+import { caloriesBurned, metOf } from "../src/shared/calories-burned";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -1038,6 +1043,86 @@ describe("reading-time", () => {
   });
 });
 
+describe("time-card", () => {
+  it("sums shifts with breaks, overnight shifts and overtime", () => {
+    expect(clockMinutes("09:00")).toBe(540);
+    expect(clockMinutes("24:00")).toBeNull();
+    expect(shiftMinutes({ start: "09:00", end: "17:30", breakMin: 30 })).toEqual({ minutes: 480, overnight: false });
+    expect(shiftMinutes({ start: "22:00", end: "06:00", breakMin: 0 })).toEqual({ minutes: 480, overnight: true });
+    expect(shiftMinutes({ start: "09:00", end: "10:00", breakMin: 60 })).toBeNull();
+    expect(shiftMinutes({ start: "9", end: "10:00", breakMin: 0 })).toBeNull();
+    const week = Array(5).fill({ start: "09:00", end: "17:30", breakMin: 30 });
+    const out = timeCard([...week, { start: "", end: "", breakMin: 0 }], 20);
+    expect(out.totalMin).toBe(2400);
+    expect(out.overtimeMin).toBe(0);
+    expect(out.pay).toBe(800);
+    expect(out.shifts[5]).toBeNull();
+    const long = timeCard([...week, { start: "09:00", end: "14:00", breakMin: 0 }], 20, 40, 1.5);
+    expect(long.overtimeMin).toBe(300);
+    expect(long.pay).toBe(800 + 5 * 30);
+    expect(timeCard(week, null).pay).toBeNull();
+    expect(hhmm(450)).toBe("7:30");
+  });
+});
+
+describe("electricity", () => {
+  it("prices watts over hours and days", () => {
+    const out = electricityCost({ watts: 1000, hoursPerDay: 8, days: 30, pricePerKwh: 0.15 });
+    expect(out!.kwhPerDay).toBe(8);
+    expect(out!.kwh).toBe(240);
+    expect(out!.cost).toBeCloseTo(36, 6);
+    expect(out!.costPerYear).toBeCloseTo(438, 6);
+    expect(electricityCost({ watts: 10, hoursPerDay: 24, days: 1, pricePerKwh: 0.2, quantity: 10 })!.kwh).toBeCloseTo(2.4, 6);
+    expect(electricityCost({ watts: 100, hoursPerDay: 25, days: 1, pricePerKwh: 0.2 })).toBeNull();
+    expect(electricityCost({ watts: 0, hoursPerDay: 1, days: 1, pricePerKwh: 0.2 })).toBeNull();
+    expect(electricityCost({ watts: 100, hoursPerDay: 1, days: 1, pricePerKwh: 0.2, quantity: 1.5 })).toBeNull();
+  });
+});
+
+describe("ovulation", () => {
+  it("places ovulation 14 days before the next period and rolls forward to today", () => {
+    const c = ovulationCycles("2026-01-01", 28, 3, "2026-01-05")!;
+    expect(isoOf(c[0].ovulation)).toBe("2026-01-15");
+    expect(isoOf(c[0].fertileStart)).toBe("2026-01-10");
+    expect(isoOf(c[0].fertileEnd)).toBe("2026-01-16");
+    expect(isoOf(c[0].nextPeriod)).toBe("2026-01-29");
+    expect(isoOf(c[1].periodStart)).toBe("2026-01-29");
+    expect(isoOf(ovulationCycles("2026-01-01", 32, 1, "2026-01-05")![0].ovulation)).toBe("2026-01-19");
+    // Two months later the list starts at the current cycle.
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-03-10")![0].periodStart)).toBe("2026-02-26");
+    expect(ovulationCycles("2026-01-01", 20)).toBeNull();
+    expect(ovulationCycles("nope", 28)).toBeNull();
+  });
+});
+
+describe("macro", () => {
+  it("splits calories into grams", () => {
+    const out = macros(2500, "maintain", "balanced", 70)!;
+    expect(out.kcal).toBe(2500);
+    expect(out.protein).toBeCloseTo(187.5, 6);
+    expect(out.fat).toBeCloseTo(83.333, 3);
+    expect(out.carbs).toBeCloseTo(250, 6);
+    expect(out.proteinPerKg).toBeCloseTo(2.679, 3);
+    expect(macros(2500, "lose", "lowcarb")!.kcal).toBe(2000);
+    expect(macros(2500, "gain", "highprotein")!.protein).toBeCloseTo(280, 6);
+    expect(macros(2500, "maintain", "balanced")!.proteinPerKg).toBeNull();
+    expect(macros(700, "maintain", "balanced")).toBeNull();
+    expect(macros(1200, "lose", "balanced")).toBeNull();
+  });
+});
+
+describe("calories-burned", () => {
+  it("uses MET × kg × hours", () => {
+    expect(metOf("walkBrisk")).toBe(4.3);
+    const out = caloriesBurned("walkBrisk", 70, 30)!;
+    expect(out.kcal).toBeCloseTo(150.5, 6);
+    expect(out.perMinute).toBeCloseTo(5.0167, 3);
+    expect(caloriesBurned("run10", 60, 60)!.kcal).toBeCloseTo(588, 6);
+    expect(caloriesBurned("walkBrisk", 10, 30)).toBeNull();
+    expect(caloriesBurned("walkBrisk", 70, 0)).toBeNull();
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -1128,6 +1213,11 @@ describe("new routes", () => {
     expect(parseAppPath("/en/water-intake/")).toEqual({ kind: "app", locale: "en", tool: "water-intake" });
     expect(parseAppPath("/en/fuel-cost/")).toEqual({ kind: "app", locale: "en", tool: "fuel-cost" });
     expect(parseAppPath("/en/reading-time/")).toEqual({ kind: "app", locale: "en", tool: "reading-time" });
+    expect(parseAppPath("/en/time-card/")).toEqual({ kind: "app", locale: "en", tool: "time-card" });
+    expect(parseAppPath("/en/electricity/")).toEqual({ kind: "app", locale: "en", tool: "electricity" });
+    expect(parseAppPath("/en/ovulation/")).toEqual({ kind: "app", locale: "en", tool: "ovulation" });
+    expect(parseAppPath("/en/macro/")).toEqual({ kind: "app", locale: "en", tool: "macro" });
+    expect(parseAppPath("/en/calories-burned/")).toEqual({ kind: "app", locale: "en", tool: "calories-burned" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");

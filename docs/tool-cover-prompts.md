@@ -166,3 +166,13 @@ Codex (`codex exec`, built-in image tool), refs `sleep-sweet.jpg` + `grade-sweet
 - `water-intake`: she holds a tall glass of clear water with a pink straw and a strawberry slice, a cream carafe on the desk.
 - `fuel-cost`: she holds a small pastel pink toy car, a cream fuel pump nozzle toy and a tiny road map with a heart pin on the desk.
 - `reading-time`: she reads an open cream book with a pink bookmark ribbon, a small pink pocket watch with a blank face on the desk.
+
+## Time card, electricity, ovulation, macro, calories burned (2026-10-29)
+
+Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `time-card`: she holds a cream punch card with a pink heart punched in it; on the desk a small pink desk clock with a blank face.
+- `electricity`: she holds a glowing pastel light bulb with a heart filament; on the desk a cream plug and a small pink meter with a blank dial.
+- `ovulation`: she holds a small cream calendar with a few pink heart stickers on blank days; on the desk a pink flower in a bud vase.
+- `macro`: she holds a cream plate divided into three sections with an egg, a strawberry and a slice of bread; on the desk a small pink kitchen scale.
+- `calories-burned`: she wears a pink headband and holds a cream skipping rope; on the desk a pink water bottle and a small towel with a heart.

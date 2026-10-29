@@ -97,14 +97,17 @@ async function run(): Promise<void> {
 }
 
 async function writeDigest(bytes: Uint8Array): Promise<void> {
-  if (!hexEl || !b64El) return;
+  // Hold the fields locally: the page may be left while the digest is running.
+  const hex = hexEl;
+  const b64 = b64El;
+  if (!hex || !b64) return;
   try {
     const out = await digest(algo, bytes);
-    hexEl.value = toHex(out);
-    b64El.value = toB64(out);
+    hex.value = toHex(out);
+    b64.value = toB64(out);
   } catch {
-    hexEl.value = "";
-    b64El.value = "";
+    hex.value = "";
+    b64.value = "";
     if (statusEl) statusEl.textContent = t("hash.error");
   }
 }
