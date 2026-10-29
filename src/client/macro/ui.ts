@@ -3,6 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { SPLITS, macros, type Goal, type MacroSplit } from "../../shared/macro";
+import { BULK_KCAL, CUT_KCAL } from "../../shared/tdee";
 
 let kcalEl: HTMLInputElement | null = null;
 let goalEl: HTMLSelectElement | null = null;
@@ -15,9 +16,9 @@ let last = "";
 export function mountMacro(host: HTMLElement): void {
   kcalEl = h("input", { type: "number", min: "0", step: "10", inputmode: "numeric", value: "2500", "data-field": "kcal", onInput: () => paint() });
   goalEl = h("select", { "data-field": "goal", onChange: () => paint() },
-    h("option", { value: "lose" }, t("macro.goal_lose")),
+    h("option", { value: "lose" }, t("macro.goal_lose", { n: CUT_KCAL })),
     h("option", { value: "maintain", selected: true }, t("macro.goal_maintain")),
-    h("option", { value: "gain" }, t("macro.goal_gain")),
+    h("option", { value: "gain" }, t("macro.goal_gain", { n: BULK_KCAL })),
   );
   splitEl = h("select", { "data-field": "split", onChange: () => paint() },
     ...(Object.keys(SPLITS) as MacroSplit[]).map((s) => {

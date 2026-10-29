@@ -11,7 +11,7 @@ const DAY = 86400000;
 export type OvulationCycle = {
   periodStart: Date;
   ovulation: Date;
-  /** Five days before ovulation through the day after: sperm survive up to five days, the egg about one. */
+  /** The five days before ovulation plus ovulation day (Wilcox et al., 1995): sperm survive up to five days, the egg about one. */
   fertileStart: Date;
   fertileEnd: Date;
   nextPeriod: Date;
@@ -25,6 +25,8 @@ export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, co
   if (lmp.getUTCFullYear() < MIN_YEAR || lmp.getUTCFullYear() > MAX_YEAR) return null;
   // Skip whole cycles that ended before today so the list stays current.
   const elapsed = Math.floor((today.getTime() - lmp.getTime()) / DAY);
+  // A last period in the future is a typo (often the year), not a forecast.
+  if (elapsed < 0) return null;
   // On the day the next period is due (elapsed === cycle) that new cycle is the current one.
   const skip = elapsed >= cycle ? Math.floor(elapsed / cycle) : 0;
   const out: OvulationCycle[] = [];
@@ -35,7 +37,7 @@ export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, co
       periodStart,
       ovulation,
       fertileStart: addDays(ovulation, -5),
-      fertileEnd: addDays(ovulation, 1),
+      fertileEnd: ovulation,
       nextPeriod: addDays(periodStart, cycle),
     });
   }

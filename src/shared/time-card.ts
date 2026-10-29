@@ -32,21 +32,30 @@ export function shiftMinutes(row: ShiftRow): ShiftResult | null {
   return { minutes: span - row.breakMin, overnight };
 }
 
-/**
- * Totals for a list of shifts. Rows with blank times are skipped; invalid rows count as null.
- * Hours above `overtimeAfterHours` in the period are overtime, paid at `rate × multiplier`.
- */
 export const MIN_MULTIPLIER = 1;
 export const MAX_MULTIPLIER = 5;
+/** Rows per week: overtime is counted per block of seven rows, so a two-week card is not one 80-hour week. */
+export const DAYS_PER_WEEK = 7;
 
+/**
+ * Totals for a list of shifts. Rows with blank times are skipped; invalid rows count as null.
+ * Hours above `overtimeAfterHours` in each week (seven rows) are overtime, paid at `rate × multiplier`.
+ */
 export function timeCard(rows: ShiftRow[], rate: number | null, overtimeAfterHours = 40, multiplier = 1.5): TimeCardResult {
   const shifts = rows.map((row) => (row.start.trim() === "" && row.end.trim() === "" ? null : shiftMinutes(row)));
   const totalMin = shifts.reduce((sum, s) => sum + (s?.minutes ?? 0), 0);
   const limit = Number.isFinite(overtimeAfterHours) && overtimeAfterHours >= 0 ? overtimeAfterHours * 60 : Infinity;
-  const regularMin = Math.min(totalMin, limit);
-  const overtimeMin = totalMin - regularMin;
+  let overtimeMin = 0;
+  for (let i = 0; i < shifts.length; i += DAYS_PER_WEEK) {
+    const week = shifts.slice(i, i + DAYS_PER_WEEK).reduce((sum, s) => sum + (s?.minutes ?? 0), 0);
+    overtimeMin += Math.max(0, week - limit);
+  }
+  const regularMin = totalMin - overtimeMin;
   const multOk = Number.isFinite(multiplier) && multiplier >= MIN_MULTIPLIER && multiplier <= MAX_MULTIPLIER;
-  const pay = rate != null && Number.isFinite(rate) && rate >= 0 && multOk ? (regularMin / 60) * rate + (overtimeMin / 60) * rate * multiplier : null;
+  // The multiplier only matters when there is overtime.
+  const pay = rate != null && Number.isFinite(rate) && rate >= 0 && (multOk || overtimeMin === 0)
+    ? (regularMin / 60) * rate + (overtimeMin / 60) * rate * (multOk ? multiplier : 1)
+    : null;
   return { shifts, totalMin, regularMin, overtimeMin, pay };
 }
 

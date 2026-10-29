@@ -1062,9 +1062,17 @@ describe("time-card", () => {
     expect(long.overtimeMin).toBe(300);
     expect(long.pay).toBe(800 + 5 * 30);
     expect(timeCard(week, null).pay).toBeNull();
-    expect(timeCard(week, 20, 40, 0).pay).toBeNull();
-    expect(timeCard(week, 20, 40, -1).pay).toBeNull();
+    const withOvertime = [...week, { start: "09:00", end: "14:00", breakMin: 0 }];
+    expect(timeCard(withOvertime, 20, 40, 0).pay).toBeNull();
+    expect(timeCard(withOvertime, 20, 40, -1).pay).toBeNull();
     expect(timeCard(week, 20, 40, 2).pay).toBe(800);
+    // No overtime: the multiplier does not matter, even when it is blank.
+    expect(timeCard(week, 20, 40, NaN).pay).toBe(800);
+    expect(timeCard([...week, { start: "09:00", end: "14:00", breakMin: 0 }], 20, 40, NaN).pay).toBeNull();
+    // Two weeks of 40 hours each have no overtime.
+    const twoWeeks = [...week, { start: "", end: "", breakMin: 0 }, { start: "", end: "", breakMin: 0 }, ...week];
+    expect(timeCard(twoWeeks, 20).overtimeMin).toBe(0);
+    expect(timeCard(twoWeeks, 20).totalMin).toBe(4800);
     expect(hhmm(450)).toBe("7:30");
   });
 });
@@ -1088,7 +1096,7 @@ describe("ovulation", () => {
     const c = ovulationCycles("2026-01-01", 28, 3, "2026-01-05")!;
     expect(isoOf(c[0].ovulation)).toBe("2026-01-15");
     expect(isoOf(c[0].fertileStart)).toBe("2026-01-10");
-    expect(isoOf(c[0].fertileEnd)).toBe("2026-01-16");
+    expect(isoOf(c[0].fertileEnd)).toBe("2026-01-15");
     expect(isoOf(c[0].nextPeriod)).toBe("2026-01-29");
     expect(isoOf(c[1].periodStart)).toBe("2026-01-29");
     expect(isoOf(ovulationCycles("2026-01-01", 32, 1, "2026-01-05")![0].ovulation)).toBe("2026-01-19");
@@ -1099,6 +1107,7 @@ describe("ovulation", () => {
     expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-03-10")![0].periodStart)).toBe("2026-02-26");
     expect(ovulationCycles("2026-01-01", 20)).toBeNull();
     expect(ovulationCycles("nope", 28)).toBeNull();
+    expect(ovulationCycles("2027-01-01", 28, 1, "2026-01-05")).toBeNull();
   });
 });
 
@@ -1113,6 +1122,7 @@ describe("macro", () => {
     expect(macros(2500, "lose", "lowcarb")!.kcal).toBe(2000);
     expect(macros(2500, "gain", "highprotein")!.protein).toBeCloseTo(280, 6);
     expect(macros(2500, "maintain", "balanced")!.proteinPerKg).toBeNull();
+    expect(macros(2500, "maintain", "balanced", 7)!.proteinPerKg).toBeNull();
     expect(macros(700, "maintain", "balanced")).toBeNull();
     expect(macros(1200, "lose", "balanced")).toBeNull();
   });

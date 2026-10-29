@@ -35,6 +35,7 @@ export function macros(maintenanceKcal: number, goal: Goal, split: MacroSplit, k
     protein,
     fat: (kcal * s.fat) / KCAL_PER_G.fat,
     carbs: (kcal * s.carbs) / KCAL_PER_G.carbs,
-    proteinPerKg: kg != null && Number.isFinite(kg) && kg > 0 ? protein / kg : null,
+    // A weight outside 20–300 kg (or one still being typed) gives no per-kg figure.
+    proteinPerKg: kg != null && Number.isFinite(kg) && kg >= 20 && kg <= 300 ? protein / kg : null,
   };
 }

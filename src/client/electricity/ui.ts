@@ -75,7 +75,9 @@ function applyPreset(): void {
 function paint(): void {
   if (!outEl) return;
   const read = (el: HTMLInputElement | null) => (el == null || el.value.trim() === "" ? NaN : Number(el.value));
-  const out = electricityCost({ watts: read(wattsEl), hoursPerDay: read(hoursEl), days: read(daysEl), pricePerKwh: read(priceEl), quantity: read(qtyEl) });
+  // A blank "How many" means one appliance.
+  const qty = qtyEl?.value.trim() === "" ? 1 : read(qtyEl);
+  const out = electricityCost({ watts: read(wattsEl), hoursPerDay: read(hoursEl), days: read(daysEl), pricePerKwh: read(priceEl), quantity: qty });
   outEl.replaceChildren();
   if (!out) {
     last = "";
@@ -83,7 +85,8 @@ function paint(): void {
     return;
   }
   const price = read(priceEl);
-  const dp = price >= 10 ? 0 : 2;
+  // Whole-number prices of 10 or more (yen, won, dong) give whole-number totals; 11.50 pesos keeps cents.
+  const dp = Number.isInteger(price) && price >= 10 ? 0 : 2;
   const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
   // Whole-number currencies still need decimals for small daily amounts (2.48 yen, not 2).
   const daily = new Intl.NumberFormat(locale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 });

@@ -5,7 +5,7 @@
     "titleElectricityCost": "How to calculate the electricity cost of an appliance | cv.cm",
     "descElectricityCost": "Watts × hours ÷ 1000 = kWh; kWh × price = cost. A 1000 W air conditioner for 8 hours a day for 30 days uses 240 kWh, 36.00 at 0.15 a kWh. Nothing is uploaded.",
     "titleFindFertileWindow": "How to find your fertile window and ovulation day | cv.cm",
-    "descFindFertileWindow": "Ovulation is about 14 days before the next period. With a period starting 1 January and a 28-day cycle, ovulation is 15 January and the fertile window 10–16 January. Nothing is uploaded.",
+    "descFindFertileWindow": "Ovulation is about 14 days before the next period. With a period starting 1 January and a 28-day cycle, ovulation is 15 January and the fertile window 10–15 January. Nothing is uploaded.",
     "titleCalculateMacros": "How to calculate your macros in grams | cv.cm",
     "descCalculateMacros": "Split a calorie target into protein, fat and carbs: grams = calories × share ÷ 4 (protein, carbs) or ÷ 9 (fat). 2500 kcal at 30/30/40 is 188 g, 83 g and 250 g. Nothing is uploaded.",
     "titleCaloriesBurnedExercise": "How to calculate calories burned during exercise | cv.cm",
@@ -93,7 +93,7 @@
     "find-fertile-window": {
       "copy": {
         "name": "How to find your fertile window and ovulation day",
-        "blurb": "Ovulation is about 14 days before the next period. A period starting 1 January with a 28-day cycle gives ovulation on 15 January, a fertile window of 10–16 January and the next period on 29 January.",
+        "blurb": "Ovulation is about 14 days before the next period. A period starting 1 January with a 28-day cycle gives ovulation on 15 January, a fertile window of 10–15 January and the next period on 29 January.",
         "title": "How to find your fertile window and ovulation day",
         "lead": "You know when your last period started and roughly how long your cycle is. You will find the likely ovulation day, the six-day fertile window and the next period for the next three cycles. With a 1 January start and 28 days, ovulation falls on 15 January. Nothing leaves this tab.",
         "result": "For each of the next three cycles: the fertile window, the likely ovulation day and the next period.",
@@ -107,11 +107,11 @@
         "s4t": "Set your cycle length",
         "s4b": "Count from the first day of one period to the day before the next and average a few cycles. A 32-day cycle moves ovulation from 15 January to 19 January.",
         "s5t": "Read the fertile window",
-        "s5b": "The window is the five days before ovulation and the day after: 10–16 January. Sperm can live up to five days and the egg about one, so these six days carry the highest chance.",
+        "s5b": "The window is the five days before ovulation plus ovulation day: 10–15 January. Sperm can live up to five days and the egg about one, so these six days carry the highest chance.",
         "s6t": "Treat it as an estimate, then copy",
         "s6b": "Cycles shift by a few days from month to month, and calendar estimates miss many ovulations. Ovulation test strips give a better signal. Copy puts the dates on the clipboard.",
-        "diagram1": "Ovulation ≈ next period − 14 days; the fertile window runs from 5 days before to 1 day after.",
-        "diagram2": "Period 1 January, 28 days: fertile 10–16 January, ovulation 15 January, next period 29 January."
+        "diagram1": "Ovulation ≈ next period − 14 days; the fertile window runs from 5 days before through ovulation day.",
+        "diagram2": "Period 1 January, 28 days: fertile 10–15 January, ovulation 15 January, next period 29 January."
       },
       "faq": {
         "q1": "Can I calculate my ovulation day free online?",
@@ -119,7 +119,7 @@
         "q2": "When do I ovulate with a 28-day cycle?",
         "a2": "Around day 14, counting the first day of your period as day 1.",
         "q3": "How long is the fertile window?",
-        "a3": "About six days: the five days before ovulation and the day after.",
+        "a3": "About six days: the five days before ovulation plus ovulation day.",
         "q4": "Can I use this to avoid pregnancy?",
         "a4": "No. Calendar estimates are not reliable contraception. Use a proper method and ask a doctor.",
         "q5": "My cycle is irregular. What should I enter?",
@@ -308,13 +308,53 @@
     }
   },
   "svg": {
-    "calculate-work-hours": { "title": "How to calculate hours worked", "a": "End − start − break", "b": "45 h = 40 regular + 5 overtime", "cap": "09:00–17:30 minus 30 minutes is 8 hours." },
-    "electricity-cost": { "title": "How to calculate electricity cost", "a": "kWh = W × hours ÷ 1000", "b": "1000 W × 8 h × 30 d = 240 kWh", "cap": "Cost = kWh × price per kWh." },
-    "find-fertile-window": { "title": "How to find your fertile window", "a": "Ovulation ≈ next period − 14", "b": "Fertile 10–16 Jan, ovulation 15 Jan", "cap": "Five days before ovulation to one day after." },
-    "calculate-macros": { "title": "How to calculate your macros", "a": "g = kcal × share ÷ 4 or ÷ 9", "b": "2500 kcal: 188 g / 83 g / 250 g", "cap": "Protein and carbs 4 kcal/g, fat 9 kcal/g." },
-    "calories-burned-exercise": { "title": "How to calculate calories burned", "a": "kcal = MET × kg × hours", "b": "Run 30 min at 70 kg = 343 kcal", "cap": "1 MET ≈ 1 kcal per kg per hour at rest." },
-    "compound-interest": { "title": "How to calculate compound interest", "a": "P × (1 + r ÷ n)^(n × t)", "b": "1000 at 5%, 10 years = 1647.01", "cap": "Monthly compounding; yearly gives 1628.89." },
-    "remove-photo-background": { "title": "How to remove a photo background", "a": "AI runs in your browser", "b": "PNG / WebP keep transparency", "cap": "Photos never leave your device." },
-    "test-regex": { "title": "How to test a regular expression", "a": "\\d \\w \\s + * ? ( ) \\b", "b": "g i m s u flags", "cap": "JavaScript flavour, as in browsers and Node.js." }
+    "calculate-work-hours": {
+      "title": "How to calculate hours worked",
+      "a": "End − start − break",
+      "b": "45 h = 40 regular + 5 overtime",
+      "cap": "09:00–17:30 minus 30 minutes is 8 hours."
+    },
+    "electricity-cost": {
+      "title": "How to calculate electricity cost",
+      "a": "kWh = W × hours ÷ 1000",
+      "b": "1000 W × 8 h × 30 d = 240 kWh",
+      "cap": "Cost = kWh × price per kWh."
+    },
+    "find-fertile-window": {
+      "title": "How to find your fertile window",
+      "a": "Ovulation ≈ next period − 14",
+      "b": "Fertile 10–15 Jan, ovulation 15 Jan",
+      "cap": "Five days before through ovulation day."
+    },
+    "calculate-macros": {
+      "title": "How to calculate your macros",
+      "a": "g = kcal × share ÷ 4 or ÷ 9",
+      "b": "2500 kcal: 188 g / 83 g / 250 g",
+      "cap": "Protein and carbs 4 kcal/g, fat 9 kcal/g."
+    },
+    "calories-burned-exercise": {
+      "title": "How to calculate calories burned",
+      "a": "kcal = MET × kg × hours",
+      "b": "Run 30 min at 70 kg = 343 kcal",
+      "cap": "1 MET ≈ 1 kcal per kg per hour at rest."
+    },
+    "compound-interest": {
+      "title": "How to calculate compound interest",
+      "a": "P × (1 + r ÷ n)^(n × t)",
+      "b": "1000 at 5%, 10 years = 1647.01",
+      "cap": "Monthly compounding; yearly gives 1628.89."
+    },
+    "remove-photo-background": {
+      "title": "How to remove a photo background",
+      "a": "AI runs in your browser",
+      "b": "PNG / WebP keep transparency",
+      "cap": "Photos never leave your device."
+    },
+    "test-regex": {
+      "title": "How to test a regular expression",
+      "a": "\\d \\w \\s + * ? ( ) \\b",
+      "b": "g i m s u flags",
+      "cap": "JavaScript flavour, as in browsers and Node.js."
+    }
   }
 }

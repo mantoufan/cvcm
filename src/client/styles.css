@@ -632,4 +632,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .time-head span, .time-row input { flex: 1 1 0; min-width: 0; }
 .time-row-out { flex: 0 0 3.6rem; text-align: right; font-variant-numeric: tabular-nums; }
 .time-head span:nth-child(4) { flex: 0 0 3.6rem; text-align: right; }
+.time-head .time-head-pad { flex: 0 0 2.75rem; }
+.time-row .chip { min-width: 2.75rem; }
 .ovulation-out h3 { margin: 0.8rem 0 0.3rem; font-size: 0.95rem; color: var(--pink-deep); }

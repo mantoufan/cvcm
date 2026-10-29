@@ -39,6 +39,7 @@ export function mountTimeCard(host: HTMLElement): void {
           h("legend", null, t("timeCard.options")),
           h("div", { class: "row gpa-head time-head" },
             h("span", null, t("timeCard.start")), h("span", null, t("timeCard.end")), h("span", null, t("timeCard.break")), h("span", null, t("timeCard.hours")),
+            h("span", { class: "time-head-pad", "aria-hidden": "true" }),
           ),
           rowsEl,
         ),
@@ -130,7 +131,7 @@ function paint(): void {
   if (out.pay != null) rowsOut.push([t("timeCard.pay"), money.format(out.pay)]);
   for (const [k, v] of rowsOut) outEl.append(h("dt", null, k), h("dd", { "data-volatile": "" }, v));
   if (bad) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidRow")));
-  if (rate != null && !(mult >= MIN_MULTIPLIER && mult <= MAX_MULTIPLIER)) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
+  if (rate != null && out.overtimeMin > 0 && !(mult >= MIN_MULTIPLIER && mult <= MAX_MULTIPLIER)) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
   last = rowsOut.map(([k, v]) => `${k}: ${v}`).join("\n");
 }
 

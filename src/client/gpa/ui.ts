@@ -63,8 +63,6 @@ function addRow(initial: GpaRow): void {
   const grade = h("select", { "data-field": "grade", "aria-label": t("gpa.grade"), onChange: () => paint() },
     ...GRADES.map((g) => h("option", { value: g, selected: g === initial.grade }, g)),
   );
-  // happy-dom ignores a `selected` attribute set before the option joins the select; set the value explicitly.
-  grade.value = initial.grade;
   const credits = h("input", {
     type: "number", min: "0", max: String(MAX_CREDITS), step: "0.5", value: String(initial.credits),
     "data-field": "credits", "aria-label": t("gpa.credits"), onInput: () => paint(),

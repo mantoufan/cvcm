@@ -176,3 +176,12 @@ Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-
 - `ovulation`: she holds a small cream calendar with a few pink heart stickers on blank days; on the desk a pink flower in a bud vase.
 - `macro`: she holds a cream plate divided into three sections with an egg, a strawberry and a slice of bread; on the desk a small pink kitchen scale.
 - `calories-burned`: she wears a pink headband and holds a cream skipping rope; on the desk a pink water bottle and a small towel with a heart.
+
+## AI tools (2026-10-29, were missing in production)
+
+Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark.
+
+- `remove-background`: a cut-out photo of a plush teddy bear on a grey-and-white checkerboard (transparency), pink heart scissors and paper scraps.
+- `image-upscaler`: a pink magnifying glass over a small flower photo that is crisp inside the lens, a tiny sparkle wand.
+- `speech-to-text`: a pink retro microphone with a heart grille, a cream speech bubble with blank wavy lines, a lined notebook.
+- `depth-map`: a layered paper diorama of hills and a cottage from cream to deep pink, heart-shaped 3D glasses.
