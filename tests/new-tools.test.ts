@@ -63,6 +63,12 @@ import { durationBetween, parseDuration } from "../src/shared/duration";
 import { flipCoins, rollDice } from "../src/shared/dice";
 import { gpaOf, gradePoints } from "../src/shared/gpa";
 import { mmss, nextPhase, normalizeSettings, phaseSeconds } from "../src/shared/pomodoro";
+import { bedtimesFor, formatClock as sleepClock, hoursOf, parseClock, wakeTimesFor } from "../src/shared/sleep";
+import { bodyFat, categoryOf } from "../src/shared/body-fat";
+import { contrastLevels, suggestForeground } from "../src/shared/contrast";
+import { contrastRatio, hexToRgb as parseHex, relativeLuminance as luminance, rgbToHex as rgbHex } from "../src/shared/color";
+import { formatTime, parseTime, solvePace } from "../src/shared/pace";
+import { finalGrade, neededOnFinal } from "../src/shared/grade";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -799,6 +805,118 @@ describe("pomodoro", () => {
   });
 });
 
+describe("sleep", () => {
+  it("counts whole 90-minute cycles plus 14 minutes to fall asleep", () => {
+    expect(parseClock("07:00")).toBe(420);
+    expect(parseClock("7:05")).toBe(425);
+    expect(parseClock("24:00")).toBeNull();
+    expect(parseClock("07:60")).toBeNull();
+    expect(parseClock("")).toBeNull();
+    expect(sleepClock(420)).toBe("07:00");
+    expect(sleepClock(-30)).toBe("23:30");
+    const beds = bedtimesFor(420);
+    expect(beds.map((s) => s.cycles)).toEqual([6, 5, 4, 3]);
+    expect(sleepClock(beds[0].minutes)).toBe("21:46");
+    expect(sleepClock(beds[1].minutes)).toBe("23:16");
+    expect(sleepClock(beds[3].minutes)).toBe("02:16");
+    expect(hoursOf(beds[1].sleepMin)).toBe(7.5);
+    const wakes = wakeTimesFor(23 * 60);
+    expect(wakes.map((s) => s.cycles)).toEqual([3, 4, 5, 6]);
+    expect(sleepClock(wakes[0].minutes)).toBe("03:44");
+    expect(sleepClock(wakes[3].minutes)).toBe("08:14");
+  });
+});
+
+describe("body-fat", () => {
+  it("uses the U.S. Navy formula and ACE categories", () => {
+    const man = bodyFat({ sex: "male", cm: 175, neck: 38, waist: 85, kg: 70 });
+    expect(man?.percent).toBeCloseTo(17.0, 0);
+    expect(man?.category).toBe("fitness");
+    expect((man?.fatKg ?? 0) + (man?.leanKg ?? 0)).toBeCloseTo(70, 6);
+    const woman = bodyFat({ sex: "female", cm: 165, neck: 32, waist: 72, hip: 95 });
+    expect(woman?.percent).toBeCloseTo(25.9, 0);
+    expect(woman?.category).toBe("average");
+    expect(woman?.fatKg).toBeNull();
+    expect(bodyFat({ sex: "female", cm: 165, neck: 32, waist: 72 })).toBeNull();
+    expect(bodyFat({ sex: "male", cm: 175, neck: 90, waist: 85 })).toBeNull();
+    expect(bodyFat({ sex: "male", cm: 175, neck: 38, waist: NaN })).toBeNull();
+    expect(categoryOf("male", 5)).toBe("essential");
+    expect(categoryOf("male", 25)).toBe("obese");
+    expect(categoryOf("female", 20)).toBe("athlete");
+    expect(categoryOf("female", 32)).toBe("obese");
+  });
+});
+
+describe("contrast", () => {
+  it("computes WCAG ratios, levels and a passing suggestion", () => {
+    expect(parseHex("#fff")).toEqual({ r: 255, g: 255, b: 255 });
+    expect(parseHex("000000")).toEqual({ r: 0, g: 0, b: 0 });
+    expect(parseHex("#12345")).toBeNull();
+    expect(parseHex("#80808080")).toEqual({ r: 128, g: 128, b: 128 });
+    expect(parseHex("red")).toBeNull();
+    expect(rgbHex({ r: 255, g: 0, b: 128 })).toBe("#ff0080");
+    expect(luminance({ r: 255, g: 255, b: 255 })).toBeCloseTo(1, 10);
+    expect(contrastRatio({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 })).toBeCloseTo(21, 10);
+    expect(contrastRatio({ r: 255, g: 255, b: 255 }, { r: 0, g: 0, b: 0 })).toBeCloseTo(21, 10);
+    expect(contrastRatio({ r: 119, g: 119, b: 119 }, { r: 255, g: 255, b: 255 })).toBeCloseTo(4.48, 2);
+    const grey = contrastLevels({ r: 119, g: 119, b: 119 }, { r: 255, g: 255, b: 255 });
+    expect(grey.aaNormal).toBe(false);
+    expect(grey.aaLarge).toBe(true);
+    expect(grey.ui).toBe(true);
+    const fix = suggestForeground({ r: 119, g: 119, b: 119 }, { r: 255, g: 255, b: 255 });
+    expect(fix).not.toBeNull();
+    expect(contrastRatio(fix!, { r: 255, g: 255, b: 255 })).toBeGreaterThanOrEqual(4.5);
+    expect(fix!.r).toBeLessThan(119);
+    expect(suggestForeground({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 })).toEqual({ r: 0, g: 0, b: 0 });
+    expect(suggestForeground({ r: 120, g: 120, b: 120 }, { r: 128, g: 128, b: 128 }, 21)).toBeNull();
+    // White on mid grey fails AA but black passes: head for black, not the wrong endpoint.
+    const onGrey = suggestForeground({ r: 255, g: 255, b: 255 }, { r: 128, g: 128, b: 128 });
+    expect(onGrey).not.toBeNull();
+    expect(contrastRatio(onGrey!, { r: 128, g: 128, b: 128 })).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("pace", () => {
+  it("solves pace, time and distance and predicts races", () => {
+    expect(parseTime("55:00")).toBe(3300);
+    expect(parseTime("1:05:30")).toBe(3930);
+    expect(parseTime("5")).toBe(300);
+    expect(parseTime("5:75")).toBeNull();
+    expect(parseTime("240:00")).toBe(14400);
+    expect(parseTime("5:5")).toBe(305);
+    expect(parseTime("1:75:00")).toBeNull();
+    expect(parseTime("")).toBeNull();
+    expect(parseTime("0:00")).toBeNull();
+    expect(formatTime(3930)).toBe("1:05:30");
+    expect(formatTime(330)).toBe("05:30");
+    const pace = solvePace({ solve: "pace", unit: "km", distance: 10, timeSec: 3300 });
+    expect(pace?.paceSec).toBe(330);
+    expect(formatTime(pace?.paceOtherSec ?? 0)).toBe("08:51");
+    expect(pace?.speed).toBeCloseTo(10.909, 3);
+    expect(formatTime(pace!.races.find((r) => r.id === "marathon")!.timeSec)).toBe("3:52:04");
+    const time = solvePace({ solve: "time", unit: "mi", distance: 3.1, paceSec: 480 });
+    expect(time?.timeSec).toBeCloseTo(1488, 6);
+    const dist = solvePace({ solve: "distance", unit: "km", timeSec: 3600, paceSec: 300 });
+    expect(dist?.distance).toBe(12);
+    expect(solvePace({ solve: "pace", unit: "km", distance: 0, timeSec: 100 })).toBeNull();
+    expect(solvePace({ solve: "pace", unit: "km", distance: 20000, timeSec: 100 })).toBeNull();
+  });
+});
+
+describe("grade", () => {
+  it("finds the final score needed for a target", () => {
+    expect(neededOnFinal(85, 90, 30)).toBeCloseTo(101.667, 3);
+    expect(neededOnFinal(85, 80, 50)).toBeCloseTo(75, 6);
+    expect(neededOnFinal(95, 90, 20)).toBeCloseTo(70, 6);
+    expect(neededOnFinal(85, 90, 0)).toBeNull();
+    expect(neededOnFinal(85, 90, 101)).toBeNull();
+    expect(neededOnFinal(NaN, 90, 30)).toBeNull();
+    const out = finalGrade({ current: 85, wanted: 90, weight: 30 });
+    expect(out?.targets.map((row) => row.letter)).toEqual(["A", "B", "C", "D"]);
+    expect(out?.targets[1].needed).toBeCloseTo(68.333, 3);
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -879,6 +997,11 @@ describe("new routes", () => {
     expect(parseAppPath("/en/dice/")).toEqual({ kind: "app", locale: "en", tool: "dice" });
     expect(parseAppPath("/en/gpa/")).toEqual({ kind: "app", locale: "en", tool: "gpa" });
     expect(parseAppPath("/en/pomodoro/")).toEqual({ kind: "app", locale: "en", tool: "pomodoro" });
+    expect(parseAppPath("/en/sleep/")).toEqual({ kind: "app", locale: "en", tool: "sleep" });
+    expect(parseAppPath("/en/body-fat/")).toEqual({ kind: "app", locale: "en", tool: "body-fat" });
+    expect(parseAppPath("/en/contrast/")).toEqual({ kind: "app", locale: "en", tool: "contrast" });
+    expect(parseAppPath("/en/pace/")).toEqual({ kind: "app", locale: "en", tool: "pace" });
+    expect(parseAppPath("/en/grade/")).toEqual({ kind: "app", locale: "en", tool: "grade" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");
@@ -934,6 +1057,8 @@ describe("new routes", () => {
     expect(appHref("zh-CN", "dice")).toBe("/zh-cn/dice/");
     expect(appHref("zh-CN", "gpa")).toBe("/zh-cn/gpa/");
     expect(appHref("zh-CN", "pomodoro")).toBe("/zh-cn/pomodoro/");
+    expect(appHref("zh-CN", "body-fat")).toBe("/zh-cn/body-fat/");
+    expect(appHref("zh-CN", "contrast")).toBe("/zh-cn/contrast/");
     expect(appHref("zh-CN", "portrait-sim")).toBe("/zh-cn/portrait-sim/");
     expect(appHref("zh-CN", "diff")).toBe("/zh-cn/diff/");
     expect(appHref("zh-CN", "signature")).toBe("/zh-cn/signature/");

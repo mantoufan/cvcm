@@ -351,6 +351,54 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["cron", "timestamp", "slug"],
   },
+  "find-bedtime": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["sleep", "pomodoro", "countdown"],
+  },
+  "measure-body-fat": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["body-fat", "bmi", "tdee"],
+  },
+  "check-contrast": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["contrast", "color", "hex-rgb"],
+  },
+  "calculate-pace": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["pace", "duration", "units"],
+  },
+  "calculate-final-grade": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["grade", "gpa", "percent"],
+  },
+  "calculate-tdee": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["tdee", "bmi", "body-fat"],
+  },
+  "calculate-gpa": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["gpa", "grade", "percent"],
+  },
+  "use-pomodoro": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["pomodoro", "countdown", "stopwatch"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -695,5 +743,37 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "read-cron": [
     { step: 1, src: "/covers/tutorials/read-cron-fields.svg" },
     { step: 4, src: "/covers/tutorials/read-cron-sunday.svg" },
+  ],
+  "find-bedtime": [
+    { step: 1, src: "/covers/tutorials/find-bedtime-cycles.svg" },
+    { step: 5, src: "/covers/tutorials/find-bedtime-wake.svg" },
+  ],
+  "measure-body-fat": [
+    { step: 1, src: "/covers/tutorials/measure-body-fat-tape.svg" },
+    { step: 4, src: "/covers/tutorials/measure-body-fat-result.svg" },
+  ],
+  "check-contrast": [
+    { step: 1, src: "/covers/tutorials/check-contrast-levels.svg" },
+    { step: 5, src: "/covers/tutorials/check-contrast-fix.svg" },
+  ],
+  "calculate-pace": [
+    { step: 1, src: "/covers/tutorials/calculate-pace-formula.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-pace-races.svg" },
+  ],
+  "calculate-final-grade": [
+    { step: 1, src: "/covers/tutorials/calculate-final-grade-formula.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-final-grade-letters.svg" },
+  ],
+  "calculate-tdee": [
+    { step: 1, src: "/covers/tutorials/calculate-tdee-formula.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-tdee-targets.svg" },
+  ],
+  "calculate-gpa": [
+    { step: 1, src: "/covers/tutorials/calculate-gpa-points.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-gpa-math.svg" },
+  ],
+  "use-pomodoro": [
+    { step: 1, src: "/covers/tutorials/use-pomodoro-rounds.svg" },
+    { step: 5, src: "/covers/tutorials/use-pomodoro-controls.svg" },
   ],
 };

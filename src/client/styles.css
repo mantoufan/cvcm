@@ -609,3 +609,16 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .gpa-row .chip { flex: 0 0 auto; min-height: 44px; }
 .gpa-check { display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; }
 .pomodoro-clock { font-size: 2.6rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0; }
+
+/* Sleep, body fat, contrast, pace, final grade */
+.sleep-best { color: var(--pink-deep); font-weight: 700; }
+.contrast-row { align-items: center; gap: 0.45rem; }
+.contrast-row input[type="text"] { flex: 1 1 0; min-width: 0; font-family: var(--mono); }
+.contrast-sample { padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 10px; margin: 0 0 0.6rem; }
+.contrast-sample p { margin: 0; }
+.contrast-sample-normal { font-size: 16px; }
+.contrast-sample-large { font-size: 24px; margin-top: 0.3rem; }
+.contrast-ratio { font-size: 2rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0 0.6rem; }
+.contrast-pass { color: #1f7a3f; font-weight: 700; }
+.contrast-fail { color: #b3261e; font-weight: 700; }
+.grade-needed { font-size: 1.6rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0 0.4rem; }

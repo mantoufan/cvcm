@@ -592,4 +592,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountPomodoro(host);
     return m.unmountPomodoro;
   },
+  "sleep": async (host, ctx) => {
+    const m = await import("./sleep/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSleep(host);
+    return m.unmountSleep;
+  },
+  "body-fat": async (host, ctx) => {
+    const m = await import("./body-fat/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBodyFat(host);
+    return m.unmountBodyFat;
+  },
+  "contrast": async (host, ctx) => {
+    const m = await import("./contrast/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountContrast(host);
+    return m.unmountContrast;
+  },
+  "pace": async (host, ctx) => {
+    const m = await import("./pace/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPace(host);
+    return m.unmountPace;
+  },
+  "grade": async (host, ctx) => {
+    const m = await import("./grade/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGrade(host);
+    return m.unmountGrade;
+  },
 };
