@@ -12,6 +12,9 @@ let copyBtn: HTMLButtonElement | null = null;
 let algo: HashAlgo = "SHA-256";
 /** Bumped on every digest request and on unmount; a result for an older request is dropped. */
 let digestSeq = 0;
+/** The last file that was read; an algorithm change rehashes it until the user types again. */
+let fileBytes: Uint8Array | null = null;
+let fileName = "";
 const schedule = debounce(() => { void run(); }, 80);
 
 export function mountHash(host: HTMLElement): void {
@@ -20,7 +23,7 @@ export function mountHash(host: HTMLElement): void {
     spellcheck: "false",
     "aria-label": t("hash.input"),
     placeholder: t("hash.placeholder"),
-    onInput: () => schedule(),
+    onInput: () => { fileBytes = null; schedule(); },
   });
   hexEl = h("input", { class: "regex-pattern", readonly: true, spellcheck: "false", "aria-label": t("hash.hex") });
   b64El = h("input", { class: "regex-pattern", readonly: true, spellcheck: "false", "aria-label": t("hash.b64") });
@@ -49,7 +52,8 @@ export function mountHash(host: HTMLElement): void {
             h("select", {
               onChange: (e: Event) => {
                 algo = (e.target as HTMLSelectElement).value as HashAlgo;
-                void run();
+                if (fileBytes) void writeDigest(fileBytes);
+                else void run();
               },
             },
               ...HASH_ALGOS.map((id) => h("option", { value: id, selected: id === algo }, id)),
@@ -80,6 +84,8 @@ export function unmountHash(): void {
   b64El = null;
   statusEl = null;
   digestSeq++;
+  fileBytes = null;
+  fileName = "";
   copyBtn = null;
 }
 
@@ -91,9 +97,21 @@ async function loadFile(file: File): Promise<void> {
   // Claim a sequence number before the read, so a slow file never overwrites newer text or a remounted page.
   const seq = ++digestSeq;
   const status = statusEl;
-  const bytes = new Uint8Array(await file.arrayBuffer());
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await file.arrayBuffer());
+  } catch {
+    // The file vanished or changed after it was picked (removed drive, cloud placeholder).
+    if (seq !== digestSeq) return;
+    if (hexEl) hexEl.value = "";
+    if (b64El) b64El.value = "";
+    if (status) status.textContent = t("hash.error");
+    return;
+  }
   if (seq !== digestSeq) return;
-  if (status) status.textContent = t("hash.fileMeta", { name: file.name });
+  fileBytes = bytes;
+  fileName = file.name;
+  if (status) status.textContent = t("hash.fileMeta", { name: fileName });
   await writeDigest(bytes, seq);
 }
 

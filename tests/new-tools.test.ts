@@ -1113,6 +1113,8 @@ describe("ovulation", () => {
     expect(ovulationCycles("2026-01-01", 20)).toBeNull();
     expect(ovulationCycles("nope", 28)).toBeNull();
     expect(ovulationCycles("2027-01-01", 28, 1, "2026-01-05")).toBeNull();
+    expect(ovulationCycles("2024-10-20", 28, 1, "2026-01-05")).toBeNull();
+    expect(ovulationCycles("2025-01-10", 28, 1, "2026-01-05")).not.toBeNull();
   });
 });
 

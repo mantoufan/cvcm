@@ -7,6 +7,8 @@ export const MAX_CYCLE = 45;
 /** The luteal phase (ovulation to next period) is about 14 days; the variable part of a cycle comes before ovulation. */
 export const LUTEAL_DAYS = 14;
 const DAY = 86400000;
+/** Projecting more than a year of cycles from one date is guesswork; ask for the most recent period instead. */
+export const MAX_ELAPSED_DAYS = 365;
 
 export type OvulationCycle = {
   periodStart: Date;
@@ -24,8 +26,8 @@ export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, co
   if (!lmp || !today || !Number.isInteger(cycle) || cycle < MIN_CYCLE || cycle > MAX_CYCLE) return null;
   if (lmp.getUTCFullYear() < MIN_YEAR || lmp.getUTCFullYear() > MAX_YEAR) return null;
   const elapsed = Math.floor((today.getTime() - lmp.getTime()) / DAY);
-  // A last period in the future is a typo (often the year), not a forecast.
-  if (elapsed < 0) return null;
+  // A last period in the future, or more than a year back, is a typo (often the year), not a basis for a forecast.
+  if (elapsed < 0 || elapsed > MAX_ELAPSED_DAYS) return null;
   // Start at the cycle that contains today, then skip it too if its fertile window has already ended.
   let skip = Math.floor(elapsed / cycle);
   const ovulationDay = cycle - LUTEAL_DAYS;

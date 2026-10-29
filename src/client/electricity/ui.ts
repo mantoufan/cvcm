@@ -16,7 +16,7 @@ let last = "";
 
 export function mountElectricity(host: HTMLElement): void {
   const num = (field: string, value: string, step = "any") =>
-    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => { if (field === "watts" && presetEl) presetEl.value = "custom"; paint(); } });
+    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => { if (field === "watts") syncPreset(); paint(); } });
   presetEl = h("select", { "data-field": "preset", onChange: () => applyPreset() },
     h("option", { value: "custom" }, t("electricity.custom")),
     ...APPLIANCES.map((a) => h("option", { value: a.id, selected: a.id === "aircon" }, t("electricity.app_" + a.id, { w: a.watts }))),
@@ -66,6 +66,13 @@ export function unmountElectricity(): void {
   last = "";
 }
 
+/** Typed watts select the matching appliance, or Custom when none matches. */
+function syncPreset(): void {
+  if (!presetEl || !wattsEl) return;
+  const w = Number(wattsEl.value);
+  presetEl.value = APPLIANCES.find((a) => a.watts === w)?.id ?? "custom";
+}
+
 function applyPreset(): void {
   const a = APPLIANCES.find((x) => x.id === presetEl?.value);
   if (a && wattsEl) wattsEl.value = String(a.watts);
@@ -88,13 +95,13 @@ function paint(): void {
   // Whole-number prices of 10 or more (yen, won, dong) give whole-number totals; 11.50 pesos keeps cents.
   const dp = Number.isInteger(price) && price >= 10 ? 0 : 2;
   const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
-  // Whole-number currencies still need decimals for small daily amounts (2.48 yen, not 2).
-  const daily = new Intl.NumberFormat(locale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  // Small daily amounts get two more decimals than the totals (2.48 yen, 0.0015 dollars), so they never read as 0.
+  const daily = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp + 2 });
   const num = new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 });
   const rows: Array<[string, string]> = [
     [t("electricity.cost"), money.format(out.cost)],
     [t("electricity.energy"), `${num.format(out.kwh)} kWh`],
-    [t("electricity.perDay"), `${(dp === 0 ? daily : money).format(out.costPerDay)} · ${num.format(out.kwhPerDay)} kWh`],
+    [t("electricity.perDay"), `${daily.format(out.costPerDay)} · ${num.format(out.kwhPerDay)} kWh`],
     [t("electricity.perYear"), money.format(out.costPerYear)],
   ];
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));

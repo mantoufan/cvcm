@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { todayIso } from "../../shared/age";
-import { DEFAULT_CYCLE, MAX_CYCLE, MIN_CYCLE, ovulationCycles } from "../../shared/ovulation";
+import { DEFAULT_CYCLE, MAX_CYCLE, MAX_ELAPSED_DAYS, MIN_CYCLE, ovulationCycles } from "../../shared/ovulation";
 
 let dateEl: HTMLInputElement | null = null;
 let cycleEl: HTMLInputElement | null = null;
@@ -59,7 +59,8 @@ function paint(): void {
   if (!cycles) {
     last = "";
     const future = dateEl.value !== "" && dateEl.value > todayIso();
-    outEl.append(h("p", { class: "muted" }, future ? t("ovulation.invalidFuture") : t("ovulation.invalid")));
+    const old = dateEl.value !== "" && dateEl.value < todayIso(new Date(Date.now() - MAX_ELAPSED_DAYS * 86400000));
+    outEl.append(h("p", { class: "muted" }, future ? t("ovulation.invalidFuture") : old ? t("ovulation.invalidOld") : t("ovulation.invalid")));
     return;
   }
   const fmt = new Intl.DateTimeFormat(locale(), { month: "short", day: "numeric", weekday: "short", timeZone: "UTC" });

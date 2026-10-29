@@ -129,17 +129,23 @@ function paint(): void {
   const bad = out.shifts.some((s, i) => s == null && !(input[i].start.trim() === "" && input[i].end.trim() === ""));
   const fmt = new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 });
   const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const hours = (m: number) => `${hhmm(m)} (${fmt.format(m / 60)} h)`;
   const rowsOut: Array<[string, string]> = [
-    [t("timeCard.total"), `${hhmm(out.totalMin)} (${fmt.format(out.totalMin / 60)} h)`],
-    [t("timeCard.regular"), `${hhmm(out.regularMin)} (${fmt.format(out.regularMin / 60)} h)`],
-    [t("timeCard.overtime"), `${hhmm(out.overtimeMin)} (${fmt.format(out.overtimeMin / 60)} h)`],
+    [t("timeCard.total"), hours(out.totalMin)],
+    // Without a valid threshold the regular/overtime split is unknown, not zero.
+    [t("timeCard.regular"), out.thresholdInvalid ? "—" : hours(out.regularMin)],
+    [t("timeCard.overtime"), out.thresholdInvalid ? "—" : hours(out.overtimeMin)],
   ];
   if (out.pay != null) rowsOut.push([t("timeCard.pay"), money.format(out.pay)]);
   for (const [k, v] of rowsOut) outEl.append(h("dt", null, k), h("dd", { "data-volatile": "" }, v));
-  if (bad) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidRow")));
-  if (out.thresholdInvalid) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidOvertime")));
-  else if (rate != null && out.multiplierInvalid) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
-  last = rowsOut.map(([k, v]) => `${k}: ${v}`).join("\n");
+  const notes: string[] = [];
+  if (bad) notes.push(t("timeCard.invalidRow"));
+  if (rate != null && (Number.isNaN(rate) || rate < 0)) notes.push(t("timeCard.invalidRate"));
+  if (out.thresholdInvalid) notes.push(t("timeCard.invalidOvertime"));
+  else if (rate != null && out.multiplierInvalid) notes.push(t("timeCard.invalidMultiplier"));
+  for (const note of notes) outEl.append(h("p", { class: "hint" }, note));
+  // Warnings travel with the copied totals, so a pasted timesheet says what was left out.
+  last = [...rowsOut.map(([k, v]) => `${k}: ${v}`), ...notes].join("\n");
 }
 
 async function copyOut(): Promise<void> {
