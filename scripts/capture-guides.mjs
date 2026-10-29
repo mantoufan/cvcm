@@ -101,6 +101,11 @@ const STEPS = {
   dice: 3,
   gpa: 3,
   pomodoro: 3,
+  sleep: 3,
+  "body-fat": 3,
+  contrast: 3,
+  pace: 3,
+  grade: 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1490,6 +1495,81 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "sleep") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const f = document.querySelector("[data-field=time]");
+      if (f) { f.value = "06:30"; f.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const m = document.querySelector("[data-field=mode]");
+      if (m) { m.value = "bed"; m.dispatchEvent(new Event("change", { bubbles: true })); }
+      const f = document.querySelector("[data-field=time]");
+      if (f) { f.value = "23:00"; f.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "body-fat") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const s = document.querySelector("[data-field=sex]");
+      if (s) { s.value = "female"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      const w = document.querySelector("[data-field=waist]");
+      if (w) { w.value = "72"; w.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "contrast") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const f = document.querySelector("[data-field=fg]");
+      if (f) { f.value = "#ff8fb1"; f.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "pace") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const s = document.querySelector("[data-field=solve]");
+      if (s) { s.value = "time"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "grade") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const w = document.querySelector("[data-field=weight]");
+      if (w) { w.value = "40"; w.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
     await snap(3);
     return;
   }

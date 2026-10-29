@@ -850,6 +850,51 @@
       "s3t": "Change the lengths",
       "s3b": "Edit the minutes or rounds while the clock is stopped and the current phase takes them right away. Reset starts over from round 1."
     },
+    "sleep": {
+      "lead": "Find a bedtime that ends on a full sleep cycle, or the best times to wake up. Nothing is uploaded.",
+      "s1t": "Open Sleep calculator",
+      "s1b": "Wake-up time is selected and 07:00 is filled. Four bedtimes for 6 to 3 cycles sit on the right.",
+      "s2t": "Set your wake-up time",
+      "s2b": "Change the time to your alarm. Five or six cycles are the usual target; the shorter options are for short nights.",
+      "s3t": "Or start from bedtime",
+      "s3b": "Switch to Bedtime and enter when you lie down to see wake-up times. Copy puts the list on the clipboard."
+    },
+    "body-fat": {
+      "lead": "Estimate body fat from a tape measure with the U.S. Navy formula. Nothing is uploaded.",
+      "s1t": "Open Body fat calculator",
+      "s1b": "Metric and male are selected with sample numbers. Body fat and category sit on the right.",
+      "s2t": "Enter your measurements",
+      "s2b": "Height, neck and waist; women also enter hips. Switch to imperial for inches and pounds. Add weight to see fat and lean mass.",
+      "s3t": "Read the result",
+      "s3b": "The percentage and ACE category update as you type. Copy puts them on the clipboard."
+    },
+    "contrast": {
+      "lead": "Check a text and background pair against WCAG 2 AA and AAA. Nothing is uploaded.",
+      "s1t": "Open Contrast checker",
+      "s1b": "A sample pink on cream pair is filled. The ratio and pass/fail rows sit on the right under a text sample.",
+      "s2t": "Enter your colors",
+      "s2b": "Type a hex code or use the color picker for text and background. Swap exchanges the two.",
+      "s3t": "Fix a failing pair",
+      "s3b": "When normal text fails AA, the closest passing text color is suggested below the table. Copy puts the ratio and results on the clipboard."
+    },
+    "pace": {
+      "lead": "Turn distance and time into pace, or pace into finish time, with race predictions. Nothing is uploaded.",
+      "s1t": "Open Pace calculator",
+      "s1b": "Pace is selected with 10 km in 55:00. The pace per km and per mile, speed, and race times sit on the right.",
+      "s2t": "Choose what to calculate",
+      "s2b": "Pick Pace, Time or Distance and fill the other two. Switch km to miles when needed.",
+      "s3t": "Read the predictions",
+      "s3b": "5K, 10K, half and marathon times at the same pace update as you type. Copy puts the result on the clipboard."
+    },
+    "grade": {
+      "lead": "See the score you need on the final to reach a grade. Nothing is uploaded.",
+      "s1t": "Open Final grade calculator",
+      "s1b": "85% current, 90% wanted and a 30% final are filled. The needed score sits on the right.",
+      "s2t": "Enter your numbers",
+      "s2b": "Type your current grade, the grade you want and the final's weight from your syllabus.",
+      "s3t": "Check the letter table",
+      "s3b": "The table shows the final score needed for an A, B, C or D. Copy puts everything on the clipboard."
+    },
     "remove-background": {
       "lead": "Cut people, products or pets out of a photo in this tab, then download a transparent PNG.",
       "s1t": "Add photos",

@@ -86,6 +86,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/dice/` — dice roller (d4–d100) and coin flip
 - `src/client/gpa/` — GPA calculator, 4.0 scale weighted by credits
 - `src/client/pomodoro/` — Pomodoro timer with breaks and a chime
+- `src/client/sleep/` — sleep calculator: bedtimes or wake-up times by 90-minute cycles plus 14 minutes to fall asleep
+- `src/client/body-fat/` — body fat calculator, U.S. Navy circumference method, ACE categories, metric / imperial (not medical advice)
+- `src/client/contrast/` — WCAG 2 color contrast checker (AA / AAA, normal / large text, non-text) with a passing text-color suggestion
+- `src/client/pace/` — running pace calculator: pace, time or distance, km / mi, 5K–marathon predictions
+- `src/client/grade/` — final grade calculator: score needed on the final, table per letter
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

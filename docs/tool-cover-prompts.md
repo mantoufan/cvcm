@@ -146,3 +146,13 @@ Same character and room. She holds a cream report card tied with a pink ribbon, 
 ## Pomodoro timer (2026-10-28)
 
 Same character and room. She holds a round pink tomato-shaped kitchen timer with a blank face and a cream dial, a small cup of tea on the desk. No numerals. Save `public/covers/pomodoro-sweet.jpg`, `sips -z 720 1280`.
+
+## Sleep, body fat, contrast, pace, final grade (2026-10-29)
+
+Codex (`codex exec`, built-in image tool), refs `pomodoro-sweet.jpg` + `gpa-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `sleep`: she hugs a cream crescent-moon pillow, a small pink alarm clock with a blank face and a sleep mask with hearts on the desk.
+- `body-fat`: she holds a pink soft measuring tape looped into a heart, a cream bathroom scale with a blank dial on the floor.
+- `contrast`: she holds up two paint swatch cards, one deep pink and one cream, a small pink magnifying glass on the desk.
+- `pace`: she wears a pink headband and holds a cream stopwatch with a blank face, pink running shoes with heart laces on the desk.
+- `grade`: she holds a cream exam paper with a big pink heart stamp, a pink pencil and a tiny trophy on the desk.
