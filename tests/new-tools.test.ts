@@ -1069,10 +1069,12 @@ describe("time-card", () => {
     // No overtime: the multiplier does not matter, even when it is blank.
     expect(timeCard(week, 20, 40, NaN).pay).toBe(800);
     expect(timeCard([...week, { start: "09:00", end: "14:00", breakMin: 0 }], 20, 40, NaN).pay).toBeNull();
-    // Two weeks of 40 hours each have no overtime.
-    const twoWeeks = [...week, { start: "", end: "", breakMin: 0 }, { start: "", end: "", breakMin: 0 }, ...week];
-    expect(timeCard(twoWeeks, 20).overtimeMin).toBe(0);
-    expect(timeCard(twoWeeks, 20).totalMin).toBe(4800);
+    // A blank or impossible threshold is flagged instead of silently paying straight time.
+    expect(timeCard(withOvertime, 20, NaN).thresholdInvalid).toBe(true);
+    expect(timeCard(withOvertime, 20, NaN).pay).toBeNull();
+    expect(timeCard(withOvertime, 20, -40).thresholdInvalid).toBe(true);
+    expect(timeCard(withOvertime, 20, 0, 1.5).overtimeMin).toBe(2700);
+    expect(timeCard(withOvertime, 20, 40, 0).multiplierInvalid).toBe(true);
     expect(hhmm(450)).toBe("7:30");
   });
 });
@@ -1100,9 +1102,12 @@ describe("ovulation", () => {
     expect(isoOf(c[0].nextPeriod)).toBe("2026-01-29");
     expect(isoOf(c[1].periodStart)).toBe("2026-01-29");
     expect(isoOf(ovulationCycles("2026-01-01", 32, 1, "2026-01-05")![0].ovulation)).toBe("2026-01-19");
+    // Once this cycle's fertile window has ended, the list starts with the next cycle.
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-15")![0].periodStart)).toBe("2026-01-01");
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-16")![0].periodStart)).toBe("2026-01-29");
     // On the day the next period is due, the new cycle is the first one listed.
     expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-29")![0].periodStart)).toBe("2026-01-29");
-    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-28")![0].periodStart)).toBe("2026-01-01");
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-28")![0].periodStart)).toBe("2026-01-29");
     // Two months later the list starts at the current cycle.
     expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-03-10")![0].periodStart)).toBe("2026-02-26");
     expect(ovulationCycles("2026-01-01", 20)).toBeNull();
@@ -1137,6 +1142,7 @@ describe("calories-burned", () => {
     expect(caloriesBurned("run10", 60, 60)!.kcal).toBeCloseTo(588, 6);
     expect(caloriesBurned("walkBrisk", 10, 30)).toBeNull();
     expect(caloriesBurned("walkBrisk", 70, 0)).toBeNull();
+    expect(caloriesBurned("walkBrisk", 70, 0.5)).toBeNull();
   });
 });
 

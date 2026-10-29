@@ -17,18 +17,19 @@ export type OvulationCycle = {
   nextPeriod: Date;
 };
 
-/** The next `count` cycles from the first day of the last period, starting with the cycle that contains `today` or later. */
+/** The next `count` cycles from the first day of the last period, starting with the first whose fertile window has not ended by `today`. */
 export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, count = 3, todayIsoStr = todayIso()): OvulationCycle[] | null {
   const lmp = parseIsoDate(lastPeriodIso);
   const today = parseIsoDate(todayIsoStr);
   if (!lmp || !today || !Number.isInteger(cycle) || cycle < MIN_CYCLE || cycle > MAX_CYCLE) return null;
   if (lmp.getUTCFullYear() < MIN_YEAR || lmp.getUTCFullYear() > MAX_YEAR) return null;
-  // Skip whole cycles that ended before today so the list stays current.
   const elapsed = Math.floor((today.getTime() - lmp.getTime()) / DAY);
   // A last period in the future is a typo (often the year), not a forecast.
   if (elapsed < 0) return null;
-  // On the day the next period is due (elapsed === cycle) that new cycle is the current one.
-  const skip = elapsed >= cycle ? Math.floor(elapsed / cycle) : 0;
+  // Start at the cycle that contains today, then skip it too if its fertile window has already ended.
+  let skip = Math.floor(elapsed / cycle);
+  const ovulationDay = cycle - LUTEAL_DAYS;
+  if (elapsed - skip * cycle > ovulationDay) skip += 1;
   const out: OvulationCycle[] = [];
   for (let i = 0; i < count; i++) {
     const periodStart = addDays(lmp, (skip + i) * cycle);

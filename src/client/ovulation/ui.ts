@@ -58,7 +58,8 @@ function paint(): void {
   outEl.replaceChildren();
   if (!cycles) {
     last = "";
-    outEl.append(h("p", { class: "muted" }, t("ovulation.invalid")));
+    const future = dateEl.value !== "" && dateEl.value > todayIso();
+    outEl.append(h("p", { class: "muted" }, future ? t("ovulation.invalidFuture") : t("ovulation.invalid")));
     return;
   }
   const fmt = new Intl.DateTimeFormat(locale(), { month: "short", day: "numeric", weekday: "short", timeZone: "UTC" });

@@ -88,9 +88,13 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
 }
 
 async function loadFile(file: File): Promise<void> {
+  // Claim a sequence number before the read, so a slow file never overwrites newer text or a remounted page.
+  const seq = ++digestSeq;
+  const status = statusEl;
   const bytes = new Uint8Array(await file.arrayBuffer());
-  if (statusEl) statusEl.textContent = t("hash.fileMeta", { name: file.name });
-  await writeDigest(bytes);
+  if (seq !== digestSeq) return;
+  if (status) status.textContent = t("hash.fileMeta", { name: file.name });
+  await writeDigest(bytes, seq);
 }
 
 async function run(): Promise<void> {
@@ -99,13 +103,13 @@ async function run(): Promise<void> {
   await writeDigest(encodeUtf8(inputEl.value));
 }
 
-async function writeDigest(bytes: Uint8Array): Promise<void> {
+async function writeDigest(bytes: Uint8Array, claimed?: number): Promise<void> {
   // Hold the fields locally: the page may be left while the digest is running.
   const hex = hexEl;
   const b64 = b64El;
   const status = statusEl;
   if (!hex || !b64) return;
-  const seq = ++digestSeq;
+  const seq = claimed ?? ++digestSeq;
   try {
     const out = await digest(algo, bytes);
     if (seq !== digestSeq) return;

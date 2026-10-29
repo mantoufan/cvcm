@@ -7756,6 +7756,7 @@
     "break": "Break (min)",
     "hours": "Hours",
     "add": "Add shift",
+    "maxRows": "A card covers one week: up to 7 shifts.",
     "remove": "Remove shift",
     "payOptions": "Pay (optional)",
     "rate": "Hourly rate",
@@ -7768,6 +7769,7 @@
     "pay": "Gross pay",
     "invalidRow": "Rows marked ! have a missing time, the same start and end, or a break as long as the shift.",
     "invalidMultiplier": "Overtime multiplier must be from 1 to 5.",
+    "invalidOvertime": "Overtime threshold must be from 0 to 168 hours a week.",
     "hint": "An end time before the start runs past midnight (☾). Overtime rules differ by country; set yours.",
     "copy": "Copy",
     "copied": "Copied",
@@ -7799,7 +7801,7 @@
     "perDay": "Per day",
     "perYear": "Per year",
     "hint": "Prices are in whatever currency you type. Fridges and air conditioners cycle on and off, so their real use is usually lower than the label.",
-    "invalid": "Enter watts above 0, 1 to 24 hours a day, at least 1 day and a price.",
+    "invalid": "Check the inputs: power above 0 and up to 100000 W, up to 24 hours a day, up to 3660 days, 1–1000 appliances (a whole number) and a price.",
     "copy": "Copy",
     "copied": "Copied",
     "copyFailed": "Copy failed"
@@ -7819,6 +7821,7 @@
     "formula": "Ovulation ≈ next period − 14 days; fertile window = 5 days before through ovulation day.",
     "disclaimer": "An estimate, not contraception or medical advice. Cycles vary from month to month.",
     "invalid": "Enter a date and a cycle length between 21 and 45 days.",
+    "invalidFuture": "The last period date is in the future. Check the year.",
     "copy": "Copy",
     "copied": "Copied",
     "copyFailed": "Copy failed"

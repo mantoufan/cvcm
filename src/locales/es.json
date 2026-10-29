@@ -7756,6 +7756,7 @@
     "break": "Descanso (min)",
     "hours": "Horas",
     "add": "Añadir turno",
+    "maxRows": "Una tarjeta cubre una semana: hasta 7 turnos.",
     "remove": "Quitar turno",
     "payOptions": "Sueldo (opcional)",
     "rate": "Tarifa por hora",
@@ -7768,6 +7769,7 @@
     "pay": "Sueldo bruto",
     "invalidRow": "Las filas con ! no tienen hora, empiezan y terminan a la misma hora o tienen un descanso igual o mayor que el turno.",
     "invalidMultiplier": "El multiplicador de horas extra debe estar entre 1 y 5.",
+    "invalidOvertime": "El umbral de horas extra debe estar entre 0 y 168 horas por semana.",
     "hint": "Una salida anterior a la entrada pasa la medianoche (☾). Las horas extra cambian según el país; ajusta las tuyas.",
     "copy": "Copiar",
     "copied": "Copiado",
@@ -7799,7 +7801,7 @@
     "perDay": "Por día",
     "perYear": "Por año",
     "hint": "Los precios van en la moneda que escribas. Neveras y aires acondicionados se encienden y apagan solos, así que su consumo real suele ser menor que la etiqueta.",
-    "invalid": "Introduce más de 0 vatios, de 1 a 24 horas al día, al menos 1 día y un precio.",
+    "invalid": "Revisa los datos: potencia mayor que 0 y hasta 100000 W, hasta 24 horas al día, hasta 3660 días, de 1 a 1000 aparatos (número entero) y un precio.",
     "copy": "Copiar",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar"
@@ -7819,6 +7821,7 @@
     "formula": "Ovulación ≈ próxima regla − 14 días; días fértiles = de 5 días antes hasta el día de la ovulación.",
     "disclaimer": "Una estimación, no un anticonceptivo ni consejo médico. Los ciclos cambian de un mes a otro.",
     "invalid": "Introduce una fecha y una duración del ciclo de 21 a 45 días.",
+    "invalidFuture": "La fecha del último periodo está en el futuro. Revisa el año.",
     "copy": "Copiar",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar"

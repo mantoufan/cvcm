@@ -30,7 +30,7 @@ export type BurnResult = { kcal: number; perMinute: number; met: number; /** App
 
 export function caloriesBurned(id: ActivityId, kg: number, minutes: number): BurnResult | null {
   const met = metOf(id);
-  if (!met || !Number.isFinite(kg) || kg < 20 || kg > 300 || !Number.isFinite(minutes) || minutes <= 0 || minutes > 1440) return null;
+  if (!met || !Number.isFinite(kg) || kg < 20 || kg > 300 || !Number.isFinite(minutes) || minutes < 1 || minutes > 1440) return null;
   const kcal = met * kg * (minutes / 60);
   return { kcal, perMinute: kcal / minutes, met, fatGrams: kcal / 7.7 };
 }

@@ -16,6 +16,10 @@ export type TimeCardResult = {
   regularMin: number;
   overtimeMin: number;
   pay: number | null;
+  /** The overtime threshold is blank, negative or above 168 hours. */
+  thresholdInvalid: boolean;
+  /** There is overtime to pay and the multiplier is outside 1–5. */
+  multiplierInvalid: boolean;
 };
 
 /** Worked minutes for one shift. An end before the start runs past midnight. Null when the times or break are invalid. */
@@ -34,29 +38,28 @@ export function shiftMinutes(row: ShiftRow): ShiftResult | null {
 
 export const MIN_MULTIPLIER = 1;
 export const MAX_MULTIPLIER = 5;
-/** Rows per week: overtime is counted per block of seven rows, so a two-week card is not one 80-hour week. */
-export const DAYS_PER_WEEK = 7;
+/** A card is one week: at most seven shifts, so the weekly overtime threshold always applies to the right hours. */
+export const MAX_SHIFTS = 7;
+export const MAX_OVERTIME_AFTER = 168;
 
 /**
- * Totals for a list of shifts. Rows with blank times are skipped; invalid rows count as null.
- * Hours above `overtimeAfterHours` in each week (seven rows) are overtime, paid at `rate × multiplier`.
+ * Totals for one week of shifts. Rows with blank times are skipped; invalid rows count as null.
+ * Hours above `overtimeAfterHours` are overtime, paid at `rate × multiplier`.
  */
 export function timeCard(rows: ShiftRow[], rate: number | null, overtimeAfterHours = 40, multiplier = 1.5): TimeCardResult {
   const shifts = rows.map((row) => (row.start.trim() === "" && row.end.trim() === "" ? null : shiftMinutes(row)));
   const totalMin = shifts.reduce((sum, s) => sum + (s?.minutes ?? 0), 0);
-  const limit = Number.isFinite(overtimeAfterHours) && overtimeAfterHours >= 0 ? overtimeAfterHours * 60 : Infinity;
-  let overtimeMin = 0;
-  for (let i = 0; i < shifts.length; i += DAYS_PER_WEEK) {
-    const week = shifts.slice(i, i + DAYS_PER_WEEK).reduce((sum, s) => sum + (s?.minutes ?? 0), 0);
-    overtimeMin += Math.max(0, week - limit);
-  }
+  const thresholdInvalid = !(Number.isFinite(overtimeAfterHours) && overtimeAfterHours >= 0 && overtimeAfterHours <= MAX_OVERTIME_AFTER);
+  const limit = thresholdInvalid ? Infinity : overtimeAfterHours * 60;
+  const overtimeMin = Math.max(0, totalMin - limit);
   const regularMin = totalMin - overtimeMin;
   const multOk = Number.isFinite(multiplier) && multiplier >= MIN_MULTIPLIER && multiplier <= MAX_MULTIPLIER;
   // The multiplier only matters when there is overtime.
-  const pay = rate != null && Number.isFinite(rate) && rate >= 0 && (multOk || overtimeMin === 0)
+  const multiplierInvalid = overtimeMin > 0 && !multOk;
+  const pay = rate != null && Number.isFinite(rate) && rate >= 0 && !thresholdInvalid && !multiplierInvalid
     ? (regularMin / 60) * rate + (overtimeMin / 60) * rate * (multOk ? multiplier : 1)
     : null;
-  return { shifts, totalMin, regularMin, overtimeMin, pay };
+  return { shifts, totalMin, regularMin, overtimeMin, pay, thresholdInvalid, multiplierInvalid };
 }
 
 /** 450 → "7:30" */

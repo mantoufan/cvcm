@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_MULTIPLIER, MIN_MULTIPLIER, hhmm, timeCard, type ShiftRow } from "../../shared/time-card";
+import { MAX_SHIFTS, hhmm, timeCard, type ShiftRow } from "../../shared/time-card";
 
 type RowEls = { wrap: HTMLElement; start: HTMLInputElement; end: HTMLInputElement; brk: HTMLInputElement; out: HTMLElement };
 
@@ -15,6 +15,8 @@ let otEl: HTMLInputElement | null = null;
 let multEl: HTMLInputElement | null = null;
 let outEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
+let addBtn: HTMLButtonElement | null = null;
+let fullEl: HTMLElement | null = null;
 let rows: RowEls[] = [];
 let last = "";
 
@@ -44,8 +46,9 @@ export function mountTimeCard(host: HTMLElement): void {
           rowsEl,
         ),
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn ghost", "data-action": "add", onClick: () => { addRow({ start: "", end: "", breakMin: 0 }); paint(); } }, t("timeCard.add")),
+          addBtn = h("button", { type: "button", class: "btn ghost", "data-action": "add", onClick: () => { addRow({ start: "", end: "", breakMin: 0 }); paint(); } }, t("timeCard.add")),
         ),
+        fullEl = h("p", { class: "hint", hidden: true }, t("timeCard.maxRows")),
         h("fieldset", null,
           h("legend", null, t("timeCard.payOptions")),
           h("label", { class: "field" }, h("span", null, t("timeCard.rate")), rateEl),
@@ -69,14 +72,15 @@ export function mountTimeCard(host: HTMLElement): void {
 
 export function unmountTimeCard(): void {
   rowsEl = rateEl = otEl = multEl = null;
-  outEl = null;
+  outEl = fullEl = null;
+  addBtn = null;
   copyBtn = null;
   rows = [];
   last = "";
 }
 
 function addRow(initial: ShiftRow): void {
-  if (!rowsEl) return;
+  if (!rowsEl || rows.length >= MAX_SHIFTS) return;
   // Time inputs are emptied in the prerendered HTML, so their per-row results are marked volatile too.
   const start = h("input", { type: "time", value: initial.start, "data-field": "start", onInput: () => paint(), onChange: () => paint() });
   const end = h("input", { type: "time", value: initial.end, "data-field": "end", onInput: () => paint(), onChange: () => paint() });
@@ -90,8 +94,11 @@ function addRow(initial: ShiftRow): void {
   labelRows();
 }
 
-/** Number the rows' accessible names in order, so removing one never leaves duplicates. */
+/** Number the rows' accessible names in order, so removing one never leaves duplicates; a full week disables Add. */
 function labelRows(): void {
+  const full = rows.length >= MAX_SHIFTS;
+  if (addBtn) addBtn.disabled = full;
+  if (fullEl) fullEl.hidden = !full;
   rows.forEach((r, i) => {
     r.start.setAttribute("aria-label", `${t("timeCard.start")} ${i + 1}`);
     r.end.setAttribute("aria-label", `${t("timeCard.end")} ${i + 1}`);
@@ -111,8 +118,7 @@ function paint(): void {
   const read = (el: HTMLInputElement | null) => (el == null || el.value.trim() === "" ? NaN : Number(el.value));
   const input: ShiftRow[] = rows.map((r) => ({ start: r.start.value, end: r.end.value, breakMin: r.brk.value.trim() === "" ? 0 : Number(r.brk.value) }));
   const rate = rateEl?.value.trim() === "" ? null : read(rateEl);
-  const mult = read(multEl);
-  const out = timeCard(input, rate, read(otEl), mult);
+  const out = timeCard(input, rate, read(otEl), read(multEl));
   rows.forEach((r, i) => {
     const s = out.shifts[i];
     const blank = input[i].start.trim() === "" && input[i].end.trim() === "";
@@ -131,7 +137,8 @@ function paint(): void {
   if (out.pay != null) rowsOut.push([t("timeCard.pay"), money.format(out.pay)]);
   for (const [k, v] of rowsOut) outEl.append(h("dt", null, k), h("dd", { "data-volatile": "" }, v));
   if (bad) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidRow")));
-  if (rate != null && out.overtimeMin > 0 && !(mult >= MIN_MULTIPLIER && mult <= MAX_MULTIPLIER)) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
+  if (out.thresholdInvalid) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidOvertime")));
+  else if (rate != null && out.multiplierInvalid) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
   last = rowsOut.map(([k, v]) => `${k}: ${v}`).join("\n");
 }
 

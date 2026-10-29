@@ -7756,6 +7756,7 @@
     "break": "Istirahat (menit)",
     "hours": "Jam",
     "add": "Tambah sif",
+    "maxRows": "Satu kartu untuk satu minggu: maksimal 7 shift.",
     "remove": "Hapus sif",
     "payOptions": "Upah (opsional)",
     "rate": "Tarif per jam",
@@ -7768,6 +7769,7 @@
     "pay": "Upah kotor",
     "invalidRow": "Baris bertanda ! kosong jamnya, jam mulai dan selesainya sama, atau istirahatnya tidak lebih pendek dari shift.",
     "invalidMultiplier": "Pengali lembur harus 1 sampai 5.",
+    "invalidOvertime": "Batas lembur harus 0 sampai 168 jam per minggu.",
     "hint": "Jam selesai sebelum jam mulai berarti melewati tengah malam (☾). Aturan lembur berbeda tiap negara; atur sesuai milik Anda.",
     "copy": "Salin",
     "copied": "Tersalin",
@@ -7799,7 +7801,7 @@
     "perDay": "Per hari",
     "perYear": "Per tahun",
     "hint": "Harga dalam mata uang apa pun yang Anda ketik. Kulkas dan AC menyala-mati bergantian, jadi pemakaian nyatanya biasanya lebih rendah dari label.",
-    "invalid": "Masukkan watt di atas 0, 1 sampai 24 jam per hari, minimal 1 hari, dan tarif.",
+    "invalid": "Periksa isian: daya di atas 0 dan maksimal 100000 W, maksimal 24 jam per hari, maksimal 3660 hari, 1–1000 alat (bilangan bulat) dan tarif listrik.",
     "copy": "Salin",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin"
@@ -7819,6 +7821,7 @@
     "formula": "Ovulasi ≈ haid berikutnya − 14 hari; jendela subur = 5 hari sebelum sampai hari ovulasi.",
     "disclaimer": "Hanya perkiraan, bukan kontrasepsi atau saran medis. Siklus berubah dari bulan ke bulan.",
     "invalid": "Masukkan tanggal dan panjang siklus antara 21 dan 45 hari.",
+    "invalidFuture": "Tanggal haid terakhir ada di masa depan. Periksa tahunnya.",
     "copy": "Salin",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin"

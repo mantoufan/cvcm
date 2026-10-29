@@ -7756,6 +7756,7 @@
     "break": "Nghỉ (phút)",
     "hours": "Số giờ",
     "add": "Thêm ca",
+    "maxRows": "Mỗi thẻ là một tuần: tối đa 7 ca.",
     "remove": "Xóa ca",
     "payOptions": "Tiền công (tùy chọn)",
     "rate": "Lương theo giờ",
@@ -7768,6 +7769,7 @@
     "pay": "Tiền công gộp",
     "invalidRow": "Dòng có dấu ! thiếu giờ, có giờ bắt đầu và kết thúc trùng nhau, hoặc giờ nghỉ không ngắn hơn ca.",
     "invalidMultiplier": "Hệ số làm thêm giờ phải từ 1 đến 5.",
+    "invalidOvertime": "Ngưỡng làm thêm giờ phải từ 0 đến 168 giờ mỗi tuần.",
     "hint": "Giờ kết thúc sớm hơn giờ bắt đầu là ca qua nửa đêm (☾). Quy định tăng ca khác nhau theo quốc gia; hãy đặt theo của bạn.",
     "copy": "Sao chép",
     "copied": "Đã sao chép",
@@ -7799,7 +7801,7 @@
     "perDay": "Mỗi ngày",
     "perYear": "Mỗi năm",
     "hint": "Giá theo loại tiền bạn nhập. Tủ lạnh và điều hòa bật tắt theo chu kỳ, nên mức dùng thực thường thấp hơn nhãn.",
-    "invalid": "Nhập công suất lớn hơn 0, 1 đến 24 giờ mỗi ngày, ít nhất 1 ngày và một mức giá.",
+    "invalid": "Kiểm tra lại: công suất lớn hơn 0 và tối đa 100000 W, tối đa 24 giờ mỗi ngày, tối đa 3660 ngày, 1–1000 thiết bị (số nguyên) và giá điện.",
     "copy": "Sao chép",
     "copied": "Đã sao chép",
     "copyFailed": "Sao chép thất bại"
@@ -7819,6 +7821,7 @@
     "formula": "Rụng trứng ≈ kỳ kinh tiếp theo − 14 ngày; cửa sổ thụ thai = 5 ngày trước đến ngày rụng trứng.",
     "disclaimer": "Chỉ là ước tính, không phải biện pháp tránh thai hay lời khuyên y tế. Chu kỳ thay đổi theo từng tháng.",
     "invalid": "Nhập một ngày và độ dài chu kỳ từ 21 đến 45 ngày.",
+    "invalidFuture": "Ngày kỳ kinh gần nhất đang ở tương lai. Hãy kiểm tra năm.",
     "copy": "Sao chép",
     "copied": "Đã sao chép",
     "copyFailed": "Sao chép thất bại"
