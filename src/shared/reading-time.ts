@@ -20,7 +20,6 @@ export type ReadingStats = {
   units: number;
   readSec: number;
   speakSec: number;
-  cjkMode: boolean;
 };
 
 export function readingTime(text: string, speed: Speed = "average"): ReadingStats {
@@ -29,7 +28,6 @@ export function readingTime(text: string, speed: Speed = "average"): ReadingStat
   const latinWords = trimmed.replace(CJK, " ").split(/\s+/).filter((w) => WORD.test(w)).length;
   const chars = Array.from(trimmed).length;
   const charsNoSpaces = Array.from(trimmed.replace(/\s/g, "")).length;
-  const cjkMode = cjk > latinWords;
   const readMin = latinWords / READ_WPM[speed] + cjk / CJK_CPM[speed];
   const speakMin = latinWords / SPEAK_WPM + cjk / CJK_SPEAK_CPM;
   const units = latinWords + cjk;
@@ -42,7 +40,6 @@ export function readingTime(text: string, speed: Speed = "average"): ReadingStat
     units,
     readSec: seconds(readMin),
     speakSec: seconds(speakMin),
-    cjkMode,
   };
 }
 

@@ -5,7 +5,7 @@ import { appHref } from "../../shared/path";
 import {
   ACTIVITIES,
   BULK_KCAL,
-  CM_PER_IN,
+  cmToFeetInches,
   CUT_KCAL,
   LB_PER_KG,
   feetInchesToCm,
@@ -117,10 +117,7 @@ function switchUnits(): void {
     // An empty or invalid source clears the target, so the result stays invalid instead of using a stale value.
     lbEl.value = kgEl.value.trim() !== "" && kg > 0 ? round1(kg * LB_PER_KG) : "";
     if (cmEl.value.trim() !== "" && cm > 0) {
-      const totalIn = cm / CM_PER_IN;
-      let ft = Math.floor(totalIn / 12);
-      let inch = Math.round((totalIn - ft * 12) * 10) / 10;
-      if (inch >= 12) { ft += 1; inch = 0; }
+      const { ft, inch } = cmToFeetInches(cm);
       ftEl.value = String(ft);
       inEl.value = String(inch);
     } else {

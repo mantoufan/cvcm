@@ -25,7 +25,7 @@ let perLitreCanon = 1.6;
 
 export function mountFuelCost(host: HTMLElement): void {
   const num = (field: string, value: string, step = "0.1") =>
-    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => { remember(); paint(); } });
+    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => { remember(field); paint(); } });
   distanceEl = num("distance", "300");
   distanceUnitEl = h("select", { "data-field": "distanceUnit", "aria-label": t("fuelCost.distanceUnit"), onChange: () => convertDistance() },
     h("option", { value: "km", selected: true }, "km"),
@@ -96,14 +96,18 @@ const round = (n: number, dp: number) => String(Math.round(n * 10 ** dp) / 10 **
 
 const readNum = (el: HTMLInputElement | null) => (el?.value.trim() === "" ? NaN : Number(el?.value));
 
-/** Store what the user typed in canonical units (km, L/100 km, per litre). */
-function remember(): void {
-  const d = readNum(distanceEl);
-  kmCanon = prevDistanceUnit === "mi" ? d * KM_PER_MI : d;
-  const e = readNum(economyEl);
-  l100Canon = e > 0 ? toL100km(e, prevEconomyUnit) : NaN;
-  const p = readNum(priceEl);
-  perLitreCanon = prevPriceUnit === "gal" ? p / L_PER_US_GAL : p;
+/** Store the edited field in canonical units (km, L/100 km, per litre); the others keep their unrounded values. */
+function remember(field: string): void {
+  if (field === "distance") {
+    const d = readNum(distanceEl);
+    kmCanon = prevDistanceUnit === "mi" ? d * KM_PER_MI : d;
+  } else if (field === "economy") {
+    const e = readNum(economyEl);
+    l100Canon = e > 0 ? toL100km(e, prevEconomyUnit) : NaN;
+  } else if (field === "price") {
+    const p = readNum(priceEl);
+    perLitreCanon = prevPriceUnit === "gal" ? p / L_PER_US_GAL : p;
+  }
 }
 
 /** Unit switches redisplay the canonical value; the stored trip does not change. */
@@ -129,12 +133,15 @@ function convertPrice(): void {
   paint();
 }
 
-/** Yen, won and dong have no minor unit in everyday prices. */
-const WHOLE_CURRENCY_LOCALES = new Set(["ja", "ko", "vi"]);
+/** A whole-number price of 10 or more (yen, won, dong) gets whole-number totals; anything else keeps cents. */
+function moneyDecimals(): number {
+  const raw = priceEl?.value.trim() ?? "";
+  const n = Number(raw);
+  return raw !== "" && Number.isInteger(n) && n >= 10 ? 0 : 2;
+}
 
 function paint(): void {
   if (!outEl || !distanceUnitEl || !economyUnitEl || !priceUnitEl) return;
-  const read = (el: HTMLInputElement | null) => (el?.value.trim() === "" ? NaN : Number(el?.value));
   const distanceUnit = distanceUnitEl.value === "mi" ? "mi" : "km";
   const out = fuelCost({
     distance: kmCanon,
@@ -144,7 +151,7 @@ function paint(): void {
     price: perLitreCanon,
     pricePerGallon: false,
     roundTrip: Boolean(roundTripEl?.checked),
-    people: peopleEl?.value.trim() === "" ? undefined : read(peopleEl),
+    people: peopleEl?.value.trim() === "" ? undefined : readNum(peopleEl),
   });
   outEl.replaceChildren();
   if (!out) {
@@ -152,7 +159,7 @@ function paint(): void {
     outEl.append(h("p", { class: "muted" }, t("fuelCost.invalid")));
     return;
   }
-  const dp = WHOLE_CURRENCY_LOCALES.has(locale()) ? 0 : 2;
+  const dp = moneyDecimals();
   const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
   const num = new Intl.NumberFormat(locale(), { maximumFractionDigits: 1 });
   const usVolume = economyUnitEl.value === "mpg" || priceUnitEl.value === "gal";

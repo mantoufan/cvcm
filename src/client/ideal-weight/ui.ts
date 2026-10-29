@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { BASE_CM, FORMULAS, healthyBmiRange, idealWeights } from "../../shared/ideal-weight";
-import { CM_PER_IN, LB_PER_KG, feetInchesToCm, type Sex } from "../../shared/tdee";
+import { LB_PER_KG, cmToFeetInches, feetInchesToCm, type Sex } from "../../shared/tdee";
 
 type Units = "metric" | "imperial";
 
@@ -99,10 +99,7 @@ function switchUnits(): void {
   const imperial = units() === "imperial";
   if (Number.isFinite(heightCm) && heightCm > 0) {
     if (imperial) {
-      const totalIn = heightCm / CM_PER_IN;
-      let ft = Math.floor(totalIn / 12);
-      let inch = Math.round((totalIn - ft * 12) * 10) / 10;
-      if (inch >= 12) { ft += 1; inch = 0; }
+      const { ft, inch } = cmToFeetInches(heightCm);
       ftEl.value = String(ft);
       inEl.value = String(inch);
     } else {
@@ -124,7 +121,7 @@ function paint(): void {
   outEl.replaceChildren();
   if (!ideal || !range) {
     last = "";
-    outEl.append(h("p", { class: "muted" }, t("idealWeight.invalid")));
+    outEl.append(h("p", { class: "muted" }, units() === "imperial" ? t("idealWeight.invalidImperial") : t("idealWeight.invalid")));
     return;
   }
   const imperial = units() === "imperial";

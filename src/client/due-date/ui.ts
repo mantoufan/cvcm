@@ -92,6 +92,8 @@ function paint(): void {
   const m = mode();
   dateLabel.textContent = m === "lmp" ? t("dueDate.lmp") : m === "conception" ? t("dueDate.conception") : t("dueDate.due");
   const out = dueDate(m, dateEl.value, cycleFor(m));
+  // Outside LMP mode the cycle only feeds the LMP row; an invalid one blanks that row instead of being guessed.
+  const cycleOk = cycleFor(m) === cycleFor(m, true) && cycleEl.value.trim() !== "";
   outEl.replaceChildren();
   if (!out) {
     last = "";
@@ -104,9 +106,9 @@ function paint(): void {
     [t("dueDate.due"), day(out.due)],
     [t("dueDate.along"), out.trimester ? t("dueDate.weeksDays", { w: out.weeks, d: out.days }) : t("dueDate.notYet")],
     [t("dueDate.trimesterNow"), out.trimester ? String(out.trimester) : "—"],
-    [t("dueDate.daysLeft"), String(out.daysLeft)],
+    [t("dueDate.daysLeft"), out.trimester ? String(out.daysLeft) : "—"],
     [t("dueDate.conception"), day(out.conception)],
-    [t("dueDate.lmp"), day(out.lmp)],
+    [t("dueDate.lmp"), cycleOk ? day(out.lmp) : "—"],
     [t("dueDate.t2"), day(out.trimester2)],
     [t("dueDate.t3"), day(out.trimester3)],
   ];

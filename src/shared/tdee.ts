@@ -39,6 +39,15 @@ export function lbToKg(lb: number): number {
   return lb / LB_PER_KG;
 }
 
+/** Whole feet and inches to one decimal, carrying 12.0 in up to the next foot. */
+export function cmToFeetInches(cm: number): { ft: number; inch: number } {
+  const totalIn = cm / CM_PER_IN;
+  let ft = Math.floor(totalIn / 12);
+  let inch = Math.round((totalIn - ft * 12) * 10) / 10;
+  if (inch >= 12) { ft += 1; inch = 0; }
+  return { ft, inch };
+}
+
 export function feetInchesToCm(feet: number, inches: number): number {
   return (feet * 12 + inches) * CM_PER_IN;
 }

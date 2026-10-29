@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
 import { GLASS_ML, HOT_EXTRA_ML, MAX_EXERCISE_MIN, ML_PER_EXERCISE_MIN, ML_PER_KG, waterIntake, type Climate } from "../../shared/water-intake";
-import { LB_PER_KG } from "../../shared/tdee";
+import { LB_PER_KG, lbToKg } from "../../shared/tdee";
 
 let unitsEl: HTMLSelectElement | null = null;
 let weightEl: HTMLInputElement | null = null;
@@ -76,7 +76,7 @@ function lbMode(): boolean {
 
 function readWeight(): void {
   const raw = weightEl?.value.trim() ?? "";
-  kg = raw === "" ? NaN : lbMode() ? Number(raw) / LB_PER_KG : Number(raw);
+  kg = raw === "" ? NaN : lbMode() ? lbToKg(Number(raw)) : Number(raw);
 }
 
 function switchUnits(): void {

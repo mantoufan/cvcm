@@ -29,6 +29,14 @@ describe("due date, fuel cost and reading time UI", () => {
     expect(dds(host)[1]).toMatch(/gal/);
     change(eu, "l100km"); change(pu, "l");
     expect(dds(host)[0]).toBe(before);
+    // Editing one field after a unit switch must not re-read the others from their rounded text.
+    change(du, "mi");
+    change(q<HTMLInputElement>(host, "[data-field=price]"), "1.60", "input");
+    change(du, "km");
+    expect(dds(host)[0]).toBe(before);
+    // A whole-number price of 10+ (yen, won, dong) gives whole-number totals.
+    change(q<HTMLInputElement>(host, "[data-field=price]"), "170", "input");
+    expect(dds(host)[0]).not.toMatch(/[.,]\d\d$/);
     unmountFuelCost();
   });
 
@@ -47,6 +55,8 @@ describe("due date, fuel cost and reading time UI", () => {
     change(mode, "conception");
     expect(date.value).toBe("2026-01-15");
     expect(dds(host)[0]).toBe(due);
+    // Blank cycle outside LMP mode: results stay, the LMP row is not guessed.
+    expect(dds(host)[5]).toBe("—");
     unmountDueDate();
   });
 

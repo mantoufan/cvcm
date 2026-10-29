@@ -1012,12 +1012,10 @@ describe("reading-time", () => {
     const en = readingTime(Array(238).fill("word").join(" "));
     expect(en.units).toBe(238);
     expect(en.readSec).toBe(60);
-    expect(en.cjkMode).toBe(false);
     expect(readingTime(Array(300).fill("w").join(" "), "fast").readSec).toBe(60);
     const zh = readingTime("中文".repeat(150));
     expect(zh.units).toBe(300);
     expect(zh.cjk).toBe(300);
-    expect(zh.cjkMode).toBe(true);
     expect(zh.readSec).toBe(60);
     expect(zh.charsNoSpaces).toBe(300);
     expect(readingTime("   ").units).toBe(0);
