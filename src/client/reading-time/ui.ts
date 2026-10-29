@@ -73,7 +73,9 @@ function paint(): void {
   const rows: Array<[string, string]> = [
     [t("readingTime.readTime"), clock(stats.readSec)],
     [t("readingTime.speakTime"), clock(stats.speakSec)],
-    [stats.cjkMode ? t("readingTime.cjkChars") : t("readingTime.words"), fmt.format(stats.units)],
+    // Mixed text gets both counts, each under its own label.
+    ...(stats.latin > 0 ? [[t("readingTime.words"), fmt.format(stats.latin)] as [string, string]] : []),
+    ...(stats.cjk > 0 ? [[t("readingTime.cjkChars"), fmt.format(stats.cjk)] as [string, string]] : []),
     [t("readingTime.chars"), fmt.format(stats.chars)],
     [t("readingTime.charsNoSpaces"), fmt.format(stats.charsNoSpaces)],
   ];

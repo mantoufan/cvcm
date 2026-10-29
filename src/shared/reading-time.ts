@@ -11,6 +11,8 @@ const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hang
 const WORD = /[\p{L}\p{N}]/u;
 
 export type ReadingStats = {
+  /** Space-separated words outside CJK scripts. */
+  latin: number;
   chars: number;
   charsNoSpaces: number;
   cjk: number;
@@ -33,6 +35,7 @@ export function readingTime(text: string, speed: Speed = "average"): ReadingStat
   const units = latinWords + cjk;
   const seconds = (min: number) => (units === 0 ? 0 : Math.max(1, Math.round(min * 60)));
   return {
+    latin: latinWords,
     chars,
     charsNoSpaces,
     cjk,

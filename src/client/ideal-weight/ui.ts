@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { FORMULAS, healthyBmiRange, idealWeights } from "../../shared/ideal-weight";
+import { BASE_CM, FORMULAS, healthyBmiRange, idealWeights } from "../../shared/ideal-weight";
 import { CM_PER_IN, LB_PER_KG, feetInchesToCm, type Sex } from "../../shared/tdee";
 
 type Units = "metric" | "imperial";
@@ -133,7 +133,9 @@ function paint(): void {
   const rows: Array<[string, string]> = FORMULAS.map((f) => [t(`idealWeight.f_${f}`), mass(ideal[f])]);
   rows.push([t("idealWeight.bmiRange"), `${mass(range.low)} – ${mass(range.high)}`]);
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));
-  last = rows.map(([k, v]) => `${k}: ${v}`).join("\n");
+  const note = heightCm < BASE_CM ? t("idealWeight.extrapolated") : "";
+  if (note) outEl.append(h("p", { class: "hint" }, note));
+  last = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + (note ? `\n${note}` : "");
 }
 
 async function copyOut(): Promise<void> {

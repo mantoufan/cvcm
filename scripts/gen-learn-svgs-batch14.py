@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Step diagrams for the due date, ideal weight, water, fuel cost, reading time, diff, hash and UUID lessons.
+"""Step diagrams (the caption line belongs to the first diagram only) for the due date, ideal weight, water, fuel cost, reading time, diff, hash and UUID lessons.
 
 Strings come from the same per-locale JSON as learn_batch14.py (`svg` block: title, a, b, cap).
 """
@@ -71,7 +71,7 @@ def main(src: Path) -> None:
                 encoding="utf-8",
             )
             (dest / f"{file_b}.svg").write_text(
-                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], t["cap"], True), t["b"]),
+                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], "", True), t["b"]),
                 encoding="utf-8",
             )
             count += 2

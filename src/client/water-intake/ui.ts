@@ -92,7 +92,7 @@ function paint(): void {
   outEl.replaceChildren();
   if (!out) {
     last = "";
-    outEl.append(h("p", { class: "muted" }, t("waterIntake.invalid")));
+    outEl.append(h("p", { class: "muted" }, lbMode() ? t("waterIntake.invalidLb") : t("waterIntake.invalid")));
     return;
   }
   const fmt = new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 });

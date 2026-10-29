@@ -18,10 +18,14 @@ let last = "";
 let prevDistanceUnit = "km";
 let prevEconomyUnit: EconomyUnit = "l100km";
 let prevPriceUnit = "l";
+/** Unrounded km, L/100 km and price per litre, so unit switches never drift the trip. */
+let kmCanon = 300;
+let l100Canon = 7;
+let perLitreCanon = 1.6;
 
 export function mountFuelCost(host: HTMLElement): void {
   const num = (field: string, value: string, step = "0.1") =>
-    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => paint() });
+    h("input", { type: "number", min: "0", step, inputmode: "decimal", "data-field": field, value, onInput: () => { remember(); paint(); } });
   distanceEl = num("distance", "300");
   distanceUnitEl = h("select", { "data-field": "distanceUnit", "aria-label": t("fuelCost.distanceUnit"), onChange: () => convertDistance() },
     h("option", { value: "km", selected: true }, "km"),
@@ -44,6 +48,9 @@ export function mountFuelCost(host: HTMLElement): void {
   prevDistanceUnit = "km";
   prevEconomyUnit = "l100km";
   prevPriceUnit = "l";
+  kmCanon = 300;
+  l100Canon = 7;
+  perLitreCanon = 1.6;
   roundTripEl = h("input", { type: "checkbox", "data-field": "roundTrip", onChange: () => paint() });
   peopleEl = num("people", "1", "1");
   outEl = h("dl", { class: "stats-grid timestamp-out" });
@@ -87,53 +94,55 @@ export function unmountFuelCost(): void {
 
 const round = (n: number, dp: number) => String(Math.round(n * 10 ** dp) / 10 ** dp);
 
-/** Unit switches convert the typed number so the trip stays the same. */
+const readNum = (el: HTMLInputElement | null) => (el?.value.trim() === "" ? NaN : Number(el?.value));
+
+/** Store what the user typed in canonical units (km, L/100 km, per litre). */
+function remember(): void {
+  const d = readNum(distanceEl);
+  kmCanon = prevDistanceUnit === "mi" ? d * KM_PER_MI : d;
+  const e = readNum(economyEl);
+  l100Canon = e > 0 ? toL100km(e, prevEconomyUnit) : NaN;
+  const p = readNum(priceEl);
+  perLitreCanon = prevPriceUnit === "gal" ? p / L_PER_US_GAL : p;
+}
+
+/** Unit switches redisplay the canonical value; the stored trip does not change. */
 function convertDistance(): void {
   if (!distanceEl || !distanceUnitEl) return;
-  const n = Number(distanceEl.value);
-  const next = distanceUnitEl.value;
-  if (distanceEl.value.trim() !== "" && n > 0 && next !== prevDistanceUnit) {
-    distanceEl.value = round(next === "mi" ? n / KM_PER_MI : n * KM_PER_MI, 1);
-  }
-  prevDistanceUnit = next;
+  prevDistanceUnit = distanceUnitEl.value;
+  if (kmCanon > 0) distanceEl.value = round(prevDistanceUnit === "mi" ? kmCanon / KM_PER_MI : kmCanon, 1);
   paint();
 }
 
 function convertEconomy(): void {
   if (!economyEl || !economyUnitEl) return;
-  const n = Number(economyEl.value);
-  const next = economyUnitEl.value as EconomyUnit;
-  if (economyEl.value.trim() !== "" && n > 0 && next !== prevEconomyUnit) {
-    const l100 = toL100km(n, prevEconomyUnit);
-    // toL100km is its own inverse for km/L and mpg: both are distance per volume.
-    economyEl.value = round(next === "l100km" ? l100 : toL100km(l100, next), 1);
-  }
-  prevEconomyUnit = next;
+  prevEconomyUnit = economyUnitEl.value as EconomyUnit;
+  // toL100km is its own inverse for km/L and mpg: both are distance per volume.
+  if (l100Canon > 0) economyEl.value = round(prevEconomyUnit === "l100km" ? l100Canon : toL100km(l100Canon, prevEconomyUnit), 1);
   paint();
 }
 
 function convertPrice(): void {
   if (!priceEl || !priceUnitEl) return;
-  const n = Number(priceEl.value);
-  const next = priceUnitEl.value;
-  if (priceEl.value.trim() !== "" && n >= 0 && next !== prevPriceUnit) {
-    priceEl.value = round(next === "gal" ? n * L_PER_US_GAL : n / L_PER_US_GAL, 2);
-  }
-  prevPriceUnit = next;
+  prevPriceUnit = priceUnitEl.value;
+  if (perLitreCanon >= 0) priceEl.value = round(prevPriceUnit === "gal" ? perLitreCanon * L_PER_US_GAL : perLitreCanon, 2);
   paint();
 }
+
+/** Yen, won and dong have no minor unit in everyday prices. */
+const WHOLE_CURRENCY_LOCALES = new Set(["ja", "ko", "vi"]);
 
 function paint(): void {
   if (!outEl || !distanceUnitEl || !economyUnitEl || !priceUnitEl) return;
   const read = (el: HTMLInputElement | null) => (el?.value.trim() === "" ? NaN : Number(el?.value));
   const distanceUnit = distanceUnitEl.value === "mi" ? "mi" : "km";
   const out = fuelCost({
-    distance: read(distanceEl),
-    distanceUnit,
-    economy: read(economyEl),
-    economyUnit: economyUnitEl.value as EconomyUnit,
-    price: read(priceEl),
-    pricePerGallon: priceUnitEl.value === "gal",
+    distance: kmCanon,
+    distanceUnit: "km",
+    economy: l100Canon,
+    economyUnit: "l100km",
+    price: perLitreCanon,
+    pricePerGallon: false,
     roundTrip: Boolean(roundTripEl?.checked),
     people: peopleEl?.value.trim() === "" ? undefined : read(peopleEl),
   });
@@ -143,7 +152,8 @@ function paint(): void {
     outEl.append(h("p", { class: "muted" }, t("fuelCost.invalid")));
     return;
   }
-  const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const dp = WHOLE_CURRENCY_LOCALES.has(locale()) ? 0 : 2;
+  const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
   const num = new Intl.NumberFormat(locale(), { maximumFractionDigits: 1 });
   const usVolume = economyUnitEl.value === "mpg" || priceUnitEl.value === "gal";
   const rows: Array<[string, string]> = [

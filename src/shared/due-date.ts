@@ -6,6 +6,9 @@ export const MIN_CYCLE = 20;
 export const MAX_CYCLE = 45;
 /** Naegele's rule: 280 days from the first day of the last period for a 28-day cycle. */
 export const PREGNANCY_DAYS = 280;
+/** Dates outside this range are treated as typos (the date input and parseIsoDate cannot round-trip them anyway). */
+export const MIN_YEAR = 1900;
+export const MAX_YEAR = 2200;
 const DAY = 86400000;
 
 export type DueDateResult = {
@@ -45,6 +48,7 @@ export function dueDate(mode: DueDateMode, dateIso: string, cycle = DEFAULT_CYCL
   const date = parseIsoDate(dateIso);
   const today = parseIsoDate(todayIsoStr);
   if (!date || !today || !Number.isInteger(cycle) || cycle < MIN_CYCLE || cycle > MAX_CYCLE) return null;
+  if (date.getUTCFullYear() < MIN_YEAR || date.getUTCFullYear() > MAX_YEAR) return null;
   const shift = cycle - DEFAULT_CYCLE;
   // A longer cycle ovulates later, so gestation effectively starts `shift` days after the real LMP.
   // One adjusted LMP drives the due date, conception, weeks along and trimester dates, so they agree.

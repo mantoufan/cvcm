@@ -948,9 +948,10 @@ describe("due-date", () => {
     expect(dueDate("lmp", "2026-01-01", 28, "2026-07-15")!.trimester).toBe(3);
     expect(dueDate("lmp", "2026-01-01", 19)).toBeNull();
     expect(dueDate("lmp", "nope", 28)).toBeNull();
-    // Early and far-future years keep their digits.
-    expect(isoOf(dueDate("due", "0100-03-01", 28, "0100-01-01")!.lmp)).toBe("0099-05-25");
-    expect(isoOf(dueDate("lmp", "9999-06-01", 28, "9999-06-02")!.due)).toBe("10000-03-07");
+    // Years outside 1900–2200 are typos; isoOf still pads early years instead of mapping them to 19xx.
+    expect(dueDate("due", "0100-03-01", 28, "0100-01-01")).toBeNull();
+    expect(dueDate("lmp", "9999-06-01", 28, "9999-06-02")).toBeNull();
+    expect(isoOf(new Date(Date.UTC(2026, 0, 1)))).toBe("2026-01-01");
   });
 });
 
@@ -1024,6 +1025,9 @@ describe("reading-time", () => {
     expect(readingTime("hi").readSec).toBe(1);
     const punct = readingTime("今天天气很好。明天也会很好，我们去公园吧！");
     expect(punct.units).toBe(18);
+    const mixed = readingTime("你好世界 hello there friend");
+    expect(mixed.cjk).toBe(4);
+    expect(mixed.latin).toBe(3);
     expect(readingTime("コーヒーを飲みます。").units).toBe(9);
     expect(splitSec(200)).toEqual({ min: 3, sec: 20 });
   });

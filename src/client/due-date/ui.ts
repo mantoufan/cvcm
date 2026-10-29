@@ -69,11 +69,11 @@ function mode(): DueDateMode {
   return v === "conception" || v === "due" ? v : "lmp";
 }
 
-/** The cycle only shifts dates in LMP mode; elsewhere a blank or odd value falls back to 28. */
-function cycleFor(m: DueDateMode): number {
+/** The cycle only shifts dates in LMP mode; elsewhere (and when converting between modes) a blank or odd value falls back to 28. */
+function cycleFor(m: DueDateMode, lenient = false): number {
   const raw = cycleEl?.value.trim() ?? "";
   const n = raw === "" ? NaN : Number(raw);
-  if (m === "lmp") return n;
+  if (m === "lmp" && !lenient) return n;
   return Number.isInteger(n) && n >= MIN_CYCLE && n <= MAX_CYCLE ? n : DEFAULT_CYCLE;
 }
 
@@ -81,7 +81,7 @@ function cycleFor(m: DueDateMode): number {
 function switchMode(): void {
   if (!dateEl) return;
   const m = mode();
-  const before = dueDate(prevMode, dateEl.value, cycleFor(prevMode));
+  const before = dueDate(prevMode, dateEl.value, cycleFor(prevMode, true));
   if (before) dateEl.value = isoOf(m === "lmp" ? before.lmp : m === "conception" ? before.conception : before.due);
   prevMode = m;
   paint();
