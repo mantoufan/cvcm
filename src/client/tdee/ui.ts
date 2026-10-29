@@ -52,8 +52,6 @@ export function mountTdee(host: HTMLElement): void {
   activityEl = h("select", { "data-field": "activity", onChange: () => paint() },
     ...ACTIVITIES.map((a) => h("option", { value: a, selected: a === "moderate" }, t(`tdee.act_${a}`))),
   );
-  // happy-dom (prerender) ignores `selected` on options added before the select is built; set the value explicitly.
-  activityEl.value = "moderate";
   metricBox = h("div", null, labeled(t("tdee.kg"), kgEl), labeled(t("tdee.cm"), cmEl));
   imperialBox = h("div", { hidden: true },
     labeled(t("tdee.lb"), lbEl),

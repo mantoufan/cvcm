@@ -96,6 +96,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/water-intake/` — daily water estimate: 35 ml/kg + exercise + hot climate, in litres and 250 ml glasses
 - `src/client/fuel-cost/` — trip fuel cost: L/100km, km/L or US mpg, price per litre or gallon, round trip, split by people
 - `src/client/reading-time/` — reading and speaking time for a text; CJK counted in characters
+- `src/client/time-card/` — weekly time card: shifts with breaks and overnight ends, overtime above a weekly threshold, optional pay; results are `data-volatile` (time inputs are blank in prerender)
+- `src/client/electricity/` — appliance electricity cost: watts × hours × days × price per kWh, presets, per day / year
+- `src/client/ovulation/` — ovulation and fertile window for the next three cycles (luteal phase 14 days); dates are `data-volatile` (not medical advice)
+- `src/client/macro/` — macronutrient grams from a calorie target, goal and split (links to TDEE)
+- `src/client/calories-burned/` — calories burned by activity from MET values (2011 Compendium) × kg × hours, with a comparison list
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

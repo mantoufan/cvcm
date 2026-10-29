@@ -37,6 +37,12 @@ export function h<K extends keyof HTMLElementTagNameMap>(
     if (kid == null || kid === false) continue;
     el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
   }
+  // happy-dom (the build-time prerender) does not honour a `selected` attribute set on an option before it joined the
+  // select, so the static HTML showed a different default than browsers. Sync the value once the options are in.
+  if (el instanceof HTMLSelectElement) {
+    const marked = Array.from(el.options).filter((o) => o.hasAttribute("selected"));
+    if (marked.length > 0) el.value = marked[marked.length - 1].value;
+  }
   return el;
 }
 

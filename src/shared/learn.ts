@@ -447,6 +447,54 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["uuid", "password", "random"],
   },
+  "calculate-work-hours": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["time-card", "hourly", "duration"],
+  },
+  "electricity-cost": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["electricity", "units", "percent"],
+  },
+  "find-fertile-window": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["ovulation", "due-date", "days"],
+  },
+  "calculate-macros": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["macro", "tdee", "body-fat"],
+  },
+  "calories-burned-exercise": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["calories-burned", "tdee", "pace"],
+  },
+  "compound-interest": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["compound", "loan", "percent"],
+  },
+  "remove-photo-background": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["remove-background", "resize", "convert"],
+  },
+  "test-regex": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["regex", "replace", "diff"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -855,5 +903,37 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "generate-uuid": [
     { step: 1, src: "/covers/tutorials/generate-uuid-shape.svg" },
     { step: 4, src: "/covers/tutorials/generate-uuid-forms.svg" },
+  ],
+  "calculate-work-hours": [
+    { step: 1, src: "/covers/tutorials/calculate-work-hours-shift.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-work-hours-overtime.svg" },
+  ],
+  "electricity-cost": [
+    { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
+    { step: 5, src: "/covers/tutorials/electricity-cost-example.svg" },
+  ],
+  "find-fertile-window": [
+    { step: 1, src: "/covers/tutorials/find-fertile-window-rule.svg" },
+    { step: 5, src: "/covers/tutorials/find-fertile-window-example.svg" },
+  ],
+  "calculate-macros": [
+    { step: 1, src: "/covers/tutorials/calculate-macros-grams.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-macros-example.svg" },
+  ],
+  "calories-burned-exercise": [
+    { step: 1, src: "/covers/tutorials/calories-burned-exercise-met.svg" },
+    { step: 5, src: "/covers/tutorials/calories-burned-exercise-compare.svg" },
+  ],
+  "compound-interest": [
+    { step: 1, src: "/covers/tutorials/compound-interest-formula.svg" },
+    { step: 4, src: "/covers/tutorials/compound-interest-frequency.svg" },
+  ],
+  "remove-photo-background": [
+    { step: 2, src: "/covers/tutorials/remove-photo-background-local.svg" },
+    { step: 6, src: "/covers/tutorials/remove-photo-background-formats.svg" },
+  ],
+  "test-regex": [
+    { step: 1, src: "/covers/tutorials/test-regex-tokens.svg" },
+    { step: 4, src: "/covers/tutorials/test-regex-flags.svg" },
   ],
 };

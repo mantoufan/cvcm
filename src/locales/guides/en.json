@@ -940,6 +940,51 @@
       "s3t": "Pick a speed",
       "s3b": "Choose Slow for technical text or Fast for light reading. Speaking time stays at 130 words a minute. Copy puts the numbers on the clipboard."
     },
+    "time-card": {
+      "lead": "Total a week of shifts, breaks and overtime. Nothing is uploaded.",
+      "s1t": "Open Time card calculator",
+      "s1b": "Five shifts from 09:00 to 17:30 with a 30-minute break are filled: 40 hours. Each row shows its hours on the right.",
+      "s2t": "Enter your shifts",
+      "s2b": "Change the start, end and break minutes per row. Add shift adds a row; × removes one. An end before the start runs past midnight.",
+      "s3t": "Add your rate",
+      "s3b": "Type the hourly rate to see gross pay. Hours above the overtime threshold are paid at the multiplier. Copy puts the totals on the clipboard."
+    },
+    "electricity": {
+      "lead": "Work out what an appliance costs to run. Nothing is uploaded.",
+      "s1t": "Open Electricity cost calculator",
+      "s1b": "A 1000 W air conditioner for 8 hours a day, 30 days, at 0.15 per kWh is filled. The cost sits on the right.",
+      "s2t": "Pick an appliance or type watts",
+      "s2b": "Choose a preset or type the watts from the label. Set the hours a day, the days and how many of them run.",
+      "s3t": "Enter your price",
+      "s3b": "Type the price per kWh from your bill. The cost for the period, per day and per year update. Copy puts them on the clipboard."
+    },
+    "ovulation": {
+      "lead": "See the fertile window, likely ovulation and next period for three cycles. Nothing is uploaded.",
+      "s1t": "Open Ovulation calculator",
+      "s1b": "A sample last period 10 days ago and a 28-day cycle are filled. Three cycles sit on the right.",
+      "s2t": "Enter your last period",
+      "s2b": "Type the first day of your last period. The dates are in this tab only.",
+      "s3t": "Set your cycle length",
+      "s3b": "Type the average length of your cycle, 21 to 45 days. The dates move with it. Copy puts them on the clipboard."
+    },
+    "macro": {
+      "lead": "Turn a calorie target into grams of protein, fat and carbs. Nothing is uploaded.",
+      "s1t": "Open Macro calculator",
+      "s1b": "2500 kcal, maintain and a balanced split are set. The grams sit on the right.",
+      "s2t": "Enter your calories and goal",
+      "s2b": "Type your maintenance calories (the TDEE calculator estimates them) and pick lose, maintain or gain.",
+      "s3t": "Choose a split",
+      "s3b": "Pick balanced, low carb or high protein. Add your weight to see protein per kg. Copy puts the grams on the clipboard."
+    },
+    "calories-burned": {
+      "lead": "Estimate calories burned for an activity and compare it with others. Nothing is uploaded.",
+      "s1t": "Open Calories burned calculator",
+      "s1b": "Brisk walking, 70 kg and 30 minutes are set. Calories and a list of other activities sit on the right.",
+      "s2t": "Enter your weight and minutes",
+      "s2b": "Type your weight in kg or switch to lb, and the minutes of activity.",
+      "s3t": "Pick the activity",
+      "s3b": "Choose from 16 activities. The comparison list shows the same time for every activity. Copy puts the result on the clipboard."
+    },
     "remove-background": {
       "lead": "Cut people, products or pets out of a photo in this tab, then download a transparent PNG.",
       "s1t": "Add photos",

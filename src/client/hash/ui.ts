@@ -10,6 +10,11 @@ let b64El: HTMLInputElement | null = null;
 let statusEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let algo: HashAlgo = "SHA-256";
+/** Bumped on every digest request and on unmount; a result for an older request is dropped. */
+let digestSeq = 0;
+/** The last file that was read; an algorithm change rehashes it until the user types again. */
+let fileBytes: Uint8Array | null = null;
+let fileName = "";
 const schedule = debounce(() => { void run(); }, 80);
 
 export function mountHash(host: HTMLElement): void {
@@ -18,7 +23,7 @@ export function mountHash(host: HTMLElement): void {
     spellcheck: "false",
     "aria-label": t("hash.input"),
     placeholder: t("hash.placeholder"),
-    onInput: () => schedule(),
+    onInput: () => { fileBytes = null; schedule(); },
   });
   hexEl = h("input", { class: "regex-pattern", readonly: true, spellcheck: "false", "aria-label": t("hash.hex") });
   b64El = h("input", { class: "regex-pattern", readonly: true, spellcheck: "false", "aria-label": t("hash.b64") });
@@ -47,7 +52,8 @@ export function mountHash(host: HTMLElement): void {
             h("select", {
               onChange: (e: Event) => {
                 algo = (e.target as HTMLSelectElement).value as HashAlgo;
-                void run();
+                if (fileBytes) void writeDigest(fileBytes);
+                else void run();
               },
             },
               ...HASH_ALGOS.map((id) => h("option", { value: id, selected: id === algo }, id)),
@@ -77,6 +83,9 @@ export function unmountHash(): void {
   hexEl = null;
   b64El = null;
   statusEl = null;
+  digestSeq++;
+  fileBytes = null;
+  fileName = "";
   copyBtn = null;
 }
 
@@ -85,9 +94,25 @@ function labeled(label: string, control: HTMLElement): HTMLElement {
 }
 
 async function loadFile(file: File): Promise<void> {
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  if (statusEl) statusEl.textContent = t("hash.fileMeta", { name: file.name });
-  await writeDigest(bytes);
+  // Claim a sequence number before the read, so a slow file never overwrites newer text or a remounted page.
+  const seq = ++digestSeq;
+  const status = statusEl;
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await file.arrayBuffer());
+  } catch {
+    // The file vanished or changed after it was picked (removed drive, cloud placeholder).
+    if (seq !== digestSeq) return;
+    if (hexEl) hexEl.value = "";
+    if (b64El) b64El.value = "";
+    if (status) status.textContent = t("hash.error");
+    return;
+  }
+  if (seq !== digestSeq) return;
+  fileBytes = bytes;
+  fileName = file.name;
+  if (status) status.textContent = t("hash.fileMeta", { name: fileName });
+  await writeDigest(bytes, seq);
 }
 
 async function run(): Promise<void> {
@@ -96,16 +121,23 @@ async function run(): Promise<void> {
   await writeDigest(encodeUtf8(inputEl.value));
 }
 
-async function writeDigest(bytes: Uint8Array): Promise<void> {
-  if (!hexEl || !b64El) return;
+async function writeDigest(bytes: Uint8Array, claimed?: number): Promise<void> {
+  // Hold the fields locally: the page may be left while the digest is running.
+  const hex = hexEl;
+  const b64 = b64El;
+  const status = statusEl;
+  if (!hex || !b64) return;
+  const seq = claimed ?? ++digestSeq;
   try {
     const out = await digest(algo, bytes);
-    hexEl.value = toHex(out);
-    b64El.value = toB64(out);
+    if (seq !== digestSeq) return;
+    hex.value = toHex(out);
+    b64.value = toB64(out);
   } catch {
-    hexEl.value = "";
-    b64El.value = "";
-    if (statusEl) statusEl.textContent = t("hash.error");
+    if (seq !== digestSeq) return;
+    hex.value = "";
+    b64.value = "";
+    if (status) status.textContent = t("hash.error");
   }
 }
 

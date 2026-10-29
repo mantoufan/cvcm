@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "titleCalculateWorkHours": "Cara hitung jam kerja di kartu absen | cv.cm",
+    "descCalculateWorkHours": "Masukkan jam mulai, selesai, dan istirahat tak dibayar tiap sif. 09:00–17:30 dengan istirahat 30 menit adalah 8 jam; lima hari jadi 40. Lebih dari 40 jam dihitung lembur ×1,5. Tidak ada unggahan.",
+    "titleElectricityCost": "Cara hitung biaya listrik sebuah alat | cv.cm",
+    "descElectricityCost": "Watt × jam ÷ 1000 = kWh; kWh × tarif = biaya. AC 1000 W yang menyala 8 jam sehari selama 30 hari memakai 240 kWh, 36,00 pada tarif 0,15 per kWh. Tidak ada unggahan.",
+    "titleFindFertileWindow": "Cara menemukan masa subur dan hari ovulasi | cv.cm",
+    "descFindFertileWindow": "Ovulasi terjadi sekitar 14 hari sebelum haid berikutnya. Haid mulai 1 Januari dengan siklus 28 hari: ovulasi 15 Januari, jendela subur 10–15 Januari. Tidak ada unggahan.",
+    "titleCalculateMacros": "Cara hitung makro dalam gram | cv.cm",
+    "descCalculateMacros": "Bagi target kalori menjadi protein, lemak, dan karbo: gram = kalori × porsi ÷ 4 (protein, karbo) atau ÷ 9 (lemak). 2500 kcal dengan 30/30/40 adalah 188 g, 83 g, dan 250 g. Tidak ada unggahan.",
+    "titleCaloriesBurnedExercise": "Cara hitung kalori yang terbakar saat berolahraga | cv.cm",
+    "descCaloriesBurnedExercise": "Kalori = MET × kg × jam. 30 menit lari 10 km/h pada 70 kg membakar sekitar 343 kcal; lompat tali 413, yoga 88. Tidak ada unggahan.",
+    "titleCompoundInterest": "Cara hitung bunga majemuk | cv.cm",
+    "descCompoundInterest": "Nilai masa depan = pokok × (1 + bunga ÷ n)^(n × tahun). 1000 dengan bunga 5% selama 10 tahun, dimajemukkan bulanan, menjadi 1647,01. Tidak ada unggahan.",
+    "titleRemovePhotoBackground": "Cara hapus background foto gratis | cv.cm",
+    "descRemovePhotoBackground": "Taruh foto JPG, PNG, WebP, atau HEIC, biarkan AI memotong objek di browser Anda, pilih latar transparan, putih, warna, atau buram, lalu unduh PNG atau ZIP. Foto tidak pernah diunggah.",
+    "titleTestRegex": "Cara menguji ekspresi reguler | cv.cm",
+    "descTestRegex": "Ketik pola, atur flag g, i, m, s, dan u, tempel teks, lalu lihat setiap kecocokan dan grup tangkap, plus pratinjau penggantian dengan $& dan $1. Tidak ada unggahan."
+  },
+  "lessons": {
+    "calculate-work-hours": {
+      "copy": {
+        "name": "Cara hitung jam kerja di kartu absen",
+        "blurb": "Masukkan jam mulai, selesai, dan istirahat tak dibayar tiap sif. 09:00–17:30 dengan istirahat 30 menit adalah 8 jam, lima hari 40 jam, dan Sabtu 09:00–14:00 menambah 5 jam lembur: 950,00 dengan tarif 20 per jam dan lembur ×1,5.",
+        "title": "Cara hitung jam kerja di kartu absen",
+        "lead": "Anda punya jam masuk dan pulang selama seminggu dan ingin tahu jumlah jam, lembur, dan upahnya. Anda akan memasukkan tiap sif sekali lalu membaca totalnya. Lima sif 09:00–17:30 dengan istirahat 30 menit adalah 40 jam; ditambah Sabtu pagi jadi 45 jam, 5 jam di antaranya lembur. Tidak ada yang keluar dari tab ini.",
+        "result": "Jam tiap sif, total seminggu dalam jam:menit dan jam desimal, jam reguler, jam lembur, dan upah kotor bila Anda mengisi tarif.",
+        "note": "Buka Kalkulator jam kerja dengan jam sif di tangan. Masukkan hanya istirahat yang tidak dibayar; istirahat berbayar dihitung sebagai kerja. Aturan lembur berbeda tiap negara dan kontrak, jadi atur batas dan pengalinya. Tidak ada unggahan.",
+        "s1t": "Kumpulkan jam mulai, selesai, dan istirahat",
+        "s1b": "Untuk tiap hari Anda butuh jam masuk, jam pulang, dan menit istirahat tak dibayar. Satu sif = selesai − mulai − istirahat: 09:00 sampai 17:30 adalah 8 jam 30 menit, dikurangi 30 menit jadi 8 jam.",
+        "s2t": "Buka Kalkulator jam kerja di cv.cm",
+        "s2b": "Lima sif 09:00–17:30 dengan istirahat 30 menit sudah terisi: 40:00 jam. Tiap baris menampilkan jamnya di kanan. Tidak ada unggahan.",
+        "s3t": "Masukkan tiap sif",
+        "s3b": "Ubah Mulai, Selesai, dan Istirahat (menit) di tiap baris. Tambah sif menambah hari keenam; × menghapus satu baris. Baris bertanda ! jamnya kosong atau istirahatnya lebih panjang dari sif.",
+        "s4t": "Tangani sif malam",
+        "s4b": "Jika jam selesai lebih awal dari jam mulai, sif melewati tengah malam: 22:00 sampai 06:00 adalah 8 jam dan muncul tanda ☾. Jangan pecah menjadi dua hari.",
+        "s5t": "Baca lembur dan upah",
+        "s5b": "Tambahkan Sabtu 09:00–14:00 tanpa istirahat: total 45:00, reguler 40:00, lembur 5:00. Dengan Tarif per jam 20 dan pengali bawaan 1,5, upah kotor adalah 800 + 150 = 950,00.",
+        "s6t": "Ubah ke jam desimal lalu salin",
+        "s6b": "Penggajian sering meminta jam desimal: bagi menit dengan 60, jadi 7:45 adalah 7,75. Total menampilkan kedua bentuk. Salin menaruhnya di papan klip.",
+        "diagram1": "Satu sif = selesai − mulai − istirahat tak dibayar: 09:00–17:30 dikurangi 30 menit adalah 8 jam.",
+        "diagram2": "45 jam seminggu dengan batas 40 jam: 40 reguler + 5 lembur ×1,5."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung jam kerja gratis secara online?",
+        "a1": "Bisa. cv.cm menjumlahkan sif di tab ini. Tidak ada unggahan.",
+        "q2": "Berapa jam kerja dari 9 sampai 17:30 dengan istirahat 30 menit?",
+        "a2": "8 jam. 8,5 jam di jam dinding dikurangi istirahat tak dibayar.",
+        "q3": "Bagaimana mengubah 7 jam 45 menit ke desimal?",
+        "a3": "Bagi menit dengan 60: 45 ÷ 60 = 0,75, jadi 7,75 jam.",
+        "q4": "Apakah bisa untuk sif malam?",
+        "a4": "Bisa. Jam selesai sebelum jam mulai berarti melewati tengah malam: 22:00 sampai 06:00 adalah 8 jam.",
+        "q5": "Apakah aturan lemburnya sesuai pekerjaan saya?",
+        "a5": "Bawaannya lebih dari 40 jam seminggu dengan ×1,5. Ada tempat yang menghitung lembur harian atau memakai ×2; atur batas dan pengali sesuai aturan Anda."
+      }
+    },
+    "electricity-cost": {
+      "copy": {
+        "name": "Cara hitung biaya listrik sebuah alat",
+        "blurb": "Watt × jam ÷ 1000 = kWh; kWh × tarif Anda = biaya. AC 1000 W yang menyala 8 jam sehari selama 30 hari memakai 240 kWh: 36,00 pada tarif 0,15 per kWh, 438,00 setahun.",
+        "title": "Cara hitung biaya listrik sebuah alat",
+        "lead": "Anda ingin tahu berapa sebuah alat menambah tagihan. Anda akan membaca wattnya, memperkirakan lama pemakaian, dan mengalikan dengan tarif per kWh. AC 1000 W yang menyala 8 jam sehari selama sebulan memakai 240 kWh; pada 0,15 itu 36,00. Tidak ada yang keluar dari tab ini.",
+        "result": "Biaya untuk periode, energi dalam kWh, biaya dan kWh per hari, serta biaya per tahun, dalam mata uang apa pun yang Anda ketik.",
+        "note": "Buka Kalkulator biaya listrik dengan label alat dan tagihan terakhir di tangan. Kulkas dan AC menyala-mati bergantian, jadi pemakaian nyatanya lebih rendah dari label. Tidak ada unggahan.",
+        "s1t": "Pahami rumusnya",
+        "s1b": "Energi dalam kWh = watt × jam ÷ 1000. Biaya = kWh × tarif per kWh. Pemanas 1000 W yang menyala satu jam memakai tepat 1 kWh.",
+        "s2t": "Buka Kalkulator biaya listrik di cv.cm",
+        "s2b": "AC 1000 W, 8 jam sehari, 30 hari dengan tarif 0,15 per kWh sudah terisi. Biayanya ada di kanan. Tidak ada unggahan.",
+        "s3t": "Cari wattnya",
+        "s3b": "Pilih di Alat atau ketik Daya (watt) dari label atau buku panduan. Jika label menulis ampere, kalikan dengan tegangan: 5 A × 220 V = 1100 W.",
+        "s4t": "Masukkan jam, hari, dan tarif",
+        "s4b": "Ketik Jam per hari dan Hari. Ambil Tarif per kWh dari tagihan: biaya energi ÷ kWh terpakai. Untuk beberapa alat yang sama, atur Jumlah unit.",
+        "s5t": "Baca hasilnya",
+        "s5b": "AC tadi: 240 kWh, 36,00 sebulan, 1,20 sehari, 438,00 setahun. Lampu LED 10 W yang menyala 5 jam sehari memakai 1,5 kWh sebulan: 0,30 pada tarif 0,20 per kWh.",
+        "s6t": "Perhitungkan siklus dan siaga, lalu salin",
+        "s6b": "Kulkas 150 W selama 24 jam tampil 3,6 kWh sehari, tetapi kompresornya menyala sekitar sepertiga waktu, jadi kenyataannya mendekati 1,2. Siaga beberapa watt sepanjang tahun bisa jadi puluhan kWh. Salin menaruh angkanya di papan klip.",
+        "diagram1": "kWh = watt × jam ÷ 1000; biaya = kWh × tarif per kWh.",
+        "diagram2": "1000 W × 8 jam × 30 hari = 240 kWh; pada 0,15 itu 36,00 sebulan."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung biaya listrik alat gratis secara online?",
+        "a1": "Bisa. cv.cm menghitungnya di tab ini. Tidak ada unggahan.",
+        "q2": "Berapa biaya alat 1000 W per jam?",
+        "a2": "Alat itu memakai 1 kWh per jam, jadi biayanya sama dengan tarif per kWh Anda, misalnya 0,15.",
+        "q3": "Bagaimana mengubah ampere ke watt?",
+        "a3": "Kalikan ampere dengan volt: 5 A pada 220 V adalah 1100 W, pada 120 V adalah 600 W.",
+        "q4": "Mengapa pemakaian kulkas saya lebih rendah?",
+        "a4": "Kompresornya hanya menyala sebagian waktu, sering sekitar sepertiga, jadi watt di label membuat pemakaian harian terlihat lebih besar.",
+        "q5": "Mata uang apa yang dipakai?",
+        "a5": "Apa pun yang Anda ketik untuk tarif. Hasilnya dalam mata uang yang sama."
+      }
+    },
+    "find-fertile-window": {
+      "copy": {
+        "name": "Cara menemukan masa subur dan hari ovulasi",
+        "blurb": "Ovulasi terjadi sekitar 14 hari sebelum haid berikutnya. Haid mulai 1 Januari dengan siklus 28 hari: ovulasi 15 Januari, jendela subur 10–15 Januari, haid berikutnya 29 Januari.",
+        "title": "Cara menemukan masa subur dan hari ovulasi",
+        "lead": "Anda tahu kapan haid terakhir dimulai dan kira-kira berapa panjang siklus Anda. Anda akan menemukan perkiraan hari ovulasi, jendela subur enam hari, dan haid berikutnya untuk tiga siklus ke depan. Mulai 1 Januari dengan 28 hari, ovulasi jatuh pada 15 Januari. Tidak ada yang keluar dari tab ini.",
+        "result": "Untuk tiap tiga siklus ke depan: jendela subur, perkiraan hari ovulasi, dan haid berikutnya.",
+        "note": "Buka Kalkulator masa subur dengan tanggal haid Anda. Pakai rata-rata beberapa siklus terakhir. Ini perkiraan, bukan kontrasepsi atau saran medis. Tidak ada unggahan.",
+        "s1t": "Pahami waktu ovulasi",
+        "s1b": "Jarak dari ovulasi ke haid berikutnya, fase luteal, sekitar 14 hari bagi kebanyakan orang. Bagian sebelum ovulasi yang berubah-ubah, jadi ovulasi = haid berikutnya − 14 hari.",
+        "s2t": "Buka Kalkulator masa subur di cv.cm",
+        "s2b": "Contoh haid terakhir dan siklus 28 hari sudah terisi. Tiga siklus ada di kanan. Tidak ada unggahan.",
+        "s3t": "Masukkan haid terakhir",
+        "s3b": "Ketik Hari pertama haid terakhir, yaitu hari pertama keluar darah. Untuk 1 Januari dan 28 hari, haid berikutnya 29 Januari.",
+        "s4t": "Atur panjang siklus",
+        "s4b": "Hitung dari hari pertama satu haid sampai sehari sebelum haid berikutnya, rata-ratakan beberapa siklus, lalu isi Panjang siklus (hari). Siklus 32 hari menggeser ovulasi dari 15 ke 19 Januari.",
+        "s5t": "Baca jendela subur",
+        "s5b": "Jendela subur adalah lima hari sebelum ovulasi ditambah hari ovulasi: 10–15 Januari. Sperma bisa hidup sampai lima hari dan sel telur sekitar sehari, jadi enam hari ini peluangnya paling tinggi.",
+        "s6t": "Anggap sebagai perkiraan, lalu salin",
+        "s6b": "Siklus bergeser beberapa hari dari bulan ke bulan, dan perkiraan kalender sering meleset. Tes ovulasi memberi tanda yang lebih baik. Salin menaruh tanggalnya di papan klip.",
+        "diagram1": "Ovulasi ≈ haid berikutnya − 14 hari; jendela subur dari 5 hari sebelum sampai hari ovulasi.",
+        "diagram2": "Haid 1 Januari, 28 hari: subur 10–15 Januari, ovulasi 15 Januari, haid berikutnya 29 Januari."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung hari ovulasi gratis secara online?",
+        "a1": "Bisa. cv.cm memperkirakannya di tab ini. Tidak diunggah atau disimpan.",
+        "q2": "Kapan ovulasi pada siklus 28 hari?",
+        "a2": "Sekitar hari ke-14, dengan hari pertama haid sebagai hari ke-1.",
+        "q3": "Berapa lama jendela subur?",
+        "a3": "Sekitar enam hari: lima hari sebelum ovulasi ditambah hari ovulasi.",
+        "q4": "Bisakah dipakai untuk mencegah kehamilan?",
+        "a4": "Tidak. Perkiraan kalender bukan kontrasepsi yang andal. Pakai metode yang tepat dan tanyakan dokter.",
+        "q5": "Siklus saya tidak teratur. Apa yang harus saya isi?",
+        "a5": "Rata-rata enam siklus terakhir. Siklus tidak teratur membuat perkiraan kurang akurat; tes ovulasi membantu."
+      }
+    },
+    "calculate-macros": {
+      "copy": {
+        "name": "Cara hitung makro dalam gram",
+        "blurb": "Bagi target kalori menjadi protein, lemak, dan karbohidrat. Gram = kalori × porsi ÷ 4 untuk protein dan karbo, ÷ 9 untuk lemak. 2500 kcal dengan 30/30/40 adalah 188 g protein, 83 g lemak, dan 250 g karbo.",
+        "title": "Cara hitung makro dalam gram",
+        "lead": "Anda kira-kira tahu berapa kalori yang dibutuhkan dan ingin mengubahnya ke gram seperti di label makanan. Anda akan memilih tujuan dan pembagian lalu membaca protein, lemak, dan karbohidrat dalam gram. 2500 kcal dengan pembagian seimbang 30/30/40 adalah 188 g protein, 83 g lemak, dan 250 g karbo. Tidak ada yang keluar dari tab ini.",
+        "result": "Target kalori harian dan gram protein, lemak, dan karbohidrat, ditambah protein per kg bila Anda mengisi berat badan.",
+        "note": "Buka Kalkulator makro dengan kalori pemeliharaan di tangan; Kalkulator TDEE bisa memperkirakannya. Titik awal untuk orang dewasa sehat, bukan saran medis. Tidak ada unggahan.",
+        "s1t": "Ketahui kalori per gram",
+        "s1b": "Protein dan karbohidrat punya 4 kcal per gram, lemak 9. Jadi gram = kalori makro itu ÷ 4 atau ÷ 9. 750 kcal protein adalah 187,5 g.",
+        "s2t": "Buka Kalkulator makro di cv.cm",
+        "s2b": "2500 kcal, Jaga berat, dan pembagian seimbang sudah diatur. Gramnya ada di kanan. Tidak ada unggahan.",
+        "s3t": "Masukkan kalori dan tujuan",
+        "s3b": "Ketik Kalori pemeliharaan (kcal/hari). Turunkan berat mengurangi 500 kcal; Naikkan berat menambah 300. Pemeliharaan 2500 menjadi 2000 untuk menurunkan berat.",
+        "s4t": "Pilih pembagian",
+        "s4b": "Seimbang 30/30/40 (% protein/lemak/karbo), Tinggi protein 40/30/30, Rendah karbo 35/45/20. 2000 kcal tinggi protein adalah 200 g protein, 67 g lemak, dan 150 g karbo.",
+        "s5t": "Periksa protein per kg",
+        "s5b": "Ketik berat badan Anda. 200 g pada 70 kg adalah 2,9 g per kg; orang dewasa aktif biasanya menargetkan 1,6–2,2. Pilih pembagian dengan protein lebih rendah bila angka Anda jauh di atasnya.",
+        "s6t": "Ubah gram menjadi porsi makan, lalu salin",
+        "s6b": "Bagi dengan jumlah makan: 200 g protein untuk empat kali makan adalah 50 g tiap kali. Salin menaruh target dan gramnya di papan klip.",
+        "diagram1": "Gram = kalori × porsi ÷ 4 untuk protein dan karbo, ÷ 9 untuk lemak.",
+        "diagram2": "2500 kcal dengan 30/30/40: 188 g protein, 83 g lemak, 250 g karbo."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung makro gratis secara online?",
+        "a1": "Bisa. cv.cm menghitungnya di tab ini. Tidak ada unggahan.",
+        "q2": "Berapa gram protein untuk 30% dari 2000 kcal?",
+        "a2": "600 kcal ÷ 4 = 150 g protein.",
+        "q3": "Mengapa lemak dibagi 9?",
+        "a3": "Satu gram lemak berisi 9 kcal; protein dan karbohidrat berisi 4.",
+        "q4": "Pembagian mana yang terbaik?",
+        "a4": "Seimbang cocok untuk kebanyakan orang. Tinggi protein membantu mempertahankan otot saat menurunkan berat; rendah karbo cocok bagi yang ingin sedikit karbohidrat.",
+        "q5": "Dari mana saya tahu kalori saya?",
+        "a5": "Dari Kalkulator TDEE, yang memperkirakan kalori pemeliharaan dari usia, ukuran tubuh, dan aktivitas."
+      }
+    },
+    "calories-burned-exercise": {
+      "copy": {
+        "name": "Cara hitung kalori yang terbakar saat berolahraga",
+        "blurb": "Kalori = MET × berat badan dalam kg × jam. 30 menit pada 70 kg: lari 10 km/h sekitar 343 kcal, lompat tali 413, bersepeda 280, renang 203, yoga 88.",
+        "title": "Cara hitung kalori yang terbakar saat berolahraga",
+        "lead": "Anda ingin tahu berapa kalori yang dibakar sebuah latihan. Anda akan memilih aktivitas, memasukkan berat badan dan menit, lalu membaca kalorinya dari nilai MET. 30 menit lari 10 km/h pada 70 kg membakar sekitar 343 kcal. Tidak ada yang keluar dari tab ini.",
+        "result": "Kalori terbakar, kalori per menit, nilai MET, setara lemak, dan menit yang sama untuk 15 aktivitas lain.",
+        "note": "Buka Kalkulator kalori terbakar setelah latihan atau saat merencanakannya. Nilai MET adalah rata-rata; pembakaran nyata bisa berbeda 20% atau lebih. Tidak ada unggahan.",
+        "s1t": "Pahami apa itu MET",
+        "s1b": "Satu MET adalah energi saat duduk diam, sekitar 1 kcal per kg per jam. Lari 10 km/h bernilai 9,8 MET, hampir sepuluh kali istirahat. Kalori = MET × kg × jam.",
+        "s2t": "Buka Kalkulator kalori terbakar di cv.cm",
+        "s2b": "Jalan cepat, 70 kg, dan 30 menit sudah diatur. Hasil dan daftar perbandingan ada di kanan. Tidak ada unggahan.",
+        "s3t": "Masukkan berat dan menit",
+        "s3b": "Ketik Berat badan dalam kg atau ganti ke lb, lalu Menit. Orang yang lebih berat membakar lebih banyak untuk aktivitas yang sama karena rumusnya mengikuti berat.",
+        "s4t": "Pilih aktivitas",
+        "s4b": "Pilih dari 16 aktivitas dengan nilai MET dari Compendium of Physical Activities 2011. Lari (10 km/h) 30 menit pada 70 kg: 9,8 × 70 × 0,5 = 343 kcal.",
+        "s5t": "Bandingkan aktivitas",
+        "s5b": "Daftar Waktu sama, aktivitas lain menampilkan 30 menit yang sama untuk semua aktivitas, tertinggi dulu: lompat tali 413, lari 343, bersepeda 280, renang 203, yoga 88.",
+        "s6t": "Kurangi energi istirahat bila perlu, lalu salin",
+        "s6b": "MET sudah termasuk energi yang tetap terbakar saat diam. Untuk tambahan dari olahraga saja, kurangi sekitar 1 kcal per kg per jam: 35 kcal untuk 30 menit pada 70 kg. Salin menaruh hasilnya di papan klip.",
+        "diagram1": "Kalori = MET × kg × jam; satu MET ≈ 1 kcal per kg per jam saat istirahat.",
+        "diagram2": "30 menit pada 70 kg: lompat tali 413, lari 343, bersepeda 280, renang 203, yoga 88 kcal."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung kalori terbakar gratis secara online?",
+        "a1": "Bisa. cv.cm menghitungnya di tab ini. Tidak ada unggahan.",
+        "q2": "Berapa kalori yang terbakar dengan lari 30 menit?",
+        "a2": "Sekitar 343 kcal pada 10 km/h untuk orang 70 kg; sekitar 290 pada 60 kg.",
+        "q3": "Apa itu MET?",
+        "a3": "Energi sebuah aktivitas dibanding duduk diam. 1 MET sekitar 1 kcal per kg per jam.",
+        "q4": "Seberapa akurat?",
+        "a4": "Sekitar 20% untuk kebanyakan orang. Kebugaran, intensitas, dan medan mengubah angka sebenarnya.",
+        "q5": "Dari mana nilainya berasal?",
+        "a5": "Dari Compendium of Physical Activities 2011 oleh Ainsworth dan rekan."
+      }
+    },
+    "compound-interest": {
+      "copy": {
+        "name": "Cara hitung bunga majemuk",
+        "blurb": "Nilai masa depan = pokok × (1 + bunga ÷ n)^(n × tahun). 1000 dengan bunga 5% selama 10 tahun menjadi 1628,89 bila dimajemukkan tahunan, 1647,01 bulanan, dan 1648,66 harian.",
+        "title": "Cara hitung bunga majemuk",
+        "lead": "Anda punya tabungan atau investasi dan bunga per tahun. Anda akan melihat nilainya bila bunga ikut berbunga, dan bagaimana frekuensi pemajemukan mengubah hasil. 1000 dengan bunga 5% selama 10 tahun dimajemukkan bulanan menjadi 1647,01, dengan 647,01 berupa bunga. Tidak ada yang keluar dari tab ini.",
+        "result": "Nilai masa depan dan total bunga untuk pokok, bunga, tahun, dan frekuensi pemajemukan Anda.",
+        "note": "Buka Bunga majemuk dengan pokok, bunga per tahun, dan jangka waktu di tangan. Alat ini menganggap tidak ada setoran, penarikan, atau pajak di tengah jalan. Tidak ada unggahan.",
+        "s1t": "Pahami rumusnya",
+        "s1b": "Nilai masa depan = pokok × (1 + bunga ÷ n)^(n × tahun), dengan n berapa kali bunga ditambahkan per tahun. Bunga tiap periode masuk ke saldo, jadi periode berikutnya ikut berbunga atasnya.",
+        "s2t": "Buka Bunga majemuk di cv.cm",
+        "s2b": "1000, 5% per tahun, 10 tahun, dan pemajemukan bulanan sudah terisi. Nilai masa depan ada di kanan. Tidak ada unggahan.",
+        "s3t": "Masukkan pokok, bunga, dan tahun",
+        "s3b": "Ketik Pokok, % per tahun, dan Tahun. Pakai bunga nominal (APR) yang disebut bank, bukan bunga efektif.",
+        "s4t": "Pilih frekuensi pemajemukan",
+        "s4b": "Di Pemajemukan: Tahunan memberi 1628,89, Kuartalan 1643,62, Bulanan 1647,01, Harian 1648,66. Makin sering dimajemukkan, makin bertambah sedikit tiap langkah, dengan kenaikan yang makin kecil.",
+        "s5t": "Bandingkan dengan bunga sederhana",
+        "s5b": "Bunga sederhana membayar 5% dari 1000 tiap tahun, 500 dalam 10 tahun. Bunga majemuk menambah 147,01 lagi. Selisihnya melebar pada bunga yang lebih tinggi dan jangka yang lebih panjang.",
+        "s6t": "Perkirakan waktu dua kali lipat, lalu salin",
+        "s6b": "Aturan 72: tahun sampai dua kali lipat ≈ 72 ÷ bunga. Pada 5% sekitar 14,4 tahun. Salin menaruh nilai masa depan dan bunganya di papan klip.",
+        "diagram1": "Nilai masa depan = pokok × (1 + bunga ÷ n)^(n × tahun).",
+        "diagram2": "1000 dengan bunga 5% selama 10 tahun: tahunan 1628,89, bulanan 1647,01, harian 1648,66."
+      },
+      "faq": {
+        "q1": "Bisakah menghitung bunga majemuk gratis secara online?",
+        "a1": "Bisa. cv.cm menghitungnya di tab ini. Tidak ada unggahan.",
+        "q2": "Berapa 1000 dengan bunga 5% selama 10 tahun?",
+        "a2": "1647,01 bila dimajemukkan bulanan, 1628,89 bila tahunan.",
+        "q3": "Apa bedanya dengan bunga sederhana?",
+        "a3": "Bunga sederhana hanya dibayar atas pokok; bunga majemuk juga dibayar atas bunga yang sudah ditambahkan.",
+        "q4": "Berapa lama sampai dua kali lipat?",
+        "a4": "Sekitar 72 ÷ bunga, dalam tahun: 14,4 tahun pada 5%, 9 tahun pada 8%.",
+        "q5": "Apakah termasuk setoran rutin?",
+        "a5": "Tidak. Alat ini menunjukkan satu jumlah awal yang tumbuh tanpa setoran, penarikan, atau pajak."
+      }
+    },
+    "remove-photo-background": {
+      "copy": {
+        "name": "Cara hapus background foto gratis",
+        "blurb": "Taruh foto JPG, PNG, WebP, atau HEIC dan model AI memotong objek di browser Anda. Pilih latar transparan, putih, warna, atau buram, lalu unduh PNG, WebP, JPG, atau semuanya sekaligus sebagai ZIP.",
+        "title": "Cara hapus background foto gratis",
+        "lead": "Anda punya foto orang, produk, atau hewan peliharaan dan ingin latarnya bersih. Anda akan menaruh fotonya, membiarkan model AI memotong objek di tab ini, lalu mengunduh hasilnya. Foto tidak pernah keluar dari perangkat Anda.",
+        "result": "Potongan objek dengan latar transparan, putih, berwarna, atau buram, diunduh sebagai PNG, WebP, atau JPG, atau beberapa sekaligus dalam satu ZIP.",
+        "note": "Buka Hapus background di komputer atau ponsel yang cukup baru. Pertama kali, model diunduh sekali; berikutnya langsung jalan. Foto Anda tidak pernah diunggah.",
+        "s1t": "Pilih foto yang jelas",
+        "s1b": "Objek sebaiknya tajam dan menonjol dari latar. Rambut di depan latar ramai paling sulit; dinding polos atau langit memberi tepi paling bersih.",
+        "s2t": "Buka Hapus background di cv.cm",
+        "s2b": "Area taruh menerima JPG, PNG, WebP, dan HEIC. Model berjalan di tab ini memakai kartu grafis bila bisa, kalau tidak memakai prosesor.",
+        "s3t": "Taruh atau tempel foto",
+        "s3b": "Taruh satu atau beberapa foto, atau tempel satu. Tiap foto menampilkan Menunggu, lalu Menghapus background…, lalu Selesai. Pertama kali lebih lama karena model sedang diunduh.",
+        "s4t": "Periksa tepinya",
+        "s4b": "Tahan untuk lihat aslinya dan bandingkan garis tepinya. Rambut halus dan benda transparan seperti kaca mungkin perlu foto kedua dengan latar lebih polos.",
+        "s5t": "Pilih latar",
+        "s5b": "Transparan hanya menyisakan objek. Putih cocok untuk foto produk dan foto bergaya pas foto. Warna mengisi warna apa pun; Buram membuat pemandangan di belakang objek kabur lembut.",
+        "s6t": "Pilih format dan unduh",
+        "s6b": "PNG dan WebP tetap transparan; JPG diberi latar putih. Unduh menyimpan satu foto; Unduh semua (ZIP) menyimpan semua foto yang selesai sekaligus.",
+        "diagram1": "Model berjalan di browser Anda: foto masuk, masker objek keluar, tanpa unggahan.",
+        "diagram2": "PNG dan WebP tetap transparan; JPG diberi putih; ZIP menyimpan semua foto."
+      },
+      "faq": {
+        "q1": "Bisakah menghapus background foto gratis?",
+        "a1": "Bisa. cv.cm menjalankan model AI di browser Anda tanpa biaya, tanpa daftar, dan tanpa watermark.",
+        "q2": "Apakah foto saya diunggah?",
+        "a2": "Tidak. Model diunduh ke browser Anda dan foto tetap di perangkat Anda.",
+        "q3": "Mengapa proses pertama lambat?",
+        "a3": "Model diunduh sekali. Proses berikutnya memakai salinan yang tersimpan.",
+        "q4": "Format mana yang tetap transparan?",
+        "a4": "PNG dan WebP. JPG tidak mendukung transparansi, jadi diberi latar putih.",
+        "q5": "Bisakah beberapa foto sekaligus?",
+        "a5": "Bisa. Taruh beberapa foto dan pakai Unduh semua (ZIP)."
+      }
+    },
+    "test-regex": {
+      "copy": {
+        "name": "Cara menguji ekspresi reguler",
+        "blurb": "Ketik pola, atur flag g, i, m, s, dan u, lalu tempel teks untuk melihat setiap kecocokan beserta grup tangkapnya. Pengganti seperti [$&] atau $1 memberi pratinjau hasil sebelum dipakai di kode.",
+        "title": "Cara menguji ekspresi reguler",
+        "lead": "Anda sedang menulis pola untuk kode, kotak pencarian, atau spreadsheet dan ingin melihat apa yang cocok sebelum memakainya. Anda akan mengetik pola, menempel teks contoh, dan membaca setiap kecocokan. \\b\\w+@\\w+\\.\\w+\\b menemukan alamat email sederhana. Tidak ada yang keluar dari tab ini.",
+        "result": "Jumlah kecocokan, tiap kecocokan dengan posisi dan grup tangkapnya, serta pratinjau penggantian opsional, memakai regex JavaScript.",
+        "note": "Buka Penguji regex dengan beberapa baris teks nyata, termasuk baris yang seharusnya tidak cocok. Alat ini memakai ragam JavaScript, sama dengan browser dan Node.js. Tidak ada unggahan.",
+        "s1t": "Kenali bagian dasarnya",
+        "s1b": "\\d adalah angka, \\w huruf, angka, atau garis bawah, \\s spasi, . karakter apa pun. + berarti satu atau lebih, * nol atau lebih, ? opsional. ( ) menangkap grup; \\b adalah batas kata.",
+        "s2t": "Buka Penguji regex di cv.cm",
+        "s2b": "Kotak Ekspresi reguler, flag, dan Teks uji sudah siap. Tidak ada unggahan.",
+        "s3t": "Ketik pola dan tempel teks",
+        "s3b": "Ketik pola tanpa garis miring, misalnya \\d{4}-\\d{2}-\\d{2} untuk tanggal seperti 2026-10-29. Tempel teks yang berisi baris yang seharusnya cocok dan yang tidak.",
+        "s4t": "Atur flag",
+        "s4b": "g menemukan semua kecocokan, bukan hanya yang pertama; i mengabaikan huruf besar-kecil; m membuat ^ dan $ berlaku per baris; s membuat . cocok dengan pindah baris; u mengaktifkan Unicode penuh. Baris jumlah kecocokan menampilkan flag yang aktif.",
+        "s5t": "Baca kecocokan dan grup",
+        "s5b": "Tiap kecocokan mencantumkan teks dan grup tangkapnya. (\\d{4})-(\\d{2}) pada 2026-10 memberi grup 1 = 2026 dan grup 2 = 10. Pola yang terlalu banyak cocok biasanya perlu \\b atau kelas karakter yang lebih sempit.",
+        "s6t": "Pratinjau penggantian",
+        "s6b": "Ketik di Ganti (opsional): $& adalah seluruh kecocokan, $1 grup pertama. [$&] membungkus tiap kecocokan dengan kurung siku. Salin kecocokan menaruh semua kecocokan di papan klip.",
+        "diagram1": "\\d angka, \\w karakter kata, \\s spasi, + satu atau lebih, ( ) grup tangkap, \\b batas kata.",
+        "diagram2": "Flag: g semua kecocokan, i abaikan huruf besar, m per baris, s titik cocok pindah baris, u Unicode."
+      },
+      "faq": {
+        "q1": "Bisakah menguji regex gratis secara online?",
+        "a1": "Bisa. cv.cm menjalankannya di tab ini. Tidak ada unggahan.",
+        "q2": "Ragam regex apa ini?",
+        "a2": "JavaScript, sama dengan browser dan Node.js. Kebanyakan pola sederhana bekerja sama di Python dan Java.",
+        "q3": "Mengapa saya hanya mendapat satu kecocokan?",
+        "a3": "Aktifkan flag g untuk menemukan semua kecocokan.",
+        "q4": "Bagaimana memakai grup tangkap di pengganti?",
+        "a4": "$1 adalah grup pertama, $2 grup kedua, $& seluruh kecocokan.",
+        "q5": "Apakah saya mengetik garis miringnya?",
+        "a5": "Tidak. Ketik polanya saja; flag berupa kotak centang."
+      }
+    }
+  },
+  "svg": {
+    "calculate-work-hours": {
+      "title": "Cara hitung jam kerja",
+      "a": "Selesai − mulai − istirahat",
+      "b": "45 jam = 40 reguler + 5 lembur",
+      "cap": "09:00–17:30 dikurangi 30 menit = 8 jam."
+    },
+    "electricity-cost": {
+      "title": "Cara hitung biaya listrik",
+      "a": "kWh = W × jam ÷ 1000",
+      "b": "1000 W × 8 jam × 30 hari = 240 kWh",
+      "cap": "Biaya = kWh × tarif per kWh."
+    },
+    "find-fertile-window": {
+      "title": "Cara menemukan masa subur",
+      "a": "Ovulasi ≈ haid berikutnya − 14",
+      "b": "Subur 10–15 Jan, ovulasi 15 Jan",
+      "cap": "Dari 5 hari sebelum s.d. hari ovulasi"
+    },
+    "calculate-macros": {
+      "title": "Cara hitung makro",
+      "a": "g = kcal × porsi ÷ 4 atau ÷ 9",
+      "b": "2500 kcal: 188 g / 83 g / 250 g gram",
+      "cap": "Protein, karbo 4 kcal/g; lemak 9 kcal/g."
+    },
+    "calories-burned-exercise": {
+      "title": "Cara hitung kalori terbakar",
+      "a": "kcal = MET × kg × jam",
+      "b": "Lari 30 menit, 70 kg = 343 kcal",
+      "cap": "1 MET ≈ 1 kcal per kg per jam saat diam."
+    },
+    "compound-interest": {
+      "title": "Cara hitung bunga majemuk",
+      "a": "Rumus: P × (1 + r ÷ n)^(n × t)",
+      "b": "1000, 5%, 10 tahun = 1647,01",
+      "cap": "Bulanan; tahunan memberi 1628,89."
+    },
+    "remove-photo-background": {
+      "title": "Cara hapus background foto",
+      "a": "AI berjalan di browser Anda",
+      "b": "PNG / WebP tetap transparan",
+      "cap": "Foto tidak keluar dari perangkat."
+    },
+    "test-regex": {
+      "title": "Cara menguji regex",
+      "a": "Simbol: \\d \\w \\s + * ? ( ) \\b",
+      "b": "Flag g i m s u",
+      "cap": "Ragam JavaScript, seperti di browser."
+    }
+  }
+}

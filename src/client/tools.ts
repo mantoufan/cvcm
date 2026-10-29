@@ -652,4 +652,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountReadingTime(host);
     return m.unmountReadingTime;
   },
+  "time-card": async (host, ctx) => {
+    const m = await import("./time-card/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTimeCard(host);
+    return m.unmountTimeCard;
+  },
+  "electricity": async (host, ctx) => {
+    const m = await import("./electricity/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountElectricity(host);
+    return m.unmountElectricity;
+  },
+  "ovulation": async (host, ctx) => {
+    const m = await import("./ovulation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountOvulation(host);
+    return m.unmountOvulation;
+  },
+  "macro": async (host, ctx) => {
+    const m = await import("./macro/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMacro(host);
+    return m.unmountMacro;
+  },
+  "calories-burned": async (host, ctx) => {
+    const m = await import("./calories-burned/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCaloriesBurned(host);
+    return m.unmountCaloriesBurned;
+  },
 };

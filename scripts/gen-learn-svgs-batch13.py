@@ -45,17 +45,13 @@ def heading(text, size=22) -> str:
     return f'<text x="48" y="54" fill="{DEEP}" font-size="{size}" font-weight="800" font-family="{FONT}">{xml(text)}</text>'
 
 
-def caption(text, y=500, x=48) -> str:
-    return f'<text x="{x}" y="{y}" fill="{MUTED}" font-size="18" font-family="{FONT}">{xml(text)}</text>'
-
 
 def card(x, y, w, h, title, line, accent=False) -> str:
     fill, stroke = (SOFT, PINK) if accent else (CARD, LINE)
     return f'''
   <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22" fill="{fill}" stroke="{stroke}" stroke-width="3"/>
   <text x="{x + 24}" y="{y + 52}" fill="{DEEP}" font-size="22" font-weight="700" font-family="{FONT}">{xml(title)}</text>
-  <text x="{x + 24}" y="{y + 96}" fill="{INK}" font-size="16" font-family="{FONT}">{xml(line)}</text>
-'''
+''' + (f'  <text x="{x + 24}" y="{y + 96}" fill="{INK}" font-size="16" font-family="{FONT}">{xml(line)}</text>\n' if line else "")
 
 
 def main(src: Path) -> None:
