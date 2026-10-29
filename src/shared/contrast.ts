@@ -1,12 +1,6 @@
-import { contrastRatio, hexToRgb, relativeLuminance, rgbToHex, type RGB } from "./color";
+import { contrastRatio, hexToRgb, rgbToHex, type RGB } from "./color";
 
-export type Rgb = RGB;
-
-/** `#rgb`, `#rrggbb` or `#rrggbbaa` (alpha ignored), with or without `#`. */
-export const parseHex = hexToRgb;
-export const toHex = rgbToHex;
-export const luminance = relativeLuminance;
-export { contrastRatio };
+type Rgb = RGB;
 
 export const AA_NORMAL = 4.5;
 export const AA_LARGE = 3;
@@ -53,7 +47,7 @@ export function suggestForeground(fg: Rgb, bg: Rgb, target = AA_NORMAL): Rgb | n
       g: fg.g + (toward.g - fg.g) * k,
       b: fg.b + (toward.b - fg.b) * k,
     };
-    const rounded = parseHex(toHex(c));
+    const rounded = hexToRgb(rgbToHex(c));
     if (rounded && contrastRatio(rounded, bg) >= target) return rounded;
   }
   return toward;

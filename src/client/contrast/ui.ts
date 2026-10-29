@@ -2,7 +2,8 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { AAA_LARGE, AAA_NORMAL, AA_LARGE, AA_NORMAL, UI_MIN, contrastLevels, parseHex, suggestForeground, toHex } from "../../shared/contrast";
+import { hexToRgb, rgbToHex } from "../../shared/color";
+import { AAA_LARGE, AAA_NORMAL, AA_LARGE, AA_NORMAL, UI_MIN, contrastLevels, suggestForeground } from "../../shared/contrast";
 
 let fgText: HTMLInputElement | null = null;
 let bgText: HTMLInputElement | null = null;
@@ -16,8 +17,8 @@ let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountContrast(host: HTMLElement): void {
-  fgText = h("input", { type: "text", value: "#a13f6c", maxlength: "7", spellcheck: "false", autocomplete: "off", "data-field": "fg", onInput: () => sync(fgText, fgPick) });
-  bgText = h("input", { type: "text", value: "#fff7fb", maxlength: "7", spellcheck: "false", autocomplete: "off", "data-field": "bg", onInput: () => sync(bgText, bgPick) });
+  fgText = h("input", { type: "text", value: "#a13f6c", maxlength: "9", spellcheck: "false", autocomplete: "off", "aria-label": t("contrast.fg"), "data-field": "fg", onInput: () => sync(fgText, fgPick) });
+  bgText = h("input", { type: "text", value: "#fff7fb", maxlength: "9", spellcheck: "false", autocomplete: "off", "aria-label": t("contrast.bg"), "data-field": "bg", onInput: () => sync(bgText, bgPick) });
   fgPick = h("input", { type: "color", value: "#a13f6c", "aria-label": t("contrast.fg"), onInput: () => sync(fgPick, fgText) });
   bgPick = h("input", { type: "color", value: "#fff7fb", "aria-label": t("contrast.bg"), onInput: () => sync(bgPick, bgText) });
   sample = h("div", { class: "contrast-sample" },
@@ -37,8 +38,8 @@ export function mountContrast(host: HTMLElement): void {
       h("aside", { class: "rail controls" },
         h("fieldset", null,
           h("legend", null, t("contrast.options")),
-          h("label", { class: "field" }, h("span", null, t("contrast.fg")), h("div", { class: "row contrast-row" }, fgPick, fgText)),
-          h("label", { class: "field" }, h("span", null, t("contrast.bg")), h("div", { class: "row contrast-row" }, bgPick, bgText)),
+          h("div", { class: "field" }, h("span", null, t("contrast.fg")), h("div", { class: "row contrast-row" }, fgPick, fgText)),
+          h("div", { class: "field" }, h("span", null, t("contrast.bg")), h("div", { class: "row contrast-row" }, bgPick, bgText)),
         ),
         h("div", { class: "stage-actions" },
           h("button", { type: "button", class: "btn ghost", "data-action": "swap", onClick: () => swap() }, t("contrast.swap")),
@@ -67,8 +68,8 @@ export function unmountContrast(): void {
 
 function sync(from: HTMLInputElement | null, to: HTMLInputElement | null): void {
   if (from && to) {
-    const rgb = parseHex(from.value);
-    if (rgb) to.value = toHex(rgb);
+    const rgb = hexToRgb(from.value);
+    if (rgb) to.value = rgbToHex(rgb);
   }
   paint();
 }
@@ -82,8 +83,8 @@ function swap(): void {
 
 function paint(): void {
   if (!outEl || !ratioEl || !sample || !fixEl || !fgText || !bgText) return;
-  const fg = parseHex(fgText.value);
-  const bg = parseHex(bgText.value);
+  const fg = hexToRgb(fgText.value);
+  const bg = hexToRgb(bgText.value);
   outEl.replaceChildren();
   fixEl.textContent = "";
   if (!fg || !bg) {
@@ -92,8 +93,8 @@ function paint(): void {
     outEl.append(h("p", { class: "muted" }, t("contrast.invalid")));
     return;
   }
-  sample.style.color = toHex(fg);
-  sample.style.background = toHex(bg);
+  sample.style.color = rgbToHex(fg);
+  sample.style.background = rgbToHex(bg);
   const lv = contrastLevels(fg, bg);
   const ratio = `${(Math.floor(lv.ratio * 100) / 100).toFixed(2)}:1`;
   ratioEl.textContent = ratio;
@@ -110,10 +111,10 @@ function paint(): void {
   let fixLine = "";
   if (!lv.aaNormal) {
     const better = suggestForeground(fg, bg, AA_NORMAL);
-    fixLine = better ? t("contrast.suggest", { hex: toHex(better) }) : t("contrast.noFix");
+    fixLine = better ? t("contrast.suggest", { hex: rgbToHex(better) }) : t("contrast.noFix");
     fixEl.textContent = fixLine;
   }
-  last = [`${toHex(fg)} on ${toHex(bg)}: ${ratio}`, ...rows.map(([k, v]) => `${k}: ${v}`), fixLine].filter(Boolean).join("\n");
+  last = [`${rgbToHex(fg)} on ${rgbToHex(bg)}: ${ratio}`, ...rows.map(([k, v]) => `${k}: ${v}`), fixLine].filter(Boolean).join("\n");
 }
 
 async function copyOut(): Promise<void> {

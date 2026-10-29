@@ -114,7 +114,7 @@ function switchUnits(): void {
   for (const el of [heightEl, neckEl, waistEl, hipEl, weightEl]) {
     if (!el) continue;
     const n = canon.get(el);
-    if (n == null || !(n > 0)) { el.value = ""; continue; }
+    if (n == null || !(n > 0)) { el.value = ""; canon.delete(el); continue; }
     const shown = el === weightEl ? (imperial ? n * LB_PER_KG : n) : (imperial ? n / CM_PER_IN : n);
     el.value = round1(shown);
   }

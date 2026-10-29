@@ -65,7 +65,8 @@ import { gpaOf, gradePoints } from "../src/shared/gpa";
 import { mmss, nextPhase, normalizeSettings, phaseSeconds } from "../src/shared/pomodoro";
 import { bedtimesFor, formatClock as sleepClock, hoursOf, parseClock, wakeTimesFor } from "../src/shared/sleep";
 import { bodyFat, categoryOf } from "../src/shared/body-fat";
-import { contrastLevels, contrastRatio, luminance, parseHex, suggestForeground, toHex as rgbHex } from "../src/shared/contrast";
+import { contrastLevels, suggestForeground } from "../src/shared/contrast";
+import { contrastRatio, hexToRgb as parseHex, relativeLuminance as luminance, rgbToHex as rgbHex } from "../src/shared/color";
 import { formatTime, parseTime, solvePace } from "../src/shared/pace";
 import { finalGrade, neededOnFinal } from "../src/shared/grade";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
@@ -882,6 +883,7 @@ describe("pace", () => {
     expect(parseTime("5")).toBe(300);
     expect(parseTime("5:75")).toBeNull();
     expect(parseTime("240:00")).toBe(14400);
+    expect(parseTime("5:5")).toBe(305);
     expect(parseTime("1:75:00")).toBeNull();
     expect(parseTime("")).toBeNull();
     expect(parseTime("0:00")).toBeNull();

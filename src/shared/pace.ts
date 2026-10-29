@@ -20,7 +20,7 @@ export function parseTime(value: string): number | null {
     const sec = Number(s) * 60;
     return sec > 0 && Number.isFinite(sec) ? sec : null;
   }
-  const m = /^(?:(\d{1,3}):)?(\d{1,3}):(\d{2})$/.exec(s);
+  const m = /^(?:(\d{1,3}):)?(\d{1,3}):(\d{1,2})$/.exec(s);
   if (!m) return null;
   const hh = Number(m[1] ?? 0);
   const mm = Number(m[2]);

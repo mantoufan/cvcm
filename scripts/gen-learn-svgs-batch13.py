@@ -67,11 +67,11 @@ def main(src: Path) -> None:
         for lesson_id, (file_a, file_b) in FILES.items():
             t = strings[lesson_id]
             (dest / f"{file_a}.svg").write_text(
-                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["a"], t["cap"], True) + caption(t["cap"]), t["a"]),
+                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["a"], t["cap"], True), t["a"]),
                 encoding="utf-8",
             )
             (dest / f"{file_b}.svg").write_text(
-                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], t["cap"], True) + caption(t["cap"]), t["b"]),
+                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], t["cap"], True), t["b"]),
                 encoding="utf-8",
             )
             count += 2

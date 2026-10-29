@@ -36,7 +36,7 @@ export function bodyFat(input: BodyFatInput): BodyFatResult | null {
     if (!Number.isFinite(hip) || hip < 40 || hip > 250 || waist + hip - neck <= 0) return null;
     percent = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.221 * Math.log10(cm)) - 450;
   }
-  if (!Number.isFinite(percent) || percent < 1 || percent > 75) return null;
+  if (!Number.isFinite(percent)) return null;
   const kg = input.kg;
   const hasKg = kg != null && Number.isFinite(kg) && kg > 0 && kg <= 500;
   return {
