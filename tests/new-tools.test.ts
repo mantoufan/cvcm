@@ -69,6 +69,11 @@ import { contrastLevels, suggestForeground } from "../src/shared/contrast";
 import { contrastRatio, hexToRgb as parseHex, relativeLuminance as luminance, rgbToHex as rgbHex } from "../src/shared/color";
 import { formatTime, parseTime, solvePace } from "../src/shared/pace";
 import { finalGrade, neededOnFinal } from "../src/shared/grade";
+import { dueDate, isoOf } from "../src/shared/due-date";
+import { healthyBmiRange, idealWeights } from "../src/shared/ideal-weight";
+import { waterIntake } from "../src/shared/water-intake";
+import { fuelCost, toL100km } from "../src/shared/fuel-cost";
+import { readingTime, splitSec } from "../src/shared/reading-time";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -917,6 +922,96 @@ describe("grade", () => {
   });
 });
 
+describe("due-date", () => {
+  it("applies Naegele's rule with cycle adjustment and trimesters", () => {
+    const out = dueDate("lmp", "2026-01-01", 28, "2026-03-12");
+    expect(isoOf(out!.due)).toBe("2026-10-08");
+    expect(isoOf(out!.conception)).toBe("2026-01-15");
+    expect(out!.weeks).toBe(10);
+    expect(out!.days).toBe(0);
+    expect(out!.trimester).toBe(1);
+    expect(out!.daysLeft).toBe(210);
+    expect(isoOf(out!.trimester2)).toBe("2026-04-02");
+    expect(isoOf(out!.trimester3)).toBe("2026-07-09");
+    expect(isoOf(dueDate("lmp", "2026-01-01", 32, "2026-03-12")!.due)).toBe("2026-10-12");
+    expect(isoOf(dueDate("conception", "2026-01-15", 28, "2026-03-12")!.due)).toBe("2026-10-08");
+    expect(isoOf(dueDate("due", "2026-10-08", 28, "2026-03-12")!.lmp)).toBe("2026-01-01");
+    expect(dueDate("lmp", "2026-01-01", 28, "2025-12-01")!.trimester).toBeNull();
+    expect(dueDate("lmp", "2026-01-01", 28, "2026-07-15")!.trimester).toBe(3);
+    expect(dueDate("lmp", "2026-01-01", 19)).toBeNull();
+    expect(dueDate("lmp", "nope", 28)).toBeNull();
+  });
+});
+
+describe("ideal-weight", () => {
+  it("computes Devine, Robinson, Miller, Hamwi and the BMI range", () => {
+    const m = idealWeights("male", 177.8);
+    expect(m!.devine).toBeCloseTo(50 + 2.3 * 10, 6);
+    expect(m!.robinson).toBeCloseTo(52 + 1.9 * 10, 6);
+    expect(m!.miller).toBeCloseTo(56.2 + 1.41 * 10, 6);
+    expect(m!.hamwi).toBeCloseTo(48 + 2.7 * 10, 6);
+    const f = idealWeights("female", 162.56);
+    expect(f!.devine).toBeCloseTo(45.5 + 2.3 * 4, 6);
+    expect(f!.hamwi).toBeCloseTo(45.5 + 2.2 * 4, 6);
+    expect(idealWeights("male", 150)).toBeNull();
+    expect(idealWeights("male", NaN)).toBeNull();
+    const r = healthyBmiRange(170);
+    expect(r!.low).toBeCloseTo(53.465, 3);
+    expect(r!.high).toBeCloseTo(71.961, 3);
+  });
+});
+
+describe("water-intake", () => {
+  it("adds base, exercise and climate water", () => {
+    const out = waterIntake(70, 30, "temperate");
+    expect(out!.base).toBe(2450);
+    expect(out!.exercise).toBe(360);
+    expect(out!.ml).toBe(2810);
+    expect(out!.glasses).toBe(12);
+    expect(waterIntake(70, 0, "hot")!.ml).toBe(2950);
+    expect(waterIntake(10, 0)).toBeNull();
+    expect(waterIntake(70, 601)).toBeNull();
+    expect(waterIntake(70, -1)).toBeNull();
+  });
+});
+
+describe("fuel-cost", () => {
+  it("converts economy units and prices a trip", () => {
+    expect(toL100km(7, "l100km")).toBe(7);
+    expect(toL100km(20, "kml")).toBe(5);
+    expect(toL100km(30, "mpg")).toBeCloseTo(7.84, 2);
+    const out = fuelCost({ distance: 300, distanceUnit: "km", economy: 7, economyUnit: "l100km", price: 1.6 });
+    expect(out!.litres).toBeCloseTo(21, 6);
+    expect(out!.cost).toBeCloseTo(33.6, 6);
+    expect(out!.costPer100km).toBeCloseTo(11.2, 6);
+    const rt = fuelCost({ distance: 300, distanceUnit: "km", economy: 7, economyUnit: "l100km", price: 1.6, roundTrip: true, people: 3 });
+    expect(rt!.km).toBe(600);
+    expect(rt!.perPerson).toBeCloseTo(22.4, 6);
+    const us = fuelCost({ distance: 100, distanceUnit: "mi", economy: 30, economyUnit: "mpg", price: 3.5, pricePerGallon: true });
+    expect(us!.cost).toBeCloseTo((100 / 30) * 3.5, 6);
+    expect(fuelCost({ distance: 0, distanceUnit: "km", economy: 7, economyUnit: "l100km", price: 1 })).toBeNull();
+    expect(fuelCost({ distance: 10, distanceUnit: "km", economy: 7, economyUnit: "l100km", price: 1, people: 0 })).toBeNull();
+  });
+});
+
+describe("reading-time", () => {
+  it("counts words or CJK characters and times reading and speaking", () => {
+    const en = readingTime(Array(238).fill("word").join(" "));
+    expect(en.words).toBe(238);
+    expect(en.readSec).toBe(60);
+    expect(en.cjkMode).toBe(false);
+    expect(readingTime(Array(300).fill("w").join(" "), "fast").readSec).toBe(60);
+    const zh = readingTime("中文".repeat(150));
+    expect(zh.units).toBe(300);
+    expect(zh.cjk).toBe(300);
+    expect(zh.cjkMode).toBe(true);
+    expect(zh.readSec).toBe(60);
+    expect(zh.charsNoSpaces).toBe(300);
+    expect(readingTime("   ").units).toBe(0);
+    expect(splitSec(200)).toEqual({ min: 3, sec: 20 });
+  });
+});
+
 describe("units", () => {
   it("converts length, mass, temperature, and speed", () => {
     expect(convertAmount("length", 1, "in", "cm")).toBeCloseTo(2.54, 10);
@@ -1002,6 +1097,11 @@ describe("new routes", () => {
     expect(parseAppPath("/en/contrast/")).toEqual({ kind: "app", locale: "en", tool: "contrast" });
     expect(parseAppPath("/en/pace/")).toEqual({ kind: "app", locale: "en", tool: "pace" });
     expect(parseAppPath("/en/grade/")).toEqual({ kind: "app", locale: "en", tool: "grade" });
+    expect(parseAppPath("/en/due-date/")).toEqual({ kind: "app", locale: "en", tool: "due-date" });
+    expect(parseAppPath("/en/ideal-weight/")).toEqual({ kind: "app", locale: "en", tool: "ideal-weight" });
+    expect(parseAppPath("/en/water-intake/")).toEqual({ kind: "app", locale: "en", tool: "water-intake" });
+    expect(parseAppPath("/en/fuel-cost/")).toEqual({ kind: "app", locale: "en", tool: "fuel-cost" });
+    expect(parseAppPath("/en/reading-time/")).toEqual({ kind: "app", locale: "en", tool: "reading-time" });
     expect(parseAppPath("/en/portrait-sim/")).toEqual({ kind: "app", locale: "en", tool: "portrait-sim" });
     expect(appHref("ja", "qr")).toBe("/ja/qr/");
     expect(appHref("zh-CN", "uuid")).toBe("/zh-cn/uuid/");

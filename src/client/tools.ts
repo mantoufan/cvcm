@@ -622,4 +622,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountGrade(host);
     return m.unmountGrade;
   },
+  "due-date": async (host, ctx) => {
+    const m = await import("./due-date/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDueDate(host);
+    return m.unmountDueDate;
+  },
+  "ideal-weight": async (host, ctx) => {
+    const m = await import("./ideal-weight/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountIdealWeight(host);
+    return m.unmountIdealWeight;
+  },
+  "water-intake": async (host, ctx) => {
+    const m = await import("./water-intake/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWaterIntake(host);
+    return m.unmountWaterIntake;
+  },
+  "fuel-cost": async (host, ctx) => {
+    const m = await import("./fuel-cost/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFuelCost(host);
+    return m.unmountFuelCost;
+  },
+  "reading-time": async (host, ctx) => {
+    const m = await import("./reading-time/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountReadingTime(host);
+    return m.unmountReadingTime;
+  },
 };

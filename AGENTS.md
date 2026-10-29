@@ -91,6 +91,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/contrast/` — WCAG 2 color contrast checker (AA / AAA, normal / large text, non-text) with a passing text-color suggestion
 - `src/client/pace/` — running pace calculator: pace, time or distance, km / mi, 5K–marathon predictions
 - `src/client/grade/` — final grade calculator: score needed on the final, table per letter
+- `src/client/due-date/` — pregnancy due date (Naegele's rule, cycle-length shift) from LMP, conception or due date; weeks along is `data-volatile` (not medical advice)
+- `src/client/ideal-weight/` — ideal weight: Devine / Robinson / Miller / Hamwi + BMI 18.5–24.9 range, metric / imperial
+- `src/client/water-intake/` — daily water estimate: 35 ml/kg + exercise + hot climate, in litres and 250 ml glasses
+- `src/client/fuel-cost/` — trip fuel cost: L/100km, km/L or US mpg, price per litre or gallon, round trip, split by people
+- `src/client/reading-time/` — reading and speaking time for a text; CJK counted in characters
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images

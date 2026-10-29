@@ -156,3 +156,13 @@ Codex (`codex exec`, built-in image tool), refs `pomodoro-sweet.jpg` + `gpa-swee
 - `contrast`: she holds up two paint swatch cards, one deep pink and one cream, a small pink magnifying glass on the desk.
 - `pace`: she wears a pink headband and holds a cream stopwatch with a blank face, pink running shoes with heart laces on the desk.
 - `grade`: she holds a cream exam paper with a big pink heart stamp, a pink pencil and a tiny trophy on the desk.
+
+## Due date, ideal weight, water intake, fuel cost, reading time (2026-10-29)
+
+Codex (`codex exec`, built-in image tool), refs `sleep-sweet.jpg` + `grade-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `due-date`: she cradles a tiny cream baby bootie pair tied with a pink ribbon, a small flip calendar with blank pages and a pink heart on the desk.
+- `ideal-weight`: she holds a cream balance scale toy with a pink heart on one pan, a soft pink measuring tape on the desk.
+- `water-intake`: she holds a tall glass of clear water with a pink straw and a strawberry slice, a cream carafe on the desk.
+- `fuel-cost`: she holds a small pastel pink toy car, a cream fuel pump nozzle toy and a tiny road map with a heart pin on the desk.
+- `reading-time`: she reads an open cream book with a pink bookmark ribbon, a small pink pocket watch with a blank face on the desk.

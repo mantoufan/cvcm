@@ -106,6 +106,11 @@ const STEPS = {
   contrast: 3,
   pace: 3,
   grade: 3,
+  "due-date": 3,
+  "ideal-weight": 3,
+  "water-intake": 3,
+  "fuel-cost": 3,
+  "reading-time": 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1589,6 +1594,101 @@ async function runTool(send, id, fx) {
     await evalValue(send, `(() => {
       const c = document.querySelector("[data-field=current]");
       if (c) { c.value = "95"; c.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "due-date") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const c = document.querySelector("[data-field=cycle]");
+      if (c) { c.value = "32"; c.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const m = document.querySelector("[data-field=mode]");
+      if (m) { m.value = "due"; m.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "ideal-weight") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const s = document.querySelector("[data-field=sex]");
+      if (s) { s.value = "female"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const u = document.querySelector("[data-field=units]");
+      if (u) { u.value = "imperial"; u.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "water-intake") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const e = document.querySelector("[data-field=exercise]");
+      if (e) { e.value = "60"; e.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const c = document.querySelector("[data-field=climate]");
+      if (c) { c.value = "hot"; c.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "fuel-cost") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const r = document.querySelector("[data-field=roundTrip]");
+      if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const p = document.querySelector("[data-field=people]");
+      if (p) { p.value = "3"; p.dispatchEvent(new Event("input", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "reading-time") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const s = document.querySelector("[data-field=speed]");
+      if (s) { s.value = "fast"; s.dispatchEvent(new Event("change", { bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      const t = document.querySelector("[data-field=text]");
+      if (t) { t.value = "Short note."; t.dispatchEvent(new Event("input", { bubbles: true })); }
       return true;
     })()`);
     await sleep(200);
