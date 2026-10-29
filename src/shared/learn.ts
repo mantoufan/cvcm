@@ -399,6 +399,54 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["pomodoro", "countdown", "stopwatch"],
   },
+  "find-due-date": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["due-date", "age", "days"],
+  },
+  "find-ideal-weight": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["ideal-weight", "bmi", "tdee"],
+  },
+  "daily-water": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["water-intake", "tdee", "units"],
+  },
+  "trip-fuel-cost": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["fuel-cost", "units", "percent"],
+  },
+  "estimate-reading-time": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["reading-time", "word-count", "text-to-speech"],
+  },
+  "compare-text": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["diff", "replace", "sort"],
+  },
+  "hash-text": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["hash", "base64", "uuid"],
+  },
+  "generate-uuid": {
+    minutes: 6,
+    steps: 6,
+    openAt: 2,
+    related: ["uuid", "password", "random"],
+  },
   portrait: {
     minutes: 75,
     steps: 10,
@@ -775,5 +823,37 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "use-pomodoro": [
     { step: 1, src: "/covers/tutorials/use-pomodoro-rounds.svg" },
     { step: 5, src: "/covers/tutorials/use-pomodoro-controls.svg" },
+  ],
+  "find-due-date": [
+    { step: 1, src: "/covers/tutorials/find-due-date-rule.svg" },
+    { step: 4, src: "/covers/tutorials/find-due-date-dates.svg" },
+  ],
+  "find-ideal-weight": [
+    { step: 1, src: "/covers/tutorials/find-ideal-weight-formulas.svg" },
+    { step: 4, src: "/covers/tutorials/find-ideal-weight-example.svg" },
+  ],
+  "daily-water": [
+    { step: 1, src: "/covers/tutorials/daily-water-rule.svg" },
+    { step: 4, src: "/covers/tutorials/daily-water-example.svg" },
+  ],
+  "trip-fuel-cost": [
+    { step: 1, src: "/covers/tutorials/trip-fuel-cost-formula.svg" },
+    { step: 5, src: "/covers/tutorials/trip-fuel-cost-example.svg" },
+  ],
+  "estimate-reading-time": [
+    { step: 1, src: "/covers/tutorials/estimate-reading-time-speeds.svg" },
+    { step: 5, src: "/covers/tutorials/estimate-reading-time-example.svg" },
+  ],
+  "compare-text": [
+    { step: 1, src: "/covers/tutorials/compare-text-sides.svg" },
+    { step: 4, src: "/covers/tutorials/compare-text-spaces.svg" },
+  ],
+  "hash-text": [
+    { step: 1, src: "/covers/tutorials/hash-text-algos.svg" },
+    { step: 5, src: "/covers/tutorials/hash-text-compare.svg" },
+  ],
+  "generate-uuid": [
+    { step: 1, src: "/covers/tutorials/generate-uuid-shape.svg" },
+    { step: 4, src: "/covers/tutorials/generate-uuid-forms.svg" },
   ],
 };

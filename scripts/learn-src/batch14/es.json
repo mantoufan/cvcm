@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "titleFindDueDate": "Cómo calcular la fecha de parto | cv.cm",
+    "descFindDueDate": "Introduzca el primer día de la última regla y la duración del ciclo: fecha de parto = última regla + 280 días, desplazada por ciclo − 28. Una regla del 1 de enero da el 8 de octubre. Nada se sube.",
+    "titleFindIdealWeight": "Cómo encontrar su peso ideal | cv.cm",
+    "descFindIdealWeight": "Introduzca sexo y estatura para leer los pesos ideales de Devine, Robinson, Miller y Hamwi y el rango de IMC 18,5–24,9. Un hombre de 170 cm: de 65 a 67 kg. Nada se sube.",
+    "titleDailyWater": "Cuánta agua beber al día | cv.cm",
+    "descDailyWater": "35 ml por kg más 12 ml por minuto de ejercicio más 500 ml con calor. 70 kg con 30 minutos da unos 2,8 litros, 12 vasos. Nada se sube.",
+    "titleTripFuelCost": "Cómo calcular el gasto de combustible de un viaje | cv.cm",
+    "descTripFuelCost": "Distancia × consumo da litros, litros × precio da el coste. 300 km a 7 L/100 km y 1,60 por litro son 33,60; ida y vuelta y reparto entre personas. Nada se sube.",
+    "titleEstimateReadingTime": "Cómo estimar el tiempo de lectura de un texto | cv.cm",
+    "descEstimateReadingTime": "Pegue un texto: palabras ÷ 238 da los minutos de lectura silenciosa, palabras ÷ 130 los minutos hablados. 650 palabras son un discurso de cinco minutos. El CJK cuenta caracteres. Nada se sube.",
+    "titleCompareText": "Cómo comparar dos textos y ver las diferencias | cv.cm",
+    "descCompareText": "Pegue el original a la izquierda y la versión nueva a la derecha. Las líneas añadidas salen en verde, las eliminadas en rojo; copie un diff unificado. Nada se sube.",
+    "titleHashText": "Cómo obtener el hash MD5 o SHA-256 de un texto o archivo | cv.cm",
+    "descHashText": "Elija MD5, SHA-1, SHA-256, SHA-384 o SHA-512, pegue texto o elija un archivo y copie el resumen en hex o Base64 para verificar una descarga. Nada se sube.",
+    "titleGenerateUuid": "Cómo generar un UUID | cv.cm",
+    "descGenerateUuid": "Genere uno o muchos UUID aleatorios de versión 4 con Web Crypto, con o sin guiones, en mayúsculas o minúsculas, y copie la lista. Nada se sube."
+  },
+  "lessons": {
+    "find-due-date": {
+      "copy": {
+        "name": "Cómo calcular la fecha de parto",
+        "blurb": "Introduzca el primer día de la última regla y la duración del ciclo. Fecha de parto = última regla + 280 días, desplazada por ciclo − 28. Una regla que empieza el 1 de enero da el 8 de octubre; un ciclo de 32 días da el 12 de octubre.",
+        "title": "Cómo calcular la fecha de parto",
+        "lead": "Conoce el primer día de la última regla, o la fecha de concepción, o una fecha de parto de una ecografía. La convertirá en la fecha probable de parto, la semana de embarazo de hoy y las fechas de los trimestres. Una regla que empieza el 1 de enero con un ciclo de 28 días da una fecha de parto del 8 de octubre. Nada sale de esta pestaña.",
+        "result": "La fecha de parto, las semanas y días de embarazo de hoy, el trimestre, los días que faltan, la fecha estimada de concepción y las fechas en que empiezan el segundo y el tercer trimestre.",
+        "note": "Abra la calculadora de fecha de parto con la fecha de la última regla a mano. Use la duración del ciclo de una app de regla si la tiene. Es una estimación, no consejo médico; una ecografía temprana la sustituye. Nada se sube.",
+        "s1t": "Conozca la regla de Naegele",
+        "s1b": "El embarazo se cuenta desde el primer día de la última regla, no desde la concepción. Fecha de parto = ese día + 280 días (40 semanas) para un ciclo de 28 días. Un ciclo más largo ovula más tarde, así que cada día extra mueve la fecha un día.",
+        "s2t": "Abra Calculadora de fecha de parto en cv.cm",
+        "s2b": "Última regla está seleccionada con una fecha de ejemplo y un ciclo de 28 días. La fecha de parto y la semana de hoy están a la derecha. Nada se sube.",
+        "s3t": "Introduzca la última regla y la duración del ciclo",
+        "s3b": "Escriba el primer día de la última regla, por ejemplo el 1 de enero. Deje 28 días o cámbielo: 32 días mueve la fecha de parto del 8 de octubre al 12 de octubre.",
+        "s4t": "Lea la semana y el trimestre de hoy",
+        "s4b": "El 12 de marzo ese embarazo está en 10 semanas 0 días, primer trimestre, con 210 días por delante. El segundo trimestre empieza a las 13 semanas (2 de abril), el tercero a las 27 (9 de julio).",
+        "s5t": "O parta de la concepción o de una fecha de parto conocida",
+        "s5b": "Cambie Conozco mi a Fecha de concepción (la fecha de parto es 266 días después) o a Fecha de parto de una ecografía. Las semanas, los trimestres y las demás fechas se deducen de ella.",
+        "s6t": "Tómelo como una ventana y luego copie",
+        "s6b": "Solo unos 4 de cada 100 bebés nacen en la fecha prevista; la mayoría llega en las dos semanas anteriores o posteriores. Copiar pone las fechas en el portapapeles para la primera cita.",
+        "diagram1": "Cuente desde el primer día de la última regla: 280 días para un ciclo de 28 días, más un día por cada día extra de ciclo.",
+        "diagram2": "Última regla el 1 de enero: concepción hacia el 15 de enero, segundo trimestre el 2 de abril, tercero el 9 de julio, parto el 8 de octubre."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular la fecha de parto gratis en línea?",
+        "a1": "Sí. cv.cm la calcula en esta pestaña. Nada se sube ni se guarda.",
+        "q2": "¿Cuál es la fórmula?",
+        "a2": "Fecha de parto = primer día de la última regla + 280 días + (duración del ciclo − 28).",
+        "q3": "¿Y si solo conozco la fecha de concepción?",
+        "a3": "Elija Fecha de concepción; la fecha de parto es 266 días después.",
+        "q4": "¿Por qué se asume un ciclo de 28 días?",
+        "a4": "La regla de Naegele asume la ovulación el día 14 de un ciclo de 28 días. Introduzca la duración de su ciclo y la herramienta desplaza las fechas.",
+        "q5": "¿Es esto consejo médico?",
+        "a5": "No. Es una estimación. Una ecografía temprana da la fecha más fiable."
+      }
+    },
+    "find-ideal-weight": {
+      "copy": {
+        "name": "Cómo encontrar su peso ideal",
+        "blurb": "Introduzca sexo y estatura para leer los pesos ideales de Devine, Robinson, Miller y Hamwi y el rango de IMC 18,5–24,9. Un hombre de 170 cm: Devine 65,9 kg, Robinson 65,2 kg, Miller 66 kg, Hamwi 66,7 kg, rango de IMC 53,5–72 kg.",
+        "title": "Cómo encontrar su peso ideal",
+        "lead": "Quiere un objetivo de peso razonable para su estatura. Leerá cuatro fórmulas clásicas y el rango de IMC saludable en un mismo sitio, en kilogramos o libras. Para un hombre de 170 cm las fórmulas caen entre 65,2 y 66,7 kg y el rango de IMC es de 53,5 a 72 kg. Nada sale de esta pestaña.",
+        "result": "Cuatro pesos ideales (Devine, Robinson, Miller, Hamwi) y el rango de peso para un IMC de 18,5 a 24,9 con su estatura.",
+        "note": "Abra la calculadora de peso ideal con su estatura a mano. Lea la dispersión de las fórmulas como el rango y la fila de IMC como la banda saludable. No es un objetivo personal; consulte a un médico. Nada se sube.",
+        "s1t": "Sepa qué son las fórmulas",
+        "s1b": "Devine (1974), Robinson (1983), Miller (1983) y Hamwi (1964) dan cada una un peso base a 5 pies y suman una cantidad fija por cada pulgada por encima, con cifras distintas para hombres y mujeres. Se crearon para dosificar fármacos y tablas de seguros, así que difieren en unos kilos.",
+        "s2t": "Abra Calculadora de peso ideal en cv.cm",
+        "s2b": "Métrico, hombre y 170 cm están puestos. Los cuatro resultados y el rango de IMC están a la derecha. Nada se sube.",
+        "s3t": "Introduzca sexo y estatura",
+        "s3b": "Elija Hombre o Mujer y escriba la estatura en cm. Para pies y pulgadas cambie Unidades a imperial; los resultados se muestran entonces en libras. Por debajo de 5 pies (152,4 cm) las fórmulas se extrapolan, así que tome esos resultados como orientativos.",
+        "s4t": "Lea las cuatro fórmulas",
+        "s4b": "Para un hombre de 170 cm: Devine 65,9 kg, Robinson 65,2 kg, Miller 66 kg, Hamwi 66,7 kg. Para una mujer de 160 cm: 52,4, 54,1, 57,2 y 52,1 kg. La dispersión es la respuesta; ninguna fórmula es la correcta.",
+        "s5t": "Lea el rango de IMC",
+        "s5b": "La última fila es el peso que da un IMC de 18,5 a 24,9: de 53,5 a 72 kg con 170 cm. El músculo, la complexión y la edad cambian lo que es saludable para usted.",
+        "s6t": "Copie el resultado",
+        "s6b": "Copiar pone las cinco líneas en el portapapeles. Para las calorías necesarias para alcanzar un objetivo, abra después la Calculadora de TDEE.",
+        "diagram1": "Cada fórmula: un peso base a 5 pies más una cantidad fija por pulgada, distinta para hombres y mujeres.",
+        "diagram2": "Hombre de 170 cm: Devine 65,9, Robinson 65,2, Miller 66, Hamwi 66,7 kg; rango de IMC 53,5–72 kg."
+      },
+      "faq": {
+        "q1": "¿Puedo encontrar mi peso ideal gratis en línea?",
+        "a1": "Sí. cv.cm lo calcula en esta pestaña. Nada se sube.",
+        "q2": "¿Qué fórmula debo usar?",
+        "a2": "Ninguna sola. Lea la dispersión de las cuatro como un rango y compárela con la fila de IMC.",
+        "q3": "¿Cuál es el peso ideal para 170 cm?",
+        "a3": "Unos 65,2 a 66,7 kg para un hombre y 60,7 a 62,5 kg para una mujer según las cuatro fórmulas; el rango de IMC 18,5–24,9 es de 53,5 a 72 kg.",
+        "q4": "¿Funciona por debajo de 5 pies?",
+        "a4": "Sí, hasta 140 cm: por debajo de 152,4 cm las fórmulas extrapolan su paso por pulgada, así que tome esos resultados como orientativos.",
+        "q5": "¿Es esto consejo médico?",
+        "a5": "No. Las fórmulas vienen de tablas de dosificación. Un médico o dietista puede fijar un objetivo personal."
+      }
+    },
+    "daily-water": {
+      "copy": {
+        "name": "Cuánta agua beber al día",
+        "blurb": "35 ml por kg de peso corporal, más 12 ml por minuto de ejercicio, más 500 ml con calor. 70 kg con 30 minutos de ejercicio da unos 2,8 litros, 12 vasos de 250 ml.",
+        "title": "Cuánta agua beber al día",
+        "lead": "Quiere un objetivo diario de agua que se ajuste a su cuerpo y a su día, no ocho vasos fijos. Introducirá peso, minutos de ejercicio y clima y leerá litros y vasos. Una persona de 70 kg con 30 minutos de ejercicio en clima templado obtiene unos 2,8 litros. Nada sale de esta pestaña.",
+        "result": "El agua total al día en litros y vasos de 250 ml, desglosada en la parte por peso corporal, por ejercicio y por clima.",
+        "note": "Abra la calculadora de consumo de agua con su peso a mano. Cuente té, café, leche y comida en el total. Una regla general para adultos sanos, no consejo médico. Nada se sube.",
+        "s1t": "Conozca la regla general",
+        "s1b": "Unos 35 ml por kilogramo de peso corporal al día cubren a un adulto sano en reposo con tiempo suave. El ejercicio añade unos 12 ml por minuto (360 ml por media hora). El tiempo caluroso o húmedo añade alrededor de medio litro.",
+        "s2t": "Abra Calculadora de consumo de agua en cv.cm",
+        "s2b": "70 kg, 30 minutos de ejercicio y clima templado están puestos. El total está a la derecha. Nada se sube.",
+        "s3t": "Introduzca su peso",
+        "s3b": "Escriba el peso en kg o cambie la unidad a lb. 70 kg da una base de 2450 ml; 60 kg da 2100 ml.",
+        "s4t": "Añada los minutos de ejercicio",
+        "s4b": "Introduzca los minutos de ejercicio de un día típico. 30 minutos añaden 360 ml; una hora añade 720 ml. Use 0 en los días de descanso.",
+        "s5t": "Ajuste el clima",
+        "s5b": "Elija Caluroso o húmedo en verano o en los trópicos para añadir 500 ml. Para 70 kg, 30 minutos y calor el total es 3,31 litros, 14 vasos.",
+        "s6t": "Repártala durante el día y luego copie",
+        "s6b": "12 vasos es uno cada hora más o menos mientras está despierto; la sed y la orina clara son las comprobaciones sencillas. Copiar pone el desglose en el portapapeles.",
+        "diagram1": "35 ml × kg, más 12 ml × minutos de ejercicio, más 500 ml con calor.",
+        "diagram2": "70 kg y 30 minutos: 2450 + 360 = 2810 ml, unos 12 vasos de 250 ml."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular mi consumo de agua gratis en línea?",
+        "a1": "Sí. cv.cm lo calcula en esta pestaña. Nada se sube.",
+        "q2": "¿Cuánta agua debe beber una persona de 70 kg?",
+        "a2": "Unos 2,45 litros en reposo, 2,8 litros con 30 minutos de ejercicio y 3,3 litros con calor.",
+        "q3": "¿Cuentan el café y el té?",
+        "a3": "Sí. Son casi todo agua. La comida también aporta alrededor de una quinta parte del líquido diario.",
+        "q4": "¿Son correctos ocho vasos al día?",
+        "a4": "Ocho vasos de 250 ml son 2 litros, lo que encaja con una persona de 57 kg en reposo. Las personas más pesadas y activas necesitan más; la calculadora lo escala.",
+        "q5": "¿Es esto consejo médico?",
+        "a5": "No. El embarazo, la lactancia, las enfermedades renales o cardíacas y algunos medicamentos cambian la necesidad. Consulte a un médico."
+      }
+    },
+    "trip-fuel-cost": {
+      "copy": {
+        "name": "Cómo calcular el gasto de combustible de un viaje",
+        "blurb": "Distancia × consumo da litros, litros × precio da el coste. 300 km a 7 L/100 km usan 21 litros; a 1,60 el litro son 33,60, o 67,20 ida y vuelta, 22,40 cada uno entre tres personas.",
+        "title": "Cómo calcular el gasto de combustible de un viaje",
+        "lead": "Está planeando un viaje en coche y quiere saber la factura de combustible antes de salir. Introducirá la distancia, el consumo de su coche y el precio en el surtidor y leerá litros, coste, coste por persona y coste por 100 km. 300 km a 7 L/100 km y 1,60 el litro cuestan 33,60. Nada sale de esta pestaña.",
+        "result": "Coste total, litros usados, coste por persona, coste por 100 km y la distancia recorrida, en la moneda que escriba.",
+        "note": "Abra la calculadora de gasto de combustible con la distancia de la ruta y el consumo de su coche a mano. Use la cifra combinada del ordenador de a bordo. Añada un 10% para tráfico urbano o un coche cargado. Nada se sube.",
+        "s1t": "Encuentre los tres números",
+        "s1b": "La distancia, de la app de mapas. El consumo, del ordenador de a bordo o de la ficha técnica: L/100 km en la mayoría de países, km/L en algunos, mpg en EE. UU. El precio, del último repostaje, por litro o por galón.",
+        "s2t": "Abra Calculadora de gasto de combustible en cv.cm",
+        "s2b": "300 km a 7 L/100 km y 1,60 por litro están puestos. El coste está a la derecha. Nada se sube.",
+        "s3t": "Introduzca distancia, consumo y precio",
+        "s3b": "Escriba la distancia y elija km o mi. Escriba el consumo y elija L/100 km, km/L o mpg. Escriba el precio y elija por litro o por galón de EE. UU. La herramienta convierte entre ellos.",
+        "s4t": "Lea el coste",
+        "s4b": "300 km a 7 L/100 km usan 21 litros; a 1,60 son 33,60, o 11,20 por 100 km. En unidades de EE. UU., 100 millas a 30 mpg y 3,50 el galón son 11,67.",
+        "s5t": "Ida y vuelta y reparto",
+        "s5b": "Marque Ida y vuelta para duplicar la distancia: 67,20. Ponga Personas que comparten en 3 y cada una paga 22,40, conductor incluido.",
+        "s6t": "Añada un margen y luego copie",
+        "s6b": "Las cifras de consumo son para conducción mixta; el tráfico con paradas, el aire acondicionado y un maletero lleno gastan un 10% más. Copiar pone el resultado en el portapapeles.",
+        "diagram1": "Litros = distancia ÷ 100 × L/100 km; coste = litros × precio por litro.",
+        "diagram2": "300 km, 7 L/100 km, 1,60: 21 L y 33,60; ida y vuelta 67,20; tres personas 22,40 cada una."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular el gasto de combustible gratis en línea?",
+        "a1": "Sí. cv.cm hace el cálculo en esta pestaña. Nada se sube.",
+        "q2": "¿Cómo convierto mpg a L/100 km?",
+        "a2": "Divida 235,2 entre los mpg: 30 mpg son 7,84 L/100 km. La herramienta lo hace al elegir mpg.",
+        "q3": "¿Cuánto cuestan 300 km a 7 L/100 km?",
+        "a3": "21 litros. A 1,60 el litro son 33,60; la ida y vuelta, 67,20.",
+        "q4": "¿Qué moneda se usa?",
+        "a4": "Ninguna. El resultado está en lo que escriba como precio.",
+        "q5": "¿Por qué mi coste real es mayor?",
+        "a5": "El tráfico urbano, el aire acondicionado, las bacas y un coche cargado aumentan el consumo. Añada un 10%."
+      }
+    },
+    "estimate-reading-time": {
+      "copy": {
+        "name": "Cómo estimar el tiempo de lectura de un texto",
+        "blurb": "Pegue el texto. Palabras ÷ 238 da los minutos de lectura silenciosa, palabras ÷ 130 los minutos hablados. 650 palabras son un discurso de cinco minutos; 1200 palabras, una lectura de cinco minutos. El chino, el japonés y el coreano se cuentan en caracteres.",
+        "title": "Cómo estimar el tiempo de lectura de un texto",
+        "lead": "Tiene un artículo que etiquetar, una publicación que dimensionar o un discurso que cronometrar. Pegará el texto y leerá cuánto tarda en leerse en silencio a tres velocidades y en voz alta. Un artículo de 1200 palabras son unos cinco minutos; un discurso de 650 palabras, unos cinco minutos en voz alta. Nada sale de esta pestaña.",
+        "result": "Tiempo de lectura y tiempo hablado, más palabras (o caracteres CJK), caracteres y caracteres sin espacios.",
+        "note": "Abra la calculadora de tiempo de lectura con el borrador final. Use Media para artículos, Lenta para texto técnico y la fila hablada para charlas y vídeos. Nada se sube.",
+        "s1t": "Conozca las velocidades",
+        "s1b": "Los adultos leen no ficción en silencio a unas 238 palabras por minuto (Brysbaert, 2019); 150 es lento o técnico, 300 es rápido. Hablar ronda las 130 palabras por minuto. El chino, el japonés y el coreano se cuentan en caracteres a 300 por minuto.",
+        "s2t": "Abra Calculadora de tiempo de lectura en cv.cm",
+        "s2b": "Un párrafo de ejemplo está rellenado a velocidad media. Los tiempos y los recuentos están a la derecha. Nada se sube.",
+        "s3t": "Pegue su texto",
+        "s3b": "Pulse Borrar y pegue el artículo, el ensayo o el guion. 1200 palabras se leen en 5 min 3 s a velocidad media y en 9 min 14 s en voz alta.",
+        "s4t": "Elija una velocidad",
+        "s4b": "Elija Lenta para manuales y texto legal, Rápida para lectura ligera. El tiempo hablado no cambia con la velocidad elegida.",
+        "s5t": "Dimensione un discurso o un vídeo",
+        "s5b": "Para una charla de cinco minutos apunte a unas 650 palabras; para un vídeo de 60 segundos, unas 130. Los presentadores varían entre 110 y 150 palabras por minuto, así que deje un minuto para las pausas.",
+        "s6t": "Copie los números",
+        "s6b": "Copiar pone los tiempos y los recuentos en el portapapeles para una etiqueta como \"5 min de lectura\". El recuento de palabras y de caracteres también está a la derecha.",
+        "diagram1": "Minutos de lectura = palabras ÷ 238; minutos hablados = palabras ÷ 130; el CJK usa caracteres ÷ 300.",
+        "diagram2": "1200 palabras: unos 5 minutos de lectura, 9 en voz alta. 650 palabras: un discurso de cinco minutos."
+      },
+      "faq": {
+        "q1": "¿Puedo estimar el tiempo de lectura gratis en línea?",
+        "a1": "Sí. cv.cm lo cuenta en esta pestaña. Nada se sube.",
+        "q2": "¿Cuántas palabras son una lectura de cinco minutos?",
+        "a2": "Unas 1200 a la media de 238 palabras por minuto. Muchos sitios usan 200–250 ppm, así que 1000–1250.",
+        "q3": "¿Cuántas palabras son un discurso de cinco minutos?",
+        "a3": "Unas 650 a 130 palabras por minuto. Los oradores lentos y claros usan 550–600.",
+        "q4": "¿Cómo se cuenta el chino?",
+        "a4": "En caracteres: 300 por minuto al leer y 180 al hablar. El texto mixto cuenta juntas las palabras latinas y los caracteres CJK.",
+        "q5": "¿Cuenta los caracteres?",
+        "a5": "Sí, con y sin espacios, para los límites de publicaciones y anuncios."
+      }
+    },
+    "compare-text": {
+      "copy": {
+        "name": "Cómo comparar dos textos y ver las diferencias",
+        "blurb": "Pegue el original a la izquierda y la versión nueva a la derecha. Las líneas añadidas salen en verde, las eliminadas en rojo, y los recuentos están arriba. Marque Ignorar espacios extra para saltar los cambios de espacios; copie un diff unificado para un ticket.",
+        "title": "Cómo comparar dos textos y ver las diferencias",
+        "lead": "Tiene dos versiones de un documento, una configuración o una cláusula de contrato y necesita ver qué cambió. Pegará ambas y leerá las líneas añadidas y eliminadas, con un recuento de cada una. Nada sale de esta pestaña.",
+        "result": "Un diff línea a línea: las líneas eliminadas marcadas con −, las añadidas con +, las iguales sin marca, con recuentos +/− y un diff unificado que puede copiar.",
+        "note": "Abra el comparador de textos con ambas versiones a mano. Ponga el texto antiguo a la izquierda para que las líneas añadidas se lean como nuevas. Nada se sube.",
+        "s1t": "Decida cuál es el original",
+        "s1b": "El cuadro izquierdo es el original y el derecho la versión cambiada. Las líneas que solo están a la derecha salen como añadidas (+), las que solo están a la izquierda como eliminadas (−). Intercambiarlos invierte los colores.",
+        "s2t": "Abra Comparador de textos en cv.cm",
+        "s2b": "Dos cuadros vacíos y el área de resultado están listos. Nada se sube.",
+        "s3t": "Pegue ambos textos",
+        "s3b": "Pegue el original a la izquierda y la versión nueva a la derecha. El diff aparece al pegar; la línea de arriba cuenta las líneas añadidas, eliminadas e iguales.",
+        "s4t": "Ignore los espacios cuando sean ruido",
+        "s4b": "Marque Ignorar espacios extra cuando un editor haya reindentado el texto o cambiado tabulaciones por espacios; entonces solo se muestran los cambios de contenido reales.",
+        "s5t": "Lea el resultado",
+        "s5b": "Cada línea cambiada se muestra una vez como − (antigua) y otra como + (nueva). Una línea que se movió sale como eliminada en un sitio y añadida en otro; un diff no sigue los movimientos.",
+        "s6t": "Copie un diff unificado",
+        "s6b": "Copiar diff unificado pone el formato de parche estándar en el portapapeles, con cabeceras --- y +++ y bloques @@, listo para un ticket, una revisión de código o `patch`.",
+        "diagram1": "Original a la izquierda, texto cambiado a la derecha: las líneas − se eliminan, las líneas + se añaden.",
+        "diagram2": "Ignorar espacios extra oculta la reindentación y los cambios de tabulación para que solo se vean los cambios de contenido."
+      },
+      "faq": {
+        "q1": "¿Puedo comparar dos textos gratis en línea?",
+        "a1": "Sí. cv.cm los compara en esta pestaña. Nada se sube.",
+        "q2": "¿Qué lado es el original?",
+        "a2": "El izquierdo. Las líneas que solo están a la derecha son añadidas (+), las que solo están a la izquierda, eliminadas (−).",
+        "q3": "¿Puede ignorar los espacios?",
+        "a3": "Sí. Marque Ignorar espacios extra para saltar los cambios que solo son de espacios.",
+        "q4": "¿Qué es un diff unificado?",
+        "a4": "El formato de parche estándar con cabeceras --- y +++ y bloques @@, usado por git y las revisiones de código. Copiar diff unificado lo genera.",
+        "q5": "¿Compara palabras dentro de una línea?",
+        "a5": "No. Trabaja línea a línea; una línea cambiada sale como una eliminada y una añadida."
+      }
+    },
+    "hash-text": {
+      "copy": {
+        "name": "Cómo obtener el hash MD5 o SHA-256 de un texto o archivo",
+        "blurb": "Elija MD5, SHA-1, SHA-256, SHA-384 o SHA-512, pegue texto o elija un archivo y copie el resumen en hex o Base64. Compárelo con la suma de verificación que lista la página de descarga; un solo carácter distinto significa un archivo distinto.",
+        "title": "Cómo obtener el hash MD5 o SHA-256 de un texto o archivo",
+        "lead": "Descargó un archivo y el sitio lista una suma SHA-256, o necesita el MD5 de una cadena para una configuración. Calculará el hash del texto o del archivo en esta pestaña y comparará el resumen. El SHA-256 de una cadena vacía empieza por e3b0c442. Nada sale de esta pestaña.",
+        "result": "El resumen en hex y Base64 para el algoritmo elegido, para el texto mientras escribe o para un archivo local.",
+        "note": "Abra el generador de hash con la suma esperada a mano. Use SHA-256 para verificar descargas; MD5 y SHA-1 solo cuando la otra parte los exija. Nada se sube.",
+        "s1t": "Elija el algoritmo que usa la otra parte",
+        "s1b": "Una suma de verificación debe compararse con el mismo algoritmo. Las páginas de descarga suelen dar SHA-256 (64 caracteres hex); las más antiguas dan MD5 (32) o SHA-1 (40). SHA-384 y SHA-512 son más largos. MD5 y SHA-1 valen para comprobar integridad, pero no para seguridad.",
+        "s2t": "Abra Generador de hash en cv.cm",
+        "s2b": "SHA-256 está seleccionado y el cuadro de texto vacío. Nada se sube.",
+        "s3t": "Calcule el hash de un texto",
+        "s3b": "Escriba o pegue el texto. El resumen hex se actualiza al escribir y el Base64 está debajo. Los espacios finales y los saltos de línea cambian el hash, así que pegue exactamente.",
+        "s4t": "Calcule el hash de un archivo",
+        "s4b": "Pulse Calcular hash de un archivo y elija la descarga. El archivo se lee en esta pestaña y el resumen aparece con el nombre del archivo; los archivos grandes tardan unos segundos.",
+        "s5t": "Compare con la suma publicada",
+        "s5b": "Coteje el resumen con la suma de verificación publicada: compare primero los ocho primeros y últimos caracteres y, si coinciden, la cadena completa. Cualquier diferencia significa que el archivo no es el publicado: descárguelo de nuevo.",
+        "s6t": "Copie el resumen",
+        "s6b": "Copiar hex pone el resumen en el portapapeles en minúsculas. Los hashes en hex no distinguen mayúsculas, así que ABCD y abcd coinciden.",
+        "diagram1": "El mismo algoritmo en ambos lados: SHA-256 da 64 caracteres hex, MD5 32, SHA-1 40.",
+        "diagram2": "Compare el resumen con la suma publicada; un carácter distinto significa un archivo distinto."
+      },
+      "faq": {
+        "q1": "¿Puedo calcular el hash de un archivo gratis en línea sin subirlo?",
+        "a1": "Sí. cv.cm lee el archivo en esta pestaña con Web Crypto. Nada se sube.",
+        "q2": "¿Qué algoritmos hay?",
+        "a2": "MD5, SHA-1, SHA-256, SHA-384 y SHA-512, en hex y Base64.",
+        "q3": "¿Por qué no coincide mi hash?",
+        "a3": "Un algoritmo distinto, un espacio o salto de línea de más, o un archivo distinto. Compruebe primero el algoritmo.",
+        "q4": "¿Es seguro MD5?",
+        "a4": "Para cotejar una descarga con una suma listada, sí. Para contraseñas o firmas, no; use SHA-256 o mejor.",
+        "q5": "¿Puedo verificar aquí un hash de contraseña?",
+        "a5": "Solo resúmenes simples. Los hashes con sal como bcrypt necesitan sus propias herramientas."
+      }
+    },
+    "generate-uuid": {
+      "copy": {
+        "name": "Cómo generar un UUID",
+        "blurb": "Indique cuántos, elija guiones y mayúsculas, pulse Generar y copie la lista. Cada UUID es de versión 4, 122 bits aleatorios de Web Crypto, como 3f2504e0-4f89-41d3-9a0c-0305e82c3301.",
+        "title": "Cómo generar un UUID",
+        "lead": "Necesita un identificador único para un registro, un dato de prueba o un marcador de clave de API. Generará uno o muchos UUID aleatorios en esta pestaña y los copiará. Un UUID de versión 4 tiene este aspecto: 3f2504e0-4f89-41d3-9a0c-0305e82c3301. Nada sale de esta pestaña.",
+        "result": "Una lista de UUID aleatorios de versión 4, con o sin guiones, en minúsculas o mayúsculas, lista para copiar.",
+        "note": "Abra el generador de UUID cuando necesite identificadores. Los valores son aleatorios y nunca se guardan; genere de nuevo para un conjunto nuevo. Nada se sube.",
+        "s1t": "Sepa qué es un UUID v4",
+        "s1b": "36 caracteres: 32 dígitos hex en grupos de 8-4-4-4-12. El tercer grupo empieza por 4 (versión) y el cuarto por 8, 9, a o b (variante). Los otros 122 bits son aleatorios, así que las colisiones no son una preocupación práctica.",
+        "s2t": "Abra Generador de UUID en cv.cm",
+        "s2b": "Hay cinco UUID con guiones en minúsculas listos; la lista se renueva al cambiar las opciones. Nada se sube.",
+        "s3t": "Indique cuántos",
+        "s3b": "Arrastre el control Cantidad de 1 a 20. La lista se actualiza al instante, un UUID por línea; pulse Generar para obtener un juego nuevo con los mismos ajustes.",
+        "s4t": "Elija guiones y mayúsculas",
+        "s4b": "Desmarque Guiones para la forma de 32 caracteres que quieren algunas bases de datos y nombres de archivo. Marque Mayúsculas si un esquema o una clave del registro de Windows espera mayúsculas. Ambas formas son el mismo UUID.",
+        "s5t": "Copie la lista",
+        "s5b": "Copiar lista pone cada UUID en el portapapeles, uno por línea, para un INSERT de SQL, un archivo de pruebas o una columna de hoja de cálculo.",
+        "s6t": "Use la versión correcta",
+        "s6b": "La v4 es aleatoria y adecuada para la mayoría de identificadores. Si necesita identificadores ordenados por tiempo, use UUID v7 o un ULID de su base de datos o lenguaje.",
+        "diagram1": "Grupos hex de 8-4-4-4-12; el tercer grupo empieza por 4, el cuarto por 8, 9, a o b.",
+        "diagram2": "Sin guiones da 32 caracteres; Mayúsculas da capitales; ambos nombran el mismo UUID."
+      },
+      "faq": {
+        "q1": "¿Puedo generar un UUID gratis en línea?",
+        "a1": "Sí. cv.cm los crea en esta pestaña con Web Crypto. Nada se sube ni se guarda.",
+        "q2": "¿Qué versión es?",
+        "a2": "Versión 4, aleatoria. El tercer grupo empieza por 4.",
+        "q3": "¿Pueden chocar dos UUID?",
+        "a3": "En la práctica, no: 122 bits aleatorios dan unos 5,3 × 10^36 valores.",
+        "q4": "¿Puedo obtenerlos sin guiones?",
+        "a4": "Sí. Desmarque Guiones para la forma de 32 caracteres.",
+        "q5": "¿Se guardan los UUID en algún sitio?",
+        "a5": "No. Solo existen en esta pestaña hasta que los copia."
+      }
+    }
+  },
+  "svg": {
+    "find-due-date": {
+      "title": "Cómo calcular la fecha de parto",
+      "a": "Última regla + 280 días",
+      "b": "Regla 1 ene → parto 8 oct",
+      "cap": "Sume un día por cada día de ciclo sobre 28."
+    },
+    "find-ideal-weight": {
+      "title": "Cómo encontrar su peso ideal",
+      "a": "Base a 5 pies + por pulgada",
+      "b": "Hombre 170 cm: 65,2–66,7 kg",
+      "cap": "Rango de IMC 18,5–24,9: 53,5–72 kg."
+    },
+    "daily-water": {
+      "title": "Cuánta agua beber al día",
+      "a": "35 ml × kg + 12 ml × minuto",
+      "b": "70 kg, 30 min = 2,81 L",
+      "cap": "Unos 12 vasos de 250 ml; +500 ml con calor."
+    },
+    "trip-fuel-cost": {
+      "title": "Cómo calcular el gasto de combustible",
+      "a": "Litros = km ÷ 100 × L/100 km",
+      "b": "300 km, 7 L/100 km, 1,60 = 33,60",
+      "cap": "Ida y vuelta 67,20; tres personas 22,40 cada una."
+    },
+    "estimate-reading-time": {
+      "title": "Cómo estimar el tiempo de lectura",
+      "a": "Minutos = palabras ÷ 238",
+      "b": "1200 palabras ≈ 5 min de lectura",
+      "cap": "En voz alta ÷ 130: 650 palabras, charla de 5 min."
+    },
+    "compare-text": {
+      "title": "Cómo comparar dos textos",
+      "a": "Izquierda original, derecha cambiado",
+      "b": "− eliminado, + añadido",
+      "cap": "Ignorar espacios extra oculta la reindentación."
+    },
+    "hash-text": {
+      "title": "Cómo calcular el hash de un texto o archivo",
+      "a": "SHA-256 = 64 caracteres hex",
+      "b": "Un carácter distinto = archivo distinto",
+      "cap": "Mismo algoritmo en ambos lados; MD5 32, SHA-1 40."
+    },
+    "generate-uuid": {
+      "title": "Cómo generar un UUID",
+      "a": "Grupos hex de 8-4-4-4-12",
+      "b": "El tercer grupo empieza por 4",
+      "cap": "122 bits aleatorios; sin guiones, 32 caracteres."
+    }
+  }
+}

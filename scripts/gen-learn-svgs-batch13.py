@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Step diagrams for the sleep, body fat, contrast, pace, final grade, TDEE, GPA and Pomodoro lessons.
+"""Step diagrams (the caption line belongs to the first diagram only) for the sleep, body fat, contrast, pace, final grade, TDEE, GPA and Pomodoro lessons.
 
 Strings come from the same per-locale JSON as learn_batch13.py (`svg` block: title, a, b, cap).
 """
@@ -71,7 +71,7 @@ def main(src: Path) -> None:
                 encoding="utf-8",
             )
             (dest / f"{file_b}.svg").write_text(
-                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], t["cap"], True), t["b"]),
+                svg(960, 540, heading(t["title"]) + card(70, 140, 820, 200, t["b"], "", True), t["b"]),
                 encoding="utf-8",
             )
             count += 2
@@ -79,4 +79,4 @@ def main(src: Path) -> None:
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else Path(__file__).resolve().parents[1] / "tmp-learn")
+    main(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else Path(__file__).resolve().parents[1] / "scripts/learn-src/batch13")

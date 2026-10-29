@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "titleFindDueDate": "How to calculate a due date | cv.cm",
+    "descFindDueDate": "Enter the first day of the last period and the cycle length: due date = last period + 280 days, shifted by cycle − 28. A 1 January period gives 8 October. Nothing is uploaded.",
+    "titleFindIdealWeight": "How to find your ideal weight | cv.cm",
+    "descFindIdealWeight": "Enter sex and height to read Devine, Robinson, Miller and Hamwi ideal weights and the BMI 18.5–24.9 range. A 170 cm man: 65 to 67 kg. Nothing is uploaded.",
+    "titleDailyWater": "How to work out how much water to drink a day | cv.cm",
+    "descDailyWater": "35 ml per kg plus 12 ml per minute of exercise plus 500 ml in heat. 70 kg with 30 minutes gives about 2.8 litres, 12 glasses. Nothing is uploaded.",
+    "titleTripFuelCost": "How to calculate the fuel cost of a trip | cv.cm",
+    "descTripFuelCost": "Distance × economy gives litres, litres × price gives cost. 300 km at 7 L/100 km and 1.60 per litre is 33.60; round trip and split by people. Nothing is uploaded.",
+    "titleEstimateReadingTime": "How to estimate reading time for a text | cv.cm",
+    "descEstimateReadingTime": "Paste a text: words ÷ 238 gives silent reading minutes, words ÷ 130 gives speaking minutes. 650 words is a five-minute talk. CJK counts characters. Nothing is uploaded.",
+    "titleCompareText": "How to compare two texts and see the differences | cv.cm",
+    "descCompareText": "Paste the original on the left and the new version on the right. Added lines show green, removed lines red; copy a unified diff. Nothing is uploaded.",
+    "titleHashText": "How to get the MD5 or SHA-256 hash of text or a file | cv.cm",
+    "descHashText": "Pick MD5, SHA-1, SHA-256, SHA-384 or SHA-512, paste text or choose a file, and copy the hex or Base64 digest to verify a download. Nothing is uploaded.",
+    "titleGenerateUuid": "How to generate a UUID | cv.cm",
+    "descGenerateUuid": "Generate one or many random version 4 UUIDs with Web Crypto, with or without hyphens, upper or lower case, and copy the list. Nothing is uploaded."
+  },
+  "lessons": {
+    "find-due-date": {
+      "copy": {
+        "name": "How to calculate a due date",
+        "blurb": "Enter the first day of the last period and the cycle length. Due date = last period + 280 days, shifted by cycle − 28. A period starting 1 January gives 8 October; a 32-day cycle gives 12 October.",
+        "title": "How to calculate a due date",
+        "lead": "You know the first day of the last period, or the conception date, or a due date from a scan. You will turn it into the due date, the week of pregnancy today and the trimester dates. A period starting 1 January with a 28-day cycle gives a due date of 8 October. Nothing leaves this tab.",
+        "result": "The due date, weeks and days pregnant today, the trimester, days left, the estimated conception date and the dates the second and third trimesters start.",
+        "note": "Open the due date calculator with the date of the last period at hand. Use the cycle length from a period app if you have one. An estimate, not medical advice; an early ultrasound overrides it. Nothing is uploaded.",
+        "s1t": "Know Naegele's rule",
+        "s1b": "Pregnancy is counted from the first day of the last period, not from conception. Due date = that day + 280 days (40 weeks) for a 28-day cycle. A longer cycle ovulates later, so each extra day moves the due date a day later.",
+        "s2t": "Open Due date calculator on cv.cm",
+        "s2b": "Last period is selected with a sample date and a 28-day cycle. The due date and today's week sit on the right. Nothing is uploaded.",
+        "s3t": "Enter the last period and cycle length",
+        "s3b": "Type the first day of the last period, for example 1 January. Leave 28 days or change it: 32 days moves the due date from 8 October to 12 October.",
+        "s4t": "Read today's week and trimester",
+        "s4b": "On 12 March that pregnancy is 10 weeks 0 days, first trimester, 210 days to go. The second trimester starts at 13 weeks (2 April), the third at 27 weeks (9 July).",
+        "s5t": "Or start from conception or a known due date",
+        "s5b": "Switch I know my to Conception date (due date is 266 days later) or to Due date from a scan. The weeks, trimesters and other dates follow from it.",
+        "s6t": "Treat it as a window, then copy",
+        "s6b": "Only about 4 in 100 babies arrive on the due date; most come within two weeks either side. Copy puts the dates on the clipboard for the first appointment.",
+        "diagram1": "Count from the first day of the last period: 280 days for a 28-day cycle, plus one day per extra cycle day.",
+        "diagram2": "Last period 1 January: conception about 15 January, second trimester 2 April, third 9 July, due 8 October."
+      },
+      "faq": {
+        "q1": "Can I calculate a due date free online?",
+        "a1": "Yes. cv.cm computes it in this tab. Nothing is uploaded or stored.",
+        "q2": "What is the formula?",
+        "a2": "Due date = first day of the last period + 280 days + (cycle length − 28).",
+        "q3": "What if I only know the conception date?",
+        "a3": "Pick Conception date; the due date is 266 days after it.",
+        "q4": "Why is a 28-day cycle assumed?",
+        "a4": "Naegele's rule assumes ovulation on day 14 of a 28-day cycle. Enter your own cycle length and the tool shifts the dates.",
+        "q5": "Is this medical advice?",
+        "a5": "No. It is an estimate. An early ultrasound gives the most reliable date."
+      }
+    },
+    "find-ideal-weight": {
+      "copy": {
+        "name": "How to find your ideal weight",
+        "blurb": "Enter sex and height to read the Devine, Robinson, Miller and Hamwi ideal weights and the BMI 18.5–24.9 range. A 170 cm man: 65.9 kg Devine, 65.2 kg Robinson, 66 kg Miller, 66.7 kg Hamwi, BMI range 53.5–72 kg.",
+        "title": "How to find your ideal weight",
+        "lead": "You want a sensible weight target for your height. You will read four classic formulas and the healthy BMI range in one place, in kilograms or pounds. For a 170 cm man the formulas land between 65.2 and 66.7 kg and the BMI range is 53.5 to 72 kg. Nothing leaves this tab.",
+        "result": "Four ideal weights (Devine, Robinson, Miller, Hamwi) and the weight range for a BMI of 18.5 to 24.9 at your height.",
+        "note": "Open the ideal weight calculator with your height at hand. Read the spread of the formulas as the range, and the BMI row as the healthy band. Not a personal target; ask a doctor. Nothing is uploaded.",
+        "s1t": "Know what the formulas are",
+        "s1b": "Devine (1974), Robinson (1983), Miller (1983) and Hamwi (1964) each give a base weight at 5 feet and add a fixed amount per inch above it, with separate numbers for men and women. They were built for drug dosing and insurance tables, so they differ by a few kilograms.",
+        "s2t": "Open Ideal weight calculator on cv.cm",
+        "s2b": "Metric, male and 170 cm are set. The four results and the BMI range sit on the right. Nothing is uploaded.",
+        "s3t": "Enter sex and height",
+        "s3b": "Pick Male or Female and type the height in cm. For feet and inches switch Units to imperial; the results then show in pounds. Below 5 ft (152.4 cm) the formulas extrapolate, so treat those results as rough.",
+        "s4t": "Read the four formulas",
+        "s4b": "For a 170 cm man: Devine 65.9 kg, Robinson 65.2 kg, Miller 66 kg, Hamwi 66.7 kg. For a 160 cm woman: 52.4, 54.1, 57.2 and 52.1 kg. The spread is the answer; no single formula is right.",
+        "s5t": "Read the BMI range",
+        "s5b": "The last row is the weight that gives a BMI of 18.5 to 24.9: 53.5 to 72 kg at 170 cm. Muscle, frame and age shift what is healthy for you.",
+        "s6t": "Copy the result",
+        "s6b": "Copy puts the five lines on the clipboard. For calories to reach a target, open the TDEE calculator next.",
+        "diagram1": "Each formula: a base weight at 5 ft plus a fixed amount per inch, different for men and women.",
+        "diagram2": "170 cm man: Devine 65.9, Robinson 65.2, Miller 66, Hamwi 66.7 kg; BMI range 53.5–72 kg."
+      },
+      "faq": {
+        "q1": "Can I find my ideal weight free online?",
+        "a1": "Yes. cv.cm computes it in this tab. Nothing is uploaded.",
+        "q2": "Which formula should I use?",
+        "a2": "None alone. Read the spread of the four as a range and check it against the BMI row.",
+        "q3": "What is the ideal weight for 170 cm?",
+        "a3": "About 65.2 to 66.7 kg for a man and 60.7 to 62.5 kg for a woman by the four formulas; the BMI 18.5–24.9 range is 53.5 to 72 kg.",
+        "q4": "Does it work under 5 feet?",
+        "a4": "Yes, down to 140 cm: the formulas extrapolate their per-inch step below 152.4 cm, so treat those results as rough.",
+        "q5": "Is this medical advice?",
+        "a5": "No. The formulas come from dosing tables. A doctor or dietitian can set a personal target."
+      }
+    },
+    "daily-water": {
+      "copy": {
+        "name": "How to work out how much water to drink a day",
+        "blurb": "35 ml per kg of body weight, plus 12 ml per minute of exercise, plus 500 ml in hot weather. 70 kg with 30 minutes of exercise gives about 2.8 litres, 12 glasses of 250 ml.",
+        "title": "How to work out how much water to drink a day",
+        "lead": "You want a daily water target that fits your body and your day, not a flat eight glasses. You will enter weight, exercise minutes and climate and read litres and glasses. A 70 kg person with 30 minutes of exercise in a temperate climate gets about 2.8 litres. Nothing leaves this tab.",
+        "result": "Total water a day in litres and 250 ml glasses, split into the part from body weight, from exercise and from climate.",
+        "note": "Open the water intake calculator with your weight at hand. Count tea, coffee, milk and food toward the total. A rule of thumb for healthy adults, not medical advice. Nothing is uploaded.",
+        "s1t": "Know the rule of thumb",
+        "s1b": "About 35 ml per kilogram of body weight a day covers a healthy adult at rest in mild weather. Exercise adds roughly 12 ml per minute (360 ml per half hour). Hot or humid weather adds about half a litre.",
+        "s2t": "Open Water intake calculator on cv.cm",
+        "s2b": "70 kg, 30 minutes of exercise and a temperate climate are set. The total sits on the right. Nothing is uploaded.",
+        "s3t": "Enter your weight",
+        "s3b": "Type the weight in kg, or switch the unit to lb. 70 kg gives a base of 2450 ml; 60 kg gives 2100 ml.",
+        "s4t": "Add exercise minutes",
+        "s4b": "Enter the minutes of exercise on a typical day. 30 minutes adds 360 ml; an hour adds 720 ml. Use 0 on rest days.",
+        "s5t": "Set the climate",
+        "s5b": "Pick Hot or humid in summer or in the tropics to add 500 ml. For 70 kg, 30 minutes and hot weather the total is 3.31 litres, 14 glasses.",
+        "s6t": "Spread it through the day, then copy",
+        "s6b": "12 glasses is one every hour or so while awake; thirst and pale urine are the simple checks. Copy puts the breakdown on the clipboard.",
+        "diagram1": "35 ml × kg, plus 12 ml × exercise minutes, plus 500 ml in heat.",
+        "diagram2": "70 kg and 30 minutes: 2450 + 360 = 2810 ml, about 12 glasses of 250 ml."
+      },
+      "faq": {
+        "q1": "Can I calculate my water intake free online?",
+        "a1": "Yes. cv.cm computes it in this tab. Nothing is uploaded.",
+        "q2": "How much water should a 70 kg person drink?",
+        "a2": "About 2.45 litres at rest, 2.8 litres with 30 minutes of exercise, and 3.3 litres in hot weather.",
+        "q3": "Do coffee and tea count?",
+        "a3": "Yes. They are mostly water. Food also supplies roughly a fifth of daily fluid.",
+        "q4": "Is eight glasses a day right?",
+        "a4": "Eight 250 ml glasses is 2 litres, which fits a 57 kg person at rest. Heavier, active people need more; the calculator scales it.",
+        "q5": "Is this medical advice?",
+        "a5": "No. Pregnancy, breastfeeding, kidney or heart conditions and some medicines change the need. Ask a doctor."
+      }
+    },
+    "trip-fuel-cost": {
+      "copy": {
+        "name": "How to calculate the fuel cost of a trip",
+        "blurb": "Distance × economy gives litres, litres × price gives cost. 300 km at 7 L/100 km uses 21 litres; at 1.60 a litre that is 33.60, or 67.20 for the round trip, 22.40 each for three people.",
+        "title": "How to calculate the fuel cost of a trip",
+        "lead": "You are planning a drive and want the fuel bill before you leave. You will enter distance, your car's economy and the pump price, then read litres, cost, cost per person and cost per 100 km. 300 km at 7 L/100 km and 1.60 a litre costs 33.60. Nothing leaves this tab.",
+        "result": "Total cost, litres used, cost per person, cost per 100 km and the distance driven, in whatever currency you type.",
+        "note": "Open the fuel cost calculator with the route distance and your car's economy at hand. Use the combined figure from the dashboard trip computer. Add about 10% for city traffic or a loaded car. Nothing is uploaded.",
+        "s1t": "Find the three numbers",
+        "s1b": "Distance from the map app. Economy from the car's trip computer or the spec sheet: L/100 km in most countries, km/L in some, mpg in the US. Price from the last fill-up, per litre or per gallon.",
+        "s2t": "Open Fuel cost calculator on cv.cm",
+        "s2b": "300 km at 7 L/100 km and 1.60 per litre are set. The cost sits on the right. Nothing is uploaded.",
+        "s3t": "Enter distance, economy and price",
+        "s3b": "Type the distance and pick km or mi. Type the economy and pick L/100 km, km/L or mpg. Type the price and pick per litre or per US gallon. The tool converts between them.",
+        "s4t": "Read the cost",
+        "s4b": "300 km at 7 L/100 km uses 21 litres; at 1.60 that is 33.60, or 11.20 per 100 km. In US units, 100 miles at 30 mpg and 3.50 a gallon is 11.67.",
+        "s5t": "Round trip and sharing",
+        "s5b": "Tick Round trip to double the distance: 67.20. Set People sharing to 3 and each pays 22.40, driver included.",
+        "s6t": "Add a margin, then copy",
+        "s6b": "Economy figures are for mixed driving; stop-and-go traffic, air conditioning and a full boot use about 10% more. Copy puts the result on the clipboard.",
+        "diagram1": "Litres = distance ÷ 100 × L/100 km; cost = litres × price per litre.",
+        "diagram2": "300 km, 7 L/100 km, 1.60: 21 L and 33.60; round trip 67.20; three people 22.40 each."
+      },
+      "faq": {
+        "q1": "Can I calculate fuel cost free online?",
+        "a1": "Yes. cv.cm does the math in this tab. Nothing is uploaded.",
+        "q2": "How do I convert mpg to L/100 km?",
+        "a2": "Divide 235.2 by the mpg: 30 mpg is 7.84 L/100 km. The tool does it when you pick mpg.",
+        "q3": "What does 300 km cost at 7 L/100 km?",
+        "a3": "21 litres. At 1.60 a litre that is 33.60; the round trip is 67.20.",
+        "q4": "Which currency is used?",
+        "a4": "None. The result is in whatever you type for the price.",
+        "q5": "Why is my real cost higher?",
+        "a5": "City traffic, air conditioning, roof racks and a loaded car raise consumption. Add about 10%."
+      }
+    },
+    "estimate-reading-time": {
+      "copy": {
+        "name": "How to estimate reading time for a text",
+        "blurb": "Paste the text. Words ÷ 238 gives silent reading minutes, words ÷ 130 gives speaking minutes. 650 words is a five-minute talk; 1200 words is a five-minute read. Chinese, Japanese and Korean are counted in characters.",
+        "title": "How to estimate reading time for a text",
+        "lead": "You have an article to label, a post to size or a speech to time. You will paste the text and read how long it takes to read silently at three speeds and to read aloud. A 1200-word article is about five minutes; a 650-word speech is about five minutes aloud. Nothing leaves this tab.",
+        "result": "Reading time and speaking time, plus words (or CJK characters), characters, and characters without spaces.",
+        "note": "Open the reading time calculator with the final draft. Use Average for articles, Slow for technical text, and the speaking row for talks and videos. Nothing is uploaded.",
+        "s1t": "Know the speeds",
+        "s1b": "Adults read non-fiction silently at about 238 words a minute (Brysbaert, 2019); 150 is slow or technical, 300 is fast. Speaking runs near 130 words a minute. Chinese, Japanese and Korean are counted in characters at 300 a minute.",
+        "s2t": "Open Reading time calculator on cv.cm",
+        "s2b": "A sample paragraph is filled at average speed. The times and counts sit on the right. Nothing is uploaded.",
+        "s3t": "Paste your text",
+        "s3b": "Press Clear and paste the article, essay or script. 1200 words reads as 5 min 3 s at average speed and 9 min 14 s aloud.",
+        "s4t": "Pick a speed",
+        "s4b": "Choose Slow for manuals and legal text, Fast for light reading. Speaking time does not change with the speed setting.",
+        "s5t": "Size a speech or video",
+        "s5b": "For a five-minute talk aim for about 650 words; for a 60-second video about 130. Presenters vary from 110 to 150 words a minute, so allow a minute for pauses.",
+        "s6t": "Copy the numbers",
+        "s6b": "Copy puts the times and counts on the clipboard for a byline such as \"5 min read\". Word count and character count are also on the right.",
+        "diagram1": "Reading minutes = words ÷ 238; speaking minutes = words ÷ 130; CJK uses characters ÷ 300.",
+        "diagram2": "1200 words: about 5 minutes to read, 9 minutes aloud. 650 words: a five-minute talk."
+      },
+      "faq": {
+        "q1": "Can I estimate reading time free online?",
+        "a1": "Yes. cv.cm counts it in this tab. Nothing is uploaded.",
+        "q2": "How many words is a five-minute read?",
+        "a2": "About 1200 at the average 238 words a minute. Many sites use 200–250 wpm, so 1000–1250.",
+        "q3": "How many words is a five-minute speech?",
+        "a3": "About 650 at 130 words a minute. Slow, clear speakers use 550–600.",
+        "q4": "How is Chinese counted?",
+        "a4": "In characters: 300 a minute for reading and 180 for speaking. Mixed text counts Latin words and CJK characters together.",
+        "q5": "Does it count characters?",
+        "a5": "Yes, with and without spaces, for post and ad limits."
+      }
+    },
+    "compare-text": {
+      "copy": {
+        "name": "How to compare two texts and see the differences",
+        "blurb": "Paste the original on the left and the new version on the right. Added lines show green, removed lines red, and the counts sit above. Tick Ignore extra spaces to skip whitespace changes; copy a unified diff for a ticket.",
+        "title": "How to compare two texts and see the differences",
+        "lead": "You have two versions of a document, a config or a contract clause and need to see what changed. You will paste both and read the added and removed lines, with a count of each. Nothing leaves this tab.",
+        "result": "A line-by-line diff: removed lines marked −, added lines marked +, unchanged lines plain, with +/− counts and a unified diff you can copy.",
+        "note": "Open the diff checker with both versions at hand. Put the older text on the left so added lines read as new. Nothing is uploaded.",
+        "s1t": "Decide which is the original",
+        "s1b": "The left box is the original and the right box is the changed version. Lines only on the right show as added (+), lines only on the left as removed (−). Swapping them flips the colors.",
+        "s2t": "Open Diff checker on cv.cm",
+        "s2b": "Two empty boxes and the result area are ready. Nothing is uploaded.",
+        "s3t": "Paste both texts",
+        "s3b": "Paste the original on the left and the new version on the right. The diff appears as you paste; the line above it counts added, removed and unchanged lines.",
+        "s4t": "Ignore whitespace when it is noise",
+        "s4b": "Tick Ignore extra spaces when an editor re-indented the text or changed tabs to spaces; only real content changes then show.",
+        "s5t": "Read the result",
+        "s5b": "Each changed line is shown once as − (old) and once as + (new). A line that moved shows as removed in one place and added in another; a diff does not track moves.",
+        "s6t": "Copy a unified diff",
+        "s6b": "Copy unified diff puts the standard patch format on the clipboard, with --- and +++ headers and @@ hunks, ready for a ticket, a code review or `patch`.",
+        "diagram1": "Original on the left, changed text on the right: − lines are removed, + lines are added.",
+        "diagram2": "Ignore extra spaces hides re-indenting and tab changes so only content changes show."
+      },
+      "faq": {
+        "q1": "Can I compare two texts free online?",
+        "a1": "Yes. cv.cm diffs them in this tab. Nothing is uploaded.",
+        "q2": "Which side is the original?",
+        "a2": "The left. Lines only on the right are added (+), lines only on the left are removed (−).",
+        "q3": "Can it ignore spaces?",
+        "a3": "Yes. Tick Ignore extra spaces to skip whitespace-only changes.",
+        "q4": "What is a unified diff?",
+        "a4": "The standard patch format with --- and +++ headers and @@ hunks, used by git and code reviews. Copy unified diff produces it.",
+        "q5": "Does it compare words inside a line?",
+        "a5": "No. It works line by line; a changed line shows as one removed and one added."
+      }
+    },
+    "hash-text": {
+      "copy": {
+        "name": "How to get the MD5 or SHA-256 hash of text or a file",
+        "blurb": "Pick MD5, SHA-1, SHA-256, SHA-384 or SHA-512, paste text or choose a file, and copy the hex or Base64 digest. Compare it with the checksum a download page lists; one different character means a different file.",
+        "title": "How to get the MD5 or SHA-256 hash of text or a file",
+        "lead": "You downloaded a file and the site lists a SHA-256 checksum, or you need the MD5 of a string for a config. You will hash the text or file in this tab and compare the digest. The SHA-256 of an empty string starts e3b0c442. Nothing leaves this tab.",
+        "result": "The digest in hex and Base64 for the chosen algorithm, for text as you type or for a local file.",
+        "note": "Open the hash generator with the expected checksum at hand. Use SHA-256 to verify downloads; MD5 and SHA-1 only when the other side requires them. Nothing is uploaded.",
+        "s1t": "Pick the algorithm the other side uses",
+        "s1b": "A checksum must be compared with the same algorithm. Download pages usually give SHA-256 (64 hex characters); older ones give MD5 (32) or SHA-1 (40). SHA-384 and SHA-512 are longer. MD5 and SHA-1 are fine for integrity checks but not for security.",
+        "s2t": "Open Hash generator on cv.cm",
+        "s2b": "SHA-256 is selected and the text box is empty. Nothing is uploaded.",
+        "s3t": "Hash text",
+        "s3b": "Type or paste the text. The hex digest updates as you type, and Base64 sits below it. Trailing spaces and line breaks change the hash, so paste exactly.",
+        "s4t": "Hash a file",
+        "s4b": "Press Hash a file and pick the download. The file is read in this tab and the digest appears with the file name; large files take a few seconds.",
+        "s5t": "Compare with the published checksum",
+        "s5b": "Read the digest against the published checksum: compare the first and last eight characters, then the whole string if they match. Any difference means the file is not the one published: download it again.",
+        "s6t": "Copy the digest",
+        "s6b": "Copy hex puts the digest on the clipboard in lower case. Hashes are case-insensitive in hex, so ABCD and abcd match.",
+        "diagram1": "Same algorithm on both sides: SHA-256 gives 64 hex characters, MD5 32, SHA-1 40.",
+        "diagram2": "Compare the digest with the published checksum; one different character means a different file."
+      },
+      "faq": {
+        "q1": "Can I hash a file free online without uploading it?",
+        "a1": "Yes. cv.cm reads the file in this tab with Web Crypto. Nothing is uploaded.",
+        "q2": "Which algorithms are available?",
+        "a2": "MD5, SHA-1, SHA-256, SHA-384 and SHA-512, in hex and Base64.",
+        "q3": "Why does my hash not match?",
+        "a3": "A different algorithm, an extra space or line break, or a different file. Check the algorithm first.",
+        "q4": "Is MD5 safe?",
+        "a4": "For checking a download against a listed checksum, yes. For passwords or signatures, no; use SHA-256 or better.",
+        "q5": "Can I verify a password hash here?",
+        "a5": "Only plain digests. Salted hashes such as bcrypt need their own tools."
+      }
+    },
+    "generate-uuid": {
+      "copy": {
+        "name": "How to generate a UUID",
+        "blurb": "Set how many, choose hyphens and case, press Generate and copy the list. Each UUID is version 4, 122 random bits from Web Crypto, such as 3f2504e0-4f89-41d3-9a0c-0305e82c3301.",
+        "title": "How to generate a UUID",
+        "lead": "You need a unique id for a record, a test fixture or an API key placeholder. You will generate one or many random UUIDs in this tab and copy them. A version 4 UUID looks like 3f2504e0-4f89-41d3-9a0c-0305e82c3301. Nothing leaves this tab.",
+        "result": "A list of random version 4 UUIDs, with or without hyphens, in lower or upper case, ready to copy.",
+        "note": "Open the UUID generator when you need ids. The values are random and never stored; generate again for a fresh set. Nothing is uploaded.",
+        "s1t": "Know what a UUID v4 is",
+        "s1b": "36 characters: 32 hex digits in groups of 8-4-4-4-12. The third group starts with 4 (version) and the fourth with 8, 9, a or b (variant). The other 122 bits are random, so collisions are not a practical concern.",
+        "s2t": "Open UUID generator on cv.cm",
+        "s2b": "Five UUIDs with hyphens in lower case are ready; the list refreshes as you change the options. Nothing is uploaded.",
+        "s3t": "Set how many",
+        "s3b": "Drag the How many slider from 1 to 20. The list updates at once, one UUID per line; press Generate for a fresh set with the same settings.",
+        "s4t": "Choose hyphens and case",
+        "s4b": "Untick Hyphens for a 32-character form some databases and file names want. Tick Uppercase if a schema or Windows registry key expects capitals. Both forms are the same UUID.",
+        "s5t": "Copy the list",
+        "s5b": "Copy list puts every UUID on the clipboard, one per line, for a SQL insert, a fixture file or a spreadsheet column.",
+        "s6t": "Use the right version",
+        "s6b": "v4 is random and right for most ids. If you need ids that sort by time, use UUID v7 or a ULID from your database or language instead.",
+        "diagram1": "8-4-4-4-12 hex groups; the third group starts with 4, the fourth with 8, 9, a or b.",
+        "diagram2": "Hyphens off gives 32 characters; Uppercase gives capitals; both name the same UUID."
+      },
+      "faq": {
+        "q1": "Can I generate a UUID free online?",
+        "a1": "Yes. cv.cm makes them in this tab with Web Crypto. Nothing is uploaded or stored.",
+        "q2": "Which version is it?",
+        "a2": "Version 4, random. The third group starts with 4.",
+        "q3": "Can two UUIDs collide?",
+        "a3": "In practice, no: 122 random bits give about 5.3 × 10^36 values.",
+        "q4": "Can I get them without hyphens?",
+        "a4": "Yes. Untick Hyphens for the 32-character form.",
+        "q5": "Are the UUIDs saved anywhere?",
+        "a5": "No. They exist only in this tab until you copy them."
+      }
+    }
+  },
+  "svg": {
+    "find-due-date": {
+      "title": "How to calculate a due date",
+      "a": "Last period + 280 days",
+      "b": "1 Jan period → due 8 Oct",
+      "cap": "Add one day per cycle day over 28."
+    },
+    "find-ideal-weight": {
+      "title": "How to find your ideal weight",
+      "a": "Base at 5 ft + per inch",
+      "b": "170 cm man: 65.2–66.7 kg",
+      "cap": "BMI 18.5–24.9 range: 53.5–72 kg."
+    },
+    "daily-water": {
+      "title": "How much water to drink a day",
+      "a": "35 ml × kg + 12 ml × min",
+      "b": "70 kg, 30 min = 2.81 L",
+      "cap": "About 12 glasses of 250 ml; +500 ml in heat."
+    },
+    "trip-fuel-cost": {
+      "title": "How to calculate the fuel cost of a trip",
+      "a": "Litres = km ÷ 100 × L/100 km",
+      "b": "300 km, 7 L/100 km, 1.60 = 33.60",
+      "cap": "Round trip 67.20; three people 22.40 each."
+    },
+    "estimate-reading-time": {
+      "title": "How to estimate reading time",
+      "a": "Minutes = words ÷ 238",
+      "b": "1200 words ≈ 5 min read",
+      "cap": "Aloud ÷ 130: 650 words is a 5-minute talk."
+    },
+    "compare-text": {
+      "title": "How to compare two texts",
+      "a": "Left original, right changed",
+      "b": "− removed, + added",
+      "cap": "Ignore extra spaces hides re-indenting."
+    },
+    "hash-text": {
+      "title": "How to hash text or a file",
+      "a": "SHA-256 = 64 hex characters",
+      "b": "One different character = different file",
+      "cap": "Same algorithm on both sides; MD5 32, SHA-1 40."
+    },
+    "generate-uuid": {
+      "title": "How to generate a UUID",
+      "a": "8-4-4-4-12 hex groups",
+      "b": "Third group starts with 4",
+      "cap": "122 random bits; hyphens off gives 32 characters."
+    }
+  }
+}

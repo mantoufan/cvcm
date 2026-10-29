@@ -622,3 +622,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .contrast-pass { color: #1f7a3f; font-weight: 700; }
 .contrast-fail { color: #b3261e; font-weight: 700; }
 .grade-needed { font-size: 1.6rem; font-weight: 700; color: var(--pink-deep); margin: 0.2rem 0 0.4rem; }
+
+/* Fuel cost: number next to its unit select */
+.fuel-row { align-items: center; gap: 0.45rem; }
+.fuel-row input { flex: 1 1 0; min-width: 0; }
+.fuel-row select { flex: 0 0 auto; max-width: 11rem; }

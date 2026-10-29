@@ -148,6 +148,8 @@ describe("learn SEO", () => {
     expect(pageTitle("en", { learn: true, tutorial: "find-bedtime" })).toMatch(/bedtime/i);
     expect(pageTitle("en", { learn: true, tutorial: "check-contrast" })).toMatch(/contrast/i);
     expect(pageTitle("zh-CN", { learn: true, tutorial: "calculate-gpa" })).toMatch(/GPA/);
+    expect(pageTitle("en", { learn: true, tutorial: "find-due-date" })).toMatch(/due date/i);
+    expect(pageTitle("en", { learn: true, tutorial: "hash-text" })).toMatch(/SHA-256/);
     expect(lessonsForTool("bmi")).toEqual(["calculate-bmi"]);
     expect(lessonsForTool("tip")).toEqual(["split-tip"]);
     expect(lessonsForTool("loan")).toEqual(["loan-payment"]);
@@ -160,6 +162,14 @@ describe("learn SEO", () => {
     expect(lessonsForTool("tdee")).toEqual(["calculate-tdee"]);
     expect(lessonsForTool("gpa")).toEqual(["calculate-gpa"]);
     expect(lessonsForTool("pomodoro")).toEqual(["use-pomodoro"]);
+    expect(lessonsForTool("due-date")).toEqual(["find-due-date"]);
+    expect(lessonsForTool("ideal-weight")).toEqual(["find-ideal-weight"]);
+    expect(lessonsForTool("water-intake")).toEqual(["daily-water"]);
+    expect(lessonsForTool("fuel-cost")).toEqual(["trip-fuel-cost"]);
+    expect(lessonsForTool("reading-time")).toEqual(["estimate-reading-time"]);
+    expect(lessonsForTool("diff")).toEqual(["compare-text"]);
+    expect(lessonsForTool("hash")).toEqual(["hash-text"]);
+    expect(lessonsForTool("uuid")).toEqual(["generate-uuid"]);
     expect(lessonsForTool("mosaic")).toEqual(["mosaic-photo"]);
     expect(lessonsForTool("watermark")).toEqual(["add-watermark", "watermark-id-copy"]);
     expect(pageTitle("zh-CN", { learn: true, tutorial: "mosaic-photo" })).toMatch(/马赛克/);
@@ -186,7 +196,7 @@ describe("learn sitemap", () => {
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");
     expect(xml).toContain("https://cv.cm/zh-cn/convert/png-to-webp/");
-    expect(FEATURED_TUTORIALS).toHaveLength(63);
+    expect(FEATURED_TUTORIALS).toHaveLength(71);
     expect(xml).toContain("https://cv.cm/en/learn/make-qr/");
     expect(xml).toContain("https://cv.cm/en/learn/format-json/");
     expect(xml).toContain("https://cv.cm/zh-cn/learn/read-jwt/");
