@@ -19,14 +19,12 @@ export function mountMacro(host: HTMLElement): void {
     h("option", { value: "maintain", selected: true }, t("macro.goal_maintain")),
     h("option", { value: "gain" }, t("macro.goal_gain")),
   );
-  goalEl.value = "maintain";
   splitEl = h("select", { "data-field": "split", onChange: () => paint() },
     ...(Object.keys(SPLITS) as MacroSplit[]).map((s) => {
       const p = SPLITS[s];
       return h("option", { value: s, selected: s === "balanced" }, t(`macro.split_${s}`, { p: Math.round(p.protein * 100), f: Math.round(p.fat * 100), c: Math.round(p.carbs * 100) }));
     }),
   );
-  splitEl.value = "balanced";
   kgEl = h("input", { type: "number", min: "0", step: "0.1", inputmode: "decimal", value: "70", "data-field": "kg", onInput: () => paint() });
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(

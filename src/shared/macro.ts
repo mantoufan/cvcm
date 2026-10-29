@@ -1,3 +1,5 @@
+import { BULK_KCAL, CUT_KCAL } from "./tdee";
+
 export type Goal = "lose" | "maintain" | "gain";
 export type MacroSplit = "balanced" | "lowcarb" | "highprotein";
 
@@ -10,7 +12,7 @@ export const SPLITS: Record<MacroSplit, { protein: number; fat: number; carbs: n
 
 export const KCAL_PER_G = { protein: 4, fat: 9, carbs: 4 } as const;
 /** Goal adjustment on maintenance calories, kcal/day (matches the TDEE tool). */
-export const GOAL_KCAL: Record<Goal, number> = { lose: -500, maintain: 0, gain: 300 };
+export const GOAL_KCAL: Record<Goal, number> = { lose: -CUT_KCAL, maintain: 0, gain: BULK_KCAL };
 
 export type MacroResult = {
   kcal: number;

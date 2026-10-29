@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { hhmm, timeCard, type ShiftRow } from "../../shared/time-card";
+import { MAX_MULTIPLIER, MIN_MULTIPLIER, hhmm, timeCard, type ShiftRow } from "../../shared/time-card";
 
 type RowEls = { wrap: HTMLElement; start: HTMLInputElement; end: HTMLInputElement; brk: HTMLInputElement; out: HTMLElement };
 
@@ -76,22 +76,32 @@ export function unmountTimeCard(): void {
 
 function addRow(initial: ShiftRow): void {
   if (!rowsEl) return;
-  const n = rows.length + 1;
   // Time inputs are emptied in the prerendered HTML, so their per-row results are marked volatile too.
-  const start = h("input", { type: "time", value: initial.start, "data-field": "start", "aria-label": `${t("timeCard.start")} ${n}`, onInput: () => paint(), onChange: () => paint() });
-  const end = h("input", { type: "time", value: initial.end, "data-field": "end", "aria-label": `${t("timeCard.end")} ${n}`, onInput: () => paint(), onChange: () => paint() });
-  const brk = h("input", { type: "number", min: "0", step: "5", inputmode: "numeric", value: String(initial.breakMin), "data-field": "break", "aria-label": `${t("timeCard.break")} ${n}`, onInput: () => paint() });
+  const start = h("input", { type: "time", value: initial.start, "data-field": "start", onInput: () => paint(), onChange: () => paint() });
+  const end = h("input", { type: "time", value: initial.end, "data-field": "end", onInput: () => paint(), onChange: () => paint() });
+  const brk = h("input", { type: "number", min: "0", step: "5", inputmode: "numeric", value: String(initial.breakMin), "data-field": "break", onInput: () => paint() });
   const out = h("span", { class: "time-row-out", "data-volatile": "" });
   const row: RowEls = { wrap: h("div", { class: "row gpa-row time-row" }), start, end, brk, out };
   const remove = h("button", { type: "button", class: "chip", "aria-label": t("timeCard.remove"), onClick: () => removeRow(row) }, "×");
   row.wrap.append(start, end, brk, out, remove);
   rows.push(row);
   rowsEl.append(row.wrap);
+  labelRows();
+}
+
+/** Number the rows' accessible names in order, so removing one never leaves duplicates. */
+function labelRows(): void {
+  rows.forEach((r, i) => {
+    r.start.setAttribute("aria-label", `${t("timeCard.start")} ${i + 1}`);
+    r.end.setAttribute("aria-label", `${t("timeCard.end")} ${i + 1}`);
+    r.brk.setAttribute("aria-label", `${t("timeCard.break")} ${i + 1}`);
+  });
 }
 
 function removeRow(row: RowEls): void {
   rows = rows.filter((r) => r !== row);
   row.wrap.remove();
+  labelRows();
   paint();
 }
 
@@ -100,7 +110,8 @@ function paint(): void {
   const read = (el: HTMLInputElement | null) => (el == null || el.value.trim() === "" ? NaN : Number(el.value));
   const input: ShiftRow[] = rows.map((r) => ({ start: r.start.value, end: r.end.value, breakMin: r.brk.value.trim() === "" ? 0 : Number(r.brk.value) }));
   const rate = rateEl?.value.trim() === "" ? null : read(rateEl);
-  const out = timeCard(input, rate, read(otEl), read(multEl) || 1.5);
+  const mult = read(multEl);
+  const out = timeCard(input, rate, read(otEl), mult);
   rows.forEach((r, i) => {
     const s = out.shifts[i];
     const blank = input[i].start.trim() === "" && input[i].end.trim() === "";
@@ -110,8 +121,7 @@ function paint(): void {
   outEl.replaceChildren();
   const bad = out.shifts.some((s, i) => s == null && !(input[i].start.trim() === "" && input[i].end.trim() === ""));
   const fmt = new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 });
-  const dp = rate != null && rate >= 10 && Number.isInteger(rate) ? 0 : 2;
-  const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const rowsOut: Array<[string, string]> = [
     [t("timeCard.total"), `${hhmm(out.totalMin)} (${fmt.format(out.totalMin / 60)} h)`],
     [t("timeCard.regular"), `${hhmm(out.regularMin)} (${fmt.format(out.regularMin / 60)} h)`],
@@ -120,6 +130,7 @@ function paint(): void {
   if (out.pay != null) rowsOut.push([t("timeCard.pay"), money.format(out.pay)]);
   for (const [k, v] of rowsOut) outEl.append(h("dt", null, k), h("dd", { "data-volatile": "" }, v));
   if (bad) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidRow")));
+  if (rate != null && !(mult >= MIN_MULTIPLIER && mult <= MAX_MULTIPLIER)) outEl.append(h("p", { class: "hint" }, t("timeCard.invalidMultiplier")));
   last = rowsOut.map(([k, v]) => `${k}: ${v}`).join("\n");
 }
 

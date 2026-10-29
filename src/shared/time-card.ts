@@ -24,7 +24,9 @@ export function shiftMinutes(row: ShiftRow): ShiftResult | null {
   const end = clockMinutes(row.end);
   if (start == null || end == null) return null;
   if (!Number.isFinite(row.breakMin) || row.breakMin < 0) return null;
-  const overnight = end <= start;
+  // Equal times are a typo, not a 24-hour shift.
+  if (end === start) return null;
+  const overnight = end < start;
   const span = overnight ? end + 1440 - start : end - start;
   if (row.breakMin >= span) return null;
   return { minutes: span - row.breakMin, overnight };
@@ -34,13 +36,17 @@ export function shiftMinutes(row: ShiftRow): ShiftResult | null {
  * Totals for a list of shifts. Rows with blank times are skipped; invalid rows count as null.
  * Hours above `overtimeAfterHours` in the period are overtime, paid at `rate × multiplier`.
  */
+export const MIN_MULTIPLIER = 1;
+export const MAX_MULTIPLIER = 5;
+
 export function timeCard(rows: ShiftRow[], rate: number | null, overtimeAfterHours = 40, multiplier = 1.5): TimeCardResult {
   const shifts = rows.map((row) => (row.start.trim() === "" && row.end.trim() === "" ? null : shiftMinutes(row)));
   const totalMin = shifts.reduce((sum, s) => sum + (s?.minutes ?? 0), 0);
   const limit = Number.isFinite(overtimeAfterHours) && overtimeAfterHours >= 0 ? overtimeAfterHours * 60 : Infinity;
   const regularMin = Math.min(totalMin, limit);
   const overtimeMin = totalMin - regularMin;
-  const pay = rate != null && Number.isFinite(rate) && rate >= 0 ? (regularMin / 60) * rate + (overtimeMin / 60) * rate * multiplier : null;
+  const multOk = Number.isFinite(multiplier) && multiplier >= MIN_MULTIPLIER && multiplier <= MAX_MULTIPLIER;
+  const pay = rate != null && Number.isFinite(rate) && rate >= 0 && multOk ? (regularMin / 60) * rate + (overtimeMin / 60) * rate * multiplier : null;
   return { shifts, totalMin, regularMin, overtimeMin, pay };
 }
 

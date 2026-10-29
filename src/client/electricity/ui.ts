@@ -21,7 +21,6 @@ export function mountElectricity(host: HTMLElement): void {
     h("option", { value: "custom" }, t("electricity.custom")),
     ...APPLIANCES.map((a) => h("option", { value: a.id, selected: a.id === "aircon" }, t("electricity.app_" + a.id, { w: a.watts }))),
   );
-  presetEl.value = "aircon";
   wattsEl = num("watts", "1000");
   hoursEl = num("hours", "8");
   daysEl = num("days", "30", "1");
@@ -86,11 +85,13 @@ function paint(): void {
   const price = read(priceEl);
   const dp = price >= 10 ? 0 : 2;
   const money = new Intl.NumberFormat(locale(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  // Whole-number currencies still need decimals for small daily amounts (2.48 yen, not 2).
+  const daily = new Intl.NumberFormat(locale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 });
   const num = new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 });
   const rows: Array<[string, string]> = [
     [t("electricity.cost"), money.format(out.cost)],
     [t("electricity.energy"), `${num.format(out.kwh)} kWh`],
-    [t("electricity.perDay"), `${money.format(out.costPerDay)} · ${num.format(out.kwhPerDay)} kWh`],
+    [t("electricity.perDay"), `${(dp === 0 ? daily : money).format(out.costPerDay)} · ${num.format(out.kwhPerDay)} kWh`],
     [t("electricity.perYear"), money.format(out.costPerYear)],
   ];
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));

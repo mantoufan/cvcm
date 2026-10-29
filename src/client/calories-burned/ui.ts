@@ -20,12 +20,10 @@ export function mountCaloriesBurned(host: HTMLElement): void {
   activityEl = h("select", { "data-field": "activity", onChange: () => paint() },
     ...ACTIVITIES.map((a) => h("option", { value: a.id, selected: a.id === "walkBrisk" }, t(`caloriesBurned.act_${a.id}`))),
   );
-  activityEl.value = "walkBrisk";
   unitEl = h("select", { "data-field": "unit", onChange: () => switchUnit() },
     h("option", { value: "kg", selected: true }, "kg"),
     h("option", { value: "lb" }, "lb"),
   );
-  unitEl.value = "kg";
   weightEl = h("input", { type: "number", min: "0", step: "0.1", inputmode: "decimal", value: "70", "data-field": "weight", onInput: () => { readWeight(); paint(); } });
   minutesEl = h("input", { type: "number", min: "0", step: "5", inputmode: "numeric", value: "30", "data-field": "minutes", onInput: () => paint() });
   outEl = h("dl", { class: "stats-grid timestamp-out" });

@@ -26,7 +26,7 @@ export type DueDateResult = {
 };
 
 /** setUTCDate keeps years 0–99 intact (Date.UTC would map them to 1900–1999). */
-function addDays(d: Date, n: number): Date {
+export function addDays(d: Date, n: number): Date {
   const r = new Date(d.getTime());
   r.setUTCDate(r.getUTCDate() + n);
   return r;

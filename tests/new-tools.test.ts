@@ -1051,6 +1051,7 @@ describe("time-card", () => {
     expect(shiftMinutes({ start: "22:00", end: "06:00", breakMin: 0 })).toEqual({ minutes: 480, overnight: true });
     expect(shiftMinutes({ start: "09:00", end: "10:00", breakMin: 60 })).toBeNull();
     expect(shiftMinutes({ start: "9", end: "10:00", breakMin: 0 })).toBeNull();
+    expect(shiftMinutes({ start: "09:00", end: "09:00", breakMin: 0 })).toBeNull();
     const week = Array(5).fill({ start: "09:00", end: "17:30", breakMin: 30 });
     const out = timeCard([...week, { start: "", end: "", breakMin: 0 }], 20);
     expect(out.totalMin).toBe(2400);
@@ -1061,6 +1062,9 @@ describe("time-card", () => {
     expect(long.overtimeMin).toBe(300);
     expect(long.pay).toBe(800 + 5 * 30);
     expect(timeCard(week, null).pay).toBeNull();
+    expect(timeCard(week, 20, 40, 0).pay).toBeNull();
+    expect(timeCard(week, 20, 40, -1).pay).toBeNull();
+    expect(timeCard(week, 20, 40, 2).pay).toBe(800);
     expect(hhmm(450)).toBe("7:30");
   });
 });
@@ -1088,6 +1092,9 @@ describe("ovulation", () => {
     expect(isoOf(c[0].nextPeriod)).toBe("2026-01-29");
     expect(isoOf(c[1].periodStart)).toBe("2026-01-29");
     expect(isoOf(ovulationCycles("2026-01-01", 32, 1, "2026-01-05")![0].ovulation)).toBe("2026-01-19");
+    // On the day the next period is due, the new cycle is the first one listed.
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-29")![0].periodStart)).toBe("2026-01-29");
+    expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-01-28")![0].periodStart)).toBe("2026-01-01");
     // Two months later the list starts at the current cycle.
     expect(isoOf(ovulationCycles("2026-01-01", 28, 1, "2026-03-10")![0].periodStart)).toBe("2026-02-26");
     expect(ovulationCycles("2026-01-01", 20)).toBeNull();

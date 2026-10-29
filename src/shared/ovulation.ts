@@ -1,5 +1,5 @@
 import { parseIsoDate, todayIso } from "./age";
-import { isoOf } from "./due-date";
+import { MAX_YEAR, MIN_YEAR, addDays } from "./due-date";
 
 export const DEFAULT_CYCLE = 28;
 export const MIN_CYCLE = 21;
@@ -17,21 +17,16 @@ export type OvulationCycle = {
   nextPeriod: Date;
 };
 
-function addDays(d: Date, n: number): Date {
-  const r = new Date(d.getTime());
-  r.setUTCDate(r.getUTCDate() + n);
-  return r;
-}
-
 /** The next `count` cycles from the first day of the last period, starting with the cycle that contains `today` or later. */
 export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, count = 3, todayIsoStr = todayIso()): OvulationCycle[] | null {
   const lmp = parseIsoDate(lastPeriodIso);
   const today = parseIsoDate(todayIsoStr);
   if (!lmp || !today || !Number.isInteger(cycle) || cycle < MIN_CYCLE || cycle > MAX_CYCLE) return null;
-  if (lmp.getUTCFullYear() < 1900 || lmp.getUTCFullYear() > 2200) return null;
+  if (lmp.getUTCFullYear() < MIN_YEAR || lmp.getUTCFullYear() > MAX_YEAR) return null;
   // Skip whole cycles that ended before today so the list stays current.
   const elapsed = Math.floor((today.getTime() - lmp.getTime()) / DAY);
-  const skip = elapsed > cycle ? Math.floor(elapsed / cycle) : 0;
+  // On the day the next period is due (elapsed === cycle) that new cycle is the current one.
+  const skip = elapsed >= cycle ? Math.floor(elapsed / cycle) : 0;
   const out: OvulationCycle[] = [];
   for (let i = 0; i < count; i++) {
     const periodStart = addDays(lmp, (skip + i) * cycle);
@@ -47,4 +42,3 @@ export function ovulationCycles(lastPeriodIso: string, cycle = DEFAULT_CYCLE, co
   return out;
 }
 
-export { isoOf };

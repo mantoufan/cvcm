@@ -10,6 +10,8 @@ let b64El: HTMLInputElement | null = null;
 let statusEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let algo: HashAlgo = "SHA-256";
+/** Bumped on every digest request and on unmount; a result for an older request is dropped. */
+let digestSeq = 0;
 const schedule = debounce(() => { void run(); }, 80);
 
 export function mountHash(host: HTMLElement): void {
@@ -77,6 +79,7 @@ export function unmountHash(): void {
   hexEl = null;
   b64El = null;
   statusEl = null;
+  digestSeq++;
   copyBtn = null;
 }
 
@@ -100,15 +103,19 @@ async function writeDigest(bytes: Uint8Array): Promise<void> {
   // Hold the fields locally: the page may be left while the digest is running.
   const hex = hexEl;
   const b64 = b64El;
+  const status = statusEl;
   if (!hex || !b64) return;
+  const seq = ++digestSeq;
   try {
     const out = await digest(algo, bytes);
+    if (seq !== digestSeq) return;
     hex.value = toHex(out);
     b64.value = toB64(out);
   } catch {
+    if (seq !== digestSeq) return;
     hex.value = "";
     b64.value = "";
-    if (statusEl) statusEl.textContent = t("hash.error");
+    if (status) status.textContent = t("hash.error");
   }
 }
 
