@@ -39,21 +39,24 @@ export function dueDate(mode: DueDateMode, dateIso: string, cycle = DEFAULT_CYCL
   const today = parseIsoDate(todayIsoStr);
   if (!date || !today || !Number.isInteger(cycle) || cycle < MIN_CYCLE || cycle > MAX_CYCLE) return null;
   const shift = cycle - DEFAULT_CYCLE;
-  let lmp: Date;
-  if (mode === "lmp") lmp = date;
-  else if (mode === "conception") lmp = addDays(date, -(14 + shift));
-  else lmp = addDays(date, -(PREGNANCY_DAYS + shift));
-  const due = addDays(lmp, PREGNANCY_DAYS + shift);
-  const conception = addDays(lmp, 14 + shift);
-  const daysAlong = Math.round((today.getTime() - lmp.getTime()) / DAY);
+  // A longer cycle ovulates later, so gestation effectively starts `shift` days after the real LMP.
+  // One adjusted LMP drives the due date, conception, weeks along and trimester dates, so they agree.
+  let start: Date;
+  if (mode === "lmp") start = addDays(date, shift);
+  else if (mode === "conception") start = addDays(date, -14);
+  else start = addDays(date, -PREGNANCY_DAYS);
+  const lmp = addDays(start, -shift);
+  const due = addDays(start, PREGNANCY_DAYS);
+  const conception = addDays(start, 14);
+  const daysAlong = Math.round((today.getTime() - start.getTime()) / DAY);
   const weeks = Math.floor(daysAlong / 7);
-  const trimester = daysAlong < 0 || daysAlong > PREGNANCY_DAYS + shift + 21 ? null : weeks < 13 ? 1 : weeks < 27 ? 2 : 3;
+  const trimester = daysAlong < 0 || daysAlong > PREGNANCY_DAYS + 21 ? null : weeks < 13 ? 1 : weeks < 27 ? 2 : 3;
   return {
     due,
     lmp,
     conception,
-    trimester2: addDays(lmp, 13 * 7),
-    trimester3: addDays(lmp, 27 * 7),
+    trimester2: addDays(start, 13 * 7),
+    trimester3: addDays(start, 27 * 7),
     daysAlong,
     weeks,
     days: daysAlong - weeks * 7,

@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { fuelCost, type EconomyUnit } from "../../shared/fuel-cost";
+import { KM_PER_MI, fuelCost, type EconomyUnit } from "../../shared/fuel-cost";
 
 let distanceEl: HTMLInputElement | null = null;
 let distanceUnitEl: HTMLSelectElement | null = null;
@@ -91,7 +91,7 @@ function paint(): void {
     price: read(priceEl),
     pricePerGallon: priceUnitEl.value === "gal",
     roundTrip: Boolean(roundTripEl?.checked),
-    people: read(peopleEl),
+    people: peopleEl?.value.trim() === "" ? undefined : read(peopleEl),
   });
   outEl.replaceChildren();
   if (!out) {
@@ -106,7 +106,7 @@ function paint(): void {
     [t("fuelCost.fuel"), t("fuelCost.litresUsed", { n: num.format(out.litres) })],
     [t("fuelCost.perPerson"), money.format(out.perPerson)],
     [t("fuelCost.per100km"), money.format(out.costPer100km)],
-    [t("fuelCost.totalDistance"), `${num.format(distanceUnit === "mi" ? out.km / 1.609344 : out.km)} ${distanceUnit}`],
+    [t("fuelCost.totalDistance"), `${num.format(distanceUnit === "mi" ? out.km / KM_PER_MI : out.km)} ${distanceUnit}`],
   ];
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));
   last = rows.map(([k, v]) => `${k}: ${v}`).join("\n");

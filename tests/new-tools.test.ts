@@ -933,7 +933,15 @@ describe("due-date", () => {
     expect(out!.daysLeft).toBe(210);
     expect(isoOf(out!.trimester2)).toBe("2026-04-02");
     expect(isoOf(out!.trimester3)).toBe("2026-07-09");
-    expect(isoOf(dueDate("lmp", "2026-01-01", 32, "2026-03-12")!.due)).toBe("2026-10-12");
+    const long = dueDate("lmp", "2026-01-01", 32, "2026-03-12")!;
+    expect(isoOf(long.due)).toBe("2026-10-12");
+    expect(isoOf(long.conception)).toBe("2026-01-19");
+    expect(isoOf(long.trimester2)).toBe("2026-04-06");
+    expect(long.weeks).toBe(9);
+    expect(long.days).toBe(3);
+    // A known due date fixes gestational age whatever the cycle length.
+    expect(dueDate("due", "2026-10-08", 32, "2026-03-12")!.weeks).toBe(10);
+    expect(dueDate("due", "2026-10-08", 32, "2026-03-12")!.days).toBe(0);
     expect(isoOf(dueDate("conception", "2026-01-15", 28, "2026-03-12")!.due)).toBe("2026-10-08");
     expect(isoOf(dueDate("due", "2026-10-08", 28, "2026-03-12")!.lmp)).toBe("2026-01-01");
     expect(dueDate("lmp", "2026-01-01", 28, "2025-12-01")!.trimester).toBeNull();
@@ -953,7 +961,8 @@ describe("ideal-weight", () => {
     const f = idealWeights("female", 162.56);
     expect(f!.devine).toBeCloseTo(45.5 + 2.3 * 4, 6);
     expect(f!.hamwi).toBeCloseTo(45.5 + 2.2 * 4, 6);
-    expect(idealWeights("male", 150)).toBeNull();
+    expect(idealWeights("male", 150)!.devine).toBeCloseTo(50 - 2.3 * (2.4 / 2.54), 6);
+    expect(idealWeights("male", 139)).toBeNull();
     expect(idealWeights("male", NaN)).toBeNull();
     const r = healthyBmiRange(170);
     expect(r!.low).toBeCloseTo(53.465, 3);
@@ -997,7 +1006,7 @@ describe("fuel-cost", () => {
 describe("reading-time", () => {
   it("counts words or CJK characters and times reading and speaking", () => {
     const en = readingTime(Array(238).fill("word").join(" "));
-    expect(en.words).toBe(238);
+    expect(en.units).toBe(238);
     expect(en.readSec).toBe(60);
     expect(en.cjkMode).toBe(false);
     expect(readingTime(Array(300).fill("w").join(" "), "fast").readSec).toBe(60);
@@ -1008,6 +1017,11 @@ describe("reading-time", () => {
     expect(zh.readSec).toBe(60);
     expect(zh.charsNoSpaces).toBe(300);
     expect(readingTime("   ").units).toBe(0);
+    expect(readingTime("   ").readSec).toBe(0);
+    expect(readingTime("hi").readSec).toBe(1);
+    const punct = readingTime("今天天气很好。明天也会很好，我们去公园吧！");
+    expect(punct.units).toBe(18);
+    expect(readingTime("コーヒーを飲みます。").units).toBe(9);
     expect(splitSec(200)).toEqual({ min: 3, sec: 20 });
   });
 });

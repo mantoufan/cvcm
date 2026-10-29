@@ -3,14 +3,15 @@ import { CM_PER_IN, type Sex } from "./tdee";
 export type IdealFormula = "devine" | "robinson" | "miller" | "hamwi";
 export const FORMULAS: IdealFormula[] = ["devine", "robinson", "miller", "hamwi"];
 
-/** Height must be at least 5 ft (152.4 cm); every formula adds per inch over that. */
-export const MIN_CM = 152.4;
+/** Every formula is a base weight at 5 ft (152.4 cm) plus a per-inch step; below 5 ft it extrapolates down to 140 cm. */
+export const BASE_CM = 152.4;
+export const MIN_CM = 140;
 export const MAX_CM = 250;
 
 /** kg for the four common formulas, all defined from 5 ft plus per-inch increments. */
 export function idealWeights(sex: Sex, cm: number): Record<IdealFormula, number> | null {
   if (!Number.isFinite(cm) || cm < MIN_CM || cm > MAX_CM) return null;
-  const over = (cm - MIN_CM) / CM_PER_IN;
+  const over = (cm - BASE_CM) / CM_PER_IN;
   const m = sex === "male";
   return {
     devine: (m ? 50 : 45.5) + 2.3 * over,

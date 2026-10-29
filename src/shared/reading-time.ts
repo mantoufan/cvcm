@@ -6,10 +6,11 @@ export const CJK_CPM = { slow: 200, average: 300, fast: 400 } as const;
 export const CJK_SPEAK_CPM = 180;
 export type Speed = keyof typeof READ_WPM;
 
-const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/gu;
+const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30FC\u3005]/gu;
+/** A leftover token counts as a word only if it has a letter or digit (CJK punctuation does not). */
+const WORD = /[\p{L}\p{N}]/u;
 
 export type ReadingStats = {
-  words: number;
   chars: number;
   charsNoSpaces: number;
   cjk: number;
@@ -23,20 +24,21 @@ export type ReadingStats = {
 export function readingTime(text: string, speed: Speed = "average"): ReadingStats {
   const trimmed = text.trim();
   const cjk = (trimmed.match(CJK) ?? []).length;
-  const latinWords = trimmed.replace(CJK, " ").split(/\s+/).filter(Boolean).length;
+  const latinWords = trimmed.replace(CJK, " ").split(/\s+/).filter((w) => WORD.test(w)).length;
   const chars = Array.from(trimmed).length;
   const charsNoSpaces = Array.from(trimmed.replace(/\s/g, "")).length;
   const cjkMode = cjk > latinWords;
   const readMin = latinWords / READ_WPM[speed] + cjk / CJK_CPM[speed];
   const speakMin = latinWords / SPEAK_WPM + cjk / CJK_SPEAK_CPM;
+  const units = latinWords + cjk;
+  const seconds = (min: number) => (units === 0 ? 0 : Math.max(1, Math.round(min * 60)));
   return {
-    words: latinWords + cjk,
     chars,
     charsNoSpaces,
     cjk,
-    units: latinWords + cjk,
-    readSec: Math.round(readMin * 60),
-    speakSec: Math.round(speakMin * 60),
+    units,
+    readSec: seconds(readMin),
+    speakSec: seconds(speakMin),
     cjkMode,
   };
 }
