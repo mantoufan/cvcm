@@ -98,6 +98,9 @@ function fillUnits(kind: UnitKind): void {
     fromEl.append(h("option", { value: id, selected: id === from }, unitLabel(id)));
     toEl.append(h("option", { value: id, selected: id === to }, unitLabel(id)));
   }
+  // happy-dom (prerender) ignores `selected` here; set the pair explicitly so the static page shows the same conversion.
+  fromEl.value = from;
+  toEl.value = to;
 }
 
 function onKind(): void {
