@@ -1,35 +1,12 @@
-export type Rgb = { r: number; g: number; b: number };
+import { contrastRatio, hexToRgb, relativeLuminance, rgbToHex, type RGB } from "./color";
 
-/** `#rgb` or `#rrggbb`, with or without `#`. */
-export function parseHex(value: string): Rgb | null {
-  const s = value.trim().replace(/^#/, "");
-  if (!/^[0-9a-f]{3}$|^[0-9a-f]{6}$/i.test(s)) return null;
-  const full = s.length === 3 ? s.split("").map((c) => c + c).join("") : s;
-  const n = parseInt(full, 16);
-  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
-}
+export type Rgb = RGB;
 
-export function toHex({ r, g, b }: Rgb): string {
-  return "#" + [r, g, b].map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
-}
-
-function channel(v: number): number {
-  const c = v / 255;
-  return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-}
-
-/** WCAG 2.x relative luminance, 0 (black) to 1 (white). */
-export function luminance({ r, g, b }: Rgb): number {
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-/** WCAG contrast ratio, 1 to 21, order-independent. */
-export function contrastRatio(a: Rgb, b: Rgb): number {
-  const la = luminance(a);
-  const lb = luminance(b);
-  const [hi, lo] = la >= lb ? [la, lb] : [lb, la];
-  return (hi + 0.05) / (lo + 0.05);
-}
+/** `#rgb`, `#rrggbb` or `#rrggbbaa` (alpha ignored), with or without `#`. */
+export const parseHex = hexToRgb;
+export const toHex = rgbToHex;
+export const luminance = relativeLuminance;
+export { contrastRatio };
 
 export const AA_NORMAL = 4.5;
 export const AA_LARGE = 3;
@@ -65,7 +42,9 @@ export function contrastLevels(fg: Rgb, bg: Rgb): ContrastLevels {
  */
 export function suggestForeground(fg: Rgb, bg: Rgb, target = AA_NORMAL): Rgb | null {
   if (contrastRatio(fg, bg) >= target) return fg;
-  const toward: Rgb = luminance(bg) > 0.5 ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 };
+  const black: Rgb = { r: 0, g: 0, b: 0 };
+  const white: Rgb = { r: 255, g: 255, b: 255 };
+  const toward = contrastRatio(black, bg) >= contrastRatio(white, bg) ? black : white;
   if (contrastRatio(toward, bg) < target) return null;
   for (let i = 1; i <= 100; i++) {
     const k = i / 100;

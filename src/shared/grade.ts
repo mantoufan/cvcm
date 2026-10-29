@@ -25,8 +25,10 @@ export function neededOnFinal(current: number, wanted: number, weightPercent: nu
 export function finalGrade(input: GradeInput): GradeResult | null {
   const needed = neededOnFinal(input.current, input.wanted, input.weight);
   if (needed == null) return null;
+  // Validation above covers current and weight, so the per-letter rows (fixed 60–90 targets) cannot fail.
+  const w = input.weight / 100;
   return {
     needed,
-    targets: LETTER_CUTOFFS.map((c) => ({ letter: c.letter, wanted: c.wanted, needed: neededOnFinal(input.current, c.wanted, input.weight) ?? 0 })),
+    targets: LETTER_CUTOFFS.map((c) => ({ letter: c.letter, wanted: c.wanted, needed: (c.wanted - input.current * (1 - w)) / w })),
   };
 }

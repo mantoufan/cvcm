@@ -851,6 +851,7 @@ describe("contrast", () => {
     expect(parseHex("#fff")).toEqual({ r: 255, g: 255, b: 255 });
     expect(parseHex("000000")).toEqual({ r: 0, g: 0, b: 0 });
     expect(parseHex("#12345")).toBeNull();
+    expect(parseHex("#80808080")).toEqual({ r: 128, g: 128, b: 128 });
     expect(parseHex("red")).toBeNull();
     expect(rgbHex({ r: 255, g: 0, b: 128 })).toBe("#ff0080");
     expect(luminance({ r: 255, g: 255, b: 255 })).toBeCloseTo(1, 10);
@@ -867,6 +868,10 @@ describe("contrast", () => {
     expect(fix!.r).toBeLessThan(119);
     expect(suggestForeground({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 })).toEqual({ r: 0, g: 0, b: 0 });
     expect(suggestForeground({ r: 120, g: 120, b: 120 }, { r: 128, g: 128, b: 128 }, 21)).toBeNull();
+    // White on mid grey fails AA but black passes: head for black, not the wrong endpoint.
+    const onGrey = suggestForeground({ r: 255, g: 255, b: 255 }, { r: 128, g: 128, b: 128 });
+    expect(onGrey).not.toBeNull();
+    expect(contrastRatio(onGrey!, { r: 128, g: 128, b: 128 })).toBeGreaterThanOrEqual(4.5);
   });
 });
 
@@ -876,6 +881,8 @@ describe("pace", () => {
     expect(parseTime("1:05:30")).toBe(3930);
     expect(parseTime("5")).toBe(300);
     expect(parseTime("5:75")).toBeNull();
+    expect(parseTime("240:00")).toBe(14400);
+    expect(parseTime("1:75:00")).toBeNull();
     expect(parseTime("")).toBeNull();
     expect(parseTime("0:00")).toBeNull();
     expect(formatTime(3930)).toBe("1:05:30");

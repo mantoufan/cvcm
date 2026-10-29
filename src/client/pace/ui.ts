@@ -31,8 +31,8 @@ export function mountPace(host: HTMLElement): void {
   );
   unitEl.value = "km";
   distanceEl = h("input", { type: "number", min: "0", step: "0.01", inputmode: "decimal", value: "10", "data-field": "distance", onInput: () => paint() });
-  timeEl = h("input", { type: "text", value: "55:00", placeholder: "h:mm:ss", inputmode: "numeric", "data-field": "time", onInput: () => paint() });
-  paceEl = h("input", { type: "text", value: "5:30", placeholder: "m:ss", inputmode: "numeric", "data-field": "pace", onInput: () => paint() });
+  timeEl = h("input", { type: "text", value: "55:00", placeholder: "h:mm:ss", "data-field": "time", onInput: () => paint() });
+  paceEl = h("input", { type: "text", value: "5:30", placeholder: "m:ss", "data-field": "pace", onInput: () => paint() });
   paceLabel = h("span", null, t("pace.pacePerKm"));
   distanceBox = h("label", { class: "field" }, h("span", null, t("pace.distance")), distanceEl);
   timeBox = h("label", { class: "field" }, h("span", null, t("pace.time")), timeEl);

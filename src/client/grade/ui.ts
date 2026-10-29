@@ -14,11 +14,11 @@ let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountGrade(host: HTMLElement): void {
-  const num = (field: string, value: string) =>
-    h("input", { type: "number", min: "0", max: "150", step: "0.1", inputmode: "decimal", "data-field": field, value, onInput: () => paint() });
+  const num = (field: string, value: string, min = "0", max = "150") =>
+    h("input", { type: "number", min, max, step: "0.1", inputmode: "decimal", "data-field": field, value, onInput: () => paint() });
   currentEl = num("current", "85");
   wantedEl = num("wanted", "90");
-  weightEl = num("weight", "30");
+  weightEl = num("weight", "30", "1", "100");
   neededEl = h("p", { class: "grade-needed", "aria-live": "polite" });
   noteEl = h("p", { class: "hint" });
   outEl = h("dl", { class: "stats-grid timestamp-out" });

@@ -6,7 +6,7 @@ import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
 import { KB_ARTICLES } from "../../shared/kb";
 import { kbLinkItems } from "../../shared/kb-i18n";
-import { appHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialId } from "../../shared/path";
+import { appHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialGroupId, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
@@ -108,47 +108,11 @@ function toolCta(loc: ReturnType<typeof locale>, tool: ToolId, id: TutorialId): 
   }, t("learn.openTool", { name }));
 }
 
-function groupOf(id: TutorialId): string {
-  for (const group of TUTORIAL_GROUPS) {
-    if ((group.tutorials as readonly string[]).includes(id)) return group.id;
-  }
-  if (id === "make-qr" || id === "make-barcode") return "codes";
-  if (
-    id === "merge-pdf"
-    || id === "compress-pdf"
-    || id === "split-pdf"
-    || id === "heic-to-jpg"
-    || id === "jpg-to-pdf"
-    || id === "pdf-to-jpg"
-    || id === "webp-to-png"
-    || id === "png-to-jpg"
-    || id === "jpg-to-png"
-    || id === "avif-to-jpg"
-    || id === "png-to-webp"
-    || id === "make-invoice"
-  ) return "files";
-  if (
-    id === "crop-photo"
-    || id === "rotate-photo"
-    || id === "resize-image"
-    || id === "add-watermark"
-    || id === "watermark-id-copy"
-    || id === "mosaic-photo"
-    || id === "remove-exif"
-    || id === "make-collage"
-    || id === "make-meme"
-    || id === "make-favicon"
-    || id === "make-signature"
-    || id === "annotate-screenshot"
-    || id === "phone-photos"
-    || id === "window-light"
-    || id === "crop-compose"
-    || id === "portrait"
-  ) {
-    return "photo";
-  }
-  if (id === "trim-audio" || id === "mp3-to-wav" || id === "join-audio") return "audio";
-  if (id === "count-words" || id === "make-password" || id === "format-json" || id === "decode-base64" || id === "unix-time" || id === "read-jwt" || id === "count-workdays" || id === "simplify-fraction" || id === "hourly-pay" || id === "convert-timezone" || id === "profit-margin" || id === "convert-base" || id === "add-duration" || id === "calculate-percent" || id === "days-between" || id === "shift-date" || id === "iso-week" || id === "vat-price" || id === "percent-off" || id === "encode-url" || id === "calculate-age" || id === "aspect-ratio" || id === "calculate-bmi" || id === "split-tip" || id === "loan-payment" || id === "read-cron" || id === "find-bedtime" || id === "measure-body-fat" || id === "check-contrast" || id === "calculate-pace" || id === "calculate-final-grade" || id === "calculate-tdee" || id === "calculate-gpa" || id === "use-pomodoro") return "text";
+function groupOf(id: TutorialId): TutorialGroupId {
+  const published = TUTORIAL_GROUPS.find((group) => group.tutorials.includes(id))?.id;
+  if (published) return published;
+  // Legacy ids that still parse but are not in TUTORIAL_GROUPS.
+  if (id === "phone-photos" || id === "window-light" || id === "crop-compose" || id === "portrait") return "photo";
   if (id === "algorithms" || id === "one-page-site") return "code";
   if (id.startsWith("badminton-")) return "court";
   if (id === "pool-safety") return "water";

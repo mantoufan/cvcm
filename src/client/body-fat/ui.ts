@@ -16,13 +16,15 @@ let hipEl: HTMLInputElement | null = null;
 let weightEl: HTMLInputElement | null = null;
 let hipBox: HTMLElement | null = null;
 let unitSpans: HTMLElement[] = [];
+/** Entered lengths in cm and weight in kg, kept unrounded so unit switches do not drift the numbers. */
+const canon = new Map<HTMLInputElement, number>();
 let outEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountBodyFat(host: HTMLElement): void {
   const num = (field: string, value: string) =>
-    h("input", { type: "number", min: "0", step: "0.1", inputmode: "decimal", "data-field": field, value, onInput: () => paint() });
+    h("input", { type: "number", min: "0", step: "0.1", inputmode: "decimal", "data-field": field, value, onInput: (e: Event) => { remember(e.currentTarget as HTMLInputElement); paint(); } });
   unitsEl = h("select", { "data-field": "units", onChange: () => switchUnits() },
     h("option", { value: "metric", selected: true }, t("bodyFat.metric")),
     h("option", { value: "imperial" }, t("bodyFat.imperial")),
@@ -39,6 +41,7 @@ export function mountBodyFat(host: HTMLElement): void {
   hipEl = num("hip", "95");
   weightEl = num("weight", "70");
   hipBox = h("div", { hidden: true }, field(t("bodyFat.hip"), hipEl));
+  for (const el of [heightEl, neckEl, waistEl, hipEl, weightEl]) remember(el);
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
@@ -78,6 +81,7 @@ export function unmountBodyFat(): void {
   heightEl = neckEl = waistEl = hipEl = weightEl = null;
   hipBox = outEl = null;
   unitSpans = [];
+  canon.clear();
   copyBtn = null;
   last = "";
 }
@@ -95,17 +99,24 @@ function units(): Units {
 
 const round1 = (n: number) => String(Math.round(n * 10) / 10);
 
-/** Carry the numbers across when the unit system changes; an empty field stays empty. */
+/** Store the field's value in cm (or kg) from whatever unit is showing. */
+function remember(el: HTMLInputElement): void {
+  const raw = el.value.trim();
+  if (raw === "") { canon.delete(el); return; }
+  const n = Number(raw);
+  const imperial = units() === "imperial";
+  canon.set(el, el === weightEl ? (imperial ? n / LB_PER_KG : n) : (imperial ? n * CM_PER_IN : n));
+}
+
+/** Show the stored numbers in the new unit system; an empty field stays empty. */
 function switchUnits(): void {
   const imperial = units() === "imperial";
-  for (const el of [heightEl, neckEl, waistEl, hipEl]) {
+  for (const el of [heightEl, neckEl, waistEl, hipEl, weightEl]) {
     if (!el) continue;
-    const n = Number(el.value);
-    el.value = el.value.trim() !== "" && n > 0 ? round1(imperial ? n / CM_PER_IN : n * CM_PER_IN) : "";
-  }
-  if (weightEl) {
-    const n = Number(weightEl.value);
-    weightEl.value = weightEl.value.trim() !== "" && n > 0 ? round1(imperial ? n * LB_PER_KG : n / LB_PER_KG) : "";
+    const n = canon.get(el);
+    if (n == null || !(n > 0)) { el.value = ""; continue; }
+    const shown = el === weightEl ? (imperial ? n * LB_PER_KG : n) : (imperial ? n / CM_PER_IN : n);
+    el.value = round1(shown);
   }
   for (const span of unitSpans) {
     const mass = span.dataset.mass === "1";
@@ -115,18 +126,15 @@ function switchUnits(): void {
 }
 
 function cmOf(el: HTMLInputElement | null): number {
-  const raw = el?.value.trim() ?? "";
-  if (raw === "") return NaN;
-  const n = Number(raw);
-  return units() === "imperial" ? n * CM_PER_IN : n;
+  if (!el) return NaN;
+  return canon.get(el) ?? NaN;
 }
 
 function paint(): void {
   if (!outEl || !sexEl || !hipBox) return;
   const sex = sexEl.value as Sex;
   hipBox.hidden = sex !== "female";
-  const weightRaw = weightEl?.value.trim() ?? "";
-  const kg = weightRaw === "" ? undefined : units() === "imperial" ? Number(weightRaw) / LB_PER_KG : Number(weightRaw);
+  const kg = weightEl ? canon.get(weightEl) : undefined;
   const out = bodyFat({ sex, cm: cmOf(heightEl), neck: cmOf(neckEl), waist: cmOf(waistEl), hip: sex === "female" ? cmOf(hipEl) : undefined, kg });
   outEl.replaceChildren();
   if (!out) {

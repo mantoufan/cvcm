@@ -20,11 +20,12 @@ export function parseTime(value: string): number | null {
     const sec = Number(s) * 60;
     return sec > 0 && Number.isFinite(sec) ? sec : null;
   }
-  const m = /^(?:(\d{1,3}):)?(\d{1,2}):(\d{2})$/.exec(s);
+  const m = /^(?:(\d{1,3}):)?(\d{1,3}):(\d{2})$/.exec(s);
   if (!m) return null;
   const hh = Number(m[1] ?? 0);
   const mm = Number(m[2]);
   const ss = Number(m[3]);
+  // "240:00" is 240 minutes; with an hours field the minutes must be a clock value.
   if (mm > 59 && m[1] != null) return null;
   if (ss > 59) return null;
   const sec = hh * 3600 + mm * 60 + ss;
