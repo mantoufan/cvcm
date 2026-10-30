@@ -50,7 +50,16 @@ export function lunarYear(year: number): { animal: Animal; element: Element; yin
  * Chinese (lunisolar) New Year dates, from the Chinese calendar in Intl when the runtime has it.
  * Returns [month, day] in `year`, or null when Intl cannot tell.
  */
+const newYears = new Map<number, readonly [number, number] | null>();
+
 export function lunarNewYear(year: number): readonly [number, number] | null {
+  if (newYears.has(year)) return newYears.get(year)!;
+  const found = findNewYear(year);
+  newYears.set(year, found);
+  return found;
+}
+
+function findNewYear(year: number): readonly [number, number] | null {
   const fmt = chineseFormatter();
   if (!fmt) return null;
   // New Year falls between 21 January and 20 February.

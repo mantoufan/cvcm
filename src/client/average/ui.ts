@@ -114,5 +114,8 @@ function paint(): void {
 }
 
 async function copyOut(): Promise<void> {
+  // A copy right after typing must not send the previous results.
+  window.clearTimeout(paintTimer);
+  paint();
   await copyWithFlash(copyBtn, last, { done: t("average.copied"), failed: t("average.copyFailed") });
 }

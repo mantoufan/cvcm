@@ -25,7 +25,8 @@ let nextTime = 0;
 let tick = 0;
 let tickSub = 1;
 let restart = false;
-let voices: OscillatorNode[] = [];
+/** All clicks of one run go through this node; disconnecting it silences clicks already queued. */
+let master: GainNode | null = null;
 let running = false;
 let taps: number[] = [];
 let visualTimers: number[] = [];
@@ -153,6 +154,8 @@ function start(): void {
   // Start is a user gesture: create or resume the AudioContext here, as iOS requires.
   audio = armAudio(audio);
   if (!audio) return;
+  master = audio.createGain();
+  master.connect(audio.destination);
   running = true;
   tick = 0;
   tickSub = Number(subEl?.value) || 1;
@@ -167,10 +170,8 @@ function stop(): void {
   running = false;
   window.clearInterval(timer);
   // Silence clicks already queued on the audio clock.
-  for (const osc of voices) {
-    try { osc.stop(); } catch { /* already stopped */ }
-  }
-  voices = [];
+  master?.disconnect();
+  master = null;
   for (const id of visualTimers) window.clearTimeout(id);
   visualTimers = [];
   dotsEl?.querySelectorAll(".dot.on").forEach((d) => d.classList.remove("on"));
@@ -225,11 +226,10 @@ function click(at: number, kind: "accent" | "beat" | "sub"): void {
   gain.gain.setValueAtTime(0.0001, at);
   gain.gain.exponentialRampToValueAtTime(peak, at + 0.002);
   gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.05);
-  osc.connect(gain).connect(ctx.destination);
+  if (!master) return;
+  osc.connect(gain).connect(master);
   osc.start(at);
   osc.stop(at + 0.06);
-  voices.push(osc);
-  osc.onended = () => { voices = voices.filter((v) => v !== osc); };
 }
 
 function flash(at: number, beat: number): void {
