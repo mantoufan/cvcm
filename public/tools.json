@@ -46,7 +46,7 @@
     {
       "id": "clip",
       "name": "Cloud clipboard",
-      "description": "Pastebin-style notes: text, images, files. Deleted after 10 views or one day.",
+      "description": "Pastebin-style notes: text, images, files.",
       "category": "share",
       "url": "https://cv.cm/en/clip/",
       "data_handling": "Stores the note on cv.cm (text in its database, files on its storage host s3.cv.cm) until 10 views or 24 hours. Anyone with the short link can open it, so it is not for secrets."

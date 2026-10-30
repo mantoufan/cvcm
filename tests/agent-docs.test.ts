@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { DATA_HANDLING_GROUPS, LOCAL_FILE_INPUT_TOOLS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -28,6 +28,8 @@ describe("agent discovery files", () => {
       expect(llms).toContain(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${tool.description} ${tool.data_handling}`);
     }
     expect(llms).toContain("Not a legal e-sign. Runs in the page.");
+    expect(llms).toContain("Text to speech can send text to the voice provider");
+    expect(llms.match(/10 views/g)).toHaveLength(1);
     expect(llms).toMatch(/model once on first use \(\d+(\.\d)? MB to \d+ MB,/);
   });
 
@@ -48,6 +50,8 @@ describe("agent discovery files", () => {
   });
 
   it("declares every tool that has a file input", () => {
+    // Text tools that can also read a file the user picks; they keep the generic local text.
+    const LOCAL_FILE_INPUT_TOOLS = ["data", "hash", "word-count"];
     const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...LOCAL_FILE_INPUT_TOOLS]);
     const withFileInput = TOOLS.filter((tool) => {
       const dir = join(root, "src/client", tool);
