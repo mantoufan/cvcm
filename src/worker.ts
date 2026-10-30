@@ -99,6 +99,20 @@ export default {
     const api = await handleClipApi(request, { store, s3: s3Config(env) });
     if (api) return api;
 
+    // CORS preflight for the agent discovery files (agents in other pages may send custom headers).
+    if (request.method === "OPTIONS" && (AGENT_DOC_PATHS as readonly string[]).includes(url.pathname)) {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Max-Age": "86400",
+          "Cache-Control": "no-store",
+        },
+      });
+    }
+
     if (request.method !== "GET" && request.method !== "HEAD") {
       return new Response("Method Not Allowed", {
         status: 405,

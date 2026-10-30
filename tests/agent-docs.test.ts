@@ -1,9 +1,10 @@
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
-import { AGENT_DOC_PATHS, AI_TOOLS, CATEGORIES, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
+import { DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { UNTRACKED_TOOLS } from "../src/shared/analytics";
+import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
 const root = resolve(__dirname, "..");
 
@@ -22,30 +23,34 @@ describe("agent discovery files", () => {
     expect(llms.startsWith("# cv.cm\n\n> ")).toBe(true);
     for (const tool of tools) {
       expect(tool.description).not.toBe("");
-      const line = llms.split("\n").find((l) => l.startsWith(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${tool.description}`));
-      expect(line, tool.id).toBeDefined();
-      // Every line tells the reader what happens to the input: in the blurb, or in the added data-handling sentence.
-      if (!/upload/i.test(tool.description)) expect(line).toContain(tool.data_handling);
+      const blurb = tool.description.replace(/\s*Nothing is uploaded\.$/, "");
+      expect(llms).toContain(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${blurb} ${tool.data_handling}`);
+      expect(llms).not.toContain("Nothing is uploaded. Inputs are not uploaded.");
     }
   });
 
-  it("only the clipboard claims to store input", () => {
-    for (const tool of TOOLS) {
-      if (tool === "clip") expect(dataHandling(tool)).toContain("Stores the note");
-      else expect(dataHandling(tool)).toMatch(/not uploaded\.$/);
+  it("declares every tool in exactly one data-handling group", () => {
+    const declared = Object.values(DATA_HANDLING_GROUPS).flat();
+    expect([...declared].sort()).toEqual([...TOOLS].sort());
+    expect(new Set(declared).size).toBe(declared.length);
+    // Consistent with what the code enforces elsewhere: file and AI tools are the ones kept out of analytics.
+    const fileish = [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI].sort();
+    expect([...UNTRACKED_TOOLS].sort()).toEqual(fileish);
+    expect([...AI_TOOLS].sort()).toEqual([...DATA_HANDLING_GROUPS.AI].sort());
+    expect(dataHandling("clip")).toContain("Stores the note");
+    expect(dataHandling("text-to-speech")).toContain("online voices");
+    for (const tool of [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.LOCAL]) {
+      expect(dataHandling(tool)).toMatch(/not uploaded\.$/);
     }
-    for (const tool of AI_TOOLS) expect(dataHandling(tool)).toContain("AI model");
   });
 
-  it("backs the 'not uploaded' claims: no tool but the clipboard sends data out", () => {
-    // Downloads (models, sample photos) are fine; uploads, beacons and sockets are not.
-    const upload = /method:\s*["'](POST|PUT|PATCH)["']|XMLHttpRequest|sendBeacon|new WebSocket/;
-    const folders = CATEGORIES.flatMap((c) => [...c.tools, c.id]).filter((name) => name !== "clip");
-    for (const name of new Set(folders)) {
-      const dir = join(root, "src/client", name);
-      if (!existsSync(dir)) continue;
-      for (const file of sourceFiles(dir)) expect(readFileSync(file, "utf8"), file).not.toMatch(upload);
-    }
+  it("backs the 'not uploaded' claims: no client code but the clipboard sends data out", () => {
+    // Downloads (AI models, sample photos, page data) are fine; uploads, beacons, sockets and streams are not.
+    const upload = /method:\s*["'`](post|put|patch|delete)["'`]|XMLHttpRequest|sendBeacon|new WebSocket|new EventSource/i;
+    const offenders = sourceFiles(join(root, "src/client"))
+      .filter((file) => !file.includes(`${join("src", "client", "clip")}/`))
+      .filter((file) => upload.test(readFileSync(file, "utf8")));
+    expect(offenders).toEqual([]);
   });
 
   it("publishes URL path locale codes and no live-price claim", () => {
@@ -89,6 +94,15 @@ describe("agent discovery files", () => {
     }
     expect(STATIC_FILE.test("/llms.txtx")).toBe(false);
     expect(STATIC_FILE.test("/.well-known/other.json")).toBe(false);
+  });
+
+  it("answers CORS preflight for the agent files only", async () => {
+    const preflight = await worker.fetch(new Request("https://cv.cm/tools.json", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
+    expect(preflight.status).toBe(204);
+    expect(preflight.headers.get("Access-Control-Allow-Origin")).toBe("*");
+    expect(preflight.headers.get("Access-Control-Allow-Methods")).toContain("GET");
+    const other = await worker.fetch(new Request("https://cv.cm/robots.txt", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
+    expect(other.status).toBe(405);
   });
 
   it("keeps other static files same-origin", async () => {

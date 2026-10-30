@@ -49,7 +49,7 @@
       "description": "Pastebin-style notes: text, images, files. Deleted after 10 views or one day.",
       "category": "share",
       "url": "https://cv.cm/en/clip/",
-      "data_handling": "Stores the note on cv.cm (text in cv.cm's database, files on its storage host s3.cv.cm) and deletes it after 10 views or 24 hours."
+      "data_handling": "Stores the note on cv.cm: text in its database, files on its storage host s3.cv.cm."
     },
     {
       "id": "qr",
@@ -401,7 +401,7 @@
       "description": "Hear text with device voices. Rate and pitch. Nothing is uploaded.",
       "category": "text",
       "url": "https://cv.cm/en/text-to-speech/",
-      "data_handling": "Runs in the page. Inputs are not uploaded."
+      "data_handling": "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider."
     },
     {
       "id": "diff",
