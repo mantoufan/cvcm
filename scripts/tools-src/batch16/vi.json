@@ -12,11 +12,26 @@
     "descZodiac": "Nhập ngày sinh để biết cung hoàng đạo, khoảng ngày và nguyên tố của cung, cùng con giáp, hành của năm và tên năm Can Chi, có tính đến ngày Tết Âm lịch."
   },
   "tools": {
-    "wheel": { "name": "Vòng quay may mắn", "blurb": "Chọn ngẫu nhiên một tên hoặc lựa chọn. Không tải lên." },
-    "average": { "name": "Tính trung bình cộng", "blurb": "Trung bình cộng, trung vị, yếu vị và độ lệch chuẩn. Không tải lên." },
-    "metronome": { "name": "Máy đếm nhịp", "blurb": "BPM, số phách mỗi ô nhịp và tap tempo. Chạy trong trình duyệt." },
-    "keyboard-test": { "name": "Kiểm tra bàn phím", "blurb": "Xem phím nào hoạt động. Không tải lên." },
-    "zodiac": { "name": "Xem cung hoàng đạo", "blurb": "Cung hoàng đạo và con giáp theo ngày sinh." }
+    "wheel": {
+      "name": "Vòng quay may mắn",
+      "blurb": "Chọn ngẫu nhiên một tên hoặc lựa chọn. Không tải lên."
+    },
+    "average": {
+      "name": "Tính trung bình cộng",
+      "blurb": "Trung bình cộng, trung vị, yếu vị và độ lệch chuẩn. Không tải lên."
+    },
+    "metronome": {
+      "name": "Máy đếm nhịp",
+      "blurb": "BPM, số phách mỗi ô nhịp và tap tempo. Chạy trong trình duyệt."
+    },
+    "keyboard-test": {
+      "name": "Kiểm tra bàn phím",
+      "blurb": "Xem phím nào hoạt động. Không tải lên."
+    },
+    "zodiac": {
+      "name": "Xem cung hoàng đạo",
+      "blurb": "Cung hoàng đạo và con giáp theo ngày sinh."
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "Trung bình nhân",
       "empty": "Gõ hoặc dán vài con số.",
       "skipped": "Đã bỏ qua {n} mục không phải số: {list}",
+      "truncated": "Chỉ dùng {max} số đầu tiên; {n} số còn lại không được tính.",
       "copy": "Sao chép",
       "clear": "Xóa",
       "copied": "Đã sao chép",
@@ -192,12 +208,39 @@
       "copy": "Sao chép",
       "copied": "Đã sao chép",
       "copyFailed": "Sao chép thất bại",
-      "s_aries": "Bạch Dương", "s_taurus": "Kim Ngưu", "s_gemini": "Song Tử", "s_cancer": "Cự Giải", "s_leo": "Sư Tử", "s_virgo": "Xử Nữ",
-      "s_libra": "Thiên Bình", "s_scorpio": "Bọ Cạp", "s_sagittarius": "Nhân Mã", "s_capricorn": "Ma Kết", "s_aquarius": "Bảo Bình", "s_pisces": "Song Ngư",
-      "e_fire": "Lửa", "e_earth": "Đất", "e_air": "Khí", "e_water": "Nước",
-      "a_rat": "Chuột", "a_ox": "Trâu", "a_tiger": "Hổ", "a_rabbit": "Mèo", "a_dragon": "Rồng", "a_snake": "Rắn",
-      "a_horse": "Ngựa", "a_goat": "Dê", "a_monkey": "Khỉ", "a_rooster": "Gà", "a_dog": "Chó", "a_pig": "Lợn",
-      "el_wood": "Mộc", "el_fire": "Hỏa", "el_earth": "Thổ", "el_metal": "Kim", "el_water": "Thủy"
+      "s_aries": "Bạch Dương",
+      "s_taurus": "Kim Ngưu",
+      "s_gemini": "Song Tử",
+      "s_cancer": "Cự Giải",
+      "s_leo": "Sư Tử",
+      "s_virgo": "Xử Nữ",
+      "s_libra": "Thiên Bình",
+      "s_scorpio": "Bọ Cạp",
+      "s_sagittarius": "Nhân Mã",
+      "s_capricorn": "Ma Kết",
+      "s_aquarius": "Bảo Bình",
+      "s_pisces": "Song Ngư",
+      "e_fire": "Lửa",
+      "e_earth": "Đất",
+      "e_air": "Khí",
+      "e_water": "Nước",
+      "a_rat": "Chuột",
+      "a_ox": "Trâu",
+      "a_tiger": "Hổ",
+      "a_rabbit": "Mèo",
+      "a_dragon": "Rồng",
+      "a_snake": "Rắn",
+      "a_horse": "Ngựa",
+      "a_goat": "Dê",
+      "a_monkey": "Khỉ",
+      "a_rooster": "Gà",
+      "a_dog": "Chó",
+      "a_pig": "Lợn",
+      "el_wood": "Mộc",
+      "el_fire": "Hỏa",
+      "el_earth": "Thổ",
+      "el_metal": "Kim",
+      "el_water": "Thủy"
     }
   },
   "guides": {

@@ -12,11 +12,26 @@
     "descZodiac": "輸入生日，查出星座、日期範圍和元素，以及生肖、年份五行和干支紀年，並依農曆新年日期判斷生肖。"
   },
   "tools": {
-    "wheel": { "name": "轉盤抽籤", "blurb": "隨機抽出一個名字或選項。不上傳。" },
-    "average": { "name": "平均數計算機", "blurb": "平均數、中位數、眾數和標準差。不上傳。" },
-    "metronome": { "name": "節拍器", "blurb": "BPM、每小節拍數和敲擊測速。在瀏覽器裡執行。" },
-    "keyboard-test": { "name": "鍵盤測試", "blurb": "看看哪些按鍵能用。不上傳。" },
-    "zodiac": { "name": "星座生肖查詢", "blurb": "依生日查星座和生肖。" }
+    "wheel": {
+      "name": "轉盤抽籤",
+      "blurb": "隨機抽出一個名字或選項。不上傳。"
+    },
+    "average": {
+      "name": "平均數計算機",
+      "blurb": "平均數、中位數、眾數和標準差。不上傳。"
+    },
+    "metronome": {
+      "name": "節拍器",
+      "blurb": "BPM、每小節拍數和敲擊測速。在瀏覽器裡執行。"
+    },
+    "keyboard-test": {
+      "name": "鍵盤測試",
+      "blurb": "看看哪些按鍵能用。不上傳。"
+    },
+    "zodiac": {
+      "name": "星座生肖查詢",
+      "blurb": "依生日查星座和生肖。"
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "幾何平均數",
       "empty": "請輸入或貼上一些數字。",
       "skipped": "已略過 {n} 個非數字項目：{list}",
+      "truncated": "只計算前 {max} 個數字，另有 {n} 個未計入。",
       "copy": "複製",
       "clear": "清空",
       "copied": "已複製",
@@ -192,12 +208,39 @@
       "copy": "複製",
       "copied": "已複製",
       "copyFailed": "複製失敗",
-      "s_aries": "牡羊座", "s_taurus": "金牛座", "s_gemini": "雙子座", "s_cancer": "巨蟹座", "s_leo": "獅子座", "s_virgo": "處女座",
-      "s_libra": "天秤座", "s_scorpio": "天蠍座", "s_sagittarius": "射手座", "s_capricorn": "摩羯座", "s_aquarius": "水瓶座", "s_pisces": "雙魚座",
-      "e_fire": "火", "e_earth": "土", "e_air": "風", "e_water": "水",
-      "a_rat": "鼠", "a_ox": "牛", "a_tiger": "虎", "a_rabbit": "兔", "a_dragon": "龍", "a_snake": "蛇",
-      "a_horse": "馬", "a_goat": "羊", "a_monkey": "猴", "a_rooster": "雞", "a_dog": "狗", "a_pig": "豬",
-      "el_wood": "木", "el_fire": "火", "el_earth": "土", "el_metal": "金", "el_water": "水"
+      "s_aries": "牡羊座",
+      "s_taurus": "金牛座",
+      "s_gemini": "雙子座",
+      "s_cancer": "巨蟹座",
+      "s_leo": "獅子座",
+      "s_virgo": "處女座",
+      "s_libra": "天秤座",
+      "s_scorpio": "天蠍座",
+      "s_sagittarius": "射手座",
+      "s_capricorn": "摩羯座",
+      "s_aquarius": "水瓶座",
+      "s_pisces": "雙魚座",
+      "e_fire": "火",
+      "e_earth": "土",
+      "e_air": "風",
+      "e_water": "水",
+      "a_rat": "鼠",
+      "a_ox": "牛",
+      "a_tiger": "虎",
+      "a_rabbit": "兔",
+      "a_dragon": "龍",
+      "a_snake": "蛇",
+      "a_horse": "馬",
+      "a_goat": "羊",
+      "a_monkey": "猴",
+      "a_rooster": "雞",
+      "a_dog": "狗",
+      "a_pig": "豬",
+      "el_wood": "木",
+      "el_fire": "火",
+      "el_earth": "土",
+      "el_metal": "金",
+      "el_water": "水"
     }
   },
   "guides": {

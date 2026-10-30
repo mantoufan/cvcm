@@ -638,8 +638,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .wheel-stage { display: grid; gap: 0.6rem; justify-items: center; }
 .wheel-stage > h2, .wheel-stage > .wheel-history { justify-self: stretch; }
 .wheel-wrap { position: relative; width: min(420px, 100%); aspect-ratio: 1; }
-.wheel-dial { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 6px 24px rgba(194, 51, 108, 0.18); will-change: transform; }
-.wheel-pointer { position: absolute; top: -6px; left: 50%; z-index: 1; width: 0; height: 0; transform: translateX(-50%); border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--pink-deep); filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2)); }
+.wheel-dial { display: block; width: 100%; height: 100%; border-radius: 50%; will-change: transform; }
+.wheel-pointer { position: absolute; top: -6px; left: 50%; z-index: 1; width: 0; height: 0; transform: translateX(-50%); border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--pink-deep); }
 .wheel-winner { min-height: 1.6em; margin: 0; font-size: 1.35rem; font-weight: 700; color: var(--pink-deep); text-align: center; word-break: break-word; }
 .wheel-history { margin: 0; padding-left: 1.4rem; max-height: 14rem; overflow: auto; line-height: 1.7; }
 .controls textarea { width: 100%; box-sizing: border-box; padding: 0.6rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font: inherit; resize: vertical; }

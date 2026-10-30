@@ -12,11 +12,26 @@
     "descZodiac": "Enter a birthday to get the star sign, its dates and element, and the Chinese zodiac animal, element and year name, with the Lunar New Year date taken into account."
   },
   "tools": {
-    "wheel": { "name": "Spin the wheel", "blurb": "Pick a name or option at random. Nothing is uploaded." },
-    "average": { "name": "Average calculator", "blurb": "Mean, median, mode and standard deviation. Nothing is uploaded." },
-    "metronome": { "name": "Metronome", "blurb": "BPM, beats per bar and tap tempo. Runs in your browser." },
-    "keyboard-test": { "name": "Keyboard tester", "blurb": "See which keys work. Nothing is uploaded." },
-    "zodiac": { "name": "Zodiac sign finder", "blurb": "Star sign and Chinese zodiac from a birthday." }
+    "wheel": {
+      "name": "Spin the wheel",
+      "blurb": "Pick a name or option at random. Nothing is uploaded."
+    },
+    "average": {
+      "name": "Average calculator",
+      "blurb": "Mean, median, mode and standard deviation. Nothing is uploaded."
+    },
+    "metronome": {
+      "name": "Metronome",
+      "blurb": "BPM, beats per bar and tap tempo. Runs in your browser."
+    },
+    "keyboard-test": {
+      "name": "Keyboard tester",
+      "blurb": "See which keys work. Nothing is uploaded."
+    },
+    "zodiac": {
+      "name": "Zodiac sign finder",
+      "blurb": "Star sign and Chinese zodiac from a birthday."
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "Geometric mean",
       "empty": "Type or paste some numbers.",
       "skipped": "Skipped {n} item(s) that are not numbers: {list}",
+      "truncated": "Only the first {max} numbers are used; {n} more were left out.",
       "copy": "Copy",
       "clear": "Clear",
       "copied": "Copied",
@@ -192,12 +208,39 @@
       "copy": "Copy",
       "copied": "Copied",
       "copyFailed": "Copy failed",
-      "s_aries": "Aries", "s_taurus": "Taurus", "s_gemini": "Gemini", "s_cancer": "Cancer", "s_leo": "Leo", "s_virgo": "Virgo",
-      "s_libra": "Libra", "s_scorpio": "Scorpio", "s_sagittarius": "Sagittarius", "s_capricorn": "Capricorn", "s_aquarius": "Aquarius", "s_pisces": "Pisces",
-      "e_fire": "Fire", "e_earth": "Earth", "e_air": "Air", "e_water": "Water",
-      "a_rat": "Rat", "a_ox": "Ox", "a_tiger": "Tiger", "a_rabbit": "Rabbit", "a_dragon": "Dragon", "a_snake": "Snake",
-      "a_horse": "Horse", "a_goat": "Goat", "a_monkey": "Monkey", "a_rooster": "Rooster", "a_dog": "Dog", "a_pig": "Pig",
-      "el_wood": "Wood", "el_fire": "Fire", "el_earth": "Earth", "el_metal": "Metal", "el_water": "Water"
+      "s_aries": "Aries",
+      "s_taurus": "Taurus",
+      "s_gemini": "Gemini",
+      "s_cancer": "Cancer",
+      "s_leo": "Leo",
+      "s_virgo": "Virgo",
+      "s_libra": "Libra",
+      "s_scorpio": "Scorpio",
+      "s_sagittarius": "Sagittarius",
+      "s_capricorn": "Capricorn",
+      "s_aquarius": "Aquarius",
+      "s_pisces": "Pisces",
+      "e_fire": "Fire",
+      "e_earth": "Earth",
+      "e_air": "Air",
+      "e_water": "Water",
+      "a_rat": "Rat",
+      "a_ox": "Ox",
+      "a_tiger": "Tiger",
+      "a_rabbit": "Rabbit",
+      "a_dragon": "Dragon",
+      "a_snake": "Snake",
+      "a_horse": "Horse",
+      "a_goat": "Goat",
+      "a_monkey": "Monkey",
+      "a_rooster": "Rooster",
+      "a_dog": "Dog",
+      "a_pig": "Pig",
+      "el_wood": "Wood",
+      "el_fire": "Fire",
+      "el_earth": "Earth",
+      "el_metal": "Metal",
+      "el_water": "Water"
     }
   },
   "guides": {

@@ -12,11 +12,26 @@
     "descZodiac": "Masukkan tanggal lahir untuk mengetahui zodiak, rentang tanggal dan elemennya, serta shio, elemen, dan nama tahunnya, dengan memperhitungkan tanggal Imlek."
   },
   "tools": {
-    "wheel": { "name": "Roda putar acak", "blurb": "Pilih nama atau opsi secara acak. Tidak ada unggahan." },
-    "average": { "name": "Kalkulator rata-rata", "blurb": "Rata-rata, median, modus, dan simpangan baku. Tidak ada unggahan." },
-    "metronome": { "name": "Metronom", "blurb": "BPM, ketukan per birama, dan tap tempo. Berjalan di browser Anda." },
-    "keyboard-test": { "name": "Tes keyboard", "blurb": "Lihat tombol mana yang berfungsi. Tidak ada unggahan." },
-    "zodiac": { "name": "Cek zodiak dan shio", "blurb": "Zodiak dan shio dari tanggal lahir." }
+    "wheel": {
+      "name": "Roda putar acak",
+      "blurb": "Pilih nama atau opsi secara acak. Tidak ada unggahan."
+    },
+    "average": {
+      "name": "Kalkulator rata-rata",
+      "blurb": "Rata-rata, median, modus, dan simpangan baku. Tidak ada unggahan."
+    },
+    "metronome": {
+      "name": "Metronom",
+      "blurb": "BPM, ketukan per birama, dan tap tempo. Berjalan di browser Anda."
+    },
+    "keyboard-test": {
+      "name": "Tes keyboard",
+      "blurb": "Lihat tombol mana yang berfungsi. Tidak ada unggahan."
+    },
+    "zodiac": {
+      "name": "Cek zodiak dan shio",
+      "blurb": "Zodiak dan shio dari tanggal lahir."
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "Rata-rata geometrik",
       "empty": "Ketik atau tempel beberapa angka.",
       "skipped": "{n} item yang bukan angka dilewati: {list}",
+      "truncated": "Hanya {max} angka pertama yang dihitung; {n} angka lainnya tidak disertakan.",
       "copy": "Salin",
       "clear": "Hapus",
       "copied": "Tersalin",
@@ -192,12 +208,39 @@
       "copy": "Salin",
       "copied": "Tersalin",
       "copyFailed": "Gagal menyalin",
-      "s_aries": "Aries", "s_taurus": "Taurus", "s_gemini": "Gemini", "s_cancer": "Cancer", "s_leo": "Leo", "s_virgo": "Virgo",
-      "s_libra": "Libra", "s_scorpio": "Scorpio", "s_sagittarius": "Sagitarius", "s_capricorn": "Capricorn", "s_aquarius": "Aquarius", "s_pisces": "Pisces",
-      "e_fire": "Api", "e_earth": "Tanah", "e_air": "Udara", "e_water": "Air",
-      "a_rat": "Tikus", "a_ox": "Kerbau", "a_tiger": "Macan", "a_rabbit": "Kelinci", "a_dragon": "Naga", "a_snake": "Ular",
-      "a_horse": "Kuda", "a_goat": "Kambing", "a_monkey": "Monyet", "a_rooster": "Ayam", "a_dog": "Anjing", "a_pig": "Babi",
-      "el_wood": "Kayu", "el_fire": "Api", "el_earth": "Tanah", "el_metal": "Logam", "el_water": "Air"
+      "s_aries": "Aries",
+      "s_taurus": "Taurus",
+      "s_gemini": "Gemini",
+      "s_cancer": "Cancer",
+      "s_leo": "Leo",
+      "s_virgo": "Virgo",
+      "s_libra": "Libra",
+      "s_scorpio": "Scorpio",
+      "s_sagittarius": "Sagitarius",
+      "s_capricorn": "Capricorn",
+      "s_aquarius": "Aquarius",
+      "s_pisces": "Pisces",
+      "e_fire": "Api",
+      "e_earth": "Tanah",
+      "e_air": "Udara",
+      "e_water": "Air",
+      "a_rat": "Tikus",
+      "a_ox": "Kerbau",
+      "a_tiger": "Macan",
+      "a_rabbit": "Kelinci",
+      "a_dragon": "Naga",
+      "a_snake": "Ular",
+      "a_horse": "Kuda",
+      "a_goat": "Kambing",
+      "a_monkey": "Monyet",
+      "a_rooster": "Ayam",
+      "a_dog": "Anjing",
+      "a_pig": "Babi",
+      "el_wood": "Kayu",
+      "el_fire": "Api",
+      "el_earth": "Tanah",
+      "el_metal": "Logam",
+      "el_water": "Air"
     }
   },
   "guides": {

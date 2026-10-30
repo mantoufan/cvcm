@@ -97,6 +97,15 @@ function onUp(e: KeyboardEvent): void {
   const code = e.code || e.key;
   held.delete(code);
   keyEls.get(code)?.classList.remove("down");
+  // Some keys (Print Screen on Windows) only fire keyup; count them as working too.
+  if (!tested.has(code)) {
+    e.preventDefault();
+    tested.add(code);
+    keyEls.get(code)?.classList.add("done");
+    log.unshift(`${e.key === " " ? "Space" : e.key} · ${code}`);
+    log = log.slice(0, 30);
+    paint(e);
+  }
   // macOS swallows the keyup of other keys while ⌘ is down; clear them when ⌘ is released.
   if (code.startsWith("Meta")) releaseAll();
   paintCount();

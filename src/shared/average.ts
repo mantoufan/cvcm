@@ -1,19 +1,21 @@
 export const MAX_VALUES = 100000;
 
-export type ParsedNumbers = { values: number[]; skipped: string[] };
+export type ParsedNumbers = { values: number[]; skipped: string[]; truncated: number };
 
 /** Numbers separated by spaces, new lines, commas or semicolons. Decimals use a dot. Anything else is skipped. */
 export function parseNumbers(text: string): ParsedNumbers {
   const values: number[] = [];
   const skipped: string[] = [];
+  let truncated = 0;
   for (const raw of text.split(/[\s,;，；、]+/)) {
     if (raw === "") continue;
     const token = raw.replace(/[−–]/g, "-");
     const n = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(token) ? Number(token) : NaN;
-    if (Number.isFinite(n) && values.length < MAX_VALUES) values.push(n);
-    else if (!Number.isFinite(n)) skipped.push(raw);
+    if (!Number.isFinite(n)) skipped.push(raw);
+    else if (values.length < MAX_VALUES) values.push(n);
+    else truncated++;
   }
-  return { values, skipped };
+  return { values, skipped, truncated };
 }
 
 export type Stats = {
@@ -50,8 +52,13 @@ export function stats(values: readonly number[]): Stats | null {
   const mid = count >> 1;
   const median = count % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
   const freq = new Map<number, number>();
-  for (const v of sorted) freq.set(v, (freq.get(v) ?? 0) + 1);
-  const top = Math.max(...freq.values());
+  // Track the top count in the loop: spreading 100k distinct values into Math.max overflows Safari's argument limit.
+  let top = 0;
+  for (const v of sorted) {
+    const n = (freq.get(v) ?? 0) + 1;
+    freq.set(v, n);
+    if (n > top) top = n;
+  }
   // No mode when every value appears the same number of times (all unique, or 1 1 2 2).
   const modes = freq.size > 1 && [...freq.values()].some((n) => n !== top) ? [...freq].filter(([, n]) => n === top).map(([v]) => v) : [];
   let sq = 0;

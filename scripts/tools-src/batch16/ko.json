@@ -12,11 +12,26 @@
     "descZodiac": "생일을 입력하면 별자리와 기간, 원소, 그리고 띠 동물, 오행, 간지를 알려 줍니다. 음력 설날 날짜도 반영합니다."
   },
   "tools": {
-    "wheel": { "name": "돌림판", "blurb": "이름이나 선택지를 무작위로 고릅니다. 업로드 없음." },
-    "average": { "name": "평균 계산기", "blurb": "평균, 중앙값, 최빈값, 표준편차. 업로드 없음." },
-    "metronome": { "name": "메트로놈", "blurb": "BPM, 마디당 박 수, 탭 템포. 브라우저에서 동작합니다." },
-    "keyboard-test": { "name": "키보드 테스트", "blurb": "어떤 키가 작동하는지 확인합니다. 업로드 없음." },
-    "zodiac": { "name": "별자리·띠 찾기", "blurb": "생일로 별자리와 띠를 찾습니다." }
+    "wheel": {
+      "name": "돌림판",
+      "blurb": "이름이나 선택지를 무작위로 고릅니다. 업로드 없음."
+    },
+    "average": {
+      "name": "평균 계산기",
+      "blurb": "평균, 중앙값, 최빈값, 표준편차. 업로드 없음."
+    },
+    "metronome": {
+      "name": "메트로놈",
+      "blurb": "BPM, 마디당 박 수, 탭 템포. 브라우저에서 동작합니다."
+    },
+    "keyboard-test": {
+      "name": "키보드 테스트",
+      "blurb": "어떤 키가 작동하는지 확인합니다. 업로드 없음."
+    },
+    "zodiac": {
+      "name": "별자리·띠 찾기",
+      "blurb": "생일로 별자리와 띠를 찾습니다."
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "기하평균",
       "empty": "숫자를 입력하거나 붙여 넣으세요.",
       "skipped": "숫자가 아닌 항목 {n}개를 건너뛰었습니다: {list}",
+      "truncated": "처음 {max}개 숫자만 계산합니다. 나머지 {n}개는 제외했습니다.",
       "copy": "복사",
       "clear": "지우기",
       "copied": "복사됨",
@@ -192,12 +208,39 @@
       "copy": "복사",
       "copied": "복사됨",
       "copyFailed": "복사 실패",
-      "s_aries": "양자리", "s_taurus": "황소자리", "s_gemini": "쌍둥이자리", "s_cancer": "게자리", "s_leo": "사자자리", "s_virgo": "처녀자리",
-      "s_libra": "천칭자리", "s_scorpio": "전갈자리", "s_sagittarius": "사수자리", "s_capricorn": "염소자리", "s_aquarius": "물병자리", "s_pisces": "물고기자리",
-      "e_fire": "불", "e_earth": "흙", "e_air": "공기", "e_water": "물",
-      "a_rat": "쥐", "a_ox": "소", "a_tiger": "호랑이", "a_rabbit": "토끼", "a_dragon": "용", "a_snake": "뱀",
-      "a_horse": "말", "a_goat": "양", "a_monkey": "원숭이", "a_rooster": "닭", "a_dog": "개", "a_pig": "돼지",
-      "el_wood": "목(나무)", "el_fire": "화(불)", "el_earth": "토(흙)", "el_metal": "금(쇠)", "el_water": "수(물)"
+      "s_aries": "양자리",
+      "s_taurus": "황소자리",
+      "s_gemini": "쌍둥이자리",
+      "s_cancer": "게자리",
+      "s_leo": "사자자리",
+      "s_virgo": "처녀자리",
+      "s_libra": "천칭자리",
+      "s_scorpio": "전갈자리",
+      "s_sagittarius": "사수자리",
+      "s_capricorn": "염소자리",
+      "s_aquarius": "물병자리",
+      "s_pisces": "물고기자리",
+      "e_fire": "불",
+      "e_earth": "흙",
+      "e_air": "공기",
+      "e_water": "물",
+      "a_rat": "쥐",
+      "a_ox": "소",
+      "a_tiger": "호랑이",
+      "a_rabbit": "토끼",
+      "a_dragon": "용",
+      "a_snake": "뱀",
+      "a_horse": "말",
+      "a_goat": "양",
+      "a_monkey": "원숭이",
+      "a_rooster": "닭",
+      "a_dog": "개",
+      "a_pig": "돼지",
+      "el_wood": "목(나무)",
+      "el_fire": "화(불)",
+      "el_earth": "토(흙)",
+      "el_metal": "금(쇠)",
+      "el_water": "수(물)"
     }
   },
   "guides": {

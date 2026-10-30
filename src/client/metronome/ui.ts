@@ -19,12 +19,13 @@ let audio: AudioContext | null = null;
 let timer = 0;
 let nextTime = 0;
 let tick = 0;
+let tickSub = 1;
 let running = false;
 let taps: number[] = [];
 let visualTimers: number[] = [];
 
 export function mountMetronome(host: HTMLElement): void {
-  bpmEl = h("input", { type: "number", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", inputmode: "numeric", value: "120", "data-field": "bpm", "aria-label": t("metronome.bpm"), onInput: () => typedBpm(), onChange: () => setBpm(Number(bpmEl?.value)) });
+  bpmEl = h("input", { type: "number", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", inputmode: "numeric", value: "120", "data-field": "bpm", "aria-label": t("metronome.bpm"), onInput: () => typedBpm(), onChange: () => setBpm(bpmEl?.value.trim() ? Number(bpmEl.value) : bpm()) });
   sliderEl = h("input", { type: "range", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", value: "120", "data-field": "slider", "aria-label": t("metronome.bpm"), onInput: () => setBpm(Number(sliderEl?.value)) });
   beatsEl = h("select", { "data-field": "beats", onChange: () => { drawDots(); restartBar(); } },
     ...BEATS.map((n) => h("option", { value: String(n), selected: n === 4 }, String(n))),
@@ -145,6 +146,7 @@ function start(): void {
   }
   running = true;
   tick = 0;
+  tickSub = Number(subEl?.value) || 1;
   nextTime = audio.currentTime + 0.06;
   timer = window.setInterval(schedule, LOOKAHEAD_MS);
   schedule();
@@ -168,6 +170,13 @@ function onVisibility(): void {
 function schedule(): void {
   if (!audio || !running) return;
   const sub = Number(subEl?.value) || 1;
+  // A new subdivision continues from the next beat, so the accent stays on the downbeat.
+  if (sub !== tickSub) {
+    tick = (Math.ceil(tick / tickSub) * sub) % (beats() * sub);
+    tickSub = sub;
+  }
+  // After a long timer stall, skip missed clicks instead of playing them all at once.
+  if (nextTime < audio.currentTime) nextTime = audio.currentTime + 0.05;
   // Settings are read every click, so changes take effect on the next one.
   while (nextTime < audio.currentTime + SCHEDULE_AHEAD) {
     const perBar = beats() * sub;

@@ -91,7 +91,8 @@ export function zodiacFor(year: number, month: number, day: number): ZodiacResul
   if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
   const newYear = lunarNewYear(year);
   const md = month * 100 + day;
-  const beforeNewYear = newYear ? md < newYear[0] * 100 + newYear[1] : false;
+  // New Year is never before 21 January, so earlier birthdays always belong to the previous lunar year.
+  const beforeNewYear = newYear ? md < newYear[0] * 100 + newYear[1] : md < 121;
   // Without the calendar, a birthday from 21 January to 20 February may belong to either year.
   const uncertain = !newYear && md >= 121 && md <= 220;
   const lunarYearStart = beforeNewYear ? year - 1 : year;

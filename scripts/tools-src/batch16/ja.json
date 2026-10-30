@@ -12,11 +12,26 @@
     "descZodiac": "誕生日を入れると星座とその期間・エレメント、干支の動物・五行・干支名を表示。旧正月（春節）の日付も考慮します。"
   },
   "tools": {
-    "wheel": { "name": "ルーレット", "blurb": "名前や選択肢をランダムに選ぶ。アップロードなし。" },
-    "average": { "name": "平均値計算", "blurb": "平均値、中央値、最頻値、標準偏差。アップロードなし。" },
-    "metronome": { "name": "メトロノーム", "blurb": "BPM、1 小節の拍数、タップテンポ。ブラウザで動きます。" },
-    "keyboard-test": { "name": "キーボードテスト", "blurb": "どのキーが反応するか確認。アップロードなし。" },
-    "zodiac": { "name": "星座・干支診断", "blurb": "誕生日から星座と干支。" }
+    "wheel": {
+      "name": "ルーレット",
+      "blurb": "名前や選択肢をランダムに選ぶ。アップロードなし。"
+    },
+    "average": {
+      "name": "平均値計算",
+      "blurb": "平均値、中央値、最頻値、標準偏差。アップロードなし。"
+    },
+    "metronome": {
+      "name": "メトロノーム",
+      "blurb": "BPM、1 小節の拍数、タップテンポ。ブラウザで動きます。"
+    },
+    "keyboard-test": {
+      "name": "キーボードテスト",
+      "blurb": "どのキーが反応するか確認。アップロードなし。"
+    },
+    "zodiac": {
+      "name": "星座・干支診断",
+      "blurb": "誕生日から星座と干支。"
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "幾何平均",
       "empty": "数値を入力するか貼り付けてください。",
       "skipped": "数値でない {n} 個を飛ばしました：{list}",
+      "truncated": "計算に使うのは最初の {max} 個までです。残りの {n} 個は含まれていません。",
       "copy": "コピー",
       "clear": "クリア",
       "copied": "コピーしました",
@@ -192,12 +208,39 @@
       "copy": "コピー",
       "copied": "コピーしました",
       "copyFailed": "コピーできませんでした",
-      "s_aries": "おひつじ座", "s_taurus": "おうし座", "s_gemini": "ふたご座", "s_cancer": "かに座", "s_leo": "しし座", "s_virgo": "おとめ座",
-      "s_libra": "てんびん座", "s_scorpio": "さそり座", "s_sagittarius": "いて座", "s_capricorn": "やぎ座", "s_aquarius": "みずがめ座", "s_pisces": "うお座",
-      "e_fire": "火", "e_earth": "地", "e_air": "風", "e_water": "水",
-      "a_rat": "子（ネズミ）", "a_ox": "丑（ウシ）", "a_tiger": "寅（トラ）", "a_rabbit": "卯（ウサギ）", "a_dragon": "辰（タツ）", "a_snake": "巳（ヘビ）",
-      "a_horse": "午（ウマ）", "a_goat": "未（ヒツジ）", "a_monkey": "申（サル）", "a_rooster": "酉（トリ）", "a_dog": "戌（イヌ）", "a_pig": "亥（イノシシ）",
-      "el_wood": "木", "el_fire": "火", "el_earth": "土", "el_metal": "金", "el_water": "水"
+      "s_aries": "おひつじ座",
+      "s_taurus": "おうし座",
+      "s_gemini": "ふたご座",
+      "s_cancer": "かに座",
+      "s_leo": "しし座",
+      "s_virgo": "おとめ座",
+      "s_libra": "てんびん座",
+      "s_scorpio": "さそり座",
+      "s_sagittarius": "いて座",
+      "s_capricorn": "やぎ座",
+      "s_aquarius": "みずがめ座",
+      "s_pisces": "うお座",
+      "e_fire": "火",
+      "e_earth": "地",
+      "e_air": "風",
+      "e_water": "水",
+      "a_rat": "子（ネズミ）",
+      "a_ox": "丑（ウシ）",
+      "a_tiger": "寅（トラ）",
+      "a_rabbit": "卯（ウサギ）",
+      "a_dragon": "辰（タツ）",
+      "a_snake": "巳（ヘビ）",
+      "a_horse": "午（ウマ）",
+      "a_goat": "未（ヒツジ）",
+      "a_monkey": "申（サル）",
+      "a_rooster": "酉（トリ）",
+      "a_dog": "戌（イヌ）",
+      "a_pig": "亥（イノシシ）",
+      "el_wood": "木",
+      "el_fire": "火",
+      "el_earth": "土",
+      "el_metal": "金",
+      "el_water": "水"
     }
   },
   "guides": {

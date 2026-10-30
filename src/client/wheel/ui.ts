@@ -148,6 +148,8 @@ function spin(): void {
   const ms = reduce ? 600 : SPIN_MS;
   spinning = true;
   if (spinBtn) spinBtn.disabled = true;
+  // The dial must match the list the winner was drawn from until it lands.
+  if (entriesEl) entriesEl.readOnly = true;
   if (outEl) outEl.textContent = t("wheel.spinning");
   dialEl.style.transition = `transform ${ms}ms cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
   dialEl.style.transform = `rotate(${rotation}deg)`;
@@ -156,6 +158,7 @@ function spin(): void {
 
 function land(list: string[]): void {
   spinning = false;
+  if (entriesEl) entriesEl.readOnly = false;
   const winner = list[indexAt(rotation, list.length)];
   history.unshift(winner);
   history = history.slice(0, 20);

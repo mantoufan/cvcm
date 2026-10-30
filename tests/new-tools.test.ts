@@ -1093,6 +1093,10 @@ describe("average", () => {
     expect(stats([])).toBeNull();
     expect(weightedMean([80, 90], [1, 3])).toBe(87.5);
     expect(weightedMean([80], [0])).toBeNull();
+    const many = parseNumbers(Array.from({ length: 100005 }, (_, i) => i).join(" "));
+    expect(many.values).toHaveLength(100000);
+    expect(many.truncated).toBe(5);
+    expect(stats(many.values)!.modes).toEqual([]);
   });
 });
 

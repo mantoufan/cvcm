@@ -12,11 +12,26 @@
     "descZodiac": "Escribe una fecha de nacimiento y obtén el signo zodiacal, sus fechas y elemento, y el animal del horóscopo chino, su elemento y el nombre del año, teniendo en cuenta el Año Nuevo Lunar."
   },
   "tools": {
-    "wheel": { "name": "Ruleta aleatoria", "blurb": "Elige un nombre u opción al azar. No se sube nada." },
-    "average": { "name": "Calculadora de promedio", "blurb": "Media, mediana, moda y desviación estándar. No se sube nada." },
-    "metronome": { "name": "Metrónomo", "blurb": "BPM, tiempos por compás y tap tempo. Funciona en tu navegador." },
-    "keyboard-test": { "name": "Test de teclado", "blurb": "Mira qué teclas funcionan. No se sube nada." },
-    "zodiac": { "name": "Calculadora de signo zodiacal", "blurb": "Signo zodiacal y horóscopo chino a partir de una fecha de nacimiento." }
+    "wheel": {
+      "name": "Ruleta aleatoria",
+      "blurb": "Elige un nombre u opción al azar. No se sube nada."
+    },
+    "average": {
+      "name": "Calculadora de promedio",
+      "blurb": "Media, mediana, moda y desviación estándar. No se sube nada."
+    },
+    "metronome": {
+      "name": "Metrónomo",
+      "blurb": "BPM, tiempos por compás y tap tempo. Funciona en tu navegador."
+    },
+    "keyboard-test": {
+      "name": "Test de teclado",
+      "blurb": "Mira qué teclas funcionan. No se sube nada."
+    },
+    "zodiac": {
+      "name": "Calculadora de signo zodiacal",
+      "blurb": "Signo zodiacal y horóscopo chino a partir de una fecha de nacimiento."
+    }
   },
   "faq": {
     "wheel": {
@@ -122,6 +137,7 @@
       "geometric": "Media geométrica",
       "empty": "Escribe o pega algunos números.",
       "skipped": "Se omitieron {n} elemento(s) que no son números: {list}",
+      "truncated": "Solo se usan los primeros {max} números; quedaron fuera {n} más.",
       "copy": "Copiar",
       "clear": "Borrar",
       "copied": "Copiado",
@@ -192,12 +208,39 @@
       "copy": "Copiar",
       "copied": "Copiado",
       "copyFailed": "No se pudo copiar",
-      "s_aries": "Aries", "s_taurus": "Tauro", "s_gemini": "Géminis", "s_cancer": "Cáncer", "s_leo": "Leo", "s_virgo": "Virgo",
-      "s_libra": "Libra", "s_scorpio": "Escorpio", "s_sagittarius": "Sagitario", "s_capricorn": "Capricornio", "s_aquarius": "Acuario", "s_pisces": "Piscis",
-      "e_fire": "Fuego", "e_earth": "Tierra", "e_air": "Aire", "e_water": "Agua",
-      "a_rat": "Rata", "a_ox": "Buey", "a_tiger": "Tigre", "a_rabbit": "Conejo", "a_dragon": "Dragón", "a_snake": "Serpiente",
-      "a_horse": "Caballo", "a_goat": "Cabra", "a_monkey": "Mono", "a_rooster": "Gallo", "a_dog": "Perro", "a_pig": "Cerdo",
-      "el_wood": "Madera", "el_fire": "Fuego", "el_earth": "Tierra", "el_metal": "Metal", "el_water": "Agua"
+      "s_aries": "Aries",
+      "s_taurus": "Tauro",
+      "s_gemini": "Géminis",
+      "s_cancer": "Cáncer",
+      "s_leo": "Leo",
+      "s_virgo": "Virgo",
+      "s_libra": "Libra",
+      "s_scorpio": "Escorpio",
+      "s_sagittarius": "Sagitario",
+      "s_capricorn": "Capricornio",
+      "s_aquarius": "Acuario",
+      "s_pisces": "Piscis",
+      "e_fire": "Fuego",
+      "e_earth": "Tierra",
+      "e_air": "Aire",
+      "e_water": "Agua",
+      "a_rat": "Rata",
+      "a_ox": "Buey",
+      "a_tiger": "Tigre",
+      "a_rabbit": "Conejo",
+      "a_dragon": "Dragón",
+      "a_snake": "Serpiente",
+      "a_horse": "Caballo",
+      "a_goat": "Cabra",
+      "a_monkey": "Mono",
+      "a_rooster": "Gallo",
+      "a_dog": "Perro",
+      "a_pig": "Cerdo",
+      "el_wood": "Madera",
+      "el_fire": "Fuego",
+      "el_earth": "Tierra",
+      "el_metal": "Metal",
+      "el_water": "Agua"
     }
   },
   "guides": {

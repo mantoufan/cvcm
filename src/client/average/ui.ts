@@ -11,7 +11,7 @@ let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountAverage(host: HTMLElement): void {
-  inputEl = h("textarea", { rows: "8", "data-field": "numbers", spellcheck: "false", inputmode: "decimal", "aria-label": t("average.numbers"), onInput: () => paint() });
+  inputEl = h("textarea", { rows: "8", "data-field": "numbers", spellcheck: "false", "aria-label": t("average.numbers"), onInput: () => paint() });
   inputEl.value = "12, 15, 15, 18, 20, 22, 30";
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   noteEl = h("p", { class: "hint" });
@@ -52,12 +52,13 @@ export function unmountAverage(): void {
 
 function paint(): void {
   if (!outEl || !noteEl) return;
-  const { values, skipped } = parseNumbers(inputEl?.value ?? "");
+  const { values, skipped, truncated } = parseNumbers(inputEl?.value ?? "");
   const s = stats(values);
   outEl.replaceChildren();
-  noteEl.textContent = skipped.length
-    ? t("average.skipped", { n: skipped.length, list: skipped.slice(0, 5).join(" ") + (skipped.length > 5 ? " …" : "") })
-    : "";
+  noteEl.textContent = [
+    skipped.length ? t("average.skipped", { n: skipped.length, list: skipped.slice(0, 5).join(" ") + (skipped.length > 5 ? " …" : "") }) : "",
+    truncated ? t("average.truncated", { n: new Intl.NumberFormat(locale()).format(truncated), max: new Intl.NumberFormat(locale()).format(MAX_VALUES) }) : "",
+  ].filter(Boolean).join(" ");
   if (!s) {
     last = "";
     outEl.append(h("p", { class: "muted" }, t("average.empty")));
