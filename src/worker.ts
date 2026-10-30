@@ -95,9 +95,9 @@ export default {
         status: 204,
         headers: {
           "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-          "Access-Control-Allow-Headers": "*",
+          // `*` does not cover Authorization, so name it for agent frameworks that always send one.
+          "Access-Control-Allow-Headers": "*, Authorization",
           "Access-Control-Max-Age": "86400",
-          "Cache-Control": "no-store",
         },
       });
       return withHeaders(preflight, url.pathname);
@@ -105,7 +105,10 @@ export default {
     if (url.hostname === "www.cv.cm") {
       url.hostname = "cv.cm";
       const status = request.method === "GET" || request.method === "HEAD" ? 301 : 307;
-      return redirect(url.toString(), status);
+      const moved = redirect(url.toString(), status);
+      // A cross-origin fetch follows a redirect only if the redirect itself passes the CORS check.
+      if (isAgentDocPath(url.pathname)) moved.headers.set("Access-Control-Allow-Origin", "*");
+      return moved;
     }
 
     const store = env.DB ? d1Store(env.DB) : null;
@@ -113,7 +116,7 @@ export default {
     if (api) return api;
 
     if (request.method !== "GET" && request.method !== "HEAD") {
-      return new Response("Method Not Allowed", {
+      const notAllowed = new Response("Method Not Allowed", {
         status: 405,
         headers: {
           Allow: isAgentDocPath(url.pathname) ? `${ALLOWED}, OPTIONS` : ALLOWED,
@@ -121,6 +124,7 @@ export default {
           "Content-Type": "text/plain; charset=utf-8",
         },
       });
+      return isAgentDocPath(url.pathname) ? withHeaders(notAllowed, url.pathname) : notAllowed;
     }
 
     const path = url.pathname;

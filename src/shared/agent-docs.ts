@@ -64,12 +64,15 @@ export type AgentTool = {
   data_handling: string;
 };
 
+/** Privacy sentences in tool blurbs ("Nothing is uploaded.", "On-device." ...): the data-handling sentence replaces them. */
+const BLURB_PRIVACY_NOTE = /\s*(?:Nothing is uploaded|No upload|Runs in (?:the|your) browser|On-device)\.|,\s*on-device(?=\.)/g;
+
 function agentTool(id: ToolId, category: CategoryId): AgentTool {
   const strings = TOOL_STRINGS[id];
   return {
     id,
     name: strings?.name ?? id,
-    description: strings?.blurb ?? "",
+    description: (strings?.blurb ?? "").replace(BLURB_PRIVACY_NOTE, ""),
     category,
     url: `${SITE_ORIGIN}${appHref("en", id)}`,
     data_handling: dataHandling(id),
@@ -84,8 +87,6 @@ export function agentTools(): AgentTool[] {
 const LOCALE_PATHS = LOCALES.map(localePath);
 const URL_PATTERN = `${SITE_ORIGIN}/{locale}/{tool}/`;
 const SITE_HOST = new URL(SITE_ORIGIN).host;
-/** Privacy sentences in tool blurbs ("Nothing is uploaded.", "On-device." ...): the data-handling sentence replaces them. */
-export const BLURB_PRIVACY_NOTE = /\s*(?:Nothing is uploaded|No upload|Runs in (?:the|your) browser|On-device)\.|,\s*on-device(?=\.)/g;
 
 const MODEL_BYTES = Object.values(AI_MODELS).flatMap((model) => Object.values(model.variants).map((v) => v.bytes));
 
@@ -111,7 +112,7 @@ export function buildLlmsTxt(): string {
   for (const category of CATEGORIES) {
     lines.push(`## ${CATEGORY_TITLE[category.id]}`, "");
     for (const tool of tools.filter((t) => t.category === category.id)) {
-      lines.push(`- [${tool.name}](${tool.url}): ${tool.description.replace(BLURB_PRIVACY_NOTE, "")} ${tool.data_handling}`);
+      lines.push(`- [${tool.name}](${tool.url}): ${tool.description} ${tool.data_handling}`);
     }
     lines.push("");
   }

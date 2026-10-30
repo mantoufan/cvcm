@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { BLURB_PRIVACY_NOTE, DATA_HANDLING_GROUPS, LOCAL_FILE_INPUT_TOOLS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { DATA_HANDLING_GROUPS, LOCAL_FILE_INPUT_TOOLS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -23,10 +23,9 @@ describe("agent discovery files", () => {
     expect(llms.startsWith("# cv.cm\n\n> ")).toBe(true);
     for (const tool of tools) {
       expect(tool.description).not.toBe("");
-      const blurb = tool.description.replace(BLURB_PRIVACY_NOTE, "");
-      // The blurb's own privacy sentence is dropped, so each line states data handling once.
-      expect(blurb).not.toMatch(/upload|on-device|in (the|your) browser/i);
-      expect(llms).toContain(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${blurb} ${tool.data_handling}`);
+      // The blurb's own privacy sentence is dropped (in tools.json too), so data handling is stated once.
+      expect(tool.description).not.toMatch(/upload|on-device|in (the|your) browser/i);
+      expect(llms).toContain(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${tool.description} ${tool.data_handling}`);
     }
     expect(llms).toContain("Not a legal e-sign. Runs in the page.");
     expect(llms).toMatch(/model once on first use \(\d+(\.\d)? MB to \d+ MB,/);
@@ -132,10 +131,15 @@ describe("agent discovery files", () => {
     expect(preflight.headers.get("Access-Control-Allow-Origin")).toBe("*");
     expect(preflight.headers.get("Access-Control-Allow-Methods")).toContain("GET");
     expect(preflight.headers.get("X-Content-Type-Options")).toBe("nosniff");
+    expect(preflight.headers.get("Access-Control-Allow-Headers")).toContain("Authorization");
     const www = await worker.fetch(new Request("https://www.cv.cm/llms.txt", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
     expect(www.status).toBe(204);
+    const moved = await worker.fetch(new Request("https://www.cv.cm/llms.txt"), { ASSETS: { fetch: async () => new Response("x") } });
+    expect(moved.status).toBe(301);
+    expect(moved.headers.get("Access-Control-Allow-Origin")).toBe("*");
     const post = await worker.fetch(new Request("https://cv.cm/tools.json", { method: "POST" }), { ASSETS: { fetch: async () => new Response("x") } });
     expect(post.headers.get("Allow")).toBe("GET, HEAD, OPTIONS");
+    expect(post.headers.get("Access-Control-Allow-Origin")).toBe("*");
     const other = await worker.fetch(new Request("https://cv.cm/robots.txt", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
     expect(other.status).toBe(405);
   });
