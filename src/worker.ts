@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, datasetHref, deviceHref, gamesHref, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -89,10 +89,26 @@ function s3Config(env: Env): S3Config | null {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
+    if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
+      const preflight = new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          // `*` does not cover Authorization, so name it for agent frameworks that always send one.
+          "Access-Control-Allow-Headers": "*, Authorization",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+      return withHeaders(preflight, url.pathname);
+    }
     if (url.hostname === "www.cv.cm") {
       url.hostname = "cv.cm";
       const status = request.method === "GET" || request.method === "HEAD" ? 301 : 307;
-      return redirect(url.toString(), status);
+      const moved = redirect(url.toString(), status);
+      // A cross-origin fetch follows a redirect only if the redirect itself passes the CORS check.
+      if (isAgentDocPath(url.pathname)) moved.headers.set("Access-Control-Allow-Origin", "*");
+      return moved;
     }
 
     const store = env.DB ? d1Store(env.DB) : null;
@@ -100,14 +116,15 @@ export default {
     if (api) return api;
 
     if (request.method !== "GET" && request.method !== "HEAD") {
-      return new Response("Method Not Allowed", {
+      const notAllowed = new Response("Method Not Allowed", {
         status: 405,
         headers: {
-          Allow: ALLOWED,
+          Allow: isAgentDocPath(url.pathname) ? `${ALLOWED}, OPTIONS` : ALLOWED,
           "Cache-Control": "no-store",
           "Content-Type": "text/plain; charset=utf-8",
         },
       });
+      return isAgentDocPath(url.pathname) ? withHeaders(notAllowed, url.pathname) : notAllowed;
     }
 
     const path = url.pathname;
@@ -484,6 +501,11 @@ function withHeaders(res: Response, pathname: string): Response {
   else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  // Agent discovery files are public documentation: let agents running in any page read them.
+  if (isAgentDocPath(pathname)) {
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Cross-Origin-Resource-Policy", "cross-origin");
+  }
   // AI tool pages (and the scripts their workers run) are cross-origin isolated: ONNX Runtime needs
   // SharedArrayBuffer for threaded WebAssembly. `credentialless` still lets images from other sites load.
   const aiPage = isAiToolPath(pathname);
@@ -503,7 +525,7 @@ function withHeaders(res: Response, pathname: string): Response {
     headers.set("Cache-Control", "no-store");
   } else if (pathname.startsWith("/assets/") || pathname.startsWith("/ai/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
-  } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
+  } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || isAgentDocPath(pathname) || !STATIC_FILE.test(pathname)) {
     headers.set("Cache-Control", "no-cache");
   } else {
     headers.set("Cache-Control", "public, max-age=86400");
