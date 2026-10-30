@@ -157,7 +157,7 @@ describe("data pages: tables", () => {
     const land = datasetTable("en", "land-area", rows("land-area"));
     expect(land.columns.map((c) => c.label)).toContain("Share of world");
     expect(land.rows[0][1].text).toBe("Russia");
-    // Some economy always shrinks in a five-year window; its rate keeps the minus sign.
+    // Some economy shrinks every year or two; its rate keeps the minus sign.
     const growth = datasetTable("en", "gdp-growth", rows("gdp-growth"));
     const shrank = growth.rows.find((r) => (r[2].sort as number) < 0);
     expect(shrank).toBeDefined();
@@ -167,11 +167,11 @@ describe("data pages: tables", () => {
   it("drops stale rates and EDGAR placeholder zeros", () => {
     for (const id of ["gdp-growth", "inflation", "unemployment", "gdp-ppp-per-capita"] as const) {
       const meta = datasetMeta(id);
-      expect(meta.to! - meta.from!, id).toBeLessThanOrEqual(5);
+      expect(meta.to! - meta.from!, id).toBeLessThanOrEqual(1);
     }
     const co2 = rows("co2-per-capita") as IndicatorRow[];
     expect(Math.min(...co2.map((r) => r[2]))).toBeGreaterThan(0);
-    expect(co2.some((r) => r[1] === "FRO")).toBe(false);
+    expect(co2.some((r) => r[1] === "FRO" || r[1] === "PLW")).toBe(false);
   });
 
   it("computes ISO paper sizes and time zone offsets", () => {

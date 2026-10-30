@@ -80,15 +80,17 @@ const WB = {
   "co2-per-capita": "EN.GHG.CO2.PC.CE.AR5",
   "electricity-access": "EG.ELC.ACCS.ZS",
 };
-// Whole numbers; every other indicator keeps two decimals.
-const WHOLE = new Set(["population", "gdp", "land-area"]);
-// Rates that move fast: a value more than 5 years old would set the extremes under a heading with this year.
-const MAX_AGE = { "gdp-ppp-per-capita": 5, "gdp-growth": 5, inflation: 5, unemployment: 5 };
+// Stored at the precision the page shows (formatIndicator), so rows that look equal share a rank.
+const WHOLE = new Set(["population", "gdp", "gdp-per-capita", "gdp-ppp-per-capita", "land-area"]);
+const TWO_DECIMALS = new Set(["fertility-rate", "co2-per-capita"]);
+// Rates that move fast: only this year and last, or a 2022 value (Sudan's inflation) would rank under a 2025 heading.
+const MAX_AGE = { "gdp-ppp-per-capita": 1, "gdp-growth": 1, inflation: 1, unemployment: 1 };
 // EDGAR has no estimate for some small US territories and Pacific islands; the series reports 0 or
 // ~0.002 t per person for them (Guam), which would rank as the cleanest places on Earth.
 const FLOOR = { "co2-per-capita": 0.01 };
-// EDGAR counts the Faroe Islands with Denmark, leaving a 0.04 t residue where ~14 t is real.
-const SKIP = { "co2-per-capita": new Set(["FRO"]) };
+// EDGAR counts the Faroe Islands with Denmark, leaving a 0.04 t residue where ~14 t is real, and puts
+// ~83 t per person on Palau (marine fuel sold there), against ~12 t in national inventories.
+const SKIP = { "co2-per-capita": new Set(["FRO", "PLW"]) };
 
 const economies = (await getJson("https://api.worldbank.org/v2/country?format=json&per_page=400"))[1];
 // Aggregates (regions, income groups) have region id "NA"; keep the 217 economies.
@@ -113,7 +115,7 @@ for (const [id, code] of Object.entries(WB)) {
     .filter((r) => countries.has(r.countryiso3code))
     .map((r) => {
       const c = countries.get(r.countryiso3code);
-      const decimals = WHOLE.has(id) ? 0 : 2;
+      const decimals = WHOLE.has(id) ? 0 : TWO_DECIMALS.has(id) ? 2 : 1;
       return [c.iso2Code, c.id, Number(r.value.toFixed(decimals)), Number(r.date), c.name.trim()];
     })
     // Ties (several countries at 100% internet use) fall back to name order, so reruns do not reshuffle them.
@@ -132,7 +134,10 @@ for (const [id, code] of Object.entries(WB)) {
     top: rows.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
     bottom: rows.slice(-1).map((r) => [r[0], r[2], r[4], r[3]]),
   };
-  writeCsv(id, ["rank", "iso2", "iso3", "country", "value", "year"], rows.map((r, i) => [i + 1, r[0], r[1], r[4], r[2], r[3]]));
+  // Equal values share a rank, as on the page.
+  const ranks = [];
+  rows.forEach((r, i) => ranks.push(i > 0 && r[2] === rows[i - 1][2] ? ranks[i - 1] : i + 1));
+  writeCsv(id, ["rank", "iso2", "iso3", "country", "value", "year"], rows.map((r, i) => [ranks[i], r[0], r[1], r[4], r[2], r[3]]));
   console.log(`${id}: ${rows.length} rows, ${meta.sets[id].from}-${meta.sets[id].to}`);
 }
 
