@@ -16,6 +16,7 @@
   ],
   "url_pattern": "https://cv.cm/{locale}/{tool}/",
   "docs": "https://cv.cm/llms.txt",
+  "ai_download_bytes": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached).",
   "categories": [
     {
       "id": "share",
@@ -100,7 +101,7 @@
       "ai": {
         "models": [
           {
-            "option": "Style: Photo",
+            "option": "Style \"Photo\"",
             "model": "cvcm/realesrgan-general-x4v3",
             "license": "BSD-3-Clause",
             "download_bytes": {
@@ -110,7 +111,7 @@
             }
           },
           {
-            "option": "Style: Anime / art",
+            "option": "Style \"Anime / art\"",
             "model": "cvcm/realesrgan-anime-x4v3",
             "license": "BSD-3-Clause",
             "download_bytes": {
@@ -120,7 +121,7 @@
             }
           }
         ],
-        "options": "Scale: 2× / 4×. Style: Photo / Anime / art (Anime / art keeps flat colors and clean lines.) Format: PNG / JPG / WebP. Output is capped at 16 MP."
+        "options": "Scale: 2× / 4×. Style: \"Photo\" or \"Anime / art\" (Anime / art keeps flat colors and clean lines.) Format: PNG / JPG / WebP. Output is capped at 16 MP."
       }
     },
     {
@@ -133,7 +134,7 @@
       "ai": {
         "models": [
           {
-            "option": "Model: Fast",
+            "option": "Model \"Fast\"",
             "model": "onnx-community/whisper-base",
             "license": "Apache-2.0",
             "download_bytes": {
@@ -143,7 +144,7 @@
             }
           },
           {
-            "option": "Model: Accurate",
+            "option": "Model \"Accurate\"",
             "model": "onnx-community/whisper-small",
             "license": "Apache-2.0",
             "download_bytes": {
@@ -153,7 +154,7 @@
             }
           }
         ],
-        "options": "Model: Fast / Accurate (better for Chinese, Japanese and Korean). Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters: 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, OGG, WebM, MP4, MOV."
+        "options": "Model: \"Fast\" or \"Accurate\" (better for Chinese, Japanese and Korean); the default is \"Accurate\" on a GPU with 16-bit float support and \"Fast\" otherwise. Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters: 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, AAC, OGG, Opus, FLAC, WebM, MP4, MOV and MKV."
       }
     },
     {
