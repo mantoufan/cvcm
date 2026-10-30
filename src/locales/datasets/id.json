@@ -2,11 +2,13 @@
   "crumbHome": "Beranda",
   "hub": {
     "title": "Tabel Data Publik Gratis: Penduduk, PDB, Kode Negara | cv.cm",
-    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk dunia, PDB, angka harapan hidup, tingkat kesuburan, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
+    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, inflasi, pengangguran, angka harapan hidup, angka kelahiran, luas daratan, emisi CO2, pengguna internet, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
     "h1": "Data publik",
     "lede": "Tabel sederhana berisi data publik dari Bank Dunia, ISO, dan IANA. Cari, urutkan berdasarkan kolom apa pun, atau unduh CSV-nya. Setiap tabel mencantumkan sumber dan lisensinya.",
     "groups": {
-      "world": "Negara dan ekonomi dunia",
+      "economy": "Ekonomi",
+      "people": "Penduduk dan kesehatan",
+      "planet": "Lahan, energi, dan internet",
       "codes": "Kode dan standar",
       "reference": "Referensi cepat"
     },
@@ -189,6 +191,270 @@
         { "q": "Negara mana yang persentase pengguna internetnya tertinggi?", "a": "{top1}, dengan {v1}% penduduk daring pada {year1}." },
         { "q": "Berapa persen penduduk dunia yang menggunakan internet?", "a": "{world}% penduduk dunia pada {worldYear}." },
         { "q": "Negara mana yang pengguna internetnya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast}% penduduk." }
+      ]
+    },
+    "gdp-ppp-per-capita": {
+      "name": "PDB per kapita (PPP) per negara",
+      "title": "PDB per Kapita PPP per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "PDB per orang berdasarkan paritas daya beli untuk {rows} negara, diurutkan, dalam dolar internasional berlaku. Rata-rata dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "PDB per kapita berdasarkan paritas daya beli, {to} (dolar internasional berlaku)",
+      "lede": "Output per orang untuk {rows} negara dan wilayah, dikonversi dengan paritas daya beli sehingga satu dolar bisa membeli keranjang barang yang sama di mana pun. Diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia.",
+      "value": "PDB per kapita, PPP (Int$)",
+      "facts": [
+        "Rata-rata dunia: {world} dolar internasional per orang ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Paritas daya beli (PPP) mengonversi setiap mata uang dengan kurs yang dapat membeli barang dan jasa yang sama seperti satu dolar AS di Amerika Serikat. Cara ini menghilangkan sebagian besar pengaruh tingkat harga, sehingga lebih tepat untuk membandingkan taraf hidup daripada PDB dengan kurs pasar.",
+        "Pusat keuangan kecil dan negara pengekspor minyak berada di puncak daftar karena outputnya besar dibandingkan jumlah penduduknya, bukan karena setiap penduduknya sekaya itu. Setiap baris menampilkan tahun terbaru yang dilaporkan negara tersebut."
+      ],
+      "faq": [
+        { "q": "Negara mana yang PDB per kapita PPP-nya tertinggi?", "a": "{top1}, dengan {v1} dolar internasional per orang pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Apa bedanya PDB per kapita dan PDB per kapita PPP?", "a": "PDB per kapita biasa memakai kurs pasar. Versi PPP disesuaikan dengan apa yang bisa dibeli dengan uang di dalam negeri, sehingga negara yang lebih miskin dengan harga rendah berperingkat lebih tinggi daripada di daftar nominal." },
+        { "q": "Negara mana yang PDB per kapita PPP-nya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} dolar internasional per orang." }
+      ]
+    },
+    "gdp-growth": {
+      "name": "Pertumbuhan ekonomi per negara",
+      "title": "Pertumbuhan Ekonomi (PDB) per Negara {to}: Ekonomi Tercepat | cv.cm",
+      "description": "Pertumbuhan PDB riil tahunan {rows} perekonomian, diurutkan dari tercepat ke terlambat. Pertumbuhan dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Pertumbuhan ekonomi per negara, {to} (PDB, % per tahun)",
+      "lede": "Seberapa besar setiap ekonomi tumbuh pada tahun terbarunya, setelah dikurangi inflasi, untuk {rows} negara dan wilayah. Nilai negatif berarti ekonominya menyusut. Sumber: Bank Dunia.",
+      "value": "Pertumbuhan PDB (%)",
+      "facts": [
+        "Ekonomi dunia: tumbuh {world}% ({worldYear}).",
+        "Tumbuh tercepat: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terlambat dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Pertumbuhan PDB adalah perubahan tahunan produk domestik bruto atas dasar harga konstan, sehingga yang diukur adalah output riil, bukan perubahan harga. Angkanya dihitung dalam mata uang masing-masing negara.",
+        "Ekonomi kecil paling mudah bergejolak: satu ladang minyak baru, gagal panen, atau perang bisa menggeser pertumbuhan hingga sepuluh poin dalam setahun. Lihat beberapa tahun sebelum menyimpulkan tren."
+      ],
+      "faq": [
+        { "q": "Negara mana yang ekonominya tumbuh paling cepat?", "a": "{top1}, dengan pertumbuhan PDB riil {v1}% pada {year1}. {top2} di urutan berikutnya dengan {v2}%." },
+        { "q": "Berapa pertumbuhan ekonomi dunia?", "a": "PDB dunia tumbuh {world}% secara riil pada {worldYear}." },
+        { "q": "Apa arti pertumbuhan PDB negatif?", "a": "Ekonomi menghasilkan lebih sedikit dibanding tahun sebelumnya. Penurunan dua kuartal berturut-turut adalah patokan umum untuk resesi. Nilai terendah dalam daftar ini adalah {last}, yaitu {vlast}%." }
+      ]
+    },
+    "inflation": {
+      "name": "Tingkat inflasi per negara",
+      "title": "Tingkat Inflasi per Negara {to}: Harga Konsumen di {rows} Negara | cv.cm",
+      "description": "Inflasi harga konsumen tahunan di {rows} negara, diurutkan dari tertinggi ke terendah. Inflasi dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Tingkat inflasi per negara, {to} (harga konsumen, % per tahun)",
+      "lede": "Seberapa besar kenaikan harga barang dan jasa sehari-hari di setiap negara pada tahun terbarunya, untuk {rows} negara dan wilayah. Nilai negatif berarti deflasi. Sumber: Bank Dunia, dari data IMF.",
+      "value": "Inflasi (%)",
+      "facts": [
+        "Inflasi dunia: {world}% ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Ini adalah perubahan tahunan indeks harga konsumen (IHK): biaya sekeranjang tetap barang dan jasa yang biasa dibeli rumah tangga. Inilah angka inflasi yang paling sering dikutip berita.",
+        "Sebagian besar bank sentral menargetkan sekitar 2% per tahun. Inflasi di atas 50% per bulan disebut hiperinflasi. Beberapa negara terlambat menerbitkan data, jadi periksa kolom tahun."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat inflasinya tertinggi?", "a": "{top1}, dengan kenaikan harga konsumen {v1}% pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Berapa tingkat inflasi dunia?", "a": "Harga konsumen di seluruh dunia naik {world}% pada {worldYear}." },
+        { "q": "Negara mana yang inflasinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka negatif berarti harga turun." }
+      ]
+    },
+    "unemployment": {
+      "name": "Tingkat pengangguran per negara",
+      "title": "Tingkat Pengangguran per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "Pengangguran sebagai persentase angkatan kerja di {rows} negara, diurutkan, berdasarkan estimasi model ILO. Tingkat dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Tingkat pengangguran per negara, {to} (% angkatan kerja)",
+      "lede": "Persentase orang yang ingin bekerja dan sedang mencari pekerjaan tetapi belum mendapatkannya, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari estimasi ILO.",
+      "value": "Pengangguran (%)",
+      "facts": [
+        "Pengangguran dunia: {world}% ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Organisasi Perburuhan Internasional (ILO) menggolongkan seseorang sebagai penganggur jika ia tidak bekerja, siap bekerja, dan baru-baru ini mencari pekerjaan. Orang yang sudah berhenti mencari tidak termasuk angkatan kerja, jadi tidak dihitung.",
+        "Ini adalah estimasi model yang memakai satu definisi untuk semua negara, sehingga bisa berbeda dari angka nasional yang diterbitkan masing-masing pemerintah."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat penganggurannya tertinggi?", "a": "{top1}, yaitu {v1}% dari angkatan kerja pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Berapa tingkat pengangguran dunia?", "a": "ILO memperkirakan {world}% pada {worldYear}." },
+        { "q": "Negara mana yang tingkat penganggurannya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast}%. Angka yang sangat rendah sering berarti banyak orang bekerja di sektor informal atau di usaha keluarga." }
+      ]
+    },
+    "land-area": {
+      "name": "Negara menurut luas daratan",
+      "title": "Negara Terluas di Dunia {to}: Luas Daratan dalam km² | cv.cm",
+      "description": "Luas daratan {rows} negara dan wilayah dalam kilometer persegi, diurutkan, beserta porsinya dari daratan dunia. Luas daratan dunia {world} km². Data Bank Dunia, unduh CSV.",
+      "h1": "Negara menurut luas daratan (km²)",
+      "lede": "Luas daratan {rows} negara dan wilayah, dari terbesar ke terkecil, beserta porsi masing-masing dari daratan dunia. Danau dan sungai tidak dihitung. Sumber: Bank Dunia, dari data FAO.",
+      "value": "Luas daratan (km²)",
+      "facts": [
+        "Luas daratan dunia: {world} km² ({worldYear}).",
+        "Terluas: {top1} ({v1} km²), {top2} ({v2} km²) dan {top3} ({v3} km²).",
+        "Terkecil dalam daftar: {last} ({vlast} km²)."
+      ],
+      "about": [
+        "Luas daratan adalah luas total suatu negara dikurangi perairan darat seperti sungai dan danau besar. Karena itu beberapa angka lebih kecil daripada luas total yang mungkin Anda lihat di tempat lain: Kanada, yang memiliki banyak danau, berada di bawah Tiongkok dan Amerika Serikat di sini.",
+        "Daftar ini mencakup perekonomian yang dilaporkan Bank Dunia. Antartika dan wilayah sengketa tanpa satu pemerintahan tidak termasuk."
+      ],
+      "faq": [
+        { "q": "Negara mana yang daratannya paling luas?", "a": "{top1}, dengan daratan {v1} km², disusul {top2} ({v2} km²) dan {top3} ({v3} km²)." },
+        { "q": "Berapa luas daratan di Bumi?", "a": "Bank Dunia menjumlahkan daratan semua negara menjadi {world} km² ({worldYear}), kira-kira seperempat permukaan Bumi. Antartika tidak termasuk." },
+        { "q": "Negara mana yang daratannya paling kecil?", "a": "Dalam daftar ini, {last}, dengan {vlast} km². Vatikan lebih kecil, tetapi tidak ada dalam data Bank Dunia." }
+      ]
+    },
+    "population-density": {
+      "name": "Kepadatan penduduk per negara",
+      "title": "Kepadatan Penduduk per Negara {to}: Jiwa per km² | cv.cm",
+      "description": "Jumlah jiwa per kilometer persegi daratan di {rows} negara dan wilayah, diurutkan dari terpadat ke terjarang. Rata-rata dunia {world} per km². Data Bank Dunia, unduh CSV.",
+      "h1": "Kepadatan penduduk per negara (jiwa per km² daratan)",
+      "lede": "Berapa banyak orang yang tinggal di setiap kilometer persegi daratan, untuk {rows} negara dan wilayah, diurutkan dari terpadat ke terjarang. Sumber: Bank Dunia.",
+      "value": "Jiwa per km²",
+      "facts": [
+        "Rata-rata dunia: {world} jiwa per km² ({worldYear}).",
+        "Terpadat: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terjarang dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Kepadatan penduduk adalah jumlah penduduk pertengahan tahun dibagi luas daratan. Angka ini merupakan rata-rata untuk seluruh negara, jadi negara dengan satu kota raksasa dan pedalaman luas yang kosong tetap bisa memiliki angka rendah.",
+        "Negara-kota dan pulau kecil berada di puncak daftar. Di antara negara besar, Bangladesh adalah yang terpadat."
+      ],
+      "faq": [
+        { "q": "Negara mana yang kepadatan penduduknya tertinggi?", "a": "{top1}, dengan {v1} jiwa per km² pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa kepadatan penduduk dunia?", "a": "Sekitar {world} jiwa per km² daratan pada {worldYear}." },
+        { "q": "Negara mana yang kepadatan penduduknya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} jiwa per km²." }
+      ]
+    },
+    "urban-population": {
+      "name": "Penduduk perkotaan per negara",
+      "title": "Tingkat Urbanisasi per Negara {to}: % Penduduk Kota di {rows} Negara | cv.cm",
+      "description": "Persentase penduduk yang tinggal di daerah perkotaan di {rows} negara, diurutkan. Porsi perkotaan dunia {world}% ({worldYear}). Data Bank Dunia / PBB, unduh CSV.",
+      "h1": "Penduduk perkotaan per negara, {to} (% dari total penduduk)",
+      "lede": "Persentase penduduk setiap negara yang tinggal di kota, untuk {rows} negara dan wilayah, diurutkan dari yang paling ke paling tidak urban. Sumber: Bank Dunia, dari World Urbanization Prospects PBB.",
+      "value": "Penduduk perkotaan (%)",
+      "facts": [
+        "Dunia: {world}% penduduk tinggal di daerah perkotaan ({worldYear}).",
+        "Paling urban: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Paling tidak urban dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Setiap negara memakai definisi perkotaannya sendiri, biasanya jumlah penduduk minimum atau ambang kepadatan, sehingga sebuah kota kecil di satu negara bisa dihitung sebagai desa di negara lain.",
+        "Negara-kota dan wilayah kecil 100% perkotaan menurut definisinya. Lebih dari separuh penduduk dunia tinggal di kota sejak sekitar tahun 2007."
+      ],
+      "faq": [
+        { "q": "Negara mana yang paling urban?", "a": "{top1} ({v1}%), lalu {top2} ({v2}%) dan {top3} ({v3}%). Negara-kota dan wilayah kecil sering dihitung sepenuhnya perkotaan." },
+        { "q": "Berapa persen penduduk dunia yang tinggal di kota?", "a": "{world}% pada {worldYear}, menurut perkiraan PBB." },
+        { "q": "Negara mana yang paling tidak urban?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya tinggal di daerah perkotaan." }
+      ]
+    },
+    "aged-65-plus": {
+      "name": "Penduduk usia 65+ per negara",
+      "title": "Negara dengan Penduduk Tertua {to}: Usia 65 Tahun ke Atas per Negara | cv.cm",
+      "description": "Persentase penduduk berusia 65 tahun ke atas di {rows} negara, diurutkan dari yang tertua ke termuda. Dunia {world}% ({worldYear}). Data Bank Dunia / PBB, unduh CSV.",
+      "h1": "Penduduk usia 65 tahun ke atas per negara, {to} (% dari total)",
+      "lede": "Persentase penduduk setiap negara yang berusia 65 tahun atau lebih, untuk {rows} negara dan wilayah, diurutkan dari penduduk tertua ke termuda. Sumber: Bank Dunia, dari perkiraan penduduk PBB.",
+      "value": "Usia 65+ (%)",
+      "facts": [
+        "Dunia: {world}% penduduk berusia 65 tahun atau lebih ({worldYear}).",
+        "Tertua: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Termuda dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "PBB menyebut suatu negara menua (ageing) jika lebih dari 7% penduduknya berusia 65 tahun atau lebih, tua (aged) jika di atas 14%, dan super tua (super-aged) jika di atas 20%. Angka kelahiran yang rendah dan usia hidup yang lebih panjang mendorong porsi ini naik.",
+        "Negara-negara Teluk memiliki porsi sangat rendah karena sebagian besar penduduknya adalah pekerja migran usia produktif, bukan karena warga negaranya sendiri muda."
+      ],
+      "faq": [
+        { "q": "Negara mana yang penduduknya paling tua?", "a": "{top1}, di mana {v1}% penduduknya berusia 65 tahun atau lebih pada {year1}, disusul {top2} ({v2}%)." },
+        { "q": "Berapa persen penduduk dunia yang berusia di atas 65 tahun?", "a": "{world}% pada {worldYear}." },
+        { "q": "Negara mana yang penduduknya paling muda?", "a": "Menurut ukuran ini, {last}, di mana {vlast}% penduduknya berusia 65 tahun atau lebih." }
+      ]
+    },
+    "birth-rate": {
+      "name": "Angka kelahiran kasar per negara",
+      "title": "Angka Kelahiran per Negara {to}: Kelahiran per 1.000 Penduduk di {rows} Negara | cv.cm",
+      "description": "Angka kelahiran kasar, yaitu kelahiran hidup per 1.000 penduduk per tahun, di {rows} negara, diurutkan. Dunia {world} ({worldYear}). Data Bank Dunia / PBB, unduh CSV.",
+      "h1": "Angka kelahiran kasar per negara, {to} (kelahiran per 1.000 penduduk)",
+      "lede": "Kelahiran hidup dalam setahun untuk setiap 1.000 penduduk, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari perkiraan penduduk PBB.",
+      "value": "Kelahiran per 1.000",
+      "facts": [
+        "Dunia: {world} kelahiran per 1.000 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka kelahiran kasar membagi jumlah kelahiran dengan seluruh penduduk, sehingga juga bergantung pada struktur usia: negara dengan banyak orang dewasa muda punya lebih banyak kelahiran meskipun setiap perempuan hanya punya sedikit anak.",
+        "Untuk membandingkan berapa banyak anak yang dimiliki perempuan, gunakan tabel tingkat kesuburan. Negara dengan angka kelahiran terendah juga memiliki penduduk tertua."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka kelahirannya tertinggi?", "a": "{top1}, dengan {v1} kelahiran per 1.000 penduduk pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa angka kelahiran dunia?", "a": "{world} kelahiran per 1.000 penduduk pada {worldYear}." },
+        { "q": "Negara mana yang angka kelahirannya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} kelahiran per 1.000 penduduk." }
+      ]
+    },
+    "infant-mortality": {
+      "name": "Angka kematian bayi per negara",
+      "title": "Angka Kematian Bayi per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "Kematian bayi sebelum usia satu tahun per 1.000 kelahiran hidup di {rows} negara, diurutkan. Angka dunia {world} ({worldYear}). Data Bank Dunia / UN IGME, unduh CSV.",
+      "h1": "Angka kematian bayi per negara, {to} (per 1.000 kelahiran hidup)",
+      "lede": "Berapa banyak bayi dari setiap 1.000 kelahiran hidup yang meninggal sebelum ulang tahun pertamanya, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari perkiraan UN IGME.",
+      "value": "Kematian per 1.000 kelahiran",
+      "facts": [
+        "Dunia: {world} kematian bayi per 1.000 kelahiran hidup ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Angka kematian bayi adalah salah satu tanda paling jelas tentang jangkauan sistem kesehatan: sebagian besar kematian bayi disebabkan oleh kelahiran prematur, komplikasi persalinan, dan infeksi yang bisa dicegah dengan air bersih, vaksin, dan tenaga persalinan terlatih.",
+        "Kelompok Antarlembaga PBB untuk Estimasi Kematian Anak (UN IGME) menggabungkan survei, sensus, dan pencatatan sipil menjadi satu seri yang bisa dibandingkan."
+      ],
+      "faq": [
+        { "q": "Negara mana yang angka kematian bayinya tertinggi?", "a": "{top1}, dengan {v1} kematian per 1.000 kelahiran hidup pada {year1}, disusul {top2} ({v2})." },
+        { "q": "Berapa angka kematian bayi dunia?", "a": "{world} per 1.000 kelahiran hidup pada {worldYear}. Angka ini sudah turun lebih dari separuh sejak 1990." },
+        { "q": "Negara mana yang angka kematian bayinya terendah?", "a": "Dalam daftar ini, {last}, yaitu {vlast} per 1.000 kelahiran hidup." }
+      ]
+    },
+    "co2-per-capita": {
+      "name": "Emisi CO2 per kapita per negara",
+      "title": "Emisi CO2 per Kapita per Negara {to}: Peringkat {rows} Negara | cv.cm",
+      "description": "Emisi karbon dioksida per orang dalam ton di {rows} negara, diurutkan dari tertinggi ke terendah. Rata-rata dunia {world} t ({worldYear}). Data Bank Dunia / EDGAR, unduh CSV.",
+      "h1": "Emisi CO2 per kapita per negara, {to} (ton per orang)",
+      "lede": "Ton karbon dioksida yang diemisikan setiap negara per penduduk dalam setahun, tidak termasuk penggunaan lahan dan kehutanan, untuk {rows} negara dan wilayah. Sumber: Bank Dunia, dari basis data EDGAR Uni Eropa.",
+      "value": "CO2 per orang (t)",
+      "facts": [
+        "Rata-rata dunia: {world} ton CO2 per orang ({worldYear}).",
+        "Tertinggi: {top1} ({v1} t), {top2} ({v2} t) dan {top3} ({v3} t).",
+        "Terendah dalam daftar: {last} ({vlast} t)."
+      ],
+      "about": [
+        "Angka ini menghitung CO2 dari pembakaran bahan bakar fosil dan dari industri seperti semen, di dalam wilayah negara tersebut. Emisi dari perubahan penggunaan lahan dan kehutanan (LULUCF) tidak dihitung, begitu pula emisi dari barang yang diimpor suatu negara.",
+        "Produsen minyak dan gas kecil berada di puncak daftar karena industri padat energinya besar dibandingkan jumlah penduduknya. Untuk mengetahui porsi total suatu negara dari emisi dunia, kalikan dengan jumlah penduduknya."
+      ],
+      "faq": [
+        { "q": "Negara mana yang emisi CO2 per orangnya tertinggi?", "a": "{top1}, yaitu {v1} ton per orang pada {year1}, disusul {top2} ({v2} t)." },
+        { "q": "Berapa rata-rata emisi CO2 per orang di dunia?", "a": "Sekitar {world} ton per orang pada {worldYear}." },
+        { "q": "Negara mana yang emisi CO2 per orangnya paling sedikit?", "a": "Dalam daftar ini, {last}, yaitu {vlast} ton per orang." }
+      ]
+    },
+    "electricity-access": {
+      "name": "Akses listrik per negara",
+      "title": "Akses Listrik per Negara {to}: % Penduduk | cv.cm",
+      "description": "Persentase penduduk yang memiliki akses listrik di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Akses listrik per negara, {to} (% penduduk)",
+      "lede": "Persentase penduduk setiap negara yang memiliki listrik di rumah, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari survei rumah tangga dan IEA.",
+      "value": "Akses listrik (%)",
+      "facts": [
+        "Dunia: {world}% penduduk memiliki listrik ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%). Masih banyak negara lain yang juga memiliki akses penuh.",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Akses mencakup setiap rumah tangga yang tersambung listrik, baik dari jaringan listrik umum maupun dari sistem tenaga surya rumah dan jaringan mini. Angka ini tidak menunjukkan seberapa andal pasokannya atau berapa jam sehari listrik menyala.",
+        "Sebagian besar orang tanpa listrik tinggal di Afrika sub-Sahara, di mana akses di beberapa negara masih di bawah separuh."
+      ],
+      "faq": [
+        { "q": "Negara mana yang akses listriknya tertinggi?", "a": "{top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%) memimpin daftar pada {year1}. Nilai yang sama berbagi peringkat." },
+        { "q": "Berapa persen penduduk dunia yang memiliki listrik?", "a": "{world}% penduduk dunia pada {worldYear}." },
+        { "q": "Negara mana yang akses listriknya terendah?", "a": "Dalam daftar ini, {last}, di mana {vlast}% penduduknya memiliki listrik." }
       ]
     },
     "country-codes": {

@@ -6,7 +6,7 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -144,6 +144,22 @@ describe("data pages: tables", () => {
     expect(table.rows[0][1].text).toBe("India");
     const sorts = table.rows.map((r) => r[2].sort as number);
     expect(sorts).toEqual([...sorts].sort((a, b) => b - a));
+  });
+
+  it("keeps one latest row per country in every indicator", () => {
+    for (const id of DATASETS.filter(isIndicator)) {
+      const codes = (rows(id) as IndicatorRow[]).map((r) => r[1]);
+      expect(new Set(codes).size, id).toBe(codes.length);
+    }
+  });
+
+  it("shows land as a share of the world and keeps negative rates signed", () => {
+    const land = datasetTable("en", "land-area", rows("land-area"));
+    expect(land.columns.map((c) => c.label)).toContain("Share of world");
+    expect(land.rows[0][1].text).toBe("Russia");
+    const growth = datasetTable("en", "gdp-growth", rows("gdp-growth"));
+    const last = growth.rows[growth.rows.length - 1][2];
+    if ((last.sort as number) < 0) expect(last.text).toMatch(/^-\d/);
   });
 
   it("computes ISO paper sizes and time zone offsets", () => {

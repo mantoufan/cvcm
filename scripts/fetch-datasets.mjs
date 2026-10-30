@@ -1,6 +1,6 @@
 // Snapshots the public data behind /{locale}/datasets/ into src/data/*.json and public/datasets/*.csv.
 // Run by hand to refresh (`node scripts/fetch-datasets.mjs`), then commit. Pages never call these APIs.
-//   World Bank indicators (CC BY 4.0): https://data.worldbank.org/
+//   World Bank indicators (CC BY 4.0): https://data.worldbank.org/ (CO2 from EDGAR via the World Bank)
 //   ISO 3166 / ITU dialing / ISO 4217 via datahub.io core datasets (ODC-PDDL)
 //   IANA time zones from zone.tab (data.iana.org), offsets from the Node ICU tz database
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -67,7 +67,21 @@ const WB = {
   "life-expectancy": "SP.DYN.LE00.IN",
   "fertility-rate": "SP.DYN.TFRT.IN",
   "internet-users": "IT.NET.USER.ZS",
+  "gdp-ppp-per-capita": "NY.GDP.PCAP.PP.CD",
+  "gdp-growth": "NY.GDP.MKTP.KD.ZG",
+  inflation: "FP.CPI.TOTL.ZG",
+  unemployment: "SL.UEM.TOTL.ZS",
+  "land-area": "AG.LND.TOTL.K2",
+  "population-density": "EN.POP.DNST",
+  "urban-population": "SP.URB.TOTL.IN.ZS",
+  "aged-65-plus": "SP.POP.65UP.TO.ZS",
+  "birth-rate": "SP.DYN.CBRT.IN",
+  "infant-mortality": "SP.DYN.IMRT.IN",
+  "co2-per-capita": "EN.GHG.CO2.PC.CE.AR5",
+  "electricity-access": "EG.ELC.ACCS.ZS",
 };
+// Whole numbers; every other indicator keeps two decimals.
+const WHOLE = new Set(["population", "gdp", "land-area"]);
 
 const economies = (await getJson("https://api.worldbank.org/v2/country?format=json&per_page=400"))[1];
 // Aggregates (regions, income groups) have region id "NA"; keep the 217 economies.
@@ -75,13 +89,23 @@ const countries = new Map(economies.filter((e) => e.region.id !== "NA").map((e) 
 
 const meta = { updated: today, sets: {} };
 for (const [id, code] of Object.entries(WB)) {
-  const [info, list] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&mrnev=1&per_page=400`);
-  const world = list.find((r) => r.countryiso3code === "WLD");
+  // `mrnev=1` can return two years for one country and skip others, so read a window of years and keep each
+  // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
+  const thisYear = new Date().getUTCFullYear();
+  const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 16}:${thisYear}&per_page=20000`);
+  const latestBy = new Map();
+  for (const r of all) {
+    if (r.value === null) continue;
+    const seen = latestBy.get(r.countryiso3code);
+    if (!seen || Number(r.date) > Number(seen.date)) latestBy.set(r.countryiso3code, r);
+  }
+  const list = [...latestBy.values()];
+  const world = latestBy.get("WLD");
   const rows = list
-    .filter((r) => countries.has(r.countryiso3code) && r.value !== null)
+    .filter((r) => countries.has(r.countryiso3code))
     .map((r) => {
       const c = countries.get(r.countryiso3code);
-      const decimals = id === "population" || id === "gdp" ? 0 : 2;
+      const decimals = WHOLE.has(id) ? 0 : 2;
       return [c.iso2Code, c.id, Number(r.value.toFixed(decimals)), Number(r.date), c.name.trim()];
     })
     // Ties (several countries at 100% internet use) fall back to name order, so reruns do not reshuffle them.

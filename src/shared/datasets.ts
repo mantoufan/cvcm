@@ -8,7 +8,9 @@ import type { ToolId } from "./path";
 export const DATASET_SEGMENT = "datasets";
 
 export const DATASET_GROUPS = [
-  { id: "world", sets: ["population", "gdp", "gdp-per-capita", "life-expectancy", "fertility-rate", "internet-users"] },
+  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gdp-growth", "inflation", "unemployment"] },
+  { id: "people", sets: ["population", "population-density", "urban-population", "aged-65-plus", "life-expectancy", "fertility-rate", "birth-rate", "infant-mortality"] },
+  { id: "planet", sets: ["land-area", "co2-per-capita", "electricity-access", "internet-users"] },
   { id: "codes", sets: ["country-codes", "calling-codes", "currency-codes", "time-zones"] },
   { id: "reference", sets: ["paper-sizes", "ascii"] },
 ] as const;
@@ -26,7 +28,11 @@ export function datasetGroupOf(id: DatasetId): DatasetGroupId {
 }
 
 /** World Bank indicators: one value per country, ranked. */
-export const INDICATORS = ["population", "gdp", "gdp-per-capita", "life-expectancy", "fertility-rate", "internet-users"] as const;
+export const INDICATORS = [
+  "population", "gdp", "gdp-per-capita", "life-expectancy", "fertility-rate", "internet-users",
+  "gdp-ppp-per-capita", "gdp-growth", "inflation", "unemployment", "land-area", "population-density",
+  "urban-population", "aged-65-plus", "birth-rate", "infant-mortality", "co2-per-capita", "electricity-access",
+] as const;
 export type IndicatorId = (typeof INDICATORS)[number];
 
 export function isIndicator(id: DatasetId): id is IndicatorId {
@@ -40,6 +46,18 @@ export const WB_CODE: Record<IndicatorId, string> = {
   "life-expectancy": "SP.DYN.LE00.IN",
   "fertility-rate": "SP.DYN.TFRT.IN",
   "internet-users": "IT.NET.USER.ZS",
+  "gdp-ppp-per-capita": "NY.GDP.PCAP.PP.CD",
+  "gdp-growth": "NY.GDP.MKTP.KD.ZG",
+  inflation: "FP.CPI.TOTL.ZG",
+  unemployment: "SL.UEM.TOTL.ZS",
+  "land-area": "AG.LND.TOTL.K2",
+  "population-density": "EN.POP.DNST",
+  "urban-population": "SP.URB.TOTL.IN.ZS",
+  "aged-65-plus": "SP.POP.65UP.TO.ZS",
+  "birth-rate": "SP.DYN.CBRT.IN",
+  "infant-mortality": "SP.DYN.IMRT.IN",
+  "co2-per-capita": "EN.GHG.CO2.PC.CE.AR5",
+  "electricity-access": "EG.ELC.ACCS.ZS",
 };
 
 export type DatasetSource = { name: string; url: string; license: string; licenseUrl: string };
@@ -59,6 +77,18 @@ export const DATASET_SOURCE: Record<DatasetId, DatasetSource> = {
   "life-expectancy": WORLD_BANK(WB_CODE["life-expectancy"]),
   "fertility-rate": WORLD_BANK(WB_CODE["fertility-rate"]),
   "internet-users": WORLD_BANK(WB_CODE["internet-users"]),
+  "gdp-ppp-per-capita": WORLD_BANK(WB_CODE["gdp-ppp-per-capita"]),
+  "gdp-growth": WORLD_BANK(WB_CODE["gdp-growth"]),
+  inflation: WORLD_BANK(WB_CODE["inflation"]),
+  unemployment: WORLD_BANK(WB_CODE["unemployment"]),
+  "land-area": WORLD_BANK(WB_CODE["land-area"]),
+  "population-density": WORLD_BANK(WB_CODE["population-density"]),
+  "urban-population": WORLD_BANK(WB_CODE["urban-population"]),
+  "aged-65-plus": WORLD_BANK(WB_CODE["aged-65-plus"]),
+  "birth-rate": WORLD_BANK(WB_CODE["birth-rate"]),
+  "infant-mortality": WORLD_BANK(WB_CODE["infant-mortality"]),
+  "co2-per-capita": WORLD_BANK(WB_CODE["co2-per-capita"]),
+  "electricity-access": WORLD_BANK(WB_CODE["electricity-access"]),
   "country-codes": { name: "ISO 3166-1 (via datahub.io core/country-codes)", url: "https://www.iso.org/iso-3166-country-codes.html", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
   "calling-codes": { name: "ITU-T E.164 (via datahub.io core/country-codes)", url: "https://www.itu.int/pub/T-SP-E.164D", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
   "currency-codes": { name: "ISO 4217 (via datahub.io core/currency-codes)", url: "https://www.iso.org/iso-4217-currency-codes.html", license: "ODC-PDDL", licenseUrl: PUBLIC_DOMAIN },
@@ -75,6 +105,18 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "life-expectancy": ["age", "days"],
   "fertility-rate": ["percent"],
   "internet-users": ["percent"],
+  "gdp-ppp-per-capita": ["hourly", "compound"],
+  "gdp-growth": ["compound", "percent"],
+  inflation: ["compound", "percent", "loan"],
+  unemployment: ["percent", "hourly"],
+  "land-area": ["units", "percent"],
+  "population-density": ["units", "percent"],
+  "urban-population": ["percent"],
+  "aged-65-plus": ["age", "percent"],
+  "birth-rate": ["due-date", "ovulation"],
+  "infant-mortality": ["percent"],
+  "co2-per-capita": ["fuel-cost", "electricity"],
+  "electricity-access": ["electricity", "percent"],
   "country-codes": ["data", "json"],
   "calling-codes": ["qr"],
   "currency-codes": ["vat", "margin"],
@@ -115,6 +157,18 @@ export const DATASET_FILES: Record<DatasetId, readonly string[]> = {
   "life-expectancy": ["life-expectancy"],
   "fertility-rate": ["fertility-rate"],
   "internet-users": ["internet-users"],
+  "gdp-ppp-per-capita": ["gdp-ppp-per-capita"],
+  "gdp-growth": ["gdp-growth"],
+  inflation: ["inflation"],
+  unemployment: ["unemployment"],
+  "land-area": ["land-area"],
+  "population-density": ["population-density"],
+  "urban-population": ["urban-population"],
+  "aged-65-plus": ["aged-65-plus"],
+  "birth-rate": ["birth-rate"],
+  "infant-mortality": ["infant-mortality"],
+  "co2-per-capita": ["co2-per-capita"],
+  "electricity-access": ["electricity-access"],
   "country-codes": ["countries"],
   "calling-codes": ["countries"],
   "currency-codes": ["currencies", "countries"],

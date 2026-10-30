@@ -2,11 +2,13 @@
   "crumbHome": "Inicio",
   "hub": {
     "title": "Datos públicos gratis: población, PIB, códigos de país | cv.cm",
-    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población mundial, PIB, esperanza de vida, fecundidad, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
+    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, inflación, desempleo, esperanza de vida, natalidad, superficie, emisiones de CO2, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
     "h1": "Datos públicos",
     "lede": "Tablas sencillas con datos públicos del Banco Mundial, ISO e IANA. Se pueden buscar, ordenar por cualquier columna o descargar en CSV. Cada tabla indica su fuente y su licencia.",
     "groups": {
-      "world": "Países y economía mundial",
+      "economy": "Economía",
+      "people": "Población y salud",
+      "planet": "Territorio, energía e internet",
       "codes": "Códigos y estándares",
       "reference": "Consulta rápida"
     },
@@ -189,6 +191,270 @@
         { "q": "¿Qué país tiene el mayor porcentaje de usuarios de internet?", "a": "{top1}, donde el {v1}% de las personas se conectó en {year1}." },
         { "q": "¿Qué porcentaje del mundo usa internet?", "a": "El {world}% de la población mundial en {worldYear}." },
         { "q": "¿Qué país tiene menos usuarios de internet?", "a": "En esta lista, {last}, con el {vlast}% de la población." }
+      ]
+    },
+    "gdp-ppp-per-capita": {
+      "name": "PIB per cápita (PPA) por país",
+      "title": "PIB per cápita PPA por país {to}: ranking de {rows} países | cv.cm",
+      "description": "PIB por habitante en paridad de poder adquisitivo de {rows} países, en orden, en dólares internacionales corrientes. Promedio mundial: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "PIB per cápita en paridad de poder adquisitivo, {to} (dólares internacionales corrientes)",
+      "lede": "Producción por persona de {rows} países y territorios, convertida con la paridad de poder adquisitivo para que un dólar compre la misma cesta de bienes en todas partes. De mayor a menor. Fuente: Banco Mundial.",
+      "value": "PIB per cápita, PPA ($ int.)",
+      "facts": [
+        "Promedio mundial: {world} dólares internacionales por persona ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La paridad de poder adquisitivo (PPA) convierte cada moneda al tipo que compra los mismos bienes y servicios que un dólar estadounidense en Estados Unidos. Elimina la mayor parte del efecto de los niveles de precios, por lo que compara el nivel de vida mejor que el PIB a tipos de cambio de mercado.",
+        "Los pequeños centros financieros y los exportadores de petróleo encabezan la lista porque su producción es grande en relación con el número de residentes, no porque todos sus habitantes sean así de ricos. Cada fila muestra el último año del que el país tiene datos."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el PIB per cápita PPA más alto?", "a": "{top1}, con {v1} dólares internacionales por persona en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Qué diferencia hay entre el PIB per cápita y el PIB per cápita PPA?", "a": "El PIB per cápita simple usa tipos de cambio de mercado. La versión PPA tiene en cuenta lo que el dinero compra en cada país, de modo que los países más pobres con precios bajos quedan más arriba que en la lista nominal." },
+        { "q": "¿Qué país tiene el PIB per cápita PPA más bajo?", "a": "En esta lista, {last}, con {vlast} dólares internacionales por persona." }
+      ]
+    },
+    "gdp-growth": {
+      "name": "Crecimiento del PIB por país",
+      "title": "Crecimiento del PIB por país {to}: las economías que más crecen | cv.cm",
+      "description": "Crecimiento anual del PIB real de {rows} economías, de la que más crece a la que menos. Crecimiento mundial: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de crecimiento del PIB por país, {to} (% anual)",
+      "lede": "Cuánto creció cada economía en su último año, descontada la inflación, en {rows} países y territorios. Los valores negativos indican que la economía se contrajo. Fuente: Banco Mundial.",
+      "value": "Crecimiento del PIB (%)",
+      "facts": [
+        "Economía mundial: crecimiento del {world}% ({worldYear}).",
+        "Las que más crecen: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La que menos crece de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El crecimiento del PIB es la variación anual del producto interno bruto a precios constantes, así que mide la producción real y no los cambios de precios. Se calcula en la moneda de cada país.",
+        "Las economías pequeñas son las que más oscilan: un nuevo yacimiento de petróleo, una mala cosecha o una guerra pueden mover el crecimiento diez puntos en un año. Conviene mirar varios años antes de hablar de tendencia."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la economía que más crece?", "a": "{top1}, con un crecimiento del PIB real del {v1}% en {year1}. Le sigue {top2}, con un {v2}%." },
+        { "q": "¿Cuánto crece la economía mundial?", "a": "El PIB mundial creció un {world}% en términos reales en {worldYear}." },
+        { "q": "¿Qué significa un crecimiento negativo del PIB?", "a": "Que la economía produjo menos que el año anterior. Dos trimestres seguidos de caída es la regla práctica habitual para hablar de recesión. El valor más bajo de esta lista es el de {last}, con un {vlast}%." }
+      ]
+    },
+    "inflation": {
+      "name": "Tasa de inflación por país",
+      "title": "Tasa de inflación por país {to}: precios al consumidor en {rows} países | cv.cm",
+      "description": "Inflación anual de los precios al consumidor en {rows} países, de mayor a menor. Inflación mundial: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de inflación por país, {to} (precios al consumidor, % anual)",
+      "lede": "Cuánto subieron los precios de los bienes y servicios de uso diario en el último año de cada país, en {rows} países y territorios. Los valores negativos indican deflación. Fuente: Banco Mundial, con datos del FMI.",
+      "value": "Inflación (%)",
+      "facts": [
+        "Inflación mundial: {world}% ({worldYear}).",
+        "Las más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La más baja de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Es la variación anual del índice de precios al consumidor (IPC): el costo de una cesta fija de bienes y servicios que compra un hogar típico. Es la cifra de inflación que citan la mayoría de las noticias.",
+        "La mayoría de los bancos centrales apuntan a un 2% anual aproximadamente. Las tasas superiores al 50% mensual se llaman hiperinflación. Algunos países publican con retraso, así que revise la columna del año."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de inflación más alta?", "a": "{top1}, donde los precios al consumidor subieron un {v1}% en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Cuál es la tasa de inflación mundial?", "a": "Los precios al consumidor en el mundo subieron un {world}% en {worldYear}." },
+        { "q": "¿Qué país tiene la inflación más baja?", "a": "En esta lista, {last}, con un {vlast}%. Un número negativo significa que los precios bajaron." }
+      ]
+    },
+    "unemployment": {
+      "name": "Tasa de desempleo por país",
+      "title": "Tasa de desempleo por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Desempleo como porcentaje de la población activa en {rows} países, en orden, según las estimaciones modelizadas de la OIT. Tasa mundial: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de desempleo por país, {to} (% de la población activa)",
+      "lede": "Porcentaje de personas que quieren trabajar y buscan empleo pero no lo tienen, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de la OIT.",
+      "value": "Desempleo (%)",
+      "facts": [
+        "Desempleo mundial: {world}% ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La Organización Internacional del Trabajo (OIT) considera desempleada a una persona que no tenía trabajo, estaba disponible para trabajar y buscó empleo recientemente. Quienes han dejado de buscar no forman parte de la población activa, así que no se cuentan.",
+        "Son estimaciones modelizadas que usan una misma definición para todos los países, por lo que pueden diferir de las cifras nacionales que publica cada gobierno."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de desempleo más alta?", "a": "{top1}, con un {v1}% de la población activa en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Cuál es la tasa de desempleo mundial?", "a": "La OIT la estima en un {world}% para {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de desempleo más baja?", "a": "En esta lista, {last}, con un {vlast}%. Las tasas muy bajas suelen indicar que mucha gente trabaja en la economía informal o en negocios familiares." }
+      ]
+    },
+    "land-area": {
+      "name": "Países por superficie",
+      "title": "Países por superficie {to}: de mayor a menor en km² | cv.cm",
+      "description": "Superficie terrestre de {rows} países y territorios en kilómetros cuadrados, en orden, con su porcentaje de la tierra del mundo. Superficie terrestre mundial: {world} km². Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Países por superficie terrestre (km²)",
+      "lede": "Superficie terrestre de {rows} países y territorios, de mayor a menor, con el porcentaje de la tierra del mundo que corresponde a cada uno. No se cuentan lagos ni ríos. Fuente: Banco Mundial, con datos de la FAO.",
+      "value": "Superficie (km²)",
+      "facts": [
+        "Superficie terrestre mundial: {world} km² ({worldYear}).",
+        "Los más grandes: {top1} ({v1} km²), {top2} ({v2} km²) y {top3} ({v3} km²).",
+        "El más pequeño de la lista: {last} ({vlast} km²)."
+      ],
+      "about": [
+        "La superficie terrestre es la superficie total de un país menos las aguas interiores, como los grandes ríos y lagos. Por eso algunas cifras son menores que la superficie total que puede ver en otros sitios: Canadá, con muchos lagos, queda aquí por detrás de China y Estados Unidos.",
+        "La lista abarca las economías sobre las que informa el Banco Mundial. No se incluyen la Antártida ni las zonas en disputa sin un único gobierno."
+      ],
+      "faq": [
+        { "q": "¿Cuál es el país más grande por superficie?", "a": "{top1}, con {v1} km² de tierra, seguido de {top2} ({v2} km²) y {top3} ({v3} km²)." },
+        { "q": "¿Cuánta tierra hay en la Tierra?", "a": "El Banco Mundial suma la tierra de todos los países en {world} km² ({worldYear}), aproximadamente una cuarta parte de la superficie de la Tierra. No se incluye la Antártida." },
+        { "q": "¿Cuál es el país más pequeño por superficie?", "a": "En esta lista, {last}, con {vlast} km². La Ciudad del Vaticano es más pequeña, pero no figura en los datos del Banco Mundial." }
+      ]
+    },
+    "population-density": {
+      "name": "Densidad de población por país",
+      "title": "Densidad de población por país {to}: habitantes por km² | cv.cm",
+      "description": "Habitantes por kilómetro cuadrado de tierra en {rows} países y territorios, del más al menos poblado. Promedio mundial: {world} por km². Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Densidad de población por país (habitantes por km² de tierra)",
+      "lede": "Cuántas personas viven en cada kilómetro cuadrado de tierra, en {rows} países y territorios, del más al menos densamente poblado. Fuente: Banco Mundial.",
+      "value": "Habitantes por km²",
+      "facts": [
+        "Promedio mundial: {world} habitantes por km² ({worldYear}).",
+        "Los más densamente poblados: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El menos densamente poblado de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La densidad de población es la población a mitad de año dividida entre la superficie terrestre. Es un promedio de todo el país, así que un país con una ciudad enorme y un interior extenso y vacío puede tener una cifra baja.",
+        "Las ciudades-estado y las islas pequeñas encabezan la lista. Entre los países grandes, Bangladés es el más densamente poblado."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor densidad de población?", "a": "{top1}, con {v1} habitantes por km² en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la densidad de población del mundo?", "a": "Unos {world} habitantes por km² de tierra en {worldYear}." },
+        { "q": "¿Qué país tiene la menor densidad de población?", "a": "En esta lista, {last}, con {vlast} habitantes por km²." }
+      ]
+    },
+    "urban-population": {
+      "name": "Población urbana por país",
+      "title": "Tasa de urbanización por país {to}: % de población urbana en {rows} países | cv.cm",
+      "description": "Porcentaje de la población que vive en zonas urbanas en {rows} países, en orden. Población urbana mundial: {world}% ({worldYear}). Datos del Banco Mundial / ONU, descarga en CSV.",
+      "h1": "Población urbana por país, {to} (% de la población total)",
+      "lede": "Porcentaje de los habitantes de cada país que viven en ciudades y pueblos, en {rows} países y territorios, del más al menos urbano. Fuente: Banco Mundial, con datos de las Perspectivas de la Urbanización Mundial de la ONU.",
+      "value": "Población urbana (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas vive en zonas urbanas ({worldYear}).",
+        "Los más urbanos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El menos urbano de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Cada país usa su propia definición de lo urbano, normalmente un número mínimo de habitantes o un umbral de densidad, así que lo que en un país cuenta como ciudad puede ser un pueblo en otro.",
+        "Las ciudades-estado y los territorios pequeños son 100% urbanos por definición. Más de la mitad de la población mundial vive en ciudades desde aproximadamente 2007."
+      ],
+      "faq": [
+        { "q": "¿Cuál es el país más urbanizado?", "a": "{top1} ({v1}%), seguido de {top2} ({v2}%) y {top3} ({v3}%). Las ciudades-estado y los territorios pequeños suelen contar como totalmente urbanos." },
+        { "q": "¿Qué porcentaje de la población mundial vive en ciudades?", "a": "El {world}% en {worldYear}, según estimaciones de la ONU." },
+        { "q": "¿Cuál es el país menos urbanizado?", "a": "En esta lista, {last}, donde el {vlast}% de las personas vive en zonas urbanas." }
+      ]
+    },
+    "aged-65-plus": {
+      "name": "Población de 65 años o más por país",
+      "title": "Países más envejecidos {to}: población de 65 años o más por país | cv.cm",
+      "description": "Porcentaje de la población de 65 años o más en {rows} países, del más envejecido al más joven. Mundo: {world}% ({worldYear}). Datos del Banco Mundial / ONU, descarga en CSV.",
+      "h1": "Población de 65 años o más por país, {to} (% del total)",
+      "lede": "Porcentaje de los habitantes de cada país que tienen 65 años o más, en {rows} países y territorios, de la población más envejecida a la más joven. Fuente: Banco Mundial, con estimaciones de población de la ONU.",
+      "value": "65 años o más (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas tiene 65 años o más ({worldYear}).",
+        "Los más envejecidos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El más joven de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La ONU considera que un país está en proceso de envejecimiento cuando más del 7% de su población tiene 65 años o más, envejecido por encima del 14% y superenvejecido por encima del 20%. La baja natalidad y una vida más larga hacen subir ese porcentaje.",
+        "Los países del Golfo tienen porcentajes muy bajos porque la mayoría de sus residentes son migrantes en edad de trabajar, no porque sus propios ciudadanos sean jóvenes."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la población más envejecida?", "a": "{top1}, donde el {v1}% de las personas tenía 65 años o más en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué porcentaje de la población mundial tiene más de 65 años?", "a": "El {world}% en {worldYear}." },
+        { "q": "¿Qué país tiene la población más joven?", "a": "Según esta medida, {last}, donde el {vlast}% de las personas tiene 65 años o más." }
+      ]
+    },
+    "birth-rate": {
+      "name": "Tasa de natalidad por país",
+      "title": "Tasa de natalidad por país {to}: nacimientos por 1000 habitantes en {rows} países | cv.cm",
+      "description": "Tasa bruta de natalidad, nacidos vivos al año por cada 1000 habitantes, en {rows} países, en orden. Mundo: {world} ({worldYear}). Datos del Banco Mundial / ONU, descarga en CSV.",
+      "h1": "Tasa de natalidad por país, {to} (nacimientos por cada 1000 habitantes)",
+      "lede": "Nacidos vivos en un año por cada 1000 habitantes, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de población de la ONU.",
+      "value": "Nacimientos por 1000",
+      "facts": [
+        "Mundo: {world} nacimientos por cada 1000 habitantes ({worldYear}).",
+        "Las más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La tasa bruta de natalidad divide los nacimientos entre toda la población, así que también depende de la estructura por edades: un país con muchos adultos jóvenes tiene más nacimientos aunque cada mujer tenga pocos hijos.",
+        "Para comparar cuántos hijos tienen las mujeres, use la tabla de tasa de fecundidad. Los países con las tasas de natalidad más bajas también tienen las poblaciones más envejecidas."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de natalidad más alta?", "a": "{top1}, con {v1} nacimientos por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de natalidad mundial?", "a": "{world} nacimientos por cada 1000 habitantes en {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de natalidad más baja?", "a": "En esta lista, {last}, con {vlast} nacimientos por cada 1000 habitantes." }
+      ]
+    },
+    "infant-mortality": {
+      "name": "Mortalidad infantil por país",
+      "title": "Tasa de mortalidad infantil por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Muertes de menores de un año por cada 1000 nacidos vivos en {rows} países, en orden. Tasa mundial: {world} ({worldYear}). Datos del Banco Mundial / UN IGME, descarga en CSV.",
+      "h1": "Tasa de mortalidad infantil por país, {to} (por cada 1000 nacidos vivos)",
+      "lede": "Cuántos bebés de cada 1000 nacidos vivos mueren antes de cumplir un año, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones del UN IGME.",
+      "value": "Muertes por 1000 nacimientos",
+      "facts": [
+        "Mundo: {world} muertes infantiles por cada 1000 nacidos vivos ({worldYear}).",
+        "Las más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La mortalidad infantil es una de las señales más claras del alcance de un sistema de salud: la mayoría de las muertes infantiles se deben a partos prematuros, complicaciones del parto e infecciones que el agua potable, las vacunas y la atención del parto por personal capacitado previenen.",
+        "El Grupo Interinstitucional de las Naciones Unidas para la Estimación de la Mortalidad Infantil (UN IGME) combina encuestas, censos y registros civiles en una única serie comparable."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de mortalidad infantil más alta?", "a": "{top1}, con {v1} muertes por cada 1000 nacidos vivos en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de mortalidad infantil mundial?", "a": "{world} por cada 1000 nacidos vivos en {worldYear}. Ha bajado a menos de la mitad desde 1990." },
+        { "q": "¿Qué país tiene la tasa de mortalidad infantil más baja?", "a": "En esta lista, {last}, con {vlast} por cada 1000 nacidos vivos." }
+      ]
+    },
+    "co2-per-capita": {
+      "name": "Emisiones de CO2 per cápita por país",
+      "title": "Emisiones de CO2 per cápita por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Emisiones de dióxido de carbono por persona, en toneladas, de {rows} países, de mayor a menor. Promedio mundial: {world} t ({worldYear}). Datos del Banco Mundial / EDGAR, descarga en CSV.",
+      "h1": "Emisiones de CO2 per cápita por país, {to} (toneladas por persona)",
+      "lede": "Toneladas de dióxido de carbono que emite cada país por habitante al año, sin contar el uso de la tierra ni la silvicultura, en {rows} países y territorios. Fuente: Banco Mundial, con datos de la base EDGAR de la UE.",
+      "value": "CO2 por persona (t)",
+      "facts": [
+        "Promedio mundial: {world} toneladas de CO2 por persona ({worldYear}).",
+        "Las más altas: {top1} ({v1} t), {top2} ({v2} t) y {top3} ({v3} t).",
+        "La más baja de la lista: {last} ({vlast} t)."
+      ],
+      "about": [
+        "Las cifras cuentan el CO2 procedente de la quema de combustibles fósiles y de la industria, como el cemento, dentro de las fronteras del país. Quedan fuera las emisiones del uso de la tierra, el cambio de uso de la tierra y la silvicultura (UTCUTS), y también las de los bienes que importa el país.",
+        "Los pequeños productores de petróleo y gas encabezan la lista porque su industria intensiva en energía es grande en relación con su población. Para conocer el porcentaje total de un país en las emisiones mundiales, multiplique por su población."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene las mayores emisiones de CO2 por persona?", "a": "{top1}, con {v1} toneladas por persona en {year1}, seguido de {top2} ({v2} t)." },
+        { "q": "¿Cuáles son las emisiones medias de CO2 por persona en el mundo?", "a": "Unas {world} toneladas por persona en {worldYear}." },
+        { "q": "¿Qué país emite menos CO2 por persona?", "a": "En esta lista, {last}, con {vlast} toneladas por persona." }
+      ]
+    },
+    "electricity-access": {
+      "name": "Acceso a la electricidad por país",
+      "title": "Acceso a la electricidad por país {to}: % de la población | cv.cm",
+      "description": "Porcentaje de la población con acceso a la electricidad en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Acceso a la electricidad por país, {to} (% de la población)",
+      "lede": "Porcentaje de los habitantes de cada país que tienen electricidad en casa, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de encuestas de hogares y de la AIE.",
+      "value": "Acceso a la electricidad (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas tiene electricidad ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%). Muchos otros países también tienen acceso total.",
+        "El más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El acceso cuenta cualquier hogar con conexión eléctrica, ya sea a la red o mediante sistemas solares domésticos y minirredes. No dice nada sobre la fiabilidad del suministro ni sobre cuántas horas al día funciona.",
+        "La mayoría de las personas sin electricidad vive en África subsahariana, donde el acceso en varios países sigue por debajo de la mitad."
+      ],
+      "faq": [
+        { "q": "¿Qué países tienen el mayor acceso a la electricidad?", "a": "{top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%) encabezan la lista en {year1}. Los empates comparten puesto." },
+        { "q": "¿Qué porcentaje del mundo tiene electricidad?", "a": "El {world}% de la población mundial en {worldYear}." },
+        { "q": "¿Qué país tiene el menor acceso a la electricidad?", "a": "En esta lista, {last}, donde el {vlast}% de las personas tiene electricidad." }
       ]
     },
     "country-codes": {

@@ -2,11 +2,13 @@
   "crumbHome": "Home",
   "hub": {
     "title": "Free Public Data Tables: Population, GDP, Country Codes and More | cv.cm",
-    "description": "Open data tables you can search, sort and download as CSV: world population, GDP, life expectancy, fertility, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
+    "description": "Open data tables you can search, sort and download as CSV: population, GDP, inflation, unemployment, life expectancy, birth rates, land area, CO2 emissions, internet use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
     "h1": "Public data",
     "lede": "Plain tables of public data from the World Bank, ISO and IANA. Search, sort by any column, or download the CSV. Every table names its source and licence.",
     "groups": {
-      "world": "Countries and the world economy",
+      "economy": "Economy",
+      "people": "People and health",
+      "planet": "Land, energy and the internet",
       "codes": "Codes and standards",
       "reference": "Quick reference"
     },
@@ -189,6 +191,270 @@
         { "q": "Which country has the highest share of internet users?", "a": "{top1}, where {v1}% of people were online in {year1}." },
         { "q": "What share of the world uses the internet?", "a": "{world}% of the world's population in {worldYear}." },
         { "q": "Which country has the fewest internet users?", "a": "In this list, {last}, at {vlast}% of the population." }
+      ]
+    },
+    "gdp-ppp-per-capita": {
+      "name": "GDP per capita (PPP) by country",
+      "title": "GDP per Capita PPP by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "GDP per person at purchasing power parity for {rows} countries, ranked, in current international dollars. World average {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "GDP per capita at purchasing power parity, {to} (current international $)",
+      "lede": "Output per person for {rows} countries and areas, converted with purchasing power parity so that a dollar buys the same basket of goods everywhere. Ranked from highest to lowest. Source: World Bank.",
+      "value": "GDP per capita, PPP (Int$)",
+      "facts": [
+        "World average: {world} international dollars per person ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Purchasing power parity (PPP) converts each currency at the rate that buys the same goods and services as one US dollar buys in the United States. It removes most of the effect of price levels, so it compares living standards better than GDP at market exchange rates.",
+        "Small financial centres and oil exporters top the list because their output is large next to the number of residents, not because every resident is that rich. Each row shows the latest year the country reported."
+      ],
+      "faq": [
+        { "q": "Which country has the highest GDP per capita at PPP?", "a": "{top1}, with {v1} international dollars per person in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the difference between GDP per capita and GDP per capita PPP?", "a": "Plain GDP per capita uses market exchange rates. The PPP version adjusts for what money buys locally, so poorer countries with low prices rank higher than they do on the nominal list." },
+        { "q": "Which country has the lowest GDP per capita at PPP?", "a": "In this list, {last}, at {vlast} international dollars per person." }
+      ]
+    },
+    "gdp-growth": {
+      "name": "GDP growth rate by country",
+      "title": "GDP Growth Rate by Country {to}: Fastest Growing Economies | cv.cm",
+      "description": "Annual real GDP growth for {rows} economies, ranked from fastest to slowest. World growth {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "GDP growth rate by country, {to} (annual %)",
+      "lede": "How much each economy grew in its latest year, after taking out inflation, for {rows} countries and areas. Negative values mean the economy shrank. Source: World Bank.",
+      "value": "GDP growth (%)",
+      "facts": [
+        "World economy: {world}% growth ({worldYear}).",
+        "Fastest growing: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Slowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "GDP growth is the yearly change in gross domestic product at constant prices, so it measures real output, not price changes. It is based on each country's own currency.",
+        "Small economies swing the most: one new oil field, a bad harvest or a war can move growth by ten points in a year. Look at several years before reading a trend."
+      ],
+      "faq": [
+        { "q": "Which country has the fastest growing economy?", "a": "{top1}, with real GDP growth of {v1}% in {year1}. {top2} was next at {v2}%." },
+        { "q": "How fast is the world economy growing?", "a": "World GDP grew {world}% in {worldYear}, in real terms." },
+        { "q": "What does negative GDP growth mean?", "a": "The economy produced less than the year before. Two quarters in a row of decline is the common rule of thumb for a recession. The lowest value in this list is {last}, at {vlast}%." }
+      ]
+    },
+    "inflation": {
+      "name": "Inflation rate by country",
+      "title": "Inflation Rate by Country {to}: Consumer Prices in {rows} Countries | cv.cm",
+      "description": "Annual consumer price inflation for {rows} countries, ranked from highest to lowest. World inflation {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Inflation rate by country, {to} (consumer prices, annual %)",
+      "lede": "How much the prices of everyday goods and services rose in each country's latest year, for {rows} countries and areas. Negative values are deflation. Source: World Bank, from IMF data.",
+      "value": "Inflation (%)",
+      "facts": [
+        "World inflation: {world}% ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "This is the yearly change in the consumer price index (CPI): the cost of a fixed basket of goods and services that a typical household buys. It is the inflation figure most news reports quote.",
+        "Most central banks aim for about 2% a year. Rates above 50% a month are called hyperinflation. Some countries publish late, so check the year column."
+      ],
+      "faq": [
+        { "q": "Which country has the highest inflation rate?", "a": "{top1}, where consumer prices rose {v1}% in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What is the world inflation rate?", "a": "Consumer prices worldwide rose {world}% in {worldYear}." },
+        { "q": "Which country has the lowest inflation?", "a": "In this list, {last}, at {vlast}%. A negative number means prices fell." }
+      ]
+    },
+    "unemployment": {
+      "name": "Unemployment rate by country",
+      "title": "Unemployment Rate by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Unemployment as a share of the labour force for {rows} countries, ranked, using ILO modelled estimates. World rate {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Unemployment rate by country, {to} (% of labour force)",
+      "lede": "Share of people who want a job and are looking for one but do not have one, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from ILO estimates.",
+      "value": "Unemployment (%)",
+      "facts": [
+        "World unemployment: {world}% ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The International Labour Organization (ILO) counts someone as unemployed if they had no work, were available to work and looked for a job recently. People who have stopped looking are not in the labour force, so they are not counted.",
+        "These are modelled estimates that use one definition for every country, so they can differ from the national figures each government publishes."
+      ],
+      "faq": [
+        { "q": "Which country has the highest unemployment rate?", "a": "{top1}, at {v1}% of the labour force in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What is the world unemployment rate?", "a": "The ILO estimates {world}% for {worldYear}." },
+        { "q": "Which country has the lowest unemployment rate?", "a": "In this list, {last}, at {vlast}%. Very low rates often mean many people work informally or for family businesses." }
+      ]
+    },
+    "land-area": {
+      "name": "Countries by land area",
+      "title": "Countries by Land Area {to}: Largest to Smallest in km² | cv.cm",
+      "description": "Land area of {rows} countries and areas in square kilometres, ranked, with share of the world's land. World land area {world} km². World Bank data, CSV download.",
+      "h1": "Countries by land area (km²)",
+      "lede": "Land area of {rows} countries and areas, from largest to smallest, with each one's share of the world's land. Lakes and rivers are not counted. Source: World Bank, from FAO data.",
+      "value": "Land area (km²)",
+      "facts": [
+        "World land area: {world} km² ({worldYear}).",
+        "Largest: {top1} ({v1} km²), {top2} ({v2} km²) and {top3} ({v3} km²).",
+        "Smallest in the list: {last} ({vlast} km²)."
+      ],
+      "about": [
+        "Land area is a country's total area minus inland water such as major rivers and lakes. That is why some figures are smaller than the total area you may see elsewhere: Canada, with many lakes, ranks below China and the United States here.",
+        "The list covers the economies the World Bank reports on. Antarctica and disputed areas with no single government are not included."
+      ],
+      "faq": [
+        { "q": "What is the largest country by land area?", "a": "{top1}, with {v1} km² of land, followed by {top2} ({v2} km²) and {top3} ({v3} km²)." },
+        { "q": "How much land is there on Earth?", "a": "The World Bank sums the land of all countries to {world} km² ({worldYear}), roughly a quarter of the Earth's surface. Antarctica is not included." },
+        { "q": "What is the smallest country by land area?", "a": "In this list, {last}, at {vlast} km². Vatican City is smaller but is not in the World Bank data." }
+      ]
+    },
+    "population-density": {
+      "name": "Population density by country",
+      "title": "Population Density by Country {to}: People per km² | cv.cm",
+      "description": "People per square kilometre of land in {rows} countries and areas, ranked from most to least crowded. World average {world} per km². World Bank data, CSV download.",
+      "h1": "Population density by country (people per km² of land)",
+      "lede": "How many people live on each square kilometre of land, for {rows} countries and areas, ranked from most to least densely populated. Source: World Bank.",
+      "value": "People per km²",
+      "facts": [
+        "World average: {world} people per km² ({worldYear}).",
+        "Most densely populated: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Least densely populated in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Population density is mid-year population divided by land area. It is an average over the whole country, so a country with one huge city and a large empty interior can still have a low figure.",
+        "City-states and small islands top the list. Among large countries, Bangladesh is the most crowded."
+      ],
+      "faq": [
+        { "q": "Which country has the highest population density?", "a": "{top1}, with {v1} people per km² in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the population density of the world?", "a": "About {world} people per km² of land in {worldYear}." },
+        { "q": "Which country has the lowest population density?", "a": "In this list, {last}, with {vlast} people per km²." }
+      ]
+    },
+    "urban-population": {
+      "name": "Urban population by country",
+      "title": "Urbanization Rate by Country {to}: Urban Population % in {rows} Countries | cv.cm",
+      "description": "Share of the population living in urban areas for {rows} countries, ranked. World urban share {world}% ({worldYear}). World Bank / UN data, CSV download.",
+      "h1": "Urban population by country, {to} (% of total population)",
+      "lede": "Share of each country's people who live in cities and towns, for {rows} countries and areas, ranked from most to least urban. Source: World Bank, from the UN World Urbanization Prospects.",
+      "value": "Urban population (%)",
+      "facts": [
+        "World: {world}% of people live in urban areas ({worldYear}).",
+        "Most urban: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Least urban in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Each country uses its own definition of urban, usually a minimum number of people or a density threshold, so a town in one country may count as a village in another.",
+        "City-states and small territories are 100% urban by definition. More than half of the world's people have lived in cities since about 2007."
+      ],
+      "faq": [
+        { "q": "Which country is the most urbanized?", "a": "{top1} ({v1}%), then {top2} ({v2}%) and {top3} ({v3}%). City-states and small territories often count as fully urban." },
+        { "q": "What share of the world lives in cities?", "a": "{world}% in {worldYear}, according to UN estimates." },
+        { "q": "Which country is the least urbanized?", "a": "In this list, {last}, where {vlast}% of people live in urban areas." }
+      ]
+    },
+    "aged-65-plus": {
+      "name": "Population aged 65+ by country",
+      "title": "Oldest Countries {to}: Population Aged 65 and Over by Country | cv.cm",
+      "description": "Share of the population aged 65 and above for {rows} countries, ranked from oldest to youngest. World {world}% ({worldYear}). World Bank / UN data, CSV download.",
+      "h1": "Population aged 65 and over by country, {to} (% of total)",
+      "lede": "Share of each country's people who are 65 or older, for {rows} countries and areas, ranked from the oldest population to the youngest. Source: World Bank, from UN population estimates.",
+      "value": "Aged 65+ (%)",
+      "facts": [
+        "World: {world}% of people are 65 or older ({worldYear}).",
+        "Oldest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Youngest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "The UN calls a country ageing when more than 7% of its people are 65 or older, aged above 14% and super-aged above 20%. Low birth rates and longer lives push the share up.",
+        "Gulf states have very low shares because most residents are working-age migrants, not because their own citizens are young."
+      ],
+      "faq": [
+        { "q": "Which country has the oldest population?", "a": "{top1}, where {v1}% of people were 65 or older in {year1}, followed by {top2} ({v2}%)." },
+        { "q": "What share of the world is over 65?", "a": "{world}% in {worldYear}." },
+        { "q": "Which country has the youngest population?", "a": "By this measure, {last}, where {vlast}% of people are 65 or older." }
+      ]
+    },
+    "birth-rate": {
+      "name": "Birth rate by country",
+      "title": "Birth Rate by Country {to}: Births per 1,000 People in {rows} Countries | cv.cm",
+      "description": "Crude birth rate, live births per 1,000 people a year, for {rows} countries, ranked. World {world} ({worldYear}). World Bank / UN data, CSV download.",
+      "h1": "Birth rate by country, {to} (births per 1,000 people)",
+      "lede": "Live births in a year for every 1,000 people, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN population estimates.",
+      "value": "Births per 1,000",
+      "facts": [
+        "World: {world} births per 1,000 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "The crude birth rate divides births by the whole population, so it also depends on the age structure: a country with many young adults has more births even when each woman has few children.",
+        "To compare how many children women have, use the fertility rate table. Countries with the lowest birth rates also have the oldest populations."
+      ],
+      "faq": [
+        { "q": "Which country has the highest birth rate?", "a": "{top1}, with {v1} births per 1,000 people in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world birth rate?", "a": "{world} births per 1,000 people in {worldYear}." },
+        { "q": "Which country has the lowest birth rate?", "a": "In this list, {last}, with {vlast} births per 1,000 people." }
+      ]
+    },
+    "infant-mortality": {
+      "name": "Infant mortality by country",
+      "title": "Infant Mortality Rate by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Infant deaths before age one per 1,000 live births for {rows} countries, ranked. World rate {world} ({worldYear}). World Bank / UN IGME data, CSV download.",
+      "h1": "Infant mortality rate by country, {to} (per 1,000 live births)",
+      "lede": "How many babies out of every 1,000 born alive die before their first birthday, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from UN IGME estimates.",
+      "value": "Deaths per 1,000 births",
+      "facts": [
+        "World: {world} infant deaths per 1,000 live births ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Infant mortality is one of the clearest signs of a health system's reach: most infant deaths come from premature birth, birth complications and infections that clean water, vaccines and trained birth attendants prevent.",
+        "The UN Inter-agency Group for Child Mortality Estimation (UN IGME) combines surveys, censuses and civil registration into one comparable series."
+      ],
+      "faq": [
+        { "q": "Which country has the highest infant mortality rate?", "a": "{top1}, with {v1} deaths per 1,000 live births in {year1}, followed by {top2} ({v2})." },
+        { "q": "What is the world infant mortality rate?", "a": "{world} per 1,000 live births in {worldYear}. It has fallen by more than half since 1990." },
+        { "q": "Which country has the lowest infant mortality rate?", "a": "In this list, {last}, at {vlast} per 1,000 live births." }
+      ]
+    },
+    "co2-per-capita": {
+      "name": "CO2 emissions per capita by country",
+      "title": "CO2 Emissions per Capita by Country {to}: {rows} Countries Ranked | cv.cm",
+      "description": "Carbon dioxide emissions per person in tonnes for {rows} countries, ranked from highest to lowest. World average {world} t ({worldYear}). World Bank / EDGAR data, CSV download.",
+      "h1": "CO2 emissions per capita by country, {to} (tonnes per person)",
+      "lede": "Tonnes of carbon dioxide each country emits per resident in a year, excluding land use and forestry, for {rows} countries and areas. Source: World Bank, from the EU EDGAR database.",
+      "value": "CO2 per person (t)",
+      "facts": [
+        "World average: {world} tonnes of CO2 per person ({worldYear}).",
+        "Highest: {top1} ({v1} t), {top2} ({v2} t) and {top3} ({v3} t).",
+        "Lowest in the list: {last} ({vlast} t)."
+      ],
+      "about": [
+        "The figures count CO2 from burning fossil fuels and from industry such as cement, inside the country's borders. Emissions from land use change and forestry (LULUCF) are left out, and so are emissions from goods a country imports.",
+        "Small oil and gas producers top the list because energy-heavy industry is large next to their population. For a country's total share of world emissions, multiply by its population."
+      ],
+      "faq": [
+        { "q": "Which country has the highest CO2 emissions per person?", "a": "{top1}, at {v1} tonnes per person in {year1}, followed by {top2} ({v2} t)." },
+        { "q": "What are average CO2 emissions per person in the world?", "a": "About {world} tonnes per person in {worldYear}." },
+        { "q": "Which country emits the least CO2 per person?", "a": "In this list, {last}, at {vlast} tonnes per person." }
+      ]
+    },
+    "electricity-access": {
+      "name": "Access to electricity by country",
+      "title": "Access to Electricity by Country {to}: % of Population | cv.cm",
+      "description": "Share of the population with access to electricity in {rows} countries, ranked. World {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Access to electricity by country, {to} (% of population)",
+      "lede": "Share of each country's people who have electricity at home, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from household surveys and the IEA.",
+      "value": "Access to electricity (%)",
+      "facts": [
+        "World: {world}% of people have electricity ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%). Many more countries also have full access.",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Access counts any household with an electricity connection, from the grid or from solar home systems and mini-grids. It says nothing about how reliable the supply is or how many hours a day it runs.",
+        "Most people without electricity live in sub-Saharan Africa, where access in several countries is still below half."
+      ],
+      "faq": [
+        { "q": "Which countries have the highest access to electricity?", "a": "{top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%) lead the list in {year1}. Ties share a rank." },
+        { "q": "What share of the world has electricity?", "a": "{world}% of the world's population in {worldYear}." },
+        { "q": "Which country has the lowest access to electricity?", "a": "In this list, {last}, where {vlast}% of people have electricity." }
       ]
     },
     "country-codes": {

@@ -2,11 +2,13 @@
   "crumbHome": "Trang chủ",
   "hub": {
     "title": "Bảng dữ liệu mở miễn phí: dân số, GDP, mã quốc gia | cv.cm",
-    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số thế giới, GDP các nước, tuổi thọ, tỷ suất sinh, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại quốc tế, múi giờ, khổ giấy và bảng mã ASCII.",
+    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, lạm phát, thất nghiệp, tuổi thọ, tỷ suất sinh, diện tích đất, phát thải CO2, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
     "h1": "Dữ liệu mở",
     "lede": "Dữ liệu công khai từ Ngân hàng Thế giới, ISO và IANA, trình bày thành bảng đơn giản. Bạn có thể tìm kiếm, sắp xếp theo cột bất kỳ hoặc tải file CSV. Mỗi bảng đều ghi rõ nguồn và giấy phép.",
     "groups": {
-      "world": "Các nước và kinh tế thế giới",
+      "economy": "Kinh tế",
+      "people": "Dân số và sức khỏe",
+      "planet": "Đất đai, năng lượng và internet",
       "codes": "Mã và tiêu chuẩn",
       "reference": "Tra cứu nhanh"
     },
@@ -189,6 +191,270 @@
         { "q": "Nước nào có tỷ lệ người dùng internet cao nhất?", "a": "{top1}, nơi {v1}% dân số lên mạng vào năm {year1}." },
         { "q": "Bao nhiêu phần trăm dân số thế giới dùng internet?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
         { "q": "Nước nào có ít người dùng internet nhất?", "a": "Trong danh sách này là {last}, với {vlast}% dân số." }
+      ]
+    },
+    "gdp-ppp-per-capita": {
+      "name": "GDP bình quân đầu người (PPP) các nước",
+      "title": "GDP bình quân đầu người PPP các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "GDP bình quân đầu người theo sức mua tương đương của {rows} quốc gia, xếp hạng, tính bằng đô la quốc tế hiện hành. Trung bình thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "GDP bình quân đầu người theo sức mua tương đương các nước năm {to} (đô la quốc tế hiện hành)",
+      "lede": "Sản lượng trên mỗi người của {rows} quốc gia và vùng lãnh thổ, quy đổi theo sức mua tương đương để một đô la mua được cùng một giỏ hàng hóa ở mọi nơi. Xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới.",
+      "value": "GDP bình quân đầu người, PPP (Int$)",
+      "facts": [
+        "Trung bình thế giới: {world} đô la quốc tế mỗi người ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Sức mua tương đương (PPP) quy đổi mỗi đồng tiền theo tỷ giá mua được lượng hàng hóa và dịch vụ bằng với lượng mà một đô la Mỹ mua được ở Mỹ. Cách này loại bỏ phần lớn ảnh hưởng của mặt bằng giá, nên so sánh mức sống tốt hơn GDP theo tỷ giá thị trường.",
+        "Các trung tâm tài chính nhỏ và nước xuất khẩu dầu đứng đầu danh sách vì sản lượng của họ lớn so với số cư dân, chứ không phải vì mọi cư dân đều giàu như vậy. Mỗi dòng hiển thị năm mới nhất mà nước đó báo cáo."
+      ],
+      "faq": [
+        { "q": "Nước nào có GDP bình quân đầu người PPP cao nhất?", "a": "{top1}, với {v1} đô la quốc tế mỗi người vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "GDP bình quân đầu người và GDP bình quân đầu người PPP khác nhau thế nào?", "a": "GDP bình quân đầu người thông thường dùng tỷ giá thị trường. Bản PPP điều chỉnh theo lượng hàng hóa mà tiền mua được trong nước, nên các nước nghèo có giá cả thấp xếp hạng cao hơn so với danh sách danh nghĩa." },
+        { "q": "Nước nào có GDP bình quân đầu người PPP thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} đô la quốc tế mỗi người." }
+      ]
+    },
+    "gdp-growth": {
+      "name": "Tốc độ tăng trưởng GDP các nước",
+      "title": "Tốc độ tăng trưởng GDP các nước năm {to}: nền kinh tế tăng nhanh nhất | cv.cm",
+      "description": "Tăng trưởng GDP thực hằng năm của {rows} nền kinh tế, xếp từ nhanh nhất đến chậm nhất. Tăng trưởng thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tốc độ tăng trưởng GDP các nước năm {to} (% mỗi năm)",
+      "lede": "Mức tăng trưởng của từng nền kinh tế trong năm gần nhất, sau khi loại trừ lạm phát, cho {rows} quốc gia và vùng lãnh thổ. Giá trị âm nghĩa là nền kinh tế thu hẹp. Nguồn: Ngân hàng Thế giới.",
+      "value": "Tăng trưởng GDP (%)",
+      "facts": [
+        "Kinh tế thế giới: tăng trưởng {world}% ({worldYear}).",
+        "Tăng nhanh nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Chậm nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tăng trưởng GDP là mức thay đổi hằng năm của tổng sản phẩm quốc nội theo giá cố định, nên nó đo sản lượng thực chứ không phải biến động giá. Số liệu tính theo đồng tiền của chính mỗi nước.",
+        "Các nền kinh tế nhỏ biến động mạnh nhất: một mỏ dầu mới, một vụ mùa thất bát hay một cuộc chiến có thể làm tăng trưởng thay đổi mười điểm trong một năm. Hãy xem nhiều năm trước khi kết luận về xu hướng."
+      ],
+      "faq": [
+        { "q": "Nước nào có nền kinh tế tăng trưởng nhanh nhất?", "a": "{top1}, với tăng trưởng GDP thực {v1}% vào năm {year1}. {top2} đứng tiếp theo với {v2}%." },
+        { "q": "Kinh tế thế giới tăng trưởng bao nhiêu?", "a": "GDP thế giới tăng {world}% trong năm {worldYear}, tính theo giá thực." },
+        { "q": "Tăng trưởng GDP âm nghĩa là gì?", "a": "Nền kinh tế sản xuất ít hơn năm trước. Hai quý giảm liên tiếp là quy tắc kinh nghiệm thường dùng để xác định suy thoái. Giá trị thấp nhất trong danh sách này là {last}, ở mức {vlast}%." }
+      ]
+    },
+    "inflation": {
+      "name": "Tỷ lệ lạm phát các nước",
+      "title": "Tỷ lệ lạm phát các nước năm {to}: giá tiêu dùng tại {rows} nước | cv.cm",
+      "description": "Lạm phát giá tiêu dùng hằng năm của {rows} quốc gia, xếp từ cao đến thấp. Lạm phát thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ lạm phát các nước năm {to} (giá tiêu dùng, % mỗi năm)",
+      "lede": "Mức tăng giá hàng hóa và dịch vụ thiết yếu ở mỗi nước trong năm gần nhất, cho {rows} quốc gia và vùng lãnh thổ. Giá trị âm là giảm phát. Nguồn: Ngân hàng Thế giới, từ dữ liệu IMF.",
+      "value": "Lạm phát (%)",
+      "facts": [
+        "Lạm phát thế giới: {world}% ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Đây là mức thay đổi hằng năm của chỉ số giá tiêu dùng (CPI): chi phí của một giỏ hàng hóa và dịch vụ cố định mà một hộ gia đình điển hình mua. Đây là con số lạm phát mà phần lớn tin tức trích dẫn.",
+        "Hầu hết ngân hàng trung ương nhắm mức khoảng 2% mỗi năm. Mức trên 50% mỗi tháng được gọi là siêu lạm phát. Một số nước công bố chậm, nên hãy xem cột năm."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ lạm phát cao nhất?", "a": "{top1}, nơi giá tiêu dùng tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Tỷ lệ lạm phát thế giới là bao nhiêu?", "a": "Giá tiêu dùng trên toàn thế giới tăng {world}% trong năm {worldYear}." },
+        { "q": "Nước nào có lạm phát thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%. Số âm nghĩa là giá giảm." }
+      ]
+    },
+    "unemployment": {
+      "name": "Tỷ lệ thất nghiệp các nước",
+      "title": "Tỷ lệ thất nghiệp các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Thất nghiệp tính theo tỷ lệ lực lượng lao động của {rows} quốc gia, xếp hạng, theo ước tính mô hình của ILO. Tỷ lệ thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ thất nghiệp các nước năm {to} (% lực lượng lao động)",
+      "lede": "Tỷ lệ người muốn có việc và đang tìm việc nhưng chưa có việc làm, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của ILO.",
+      "value": "Thất nghiệp (%)",
+      "facts": [
+        "Thất nghiệp thế giới: {world}% ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tổ chức Lao động Quốc tế (ILO) coi một người là thất nghiệp nếu người đó không có việc làm, sẵn sàng làm việc và gần đây có tìm việc. Người đã ngừng tìm việc không thuộc lực lượng lao động, nên không được tính.",
+        "Đây là ước tính mô hình dùng một định nghĩa chung cho mọi nước, nên có thể khác với số liệu chính thức mà chính phủ từng nước công bố."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ thất nghiệp cao nhất?", "a": "{top1}, ở mức {v1}% lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Tỷ lệ thất nghiệp thế giới là bao nhiêu?", "a": "ILO ước tính {world}% cho năm {worldYear}." },
+        { "q": "Nước nào có tỷ lệ thất nghiệp thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%. Tỷ lệ rất thấp thường có nghĩa là nhiều người làm việc phi chính thức hoặc cho doanh nghiệp gia đình." }
+      ]
+    },
+    "land-area": {
+      "name": "Diện tích đất các nước",
+      "title": "Diện tích các nước năm {to}: xếp hạng từ lớn đến nhỏ theo km² | cv.cm",
+      "description": "Diện tích đất của {rows} quốc gia và vùng lãnh thổ theo km², xếp hạng, kèm tỷ trọng so với đất liền thế giới. Diện tích đất thế giới {world} km². Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Diện tích đất các nước (km²)",
+      "lede": "Diện tích đất của {rows} quốc gia và vùng lãnh thổ, từ lớn nhất đến nhỏ nhất, kèm tỷ trọng của từng nơi so với đất liền thế giới. Không tính hồ và sông. Nguồn: Ngân hàng Thế giới, từ dữ liệu FAO.",
+      "value": "Diện tích đất (km²)",
+      "facts": [
+        "Diện tích đất thế giới: {world} km² ({worldYear}).",
+        "Lớn nhất: {top1} ({v1} km²), {top2} ({v2} km²) và {top3} ({v3} km²).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast} km²)."
+      ],
+      "about": [
+        "Diện tích đất là tổng diện tích của một nước trừ đi mặt nước nội địa như các sông và hồ lớn. Vì vậy một số con số nhỏ hơn tổng diện tích bạn có thể thấy ở nơi khác: Canada, với rất nhiều hồ, xếp sau Trung Quốc và Hoa Kỳ trong bảng này.",
+        "Danh sách gồm các nền kinh tế mà Ngân hàng Thế giới thống kê. Châu Nam Cực và các vùng tranh chấp không có một chính quyền duy nhất không được đưa vào."
+      ],
+      "faq": [
+        { "q": "Nước nào có diện tích đất lớn nhất?", "a": "{top1}, với {v1} km² đất, tiếp theo là {top2} ({v2} km²) và {top3} ({v3} km²)." },
+        { "q": "Trái Đất có bao nhiêu diện tích đất liền?", "a": "Ngân hàng Thế giới cộng diện tích đất của mọi quốc gia được {world} km² ({worldYear}), khoảng một phần tư bề mặt Trái Đất. Không tính châu Nam Cực." },
+        { "q": "Nước nào có diện tích đất nhỏ nhất?", "a": "Trong danh sách này là {last}, với {vlast} km². Thành Vatican nhỏ hơn nhưng không có trong dữ liệu của Ngân hàng Thế giới." }
+      ]
+    },
+    "population-density": {
+      "name": "Mật độ dân số các nước",
+      "title": "Mật độ dân số các nước năm {to}: số người trên km² | cv.cm",
+      "description": "Số người trên mỗi km² đất ở {rows} quốc gia và vùng lãnh thổ, xếp từ đông đúc nhất đến thưa thớt nhất. Trung bình thế giới {world} người/km². Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Mật độ dân số các nước (số người trên km² đất)",
+      "lede": "Số người sống trên mỗi km² đất, cho {rows} quốc gia và vùng lãnh thổ, xếp từ mật độ cao nhất đến thấp nhất. Nguồn: Ngân hàng Thế giới.",
+      "value": "Người/km²",
+      "facts": [
+        "Trung bình thế giới: {world} người/km² ({worldYear}).",
+        "Mật độ cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Mật độ thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Mật độ dân số là dân số giữa năm chia cho diện tích đất. Đây là con số trung bình trên cả nước, nên một nước có một thành phố khổng lồ và vùng nội địa rộng lớn bỏ trống vẫn có thể có mật độ thấp.",
+        "Các thành bang và đảo nhỏ đứng đầu danh sách. Trong số các nước lớn, Bangladesh đông đúc nhất."
+      ],
+      "faq": [
+        { "q": "Nước nào có mật độ dân số cao nhất?", "a": "{top1}, với {v1} người/km² vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Mật độ dân số thế giới là bao nhiêu?", "a": "Khoảng {world} người trên mỗi km² đất vào năm {worldYear}." },
+        { "q": "Nước nào có mật độ dân số thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} người/km²." }
+      ]
+    },
+    "urban-population": {
+      "name": "Dân số đô thị các nước",
+      "title": "Tỷ lệ đô thị hóa các nước năm {to}: % dân số đô thị tại {rows} nước | cv.cm",
+      "description": "Tỷ lệ dân số sống ở khu vực đô thị của {rows} quốc gia, xếp hạng. Tỷ lệ đô thị thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / Liên Hợp Quốc, tải CSV.",
+      "h1": "Dân số đô thị các nước năm {to} (% tổng dân số)",
+      "lede": "Tỷ lệ người dân mỗi nước sống ở thành phố và thị trấn, cho {rows} quốc gia và vùng lãnh thổ, xếp từ đô thị hóa cao nhất đến thấp nhất. Nguồn: Ngân hàng Thế giới, từ Triển vọng Đô thị hóa Thế giới của Liên Hợp Quốc.",
+      "value": "Dân số đô thị (%)",
+      "facts": [
+        "Thế giới: {world}% dân số sống ở khu vực đô thị ({worldYear}).",
+        "Đô thị hóa cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Đô thị hóa thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Mỗi nước dùng định nghĩa đô thị riêng, thường là số dân tối thiểu hoặc ngưỡng mật độ, nên một thị trấn ở nước này có thể được tính là làng ở nước khác.",
+        "Các thành bang và vùng lãnh thổ nhỏ theo định nghĩa là 100% đô thị. Từ khoảng năm 2007, hơn một nửa dân số thế giới sống ở thành phố."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ đô thị hóa cao nhất?", "a": "{top1} ({v1}%), rồi đến {top2} ({v2}%) và {top3} ({v3}%). Các thành bang và vùng lãnh thổ nhỏ thường được tính là hoàn toàn đô thị." },
+        { "q": "Bao nhiêu phần trăm dân số thế giới sống ở thành phố?", "a": "{world}% vào năm {worldYear}, theo ước tính của Liên Hợp Quốc." },
+        { "q": "Nước nào có tỷ lệ đô thị hóa thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người dân sống ở khu vực đô thị." }
+      ]
+    },
+    "aged-65-plus": {
+      "name": "Dân số từ 65 tuổi trở lên các nước",
+      "title": "Các nước già nhất năm {to}: tỷ lệ dân số từ 65 tuổi trở lên | cv.cm",
+      "description": "Tỷ lệ dân số từ 65 tuổi trở lên của {rows} quốc gia, xếp từ già nhất đến trẻ nhất. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / Liên Hợp Quốc, tải CSV.",
+      "h1": "Dân số từ 65 tuổi trở lên các nước năm {to} (% tổng dân số)",
+      "lede": "Tỷ lệ người dân mỗi nước từ 65 tuổi trở lên, cho {rows} quốc gia và vùng lãnh thổ, xếp từ dân số già nhất đến trẻ nhất. Nguồn: Ngân hàng Thế giới, từ ước tính dân số của Liên Hợp Quốc.",
+      "value": "Từ 65 tuổi (%)",
+      "facts": [
+        "Thế giới: {world}% dân số từ 65 tuổi trở lên ({worldYear}).",
+        "Già nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Trẻ nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Liên Hợp Quốc gọi một nước là đang già hóa khi hơn 7% dân số từ 65 tuổi trở lên, là già khi trên 14% và siêu già khi trên 20%. Tỷ suất sinh thấp và tuổi thọ dài hơn đẩy tỷ lệ này lên.",
+        "Các nước vùng Vịnh có tỷ lệ rất thấp vì phần lớn cư dân là lao động nhập cư trong độ tuổi làm việc, chứ không phải vì công dân của họ trẻ."
+      ],
+      "faq": [
+        { "q": "Nước nào có dân số già nhất?", "a": "{top1}, nơi {v1}% dân số từ 65 tuổi trở lên vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Bao nhiêu phần trăm dân số thế giới trên 65 tuổi?", "a": "{world}% vào năm {worldYear}." },
+        { "q": "Nước nào có dân số trẻ nhất?", "a": "Theo thước đo này là {last}, nơi {vlast}% dân số từ 65 tuổi trở lên." }
+      ]
+    },
+    "birth-rate": {
+      "name": "Tỷ suất sinh thô các nước",
+      "title": "Tỷ suất sinh thô các nước năm {to}: số ca sinh trên 1.000 dân tại {rows} nước | cv.cm",
+      "description": "Tỷ suất sinh thô, số trẻ sinh sống trên 1.000 dân mỗi năm, của {rows} quốc gia, xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới / Liên Hợp Quốc, tải CSV.",
+      "h1": "Tỷ suất sinh thô các nước năm {to} (số ca sinh trên 1.000 dân)",
+      "lede": "Số trẻ sinh sống trong một năm trên mỗi 1.000 dân, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính dân số của Liên Hợp Quốc.",
+      "value": "Số ca sinh/1.000 dân",
+      "facts": [
+        "Thế giới: {world} ca sinh trên 1.000 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tỷ suất sinh thô lấy số ca sinh chia cho toàn bộ dân số, nên nó còn phụ thuộc vào cơ cấu tuổi: một nước có nhiều người trẻ trưởng thành sẽ có nhiều ca sinh hơn dù mỗi phụ nữ sinh ít con.",
+        "Để so sánh số con mỗi phụ nữ sinh, hãy xem bảng tổng tỷ suất sinh. Các nước có tỷ suất sinh thô thấp nhất cũng có dân số già nhất."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ suất sinh thô cao nhất?", "a": "{top1}, với {v1} ca sinh trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tỷ suất sinh thô của thế giới là bao nhiêu?", "a": "{world} ca sinh trên 1.000 dân vào năm {worldYear}." },
+        { "q": "Nước nào có tỷ suất sinh thô thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} ca sinh trên 1.000 dân." }
+      ]
+    },
+    "infant-mortality": {
+      "name": "Tỷ lệ tử vong trẻ sơ sinh các nước",
+      "title": "Tỷ lệ tử vong trẻ sơ sinh các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Số trẻ tử vong trước 1 tuổi trên 1.000 trẻ sinh sống của {rows} quốc gia, xếp hạng. Tỷ lệ thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới / UN IGME, tải CSV.",
+      "h1": "Tỷ lệ tử vong trẻ sơ sinh các nước năm {to} (trên 1.000 trẻ sinh sống)",
+      "lede": "Trong mỗi 1.000 trẻ sinh sống, bao nhiêu trẻ tử vong trước sinh nhật đầu tiên, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của UN IGME.",
+      "value": "Tử vong/1.000 ca sinh",
+      "facts": [
+        "Thế giới: {world} trẻ tử vong trên 1.000 trẻ sinh sống ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tỷ lệ tử vong trẻ sơ sinh là một trong những dấu hiệu rõ nhất về mức độ phủ sóng của hệ thống y tế: phần lớn ca tử vong ở trẻ sơ sinh do sinh non, biến chứng khi sinh và nhiễm trùng, những nguyên nhân mà nước sạch, vắc-xin và người đỡ đẻ có chuyên môn có thể ngăn ngừa.",
+        "Nhóm Liên cơ quan Liên Hợp Quốc về Ước tính Tử vong Trẻ em (UN IGME) kết hợp khảo sát, tổng điều tra dân số và đăng ký hộ tịch thành một chuỗi số liệu có thể so sánh."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh cao nhất?", "a": "{top1}, với {v1} ca tử vong trên 1.000 trẻ sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tỷ lệ tử vong trẻ sơ sinh của thế giới là bao nhiêu?", "a": "{world} trên 1.000 trẻ sinh sống vào năm {worldYear}. Tỷ lệ này đã giảm hơn một nửa kể từ năm 1990." },
+        { "q": "Nước nào có tỷ lệ tử vong trẻ sơ sinh thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} trên 1.000 trẻ sinh sống." }
+      ]
+    },
+    "co2-per-capita": {
+      "name": "Phát thải CO2 bình quân đầu người các nước",
+      "title": "Phát thải CO2 bình quân đầu người các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Lượng khí CO2 phát thải trên mỗi người tính bằng tấn của {rows} quốc gia, xếp từ cao đến thấp. Trung bình thế giới {world} tấn ({worldYear}). Dữ liệu Ngân hàng Thế giới / EDGAR, tải CSV.",
+      "h1": "Phát thải CO2 bình quân đầu người các nước năm {to} (tấn mỗi người)",
+      "lede": "Số tấn khí CO2 mà mỗi nước phát thải trên mỗi cư dân trong một năm, không tính sử dụng đất và lâm nghiệp, cho {rows} quốc gia và vùng lãnh thổ. Nguồn: Ngân hàng Thế giới, từ cơ sở dữ liệu EDGAR của EU.",
+      "value": "CO2 mỗi người (tấn)",
+      "facts": [
+        "Trung bình thế giới: {world} tấn CO2 mỗi người ({worldYear}).",
+        "Cao nhất: {top1} ({v1} tấn), {top2} ({v2} tấn) và {top3} ({v3} tấn).",
+        "Thấp nhất trong danh sách: {last} ({vlast} tấn)."
+      ],
+      "about": [
+        "Số liệu tính CO2 từ đốt nhiên liệu hóa thạch và từ công nghiệp như sản xuất xi măng, trong lãnh thổ mỗi nước. Phát thải từ thay đổi sử dụng đất và lâm nghiệp (LULUCF) không được tính, phát thải từ hàng hóa nhập khẩu cũng vậy.",
+        "Các nước sản xuất dầu khí nhỏ đứng đầu danh sách vì ngành công nghiệp tiêu tốn nhiều năng lượng lớn so với dân số. Để biết tỷ trọng của một nước trong tổng phát thải thế giới, hãy nhân với dân số của nước đó."
+      ],
+      "faq": [
+        { "q": "Nước nào phát thải CO2 bình quân đầu người cao nhất?", "a": "{top1}, ở mức {v1} tấn mỗi người vào năm {year1}, tiếp theo là {top2} ({v2} tấn)." },
+        { "q": "Phát thải CO2 trung bình mỗi người trên thế giới là bao nhiêu?", "a": "Khoảng {world} tấn mỗi người vào năm {worldYear}." },
+        { "q": "Nước nào phát thải CO2 bình quân đầu người thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} tấn mỗi người." }
+      ]
+    },
+    "electricity-access": {
+      "name": "Tỷ lệ tiếp cận điện các nước",
+      "title": "Tỷ lệ dân số có điện các nước năm {to}: % dân số | cv.cm",
+      "description": "Tỷ lệ dân số được tiếp cận điện ở {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ tiếp cận điện các nước năm {to} (% dân số)",
+      "lede": "Tỷ lệ người dân mỗi nước có điện tại nhà, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ khảo sát hộ gia đình và IEA.",
+      "value": "Tiếp cận điện (%)",
+      "facts": [
+        "Thế giới: {world}% dân số có điện ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%). Nhiều nước khác cũng đã có điện cho toàn dân.",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tiếp cận điện tính mọi hộ gia đình có đấu nối điện, từ lưới điện hoặc từ hệ thống điện mặt trời gia đình và lưới điện mini. Chỉ số này không cho biết nguồn điện ổn định đến đâu hay có điện bao nhiêu giờ mỗi ngày.",
+        "Phần lớn người chưa có điện sống ở châu Phi hạ Sahara, nơi tỷ lệ tiếp cận ở một số nước vẫn dưới một nửa."
+      ],
+      "faq": [
+        { "q": "Những nước nào có tỷ lệ tiếp cận điện cao nhất?", "a": "{top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%) dẫn đầu danh sách năm {year1}. Các nước bằng nhau được xếp cùng hạng." },
+        { "q": "Bao nhiêu phần trăm dân số thế giới có điện?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
+        { "q": "Nước nào có tỷ lệ tiếp cận điện thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người dân có điện." }
       ]
     },
     "country-codes": {
