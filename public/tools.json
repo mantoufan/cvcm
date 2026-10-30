@@ -73,7 +73,22 @@
       "description": "AI cut-out for people, products and pets. Transparent PNG.",
       "category": "ai",
       "url": "https://cv.cm/en/remove-background/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "cvcm/birefnet-lite-1024",
+            "license": "MIT",
+            "download_bytes": {
+              "webgpu_fp16": 101615014,
+              "webgpu": 180826341,
+              "cpu": 101615014
+            }
+          }
+        ],
+        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency. JPG gets a white background.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
+      }
     },
     {
       "id": "image-upscaler",
@@ -81,7 +96,32 @@
       "description": "Enlarge photos and anime art 2× or 4× with AI.",
       "category": "ai",
       "url": "https://cv.cm/en/image-upscaler/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": "Style: Photo",
+            "model": "cvcm/realesrgan-general-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 2445084,
+              "webgpu": 4866457,
+              "cpu": 4866457
+            }
+          },
+          {
+            "option": "Style: Anime / art",
+            "model": "cvcm/realesrgan-anime-x4v3",
+            "license": "BSD-3-Clause",
+            "download_bytes": {
+              "webgpu_fp16": 1253243,
+              "webgpu": 2492937,
+              "cpu": 2492937
+            }
+          }
+        ],
+        "options": "Scale: 2× / 4×. Style: Photo / Anime / art (Anime / art keeps flat colors and clean lines.) Format: PNG / JPG / WebP. Output is capped at 16 MP."
+      }
     },
     {
       "id": "speech-to-text",
@@ -89,7 +129,32 @@
       "description": "Transcribe audio and video with Whisper. TXT, SRT and VTT.",
       "category": "ai",
       "url": "https://cv.cm/en/speech-to-text/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": "Model: Fast",
+            "model": "onnx-community/whisper-base",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 187195896,
+              "webgpu": 206070497,
+              "cpu": 136161393
+            }
+          },
+          {
+            "option": "Model: Accurate",
+            "model": "onnx-community/whisper-small",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 409757083,
+              "webgpu": 585975197,
+              "cpu": 249077005
+            }
+          }
+        ],
+        "options": "Model: Fast / Accurate (better for Chinese, Japanese and Korean). Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters: 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, OGG, WebM, MP4, MOV."
+      }
     },
     {
       "id": "depth-map",
@@ -97,7 +162,22 @@
       "description": "Turn a photo into an AI depth map for 3D, parallax and ControlNet.",
       "category": "ai",
       "url": "https://cv.cm/en/depth-map/",
-      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded."
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": null,
+            "model": "onnx-community/depth-anything-v2-small",
+            "license": "Apache-2.0",
+            "download_bytes": {
+              "webgpu_fp16": 49642442,
+              "webgpu": 99060839,
+              "cpu": 27258801
+            }
+          }
+        ],
+        "options": "Style: Grayscale / Turbo / Magma. Invert (near = dark). Show the photo beside it. Relative depth, not meters. The PNG matches the photo's size."
+      }
     },
     {
       "id": "watermark",

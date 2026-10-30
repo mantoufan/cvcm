@@ -1,7 +1,7 @@
 // Machine-readable descriptions of cv.cm for AI agents: /llms.txt, /tools.json and /.well-known/poppy.json
 // (paths in AGENT_DOC_PATHS). Generated at build time by scripts/emit-sitemap.ts from the tool registry.
 import en from "../locales/en.json";
-import { AI_MODELS, formatMb } from "./ai-models";
+import { AI_MODELS, formatMb, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
 import { LOCALES, localePath } from "./locale";
@@ -50,6 +50,54 @@ export function dataHandling(tool: ToolId): string {
   return DATA_HANDLING_TEXT.LOCAL;
 }
 
+/** What the AI tool pages offer, with the model behind each choice. Labels are the page's own (en.json). */
+type AiToolDetails = { models: { option: string | null; model: AiModelId }[]; options: string };
+
+const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
+  "remove-background": {
+    models: [{ option: null, model: "birefnet" }],
+    options: `${en.removeBg.background}: ${[en.removeBg.bg_transparent, en.removeBg.bg_white, en.removeBg.bg_color, en.removeBg.bg_blur].join(" / ")}. ${en.removeBg.format}: PNG / JPG / WebP (${en.removeBg.formatNote}) Several photos at once, with ${en.removeBg.downloadAll}. No edge, quality or brush controls.`,
+  },
+  "image-upscaler": {
+    models: [
+      { option: `${en.upscaler.style}: ${en.upscaler.style_photo}`, model: "esrgan-photo" },
+      { option: `${en.upscaler.style}: ${en.upscaler.style_anime}`, model: "esrgan-anime" },
+    ],
+    options: `${en.upscaler.scale}: 2× / 4×. ${en.upscaler.style}: ${en.upscaler.style_photo} / ${en.upscaler.style_anime} (${en.upscaler.styleNote}) ${en.upscaler.format}: PNG / JPG / WebP. Output is capped at 16 MP.`,
+  },
+  "speech-to-text": {
+    models: [
+      { option: `${en.stt.model}: ${en.stt.model_fast}`, model: "whisper-base" },
+      { option: `${en.stt.model}: ${en.stt.model_accurate}`, model: "whisper-small" },
+    ],
+    options: `${en.stt.model}: ${en.stt.model_fast} / ${en.stt.model_accurate} (better for Chinese, Japanese and Korean). ${en.stt.language}: ${en.stt.autoDetect} or a chosen language. ${en.stt.task}: ${en.stt.task_transcribe} / ${en.stt.task_translate}. ${en.stt.script}: 简体中文 / 繁體中文 / ${en.stt.scriptAsIs}. Export TXT, SRT or VTT. Records from the microphone too. Accepts ${en.stt.dropTypes}.`,
+  },
+  "depth-map": {
+    models: [{ option: null, model: "depth" }],
+    options: `${en.depthMap.style}: ${[en.depthMap.palette_gray, en.depthMap.palette_turbo, en.depthMap.palette_magma].join(" / ")}. ${en.depthMap.invert}. ${en.depthMap.side}. ${en.depthMap.note}`,
+  },
+};
+
+/** Download sizes per backend: the page uses WebGPU (fp16 when the GPU supports it) and falls back to CPU. */
+export function aiToolDetails(tool: ToolId) {
+  const details = AI_DETAILS[tool];
+  if (!details) return undefined;
+  return {
+    models: details.models.map(({ option, model }) => {
+      const { variants, repo, license } = AI_MODELS[model];
+      return {
+        option,
+        model: repo,
+        license,
+        download_bytes: { webgpu_fp16: variants.gpu16.bytes, webgpu: variants.gpu.bytes, cpu: variants.cpu.bytes },
+      };
+    }),
+    options: details.options,
+  };
+}
+
+export const AI_DETAIL_TOOLS = Object.keys(AI_DETAILS) as ToolId[];
+
 type ToolStrings = { name: string; blurb: string };
 const TOOL_STRINGS = en.tools as Record<string, ToolStrings>;
 
@@ -60,6 +108,8 @@ export type AgentTool = {
   category: CategoryId;
   url: string;
   data_handling: string;
+  /** AI tools only: model downloads and the options on the page. */
+  ai?: ReturnType<typeof aiToolDetails>;
 };
 
 /**
@@ -77,6 +127,7 @@ function agentTool(id: ToolId, category: CategoryId): AgentTool {
     category,
     url: `${SITE_ORIGIN}${appHref("en", id)}`,
     data_handling: dataHandling(id),
+    ai: aiToolDetails(id),
   };
 }
 
@@ -115,6 +166,11 @@ export function buildLlmsTxt(): string {
     lines.push(`## ${CATEGORY_TITLE[category.id]}`, "");
     for (const tool of tools.filter((t) => t.category === category.id)) {
       lines.push(`- [${tool.name}](${tool.url}): ${tool.description} ${tool.data_handling}`);
+      if (tool.ai) {
+        const sizes = tool.ai.models.map(({ option, model, download_bytes: b }) =>
+          `${option ? `${option} (${model})` : model}: ${formatMb(b.webgpu_fp16)} / ${formatMb(b.webgpu)} / ${formatMb(b.cpu)}`);
+        lines.push(`  - Model download (WebGPU fp16 / WebGPU / CPU): ${sizes.join("; ")}.`, `  - Options on the page: ${tool.ai.options}`);
+      }
     }
     lines.push("");
   }

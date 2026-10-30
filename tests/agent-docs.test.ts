@@ -2,7 +2,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { AI_DETAIL_TOOLS, DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { AI_MODELS, formatMb } from "../src/shared/ai-models";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -31,6 +32,25 @@ describe("agent discovery files", () => {
     expect(llms).toContain("Text to speech can send text to the voice provider");
     expect(llms.match(/10 views/g)).toHaveLength(1);
     expect(llms).toMatch(/model once on first use \(model weights of \d+(\.\d)? MB to \d+ MB /);
+  });
+
+  it("lists model downloads and page options for every AI tool, from the model registry", () => {
+    expect([...AI_DETAIL_TOOLS].sort()).toEqual([...AI_TOOLS].sort());
+    const tools = JSON.parse(buildToolsJson()).tools as { id: string; ai?: { models: { model: string; download_bytes: Record<string, number> }[]; options: string } }[];
+    for (const tool of tools) {
+      if (!AI_TOOLS.has(tool.id as never)) {
+        expect(tool.ai, tool.id).toBeUndefined();
+        continue;
+      }
+      expect(tool.ai!.options.length, tool.id).toBeGreaterThan(20);
+      for (const m of tool.ai!.models) {
+        const entry = Object.values(AI_MODELS).find((model) => model.repo === m.model)!;
+        expect(m.download_bytes).toEqual({ webgpu_fp16: entry.variants.gpu16.bytes, webgpu: entry.variants.gpu.bytes, cpu: entry.variants.cpu.bytes });
+      }
+    }
+    const llms = buildLlmsTxt();
+    expect(llms).toContain(`Model: Accurate (onnx-community/whisper-small): ${formatMb(AI_MODELS["whisper-small"].variants.gpu16.bytes)}`);
+    expect(llms).toContain("  - Options on the page: Scale: 2× / 4×. Style: Photo / Anime / art");
   });
 
   it("declares data handling per tool", () => {
