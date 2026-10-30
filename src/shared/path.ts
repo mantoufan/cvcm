@@ -19,6 +19,12 @@ export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"]
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
 
+const AGENT_DOC_SET: ReadonlySet<string> = new Set(AGENT_DOC_PATHS);
+
+export function isAgentDocPath(pathname: string): boolean {
+  return AGENT_DOC_SET.has(pathname);
+}
+
 const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.\/]/g, (c) => `\\${c}`)}$`).join("|");
 
 export const STATIC_FILE = new RegExp(

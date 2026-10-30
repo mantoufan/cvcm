@@ -1,9 +1,10 @@
 // Machine-readable descriptions of cv.cm for AI agents: /llms.txt, /tools.json and /.well-known/poppy.json
 // (paths in AGENT_DOC_PATHS). Generated at build time by scripts/emit-sitemap.ts from the tool registry.
 import en from "../locales/en.json";
+import { AI_MODELS, formatMb } from "./ai-models";
 import { DATASETS, csvHref } from "./datasets";
 import { LOCALES, localePath } from "./locale";
-import { CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, appHref, datasetHref, gamesHref, kbHref, learnHref, quizHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -16,34 +17,23 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
 };
 
 /**
- * What each tool does with the user's input, declared per tool. Agents repeat this to users, so every tool must be
- * listed in exactly one group (tests/agent-docs.test.ts fails otherwise, and also fails if any client code other than
- * the clipboard gains an upload-style request).
+ * What each tool does with the user's input. Agents repeat this to users. Tools not named in a group run in the page
+ * (LOCAL), so a new local tool needs no entry here; tests/agent-docs.test.ts checks that file tools are kept out of
+ * analytics and that no client code outside a reviewed list makes network requests.
  */
 const STORES: readonly ToolId[] = ["clip"];
 const NETWORK_VOICES: readonly ToolId[] = ["text-to-speech"];
-const AI: readonly ToolId[] = [
-  "remove-background", "image-upscaler", "speech-to-text", "depth-map",
-];
+const AI: readonly ToolId[] = [...AI_TOOLS];
+/** Tools that take the user's image, PDF or audio files. */
 const FILES: readonly ToolId[] = [
   "watermark", "mosaic", "collage", "portrait-sim", "convert", "image-pdf", "resize", "crop", "rotate", "exif",
-  "meme", "signature", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice",
-  "audio", "audio-cutter", "audio-joiner", "image-colors",
-];
-const LOCAL: readonly ToolId[] = [
-  "qr", "barcode", "data", "xml-json", "yaml-json", "password", "word-count", "color", "hex-rgb", "names",
-  "timezone", "timestamp", "lorem", "units", "diff", "uuid", "hash", "regex", "case", "jwt", "percent", "random",
-  "html", "cron", "slug", "age", "bmi", "binary", "tip", "morse", "roman", "discount", "countdown", "loan",
-  "stopwatch", "compound", "vat", "reverse", "url-encode", "text-hex", "json", "base64", "days", "sort", "replace",
-  "words", "add-days", "week", "aspect", "workdays", "fraction", "hourly", "margin", "radix", "duration", "tdee",
-  "cidr", "chmod", "typing", "dice", "gpa", "pomodoro", "sleep", "body-fat", "contrast", "pace", "grade", "due-date",
-  "ideal-weight", "water-intake", "fuel-cost", "reading-time", "time-card", "electricity", "ovulation", "macro",
-  "calories-burned", "gold", "silver", "platinum", "palladium", "oil", "stocks",
+  "meme", "favicon", "screenshot", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "audio", "audio-cutter",
+  "audio-joiner", "image-colors",
 ];
 
-export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, LOCAL } as const;
+export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES } as const;
 
-const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS, string> = {
+const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", string> = {
   STORES: "Stores the note on cv.cm: text in its database, files on its storage host s3.cv.cm.",
   NETWORK_VOICES:
     "Speaks with the browser's voices. On-device voices keep the text on the device; online voices (such as Chrome's Google voices) send it to the voice provider.",
@@ -56,7 +46,7 @@ export function dataHandling(tool: ToolId): string {
   for (const [group, tools] of Object.entries(DATA_HANDLING_GROUPS) as [keyof typeof DATA_HANDLING_GROUPS, readonly ToolId[]][]) {
     if (tools.includes(tool)) return DATA_HANDLING_TEXT[group];
   }
-  throw new Error(`No data-handling group declared for tool "${tool}" in src/shared/agent-docs.ts`);
+  return DATA_HANDLING_TEXT.LOCAL;
 }
 
 type ToolStrings = { name: string; blurb: string };
@@ -91,7 +81,10 @@ export function agentTools(): AgentTool[] {
 const LOCALE_PATHS = LOCALES.map(localePath);
 const URL_PATTERN = `${SITE_ORIGIN}/{locale}/{tool}/`;
 const SITE_HOST = new URL(SITE_ORIGIN).host;
-const BLURB_UPLOAD_NOTE = /\s*Nothing is uploaded\.$/;
+/** Privacy sentences in tool blurbs ("Nothing is uploaded.", "On-device." ...): the data-handling sentence replaces them. */
+export const BLURB_PRIVACY_NOTE = /\s*(?:Nothing is uploaded|No upload|Runs in (?:the|your) browser|On-device)\.|,\s*on-device(?=\.)/g;
+
+const MODEL_BYTES = Object.values(AI_MODELS).flatMap((model) => Object.values(model.variants).map((v) => v.bytes));
 
 export function buildLlmsTxt(): string {
   const tools = agentTools();
@@ -107,7 +100,7 @@ export function buildLlmsTxt(): string {
     "- Price: every tool is free. There is no sign-up and no paid tier.",
     "- Privacy: each tool below says what happens to the user's input. Image, PDF, audio and AI tools process files in the page and never upload them. The cloud clipboard is the one tool that stores data, and it deletes each note after 10 views or 24 hours.",
     "- Analytics: Google Analytics counts visits to ordinary pages. File and AI tool pages and opened clipboard notes send nothing to it, and no page sends what the user types or uploads.",
-    "- AI tools download their model once on first use (from a few MB up to several hundred MB; speech-to-text is the largest), then load it from the browser cache.",
+    `- AI tools download their model once on first use (${formatMb(Math.min(...MODEL_BYTES))} to ${formatMb(Math.max(...MODEL_BYTES))}, depending on the tool and the device), then load it from the browser cache.`,
     `- Languages: tool URLs follow \`${URL_PATTERN}\`, where \`{locale}\` is one of ${LOCALE_PATHS.map((l) => `\`${l}\``).join(", ")}. The links below use \`en\`.`,
     `- Machine-readable list of every tool: ${SITE_ORIGIN}/tools.json`,
     "",
@@ -115,8 +108,7 @@ export function buildLlmsTxt(): string {
   for (const category of CATEGORIES) {
     lines.push(`## ${CATEGORY_TITLE[category.id]}`, "");
     for (const tool of tools.filter((t) => t.category === category.id)) {
-      // The data-handling sentence replaces the blurb's own "Nothing is uploaded." so a line never says it twice.
-      lines.push(`- [${tool.name}](${tool.url}): ${tool.description.replace(BLURB_UPLOAD_NOTE, "")} ${tool.data_handling}`);
+      lines.push(`- [${tool.name}](${tool.url}): ${tool.description.replace(BLURB_PRIVACY_NOTE, "")} ${tool.data_handling}`);
     }
     lines.push("");
   }

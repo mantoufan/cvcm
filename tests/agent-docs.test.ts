@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { BLURB_PRIVACY_NOTE, DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -23,34 +23,50 @@ describe("agent discovery files", () => {
     expect(llms.startsWith("# cv.cm\n\n> ")).toBe(true);
     for (const tool of tools) {
       expect(tool.description).not.toBe("");
-      const blurb = tool.description.replace(/\s*Nothing is uploaded\.$/, "");
+      const blurb = tool.description.replace(BLURB_PRIVACY_NOTE, "");
+      // The blurb's own privacy sentence is dropped, so each line states data handling once.
+      expect(blurb).not.toMatch(/upload|on-device|in (the|your) browser/i);
       expect(llms).toContain(`- [${tool.name}](https://cv.cm${appHref("en", tool.id)}): ${blurb} ${tool.data_handling}`);
-      expect(llms).not.toContain("Nothing is uploaded. Inputs are not uploaded.");
     }
+    expect(llms).toContain("Not a legal e-sign. Runs in the page.");
+    expect(llms).toMatch(/model once on first use \(\d+(\.\d)? MB to \d+ MB,/);
   });
 
-  it("declares every tool in exactly one data-handling group", () => {
+  it("declares data handling per tool", () => {
     const declared = Object.values(DATA_HANDLING_GROUPS).flat();
-    expect([...declared].sort()).toEqual([...TOOLS].sort());
     expect(new Set(declared).size).toBe(declared.length);
-    // Consistent with what the code enforces elsewhere: file and AI tools are the ones kept out of analytics.
-    const fileish = [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI].sort();
-    expect([...UNTRACKED_TOOLS].sort()).toEqual(fileish);
-    expect([...AI_TOOLS].sort()).toEqual([...DATA_HANDLING_GROUPS.AI].sort());
+    expect(declared.every((tool) => TOOLS.includes(tool))).toBe(true);
+    // File and AI tools are the ones AGENTS.md rule 1 keeps out of analytics.
+    for (const tool of [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI]) expect(UNTRACKED_TOOLS.has(tool)).toBe(true);
+    expect([...DATA_HANDLING_GROUPS.AI].sort()).toEqual([...AI_TOOLS].sort());
     expect(dataHandling("clip")).toContain("Stores the note");
     expect(dataHandling("text-to-speech")).toContain("online voices");
-    for (const tool of [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.LOCAL]) {
+    expect(dataHandling("signature")).toBe("Runs in the page. Inputs are not uploaded.");
+    expect(dataHandling("crop")).toBe("Processes files in the page. Files are not uploaded.");
+    for (const tool of TOOLS.filter((t) => t !== "clip" && t !== "text-to-speech")) {
       expect(dataHandling(tool)).toMatch(/not uploaded\.$/);
     }
   });
 
-  it("backs the 'not uploaded' claims: no client code but the clipboard sends data out", () => {
-    // Downloads (AI models, sample photos, page data) are fine; uploads, beacons, sockets and streams are not.
-    const upload = /method:\s*["'`](post|put|patch|delete)["'`]|XMLHttpRequest|sendBeacon|new WebSocket|new EventSource/i;
-    const offenders = sourceFiles(join(root, "src/client"))
-      .filter((file) => !file.includes(`${join("src", "client", "clip")}/`))
-      .filter((file) => upload.test(readFileSync(file, "utf8")));
-    expect(offenders).toEqual([]);
+  it("backs the 'not uploaded' claims: only reviewed client files make requests, and none sends data", () => {
+    const network = /\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.submit\(|window\.open\(|new Image\(|importScripts|navigator\.share/;
+    // Each file here was read by hand. Add a file only after checking that it sends none of the user's input.
+    const reviewed: Record<string, string> = {
+      "src/client/clip/ui.ts": "the clipboard, which stores notes by design",
+      "src/client/ai/worker.ts": "downloads model files",
+      "src/client/portrait-sim/assets.ts": "downloads sample photos",
+      "src/client/games/ui.ts": "HEAD request for a ROM file",
+      "src/client/device/ui.ts": "reads the visitor's own IP address",
+      "src/client/decode.ts": "decodes a local image with new Image()",
+    };
+    const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
+      .map((file) => file.slice(root.length + 1).split("\\").join("/"))
+      .filter((file) => network.test(readFileSync(join(root, file), "utf8")));
+    expect(files.sort()).toEqual(Object.keys(reviewed).sort());
+    for (const file of files.filter((f) => f !== "src/client/clip/ui.ts")) {
+      const code = readFileSync(join(root, file), "utf8");
+      expect(code, file).not.toMatch(/method:(?!\s*["'`](get|head)["'`])|fetch\([^)]*\$\{/i);
+    }
   });
 
   it("publishes URL path locale codes and no live-price claim", () => {

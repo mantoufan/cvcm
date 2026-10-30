@@ -3,7 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { AGENT_DOC_PATHS, appHref, datasetHref, deviceHref, gamesHref, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
@@ -100,7 +100,7 @@ export default {
     if (api) return api;
 
     // CORS preflight for the agent discovery files (agents in other pages may send custom headers).
-    if (request.method === "OPTIONS" && (AGENT_DOC_PATHS as readonly string[]).includes(url.pathname)) {
+    if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
       return new Response(null, {
         status: 204,
         headers: {
@@ -499,7 +499,7 @@ function withHeaders(res: Response, pathname: string): Response {
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");
   // Agent discovery files are public documentation: let agents running in any page read them.
-  if ((AGENT_DOC_PATHS as readonly string[]).includes(pathname)) {
+  if (isAgentDocPath(pathname)) {
     headers.set("Access-Control-Allow-Origin", "*");
     headers.set("Cross-Origin-Resource-Policy", "cross-origin");
   }

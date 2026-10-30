@@ -177,7 +177,7 @@
       "description": "Draw a signature, download PNG. Nothing is uploaded. Not a legal e-sign.",
       "category": "image",
       "url": "https://cv.cm/en/signature/",
-      "data_handling": "Processes files in the page. Files are not uploaded."
+      "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
       "id": "favicon",
@@ -257,7 +257,7 @@
       "description": "Fill line items, tax, and currency. Download a PDF. Nothing is uploaded.",
       "category": "convert",
       "url": "https://cv.cm/en/invoice/",
-      "data_handling": "Processes files in the page. Files are not uploaded."
+      "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
       "id": "audio",
