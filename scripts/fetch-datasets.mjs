@@ -82,6 +82,13 @@ const WB = {
 };
 // Whole numbers; every other indicator keeps two decimals.
 const WHOLE = new Set(["population", "gdp", "land-area"]);
+// Rates that move fast: a value more than 5 years old would set the extremes under a heading with this year.
+const MAX_AGE = { "gdp-ppp-per-capita": 5, "gdp-growth": 5, inflation: 5, unemployment: 5 };
+// EDGAR has no estimate for some small US territories and Pacific islands; the series reports 0 or
+// ~0.002 t per person for them (Guam), which would rank as the cleanest places on Earth.
+const FLOOR = { "co2-per-capita": 0.01 };
+// EDGAR counts the Faroe Islands with Denmark, leaving a 0.04 t residue where ~14 t is real.
+const SKIP = { "co2-per-capita": new Set(["FRO"]) };
 
 const economies = (await getJson("https://api.worldbank.org/v2/country?format=json&per_page=400"))[1];
 // Aggregates (regions, income groups) have region id "NA"; keep the 217 economies.
@@ -93,9 +100,10 @@ for (const [id, code] of Object.entries(WB)) {
   // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
   const thisYear = new Date().getUTCFullYear();
   const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 16}:${thisYear}&per_page=20000`);
+  if (info.pages !== 1) throw new Error(`${code}: ${info.total} rows over ${info.pages} pages; raise per_page`);
   const latestBy = new Map();
   for (const r of all) {
-    if (r.value === null) continue;
+    if (r.value === null || r.value < (FLOOR[id] ?? -Infinity) || SKIP[id]?.has(r.countryiso3code)) continue;
     const seen = latestBy.get(r.countryiso3code);
     if (!seen || Number(r.date) > Number(seen.date)) latestBy.set(r.countryiso3code, r);
   }
@@ -112,7 +120,7 @@ for (const [id, code] of Object.entries(WB)) {
     .sort((a, b) => b[2] - a[2] || a[4].localeCompare(b[4]));
   // A last value from decades ago (1990 internet use) misleads more than a gap does.
   const latest = Math.max(...rows.map((r) => r[3]));
-  rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - 15));
+  rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (MAX_AGE[id] ?? 15)));
   writeJson(`${id}.json`, rows);
   const years = rows.map((r) => r[3]);
   meta.sets[id] = {
