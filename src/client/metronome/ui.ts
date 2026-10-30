@@ -20,6 +20,8 @@ let timer = 0;
 let nextTime = 0;
 let tick = 0;
 let tickSub = 1;
+let restart = false;
+let voices: OscillatorNode[] = [];
 let running = false;
 let taps: number[] = [];
 let visualTimers: number[] = [];
@@ -103,6 +105,8 @@ function setBpm(value: number): void {
 
 /** While typing, follow values already in range without rewriting the field ("1" on the way to "140" stays put). */
 function typedBpm(): void {
+  // While running, a half-typed tempo ("25" on the way to "250") would schedule a long gap; apply on change instead.
+  if (running) return;
   const v = Number(bpmEl?.value);
   if (!Number.isInteger(v) || v < MIN_BPM || v > MAX_BPM) return;
   if (sliderEl) sliderEl.value = String(v);
@@ -125,8 +129,9 @@ function drawDots(): void {
   dotsEl.replaceChildren(...Array.from({ length: beats() }, (_, i) => h("span", { class: i === 0 ? "dot first" : "dot" })));
 }
 
+/** A new bar length starts a fresh bar on the next beat (not on an off-beat click). */
 function restartBar(): void {
-  tick = 0;
+  restart = true;
 }
 
 function toggle(): void {
@@ -147,6 +152,7 @@ function start(): void {
   running = true;
   tick = 0;
   tickSub = Number(subEl?.value) || 1;
+  restart = false;
   nextTime = audio.currentTime + 0.06;
   timer = window.setInterval(schedule, LOOKAHEAD_MS);
   schedule();
@@ -156,6 +162,11 @@ function start(): void {
 function stop(): void {
   running = false;
   window.clearInterval(timer);
+  // Silence clicks already queued on the audio clock.
+  for (const osc of voices) {
+    try { osc.stop(); } catch { /* already stopped */ }
+  }
+  voices = [];
   for (const id of visualTimers) window.clearTimeout(id);
   visualTimers = [];
   dotsEl?.querySelectorAll(".dot.on").forEach((d) => d.classList.remove("on"));
@@ -171,9 +182,14 @@ function schedule(): void {
   if (!audio || !running) return;
   const sub = Number(subEl?.value) || 1;
   // A new subdivision continues from the next beat, so the accent stays on the downbeat.
-  if (sub !== tickSub) {
-    tick = (Math.ceil(tick / tickSub) * sub) % (beats() * sub);
+  if (sub !== tickSub || restart) {
+    // Skip the rest of the current beat's clicks so the new grid starts exactly on the next beat.
+    const left = (tickSub - (tick % tickSub)) % tickSub;
+    nextTime += left * clickInterval(bpm(), tickSub);
+    const beat = restart ? 0 : Math.ceil(tick / tickSub) % beats();
+    tick = beat * sub;
     tickSub = sub;
+    restart = false;
   }
   // After a long timer stall, skip missed clicks instead of playing them all at once.
   if (nextTime < audio.currentTime) nextTime = audio.currentTime + 0.05;
@@ -206,6 +222,8 @@ function click(at: number, kind: "accent" | "beat" | "sub"): void {
   osc.connect(gain).connect(ctx.destination);
   osc.start(at);
   osc.stop(at + 0.06);
+  voices.push(osc);
+  osc.onended = () => { voices = voices.filter((v) => v !== osc); };
 }
 
 function flash(at: number, beat: number): void {

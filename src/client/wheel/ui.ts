@@ -89,7 +89,10 @@ function paint(): void {
   countEl.textContent = t("wheel.count", { n: list.length, max: MAX_ENTRIES });
   spinBtn.disabled = spinning || list.length < 2;
   drawDial(list);
-  if (!spinning && outEl) outEl.textContent = list.length < 2 ? t("wheel.needTwo") : history.length ? t("wheel.winner", { name: history[0] }) : "";
+  // The last winner stays visible, also when removing it leaves fewer than two entries.
+  if (!spinning && outEl) {
+    outEl.textContent = [history.length ? t("wheel.winner", { name: history[0] }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" ");
+  }
 }
 
 function drawDial(list: string[]): void {
@@ -142,8 +145,9 @@ function spin(): void {
   const list = entries();
   if (spinning || list.length < 2 || !dialEl) return;
   const index = pickIndex(list.length);
-  rotation = spinTarget(rotation, index, list.length, randomInt(0, 999) / 1000);
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  // Reduced motion: less than one turn, briefly.
+  rotation = spinTarget(rotation, index, list.length, randomInt(0, 999) / 1000, reduce ? 0 : 6);
   const ms = reduce ? 600 : SPIN_MS;
   spinning = true;
   if (spinBtn) spinBtn.disabled = true;

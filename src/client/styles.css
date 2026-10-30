@@ -668,3 +668,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .zodiac-table { width: 100%; max-width: 40rem; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
 .zodiac-table th, .zodiac-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
 .zodiac-table thead th { background: var(--pink-soft); }
+.kbt-extra { margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px dashed var(--line); }
+.kbt-extra .kbt-row { justify-content: flex-start; }
+.kbt-extra .kbt-key { flex-grow: 0 !important; }

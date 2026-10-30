@@ -83,7 +83,7 @@ import { caloriesBurned, metOf } from "../src/shared/calories-burned";
 import { indexAt, parseEntries, spinTarget } from "../src/shared/wheel";
 import { parseNumbers, stats } from "../src/shared/average";
 import { clampBpm, clickInterval, tapBpm, tempoName } from "../src/shared/metronome";
-import { ALL_CODES } from "../src/shared/keyboard";
+import { ALL_CODES, EXTRA_CODES } from "../src/shared/keyboard";
 import { lunarNewYear, westernSign, zodiacFor } from "../src/shared/zodiac";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
@@ -1096,6 +1096,10 @@ describe("average", () => {
     expect(parseNumbers("3,5 4,2; 1,0", ",").values).toEqual([3.5, 4.2, 1]);
     expect(parseNumbers("1,2,3", ",").skipped).toEqual(["1,2,3"]);
     expect(parseNumbers("3,5 4,2").values).toEqual([3, 5, 4, 2]);
+    expect(parseNumbers("1,234.50\n2,000 1,2,3").values).toEqual([1234.5, 2000, 1, 2, 3]);
+    const huge = stats([1e308, 1e308])!;
+    expect(huge.mean).toBe(1e308);
+    expect(huge.populationSd).toBe(0);
     const many = parseNumbers(Array.from({ length: 100005 }, (_, i) => i).join(" "));
     expect(many.values).toHaveLength(100000);
     expect(many.truncated).toBe(5);
@@ -1116,6 +1120,7 @@ describe("metronome", () => {
     expect(tapBpm([0])).toBeNull();
     expect(tapBpm([0, 500, 1000, 1500])).toBe(120);
     expect(tapBpm([0, 10000, 10600, 11200, 11800, 12400])).toBe(100);
+    expect(tapBpm([0, 2500, 5000])).toBe(24);
   });
 });
 
@@ -1123,6 +1128,7 @@ describe("keyboard-test", () => {
   it("maps a full-size keyboard by event.code", () => {
     for (const code of ["KeyA", "Digit0", "Space", "Enter", "ShiftLeft", "ShiftRight", "ArrowUp", "F12", "Numpad0", "NumpadEnter"]) expect(ALL_CODES.has(code), code).toBe(true);
     expect(ALL_CODES.size).toBe(104);
+    for (const code of EXTRA_CODES) expect(ALL_CODES.has(code), code).toBe(false);
   });
 });
 

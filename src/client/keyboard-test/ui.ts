@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { ALL_CODES, LOCATIONS, MAIN_ROWS, NAV_ROWS, NUMPAD_ROWS, type Key } from "../../shared/keyboard";
+import { ALL_CODES, EXTRA_CODES, EXTRA_ROW, LOCATIONS, MAIN_ROWS, NAV_ROWS, NUMPAD_ROWS, type Key } from "../../shared/keyboard";
 
 let boardEl: HTMLElement | null = null;
 let outEl: HTMLElement | null = null;
@@ -23,7 +23,7 @@ export function mountKeyboardTest(host: HTMLElement): void {
     onKeyup: (e: Event) => onUp(e as KeyboardEvent),
     onBlur: () => releaseAll(),
   },
-  h("div", { class: "kbt-block kbt-main" }, ...MAIN_ROWS.map(row)),
+  h("div", { class: "kbt-block kbt-main" }, ...MAIN_ROWS.map(row), h("div", { class: "kbt-extra" }, row(EXTRA_ROW))),
   h("div", { class: "kbt-block kbt-nav" }, ...NAV_ROWS.map(row)),
   h("div", { class: "kbt-block kbt-num" }, ...NUMPAD_ROWS.map(row)),
   );
@@ -149,6 +149,7 @@ function paint(e: KeyboardEvent | null): void {
 
 function paintCount(): void {
   if (!countEl) return;
-  const onBoard = [...tested].filter((c) => ALL_CODES.has(c)).length;
-  countEl.textContent = t("keyboardTest.count", { n: onBoard, total: ALL_CODES.size, held: held.size, max: maxHeld });
+  const extras = [...tested].filter((c) => EXTRA_CODES.has(c)).length;
+  const onBoard = [...tested].filter((c) => ALL_CODES.has(c)).length + extras;
+  countEl.textContent = t("keyboardTest.count", { n: onBoard, total: ALL_CODES.size + extras, held: held.size, max: maxHeld });
 }

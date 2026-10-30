@@ -12,8 +12,12 @@ export function parseNumbers(text: string, decimal: DecimalMark = "."): ParsedNu
   const values: number[] = [];
   const skipped: string[] = [];
   let truncated = 0;
-  const split = decimal === "," ? /[\s;；、]+/ : /[\s,;，；、]+/;
-  for (const raw of text.split(split)) {
+  // With a dot decimal mark, "1,234.50" (comma before groups of three digits, no space) is one number with thousands
+  // separators; any other comma separates numbers.
+  const chunks = decimal === ","
+    ? text.split(/[\s;；、]+/)
+    : text.split(/[\s;；、]+/).flatMap((chunk) => (/^[+-]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(chunk) ? [chunk.replaceAll(",", "")] : chunk.split(/[,，]+/)));
+  for (const raw of chunks) {
     if (raw === "") continue;
     let token = raw.replace(/[−–]/g, "-");
     if (decimal === ",") token = token.replace(",", ".");
@@ -46,16 +50,19 @@ export function stats(values: readonly number[]): Stats | null {
   const count = values.length;
   if (count === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
+  // Work on values divided by the largest magnitude so 1e308 + 1e308 does not overflow the mean or variance.
+  const scale = Math.max(Math.abs(sorted[0]), Math.abs(sorted[count - 1])) || 1;
   // Kahan summation keeps 0.1 + 0.2 + … sums from drifting on long lists.
-  let sum = 0;
+  let scaled = 0;
   let c = 0;
   for (const v of values) {
-    const y = v - c;
-    const t = sum + y;
-    c = t - sum - y;
-    sum = t;
+    const y = v / scale - c;
+    const t = scaled + y;
+    c = t - scaled - y;
+    scaled = t;
   }
-  const mean = sum / count;
+  const sum = scaled * scale;
+  const mean = (scaled / count) * scale;
   const mid = count >> 1;
   const median = count % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
   const freq = new Map<number, number>();
@@ -70,9 +77,9 @@ export function stats(values: readonly number[]): Stats | null {
   const tie = freq.size > 1 && [...freq.values()].every((n) => n === top);
   const modes = top > 1 && !tie ? [...freq].filter(([, n]) => n === top).map(([v]) => v) : [];
   let sq = 0;
-  for (const v of values) sq += (v - mean) ** 2;
-  const populationVariance = sq / count;
-  const sampleVariance = count > 1 ? sq / (count - 1) : null;
+  for (const v of values) sq += (v / scale - mean / scale) ** 2;
+  const populationVariance = (sq / count) * scale * scale;
+  const sampleVariance = count > 1 ? (sq / (count - 1)) * scale * scale : null;
   const geometricMean = sorted[0] > 0 ? Math.exp(values.reduce((s, v) => s + Math.log(v), 0) / count) : null;
   return {
     count,

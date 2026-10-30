@@ -28,6 +28,13 @@ export const NUMPAD_ROWS: ReadonlyArray<ReadonlyArray<Key>> = [
   [["Numpad0", "0", 2], ["NumpadDecimal", ".", 1], [null, "", 1]],
 ];
 
+/** ISO, JIS and Korean keys. Shown on the board but only counted once pressed, since most keyboards lack them. */
+export const EXTRA_ROW: ReadonlyArray<Key> = [
+  ["IntlBackslash", "ISO \\", 1.25], ["IntlYen", "¥", 1], ["IntlRo", "ろ", 1], ["NonConvert", "無変換", 1.25], ["Convert", "変換", 1.25],
+  ["KanaMode", "かな", 1.25], ["Lang1", "한/영", 1.25], ["Lang2", "한자", 1.25],
+];
+export const EXTRA_CODES: ReadonlySet<string> = new Set(EXTRA_ROW.map(([code]) => code).filter((c): c is string => c !== null));
+
 export const ALL_CODES: ReadonlySet<string> = new Set(
   [...MAIN_ROWS, ...NAV_ROWS, ...NUMPAD_ROWS].flat().map(([code]) => code).filter((c): c is string => c !== null),
 );

@@ -27,8 +27,8 @@ export function tempoName(bpm: number): string {
   return "Prestissimo";
 }
 
-/** A gap longer than this starts a new tap sequence. */
-export const TAP_RESET_MS = 2000;
+/** A gap longer than this starts a new tap sequence (20 BPM is 3000 ms a beat). */
+export const TAP_RESET_MS = 3500;
 
 /** BPM from tap times (ms, ascending): mean of the last up to 4 intervals; null until two taps. */
 export function tapBpm(times: readonly number[]): number | null {
