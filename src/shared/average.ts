@@ -12,15 +12,16 @@ export function parseNumbers(text: string, decimal: DecimalMark = "."): ParsedNu
   const values: number[] = [];
   const skipped: string[] = [];
   let truncated = 0;
-  // With a dot decimal mark, "1,234.50" (comma before groups of three digits, no space) is one number with thousands
-  // separators; any other comma separates numbers.
+  // With a dot decimal mark, "1,234.50" (comma-grouped thousands with a decimal part) is one number; any other comma
+  // separates numbers, so a CSV row "100,200,300" stays three values.
   const chunks = decimal === ","
     ? text.split(/[\s;；、]+/)
-    : text.split(/[\s;；、]+/).flatMap((chunk) => (/^[+-]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(chunk) ? [chunk.replaceAll(",", "")] : chunk.split(/[,，]+/)));
+    : text.split(/[\s;；、]+/).flatMap((chunk) => (/^[+-]?\d{1,3}(,\d{3})+\.\d+$/.test(chunk) ? [chunk.replaceAll(",", "")] : chunk.split(/[,，]+/)));
   for (const raw of chunks) {
     if (raw === "") continue;
     let token = raw.replace(/[−–]/g, "-");
-    if (decimal === ",") token = token.replace(",", ".");
+    // With a comma decimal mark a dot is ambiguous (1.234 may mean 1234), so such tokens are skipped and listed.
+    if (decimal === ",") token = token.includes(".") ? "" : token.replace(",", ".");
     const n = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(token) ? Number(token) : NaN;
     if (!Number.isFinite(n)) skipped.push(raw);
     else if (values.length < MAX_VALUES) values.push(n);
@@ -91,8 +92,9 @@ export function stats(values: readonly number[]): Stats | null {
     min: sorted[0],
     max: sorted[count - 1],
     range: sorted[count - 1] - sorted[0],
-    populationSd: Math.sqrt(populationVariance),
-    sampleSd: sampleVariance == null ? null : Math.sqrt(sampleVariance),
+    // Take the root before scaling back, so tiny or huge values do not underflow or overflow in scale².
+    populationSd: Math.sqrt(sq / count) * scale,
+    sampleSd: count > 1 ? Math.sqrt(sq / (count - 1)) * scale : null,
     populationVariance,
     sampleVariance,
     geometricMean,

@@ -1,3 +1,4 @@
+import { armAudio } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -119,7 +120,7 @@ function toggle(): void {
     return;
   }
   // Start is a user gesture: create (or resume) the AudioContext here so the chime can play later on iOS.
-  armAudio();
+  arm();
   run();
 }
 
@@ -192,13 +193,8 @@ function paint(): void {
   if (pageTitle) document.title = running ? `${clock} ${label} · ${pageTitle}` : pageTitle;
 }
 
-function armAudio(): void {
-  try {
-    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) return;
-    if (!audio) audio = new Ctx();
-    if (audio.state === "suspended") void audio.resume().catch(() => undefined);
-  } catch { /* ignore */ }
+function arm(): void {
+  audio = armAudio(audio);
 }
 
 /** Two short tones on the context armed by Start. Silently skipped where audio is blocked. */

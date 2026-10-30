@@ -145,7 +145,7 @@ function spin(): void {
   const list = entries();
   if (spinning || list.length < 2 || !dialEl) return;
   const index = pickIndex(list.length);
-  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   // Reduced motion: less than one turn, briefly.
   rotation = spinTarget(rotation, index, list.length, randomInt(0, 999) / 1000, reduce ? 0 : 6);
   const ms = reduce ? 600 : SPIN_MS;

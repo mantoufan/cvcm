@@ -1096,7 +1096,10 @@ describe("average", () => {
     expect(parseNumbers("3,5 4,2; 1,0", ",").values).toEqual([3.5, 4.2, 1]);
     expect(parseNumbers("1,2,3", ",").skipped).toEqual(["1,2,3"]);
     expect(parseNumbers("3,5 4,2").values).toEqual([3, 5, 4, 2]);
-    expect(parseNumbers("1,234.50\n2,000 1,2,3").values).toEqual([1234.5, 2000, 1, 2, 3]);
+    expect(parseNumbers("1,234.50\n100,200,300 1,2,3").values).toEqual([1234.5, 100, 200, 300, 1, 2, 3]);
+    expect(parseNumbers("1.234 2,5", ",")).toEqual({ values: [2.5], skipped: ["1.234"], truncated: 0 });
+    expect(stats([1e-300, 2e-300])!.populationSd).toBeCloseTo(5e-301, 310);
+    expect(stats([-1e308, 1e308, 1e308])!.populationSd).toBeLessThan(Infinity);
     const huge = stats([1e308, 1e308])!;
     expect(huge.mean).toBe(1e308);
     expect(huge.populationSd).toBe(0);

@@ -1,3 +1,4 @@
+import { armAudio } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -13,6 +14,7 @@ let subEl: HTMLSelectElement | null = null;
 let accentEl: HTMLInputElement | null = null;
 let volumeEl: HTMLInputElement | null = null;
 let tempoEl: HTMLElement | null = null;
+let bpmOutEl: HTMLElement | null = null;
 let dotsEl: HTMLElement | null = null;
 let startBtn: HTMLButtonElement | null = null;
 let audio: AudioContext | null = null;
@@ -63,7 +65,7 @@ export function mountMetronome(host: HTMLElement): void {
         ),
       ),
       h("div", { class: "rail metronome-stage" },
-        h("p", { class: "pomodoro-clock", "data-out": "bpm" }),
+        bpmOutEl = h("p", { class: "pomodoro-clock", "data-out": "bpm" }),
         tempoEl,
         dotsEl,
         h("div", { class: "stage-actions" },
@@ -86,7 +88,7 @@ export function unmountMetronome(): void {
   audio = null;
   bpmEl = sliderEl = accentEl = volumeEl = null;
   beatsEl = subEl = null;
-  tempoEl = dotsEl = null;
+  tempoEl = dotsEl = bpmOutEl = null;
   startBtn = null;
   taps = [];
 }
@@ -115,8 +117,7 @@ function typedBpm(): void {
 
 function paintBpm(): void {
   const b = bpm();
-  const big = dotsEl?.parentElement?.querySelector("[data-out=bpm]");
-  if (big) big.textContent = `${b} BPM`;
+  if (bpmOutEl) bpmOutEl.textContent = `${b} BPM`;
   if (tempoEl) tempoEl.textContent = tempoName(b);
 }
 
@@ -141,14 +142,8 @@ function toggle(): void {
 
 function start(): void {
   // Start is a user gesture: create or resume the AudioContext here, as iOS requires.
-  try {
-    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) return;
-    if (!audio) audio = new Ctx();
-    if (audio.state === "suspended") void audio.resume().catch(() => undefined);
-  } catch {
-    return;
-  }
+  audio = armAudio(audio);
+  if (!audio) return;
   running = true;
   tick = 0;
   tickSub = Number(subEl?.value) || 1;

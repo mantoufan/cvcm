@@ -10,6 +10,10 @@ let logEl: HTMLOListElement | null = null;
 const keyEls = new Map<string, HTMLElement>();
 const tested = new Set<string>();
 const held = new Set<string>();
+/** Keys pressed while ⌘ was down; macOS may never send their keyup. */
+const withMeta = new Set<string>();
+/** Keys that only fire keyup on some systems (Print Screen on Windows). */
+const KEYUP_ONLY = new Set(["PrintScreen"]);
 let maxHeld = 0;
 let log: string[] = [];
 
@@ -62,6 +66,7 @@ export function unmountKeyboardTest(): void {
   keyEls.clear();
   tested.clear();
   held.clear();
+  withMeta.clear();
   maxHeld = 0;
   log = [];
 }
@@ -90,6 +95,7 @@ function onDown(e: KeyboardEvent): void {
   } else {
     held.add(code);
     maxHeld = Math.max(maxHeld, held.size);
+    if (e.metaKey && !code.startsWith("Meta")) withMeta.add(code);
   }
   if (!e.repeat) {
     log.unshift(`${e.key === " " ? "Space" : e.key} · ${code}`);
@@ -102,8 +108,9 @@ function onUp(e: KeyboardEvent): void {
   const code = e.code || e.key;
   held.delete(code);
   keyEls.get(code)?.classList.remove("down");
-  // Some keys (Print Screen on Windows) only fire keyup; count them as working too.
-  if (!tested.has(code)) {
+  // Some keys only fire keyup; count them as working too. Other keyups without a keydown here (Tab from the
+  // previous control) are ignored.
+  if (KEYUP_ONLY.has(code) && !tested.has(code)) {
     e.preventDefault();
     tested.add(code);
     keyEls.get(code)?.classList.add("done");
@@ -111,14 +118,22 @@ function onUp(e: KeyboardEvent): void {
     log = log.slice(0, 30);
     paint(e);
   }
-  // macOS swallows the keyup of other keys while ⌘ is down; clear them when ⌘ is released.
-  if (code.startsWith("Meta")) releaseAll();
+  withMeta.delete(code);
+  // macOS swallows the keyup of keys pressed while ⌘ is down; clear just those when ⌘ is released.
+  if (code.startsWith("Meta")) {
+    for (const c of withMeta) {
+      held.delete(c);
+      keyEls.get(c)?.classList.remove("down");
+    }
+    withMeta.clear();
+  }
   paintCount();
 }
 
 function releaseAll(): void {
   for (const code of held) keyEls.get(code)?.classList.remove("down");
   held.clear();
+  withMeta.clear();
   paintCount();
 }
 
