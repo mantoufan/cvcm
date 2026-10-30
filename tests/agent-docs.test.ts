@@ -53,13 +53,13 @@ describe("agent discovery files", () => {
     const llms = buildLlmsTxt();
     expect(llms).toContain(`Model "Accurate" (onnx-community/whisper-small): WebGPU fp16 ${formatMb(AI_MODELS["whisper-small"].variants.gpu16.bytes)}, WebGPU`);
     expect(llms).toContain('  - Options on the page: Scale: 2× / 4×. Style: "Photo" or "Anime / art"');
-    expect(JSON.parse(buildToolsJson()).ai_download_bytes).toContain("webgpu_fp16");
+    expect(JSON.parse(buildToolsJson()).ai_backend_note).toContain("webgpu_fp16");
   });
 
   it("restates the AI tool pages as they are (UI source)", () => {
     const ui = (tool: string) => readFileSync(join(root, "src/client", tool, "ui.ts"), "utf8");
-    const options = (tool: string) => tools().find((t) => t.id === tool)!.ai!.options;
-    const tools = () => JSON.parse(buildToolsJson()).tools as { id: string; ai?: { options: string } }[];
+    const tools = JSON.parse(buildToolsJson()).tools as { id: string; ai?: { options: string } }[];
+    const options = (tool: string) => tools.find((t) => t.id === tool)!.ai!.options;
     for (const tool of ["image-upscaler", "remove-background"]) {
       expect(ui(tool)).toMatch(/format: "png" as "png" \| "jpeg" \| "webp"/);
       expect(options(tool)).toContain("PNG / JPG / WebP");
@@ -69,6 +69,7 @@ describe("agent discovery files", () => {
     const stt = ui("speech-to-text");
     expect(stt).toMatch(/b !== "gpu16"\) return;\s*setModel\("whisper-small"\)/);
     expect(stt).toContain('value: "hans"');
+    expect(ui("remove-background")).toContain('if (b !== "transparent" && state.format === "png") state.format = "jpeg";');
     const accept = stt.match(/accept: "([^"]+)"/)![1];
     for (const ext of accept.split(",").filter((a) => a.startsWith("."))) {
       expect(options("speech-to-text").toLowerCase(), ext).toContain(ext.slice(1));

@@ -16,7 +16,7 @@
   ],
   "url_pattern": "https://cv.cm/{locale}/{tool}/",
   "docs": "https://cv.cm/llms.txt",
-  "ai_download_bytes": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached).",
+  "ai_backend_note": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which downloads the cpu weights as well.",
   "categories": [
     {
       "id": "share",
@@ -88,7 +88,7 @@
             }
           }
         ],
-        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency. JPG gets a white background.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
+        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency. JPG gets a white background. Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
       }
     },
     {
@@ -154,7 +154,7 @@
             }
           }
         ],
-        "options": "Model: \"Fast\" or \"Accurate\" (better for Chinese, Japanese and Korean); the default is \"Accurate\" on a GPU with 16-bit float support and \"Fast\" otherwise. Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters: 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, AAC, OGG, Opus, FLAC, WebM, MP4, MOV and MKV."
+        "options": "Model: \"Fast\" or \"Accurate\" (better for Chinese, Japanese and Korean); the default is \"Accurate\" on a GPU with 16-bit float support and \"Fast\" otherwise. Spoken language: Detect automatically or a chosen language. Output: Same language / Translate to English. Chinese characters (shown only for Chinese audio with \"Same language\"): 简体中文 / 繁體中文 / As written. Export TXT, SRT or VTT. Records from the microphone too. Accepts MP3, WAV, M4A, AAC, OGG, Opus, FLAC, WebM, MP4, MOV and MKV."
       }
     },
     {
