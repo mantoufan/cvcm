@@ -80,6 +80,11 @@ import { electricityCost } from "../src/shared/electricity";
 import { ovulationCycles } from "../src/shared/ovulation";
 import { macros } from "../src/shared/macro";
 import { caloriesBurned, metOf } from "../src/shared/calories-burned";
+import { indexAt, parseEntries, spinTarget } from "../src/shared/wheel";
+import { parseNumbers, stats, weightedMean } from "../src/shared/average";
+import { clampBpm, clickInterval, tapBpm, tempoName } from "../src/shared/metronome";
+import { ALL_CODES } from "../src/shared/keyboard";
+import { lunarNewYear, westernSign, zodiacFor } from "../src/shared/zodiac";
 import { appHref, parseAppPath, withSearch } from "../src/shared/path";
 
 describe("qr", () => {
@@ -1040,6 +1045,98 @@ describe("reading-time", () => {
     expect(mixed.latin).toBe(3);
     expect(readingTime("コーヒーを飲みます。").units).toBe(9);
     expect(splitSec(200)).toEqual({ min: 3, sec: 20 });
+  });
+});
+
+describe("wheel", () => {
+  it("parses entries and stops on the drawn slice", () => {
+    expect(parseEntries(" Anna \n\nBen\r\nChloe\n")).toEqual(["Anna", "Ben", "Chloe"]);
+    expect(parseEntries(Array.from({ length: 150 }, (_, i) => `n${i}`).join("\n"))).toHaveLength(100);
+    expect(parseEntries("x".repeat(60))[0]).toHaveLength(40);
+    for (const n of [2, 3, 6, 7, 100]) {
+      for (let i = 0; i < n; i += Math.max(1, Math.floor(n / 7))) {
+        for (const offset of [0, 0.5, 0.999]) {
+          const from = 1234.5;
+          const to = spinTarget(from, i, n, offset);
+          expect(indexAt(to, n), `${n}/${i}/${offset}`).toBe(i);
+          expect(to - from).toBeGreaterThanOrEqual(6 * 360);
+        }
+      }
+    }
+    expect(indexAt(0, 4)).toBe(0);
+    expect(indexAt(-10, 4)).toBe(0);
+    expect(indexAt(10, 4)).toBe(3);
+  });
+});
+
+describe("average", () => {
+  it("summarises a list of numbers", () => {
+    const { values, skipped } = parseNumbers("12, 15 15;18\n20 abc 22 30 −2 1e2 .5");
+    expect(values).toEqual([12, 15, 15, 18, 20, 22, 30, -2, 100, 0.5]);
+    expect(skipped).toEqual(["abc"]);
+    const s = stats([12, 15, 15, 18, 20, 22, 30])!;
+    expect(s.count).toBe(7);
+    expect(s.sum).toBe(132);
+    expect(s.mean).toBeCloseTo(18.857142857, 6);
+    expect(s.median).toBe(18);
+    expect(s.modes).toEqual([15]);
+    expect(s.modeCount).toBe(2);
+    expect(s.range).toBe(18);
+    expect(s.sampleSd).toBeCloseTo(5.956189, 5);
+    expect(s.populationSd).toBeCloseTo(5.51436, 5);
+    expect(stats([1, 2, 3, 4])!.median).toBe(2.5);
+    expect(stats([1, 1, 2, 2])!.modes).toEqual([]);
+    expect(stats([5])!.sampleSd).toBeNull();
+    expect(stats([2, 8])!.geometricMean).toBeCloseTo(4, 9);
+    expect(stats([0, 8])!.geometricMean).toBeNull();
+    expect(stats([0.1, 0.2, 0.3])!.sum).toBeCloseTo(0.6, 12);
+    expect(stats([])).toBeNull();
+    expect(weightedMean([80, 90], [1, 3])).toBe(87.5);
+    expect(weightedMean([80], [0])).toBeNull();
+  });
+});
+
+describe("metronome", () => {
+  it("clamps tempo, names it and reads taps", () => {
+    expect(clampBpm(10)).toBe(20);
+    expect(clampBpm(999)).toBe(300);
+    expect(clampBpm(Number.NaN)).toBe(120);
+    expect(clickInterval(120)).toBe(0.5);
+    expect(clickInterval(120, 2)).toBe(0.25);
+    expect(tempoName(60)).toBe("Larghetto");
+    expect(tempoName(90)).toBe("Andante");
+    expect(tempoName(120)).toBe("Allegro");
+    expect(tapBpm([0])).toBeNull();
+    expect(tapBpm([0, 500, 1000, 1500])).toBe(120);
+    expect(tapBpm([0, 10000, 10600, 11200, 11800, 12400])).toBe(100);
+  });
+});
+
+describe("keyboard-test", () => {
+  it("maps a full-size keyboard by event.code", () => {
+    for (const code of ["KeyA", "Digit0", "Space", "Enter", "ShiftLeft", "ShiftRight", "ArrowUp", "F12", "Numpad0", "NumpadEnter"]) expect(ALL_CODES.has(code), code).toBe(true);
+    expect(ALL_CODES.size).toBe(104);
+  });
+});
+
+describe("zodiac", () => {
+  it("finds the star sign and the Chinese zodiac across Lunar New Year", () => {
+    expect(westernSign(3, 21)).toBe("aries");
+    expect(westernSign(3, 20)).toBe("pisces");
+    expect(westernSign(1, 1)).toBe("capricorn");
+    expect(westernSign(1, 20)).toBe("aquarius");
+    expect(westernSign(12, 22)).toBe("capricorn");
+    expect(westernSign(8, 15)).toBe("leo");
+    expect(lunarNewYear(2024)).toEqual([2, 10]);
+    expect(lunarNewYear(2026)).toEqual([2, 17]);
+    const pig = zodiacFor(1995, 8, 15)!;
+    expect([pig.sign, pig.animal, pig.element, pig.ganzhi]).toEqual(["leo", "pig", "wood", "乙亥"]);
+    const rabbit = zodiacFor(2024, 2, 9)!;
+    expect([rabbit.animal, rabbit.beforeNewYear, rabbit.lunarYearStart]).toEqual(["rabbit", true, 2023]);
+    const dragon = zodiacFor(2024, 2, 10)!;
+    expect([dragon.animal, dragon.element, dragon.yin, dragon.ganzhi]).toEqual(["dragon", "wood", false, "甲辰"]);
+    expect(zodiacFor(2023, 2, 29)).toBeNull();
+    expect(zodiacFor(1899, 12, 31)).toBeNull();
   });
 });
 

@@ -177,6 +177,16 @@ Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-
 - `macro`: she holds a cream plate divided into three sections with an egg, a strawberry and a slice of bread; on the desk a small pink kitchen scale.
 - `calories-burned`: she wears a pink headband and holds a cream skipping rope; on the desk a pink water bottle and a small towel with a heart.
 
+## Wheel, average, metronome, keyboard tester, zodiac (2026-10-31)
+
+Codex (`codex exec`, built-in image tool), refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `wheel`: she holds up a small pastel prize wheel with blank pink and cream slices and a heart pointer; tiny confetti hearts float around.
+- `average`: she holds a cream card with a simple bar chart of five pink bars and a dotted line across the middle; on the desk a pink abacus.
+- `metronome`: a classic pyramid metronome in pink and cream with a swinging heart-tipped arm sits on the desk; she taps the beat with one finger, a few music notes float.
+- `keyboard-test`: she presses keys on a small pastel pink mechanical keyboard with blank cream keycaps, a few keys glowing pink.
+- `zodiac`: she holds a round cream star chart with tiny constellation dots and a small pink dragon plush beside her; little gold stars sparkle.
+
 ## AI tools (2026-10-29, were missing in production)
 
 Codex, refs `due-date-sweet.jpg` + `reading-time-sweet.jpg`. Same character and room, no words, letters, numerals, logo or watermark.

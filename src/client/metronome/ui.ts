@@ -1,0 +1,221 @@
+import { h } from "../dom";
+import { locale, t } from "../i18n";
+import { appHref } from "../../shared/path";
+import { BEATS, MAX_BPM, MIN_BPM, TAP_RESET_MS, clampBpm, clickInterval, tapBpm, tempoName } from "../../shared/metronome";
+
+const LOOKAHEAD_MS = 25;
+const SCHEDULE_AHEAD = 0.12;
+
+let bpmEl: HTMLInputElement | null = null;
+let sliderEl: HTMLInputElement | null = null;
+let beatsEl: HTMLSelectElement | null = null;
+let subEl: HTMLSelectElement | null = null;
+let accentEl: HTMLInputElement | null = null;
+let volumeEl: HTMLInputElement | null = null;
+let tempoEl: HTMLElement | null = null;
+let dotsEl: HTMLElement | null = null;
+let startBtn: HTMLButtonElement | null = null;
+let audio: AudioContext | null = null;
+let timer = 0;
+let nextTime = 0;
+let tick = 0;
+let running = false;
+let taps: number[] = [];
+let visualTimers: number[] = [];
+
+export function mountMetronome(host: HTMLElement): void {
+  bpmEl = h("input", { type: "number", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", inputmode: "numeric", value: "120", "data-field": "bpm", "aria-label": t("metronome.bpm"), onInput: () => typedBpm(), onChange: () => setBpm(Number(bpmEl?.value)) });
+  sliderEl = h("input", { type: "range", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", value: "120", "data-field": "slider", "aria-label": t("metronome.bpm"), onInput: () => setBpm(Number(sliderEl?.value)) });
+  beatsEl = h("select", { "data-field": "beats", onChange: () => { drawDots(); restartBar(); } },
+    ...BEATS.map((n) => h("option", { value: String(n), selected: n === 4 }, String(n))),
+  );
+  subEl = h("select", { "data-field": "subdivision" },
+    h("option", { value: "1", selected: true }, t("metronome.sub1")),
+    h("option", { value: "2" }, t("metronome.sub2")),
+    h("option", { value: "3" }, t("metronome.sub3")),
+    h("option", { value: "4" }, t("metronome.sub4")),
+  );
+  accentEl = h("input", { type: "checkbox", checked: true, "data-field": "accent" });
+  volumeEl = h("input", { type: "range", min: "0", max: "100", step: "1", value: "70", "data-field": "volume", "aria-label": t("metronome.volume") });
+  tempoEl = h("p", { class: "metronome-tempo" });
+  dotsEl = h("div", { class: "metronome-dots", "aria-hidden": "true" });
+  const nudge = (d: number) => h("button", { type: "button", class: "chip", "data-action": d > 0 ? "faster" : "slower", "aria-label": `${d > 0 ? "+" : "−"}${Math.abs(d)} BPM`, onClick: () => setBpm(bpm() + d) }, d > 0 ? `+${d}` : `−${-d}`);
+  host.append(
+    h("header", { class: "tool-head" },
+      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("metronome.back")),
+      h("h1", null, t("metronome.title")),
+      h("p", { class: "lede" }, t("metronome.privacyNote")),
+    ),
+    h("div", { class: "data-tool" },
+      h("aside", { class: "rail controls" },
+        h("fieldset", null,
+          h("legend", null, t("metronome.options")),
+          h("label", { class: "field" }, h("span", null, t("metronome.bpm")), bpmEl),
+          sliderEl,
+          h("div", { class: "chip-row" }, nudge(-5), nudge(-1), nudge(1), nudge(5)),
+          h("label", { class: "field" }, h("span", null, t("metronome.beats")), beatsEl),
+          h("label", { class: "field" }, h("span", null, t("metronome.subdivision")), subEl),
+          h("label", { class: "check" }, accentEl, h("span", null, t("metronome.accent"))),
+          h("label", { class: "field" }, h("span", null, t("metronome.volume")), volumeEl),
+        ),
+      ),
+      h("div", { class: "rail metronome-stage" },
+        h("p", { class: "pomodoro-clock", "data-out": "bpm" }),
+        tempoEl,
+        dotsEl,
+        h("div", { class: "stage-actions" },
+          startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => toggle() }, t("metronome.start")),
+          h("button", { type: "button", class: "btn ghost", "data-action": "tap", onClick: () => tap() }, t("metronome.tap")),
+        ),
+        h("p", { class: "hint" }, t("metronome.hint")),
+      ),
+    ),
+  );
+  document.addEventListener("visibilitychange", onVisibility);
+  drawDots();
+  paintBpm();
+}
+
+export function unmountMetronome(): void {
+  stop();
+  document.removeEventListener("visibilitychange", onVisibility);
+  if (audio) void audio.close().catch(() => undefined);
+  audio = null;
+  bpmEl = sliderEl = accentEl = volumeEl = null;
+  beatsEl = subEl = null;
+  tempoEl = dotsEl = null;
+  startBtn = null;
+  taps = [];
+}
+
+/** The slider always holds a valid tempo; the number field may be mid-edit. */
+function bpm(): number {
+  return clampBpm(Number(sliderEl?.value));
+}
+
+function setBpm(value: number): void {
+  const b = clampBpm(value);
+  if (bpmEl) bpmEl.value = String(b);
+  if (sliderEl) sliderEl.value = String(b);
+  paintBpm();
+}
+
+/** While typing, follow values already in range without rewriting the field ("1" on the way to "140" stays put). */
+function typedBpm(): void {
+  const v = Number(bpmEl?.value);
+  if (!Number.isInteger(v) || v < MIN_BPM || v > MAX_BPM) return;
+  if (sliderEl) sliderEl.value = String(v);
+  paintBpm();
+}
+
+function paintBpm(): void {
+  const b = bpm();
+  const big = dotsEl?.parentElement?.querySelector("[data-out=bpm]");
+  if (big) big.textContent = `${b} BPM`;
+  if (tempoEl) tempoEl.textContent = tempoName(b);
+}
+
+function beats(): number {
+  return Number(beatsEl?.value) || 4;
+}
+
+function drawDots(): void {
+  if (!dotsEl) return;
+  dotsEl.replaceChildren(...Array.from({ length: beats() }, (_, i) => h("span", { class: i === 0 ? "dot first" : "dot" })));
+}
+
+function restartBar(): void {
+  tick = 0;
+}
+
+function toggle(): void {
+  if (running) stop();
+  else start();
+}
+
+function start(): void {
+  // Start is a user gesture: create or resume the AudioContext here, as iOS requires.
+  try {
+    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) return;
+    if (!audio) audio = new Ctx();
+    if (audio.state === "suspended") void audio.resume().catch(() => undefined);
+  } catch {
+    return;
+  }
+  running = true;
+  tick = 0;
+  nextTime = audio.currentTime + 0.06;
+  timer = window.setInterval(schedule, LOOKAHEAD_MS);
+  schedule();
+  if (startBtn) startBtn.textContent = t("metronome.stop");
+}
+
+function stop(): void {
+  running = false;
+  window.clearInterval(timer);
+  for (const id of visualTimers) window.clearTimeout(id);
+  visualTimers = [];
+  dotsEl?.querySelectorAll(".dot.on").forEach((d) => d.classList.remove("on"));
+  if (startBtn) startBtn.textContent = t("metronome.start");
+}
+
+/** Hidden tabs throttle timers to about once a second; restart the clock on return so clicks do not bunch up. */
+function onVisibility(): void {
+  if (running && document.visibilityState === "visible" && audio) nextTime = Math.max(nextTime, audio.currentTime + 0.05);
+}
+
+function schedule(): void {
+  if (!audio || !running) return;
+  const sub = Number(subEl?.value) || 1;
+  // Settings are read every click, so changes take effect on the next one.
+  while (nextTime < audio.currentTime + SCHEDULE_AHEAD) {
+    const perBar = beats() * sub;
+    const pos = tick % perBar;
+    const onBeat = pos % sub === 0;
+    const kind = pos === 0 && accentEl?.checked && beats() > 1 ? "accent" : onBeat ? "beat" : "sub";
+    click(nextTime, kind);
+    if (onBeat) flash(nextTime, pos / sub);
+    nextTime += clickInterval(bpm(), sub);
+    tick = (tick + 1) % perBar;
+  }
+}
+
+function click(at: number, kind: "accent" | "beat" | "sub"): void {
+  const ctx = audio;
+  if (!ctx) return;
+  const volume = (Number(volumeEl?.value) || 0) / 100;
+  if (volume <= 0) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "square";
+  osc.frequency.value = kind === "accent" ? 1760 : kind === "beat" ? 1175 : 880;
+  const peak = volume * (kind === "sub" ? 0.12 : 0.3);
+  gain.gain.setValueAtTime(0.0001, at);
+  gain.gain.exponentialRampToValueAtTime(peak, at + 0.002);
+  gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.05);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(at);
+  osc.stop(at + 0.06);
+}
+
+function flash(at: number, beat: number): void {
+  if (!audio) return;
+  const delay = Math.max(0, (at - audio.currentTime) * 1000);
+  const id = window.setTimeout(() => {
+    visualTimers = visualTimers.filter((x) => x !== id);
+    const dots = dotsEl?.children;
+    if (!dots) return;
+    for (let i = 0; i < dots.length; i++) dots[i].classList.toggle("on", i === beat);
+  }, delay);
+  visualTimers.push(id);
+}
+
+function tap(): void {
+  const now = performance.now();
+  if (taps.length && now - taps[taps.length - 1] > TAP_RESET_MS) taps = [];
+  taps.push(now);
+  taps = taps.slice(-5);
+  const b = tapBpm(taps);
+  if (b != null) setBpm(b);
+}

@@ -116,6 +116,11 @@ const STEPS = {
   "ovulation": 3,
   "macro": 3,
   "calories-burned": 3,
+  "wheel": 3,
+  "average": 3,
+  "metronome": 3,
+  "keyboard-test": 3,
+  "zodiac": 3,
   gold: 3,
   silver: 3,
   platinum: 3,
@@ -1771,6 +1776,74 @@ async function runTool(send, id, fx) {
       return true;
     })()`);
     await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "wheel") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=entries]"); if (e) { e.value = "Anna\\nBen\\nChloe\\nDavid\\nEmma"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => { document.querySelector("[data-action=spin]")?.click(); return true; })()`);
+    await sleep(4600);
+    await snap(3);
+    return;
+  }
+
+  if (id === "average") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=numbers]"); if (e) { e.value = "72 85 85 90 64 78"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "metronome") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=bpm]"); if (e) { e.value = "90"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=beats]"); if (e) { e.value = "3"; e.dispatchEvent(new Event("change", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(3);
+    return;
+  }
+
+  if (id === "keyboard-test") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      const b = document.querySelector(".kbt-board"); if (!b) return false; b.focus();
+      for (const [key, code] of [["a", "KeyA"], ["s", "KeyS"], ["d", "KeyD"]]) { b.dispatchEvent(new KeyboardEvent("keydown", { key, code, bubbles: true })); b.dispatchEvent(new KeyboardEvent("keyup", { key, code, bubbles: true })); }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
+    await snap(3);
+    return;
+  }
+
+  if (id === "zodiac") {
+    await snap(1);
+    await evalValue(send, `(() => {
+      { const e = document.querySelector("[data-field=birthday]"); if (e) { e.value = "2000-02-01"; e.dispatchEvent(new Event("input", { bubbles: true })); } }
+      return true;
+    })()`);
+    await sleep(200);
+    await snap(2);
     await snap(3);
     return;
   }

@@ -1,0 +1,42 @@
+import { randomInt } from "./random";
+
+export const MAX_ENTRIES = 100;
+export const MAX_LABEL = 40;
+
+/** One entry per non-empty line, trimmed, capped at MAX_ENTRIES and MAX_LABEL characters each. */
+export function parseEntries(text: string): string[] {
+  return text
+    .split(/\r?\n/)
+    .map((line) => Array.from(line.trim()).slice(0, MAX_LABEL).join(""))
+    .filter((line) => line !== "")
+    .slice(0, MAX_ENTRIES);
+}
+
+/** Uniform winner index from Web Crypto. */
+export function pickIndex(count: number): number {
+  return randomInt(0, count - 1);
+}
+
+/**
+ * Segment i covers [i·seg, (i+1)·seg) degrees clockwise from the top pointer at rotation 0.
+ * A clockwise rotation r puts wheel angle (360 − r mod 360) under the pointer.
+ */
+export function indexAt(rotation: number, count: number): number {
+  const seg = 360 / count;
+  const under = (((360 - (rotation % 360)) % 360) + 360) % 360;
+  return Math.min(count - 1, Math.floor(under / seg));
+}
+
+/**
+ * Rotation (degrees, larger than `from`) that stops segment `index` under the pointer after `turns` full turns.
+ * `offset` in [0, 1) places the stop inside the segment; it is kept away from the edges so the pointer never sits on a line.
+ */
+export function spinTarget(from: number, index: number, count: number, offset: number, turns = 6): number {
+  const seg = 360 / count;
+  const inside = 0.15 + Math.min(Math.max(offset, 0), 0.999) * 0.7;
+  const angle = (index + inside) * seg;
+  const base = from - (((from % 360) + 360) % 360);
+  let target = base + turns * 360 + ((360 - angle) % 360);
+  while (target - from < turns * 360) target += 360;
+  return target;
+}
