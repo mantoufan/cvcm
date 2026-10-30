@@ -642,7 +642,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .wheel-pointer { position: absolute; top: -6px; left: 50%; z-index: 1; width: 0; height: 0; transform: translateX(-50%); border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--pink-deep); }
 .wheel-winner { min-height: 1.6em; margin: 0; font-size: 1.35rem; font-weight: 700; color: var(--pink-deep); text-align: center; word-break: break-word; }
 .wheel-history { margin: 0; padding-left: 1.4rem; max-height: 14rem; overflow: auto; line-height: 1.7; }
-.controls textarea { width: 100%; box-sizing: border-box; padding: 0.6rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font: inherit; resize: vertical; }
+.wheel-entries, .average-input { width: 100%; box-sizing: border-box; padding: 0.6rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font: inherit; resize: vertical; }
 .chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 0.6rem; }
 .metronome-stage { display: grid; gap: 0.5rem; justify-items: center; text-align: center; }
 .metronome-tempo { margin: 0; font-size: 1.05rem; color: var(--ink-soft); font-style: italic; }

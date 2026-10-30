@@ -6,14 +6,14 @@ import { MAX_VALUES, parseNumbers, stats, type DecimalMark } from "../../shared/
 
 let inputEl: HTMLTextAreaElement | null = null;
 let decimalEl: HTMLSelectElement | null = null;
-let frame = 0;
+let paintTimer = 0;
 let outEl: HTMLElement | null = null;
 let noteEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountAverage(host: HTMLElement): void {
-  inputEl = h("textarea", { rows: "8", "data-field": "numbers", spellcheck: "false", "aria-label": t("average.numbers"), onInput: () => schedulePaint() });
+  inputEl = h("textarea", { class: "average-input", rows: "8", "data-field": "numbers", spellcheck: "false", "aria-label": t("average.numbers"), onInput: () => schedulePaint() });
   // Languages that write 3,5 default to a comma decimal mark.
   const comma = ["es", "id", "vi"].includes(locale());
   decimalEl = h("select", { "data-field": "decimal", onChange: () => paint() },
@@ -53,7 +53,7 @@ export function mountAverage(host: HTMLElement): void {
 }
 
 export function unmountAverage(): void {
-  cancelAnimationFrame(frame);
+  window.clearTimeout(paintTimer);
   inputEl = null;
   decimalEl = null;
   outEl = noteEl = null;
@@ -61,10 +61,10 @@ export function unmountAverage(): void {
   last = "";
 }
 
-/** One recount per frame, so typing stays smooth with a long pasted list. */
+/** Recount after a short pause, so typing stays smooth with a long pasted list. */
 function schedulePaint(): void {
-  cancelAnimationFrame(frame);
-  frame = requestAnimationFrame(() => paint());
+  window.clearTimeout(paintTimer);
+  paintTimer = window.setTimeout(() => paint(), 150);
 }
 
 function paint(): void {

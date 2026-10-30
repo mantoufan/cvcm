@@ -79,12 +79,15 @@ export function mountMetronome(host: HTMLElement): void {
       ),
     ),
   );
+  // Queue the longer hidden-tab lookahead as soon as the tab is hidden.
+  document.addEventListener("visibilitychange", schedule);
   drawDots();
   paintBpm();
 }
 
 export function unmountMetronome(): void {
   stop();
+  document.removeEventListener("visibilitychange", schedule);
   window.clearTimeout(typeTimer);
   if (audio) void audio.close().catch(() => undefined);
   audio = null;
@@ -187,8 +190,14 @@ function schedule(): void {
     tickSub = sub;
     restart = false;
   }
-  // After a long timer stall, skip missed clicks instead of playing them all at once.
-  if (nextTime < audio.currentTime) nextTime = audio.currentTime + 0.05;
+  // After a long timer stall, skip the missed clicks (instead of playing them all at once) and stay on the beat grid,
+  // so the accent still falls on the downbeat.
+  if (nextTime < audio.currentTime) {
+    const step = clickInterval(bpm(), tickSub);
+    const missed = Math.ceil((audio.currentTime + 0.02 - nextTime) / step);
+    nextTime += missed * step;
+    tick = (tick + missed) % (beats() * tickSub);
+  }
   // Settings are read every click, so changes take effect on the next one.
   const ahead = document.hidden ? SCHEDULE_AHEAD_HIDDEN : SCHEDULE_AHEAD;
   while (nextTime < audio.currentTime + ahead) {

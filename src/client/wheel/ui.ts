@@ -24,7 +24,7 @@ let timer = 0;
 let history: string[] = [];
 
 export function mountWheel(host: HTMLElement): void {
-  entriesEl = h("textarea", { rows: "9", "data-field": "entries", spellcheck: "false", "aria-label": t("wheel.entries"), onInput: () => paint() });
+  entriesEl = h("textarea", { class: "wheel-entries", rows: "9", "data-field": "entries", spellcheck: "false", "aria-label": t("wheel.entries"), onInput: () => paint() });
   entriesEl.value = t("wheel.sample");
   removeEl = h("input", { type: "checkbox", "data-field": "remove" });
   dialEl = document.createElementNS(SVG, "svg");

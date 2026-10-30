@@ -11,7 +11,7 @@ let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountZodiac(host: HTMLElement): void {
-  dateEl = h("input", { type: "date", min: "1900-01-01", max: "2100-12-31", value: "1995-08-15", "data-field": "birthday", "data-fixed-date": true, onInput: () => paint() });
+  dateEl = h("input", { type: "date", min: "1900-01-01", max: "2100-12-31", value: "1995-08-15", "data-field": "birthday", "data-fixed-date": true, onInput: () => paint(), onChange: () => paint() });
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   noteEl = h("p", { class: "hint" });
   host.append(
