@@ -17,7 +17,7 @@ import { localePath, parseLocale, type Locale } from "./locale";
 export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
 
 export const STATIC_FILE = new RegExp(
-  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|llms\.txt$|tools\.json$|\.well-known\/poppy\.json$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
 );
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */

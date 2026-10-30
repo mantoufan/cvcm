@@ -3,6 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
+import { AGENT_DOC_PATHS } from "./shared/agent-docs";
 import { appHref, datasetHref, deviceHref, gamesHref, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, STATIC_FILE, toolJob } from "./shared/path";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
@@ -484,6 +485,11 @@ function withHeaders(res: Response, pathname: string): Response {
   else headers.set("X-Frame-Options", "DENY");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  // Agent discovery files are public documentation: let agents running in any page read them.
+  if ((AGENT_DOC_PATHS as readonly string[]).includes(pathname)) {
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Cross-Origin-Resource-Policy", "cross-origin");
+  }
   // AI tool pages (and the scripts their workers run) are cross-origin isolated: ONNX Runtime needs
   // SharedArrayBuffer for threaded WebAssembly. `credentialless` still lets images from other sites load.
   const aiPage = isAiToolPath(pathname);
