@@ -16,8 +16,13 @@ import { localePath, parseLocale, type Locale } from "./locale";
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
 export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets"] as const;
 
+/** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
+export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
+
+const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.\/]/g, (c) => `\\${c}`)}$`).join("|");
+
 export const STATIC_FILE = new RegExp(
-  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|llms\.txt$|tools\.json$|\.well-known\/poppy\.json$|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,
 );
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
