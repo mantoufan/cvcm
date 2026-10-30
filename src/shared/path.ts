@@ -25,7 +25,7 @@ export function isAgentDocPath(pathname: string): boolean {
   return AGENT_DOC_SET.has(pathname);
 }
 
-const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.\/]/g, (c) => `\\${c}`)}$`).join("|");
+const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}$`).join("|");
 
 export const STATIC_FILE = new RegExp(
   String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|datasets\/[a-z0-9-]+\.csv$)`,

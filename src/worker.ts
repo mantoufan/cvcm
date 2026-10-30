@@ -89,6 +89,19 @@ function s3Config(env: Env): S3Config | null {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
+    if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
+      const preflight = new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Max-Age": "86400",
+          "Cache-Control": "no-store",
+        },
+      });
+      return withHeaders(preflight, url.pathname);
+    }
     if (url.hostname === "www.cv.cm") {
       url.hostname = "cv.cm";
       const status = request.method === "GET" || request.method === "HEAD" ? 301 : 307;
@@ -99,25 +112,11 @@ export default {
     const api = await handleClipApi(request, { store, s3: s3Config(env) });
     if (api) return api;
 
-    // CORS preflight for the agent discovery files (agents in other pages may send custom headers).
-    if (request.method === "OPTIONS" && isAgentDocPath(url.pathname)) {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-          "Access-Control-Allow-Headers": "*",
-          "Access-Control-Max-Age": "86400",
-          "Cache-Control": "no-store",
-        },
-      });
-    }
-
     if (request.method !== "GET" && request.method !== "HEAD") {
       return new Response("Method Not Allowed", {
         status: 405,
         headers: {
-          Allow: ALLOWED,
+          Allow: isAgentDocPath(url.pathname) ? `${ALLOWED}, OPTIONS` : ALLOWED,
           "Cache-Control": "no-store",
           "Content-Type": "text/plain; charset=utf-8",
         },

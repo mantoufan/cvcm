@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { BLURB_PRIVACY_NOTE, DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
+import { BLURB_PRIVACY_NOTE, DATA_HANDLING_GROUPS, LOCAL_FILE_INPUT_TOOLS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
 import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
@@ -39,7 +39,7 @@ describe("agent discovery files", () => {
     // File and AI tools are the ones AGENTS.md rule 1 keeps out of analytics.
     for (const tool of [...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI]) expect(UNTRACKED_TOOLS.has(tool)).toBe(true);
     expect([...DATA_HANDLING_GROUPS.AI].sort()).toEqual([...AI_TOOLS].sort());
-    expect(dataHandling("clip")).toContain("Stores the note");
+    expect(dataHandling("clip")).toContain("until 10 views or 24 hours. Anyone with the short link can open it");
     expect(dataHandling("text-to-speech")).toContain("online voices");
     expect(dataHandling("signature")).toBe("Runs in the page. Inputs are not uploaded.");
     expect(dataHandling("crop")).toBe("Processes files in the page. Files are not uploaded.");
@@ -48,8 +48,21 @@ describe("agent discovery files", () => {
     }
   });
 
+  it("declares every tool that has a file input", () => {
+    const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...LOCAL_FILE_INPUT_TOOLS]);
+    const withFileInput = TOOLS.filter((tool) => {
+      const dir = join(root, "src/client", tool);
+      try {
+        return sourceFiles(dir).some((file) => /type:\s*"file"/.test(readFileSync(file, "utf8")));
+      } catch {
+        return false;
+      }
+    });
+    expect(withFileInput.filter((tool) => !declared.has(tool))).toEqual([]);
+  });
+
   it("backs the 'not uploaded' claims: only reviewed client files make requests, and none sends data", () => {
-    const network = /\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.submit\(|window\.open\(|new Image\(|importScripts|navigator\.share/;
+    const network = /\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.submit\(|window\.open\(|new Image\(|importScripts|navigator\.share|\.src\s*=\s*`/;
     // Each file here was read by hand. Add a file only after checking that it sends none of the user's input.
     const reviewed: Record<string, string> = {
       "src/client/clip/ui.ts": "the clipboard, which stores notes by design",
@@ -58,6 +71,7 @@ describe("agent discovery files", () => {
       "src/client/games/ui.ts": "HEAD request for a ROM file",
       "src/client/device/ui.ts": "reads the visitor's own IP address",
       "src/client/decode.ts": "decodes a local image with new Image()",
+      "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))
@@ -117,6 +131,11 @@ describe("agent discovery files", () => {
     expect(preflight.status).toBe(204);
     expect(preflight.headers.get("Access-Control-Allow-Origin")).toBe("*");
     expect(preflight.headers.get("Access-Control-Allow-Methods")).toContain("GET");
+    expect(preflight.headers.get("X-Content-Type-Options")).toBe("nosniff");
+    const www = await worker.fetch(new Request("https://www.cv.cm/llms.txt", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
+    expect(www.status).toBe(204);
+    const post = await worker.fetch(new Request("https://cv.cm/tools.json", { method: "POST" }), { ASSETS: { fetch: async () => new Response("x") } });
+    expect(post.headers.get("Allow")).toBe("GET, HEAD, OPTIONS");
     const other = await worker.fetch(new Request("https://cv.cm/robots.txt", { method: "OPTIONS" }), { ASSETS: { fetch: async () => new Response("x") } });
     expect(other.status).toBe(405);
   });
