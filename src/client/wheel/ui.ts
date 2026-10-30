@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_ENTRIES, indexAt, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
+import { MAX_ENTRIES, indexAt, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
 import { randomInt } from "../../shared/random";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -89,8 +89,7 @@ function paint(): void {
   countEl.textContent = t("wheel.count", { n: list.length, max: MAX_ENTRIES });
   spinBtn.disabled = spinning || list.length < 2;
   drawDial(list);
-  if (!spinning && outEl && list.length < 2) outEl.textContent = t("wheel.needTwo");
-  else if (!spinning && outEl && !history.length) outEl.textContent = "";
+  if (!spinning && outEl) outEl.textContent = list.length < 2 ? t("wheel.needTwo") : history.length ? t("wheel.winner", { name: history[0] }) : "";
 }
 
 function drawDial(list: string[]): void {
@@ -167,17 +166,21 @@ function land(list: string[]): void {
   if (removeEl?.checked && entriesEl) {
     // Drop one copy of the winner; the dial redraws without it (the pointer then sits on a neighbour, which is fine).
     const lines = entriesEl.value.split(/\r?\n/);
-    const at = lines.findIndex((line) => Array.from(line.trim()).slice(0, 40).join("") === winner);
+    const at = lines.findIndex((line) => normalizeEntry(line) === winner);
     if (at >= 0) lines.splice(at, 1);
     entriesEl.value = lines.join("\n");
   }
   paint();
-  if (outEl) outEl.textContent = t("wheel.winner", { name: winner });
+}
+
+/** Shuffle and Sort reorder the typed lines as they are (beyond 100 entries or 40 characters too), dropping blanks. */
+function lines(): string[] {
+  return (entriesEl?.value ?? "").split(/\r?\n/).map((line) => line.trim()).filter((line) => line !== "");
 }
 
 function shuffle(): void {
   if (!entriesEl || spinning) return;
-  const list = entries();
+  const list = lines();
   for (let i = list.length - 1; i > 0; i--) {
     const j = randomInt(0, i);
     [list[i], list[j]] = [list[j], list[i]];
@@ -188,7 +191,7 @@ function shuffle(): void {
 
 function sortEntries(): void {
   if (!entriesEl || spinning) return;
-  entriesEl.value = entries().sort(new Intl.Collator(locale()).compare).join("\n");
+  entriesEl.value = lines().sort(new Intl.Collator(locale()).compare).join("\n");
   paint();
 }
 

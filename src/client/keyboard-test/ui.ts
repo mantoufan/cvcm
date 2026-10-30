@@ -82,10 +82,15 @@ function onDown(e: KeyboardEvent): void {
   e.preventDefault();
   const code = e.code || e.key;
   tested.add(code);
-  held.add(code);
-  maxHeld = Math.max(maxHeld, held.size);
   const el = keyEls.get(code);
   el?.classList.add("down", "done");
+  if (code === "CapsLock") {
+    // macOS sends Caps Lock keydown on and keyup only on the next press, so show it as a short tap, not a held key.
+    window.setTimeout(() => el?.classList.remove("down"), 150);
+  } else {
+    held.add(code);
+    maxHeld = Math.max(maxHeld, held.size);
+  }
   if (!e.repeat) {
     log.unshift(`${e.key === " " ? "Space" : e.key} · ${code}`);
     log = log.slice(0, 30);

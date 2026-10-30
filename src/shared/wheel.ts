@@ -3,13 +3,14 @@ import { randomInt } from "./random";
 export const MAX_ENTRIES = 100;
 export const MAX_LABEL = 40;
 
-/** One entry per non-empty line, trimmed, capped at MAX_ENTRIES and MAX_LABEL characters each. */
+/** The label a line becomes on the wheel: trimmed and capped at MAX_LABEL characters. */
+export function normalizeEntry(line: string): string {
+  return Array.from(line.trim()).slice(0, MAX_LABEL).join("");
+}
+
+/** One entry per non-empty line, capped at MAX_ENTRIES. */
 export function parseEntries(text: string): string[] {
-  return text
-    .split(/\r?\n/)
-    .map((line) => Array.from(line.trim()).slice(0, MAX_LABEL).join(""))
-    .filter((line) => line !== "")
-    .slice(0, MAX_ENTRIES);
+  return text.split(/\r?\n/).map(normalizeEntry).filter((line) => line !== "").slice(0, MAX_ENTRIES);
 }
 
 /** Uniform winner index from Web Crypto. */

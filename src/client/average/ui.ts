@@ -2,17 +2,25 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_VALUES, parseNumbers, stats } from "../../shared/average";
+import { MAX_VALUES, parseNumbers, stats, type DecimalMark } from "../../shared/average";
 
 let inputEl: HTMLTextAreaElement | null = null;
+let decimalEl: HTMLSelectElement | null = null;
+let frame = 0;
 let outEl: HTMLElement | null = null;
 let noteEl: HTMLElement | null = null;
 let copyBtn: HTMLButtonElement | null = null;
 let last = "";
 
 export function mountAverage(host: HTMLElement): void {
-  inputEl = h("textarea", { rows: "8", "data-field": "numbers", spellcheck: "false", "aria-label": t("average.numbers"), onInput: () => paint() });
-  inputEl.value = "12, 15, 15, 18, 20, 22, 30";
+  inputEl = h("textarea", { rows: "8", "data-field": "numbers", spellcheck: "false", "aria-label": t("average.numbers"), onInput: () => schedulePaint() });
+  // Languages that write 3,5 default to a comma decimal mark.
+  const comma = ["es", "id", "vi"].includes(locale());
+  decimalEl = h("select", { "data-field": "decimal", onChange: () => paint() },
+    h("option", { value: ".", selected: !comma }, "3.5"),
+    h("option", { value: ",", selected: comma }, "3,5"),
+  );
+  inputEl.value = "12 15 15 18 20 22 30";
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   noteEl = h("p", { class: "hint" });
   host.append(
@@ -26,6 +34,7 @@ export function mountAverage(host: HTMLElement): void {
         h("fieldset", null,
           h("legend", null, t("average.numbers")),
           inputEl,
+          h("label", { class: "field" }, h("span", null, t("average.decimal")), decimalEl),
           h("p", { class: "hint" }, t("average.inputHint", { max: new Intl.NumberFormat(locale()).format(MAX_VALUES) })),
         ),
         h("div", { class: "stage-actions" },
@@ -44,15 +53,24 @@ export function mountAverage(host: HTMLElement): void {
 }
 
 export function unmountAverage(): void {
+  cancelAnimationFrame(frame);
   inputEl = null;
+  decimalEl = null;
   outEl = noteEl = null;
   copyBtn = null;
   last = "";
 }
 
+/** One recount per frame, so typing stays smooth with a long pasted list. */
+function schedulePaint(): void {
+  cancelAnimationFrame(frame);
+  frame = requestAnimationFrame(() => paint());
+}
+
 function paint(): void {
   if (!outEl || !noteEl) return;
-  const { values, skipped, truncated } = parseNumbers(inputEl?.value ?? "");
+  const decimal: DecimalMark = decimalEl?.value === "," ? "," : ".";
+  const { values, skipped, truncated } = parseNumbers(inputEl?.value ?? "", decimal);
   const s = stats(values);
   outEl.replaceChildren();
   noteEl.textContent = [
@@ -64,7 +82,10 @@ function paint(): void {
     outEl.append(h("p", { class: "muted" }, t("average.empty")));
     return;
   }
-  const num = new Intl.NumberFormat(locale(), { maximumFractionDigits: 6 });
+  // No grouping, so a result pasted back in reads as one number; tiny values keep six significant digits instead of rounding to 0.
+  const fixed = new Intl.NumberFormat(locale(), { maximumFractionDigits: 6, useGrouping: false });
+  const small = new Intl.NumberFormat(locale(), { maximumSignificantDigits: 6, useGrouping: false });
+  const num = { format: (x: number) => (x !== 0 && Math.abs(x) < 0.01 ? small : fixed).format(x) };
   const dash = "—";
   const rows: Array<[string, string]> = [
     [t("average.mean"), num.format(s.mean)],
@@ -78,6 +99,7 @@ function paint(): void {
     [t("average.sampleSd"), s.sampleSd == null ? dash : num.format(s.sampleSd)],
     [t("average.populationSd"), num.format(s.populationSd)],
     [t("average.sampleVariance"), s.sampleVariance == null ? dash : num.format(s.sampleVariance)],
+    [t("average.populationVariance"), num.format(s.populationVariance)],
     [t("average.geometric"), s.geometricMean == null ? dash : num.format(s.geometricMean)],
   ];
   for (const [k, v] of rows) outEl.append(h("dt", null, k), h("dd", null, v));

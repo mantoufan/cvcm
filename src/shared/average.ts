@@ -2,14 +2,21 @@ export const MAX_VALUES = 100000;
 
 export type ParsedNumbers = { values: number[]; skipped: string[]; truncated: number };
 
-/** Numbers separated by spaces, new lines, commas or semicolons. Decimals use a dot. Anything else is skipped. */
-export function parseNumbers(text: string): ParsedNumbers {
+export type DecimalMark = "." | ",";
+
+/**
+ * Numbers separated by spaces, new lines or semicolons. With a dot as the decimal mark commas separate too;
+ * with a comma ("3,5") the comma is the decimal mark. Anything else is skipped.
+ */
+export function parseNumbers(text: string, decimal: DecimalMark = "."): ParsedNumbers {
   const values: number[] = [];
   const skipped: string[] = [];
   let truncated = 0;
-  for (const raw of text.split(/[\s,;，；、]+/)) {
+  const split = decimal === "," ? /[\s;；、]+/ : /[\s,;，；、]+/;
+  for (const raw of text.split(split)) {
     if (raw === "") continue;
-    const token = raw.replace(/[−–]/g, "-");
+    let token = raw.replace(/[−–]/g, "-");
+    if (decimal === ",") token = token.replace(",", ".");
     const n = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(token) ? Number(token) : NaN;
     if (!Number.isFinite(n)) skipped.push(raw);
     else if (values.length < MAX_VALUES) values.push(n);
@@ -59,8 +66,9 @@ export function stats(values: readonly number[]): Stats | null {
     freq.set(v, n);
     if (n > top) top = n;
   }
-  // No mode when every value appears the same number of times (all unique, or 1 1 2 2).
-  const modes = freq.size > 1 && [...freq.values()].some((n) => n !== top) ? [...freq].filter(([, n]) => n === top).map(([v]) => v) : [];
+  // No mode when every value appears the same number of times (all unique, or 1 1 2 2); 5 5 5 has mode 5.
+  const tie = freq.size > 1 && [...freq.values()].every((n) => n === top);
+  const modes = top > 1 && !tie ? [...freq].filter(([, n]) => n === top).map(([v]) => v) : [];
   let sq = 0;
   for (const v of values) sq += (v - mean) ** 2;
   const populationVariance = sq / count;
@@ -82,13 +90,4 @@ export function stats(values: readonly number[]): Stats | null {
     sampleVariance,
     geometricMean,
   };
-}
-
-/** Weighted mean of value/weight pairs; null when the weights do not sum to a positive number. */
-export function weightedMean(values: readonly number[], weights: readonly number[]): number | null {
-  if (values.length === 0 || values.length !== weights.length) return null;
-  if (weights.some((w) => !Number.isFinite(w) || w < 0)) return null;
-  const total = weights.reduce((s, w) => s + w, 0);
-  if (total <= 0) return null;
-  return values.reduce((s, v, i) => s + v * weights[i], 0) / total;
 }
