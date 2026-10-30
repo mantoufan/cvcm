@@ -30,7 +30,7 @@ describe("agent discovery files", () => {
     expect(llms).toContain("Not a legal e-sign. Runs in the page.");
     expect(llms).toContain("Text to speech can send text to the voice provider");
     expect(llms.match(/10 views/g)).toHaveLength(1);
-    expect(llms).toMatch(/model once on first use \(\d+(\.\d)? MB to \d+ MB,/);
+    expect(llms).toMatch(/model once on first use \(model weights of \d+(\.\d)? MB to \d+ MB /);
   });
 
   it("declares data handling per tool", () => {
@@ -124,6 +124,8 @@ describe("agent discovery files", () => {
       expect(response.headers.get("Content-Type")).toBe(type);
       expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
       expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe("cross-origin");
+      // Rebuilt from the tool registry on every deploy, so caches revalidate.
+      expect(response.headers.get("Cache-Control")).toBe("no-cache");
     }
     expect(STATIC_FILE.test("/llms.txtx")).toBe(false);
     expect(STATIC_FILE.test("/.well-known/other.json")).toBe(false);

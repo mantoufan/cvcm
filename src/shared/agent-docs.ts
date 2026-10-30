@@ -106,7 +106,7 @@ export function buildLlmsTxt(): string {
     "- Price: every tool is free. There is no sign-up and no paid tier.",
     `- Privacy: each tool below says what happens to the user's input. Image, PDF, audio and AI tools process files in the page and never upload them. ${names(STORES)} ${STORES.length === 1 ? "is the one tool that stores" : "are the tools that store"} data. ${names(NETWORK_VOICES)} can send text to the voice provider when the user picks an online voice. Other tools keep input in the page.`,
     "- Analytics: Google Analytics counts visits to ordinary pages. Image, PDF, audio and AI tool pages and opened clipboard notes send nothing to it, and no page sends what the user types or uploads to it.",
-    `- AI tools download their model once on first use (${formatMb(Math.min(...MODEL_BYTES))} to ${formatMb(Math.max(...MODEL_BYTES))}, depending on the tool and the device), then load it from the browser cache.`,
+    `- AI tools download their model once on first use (model weights of ${formatMb(Math.min(...MODEL_BYTES))} to ${formatMb(Math.max(...MODEL_BYTES))} depending on the tool and the device, plus the ONNX Runtime files), then load it from the browser cache.`,
     `- Languages: tool URLs follow \`${URL_PATTERN}\`, where \`{locale}\` is one of ${LOCALE_PATHS.map((l) => `\`${l}\``).join(", ")}. The links below use \`en\`.`,
     `- Machine-readable list of every tool: ${SITE_ORIGIN}/tools.json`,
     "",
@@ -137,7 +137,7 @@ export function buildToolsJson(): string {
     {
       name: SITE_HOST,
       url: `${SITE_ORIGIN}/`,
-      description: "Free browser tools. Image, PDF, audio and AI tools process files on the user's device and never upload them.",
+      description: `Free browser tools. Image, PDF, audio and AI tools process files on the user's device and never upload them. Each tool's data_handling says what happens to its input; ${STORES.map((id) => TOOL_STRINGS[id]?.name ?? id).join(", ")} stores data on ${SITE_HOST}.`,
       price: "free",
       account_required: false,
       locales: LOCALE_PATHS,

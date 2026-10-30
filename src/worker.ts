@@ -525,7 +525,7 @@ function withHeaders(res: Response, pathname: string): Response {
     headers.set("Cache-Control", "no-store");
   } else if (pathname.startsWith("/assets/") || pathname.startsWith("/ai/")) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
-  } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || !STATIC_FILE.test(pathname)) {
+  } else if (pathname === "/favicon.svg" || pathname.endsWith(".html") || isAgentDocPath(pathname) || !STATIC_FILE.test(pathname)) {
     headers.set("Cache-Control", "no-cache");
   } else {
     headers.set("Cache-Control", "public, max-age=86400");
