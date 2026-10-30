@@ -85,7 +85,14 @@ function paint(): void {
   // No grouping, so a result pasted back in reads as one number; tiny values keep six significant digits instead of rounding to 0.
   const fixed = new Intl.NumberFormat(locale(), { maximumFractionDigits: 6, useGrouping: false });
   const small = new Intl.NumberFormat(locale(), { maximumSignificantDigits: 6, useGrouping: false });
-  const num = { format: (x: number) => (x !== 0 && Math.abs(x) < 0.01 ? small : fixed).format(x) };
+  const sci = new Intl.NumberFormat(locale(), { notation: "scientific", maximumSignificantDigits: 6 });
+  const num = {
+    format: (x: number) => {
+      const a = Math.abs(x);
+      if (x !== 0 && Number.isFinite(x) && (a >= 1e15 || a < 1e-6)) return sci.format(x);
+      return (x !== 0 && a < 0.01 ? small : fixed).format(x);
+    },
+  };
   const dash = "—";
   const rows: Array<[string, string]> = [
     [t("average.mean"), num.format(s.mean)],

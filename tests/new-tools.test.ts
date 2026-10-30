@@ -1103,6 +1103,8 @@ describe("average", () => {
     const huge = stats([1e308, 1e308])!;
     expect(huge.mean).toBe(1e308);
     expect(huge.populationSd).toBe(0);
+    expect(huge.median).toBe(1e308);
+    expect(parseNumbers("−1,234.50 2").values).toEqual([-1234.5, 2]);
     const many = parseNumbers(Array.from({ length: 100005 }, (_, i) => i).join(" "));
     expect(many.values).toHaveLength(100000);
     expect(many.truncated).toBe(5);

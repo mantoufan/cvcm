@@ -6,6 +6,8 @@ import { BEATS, MAX_BPM, MIN_BPM, TAP_RESET_MS, clampBpm, clickInterval, tapBpm,
 
 const LOOKAHEAD_MS = 25;
 const SCHEDULE_AHEAD = 0.12;
+// Hidden tabs run timers about once a second, so queue further ahead there.
+const SCHEDULE_AHEAD_HIDDEN = 1.5;
 
 let bpmEl: HTMLInputElement | null = null;
 let sliderEl: HTMLInputElement | null = null;
@@ -27,6 +29,7 @@ let voices: OscillatorNode[] = [];
 let running = false;
 let taps: number[] = [];
 let visualTimers: number[] = [];
+let typeTimer = 0;
 
 export function mountMetronome(host: HTMLElement): void {
   bpmEl = h("input", { type: "number", min: String(MIN_BPM), max: String(MAX_BPM), step: "1", inputmode: "numeric", value: "120", "data-field": "bpm", "aria-label": t("metronome.bpm"), onInput: () => typedBpm(), onChange: () => setBpm(bpmEl?.value.trim() ? Number(bpmEl.value) : bpm()) });
@@ -76,14 +79,13 @@ export function mountMetronome(host: HTMLElement): void {
       ),
     ),
   );
-  document.addEventListener("visibilitychange", onVisibility);
   drawDots();
   paintBpm();
 }
 
 export function unmountMetronome(): void {
   stop();
-  document.removeEventListener("visibilitychange", onVisibility);
+  window.clearTimeout(typeTimer);
   if (audio) void audio.close().catch(() => undefined);
   audio = null;
   bpmEl = sliderEl = accentEl = volumeEl = null;
@@ -105,14 +107,18 @@ function setBpm(value: number): void {
   paintBpm();
 }
 
-/** While typing, follow values already in range without rewriting the field ("1" on the way to "140" stays put). */
+/**
+ * A typed tempo applies after a short pause, so "25" on the way to "250" never takes effect (and never schedules a
+ * long gap); the field is not rewritten while typing.
+ */
 function typedBpm(): void {
-  // While running, a half-typed tempo ("25" on the way to "250") would schedule a long gap; apply on change instead.
-  if (running) return;
-  const v = Number(bpmEl?.value);
-  if (!Number.isInteger(v) || v < MIN_BPM || v > MAX_BPM) return;
-  if (sliderEl) sliderEl.value = String(v);
-  paintBpm();
+  window.clearTimeout(typeTimer);
+  typeTimer = window.setTimeout(() => {
+    const v = Number(bpmEl?.value);
+    if (!Number.isInteger(v) || v < MIN_BPM || v > MAX_BPM) return;
+    if (sliderEl) sliderEl.value = String(v);
+    paintBpm();
+  }, 500);
 }
 
 function paintBpm(): void {
@@ -168,11 +174,6 @@ function stop(): void {
   if (startBtn) startBtn.textContent = t("metronome.start");
 }
 
-/** Hidden tabs throttle timers to about once a second; restart the clock on return so clicks do not bunch up. */
-function onVisibility(): void {
-  if (running && document.visibilityState === "visible" && audio) nextTime = Math.max(nextTime, audio.currentTime + 0.05);
-}
-
 function schedule(): void {
   if (!audio || !running) return;
   const sub = Number(subEl?.value) || 1;
@@ -189,7 +190,8 @@ function schedule(): void {
   // After a long timer stall, skip missed clicks instead of playing them all at once.
   if (nextTime < audio.currentTime) nextTime = audio.currentTime + 0.05;
   // Settings are read every click, so changes take effect on the next one.
-  while (nextTime < audio.currentTime + SCHEDULE_AHEAD) {
+  const ahead = document.hidden ? SCHEDULE_AHEAD_HIDDEN : SCHEDULE_AHEAD;
+  while (nextTime < audio.currentTime + ahead) {
     const perBar = beats() * sub;
     const pos = tick % perBar;
     const onBeat = pos % sub === 0;

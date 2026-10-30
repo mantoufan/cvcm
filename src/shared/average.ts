@@ -14,12 +14,14 @@ export function parseNumbers(text: string, decimal: DecimalMark = "."): ParsedNu
   let truncated = 0;
   // With a dot decimal mark, "1,234.50" (comma-grouped thousands with a decimal part) is one number; any other comma
   // separates numbers, so a CSV row "100,200,300" stays three values.
+  // Typographic minus signs and dashes become "-" first, so −1,234.50 is grouped like -1,234.50.
+  const plain = text.replace(/[−–]/g, "-");
   const chunks = decimal === ","
-    ? text.split(/[\s;；、]+/)
-    : text.split(/[\s;；、]+/).flatMap((chunk) => (/^[+-]?\d{1,3}(,\d{3})+\.\d+$/.test(chunk) ? [chunk.replaceAll(",", "")] : chunk.split(/[,，]+/)));
+    ? plain.split(/[\s;；、]+/)
+    : plain.split(/[\s;；、]+/).flatMap((chunk) => (/^[+-]?\d{1,3}(,\d{3})+\.\d+$/.test(chunk) ? [chunk.replaceAll(",", "")] : chunk.split(/[,，]+/)));
   for (const raw of chunks) {
     if (raw === "") continue;
-    let token = raw.replace(/[−–]/g, "-");
+    let token = raw;
     // With a comma decimal mark a dot is ambiguous (1.234 may mean 1234), so such tokens are skipped and listed.
     if (decimal === ",") token = token.includes(".") ? "" : token.replace(",", ".");
     const n = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(token) ? Number(token) : NaN;
@@ -65,7 +67,8 @@ export function stats(values: readonly number[]): Stats | null {
   const sum = scaled * scale;
   const mean = (scaled / count) * scale;
   const mid = count >> 1;
-  const median = count % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  // Halve before adding so two values near the float limit do not overflow.
+  const median = count % 2 ? sorted[mid] : sorted[mid - 1] / 2 + sorted[mid] / 2;
   const freq = new Map<number, number>();
   // Track the top count in the loop: spreading 100k distinct values into Math.max overflows Safari's argument limit.
   let top = 0;

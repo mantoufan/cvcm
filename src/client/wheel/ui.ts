@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_ENTRIES, indexAt, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
+import { MAX_ENTRIES, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
 import { randomInt } from "../../shared/random";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -156,13 +156,14 @@ function spin(): void {
   if (outEl) outEl.textContent = t("wheel.spinning");
   dialEl.style.transition = `transform ${ms}ms cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
   dialEl.style.transform = `rotate(${rotation}deg)`;
-  timer = window.setTimeout(() => land(list), ms + 50);
+  timer = window.setTimeout(() => land(list, index), ms + 50);
 }
 
-function land(list: string[]): void {
+function land(list: string[], index: number): void {
   spinning = false;
   if (entriesEl) entriesEl.readOnly = false;
-  const winner = list[indexAt(rotation, list.length)];
+  // The Web Crypto draw decides; spinTarget only makes the dial stop on it.
+  const winner = list[index];
   history.unshift(winner);
   history = history.slice(0, 20);
   if (outEl) outEl.textContent = t("wheel.winner", { name: winner });
