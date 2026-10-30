@@ -59,7 +59,7 @@ type AiToolDetails = { models: { option: string | null; model: AiModelId }[]; op
 const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
   "remove-background": {
     models: [{ option: null, model: "birefnet" }],
-    options: `${en.removeBg.background}: ${[en.removeBg.bg_transparent, en.removeBg.bg_white, en.removeBg.bg_color, en.removeBg.bg_blur].join(" / ")}. ${en.removeBg.format}: PNG / JPG / WebP (${en.removeBg.formatNote} Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with ${en.removeBg.downloadAll}. No edge, quality or brush controls.`,
+    options: `${en.removeBg.background}: ${[en.removeBg.bg_transparent, en.removeBg.bg_white, en.removeBg.bg_color, en.removeBg.bg_blur].join(" / ")}. ${en.removeBg.format}: PNG / JPG / WebP (PNG and WebP keep transparency; JPG has none, so a transparent background exports as white. Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with ${en.removeBg.downloadAll}. No edge, quality or brush controls.`,
   },
   "image-upscaler": {
     models: [
@@ -83,7 +83,7 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
 
 /** Model weights only, per backend; the page shows the size for the backend it picks before downloading. */
 const AI_BACKEND_RULE =
-  "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which downloads the cpu weights as well.";
+  "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which also downloads the cpu weights when they are a different file.";
 
 export function aiToolDetails(tool: ToolId) {
   const details = AI_DETAILS[tool];

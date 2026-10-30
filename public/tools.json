@@ -16,7 +16,7 @@
   ],
   "url_pattern": "https://cv.cm/{locale}/{tool}/",
   "docs": "https://cv.cm/llms.txt",
-  "ai_backend_note": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which downloads the cpu weights as well.",
+  "ai_backend_note": "The page uses WebGPU with 16-bit floats when the GPU supports them (webgpu_fp16), WebGPU otherwise (webgpu), and WebAssembly on the CPU without WebGPU (cpu). Sizes are model weights; the first AI tool used also loads the ONNX Runtime WebAssembly engine (tens of MB, cached). If a WebGPU run fails, the page retries on the CPU, which also downloads the cpu weights when they are a different file.",
   "categories": [
     {
       "id": "share",
@@ -88,7 +88,7 @@
             }
           }
         ],
-        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency. JPG gets a white background. Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
+        "options": "Background: Transparent / White / Color / Blur. Format: PNG / JPG / WebP (PNG and WebP keep transparency; JPG has none, so a transparent background exports as white. Picking a non-transparent background while PNG is set switches the format to JPG.) Several photos at once, with Download all (ZIP). No edge, quality or brush controls."
       }
     },
     {
