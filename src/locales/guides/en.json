@@ -1020,6 +1020,51 @@
       "s2b": "Grayscale for 3D tools, or Turbo and Magma colors to read depth at a glance. Invert if your tool expects near = dark.",
       "s3t": "Download",
       "s3b": "Save a PNG the same size as your photo."
+    },
+    "wheel": {
+      "lead": "Pick a name or option at random with a spinning wheel. Nothing is uploaded.",
+      "s1t": "Open Spin the wheel",
+      "s1b": "Six sample food choices are on the wheel. The list sits on the left, one entry per line.",
+      "s2t": "Type your entries",
+      "s2b": "Replace the list with your names or options, one per line. Shuffle and Sort reorder the slices.",
+      "s3t": "Press Spin",
+      "s3b": "The wheel slows to a stop and shows the winner, which is added to History. Tick “Remove the winner after each spin” to draw without repeats."
+    },
+    "average": {
+      "lead": "Get the mean, median, mode and standard deviation of a list of numbers. Nothing is uploaded.",
+      "s1t": "Open Average calculator",
+      "s1b": "Seven sample numbers are filled in. The results sit on the right.",
+      "s2t": "Paste your numbers",
+      "s2b": "Type or paste numbers separated by spaces, new lines or semicolons, and pick the decimal mark you use. Anything that is not a number is listed as skipped.",
+      "s3t": "Read the results",
+      "s3b": "Mean, median, mode, sum, range, standard deviation and variance update as you type. Copy puts them all on the clipboard."
+    },
+    "metronome": {
+      "lead": "Keep time with an online metronome. Nothing is uploaded.",
+      "s1t": "Open Metronome",
+      "s1b": "It starts at 120 BPM in 4 beats per bar. Press Start to hear it; the dots follow each beat.",
+      "s2t": "Set the tempo",
+      "s2b": "Type a BPM, drag the slider or use −5, −1, +1 and +5. Or press Tap in time with a song.",
+      "s3t": "Choose the bar",
+      "s3b": "Pick beats per bar (3 for a waltz) and clicks per beat for eighths, triplets or sixteenths. The first beat is accented."
+    },
+    "keyboard-test": {
+      "lead": "Check that every key on your keyboard works. Nothing is uploaded.",
+      "s1t": "Open Keyboard tester",
+      "s1b": "A full keyboard map appears. Click it so it can read your key presses.",
+      "s2t": "Press every key",
+      "s2b": "Each working key turns pink, and the last key shows its key, code and keyCode on the left.",
+      "s3t": "Check the count",
+      "s3b": "The counter shows how many keys you have tested and the most held at once. Reset starts over."
+    },
+    "zodiac": {
+      "lead": "Find the star sign and Chinese zodiac animal for a birthday. Nothing is uploaded.",
+      "s1t": "Open Zodiac sign finder",
+      "s1b": "A sample birthday, 15 August 1995, shows Leo and the wood Pig.",
+      "s2t": "Enter a birthday",
+      "s2b": "Pick the date of birth. The star sign, element, Chinese zodiac animal, year element and year name update.",
+      "s3t": "Check Lunar New Year",
+      "s3b": "For January and February birthdays the tool compares the date with Lunar New Year and says when the animal is the previous year’s."
     }
   }
 }

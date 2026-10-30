@@ -101,6 +101,11 @@ Browser toolkit on a Cloudflare Worker (Pages advanced mode `_worker.js`).
 - `src/client/ovulation/` — ovulation and fertile window for the next three cycles (luteal phase 14 days); dates are `data-volatile` (not medical advice)
 - `src/client/macro/` — macronutrient grams from a calorie target, goal and split (links to TDEE)
 - `src/client/calories-burned/` — calories burned by activity from MET values (2011 Compendium) × kg × hours, with a comparison list
+- `src/client/wheel/` — spin the wheel: one entry per line, Web Crypto draw before the SVG wheel spins, remove winner, shuffle/sort, history
+- `src/client/average/` — mean, median, mode, sum, range, sample/population SD and variance, geometric mean of a pasted list
+- `src/client/metronome/` — Web Audio lookahead metronome 20–300 BPM, beats per bar, subdivisions, accent, tap tempo
+- `src/client/keyboard-test/` — keyboard map by event.code (104 keys), key/code/keyCode/location, rollover count
+- `src/client/zodiac/` — star sign + Chinese zodiac by birthday; Lunar New Year from Intl `ca-chinese`, sign and animal-year tables
 - `src/client/resize/` — resize / compress images
 - `src/client/crop/` — crop images
 - `src/client/rotate/` — rotate / flip images
