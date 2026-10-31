@@ -2,7 +2,7 @@
   "crumbHome": "Inicio",
   "hub": {
     "title": "Datos públicos gratis: población, PIB, códigos de país | cv.cm",
-    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, inflación, desempleo, esperanza de vida, natalidad, superficie, emisiones de CO2, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
+    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, exportaciones, inflación, desempleo, esperanza de vida de hombres y mujeres, natalidad y mortalidad, superficie y bosques, emisiones de CO2, energía renovable, uso de internet, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
     "h1": "Datos públicos",
     "lede": "Tablas sencillas con datos públicos del Banco Mundial, ISO e IANA. Se pueden buscar, ordenar por cualquier columna o descargar en CSV. Cada tabla indica su fuente y su licencia.",
     "groups": {
@@ -29,6 +29,7 @@
     "rows": "{n} filas",
     "shown": "{shown} de {n} filas",
     "noMatch": "Ninguna fila coincide.",
+    "others": "otros {n}",
     "download": "Descargar CSV",
     "sortHint": "Seleccione el encabezado de una columna para ordenar.",
     "facts": "Datos clave",
@@ -455,6 +456,248 @@
         { "q": "¿Qué países tienen el mayor acceso a la electricidad?", "a": "{top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%) encabezan la lista en {year1}. Los empates comparten puesto." },
         { "q": "¿Qué porcentaje del mundo tiene electricidad?", "a": "El {world}% de la población mundial en {worldYear}." },
         { "q": "¿Qué país tiene el menor acceso a la electricidad?", "a": "En esta lista, {last}, donde el {vlast}% de las personas tiene electricidad." }
+      ]
+    },
+    "population-growth": {
+      "name": "Crecimiento de la población por país",
+      "title": "Tasa de crecimiento de la población por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Crecimiento anual de la población en {rows} países, del más rápido al más lento. La población mundial creció un {world}% en {worldYear}. Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de crecimiento de la población por país, {to} (% anual)",
+      "lede": "Cuánto creció o disminuyó la población de cada país en su último año, en {rows} países y territorios. Los valores negativos indican que la población bajó. Fuente: Banco Mundial, con estimaciones de la ONU.",
+      "value": "Crecimiento de la población (%)",
+      "facts": [
+        "Crecimiento de la población mundial: {world}% ({worldYear}).",
+        "Los que más crecen: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El que menos crece de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El crecimiento de la población suma los nacimientos menos las defunciones, más las personas que llegan menos las que se van. En los países pequeños y en los Estados del Golfo, la migración pesa mucho más en la cifra que los nacimientos.",
+        "Muchos países de Europa y de Asia oriental ya pierden población cada año porque las defunciones superan a los nacimientos y llegan pocos migrantes."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la población que más rápido crece?", "a": "{top1}, donde la población creció un {v1}% en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿A qué ritmo crece la población mundial?", "a": "Un {world}% en {worldYear}, menos de la mitad de la tasa máxima de finales de los años sesenta." },
+        { "q": "¿Qué país pierde población más rápido?", "a": "En esta lista, {last}, con un {vlast}% al año." }
+      ]
+    },
+    "death-rate": {
+      "name": "Tasa de mortalidad por país",
+      "title": "Tasa de mortalidad por país {to}: muertes por 1000 habitantes en {rows} países | cv.cm",
+      "description": "Tasa bruta de mortalidad, defunciones al año por cada 1000 habitantes, en {rows} países, en orden. Mundo: {world} ({worldYear}). Datos del Banco Mundial / ONU, descarga en CSV.",
+      "h1": "Tasa de mortalidad por país, {to} (muertes por cada 1000 habitantes)",
+      "lede": "Defunciones en un año por cada 1000 habitantes, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de población de la ONU.",
+      "value": "Muertes por 1000",
+      "facts": [
+        "Mundo: {world} muertes por cada 1000 habitantes ({worldYear}).",
+        "Las más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La tasa bruta de mortalidad depende sobre todo de la edad, no de la atención sanitaria. Los países con mucha población mayor, como los de Europa del Este, tienen tasas altas aunque su gente viva muchos años.",
+        "Los Estados del Golfo tienen las tasas más bajas porque la mayoría de sus residentes son migrantes jóvenes en edad de trabajar. Para comparar la salud, use mejor la esperanza de vida."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de mortalidad más alta?", "a": "{top1}, con {v1} muertes por cada 1000 habitantes en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la tasa de mortalidad mundial?", "a": "{world} muertes por cada 1000 habitantes en {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de mortalidad más baja?", "a": "En esta lista, {last}, con {vlast} muertes por cada 1000 habitantes." }
+      ]
+    },
+    "life-expectancy-male": {
+      "name": "Esperanza de vida de los hombres por país",
+      "title": "Esperanza de vida masculina por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Esperanza de vida al nacer de los hombres en {rows} países, en orden. Promedio mundial masculino: {world} años ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Esperanza de vida masculina al nacer por país, {to}",
+      "lede": "Cuántos años viviría un niño recién nacido si se mantuvieran las tasas de mortalidad actuales, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de la ONU.",
+      "value": "Esperanza de vida masculina (años)",
+      "facts": [
+        "Promedio mundial de los hombres: {world} años ({worldYear}).",
+        "La más alta: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La esperanza de vida al nacer es el número medio de años que viviría un recién nacido si las tasas de mortalidad de su año de nacimiento se mantuvieran durante toda su vida. Resume la salud actual; no es un pronóstico.",
+        "Los hombres mueren antes que las mujeres en casi todo el mundo, unos cinco años de media. La diferencia es mayor en Europa del Este, donde el consumo excesivo de alcohol y el tabaquismo son frecuentes entre los hombres."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor esperanza de vida masculina?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio de los hombres en el mundo?", "a": "{world} años en {worldYear}." },
+        { "q": "¿Qué país tiene la menor esperanza de vida masculina?", "a": "En esta lista, {last}, con {vlast} años." }
+      ]
+    },
+    "life-expectancy-female": {
+      "name": "Esperanza de vida de las mujeres por país",
+      "title": "Esperanza de vida femenina por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Esperanza de vida al nacer de las mujeres en {rows} países, en orden. Promedio mundial femenino: {world} años ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Esperanza de vida femenina al nacer por país, {to}",
+      "lede": "Cuántos años viviría una niña recién nacida si se mantuvieran las tasas de mortalidad actuales, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de la ONU.",
+      "value": "Esperanza de vida femenina (años)",
+      "facts": [
+        "Promedio mundial de las mujeres: {world} años ({worldYear}).",
+        "La más alta: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "La esperanza de vida al nacer es el número medio de años que viviría un recién nacido si las tasas de mortalidad de su año de nacimiento se mantuvieran durante toda su vida. Resume la salud actual; no es un pronóstico.",
+        "Las mujeres viven más que los hombres en casi todos los países. Parte de la diferencia es biológica y parte se debe a que los hombres fuman, beben y sufren accidentes y violencia con más frecuencia."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor esperanza de vida femenina?", "a": "{top1}, con {v1} años en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la esperanza de vida promedio de las mujeres en el mundo?", "a": "{world} años en {worldYear}." },
+        { "q": "¿Qué país tiene la menor esperanza de vida femenina?", "a": "En esta lista, {last}, con {vlast} años." }
+      ]
+    },
+    "maternal-mortality": {
+      "name": "Mortalidad materna por país",
+      "title": "Razón de mortalidad materna por país {to}: ranking de {rows} países | cv.cm",
+      "description": "Muertes maternas por cada 100 000 nacidos vivos en {rows} países, en orden, según estimaciones modelizadas de la ONU. Mundo: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Razón de mortalidad materna por país, {to} (por cada 100 000 nacidos vivos)",
+      "lede": "Cuántas mujeres mueren por causas del embarazo o el parto por cada 100 000 bebés nacidos vivos, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones del MMEIG de la ONU.",
+      "value": "Muertes por 100 000 nacimientos",
+      "facts": [
+        "Mundo: {world} muertes maternas por cada 100 000 nacidos vivos ({worldYear}).",
+        "Las más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Una muerte materna es la de una mujer durante el embarazo o en los 42 días siguientes a su terminación, por causas relacionadas con él. Las hemorragias graves, las infecciones y la hipertensión causan la mayoría, y casi todas se pueden prevenir con atención cualificada en el parto.",
+        "Son estimaciones modelizadas del Grupo Interinstitucional de las Naciones Unidas para la Estimación de la Mortalidad Materna (MMEIG), que completa los vacíos donde los países no registran todas las defunciones."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de mortalidad materna más alta?", "a": "{top1}, con {v1} muertes maternas por cada 100 000 nacidos vivos en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuál es la razón de mortalidad materna mundial?", "a": "{world} por cada 100 000 nacidos vivos en {worldYear}. La meta de la ONU para 2030 es bajar de 70." },
+        { "q": "¿Qué país tiene la mortalidad materna más baja?", "a": "En esta lista, {last}, con {vlast} por cada 100 000 nacidos vivos." }
+      ]
+    },
+    "exports": {
+      "name": "Exportaciones por país",
+      "title": "Exportaciones por país {to}: los mayores exportadores en US$ | cv.cm",
+      "description": "Exportaciones de bienes y servicios de {rows} economías en dólares estadounidenses corrientes, en orden, con su porcentaje de las exportaciones mundiales. Exportaciones mundiales: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Exportaciones de bienes y servicios por país, {to} (US$ corrientes)",
+      "lede": "Valor de todo lo que cada economía vendió al resto del mundo, bienes y servicios juntos, en {rows} países y territorios, en orden, con el porcentaje del total mundial de cada uno. Fuente: Banco Mundial.",
+      "value": "Exportaciones (US$)",
+      "facts": [
+        "Exportaciones mundiales: {world} ({worldYear}).",
+        "Los mayores exportadores: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El menor de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Las exportaciones incluyen bienes como automóviles, teléfonos y petróleo, y servicios como turismo, transporte marítimo, software y finanzas. Los valores están en dólares estadounidenses corrientes, así que los cambios del tipo de cambio también los mueven, no solo el comercio.",
+        "Cada fila muestra el último año informado por el país dentro de los cuatro últimos años. Las reexportaciones a través de centros comerciales como Singapur y Hong Kong se cuentan en el lugar desde donde salen."
+      ],
+      "faq": [
+        { "q": "¿Qué país exporta más?", "a": "{top1}, con exportaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto exporta el mundo?", "a": "{world} en bienes y servicios en {worldYear}." },
+        { "q": "¿Las exportaciones incluyen los servicios?", "a": "Sí. Esta tabla cuenta bienes y servicios juntos, así que los países con grandes sectores de turismo, finanzas o software quedan más arriba que en una lista solo de bienes." }
+      ]
+    },
+    "imports": {
+      "name": "Importaciones por país",
+      "title": "Importaciones por país {to}: los mayores importadores en US$ | cv.cm",
+      "description": "Importaciones de bienes y servicios de {rows} economías en dólares estadounidenses corrientes, en orden, con su porcentaje de las importaciones mundiales. Importaciones mundiales: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Importaciones de bienes y servicios por país, {to} (US$ corrientes)",
+      "lede": "Valor de todo lo que cada economía compró al resto del mundo, bienes y servicios juntos, en {rows} países y territorios, en orden, con el porcentaje del total mundial de cada uno. Fuente: Banco Mundial.",
+      "value": "Importaciones (US$)",
+      "facts": [
+        "Importaciones mundiales: {world} ({worldYear}).",
+        "Los mayores importadores: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El menor de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Las importaciones incluyen bienes como combustibles, alimentos y maquinaria, y servicios como viajes al extranjero, transporte y licencias. Los valores están en dólares estadounidenses corrientes.",
+        "Un país que importa más de lo que exporta tiene déficit comercial. Compare esta tabla con la de exportaciones para ver la balanza de cada país."
+      ],
+      "faq": [
+        { "q": "¿Qué país importa más?", "a": "{top1}, con importaciones de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto importa el mundo?", "a": "{world} en bienes y servicios en {worldYear}. Las importaciones y exportaciones mundiales deberían coincidir, pero difieren por desfases temporales y lagunas en los datos informados." },
+        { "q": "¿Qué país importa menos?", "a": "En esta lista, {last}, con {vlast}." }
+      ]
+    },
+    "health-spending-per-capita": {
+      "name": "Gasto en salud per cápita por país",
+      "title": "Gasto en salud per cápita por país {to}: {rows} países en US$ | cv.cm",
+      "description": "Gasto corriente en salud por persona en dólares estadounidenses en {rows} países, en orden. Promedio mundial: {world} ({worldYear}). Datos del Banco Mundial / OMS, descarga en CSV.",
+      "h1": "Gasto en salud per cápita por país, {to} (US$ corrientes)",
+      "lede": "Cuánto se gasta al año en atención sanitaria por cada habitante, entre gobiernos, aseguradoras y hogares, en {rows} países y territorios, en orden. Fuente: Banco Mundial, con datos de la Base de Datos Mundial sobre el Gasto en Salud de la OMS.",
+      "value": "Gasto en salud por persona (US$)",
+      "facts": [
+        "Promedio mundial: {world} por persona ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "El gasto corriente en salud abarca los bienes y servicios sanitarios consumidos en el año: hospitales y consultas médicas, medicamentos, prevención y administración. No incluye la inversión en nuevos hospitales ni en equipos.",
+        "Los valores se calculan con tipos de cambio de mercado, por lo que en los países con salarios altos la atención parece más cara de lo que realmente compra. Gastar más no siempre significa vivir más: compárelo con la tabla de esperanza de vida."
+      ],
+      "faq": [
+        { "q": "¿Qué país gasta más en salud por persona?", "a": "{top1}, con {v1} por persona en {year1}, seguido de {top2} ({v2})." },
+        { "q": "¿Cuánto gasta el mundo en salud por persona?", "a": "Unos {world} por persona en {worldYear}." },
+        { "q": "¿Qué país gasta menos en salud?", "a": "En esta lista, {last}, con {vlast} por persona." }
+      ]
+    },
+    "female-labor-force": {
+      "name": "Participación laboral femenina por país",
+      "title": "Tasa de participación laboral femenina por país {to} | cv.cm",
+      "description": "Porcentaje de mujeres de 15 años o más que trabajan o buscan trabajo en {rows} países, en orden, según estimaciones modelizadas de la OIT. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de participación laboral femenina por país, {to} (% de mujeres de 15 años o más)",
+      "lede": "Porcentaje de mujeres de 15 años o más que tienen empleo o lo buscan, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con estimaciones de la OIT.",
+      "value": "Mujeres en la población activa (%)",
+      "facts": [
+        "Mundo: el {world}% de las mujeres forma parte de la población activa ({worldYear}).",
+        "Las más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La más baja de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La población activa incluye a todas las personas que trabajan a cambio de un salario o ganancia, también en la agricultura y en negocios familiares, más las que buscan trabajo. No cuentan las tareas domésticas ni los cuidados no remunerados.",
+        "Algunas de las tasas más altas se dan en países de bajos ingresos donde la mayoría de las mujeres trabaja en el campo. Las más bajas están en partes de Oriente Medio y Asia meridional. Son estimaciones modelizadas de la OIT que aplican una misma definición a todos los países."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor participación laboral femenina?", "a": "{top1}, donde el {v1}% de las mujeres formaba parte de la población activa en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué porcentaje de mujeres trabaja en el mundo?", "a": "El {world}% de las mujeres de 15 años o más trabajaba o buscaba trabajo en {worldYear}." },
+        { "q": "¿Qué país tiene la menor participación laboral femenina?", "a": "En esta lista, {last}, con un {vlast}%." }
+      ]
+    },
+    "forest-area": {
+      "name": "Superficie forestal por país",
+      "title": "Superficie forestal por país {to}: % del territorio en {rows} países | cv.cm",
+      "description": "Superficie forestal como porcentaje de la superficie terrestre en {rows} países, del más al menos boscoso. Mundo: {world}% ({worldYear}). Datos del Banco Mundial / FAO, descarga en CSV.",
+      "h1": "Superficie forestal por país, {to} (% de la superficie terrestre)",
+      "lede": "Porcentaje del territorio de cada país cubierto por bosques, en {rows} países y territorios, del más al menos boscoso. Fuente: Banco Mundial, con datos de la Evaluación de los Recursos Forestales Mundiales de la FAO.",
+      "value": "Superficie forestal (% del territorio)",
+      "facts": [
+        "Mundo: el {world}% de la tierra es bosque ({worldYear}).",
+        "Los más boscosos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El menos boscoso de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La FAO considera bosque toda superficie de más de media hectárea con árboles de más de 5 metros de altura y una cubierta de copas superior al 10% del suelo. Las plantaciones cuentan; los huertos frutales y los parques urbanos, no.",
+        "Por porcentaje, encabezan la lista pequeños países tropicales. Por superficie total, Rusia, Brasil, Canadá, Estados Unidos y China reúnen más de la mitad de los bosques del mundo."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene más superficie cubierta de bosque?", "a": "{top1}, donde los bosques cubrían el {v1}% del territorio en {year1}, seguido de {top2} ({v2}%)." },
+        { "q": "¿Qué parte del mundo está cubierta de bosques?", "a": "El {world}% de la superficie terrestre mundial en {worldYear}." },
+        { "q": "¿Qué país tiene menos bosques?", "a": "En esta lista, {last}, con el {vlast}% de su territorio." }
+      ]
+    },
+    "renewable-energy": {
+      "name": "Porcentaje de energía renovable por país",
+      "title": "Energía renovable por país {to}: % del consumo de energía | cv.cm",
+      "description": "Energía renovable como porcentaje del consumo total de energía final en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial / AIE, descarga en CSV.",
+      "h1": "Porcentaje de energía renovable por país, {to} (% del consumo de energía final)",
+      "lede": "Porcentaje de la energía que usan las personas y las empresas que procede de fuentes renovables, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos de la AIE, IRENA y la ONU.",
+      "value": "Porcentaje renovable (%)",
+      "facts": [
+        "Mundo: el {world}% del consumo de energía es renovable ({worldYear}).",
+        "Los más altos: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "El más bajo de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Se cuenta todo el consumo de energía final, incluidos la calefacción y el transporte, no solo la electricidad. Son renovables la hidráulica, la eólica, la solar, la geotérmica, los biocombustibles modernos y la biomasa tradicional, como la leña.",
+        "Muchos de los porcentajes más altos se dan en países de bajos ingresos donde la mayoría de los hogares cocina con leña, no en los países con más energía eólica y solar. Los datos llevan unos años de retraso."
+      ],
+      "faq": [
+        { "q": "¿Qué país usa más energía renovable?", "a": "Por porcentaje, {top1}, donde el {v1}% del consumo de energía fue renovable en {year1}, sobre todo leña y energía hidráulica." },
+        { "q": "¿Qué porcentaje de la energía mundial es renovable?", "a": "El {world}% del consumo de energía final en {worldYear}." },
+        { "q": "¿Qué país usa menos energía renovable?", "a": "En esta lista, {last}, con un {vlast}%." }
       ]
     },
     "country-codes": {

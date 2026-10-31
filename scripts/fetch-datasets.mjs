@@ -3,7 +3,7 @@
 //   World Bank indicators (CC BY 4.0): https://data.worldbank.org/ (CO2 from EDGAR via the World Bank)
 //   ISO 3166 / ITU dialing / ISO 4217 via datahub.io core datasets (ODC-PDDL)
 //   IANA time zones from zone.tab (data.iana.org), offsets from the Node ICU tz database
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -60,44 +60,16 @@ function writeJson(name, value) {
 
 // --- World Bank -----------------------------------------------------------
 
-const WB = {
-  population: "SP.POP.TOTL",
-  gdp: "NY.GDP.MKTP.CD",
-  "gdp-per-capita": "NY.GDP.PCAP.CD",
-  "life-expectancy": "SP.DYN.LE00.IN",
-  "fertility-rate": "SP.DYN.TFRT.IN",
-  "internet-users": "IT.NET.USER.ZS",
-  "gdp-ppp-per-capita": "NY.GDP.PCAP.PP.CD",
-  "gdp-growth": "NY.GDP.MKTP.KD.ZG",
-  inflation: "FP.CPI.TOTL.ZG",
-  unemployment: "SL.UEM.TOTL.ZS",
-  "land-area": "AG.LND.TOTL.K2",
-  "population-density": "EN.POP.DNST",
-  "urban-population": "SP.URB.TOTL.IN.ZS",
-  "aged-65-plus": "SP.POP.65UP.TO.ZS",
-  "birth-rate": "SP.DYN.CBRT.IN",
-  "infant-mortality": "SP.DYN.IMRT.IN",
-  "co2-per-capita": "EN.GHG.CO2.PC.CE.AR5",
-  "electricity-access": "EG.ELC.ACCS.ZS",
-};
-// Stored at the precision the page shows (formatIndicator), so rows that look equal share a rank.
-const WHOLE = new Set(["population", "gdp", "gdp-per-capita", "gdp-ppp-per-capita", "land-area"]);
-const TWO_DECIMALS = new Set(["fertility-rate", "co2-per-capita"]);
-// Rates that move fast: only this year and last, or a 2022 value (Sudan's inflation) would rank under a 2025 heading.
-const MAX_AGE = { "gdp-ppp-per-capita": 1, "gdp-growth": 1, inflation: 1, unemployment: 1 };
-// EDGAR has no estimate for some small US territories and Pacific islands; the series reports 0 or
-// ~0.002 t per person for them (Guam), which would rank as the cleanest places on Earth.
-const FLOOR = { "co2-per-capita": 0.01 };
-// EDGAR counts the Faroe Islands with Denmark, leaving a 0.04 t residue where ~14 t is real, and puts
-// ~83 t per person on Palau (marine fuel sold there), against ~12 t in national inventories.
-const SKIP = { "co2-per-capita": new Set(["FRO", "PLW"]) };
+// One spec per indicator (code, stored precision, age window, placeholder filters), shared with the pages.
+const WB = JSON.parse(readFileSync(join(root, "src/shared/indicators.json"), "utf8"));
 
 const economies = (await getJson("https://api.worldbank.org/v2/country?format=json&per_page=400"))[1];
 // Aggregates (regions, income groups) have region id "NA"; keep the 217 economies.
 const countries = new Map(economies.filter((e) => e.region.id !== "NA").map((e) => [e.id, e]));
 
 const meta = { updated: today, sets: {} };
-for (const [id, code] of Object.entries(WB)) {
+for (const [id, spec] of Object.entries(WB)) {
+  const { code } = spec;
   // `mrnev=1` can return two years for one country and skip others, so read a window of years and keep each
   // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
   const thisYear = new Date().getUTCFullYear();
@@ -110,31 +82,40 @@ for (const [id, code] of Object.entries(WB)) {
     if (!seen || Number(r.date) > Number(seen.date)) latestBy.set(r.countryiso3code, r);
   }
   // Placeholders are judged on each economy's latest value: dropping only that year would fall back to an old one.
-  const list = [...latestBy.values()].filter((r) => r.value >= (FLOOR[id] ?? -Infinity) && !SKIP[id]?.has(r.countryiso3code));
+  const list = [...latestBy.values()].filter((r) => r.value >= (spec.floor ?? -Infinity) && !spec.skip?.includes(r.countryiso3code));
   const world = latestBy.get("WLD");
   const rows = list
     .filter((r) => countries.has(r.countryiso3code))
     .map((r) => {
       const c = countries.get(r.countryiso3code);
-      const decimals = WHOLE.has(id) ? 0 : TWO_DECIMALS.has(id) ? 2 : 1;
-      return [c.iso2Code, c.id, Number(r.value.toFixed(decimals)), Number(r.date), c.name.trim()];
+      // Stored at the precision the page shows, so rows that look equal share a rank.
+      return [c.iso2Code, c.id, Number(r.value.toFixed(spec.decimals)), Number(r.date), c.name.trim()];
     })
     // Ties (several countries at 100% internet use) fall back to name order, so reruns do not reshuffle them.
     .sort((a, b) => b[2] - a[2] || a[4].localeCompare(b[4]));
+  if (!rows.length) throw new Error(`${id}: no rows left after the filters in indicators.json`);
   // A last value from decades ago (1990 internet use) misleads more than a gap does.
   const latest = Math.max(...rows.map((r) => r[3]));
-  rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (MAX_AGE[id] ?? 15)));
+  rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (spec.maxAge ?? 15)));
   writeJson(`${id}.json`, rows);
-  if (world && Number(world.date) !== latest) console.warn(`${id}: world value is from ${world.date}, rows reach ${latest}`);
+  const asOf = mode(rows.map((r) => r[3]));
+  if (world && Number(world.date) !== asOf) console.warn(`${id}: world value is from ${world.date}, the heading year is ${asOf}`);
   const years = rows.map((r) => r[3]);
+  const last = rows.filter((r) => r[2] === rows[rows.length - 1][2]);
   meta.sets[id] = {
     rows: rows.length,
     from: Math.min(...years),
     to: Math.max(...years),
     sourceUpdated: info.lastupdated,
     world: world ? [Number(world.value.toFixed(2)), Number(world.date)] : null,
+    // The year most rows are from heads the page; a few early reporters should not date the whole table.
+    asOf,
     top: rows.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
-    bottom: rows.slice(-1).map((r) => [r[0], r[2], r[4], r[3]]),
+    // Everyone tied for last (forest area: several at 0.0), up to three by name plus how many in all.
+    bottom: last.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
+    tiedLast: last.length,
+    // Totals: the world value of every year, so each row's share uses its own year (US exports are a year behind).
+    ...(spec.total ? { worlds: worldsFor(all, years) } : {}),
   };
   // Equal values share a rank, as on the page.
   const ranks = [];
@@ -272,6 +253,25 @@ writeCsv("ascii", ["decimal", "hex", "octal", "binary", "char", "name"],
 
 writeJson("meta.json", meta);
 console.log("wrote src/data and public/datasets");
+
+/** For each year a row is from: the world total of that year, else the nearest earlier one within 5 years. */
+function worldsFor(all, years) {
+  const byYear = new Map(all.filter((r) => r.countryiso3code === "WLD" && r.value !== null).map((r) => [Number(r.date), r.value]));
+  const out = {};
+  for (const year of [...new Set(years)].sort()) {
+    for (let y = year; y >= year - 5; y--) {
+      if (byYear.has(y)) { out[year] = Number(byYear.get(y).toFixed(2)); break; }
+    }
+    if (!(year in out)) throw new Error(`no world total within 5 years before ${year} for a share column`);
+  }
+  return out;
+}
+
+function mode(values) {
+  const counts = new Map();
+  for (const v of values) counts.set(v, (counts.get(v) ?? 0) + 1);
+  return [...counts].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0][0];
+}
 
 function writeCsv(id, head, rows) {
   const dir = join(root, "public/datasets");

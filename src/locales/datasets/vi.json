@@ -2,7 +2,7 @@
   "crumbHome": "Trang chủ",
   "hub": {
     "title": "Bảng dữ liệu mở miễn phí: dân số, GDP, mã quốc gia | cv.cm",
-    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, lạm phát, thất nghiệp, tuổi thọ, tỷ suất sinh, diện tích đất, phát thải CO2, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
+    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, xuất khẩu, lạm phát, thất nghiệp, tuổi thọ nam và nữ, tỷ suất sinh và tỷ suất chết, diện tích đất và rừng, phát thải CO2, năng lượng tái tạo, tỷ lệ dùng internet, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
     "h1": "Dữ liệu mở",
     "lede": "Dữ liệu công khai từ Ngân hàng Thế giới, ISO và IANA, trình bày thành bảng đơn giản. Bạn có thể tìm kiếm, sắp xếp theo cột bất kỳ hoặc tải file CSV. Mỗi bảng đều ghi rõ nguồn và giấy phép.",
     "groups": {
@@ -29,6 +29,7 @@
     "rows": "{n} dòng",
     "shown": "{shown} / {n} dòng",
     "noMatch": "Không có dòng nào khớp.",
+    "others": "{n} nước và vùng lãnh thổ khác",
     "download": "Tải CSV",
     "sortHint": "Chọn tiêu đề cột để sắp xếp.",
     "facts": "Thông tin chính",
@@ -455,6 +456,248 @@
         { "q": "Những nước nào có tỷ lệ tiếp cận điện cao nhất?", "a": "{top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%) dẫn đầu danh sách năm {year1}. Các nước bằng nhau được xếp cùng hạng." },
         { "q": "Bao nhiêu phần trăm dân số thế giới có điện?", "a": "{world}% dân số thế giới vào năm {worldYear}." },
         { "q": "Nước nào có tỷ lệ tiếp cận điện thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người dân có điện." }
+      ]
+    },
+    "population-growth": {
+      "name": "Tốc độ tăng dân số các nước",
+      "title": "Tốc độ tăng dân số các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Tốc độ tăng dân số hằng năm của {rows} quốc gia, xếp từ nhanh nhất đến chậm nhất. Dân số thế giới tăng {world}% năm {worldYear}. Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tốc độ tăng dân số các nước năm {to} (% mỗi năm)",
+      "lede": "Dân số mỗi nước tăng hay giảm bao nhiêu trong năm gần nhất, cho {rows} quốc gia và vùng lãnh thổ. Giá trị âm nghĩa là dân số giảm. Nguồn: Ngân hàng Thế giới, từ ước tính của Liên Hợp Quốc.",
+      "value": "Tăng dân số (%)",
+      "facts": [
+        "Tốc độ tăng dân số thế giới: {world}% ({worldYear}).",
+        "Tăng nhanh nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Chậm nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Mức tăng dân số bằng số ca sinh trừ số ca tử vong, cộng số người nhập cư trừ số người di cư ra nước ngoài. Ở các nước nhỏ và các nước vùng Vịnh, di cư tác động đến con số này mạnh hơn nhiều so với số ca sinh.",
+        "Nhiều nước ở châu Âu và Đông Á hiện giảm dân số mỗi năm vì số người chết nhiều hơn số trẻ sinh ra và có ít người nhập cư."
+      ],
+      "faq": [
+        { "q": "Nước nào có dân số tăng nhanh nhất?", "a": "{top1}, nơi dân số tăng {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Dân số thế giới đang tăng nhanh đến mức nào?", "a": "{world}% vào năm {worldYear}, chưa bằng một nửa mức đỉnh cuối thập niên 1960." },
+        { "q": "Nước nào có dân số giảm nhanh nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}% mỗi năm." }
+      ]
+    },
+    "death-rate": {
+      "name": "Tỷ suất chết thô các nước",
+      "title": "Tỷ suất chết thô các nước năm {to}: số ca tử vong trên 1.000 dân tại {rows} nước | cv.cm",
+      "description": "Tỷ suất chết thô, số ca tử vong trên 1.000 dân mỗi năm, của {rows} quốc gia, xếp hạng. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới / Liên Hợp Quốc, tải CSV.",
+      "h1": "Tỷ suất chết thô các nước năm {to} (số ca tử vong trên 1.000 dân)",
+      "lede": "Số ca tử vong trong một năm trên mỗi 1.000 dân, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính dân số của Liên Hợp Quốc.",
+      "value": "Số ca tử vong/1.000 dân",
+      "facts": [
+        "Thế giới: {world} ca tử vong trên 1.000 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tỷ suất chết thô phụ thuộc chủ yếu vào cơ cấu tuổi, không phải vào chất lượng y tế. Các nước có nhiều người cao tuổi, như ở Đông Âu, có tỷ suất cao ngay cả khi người dân sống thọ.",
+        "Các nước vùng Vịnh có tỷ suất thấp nhất vì phần lớn cư dân là lao động nhập cư trẻ trong độ tuổi làm việc. Để so sánh sức khỏe, hãy xem tuổi thọ trung bình."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ suất chết thô cao nhất?", "a": "{top1}, với {v1} ca tử vong trên 1.000 dân vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tỷ suất chết thô của thế giới là bao nhiêu?", "a": "{world} ca tử vong trên 1.000 dân vào năm {worldYear}." },
+        { "q": "Nước nào có tỷ suất chết thô thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} ca tử vong trên 1.000 dân." }
+      ]
+    },
+    "life-expectancy-male": {
+      "name": "Tuổi thọ nam giới các nước",
+      "title": "Tuổi thọ nam giới các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Tuổi thọ trung bình khi sinh của nam giới tại {rows} quốc gia, xếp hạng. Trung bình thế giới của nam {world} tuổi ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tuổi thọ trung bình khi sinh của nam giới các nước năm {to}",
+      "lede": "Số năm một bé trai mới sinh sẽ sống nếu tỷ lệ tử vong hiện tại không đổi, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của Liên Hợp Quốc.",
+      "value": "Tuổi thọ nam (năm)",
+      "facts": [
+        "Tuổi thọ trung bình thế giới của nam giới: {world} tuổi ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tuổi thọ trung bình khi sinh là số năm trung bình một trẻ sơ sinh sẽ sống nếu tỷ lệ tử vong của năm sinh giữ nguyên suốt cuộc đời. Đây là bức tranh tóm tắt về sức khỏe hiện tại, không phải dự báo.",
+        "Gần như ở mọi nơi, nam giới mất sớm hơn nữ giới, trung bình khoảng năm năm. Khoảng cách lớn nhất ở Đông Âu, nơi nam giới uống nhiều rượu và hút thuốc phổ biến."
+      ],
+      "faq": [
+        { "q": "Nước nào có tuổi thọ nam giới cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tuổi thọ trung bình của nam giới trên thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}." },
+        { "q": "Nước nào có tuổi thọ nam giới thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+      ]
+    },
+    "life-expectancy-female": {
+      "name": "Tuổi thọ nữ giới các nước",
+      "title": "Tuổi thọ nữ giới các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Tuổi thọ trung bình khi sinh của nữ giới tại {rows} quốc gia, xếp hạng. Trung bình thế giới của nữ {world} tuổi ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tuổi thọ trung bình khi sinh của nữ giới các nước năm {to}",
+      "lede": "Số năm một bé gái mới sinh sẽ sống nếu tỷ lệ tử vong hiện tại không đổi, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của Liên Hợp Quốc.",
+      "value": "Tuổi thọ nữ (năm)",
+      "facts": [
+        "Tuổi thọ trung bình thế giới của nữ giới: {world} tuổi ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tuổi thọ trung bình khi sinh là số năm trung bình một trẻ sơ sinh sẽ sống nếu tỷ lệ tử vong của năm sinh giữ nguyên suốt cuộc đời. Đây là bức tranh tóm tắt về sức khỏe hiện tại, không phải dự báo.",
+        "Ở gần như mọi nước, phụ nữ sống lâu hơn nam giới. Một phần khoảng cách là do sinh học, một phần do nam giới hút thuốc, uống rượu, gặp tai nạn và bạo lực nhiều hơn."
+      ],
+      "faq": [
+        { "q": "Nước nào có tuổi thọ nữ giới cao nhất?", "a": "{top1}, với {v1} tuổi năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tuổi thọ trung bình của nữ giới trên thế giới là bao nhiêu?", "a": "{world} tuổi năm {worldYear}." },
+        { "q": "Nước nào có tuổi thọ nữ giới thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} tuổi." }
+      ]
+    },
+    "maternal-mortality": {
+      "name": "Tỷ số tử vong mẹ các nước",
+      "title": "Tỷ số tử vong mẹ các nước năm {to}: xếp hạng {rows} nước | cv.cm",
+      "description": "Số ca tử vong mẹ trên 100.000 ca sinh sống tại {rows} quốc gia, xếp hạng, theo ước tính mô hình của Liên Hợp Quốc. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ số tử vong mẹ các nước năm {to} (trên 100.000 ca sinh sống)",
+      "lede": "Số phụ nữ tử vong do mang thai hoặc sinh nở trên mỗi 100.000 trẻ sinh sống, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của MMEIG (Liên Hợp Quốc).",
+      "value": "Số ca tử vong/100.000 ca sinh",
+      "facts": [
+        "Thế giới: {world} ca tử vong mẹ trên 100.000 ca sinh sống ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Tử vong mẹ là cái chết của người phụ nữ khi đang mang thai hoặc trong vòng 42 ngày sau khi kết thúc thai kỳ, do các nguyên nhân liên quan đến thai kỳ. Phần lớn là do băng huyết, nhiễm trùng và tăng huyết áp, và hầu hết có thể phòng tránh nếu được nhân viên y tế có chuyên môn hỗ trợ khi sinh.",
+        "Đây là ước tính mô hình của Nhóm liên cơ quan ước tính tử vong mẹ của Liên Hợp Quốc (MMEIG), giúp lấp các khoảng trống ở những nước không đăng ký đầy đủ mọi ca tử vong."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ tử vong mẹ cao nhất?", "a": "{top1}, với {v1} ca tử vong mẹ trên 100.000 ca sinh sống vào năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Tỷ số tử vong mẹ của thế giới là bao nhiêu?", "a": "{world} trên 100.000 ca sinh sống vào năm {worldYear}. Mục tiêu của Liên Hợp Quốc đến năm 2030 là dưới 70." },
+        { "q": "Nước nào có tỷ lệ tử vong mẹ thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} trên 100.000 ca sinh sống." }
+      ]
+    },
+    "exports": {
+      "name": "Kim ngạch xuất khẩu các nước",
+      "title": "Kim ngạch xuất khẩu các nước năm {to}: nước xuất khẩu lớn nhất (USD) | cv.cm",
+      "description": "Xuất khẩu hàng hóa và dịch vụ của {rows} nền kinh tế theo USD hiện hành, xếp hạng, kèm tỷ trọng trong xuất khẩu thế giới. Xuất khẩu thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Xuất khẩu hàng hóa và dịch vụ các nước năm {to} (USD hiện hành)",
+      "lede": "Giá trị mọi thứ mỗi nền kinh tế bán ra phần còn lại của thế giới, gồm cả hàng hóa và dịch vụ, cho {rows} quốc gia và vùng lãnh thổ, xếp hạng, kèm tỷ trọng của từng nơi trong tổng thế giới. Nguồn: Ngân hàng Thế giới.",
+      "value": "Xuất khẩu (USD)",
+      "facts": [
+        "Xuất khẩu thế giới: {world} ({worldYear}).",
+        "Xuất khẩu lớn nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Xuất khẩu gồm hàng hóa như ô tô, điện thoại, dầu mỏ và dịch vụ như du lịch, vận tải biển, phần mềm và tài chính. Giá trị tính theo USD hiện hành, nên biến động tỷ giá cũng làm con số thay đổi, không chỉ thương mại.",
+        "Mỗi dòng là năm gần nhất nước đó báo cáo, trong vòng bốn năm qua. Hàng tái xuất qua các trung tâm thương mại như Singapore và Hồng Kông được tính tại nơi hàng rời đi."
+      ],
+      "faq": [
+        { "q": "Nước nào xuất khẩu nhiều nhất?", "a": "{top1}, với kim ngạch xuất khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới xuất khẩu bao nhiêu?", "a": "{world} hàng hóa và dịch vụ năm {worldYear}." },
+        { "q": "Xuất khẩu có bao gồm dịch vụ không?", "a": "Có. Bảng này tính chung hàng hóa và dịch vụ, nên các nước có ngành du lịch, tài chính hay phần mềm lớn sẽ xếp cao hơn so với danh sách chỉ tính hàng hóa." }
+      ]
+    },
+    "imports": {
+      "name": "Kim ngạch nhập khẩu các nước",
+      "title": "Kim ngạch nhập khẩu các nước năm {to}: nước nhập khẩu lớn nhất (USD) | cv.cm",
+      "description": "Nhập khẩu hàng hóa và dịch vụ của {rows} nền kinh tế theo USD hiện hành, xếp hạng, kèm tỷ trọng trong nhập khẩu thế giới. Nhập khẩu thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Nhập khẩu hàng hóa và dịch vụ các nước năm {to} (USD hiện hành)",
+      "lede": "Giá trị mọi thứ mỗi nền kinh tế mua từ phần còn lại của thế giới, gồm cả hàng hóa và dịch vụ, cho {rows} quốc gia và vùng lãnh thổ, xếp hạng, kèm tỷ trọng của từng nơi trong tổng thế giới. Nguồn: Ngân hàng Thế giới.",
+      "value": "Nhập khẩu (USD)",
+      "facts": [
+        "Nhập khẩu thế giới: {world} ({worldYear}).",
+        "Nhập khẩu lớn nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Nhập khẩu gồm hàng hóa như nhiên liệu, lương thực, máy móc và dịch vụ như du lịch nước ngoài, vận tải và bản quyền. Giá trị tính theo USD hiện hành.",
+        "Một nước nhập khẩu nhiều hơn xuất khẩu sẽ bị thâm hụt thương mại. Hãy so sánh bảng này với bảng xuất khẩu để thấy cán cân của từng nước."
+      ],
+      "faq": [
+        { "q": "Nước nào nhập khẩu nhiều nhất?", "a": "{top1}, với kim ngạch nhập khẩu {v1} năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Thế giới nhập khẩu bao nhiêu?", "a": "{world} hàng hóa và dịch vụ năm {worldYear}. Về lý thuyết, nhập khẩu và xuất khẩu thế giới phải bằng nhau, nhưng vẫn chênh lệch do khác biệt về thời điểm và thiếu sót trong báo cáo." },
+        { "q": "Nước nào nhập khẩu ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}." }
+      ]
+    },
+    "health-spending-per-capita": {
+      "name": "Chi tiêu y tế bình quân đầu người các nước",
+      "title": "Chi tiêu y tế bình quân đầu người các nước năm {to}: {rows} nước (USD) | cv.cm",
+      "description": "Chi tiêu y tế thường xuyên trên mỗi người theo USD của {rows} quốc gia, xếp hạng. Trung bình thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới / WHO, tải CSV.",
+      "h1": "Chi tiêu y tế bình quân đầu người các nước năm {to} (USD hiện hành)",
+      "lede": "Số tiền chi cho chăm sóc sức khỏe của mỗi cư dân trong một năm, gồm cả chính phủ, bảo hiểm và hộ gia đình, cho {rows} quốc gia và vùng lãnh thổ, xếp hạng. Nguồn: Ngân hàng Thế giới, từ Cơ sở dữ liệu chi tiêu y tế toàn cầu của WHO.",
+      "value": "Chi tiêu y tế mỗi người (USD)",
+      "facts": [
+        "Trung bình thế giới: {world} mỗi người ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Chi tiêu y tế thường xuyên gồm hàng hóa và dịch vụ y tế dùng trong năm: điều trị tại bệnh viện, khám bác sĩ, thuốc, phòng bệnh và quản lý. Chi xây bệnh viện mới và mua thiết bị không được tính.",
+        "Giá trị tính theo tỷ giá thị trường, nên ở các nước lương cao, chi phí trông đắt hơn so với lượng dịch vụ thực sự mua được. Chi nhiều hơn không phải lúc nào cũng giúp sống lâu hơn: hãy so sánh với bảng tuổi thọ."
+      ],
+      "faq": [
+        { "q": "Nước nào chi cho y tế bình quân đầu người nhiều nhất?", "a": "{top1}, ở mức {v1} mỗi người năm {year1}, tiếp theo là {top2} ({v2})." },
+        { "q": "Thế giới chi bao nhiêu cho y tế trên mỗi người?", "a": "Khoảng {world} mỗi người năm {worldYear}." },
+        { "q": "Nước nào chi cho y tế ít nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast} mỗi người." }
+      ]
+    },
+    "female-labor-force": {
+      "name": "Tỷ lệ tham gia lực lượng lao động nữ các nước",
+      "title": "Tỷ lệ tham gia lực lượng lao động nữ các nước năm {to} | cv.cm",
+      "description": "Tỷ lệ phụ nữ từ 15 tuổi trở lên đang làm việc hoặc đang tìm việc tại {rows} quốc gia, xếp hạng, theo ước tính mô hình của ILO. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ tham gia lực lượng lao động nữ các nước năm {to} (% phụ nữ từ 15 tuổi)",
+      "lede": "Tỷ lệ phụ nữ từ 15 tuổi trở lên có việc làm hoặc đang tìm việc, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính của ILO.",
+      "value": "Phụ nữ trong lực lượng lao động (%)",
+      "facts": [
+        "Thế giới: {world}% phụ nữ tham gia lực lượng lao động ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Lực lượng lao động gồm mọi người làm việc để có lương hoặc lợi nhuận, kể cả làm nông và làm cho doanh nghiệp gia đình, cùng những người đang tìm việc. Việc nhà và chăm sóc không được trả công thì không được tính.",
+        "Một số tỷ lệ cao nhất thuộc về các nước thu nhập thấp, nơi phần lớn phụ nữ làm nông. Tỷ lệ thấp nhất ở một số khu vực Trung Đông và Nam Á. Đây là ước tính mô hình của ILO, dùng một định nghĩa chung cho mọi nước."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ cao nhất?", "a": "{top1}, nơi {v1}% phụ nữ tham gia lực lượng lao động vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Bao nhiêu phần trăm phụ nữ trên thế giới đi làm?", "a": "{world}% phụ nữ từ 15 tuổi trở lên đang làm việc hoặc đang tìm việc vào năm {worldYear}." },
+        { "q": "Nước nào có tỷ lệ tham gia lực lượng lao động nữ thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
+      ]
+    },
+    "forest-area": {
+      "name": "Diện tích rừng các nước",
+      "title": "Tỷ lệ che phủ rừng các nước năm {to}: % diện tích đất tại {rows} nước | cv.cm",
+      "description": "Diện tích rừng tính theo tỷ lệ diện tích đất của {rows} quốc gia, xếp từ nhiều rừng nhất đến ít rừng nhất. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / FAO, tải CSV.",
+      "h1": "Diện tích rừng các nước năm {to} (% diện tích đất)",
+      "lede": "Tỷ lệ diện tích đất của mỗi nước được rừng che phủ, cho {rows} quốc gia và vùng lãnh thổ, xếp từ nhiều rừng nhất đến ít rừng nhất. Nguồn: Ngân hàng Thế giới, từ Đánh giá tài nguyên rừng toàn cầu của FAO.",
+      "value": "Diện tích rừng (% đất)",
+      "facts": [
+        "Thế giới: {world}% diện tích đất là rừng ({worldYear}).",
+        "Nhiều rừng nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Ít rừng nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "FAO coi một vùng đất là rừng nếu rộng hơn nửa hecta, có cây cao trên 5 mét và độ che phủ tán trên 10% mặt đất. Rừng trồng được tính; vườn cây ăn quả và công viên đô thị thì không.",
+        "Các nước nhiệt đới nhỏ đứng đầu danh sách theo tỷ lệ. Xét theo tổng diện tích, Nga, Brazil, Canada, Hoa Kỳ và Trung Quốc chiếm hơn một nửa diện tích rừng thế giới."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ che phủ rừng cao nhất?", "a": "{top1}, nơi rừng che phủ {v1}% diện tích đất vào năm {year1}, tiếp theo là {top2} ({v2}%)." },
+        { "q": "Rừng che phủ bao nhiêu phần trăm thế giới?", "a": "{world}% diện tích đất thế giới vào năm {worldYear}." },
+        { "q": "Nước nào có ít rừng nhất?", "a": "Trong danh sách này là {last}, với {vlast}% diện tích đất." }
+      ]
+    },
+    "renewable-energy": {
+      "name": "Tỷ trọng năng lượng tái tạo các nước",
+      "title": "Tỷ trọng năng lượng tái tạo các nước năm {to}: % năng lượng sử dụng | cv.cm",
+      "description": "Năng lượng tái tạo tính theo tỷ trọng trong tổng tiêu thụ năng lượng cuối cùng của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới / IEA, tải CSV.",
+      "h1": "Tỷ trọng năng lượng tái tạo các nước năm {to} (% tiêu thụ năng lượng cuối cùng)",
+      "lede": "Tỷ trọng năng lượng mà người dân và doanh nghiệp sử dụng đến từ nguồn tái tạo, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ dữ liệu của IEA, IRENA và Liên Hợp Quốc.",
+      "value": "Tỷ trọng tái tạo (%)",
+      "facts": [
+        "Thế giới: {world}% năng lượng sử dụng là năng lượng tái tạo ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Số liệu tính toàn bộ năng lượng sử dụng cuối cùng, kể cả sưởi ấm và giao thông, không chỉ điện. Năng lượng tái tạo gồm thủy điện, gió, mặt trời, địa nhiệt, nhiên liệu sinh học hiện đại và sinh khối truyền thống như củi.",
+        "Nhiều tỷ trọng cao nhất thuộc về các nước thu nhập thấp, nơi phần lớn hộ gia đình nấu ăn bằng củi, chứ không phải các nước có nhiều điện gió và điện mặt trời nhất. Dữ liệu thường chậm vài năm."
+      ],
+      "faq": [
+        { "q": "Nước nào sử dụng nhiều năng lượng tái tạo nhất?", "a": "Xét theo tỷ trọng là {top1}, nơi {v1}% năng lượng sử dụng là năng lượng tái tạo vào năm {year1}, chủ yếu từ củi và thủy điện." },
+        { "q": "Năng lượng tái tạo chiếm bao nhiêu phần trăm năng lượng thế giới?", "a": "{world}% tổng tiêu thụ năng lượng cuối cùng vào năm {worldYear}." },
+        { "q": "Nước nào sử dụng ít năng lượng tái tạo nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}%." }
       ]
     },
     "country-codes": {

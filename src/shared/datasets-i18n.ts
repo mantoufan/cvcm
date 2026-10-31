@@ -4,6 +4,7 @@ import {
   DATASET_SNAPSHOT,
   DATASET_SOURCE,
   DATASETS,
+  INDICATOR_SPEC,
   csvHref,
   datasetMeta,
   indicatorMeta,
@@ -117,32 +118,10 @@ export function utcOffset(minutes: number): string {
 }
 
 export function formatIndicator(locale: Locale, id: IndicatorId, value: number): string {
-  switch (id) {
-    case "population":
-      return numberFormat(locale, { maximumFractionDigits: 0 }).format(value);
-    case "gdp":
-      return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }).format(value);
-    case "gdp-per-capita":
-      return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
-    case "gdp-ppp-per-capita":
-    case "land-area":
-      return numberFormat(locale, { maximumFractionDigits: 0 }).format(value);
-    case "life-expectancy":
-    case "internet-users":
-    case "gdp-growth":
-    case "inflation":
-    case "unemployment":
-    case "population-density":
-    case "urban-population":
-    case "aged-65-plus":
-    case "birth-rate":
-    case "infant-mortality":
-    case "electricity-access":
-      return numberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
-    case "fertility-rate":
-    case "co2-per-capita":
-      return numberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
-  }
+  const { decimals, format } = INDICATOR_SPEC[id];
+  if (format === "usd-compact") return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }).format(value);
+  if (format === "usd") return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: decimals }).format(value);
+  return numberFormat(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
 }
 
 function formatShare(locale: Locale, share: number): string {
@@ -166,7 +145,7 @@ export function datasetVars(locale: Locale, id: DatasetId): Record<string, strin
   if (!isIndicator(id)) return vars;
   const m = indicatorMeta(id);
   vars.from = m.from;
-  vars.to = m.to;
+  vars.to = m.asOf;
   if (m.world) {
     vars.world = formatIndicator(locale, id, m.world[0]);
     vars.worldYear = m.world[1];
@@ -176,9 +155,11 @@ export function datasetVars(locale: Locale, id: DatasetId): Record<string, strin
     vars[`v${index + 1}`] = formatIndicator(locale, id, value);
     vars[`year${index + 1}`] = year;
   });
-  const [code, value, en] = m.bottom[0];
-  vars.last = regionName(locale, code, en);
-  vars.vlast = formatIndicator(locale, id, value);
+  const list = memo(`lfc:${locale}`, () => new Intl.ListFormat(locale, { type: "conjunction" }));
+  const names = m.bottom.map(([code, , en]) => regionName(locale, code, en));
+  if (m.tiedLast > names.length) names.push(fill(datasetUi(locale).others, { n: m.tiedLast - names.length }));
+  vars.last = list.format(names);
+  vars.vlast = formatIndicator(locale, id, m.bottom[0][1]);
   return vars;
 }
 
@@ -246,9 +227,10 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
 
   if (isIndicator(id)) {
     const rows = data as IndicatorRow[];
-    const world = indicatorMeta(id).world;
+    const { world, worlds = {} } = indicatorMeta(id);
     // Totals have a share of the world; rates and averages do not.
-    const share = (id === "population" || id === "gdp" || id === "land-area") && world;
+    const share = INDICATOR_SPEC[id].total && world;
+
     // Rows come sorted by value; equal values share a rank (four countries at 100% internet use are all #1).
     const ranks: number[] = [];
     rows.forEach((row, index) => ranks.push(index > 0 && row[2] === rows[index - 1][2] ? ranks[index - 1] : index + 1));
@@ -260,13 +242,17 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
         ...(share ? [{ label: ui.share, num: true }] : []),
         { label: ui.year, num: true },
       ],
-      rows: rows.map(([code, , value, year, en], index) => [
-        cell(ranks[index]),
-        cell(regionName(locale, code, en)),
-        cell(formatIndicator(locale, id, value), value),
-        ...(share ? [cell(formatShare(locale, value / world[0]), value)] : []),
-        cell(year),
-      ]),
+      rows: rows.map(([code, , value, year, en], index) => {
+        // Divided by the world total of the row's own year (exports: the US reports a year after China).
+        const total = worlds[year];
+        return [
+          cell(ranks[index]),
+          cell(regionName(locale, code, en)),
+          cell(formatIndicator(locale, id, value), value),
+          ...(share ? [total ? cell(formatShare(locale, value / total), value) : cell("–", value)] : []),
+          cell(year),
+        ];
+      }),
     };
   }
   if (id === "country-codes") {

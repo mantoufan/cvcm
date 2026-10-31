@@ -1,8 +1,9 @@
 import type { DatasetRows } from "../../shared/datasets";
 
 // One lazy chunk per row file, so a page downloads only its own rows (and the Worker bundles none).
-// The Worker preloads the same chunks by file name (see scripts/build-worker.mjs).
-const FILES: Record<string, () => Promise<{ default: unknown }>> = {
+// The Worker preloads the same chunks by file name (see scripts/build-worker.mjs). A test keeps this list
+// equal to the files DATASET_FILES names (src/data also holds meta.json and ref-photos.json, which are not rows).
+export const ROW_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   population: () => import("../../data/population.json"),
   gdp: () => import("../../data/gdp.json"),
   "gdp-per-capita": () => import("../../data/gdp-per-capita.json"),
@@ -21,6 +22,17 @@ const FILES: Record<string, () => Promise<{ default: unknown }>> = {
   "infant-mortality": () => import("../../data/infant-mortality.json"),
   "co2-per-capita": () => import("../../data/co2-per-capita.json"),
   "electricity-access": () => import("../../data/electricity-access.json"),
+  "population-growth": () => import("../../data/population-growth.json"),
+  "death-rate": () => import("../../data/death-rate.json"),
+  "life-expectancy-male": () => import("../../data/life-expectancy-male.json"),
+  "life-expectancy-female": () => import("../../data/life-expectancy-female.json"),
+  "maternal-mortality": () => import("../../data/maternal-mortality.json"),
+  exports: () => import("../../data/exports.json"),
+  imports: () => import("../../data/imports.json"),
+  "health-spending-per-capita": () => import("../../data/health-spending-per-capita.json"),
+  "female-labor-force": () => import("../../data/female-labor-force.json"),
+  "forest-area": () => import("../../data/forest-area.json"),
+  "renewable-energy": () => import("../../data/renewable-energy.json"),
   countries: () => import("../../data/countries.json"),
   currencies: () => import("../../data/currencies.json"),
   "time-zones": () => import("../../data/time-zones.json"),
@@ -29,5 +41,5 @@ const FILES: Record<string, () => Promise<{ default: unknown }>> = {
 };
 
 export async function loadRowFile(file: string): Promise<DatasetRows> {
-  return (await FILES[file]()).default as DatasetRows;
+  return (await ROW_FILES[file]()).default as DatasetRows;
 }

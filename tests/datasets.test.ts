@@ -6,7 +6,8 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { ROW_FILES } from "../src/client/datasets/rows";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -144,6 +145,40 @@ describe("data pages: tables", () => {
     expect(table.rows[0][1].text).toBe("India");
     const sorts = table.rows.map((r) => r[2].sort as number);
     expect(sorts).toEqual([...sorts].sort((a, b) => b - a));
+  });
+
+  it("gives every indicator a known format, a row file and a reason for each data filter", () => {
+    for (const id of INDICATORS) {
+      const spec = INDICATOR_SPEC[id];
+      expect([undefined, "usd", "usd-compact"], id).toContain(spec.format);
+      expect(Number.isInteger(spec.decimals), id).toBe(true);
+      if (spec.maxAge !== undefined || spec.floor !== undefined || spec.skip) expect(spec.why, id).toBeTruthy();
+    }
+    for (const id of DATASETS) for (const file of DATASET_FILES[id]) expect(existsSync(`src/data/${file}.json`), file).toBe(true);
+    expect(Object.keys(ROW_FILES).sort()).toEqual([...new Set(DATASETS.flatMap((id) => DATASET_FILES[id]))].sort());
+  });
+
+  it("divides each share by the world total of its year and names every country tied for last", () => {
+    // Every row of a total table gets a share, each against the world total of its own year.
+    for (const id of INDICATORS.filter((i) => INDICATOR_SPEC[i].total)) {
+      const table = datasetTable("en", id, rows(id));
+      const shareCol = table.columns.findIndex((c) => c.label === "Share of world");
+      expect(table.rows.filter((r) => r[shareCol].text === "–").length, id).toBe(0);
+    }
+    // Each share is the row's value over the world total stored for the row's year.
+    const exports = datasetTable("en", "exports", rows("exports"));
+    const worlds = datasetMeta("exports").worlds!;
+    for (const row of exports.rows) expect(parseFloat(row[3].text), row[1].text).toBeCloseTo(((row[2].sort as number) / worlds[row[4].text]) * 100, 1);
+    const forest = rows("forest-area") as IndicatorRow[];
+    const zeros = forest.filter((r) => r[2] === forest[forest.length - 1][2]).length;
+    expect(datasetMeta("forest-area").tiedLast).toBe(zeros);
+    expect(datasetMeta("forest-area").bottom!.length).toBe(Math.min(zeros, 3));
+    if (zeros > 3) expect(datasetPageCopy("en", "forest-area").facts[2]).toContain(`${zeros - 3} others`);
+  });
+
+  it("places every indicator from indicators.json in exactly one group", () => {
+    for (const id of INDICATORS) expect(DATASETS.filter((d) => d === id).length, id).toBe(1);
+    expect(DATASETS.filter(isIndicator).length).toBe(INDICATORS.length);
   });
 
   it("keeps one latest row per country in every indicator", () => {
