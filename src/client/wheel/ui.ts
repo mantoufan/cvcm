@@ -9,6 +9,8 @@ const SVG = "http://www.w3.org/2000/svg";
 const COLORS = ["#f4a9c6", "#fdf0f5", "#e86a9a", "#ffe3ee", "#c2336c", "#fbd3e2"];
 const DARK_TEXT = new Set(["#fdf0f5", "#ffe3ee", "#fbd3e2", "#f4a9c6"]);
 const SPIN_MS = 4200;
+// The list can grow past the 100 names on the wheel as winners leave, so keep a long order.
+const HISTORY_MAX = 1000;
 
 let entriesEl: HTMLTextAreaElement | null = null;
 let removeEl: HTMLInputElement | null = null;
@@ -21,12 +23,18 @@ let copyBtn: HTMLButtonElement | null = null;
 let rotation = 0;
 let spinning = false;
 let timer = 0;
+/** Draws in order, first draw first. */
 let history: string[] = [];
+let lastWinner = "";
+/** Set when an elimination has used up the list; the next draw starts a new History. */
+let roundDone = false;
+let lastPlace = "";
 
 export function mountWheel(host: HTMLElement): void {
   entriesEl = h("textarea", { class: "wheel-entries", rows: "9", "data-field": "entries", spellcheck: "false", "aria-label": t("wheel.entries"), onInput: () => paint() });
   entriesEl.value = t("wheel.sample");
-  removeEl = h("input", { type: "checkbox", "data-field": "remove" });
+  // Ticking remove-winner starts an elimination, so History begins again and lists just that order.
+  removeEl = h("input", { type: "checkbox", "data-field": "remove", onChange: () => { if (removeEl?.checked) newRound(); } });
   dialEl = document.createElementNS(SVG, "svg");
   dialEl.setAttribute("viewBox", "-100 -100 200 200");
   dialEl.setAttribute("class", "wheel-dial");
@@ -77,6 +85,9 @@ export function unmountWheel(): void {
   rotation = 0;
   spinning = false;
   history = [];
+  lastWinner = "";
+  lastPlace = "";
+  roundDone = false;
 }
 
 function entries(): string[] {
@@ -91,7 +102,7 @@ function paint(): void {
   drawDial(list);
   // The last winner stays visible, also when removing it leaves fewer than two entries.
   if (!spinning && outEl) {
-    outEl.textContent = [history.length ? t("wheel.winner", { name: history[0] }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" ");
+    outEl.textContent = [lastWinner ? t("wheel.winner", { name: lastWinner }) : "", lastPlace ? t("wheel.lastPlace", { name: lastPlace }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" · ");
   }
 }
 
@@ -164,18 +175,45 @@ function land(list: string[], index: number): void {
   if (entriesEl) entriesEl.readOnly = false;
   // The Web Crypto draw decides; spinTarget only makes the dial stop on it.
   const winner = list[index];
-  history.unshift(winner);
-  history = history.slice(0, 20);
-  if (outEl) outEl.textContent = t("wheel.winner", { name: winner });
-  if (historyEl) historyEl.replaceChildren(...history.map((name) => h("li", null, name)));
-  if (removeEl?.checked && entriesEl) {
-    // Drop one copy of the winner; the dial redraws without it (the pointer then sits on a neighbour, which is fine).
-    const lines = entriesEl.value.split(/\r?\n/);
-    const at = lines.findIndex((line) => normalizeEntry(line) === winner);
-    if (at >= 0) lines.splice(at, 1);
-    entriesEl.value = lines.join("\n");
+  if (roundDone) {
+    history = [];
+    roundDone = false;
   }
+  lastPlace = "";
+  lastWinner = winner;
+  history.push(winner);
+  if (removeEl?.checked && entriesEl) {
+    // Drop every copy of the winner, so a name repeated for better odds still appears once in the order.
+    // The dial redraws without it (the pointer then sits on a neighbour, which is fine).
+    entriesEl.value = entriesEl.value.split(/\r?\n/).filter((line) => normalizeEntry(line) !== winner).join("\n");
+    // One name left cannot be spun: it takes the last place, so History holds the whole order. It stays in the list;
+    // the next draw (after adding names) starts a new round.
+    const left = entries();
+    if (left.length === 1) {
+      history.push(left[0]);
+      lastPlace = left[0];
+      roundDone = true;
+    }
+  }
+  history = history.slice(-HISTORY_MAX);
+  paintHistory();
   paint();
+}
+
+function newRound(): void {
+  history = [];
+  lastWinner = "";
+  lastPlace = "";
+  roundDone = false;
+  paintHistory();
+  paint();
+}
+
+function paintHistory(): void {
+  if (!historyEl) return;
+  historyEl.replaceChildren(...history.map((name) => h("li", null, name)));
+  // The newest draw is at the bottom; keep it in view.
+  historyEl.scrollTop = historyEl.scrollHeight;
 }
 
 /** Shuffle and Sort reorder the typed lines as they are (beyond 100 entries or 40 characters too), dropping blanks. */
@@ -201,5 +239,5 @@ function sortEntries(): void {
 }
 
 async function copyOut(): Promise<void> {
-  await copyWithFlash(copyBtn, history[0] ?? "", { done: t("wheel.copied"), failed: t("wheel.copyFailed") });
+  await copyWithFlash(copyBtn, lastWinner, { done: t("wheel.copied"), failed: t("wheel.copyFailed") });
 }
