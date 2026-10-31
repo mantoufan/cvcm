@@ -29,11 +29,11 @@
         "s4t": "Pulse Girar",
         "s4b": "La ruleta frena y muestra «Ganador: …». El nombre se añade al Historial y «Copiar ganador» lo lleva al portapapeles.",
         "s5t": "Saque un orden sin repetir",
-        "s5b": "Marque «Quitar al ganador después de cada giro». Cada ganador sale de la lista, así que girar cinco veces con cinco nombres da un orden de intervención completo. El Historial conserva el orden.",
+        "s5b": "Marque «Quitar al ganador después de cada giro». Cada ganador sale de la lista, así que con cinco nombres cuatro giros fijan los cuatro primeros puestos y el nombre que queda va al final. El Historial conserva el orden.",
         "s6t": "Mezcle u ordene la lista",
         "s6b": "Mezclar baraja las porciones y Ordenar las pone en orden alfabético. Ninguno cambia las probabilidades; solo cambian el lugar de cada nombre en la ruleta.",
         "diagram1": "Cada línea es una porción; el ganador se sortea con Web Crypto antes de girar.",
-        "diagram2": "Con quitar al ganador activado, cinco giros sobre cinco nombres dan un orden completo."
+        "diagram2": "Con quitar al ganador activado, cuatro giros sobre cinco nombres dan el orden; el último que queda va quinto."
       },
       "faq": {
         "q1": "¿Hay una ruleta aleatoria de nombres gratis?",
@@ -45,7 +45,7 @@
         "q4": "¿Puedo dar más probabilidad a una opción?",
         "a4": "Añádala en más líneas. Dos de seis líneas le dan 2 entre 6.",
         "q5": "¿Cuántos nombres puedo añadir?",
-        "a5": "Hasta 100 líneas; cada etiqueta se muestra con un máximo de 40 caracteres."
+        "a5": "Hasta 100 líneas de hasta 40 caracteres; los nombres largos se acortan en la ruleta."
       }
     },
     "calculate-average": {
@@ -197,7 +197,7 @@
     "pick-random-name": {
       "title": "Cómo elegir un nombre al azar",
       "a": "1 línea = 1 porción",
-      "b": "5 giros quitando al ganador = orden",
+      "b": "4 giros + el último = orden de 5",
       "cap": "Se sortea con Web Crypto antes de girar."
     },
     "calculate-average": {

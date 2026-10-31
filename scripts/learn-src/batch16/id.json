@@ -29,11 +29,11 @@
         "s4t": "Tekan Putar",
         "s4b": "Roda melambat dan menampilkan “Pemenang: …”. Nama itu masuk ke Riwayat, dan “Salin pemenang” menaruhnya di papan klip.",
         "s5t": "Undi urutan tanpa pengulangan",
-        "s5b": "Centang “Hapus pemenang setiap selesai putar”. Setiap pemenang keluar dari daftar, jadi lima kali putar dengan lima nama menghasilkan urutan bicara lengkap. Riwayat menyimpan urutannya.",
+        "s5b": "Centang “Hapus pemenang setiap selesai putar”. Setiap pemenang keluar dari daftar, jadi dengan lima nama empat kali putar menentukan empat urutan pertama dan nama yang tersisa menjadi terakhir. Riwayat menyimpan urutannya.",
         "s6t": "Acak atau urutkan daftar",
         "s6b": "Acak urutan mengocok irisan dan Urutkan menyusunnya menurut abjad. Keduanya tidak mengubah peluang; hanya posisi tiap nama di roda yang berubah.",
         "diagram1": "Setiap baris satu irisan; pemenang diundi dengan Web Crypto sebelum roda berputar.",
-        "diagram2": "Dengan hapus pemenang aktif, lima putaran untuk lima nama menghasilkan urutan lengkap."
+        "diagram2": "Dengan hapus pemenang aktif, empat putaran untuk lima nama menentukan urutan; nama yang tersisa menjadi kelima."
       },
       "faq": {
         "q1": "Adakah roda putar acak untuk undian nama yang gratis?",
@@ -45,7 +45,7 @@
         "q4": "Bisakah satu pilihan diberi peluang lebih besar?",
         "a4": "Tulis di lebih banyak baris. Dua dari enam baris memberinya peluang 2 banding 6.",
         "q5": "Berapa banyak nama yang bisa ditambahkan?",
-        "a5": "Maksimal 100 baris; setiap label ditampilkan sampai 40 karakter."
+        "a5": "Maksimal 100 baris, masing-masing sampai 40 karakter; nama panjang dipendekkan di roda."
       }
     },
     "calculate-average": {
@@ -197,7 +197,7 @@
     "pick-random-name": {
       "title": "Cara undian nama acak",
       "a": "1 baris = 1 irisan",
-      "b": "5 putaran, hapus pemenang = urutan",
+      "b": "4 putaran + sisa 1 = urutan 5 nama",
       "cap": "Diundi dengan Web Crypto sebelum roda berputar."
     },
     "calculate-average": {

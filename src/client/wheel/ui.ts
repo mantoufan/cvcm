@@ -165,7 +165,8 @@ function land(list: string[], index: number): void {
   // The Web Crypto draw decides; spinTarget only makes the dial stop on it.
   const winner = list[index];
   history.unshift(winner);
-  history = history.slice(0, 20);
+  // Keep every draw of a full list, so an elimination order is never cut short.
+  history = history.slice(0, MAX_ENTRIES);
   if (outEl) outEl.textContent = t("wheel.winner", { name: winner });
   if (historyEl) historyEl.replaceChildren(...history.map((name) => h("li", null, name)));
   if (removeEl?.checked && entriesEl) {

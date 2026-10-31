@@ -944,7 +944,7 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   ],
   "calculate-average": [
     { step: 1, src: "/covers/tutorials/calculate-average-formula.svg" },
-    { step: 5, src: "/covers/tutorials/calculate-average-median.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-average-median.svg" },
   ],
   "use-metronome": [
     { step: 1, src: "/covers/tutorials/use-metronome-bpm.svg" },
@@ -956,7 +956,7 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   ],
   "find-zodiac-sign": [
     { step: 1, src: "/covers/tutorials/find-zodiac-sign-sign.svg" },
-    { step: 5, src: "/covers/tutorials/find-zodiac-sign-lunar.svg" },
+    { step: 4, src: "/covers/tutorials/find-zodiac-sign-lunar.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },

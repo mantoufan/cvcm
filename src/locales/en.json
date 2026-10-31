@@ -2300,11 +2300,11 @@
       "s4t": "Press Spin",
       "s4b": "The wheel slows down and shows “Winner: …”. The name is added to History, and “Copy winner” puts it on the clipboard.",
       "s5t": "Draw an order without repeats",
-      "s5b": "Tick “Remove the winner after each spin”. Each winner leaves the list, so spinning five times with five names gives a full speaking order. History keeps the order.",
+      "s5b": "Tick “Remove the winner after each spin”. Each winner leaves the list, so four spins with five names set the first four places and the name left over goes last. History keeps the order.",
       "s6t": "Shuffle or sort the list",
       "s6b": "Shuffle mixes the slices and Sort puts them in alphabetical order. Neither changes the odds; they only change where each name sits on the wheel.",
       "diagram1": "Each line is one slice; the winner is drawn with Web Crypto before the wheel spins.",
-      "diagram2": "With remove-winner on, five spins over five names give a full order."
+      "diagram2": "With remove-winner on, four spins over five names give the order; the last name left goes fifth."
     },
     "calculate-average": {
       "name": "How to calculate the mean, median, mode and standard deviation",
@@ -2338,7 +2338,7 @@
       "s1t": "Know BPM and beats per bar",
       "s1b": "BPM is beats per minute: 60 BPM is one beat per second, 120 BPM two. Beats per bar is the top number of the time signature: 4 for most pop (4/4), 3 for a waltz (3/4), 6 for many jigs (6/8).",
       "s2t": "Open Metronome on cv.cm",
-      "s2b": "It starts at 120 BPM in 4 beats per bar. Press Start to hear it; the dots follow each beat and the first is higher.",
+      "s2b": "It starts at 120 BPM in 4 beats per bar. Press Start to hear it; the dots follow each beat and the first beat sounds higher.",
       "s3t": "Set the tempo",
       "s3b": "Type a BPM, drag the slider or use −5, −1, +1 and +5. To match a song, press Tap on four or more beats; the BPM follows your taps. The tempo name (Andante, Allegro…) is shown under the number.",
       "s4t": "Set the bar and subdivision",
@@ -4345,7 +4345,7 @@
         "q4": "Can I give one option more chance?",
         "a4": "Add it on more lines. Two lines out of six give it a 2 in 6 chance.",
         "q5": "How many names can I add?",
-        "a5": "Up to 100 lines; each label is shown up to 40 characters."
+        "a5": "Up to 100 lines of up to 40 characters; long names are shortened on the wheel itself."
       },
       "calculate-average": {
         "q1": "Is there a free mean, median and mode calculator?",
