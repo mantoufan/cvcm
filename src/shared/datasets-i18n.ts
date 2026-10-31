@@ -124,10 +124,23 @@ export function formatIndicator(locale: Locale, id: IndicatorId, value: number):
       return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }).format(value);
     case "gdp-per-capita":
       return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
+    case "gdp-ppp-per-capita":
+    case "land-area":
+      return numberFormat(locale, { maximumFractionDigits: 0 }).format(value);
     case "life-expectancy":
     case "internet-users":
+    case "gdp-growth":
+    case "inflation":
+    case "unemployment":
+    case "population-density":
+    case "urban-population":
+    case "aged-65-plus":
+    case "birth-rate":
+    case "infant-mortality":
+    case "electricity-access":
       return numberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
     case "fertility-rate":
+    case "co2-per-capita":
       return numberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
   }
 }
@@ -234,7 +247,8 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
   if (isIndicator(id)) {
     const rows = data as IndicatorRow[];
     const world = indicatorMeta(id).world;
-    const share = (id === "population" || id === "gdp") && world;
+    // Totals have a share of the world; rates and averages do not.
+    const share = (id === "population" || id === "gdp" || id === "land-area") && world;
     // Rows come sorted by value; equal values share a rank (four countries at 100% internet use are all #1).
     const ranks: number[] = [];
     rows.forEach((row, index) => ranks.push(index > 0 && row[2] === rows[index - 1][2] ? ranks[index - 1] : index + 1));
