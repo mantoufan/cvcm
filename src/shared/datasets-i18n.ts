@@ -230,11 +230,7 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
     const { world, worlds = {} } = indicatorMeta(id);
     // Totals have a share of the world; rates and averages do not.
     const share = INDICATOR_SPEC[id].total && world;
-    // The world total of the row's year, else the nearest earlier one (land area: world 2023, rows 2024).
-    const worldIn = (year: number): number | undefined => {
-      for (let y = year; y >= year - 5; y--) if (worlds[y] !== undefined) return worlds[y];
-      return undefined;
-    };
+
     // Rows come sorted by value; equal values share a rank (four countries at 100% internet use are all #1).
     const ranks: number[] = [];
     rows.forEach((row, index) => ranks.push(index > 0 && row[2] === rows[index - 1][2] ? ranks[index - 1] : index + 1));
@@ -246,14 +242,17 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
         ...(share ? [{ label: ui.share, num: true }] : []),
         { label: ui.year, num: true },
       ],
-      rows: rows.map(([code, , value, year, en], index) => [
-        cell(ranks[index]),
-        cell(regionName(locale, code, en)),
-        cell(formatIndicator(locale, id, value), value),
-        // A share divides by the world total of the same year (exports: the US reports a year after China).
-        ...(share ? [worldIn(year) ? cell(formatShare(locale, value / worldIn(year)!), value) : cell("–", value)] : []),
-        cell(year),
-      ]),
+      rows: rows.map(([code, , value, year, en], index) => {
+        // Divided by the world total of the row's own year (exports: the US reports a year after China).
+        const total = worlds[year];
+        return [
+          cell(ranks[index]),
+          cell(regionName(locale, code, en)),
+          cell(formatIndicator(locale, id, value), value),
+          ...(share ? [total ? cell(formatShare(locale, value / total), value) : cell("–", value)] : []),
+          cell(year),
+        ];
+      }),
     };
   }
   if (id === "country-codes") {

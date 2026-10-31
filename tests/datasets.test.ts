@@ -163,11 +163,10 @@ describe("data pages: tables", () => {
       const shareCol = table.columns.findIndex((c) => c.label === "Share of world");
       expect(table.rows.filter((r) => r[shareCol].text === "–").length, id).toBe(0);
     }
+    // Each share is the row's value over the world total stored for the row's year.
     const exports = datasetTable("en", "exports", rows("exports"));
-    const us = exports.rows.find((r) => r[1].text === "United States")!;
-    const meta = datasetMeta("exports");
-    expect(Number(us[4].text)).toBeLessThan(meta.world![1]);
-    expect(parseFloat(us[3].text)).toBeCloseTo(((us[2].sort as number) / meta.worlds![us[4].text]) * 100, 1);
+    const worlds = datasetMeta("exports").worlds!;
+    for (const row of exports.rows) expect(parseFloat(row[3].text), row[1].text).toBeCloseTo(((row[2].sort as number) / worlds[row[4].text]) * 100, 1);
     const forest = rows("forest-area") as IndicatorRow[];
     const zeros = forest.filter((r) => r[2] === forest[forest.length - 1][2]).length;
     expect(datasetMeta("forest-area").bottom!.length).toBe(Math.min(zeros, 3));

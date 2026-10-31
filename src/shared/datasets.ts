@@ -39,7 +39,7 @@ export type IndicatorId = keyof typeof indicatorSpec;
 export const INDICATORS = Object.keys(INDICATOR_SPEC) as IndicatorId[];
 
 export function isIndicator(id: DatasetId): id is DatasetId & IndicatorId {
-  return id in INDICATOR_SPEC;
+  return Object.hasOwn(INDICATOR_SPEC, id);
 }
 
 
@@ -116,7 +116,7 @@ export type IndicatorMeta = {
   bottom: [string, number, string, number][];
   /** How many rows share the last value; `bottom` names up to three of them. */
   tiedLast: number;
-  /** Totals only: world value by year. */
+  /** Totals only: for each row year, the world total to divide by (that year's, else the nearest earlier). */
   worlds?: Record<string, number>;
 };
 /** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */

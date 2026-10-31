@@ -93,12 +93,12 @@ for (const [id, spec] of Object.entries(WB)) {
     })
     // Ties (several countries at 100% internet use) fall back to name order, so reruns do not reshuffle them.
     .sort((a, b) => b[2] - a[2] || a[4].localeCompare(b[4]));
+  if (!rows.length) throw new Error(`${id}: no rows left after the filters in indicators.json`);
   // A last value from decades ago (1990 internet use) misleads more than a gap does.
   const latest = Math.max(...rows.map((r) => r[3]));
   rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (spec.maxAge ?? 15)));
   writeJson(`${id}.json`, rows);
   if (world && Number(world.date) !== latest) console.warn(`${id}: world value is from ${world.date}, rows reach ${latest}`);
-  if (!rows.length) throw new Error(`${id}: no rows left after the filters in indicators.json`);
   const years = rows.map((r) => r[3]);
   const last = rows.filter((r) => r[2] === rows[rows.length - 1][2]);
   meta.sets[id] = {
@@ -114,7 +114,7 @@ for (const [id, spec] of Object.entries(WB)) {
     bottom: last.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
     tiedLast: last.length,
     // Totals: the world value of every year, so each row's share uses its own year (US exports are a year behind).
-    ...(spec.total ? { worlds: Object.fromEntries(all.filter((r) => r.countryiso3code === "WLD" && r.value !== null && Number(r.date) >= Math.min(...years) - 5).map((r) => [r.date, Number(r.value.toFixed(2))])) } : {}),
+    ...(spec.total ? { worlds: worldsFor(all, years) } : {}),
   };
   // Equal values share a rank, as on the page.
   const ranks = [];
@@ -252,6 +252,18 @@ writeCsv("ascii", ["decimal", "hex", "octal", "binary", "char", "name"],
 
 writeJson("meta.json", meta);
 console.log("wrote src/data and public/datasets");
+
+/** For each year a row is from: the world total of that year, else the nearest earlier one within 5 years. */
+function worldsFor(all, years) {
+  const byYear = new Map(all.filter((r) => r.countryiso3code === "WLD" && r.value !== null).map((r) => [Number(r.date), r.value]));
+  const out = {};
+  for (const year of [...new Set(years)].sort()) {
+    for (let y = year; y >= year - 5; y--) {
+      if (byYear.has(y)) { out[year] = Number(byYear.get(y).toFixed(2)); break; }
+    }
+  }
+  return out;
+}
 
 function mode(values) {
   const counts = new Map();
