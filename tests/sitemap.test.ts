@@ -4,10 +4,10 @@ import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
 import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, kbHref, learnHref, parseAppPath } from "../src/shared/path";
 import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
-import { KB_UPDATED } from "../src/locales/kb/meta";
+import "../src/shared/kb-code-meta";
 import { QUIZZES } from "../src/shared/quiz";
 import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
-import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES } from "../src/shared/kb";
+import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, kbUpdatedOn } from "../src/shared/kb";
 
 describe("sitemap", () => {
   it("lists every locale home and tool with reciprocal hreflang", () => {
@@ -42,11 +42,11 @@ describe("sitemap", () => {
     // Only kb pages (two hubs and their articles) and data tables have real edit dates.
     expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 2 + DATASETS.length + 1));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
-    const newest = KNOWLEDGE_ARTICLES.map((id) => KB_UPDATED[id].en).sort().at(-1);
+    const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);
-    const newestCode = CODE_ARTICLES.map((id) => KB_UPDATED[id].en).sort().at(-1);
+    const newestCode = CODE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", "code")}</loc>\n    <lastmod>${newestCode}</lastmod>`);
-    expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", KB_ARTICLES[0])}</loc>\n    <lastmod>${KB_UPDATED[KB_ARTICLES[0]].en}</lastmod>`);
+    expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", KB_ARTICLES[0])}</loc>\n    <lastmod>${kbUpdatedOn(KB_ARTICLES[0], "en")}</lastmod>`);
     expect(xml).toContain(`<loc>https://cv.cm${appHref("en", null)}</loc>\n    <xhtml:link`);
     expect(xml).not.toContain("<changefreq>");
     expect(xml).not.toContain("<priority>");

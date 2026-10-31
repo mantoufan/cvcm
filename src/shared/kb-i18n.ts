@@ -1,8 +1,7 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { KB_META, kbArticleOf, kbGroupOf, kbGroupsOf, kbShelfOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
-import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
+import { kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
@@ -69,12 +68,12 @@ export function kbFaqItems(locale: Locale, page: KbPage): { q: string; a: string
 
 /** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
 export function kbUpdated(locale: Locale, id: KbId): string {
-  return KB_UPDATED[id][locale];
+  return kbUpdatedOn(id, locale);
 }
 
 /** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
 export function kbMinutes(locale: Locale, id: KbId): number {
-  return KB_MINUTES[id][locale];
+  return kbMinutesOf(id, locale);
 }
 
 /** Plain text with `code` spans; everything else escaped. */
@@ -149,7 +148,7 @@ function toolLinkItems(locale: Locale, tools: readonly ToolId[]): { href: string
 
 function tutorialLinkItems(locale: Locale, id: KbId): { href: string; name: string; blurb: string; nav: string }[] {
   const learn = messages(locale).ui.learn as unknown as Record<string, { name: string; blurb: string }>;
-  return KB_META[id].tutorials.map((tutorial) => ({ href: learnHref(locale, tutorial), name: learn[tutorial].name, blurb: learn[tutorial].blurb, nav: `learn-${tutorial}` }));
+  return kbMeta(id).tutorials.map((tutorial) => ({ href: learnHref(locale, tutorial), name: learn[tutorial].name, blurb: learn[tutorial].blurb, nav: `learn-${tutorial}` }));
 }
 
 function dateLabel(locale: Locale, iso: string): string {
@@ -164,7 +163,7 @@ function dateLabel(locale: Locale, iso: string): string {
 export function kbPageHtml(locale: Locale, page: KbPage): string {
   const ui = kbUi(locale);
   const id = kbArticleOf(page);
-  const shelf = id ? kbShelfOf(id) : kbShelfOfPage(page);
+  const shelf = kbShelfOfPage(page);
   const hub = kbHub(locale, shelf);
   const hubHref = kbHref(locale, hubOf(shelf));
   const nav = kbHubNav(shelf);
@@ -181,7 +180,7 @@ export function kbPageHtml(locale: Locale, page: KbPage): string {
     ].join("");
   }
   const copy = kbCopy(locale, id);
-  const meta = KB_META[id];
+  const meta = kbMeta(id);
   const toc = copy.sections.map((s, i) => `<li><a href="#kb-${i + 1}">${inline(s.h)}</a></li>`).join("");
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="kb-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
@@ -273,7 +272,7 @@ export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, un
     };
   }
   const copy = kbCopy(locale, id);
-  const meta = KB_META[id];
+  const meta = kbMeta(id);
   const url = `${ORIGIN}${kbHref(locale, id)}`;
   return {
     "@context": "https://schema.org",

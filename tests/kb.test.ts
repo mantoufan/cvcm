@@ -3,16 +3,14 @@ import en from "../src/locales/kb/en.json";
 import enHeic from "../src/locales/kb/en/what-is-heic.json";
 import syncMeta from "../src/locales/kb/meta.json";
 import { KB_ALL } from "../src/locales/kb/all";
-import { KB_LOADERS } from "../src/locales/kb/loaders";
 import { syncEntry, type KbSyncEntry } from "../src/shared/kb-sync";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KB_META, KNOWLEDGE_ARTICLES, kbForTool, kbShelfOf, type KbId } from "../src/shared/kb";
+import { CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
-import { KB_MINUTES, KB_UPDATED } from "../src/locales/kb/meta";
 import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
@@ -138,9 +136,9 @@ describe("knowledge: SEO", () => {
   it("describes each article as a dated TechArticle with its sources", () => {
     const ld = kbArticleJsonLd("en", "md5-vs-sha-256") as Record<string, unknown>;
     expect(ld["@type"]).toBe("TechArticle");
-    expect(ld.datePublished).toBe(KB_META["md5-vs-sha-256"].published);
+    expect(ld.datePublished).toBe(kbMeta("md5-vs-sha-256").published);
     expect(ld.dateModified).toBe(kbUpdated("en", "md5-vs-sha-256"));
-    expect((ld.citation as unknown[]).length).toBe(KB_META["md5-vs-sha-256"].sources.length);
+    expect((ld.citation as unknown[]).length).toBe(kbMeta("md5-vs-sha-256").sources.length);
     const hub = kbArticleJsonLd("en", null) as { mainEntity: { itemListElement: unknown[] } };
     expect(hub.mainEntity.itemListElement.length).toBe(KNOWLEDGE_ARTICLES.length);
     const codeHub = kbArticleJsonLd("en", "code") as { url: string; mainEntity: { itemListElement: unknown[] } };
@@ -177,7 +175,7 @@ describe("knowledge: catalog and copy", () => {
 
   it("links only to real tools, published tutorials and other articles", () => {
     for (const id of KB_ARTICLES) {
-      const meta = KB_META[id];
+      const meta = kbMeta(id);
       if (kbShelfOf(id) === "knowledge") expect(meta.tools.length, id).toBeGreaterThan(0);
       for (const tool of meta.tools) expect(TOOLS, `${id} tool ${tool}`).toContain(tool);
       for (const tutorial of meta.tutorials) expect(FEATURED_TUTORIALS, `${id} tutorial ${tutorial}`).toContain(tutorial);
@@ -185,6 +183,10 @@ describe("knowledge: catalog and copy", () => {
       for (const source of meta.sources) expect(source.href, id).toMatch(/^https:\/\//);
     }
     expect(kbForTool("base64")).toEqual(["what-is-base64"]);
+    // Tool pages list each shelf under its own heading: coding articles never come back for the knowledge shelf.
+    expect(kbForTool("sort")).toEqual([]);
+    expect(kbForTool("sort", "code")).toContain("quicksort");
+    for (const id of CODE_ARTICLES) for (const tool of kbMeta(id).tools) expect(kbForTool(tool, "code"), `${id} ${tool}`).toContain(id);
   });
 
   it("has the same copy structure in every locale", () => {
@@ -250,18 +252,20 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
     expect(Object.keys(meta).sort()).toEqual([...KB_ARTICLES].sort());
     for (const id of KB_ARTICLES) {
       // A different fingerprint means the copy changed without `npm run kb:sync`, so its "Updated" date is stale.
-      expect(syncEntry(copiesOf(id), KB_META[id].sources, meta[id], "changed"), `${id}: copy or sources changed, run npm run kb:sync`).toEqual(meta[id]);
+      expect(syncEntry(copiesOf(id), kbMeta(id).sources, meta[id], "changed"), `${id}: copy or sources changed, run npm run kb:sync`).toEqual(meta[id]);
       for (const locale of LOCALES) {
         expect(meta[id].updated[locale], `${id} ${locale}`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-        expect(meta[id].updated[locale] >= KB_META[id].published, `${id} ${locale}`).toBe(true);
+        expect(meta[id].updated[locale] >= kbMeta(id).published, `${id} ${locale}`).toBe(true);
       }
     }
   });
 
   it("ships the same dates and reading times to the pages", () => {
     for (const id of KB_ARTICLES) {
-      expect(KB_UPDATED[id], id).toEqual(meta[id].updated);
-      expect(KB_MINUTES[id], id).toEqual(meta[id].minutes);
+      for (const locale of LOCALES) {
+        expect(kbUpdatedOn(id, locale), `${id} ${locale}`).toBe(meta[id].updated[locale]);
+        expect(kbMinutesOf(id, locale), `${id} ${locale}`).toBe(meta[id].minutes[locale]);
+      }
     }
     expect(kbMinutes("ja", "what-is-heic")).toBe(meta["what-is-heic"].minutes.ja);
     expect(kbUpdated("vi", "iso-8601")).toBe(meta["iso-8601"].updated.vi);
@@ -269,7 +273,7 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
 
   it("dates only the locale whose copy changed, every locale when sources change, and all on --touch", () => {
     const copies = copiesOf("iso-8601");
-    const sources = KB_META["iso-8601"].sources;
+    const sources = kbMeta("iso-8601").sources;
     const before = syncEntry(copies, sources, undefined, "2026-01-01");
     const same = syncEntry(copies, sources, before, "2026-02-02");
     expect(same.updated).toEqual(before.updated);
@@ -282,8 +286,11 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
     for (const locale of LOCALES) expect(touched.updated[locale]).toBe("2026-03-03");
   });
 
-  it("has a generated lazy loader for every article in every locale", () => {
-    for (const locale of LOCALES) expect(Object.keys(KB_LOADERS[locale]).sort(), locale).toEqual([...KB_ARTICLES].sort());
+  it("has a generated lazy loader table per locale with every article", async () => {
+    for (const locale of LOCALES) {
+      const { KB_LOADERS } = await import(`../src/locales/kb/loaders/${locale}.ts`);
+      expect(Object.keys(KB_LOADERS).sort(), locale).toEqual([...KB_ARTICLES].sort());
+    }
   });
 
   it("preloads only the hub pack on either hub, or the hub pack plus one article", () => {

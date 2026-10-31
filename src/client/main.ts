@@ -32,7 +32,7 @@ import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
 import { QUIZZES, type QuizId } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
-import { KNOWLEDGE_ARTICLES, isKbId, kbGroupsOf, type KbPage } from "../shared/kb";
+import { KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, type KbPage } from "../shared/kb";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
@@ -511,7 +511,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || (kbPage && kbPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage)) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
