@@ -4,7 +4,6 @@ import { GAME_CONSOLES, GAMES } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
 import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, kbHref, learnHref, parseAppPath } from "../src/shared/path";
 import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
-import "../src/shared/kb-code-meta";
 import { QUIZZES } from "../src/shared/quiz";
 import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
 import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, kbUpdatedOn } from "../src/shared/kb";

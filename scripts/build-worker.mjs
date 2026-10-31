@@ -22,6 +22,9 @@ for (const [src, chunk] of Object.entries(manifest)) {
   // One knowledge article in one locale: preloaded as "kb-<locale>/<id>".
   const article = /^src\/locales\/kb\/([^/]+)\/([a-z0-9-]+)\.json$/.exec(src);
   if (article) localePacks[`kb-${article[1]}/${article[2]}`] = [`/${chunk.file}`];
+  // A locale's article loader table, fetched before any article in that locale: preloaded as "kb-<locale>/loaders".
+  const loaders = /^src\/locales\/kb\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (loaders) localePacks[`kb-${loaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 

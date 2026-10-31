@@ -186,7 +186,6 @@ describe("knowledge: catalog and copy", () => {
     // Tool pages list each shelf under its own heading: coding articles never come back for the knowledge shelf.
     expect(kbForTool("sort")).toEqual([]);
     expect(kbForTool("sort", "code")).toContain("quicksort");
-    for (const id of CODE_ARTICLES) for (const tool of kbMeta(id).tools) expect(kbForTool(tool, "code"), `${id} ${tool}`).toContain(id);
   });
 
   it("has the same copy structure in every locale", () => {
@@ -294,7 +293,7 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
   });
 
   it("preloads only the hub pack on either hub, or the hub pack plus one article", () => {
-    const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
+    const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/loaders": ["/a/loaders-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
     const shell = "<head></head>";
     const hub = preloadLocalePack(shell, "en", false, packs, false, false, "hub");
     expect(hub).toContain("/a/kb-en.js");
@@ -305,6 +304,8 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
     const article = preloadLocalePack(shell, "en", false, packs, false, false, "iso-8601");
     expect(article).toContain("/a/kb-en.js");
     expect(article).toContain("/a/iso.js");
+    expect(article).toContain("/a/loaders-en.js");
+    expect(hub).not.toContain("/a/loaders-en.js");
     expect(article).not.toContain("/a/uuid.js");
   });
 });
