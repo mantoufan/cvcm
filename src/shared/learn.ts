@@ -453,6 +453,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 2,
     related: ["time-card", "hourly", "duration"],
   },
+  "pick-random-name": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["wheel", "random", "dice"],
+  },
+  "calculate-average": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["average", "percent", "grade"],
+  },
+  "use-metronome": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["metronome", "stopwatch", "pomodoro"],
+  },
+  "test-keyboard": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["keyboard-test", "typing", "text-hex"],
+  },
+  "find-zodiac-sign": {
+    minutes: 5,
+    steps: 6,
+    openAt: 2,
+    related: ["zodiac", "age", "days"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -907,6 +937,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "calculate-work-hours": [
     { step: 1, src: "/covers/tutorials/calculate-work-hours-shift.svg" },
     { step: 5, src: "/covers/tutorials/calculate-work-hours-overtime.svg" },
+  ],
+  "pick-random-name": [
+    { step: 1, src: "/covers/tutorials/pick-random-name-slices.svg" },
+    { step: 5, src: "/covers/tutorials/pick-random-name-order.svg" },
+  ],
+  "calculate-average": [
+    { step: 1, src: "/covers/tutorials/calculate-average-formula.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-average-median.svg" },
+  ],
+  "use-metronome": [
+    { step: 1, src: "/covers/tutorials/use-metronome-bpm.svg" },
+    { step: 5, src: "/covers/tutorials/use-metronome-practice.svg" },
+  ],
+  "test-keyboard": [
+    { step: 1, src: "/covers/tutorials/test-keyboard-codes.svg" },
+    { step: 5, src: "/covers/tutorials/test-keyboard-rollover.svg" },
+  ],
+  "find-zodiac-sign": [
+    { step: 1, src: "/covers/tutorials/find-zodiac-sign-sign.svg" },
+    { step: 5, src: "/covers/tutorials/find-zodiac-sign-lunar.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
