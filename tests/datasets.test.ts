@@ -156,10 +156,18 @@ describe("data pages: tables", () => {
     for (const id of DATASETS) for (const file of DATASET_FILES[id]) expect(existsSync(`src/data/${file}.json`), file).toBe(true);
   });
 
-  it("shows a share only next to the world total of the same year and names every country tied for last", () => {
+  it("divides each share by the world total of its year and names every country tied for last", () => {
+    // Every row of a total table gets a share, each against the world total of its own year.
+    for (const id of INDICATORS.filter((i) => INDICATOR_SPEC[i].total)) {
+      const table = datasetTable("en", id, rows(id));
+      const shareCol = table.columns.findIndex((c) => c.label === "Share of world");
+      expect(table.rows.filter((r) => r[shareCol].text === "–").length, id).toBe(0);
+    }
     const exports = datasetTable("en", "exports", rows("exports"));
-    const worldYear = datasetMeta("exports").world![1];
-    for (const row of exports.rows) expect(row[3].text === "–", row[1].text).toBe(Number(row[4].text) !== worldYear);
+    const us = exports.rows.find((r) => r[1].text === "United States")!;
+    const meta = datasetMeta("exports");
+    expect(Number(us[4].text)).toBeLessThan(meta.world![1]);
+    expect(parseFloat(us[3].text)).toBeCloseTo(((us[2].sort as number) / meta.worlds![us[4].text]) * 100, 1);
     const forest = rows("forest-area") as IndicatorRow[];
     const zeros = forest.filter((r) => r[2] === forest[forest.length - 1][2]).length;
     expect(datasetMeta("forest-area").bottom!.length).toBe(Math.min(zeros, 3));

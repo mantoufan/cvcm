@@ -227,9 +227,14 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
 
   if (isIndicator(id)) {
     const rows = data as IndicatorRow[];
-    const world = indicatorMeta(id).world;
+    const { world, worlds = {} } = indicatorMeta(id);
     // Totals have a share of the world; rates and averages do not.
     const share = INDICATOR_SPEC[id].total && world;
+    // The world total of the row's year, else the nearest earlier one (land area: world 2023, rows 2024).
+    const worldIn = (year: number): number | undefined => {
+      for (let y = year; y >= year - 5; y--) if (worlds[y] !== undefined) return worlds[y];
+      return undefined;
+    };
     // Rows come sorted by value; equal values share a rank (four countries at 100% internet use are all #1).
     const ranks: number[] = [];
     rows.forEach((row, index) => ranks.push(index > 0 && row[2] === rows[index - 1][2] ? ranks[index - 1] : index + 1));
@@ -245,8 +250,8 @@ export function datasetTable(locale: Locale, id: DatasetId, data: DatasetRows, c
         cell(ranks[index]),
         cell(regionName(locale, code, en)),
         cell(formatIndicator(locale, id, value), value),
-        // A share needs the world total of the same year (exports: the US reports a year later than China).
-        ...(share ? [year === world[1] ? cell(formatShare(locale, value / world[0]), value) : cell("–", -1)] : []),
+        // A share divides by the world total of the same year (exports: the US reports a year after China).
+        ...(share ? [worldIn(year) ? cell(formatShare(locale, value / worldIn(year)!), value) : cell("–", value)] : []),
         cell(year),
       ]),
     };

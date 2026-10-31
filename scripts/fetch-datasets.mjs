@@ -98,7 +98,9 @@ for (const [id, spec] of Object.entries(WB)) {
   rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (spec.maxAge ?? 15)));
   writeJson(`${id}.json`, rows);
   if (world && Number(world.date) !== latest) console.warn(`${id}: world value is from ${world.date}, rows reach ${latest}`);
+  if (!rows.length) throw new Error(`${id}: no rows left after the filters in indicators.json`);
   const years = rows.map((r) => r[3]);
+  const last = rows.filter((r) => r[2] === rows[rows.length - 1][2]);
   meta.sets[id] = {
     rows: rows.length,
     from: Math.min(...years),
@@ -109,8 +111,10 @@ for (const [id, spec] of Object.entries(WB)) {
     asOf: mode(years),
     top: rows.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
     // Everyone tied for last (forest area: several at 0.0), up to three by name plus how many in all.
-    bottom: rows.filter((r) => r[2] === rows[rows.length - 1][2]).slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
-    tiedLast: rows.filter((r) => r[2] === rows[rows.length - 1][2]).length,
+    bottom: last.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
+    tiedLast: last.length,
+    // Totals: the world value of every year, so each row's share uses its own year (US exports are a year behind).
+    ...(spec.total ? { worlds: Object.fromEntries(all.filter((r) => r.countryiso3code === "WLD" && r.value !== null && Number(r.date) >= Math.min(...years) - 5).map((r) => [r.date, Number(r.value.toFixed(2))])) } : {}),
   };
   // Equal values share a rank, as on the page.
   const ranks = [];

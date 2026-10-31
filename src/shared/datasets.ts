@@ -116,6 +116,8 @@ export type IndicatorMeta = {
   bottom: [string, number, string, number][];
   /** How many rows share the last value; `bottom` names up to three of them. */
   tiedLast: number;
+  /** Totals only: world value by year. */
+  worlds?: Record<string, number>;
 };
 /** `west` / `east`: the extreme UTC offsets in minutes (time zones only). */
 export type DatasetMeta = { rows: number; year?: number; tzdata?: string | null; west?: number; east?: number } & Partial<IndicatorMeta>;
