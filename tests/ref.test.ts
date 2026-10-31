@@ -216,11 +216,11 @@ describe("reference: routes", () => {
     expect(html).not.toContain('id="software-jsonld"');
   });
 
-  it("is in the sitemap with every locale, dated by REF_PUBLISHED, and tracked by analytics", () => {
+  it("is in the sitemap with every locale, without lastmod, and tracked by analytics", () => {
     const xml = buildSitemapXml(sitemapPages().filter((p) => p.kind === "ref"));
     expect(xml.match(/<url>/g)?.length).toBe(LOCALES.length * (REF_ENTRIES.length + 1));
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (REF_ENTRIES.length + 1));
-    expect(xml).toContain(`<loc>https://cv.cm/vi/reference/hanfu/</loc>\n    <lastmod>${REF_PUBLISHED}</lastmod>`);
+    expect(xml).not.toContain("<lastmod>");
+    expect(xml).toContain("<loc>https://cv.cm/vi/reference/hanfu/</loc>");
     expect(xml).toContain('hreflang="zh-TW" href="https://cv.cm/zh-tw/reference/hanfu/"');
     expect(readFileSync(join(root, "public/sitemaps/reference.xml"), "utf8")).toBe(buildSitemapXml(sitemapPages().filter((p) => p.kind === "ref")));
     expect(isTrackedPath("/en/reference/wink/")).toBe(true);
@@ -264,7 +264,7 @@ describe("reference: page HTML and SEO", () => {
       }
       const ld = refArticleJsonLd("en", withPhotos) as { image: { contentUrl: string; acquireLicensePage: string }[] };
       expect(ld.image[0].contentUrl).toBe(`https://s1.mtf6.com/${photo.img}_c_w_600_ext_jpg.webp`);
-      expect(ld.image[0].acquireLicensePage).toBe(`https://www.mfan8.com/${photo.item}`);
+      expect(ld.image[0]).not.toHaveProperty("acquireLicensePage");
     }
     if (without) {
       const html = refPageHtml("en", without);

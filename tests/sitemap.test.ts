@@ -40,7 +40,7 @@ describe("sitemap", () => {
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
     // Only kb pages (two hubs and their articles), data tables and reference pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 2 + DATASETS.length + 1 + REF_ENTRIES.length + 1));
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 2 + DATASETS.length + 1));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);

@@ -4,7 +4,7 @@ import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
 import { DATASET_SNAPSHOT, DATASETS, type DatasetId } from "./datasets";
-import { REF_ENTRIES, REF_PUBLISHED, type RefId } from "./ref";
+import { REF_ENTRIES, type RefId } from "./ref";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -128,7 +128,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date) and reference pages (published date). Other pages have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date). Other pages, reference entries included, have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -139,7 +139,6 @@ function pageLastmod(page: SitemapPage): string | null {
     return kbGroupsOf(kbShelfOfPage(page.article)).flatMap((group) => group.articles).map((article) => kbUpdatedOn(article, page.locale)).sort().at(-1) ?? null;
   }
   if (page.kind === "dataset") return DATASET_SNAPSHOT;
-  if (page.kind === "ref") return REF_PUBLISHED;
   return null;
 }
 

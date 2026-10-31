@@ -242,7 +242,6 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
       "@type": "ImageObject",
       contentUrl: refImageUrl(photo, 600),
       ...(credit ? { creditText: credit } : {}),
-      acquireLicensePage: refPhotoPage(photo),
     };
   });
   return {
