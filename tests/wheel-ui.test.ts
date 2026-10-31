@@ -63,6 +63,18 @@ describe("wheel history", () => {
     expect(history()).toHaveLength(2);
   });
 
+  it("gives last place to a name left on several lines, and needs two different names to spin", () => {
+    setList("A\nB\nB\nC\nC");
+    const box = field<HTMLInputElement>("[data-field=remove]");
+    box.checked = true;
+    box.dispatchEvent(new Event("change"));
+    spin(2);
+    expect(new Set(history())).toEqual(new Set(["A", "B", "C"]));
+    expect(history()).toHaveLength(3);
+    setList("A\nA");
+    expect(field<HTMLButtonElement>("[data-action=spin]").disabled).toBe(true);
+  });
+
   it("starts fresh when remove-winner is ticked", () => {
     spin(2);
     expect(history()).toHaveLength(2);

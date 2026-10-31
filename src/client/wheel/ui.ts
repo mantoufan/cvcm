@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
-import { MAX_ENTRIES, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
+import { MAX_ENTRIES, canSpin, distinctEntries, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
 import { randomInt } from "../../shared/random";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -98,8 +98,7 @@ function paint(): void {
   if (!dialEl || !countEl || !spinBtn) return;
   const list = entries();
   countEl.textContent = t("wheel.count", { n: list.length, max: MAX_ENTRIES });
-  // A spin needs two different names; "A" twice has only one possible result.
-  const tooFew = new Set(list).size < 2;
+  const tooFew = !canSpin(list);
   spinBtn.disabled = spinning || tooFew;
   drawDial(list);
   // The last winner stays visible, also when removing it leaves fewer than two entries.
@@ -156,7 +155,7 @@ function el(tag: string, attrs: Record<string, string>): SVGElement {
 
 function spin(): void {
   const list = entries();
-  if (spinning || new Set(list).size < 2 || !dialEl) return;
+  if (spinning || !canSpin(list) || !dialEl) return;
   const index = pickIndex(list.length);
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   // Reduced motion: less than one turn, briefly.
@@ -190,8 +189,8 @@ function land(list: string[], index: number): void {
     entriesEl.value = entriesEl.value.split(/\r?\n/).filter((line) => normalizeEntry(line) !== winner).join("\n");
     // One name left cannot be spun: it takes the last place, so History holds the whole order. It stays in the list;
     // the next draw (after adding names) starts a new round.
-    // Count distinct names: two lines of the same name left is still one name.
-    const left = [...new Set(entries())];
+    // Two lines of the same name left is still one name.
+    const left = distinctEntries(entries());
     if (left.length === 1) {
       history.push(left[0]);
       lastPlace = left[0];

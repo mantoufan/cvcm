@@ -80,7 +80,7 @@ import { electricityCost } from "../src/shared/electricity";
 import { ovulationCycles } from "../src/shared/ovulation";
 import { macros } from "../src/shared/macro";
 import { caloriesBurned, metOf } from "../src/shared/calories-burned";
-import { indexAt, parseEntries, spinTarget } from "../src/shared/wheel";
+import { canSpin, indexAt, parseEntries, spinTarget } from "../src/shared/wheel";
 import { parseNumbers, stats } from "../src/shared/average";
 import { clampBpm, clickInterval, tapBpm, tempoName } from "../src/shared/metronome";
 import { ALL_CODES, EXTRA_CODES } from "../src/shared/keyboard";
@@ -1063,6 +1063,8 @@ describe("wheel", () => {
         }
       }
     }
+    expect(canSpin(["A", "A"])).toBe(false);
+    expect(canSpin(["A", "A", "B"])).toBe(true);
     expect(indexAt(0, 4)).toBe(0);
     expect(indexAt(-10, 4)).toBe(0);
     expect(indexAt(10, 4)).toBe(3);
