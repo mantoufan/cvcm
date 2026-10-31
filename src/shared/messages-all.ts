@@ -48,6 +48,16 @@ import viKb from "../locales/packs/kb-vi";
 import zhCNKb from "../locales/packs/kb-zh-CN";
 import zhTWKb from "../locales/packs/kb-zh-TW";
 import { KB_ALL } from "../locales/kb/all";
+import enRef from "../locales/packs/ref-en";
+import esRef from "../locales/packs/ref-es";
+import idRef from "../locales/packs/ref-id";
+import jaRef from "../locales/packs/ref-ja";
+import koRef from "../locales/packs/ref-ko";
+import viRef from "../locales/packs/ref-vi";
+import zhCNRef from "../locales/packs/ref-zh-CN";
+import zhTWRef from "../locales/packs/ref-zh-TW";
+import { REF_ALL } from "../locales/ref/all";
+import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
 import {
@@ -58,12 +68,15 @@ import {
   registerMessages,
   registerQuizMessages,
   registerDatasetMessages,
+  registerRefEntry,
+  registerRefMessages,
   type GameMessages,
   type KbMessages,
   type LegalMessages,
   type LocaleMessages,
   type QuizMessages,
   type DatasetMessages,
+  type RefMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -130,4 +143,19 @@ for (const [locale, pack] of Object.entries(DATASETS)) registerDatasetMessages(l
 for (const [locale, pack] of Object.entries(KB)) registerKbMessages(locale as Locale, pack);
 for (const [locale, articles] of Object.entries(KB_ALL)) {
   for (const [id, copy] of Object.entries(articles)) registerKbArticle(locale as Locale, id as KbId, copy);
+}
+
+const REF: Record<Locale, RefMessages> = {
+  en: enRef,
+  "zh-CN": zhCNRef,
+  "zh-TW": zhTWRef,
+  ja: jaRef,
+  ko: koRef,
+  vi: viRef,
+  id: idRef,
+  es: esRef,
+};
+for (const [locale, pack] of Object.entries(REF)) registerRefMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(REF_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerRefEntry(locale as Locale, id as RefId, copy);
 }

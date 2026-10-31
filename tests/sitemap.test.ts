@@ -7,6 +7,7 @@ import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, 
 import { QUIZZES } from "../src/shared/quiz";
 import { DATASET_SNAPSHOT, DATASETS } from "../src/shared/datasets";
 import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, kbUpdatedOn } from "../src/shared/kb";
+import { REF_ENTRIES } from "../src/shared/ref";
 
 describe("sitemap", () => {
   it("lists every locale home and tool with reciprocal hreflang", () => {
@@ -15,7 +16,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 2 + KB_ARTICLES.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 2 + KB_ARTICLES.length + 1 + REF_ENTRIES.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
@@ -38,7 +39,7 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    // Only kb pages (two hubs and their articles) and data tables have real edit dates.
+    // Only kb pages (two hubs and their articles), data tables and reference pages have real edit dates.
     expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + 2 + DATASETS.length + 1));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);

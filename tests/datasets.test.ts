@@ -7,6 +7,7 @@ import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
 import { DATASETS, DATASET_FILES, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { ROW_FILES } from "../src/client/datasets/rows";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -154,6 +155,7 @@ describe("data pages: tables", () => {
       if (spec.maxAge !== undefined || spec.floor !== undefined || spec.skip) expect(spec.why, id).toBeTruthy();
     }
     for (const id of DATASETS) for (const file of DATASET_FILES[id]) expect(existsSync(`src/data/${file}.json`), file).toBe(true);
+    expect(Object.keys(ROW_FILES).sort()).toEqual([...new Set(DATASETS.flatMap((id) => DATASET_FILES[id]))].sort());
   });
 
   it("divides each share by the world total of its year and names every country tied for last", () => {

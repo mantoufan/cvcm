@@ -76,12 +76,12 @@ export function kbMinutes(locale: Locale, id: KbId): number {
   return kbMinutesOf(id, locale);
 }
 
-/** Plain text with `code` spans; everything else escaped. */
-function inline(text: string): string {
+/** Plain text with `code` spans; everything else escaped. Shared with the reference pages (ref-i18n.ts). */
+export function inline(text: string): string {
   return text.split("`").map((part, i) => (i % 2 ? `<code>${escapeHtml(part)}</code>` : escapeHtml(part))).join("");
 }
 
-function blockHtml(block: KbBlock): string {
+export function blockHtml(block: KbBlock): string {
   if (typeof block === "string") return `<p>${inline(block)}</p>`;
   if ("ul" in block) return `<ul>${block.ul.map((li) => `<li>${inline(li)}</li>`).join("")}</ul>`;
   if ("ol" in block) return `<ol>${block.ol.map((li) => `<li>${inline(li)}</li>`).join("")}</ol>`;
@@ -127,7 +127,7 @@ function faqHtml(locale: Locale, page: KbPage): string {
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(kbUi(locale).faq)}</h2>${items}</section>`;
 }
 
-function linkListHtml(items: { href: string; name: string; blurb?: string; meta?: string; nav?: string }[]): string {
+export function linkListHtml(items: { href: string; name: string; blurb?: string; meta?: string; nav?: string }[]): string {
   return `<ul class="links">${items.map((item) => (
     `<li><a href="${escapeHtml(item.href)}"${item.nav ? ` data-nav="${escapeHtml(item.nav)}"` : ""}>`
     + (item.meta ? `<small>${escapeHtml(item.meta)}</small>` : "")
@@ -240,7 +240,7 @@ export function kbFaqJsonLd(locale: Locale, page: KbPage): Record<string, unknow
   };
 }
 
-const PUBLISHER = {
+export const PUBLISHER = {
   "@type": "Organization",
   name: "cv.cm",
   url: `${ORIGIN}/`,
