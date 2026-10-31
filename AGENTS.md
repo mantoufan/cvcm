@@ -162,7 +162,7 @@ The Cloudflare API token in use has **Pages + DNS + D1**. Ship with:
 ```
 npm run build
 npx wrangler d1 migrations apply cvcm --remote
-npx wrangler pages deploy dist --project-name cvcm
+npx wrangler pages deploy dist --project-name cvcm --no-bundle
 ```
 
-`dist/_worker.js` is the Worker. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.
+`dist/_worker.js` is the Worker, already bundled by `scripts/build-worker.mjs` as UTF-8; deploy with `--no-bundle`, because wrangler's own re-bundle escapes CJK copy as `\uXXXX` and pushes the Worker past the 25 MiB uncompressed limit. Domain: `cv.cm`. D1 database id: `1a809cf5-bb42-4f8d-b2c6-6cd7430226c5`.

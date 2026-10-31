@@ -15,7 +15,7 @@
     "kb:sync": "node scripts/kb-sync.mjs",
     "ref:sync": "node scripts/ref-sync.mjs",
     "test": "vitest run",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name cvcm --commit-dirty=true"
+    "deploy": "npm run build && wrangler pages deploy dist --project-name cvcm --commit-dirty=true --no-bundle"
   },
   "devDependencies": {
     "esbuild": "^0.25.9",
