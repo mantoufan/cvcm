@@ -24,12 +24,14 @@ let timer = 0;
 /** Draws in order, first draw first. */
 let history: string[] = [];
 let lastWinner = "";
+/** Set when an elimination has used up the list; the next draw starts a new History. */
+let roundDone = false;
 
 export function mountWheel(host: HTMLElement): void {
   entriesEl = h("textarea", { class: "wheel-entries", rows: "9", "data-field": "entries", spellcheck: "false", "aria-label": t("wheel.entries"), onInput: () => paint() });
   entriesEl.value = t("wheel.sample");
   // Ticking remove-winner starts an elimination, so History begins again and lists just that order.
-  removeEl = h("input", { type: "checkbox", "data-field": "remove", onChange: () => { if (removeEl?.checked) { history = []; paintHistory(); } } });
+  removeEl = h("input", { type: "checkbox", "data-field": "remove", onChange: () => { if (removeEl?.checked) newRound(); } });
   dialEl = document.createElementNS(SVG, "svg");
   dialEl.setAttribute("viewBox", "-100 -100 200 200");
   dialEl.setAttribute("class", "wheel-dial");
@@ -81,6 +83,7 @@ export function unmountWheel(): void {
   spinning = false;
   history = [];
   lastWinner = "";
+  roundDone = false;
 }
 
 function entries(): string[] {
@@ -168,6 +171,7 @@ function land(list: string[], index: number): void {
   if (entriesEl) entriesEl.readOnly = false;
   // The Web Crypto draw decides; spinTarget only makes the dial stop on it.
   const winner = list[index];
+  if (roundDone) newRound();
   lastWinner = winner;
   history.push(winner);
   if (removeEl?.checked && entriesEl) {
@@ -176,12 +180,25 @@ function land(list: string[], index: number): void {
     const at = lines.findIndex((line) => normalizeEntry(line) === winner);
     if (at >= 0) lines.splice(at, 1);
     entriesEl.value = lines.join("\n");
-    // One name left cannot be spun: it takes the last place, so History holds the whole order.
+    // One name left cannot be spun: it takes the last place and leaves the list, so History holds the whole order
+    // and a new list starts a new round.
     const left = entries();
-    if (left.length === 1) history.push(left[0]);
+    if (left.length === 1) {
+      history.push(left[0]);
+      entriesEl.value = "";
+      roundDone = true;
+    }
   }
   // A full list's order is at most 100 names; drop the oldest draws beyond that.
   history = history.slice(-MAX_ENTRIES);
+  paintHistory();
+  paint();
+}
+
+function newRound(): void {
+  history = [];
+  lastWinner = "";
+  roundDone = false;
   paintHistory();
   paint();
 }
