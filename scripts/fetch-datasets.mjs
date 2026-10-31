@@ -101,15 +101,16 @@ for (const [id, code] of Object.entries(WB)) {
   // `mrnev=1` can return two years for one country and skip others, so read a window of years and keep each
   // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
   const thisYear = new Date().getUTCFullYear();
-  const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 16}:${thisYear}&per_page=20000`);
+  const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 20}:${thisYear}&per_page=20000`);
   if (info.pages !== 1) throw new Error(`${code}: ${info.total} rows over ${info.pages} pages; raise per_page`);
   const latestBy = new Map();
   for (const r of all) {
-    if (r.value === null || r.value < (FLOOR[id] ?? -Infinity) || SKIP[id]?.has(r.countryiso3code)) continue;
+    if (r.value === null) continue;
     const seen = latestBy.get(r.countryiso3code);
     if (!seen || Number(r.date) > Number(seen.date)) latestBy.set(r.countryiso3code, r);
   }
-  const list = [...latestBy.values()];
+  // Placeholders are judged on each economy's latest value: dropping only that year would fall back to an old one.
+  const list = [...latestBy.values()].filter((r) => r.value >= (FLOOR[id] ?? -Infinity) && !SKIP[id]?.has(r.countryiso3code));
   const world = latestBy.get("WLD");
   const rows = list
     .filter((r) => countries.has(r.countryiso3code))
@@ -124,6 +125,7 @@ for (const [id, code] of Object.entries(WB)) {
   const latest = Math.max(...rows.map((r) => r[3]));
   rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (MAX_AGE[id] ?? 15)));
   writeJson(`${id}.json`, rows);
+  if (world && Number(world.date) !== latest) console.warn(`${id}: world value is from ${world.date}, rows reach ${latest}`);
   const years = rows.map((r) => r[3]);
   meta.sets[id] = {
     rows: rows.length,
