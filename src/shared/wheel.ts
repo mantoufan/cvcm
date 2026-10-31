@@ -13,7 +13,17 @@ export function parseEntries(text: string): string[] {
   return text.split(/\r?\n/).map(normalizeEntry).filter((line) => line !== "").slice(0, MAX_ENTRIES);
 }
 
-/** Uniform winner index from Web Crypto. */
+/** Different names in a list; repeated lines only add odds. */
+export function distinctEntries(list: readonly string[]): string[] {
+  return [...new Set(list)];
+}
+
+/** A spin needs two different names; "A" twice has only one possible result. */
+export function canSpin(list: readonly string[]): boolean {
+  return distinctEntries(list).length >= 2;
+}
+
+/** Uniform winner index from Web Crypto (a line repeated twice has twice the chance). */
 export function pickIndex(count: number): number {
   return randomInt(0, count - 1);
 }
