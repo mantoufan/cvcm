@@ -98,7 +98,8 @@ for (const [id, spec] of Object.entries(WB)) {
   const latest = Math.max(...rows.map((r) => r[3]));
   rows.splice(0, rows.length, ...rows.filter((r) => r[3] >= latest - (spec.maxAge ?? 15)));
   writeJson(`${id}.json`, rows);
-  if (world && Number(world.date) !== latest) console.warn(`${id}: world value is from ${world.date}, rows reach ${latest}`);
+  const asOf = mode(rows.map((r) => r[3]));
+  if (world && Number(world.date) !== asOf) console.warn(`${id}: world value is from ${world.date}, the heading year is ${asOf}`);
   const years = rows.map((r) => r[3]);
   const last = rows.filter((r) => r[2] === rows[rows.length - 1][2]);
   meta.sets[id] = {
@@ -108,7 +109,7 @@ for (const [id, spec] of Object.entries(WB)) {
     sourceUpdated: info.lastupdated,
     world: world ? [Number(world.value.toFixed(2)), Number(world.date)] : null,
     // The year most rows are from heads the page; a few early reporters should not date the whole table.
-    asOf: mode(years),
+    asOf,
     top: rows.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
     // Everyone tied for last (forest area: several at 0.0), up to three by name plus how many in all.
     bottom: last.slice(0, 3).map((r) => [r[0], r[2], r[4], r[3]]),
@@ -261,6 +262,7 @@ function worldsFor(all, years) {
     for (let y = year; y >= year - 5; y--) {
       if (byYear.has(y)) { out[year] = Number(byYear.get(y).toFixed(2)); break; }
     }
+    if (!(year in out)) throw new Error(`no world total within 5 years before ${year} for a share column`);
   }
   return out;
 }

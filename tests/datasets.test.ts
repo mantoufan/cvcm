@@ -169,7 +169,9 @@ describe("data pages: tables", () => {
     for (const row of exports.rows) expect(parseFloat(row[3].text), row[1].text).toBeCloseTo(((row[2].sort as number) / worlds[row[4].text]) * 100, 1);
     const forest = rows("forest-area") as IndicatorRow[];
     const zeros = forest.filter((r) => r[2] === forest[forest.length - 1][2]).length;
+    expect(datasetMeta("forest-area").tiedLast).toBe(zeros);
     expect(datasetMeta("forest-area").bottom!.length).toBe(Math.min(zeros, 3));
+    if (zeros > 3) expect(datasetPageCopy("en", "forest-area").facts[2]).toContain(`${zeros - 3} others`);
   });
 
   it("places every indicator from indicators.json in exactly one group", () => {
