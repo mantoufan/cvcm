@@ -21,12 +21,15 @@ let copyBtn: HTMLButtonElement | null = null;
 let rotation = 0;
 let spinning = false;
 let timer = 0;
+/** Draws in order, first draw first. */
 let history: string[] = [];
+let lastWinner = "";
 
 export function mountWheel(host: HTMLElement): void {
   entriesEl = h("textarea", { class: "wheel-entries", rows: "9", "data-field": "entries", spellcheck: "false", "aria-label": t("wheel.entries"), onInput: () => paint() });
   entriesEl.value = t("wheel.sample");
-  removeEl = h("input", { type: "checkbox", "data-field": "remove" });
+  // Ticking remove-winner starts an elimination, so History begins again and lists just that order.
+  removeEl = h("input", { type: "checkbox", "data-field": "remove", onChange: () => { if (removeEl?.checked) { history = []; paintHistory(); } } });
   dialEl = document.createElementNS(SVG, "svg");
   dialEl.setAttribute("viewBox", "-100 -100 200 200");
   dialEl.setAttribute("class", "wheel-dial");
@@ -77,6 +80,7 @@ export function unmountWheel(): void {
   rotation = 0;
   spinning = false;
   history = [];
+  lastWinner = "";
 }
 
 function entries(): string[] {
@@ -91,7 +95,7 @@ function paint(): void {
   drawDial(list);
   // The last winner stays visible, also when removing it leaves fewer than two entries.
   if (!spinning && outEl) {
-    outEl.textContent = [history.length ? t("wheel.winner", { name: history[0] }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" ");
+    outEl.textContent = [lastWinner ? t("wheel.winner", { name: lastWinner }) : "", list.length < 2 ? t("wheel.needTwo") : ""].filter(Boolean).join(" ");
   }
 }
 
@@ -164,19 +168,26 @@ function land(list: string[], index: number): void {
   if (entriesEl) entriesEl.readOnly = false;
   // The Web Crypto draw decides; spinTarget only makes the dial stop on it.
   const winner = list[index];
-  history.unshift(winner);
-  // Keep every draw of a full list, so an elimination order is never cut short.
-  history = history.slice(0, MAX_ENTRIES);
-  if (outEl) outEl.textContent = t("wheel.winner", { name: winner });
-  if (historyEl) historyEl.replaceChildren(...history.map((name) => h("li", null, name)));
+  lastWinner = winner;
+  history.push(winner);
   if (removeEl?.checked && entriesEl) {
     // Drop one copy of the winner; the dial redraws without it (the pointer then sits on a neighbour, which is fine).
     const lines = entriesEl.value.split(/\r?\n/);
     const at = lines.findIndex((line) => normalizeEntry(line) === winner);
     if (at >= 0) lines.splice(at, 1);
     entriesEl.value = lines.join("\n");
+    // One name left cannot be spun: it takes the last place, so History holds the whole order.
+    const left = entries();
+    if (left.length === 1) history.push(left[0]);
   }
+  // A full list's order is at most 100 names; drop the oldest draws beyond that.
+  history = history.slice(-MAX_ENTRIES);
+  paintHistory();
   paint();
+}
+
+function paintHistory(): void {
+  historyEl?.replaceChildren(...history.map((name) => h("li", null, name)));
 }
 
 /** Shuffle and Sort reorder the typed lines as they are (beyond 100 entries or 40 characters too), dropping blanks. */
@@ -202,5 +213,5 @@ function sortEntries(): void {
 }
 
 async function copyOut(): Promise<void> {
-  await copyWithFlash(copyBtn, history[0] ?? "", { done: t("wheel.copied"), failed: t("wheel.copyFailed") });
+  await copyWithFlash(copyBtn, lastWinner, { done: t("wheel.copied"), failed: t("wheel.copyFailed") });
 }
