@@ -1,0 +1,169 @@
+{
+  "title": "Fortran入門：モダンな構文・配列・モジュール・手続きを解説 — cv.cm",
+  "description": "モダンFortranを学べる入門講座。gfortranでHello worldをコンパイルし、型付き変数の宣言、ループ、関数、サブルーチン、モジュール、配列全体の演算、iostatを解説します。",
+  "h1": "Fortran入門：初心者向けチュートリアル",
+  "answer": "Fortranは、数値計算・科学技術計算のために作られた、コンパイル型の静的型付け言語です。モダンFortran(Fortran 90以降の規格)には、自由形式のソース、モジュール、動的配列、強力な配列全体の演算があり、コンパイラはそれを非常に高速な機械語にします。無料のgfortranコンパイラをインストールし、コードを`.f90`ファイルに保存して、`gfortran hello.f90 -o hello`でビルドします。",
+  "sections": [
+    {
+      "h": "Fortranとは何か、誰が使うのか",
+      "body": [
+        "Fortran(「formula translation」)は、1950年代にIBMでJohn Backusが率いるチームが開発した言語で、現在も現役で使われている最も古いプログラミング言語の1つです。ISOで標準化されており、主な改訂にFortran 90、95、2003、2008、2018、2023があります。古い固定形式(大文字の`FORTRAN 77`で、コードは7桁目から始まる)も今でもコンパイルできますが、新しいコードでは、ここで示す自由形式の構文を使います。",
+        "Fortranは、重い数値計算が重要な場面で使われています。気象・気候モデル、数値流体力学、物理や化学のシミュレーション、スーパーコンピューターで動く多くのプログラムなどです。NumPyやMATLABなどのツールの内部で使われている線形代数ライブラリBLASとLAPACKのリファレンス実装は、Fortranで書かれています。"
+      ]
+    },
+    {
+      "h": "コンパイラのインストールとhello, worldの実行",
+      "body": [
+        "GCCの一部であるgfortranは無料で、Linux(パッケージ`gfortran`)、macOS(Homebrewの`gcc`)、Windows(MSYS2またはWSL)で使えます。IntelのifxやLLVM Flangも、ほかのコンパイラです。Fortran Package Manager(`fpm`)を使うと、プロジェクトの作成とビルドができます。",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *`はリスト指向出力を使い、間隔は自動で決まります(先頭に空白が入る点に注意)。Fortranは大文字・小文字を区別しません。`PRINT`、`Print`、`print`は同じです。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "宣言はすべて、プログラム単位の先頭、実行文の前に置きます。必ず`implicit none`を書いてください。書かないと、宣言されていないIからNで始まる名前は黙って整数になり、それ以外はすべて実数になります。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "宣言の例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "通常は32ビット。64ビットには`integer(int64)`を使います"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "通常は単精度"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "倍精度。科学計算では通常こちらを選びます"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "組み込みの複素数"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`。演算子は`.and.`、`.or.`、`.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "固定長の文字列。空白で埋められます"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "接尾辞`_real64`は、リテラルの種別(精度)を指定します。付けないと、`1.0`は単精度の定数となり、倍精度の変数に代入するときに桁が失われます。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10`は両端を含み、省略可能な3つ目の値で刻み幅を指定します(`do i = 10, 1, -1`)。`cycle`は次の繰り返しに進み、`exit`はループを抜けます。`do while (condition)`や、`exit`を使う単純な`do`も使えます。コメントは`!`で始まります。"
+      ]
+    },
+    {
+      "h": "関数・サブルーチン・モジュール",
+      "body": [
+        "Fortranの手続きには2種類あります。関数は値を返し、式の中で使います。サブルーチンは`call`で呼び出し、結果を引数を通して返します。手続きはモジュールに入れると、コンパイラがすべての呼び出しをチェックできます。",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "引数は参照渡しなので、手続きは呼び出し側の変数を変更できます。`intent(in)`、`intent(out)`、`intent(inout)`は、各引数に許される操作を文書化し、強制します。`**`はべき乗の演算子です。"
+      ]
+    },
+    {
+      "h": "配列：Fortranの特徴的な機能",
+      "body": [
+        "配列はFortranの中心です。添字はデフォルトで1から始まり(任意の下限を指定できます)、ループなしで配列全体に算術演算ができ、スライスは`a(start:end)`で書き、多くの組み込み関数が配列を直接扱います。",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "多次元配列は列優先で格納されます。メモリ上では最初の添字が最も速く変化し、Cとは逆です。高速化のためには、最も内側のループが最初の添字を回るようにしてください。ほかにも`matmul`、`dot_product`、`transpose`、`minval`、`count`などの組み込み関数が便利です。モダンFortranには、並列プログラム向けの`do concurrent`ループとコアレイもあります。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Fortranに例外はありません。失敗しうる文は、ステータス引数を受け取ります。入出力には`iostat`、`allocate`には`stat`です。値を確認して対処してください。省略するとエラーでプログラムが止まります。`error stop`は、エラーでプログラムを終了させます。",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "上のように文字型変数から読み込むことを内部読み込みといい、文字列を数値に変換する一般的な方法です。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：平均と標準偏差",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "`x(:)`の宣言は形状引き継ぎ配列なので、関数は任意の長さの配列を受け取れます。`pure`は、関数に副作用がないことを約束します。書式`'(a, f6.3)'`は、文字列に続けて、幅6文字・小数3桁の実数を出力します。",
+        {
+          "note": "初心者がよくやる間違い：`implicit none`を忘れる、整数の除算(`1 / 2`は0なので、`1.0 / 2.0`と書きます)、倍精度のコードに単精度のリテラルを使う(`0.1_dp`ではなく`0.1`)、手続き内のローカル変数を宣言時に初期化して`save`属性が付き、呼び出し間で値が残る、最も内側のループで最後の添字を回す(列優先のため遅くなります)、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org：クイックスタートのチュートリアルとベストプラクティスがあるLearnセクション。",
+            "コンパイラのオプションと組み込み手続きについてのGNU Fortran(gfortran)のマニュアル。",
+            "Fortran Package Manager(fpm)でプロジェクトを作り、Fortran標準ライブラリ(stdlib)などのライブラリを使ってみる。",
+            "学習中は、`gfortran -Wall -fcheck=all`のように、警告と実行時チェックを付けてコンパイルする。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Fortranは今でも使われていますか？",
+      "a": "はい。Fortranは科学技術計算やハイパフォーマンスコンピューティング、特に気候、気象、物理、工学のシミュレーションで広く使われ続けており、言語の規格も更新され続けています。"
+    },
+    {
+      "q": ".fファイルと.f90ファイルの違いは何ですか？",
+      "a": "慣例として、`.f`と`.for`のファイルはFORTRAN 77の古い固定形式のレイアウトを使い、桁位置が重要です。`.f90`のファイルは自由形式のソースです。`.f90`の拡張子は、Fortran 90に限らず、あらゆる現代の規格の自由形式コードに使われます。"
+    },
+    {
+      "q": "Fortranはなぜ速いのですか？",
+      "a": "この言語は数値計算のために設計されています。配列が組み込まれ、エイリアシングの規則によってコンパイラが積極的に最適化でき、数十年にわたるコンパイラの開発がFortranを対象にしてきました。よく書かれたCやC++でも、同程度の速度に達します。"
+    },
+    {
+      "q": "Fortranの配列は0から始まりますか、1から始まりますか？",
+      "a": "デフォルトでは1から始まりますが、下限は自由に選べます。たとえば`real :: a(0:9)`は、添字0から9までの10要素を宣言します。"
+    }
+  ]
+}

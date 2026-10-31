@@ -1,0 +1,250 @@
+{
+  "title": "Heapsort explained: binary heaps, sift-down, Python code and complexity — cv.cm",
+  "description": "Heapsort builds a max-heap and repeatedly moves the largest item to the end, in O(n log n) time and O(1) space. Trace, Python code, heapq and stability.",
+  "h1": "Heapsort explained: how it works, code and complexity",
+  "answer": "Heapsort is a comparison sort that first arranges the array into a max-heap, a binary tree stored in the array where every parent is at least as large as its children. It then repeatedly swaps the largest element (the root) to the end of the array, shrinks the heap by one and restores the heap property by sifting the new root down. It runs in O(n log n) time in every case and sorts in place with O(1) extra space, but it is not stable and is usually slower than quicksort in practice.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Heapsort is selection sort with a faster way to find the maximum. Selection sort scans the whole unsorted part, O(n) each time. Heapsort keeps the unsorted part as a heap, so the maximum is always at index 0 and restoring order after removing it costs only O(log n).",
+        "A binary heap is stored in a plain array without pointers. For the element at index `i`:",
+        {
+          "ul": [
+            "the left child is at `2*i + 1` and the right child at `2*i + 2`;",
+            "the parent is at `(i - 1) // 2`;",
+            "in a max-heap, every parent is greater than or equal to its children, so the largest element is at index 0."
+          ]
+        },
+        {
+          "ol": [
+            "Build a max-heap from the array by sifting down every non-leaf node, starting from the last one and moving to index 0.",
+            "Swap the root (the maximum) with the last element of the heap. That element is now in its final place.",
+            "Shrink the heap by one and sift the new root down until the heap property holds again.",
+            "Repeat steps 2 and 3 until the heap has one element."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Sort `[4, 10, 3, 5, 1]`. Elements after the bar are sorted and final.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Action",
+              "Array"
+            ],
+            "rows": [
+              [
+                "Start",
+                "",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Build 1",
+                "sift down index 1 (10): larger than children 5 and 1, no change",
+                "`[4, 10, 3, 5, 1]`"
+              ],
+              [
+                "Build 2",
+                "sift down index 0 (4): swap with 10, then with 5",
+                "`[10, 5, 3, 4, 1]`  max-heap"
+              ],
+              [
+                "Extract 1",
+                "swap 10 to the end, sift 1 down: swap with 5, then with 4",
+                "`[5, 4, 3, 1 | 10]`"
+              ],
+              [
+                "Extract 2",
+                "swap 5 to the end, sift 1 down: swap with 4",
+                "`[4, 1, 3 | 5, 10]`"
+              ],
+              [
+                "Extract 3",
+                "swap 4 to the end, sift 3 down: no children larger",
+                "`[3, 1 | 4, 5, 10]`"
+              ],
+              [
+                "Extract 4",
+                "swap 3 to the end",
+                "`[1 | 3, 4, 5, 10]`  sorted"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def sift_down(a, root, end):\n    \"\"\"Restore the max-heap property for a[root..end-1].\"\"\"\n    while True:\n        child = 2 * root + 1\n        if child >= end:\n            return\n        if child + 1 < end and a[child + 1] > a[child]:\n            child += 1                      # pick the larger child\n        if a[root] >= a[child]:\n            return\n        a[root], a[child] = a[child], a[root]\n        root = child\n\ndef heapsort(a):\n    \"\"\"Sort list a in place, ascending.\"\"\"\n    n = len(a)\n    for i in range(n // 2 - 1, -1, -1):     # build the max-heap\n        sift_down(a, i, n)\n    for end in range(n - 1, 0, -1):\n        a[0], a[end] = a[end], a[0]         # move the max to the end\n        sift_down(a, 0, end)\n    return a\n\nprint(heapsort([4, 10, 3, 5, 1]))   # [1, 3, 4, 5, 10]\nprint(heapsort([2, 2, 1]))          # [1, 2, 2]",
+          "lang": "python"
+        },
+        "Python's `heapq` module provides a min-heap on a plain list. Popping every element gives a sorted list, which is a short (not in-place) heapsort:",
+        {
+          "code": "import heapq\n\ndef heapsort_heapq(items):\n    h = list(items)\n    heapq.heapify(h)                       # O(n)\n    return [heapq.heappop(h) for _ in range(len(h))]\n\nprint(heapsort_heapq([4, 10, 3, 5, 1]))     # [1, 3, 4, 5, 10]\nprint(heapq.nlargest(2, [4, 10, 3, 5, 1]))  # [10, 5]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Build heap",
+                "O(n)",
+                "most nodes are near the bottom and sift down only a short distance"
+              ],
+              [
+                "Best",
+                "O(n log n)",
+                "n − 1 extractions, each sift-down up to log₂ n levels (distinct keys)"
+              ],
+              [
+                "Average",
+                "O(n log n)",
+                "same work regardless of order"
+              ],
+              [
+                "Worst",
+                "O(n log n)",
+                "the tree height is always about log₂ n"
+              ],
+              [
+                "Extra space",
+                "O(1)",
+                "the heap lives inside the input array, sift-down is a loop"
+              ]
+            ]
+          }
+        },
+        "Building the heap bottom-up is O(n), not O(n log n), because the sum of node heights in a complete binary tree is O(n). The extraction phase dominates the total."
+      ]
+    },
+    {
+      "h": "How heapsort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Heapsort is not stable: swapping the root to the end can carry an element past others with the same key. Its main strengths are a guaranteed O(n log n) worst case together with O(1) extra space, a combination neither quicksort nor merge sort offers. Its weakness is memory access: jumping between index `i` and `2*i + 1` uses CPU caches poorly, so it is typically slower than a well-implemented quicksort. Introsort uses heapsort as a fallback when quicksort recurses too deeply."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Partial sorting: to get only the k largest items, build the heap and extract k times, O(n + k log n). In Python, `heapq.nlargest` and `heapq.nsmallest` do this.",
+            "Top-k from a stream: keep a min-heap of size k and push or replace each new item, O(n log k) time and O(k) memory.",
+            "Bottom-up heapsort sifts the hole down to a leaf first and then up, which saves comparisons.",
+            "Smoothsort, a heap-based variant by Dijkstra, runs in O(n) on already sorted input but is rarely used because it is complex."
+          ]
+        },
+        {
+          "note": "Common bugs: using a min-heap in place and getting descending order, starting the build loop at index `n // 2` with 1-based child formulas on a 0-based array, forgetting to shrink the heap (`end`) after each swap, and comparing only with the left child during sift-down."
+        }
+      ]
+    },
+    {
+      "h": "When to use heapsort",
+      "body": [
+        "Use heapsort when you need a guaranteed O(n log n) worst case with no extra memory, for example in embedded or real-time systems, or as a safety fallback inside another sort. For everyday Python code, use `sorted()`, which is stable and faster on typical data. The heap itself is more useful than the sort: priority queues, Dijkstra's shortest paths, schedulers, merging k sorted lists (`heapq.merge`) and finding the k largest values all build on it. Interviews often ask for the heap index formulas, why heap building is O(n), and the top-k problem."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is heapsort stable?",
+      "a": "No. Moving the root to the end and sifting elements down can change the relative order of equal keys."
+    },
+    {
+      "q": "What is the time complexity of heapsort?",
+      "a": "O(n log n) in the best, average and worst case. Building the heap is O(n) and each of the n − 1 extractions costs O(log n)."
+    },
+    {
+      "q": "Is heapsort in place?",
+      "a": "Yes. The heap is stored inside the array being sorted, and the sorted part grows from the end, so only O(1) extra space is needed."
+    },
+    {
+      "q": "Why is heapsort slower than quicksort in practice?",
+      "a": "Both are O(n log n) on average, but heapsort jumps between distant array positions, which causes more cache misses, and it does more comparisons per element than quicksort."
+    },
+    {
+      "q": "How do you sort with heapq in Python?",
+      "a": "Call `heapq.heapify(list)` and then `heapq.heappop` repeatedly, or use `heapq.nsmallest(k, items)` for the k smallest. For a full sort, `sorted()` is simpler and faster."
+    }
+  ]
+}

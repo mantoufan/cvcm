@@ -1,0 +1,181 @@
+{
+  "title": "Học lập trình Perl cơ bản: scalar, mảng, hash và biểu thức chính quy — cv.cm",
+  "description": "Học Perl từng bước: chạy script, scalar, mảng và hash, điều khiển luồng, subroutine, tham chiếu, biểu thức chính quy, die và eval, cùng một trình phân tích log.",
+  "h1": "Hướng dẫn học lập trình Perl cơ bản cho người mới",
+  "answer": "Perl là ngôn ngữ kịch bản động do Larry Wall tạo ra năm 1987, nổi tiếng với xử lý văn bản và biểu thức chính quy dựng sẵn rất mạnh. Perl được cài sẵn trên hầu hết hệ thống Unix và dùng cho quản trị hệ thống, xử lý log và tin sinh học. Trang này bao gồm chạy Perl, scalar, mảng và hash, điều khiển luồng, subroutine, tham chiếu, biểu thức chính quy và xử lý lỗi với die và eval.",
+  "sections": [
+    {
+      "h": "Perl là gì và dùng để làm gì",
+      "body": [
+        "Perl là ngôn ngữ bậc cao, kiểu động, do Larry Wall tạo ra năm 1987. Nó được thiết kế cho xử lý văn bản và tạo báo cáo, và trở nên nổi tiếng như ngôn ngữ keo dán của quản trị hệ thống Unix và phát triển web thuở đầu. Biểu thức chính quy của Perl có ảnh hưởng lớn đến mức nhiều ngôn ngữ khác áp dụng cú pháp regex \"tương thích Perl\".",
+        "Ngày nay Perl được dùng cho script quản trị hệ thống, xử lý log và văn bản, tin sinh học, ứng dụng web cũ và các bộ lọc dòng lệnh một dòng. Perl được cài sẵn trên hầu hết hệ thống Linux và Unix. CPAN (Comprehensive Perl Archive Network) lưu trữ một bộ sưu tập rất lớn các module có thể tái sử dụng. Hướng dẫn này nói về Perl 5; ngôn ngữ từng được gọi là Perl 6 nay là một ngôn ngữ riêng tên Raku."
+      ]
+    },
+    {
+      "h": "Chạy Hello, world",
+      "body": [
+        "Kiểm tra Perl đã được cài bằng `perl -v`. Trên Windows, Strawberry Perl là một bản phân phối phổ biến. Hãy bắt đầu mọi script bằng `use strict;` và `use warnings;`: chúng bắt lỗi gõ nhầm và mã không an toàn.",
+        {
+          "code": "#!/usr/bin/env perl\nuse strict;\nuse warnings;\n\nprint \"Hello, world!\\n\";",
+          "lang": "perl"
+        },
+        {
+          "code": "perl hello.pl\n# Hello, world!\nperl -e 'print \"Hello from a one-liner\\n\"'",
+          "lang": "shell"
+        },
+        "Câu lệnh kết thúc bằng dấu chấm phẩy. Chú thích bắt đầu bằng `#`. Chuỗi trong dấu nháy kép nội suy biến và các chuỗi thoát như `\\n`; chuỗi trong dấu nháy đơn được giữ nguyên."
+      ]
+    },
+    {
+      "h": "Biến: scalar, mảng và hash",
+      "body": [
+        "Biến Perl bắt đầu bằng một sigil cho biết loại giá trị. Khai báo mỗi biến bằng `my`, để biến cục bộ trong khối bao quanh.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $name  = \"Perl\";             # scalar: one value\nmy $year  = 1987;\nmy @langs = (\"Perl\", \"C\", \"sh\"); # array: ordered list\nmy %port  = (http => 80, https => 443);  # hash: key-value pairs\n\nprint \"$name since $year\\n\";    # Perl since 1987\nprint \"First: $langs[0]\\n\";     # First: Perl (element is a scalar, so $)\nprint \"Count: \", scalar(@langs), \"\\n\";   # Count: 3\nprint \"HTTPS: $port{https}\\n\";  # HTTPS: 443\nprint \"Sum: \", \"10\" + 5, \"\\n\";  # Sum: 15 (strings convert to numbers)\nprint \"Join: \" . \"a\" . \"b\" x 3, \"\\n\";    # Join: abbb",
+          "lang": "perl"
+        },
+        {
+          "table": {
+            "head": [
+              "Sigil",
+              "Loại",
+              "Ví dụ"
+            ],
+            "rows": [
+              [
+                "`$`",
+                "scalar: một số, chuỗi hoặc tham chiếu",
+                "`my $n = 42;`"
+              ],
+              [
+                "`@`",
+                "mảng: danh sách có thứ tự các scalar",
+                "`my @list = (1, 2);`"
+              ],
+              [
+                "`%`",
+                "hash: các cặp khóa-giá trị không có thứ tự",
+                "`my %h = (a => 1);`"
+              ],
+              [
+                "`&`",
+                "subroutine (hiếm khi viết như vậy)",
+                "`&name`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Perl có toán tử riêng cho số và cho chuỗi: `==`, `<` và `<=>` so sánh số, còn `eq`, `lt` và `cmp` so sánh chuỗi. Dùng `==` cho chuỗi như `\"abc\" == \"xyz\"` cho kết quả đúng (cả hai đều bằng 0 khi coi là số) và in cảnh báo khi có `use warnings`."
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "Perl có `if`, `elsif`, `else`, `unless`, `while`, `until`, `for` và `foreach`. Một câu lệnh ngắn có thể theo sau bởi điều kiện, đọc như tiếng Anh. `next` nhảy sang lần lặp kế tiếp và `last` thoát khỏi vòng lặp.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $score = 72;\nif ($score >= 90) {\n    print \"A\\n\";\n} elsif ($score >= 70) {\n    print \"B\\n\";                 # B\n} else {\n    print \"C\\n\";\n}\nprint \"passed\\n\" if $score >= 50;          # statement modifier\nprint \"not perfect\\n\" unless $score == 100;\n\nfor my $i (1 .. 3) {\n    print \"i = $i\\n\";\n}\n\nmy @names = (\"ann\", \"bo\");\nforeach my $n (@names) {\n    next if $n eq \"bo\";          # skip to the next item\n    print ucfirst($n), \"\\n\";     # Ann\n}\n\nmy $k = 3;\nwhile ($k > 0) { $k--; }",
+          "lang": "perl"
+        },
+        "Các giá trị sai là `0`, `\"0\"`, chuỗi rỗng `\"\"`, danh sách rỗng và `undef`. Mọi thứ khác đều đúng."
+      ]
+    },
+    {
+      "h": "Subroutine",
+      "body": [
+        "Định nghĩa hàm bằng `sub`. Các đối số đến trong mảng đặc biệt `@_`, và dòng đầu thông thường sẽ sao chép chúng vào các biến có tên. Một subroutine có thể trả về một scalar hoặc một danh sách.",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub add {\n    my ($x, $y) = @_;            # arguments arrive in @_\n    return $x + $y;\n}\n\nsub greet {\n    my ($name, $greeting) = @_;\n    $greeting //= \"Hello\";       # default if undefined\n    return \"$greeting, $name!\";\n}\n\nsub stats {\n    my @nums = @_;\n    my $sum = 0;\n    $sum += $_ for @nums;\n    return ($sum, $sum / @nums); # return a list\n}\n\nprint add(2, 3), \"\\n\";           # 5\nprint greet(\"Ann\"), \"\\n\";        # Hello, Ann!\nmy ($total, $avg) = stats(4, 8, 6);\nprint \"$total $avg\\n\";           # 18 6",
+          "lang": "perl"
+        },
+        "Perl hiện đại cũng hỗ trợ signature, như `sub add($x, $y) { ... }`, được bật bằng `use v5.36;` trở lên, đồng thời cũng bật `strict` và `warnings`."
+      ]
+    },
+    {
+      "h": "Mảng, hash và tham chiếu",
+      "body": [
+        "Mảng và hash đi kèm các hàm dựng sẵn mạnh như `push`, `pop`, `shift`, `sort`, `map`, `grep`, `keys` và `exists`. Dữ liệu lồng nhau dùng tham chiếu: `[ ... ]` tạo tham chiếu mảng và `{ ... }` tạo tham chiếu hash, còn `->` đi theo chúng.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy @nums = (5, 3, 8, 1);\npush @nums, 9;                           # add to the end\nmy $last = pop @nums;                    # remove from the end: 9\nmy @sorted  = sort { $a <=> $b } @nums;  # numeric sort\nmy @doubled = map  { $_ * 2 } @sorted;\nmy @big     = grep { $_ > 4 } @sorted;\nprint \"@sorted | @doubled | @big\\n\";     # 1 3 5 8 | 2 6 10 16 | 5 8\n\nmy %age = (ann => 31, bo => 25);\n$age{cy} = 40;\ndelete $age{bo};\nfor my $who (sort keys %age) {\n    print \"$who is $age{$who}\\n\";        # ann is 31 / cy is 40\n}\nprint \"has ann\\n\" if exists $age{ann};\n\n# references build nested data structures\nmy $user = { name => \"Ann\", langs => [\"Perl\", \"SQL\"] };\nprint \"$user->{name} knows $user->{langs}[1]\\n\";  # Ann knows SQL\nprint scalar @{ $user->{langs} }, \"\\n\";           # 2",
+          "lang": "perl"
+        },
+        "Trong khối `sort`, `$a` và `$b` là hai phần tử đang được so sánh. `<=>` so sánh theo số và `cmp` so sánh như chuỗi; `sort @list` thông thường sắp xếp như chuỗi, nên `10` đứng trước `9`."
+      ]
+    },
+    {
+      "h": "Biểu thức chính quy",
+      "body": [
+        "Biểu thức chính quy được tích hợp vào cú pháp của Perl, và đó là tính năng đặc trưng của nó. `=~` áp dụng phép khớp `m/.../` hoặc phép thay thế `s/.../.../`. Các nhóm bắt được có sẵn dưới dạng `$1`, `$2` và tiếp theo, còn các bộ điều chỉnh như `g` (toàn cục) và `i` (không phân biệt hoa thường) đứng sau dấu gạch chéo đóng.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $line = \"2026-10-31 ERROR disk full on /dev/sda1\";\n\nif ($line =~ /^(\\d{4})-(\\d\\d)-(\\d\\d)\\s+(\\w+)/) {\n    print \"year=$1 level=$4\\n\";          # year=2026 level=ERROR\n}\n\n(my $masked = $line) =~ s/\\d/#/g;        # copy, then replace digits\nprint \"$masked\\n\";                       # ####-##-## ERROR disk full on /dev/sda#\n\nmy @words = split /\\s+/, $line;\nprint scalar(@words), \" words\\n\";        # 6 words\n\nmy %h = (\"a=1, b=2, c=3\" =~ /(\\w)=(\\d)/g); # pairs into a hash\nprint join(\",\", map { \"$_$h{$_}\" } sort keys %h), \"\\n\";  # a1,b2,c3",
+          "lang": "perl"
+        },
+        "Dùng `qr/.../` để lưu mẫu đã biên dịch vào một biến, và bộ điều chỉnh `x` để viết mẫu dài trên nhiều dòng kèm chú thích."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "`die` phát sinh một ngoại lệ còn `warn` in cảnh báo ra đầu ra lỗi chuẩn. `eval { ... }` bắt ngoại lệ và đặt thông báo lỗi vào `$@`. Các lời gọi hệ thống như `open` trả về sai khi thất bại và đặt `$!` thành lỗi của hệ điều hành, vì vậy hãy kiểm tra chúng bằng `or die`.",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub divide {\n    my ($x, $y) = @_;\n    die \"division by zero\\n\" if $y == 0;\n    return $x / $y;\n}\n\nmy $result = eval { divide(1, 0) };\nif ($@) {\n    print \"Caught: $@\";                  # Caught: division by zero\n}\n\nopen(my $fh, \"<\", \"missing.txt\")\n    or print \"Cannot open: $!\\n\";        # Cannot open: No such file or directory",
+          "lang": "perl"
+        },
+        "Thông báo `die` kết thúc bằng `\\n` được in nguyên văn; nếu không có ký tự xuống dòng, Perl sẽ thêm tên tệp và số dòng. Từ Perl 5.34 còn có tính năng `try`/`catch` thử nghiệm, và các module như Try::Tiny được dùng rộng rãi."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: đếm mức độ log",
+      "body": [
+        "Script này đọc log từ các tệp nêu trên dòng lệnh hoặc từ đầu vào chuẩn, đếm số dòng theo mức độ và in bản tóm tắt đã sắp xếp. Nó minh họa toán tử kim cương `<>`, biểu thức chính quy, hash và `printf`.",
+        {
+          "code": "#!/usr/bin/env perl\n# logstat.pl: count log levels in a file or standard input\nuse strict;\nuse warnings;\n\nmy %count;\nmy $lines = 0;\n\nwhile (my $line = <>) {                  # reads files named on the command line, or STDIN\n    chomp $line;\n    $lines++;\n    next unless $line =~ /\\b(INFO|WARN|ERROR)\\b/;\n    $count{$1}++;\n}\n\nprintf \"%d lines read\\n\", $lines;\nfor my $level (sort { $count{$b} <=> $count{$a} || $a cmp $b } keys %count) {\n    printf \"%-5s %3d\\n\", $level, $count{$level};\n}",
+          "lang": "perl"
+        },
+        {
+          "code": "perl logstat.pl app.log\n# 120 lines read\n# INFO   97\n# WARN   18\n# ERROR   5",
+          "lang": "shell"
+        },
+        {
+          "note": "Lỗi thường gặp của người mới: bỏ `use strict` và `use warnings`; dùng `==` cho chuỗi; quên `chomp` sau khi đọc một dòng, khiến ký tự xuống dòng còn dính lại; nhầm `$array[0]` (một phần tử) với `@array` (cả danh sách); và không kiểm tra giá trị trả về của `open`."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "perlintro và các hướng dẫn khác tại perldoc.perl.org, cũng dùng được ngoại tuyến bằng `perldoc perlintro`.",
+            "Learning Perl và Modern Perl, hai cuốn sách nổi tiếng cho người mới.",
+            "MetaCPAN, giao diện tìm kiếm các module CPAN.",
+            "perlre và perlretut cho tài liệu tham chiếu đầy đủ về biểu thức chính quy."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Perl còn được dùng không?",
+      "a": "Có. Perl được cài sẵn trên hầu hết hệ thống giống Unix và vẫn phổ biến trong quản trị hệ thống, xử lý văn bản, tin sinh học và các hệ thống nghiệp vụ chạy lâu năm, dù ít dự án web mới bắt đầu bằng Perl."
+    },
+    {
+      "q": "Perl và Raku khác nhau thế nào?",
+      "a": "Raku khởi đầu là Perl 6 nhưng trở thành một ngôn ngữ riêng với thiết kế khác. Perl 5 tiếp tục được phát triển độc lập, và tên Perl chỉ ngôn ngữ này."
+    },
+    {
+      "q": "Vì sao biến Perl bắt đầu bằng $, @ và %?",
+      "a": "Sigil cho biết bạn nhận được loại giá trị nào: `$` cho một scalar đơn, `@` cho danh sách và `%` cho hash. Vì thế một phần tử của `@items` được viết là `$items[0]`."
+    },
+    {
+      "q": "chomp làm gì trong Perl?",
+      "a": "`chomp` xóa ký tự xuống dòng ở cuối chuỗi, thứ bạn thường cần sau khi đọc một dòng từ tệp hoặc bàn phím."
+    },
+    {
+      "q": "Perl có tốt cho biểu thức chính quy không?",
+      "a": "Có. Biểu thức chính quy là một phần của cú pháp lõi của Perl, và PCRE, thư viện regex được nhiều công cụ và ngôn ngữ khác dùng, được đặt tên theo kiểu regex của Perl."
+    }
+  ]
+}

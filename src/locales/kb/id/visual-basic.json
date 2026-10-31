@@ -1,0 +1,190 @@
+{
+  "title": "Tutorial Visual Basic: sintaks VB.NET, tipe, koleksi, dan class — cv.cm",
+  "description": "Belajar Visual Basic .NET: membuat proyek, mendeklarasikan variabel dengan Dim, memakai If, Select Case dan perulangan, fungsi, List, Dictionary, class, LINQ, dan Try.",
+  "h1": "Tutorial Visual Basic .NET untuk pemula",
+  "answer": "Visual Basic .NET (VB.NET) adalah bahasa berorientasi objek bertipe statis untuk platform .NET dengan kata kunci mirip bahasa Inggris seperti `Dim`, `If ... Then ... End If`, dan `For ... Next`. Bahasa ini tidak peka huruf besar/kecil dan memakai library .NET yang sama dengan C#. Buat proyek dengan `dotnet new console -lang VB` dan jalankan dengan `dotnet run`. VBA, bahasa macro di dalam Microsoft Office, adalah kerabat lama dengan sintaks serupa.",
+  "sections": [
+    {
+      "h": "Apa itu Visual Basic .NET dan siapa yang memakainya",
+      "body": [
+        "VB.NET adalah penerus .NET dari Visual Basic klasik (VB6). Bahasa ini dikompilasi ke intermediate language yang sama dengan C#, sehingga kedua bahasa dapat berbagi library dan bahkan dicampur dalam satu solution. Terutama dipakai untuk aplikasi desktop Windows (Windows Forms, WPF), tool bisnis internal, aplikasi web ASP.NET, dan pemeliharaan code base VB yang sudah ada.",
+        "Microsoft terus mendukung Visual Basic di .NET modern, tetapi menyatakan tidak berencana mengembangkan bahasa ini dengan fitur besar baru; fitur .NET baru biasanya muncul lebih dulu di C#. Untuk proyek baru tanpa kode VB yang sudah ada, C# adalah pilihan yang lebih umum, tetapi VB.NET tetap bahasa yang mudah dibaca untuk belajar pemrograman dan untuk perangkat lunak bisnis."
+      ]
+    },
+    {
+      "h": "Pemasangan dan menjalankan Hello, world",
+      "body": [
+        "Pasang .NET SDK (Windows, macOS, atau Linux). Visual Studio di Windows juga menyertakan template Visual Basic dan visual form designer.",
+        {
+          "code": "dotnet new console -lang VB -o HelloVB\ncd HelloVB\ndotnet run\n# Hello, world!",
+          "lang": "shell"
+        },
+        {
+          "code": "' Program.vb\nImports System\n\nModule Program\n    Sub Main(args As String())\n        Console.WriteLine(\"Hello, world!\")\n    End Sub\nEnd Module",
+          "lang": "vb"
+        },
+        "`Module` menyimpan prosedur bersama, dan `Sub Main` adalah entry point. Komentar diawali dengan apostrof `'`. Setiap statement biasanya berakhir di akhir baris; tidak ada titik koma atau kurung kurawal."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Deklarasikan variabel dengan `Dim name As Type`. Dengan `Option Infer On` (default) Anda dapat menghilangkan tipe saat meng-assign nilai. Taruh `Option Strict On` di bagian atas setiap file (atau atur di proyek) agar konversi implisit yang berisiko menjadi compile error.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`Dim n As Integer = 42`",
+                "32-bit; `Long` adalah 64-bit"
+              ],
+              [
+                "Double",
+                "`Dim x As Double = 3.14`",
+                "Floating point 64-bit"
+              ],
+              [
+                "Decimal",
+                "`Dim price As Decimal = 19.99D`",
+                "Desimal eksak, cocok untuk uang"
+              ],
+              [
+                "String",
+                "`Dim s As String = \"hello\"`",
+                "Gabungkan string dengan `&`"
+              ],
+              [
+                "Char",
+                "`Dim c As Char = \"a\"c`",
+                "Satu karakter, sufiks `c`"
+              ],
+              [
+                "Boolean",
+                "`Dim ok As Boolean = True`",
+                "`True` / `False`"
+              ],
+              [
+                "Date",
+                "`Dim d As Date = #2026-01-15#`",
+                "Nilai tanggal dan waktu"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "Option Strict On\nModule Types\n    Sub Main()\n        Dim name As String = \"Ana\"\n        Dim age = 30                  ' inferred as Integer\n        Console.WriteLine(name & \" is \" & age.ToString())\n        Console.WriteLine($\"Next year {name} is {age + 1}\")\n        Console.WriteLine(7 / 2)      ' 3.5 (always Double)\n        Console.WriteLine(7 \\ 2)      ' 3 (integer division)\n        Console.WriteLine(7 Mod 2)    ' 1\n    End Sub\nEnd Module",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "Dim score = 85\nIf score >= 90 Then\n    Console.WriteLine(\"A\")\nElseIf score >= 80 Then\n    Console.WriteLine(\"B\")\nElse\n    Console.WriteLine(\"C\")\nEnd If\n\nSelect Case score\n    Case 90 To 100\n        Console.WriteLine(\"excellent\")\n    Case 80 To 89\n        Console.WriteLine(\"good\")\n    Case Else\n        Console.WriteLine(\"keep going\")\nEnd Select\n\nFor i = 1 To 3\n    Console.WriteLine($\"{i} squared is {i * i}\")\nNext\n\nDim n = 3\nDo While n > 0\n    n -= 1\nLoop",
+          "lang": "vb"
+        },
+        "Statement ini ditaruh di dalam `Sub`. `For i = 1 To 3` menyertakan kedua ujung; tambahkan `Step -1` untuk menghitung mundur. `For Each item In collection` melakukan perulangan atas koleksi apa pun. Gunakan `Exit For` atau `Exit Do` untuk keluar lebih awal dari perulangan. Untuk kondisi, pilih `AndAlso` dan `OrElse`: keduanya berhenti mengevaluasi begitu hasilnya diketahui, sedangkan `And` dan `Or` selalu mengevaluasi kedua sisi."
+      ]
+    },
+    {
+      "h": "Sub, function, dan lambda",
+      "body": [
+        "`Sub` tidak mengembalikan nilai; `Function` mengembalikan. Parameter diteruskan secara `ByVal` (salinan) secara default; `ByRef` memungkinkan prosedur mengubah variabel milik pemanggil. Parameter dapat `Optional` dengan nilai default.",
+        {
+          "code": "Function Add(a As Integer, b As Integer) As Integer\n    Return a + b\nEnd Function\n\nSub Greet(Optional name As String = \"world\")\n    Console.WriteLine($\"Hello, {name}!\")\nEnd Sub\n\nSub Increment(ByRef value As Integer)\n    value += 1\nEnd Sub\n\n' Inside Sub Main:\nDim x = 5\nIncrement(x)                                  ' x is now 6\nGreet()                                       ' Hello, world!\nDim square = Function(n As Integer) n * n     ' lambda\nConsole.WriteLine(square(Add(1, 2)))          ' 9",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Array, List, dan Dictionary",
+      "body": [
+        {
+          "code": "Dim nums() As Integer = {3, 1, 2}\nDim five(4) As Integer            ' 5 elements, indexes 0 to 4\nArray.Sort(nums)\nConsole.WriteLine(String.Join(\", \", nums))   ' 1, 2, 3\n\nDim names As New List(Of String) From {\"Ana\", \"Ben\"}\nnames.Add(\"Cleo\")\nConsole.WriteLine(names.Count)               ' 3\n\nDim ages As New Dictionary(Of String, Integer)\nages(\"Ana\") = 30\nages(\"Ben\") = 17\nFor Each pair In ages\n    Console.WriteLine($\"{pair.Key}: {pair.Value}\")\nNext",
+          "lang": "vb"
+        },
+        "Array dan list diindeks dari 0 dengan tanda kurung: `nums(0)`. Tipe generik memakai `Of`: `List(Of String)` adalah bentuk VB dari `List<string>` di C#. Perhatikan bahwa `Dim five(4)` mendeklarasikan batas atas, bukan panjang, jadi array tersebut punya lima elemen."
+      ]
+    },
+    {
+      "h": "Fitur khas: class, property, dan query LINQ",
+      "body": [
+        "VB.NET sepenuhnya berorientasi objek: class punya property, method, constructor (`Sub New`), pewarisan (`Inherits`), interface (`Implements`), dan event (`Event`, `RaiseEvent`, `Handles`). Query LINQ dapat ditulis dalam sintaks query yang mudah dibaca.",
+        {
+          "code": "Public Class Person\n    Public Property Name As String\n    Public Property Age As Integer\n\n    Public Sub New(name As String, age As Integer)\n        Me.Name = name\n        Me.Age = age\n    End Sub\nEnd Class\n\n' Inside Sub Main:\nDim people As New List(Of Person) From {\n    New Person(\"Ana\", 30),\n    New Person(\"Ben\", 17)\n}\nDim adults = From p In people\n             Where p.Age >= 18\n             Select p.Name\nFor Each adultName In adults\n    Console.WriteLine(adultName)   ' Ana\nNext",
+          "lang": "vb"
+        },
+        "Karena VB tidak peka huruf besar/kecil, `Name` dan `name` adalah identifier yang sama; di dalam constructor, `Me.Name` merujuk ke property dan `name` ke parameter. Kemudahan khas VB lainnya meliputi blok `With ... End With`, XML literal, dan namespace `My` untuk tugas umum."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "VB.NET memakai structured exception handling: `Try`, `Catch`, `Finally`, dan `Throw`. `Catch` dapat menyertakan filter `When`. Gaya `On Error GoTo` yang lebih lama dari VB6 dan VBA masih dapat dikompilasi tetapi sebaiknya tidak dipakai di kode .NET baru.",
+        {
+          "code": "Function ParseAge(s As String) As Integer\n    Dim n As Integer\n    If Not Integer.TryParse(s, n) Then\n        Throw New FormatException($\"Not a number: {s}\")\n    End If\n    If n < 0 Then Throw New ArgumentOutOfRangeException(NameOf(s))\n    Return n\nEnd Function\n\n' Inside Sub Main:\nTry\n    Console.WriteLine(ParseAge(\"abc\"))\nCatch ex As FormatException\n    Console.WriteLine(\"Error: \" & ex.Message)   ' Error: Not a number: abc\nFinally\n    Console.WriteLine(\"done\")\nEnd Try",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "Imports System\nImports System.Collections.Generic\nImports System.Linq\n\nModule WordCount\n    Sub Main()\n        Dim text = \"the cat and the hat and the bat\"\n        Dim counts As New Dictionary(Of String, Integer)\n\n        For Each word In text.Split(\" \"c)\n            If counts.ContainsKey(word) Then\n                counts(word) += 1\n            Else\n                counts(word) = 1\n            End If\n        Next\n\n        Dim top = counts.OrderByDescending(Function(kv) kv.Value).Take(2)\n        For Each kv In top\n            Console.WriteLine($\"{kv.Key} {kv.Value}\")\n        Next\n    End Sub\nEnd Module\n' the 3\n' and 2",
+          "lang": "vb"
+        },
+        {
+          "note": "Kesalahan umum pemula: mengira `Dim a(4)` membuat empat elemen (sebenarnya lima); memakai `And`/`Or` padahal perlu short-circuit `AndAlso`/`OrElse`, misalnya `If x IsNot Nothing And x.Length > 0` gagal saat `x` adalah `Nothing`; mengira `/` melakukan pembagian integer (gunakan `\\`); membiarkan `Option Strict Off`, yang menyembunyikan error tipe sampai run time; dan mengacaukan VB.NET dengan VBA, yang kode dan librarynya berbeda."
+        }
+      ]
+    },
+    {
+      "h": "VBA: Visual Basic di dalam Microsoft Office",
+      "body": [
+        "Visual Basic for Applications (VBA) adalah bahasa macro bawaan aplikasi Microsoft Office seperti Excel, Word, dan Access. VBA berbasis Visual Basic klasik, bukan .NET: berjalan di dalam aplikasi Office, memakai object model Office (workbook, range, dokumen), dan diedit di editor VBA (Alt+F11 di Windows). Sintaks dasar `Dim`, `If`, `For`, dan `Sub` sama, sehingga pengetahuan VB.NET berguna untuk VBA.",
+        {
+          "code": "' VBA in Excel: write the squares of 1 to 5 into column A\nSub FillSquares()\n    Dim i As Long\n    For i = 1 To 5\n        Cells(i, 1).Value = i * i\n    Next i\n    MsgBox \"Done\"\nEnd Sub",
+          "lang": "vb"
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: dokumentasi Visual Basic, termasuk panduan memulai dan referensi bahasa.",
+            "Pelajari .NET base class library (koleksi, file, LINQ); library ini dipakai bersama dengan C#.",
+            "Untuk aplikasi desktop, coba template Windows Forms atau WPF di Visual Studio.",
+            "Untuk otomatisasi Office, baca referensi VBA di Microsoft Learn untuk aplikasi yang Anda pakai."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Visual Basic .NET sudah mati?",
+      "a": "Tidak. VB.NET didukung di versi .NET terkini dan di Visual Studio, tetapi Microsoft tidak berencana menambah fitur bahasa besar, sehingga sebagian besar proyek .NET baru memilih C#."
+    },
+    {
+      "q": "Apa perbedaan VB.NET dan VBA?",
+      "a": "VB.NET adalah bahasa .NET lengkap untuk membangun aplikasi mandiri. VBA adalah bahasa macro berbasis Visual Basic klasik yang berjalan di dalam aplikasi Office seperti Excel; sintaksnya mirip, tetapi runtime dan librarynya berbeda."
+    },
+    {
+      "q": "Sebaiknya belajar VB.NET atau C#?",
+      "a": "Jika Anda memelihara kode VB atau menginginkan sintaks yang sangat mudah dibaca, VB.NET tidak masalah. Untuk proyek baru, peluang kerja, dan fitur .NET terbaru, C# biasanya investasi yang lebih baik, dan library yang Anda pelajari dapat dipakai di keduanya."
+    },
+    {
+      "q": "Apakah Visual Basic peka huruf besar/kecil?",
+      "a": "Tidak. `Dim Total`, `total`, dan `TOTAL` merujuk ke variabel yang sama, dan editor biasanya menormalkan huruf kapitalnya untuk Anda."
+    }
+  ]
+}

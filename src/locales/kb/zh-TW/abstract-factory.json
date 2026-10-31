@@ -1,0 +1,182 @@
+{
+  "title": "抽象工廠模式：物件系列與 TypeScript 範例 — cv.cm",
+  "description": "說明抽象工廠（Abstract Factory）設計模式：不指定具體類別，就能建立一整個系列的相關物件。附 TypeScript 範例、用途與陷阱。",
+  "h1": "抽象工廠模式詳解與範例",
+  "answer": "抽象工廠是一種建立型設計模式，它提供一個介面，用來建立一整個系列的相關物件，而不需要指定它們的具體類別。用戶端程式碼會拿到一個工廠物件，例如 `LightThemeFactory` 或 `DarkThemeFactory`，再向它索取每一種產品（按鈕、對話框）。因為整個系列都由同一個工廠建立，這些產品一定彼此相配，只要換一個工廠傳入，就能切換整個系列。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "提供一個介面，用來建立一系列相關或相依的物件，而不指定它們的具體類別。抽象工廠是《設計模式》（Gang of Four，簡稱 GoF）一書中五種建立型模式之一，在書中也稱為 Kit。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個報表應用程式，可以為兩種目標輸出：網頁和純文字終端機。每個目標都需要自己版本的幾種元件：標題、表格和警告方塊。網頁的標題不能和終端機的表格混用，否則輸出就會壞掉。",
+        "如果報表程式碼直接呼叫 `new HtmlHeading()` 和 `new TextTable()`，它就綁死在具體類別上，目標的選擇散落在許多行程式碼中，也沒有任何機制能阻止有人把不同系列混在一起。抽象工廠把同一個系列的所有建立動作放在同一個物件後面，因此選擇只會在一個地方做出。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "抽象工廠（AbstractFactory）",
+                "為每一種產品類型宣告一個建立方法。",
+                "`UiFactory`"
+              ],
+              [
+                "具體工廠（ConcreteFactory）",
+                "實作某一個系列的建立方法。",
+                "`HtmlFactory`、`TextFactory`"
+              ],
+              [
+                "抽象產品（AbstractProduct）",
+                "某一種產品的介面。",
+                "`Heading`、`Alert`"
+              ],
+              [
+                "具體產品（ConcreteProduct）",
+                "屬於特定系列的產品。",
+                "`HtmlHeading`、`TextAlert`"
+              ],
+              [
+                "用戶端",
+                "只使用抽象工廠與抽象產品的介面。",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "唯一提到具體類別名稱的地方，就是選擇工廠的那一行。`renderReport` 可以搭配任何系列運作，而且不可能不小心混用 HTML 和文字的元件，因為它所有的產品都來自同一個工廠。",
+        "在實際的程式中，產品通常會是方法更多的類別。這裡用物件字面值是為了讓範例簡短，結構是一樣的。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用抽象工廠：",
+        {
+          "ul": [
+            "系統必須處理好幾個系列的相關產品，而且不同系列的產品不能混合使用（UI 主題、作業系統的元件、有成套連線與命令物件的資料庫驅動程式）。",
+            "你想在設定階段一次選定系列，並讓其餘程式碼與該選擇無關。",
+            "你想讓測試能透過一個工廠，提供整個系列的假物件。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "只有一個系列。直接使用 `new` 或一個工廠函式會更簡單。",
+            "產品類型經常變動。新增一種產品，例如 `createTable()`，會迫使你修改工廠介面和每一個具體工廠。這正是 GoF 一書列出的主要弱點。"
+          ]
+        },
+        {
+          "note": "不要把「許多產品變化版本」和「許多系列」搞混。如果你只需要為一個介面挑選一個實作，用工廠方法或單純的依賴注入就夠了。"
+        }
+      ]
+    },
+    {
+      "h": "抽象工廠與工廠方法的比較",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "面向",
+              "工廠方法",
+              "抽象工廠"
+            ],
+            "rows": [
+              [
+                "建立",
+                "一個產品",
+                "一個系列的相關產品"
+              ],
+              [
+                "機制",
+                "由子類別覆寫一個建立方法",
+                "用戶端取得一個含有多個建立方法的工廠物件"
+              ],
+              [
+                "依賴",
+                "繼承",
+                "組合"
+              ],
+              [
+                "容易新增",
+                "新的產品變化版本（新的子類別）",
+                "新的系列（新的工廠類別）"
+              ],
+              [
+                "難以新增",
+                "幾乎沒有；每個建立者都是獨立的",
+                "新的產品類型（每個工廠都要更動）"
+              ]
+            ]
+          }
+        },
+        "兩者常常結合使用：具體工廠的每個建立方法，本身就是一個工廠方法。"
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 XML API：`DocumentBuilderFactory` 和 `TransformerFactory` 是抽象類別。`newInstance()` 會找出具體實作，而使用它們的程式碼只依賴抽象型別。",
+            "Java 的 JDBC API 運作方式類似：資料庫驅動程式會提供彼此相配的 `Connection`、`Statement` 和 `ResultSet` 實作，應用程式碼則只使用這些介面。",
+            "GoF 一書自己的範例是支援多種外觀風格標準的使用者介面工具箱，每種標準有一個工廠，建立相配的捲軸、視窗與按鈕。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "ul": [
+            "工廠方法：具體工廠常把它的建立方法實作成工廠方法。",
+            "原型：工廠可以用原型物件來設定，並透過複製來建立產品，如此就不必為每個系列各寫一個工廠子類別。",
+            "單例：應用程式通常每個具體工廠只需要一個實例。",
+            "建造者：同樣會隱藏建構的細節，但它是一步一步建構單一的複雜物件，而抽象工廠則是立即回傳完成的產品。",
+            "橋接：抽象工廠可以建立並設定橋接中的實作端。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "什麼是產品系列？",
+      "a": "一組設計成要搭配使用的物件，例如某個 UI 主題的按鈕、選單與對話框。混用不同系列的產品，會得到不一致甚至壞掉的結果。"
+    },
+    {
+      "q": "如何為抽象工廠新增產品類型？",
+      "a": "你要在工廠介面中加入一個建立方法，並在每個具體工廠中實作它。這也是為什麼這個模式最適合用在產品類型集合穩定的情況。"
+    },
+    {
+      "q": "抽象工廠就是依賴注入嗎？",
+      "a": "不是，但兩者搭配得很好。依賴注入是從外部提供物件；抽象工廠則是一種當用戶端需要自己建立數個相關物件時，可以拿來注入的物件。"
+    },
+    {
+      "q": "抽象工廠可以是函式而不是類別嗎？",
+      "a": "可以。在 TypeScript 中，工廠可以只是一個由建立函式組成、並符合工廠介面的普通物件。這個模式重視的是介面與系列，而不是類別。"
+    }
+  ]
+}

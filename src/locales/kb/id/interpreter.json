@@ -1,0 +1,147 @@
+{
+  "title": "Pola Interpreter: grammar, expression tree, dan contoh TypeScript — cv.cm",
+  "description": "Pola Interpreter memodelkan setiap aturan grammar sebagai class dan mengevaluasi kalimat sebagai pohon. Buat bahasa ekspresi mini di TypeScript.",
+  "h1": "Penjelasan pola Interpreter beserta contohnya",
+  "answer": "Interpreter adalah pola desain behavioral yang mendefinisikan representasi grammar sebuah bahasa kecil dan interpreter yang mengevaluasi kalimat dalam bahasa itu. Setiap aturan grammar menjadi sebuah class, sebuah kalimat menjadi pohon objek-objek tersebut (abstract syntax tree), dan mengevaluasi kalimat berarti memanggil `interpret` pada root, yang secara rekursif menginterpretasikan anak-anaknya. Pola ini cocok untuk bahasa kecil dan sederhana seperti filter, aturan, dan rumus.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: untuk sebuah bahasa, definisikan representasi grammar-nya beserta interpreter yang memakai representasi itu untuk menginterpretasikan kalimat dalam bahasa tersebut. Interpreter adalah salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Misalkan pengguna sistem penetapan harga ingin menulis aturan diskon sendiri, seperti `price * 0.9` atau `price - 5`, dan aturan itu harus disimpan di database lalu dievaluasi nanti. Menulis tiap aturan langsung di kode tidak mungkin, karena pengguna terus membuat aturan baru. Anda butuh bahasa kecil dan cara untuk mengevaluasinya.",
+        "Pola Interpreter memberi desain sederhana untuk langkah evaluasi itu. Angka, variabel, dan operator masing-masing menjadi sebuah class. Aturan seperti `price * 0.9` menjadi pohon: node perkalian dengan node variabel dan node angka sebagai anaknya. Untuk menghitung hasilnya, Anda memanggil `interpret` pada node perkalian dengan context yang menyimpan harga saat ini."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Abstract expression",
+                "Mendeklarasikan operasi `interpret(context)` yang dipakai bersama oleh semua node"
+              ],
+              [
+                "Terminal expression",
+                "Daun pohon, seperti literal angka atau nama variabel"
+              ],
+              [
+                "Nonterminal expression",
+                "Aturan grammar yang tersusun dari ekspresi lain, seperti penjumlahan atau perkalian; ia menginterpretasikan anak-anaknya dan menggabungkan hasilnya"
+              ],
+              [
+                "Context",
+                "Informasi global untuk interpretasi, seperti nilai variabel"
+              ],
+              [
+                "Client",
+                "Membangun syntax tree (manual atau dengan parser) dan memanggil `interpret`"
+              ]
+            ]
+          }
+        },
+        "Grammar untuk contoh di bawah, ditulis dalam notasi sederhana:",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "Setiap aturan grammar adalah class yang mengimplementasikan `Expression`. Fungsi `parse` mengubah ekspresi berpemisah spasi dalam notasi postfix (operator setelah operandnya) menjadi pohon, sehingga parser tetap pendek.",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "Pohon untuk `price 0.9 * 5 -` adalah node pengurangan dengan anak kiri berupa node perkalian (berisi `price` dan `0.9`) dan anak kanan berupa angka `5`. Setelah di-parse, pohon yang sama bisa dievaluasi berkali-kali dengan context yang berbeda.",
+        {
+          "note": "Pola ini menjelaskan cara merepresentasikan dan mengevaluasi sebuah kalimat, bukan cara mem-parse teks. Input sungguhan membutuhkan parser yang layak dengan pesan error; parser postfix minimal di atas tidak memvalidasi input yang salah format."
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila bahasanya kecil dan grammar-nya sederhana: filter pencarian, aturan feature flag, ekspresi izin, konversi satuan, atau rumus ala spreadsheet.",
+            "Pakai bila ekspresi yang sama dievaluasi berkali-kali dengan data berbeda, sehingga membangun pohon sekali saja sudah menguntungkan.",
+            "Jangan dipakai untuk bahasa besar. Satu class per aturan menjadi sulit dirawat; gunakan parser generator atau bahasa tertanam yang sudah ada.",
+            "Jangan dipakai bila performa sangat penting. Menelusuri pohon objek lebih lambat daripada mengompilasi ke bytecode atau kode mesin.",
+            "Jangan pernah menyelesaikan masalah ini dengan `eval` pada input pengguna. Interpreter kecil hanya mendukung operasi yang Anda definisikan, yang jauh lebih aman."
+          ]
+        },
+        "Untuk menambah operasi baru pada pohon yang sama, seperti pretty-printing atau pengecekan tipe, gabungkan Interpreter dengan Visitor alih-alih menambah method ke setiap class node."
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Mesin regular expression mengompilasi pola menjadi pohon atau graf objek node; pencocokan menelusuri node-node itu, yaitu gagasan Interpreter yang diterapkan pada grammar regex.",
+            "Tool bahasa merepresentasikan kode sumber sebagai abstract syntax tree: modul `ast` Python dan spesifikasi ESTree yang dipakai tool JavaScript seperti Babel dan ESLint menjelaskan tipe node untuk setiap aturan grammar.",
+            "Database SQL mem-parse klausa `WHERE` menjadi expression tree dan mengevaluasinya untuk setiap baris.",
+            "Template engine dan rule engine mengevaluasi ekspresi kecil di dalam template atau aturan bisnis."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Hubungannya dengan Interpreter"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Syntax tree adalah Composite: nonterminal expression berisi ekspresi lain. Interpreter menambahkan makna pada setiap node."
+              ],
+              [
+                "Visitor",
+                "Visitor memindahkan operasi keluar dari class node, sehingga banyak operasi (evaluasi, cetak, pengecekan) dapat berbagi satu pohon."
+              ],
+              [
+                "Iterator",
+                "Iterator dapat menelusuri node syntax tree tanpa membuka cara penyimpanannya."
+              ],
+              [
+                "Flyweight",
+                "Simbol terminal yang sering berulang, seperti konstanta umum, dapat dibagi sebagai flyweight."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara terminal dan nonterminal expression?",
+      "a": "Terminal expression adalah daun yang tidak bisa diuraikan lagi, seperti angka atau variabel. Nonterminal expression mewakili aturan yang tersusun dari ekspresi lain, seperti penjumlahan, dan menginterpretasikan anak-anaknya untuk menghasilkan hasilnya."
+    },
+    {
+      "q": "Apakah pola Interpreter mencakup parser?",
+      "a": "Tidak. Pola ini mengasumsikan Anda sudah punya syntax tree. Anda bisa membangun pohon secara manual, menulis parser kecil, atau memakai parser generator."
+    },
+    {
+      "q": "Kapan sebaiknya tidak memakai pola Interpreter?",
+      "a": "Hindari untuk grammar yang kompleks atau kode yang kritis terhadap performa. Bahasa besar membutuhkan terlalu banyak class, dan evaluasi dengan menelusuri pohon lebih lambat daripada pendekatan terkompilasi."
+    },
+    {
+      "q": "Apa hubungan Interpreter dengan Composite?",
+      "a": "Syntax tree pada Interpreter berbentuk sama dengan Composite: daun dan node yang berisi node lain, semuanya dengan interface yang sama. Interpreter memberi struktur itu makna tertentu, yaitu mengevaluasi sebuah bahasa."
+    }
+  ]
+}

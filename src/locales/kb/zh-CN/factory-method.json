@@ -1,0 +1,168 @@
+{
+  "title": "工厂方法模式：意图、结构与 TypeScript 示例 — cv.cm",
+  "description": "工厂方法模式（Factory Method）详解：由子类决定创建哪种对象。含 TypeScript 示例、适用场景，以及与抽象工厂的区别。",
+  "h1": "工厂方法模式详解与示例",
+  "answer": "工厂方法是一种创建型设计模式，它定义一个创建对象的方法，但让子类决定实例化哪个具体类。基类的逻辑围绕产品接口来写，并调用 `createTransport()` 这类工厂方法，而不是直接用 `new`。这样只需新增一个子类，就能加入新的产品类型，而无需修改使用这些产品的代码。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "定义一个用于创建对象的接口，但让子类决定实例化哪个类。工厂方法使一个类把实例化推迟到子类。它是《设计模式》（四人组，GoF）一书中五种创建型模式之一，也是其中唯一作用于类的创建型模式，因为它依赖继承。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "设想一个通知模块：它格式化消息、发送消息，并记录结果。起初只发邮件，所以代码直接调用 `new EmailChannel()`。后来产品需要短信，再后来又要推送通知。每增加一个渠道，就得修改同一个类、再加一个 `if` 分支，而格式化和记录日志这些步骤其实从未变过。",
+        "发送流程是稳定的，变化的只是渠道的种类。工厂方法把这个唯一会变的决定，也就是创建哪个类，收拢到一个可重写的方法里。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责",
+              "示例中的对应"
+            ],
+            "rows": [
+              [
+                "产品（Product）",
+                "工厂方法所创建对象的接口。",
+                "`Channel`"
+              ],
+              [
+                "具体产品（ConcreteProduct）",
+                "实现产品接口。",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "创建者（Creator）",
+                "声明工厂方法，并包含使用产品的逻辑。",
+                "`Notifier`"
+              ],
+              [
+                "具体创建者（ConcreteCreator）",
+                "重写工厂方法，返回某个具体产品。",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "现在要加推送通知，只需编写 `PushChannel` 和 `PushNotifier`。`notify` 方法以及它的所有调用方都保持不变。",
+        "应用该模式之前，创建哪个对象的决定被埋在共用逻辑里：",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "更轻量的替代：传入一个工厂函数",
+      "body": [
+        "工厂方法依赖继承。在 TypeScript 中，往往可以通过组合获得同样的灵活性：把创建函数传给构造函数。这样就不必为每种产品写一个子类：",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "如果每个创建者本来就因为其他原因有各自的类，或者框架要求你继承某个基类，就用子类版本。如果各个变体之间唯一的差别就是创建的对象，就用函数版本。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用工厂方法：",
+        {
+          "ul": [
+            "一个类包含稳定的算法，却无法事先知道必须创建哪些具体对象。",
+            "你在编写框架或库，希望用户通过继承来接入自己的产品类。",
+            "你希望把某个类型的创建逻辑集中在一处，而不是到处散落 `new` 调用。"
+          ]
+        },
+        "以下情况应避免使用：",
+        {
+          "ul": [
+            "只有一种产品类型，也没有出现第二种的迹象。直接 `new` 更清晰。",
+            "唯一的理由是为了方便测试。通过构造函数传入依赖更简单。",
+            "你会建立一套与产品一一对应、却没有其他逻辑的平行创建者层级。"
+          ]
+        },
+        {
+          "note": "“静态工厂方法”，例如 `Array.from()` 或 `Promise.resolve()`，是另一回事：它是一个返回实例的具名静态函数。它很有用，但不是 GoF 的工厂方法，因为后者依赖子类重写某个方法。"
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Java 集合：`Iterable.iterator()` 只声明一次，每个集合类（`ArrayList`、`HashSet` 等）各自重写它，返回自己的迭代器类。GoF 一书就是用工厂方法来描述这种多态迭代。",
+            "JavaScript 可迭代对象：每个可迭代对象都实现 `[Symbol.iterator]()`，这个方法返回一个适合该集合的新迭代器。",
+            "UI 框架通常允许子类重写创建组件、单元格或视图的方法，而基类负责控制布局和生命周期。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "区别"
+            ],
+            "rows": [
+              [
+                "抽象工厂",
+                "通过一个带有多个创建方法的对象，创建一整个系列的相关产品。它的各个方法通常用工厂方法来实现。"
+              ],
+              [
+                "模板方法",
+                "工厂方法常常在模板方法里被调用，就像上面的 `notify` 调用 `createChannel` 一样。"
+              ],
+              [
+                "原型",
+                "通过复制现有实例来创建对象，而不是继承创建者，因此不需要平行的创建者层级。"
+              ],
+              [
+                "建造者",
+                "关注的是一步步构造一个复杂对象，而不是选择创建哪个类。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "工厂方法与抽象工厂有什么区别？",
+      "a": "工厂方法是单个方法，由子类重写来创建一种产品。抽象工厂是一个带有多个创建方法的对象，用来产出必须配套使用的一系列相关产品。"
+    },
+    {
+      "q": "简单的工厂函数就是工厂方法吗？",
+      "a": "不完全是。像 `createShape(kind)` 这样内部用 switch 的函数，通常称为简单工厂。GoF 的工厂方法依赖子类重写创建方法，不过两者都对客户端隐藏了 `new`。"
+    },
+    {
+      "q": "工厂方法符合开闭原则吗？",
+      "a": "符合。新增产品时，只需添加一个新的产品类和一个新的创建者子类，而不必改动创建者已有的逻辑。"
+    },
+    {
+      "q": "工厂方法必须是抽象的吗？",
+      "a": "不必。基类可以提供一个返回标准产品的默认实现，子类只在需要不同产品时才重写它。"
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "title": "Penjelasan merge sort: divide and conquer, kode Python, dan kompleksitas — cv.cm",
+  "description": "Merge sort membagi list menjadi dua, mengurutkan tiap bagian, lalu menggabungkannya dalam waktu O(n log n). Penelusuran, kode Python, langkah merge, stabilitas, dan kapan memakainya.",
+  "h1": "Penjelasan merge sort: cara kerja, kode, dan kompleksitas",
+  "answer": "Merge sort adalah algoritma pengurutan divide-and-conquer. Algoritma ini membagi list menjadi dua bagian, mengurutkan setiap bagian secara rekursif, lalu menggabungkan dua bagian terurut itu menjadi satu list terurut dengan berulang kali mengambil elemen depan yang lebih kecil. Waktunya selalu O(n log n), stabil, dan membutuhkan memori tambahan O(n) untuk penggabungan. Ini dasar dari Timsort, algoritma di balik `sorted()` Python, dan dari external sorting untuk data yang tidak muat di memori.",
+  "sections": [
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "List dengan nol atau satu elemen sudah terurut. Untuk list yang lebih panjang:",
+        {
+          "ol": [
+            "Divide: bagi list menjadi bagian kiri dan bagian kanan.",
+            "Conquer: urutkan setiap bagian dengan merge sort.",
+            "Combine: gabungkan dua bagian terurut. Bandingkan elemen pertama dari masing-masing, pindahkan yang lebih kecil ke output, dan ulangi sampai salah satu bagian habis; lalu salin sisa bagian yang lain."
+          ]
+        },
+        "Semua pekerjaan sebenarnya terjadi di langkah merge, dan menggabungkan dua list terurut dengan total panjang n hanya butuh paling banyak n − 1 perbandingan."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Urutkan `[38, 27, 43, 3, 9, 82, 10]`.",
+        {
+          "table": {
+            "head": [
+              "Tingkat",
+              "Sublist"
+            ],
+            "rows": [
+              [
+                "Pecah 1",
+                "`[38, 27, 43]`  `[3, 9, 82, 10]`"
+              ],
+              [
+                "Pecah 2",
+                "`[38]` `[27, 43]`  `[3, 9]` `[82, 10]`"
+              ],
+              [
+                "Pecah 3",
+                "`[38]` `[27]` `[43]`  `[3]` `[9]` `[82]` `[10]`"
+              ],
+              [
+                "Gabung 1",
+                "`[38]` `[27, 43]`  `[3, 9]` `[10, 82]`"
+              ],
+              [
+                "Gabung 2",
+                "`[27, 38, 43]`  `[3, 9, 10, 82]`"
+              ],
+              [
+                "Gabung 3",
+                "`[3, 9, 10, 27, 38, 43, 82]`"
+              ]
+            ]
+          }
+        },
+        "Penggabungan terakhir membandingkan elemen depan: 27 vs 3 mengambil 3, 27 vs 9 mengambil 9, 27 vs 10 mengambil 10, 27 vs 82 mengambil 27, 38 vs 82 mengambil 38, 43 vs 82 mengambil 43, lalu 82 disalin. Enam perbandingan untuk tujuh elemen."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def merge(left, right):\n    out, i, j = [], 0, 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:     # <= takes from left on ties: stable\n            out.append(left[i]); i += 1\n        else:\n            out.append(right[j]); j += 1\n    out.extend(left[i:])            # one of these is empty\n    out.extend(right[j:])\n    return out\ndef merge_sort(items):\n    \"\"\"Return a new sorted list.\"\"\"\n    if len(items) <= 1:\n        return list(items)\n    mid = len(items) // 2\n    return merge(merge_sort(items[:mid]), merge_sort(items[mid:]))\nprint(merge_sort([38, 27, 43, 3, 9, 82, 10]))   # [3, 9, 10, 27, 38, 43, 82]\nprint(merge_sort([]))                           # []",
+          "lang": "python"
+        },
+        "Versi top-down ini jelas tetapi menyalin slice. Versi bottom-up menghindari rekursi sepenuhnya: gabungkan run berlebar 1, lalu 2, lalu 4, dan seterusnya.",
+        {
+          "code": "def merge_sort_bottom_up(items):\n    a = list(items)\n    width = 1\n    while width < len(a):\n        for lo in range(0, len(a), 2 * width):\n            mid, hi = lo + width, lo + 2 * width\n            a[lo:hi] = merge(a[lo:mid], a[mid:hi])\n        width *= 2\n    return a",
+          "lang": "python"
+        },
+        "Versi bottom-up memakai ulang `merge` dari atas. Pustaka standar juga punya `heapq.merge`, yang menggabungkan sejumlah iterable terurut secara lazy."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Terbaik",
+                "O(n log n)",
+                "selalu membagi dan menggabungkan, apa pun urutannya"
+              ],
+              [
+                "Rata-rata",
+                "O(n log n)",
+                "sekitar log₂ n tingkat, pekerjaan merge O(n) per tingkat"
+              ],
+              [
+                "Terburuk",
+                "O(n log n)",
+                "rekursi yang sama; tidak ada input yang buruk"
+              ],
+              [
+                "Ruang tambahan",
+                "O(n)",
+                "buffer untuk penggabungan, ditambah stack rekursi O(log n)"
+              ]
+            ]
+          }
+        },
+        "Rekurensinya adalah T(n) = 2T(n/2) + O(n). Setiap tingkat pada pohon rekursi mengerjakan O(n) secara total dan ada sekitar log₂ n tingkat, sehingga totalnya O(n log n). Untuk sejuta item itu sekitar 20 tingkat."
+      ]
+    },
+    {
+      "h": "Perbandingan merge sort dengan sort lain",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Terbaik",
+              "Rata-rata",
+              "Terburuk",
+              "Ruang tambahan",
+              "Stabil"
+            ],
+            "rows": [
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Tidak"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Ya"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Tidak"
+              ],
+              [
+                "Timsort (`sorted` di Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Ya"
+              ]
+            ]
+          }
+        },
+        "Merge sort stabil karena merge mengambil dari bagian kiri ketika dua elemen sama, sehingga elemen yang sama mempertahankan urutannya. Dibandingkan quicksort, merge sort punya kasus terburuk O(n log n) yang terjamin tetapi butuh memori tambahan O(n) dan biasanya lebih banyak perpindahan data pada array. Dibandingkan heapsort, merge sort stabil dan mengakses memori secara berurutan, yang bersahabat dengan cache dan disk."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Natural merge sort mendeteksi run yang sudah terurut dan menggabungkannya, menghasilkan O(n) pada input terurut. Timsort adalah natural merge sort yang disempurnakan dan memakai binary insertion sort untuk run pendek.",
+            "Beralihlah ke insertion sort untuk sublist kecil (misalnya kurang dari sekitar 10 sampai 30 elemen) untuk memangkas overhead.",
+            "Pada linked list, merge sort tidak butuh buffer tambahan: penggabungan hanya menyambung ulang node, sehingga ini pilihan yang lazim untuk mengurutkan linked list.",
+            "External merge sort mengurutkan potongan yang muat di memori, menuliskannya ke disk, lalu melakukan k-way merge. Database dan alat seperti `sort` dari GNU memakai ide ini untuk file besar.",
+            "Menghitung inversi: saat merge, setiap kali elemen diambil dari bagian kanan, elemen itu lebih kecil daripada semua elemen yang tersisa di bagian kiri."
+          ]
+        },
+        {
+          "note": "Bug yang umum: memakai `<` alih-alih `<=` pada merge (merusak stabilitas), lupa menyalin sisa ekor setelah perulangan, dan menghitung `mid` sehingga satu bagian kosong dan bagian lain adalah seluruh list, yang membuat rekursi tak berujung."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai merge sort",
+      "body": [
+        "Pilih merge sort ketika Anda butuh sort stabil dengan waktu O(n log n) yang terjamin, saat mengurutkan linked list, atau ketika data terlalu besar untuk memori. Di Python, cukup panggil `sorted()` atau `list.sort()`: keduanya mengimplementasikan Timsort, yang merupakan varian merge sort, jadi sifat-sifat ini sudah Anda dapatkan. Menulis merge sort sendiri adalah tugas wawancara klasik, sering diperluas menjadi menghitung inversi atau menggabungkan k list terurut."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah merge sort stabil?",
+      "a": "Ya, selama merge mengambil dari bagian kiri ketika elemen sama (`<=`). Elemen yang sama lalu mempertahankan urutan aslinya."
+    },
+    {
+      "q": "Berapa kompleksitas waktu merge sort?",
+      "a": "O(n log n) pada kasus terbaik, rata-rata, dan terburuk. List dibagi dua sekitar log₂ n kali, dan setiap tingkat penggabungan berbiaya O(n)."
+    },
+    {
+      "q": "Mengapa merge sort butuh ruang tambahan?",
+      "a": "Menggabungkan dua bagian array di tempat secara efisien itu sulit, jadi implementasi umum menulis hasil penggabungan ke buffer terpisah berukuran n. Varian in-place ada tetapi rumit dan lebih lambat dalam praktik."
+    },
+    {
+      "q": "Apakah merge sort lebih cepat daripada quicksort?",
+      "a": "Biasanya tidak untuk array di memori: quicksort cenderung lebih cepat rata-rata karena memindahkan lebih sedikit data dan tidak butuh buffer. Merge sort menang ketika Anda butuh stabilitas, kasus terburuk yang terjamin, linked list, atau external sorting."
+    },
+    {
+      "q": "Apakah Python memakai merge sort?",
+      "a": "`sorted()` dan `list.sort()` di Python memakai Timsort, hibrida merge sort dan insertion sort. Sejak Python 3.11, strategi merge-nya didasarkan pada powersort."
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "title": "Minimum spanning tree: algoritma Kruskal dan Prim di Python — cv.cm",
+  "description": "Pelajari minimum spanning tree: algoritma Kruskal dengan union-find dan algoritma Prim dengan heap, contoh penelusuran, kode Python, dan biaya O(E log E).",
+  "h1": "Penjelasan minimum spanning tree: algoritma Kruskal dan Prim",
+  "answer": "Minimum spanning tree (MST) dari graf terhubung, tak berarah, dan berbobot adalah himpunan edge yang menghubungkan semua node tanpa siklus dan memiliki total bobot sekecil mungkin. Algoritma Kruskal mengurutkan semua edge dan menambahkan edge termurah yang tidak membentuk siklus, dengan union-find. Algoritma Prim menumbuhkan satu pohon dari node awal, selalu menambahkan edge termurah yang keluar dari pohon, dengan priority queue. Keduanya berjalan dalam waktu O(E log E).",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan minimum spanning tree",
+      "body": [
+        "Misalkan Anda harus menghubungkan beberapa gedung dengan kabel, beberapa kota dengan jalan, atau beberapa server dengan tautan jaringan, dan setiap sambungan yang mungkin punya biaya. Anda ingin setiap tempat terhubung (langsung maupun tidak langsung) dengan total biaya terendah. Sambungan tambahan yang membentuk lingkaran tidak pernah diperlukan, sehingga jawabannya berupa pohon: V node yang dihubungkan oleh tepat V − 1 edge. Pohon itulah minimum spanning tree.",
+        "MST bukan shortest-path tree. MST meminimalkan total bobot semua edge, bukan jarak dari satu node awal ke node lain."
+      ]
+    },
+    {
+      "h": "Mengapa pilihan greedy berhasil: cut property",
+      "body": [
+        "Bagi node menjadi dua kelompok mana pun. Dari edge yang menyeberang antar kelompok, edge teringan termasuk dalam suatu minimum spanning tree. Kedua algoritma bertumpu pada fakta ini:",
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Aturan greedy",
+              "Struktur data bantu"
+            ],
+            "rows": [
+              [
+                "Kruskal (1956)",
+                "Ambil edge dari yang teringan sampai terberat; simpan edge jika ia menghubungkan dua komponen berbeda.",
+                "Union-find (disjoint set union)"
+              ],
+              [
+                "Prim (1957; juga Jarník, 1930)",
+                "Tumbuhkan satu pohon; berulang kali tambahkan edge teringan dari pohon ke node di luarnya.",
+                "Priority queue min-heap"
+              ]
+            ]
+          }
+        },
+        "Jika semua bobot edge berbeda, MST bersifat unik, sehingga kedua algoritma menghasilkan pohon yang sama. Dengan bobot yang sama, bisa ada beberapa MST dengan total yang sama."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Graf tak berarah dengan 5 node dan edge A–B 4, A–C 3, B–C 1, B–D 2, C–D 4, D–E 2, C–E 5.",
+        "Algoritma Kruskal, edge diurutkan berdasarkan bobot:",
+        {
+          "table": {
+            "head": [
+              "Edge",
+              "Bobot",
+              "Keputusan",
+              "Komponen setelahnya"
+            ],
+            "rows": [
+              [
+                "B–C",
+                "Tambah",
+                "Add",
+                "{B, C} {A} {D} {E}"
+              ],
+              [
+                "Tambah",
+                "2",
+                "Add",
+                "Tambah"
+              ],
+              [
+                "D–E",
+                "2",
+                "Tambah",
+                "{A, B, C, D, E}: 4 edge, selesai"
+              ],
+              [
+                "A–C",
+                "Tidak diperlukan (masing-masing akan membentuk siklus)",
+                "Algoritma Prim dari A: edge termurah yang keluar dari {A} adalah A–C (3); dari {A, C} adalah C–B (1); dari {A, B, C} adalah B–D (2); dari {A, B, C, D} adalah D–E (2). Pohonnya sama, total bobot 3 + 1 + 2 + 2 = 8.",
+                "Algoritma Kruskal di Python"
+              ],
+              [
+                "Union-find menyimpan satu pointer parent per node. `find` mengembalikan perwakilan komponen sebuah node, dan dua node terhubung tepat ketika perwakilannya sama.",
+                "Union-find lengkap juga memakai union by rank atau size, yang menjaga pohon tetap dangkal. Path halving saja sudah cepat dalam praktik. Anda bisa menghentikan loop lebih awal begitu pohon memiliki V − 1 edge.",
+                "Algoritma Prim di Python",
+                "Algoritma Prim membutuhkan adjacency list. Ia memakai lazy deletion seperti algoritma Dijkstra: masukkan setiap edge yang keluar dari pohon, dan lewati edge yang ujung seberangnya sudah ada di pohon."
+              ]
+            ]
+          }
+        },
+        "Kompleksitas waktu dan ruang"
+      ]
+    },
+    {
+      "h": "Algoritma",
+      "body": [
+        "Waktu",
+        {
+          "code": "def kruskal(nodes, edges):\n    parent = {n: n for n in nodes}\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]   # path halving\n            x = parent[x]\n        return x\n\n    tree, total = [], 0\n    for w, u, v in sorted(edges):\n        ru, rv = find(u), find(v)\n        if ru != rv:                          # different components: no cycle\n            parent[ru] = rv\n            tree.append((u, v, w))\n            total += w\n    return tree, total\n\nnodes = \"ABCDE\"\nedges = [(4, \"A\", \"B\"), (3, \"A\", \"C\"), (1, \"B\", \"C\"), (2, \"B\", \"D\"),\n         (4, \"C\", \"D\"), (2, \"D\", \"E\"), (5, \"C\", \"E\")]\nprint(kruskal(nodes, edges))\n# ([('B', 'C', 1), ('B', 'D', 2), ('D', 'E', 2), ('A', 'C', 3)], 8)",
+          "lang": "python"
+        },
+        "Ruang"
+      ]
+    },
+    {
+      "h": "Terbaik untuk",
+      "body": [
+        "Prim's algorithm needs an adjacency list. It uses lazy deletion like Dijkstra's algorithm: push every edge that leaves the tree, and skip edges whose far end is already in the tree.",
+        {
+          "code": "import heapq\nfrom collections import defaultdict\n\ndef prim(edges, start):\n    graph = defaultdict(list)\n    for w, u, v in edges:\n        graph[u].append((w, u, v))\n        graph[v].append((w, v, u))\n    in_tree = {start}\n    heap = list(graph[start])\n    heapq.heapify(heap)\n    tree, total = [], 0\n    while heap:\n        w, u, v = heapq.heappop(heap)\n        if v in in_tree:\n            continue\n        in_tree.add(v)\n        tree.append((u, v, w))\n        total += w\n        for edge in graph[v]:\n            if edge[2] not in in_tree:\n                heapq.heappush(heap, edge)\n    return tree, total\n\nprint(prim(edges, \"A\"))\n# ([('A', 'C', 3), ('C', 'B', 1), ('B', 'D', 2), ('D', 'E', 2)], 8)",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Graf jarang, atau edge yang sudah berupa list. Pengurutan mendominasi; union-find hampir O(1) per operasi.",
+              "Prim dengan binary heap",
+              "Best for"
+            ],
+            "rows": [
+              [
+                "Kruskal",
+                "Graf dalam bentuk adjacency list.",
+                "Prim dengan array (tanpa heap)",
+                "Sparse graphs, or edges already given as a list. Sorting dominates; union-find is nearly O(1) per operation."
+              ],
+              [
+                "Prim with binary heap",
+                "Graf padat, misalnya semua pasangan titik.",
+                "Karena E paling besar V², log E paling besar 2 log V, sehingga O(E log E) dan O(E log V) berorde sama.",
+                "Varian dan kesalahan umum"
+              ],
+              [
+                "Graf tidak terhubung: tidak ada spanning tree. Kruskal lalu mengembalikan minimum spanning forest (satu pohon per komponen); Prim dari satu titik awal hanya mencakup komponen titik itu. Periksa bahwa pohon memiliki V − 1 edge.",
+                "Maximum spanning tree: urutkan edge secara menurun (atau negasikan bobotnya). Bobot negatif tidak masalah untuk kedua algoritma.",
+                "Graf berarah membutuhkan algoritma lain (minimum arborescence, Chu-Liu/Edmonds); Kruskal dan Prim tidak berlaku.",
+                "Clustering: jalankan Kruskal dan berhenti ketika tersisa k komponen. Hasilnya single-linkage clustering menjadi k kelompok."
+              ]
+            ]
+          }
+        },
+        "Algoritma Borůvka, dari 1926, menambahkan edge termurah dari setiap komponen sekaligus dan mudah diparalelkan."
+      ]
+    },
+    {
+      "h": "Bug umum pada Kruskal adalah memeriksa siklus dengan himpunan node yang dikunjungi, bukan union-find. Dua node bisa sama-sama sudah dikunjungi tetapi berada di komponen berbeda, sehingga edge di antara keduanya tetap dibutuhkan. Hanya \"komponen yang sama\" yang berarti \"akan membentuk siklus\".",
+      "body": [
+        {
+          "ul": [
+            "Kapan memakainya dan penggunaannya di dunia nyata",
+            "Desain jaringan: cara termurah menghubungkan lokasi dengan kabel, pipa, atau jalan, ketika tata letak terhubung apa pun dapat diterima.",
+            "Algoritma aproksimasi: MST menghasilkan tur yang panjangnya paling banyak dua kali panjang optimal untuk metric traveling salesman problem.",
+            "Clustering dan segmentasi gambar dengan memotong edge terberat MST.",
+            "Soal wawancara: min cost to connect all points, connecting cities with minimum cost, optimize water distribution in a village."
+          ]
+        },
+        {
+          "note": "Apa perbedaan algoritma Kruskal dan Prim?"
+        }
+      ]
+    },
+    {
+      "h": "Kruskal memproses semua edge secara global dari teringan ke terberat dan menggabungkan komponen dengan union-find. Prim menumbuhkan satu pohon dari satu node dengan priority queue. Keduanya menemukan minimum spanning tree.",
+      "body": [
+        {
+          "ul": [
+            "Apakah minimum spanning tree itu unik?",
+            "Unik bila semua bobot edge berbeda. Dengan bobot yang sama, bisa ada beberapa pohon dengan total bobot minimum yang sama.",
+            "Apakah minimum spanning tree sama dengan shortest path tree?",
+            "Tidak. MST meminimalkan jumlah semua edge-nya, sedangkan shortest path tree, seperti yang dihasilkan algoritma Dijkstra, meminimalkan jarak dari satu sumber ke setiap node. Kedua pohon itu sering berbeda."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa edge yang dimiliki sebuah spanning tree?",
+      "a": "Tepat V − 1 untuk graf terhubung dengan V node. Edge yang lebih sedikit tidak bisa menghubungkan semua node, dan edge yang lebih banyak akan membentuk siklus."
+    },
+    {
+      "q": "Is the minimum spanning tree unique?",
+      "a": "It is unique when all edge weights are different. With equal weights there can be several trees with the same minimum total weight."
+    },
+    {
+      "q": "Is a minimum spanning tree the same as a shortest path tree?",
+      "a": "No. The MST minimizes the sum of all its edges, while a shortest path tree, such as the one from Dijkstra's algorithm, minimizes the distance from one source to each node. The two trees are often different."
+    },
+    {
+      "q": "How many edges does a spanning tree have?",
+      "a": "Exactly V − 1 for a connected graph with V nodes. Fewer edges cannot connect all nodes, and more edges would create a cycle."
+    }
+  ]
+}

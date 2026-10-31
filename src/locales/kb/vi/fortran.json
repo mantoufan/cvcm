@@ -1,0 +1,169 @@
+{
+  "title": "Hướng dẫn Fortran: cú pháp hiện đại, mảng, module và thủ tục — cv.cm",
+  "description": "Học Fortran hiện đại: biên dịch Hello world bằng gfortran, khai báo biến có kiểu, dùng vòng lặp, hàm, subroutine, module, phép toán trên cả mảng và iostat.",
+  "h1": "Hướng dẫn Fortran cho người mới bắt đầu",
+  "answer": "Fortran là ngôn ngữ biên dịch, kiểu tĩnh, được tạo ra cho tính toán số và khoa học. Fortran hiện đại (Fortran 90 và các chuẩn sau đó) có mã nguồn dạng tự do, module, mảng động và các phép toán mạnh trên cả mảng, còn trình biên dịch tạo ra mã máy rất nhanh. Hãy cài trình biên dịch gfortran miễn phí, lưu mã vào tệp `.f90` rồi biên dịch bằng `gfortran hello.f90 -o hello`.",
+  "sections": [
+    {
+      "h": "Fortran là gì và ai dùng nó",
+      "body": [
+        "Fortran (\"formula translation\") được một nhóm do John Backus dẫn đầu phát triển tại IBM vào thập niên 1950 và là một trong những ngôn ngữ lập trình lâu đời nhất vẫn còn được dùng tích cực. Ngôn ngữ này được ISO chuẩn hóa; các bản sửa đổi lớn gồm Fortran 90, 95, 2003, 2008, 2018 và 2023. Kiểu cố định cũ (`FORTRAN 77` viết hoa, mã bắt đầu ở cột 7) vẫn biên dịch được, nhưng mã mới dùng cú pháp tự do như trong bài này.",
+        "Fortran được dùng ở những nơi cần tính toán số nặng: mô hình thời tiết và khí hậu, động lực học chất lưu tính toán, mô phỏng vật lý và hóa học, cùng nhiều chương trình chạy trên siêu máy tính. Các phiên bản tham chiếu của thư viện đại số tuyến tính BLAS và LAPACK, nằm bên dưới những công cụ như NumPy và MATLAB, được viết bằng Fortran."
+      ]
+    },
+    {
+      "h": "Cài trình biên dịch và chạy Hello, world",
+      "body": [
+        "gfortran, một phần của GCC, là trình biên dịch miễn phí và có trên Linux (gói `gfortran`), macOS (Homebrew `gcc`) và Windows (MSYS2 hoặc WSL). ifx của Intel và LLVM Flang là các trình biên dịch khác. Trình quản lý gói Fortran (`fpm`) có thể tạo và build dự án.",
+        {
+          "code": "program hello\n  implicit none\n  print *, \"Hello, world!\"\nend program hello",
+          "lang": "fortran"
+        },
+        {
+          "code": "gfortran hello.f90 -o hello\n./hello\n#  Hello, world!",
+          "lang": "shell"
+        },
+        "`print *` dùng đầu ra theo danh sách (list-directed), tự chọn khoảng cách cho bạn (lưu ý dấu cách ở đầu). Fortran không phân biệt hoa thường: `PRINT`, `Print` và `print` là như nhau."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu cơ bản",
+      "body": [
+        "Mọi khai báo nằm ở đầu một đơn vị chương trình, trước các câu lệnh thực thi. Luôn viết `implicit none`: nếu không, các tên chưa khai báo bắt đầu bằng chữ I đến N sẽ âm thầm là số nguyên, còn các tên khác là số thực.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ khai báo",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`integer :: count = 3`",
+                "Thường là 32 bit; dùng `integer(int64)` cho 64 bit"
+              ],
+              [
+                "real",
+                "`real :: x`",
+                "Thường là độ chính xác đơn"
+              ],
+              [
+                "real(real64)",
+                "`real(real64) :: y`",
+                "Độ chính xác kép, lựa chọn thông dụng trong khoa học"
+              ],
+              [
+                "complex",
+                "`complex :: z = (1.0, 2.0)`",
+                "Số phức có sẵn"
+              ],
+              [
+                "logical",
+                "`logical :: done = .false.`",
+                "`.true.` / `.false.`, toán tử `.and.`, `.or.`, `.not.`"
+              ],
+              [
+                "character",
+                "`character(len=20) :: name`",
+                "Chuỗi độ dài cố định, được đệm thêm dấu cách"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "program types\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n  implicit none\n  integer :: count = 3\n  integer(int64) :: big = 9000000000_int64\n  real(real64) :: third\n  logical :: done = .false.\n  character(len=:), allocatable :: name\n\n  third = 1.0_real64 / 3.0_real64\n  name = \"Ana\"\n  print *, count, big, third, done, name\nend program types",
+          "lang": "fortran"
+        },
+        "Hậu tố `_real64` đặt kind (độ chính xác) cho một hằng số. Nếu thiếu, `1.0` là hằng độ chính xác đơn và sẽ mất chữ số khi gán cho biến độ chính xác kép."
+      ]
+    },
+    {
+      "h": "Luồng điều khiển",
+      "body": [
+        {
+          "code": "program control\n  implicit none\n  integer :: i, total, score\n\n  total = 0\n  do i = 1, 10\n    if (mod(i, 2) == 0) cycle   ! skip even numbers\n    total = total + i\n  end do\n  print *, \"sum of odd numbers:\", total   ! 25\n\n  score = 85\n  if (score >= 90) then\n    print *, \"A\"\n  else if (score >= 80) then\n    print *, \"B\"\n  else\n    print *, \"C\"\n  end if\n\n  select case (score)\n  case (90:)\n    print *, \"excellent\"\n  case (80:89)\n    print *, \"good\"\n  case default\n    print *, \"keep going\"\n  end select\nend program control",
+          "lang": "fortran"
+        },
+        "`do i = 1, 10` bao gồm cả hai đầu, và giá trị thứ ba tùy chọn đặt bước nhảy (`do i = 10, 1, -1`). `cycle` nhảy sang lần lặp kế tiếp và `exit` thoát khỏi vòng lặp. Cũng có `do while (condition)` và `do` trơn kèm `exit`. Chú thích bắt đầu bằng `!`."
+      ]
+    },
+    {
+      "h": "Hàm, subroutine và module",
+      "body": [
+        "Fortran có hai loại thủ tục: hàm (function) trả về một giá trị và dùng trong biểu thức; subroutine được gọi bằng `call` và trả kết quả qua các đối số. Hãy đặt thủ tục trong một module để trình biên dịch kiểm tra được mọi lời gọi.",
+        {
+          "code": "module geometry\n  implicit none\ncontains\n  function circle_area(r) result(a)\n    real, intent(in) :: r\n    real :: a\n    a = 3.14159 * r**2\n  end function circle_area\n\n  subroutine swap(a, b)\n    integer, intent(inout) :: a, b\n    integer :: tmp\n    tmp = a\n    a = b\n    b = tmp\n  end subroutine swap\nend module geometry\n\nprogram demo\n  use geometry\n  implicit none\n  integer :: x, y\n  x = 1\n  y = 2\n  print *, circle_area(2.0)   ! about 12.566\n  call swap(x, y)\n  print *, x, y               ! 2 1\nend program demo",
+          "lang": "fortran"
+        },
+        "Đối số được truyền theo tham chiếu, nên thủ tục có thể thay đổi biến của bên gọi. `intent(in)`, `intent(out)` và `intent(inout)` ghi rõ và bắt buộc những gì mỗi đối số được phép làm. `**` là toán tử lũy thừa."
+      ]
+    },
+    {
+      "h": "Mảng: tính năng nổi bật của Fortran",
+      "body": [
+        "Mảng là trung tâm của Fortran. Chỉ số mặc định bắt đầu từ 1 (cho phép mọi cận dưới), phép tính chạy trên cả mảng mà không cần vòng lặp, lát cắt dùng `a(start:end)`, và nhiều hàm tích hợp thao tác trực tiếp trên mảng.",
+        {
+          "code": "program arrays\n  implicit none\n  integer :: i\n  real :: a(5), b(5)\n  real, allocatable :: c(:)\n  integer :: m(2, 3)\n\n  a = [(real(i), i = 1, 5)]   ! 1.0 2.0 3.0 4.0 5.0\n  b = 2.0 * a + 1.0           ! whole-array arithmetic\n  print *, b(2:4)             ! 5.0 7.0 9.0\n  print *, sum(a), maxval(b)  ! 15.0 11.0\n\n  allocate(c(10))\n  c = 0.0\n  print *, size(c)            ! 10\n  deallocate(c)\n\n  m = reshape([1, 2, 3, 4, 5, 6], [2, 3])\n  print *, m(2, 1)            ! 2 (column-major order)\nend program arrays",
+          "lang": "fortran"
+        },
+        "Mảng nhiều chiều được lưu theo thứ tự ưu tiên cột (column-major): chỉ số đầu tiên thay đổi nhanh nhất trong bộ nhớ, ngược với C. Để chạy nhanh, hãy cho vòng lặp trong cùng chạy theo chỉ số đầu tiên. Các hàm tích hợp hữu ích khác là `matmul`, `dot_product`, `transpose`, `minval` và `count`. Fortran hiện đại còn có vòng lặp `do concurrent` và coarray cho chương trình song song."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Fortran không có ngoại lệ. Các câu lệnh có thể thất bại nhận một đối số trạng thái: `iostat` cho nhập xuất, `stat` cho `allocate`. Hãy kiểm tra giá trị và xử lý; nếu bỏ qua, lỗi sẽ dừng chương trình. `error stop` kết thúc chương trình với một lỗi.",
+        {
+          "code": "program parse\n  implicit none\n  character(len=20) :: text\n  integer :: n, ios\n\n  text = \"abc\"\n  read(text, *, iostat=ios) n\n  if (ios /= 0) then\n    print *, \"not a number: \", trim(text)\n  else\n    print *, \"n =\", n\n  end if\nend program parse",
+          "lang": "fortran"
+        },
+        "Đọc từ một biến ký tự như ở trên gọi là đọc nội bộ (internal read) và là cách thông dụng để chuyển chuỗi thành số."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: trung bình và độ lệch chuẩn",
+      "body": [
+        {
+          "code": "module stats\n  implicit none\n  integer, parameter :: dp = kind(1.0d0)\ncontains\n  pure function mean(x) result(m)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: m\n    m = sum(x) / size(x)\n  end function mean\n\n  pure function std_dev(x) result(s)\n    real(dp), intent(in) :: x(:)\n    real(dp) :: s\n    s = sqrt(sum((x - mean(x))**2) / (size(x) - 1))\n  end function std_dev\nend module stats\n\nprogram main\n  use stats\n  implicit none\n  real(dp) :: values(5)\n  values = [2.0_dp, 4.0_dp, 4.0_dp, 5.0_dp, 7.0_dp]\n  print '(a, f6.3)', \"mean    = \", mean(values)\n  print '(a, f6.3)', \"std dev = \", std_dev(values)\nend program main\n! mean    =  4.400\n! std dev =  1.817",
+          "lang": "fortran"
+        },
+        "Khai báo `x(:)` là mảng có hình dạng suy ra (assumed-shape), nên các hàm nhận mảng có độ dài bất kỳ. `pure` cam kết hàm không có tác dụng phụ. Định dạng `'(a, f6.3)'` in một chuỗi rồi đến một số thực rộng 6 ký tự với 3 chữ số thập phân.",
+        {
+          "note": "Các lỗi thường gặp của người mới: quên `implicit none`; chia số nguyên (`1 / 2` bằng 0, hãy viết `1.0 / 2.0`); dùng hằng độ chính xác đơn trong mã độ chính xác kép (`0.1` thay vì `0.1_dp`); khởi tạo biến cục bộ ngay trong khai báo bên trong thủ tục, khiến nó có thuộc tính `save` và giữ giá trị giữa các lần gọi; và lặp theo chỉ số cuối ở vòng lặp trong cùng, rất chậm do thứ tự ưu tiên cột."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "fortran-lang.org: mục Learn với bài hướng dẫn nhanh và các thực hành tốt nhất.",
+            "Sách hướng dẫn GNU Fortran (gfortran) về các tùy chọn biên dịch và thủ tục tích hợp.",
+            "Thử Trình quản lý gói Fortran (fpm) để tạo dự án và dùng các thư viện như thư viện chuẩn Fortran (stdlib).",
+            "Khi học, hãy biên dịch kèm cảnh báo và kiểm tra lúc chạy, ví dụ `gfortran -Wall -fcheck=all`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ngày nay Fortran còn được dùng không?",
+      "a": "Có. Fortran vẫn được dùng rộng rãi trong tính toán khoa học và tính toán hiệu năng cao, nhất là mô phỏng khí hậu, thời tiết, vật lý và kỹ thuật, và chuẩn ngôn ngữ vẫn đang được cập nhật."
+    },
+    {
+      "q": "Khác nhau giữa tệp .f và .f90 là gì?",
+      "a": "Theo quy ước, tệp `.f` và `.for` dùng bố cục kiểu cố định cũ của FORTRAN 77, trong đó vị trí cột có ý nghĩa, còn tệp `.f90` dùng mã nguồn dạng tự do. Phần mở rộng `.f90` dùng cho mã dạng tự do của mọi chuẩn hiện đại, không riêng Fortran 90."
+    },
+    {
+      "q": "Vì sao Fortran nhanh?",
+      "a": "Ngôn ngữ được thiết kế cho tính toán số: mảng có sẵn, quy tắc aliasing cho phép trình biên dịch tối ưu mạnh tay, và hàng chục năm phát triển trình biên dịch nhắm vào nó. C hoặc C++ viết tốt cũng có thể đạt tốc độ tương tự."
+    },
+    {
+      "q": "Mảng Fortran bắt đầu từ 0 hay 1?",
+      "a": "Mặc định bắt đầu từ 1, nhưng bạn có thể chọn cận dưới bất kỳ, ví dụ `real :: a(0:9)` khai báo mười phần tử với chỉ số từ 0 đến 9."
+    }
+  ]
+}

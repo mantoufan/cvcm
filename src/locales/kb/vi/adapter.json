@@ -1,0 +1,184 @@
+{
+  "title": "Mẫu Adapter: cho các interface không tương thích làm việc cùng nhau, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Adapter: bọc một lớp có interface không tương thích để client dùng được. Ví dụ TypeScript, object adapter so với class adapter, ứng dụng thực tế.",
+  "h1": "Mẫu Adapter giải thích kèm ví dụ",
+  "answer": "Adapter là mẫu thiết kế cấu trúc chuyển interface của một lớp có sẵn thành interface mà mã client mong đợi. Adapter bọc đối tượng không tương thích và dịch từng lời gọi, ví dụ biến `charge(amountCents)` thành `makePayment(\"12.50\")` cũ. Nó cho phép bạn tái sử dụng một thành phần bên thứ ba hoặc kế thừa mà không cần thay đổi nó, và không để API vụng về của nó lan khắp mã của bạn. Nó còn được gọi là Wrapper.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Chuyển interface của một lớp thành interface khác mà client mong đợi. Adapter cho phép các lớp làm việc cùng nhau dù không thể vì interface không tương thích. Đây là một trong bảy mẫu cấu trúc trong cuốn sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Mã cửa hàng của bạn làm việc với interface `PaymentGateway` nhỏ: `charge(amountCents, currency)` trả về kết quả có cờ `ok` và mã giao dịch. Nay doanh nghiệp ký hợp đồng với một nhà cung cấp thanh toán có SDK trông hoàn toàn khác: số tiền là chuỗi thập phân, đơn vị tiền tệ nằm trong một đối tượng yêu cầu, và lỗi trả về dưới dạng mã trạng thái số.",
+        "Bạn không thể đổi SDK, và không muốn viết lại mọi nơi gọi để dùng hình dạng mới. Nếu phong cách của SDK lan vào thanh toán, hoàn tiền và báo cáo, việc đổi nhà cung cấp sau này sẽ tốn kém. Một adapter giữ việc dịch trong một lớp."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Target",
+                "Interface mà client mong đợi.",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "Lớp có sẵn với interface không tương thích.",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Triển khai Target và dịch các lời gọi sang Adaptee.",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Client",
+                "Chỉ làm việc với interface Target.",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "Đổi sang nhà cung cấp khác sau này nghĩa là viết thêm một adapter. `checkout` và mọi nơi gọi khác giữ nguyên, và các bài kiểm thử có thể truyền một `PaymentGateway` giả."
+      ]
+    },
+    {
+      "h": "Object adapter so với class adapter",
+      "body": [
+        "Cuốn sách GoF mô tả hai dạng:",
+        {
+          "table": {
+            "head": [
+              "Dạng",
+              "Cách hoạt động",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Object adapter",
+                "Giữ một tham chiếu tới adaptee và ủy thác cho nó (composition).",
+                "Làm việc với adaptee và mọi lớp con của nó. Lựa chọn thông thường trong TypeScript, Java và C#."
+              ],
+              [
+                "Class adapter",
+                "Kế thừa từ adaptee và triển khai interface target.",
+                "Cần kế thừa từ adaptee, nên chỉ điều hợp đúng lớp đó. Phổ biến trong C++ với đa kế thừa."
+              ]
+            ]
+          }
+        },
+        "Trong TypeScript và JavaScript, điều hợp một hàm thường là đủ. Node.js có sẵn một adapter nhỏ kiểu này: `util.promisify()` biến một hàm kiểu callback thành hàm trả về promise.",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Adapter khi:",
+        {
+          "ul": [
+            "Bạn muốn dùng một lớp có sẵn, nhưng interface của nó không khớp với interface mã của bạn cần.",
+            "Bạn tích hợp thư viện bên thứ ba hoặc hệ thống kế thừa và muốn giữ API của chúng ở rìa chương trình.",
+            "Bạn muốn nhiều cách triển khai khác nhau, như hai nhà cung cấp thanh toán, sau một interface."
+          ]
+        },
+        "Tránh nó khi:",
+        {
+          "ul": [
+            "Bạn sở hữu cả hai phía. Đổi một trong hai interface thường đơn giản hơn thêm một lớp dịch.",
+            "Adapter sẽ phải giả mạo những phần lớn của interface target mà adaptee thực sự không hỗ trợ được. Điều đó che giấu sự không khớp thật thay vì giải quyết nó."
+          ]
+        },
+        {
+          "note": "Giữ adapter mỏng. Chúng nên dịch tên, đơn vị và định dạng lỗi, không chứa quy tắc nghiệp vụ. Nếu adapter phình to, logic có lẽ nên nằm ở chỗ khác."
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `util.promisify()` điều hợp các hàm dựa trên callback thành promise.",
+            "Java: `Arrays.asList()` cho phép dùng một mảng qua interface `List`, và `InputStreamReader` cho phép đọc một `InputStream` dựa trên byte như một `Reader` dựa trên ký tự.",
+            "Các thư viện cơ sở dữ liệu và ORM dùng một adapter hoặc driver cho mỗi cơ sở dữ liệu, nên cùng một API truy vấn chạy với PostgreSQL, MySQL hoặc SQLite.",
+            "Mã frontend thường bọc các API trình duyệt hoặc SDK phân tích sau một interface nhỏ riêng của dự án vì cùng lý do."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác Adapter như thế nào"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Giữ nguyên interface và thêm hành vi. Adapter thay đổi interface và không thêm hành vi mới."
+              ],
+              [
+                "Proxy",
+                "Giữ nguyên interface và kiểm soát truy cập tới đối tượng (tải lười, lưu đệm, phân quyền)."
+              ],
+              [
+                "Facade",
+                "Định nghĩa một interface mới, đơn giản hơn cho cả một hệ thống con gồm nhiều lớp. Adapter làm một interface có sẵn khớp với một interface có sẵn khác."
+              ],
+              [
+                "Bridge",
+                "Được thiết kế từ đầu để abstraction và phần triển khai của nó biến đổi riêng rẽ. Adapter thường được thêm sau để các lớp có sẵn vừa với nhau."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Khác nhau giữa Adapter và Facade là gì?",
+      "a": "Adapter làm một lớp có sẵn khớp với interface mà client đã mong đợi. Facade tạo một interface mới, đơn giản hơn phía trước một hệ thống con phức tạp gồm nhiều lớp."
+    },
+    {
+      "q": "Khác nhau giữa Adapter và Decorator là gì?",
+      "a": "Cả hai đều bọc một đối tượng. Decorator giữ nguyên interface và thêm hành vi; adapter thay đổi interface để đối tượng được bọc dùng được ở nơi nó vốn không dùng được."
+    },
+    {
+      "q": "Adapter có giống wrapper không?",
+      "a": "Wrapper là tên gọi khác của Adapter trong cuốn sách GoF. Trong lời nói hằng ngày, \"wrapper\" cũng được dùng cho decorator và proxy, nên mục đích cho bạn biết đang nói tới mẫu nào."
+    },
+    {
+      "q": "Một adapter có thể điều hợp nhiều lớp không?",
+      "a": "Một object adapter làm việc được với một adaptee và mọi lớp con của nó. Điều hợp các lớp không liên quan thường nghĩa là một adapter cho mỗi lớp, tất cả cùng triển khai một interface target."
+    }
+  ]
+}

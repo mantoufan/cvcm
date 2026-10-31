@@ -1,0 +1,172 @@
+{
+  "title": "Prinsip SOLID: lima aturan desain berorientasi objek beserta contoh — cv.cm",
+  "description": "Lima prinsip SOLID dalam desain berorientasi objek dijelaskan satu per satu, dengan contoh sebelum/sesudah dalam TypeScript dan panduan kapan menerapkannya.",
+  "h1": "Prinsip SOLID dijelaskan dengan contoh",
+  "answer": "SOLID adalah akronim dari lima prinsip desain berorientasi objek: Single responsibility, Open/closed, Liskov substitution, Interface segregation, dan Dependency inversion. Prinsip-prinsip ini dikumpulkan oleh Robert C. Martin, dan akronimnya dicetuskan oleh Michael Feathers. Bersama-sama, tujuannya membuat kode lebih mudah diubah: setiap kelas punya satu alasan untuk berubah, perilaku baru ditambahkan tanpa mengedit kode lama, subtipe aman sebagai pengganti, interface tetap kecil, dan kode tingkat tinggi bergantung pada abstraksi.",
+  "sections": [
+    {
+      "h": "Arti SOLID",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Huruf",
+              "Prinsip",
+              "Aturan singkat"
+            ],
+            "rows": [
+              [
+                "S",
+                "Prinsip single responsibility (SRP)",
+                "Sebuah kelas hanya boleh punya satu alasan untuk berubah."
+              ],
+              [
+                "O",
+                "Prinsip open/closed (OCP)",
+                "Perangkat lunak harus terbuka untuk ekstensi tetapi tertutup untuk modifikasi."
+              ],
+              [
+                "L",
+                "Prinsip Liskov substitution (LSP)",
+                "Subtipe harus dapat dipakai di mana pun tipe dasarnya diharapkan."
+              ],
+              [
+                "I",
+                "Prinsip interface segregation (ISP)",
+                "Klien tidak boleh dipaksa bergantung pada method yang tidak mereka pakai."
+              ],
+              [
+                "D",
+                "Prinsip dependency inversion (DIP)",
+                "Bergantunglah pada abstraksi, bukan pada detail konkret."
+              ]
+            ]
+          }
+        },
+        "Gagasan-gagasan ini lebih tua daripada akronimnya. Prinsip open/closed berasal dari buku Bertrand Meyer, Object-Oriented Software Construction (1988), dan prinsip substitusi dari keynote Barbara Liskov tahun 1987, Data Abstraction and Hierarchy. Robert C. Martin menguraikan kelima prinsip itu dalam tulisannya sekitar tahun 2000, dan Michael Feathers kemudian menyusunnya menjadi kata SOLID."
+      ]
+    },
+    {
+      "h": "S: Prinsip single responsibility",
+      "body": [
+        "Sebuah kelas harus punya satu alasan untuk berubah, artinya melayani satu aktor atau satu perhatian. Ketika sebuah kelas mencampur aturan bisnis, pemformatan, dan penyimpanan, perubahan pada salah satunya berisiko merusak yang lain.",
+        "Sebelum: satu kelas menghitung, memformat, dan menyimpan laporan.",
+        {
+          "code": "class Report {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n  toHtml(): string { return `<p>Total: ${this.total()}</p>`; }\n  saveToFile(path: string): void { /* write this.toHtml() to disk */ }\n}",
+          "lang": "typescript"
+        },
+        "Sesudah: setiap perhatian berada di unit kecilnya sendiri, sehingga format keluaran baru tidak menyentuh perhitungan.",
+        {
+          "code": "class SalesReport {\n  constructor(private sales: number[]) {}\n  total(): number { return this.sales.reduce((a, b) => a + b, 0); }\n}\nclass HtmlFormatter {\n  format(r: SalesReport): string { return `<p>Total: ${r.total()}</p>`; }\n}\nclass ReportWriter {\n  save(content: string, path: string): void { /* write to disk */ }\n}\nconst html = new HtmlFormatter().format(new SalesReport([10, 20, 5]));\nconsole.log(html); // <p>Total: 35</p>",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "O: Prinsip open/closed",
+      "body": [
+        "Anda seharusnya bisa menambah perilaku baru dengan menambah kode baru, bukan dengan mengedit kode yang sudah berfungsi dan teruji. Alat yang biasa dipakai adalah interface ditambah polimorfisme.",
+        "Sebelum: setiap bentuk baru berarti mengedit fungsi `area`.",
+        {
+          "code": "type Shape = { kind: \"circle\"; r: number } | { kind: \"square\"; side: number };\nfunction area(s: Shape): number {\n  if (s.kind === \"circle\") return Math.PI * s.r ** 2;\n  if (s.kind === \"square\") return s.side ** 2;\n  throw new Error(\"unknown shape\");\n}",
+          "lang": "typescript"
+        },
+        "Sesudah: bentuk baru adalah kelas baru; kode yang ada tidak berubah.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Circle implements Shape {\n  constructor(private r: number) {}\n  area(): number { return Math.PI * this.r ** 2; }\n}\nclass Square implements Shape {\n  constructor(private side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconst totalArea = (shapes: Shape[]) => shapes.reduce((sum, s) => sum + s.area(), 0);\nconsole.log(totalArea([new Square(2), new Square(3)])); // 13",
+          "lang": "typescript"
+        },
+        {
+          "note": "Di TypeScript, union type dengan `switch` yang exhaustive juga desain yang valid. Desain ini memudahkan penambahan operasi baru dan mempersulit penambahan tipe baru, yaitu trade-off yang berlawanan. Pilih berdasarkan jenis perubahan mana yang lebih mungkin terjadi."
+        }
+      ]
+    },
+    {
+      "h": "L: Prinsip Liskov substitution",
+      "body": [
+        "Jika kode bekerja dengan tipe dasar, kode itu harus tetap bekerja ketika diberi subtipe apa pun. Subtipe tidak boleh memperkuat prasyarat, memperlemah jaminan, atau melempar error di tempat yang tidak dilakukan tipe dasarnya.",
+        "Sebelum: masalah klasik persegi/persegi panjang. `Square` memperluas `Rectangle` tetapi melanggar ekspektasi bahwa lebar dan tinggi saling independen.",
+        {
+          "code": "class Rectangle {\n  constructor(public width: number, public height: number) {}\n  setWidth(w: number): void { this.width = w; }\n  setHeight(h: number): void { this.height = h; }\n  area(): number { return this.width * this.height; }\n}\nclass Square extends Rectangle {\n  setWidth(w: number): void { this.width = w; this.height = w; }\n  setHeight(h: number): void { this.width = h; this.height = h; }\n}\nfunction stretch(r: Rectangle): number {\n  r.setWidth(5);\n  r.setHeight(4);\n  return r.area(); // caller expects 20\n}\nconsole.log(stretch(new Rectangle(1, 1))); // 20\nconsole.log(stretch(new Square(1, 1)));    // 16, surprise",
+          "lang": "typescript"
+        },
+        "Sesudah: jangan memodelkan hubungan itu sebagai inheritance. Kedua tipe mengimplementasikan interface read-only bersama, dan tidak ada yang berharap bisa mengubah sisi persegi secara independen.",
+        {
+          "code": "interface Shape { area(): number; }\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  area(): number { return this.width * this.height; }\n}\nclass Square implements Shape {\n  constructor(readonly side: number) {}\n  area(): number { return this.side ** 2; }\n}\nconsole.log([new Rectangle(5, 4), new Square(4)].map((s) => s.area())); // [ 20, 16 ]",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "I: Prinsip interface segregation",
+      "body": [
+        "Interface yang besar memaksa kelas mengimplementasikan method yang tidak bisa mereka dukung, biasanya dengan melempar error. Pecah menjadi interface kecil yang terfokus, dan biarkan setiap kelas hanya mengimplementasikan apa yang benar-benar dilakukannya.",
+        "Sebelum: printer sederhana harus berpura-pura bisa memindai dan mengirim faks.",
+        {
+          "code": "interface Machine {\n  print(doc: string): void;\n  scan(): string;\n  fax(doc: string): void;\n}\nclass BasicPrinter implements Machine {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { throw new Error(\"not supported\"); }\n  fax(doc: string): void { throw new Error(\"not supported\"); }\n}",
+          "lang": "typescript"
+        },
+        "Sesudah: interface peran yang kecil dan bisa digabungkan.",
+        {
+          "code": "interface Printer { print(doc: string): void; }\ninterface Scanner { scan(): string; }\nclass BasicPrinter implements Printer {\n  print(doc: string): void { console.log(\"print\", doc); }\n}\nclass OfficeMachine implements Printer, Scanner {\n  print(doc: string): void { console.log(\"print\", doc); }\n  scan(): string { return \"scanned page\"; }\n}\nfunction printAll(p: Printer, docs: string[]): void { docs.forEach((d) => p.print(d)); }\nprintAll(new BasicPrinter(), [\"a.pdf\"]); // print a.pdf",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "D: Prinsip dependency inversion",
+      "body": [
+        "Kebijakan tingkat tinggi tidak boleh bergantung pada detail tingkat rendah seperti database atau layanan email tertentu. Keduanya harus bergantung pada abstraksi, dan modul tingkat tinggi biasanya yang memiliki abstraksi itu. Dalam praktiknya, Anda memasukkan dependensi dari luar (dependency injection) alih-alih membuatnya di dalam.",
+        "Sebelum: layanan membuat klien database konkret, sehingga tidak bisa diuji atau diganti.",
+        {
+          "code": "class MySqlUserStore {\n  find(id: string): string { return \"user \" + id; }\n}\nclass UserService {\n  private store = new MySqlUserStore(); // hard-wired detail\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}",
+          "lang": "typescript"
+        },
+        "Sesudah: layanan bergantung pada interface; implementasi apa pun dapat disuntikkan, termasuk tiruan dalam pengujian.",
+        {
+          "code": "interface UserStore { find(id: string): string; }\nclass UserService {\n  constructor(private store: UserStore) {}\n  greet(id: string): string { return \"Hello, \" + this.store.find(id); }\n}\nclass InMemoryUserStore implements UserStore {\n  constructor(private users: Record<string, string>) {}\n  find(id: string): string { return this.users[id] ?? \"unknown\"; }\n}\nconst service = new UserService(new InMemoryUserStore({ u1: \"Ada\" }));\nconsole.log(service.greet(\"u1\")); // Hello, Ada",
+          "lang": "typescript"
+        },
+        {
+          "note": "Dependency inversion adalah prinsip desain; dependency injection adalah salah satu teknik untuk mencapainya. Container injeksi atau framework bersifat opsional. Meneruskan objek lewat konstruktor sudah cukup."
+        }
+      ]
+    },
+    {
+      "h": "Kapan menerapkan SOLID, dan kapan tidak",
+      "body": [
+        "Prinsip SOLID adalah pedoman untuk kode yang sering berubah, bukan hukum. Jika diterapkan membabi buta, hasilnya banyak kelas dan interface kecil dengan satu implementasi saja, yang membuat kode lebih sulit diikuti.",
+        {
+          "ul": [
+            "Terapkan ketika Anda merasakan masalah yang ditangani prinsip itu: kelas yang rusak setiap kali ada perubahan, pengujian yang butuh database sungguhan, atau pernyataan switch yang disalin ke banyak tempat.",
+            "Jangan menambahkan interface untuk setiap kelas sejak awal. Ekstrak interface ketika implementasi kedua atau test double muncul.",
+            "Pada skrip kecil dan prototipe, kode yang sederhana dan langsung biasanya lebih baik.",
+            "Banyak design pattern adalah penerapan konkret SOLID: pola Strategy dan pola Decorator mendukung open/closed, pola Adapter dan pola Facade membantu mengisolasi detail, dan pola Abstract Factory mendukung dependency inversion."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Siapa yang menciptakan prinsip SOLID?",
+      "a": "Robert C. Martin mengumpulkan dan menguraikan kelima prinsip, dengan bertumpu pada karya sebelumnya dari Bertrand Meyer (open/closed) dan Barbara Liskov (substitusi). Michael Feathers mencetuskan akronim SOLID."
+    },
+    {
+      "q": "Apakah SOLID berlaku untuk pemrograman fungsional?",
+      "a": "Gagasannya bisa diterjemahkan: fungsi kecil dengan satu tujuan, menyusun perilaku alih-alih mengeditnya, dan meneruskan dependensi sebagai parameter. Rumusan berbasis kelas khusus untuk kode berorientasi objek."
+    },
+    {
+      "q": "Apa beda dependency inversion dan dependency injection?",
+      "a": "Dependency inversion adalah prinsip bahwa kode tingkat tinggi harus bergantung pada abstraksi. Dependency injection adalah teknik yang menyediakan dependensi itu dari luar, misalnya lewat konstruktor."
+    },
+    {
+      "q": "Prinsip SOLID mana yang paling penting?",
+      "a": "Tidak ada peringkat resmi. Single responsibility dan dependency inversion biasanya memberi manfaat tercepat, karena membuat kode lebih mudah dipahami dan diuji."
+    },
+    {
+      "q": "Apakah buruk melanggar prinsip SOLID?",
+      "a": "Tidak selalu. Setiap prinsip punya biaya berupa kode tambahan. Langgar satu prinsip dengan sengaja ketika desain yang lebih sederhana lebih jelas dan perubahan yang dilindunginya tidak mungkin terjadi."
+    }
+  ]
+}

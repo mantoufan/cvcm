@@ -1,0 +1,193 @@
+{
+  "title": "Danh sách liên kết (linked list) là gì: đơn, đôi, code Python và độ phức tạp — cv.cm",
+  "description": "Tìm hiểu danh sách liên kết hoạt động thế nào: node và con trỏ, chèn, xóa, đảo ngược và phát hiện chu trình bằng Python, so sánh độ phức tạp thời gian với mảng.",
+  "h1": "Danh sách liên kết (linked list): cách hoạt động, code và độ phức tạp",
+  "answer": "Danh sách liên kết là một chuỗi các node, trong đó mỗi node lưu một giá trị và một tham chiếu (con trỏ) tới node kế tiếp. Khác với mảng, các node không nằm cạnh nhau trong bộ nhớ, nên chèn hoặc xóa một node tại vị trí đã biết chỉ tốn O(1), nhưng tìm phần tử thứ k tốn O(n) vì phải đi từ đầu danh sách. Danh sách liên kết đôi còn lưu thêm con trỏ tới node đứng trước.",
+  "sections": [
+    {
+      "h": "Danh sách liên kết giải quyết vấn đề gì",
+      "body": [
+        "Mảng (một `list` trong Python) lưu các phần tử trong một khối bộ nhớ liên tục. Đọc `a[i]` là tức thì, nhưng chèn vào đầu mảng buộc mọi phần tử khác dịch sang phải một ô, tốn O(n). Danh sách liên kết tránh việc dịch này: mỗi phần tử nằm trong node riêng, các node nối với nhau bằng tham chiếu. Khi chèn, bạn chỉ cần đổi vài tham chiếu.",
+        "Danh sách liên kết là viên gạch nền móng của nhiều cấu trúc khác: ngăn xếp, hàng đợi, bucket của bảng băm (nối chuỗi - separate chaining), bộ nhớ đệm LRU và danh sách kề trong đồ thị."
+      ]
+    },
+    {
+      "h": "Ý tưởng giải thích đơn giản",
+      "body": [
+        "Hãy hình dung trò chơi tìm kho báu: mỗi manh mối chỉ cho bạn manh mối tiếp theo ở đâu. Bạn không thể nhảy thẳng tới manh mối số 7, mà phải đi qua manh mối 1 đến 6 trước. Bản thân danh sách chỉ nhớ node đầu tiên, gọi là head. Node cuối trỏ tới không có gì (`None`).",
+        {
+          "table": {
+            "head": [
+              "Loại",
+              "Mỗi node lưu",
+              "Ứng dụng điển hình"
+            ],
+            "rows": [
+              [
+                "Liên kết đơn",
+                "giá trị, `next`",
+                "ngăn xếp, hàng đợi đơn giản, bucket của bảng băm"
+              ],
+              [
+                "Liên kết đôi",
+                "giá trị, `next`, `prev`",
+                "deque, bộ nhớ đệm LRU, bộ đệm của trình soạn thảo văn bản"
+              ],
+              [
+                "Vòng",
+                "giống liên kết đơn hoặc đôi, nhưng node đuôi trỏ ngược về head",
+                "lập lịch round-robin, bộ đệm vòng (ring buffer)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: chèn và xóa",
+      "body": [
+        "Bắt đầu với danh sách `3 -> 7 -> 9`. Ta chèn 5 sau 3, rồi xóa 7.",
+        {
+          "ol": [
+            "Tạo một node mới có giá trị 5.",
+            "Gán `new.next` bằng node đứng sau 3 (node 7).",
+            "Gán `node3.next` bằng node mới. Danh sách lúc này là `3 -> 5 -> 7 -> 9`.",
+            "Để xóa 7, tìm node đứng trước nó (5) bằng cách đi từ head.",
+            "Gán `node5.next = node5.next.next`, thao tác này bỏ qua 7. Danh sách lúc này là `3 -> 5 -> 9`. Bộ thu gom rác của Python sẽ giải phóng node không còn truy cập được."
+          ]
+        },
+        {
+          "note": "Thứ tự của bước 2 và 3 rất quan trọng. Nếu bạn gán `node3.next = new` trước, bạn sẽ mất tham chiếu duy nhất tới phần còn lại của danh sách."
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt danh sách liên kết đơn bằng Python",
+      "body": [
+        "Lớp này giữ tham chiếu tới head và một biến đếm kích thước. Nó hỗ trợ thêm vào đầu và cuối, xóa giá trị khớp đầu tiên, và duyệt (iteration).",
+        {
+          "code": "class Node:\n    def __init__(self, value, next=None):\n        self.value = value\n        self.next = next\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n        self.size = 0\n    def push_front(self, value):\n        self.head = Node(value, self.head)\n        self.size += 1\n    def push_back(self, value):\n        node = Node(value)\n        if self.head is None:\n            self.head = node\n        else:\n            cur = self.head\n            while cur.next:\n                cur = cur.next\n            cur.next = node\n        self.size += 1\n    def remove(self, value):\n        prev, cur = None, self.head\n        while cur and cur.value != value:\n            prev, cur = cur, cur.next\n        if cur is None:\n            return False          # not found\n        if prev is None:\n            self.head = cur.next  # removing the head\n        else:\n            prev.next = cur.next\n        self.size -= 1\n        return True\n    def __iter__(self):\n        cur = self.head\n        while cur:\n            yield cur.value\n            cur = cur.next",
+          "lang": "python"
+        },
+        {
+          "code": "items = LinkedList()\nfor x in [3, 7, 9]:\n    items.push_back(x)\nitems.push_front(1)\nitems.remove(7)\nprint(list(items), items.size)  # [1, 3, 9] 3",
+          "lang": "python"
+        },
+        "Ở đây `push_back` đi qua toàn bộ danh sách nên tốn O(n). Giữ thêm một tham chiếu `tail` sẽ đưa nó về O(1); các cài đặt hàng đợi thực tế đều làm như vậy."
+      ]
+    },
+    {
+      "h": "Thao tác kinh điển: đảo ngược và phát hiện chu trình",
+      "body": [
+        "Đảo ngược danh sách tại chỗ là câu hỏi phỏng vấn về danh sách liên kết phổ biến nhất. Duyệt danh sách một lần và quay ngược từng con trỏ `next`.",
+        {
+          "code": "def reverse(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next     # remember the rest\n        cur.next = prev    # turn the pointer around\n        prev, cur = cur, nxt\n    return prev            # new head\ndef has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\nhead = Node(1, Node(2, Node(3)))\nhead = reverse(head)\nprint(head.value, head.next.value, head.next.next.value)  # 3 2 1\nprint(has_cycle(head))  # False",
+          "lang": "python"
+        },
+        "`has_cycle` là thuật toán rùa và thỏ của Floyd: con trỏ chậm đi một bước, con trỏ nhanh đi hai bước. Nếu có vòng lặp, con trỏ nhanh cuối cùng sẽ gặp con trỏ chậm; nếu không, nó sẽ tới `None`. Thuật toán chỉ dùng O(1) bộ nhớ phụ."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Danh sách liên kết đơn",
+              "`list` Python (mảng động)",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Truy cập phần tử thứ k",
+                "O(n)",
+                "O(1)",
+                "danh sách liên kết phải đi qua k node"
+              ],
+              [
+                "Chèn hoặc xóa ở đầu",
+                "O(1)",
+                "O(n)",
+                "mảng phải dịch mọi phần tử"
+              ],
+              [
+                "Chèn hoặc xóa sau một node đã biết",
+                "O(1)",
+                "O(n)",
+                "chỉ đổi các tham chiếu"
+              ],
+              [
+                "Thêm vào cuối",
+                "O(1) nếu có con trỏ tail",
+                "O(1) khấu hao",
+                "cả hai đều rẻ"
+              ],
+              [
+                "Tìm kiếm một giá trị",
+                "O(n)",
+                "O(n)",
+                "cả hai quét từng phần tử một"
+              ],
+              [
+                "Bộ nhớ phụ",
+                "một hoặc hai tham chiếu cho mỗi node",
+                "một ít dung lượng dự phòng",
+                "các node là những đối tượng riêng biệt"
+              ]
+            ]
+          }
+        },
+        "Trên thực tế, mảng thường nhanh hơn ngay cả ở những thao tác mà danh sách liên kết có Big O tốt hơn, vì các phần tử mảng nằm cạnh nhau trong bộ nhớ và tận dụng tốt cache của CPU. Các node của danh sách liên kết nằm rải rác."
+      ]
+    },
+    {
+      "h": "Các biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Quên trường hợp danh sách rỗng: luôn kiểm tra `head is None` trước khi đọc `head.next`.",
+            "Mất phần còn lại của danh sách do ghi đè `next` trước khi lưu nó lại (xem `nxt` trong `reverse`).",
+            "Không cập nhật `head` khi xóa node đầu tiên, hoặc `tail` khi xóa node cuối.",
+            "Dùng đệ quy trên danh sách rất dài: giới hạn đệ quy mặc định của Python khoảng 1000 khung, nên code lặp an toàn hơn.",
+            "Một node đầu giả (sentinel) loại bỏ hầu hết các trường hợp đặc biệt: khi đó mọi node thật đều có node đứng trước.",
+            "Trong danh sách liên kết đôi, mỗi lần chèn và xóa phải cập nhật bốn tham chiếu; sót một cái sẽ làm hỏng danh sách mà không báo lỗi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng danh sách liên kết, và nên dùng gì trong Python",
+      "body": [
+        "Hãy dùng danh sách liên kết khi bạn chèn và xóa ở hai đầu hoặc ở giữa tại những vị trí bạn đã nắm sẵn tham chiếu, và hiếm khi cần truy cập ngẫu nhiên. Ví dụ: bộ nhớ đệm LRU (danh sách liên kết đôi cộng bảng băm), free list của bộ cấp phát bộ nhớ, lịch sử hoàn tác (undo), hoặc các bucket của bảng băm.",
+        "Trong code Python hằng ngày bạn hiếm khi tự viết. Với hàng đợi hoặc deque, hãy dùng `collections.deque`, cho phép thêm và lấy ở cả hai đầu với O(1). Với các dãy thông thường, dùng `list`. Chỉ tự viết danh sách liên kết để học, để phỏng vấn, và khi cần ghép node trong O(1), như trong bộ nhớ đệm LRU.",
+        {
+          "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.append(4)\nprint(q.popleft(), q.pop(), list(q))  # 0 4 [1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "List trong Python có phải là danh sách liên kết không?",
+      "a": "Không. `list` của Python là một mảng động chứa các tham chiếu nằm liên tục, nên truy cập theo chỉ số là O(1) còn chèn vào đầu là O(n). `collections.deque` là cấu trúc dựng sẵn gần với danh sách liên kết nhất khi dùng làm hàng đợi."
+    },
+    {
+      "q": "Tại sao truy cập trong danh sách liên kết là O(n)?",
+      "a": "Các node không nằm ở địa chỉ có thể đoán trước. Cách duy nhất để tới node thứ k là bắt đầu từ head và đi theo k tham chiếu `next`."
+    },
+    {
+      "q": "Khi nào danh sách liên kết đôi tốt hơn danh sách liên kết đơn?",
+      "a": "Khi bạn cần xóa một node chỉ với tham chiếu tới nó, hoặc cần đi lùi. Có con trỏ `prev`, việc xóa là O(1) mà không cần tìm node đứng trước, đổi lại mỗi node tốn thêm một tham chiếu."
+    },
+    {
+      "q": "Làm sao tìm node giữa của danh sách liên kết chỉ với một lần duyệt?",
+      "a": "Dùng hai con trỏ: một con đi mỗi lần một bước, con kia đi hai bước. Khi con trỏ nhanh tới cuối, con trỏ chậm đang ở giữa."
+    },
+    {
+      "q": "Node sentinel là gì?",
+      "a": "Là một node giả đặt trước node thật đầu tiên (đôi khi cả sau node cuối). Nó không chứa dữ liệu, nhưng nhờ nó mọi node thật đều có node lân cận, nên code chèn và xóa cần ít trường hợp đặc biệt hơn cho danh sách rỗng và head."
+    }
+  ]
+}

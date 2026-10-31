@@ -1,0 +1,197 @@
+{
+  "title": "Kotlin 入门教程：空安全、函数、集合与协程 — cv.cm",
+  "description": "一步步学 Kotlin：安装并运行 Hello, world，val 与 var、空安全、when、lambda、数据类、集合、协程与错误处理，附可运行示例。",
+  "h1": "Kotlin 入门教程",
+  "answer": "Kotlin 是 JetBrains 推出的现代静态类型语言，运行在 JVM 上，也是 Android 开发的首选语言。它语法简洁，与 Java 完全互操作，其类型系统能在编译期避免大多数空指针错误。本页通过可运行的示例讲解环境搭建、变量、空安全、流程控制、函数、集合、类、协程和错误处理。",
+  "sections": [
+    {
+      "h": "Kotlin 是什么，用来做什么",
+      "body": [
+        "Kotlin 是 JetBrains 创建的静态类型通用编程语言。它运行在 Java 虚拟机（JVM）上，也可以编译成 JavaScript、WebAssembly 和原生机器码。Kotlin 与 Java 完全互操作：Kotlin 文件可以调用任何 Java 库，Java 代码也可以调用 Kotlin。",
+        "自 2019 年起，Google 将 Kotlin 推荐为 Android 应用的首选语言，因此大多数新的 Android 代码都是 Kotlin。它在服务端也很常见，常搭配 Spring Boot、Ktor 等框架；借助 Kotlin Multiplatform，团队还可以在 Android、iOS、桌面和 Web 之间共享业务逻辑。"
+      ]
+    },
+    {
+      "h": "安装 Kotlin 并运行 Hello, world",
+      "body": [
+        "最简单的入门方式是使用自带 Kotlin 的 IntelliJ IDEA 或 Android Studio。若使用命令行，则需要安装编译器（例如通过 SDKMAN! 或 Homebrew）和 Java 运行环境（JDK）。Kotlin 程序从顶层的 `main` 函数开始执行，不需要定义类。",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "实际项目通常使用 Gradle（配合 Kotlin DSL）等构建工具。你也可以在在线的 Kotlin Playground 中免安装试运行代码。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "用 `val` 声明只读变量，用 `var` 声明可变变量。编译器会自动推断类型，你也可以在冒号后显式写出类型。优先使用 `val`，这样代码更容易理解。",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32 位有符号整数"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64 位有符号整数"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64 位浮点数"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "单个字符"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "不可变；支持 `$name` 字符串模板"
+              ]
+            ]
+          }
+        },
+        "Kotlin 不会做隐式的数值类型拓宽：`Int` 不会自动转换为 `Long`。请显式调用 `toLong()`、`toDouble()` 或 `toString()`。"
+      ]
+    },
+    {
+      "h": "空安全",
+      "body": [
+        "空安全是 Kotlin 的标志性特性。像 `String` 这样的普通类型永远不能为 `null`。若要允许为空，需要加上 `?`，写成 `String?`，此后编译器会强制你在使用该值之前处理空值情况。",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "非空断言 `!!` 会把可空值转为非空值，如果值为 null 就会抛出 `NullPointerException`。初学者常常用 `!!` 来消除编译器报错；请改用 `?.`、`?:` 或 `if` 判断。"
+        }
+      ]
+    },
+    {
+      "h": "流程控制：if、when 与循环",
+      "body": [
+        "在 Kotlin 中，`if` 和 `when` 都是表达式，可以返回值。`when` 取代了 Java 和 C 中的 `switch` 语句，能够匹配具体值、范围和类型。",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3` 是包含两端的闭区间；`0 until 3`（或 `0..<3`）不包含终点，这通常正是遍历索引时需要的。"
+      ]
+    },
+    {
+      "h": "函数与 lambda",
+      "body": [
+        "函数用 `fun` 声明。参数可以有默认值，调用时可以使用具名参数，函数体只有一个表达式时可以用 `=` 简写。",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "当 lambda 只有一个参数时，可以用 `it` 引用它。当函数的最后一个参数是 lambda 时，可以把它写在括号外面，所以 `filter { ... }` 读起来就像内置的代码块。"
+      ]
+    },
+    {
+      "h": "集合与数据类",
+      "body": [
+        "标准库区分只读集合和可变集合：`listOf`、`setOf`、`mapOf` 创建只读集合，而 `mutableListOf`、`mutableSetOf`、`mutableMapOf` 创建可修改的集合。",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "`data class`（数据类）会自动获得 `equals`、`hashCode`、`toString`、`copy` 和解构功能。Kotlin 中的 `==` 比较内容（会调用 `equals`），`===` 则比较引用。"
+      ]
+    },
+    {
+      "h": "类、扩展函数与协程",
+      "body": [
+        "类默认是 final 的；加上 `open` 才允许被继承。扩展函数可以在不修改原类型的前提下为它添加方法，`sealed`（密封）类则用来表示封闭的一组情形，`when` 可以对其做穷尽性检查。",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "对于异步和并发代码，Kotlin 使用 `kotlinx.coroutines` 库提供的协程。`suspend` 函数可以在不阻塞线程的情况下暂停，`launch`、`async` 等构建器会在作用域内启动协程。Android 应用就是这样在主线程之外发起网络请求的。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "Kotlin 与 Java 一样有 `try`、`catch` 和 `finally`，但所有异常都是非受检异常：你不必声明或捕获它们。`try` 同样是表达式。对于可预期的失败，标准库提供了 `runCatching` 和 `Result`，而 `toIntOrNull()` 之类的函数会返回 `null` 而不是抛出异常。",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        "这个程序统计文本中每个单词出现的次数，并输出前三名。它用到了字符串扩展、集合函数和数据类。",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "初学者常见错误：到处使用 `var` 而不是 `val`；用 `!!` 到处压制空值错误；忘了 `1..n` 包含 `n`；试图继承没有标记 `open` 的类；在协程里调用阻塞代码（如 `Thread.sleep`）而不是 `delay`。"
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        {
+          "ul": [
+            "kotlinlang.org 上的官方 Kotlin 文档，从「Basic syntax」和「Kotlin tour」开始。",
+            "Kotlin Koans：一组可在浏览器中运行的小练习。",
+            "Android Developers 上的 Kotlin 开发指南，或服务端 Kotlin 的 Ktor 与 Spring 指南。",
+            "需要写异步代码时，阅读 kotlinx.coroutines 指南。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kotlin 比 Java 好吗？",
+      "a": "Kotlin 更简洁，并提供空安全、数据类和协程，但它与 Java 运行在同一个 JVM 上，使用相同的库。许多团队在一个项目中混用两种语言，所以选择更多取决于风格和开发效率，而非能力差异。"
+    },
+    {
+      "q": "学 Kotlin 之前需要先学 Java 吗？",
+      "a": "不需要。你可以把 Kotlin 作为第一门 JVM 语言来学。了解一些 Java 有助于阅读较早的 Android 代码或 Java 库的文档。"
+    },
+    {
+      "q": "val 和 var 有什么区别？",
+      "a": "`val` 声明只读引用，初始化后不能再赋值；`var` 声明可重新赋值的引用。指向可变列表的 `val`，其列表内容仍然可以修改。"
+    },
+    {
+      "q": "Kotlin 能开发 iOS 应用吗？",
+      "a": "可以，通过 Kotlin Multiplatform 把共享的 Kotlin 代码编译成 iOS 原生代码。界面通常仍用 Swift 编写，不过 Compose Multiplatform 也可以共享界面代码。"
+    },
+    {
+      "q": "Kotlin 中的 ?: 运算符有什么作用？",
+      "a": "它是 Elvis 运算符：`a ?: b` 在 `a` 不为 null 时返回 `a`，否则返回 `b`。它常与安全调用搭配使用，如 `name?.length ?: 0`。"
+    }
+  ]
+}

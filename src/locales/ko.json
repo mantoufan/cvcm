@@ -3953,7 +3953,12 @@
       "codes": "코드",
       "files": "파일",
       "audio": "오디오",
-      "text": "텍스트"
+      "text": "텍스트",
+      "dev": "개발·웹",
+      "time": "날짜와 시간",
+      "money": "돈·쇼핑",
+      "health": "건강·운동",
+      "math": "수학·학습"
     },
     "hub": {
       "kicker": "당일 레슨",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "마진율과 마크업 차이",
       "blurb": "이익을 표현하는 두 방식, 환산법과 빠른 환산표."
+    },
+    "code": {
+      "label": "코딩",
+      "lead": "프로그래밍 언어, 디자인 패턴, 자료 구조와 알고리즘을 한 페이지로 배우는 튜토리얼. 먼저 요점을, 다음에 실행되는 코드와 공식 문서 링크를 제공합니다.",
+      "all": "코딩 튜토리얼 전체",
+      "groups": {
+        "languages": "프로그래밍 언어",
+        "patterns": "디자인 패턴",
+        "structures": "자료 구조",
+        "algorithms": "알고리즘"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust 등, Hello World부터",
+        "patterns": "GoF 23가지 패턴과 SOLID 원칙, TypeScript 예제",
+        "structures": "연결 리스트, 해시 테이블, 트리, 힙, 트라이를 Python 코드로",
+        "algorithms": "정렬, 탐색, 그래프, 동적 계획법과 시간 복잡도"
+      }
+    },
+    "linked-list": {
+      "name": "연결 리스트",
+      "blurb": "단일/이중 연결 리스트: 삽입, 삭제, 뒤집기, 순환 탐지"
+    },
+    "stack-and-queue": {
+      "name": "스택과 큐",
+      "blurb": "Python으로 LIFO 스택과 FIFO 큐: 괄호 검사, BFS"
+    },
+    "hash-table": {
+      "name": "해시 테이블",
+      "blurb": "해시 함수, 버킷, 충돌, 부하율, 리사이즈, Python 코드"
+    },
+    "binary-search-tree": {
+      "name": "이진 탐색 트리",
+      "blurb": "BST 규칙, 탐색, 삽입, 삭제(Python), 균형, 복잡도"
+    },
+    "binary-tree-traversal": {
+      "name": "이진 트리 순회",
+      "blurb": "전위, 중위, 후위, 레벨 순회: 재귀/반복 Python 코드"
+    },
+    "binary-heap": {
+      "name": "이진 힙",
+      "blurb": "힙 속성, 시프트 업/다운, 힙 구성, 우선순위 큐, heapq"
+    },
+    "trie": {
+      "name": "트라이",
+      "blurb": "접두사 트리의 삽입, 탐색, 접두사 확인, 자동 완성, 복잡도"
+    },
+    "union-find": {
+      "name": "유니온 파인드",
+      "blurb": "분리 집합: find, union, 경로 압축, 랭크 합치기"
+    },
+    "lru-cache": {
+      "name": "LRU 캐시",
+      "blurb": "해시맵과 이중 연결 리스트로 만드는 LRU 캐시, OrderedDict"
+    },
+    "big-o-notation": {
+      "name": "빅오 표기법",
+      "blurb": "시간/공간 복잡도, 주요 등급, 코드에서 읽는 법"
+    },
+    "recursion": {
+      "name": "재귀",
+      "blurb": "기저 조건, 호출 스택, 메모이제이션, 재귀 한도"
+    },
+    "binary-search": {
+      "name": "이진 탐색",
+      "blurb": "정렬된 구간을 반씩 줄이는 법: Python, bisect, 변형, 함정"
+    },
+    "two-pointers": {
+      "name": "투 포인터와 슬라이딩 윈도우",
+      "blurb": "양끝, 빠른-느린, 슬라이딩 윈도우: Python 코드와 추적"
+    },
+    "bubble-sort": {
+      "name": "버블 정렬",
+      "blurb": "인접 요소 교환 방식: 패스별 추적, Python 코드, 복잡도"
+    },
+    "selection-sort": {
+      "name": "선택 정렬",
+      "blurb": "최솟값을 고르는 방식: 단계별 추적, Python, 안정성"
+    },
+    "insertion-sort": {
+      "name": "삽입 정렬",
+      "blurb": "요소를 밀어 삽입: 추적, Python 코드, 안정성, 최선의 경우"
+    },
+    "merge-sort": {
+      "name": "병합 정렬",
+      "blurb": "분할 정복 병합 정렬: 추적, Python, 병합 단계, 안정성"
+    },
+    "quicksort": {
+      "name": "퀵 정렬",
+      "blurb": "피벗, Lomuto 분할 추적, Python, 최악의 경우, 퀵셀렉트"
+    },
+    "heapsort": {
+      "name": "힙 정렬",
+      "blurb": "최대 힙, 시프트 다운, 단계별 추적, Python, heapq"
+    },
+    "counting-sort": {
+      "name": "계수 정렬",
+      "blurb": "작은 정수 키용 선형 시간 정렬: 추적, 안정적 Python 코드"
+    },
+    "radix-sort": {
+      "name": "기수 정렬",
+      "blurb": "LSD/MSD 기수 정렬: 자릿수별 추적, Python, 안정성, 복잡도"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "문법, 타입, 제어 흐름, 함수, 컬렉션, 오류, 파일을 한 페이지로"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "변수, 타입, 함수, 배열, 객체, Promise, async/await"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "타입, 인터페이스, 유니온, 타입 좁히기, 제네릭, 오류 처리"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "타입, 클래스, record, 컬렉션, 예외, 패턴 매칭을 한 페이지로"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "타입, 함수, 배열, 문자열, 포인터, malloc/free, 오류 처리"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "타입, 클래스, STL 컨테이너, 람다, RAII, 스마트 포인터, 예외"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "타입, 클래스, record, 컬렉션, LINQ, async/await"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "타입, 슬라이스, 맵, 구조체, 인터페이스, 고루틴, 채널, 오류"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "소유권, 대여, 구조체, 열거형, match, 컬렉션, Result"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "변수, 배열, 함수, 클래스, 열거형, 예외, JSON 엔드포인트"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "타입, 메서드, 배열, 해시, 블록, 클래스, 모듈, 예외"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "타입, 옵셔널, 클로저, 컬렉션, 구조체, 열거형, 프로토콜, 오류"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "널 안전성, 제어 흐름, 함수, 데이터 클래스, 코루틴"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Flutter용 널 안전성, 함수, 컬렉션, async/await"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Scala 3 문법, 패턴 매칭, 컬렉션, case class"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "벡터, 데이터 프레임, 함수, 통계, 그래프를 한 페이지로"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTE, 트랜잭션, DB 차이"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "스크립트, 변수, 따옴표, 반복문, 함수, 파이프, pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet, 객체 파이프라인, 변수, 함수, 해시테이블"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "변수, 테이블, 함수, 메타테이블, pcall을 한 페이지로"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "스칼라, 배열, 해시, 서브루틴, 정규식, 오류 처리"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "순수 함수, 타입, 패턴 매칭, 리스트, Maybe, IO"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "패턴 매칭, 파이프, Enum, 프로세스, {:ok, value} 처리"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "패턴 매칭, 재귀, 프로세스, OTP, let-it-crash 오류 처리"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "문법, 불변 컬렉션, 함수, 매크로, atom, 오류 처리"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "타입, 레코드, 유니온, 패턴 매칭, 파이프라인, Result"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "타입, 레코드, 베리언트, 패턴 매칭, 모듈, 오류 처리"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "타입, 배열, 브로드캐스팅, 함수, 다중 디스패치, 오류 처리"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "타입, 슬라이스, 옵셔널, 오류 유니온, comptime, defer"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "현대 문법, 타입, 반복문, 프로시저, 모듈, 배열, iostat"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "division, PIC, IF/EVALUATE, PERFORM, 테이블"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "x86-64 NASM 레지스터, 명령어, 메모리, 시스템 콜, AT&T"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "VB.NET 문법, 타입, 함수, 컬렉션, 클래스, LINQ, VBA"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "메시지, 클래스, 프로퍼티, Foundation, 블록, ARC"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "행렬, 인덱싱, 반복문, 함수, 구조체, 셀, 그래프, Octave"
+    },
+    "design-patterns": {
+      "name": "디자인 패턴",
+      "blurb": "디자인 패턴이란, GoF 23가지 패턴 분류와 선택법"
+    },
+    "solid-principles": {
+      "name": "SOLID 원칙",
+      "blurb": "SOLID 5원칙을 TypeScript 전후 비교 예제로 설명"
+    },
+    "singleton": {
+      "name": "싱글턴 패턴",
+      "blurb": "인스턴스를 하나로: TypeScript 예제, 비동기, 대안"
+    },
+    "factory-method": {
+      "name": "팩토리 메서드 패턴",
+      "blurb": "서브클래스가 객체 생성을 결정: TypeScript 예제와 활용"
+    },
+    "abstract-factory": {
+      "name": "추상 팩토리 패턴",
+      "blurb": "구체 클래스 없이 관련 객체군을 생성"
+    },
+    "builder": {
+      "name": "빌더 패턴",
+      "blurb": "플루언트 API로 복잡한 객체를 단계별로 생성, Director 포함"
+    },
+    "prototype": {
+      "name": "프로토타입 패턴",
+      "blurb": "인스턴스 복제로 객체 생성: clone(), 깊은/얕은 복사"
+    },
+    "adapter": {
+      "name": "어댑터 패턴",
+      "blurb": "호환되지 않는 인터페이스 연결: 예제, 객체/클래스 어댑터"
+    },
+    "bridge": {
+      "name": "브리지 패턴",
+      "blurb": "추상과 구현을 분리해 각각 독립적으로 변경"
+    },
+    "composite": {
+      "name": "컴포지트 패턴",
+      "blurb": "단일 객체와 트리를 동일하게 취급: 파일 시스템 예제"
+    },
+    "decorator": {
+      "name": "데코레이터 패턴",
+      "blurb": "래핑으로 런타임에 동작 추가: 클래스/함수 데코레이터"
+    },
+    "facade": {
+      "name": "퍼사드 패턴",
+      "blurb": "복잡한 서브시스템에 단일 진입점: 결제 예제"
+    },
+    "flyweight": {
+      "name": "플라이웨이트 패턴",
+      "blurb": "내부 상태를 공유해 메모리 절약, TypeScript 예제"
+    },
+    "proxy": {
+      "name": "프록시 패턴",
+      "blurb": "캐시, 지연, 보호, 원격 프록시로 접근 제어"
+    },
+    "chain-of-responsibility": {
+      "name": "책임 연쇄 패턴",
+      "blurb": "처리될 때까지 핸들러에 요청 전달, 미들웨어 형태 포함"
+    },
+    "command": {
+      "name": "커맨드 패턴",
+      "blurb": "요청을 객체로 만들어 큐, 로그, 실행 취소/다시 실행"
+    },
+    "interpreter": {
+      "name": "인터프리터 패턴",
+      "blurb": "작은 언어를 클래스로 모델링, TypeScript로 식 트리 평가"
+    },
+    "iterator": {
+      "name": "이터레이터 패턴",
+      "blurb": "내부 구조 노출 없이 순회: Symbol.iterator, 제너레이터"
+    },
+    "mediator": {
+      "name": "중재자 패턴",
+      "blurb": "직접 참조 대신 중앙 객체로 컴포넌트 조율"
+    },
+    "memento": {
+      "name": "메멘토 패턴",
+      "blurb": "내부를 노출하지 않고 상태 저장/복원: 실행 취소, 체크포인트"
+    },
+    "observer": {
+      "name": "옵저버 패턴",
+      "blurb": "주체가 바뀌면 구독자에게 자동 알림, 타입 있는 TS 코드"
+    },
+    "state": {
+      "name": "상태 패턴",
+      "blurb": "switch 대신 상태 클래스로 상태별 동작 변경"
+    },
+    "strategy": {
+      "name": "전략 패턴",
+      "blurb": "교체 가능한 알고리즘을 런타임에 교체: 함수/클래스"
+    },
+    "template-method": {
+      "name": "템플릿 메서드 패턴",
+      "blurb": "기반 클래스에서 단계를 고정하고 서브클래스가 세부 구현"
+    },
+    "visitor": {
+      "name": "비지터 패턴",
+      "blurb": "더블 디스패치로 클래스 계층에 연산 추가, 유니온 대안"
+    },
+    "breadth-first-search": {
+      "name": "너비 우선 탐색(BFS)",
+      "blurb": "큐로 구현하는 BFS: 추적, Python, 최단 경로, O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "깊이 우선 탐색(DFS)",
+      "blurb": "재귀/반복 DFS: 추적, 순환 탐지, O(V + E) 복잡도"
+    },
+    "dijkstra": {
+      "name": "다익스트라 알고리즘",
+      "blurb": "우선순위 큐로 최단 경로: 추적, Python heapq, 복잡도"
+    },
+    "bellman-ford": {
+      "name": "벨만-포드 알고리즘",
+      "blurb": "음수 가중치 최단 경로, 음수 사이클 탐지, Python 코드"
+    },
+    "floyd-warshall": {
+      "name": "플로이드-워셜 알고리즘",
+      "blurb": "모든 쌍 최단 경로: 행렬 추적, Python, 경로 복원, O(V³)"
+    },
+    "a-star-search": {
+      "name": "A* 탐색",
+      "blurb": "f = g + h 휴리스틱 길 찾기: 허용 가능 휴리스틱, 격자 예제"
+    },
+    "topological-sort": {
+      "name": "위상 정렬",
+      "blurb": "의존성 순서 정렬: Kahn, DFS, graphlib, 순환 탐지"
+    },
+    "minimum-spanning-tree": {
+      "name": "최소 신장 트리",
+      "blurb": "크루스칼과 프림 알고리즘: 추적, Python, 유니온 파인드, 힙"
+    },
+    "dynamic-programming": {
+      "name": "동적 계획법",
+      "blurb": "메모이제이션과 타뷸레이션, 동전/LCS 추적, Python, 복잡도"
+    },
+    "greedy-algorithms": {
+      "name": "그리디 알고리즘",
+      "blurb": "매 단계 지역 최적 선택: 구간 스케줄링 추적, Python, 반례"
+    },
+    "backtracking": {
+      "name": "백트래킹",
+      "blurb": "선택, 탐색, 되돌리기: N-Queens, 부분집합, 순열, 가지치기"
+    },
+    "kmp-string-search": {
+      "name": "KMP 문자열 검색",
+      "blurb": "KMP: 접두사 함수, 추적, Python, O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "비트 조작",
+      "blurb": "비트 연산자, 단일 비트 요령, 비트 세기, 비트마스크(Python)"
     }
   },
   "dice": {

@@ -1,0 +1,226 @@
+{
+  "title": "Bash 脚本入门教程：变量、循环、函数与 Shell 脚本 — cv.cm",
+  "description": "一步步学 Bash 脚本：运行脚本、变量与引号、if 和 case、循环、函数、数组、管道与重定向，以及安全的错误处理。",
+  "h1": "Bash 脚本入门教程",
+  "answer": "Bash 是 Unix 命令行 Shell 和脚本语言，广泛用于 Linux 服务器、macOS 终端和 CI 流水线。Bash 脚本是由 Shell 命令组成的文本文件，可结合变量、条件、循环、函数和管道。本页介绍如何编写和运行脚本、安全地给变量加引号、流程控制、使用数组、重定向输出，以及用 set -euo pipefail 处理错误。",
+  "sections": [
+    {
+      "h": "Bash 是什么，用来做什么",
+      "body": [
+        "Bash（Bourne Again SHell）是 GNU 项目的命令行 Shell 和脚本语言。它读取你输入的命令，运行程序，并用管道和重定向把它们连接起来。Bash 脚本就是由这些同样的命令组成的文本文件，所以你在终端里手动做的任何事情都可以自动化。",
+        "Bash 是大多数 Linux 发行版的默认交互式 Shell；macOS 现在默认使用 zsh，但仍自带 Bash；Windows 上可通过 WSL 或 Git Bash 使用。开发者、系统管理员和 DevOps 工程师用它编写构建脚本、部署、CI 任务、服务器维护，以及配合 `grep`、`sed`、`awk`、`sort` 等工具快速处理数据。"
+      ]
+    },
+    {
+      "h": "编写并运行 Hello, world",
+      "body": [
+        "脚本以 shebang 行开头，告诉系统使用哪个解释器。用 `chmod` 让文件可执行，然后运行它。",
+        {
+          "code": "#!/usr/bin/env bash\n# hello.sh\necho \"Hello, world!\"",
+          "lang": "shell"
+        },
+        {
+          "code": "chmod +x hello.sh\n./hello.sh\n# Hello, world!\nbash hello.sh       # also works without chmod\nbash --version      # check which version you have",
+          "lang": "shell"
+        },
+        "`#!/usr/bin/env bash` 会在 `PATH` 中查找 Bash，比写死 `/bin/bash` 更具可移植性。如果脚本只使用 POSIX 特性，可以改用 `#!/bin/sh`，但此时不允许使用 `[[ ]]` 和数组等 Bash 专有语法。"
+      ]
+    },
+    {
+      "h": "变量、引号与展开",
+      "body": [
+        "用 `name=value` 赋值，用 `$name` 或 `${name}` 读取。每个变量都是字符串；Bash 只在 `$(( ))` 内做整数运算。请在展开处使用双引号，以保留空格和特殊字符。",
+        {
+          "code": "name=\"Ada\"                 # no spaces around =\ncount=3\necho \"Hello, $name\"        # Hello, Ada\necho \"Next: $((count + 1))\"  # Next: 4  (integer arithmetic)\ntoday=$(date +%Y-%m-%d)    # command substitution\necho \"Today is $today\"\nfile=\"my report.txt\"\necho \"${file%.txt}.pdf\"    # my report.pdf  (strip suffix)\necho \"${#name}\"            # 3  (string length)\necho \"${missing:-default}\" # default  (fallback value)",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "语法",
+              "含义"
+            ],
+            "rows": [
+              [
+                "`\"$var\"`",
+                "变量的值，作为一个整体保留"
+              ],
+              [
+                "`'text'`",
+                "字面文本，完全不做展开"
+              ],
+              [
+                "`$(command)`",
+                "命令的输出"
+              ],
+              [
+                "`$((a + b))`",
+                "整数运算"
+              ],
+              [
+                "`$1`, `$2`, `$@`, `$#`",
+                "脚本或函数的参数、全部参数、参数个数"
+              ],
+              [
+                "`$?`",
+                "上一条命令的退出状态（0 表示成功）"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "写成带空格的 `name = value` 是最常见的初学者错误：Bash 会尝试运行名为 `name` 的命令。另外，每次展开都要加引号：当文件名含有空格时，`rm $file` 会出错或误删文件，而 `rm \"$file\"` 则是安全的。"
+        }
+      ]
+    },
+    {
+      "h": "条件判断与 case",
+      "body": [
+        "`if` 运行一条命令并检查其退出状态。`[[ ]]` 测试命令用于比较字符串和检查文件；`(( ))` 用于比较数字。`case` 将值与 glob 模式进行匹配。",
+        {
+          "code": "#!/usr/bin/env bash\nfile=\"${1:-notes.txt}\"\n\nif [[ -f \"$file\" ]]; then\n  echo \"$file exists\"\nelif [[ -d \"$file\" ]]; then\n  echo \"$file is a directory\"\nelse\n  echo \"$file not found\"\nfi\n\nn=7\nif (( n % 2 == 1 )); then echo \"$n is odd\"; fi\n\ncase \"$file\" in\n  *.txt) echo \"text file\" ;;\n  *.sh)  echo \"shell script\" ;;\n  *)     echo \"something else\" ;;\nesac",
+          "lang": "shell"
+        },
+        {
+          "table": {
+            "head": [
+              "测试",
+              "何时为真"
+            ],
+            "rows": [
+              [
+                "`[[ -f path ]]`",
+                "路径是普通文件"
+              ],
+              [
+                "`[[ -d path ]]`",
+                "路径是目录"
+              ],
+              [
+                "`[[ -z \"$s\" ]]`",
+                "字符串为空"
+              ],
+              [
+                "`[[ \"$a\" == \"$b\" ]]`",
+                "字符串相等"
+              ],
+              [
+                "`(( a > b ))`",
+                "数字 a 大于 b"
+              ],
+              [
+                "`[[ $a -lt $b ]]`",
+                "数字 a 小于 b（旧式写法）"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "循环",
+      "body": [
+        "Bash 有遍历单词列表的 `for`、C 风格的 `for (( ))`、`while` 和 `until`。逐行读取文件使用 `while read`。",
+        {
+          "code": "for fruit in apple banana cherry; do\n  echo \"fruit: $fruit\"\ndone\n\nfor (( i = 1; i <= 3; i++ )); do\n  echo \"i = $i\"\ndone\n\nfor f in *.log; do\n  [[ -e \"$f\" ]] || continue   # skip if no .log files match\n  echo \"log file: $f\"\ndone\n\nwhile IFS= read -r line; do\n  echo \"line: $line\"\ndone < input.txt",
+          "lang": "shell"
+        },
+        "`IFS= read -r` 会原样读取每一行：`IFS=` 保留行首空格，`-r` 保留反斜杠。"
+      ]
+    },
+    {
+      "h": "函数",
+      "body": [
+        "用 `name() { ... }` 定义函数，并像命令一样调用。参数以 `$1`、`$2` 等形式传入。函数用 `return` 返回退出状态（0 到 255）；若要返回数据，请把它打印出来，再用 `$( )` 捕获输出。",
+        {
+          "code": "greet() {\n  local name=\"${1:-world}\"   # local variable, default value\n  echo \"Hello, $name!\"\n}\n\nis_even() {\n  (( $1 % 2 == 0 ))          # exit status 0 means true\n}\n\ngreet                         # Hello, world!\ngreet \"Ann\"                   # Hello, Ann!\nmsg=$(greet \"Bo\")             # capture output\necho \"Got: $msg\"              # Got: Hello, Bo!\n\nif is_even 4; then echo \"4 is even\"; fi",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "数组与关联数组",
+      "body": [
+        "索引数组保存字符串列表。关联数组把字符串键映射到值，需要 Bash 4 或更高版本，因此 macOS 自带的旧版 Bash 3.2 不支持。",
+        {
+          "code": "langs=(\"bash\" \"python\" \"go\")\nlangs+=(\"rust\")\necho \"${langs[0]}\"           # bash\necho \"${#langs[@]}\"          # 4\nfor l in \"${langs[@]}\"; do echo \"- $l\"; done\n\n# associative array (Bash 4 or later)\ndeclare -A port\nport[http]=80\nport[https]=443\necho \"${port[https]}\"        # 443\nfor key in \"${!port[@]}\"; do\n  echo \"$key -> ${port[$key]}\"\ndone",
+          "lang": "shell"
+        },
+        "遍历元素时始终写成带引号的 `\"${array[@]}\"`；这样即使元素含有空格，也会被当作一个整体。"
+      ]
+    },
+    {
+      "h": "管道与重定向",
+      "body": [
+        "Bash 的标志性特性是把小程序组合起来。管道 `|` 把一条命令的输出送给下一条命令作为输入。重定向把输出写入文件，或从文件读取输入。文件描述符 1 是标准输出，2 是标准错误。",
+        {
+          "code": "ls -l > files.txt            # write stdout to a file (overwrite)\necho \"more\" >> files.txt     # append\ngrep error app.log 2> /dev/null   # discard error messages\nmake > build.log 2>&1        # stdout and stderr to the same file\n\n# count the 3 most common words in a file\ntr -cs '[:alpha:]' '\\n' < book.txt | tr '[:upper:]' '[:lower:]' |\n  sort | uniq -c | sort -rn | head -n 3",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "错误处理与安全脚本",
+      "body": [
+        "默认情况下，Bash 在命令失败后会继续执行。许多脚本以 `set -euo pipefail` 开头：`-e` 在出现未处理的错误时退出，`-u` 把未设置的变量视为错误，`-o pipefail` 让管道中任何一条命令失败时整个管道都失败。`trap` 在脚本退出时运行清理代码。",
+        {
+          "code": "#!/usr/bin/env bash\nset -euo pipefail            # stop on errors, unset vars, pipe failures\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT     # clean up when the script exits\n\nif ! grep -q \"ready\" status.txt; then\n  echo \"status is not ready\" >&2   # errors go to stderr\n  exit 1\nfi\n\ncp config.txt \"$tmp\" || { echo \"copy failed\" >&2; exit 2; }\necho \"ok\"",
+          "lang": "shell"
+        },
+        "用 `||` 在一行内处理失败，用 `&&` 仅在上一条命令成功时才运行下一条。`set -e` 有例外（例如 `if` 条件中的命令不会触发它），所以重要的命令要显式检查。"
+      ]
+    },
+    {
+      "h": "一个完整的小脚本：带日期的备份",
+      "body": [
+        "这个脚本把目录归档为带时间戳的 `.tar.gz` 文件，并只保留最新的五个归档。它用到了参数、默认值、测试、命令替换和管道。",
+        {
+          "code": "#!/usr/bin/env bash\n# backup.sh: copy a directory into a dated .tar.gz archive\nset -euo pipefail\n\nusage() { echo \"usage: $0 SOURCE_DIR [DEST_DIR]\" >&2; exit 1; }\n\n[[ $# -ge 1 ]] || usage\nsrc=\"$1\"\ndest=\"${2:-$HOME/backups}\"\n[[ -d \"$src\" ]] || { echo \"not a directory: $src\" >&2; exit 1; }\n\nmkdir -p \"$dest\"\nstamp=$(date +%Y%m%d-%H%M%S)\narchive=\"$dest/$(basename \"$src\")-$stamp.tar.gz\"\n\ntar -czf \"$archive\" -C \"$(dirname \"$src\")\" \"$(basename \"$src\")\"\nsize=$(du -h \"$archive\" | cut -f1)\necho \"Created $archive ($size)\"\n\n# keep only the 5 newest archives for this source\nls -1t \"$dest\"/\"$(basename \"$src\")\"-*.tar.gz | tail -n +6 | while read -r old; do\n  rm -f -- \"$old\"\n  echo \"Removed $old\"\ndone",
+          "lang": "shell"
+        },
+        {
+          "code": "./backup.sh ~/projects/site\n# Created /home/ann/backups/site-20261031-093000.tar.gz (2.1M)",
+          "lang": "shell"
+        },
+        {
+          "note": "初学者常见错误：`=` 两侧加空格；变量不加引号；混用 `[ ]` 和 `[[ ]]`；在必须处理特殊文件名的脚本里解析 `ls` 的输出；忘记 `chmod +x`；以及脚本使用 Windows 换行符（CRLF），导致 `$'\\r': command not found` 之类的错误。对脚本运行 ShellCheck 可以发现其中大部分问题。"
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        {
+          "ul": [
+            "GNU Bash Reference Manual，官方文档。",
+            "终端中的 `man bash` 和 `help`（例如 `help read`）。",
+            "ShellCheck：一款静态分析工具，会解释常见的脚本缺陷。",
+            "如果需要脚本同时能在 `sh`、`dash` 或 BusyBox 中运行，请阅读 POSIX Shell 规范。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bash 和 sh 有什么区别？",
+      "a": "`sh` 是 POSIX Shell 标准，由 dash 等程序实现。Bash 兼容 POSIX sh，但增加了 `[[ ]]`、数组、`(( ))` 和花括号展开等特性。"
+    },
+    {
+      "q": "Bash 和 zsh 有什么区别？",
+      "a": "对大多数日常命令来说，两者是兼容的。zsh 增加了交互特性，是 macOS 的默认 Shell；用 `bash` shebang 编写的脚本仍然由 Bash 运行。"
+    },
+    {
+      "q": "为什么我的脚本提示 permission denied？",
+      "a": "文件没有可执行权限。运行 `chmod +x script.sh`，或者用 `bash script.sh` 启动它。"
+    },
+    {
+      "q": "如何向 Bash 脚本传递参数？",
+      "a": "把参数写在脚本名之后，如 `./script.sh one two`。在脚本内部它们是 `$1` 和 `$2`，`$@` 包含全部参数，`$#` 是参数个数。"
+    },
+    {
+      "q": "应该用 Bash 写大型程序吗？",
+      "a": "Bash 最适合把命令粘合在一起。当脚本变得复杂，需要数据结构或细致的错误处理时，Python 等语言通常更易于维护。"
+    }
+  ]
+}

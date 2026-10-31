@@ -1,0 +1,203 @@
+{
+  "title": "OCaml tutorial: types, variants, pattern matching and modules — cv.cm",
+  "description": "Learn OCaml from the start: install with opam, compile Hello world, use let bindings, lists, records, variants, pattern matching, modules and Result errors.",
+  "h1": "OCaml tutorial for beginners",
+  "answer": "OCaml is a statically typed functional language from the ML family. Its compiler infers types for you, catches many mistakes before the program runs, and produces fast native code. Programs are built from immutable values, variants (tagged unions), pattern matching and modules. Install it with opam, run a file with `ocaml hello.ml`, or compile it with `ocamlopt`.",
+  "sections": [
+    {
+      "h": "What OCaml is and who uses it",
+      "body": [
+        "OCaml was created at Inria in France and is now developed by an open-source community that includes companies such as Jane Street and Tarides. It combines functional programming with optional imperative features (mutable references, arrays, loops) and an object system that most code does not need. OCaml 5 added shared-memory parallelism through domains and effect handlers.",
+        "OCaml is used for compilers and program analysis tools, proof assistants such as Rocq (formerly Coq), trading systems (Jane Street is the best-known industrial user), and developer tools such as Meta's Flow and Infer. It is also a common teaching language for functional programming and type systems."
+      ]
+    },
+    {
+      "h": "Install OCaml and run Hello, world",
+      "body": [
+        "The standard way to install OCaml is opam, the OCaml package manager. After installing opam, run `opam init` once; it sets up a compiler. Then install the build tool dune and the friendlier REPL utop with `opam install dune utop`.",
+        {
+          "code": "(* hello.ml *)\nlet () = print_endline \"Hello, world!\"",
+          "lang": "ocaml"
+        },
+        {
+          "code": "ocaml hello.ml            # run with the interpreter\nocamlopt -o hello hello.ml\n./hello                   # native executable\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`let () = ...` is the usual way to write the entry point: it evaluates the expression and checks that it returns `unit` (no value). In the REPL (`utop` or `ocaml`), end each phrase with `;;`; in source files you do not need `;;`. For real projects, `dune init project myapp` creates a project and `dune build` compiles it."
+      ]
+    },
+    {
+      "h": "Values and basic types",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "63-bit on 64-bit systems; operators `+ - * / mod`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "Has its own operators: `+.` `-.` `*.` `/.`"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "Immutable bytes; join with `^`"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "A single byte"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "`&&`, `||`, `not`"
+              ],
+              [
+                "unit",
+                "`()`",
+                "The value of expressions with no result"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet height = 1.68 *. 100.0\nlet () = Printf.printf \"%s is %d, %.0f cm\\n\" name age height\n(* Ana is 30, 168 cm *)\nlet count = ref 0\nlet () = incr count; Printf.printf \"count = %d\\n\" !count",
+          "lang": "ocaml"
+        },
+        "Bindings are immutable. A `ref` is a mutable cell: `!r` reads it and `r := v` writes it. OCaml never converts between `int` and `float` automatically; use `float_of_int` and `int_of_float`."
+      ]
+    },
+    {
+      "h": "Control flow and functions",
+      "body": [
+        "`if` is an expression. Functions are defined with `let`; recursive ones need `let rec`. Arguments are separated by spaces, and every function is curried, so partial application is free.",
+        {
+          "code": "let sign n =\n  if n > 0 then \"positive\"\n  else if n < 0 then \"negative\"\n  else \"zero\"\nlet rec factorial n = if n <= 1 then 1 else n * factorial (n - 1)\nlet add x y = x + y          (* int -> int -> int *)\nlet add5 = add 5\nlet () =\n  for i = 1 to 3 do\n    Printf.printf \"%d squared is %d\\n\" i (i * i)\n  done;\n  Printf.printf \"%s %d %d\\n\" (sign (-2)) (factorial 5) (add5 10)\n(* negative 120 15 *)",
+          "lang": "ocaml"
+        },
+        "Note the parentheses in `sign (-2)`: without them OCaml reads `sign - 2` as a subtraction. Use `;` to sequence expressions that return `unit`."
+      ]
+    },
+    {
+      "h": "Lists, arrays, tuples and records",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Structure",
+              "Literal",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "Immutable singly linked list; `x :: xs` adds to the front"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "Fixed size, mutable, `a.(0)` indexing"
+              ],
+              [
+                "Tuple",
+                "`(\"Ana\", 30)`",
+                "Fixed group of values of different types"
+              ],
+              [
+                "Record",
+                "`{ name = \"Ana\"; age = 30 }`",
+                "Named fields, type declared first"
+              ],
+              [
+                "Hashtbl / Map",
+                "`Hashtbl.create 16`",
+                "Mutable hash table / immutable balanced tree map"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type person = { name : string; age : int }\nlet people = [ { name = \"Ana\"; age = 30 }; { name = \"Ben\"; age = 17 } ]\nlet () =\n  people\n  |> List.filter (fun p -> p.age >= 18)\n  |> List.map (fun p -> p.name)\n  |> List.iter print_endline\n(* Ana *)\nlet older = { (List.hd people) with age = 31 }",
+          "lang": "ocaml"
+        },
+        "The pipeline operator `x |> f` means `f x`. The `List` module provides `map`, `filter`, `fold_left`, `find_opt` and many more."
+      ]
+    },
+    {
+      "h": "Signature features: variants, pattern matching and modules",
+      "body": [
+        "A variant type lists every possible case of a value. Pattern matching takes a value apart by case, and the compiler warns when a case is missing, which makes refactoring safe.",
+        {
+          "code": "type shape =\n  | Circle of float\n  | Rectangle of float * float\nlet area = function\n  | Circle r -> Float.pi *. r *. r\n  | Rectangle (w, h) -> w *. h\nlet () =\n  List.iter (fun s -> Printf.printf \"%.2f\\n\" (area s))\n    [ Circle 1.0; Rectangle (2.0, 3.0) ]\n(* 3.14 then 6.00 *)\nmodule StringMap = Map.Make (String)\nlet ages = StringMap.(empty |> add \"Ana\" 30 |> add \"Ben\" 17)\nlet () = Printf.printf \"%d\\n\" (StringMap.find \"Ana\" ages)   (* 30 *)",
+          "lang": "ocaml"
+        },
+        "Modules group types and functions, and every file is a module (`list.ml` would be `List`). A functor is a function from modules to modules: `Map.Make (String)` builds a map module whose keys are strings. Signatures (`.mli` files) hide implementation details."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "OCaml has three tools: `option` for a value that may be missing, `result` for an operation that can fail with information, and exceptions for exceptional situations.",
+        {
+          "code": "let parse_age s =\n  match int_of_string_opt s with\n  | Some n when n >= 0 -> Ok n\n  | Some _ -> Error \"Age must not be negative\"\n  | None -> Error \"Not a number\"\nlet () =\n  match parse_age \"abc\" with\n  | Ok n -> Printf.printf \"Age %d\\n\" n\n  | Error msg -> print_endline (\"Error: \" ^ msg)\n(* Error: Not a number *)\nexception Empty_input\nlet first = function [] -> raise Empty_input | x :: _ -> x\nlet () =\n  try print_int (first []) with Empty_input -> print_endline \"empty list\"",
+          "lang": "ocaml"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequencies",
+      "body": [
+        {
+          "code": "let () =\n  let text = \"the cat and the hat and the bat\" in\n  let counts = Hashtbl.create 16 in\n  String.split_on_char ' ' text\n  |> List.iter (fun w ->\n         let n = Option.value (Hashtbl.find_opt counts w) ~default:0 in\n         Hashtbl.replace counts w (n + 1));\n  Hashtbl.to_seq counts\n  |> List.of_seq\n  |> List.sort (fun (_, a) (_, b) -> compare b a)\n  |> List.filteri (fun i _ -> i < 2)\n  |> List.iter (fun (w, n) -> Printf.printf \"%s %d\\n\" w n)\n(* the 3\n   and 2 *)",
+          "lang": "ocaml"
+        },
+        "The program counts words in a mutable hash table, converts the table to a list of `(word, count)` pairs, sorts by count in descending order and prints the first two. `~default:0` is a labeled argument.",
+        {
+          "note": "Common beginner mistakes: using `+` with floats (use `+.`); writing `[1, 2, 3]`, which is a list containing one tuple (use semicolons); forgetting `rec` on a recursive function; using `==` (physical equality) where you mean `=` (structural equality); and writing `f -1` instead of `f (-1)`."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "ocaml.org: the installation guide, \"A Tour of OCaml\" and the other tutorials under Docs.",
+            "The OCaml manual for the full language and standard library reference.",
+            "Learn dune for building projects and opam for installing libraries.",
+            "Try the free online book \"Real World OCaml\" for larger, practical examples."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is OCaml hard to learn?",
+      "a": "The syntax is small, but thinking in types, recursion and pattern matching takes practice if you come from imperative languages. Error messages from the type checker become easier to read quickly."
+    },
+    {
+      "q": "Why does OCaml have separate operators for floats?",
+      "a": "OCaml does not overload arithmetic operators, so `+` works only on `int` and `+.` only on `float`. This keeps type inference simple and predictable."
+    },
+    {
+      "q": "What is the difference between OCaml and F#?",
+      "a": "F# is derived from OCaml and shares much of its core syntax, but F# runs on .NET and uses significant indentation, while OCaml compiles to native code or bytecode and has a more powerful module system with functors."
+    },
+    {
+      "q": "When do I need ;; in OCaml?",
+      "a": "Only in the interactive toplevel (`ocaml` or `utop`), where it tells the REPL to evaluate what you typed. In `.ml` source files you normally omit it."
+    }
+  ]
+}

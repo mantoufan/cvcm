@@ -1,0 +1,175 @@
+{
+  "title": "Pola Bridge: memisahkan abstraksi dari implementasi, contoh TypeScript — cv.cm",
+  "description": "Pola desain Bridge dijelaskan: memecah kelas menjadi hierarki abstraksi dan implementasi yang bervariasi secara independen. Contoh TypeScript dan pemakaian nyata.",
+  "h1": "Pola Bridge dijelaskan dengan contoh",
+  "answer": "Bridge adalah pola desain structural yang memecah satu hierarki kelas besar menjadi dua hierarki terpisah, abstraksi dan implementasi, yang dihubungkan dengan composition. Abstraksi (misalnya jenis laporan) menyimpan referensi ke objek implementasi (misalnya renderer keluaran) dan mendelegasikan pekerjaan tingkat rendah kepadanya. Kedua sisi lalu dapat berkembang secara independen, sehingga 3 jenis laporan dan 3 renderer hanya butuh 6 kelas, bukan 9 kombinasi subkelas.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Memisahkan abstraksi dari implementasinya agar keduanya dapat bervariasi secara independen. Pola Bridge adalah salah satu dari tujuh pola structural dalam buku Gang of Four (GoF), tempat pola ini juga dikenal sebagai Handle/Body."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan aplikasi yang mengirim dua jenis pesan, peringatan dan pengingat, lewat dua saluran, email dan SMS. Jika dimodelkan dengan inheritance, Anda mendapat `EmailAlert`, `SmsAlert`, `EmailReminder`, dan `SmsReminder`. Tambahkan saluran push dan pesan ringkasan, dan Anda butuh sembilan kelas. Setiap tipe baru di salah satu sisi melipatgandakan totalnya.",
+        "Masalah sebenarnya adalah hierarki kelas mencampur dua pertanyaan yang independen: apa pesan itu, dan bagaimana pesan itu dikirim. Pola Bridge memisahkannya menjadi dua hierarki dan menghubungkannya dengan referensi, sehingga total bertambah secara penjumlahan, bukan perkalian.",
+        {
+          "table": {
+            "head": [
+              "Desain",
+              "2 pesan × 2 saluran",
+              "3 pesan × 3 saluran",
+              "4 pesan × 4 saluran"
+            ],
+            "rows": [
+              [
+                "Subkelas untuk setiap kombinasi",
+                "4 kelas",
+                "9 kelas",
+                "16 kelas"
+              ],
+              [
+                "Bridge",
+                "4 kelas",
+                "6 kelas",
+                "8 kelas"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Abstraction",
+                "Interface tingkat tinggi yang dipakai klien; menyimpan referensi ke Implementor.",
+                "`Message`"
+              ],
+              [
+                "RefinedAbstraction",
+                "Memperluas abstraksi dengan perilaku varian.",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "Implementor",
+                "Interface untuk operasi tingkat rendah.",
+                "`Sender`"
+              ],
+              [
+                "ConcreteImplementor",
+                "Mengimplementasikan operasi tingkat rendah untuk satu platform atau teknologi.",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "Menambah `PushSender` hanya satu kelas, dan langsung bekerja dengan peringatan dan pengingat. Menambah pesan `Digest` hanya satu kelas, dan langsung bekerja dengan setiap sender. Karena sender hanyalah argumen konstruktor, sender juga bisa dipilih saat runtime, misalnya dari preferensi pengguna."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Bridge ketika:",
+        {
+          "ul": [
+            "Sebuah kelas bervariasi dalam dua dimensi independen atau lebih, dan inheritance akan menciptakan kelas untuk setiap kombinasi.",
+            "Anda ingin mengganti implementasi saat runtime, atau berbagi satu objek implementasi di antara beberapa abstraksi.",
+            "Anda membangun kode yang harus berjalan di beberapa platform (sistem operasi, back end rendering, mesin database) dan ingin detail platform berada di satu hierarki terpisah."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Hanya ada satu dimensi perubahan. Interface sederhana dengan beberapa implementasi sudah cukup.",
+            "Anda menambahkannya \"untuk nanti\" padahal hanya ada satu implementasi. Lapisan tambahan membuat kode lebih sulit dibaca tanpa manfaat apa pun saat ini."
+          ]
+        },
+        {
+          "note": "Pola Bridge dirancang sejak awal, ketika Anda tahu kedua sisi akan bervariasi. Jika Anda menyesuaikan kelas yang sudah ada ke sebuah interface setelah kejadian, yang Anda butuhkan adalah pola Adapter, bukan pola Bridge."
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "JDBC di Java adalah contoh yang terkenal: kode aplikasi ditulis terhadap API JDBC, sementara setiap vendor database menyediakan driver yang mengimplementasikan operasi tingkat rendah. Kedua sisi berkembang secara independen.",
+            "Toolkit grafis dan UI menjaga API widget atau bentuk yang tidak bergantung platform di atas back end penggambaran khusus platform. Contoh dari buku GoF sendiri adalah abstraksi `Window` dengan implementasi `WindowImp` terpisah untuk setiap sistem jendela.",
+            "Pustaka logging sering memisahkan API logger yang dipanggil kode dari handler atau appender yang menulis ke file, konsol, atau layanan jaringan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Hubungannya dengan Bridge"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Bentuknya mirip, tetapi membuat kelas-kelas yang tidak berhubungan dan sudah ada dapat bekerja bersama setelah dirancang. Bridge direncanakan sebelum kelas ditulis."
+              ],
+              [
+                "Strategy",
+                "Juga mendelegasikan ke objek yang dapat dipertukarkan. Strategy tentang menukar algoritma; Bridge tentang memisahkan seluruh hierarki abstraksi dari hierarki implementasinya."
+              ],
+              [
+                "Abstract Factory",
+                "Dapat membuat dan mengonfigurasi objek implementasi yang tepat untuk sebuah bridge, misalnya back end platform yang benar."
+              ],
+              [
+                "Composite",
+                "Bridge juga dibangun di atas composition ketimbang inheritance, tetapi Composite tentang pohon objek, bukan dua hierarki independen."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa arti \"implementasi\" dalam pola Bridge?",
+      "a": "Bukan kode di dalam sebuah kelas. Maksudnya hierarki objek terpisah yang mengerjakan pekerjaan tingkat rendah dan khusus platform, yang didelegasikan oleh abstraksi."
+    },
+    {
+      "q": "Apa beda pola Bridge dan pola Strategy?",
+      "a": "Strukturnya hampir sama. Strategy berfokus menukar satu algoritma di dalam objek, sedangkan Bridge memisahkan dua hierarki utuh agar masing-masing dapat diperluas secara independen."
+    },
+    {
+      "q": "Apa beda pola Bridge dan pola Adapter?",
+      "a": "Bridge dirancang di awal agar dua sisi dapat bervariasi. Adapter ditambahkan belakangan agar kelas yang sudah ada dan tidak kompatibel cocok dengan sebuah interface."
+    },
+    {
+      "q": "Apakah Bridge sama dengan dependency injection?",
+      "a": "Bukan. Bridge adalah cara menyusun dua hierarki. Dependency injection adalah cara menyediakan objek implementasi, dan merupakan cara yang alami untuk memberi abstraksi implementor-nya."
+    }
+  ]
+}

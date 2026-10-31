@@ -1,0 +1,151 @@
+{
+  "title": "觀察者模式：TypeScript 的主體、訂閱者與事件 — cv.cm",
+  "description": "觀察者模式讓物件訂閱另一個物件，並在它改變時收到通知。了解各角色、具型別的 TypeScript 範例與常見陷阱。",
+  "h1": "觀察者模式（Observer）詳解與範例",
+  "answer": "觀察者（Observer）是一種行為型設計模式：一個稱為主體的物件維護一份相依者清單（稱為觀察者），並在其狀態改變時自動通知它們。觀察者可在執行期訂閱與取消訂閱，主體不需要知道它們的具體類別。瀏覽器中的事件監聽器、Node.js 的 `EventEmitter`，以及 RxJS 等響應式函式庫，全都建立在這個概念之上。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：定義物件之間的一對多依賴，讓一個物件改變狀態時，所有相依者都會自動收到通知並更新。觀察者是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一，也稱為發布／訂閱或監聽器模式。",
+        "想像網路商店中的購物車。加入商品時，頁首的購物車圖示必須顯示新的數量，側邊欄必須顯示新的總額，分析模組也必須記錄這個事件。如果購物車直接呼叫這些元件，購物車模組就依賴頁首、側邊欄和分析模組。要加入第四個反應，又得再修改購物車。",
+        "有了觀察者模式，購物車只需維護一份訂閱者清單，並在變動時逐一呼叫它們。頁首、側邊欄和分析模組自行訂閱。購物車不必匯入它們，新功能也能在不碰購物車程式碼的情況下對購物車的變動做出反應。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "主體（發布者）",
+                "維護觀察者清單，並提供訂閱與取消訂閱的方法；在有變動時通知它們"
+              ],
+              [
+                "觀察者（訂閱者）",
+                "帶有更新方法的介面，通常就是一個回呼函式"
+              ],
+              [
+                "具體主體",
+                "持有被關注的狀態，並在狀態改變時呼叫 notify"
+              ],
+              [
+                "具體觀察者",
+                "對通知做出反應，例如重繪部分 UI"
+              ]
+            ]
+          }
+        },
+        "通知有兩種風格。在推模型中，主體會隨通知一併送出變動後的資料。在拉模型中，主體只說「有東西變了」，由觀察者向主體索取所需的資料。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "一個小型的泛型 `Subject` 類別負責處理訂閱。觀察者是單純的函式，這是 TypeScript 中最常見的形式。`subscribe` 會回傳一個取消訂閱的函式，因此呼叫端不會忘記自己登記了哪個監聽器。",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` 遍歷的是集合的副本（`[...this.listeners]`）。這樣一來，在通知期間取消訂閱自己的監聽器不會干擾迴圈。",
+        {
+          "note": "忘記取消訂閱是最常見的觀察者錯誤。主體會保留每個監聽器的引用，因此已被銷毀但仍在訂閱的 UI 元件會留在記憶體中，並持續對事件做出反應。觀察者不再需要時，一定要呼叫取消訂閱的函式，例如放在元件的清理程式碼中。"
+        }
+      ]
+    },
+    {
+      "h": "使用內建的 EventTarget",
+      "body": [
+        "瀏覽器、Node.js 和 Deno 都提供 `EventTarget`，所以你通常不需要自己寫主體類別：",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js 在 `node:events` 模組中還有 `EventEmitter` 類別，提供 `on`、`off` 和 `emit` 方法。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當一個物件的變動必須更新其他物件，而你事先不知道有多少個、是哪些物件時使用。",
+            "用來讓核心模組獨立於對它做出反應的 UI、日誌或分析程式碼。",
+            "用於隨時間發生的事件，例如使用者輸入、訊息或感測器讀值。",
+            "只有一個固定接收者時不要使用；直接的方法呼叫或回呼參數更容易理解。",
+            "要小心觀察者鏈會觸發其他通知。它們可能造成更新迴圈，讓人難以看出某個東西為何改變。",
+            "除非主體的文件有說明，否則不要依賴觀察者被呼叫的順序。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "DOM：`element.addEventListener(\"click\", handler)` 為元素訂閱一個觀察者。",
+            "Node.js：`EventEmitter` 是串流、HTTP 伺服器和許多其他核心物件的基礎。",
+            "瀏覽器的觀察者 API，例如 `MutationObserver`、`IntersectionObserver` 和 `ResizeObserver`，會通知回呼函式頁面的變化。",
+            "RxJS 把值的串流建模為 observable，由觀察者訂閱。",
+            "Java：`java.util.Observable` 在 Java 9 已被棄用；改用 `java.util.concurrent.Flow` 介面（發布者與訂閱者）以及事件監聽器介面。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與觀察者的差異"
+            ],
+            "rows": [
+              [
+                "中介者",
+                "中介者認識參與的物件並協調它們；主體只是廣播，並不知道觀察者做什麼。"
+              ],
+              [
+                "帶代理的發布／訂閱",
+                "發布者與訂閱者完全互不認識，透過訊息代理或事件匯流排溝通，通常跨越行程。"
+              ],
+              [
+                "命令",
+                "通知可以攜帶命令物件；命令關心的是單一請求，觀察者關心的是一對多的通知。"
+              ],
+              [
+                "迭代器",
+                "迭代器是拉取式的（消費者索取下一個值）；觀察者是推送式的（生產者在值出現時送出）。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "觀察者與發布／訂閱有什麼差別？",
+      "a": "在經典的觀察者模式中，觀察者直接向主體登記。在發布／訂閱中，兩者之間有代理或事件通道，因此發布者與訂閱者互不認識。許多人把這兩個名稱混用來指同一個概念。"
+    },
+    {
+      "q": "如何避免觀察者模式造成記憶體洩漏？",
+      "a": "觀察者不再需要時就取消訂閱。讓 `subscribe` 回傳取消訂閱的函式，或在 `addEventListener` 中搭配 `AbortSignal`，都能讓清理變得簡單。"
+    },
+    {
+      "q": "觀察者是同步呼叫的嗎？",
+      "a": "在上面的範例，以及 `EventTarget` 和 `EventEmitter` 中，監聽器會依加入的順序同步執行。其他函式庫可能以非同步方式傳遞通知，請查閱它們的文件。"
+    },
+    {
+      "q": "觀察者就是響應式程式設計嗎？",
+      "a": "響應式程式設計建立在觀察者之上。RxJS 等函式庫加入了用於過濾、組合與轉換通知串流的運算子，以及錯誤與完成的規則。"
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "title": "Ruby tutorial: objects, blocks, arrays, hashes and classes — cv.cm",
+  "description": "Learn Ruby in one page: run Hello world, variables and types, control flow, methods, arrays and hashes, blocks and iterators, classes, modules and exceptions.",
+  "h1": "Ruby tutorial for beginners",
+  "answer": "Ruby is a dynamic, object-oriented scripting language designed to be pleasant to read and write. Save `puts \"Hello, world\"` in `hello.rb` and run `ruby hello.rb`. Everything in Ruby is an object, even numbers and `nil`. The core ideas are methods defined with `def`, arrays and hashes, blocks passed to iterators such as `each` and `map`, classes and modules, and exceptions handled with `begin`/`rescue`.",
+  "sections": [
+    {
+      "h": "What Ruby is and what it is used for",
+      "body": [
+        "Ruby was created by Yukihiro Matsumoto (\"Matz\") in Japan and first released in 1995, with the goal of making programmers happy. It became widely known through Ruby on Rails, the web framework behind sites such as GitHub and Shopify. Ruby is used for web applications, scripting and automation, and developer tools such as Homebrew and CocoaPods. Its standard implementation is CRuby (also called MRI)."
+      ]
+    },
+    {
+      "h": "Install Ruby and run Hello, world",
+      "body": [
+        "macOS and many Linux systems include a Ruby, but it is often old; install a current Ruby 3 with a version manager such as rbenv, asdf or mise, or with RubyInstaller on Windows. Check it with `ruby -v`.",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` prints a value followed by a newline. Parentheses around method arguments are optional when the meaning is clear."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Variables need no declaration and hold any object. By convention names use `snake_case`. Constants start with a capital letter.",
+        {
+          "table": {
+            "head": [
+              "Class",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "Any size"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "Double precision"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "Mutable; double quotes interpolate"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "Immutable identifier, common as hash keys"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "Only `false` and `nil` are falsy"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "No value"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "Built-in collections"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "Blocks end with `end` rather than braces. Ruby code is usually indented with 2 spaces."
+      ]
+    },
+    {
+      "h": "Methods",
+      "body": [
+        "Methods return the value of their last expression, so `return` is often unnecessary. By convention, methods that return a boolean end in `?`, and methods that change the receiver in place end in `!`.",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Arrays and hashes",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` prints the `inspect` form of a value, which is handy for debugging because it shows quotes and brackets."
+      ]
+    },
+    {
+      "h": "Signature feature: blocks and iterators",
+      "body": [
+        "A block is a chunk of code passed to a method, written with `{ ... }` on one line or `do ... end` across lines. Iteration in Ruby is done mostly through blocks instead of `for` loops, and the `Enumerable` methods make data transformations short.",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` is shorthand for `{ |n| n.even? }`. Your own methods receive a block and call it with `yield`."
+      ]
+    },
+    {
+      "h": "Classes and modules",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` generates getter methods. Modules group methods that can be mixed into many classes, which Ruby uses instead of multiple inheritance. The one-line `def to_s = ...` form needs Ruby 3.0 or later."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` catches exceptions, and `ensure` always runs. Inside a method you can write `rescue` directly without `begin`."
+      ]
+    },
+    {
+      "h": "A small complete program: word frequency",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "Run it with `ruby words.rb notes.txt`. `tally` counts equal items into a hash, and `max_by(5)` returns the five entries with the highest counts."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Only `nil` and `false` are falsy. Unlike in Python or JavaScript, `0`, `\"\"` and `[]` are all truthy, so test emptiness with `.empty?` or `.zero?`."
+        },
+        {
+          "ul": [
+            "Forgetting `end` to close `if`, `def`, `class` or `do` blocks.",
+            "Mixing string keys and symbol keys: `h[\"name\"]` and `h[:name]` are different keys.",
+            "Using single quotes and expecting `#{}` interpolation to work.",
+            "Calling a `!` method and not realizing it changed the original object.",
+            "Using the old system Ruby instead of a current version installed with a version manager."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Start with the documentation page on ruby-lang.org, including the quick start \"Ruby in Twenty Minutes\", and use docs.ruby-lang.org for the core and standard library reference. Learn Bundler and gems for dependencies, RSpec or Minitest for tests, and then Ruby on Rails if you want to build web applications."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Ruby still used?",
+      "a": "Yes. Ruby on Rails runs many established web products, including GitHub and Shopify, and Ruby is common in scripting and developer tools. It is less common than Python or JavaScript for new projects, but it remains actively developed."
+    },
+    {
+      "q": "What is the difference between Ruby and Ruby on Rails?",
+      "a": "Ruby is the programming language. Rails is a web framework written in Ruby that provides routing, database access and page templates."
+    },
+    {
+      "q": "What is a symbol in Ruby?",
+      "a": "A symbol such as `:name` is an immutable, unique identifier. The same symbol is always the same object, which makes it efficient for hash keys and option names."
+    },
+    {
+      "q": "Ruby or Python for beginners?",
+      "a": "Both are good first languages with readable syntax. Python has a wider range of uses, especially in data science; Ruby is very expressive and is strong for web development with Rails."
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "title": "Duyệt cây nhị phân: preorder, inorder, postorder và level order bằng Python — cv.cm",
+  "description": "Giải thích duyệt cây nhị phân: preorder, inorder, postorder và level-order (BFS), với code Python đệ quy và lặp, ví dụ được lần theo từng bước và độ phức tạp.",
+  "h1": "Duyệt cây nhị phân: preorder, inorder, postorder và level order",
+  "answer": "Duyệt cây nhị phân nghĩa là thăm mỗi node đúng một lần theo một thứ tự cố định. Ba thứ tự theo chiều sâu chỉ khác nhau ở thời điểm thăm chính node: preorder thăm node, trái, phải; inorder thăm trái, node, phải; postorder thăm trái, phải, node. Duyệt level-order theo chiều rộng và thăm cây theo từng hàng bằng hàng đợi. Cả bốn đều tốn O(n).",
+  "sections": [
+    {
+      "h": "Tại sao thứ tự duyệt quan trọng",
+      "body": [
+        "Cây không có một thứ tự tự nhiên duy nhất, nên thuật toán chọn thứ tự phù hợp với bài toán. Duyệt inorder một cây tìm kiếm nhị phân cho ra các khóa theo thứ tự tăng dần. Preorder thăm cha trước con, đúng thứ bạn cần để sao chép cây hoặc ghi cây ra để dựng lại được. Postorder thăm con trước cha, đúng thứ bạn cần để xóa cây, tính kích thước thư mục hoặc tính giá trị cây biểu thức. Level order tìm node nông nhất trước và in cây theo từng hàng."
+      ]
+    },
+    {
+      "h": "Bốn thứ tự trên cùng một ví dụ",
+      "body": [
+        "Ta dùng cây này: gốc 1 có hai con là 2 và 3; node 2 có hai con là 4 và 5; node 3 có con phải là 6.",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "Thứ tự",
+              "Quy tắc",
+              "Kết quả"
+            ],
+            "rows": [
+              [
+                "Preorder",
+                "node, trái, phải",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "Inorder",
+                "trái, node, phải",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "Postorder",
+                "trái, phải, node",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "Level order",
+                "từng hàng, từ trái sang phải",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "Cách nhớ ba thứ tự đầu đơn giản: tên cho biết node nằm ở đâu. Pre là trước cả hai cây con, in là giữa hai cây con, post là sau cả hai. Cây con trái luôn được thăm trước cây con phải."
+      ]
+    },
+    {
+      "h": "Cài đặt đệ quy",
+      "body": [
+        "Các phiên bản đệ quy phản ánh trực tiếp định nghĩa. Mỗi hàm thăm node ở một dòng khác nhau.",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Preorder và inorder dạng lặp với ngăn xếp",
+      "body": [
+        "Đệ quy dùng ngăn xếp lời gọi. Để tránh giới hạn đệ quy trên cây sâu, hãy tự quản lý ngăn xếp. Với preorder, pop một node, thăm nó, rồi push con phải trước con trái để con trái được xử lý trước.",
+        "Với inorder, đi sang trái hết mức có thể, push các node trên đường đi. Khi không thể đi trái nữa, pop một node, thăm nó, rồi chuyển sang con phải của nó.",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Postorder và level order dạng lặp",
+      "body": [
+        "Postorder dạng lặp là khó nhất. Một cách gọn dùng cờ: push mỗi node hai lần, lần thứ hai được đánh dấu là sẵn sàng thăm sau các con của nó. Level order dùng hàng đợi thay vì ngăn xếp; xử lý hàng đợi từng tầng một cũng cho biết độ sâu của mỗi node.",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "Một mẹo phổ biến khác cho postorder: chạy preorder đã chỉnh (node, phải, trái) rồi đảo ngược kết quả."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cách duyệt",
+              "Thời gian",
+              "Không gian phụ",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Preorder / inorder / postorder (đệ quy)",
+                "O(n)",
+                "O(h)",
+                "ngăn xếp lời gọi giữ một khung cho mỗi tầng"
+              ],
+              [
+                "Preorder / inorder / postorder (lặp)",
+                "O(n)",
+                "O(h)",
+                "ngăn xếp tường minh giữ tối đa một đường đi cộng các node anh em"
+              ],
+              [
+                "Level order",
+                "O(n)",
+                "O(w)",
+                "hàng đợi giữ tối đa một tầng đầy đủ"
+              ],
+              [
+                "Duyệt inorder Morris",
+                "O(n)",
+                "O(1)",
+                "tạm thời nối các liên kết phải null thành sợi chỉ (thread)"
+              ]
+            ]
+          }
+        },
+        "Ở đây n là số node, h là chiều cao và w là độ rộng tối đa. Với cây cân bằng h khoảng log2(n) và w có thể khoảng n/2; với cây dạng chuỗi h là n và w là 1."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Push con trái trước con phải trong preorder dạng lặp. Ngăn xếp là LIFO, nên con bạn muốn thăm trước phải được push sau cùng.",
+            "Quên cây rỗng: mọi hàm nên trả về kết quả rỗng khi `root is None`.",
+            "Dùng `list` với `pop(0)` làm hàng đợi trong level order. Mỗi lần pop tốn O(n); hãy dùng `collections.deque`.",
+            "Dựa vào đệ quy cho cây rất sâu. Python dừng ở giới hạn đệ quy (mặc định khoảng 1000) với `RecursionError`.",
+            "Mong một cách duyệt đơn lẻ xác định được cây. Riêng preorder thì mơ hồ; preorder cộng inorder (với giá trị khác nhau) là đủ để dựng lại cây."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng cách duyệt nào",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tác vụ",
+              "Cách duyệt"
+            ],
+            "rows": [
+              [
+                "Liệt kê khóa BST theo thứ tự tăng dần, kiểm tra BST, phần tử nhỏ thứ k",
+                "Inorder"
+              ],
+              [
+                "Sao chép hoặc tuần tự hóa cây, in đại cương thư mục",
+                "Preorder"
+              ],
+              [
+                "Xóa cây, tính kích thước hoặc chiều cao cây con, tính cây biểu thức",
+                "Postorder"
+              ],
+              [
+                "Độ sâu nhỏ nhất, góc nhìn bên phải, in theo tầng, node gần nhất",
+                "Level order"
+              ]
+            ]
+          }
+        },
+        "Preorder, inorder và postorder đều là các dạng tìm kiếm theo chiều sâu; level order là tìm kiếm theo chiều rộng áp dụng cho cây. Cùng ý tưởng này mở rộng cho đồ thị tổng quát, nơi bạn còn cần một tập các node đã thăm."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Preorder, inorder và postorder khác nhau thế nào?",
+      "a": "Chỉ khác vị trí thăm node. Preorder thăm node trước các cây con, inorder thăm giữa cây con trái và phải, và postorder thăm sau cả hai cây con."
+    },
+    {
+      "q": "Cách duyệt nào cho kết quả đã sắp xếp với cây tìm kiếm nhị phân?",
+      "a": "Duyệt inorder. Trong BST mọi khóa bên trái nhỏ hơn và mọi khóa bên phải lớn hơn, nên thăm trái, node, phải cho ra các khóa theo thứ tự tăng dần."
+    },
+    {
+      "q": "Duyệt level-order có giống BFS không?",
+      "a": "Có. Duyệt level-order là tìm kiếm theo chiều rộng trên cây. Nó dùng hàng đợi và thăm các node theo thứ tự độ sâu."
+    },
+    {
+      "q": "Tại sao dùng duyệt dạng lặp thay vì đệ quy?",
+      "a": "Độ sâu đệ quy bằng chiều cao cây, và Python báo `RecursionError` khi vượt giới hạn đệ quy. Ngăn xếp tường minh không có giới hạn đó và giúp dễ dàng tạm dừng hoặc dừng sớm."
+    },
+    {
+      "q": "Có thể duyệt cây với O(1) không gian phụ không?",
+      "a": "Có. Duyệt Morris tạm thời nối tiền nhiệm inorder của mỗi node trỏ ngược về nó, nên không cần ngăn xếp, và khôi phục cây trước khi kết thúc. Thời gian chạy là O(n)."
+    }
+  ]
+}

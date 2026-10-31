@@ -1,0 +1,182 @@
+{
+  "title": "Mẫu Abstract Factory: họ đối tượng, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Abstract Factory: tạo các họ đối tượng liên quan mà không nêu tên lớp cụ thể. Ví dụ TypeScript, ứng dụng và cạm bẫy.",
+  "h1": "Mẫu Abstract Factory giải thích kèm ví dụ",
+  "answer": "Abstract Factory là mẫu thiết kế khởi tạo cung cấp một interface để tạo các họ đối tượng liên quan mà không chỉ rõ lớp cụ thể của chúng. Mã client nhận một đối tượng factory, như `LightThemeFactory` hoặc `DarkThemeFactory`, và yêu cầu nó tạo từng sản phẩm (một nút bấm, một hộp thoại). Vì một factory tạo cả họ, các sản phẩm luôn khớp với nhau, và bạn đổi họ bằng cách truyền một factory khác.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Cung cấp một interface để tạo các họ đối tượng liên quan hoặc phụ thuộc nhau mà không chỉ rõ lớp cụ thể của chúng. Abstract Factory là một trong năm mẫu khởi tạo trong cuốn sách Gang of Four (GoF), nơi nó còn được gọi là Kit."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Hãy hình dung một ứng dụng báo cáo có thể xuất kết quả cho hai đích: trang web và terminal văn bản thuần. Mỗi đích cần phiên bản riêng của nhiều thành phần: tiêu đề, bảng và hộp cảnh báo. Tiêu đề web không được trộn với bảng của terminal, nếu không đầu ra sẽ hỏng.",
+        "Nếu mã báo cáo gọi trực tiếp `new HtmlHeading()` và `new TextTable()`, nó bị buộc vào các lớp cụ thể, lựa chọn đích bị rải trên nhiều dòng, và không gì ngăn ai đó trộn lẫn các họ. Abstract Factory đặt mọi việc tạo của một họ sau một đối tượng, nên lựa chọn được đưa ra ở đúng một chỗ."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "AbstractFactory",
+                "Khai báo một phương thức tạo cho mỗi kiểu sản phẩm.",
+                "`UiFactory`"
+              ],
+              [
+                "ConcreteFactory",
+                "Triển khai các phương thức tạo cho một họ.",
+                "`HtmlFactory`, `TextFactory`"
+              ],
+              [
+                "AbstractProduct",
+                "Interface cho một loại sản phẩm.",
+                "`Heading`, `Alert`"
+              ],
+              [
+                "ConcreteProduct",
+                "Một sản phẩm của một họ cụ thể.",
+                "`HtmlHeading`, `TextAlert`"
+              ],
+              [
+                "Client",
+                "Chỉ dùng abstract factory và các interface sản phẩm trừu tượng.",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "Nơi duy nhất nêu tên một lớp cụ thể là dòng chọn factory. `renderReport` chạy được với mọi họ, và nó không thể vô tình trộn mảnh HTML với mảnh văn bản, vì nó lấy toàn bộ sản phẩm từ cùng một factory.",
+        "Trong chương trình thật, các sản phẩm thường là lớp có nhiều phương thức hơn. Object literal giúp ví dụ ngắn gọn; cấu trúc vẫn như vậy."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Abstract Factory khi:",
+        {
+          "ul": [
+            "Hệ thống phải làm việc với nhiều họ sản phẩm liên quan, và sản phẩm của các họ khác nhau không được kết hợp (giao diện chủ đề UI, widget của hệ điều hành, driver cơ sở dữ liệu với các đối tượng kết nối và lệnh khớp nhau).",
+            "Bạn muốn chọn họ một lần, lúc cấu hình, và giữ phần còn lại của mã độc lập với nó.",
+            "Bạn muốn kiểm thử cung cấp một họ đối tượng giả thông qua một factory."
+          ]
+        },
+        "Tránh nó khi:",
+        {
+          "ul": [
+            "Chỉ có một họ. `new` trực tiếp, hoặc một hàm factory, đơn giản hơn.",
+            "Các kiểu sản phẩm thay đổi thường xuyên. Thêm một loại sản phẩm mới, như `createTable()`, buộc bạn đổi interface factory và mọi factory cụ thể. Đây là điểm yếu chính mà cuốn sách GoF nêu."
+          ]
+        },
+        {
+          "note": "Đừng nhầm \"nhiều biến thể sản phẩm\" với \"nhiều họ\". Nếu bạn chỉ cần chọn một cách triển khai của một interface, mẫu Factory Method hoặc tiêm phụ thuộc đơn thuần là đủ."
+        }
+      ]
+    },
+    {
+      "h": "Abstract Factory so với Factory Method",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Khía cạnh",
+              "Factory Method",
+              "Abstract Factory"
+            ],
+            "rows": [
+              [
+                "Tạo ra",
+                "Một sản phẩm",
+                "Một họ sản phẩm liên quan"
+              ],
+              [
+                "Cơ chế",
+                "Một lớp con ghi đè một phương thức tạo",
+                "Client nhận một đối tượng factory với nhiều phương thức tạo"
+              ],
+              [
+                "Dựa trên",
+                "Kế thừa",
+                "Composition"
+              ],
+              [
+                "Dễ thêm",
+                "Một biến thể sản phẩm mới (lớp con mới)",
+                "Một họ mới (lớp factory mới)"
+              ],
+              [
+                "Khó thêm",
+                "Ít; mỗi creator độc lập",
+                "Một kiểu sản phẩm mới (mọi factory đều phải đổi)"
+              ]
+            ]
+          }
+        },
+        "Hai mẫu này thường được kết hợp: mỗi phương thức tạo của một factory cụ thể tự nó là một factory method."
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "API XML của Java: `DocumentBuilderFactory` và `TransformerFactory` là các lớp abstract. `newInstance()` tìm một cách triển khai cụ thể, còn mã dùng nó chỉ phụ thuộc vào các kiểu trừu tượng.",
+            "API JDBC của Java hoạt động tương tự: driver cơ sở dữ liệu cung cấp các cách triển khai `Connection`, `Statement` và `ResultSet` khớp nhau, còn mã ứng dụng chỉ dùng các interface.",
+            "Ví dụ của chính cuốn sách GoF là bộ công cụ giao diện người dùng hỗ trợ nhiều chuẩn look-and-feel, với một factory cho mỗi chuẩn tạo ra thanh cuộn, cửa sổ và nút bấm khớp nhau."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "ul": [
+            "Mẫu Factory Method: các factory cụ thể thường triển khai phương thức tạo của mình dưới dạng factory method.",
+            "Mẫu Prototype: một factory có thể được cấu hình với các đối tượng nguyên mẫu và tạo sản phẩm bằng cách sao chép chúng, tránh phải có một lớp con factory cho mỗi họ.",
+            "Mẫu Singleton: một ứng dụng thường chỉ cần một thể hiện của mỗi factory cụ thể.",
+            "Mẫu Builder: cũng ẩn việc xây dựng, nhưng xây một đối tượng phức tạp từng bước, còn Abstract Factory trả về sản phẩm hoàn chỉnh ngay lập tức.",
+            "Mẫu Bridge: một abstract factory có thể tạo và cấu hình phía triển khai của một bridge."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Họ sản phẩm là gì?",
+      "a": "Một tập các đối tượng được thiết kế để dùng cùng nhau, như nút bấm, menu và hộp thoại của một chủ đề UI. Trộn sản phẩm của các họ khác nhau sẽ cho kết quả không nhất quán hoặc hỏng."
+    },
+    {
+      "q": "Làm sao thêm một kiểu sản phẩm mới vào Abstract Factory?",
+      "a": "Bạn thêm một phương thức tạo vào interface factory và triển khai nó trong mọi factory cụ thể. Vì vậy mẫu này phù hợp nhất khi tập các kiểu sản phẩm ổn định."
+    },
+    {
+      "q": "Abstract Factory có giống tiêm phụ thuộc không?",
+      "a": "Không, nhưng chúng phối hợp tốt. Tiêm phụ thuộc cung cấp một đối tượng từ bên ngoài; Abstract Factory là một loại đối tượng bạn có thể tiêm khi client cần tự tạo nhiều đối tượng liên quan."
+    },
+    {
+      "q": "Abstract Factory có thể là một hàm thay vì lớp không?",
+      "a": "Có. Trong TypeScript, một factory có thể là một đối tượng thuần chứa các hàm tạo thỏa mãn interface factory. Mẫu này nói về interface và các họ, không phải về lớp."
+    }
+  ]
+}

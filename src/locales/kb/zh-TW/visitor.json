@@ -1,0 +1,154 @@
+{
+  "title": "訪問者模式：雙重分派與 TypeScript 語法樹訪問者 — cv.cm",
+  "description": "訪問者模式能在不更動類別階層的情況下為其新增操作。了解雙重分派、TypeScript 程式碼與聯集型別的替代方案。",
+  "h1": "訪問者模式（Visitor）詳解與範例",
+  "answer": "訪問者（Visitor）是一種行為型設計模式，讓你在不修改一組相關類別的情況下為它們新增操作。每個操作寫成一個訪問者物件，針對每種元素型別各有一個方法，而每個元素都有一個 `accept(visitor)` 方法，用來呼叫對應的訪問者方法。這種技術稱為雙重分派，會同時依據元素型別與訪問者型別來決定要執行的程式碼。編譯器、linter 和程式碼轉換工具都用訪問者來走訪語法樹。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：表示一個要對物件結構中各元素執行的操作。訪問者讓你在不更動元素所屬類別的情況下定義新的操作。它是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "假設一個繪圖程式有三個圖形類別：`Circle`、`Rectangle` 和 `Group`。隨著時間推移，你需要對它們做許多操作：計算總面積、匯出成 SVG、匯出成 JSON、計算圖形數量、檢查是否重疊。如果每個操作都成為每個圖形類別上的方法，圖形類別就會塞滿與「身為圖形」無關的程式碼，而每個新操作都得改動所有類別。",
+        "有了訪問者，每個操作都成為一個類別（面積訪問者、SVG 訪問者），裡面包含處理每種圖形型別的程式碼。圖形只需要一個通用的方法 `accept`。新增操作就是寫一個新的訪問者；圖形類別維持不變。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "訪問者",
+                "針對每種具體元素型別各有一個 visit 方法的介面，例如 `visitCircle` 和 `visitRectangle`"
+              ],
+              [
+                "具體訪問者",
+                "為所有元素型別實作一個操作，並可累積結果"
+              ],
+              [
+                "元素",
+                "帶有 `accept(visitor)` 方法的介面"
+              ],
+              [
+                "具體元素",
+                "透過呼叫自己型別對應的 visit 方法並傳入自身，來實作 `accept`"
+              ],
+              [
+                "物件結構",
+                "由元素組成的集合或樹，例如文件或語法樹，訪問者會在其上走訪"
+              ]
+            ]
+          }
+        },
+        "為什麼需要 `accept`：在 TypeScript、Java 和 C# 中，方法呼叫是依據被呼叫物件的型別來選擇實作（單一分派）。`accept` 呼叫依元素型別分派，而其內部的呼叫，例如 `visitor.visitCircle(this)`，則依訪問者型別分派。兩者合起來就形成了雙重分派。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "訪問者介面的回傳型別是泛型，因此一個訪問者可以計算數字，另一個可以產生字串。",
+        {
+          "code": "interface ShapeVisitor<R> {\n  visitCircle(c: Circle): R;\n  visitRectangle(r: Rectangle): R;\n  visitGroup(g: Group): R;\n}\ninterface Shape {\n  accept<R>(visitor: ShapeVisitor<R>): R;\n}\n\nclass Circle implements Shape {\n  constructor(readonly radius: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitCircle(this); }\n}\nclass Rectangle implements Shape {\n  constructor(readonly width: number, readonly height: number) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitRectangle(this); }\n}\nclass Group implements Shape {\n  constructor(readonly children: Shape[]) {}\n  accept<R>(v: ShapeVisitor<R>) { return v.visitGroup(this); }\n}\n\nclass AreaVisitor implements ShapeVisitor<number> {\n  visitCircle(c: Circle) { return Math.PI * c.radius ** 2; }\n  visitRectangle(r: Rectangle) { return r.width * r.height; }\n  visitGroup(g: Group): number {\n    return g.children.reduce((sum, child) => sum + child.accept(this), 0);\n  }\n}\n\nclass SvgVisitor implements ShapeVisitor<string> {\n  visitCircle(c: Circle) { return '<circle r=\"' + c.radius + '\"/>'; }\n  visitRectangle(r: Rectangle) { return '<rect width=\"' + r.width + '\" height=\"' + r.height + '\"/>'; }\n  visitGroup(g: Group): string { return \"<g>\" + g.children.map((c) => c.accept(this)).join(\"\") + \"</g>\"; }\n}\n\nconst drawing = new Group([new Circle(1), new Rectangle(2, 3), new Group([new Rectangle(1, 1)])]);\nconsole.log(drawing.accept(new AreaVisitor()).toFixed(2)); // 10.14\nconsole.log(drawing.accept(new SvgVisitor()));\n// <g><circle r=\"1\"/><rect width=\"2\" height=\"3\"/><g><rect width=\"1\" height=\"1\"/></g></g>",
+          "lang": "typescript"
+        },
+        "第三個操作，例如計算圖形數量，就是實作 `ShapeVisitor<number>` 的新類別。所有圖形類別都不必更動。",
+        {
+          "note": "訪問者讓新增操作變得容易，但新增元素型別卻很困難。新的圖形類別，例如 `Triangle`，需要在訪問者介面和每個現有的訪問者中新增方法。當元素型別的集合穩定、而操作的集合持續增加時，才適合使用這個模式。"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 的替代方案：聯集型別與 switch",
+      "body": [
+        "在 TypeScript 中，可辨識聯集（discriminated union）搭配窮盡式 `switch`，能以更少的程式碼獲得許多相同的好處。如果漏掉某個情況，編譯器會回報錯誤，取代了訪問者介面所提供的安全性：",
+        {
+          "code": "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number }\n  | { kind: \"group\"; children: Shape[] };\n\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.radius ** 2;\n    case \"rect\": return s.width * s.height;\n    case \"group\": return s.children.reduce((sum, c) => sum + area(c), 0);\n    default: {\n      const unreachable: never = s; // compile error if a kind is not handled\n      return unreachable;\n    }\n  }\n}\n\nconsole.log(area({ kind: \"group\", children: [{ kind: \"rect\", width: 2, height: 3 }] })); // 6",
+          "lang": "typescript"
+        },
+        "每個新操作就是一個新函式。這種風格適合像 JSON 或語法樹這樣的純資料，也是許多 TypeScript 程式碼庫用來取代類別式訪問者的做法。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當元素類別的集合穩定，而你需要對它們進行許多互不相關的操作時使用，例如對語法樹進行求值、列印、型別檢查和最佳化。",
+            "用來把操作的程式碼放在一起：所有 SVG 匯出都在同一個訪問者中，而不是散落在許多類別。",
+            "當訪問者需要在走訪結構時累積狀態時使用，例如符號表或累計總和。",
+            "元素型別經常改變時不要使用；每次變更都會波及所有訪問者。",
+            "元素很少、操作又簡單時不要使用。類別上的方法，或帶有 `switch` 的函式，更容易閱讀。",
+            "請注意，訪問者通常需要存取元素的資料，這可能迫使你把欄位改為公開。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Babel 外掛就是訪問者：一個以節點型別命名方法的物件，例如 `Identifier` 或 `CallExpression`，由 `@babel/traverse` 在走訪語法樹時呼叫。",
+            "ESLint 規則回傳一個以節點型別為鍵的訪問者方法物件，ESLint 在走訪期間呼叫它們。",
+            "Python 的 `ast.NodeVisitor` 與 `ast.NodeTransformer` 類別會呼叫以節點類別命名的 `visit_` 方法，例如 `visit_Name`。",
+            "Java 的 `java.nio.file.FileVisitor` 搭配 `Files.walkFileTree` 使用，會針對檔案樹中的每個目錄與檔案接收回呼。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與訪問者的關係"
+            ],
+            "rows": [
+              [
+                "組合",
+                "訪問者常套用在組合結構上；群組的 visit 方法會造訪它的子節點，如範例所示。"
+              ],
+              [
+                "直譯器",
+                "直譯器對語法樹求值；訪問者可以實作該求值，以及對同一棵樹的其他操作。"
+              ],
+              [
+                "迭代器",
+                "迭代器負責走訪元素；訪問者定義對每個元素的操作。兩者可以結合。"
+              ],
+              [
+                "策略",
+                "策略為一個情境改變一種演算法；訪問者則把針對多種元素型別的一個操作整合在一起。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "什麼是雙重分派？",
+      "a": "雙重分派是指所執行的程式碼取決於兩個物件的型別。在訪問者模式中，`element.accept(visitor)` 選出元素型別，而其內部的 `visitor.visitX(this)` 選出訪問者型別。"
+    },
+    {
+      "q": "什麼時候不該用訪問者模式？",
+      "a": "經常新增元素型別時應避免使用，因為每個新型別都需要修改所有訪問者。對於少數簡單的操作，它也會增加不值得的繁瑣程度。"
+    },
+    {
+      "q": "訪問者在 TypeScript 中有用嗎？",
+      "a": "對基於類別的物件結構很有用。對於純資料，可辨識聯集搭配窮盡式 `switch` 通常能以更少的程式碼和完整的型別檢查達到相同效果。"
+    },
+    {
+      "q": "為什麼 Babel 和 ESLint 使用訪問者？",
+      "a": "兩者都處理含有許多節點型別的語法樹，並支援許多獨立的外掛或規則。訪問者讓每個外掛或規則只處理自己關心的節點型別，而走訪則由工具負責。"
+    }
+  ]
+}

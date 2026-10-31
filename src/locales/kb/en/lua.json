@@ -1,0 +1,186 @@
+{
+  "title": "Lua tutorial: tables, functions, metatables and errors — cv.cm",
+  "description": "Learn Lua step by step: run Hello, world, local variables and types, loops, functions and closures, tables, metatables, OOP and pcall error handling.",
+  "h1": "Lua tutorial for beginners",
+  "answer": "Lua is a lightweight, embeddable scripting language used in games, Roblox (through its Luau dialect), Neovim, Redis and embedded devices. It has a small syntax and a single data structure, the table, which serves as array, dictionary and object. This page covers installing Lua, variables and types, control flow, functions, tables, metatables, error handling with pcall and a complete example.",
+  "sections": [
+    {
+      "h": "What Lua is and what it is used for",
+      "body": [
+        "Lua is a small, fast, dynamically typed scripting language created in 1993 at PUC-Rio, a university in Brazil. Its whole interpreter is a compact library written in C, which makes it easy to embed inside larger programs. It has one data structure, the table, and very few concepts, so it is quick to learn.",
+        "Lua is mostly used as an embedded scripting language: game engines and games (Roblox uses a Lua dialect called Luau; LÖVE and Defold use Lua), the Neovim editor, the Redis database, network tools such as Nginx with OpenResty, and many embedded devices. LuaJIT is a popular just-in-time compiler for Lua 5.1 code."
+      ]
+    },
+    {
+      "h": "Install Lua and run Hello, world",
+      "body": [
+        "Install Lua with your package manager (for example `brew install lua` or `apt install lua5.4`) or build it from the source at lua.org. Run `lua` alone for an interactive prompt.",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Comments start with `--`. A block comment is written `--[[ ... ]]`. Statements do not need semicolons."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Variables are global by default. Always declare them with `local` unless you really mean a global. Lua has eight basic types; the ones you use every day are below.",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "absence of a value; unset variables are nil"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "only `false` and `nil` are falsy; `0` and `\"\"` are truthy"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "integer and float subtypes since Lua 5.3"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `[[long]]`",
+                "immutable byte strings"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "the only data structure"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "first-class values"
+              ]
+            ]
+          }
+        },
+        "The not-equal operator is `~=`, not `!=`. Logical operators are the words `and`, `or` and `not`."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        "Blocks end with the keyword `end`. Lua has `if`/`elseif`/`else`, `while`, `repeat ... until`, a numeric `for` and a generic `for` that works with iterators.",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "There is no `continue` statement; use `goto continue` with a `::continue::` label, or restructure the loop with an `if`."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Functions are values. They can take a variable number of arguments with `...` and return multiple values. Closures capture local variables from the enclosing scope.",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "Tables: arrays, dictionaries and objects",
+      "body": [
+        "A table is an associative array that can be indexed by any value except `nil`. The same structure serves as an array, a dictionary, a set, a module or an object. By convention arrays start at index 1.",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "Indexes start at 1, and `#t` is only reliable for sequences without holes. Setting `t[2] = nil` in the middle of an array makes the length undefined; use `table.remove(t, 2)` to delete and shift elements instead."
+        }
+      ]
+    },
+    {
+      "h": "Metatables and object-oriented Lua",
+      "body": [
+        "Metatables are Lua's signature feature. A metatable attached to a table changes how it behaves: `__index` supplies missing keys (used for inheritance), and fields such as `__add`, `__eq` and `__tostring` overload operators. The colon syntax `obj:method()` passes the object as the hidden first parameter `self`.",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Lua also has coroutines (`coroutine.create`, `coroutine.resume`, `coroutine.yield`), which let a function pause and resume later. Game scripts often use them for step-by-step behavior that spans several frames."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Raise an error with `error(message)`. Catch it with `pcall` (protected call), which returns `false` plus the error instead of stopping the program. Many library functions return `nil` and an error message instead of raising an error, as `io.open` does.",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "The file name and line number in the error message depend on where the code runs. `assert(value, message)` raises an error when `value` is `false` or `nil` and is a short way to check results."
+      ]
+    },
+    {
+      "h": "A small complete program: word count",
+      "body": [
+        "This program counts words in a text with a pattern match, sorts them by frequency and prints the top three. It uses string patterns, tables, sorting with a custom comparator and string formatting.",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "Common beginner mistakes: forgetting `local` and creating globals by accident; using `!=` instead of `~=`; expecting arrays to start at 0; using `.` instead of `:` when calling methods (`obj.method()` does not pass `self`); and assuming `pairs` returns keys in a fixed order."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The Lua Reference Manual at lua.org, short and complete.",
+            "Programming in Lua by Roberto Ierusalimschy, one of Lua's creators; the first edition is free online.",
+            "The documentation of your host environment, such as Neovim's Lua guide, LÖVE or Roblox's Luau docs.",
+            "LuaRocks, the package manager for Lua modules."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why do Lua arrays start at 1?",
+      "a": "Lua's designers chose 1-based indexing to match common mathematical and non-programmer conventions. The standard library functions such as `ipairs`, `#` and `table.insert` all assume sequences start at 1."
+    },
+    {
+      "q": "Is Lua faster than Python?",
+      "a": "The standard Lua interpreter is small and generally fast for a dynamic language, and LuaJIT is much faster for many workloads. Actual speed depends on the task, so measure your own case."
+    },
+    {
+      "q": "What is the difference between pairs and ipairs?",
+      "a": "`ipairs` walks the array part in order from index 1 until the first `nil`. `pairs` visits every key in the table in an unspecified order."
+    },
+    {
+      "q": "What is Luau?",
+      "a": "Luau is a language derived from Lua 5.1 and developed by Roblox. It adds gradual typing and performance improvements and is used for Roblox games."
+    },
+    {
+      "q": "Is Lua good for beginners?",
+      "a": "Yes. It has a small, consistent syntax and few concepts, which is why it is popular for game modding and teaching. Its minimal standard library means you rely on the host program or modules for more features."
+    }
+  ]
+}

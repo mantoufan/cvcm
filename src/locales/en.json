@@ -515,7 +515,12 @@
       "codes": "QR codes and barcodes",
       "files": "PDF and photos",
       "audio": "Audio",
-      "text": "Text"
+      "text": "Text and writing",
+      "dev": "Developer tools",
+      "time": "Dates and time",
+      "money": "Money",
+      "health": "Health and fitness",
+      "math": "Math and school"
     },
     "hub": {
       "kicker": "Simple · Complete · Illustrated",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "Margin vs markup",
       "blurb": "Two ways to state profit, how to convert them and a quick table."
+    },
+    "code": {
+      "label": "Coding",
+      "lead": "One-page tutorials for programming languages, design patterns, data structures and algorithms, each with runnable code, a short answer first and links to the official docs.",
+      "all": "All coding tutorials",
+      "groups": {
+        "languages": "Programming languages",
+        "patterns": "Design patterns",
+        "structures": "Data structures",
+        "algorithms": "Algorithms"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust and many more, from Hello World up",
+        "patterns": "All 23 Gang of Four patterns plus SOLID, with TypeScript examples",
+        "structures": "Linked lists, hash tables, trees, heaps and tries, with Python code",
+        "algorithms": "Sorting, searching, graphs and dynamic programming, with complexity"
+      }
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "Syntax, types, control flow, functions, collections, errors and files in one page"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "Variables, types, functions, arrays, objects, promises and async/await in one page"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "Types, interfaces, unions, narrowing, generics and error handling in one page"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "Types, classes, records, collections, exceptions and pattern matching in one page"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "Types, functions, arrays, strings, pointers, malloc/free and error handling in one page"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null safety, control flow, functions, data classes and coroutines in one page"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null safety, functions, collections, classes and async/await for Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Scala 3 syntax, pattern matching, collections, case classes and Option in one page"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "Vectors, data frames, functions, statistics and plots in R in one page"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTEs, transactions and PostgreSQL vs MySQL vs SQLite"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "Syntax, immutable collections, functions, macros, atoms and errors in one page"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "Types, records, unions, pattern matching, pipelines and Result in one page"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "Types, records, variants, pattern matching, modules and errors in one page"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "Types, arrays, broadcasting, functions, multiple dispatch and errors in one page"
+    },
+    "design-patterns": {
+      "name": "Design patterns",
+      "blurb": "What design patterns are, all 23 GoF patterns by category, and how to choose"
+    },
+    "solid-principles": {
+      "name": "SOLID principles",
+      "blurb": "The five SOLID design principles, each with a TypeScript before/after example"
+    },
+    "singleton": {
+      "name": "Singleton pattern",
+      "blurb": "Ensure one instance: TypeScript example, async variant, pitfalls and alternatives"
+    },
+    "factory-method": {
+      "name": "Factory Method pattern",
+      "blurb": "Let subclasses choose which object to create: TypeScript example and when to use it"
+    },
+    "flyweight": {
+      "name": "Flyweight pattern",
+      "blurb": "Share intrinsic state across many objects to save memory, with a TypeScript example"
+    },
+    "proxy": {
+      "name": "Proxy pattern",
+      "blurb": "Control access to an object with caching, lazy, protection and remote proxies"
+    },
+    "chain-of-responsibility": {
+      "name": "Chain of Responsibility pattern",
+      "blurb": "Pass a request along handlers until one handles it, plus the middleware form"
+    },
+    "command": {
+      "name": "Command pattern",
+      "blurb": "Turn requests into objects to queue, log, undo and redo them in TypeScript"
+    },
+    "interpreter": {
+      "name": "Interpreter pattern",
+      "blurb": "Model a small language as classes and evaluate expression trees in TypeScript"
+    },
+    "linked-list": {
+      "name": "Linked list",
+      "blurb": "Singly and doubly linked lists: insert, delete, reverse, cycle detection and complexity"
+    },
+    "stack-and-queue": {
+      "name": "Stack and queue",
+      "blurb": "LIFO stacks and FIFO queues in Python: list, deque, bracket matching, BFS and complexity"
+    },
+    "hash-table": {
+      "name": "Hash table",
+      "blurb": "Hash functions, buckets, collisions, load factor and resizing, with Python code"
+    },
+    "binary-search-tree": {
+      "name": "Binary search tree",
+      "blurb": "BST ordering rule, search, insert and delete in Python, balancing and complexity"
+    },
+    "binary-tree-traversal": {
+      "name": "Binary tree traversal",
+      "blurb": "Preorder, inorder, postorder and level order, recursive and iterative Python code"
+    },
+    "binary-heap": {
+      "name": "Binary heap",
+      "blurb": "Heap property, sift up and down, heapify, priority queues and Python heapq"
+    },
+    "trie": {
+      "name": "Trie",
+      "blurb": "Prefix tree insert, search, starts-with and autocomplete in Python, with complexity"
+    },
+    "union-find": {
+      "name": "Union-find",
+      "blurb": "Disjoint set union: find, union, path compression, union by rank and size in Python"
+    },
+    "big-o-notation": {
+      "name": "Big O notation",
+      "blurb": "Time and space complexity, common classes and how to read them from code"
+    },
+    "recursion": {
+      "name": "Recursion",
+      "blurb": "Base cases, the call stack, memoization and recursion limits in Python"
+    },
+    "binary-search": {
+      "name": "Binary search",
+      "blurb": "How binary search halves a sorted range, Python code, bisect, variants and pitfalls"
+    },
+    "two-pointers": {
+      "name": "Two pointers and sliding window",
+      "blurb": "Opposite-end, fast-slow and sliding window patterns with Python code and traces"
+    },
+    "bubble-sort": {
+      "name": "Bubble sort",
+      "blurb": "How bubble sort swaps neighbours, pass-by-pass trace, Python code and complexity"
+    },
+    "selection-sort": {
+      "name": "Selection sort",
+      "blurb": "How selection sort picks the minimum, step-by-step trace, Python code and stability"
+    },
+    "insertion-sort": {
+      "name": "Insertion sort",
+      "blurb": "How insertion sort shifts items into place, trace, Python code, stability and best cases"
+    },
+    "merge-sort": {
+      "name": "Merge sort",
+      "blurb": "Divide-and-conquer merge sort: trace, Python code, merge step, stability and complexity"
+    },
+    "breadth-first-search": {
+      "name": "Breadth-first search",
+      "blurb": "BFS with a queue: traced example, Python code, shortest paths and O(V + E) cost"
+    },
+    "depth-first-search": {
+      "name": "Depth-first search",
+      "blurb": "DFS recursive and iterative in Python, traced example, cycle detection and O(V + E) cost"
+    },
+    "dijkstra": {
+      "name": "Dijkstra's algorithm",
+      "blurb": "Shortest paths with a priority queue: traced example, Python heapq code and complexity"
+    },
+    "bellman-ford": {
+      "name": "Bellman-Ford algorithm",
+      "blurb": "Shortest paths with negative weights, negative cycle detection and Python code"
+    },
+    "floyd-warshall": {
+      "name": "Floyd-Warshall algorithm",
+      "blurb": "All-pairs shortest paths: traced matrix example, Python code, path rebuilding and O(V³)"
+    },
+    "a-star-search": {
+      "name": "A* search",
+      "blurb": "Heuristic pathfinding with f = g + h: admissible heuristics, grid example, Python code"
+    },
+    "topological-sort": {
+      "name": "Topological sort",
+      "blurb": "Order tasks by dependencies: Kahn's algorithm, DFS, graphlib and cycle detection"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "Types, classes, STL containers, lambdas, RAII, smart pointers and exceptions in one page"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "Types, classes, records, collections, LINQ, async/await and exceptions in one page"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "Types, slices, maps, structs, interfaces, goroutines, channels and errors in one page"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "Ownership, borrowing, structs, enums, match, collections and Result in one page"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "Variables, arrays, functions, classes, enums, exceptions and a JSON endpoint in one page"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "Types, methods, arrays, hashes, blocks, classes, modules and exceptions in one page"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "Types, optionals, closures, collections, structs, enums, protocols and errors in one page"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "Shell scripts, variables, quoting, loops, functions, pipes and set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlets, the object pipeline, variables, functions, hashtables and try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "Variables, tables, functions, metatables and pcall in Lua in one page"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "Scalars, arrays, hashes, subroutines, regular expressions and errors in Perl"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "Pure functions, types, pattern matching, lists, Maybe and IO in Haskell"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "Pattern matching, pipes, Enum, processes and {:ok, value} error handling"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "Pattern matching, recursion, processes, OTP and let-it-crash error handling"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "Types, slices, optionals, error unions, comptime, defer and allocators in one page"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "Modern syntax, types, loops, procedures, modules, arrays and iostat in one page"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "Divisions, PIC data, IF/EVALUATE, PERFORM loops, tables, files and errors in one page"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "x86-64 NASM registers, instructions, loops, memory, syscalls, calls and AT&T syntax"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "VB.NET syntax, types, loops, functions, collections, classes, LINQ and VBA in one page"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "Messages, classes, properties, Foundation collections, blocks, ARC and NSError in one page"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "Matrices, indexing, loops, functions, structs, cells, errors, plots and Octave in one page"
+    },
+    "abstract-factory": {
+      "name": "Abstract Factory pattern",
+      "blurb": "Create families of related objects without naming their concrete classes"
+    },
+    "builder": {
+      "name": "Builder pattern",
+      "blurb": "Construct complex objects step by step with a fluent API, plus the Director role"
+    },
+    "prototype": {
+      "name": "Prototype pattern",
+      "blurb": "Create objects by cloning instances: TypeScript clone(), deep vs shallow copies"
+    },
+    "adapter": {
+      "name": "Adapter pattern",
+      "blurb": "Make incompatible interfaces work together: TypeScript example, object vs class adapter"
+    },
+    "bridge": {
+      "name": "Bridge pattern",
+      "blurb": "Separate an abstraction from its implementation so both vary independently"
+    },
+    "composite": {
+      "name": "Composite pattern",
+      "blurb": "Treat single objects and trees of objects the same: TypeScript file-system example"
+    },
+    "decorator": {
+      "name": "Decorator pattern",
+      "blurb": "Add behavior to objects at run time by wrapping them: classes and function decorators"
+    },
+    "facade": {
+      "name": "Facade pattern",
+      "blurb": "Give a complex subsystem one simple entry point: TypeScript checkout example"
+    },
+    "iterator": {
+      "name": "Iterator pattern",
+      "blurb": "Traverse collections without exposing their storage, with Symbol.iterator and generators"
+    },
+    "mediator": {
+      "name": "Mediator pattern",
+      "blurb": "Coordinate components through one central object instead of direct references"
+    },
+    "memento": {
+      "name": "Memento pattern",
+      "blurb": "Save and restore an object's state without exposing internals, for undo and checkpoints"
+    },
+    "observer": {
+      "name": "Observer pattern",
+      "blurb": "Notify subscribers automatically when a subject changes, with typed TypeScript code"
+    },
+    "state": {
+      "name": "State pattern",
+      "blurb": "Change an object's behavior with its state using state classes instead of switch"
+    },
+    "strategy": {
+      "name": "Strategy pattern",
+      "blurb": "Swap interchangeable algorithms at runtime, using functions or classes in TypeScript"
+    },
+    "template-method": {
+      "name": "Template Method pattern",
+      "blurb": "Fix an algorithm's steps in a base class and let subclasses fill in the details"
+    },
+    "visitor": {
+      "name": "Visitor pattern",
+      "blurb": "Add operations to a class hierarchy with double dispatch, plus the union-type alternative"
+    },
+    "lru-cache": {
+      "name": "LRU cache",
+      "blurb": "Least recently used cache with a hash map and doubly linked list, OrderedDict, lru_cache"
+    },
+    "quicksort": {
+      "name": "Quicksort",
+      "blurb": "Pivots, Lomuto partition trace, Python code, worst case, stability and quickselect"
+    },
+    "heapsort": {
+      "name": "Heapsort",
+      "blurb": "Max-heaps, sift-down, step-by-step trace, Python code, heapq and complexity"
+    },
+    "counting-sort": {
+      "name": "Counting sort",
+      "blurb": "Linear-time counting sort for small integer keys: trace, stable Python code, complexity"
+    },
+    "radix-sort": {
+      "name": "Radix sort",
+      "blurb": "LSD and MSD radix sort: digit-by-digit trace, Python code, stability and complexity"
+    },
+    "minimum-spanning-tree": {
+      "name": "Minimum spanning tree",
+      "blurb": "Kruskal's and Prim's algorithms: traced example, Python code, union-find and heaps"
+    },
+    "dynamic-programming": {
+      "name": "Dynamic programming",
+      "blurb": "Memoization vs tabulation, coin change and LCS traced, Python code and complexity"
+    },
+    "greedy-algorithms": {
+      "name": "Greedy algorithms",
+      "blurb": "Best local choice at each step: interval scheduling traced, Python code, counterexamples"
+    },
+    "backtracking": {
+      "name": "Backtracking",
+      "blurb": "Choose, explore, unchoose: N-Queens traced, subsets, permutations and pruning in Python"
+    },
+    "kmp-string-search": {
+      "name": "KMP string search",
+      "blurb": "Knuth-Morris-Pratt: prefix function, traced search, Python code and O(n + m) cost"
+    },
+    "bit-manipulation": {
+      "name": "Bit manipulation",
+      "blurb": "Bitwise operators, single-bit tricks, bit counting and bitmasks with Python examples"
     }
   },
   "dice": {

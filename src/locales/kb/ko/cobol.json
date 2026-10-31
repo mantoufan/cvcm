@@ -1,0 +1,194 @@
+{
+  "title": "COBOL 튜토리얼: 디비전, PIC 데이터, PERFORM 반복, 파일 — cv.cm",
+  "description": "COBOL 기초를 배웁니다. GnuCOBOL로 Hello world 컴파일, 네 개의 디비전, PIC 절, IF와 EVALUATE, PERFORM 반복, 테이블, 파일, 오류 처리까지 다룹니다.",
+  "h1": "초보자를 위한 COBOL 기초 튜토리얼",
+  "answer": "COBOL(Common Business-Oriented Language)은 레코드, 파일, 보고서, 정확한 십진 연산 같은 업무 데이터 처리를 위해 설계된 컴파일 방식 언어입니다. 프로그램은 네 개의 디비전으로 나뉘고, 데이터는 PIC(picture) 절로 기술하며, 코드는 `ADD AMOUNT TO TOTAL`처럼 영어 문장처럼 읽힙니다. 지금도 은행, 보험사, 정부의 핵심 시스템을 구동하며 대부분 IBM 메인프레임에서 실행됩니다. 무료 GnuCOBOL 컴파일러로 `cobc -x hello.cob`처럼 무료로 배울 수 있습니다.",
+  "sections": [
+    {
+      "h": "COBOL이란 무엇이며 누가 쓰는가",
+      "body": [
+        "COBOL은 1959년 CODASYL 위원회가 설계했으며 Grace Hopper의 앞선 언어 FLOW-MATIC의 영향을 크게 받았습니다. ISO가 표준화하며, 이후 표준에 구조적 프로그래밍, 객체지향 등의 기능이 추가되었고 가장 최근 개정판은 2023년에 발행되었습니다.",
+        "COBOL은 배치 처리와 트랜잭션 시스템에 쓰입니다. 계좌 처리, 급여, 보험금 청구, 세금과 복지 시스템이 그렇습니다. 이 코드의 상당수는 IBM Z 메인프레임에서 IBM Enterprise COBOL로 실행되며, 트랜잭션에는 CICS, 데이터에는 Db2를 함께 씁니다. 이런 시스템을 유지보수하고 현대화하는 일자리는 여전히 흔합니다."
+      ]
+    },
+    {
+      "h": "GnuCOBOL 설치와 Hello, world 실행",
+      "body": [
+        "GnuCOBOL은 COBOL을 C로 변환한 다음 네이티브 프로그램으로 만드는 무료 컴파일러입니다. 많은 Linux 배포판에서 `gnucobol` 패키지로, macOS에서는 Homebrew로 설치할 수 있으며 Windows 사용자는 WSL이나 미리 빌드된 패키지를 쓸 수 있습니다.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "코드는 전통적인 고정 형식을 사용합니다. 1~6열은 순서 번호, 7열은 주석(`*`)이나 이어쓰기 줄 표시, A 영역(8~11열)은 디비전, 섹션, 단락 이름, B 영역(12~72열)은 문장입니다. GnuCOBOL은 `cobc -x -free`로 자유 형식 소스도 받습니다. `-x` 옵션은 모듈이 아니라 실행 파일을 만듭니다."
+      ]
+    },
+    {
+      "h": "네 개의 디비전",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "디비전",
+              "용도"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "프로그램 이름을 지정(`PROGRAM-ID`)"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "프로그램을 외부 세계와 연결. 예를 들어 사용할 파일"
+              ],
+              [
+                "DATA DIVISION",
+                "파일 레코드, 작업 저장소, 매개변수 등 모든 데이터를 선언"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "단락으로 구성된 실행문"
+              ]
+            ]
+          }
+        },
+        "모든 변수는 사용하기 전에 DATA DIVISION에서 선언해야 합니다. WORKING-STORAGE SECTION은 프로그램의 변수를, FILE SECTION은 파일 레코드를, LINKAGE SECTION은 호출자가 넘기는 매개변수를 기술합니다."
+      ]
+    },
+    {
+      "h": "데이터와 PIC 절",
+      "body": [
+        "COBOL은 데이터를 정확한 레이아웃으로 기술합니다. 레벨 번호는 계층을 나타내고(01은 레코드, 05는 그 안의 필드), PIC 절은 형식을 지정합니다. `X`는 아무 문자, `9`는 숫자, `S`는 부호, `V`는 암묵적 소수점입니다.",
+        {
+          "table": {
+            "head": [
+              "선언",
+              "의미",
+              "예시 값"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10문자, 공백으로 채움",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "부호 없는 3자리 숫자",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "부호 있음, 소수점 앞 5자리와 뒤 2자리",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "편집 출력: 통화 기호, 앞쪽 0은 공백으로",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "메인프레임에서 흔한 팩 십진수",
+                "5바이트에 저장"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "조건 이름: 부모 필드에 대한 불리언 검사",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "숫자를 십진수로 저장하므로 `0.10 + 0.20`은 정확히 `0.30`이며, 이것이 COBOL이 금액에 적합한 이유 중 하나입니다. `WS-CUSTOMER`는 그룹 항목으로, 통째로도 필드별로도 옮길 수 있습니다."
+      ]
+    },
+    {
+      "h": "제어 흐름: IF, EVALUATE, PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING`은 COBOL의 카운팅 반복문이고 `PERFORM UNTIL condition`은 while 반복문입니다. `EVALUATE`는 switch 문입니다. `END-IF`, `END-PERFORM` 같은 범위 종결자가 각 블록을 닫고, 마침표는 문장 전체를 끝냅니다."
+      ]
+    },
+    {
+      "h": "단락, 산술, 테이블",
+      "body": [
+        "COBOL에는 일반적인 의미의 함수가 없습니다. 로직을 이름 있는 단락으로 나누어 `PERFORM`으로 실행하고, 더 큰 단위는 `CALL \"PROG\" USING ...`으로 호출하는 별도 프로그램이 됩니다. 산술은 동사(`ADD`, `SUBTRACT`, `MULTIPLY`, `DIVIDE`) 또는 수식을 쓰는 `COMPUTE`를 사용합니다. 배열은 테이블이라 부르며 `OCCURS`로 선언하고 인덱스는 1부터 시작합니다.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "합계는 21.75이고 1.1을 곱하면 23.925이지만, `COMPUTE ... ROUNDED`를 쓰지 않으면 COBOL은 선언된 소수 두 자리(23.92)로 잘라 버립니다."
+      ]
+    },
+    {
+      "h": "오류 처리",
+      "body": [
+        "COBOL은 일상적인 코드에 예외가 없습니다. 대신 문장에 조건 구문이 있습니다. 산술 오버플로나 0으로 나누기에는 `ON SIZE ERROR`, 파일 끝에는 `AT END`, 인덱스 파일에는 `INVALID KEY`가 있고, 모든 파일 작업 뒤에 두 문자 코드를 받는 `FILE STATUS` 필드가 있습니다(`\"00\"`은 성공).",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 판매 파일 합계",
+      "body": [
+        "파일에서 고정 레이아웃 레코드를 읽는 것은 전형적인 COBOL 작업입니다. 이 프로그램은 `sales.txt`를 읽는데, 각 줄은 10문자의 품목 이름 뒤에 암묵적 소수 두 자리의 7자리 금액이 옵니다.",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "실행하면 `Total sales:` 뒤에 12문자 편집 필드에서 오른쪽 정렬된 `41.49`를 출력합니다. `LINE SEQUENTIAL`은 한 줄에 레코드 하나인 텍스트 파일을 뜻하며 GnuCOBOL과 다른 PC 컴파일러가 지원합니다. 메인프레임 프로그램은 보통 JCL로 정의한 고정 길이 데이터셋을 읽습니다.",
+        {
+          "note": "초보자가 자주 하는 실수: `IF` 블록 안의 불필요한 마침표(문장 전체를 일찍 끝내므로 `END-IF` 같은 범위 종결자를 쓰세요), 고정 형식에서 8~72열 밖에 코드를 쓰는 것, 너무 작은 필드로 값을 옮길 때 조용히 잘리는 것(`PIC 99` 필드로 `MOVE 1234 TO` 하면 34가 저장됩니다), PIC에 `S` 없이 음수 결과를 저장해 부호가 사라지는 것, `ON SIZE ERROR`나 파일 상태 검사를 잊는 것입니다."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "전체 언어 레퍼런스를 위한 GnuCOBOL 프로젝트 페이지와 Programmer's Guide.",
+            "메인프레임 COBOL, CICS, Db2 사용법을 다룬 IBM의 Enterprise COBOL for z/OS 문서.",
+            "파일 읽기와 쓰기, `SORT` 동사를 이용한 정렬, 서식 있는 보고서 출력을 연습하세요.",
+            "실제 운영 시스템에서 일하고 싶다면 주변 메인프레임 도구(JCL, TSO/ISPF)를 익히세요."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "COBOL은 아직도 쓰이나요?",
+      "a": "네. 많은 은행, 보험사, 정부 기관이 핵심 배치와 트랜잭션 처리에 여전히 COBOL 프로그램을 운영하므로, 이를 유지보수하고 현대화할 수 있는 개발자에 대한 수요가 계속 있습니다."
+    },
+    {
+      "q": "COBOL은 배우기 어려운가요?",
+      "a": "문법은 장황하지만 단순하며 대부분의 초보자는 금방 동작하는 프로그램을 쓸 수 있습니다. 더 어려운 부분은 그 주변의 메인프레임 환경인 JCL, 데이터셋, CICS, Db2입니다."
+    },
+    {
+      "q": "메인프레임 없이 COBOL을 배울 수 있나요?",
+      "a": "네. GnuCOBOL은 Linux, macOS, Windows에서 실행되고 표준 COBOL을 지원하므로, 메인프레임으로 옮기기 전에 일반 컴퓨터에서 언어를 배울 수 있습니다."
+    },
+    {
+      "q": "COBOL은 왜 십진수를 쓰나요?",
+      "a": "금액 같은 업무 데이터는 정확해야 합니다. COBOL은 숫자를 고정된 소수 자릿수의 십진 숫자로 저장하여 이진 부동소수점의 반올림 오류를 피합니다."
+    }
+  ]
+}

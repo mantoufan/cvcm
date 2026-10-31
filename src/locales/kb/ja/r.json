@@ -1,0 +1,181 @@
+{
+  "title": "R言語入門：ベクトル・データフレーム・関数・統計を解説 — cv.cm",
+  "description": "データ分析のためのR言語を基礎から学べる入門講座。Rのインストール、スクリプトの実行、ベクトルと型、ifとループ、関数、リスト、データフレーム、線形モデル、グラフ、エラー処理を解説します。",
+  "h1": "R言語入門：初心者向けチュートリアル",
+  "answer": "Rは、統計、データ分析、グラフ作成のための無料の言語・環境です。中心となる考え方はベクトル化で、演算がベクトル全体やデータフレームの列全体に一度に適用されるため、分析コードを短く書けます。このページでは、Rのインストール、スクリプトの実行、ベクトルと型、制御構文、関数、リストとデータフレーム、統計モデル、グラフ作成、エラー処理を解説します。",
+  "sections": [
+    {
+      "h": "Rとは何か、何に使われるのか",
+      "body": [
+        "Rは、統計計算とグラフ作成のための無料のオープンソースの言語・環境です。ベル研究所で開発されたS言語の流れをくみ、R Core Teamによって保守されています。Rはベクトル化されており、ほとんどの演算がデータのベクトル全体に一度に作用するため、データ分析のコードを短く書けます。",
+        "Rは、統計学者、データサイエンティスト、バイオインフォマティシャン、経済学者、研究者が、データクリーニング、統計モデリング、可視化、再現可能なレポート作成に使っています。CRAN（Comprehensive R Archive Network）やBioconductorから、何千ものアドオンパッケージを入手できます。"
+      ]
+    },
+    {
+      "h": "Rのインストールとスクリプトの実行",
+      "body": [
+        "CRANから、Windows、macOS、Linux向けのRをダウンロードします。エディタ、コンソール、プロットビューア、ヘルプペインを備えたIDEのRStudioやPositronも一緒にインストールする人が多いです。コードはRコンソールに直接入力しても、`.R` ファイルに保存しても構いません。",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` は、コンソールと同じ形式で、`[1]` というインデックスの接頭辞付きで値を表示します。`cat` は素のテキストを出力するので、改行は自分で付けます。"
+      ]
+    },
+    {
+      "h": "変数、基本の型、ベクトル",
+      "body": [
+        "代入には `<-`（慣例的なスタイル）か `=` を使います。Rにはスカラーがなく、1つの数値は長さ1のベクトルです。`c()` は値をまとめてベクトルにし、算術演算は要素ごとに適用されます。",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "数値のデフォルト"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "`L` 接尾辞を付けた整数"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "文字列"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA` は欠損値を表す"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "水準が固定されたカテゴリカルデータ"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` は欠損値で、伝播します。`mean(c(1, NA, 3))` は `NA` になります。欠損値を無視するには `na.rm = TRUE` を渡し、判定には `is.na(x)` を使います。`x == NA` は決して使わないでください。"
+        }
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "Rには、`if`/`else`、`for`、`while`、`repeat` があります。ベクトルに対しては、ループよりもベクトル化された `ifelse()` のほうが適していることが多くあります。",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` には、単一の `TRUE` か `FALSE` が必要です。R 4.2以降では、長さが2以上のベクトルを `if` に渡すとエラーになります。代わりに `any()`、`all()`、`ifelse()` を使ってください。"
+      ]
+    },
+    {
+      "h": "関数",
+      "body": [
+        "関数は `function` で作成し、名前に代入します。最後に評価された式が自動的に戻り値になり、`return()` が必要なのは途中で抜けるときだけです。引数にはデフォルト値を指定でき、名前を指定して渡せます。",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "短いラムダ構文 `\\(x)` は、R 4.1から使えます。ネイティブパイプ `|>` も同様で、左辺を最初の引数として渡します。`c(1, 4, 9) |> sqrt() |> sum()` は6を返します。"
+      ]
+    },
+    {
+      "h": "主要なデータ構造：ベクトル、リスト、データフレーム",
+      "body": [
+        "アトミックベクトルのほかに、Rにはリスト（異なる型の値を保持できる）、行列、データフレームがあります。データフレームは、各列が同じ長さのベクトルである表で、データ分析の中心となる構造です。",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` は、位置、名前、論理条件で選択します。`df[1, ]` のように片側を空にすると、すべての行またはすべての列を意味します。"
+      ]
+    },
+    {
+      "h": "統計とグラフ作成",
+      "body": [
+        "統計関数は標準で用意されており、`summary`、`sd`、`quantile`、`cor`、`t.test`、`lm`（線形モデル）など多数あります。基本のグラフィックスでは、1回の呼び出しでプロットを描けます。",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "数式構文 `y ~ x` は「yをxの関数としてモデル化する」という意味で、さまざまなモデリング関数で共通して使われます。高度なグラフやデータ整形には、`install.packages(\"tidyverse\")` でggplot2やdplyrなどのtidyverseパッケージを入れるのが一般的です。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "エラーは `stop()`、警告は `warning()` で発生させます。それらは `tryCatch()` で捕捉でき、`error` と `warning` のハンドラ関数と、任意の `finally` ブロックを渡せます。",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：売上の集計",
+      "body": [
+        "このスクリプトは、小さな売上表を作り、基本のRで地域ごとの売上を計算して、最も売上の高い地域を表示します。",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "初心者がよくやる間違い：インデックスが1から始まることを忘れる、`is.na()` ではなく `== NA` で比較する、ループ内でベクトルを伸ばす（事前に領域を確保するか、ベクトル化したコードを使う）、`=` と `<-` を混在させる、リストで `[`（部分リストを返す）と `[[`（要素を1つ返す）を取り違える。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "CRANにある公式マニュアル「An Introduction to R」。",
+            "組み込みのヘルプ。コンソールで `?mean` や `help(\"lm\")` と入力します。",
+            "Hadley Wickhamらによる「R for Data Science」。tidyverseの手法を学べる無料のオンライン書籍です。",
+            "計量経済学や機械学習などの分野別にパッケージを一覧できる「CRAN Task Views」。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "データ分析にはRとPythonのどちらが向いていますか？",
+      "a": "どちらも優れています。Rは統計手法のライブラリが豊富でグラフ作成にも優れ、学術界やバイオ統計でよく使われます。Pythonはより汎用的で、機械学習エンジニアリングで主流です。両方を学ぶアナリストも多くいます。"
+    },
+    {
+      "q": "Rの <- と = の違いは何ですか？",
+      "a": "どちらもトップレベルでは代入になり、`<-` が慣例的なスタイルです。関数呼び出しの中では `=` が引数の名前指定になるため、`f(x = 1)` は変数を作らずに引数を渡します。"
+    },
+    {
+      "q": "Rはなぜ1から数え始めるのですか？",
+      "a": "Rは、前身のS言語と同じく数学・統計の慣例に従っているため、ベクトルの最初の要素は `v[1]` です。インデックス0はエラーではなく、空のベクトルを返します。"
+    },
+    {
+      "q": "tidyverseとは何ですか？",
+      "a": "tidyverseは、dplyr、ggplot2、tidyrなどを含むRパッケージ群で、データの読み込み、クリーニング、変換、グラフ作成に一貫した設計を共有しています。"
+    },
+    {
+      "q": "Rのパッケージはどうやってインストールしますか？",
+      "a": "CRANからダウンロードするために `install.packages(\"name\")` を一度実行し、セッションごとに `library(name)` で読み込みます。"
+    }
+  ]
+}

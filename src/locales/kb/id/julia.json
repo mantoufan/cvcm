@@ -1,0 +1,229 @@
+{
+  "title": "Tutorial Julia: array, fungsi, multiple dispatch, dan paket — cv.cm",
+  "description": "Belajar Julia dari nol: memasang dengan juliaup, menjalankan Hello world, memakai tipe, array berindeks 1, broadcasting, fungsi, multiple dispatch, error, dan paket.",
+  "h1": "Tutorial Julia untuk pemula",
+  "answer": "Julia adalah bahasa tingkat tinggi bertipe dinamis yang dirancang untuk komputasi numerik dan ilmiah yang cepat. Terbaca seperti Python atau MATLAB tetapi mengompilasi setiap fungsi ke kode native saat pertama kali dipanggil, sehingga perulangan dapat berjalan dengan kecepatan mendekati C. Gagasan utamanya adalah multiple dispatch: sebuah fungsi memilih method berdasarkan tipe semua argumennya. Pasang dengan juliaup dan jalankan file dengan `julia hello.jl`.",
+  "sections": [
+    {
+      "h": "Apa itu Julia dan siapa yang memakainya",
+      "body": [
+        "Julia dibuat oleh Jeff Bezanson, Stefan Karpinski, Viral Shah, dan Alan Edelman, dan dipublikasikan pada 2012. Versi 1.0 hadir pada 2018, dan seri 1.x menjaga kompatibilitas mundur. Julia bertujuan menyelesaikan \"masalah dua bahasa\": membuat prototipe dalam bahasa yang lambat tetapi mudah, lalu menulis ulang bagian yang berat dalam C atau Fortran.",
+        "Julia dipakai oleh ilmuwan, insinyur, dan analis data untuk simulasi, persamaan diferensial, optimasi, statistika, machine learning, dan komputasi performa tinggi. Ekosistem paketnya mencakup data frame, plotting, komputasi GPU, dan automatic differentiation."
+      ]
+    },
+    {
+      "h": "Memasang Julia dan menjalankan Hello, world",
+      "body": [
+        "Installer yang direkomendasikan adalah juliaup, yang memasang dan memperbarui versi Julia di Windows, macOS, dan Linux (lihat julialang.org/downloads). Setelah instalasi, `julia` memulai REPL dan `julia file.jl` menjalankan script.",
+        {
+          "code": "# hello.jl\nprintln(\"Hello, world!\")",
+          "lang": "julia"
+        },
+        {
+          "code": "julia hello.jl\n# Hello, world!\njulia\n# julia> 1 + 2\n# 3",
+          "lang": "shell"
+        },
+        "Di REPL, tekan `]` untuk masuk ke mode paket (misalnya `add DataFrames`), `?` untuk bantuan tentang sebuah nama, dan `;` untuk shell. Tekan Backspace untuk kembali ke prompt normal."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "Variabel tidak perlu dideklarasikan, tetapi setiap nilai punya tipe konkret yang dapat Anda periksa dengan `typeof`. Anda dapat menambahkan anotasi tipe pada argumen fungsi dan field struct bila diinginkan.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Int64",
+                "`42`",
+                "Integer default pada sistem 64-bit; overflow berputar kembali (wrap around)"
+              ],
+              [
+                "Float64",
+                "`3.14`, `1e-3`",
+                "Floating point default"
+              ],
+              [
+                "Rational",
+                "`1//3`",
+                "Pecahan eksak"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "UTF-8; interpolasi dengan `\"$name\"`"
+              ],
+              [
+                "Char",
+                "`'a'`",
+                "Satu karakter Unicode"
+              ],
+              [
+                "Bool",
+                "`true`, `false`",
+                "Nilai logika"
+              ],
+              [
+                "Symbol",
+                "`:name`",
+                "Nama yang di-intern, sering dipakai sebagai key atau opsi"
+              ],
+              [
+                "Nothing",
+                "`nothing`",
+                "\"Tanpa nilai\", dikembalikan oleh fungsi yang tidak menghasilkan apa pun"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ana\"\nage = 30\nprintln(\"$name is $age, next year $(age + 1)\")\n# Ana is 30, next year 31\ntypeof(age)   # Int64\n7 / 2         # 3.5  (always a float)\n7 ÷ 2         # 3    (integer division, also div(7, 2))\n2^10          # 1024",
+          "lang": "julia"
+        },
+        "Julia menerima nama Unicode seperti `π` atau `α`; di REPL dan sebagian besar editor Anda mengetik `\\pi` lalu menekan Tab untuk mendapatkan `π`."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Blok diakhiri dengan kata kunci `end`; indentasi hanya demi keterbacaan. `if`, `for`, dan `while` bekerja seperti di kebanyakan bahasa, dan comprehension membangun array dalam satu baris.",
+        {
+          "code": "function sign_name(n)\n    if n > 0\n        \"positive\"\n    elseif n < 0\n        \"negative\"\n    else\n        \"zero\"\n    end\nend\nfor i in 1:3\n    println(\"$i squared is $(i^2)\")\nend\nsquares = [x^2 for x in 1:5 if isodd(x)]   # [1, 9, 25]\nx = 5\nresult = x > 3 ? \"big\" : \"small\"           # \"big\"",
+          "lang": "julia"
+        },
+        "`1:3` adalah range yang menyertakan kedua ujungnya. Ekspresi terakhir dalam fungsi atau blok `if` adalah nilainya, jadi `sign_name(-2)` mengembalikan `\"negative\"` tanpa `return` eksplisit."
+      ]
+    },
+    {
+      "h": "Fungsi",
+      "body": [
+        {
+          "code": "add(x, y) = x + y                 # one-line definition\nfunction greet(name = \"world\"; punctuation = \"!\")\n    return \"Hello, $name$punctuation\"\nend\ngreet()                           # \"Hello, world!\"\ngreet(\"Ana\", punctuation = \".\")   # \"Hello, Ana.\"\nsquare = x -> x^2                 # anonymous function\nmap(square, [1, 2, 3])            # [1, 4, 9]\nv = [3, 1, 2]\nsort!(v)                          # v is now [1, 2, 3]",
+          "lang": "julia"
+        },
+        "Argumen posisional ditulis sebelum titik koma dan argumen keyword setelahnya. Menurut konvensi, fungsi yang namanya berakhiran `!` mengubah salah satu argumennya, seperti `sort!` atau `push!`, sedangkan `sort` mengembalikan array baru."
+      ]
+    },
+    {
+      "h": "Array, tuple, dan dictionary",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Struktur",
+              "Literal",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Vector",
+                "`[1, 2, 3]`",
+                "Berindeks 1, mutable, bertambah dengan `push!`"
+              ],
+              [
+                "Matrix",
+                "`[1 2; 3 4]`",
+                "Spasi memisahkan kolom, `;` memisahkan baris"
+              ],
+              [
+                "Tuple",
+                "`(1, \"a\")`",
+                "Immutable, panjang tetap"
+              ],
+              [
+                "Named tuple",
+                "`(name = \"Ana\", age = 30)`",
+                "Field diakses dengan `.name`"
+              ],
+              [
+                "Dict",
+                "`Dict(\"a\" => 1)`",
+                "Hash map mutable"
+              ],
+              [
+                "Set",
+                "`Set([1, 2, 2])`",
+                "Nilai unik"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "v = [10, 20, 30]\nv[1]          # 10   (first element)\nv[end]        # 30\npush!(v, 40)\nA = [1 2; 3 4]\nA * A         # matrix product: [7 10; 15 22]\nA .* A        # element-wise:   [1 4; 9 16]\nv .+ 1        # broadcasting:   [11, 21, 31, 41]\nsqrt.([1, 4, 9])   # [1.0, 2.0, 3.0]",
+          "lang": "julia"
+        },
+        "Sintaks titik disebut broadcasting: `f.(x)` menerapkan `f` pada setiap elemen, dan `.+`, `.*` bekerja elemen demi elemen. Julia menggabungkan rangkaian operasi bertitik menjadi satu perulangan."
+      ]
+    },
+    {
+      "h": "Fitur khas: multiple dispatch",
+      "body": [
+        "Sebuah fungsi Julia dapat punya banyak method. Saat dipanggil, Julia memilih method yang paling spesifik untuk tipe semua argumen. Ini menggantikan method kelas: tipe menyimpan data, dan perilaku ditambahkan dengan mendefinisikan method untuk tipe tersebut, bahkan dari paket lain.",
+        {
+          "code": "abstract type Shape end\nstruct Circle <: Shape\n    r::Float64\nend\nstruct Rect <: Shape\n    w::Float64\n    h::Float64\nend\narea(c::Circle) = π * c.r^2\narea(r::Rect) = r.w * r.h\nshapes = [Circle(1.0), Rect(2.0, 3.0)]\nprintln(round.(area.(shapes), digits = 2))   # [3.14, 6.0]",
+          "lang": "julia"
+        },
+        "Karena Julia mengompilasi versi terspesialisasi dari sebuah fungsi untuk tipe argumen yang ditemuinya, panggilan pertama sebuah fungsi lebih lambat (karena termasuk kompilasi) dan panggilan berikutnya cepat. Gunakan `mutable struct` bila field harus berubah setelah dibuat."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Julia memakai exception. Lempar tipe exception bawaan seperti `ArgumentError` atau `DomainError`, atau definisikan sendiri sebagai struct yang merupakan subtipe `Exception`. `tryparse` mengembalikan `nothing` alih-alih melempar exception.",
+        {
+          "code": "function parse_age(s)\n    n = tryparse(Int, s)\n    n === nothing && throw(ArgumentError(\"not a number: $s\"))\n    n < 0 && throw(DomainError(n, \"age must not be negative\"))\n    return n\nend\ntry\n    parse_age(\"abc\")\ncatch e\n    if e isa ArgumentError\n        println(\"Error: \", e.msg)\n    else\n        rethrow()\n    end\nend\n# Error: not a number: abc",
+          "lang": "julia"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "text = \"the cat and the hat and the bat\"\ncounts = Dict{String,Int}()\nfor w in split(text)\n    counts[w] = get(counts, w, 0) + 1\nend\ntop = sort(collect(counts), by = last, rev = true)\nfor (word, n) in first(top, 2)\n    println(word, \" \", n)\nend\n# the 3\n# and 2",
+          "lang": "julia"
+        },
+        "`split` memecah string pada spasi, `get` mengembalikan default 0 untuk kata baru, `collect` mengubah dictionary menjadi vector berisi pasangan `word => count`, dan `by = last` mengurutkan berdasarkan jumlah.",
+        {
+          "note": "Kesalahan umum pemula: mengindeks dari 0 (`v[0]` adalah error; elemen pertama adalah `v[1]`); mengira `7 / 2` berupa integer; menulis kode yang kritis performa di tingkat atas script alih-alih di dalam fungsi (variabel global lambat, dan meng-assign global di dalam perulangan tingkat atas dalam file memicu peringatan scope); dan hanya mengukur waktu panggilan pertama, yang sudah termasuk kompilasi."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Manual resmi Julia di docs.julialang.org, mulai dari \"Getting Started\".",
+            "Halaman belajar di julialang.org, yang mendaftar tutorial, buku, dan kursus.",
+            "Baca bab \"Performance Tips\" dalam manual sebelum mengoptimalkan kode.",
+            "Jelajahi paket seperti DataFrames.jl, Plots.jl, dan DifferentialEquations.jl."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Julia lebih cepat daripada Python?",
+      "a": "Untuk kode dengan banyak perulangan dan pekerjaan numerik, Julia biasanya jauh lebih cepat daripada Python murni karena dikompilasi ke kode native. Python dengan library seperti NumPy bisa cepat untuk operasi vektor, jadi perbedaannya bergantung pada tugasnya."
+    },
+    {
+      "q": "Mengapa Julia mulai menghitung dari 1?",
+      "a": "Julia mengikuti konvensi matematika dan bahasa seperti MATLAB, R, dan Fortran, di mana elemen pertama array berindeks 1."
+    },
+    {
+      "q": "Mengapa eksekusi pertama kode Julia saya lambat?",
+      "a": "Julia mengompilasi setiap fungsi untuk tipe argumen saat pertama kali dipanggil. Panggilan berikutnya memakai ulang kode yang sudah dikompilasi, jadi ukurlah performa setelah panggilan pemanasan atau dengan paket benchmarking."
+    },
+    {
+      "q": "Apakah Julia gratis?",
+      "a": "Ya. Julia adalah open source dengan lisensi MIT, dan hampir semua paketnya juga open source."
+    }
+  ]
+}

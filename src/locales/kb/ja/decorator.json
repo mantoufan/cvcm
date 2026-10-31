@@ -1,0 +1,167 @@
+{
+  "title": "Decorator パターン：オブジェクトをラップして振る舞いを追加する、TypeScriptの例 — cv.cm",
+  "description": "Decorator パターンを解説。オブジェクトをラップして実行時に責務を追加する方法を、TypeScriptの例、関数デコレーター、JavaのI/Oでの利用例とともに紹介します。",
+  "h1": "Decorator パターンを例でわかりやすく解説",
+  "answer": "Decorator パターンは、同じインターフェイスを持つ別のオブジェクトでラップすることで、オブジェクトに責務を動的に追加する構造パターンです。各デコレーターは呼び出しをラップしたオブジェクトに転送し、その前後に、ログ出力、キャッシュ、圧縮といった独自の振る舞いを加えます。デコレーターは任意の順序で積み重ねられるため、機能の組み合わせごとにサブクラスを作る方法に代わる、柔軟な選択肢です。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "オブジェクトに追加の責務を動的に付加します。Decorator パターンは、機能を拡張するためのサブクラス化に代わる柔軟な方法を提供します。Gang of Four（GoF）の書籍にある7つの構造パターンの1つで、同書ではWrapperとも呼ばれています。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "`get(key)` を持つデータストアを想像してください。呼び出し側によって、ログを取りたい、メモリ内キャッシュが欲しい、両方欲しい、遅いネットワークのバックエンドに対してリトライが欲しい、と要望はさまざまです。継承では、`LoggingStore`、`CachingStore`、`LoggingCachingStore`、`RetryingCachingStore` などを書くことになります。組み合わせごとに1つのサブクラスが必要で、組み合わせもコンパイル時に固定されます。",
+        "Decorator パターンは、各機能を小さなラッパークラスにします。必要な組み合わせは、1つのオブジェクトを別のオブジェクトでラップすることで、実行時に組み立てます。ストアを使うコードは、何層重なっていても同じインターフェイスしか見ません。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Component",
+                "本物のオブジェクトとデコレーターが共有するインターフェイスです。",
+                "`Store`"
+              ],
+              [
+                "ConcreteComponent",
+                "中核の作業を行う元のオブジェクトです。",
+                "`SlowStore`"
+              ],
+              [
+                "Decorator",
+                "Componentへの参照を保持し、転送によって同じインターフェイスを実装します。",
+                "`StoreDecorator`"
+              ],
+              [
+                "ConcreteDecorator",
+                "転送の前後に振る舞いを追加します。",
+                "`LoggingStore`, `CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "2回目の呼び出しはログに記録されますが、キャッシュから応答されるため、データベースは再び読み込まれません。順序を入れ替えて `new CachingStore(new LoggingStore(...))` にすると、キャッシュミスだけがログに記録されます。デコレーターの順序によって振る舞いが変わるのは、機能でもあり、混乱のよくある原因でもあります。"
+      ]
+    },
+    {
+      "h": "TypeScriptの関数デコレーター",
+      "body": [
+        "コンポーネントが単一の関数の場合、デコレーターは高階関数にできます。関数を受け取り、同じシグネチャで追加の振る舞いを持つ新しい関数を返します。",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScriptには、クラスとクラスのメンバーに適用する、`@name` というデコレーター構文もあります。これは言語機能（TypeScript 5.0で標準のECMAScriptデコレーターのサポートが追加されました）で、このパターンの実装に使えますが、同じものではありません。GoFのDecorator パターンは実行時にオブジェクトをラップしますが、`@` デコレーターはクラス定義を変更します。"
+        }
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はDecorator パターンを使います。",
+        {
+          "ul": [
+            "同じクラスの他のオブジェクトに影響を与えずに、個々のオブジェクトに、ログ出力、キャッシュ、リトライ、検証、圧縮、アクセスチェックなどの機能を追加したい場合。",
+            "機能を自由に組み合わせる必要があり、サブクラス化だと組み合わせごとにクラスができてしまう場合。",
+            "ライブラリ由来であるなどの理由で、元のクラスを変更できない、または変更すべきでない場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "必要な追加の振る舞いが固定の1つだけの場合。直接追加するか、1つのサブクラスを使うほうが簡単です。",
+            "コードがオブジェクトの同一性や具象クラスに依存している場合。デコレートされたオブジェクトは別のオブジェクトなので、`instanceof SlowStore` のようなチェックや `===` の比較は失敗します。",
+            "小さな層が多いとデバッグが難しくなる場合。ラッパーが深く積み重なると、コールスタックが長くなり、どの層が何をしたのかが分かりにくくなります。"
+          ]
+        },
+        "ExpressやKoaなどのWebフレームワークのミドルウェアは関連する考え方です。各層がリクエストを受け取り、必要なら処理して、次に渡します。"
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "JavaのI/O：`new BufferedInputStream(new FileInputStream(\"data.bin\"))` は、ストリームを、バッファリングを追加する別のストリームでラップしており、どちらも `InputStream` インターフェイスを持っています。GoFの書籍自身も、典型的な例としてストリームを取り上げています。",
+            "Javaのコレクション：`Collections.unmodifiableList(list)` と `Collections.synchronizedList(list)` は、既存のリストの周りに、読み取り専用の振る舞いやロックを追加するラッパーを返します。",
+            "Python：`functools.lru_cache` のような関数デコレーターは関数をラップしてキャッシュを追加し、`functools.wraps` は、ラッパーがラップされた関数の名前とdocstringを保つのを助けます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Decorator パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Adapter パターン",
+                "オブジェクトのインターフェイスを変えます。Decoratorはインターフェイスを保ち、振る舞いを追加します。"
+              ],
+              [
+                "Proxy パターン",
+                "構造は同じですが目的が違います。アクセスを制御し（遅延作成、リモートアクセス、権限）、通常は本物のオブジェクトのライフサイクルを自分で管理します。"
+              ],
+              [
+                "Composite パターン",
+                "こちらも再帰的な合成を使いますが、複合体は多くの子を持ち、Decoratorがラップするのはちょうど1つです。"
+              ],
+              [
+                "Strategy パターン",
+                "アルゴリズムを入れ替えることで、オブジェクトの内側を変えます。Decoratorは、ラップすることで外側を変えます。"
+              ],
+              [
+                "Chain of Responsibility パターン",
+                "こちらも一連のオブジェクトにリクエストを通しますが、各ハンドラーはリクエストを止められます。Decoratorは通常、常に転送します。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Decorator パターンと継承の違いは何ですか？",
+      "a": "継承は、コンパイル時にクラス全体へ振る舞いを追加します。Decoratorは、実行時に1つのオブジェクトへ振る舞いを追加し、複数のデコレーターを任意の順序で組み合わせられます。"
+    },
+    {
+      "q": "Decorator パターンとProxy パターンの違いは何ですか？",
+      "a": "形は同じです。Decoratorは、クライアントが選んで積み重ねる機能を追加します。Proxyは本物のオブジェクトへのアクセスを制御し、多くの場合、それを作成したり、呼び出すかどうかを判断したりします。"
+    },
+    {
+      "q": "TypeScriptの@デコレーターはDecorator パターンですか？",
+      "a": "厳密には違います。`@` デコレーターは、クラスとそのメンバーを定義する時点で変更する言語機能です。ラップの実装に使えますが、GoFのパターンは実行時にオブジェクトをラップすることを指します。"
+    },
+    {
+      "q": "デコレーターの順序は重要ですか？",
+      "a": "はい。各デコレーターは、自分がラップするオブジェクトよりも先に呼び出しを見ます。そのため、ロガーの外側に置いたキャッシュは繰り返しの呼び出しをロガーから隠し、キャッシュの外側に置いたロガーはすべての呼び出しを見ます。"
+    }
+  ]
+}

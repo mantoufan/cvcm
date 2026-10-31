@@ -1,0 +1,186 @@
+{
+  "title": "Học lập trình Lua cơ bản: table, hàm, metatable và xử lý lỗi — cv.cm",
+  "description": "Học Lua từng bước: chạy Hello, world, biến cục bộ và kiểu dữ liệu, vòng lặp, hàm và closure, table, metatable, lập trình hướng đối tượng và xử lý lỗi bằng pcall.",
+  "h1": "Hướng dẫn học lập trình Lua cơ bản cho người mới",
+  "answer": "Lua là ngôn ngữ kịch bản nhẹ, có thể nhúng, được dùng trong game, Roblox (qua phương ngữ Luau), Neovim, Redis và các thiết bị nhúng. Cú pháp của nó nhỏ gọn và chỉ có một cấu trúc dữ liệu là table, đóng vai trò mảng, từ điển và đối tượng. Trang này bao gồm cài Lua, biến và kiểu dữ liệu, điều khiển luồng, hàm, table, metatable, xử lý lỗi với pcall và một ví dụ hoàn chỉnh.",
+  "sections": [
+    {
+      "h": "Lua là gì và dùng để làm gì",
+      "body": [
+        "Lua là ngôn ngữ kịch bản nhỏ, nhanh, kiểu động, được tạo ra năm 1993 tại PUC-Rio, một trường đại học ở Brazil. Toàn bộ trình thông dịch là một thư viện gọn viết bằng C, nên rất dễ nhúng vào các chương trình lớn hơn. Lua chỉ có một cấu trúc dữ liệu là table và rất ít khái niệm, nên học rất nhanh.",
+        "Lua chủ yếu được dùng làm ngôn ngữ kịch bản nhúng: công cụ làm game và các tựa game (Roblox dùng phương ngữ Lua gọi là Luau; LÖVE và Defold dùng Lua), trình soạn thảo Neovim, cơ sở dữ liệu Redis, các công cụ mạng như Nginx với OpenResty, và nhiều thiết bị nhúng. LuaJIT là trình biên dịch just-in-time phổ biến cho mã Lua 5.1."
+      ]
+    },
+    {
+      "h": "Cài Lua và chạy Hello, world",
+      "body": [
+        "Cài Lua bằng trình quản lý gói (ví dụ `brew install lua` hoặc `apt install lua5.4`) hoặc biên dịch từ mã nguồn tại lua.org. Chạy riêng `lua` để mở dấu nhắc tương tác.",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Chú thích bắt đầu bằng `--`. Chú thích nhiều dòng viết là `--[[ ... ]]`. Câu lệnh không cần dấu chấm phẩy."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Biến mặc định là toàn cục. Hãy luôn khai báo bằng `local` trừ khi bạn thực sự muốn biến toàn cục. Lua có tám kiểu cơ bản; những kiểu bạn dùng hằng ngày nằm ở bảng dưới.",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "không có giá trị; biến chưa gán là nil"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "chỉ `false` và `nil` được coi là sai; `0` và `\"\"` là đúng"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "có kiểu con số nguyên và số thực từ Lua 5.3"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `[[long]]`",
+                "chuỗi byte bất biến"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "cấu trúc dữ liệu duy nhất"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "giá trị hạng nhất (first-class)"
+              ]
+            ]
+          }
+        },
+        "Toán tử khác là `~=`, không phải `!=`. Các toán tử logic là những từ `and`, `or` và `not`."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        "Các khối kết thúc bằng từ khóa `end`. Lua có `if`/`elseif`/`else`, `while`, `repeat ... until`, vòng `for` số học và vòng `for` tổng quát làm việc với iterator.",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "Không có câu lệnh `continue`; hãy dùng `goto continue` với nhãn `::continue::`, hoặc cấu trúc lại vòng lặp bằng `if`."
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Hàm là giá trị. Hàm có thể nhận số lượng đối số thay đổi với `...` và trả về nhiều giá trị. Closure bắt giữ các biến cục bộ của phạm vi bao ngoài.",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "Table: mảng, từ điển và đối tượng",
+      "body": [
+        "Table là mảng kết hợp có thể được lập chỉ mục bằng bất kỳ giá trị nào trừ `nil`. Cùng một cấu trúc đóng vai trò mảng, từ điển, tập hợp, module hoặc đối tượng. Theo quy ước, mảng bắt đầu từ chỉ số 1.",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "Chỉ số bắt đầu từ 1, và `#t` chỉ đáng tin với dãy không có lỗ hổng. Gán `t[2] = nil` ở giữa mảng khiến độ dài trở nên không xác định; hãy dùng `table.remove(t, 2)` để xóa và dồn các phần tử."
+        }
+      ]
+    },
+    {
+      "h": "Metatable và Lua hướng đối tượng",
+      "body": [
+        "Metatable là tính năng đặc trưng của Lua. Metatable gắn vào một table sẽ thay đổi cách table đó hoạt động: `__index` cung cấp các khóa còn thiếu (dùng cho kế thừa), và các trường như `__add`, `__eq` và `__tostring` nạp chồng toán tử. Cú pháp dấu hai chấm `obj:method()` truyền đối tượng làm tham số đầu tiên ẩn `self`.",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Lua còn có coroutine (`coroutine.create`, `coroutine.resume`, `coroutine.yield`), cho phép một hàm tạm dừng và tiếp tục sau đó. Script game thường dùng chúng cho hành vi từng bước kéo dài qua nhiều khung hình."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Phát sinh lỗi bằng `error(message)`. Bắt lỗi bằng `pcall` (protected call), hàm trả về `false` cùng lỗi thay vì dừng chương trình. Nhiều hàm thư viện trả về `nil` và một thông báo lỗi thay vì phát sinh lỗi, như `io.open`.",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "Tên tệp và số dòng trong thông báo lỗi phụ thuộc vào nơi mã chạy. `assert(value, message)` phát sinh lỗi khi `value` là `false` hoặc `nil`, và là cách ngắn gọn để kiểm tra kết quả."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: đếm từ",
+      "body": [
+        "Chương trình này đếm từ trong một văn bản bằng khớp mẫu, sắp xếp theo tần suất và in ba từ đứng đầu. Nó dùng mẫu chuỗi, table, sắp xếp với hàm so sánh tùy chỉnh và định dạng chuỗi.",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "Lỗi thường gặp của người mới: quên `local` và vô tình tạo biến toàn cục; dùng `!=` thay cho `~=`; mong mảng bắt đầu từ 0; dùng `.` thay vì `:` khi gọi phương thức (`obj.method()` không truyền `self`); và cho rằng `pairs` trả về khóa theo thứ tự cố định."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Lua Reference Manual tại lua.org, ngắn gọn mà đầy đủ.",
+            "Programming in Lua của Roberto Ierusalimschy, một trong những người tạo ra Lua; ấn bản đầu tiên có miễn phí trên mạng.",
+            "Tài liệu của môi trường chủ của bạn, như hướng dẫn Lua của Neovim, LÖVE hoặc tài liệu Luau của Roblox.",
+            "LuaRocks, trình quản lý gói cho các module Lua."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao mảng Lua bắt đầu từ 1?",
+      "a": "Các nhà thiết kế Lua chọn cách đánh chỉ số từ 1 để phù hợp với quy ước toán học thông thường và người không làm lập trình. Các hàm thư viện chuẩn như `ipairs`, `#` và `table.insert` đều giả định dãy bắt đầu từ 1."
+    },
+    {
+      "q": "Lua có nhanh hơn Python không?",
+      "a": "Trình thông dịch Lua chuẩn nhỏ gọn và nhìn chung nhanh so với một ngôn ngữ kiểu động, còn LuaJIT nhanh hơn nhiều với nhiều tác vụ. Tốc độ thực tế phụ thuộc vào bài toán, nên hãy tự đo với trường hợp của bạn."
+    },
+    {
+      "q": "pairs và ipairs khác nhau thế nào?",
+      "a": "`ipairs` duyệt phần mảng theo thứ tự từ chỉ số 1 cho đến `nil` đầu tiên. `pairs` duyệt mọi khóa trong table theo thứ tự không xác định."
+    },
+    {
+      "q": "Luau là gì?",
+      "a": "Luau là ngôn ngữ phát triển từ Lua 5.1 do Roblox xây dựng. Nó bổ sung kiểu dần (gradual typing) và các cải tiến hiệu năng, và được dùng cho các game Roblox."
+    },
+    {
+      "q": "Lua có phù hợp cho người mới không?",
+      "a": "Có. Lua có cú pháp nhỏ, nhất quán và ít khái niệm, nên phổ biến trong việc mod game và giảng dạy. Thư viện chuẩn tối giản nghĩa là bạn phải dựa vào chương trình chủ hoặc các module để có thêm tính năng."
+    }
+  ]
+}

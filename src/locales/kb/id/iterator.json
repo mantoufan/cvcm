@@ -1,0 +1,153 @@
+{
+  "title": "Pola Iterator: traversal, generator, dan Symbol.iterator di TypeScript — cv.cm",
+  "description": "Pola Iterator memungkinkan Anda mengulang koleksi tanpa tahu cara penyimpanannya. Pelajari peran, Symbol.iterator, dan generator di TypeScript.",
+  "h1": "Penjelasan pola Iterator beserta contohnya",
+  "answer": "Iterator adalah pola desain behavioral yang menyediakan cara mengakses elemen koleksi satu per satu tanpa membuka cara koleksi itu disimpan. Logika traversal berada di objek iterator terpisah dengan method seperti `next()`, sehingga satu koleksi dapat menawarkan beberapa urutan traversal dan kode klien dapat mengulang array, pohon, dan stream dengan cara yang sama. Di TypeScript dan JavaScript pola ini sudah bawaan bahasa lewat `Symbol.iterator` dan `for...of`.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: menyediakan cara mengakses elemen objek agregat secara berurutan tanpa membuka representasi dasarnya. Iterator adalah salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Bayangkan sebuah class yang menyimpan bagan organisasi perusahaan sebagai pohon. Berbagai bagian program perlu mendaftar semua karyawan: satu laporan berjalan level demi level, yang lain butuh urutan depth-first. Jika setiap laporan menelusuri pohon sendiri, setiap laporan bergantung pada field internal pohon, dan mengubah pohon agar memakai penyimpanan lain akan merusak semuanya.",
+        "Dengan Iterator, pohon menawarkan objek iterator. Sebuah laporan meminta iterator dan memanggil `next()` sampai selesai. Laporan itu tidak tahu apakah datanya pohon, array, atau baris yang diambil dari database halaman demi halaman."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Iterator",
+                "Interface untuk traversal, biasanya `next()` yang mengembalikan elemen berikutnya dan flag yang menandakan apakah traversal sudah selesai"
+              ],
+              [
+                "Concrete iterator",
+                "Mengimplementasikan traversal untuk satu koleksi dan mengingat posisi saat ini"
+              ],
+              [
+                "Aggregate (iterable)",
+                "Interface dengan method yang membuat iterator"
+              ],
+              [
+                "Concrete aggregate",
+                "Koleksinya; mengembalikan concrete iterator baru setiap kali diminta"
+              ],
+              [
+                "Client",
+                "Memakai iterator untuk mengunjungi elemen tanpa tahu struktur koleksi"
+              ]
+            ]
+          }
+        },
+        "Di JavaScript peran-peran ini punya nama standar, yang didefinisikan oleh protokol iterasi di ES2015. Sebuah iterable punya method `[Symbol.iterator]()`. Sebuah iterator punya method `next()` yang mengembalikan `{ value, done }`. Setiap loop `for...of`, spread `[...x]`, dan destructuring assignment memakai protokol ini."
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript: iterator yang ditulis manual",
+      "body": [
+        "Class range ini hanya menyimpan start, end, dan step, bukan daftar angka. Iterator-nya menghitung setiap nilai saat diminta.",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "Setiap pemanggilan `[Symbol.iterator]()` mengembalikan iterator baru dengan posisi `current` sendiri. Itulah sebabnya `evens` bisa diulang dua kali. Jika koleksi mengembalikan iterator yang sama setiap kali, loop kedua tidak akan melihat elemen apa pun."
+      ]
+    },
+    {
+      "h": "Generator: iterator dengan kode lebih sedikit",
+      "body": [
+        "Fungsi generator, yang ditulis dengan `function*`, membuat iterator secara otomatis. Setiap `yield` menghasilkan nilai berikutnya, dan fungsi berhenti sementara sampai `next()` dipanggil lagi. Di sini sebuah binary tree menawarkan traversal in-order tanpa membuka node-nodenya:",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "Jangan menambah atau menghapus elemen koleksi saat Anda mengulanginya, kecuali dokumentasi koleksi menyatakan itu aman. Iterator `ArrayList` di Java melempar `ConcurrentModificationException`, dan di JavaScript mengubah array selama loop dapat melewati atau mengulang elemen."
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai bila koleksi punya struktur internal yang kompleks (pohon, graf, API berhalaman) dan Anda ingin klien mengulanginya dengan sederhana.",
+            "Pakai untuk menawarkan beberapa urutan traversal pada data yang sama, seperti depth-first dan breadth-first.",
+            "Pakai untuk urutan yang lazy atau tak terbatas, di mana nilai hanya dihitung saat diminta.",
+            "Pakai untuk memberi berbagai koleksi satu interface loop yang seragam.",
+            "Jangan menulis iterator kustom untuk data yang sudah berupa array. Kembalikan array (atau salinan read-only) dan biarkan pemanggil memakai iterasi bawaan.",
+            "Jangan memakai iterator lazy bila pemanggil butuh akses acak lewat indeks atau panjang di awal; array lebih cocok."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "JavaScript: `Array`, `Map`, `Set`, dan `String` adalah iterable, dan `map.entries()` atau `set.values()` mengembalikan iterator.",
+            "Java: interface `java.util.Iterator` dengan `hasNext()` dan `next()`, dipakai oleh loop `for` yang disempurnakan pada `Iterable` mana pun.",
+            "Python: protokol iterator dengan `__iter__` dan `__next__`, serta fungsi generator yang memakai `yield`.",
+            "Database dan API: cursor atas hasil query dan API HTTP berhalaman menyajikan hasil satu halaman demi satu halaman, sehingga klien dapat mengulang hasil yang sangat besar tanpa memuat semuanya ke memori."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Hubungannya dengan Iterator"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Iterator sering dipakai untuk menelusuri pohon Composite tanpa membuka node-nodenya."
+              ],
+              [
+                "Visitor",
+                "Iterator menelusuri elemen; Visitor mendefinisikan apa yang dilakukan pada setiap elemen. Keduanya sering dipakai bersama."
+              ],
+              [
+                "Factory Method",
+                "Method yang membuat iterator, seperti `[Symbol.iterator]()`, adalah factory method: setiap koleksi mengembalikan class iterator-nya sendiri."
+              ],
+              [
+                "Memento",
+                "Iterator dapat menyimpan posisinya sebagai memento sehingga traversal bisa dilanjutkan nanti."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa perbedaan antara iterable dan iterator?",
+      "a": "Iterable adalah objek yang dapat menghasilkan iterator, lewat `[Symbol.iterator]()` di JavaScript. Iterator adalah objek yang menyimpan posisi saat ini dan mengembalikan elemen satu per satu lewat `next()`."
+    },
+    {
+      "q": "Apakah generator itu iterator?",
+      "a": "Ya. Memanggil fungsi generator mengembalikan objek generator, yang sekaligus iterator (punya `next()`) dan iterable (mengembalikan dirinya sendiri dari `[Symbol.iterator]()`)."
+    },
+    {
+      "q": "Mengapa tidak langsung membuka array internalnya saja?",
+      "a": "Membuka array mengikat setiap pemanggil pada pilihan penyimpanan itu dan membiarkan mereka memodifikasinya. Iterator menyembunyikan strukturnya, sehingga Anda dapat mengubahnya nanti atau menghitung elemen secara lazy tanpa mengubah pemanggil."
+    },
+    {
+      "q": "Apa itu internal iterator?",
+      "a": "Internal iterator adalah method yang menerima callback dan menjalankannya untuk setiap elemen, seperti `array.forEach(fn)`. Koleksi yang mengendalikan loop. External iterator, seperti `next()`, membiarkan klien mengendalikan kapan maju dan kapan berhenti."
+    }
+  ]
+}

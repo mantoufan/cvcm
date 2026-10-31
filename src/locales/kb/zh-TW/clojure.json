@@ -1,0 +1,218 @@
+{
+  "title": "Clojure 入門教學：語法、集合、函式與 REPL — cv.cm",
+  "description": "從零開始學 Clojure：安裝 CLI、撰寫 Hello world、使用不可變的 vector 與 map、定義函式、threading 巨集、atom 與錯誤處理。",
+  "h1": "Clojure 入門教學",
+  "answer": "Clojure 是一種動態、函數式的 Lisp，運行在 Java 虛擬機（JVM）上（另有編譯成 JavaScript 的 ClojureScript）。程式碼以括號內的串列寫成，資料預設不可變，你透過組合作用於 vector、map 與 set 的小型函式來建構程式。安裝 Clojure CLI 後，用 `clj` 啟動 REPL，並以 `clojure -M hello.clj` 執行檔案。",
+  "sections": [
+    {
+      "h": "Clojure 是什麼、誰在使用",
+      "body": [
+        "Clojure 由 Rich Hickey 創造，2007 年首度發布。它是 Lisp 的方言：每個運算式都是一個串列，第一個元素是函式或運算子，例如 `(+ 1 2)`。它會編譯成 JVM 位元組碼，所以可以直接呼叫任何 Java 函式庫。ClojureScript 則把同一種語言編譯成 JavaScript，供瀏覽器與 Node.js 使用。",
+        "Clojure 用於後端網頁服務、資料處理管線與企業內部系統，特別適合重視不可變資料與互動式開發的團隊。開發者通常在連接編輯器的 REPL（read-eval-print loop）中工作，在程式執行的同時，一次求值一個運算式。"
+      ]
+    },
+    {
+      "h": "安裝 Clojure 並執行 Hello, world",
+      "body": [
+        "先安裝 Java 執行環境（JDK 17 或更新版本是穩當的選擇），再從 clojure.org 安裝 Clojure CLI 工具（macOS 用 Homebrew，Linux 用安裝腳本，Windows 用安裝程式）。CLI 提供兩個指令：`clj`（支援行編輯的 REPL）與 `clojure`（用來執行程式）。",
+        {
+          "code": ";; hello.clj\n(println \"Hello, world!\")",
+          "lang": "clojure"
+        },
+        {
+          "code": "clojure -M hello.clj\n# Hello, world!\nclj\n# user=> (+ 1 2)\n# 3",
+          "lang": "shell"
+        },
+        "實際的專案會把相依套件寫在 `deps.edn` 檔案中，程式碼放在 `src/` 底下，每個檔案一個命名空間。Leiningen（`lein`）是較早出現但仍很受歡迎的建置工具，使用 `project.clj` 檔案。"
+      ]
+    },
+    {
+      "h": "值、型別與名稱",
+      "body": [
+        "Clojure 是動態型別。`def` 綁定全域名稱（var），`let` 綁定區域名稱。值在建立後不會改變：Clojure 沒有賦值陳述式。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "Integer",
+                "`42`",
+                "64 位元的 `long`；`42N` 是 BigInt"
+              ],
+              [
+                "Floating point",
+                "`3.14`",
+                "Java 的 `double`"
+              ],
+              [
+                "Ratio",
+                "`(/ 1 3)`",
+                "精確分數 `1/3`，而不是 0.333"
+              ],
+              [
+                "String",
+                "`\"hello\"`",
+                "Java 的 `String`，只能用雙引號"
+              ],
+              [
+                "Character",
+                "`\\a`",
+                "單一字元"
+              ],
+              [
+                "Keyword",
+                "`:name`",
+                "快速、自我求值的標籤，常用作 map 的鍵"
+              ],
+              [
+                "Boolean / nil",
+                "`true`, `false`, `nil`",
+                "只有 `false` 與 `nil` 為假值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def pi-approx 3.14159)\n(let [r 2\n      area (* pi-approx r r)]\n  (println \"Area:\" area))\n;; Area: 12.56636\n(str \"a\" 1 :b)   ;; => \"a1:b\"",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "在 Clojure 中，一切都是會回傳值的運算式，包括 `if`。`if` 恰好接收一個「then」與一個「else」形式；若有多個副作用且不需要 else 分支，請用 `when`；多個條件則用 `cond`。",
+        {
+          "code": "(defn grade [score]\n  (cond\n    (>= score 90) \"A\"\n    (>= score 80) \"B\"\n    :else         \"C\"))\n(println (grade 85))            ;; B\n(when (pos? 5) (println \"positive\") :done)\n(doseq [x [1 2 3]] (println (* x x)))   ;; 1 4 9\n(for [x (range 5) :when (odd? x)] (* x 10))   ;; => (10 30)\n(loop [i 0 acc 0]\n  (if (< i 5) (recur (inc i) (+ acc i)) acc))   ;; => 10",
+          "lang": "clojure"
+        },
+        "Clojure 沒有那種會修改計數器的 `for` 迴圈。`doseq` 對每個元素執行副作用，`for` 建立惰性序列（類似串列生成式），`loop`/`recur` 則在不增加呼叫堆疊的情況下表達迭代。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "用 `defn` 定義具名函式。一個函式可以有多種元數（不同的引數個數），而 `#(...)` 是小型匿名函式的簡寫，其中 `%` 代表引數。",
+        {
+          "code": "(defn greet\n  ([] (greet \"world\"))\n  ([name] (str \"Hello, \" name \"!\")))\n(greet)          ;; => \"Hello, world!\"\n(greet \"Ana\")    ;; => \"Hello, Ana!\"\n(defn sum-all [& nums] (reduce + nums))\n(sum-all 1 2 3)  ;; => 6\n(map #(* % %) [1 2 3])        ;; => (1 4 9)\n(filter even? (range 10))     ;; => (0 2 4 6 8)",
+          "lang": "clojure"
+        },
+        "函式也是值：你可以把它們傳給 `map`、`filter` 與 `reduce`，從其他函式回傳，或存放在 map 中。"
+      ]
+    },
+    {
+      "h": "集合：list、vector、map 與 set",
+      "body": [
+        "Clojure 的四種核心集合都是不可變且持久化的：「修改」其中一個會回傳新版本，並與舊版本共用大部分結構，所以更新的成本很低。",
+        {
+          "table": {
+            "head": [
+              "集合",
+              "字面值",
+              "典型用途"
+            ],
+            "rows": [
+              [
+                "List",
+                "`'(1 2 3)`",
+                "程式碼與在前端新增元素的循序資料"
+              ],
+              [
+                "Vector",
+                "`[1 2 3]`",
+                "可用索引存取的序列，在尾端新增元素"
+              ],
+              [
+                "Map",
+                "`{:name \"Ana\" :age 30}`",
+                "鍵值紀錄"
+              ],
+              [
+                "Set",
+                "`#{:red :green}`",
+                "不重複的值、成員判斷"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "(def user {:name \"Ana\" :age 30})\n(:name user)                   ;; => \"Ana\"\n(assoc user :email \"a@x.io\")   ;; new map with :email\n(update user :age inc)         ;; => {:name \"Ana\", :age 31}\n(conj [1 2] 3)                 ;; => [1 2 3]\n(contains? #{:red :green} :red) ;; => true\n(get-in {:a {:b 1}} [:a :b])   ;; => 1\nuser                           ;; unchanged: {:name \"Ana\", :age 30}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "招牌特色：threading 巨集、atom 與巨集",
+      "body": [
+        "Threading 巨集讓資料處理管線可以由上往下閱讀。`->` 把前一個結果插入下一個形式的第一個引數；`->>` 則插入為最後一個引數。",
+        {
+          "code": "(->> (range 1 11)\n     (filter odd?)\n     (map #(* % %))\n     (reduce +))   ;; => 165\n(def counter (atom 0))\n(swap! counter inc)\n(swap! counter + 10)\n@counter           ;; => 11\n(defmacro unless [test & body]\n  `(if ~test nil (do ~@body)))\n(unless false (println \"runs\"))",
+          "lang": "clojure"
+        },
+        "Atom 存放可變的狀態：`swap!` 以原子方式套用函式，因此可以安全地在多個執行緒中使用。Ref 與 agent 則處理其他並行情境。由於程式碼就是資料（串列），巨集可以在編譯前轉換程式碼；`when`、`cond` 與 `->` 本身就是巨集。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "Clojure 使用 JVM 的例外，搭配 `try`、`catch` 與 `finally`。若要在錯誤中附帶資料，請丟出 `ex-info`，再用 `ex-data` 讀回資料。",
+        {
+          "code": "(defn parse-age [s]\n  (let [n (Long/parseLong s)]\n    (when (neg? n)\n      (throw (ex-info \"Age must not be negative\" {:value n})))\n    n))\n(try\n  (parse-age \"-5\")\n  (catch clojure.lang.ExceptionInfo e\n    (println (ex-message e) (ex-data e)))\n  (catch NumberFormatException _\n    (println \"not a number\")))\n;; Age must not be negative {:value -5}",
+          "lang": "clojure"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：字詞頻率",
+      "body": [
+        {
+          "code": "(ns wordcount\n  (:require [clojure.string :as str]))\n(defn word-counts [text]\n  (->> (str/split (str/lower-case text) #\"\\W+\")\n       (remove str/blank?)\n       frequencies\n       (sort-by val >)))\n(doseq [[word n] (take 2 (word-counts \"The cat and the hat and the bat\"))]\n  (println word n))\n;; the 3\n;; and 2",
+          "lang": "clojure"
+        },
+        "這個程式先把文字轉成小寫，再用正規表示式字面值 `#\"\\W+\"` 以非單字字元切開，用 `frequencies`（回傳一個 map）統計每個字詞，最後依次數由大到小排序各項目。",
+        {
+          "note": "新手常見錯誤：把函式放在括號外面（寫成 `print(x)` 而不是 `(println x)`）；以為 `assoc` 或 `conj` 會就地修改集合（它們會回傳新的集合，所以要保留回傳值）；忘了 `map` 與 `for` 是惰性的，因此在 REPL 或腳本中，裡面的副作用可能永遠不會執行（請用 `doseq` 或 `run!`）；以及把 `0` 或空字串當成假值（只有 `false` 與 `nil` 為假值）。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "clojure.org 上的官方指南：Getting Started、Learn Clojure 與 deps.edn 指南。",
+            "Clojure 參考頁面，涵蓋 reader 語法、special form 與資料結構。",
+            "設定一個可連接 REPL 的編輯器（例如 VS Code 的 Calva、Emacs 的 CIDER 或 IntelliJ 的 Cursive）。",
+            "如果想以瀏覽器為目標，可以試試 ClojureScript。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Clojure 是函數式語言嗎？",
+      "a": "是的。Clojure 偏好純函式與不可變資料，但也很務實：它允許副作用，並透過 atom、ref 與 agent 提供受管理的可變狀態。"
+    },
+    {
+      "q": "學 Clojure 需要先會 Java 嗎？",
+      "a": "不需要。不懂 Java 也能學這門語言，但必須安裝 Java 執行環境，而且對 JVM 有些了解，在閱讀堆疊追蹤或使用 Java 函式庫時會很有幫助。"
+    },
+    {
+      "q": "Clojure 的 list 與 vector 有什麼差別？",
+      "a": "List `'(1 2 3)` 在前端新增元素，主要用來表示程式碼；vector `[1 2 3]` 在尾端新增元素，並支援以索引快速存取。Clojure 程式中的大部分資料都存放在 vector 與 map 中。"
+    },
+    {
+      "q": "為什麼 Clojure 有這麼多括號？",
+      "a": "Clojure 程式碼是以 Lisp 的資料結構寫成的，所以每次呼叫都是一個串列。這種一致的語法讓巨集成為可能，而支援結構化編輯的編輯器也讓括號容易管理。"
+    },
+    {
+      "q": "Clojure 與 ClojureScript 有什麼差別？",
+      "a": "它們是同一種語言，只是運行在不同的宿主上：Clojure 運行在 JVM 上，ClojureScript 則編譯成 JavaScript。宿主互通的方式不同，但核心函式與資料結構是一樣的。"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "title": "Facade パターン：複雑なサブシステムへの単純な窓口、TypeScriptの例 — cv.cm",
+  "description": "Facade パターンを解説。複雑なサブシステムを1つの単純なインターフェイスの背後に隠す方法を、TypeScriptの注文チェックアウトの例、使うべきとき、実際の利用例とともに紹介します。",
+  "h1": "Facade パターンを例でわかりやすく解説",
+  "answer": "Facade パターンは、複雑なサブシステムにある一連のインターフェイスに対して、1つの単純で高レベルなインターフェイスを提供する構造パターンです。在庫、決済、配送、メールの各サービスを正しい順序で呼び出す代わりに、クライアントコードは `shop.placeOrder()` のような1つのメソッドを呼び、Facadeがサブシステムのクラスを調整します。サブシステムは存在し続け、必要なら直接使えます。Facadeは、よくあるケースを簡単にするだけです。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "サブシステムにある一連のインターフェイスに対して、統一されたインターフェイスを提供します。Facade パターンは、サブシステムを使いやすくする、より高レベルのインターフェイスを定義します。Gang of Four（GoF）の書籍にある7つの構造パターンの1つです。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "オンラインショップを想像してください。注文するには複数のサービスが必要です。在庫の確認と確保、カードへの請求、決済が失敗した場合の在庫の解放、出荷の作成、確認メールの送信です。各サービスには独自のAPIと独自のルールがあります。",
+        "Webのチェックアウト、モバイルAPI、管理ツールなど、すべての呼び出し元がこれらの手順を自分で実行すると、同じ手順があちこちにコピーされます。コピーごとに順序を間違えたり、ロールバックを忘れたりするおそれがあり、すべての呼び出し元が5つのサービスに依存します。1つのサービスが変わると、すべての呼び出し元が変わらなければなりません。Facadeは手順を1か所にまとめ、呼び出し元に1つのメソッドを与えます。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Facade",
+                "どのサブシステムのクラスがリクエストを処理するかを知っていて、正しい順序でそれらに委譲します。",
+                "`OrderFacade`"
+              ],
+              [
+                "サブシステムのクラス",
+                "実際の作業を行います。Facadeの存在は知りません。",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Client",
+                "よくある作業にはFacadeを使い、特別なケースではサブシステムのクラスを直接使うこともあります。",
+                "チェックアウトのコード"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "Facadeは、1つのメソッドの背後で、ワークフロー全体を正しい順序で実行します。",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "呼び出し元は、1つのメソッドを持つ1つのクラスに依存するだけになりました。ロールバックのルールはちょうど1か所にあります。サブシステムのクラスも引き続き利用でき、在庫を解放するだけでよい管理ツールは、`Inventory` を直接呼び出せます。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はFacade パターンを使います。",
+        {
+          "ul": [
+            "サブシステムが複雑で、ほとんどのクライアントが、その機能のうちの単純でよく使う一部だけを必要とする場合。",
+            "クライアントコードと多くのサブシステムのクラスの間の依存関係の数を減らしたい場合。",
+            "システムを層に整理し、各層への入口としてFacadeを置きたい場合。",
+            "大きなサードパーティのライブラリをラップし、コードの他の部分には必要な少数の操作だけを使わせたい場合。"
+          ]
+        },
+        "次の場合は避けるか、使い方を限定します。",
+        {
+          "ul": [
+            "サブシステムがすでに単純な場合。各呼び出しを1対1で転送するだけのFacadeは、何も隠さずに層を増やすだけです。",
+            "Facadeが、システム中の無関係なメソッドやビジネスルールを集め始めた場合。これは「神オブジェクト」の問題で、1つのクラスが多くを知りすぎ、やりすぎています。焦点を絞った複数のFacadeに分割しましょう。"
+          ]
+        },
+        {
+          "note": "Facadeは単純にするためのもので、閉じ込めるためのものではありません。Facadeがあるからといって、サブシステムを非公開にしてはいけません。高度なクライアントは完全なAPIを必要とすることが多く、それをふさぐと回避策が生まれます。"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`fs.readFile()` は、ファイルを開き、最後まで読み、閉じる処理を1回の呼び出しで行います。低レベルの `fs.open()`、`fs.read()`、`fs.close()` も引き続き利用できます。",
+            "jQueryは、DOMや当時のブラウザー間の差異の前に、短く一貫した1つのAPIを置くことで、大きく普及しました。",
+            "GoFの書籍の例はコンパイラです。1つの `Compiler` クラスが、スキャナー、パーサー、コードジェネレーターなどのサブシステムのクラスを、単にコードをコンパイルしたいプログラムから隠します。",
+            "バックエンドアプリケーションのサービス層やAPIゲートウェイは、多くの内部サービスに対するFacadeとして機能します。"
+          ]
+        },
+        {
+          "note": "PHPフレームワークのLaravelには、Facadesという機能があります。これは別の考え方で、サービスコンテナ内のオブジェクトへ、静的呼び出しのような形でアクセスするものです。名前は同じですが、意図はGoFのパターンではありません。"
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Facade パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Adapter パターン",
+                "既存のインターフェイスを別の既存のインターフェイスに合わせます。Facadeは、多くのクラスに対して新しいより単純なインターフェイスを定義します。"
+              ],
+              [
+                "Mediator パターン",
+                "こちらも調整を集中させますが、サブシステムのオブジェクトがMediatorを知っていて、それを介して通信します。Facadeでは、サブシステムのクラスはFacadeの存在を知りません。"
+              ],
+              [
+                "Abstract Factory パターン",
+                "Facadeと併用して、プラットフォームに依存しない方法でサブシステムのオブジェクトを作成できます。"
+              ],
+              [
+                "Singleton パターン",
+                "サブシステムへの入口は通常1つあれば足りるため、Facadeはしばしば単一のインスタンスになります。"
+              ],
+              [
+                "Proxy パターン",
+                "1つのオブジェクトと同じインターフェイスを持ち、それへのアクセスを制御します。Facadeは、多くのオブジェクトに対して、異なるより単純なインターフェイスを持ちます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Facade パターンとAdapter パターンの違いは何ですか？",
+      "a": "Adapterは、既存のインターフェイスを、クライアントがすでに期待している別のインターフェイスに変換します。Facadeは、サブシステム全体を使いやすくするために、新しいより単純なインターフェイスを考案します。"
+    },
+    {
+      "q": "Facadeはサブシステムを完全に隠しますか？",
+      "a": "いいえ。Facadeはよくある作業を簡単にしますが、より細かい制御が必要なクライアントは、サブシステムのクラスを直接使えます。"
+    },
+    {
+      "q": "1つのシステムに複数のFacadeを置けますか？",
+      "a": "はい。大きなシステムでは、サブシステムごと、またはユースケースごとに1つのFacadeを置くことが多く、各Facadeを小さく、焦点の絞られたものに保てます。"
+    },
+    {
+      "q": "サービス層はFacadeですか？",
+      "a": "多くの場合はそうです。リポジトリ、外部API、通知を1回の呼び出しの背後で調整するサービスメソッドは、それを呼び出すコードに対してFacadeの役割を果たします。"
+    }
+  ]
+}

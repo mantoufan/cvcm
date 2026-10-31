@@ -1,0 +1,211 @@
+{
+  "title": "위상 정렬: 칸의 알고리즘과 DFS 파이썬 구현, 예제 — cv.cm",
+  "description": "위상 정렬 설명: 의존 관계가 먼저 오도록 작업 순서 정하기. 칸의 알고리즘과 DFS 파이썬 구현, 사이클 탐지, graphlib, O(V + E) 복잡도를 정리했습니다.",
+  "h1": "위상 정렬 쉽게 이해하기: 동작 원리, 코드, 시간 복잡도",
+  "answer": "위상 정렬은 방향 비순환 그래프(DAG)의 노드를, 모든 간선 u → v에서 u가 v보다 앞에 오도록 나열하는 것입니다. \"일부 작업이 다른 작업에 의존할 때 어떤 순서로 처리할 수 있는가?\"에 답합니다. 대표적인 방법은 들어오는 간선이 없는 노드를 반복해서 제거하는 칸의 알고리즘(Kahn's algorithm)과, 노드를 종료 순서의 역순으로 출력하는 DFS 방식입니다. 둘 다 O(V + E) 시간에 동작하며, 순서를 불가능하게 만드는 사이클도 탐지합니다.",
+  "sections": [
+    {
+      "h": "위상 정렬이 해결하는 문제",
+      "body": [
+        "현실의 많은 작업에는 선행 조건이 있습니다. 과목에는 선수 과목이 있고, 소스 파일은 import하는 파일 뒤에 컴파일해야 하며, 패키지는 의존하는 패키지 뒤에 설치해야 하고, 스프레드시트 셀은 참조하는 셀 뒤에 계산해야 합니다. 각 작업을 노드로, \"먼저 해야 한다\"는 각 규칙을 방향 간선으로 그립니다. 위상 순서는 모든 간선을 지키는 작업 나열입니다.",
+        "순서는 그래프에 방향 사이클이 없을 때, 그리고 그때에만 존재합니다. A가 B를 필요로 하고 B가 A를 필요로 하면 유효한 순서는 없으며, 좋은 위상 정렬은 무한 루프를 돌지 않고 이를 보고합니다. DAG에는 보통 유효한 순서가 여러 개 있으며 알고리즘은 그중 하나를 반환합니다."
+      ]
+    },
+    {
+      "h": "핵심 아이디어",
+      "body": [
+        "칸의 알고리즘(1962년 아서 칸(Arthur Kahn)이 발표)은 앞쪽에서부터 작동합니다.",
+        {
+          "ol": [
+            "모든 노드의 들어오는 간선 수(진입 차수)를 셉니다.",
+            "진입 차수가 0인 노드를 모두 큐에 넣습니다. 이 작업들은 아직 충족되지 않은 선행 조건이 없습니다.",
+            "큐에서 노드를 꺼내 결과에 추가합니다. 그 노드에서 나가는 각 간선에 대해 대상의 진입 차수를 1 줄이고, 0이 되면 대상을 큐에 넣습니다.",
+            "큐가 비었을 때 결과에 모든 노드가 들어 있으면 그것이 위상 순서입니다. 그렇지 않다면 남은 노드는 사이클의 일부입니다."
+          ]
+        },
+        "DFS 방식은 뒤쪽에서부터 작동합니다. 노드는 자신이 가리키는 모든 노드가 끝난 뒤에야 끝나므로, 종료 순서의 역순으로 나열하면 각 노드가 자신의 모든 후속 노드보다 앞에 놓입니다."
+      ]
+    },
+    {
+      "h": "단계별 예제",
+      "body": [
+        "옷 입기: underwear → pants, pants → shoes, socks → shoes, pants → belt, shirt → belt, shirt → tie, tie → jacket, belt → jacket. 큐의 노드를 선입선출 순서로 꺼내는 칸의 알고리즘입니다.",
+        {
+          "table": {
+            "head": [
+              "단계",
+              "꺼냄",
+              "0으로 떨어지는 진입 차수",
+              "단계 후 큐",
+              "지금까지의 결과"
+            ],
+            "rows": [
+              [
+                "시작",
+                "—",
+                "underwear, socks, shirt",
+                "underwear, socks, shirt",
+                "—"
+              ],
+              [
+                "1",
+                "underwear",
+                "pants",
+                "socks, shirt, pants",
+                "underwear"
+              ],
+              [
+                "2",
+                "socks",
+                "없음 (shoes는 아직 pants를 기다림)",
+                "shirt, pants",
+                "underwear, socks"
+              ],
+              [
+                "3",
+                "shirt",
+                "tie",
+                "pants, tie",
+                "…, shirt"
+              ],
+              [
+                "4",
+                "pants",
+                "shoes, belt",
+                "tie, shoes, belt",
+                "…, pants"
+              ],
+              [
+                "5",
+                "tie",
+                "없음 (jacket은 belt를 기다림)",
+                "shoes, belt",
+                "…, tie"
+              ],
+              [
+                "6",
+                "shoes",
+                "없음",
+                "belt",
+                "…, shoes"
+              ],
+              [
+                "7",
+                "belt",
+                "jacket",
+                "jacket",
+                "…, belt"
+              ],
+              [
+                "8",
+                "jacket",
+                "없음",
+                "비어 있음",
+                "…, jacket"
+              ]
+            ]
+          }
+        },
+        "최종 순서: underwear, socks, shirt, pants, tie, shoes, belt, jacket. 8개 노드가 모두 배치되었으므로 사이클은 없습니다."
+      ]
+    },
+    {
+      "h": "파이썬 구현",
+      "body": [
+        "deque를 사용한 칸의 알고리즘입니다.",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "DFS 버전은 후속 노드가 모두 끝난 뒤에 노드를 추가하고 마지막에 리스트를 뒤집습니다.",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "두 결과 모두 유효합니다. 파이썬 3.9부터는 표준 라이브러리에 `graphlib.TopologicalSorter`도 있습니다. 위의 딕셔너리들과 반대로 각 노드를 그 선행 노드에 대응시키는 매핑을 받는다는 점에 유의하세요.",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "시간 복잡도와 공간 복잡도",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "방법",
+              "시간",
+              "공간",
+              "이유"
+            ],
+            "rows": [
+              [
+                "칸의 알고리즘",
+                "O(V + E)",
+                "O(V)",
+                "각 노드는 큐에 한 번 들어가고, 각 간선은 진입 차수를 한 번 낮춥니다."
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "각 노드는 한 번 방문하고 각 간선은 한 번 따라갑니다. 재귀 스택은 V 프레임까지 커질 수 있습니다."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "변형과 흔한 실수",
+      "body": [
+        {
+          "ul": [
+            "가장 작은 순서 우선: 큐 대신 최소 힙(`heapq`)을 써서 항상 선택 가능한 가장 작은 노드를 고릅니다. O((V + E) log V)에 사전순으로 가장 앞서는 순서를 얻습니다.",
+            "병렬 스케줄링: 칸의 알고리즘을 라운드 단위로 처리하여 진입 차수 0인 노드를 한꺼번에 꺼냅니다. 각 라운드는 동시에 실행할 수 있는 작업 묶음이며, 라운드 수는 가장 긴 의존 체인의 길이입니다. `graphlib.TopologicalSorter`는 `get_ready()`와 `done()`으로 이를 지원합니다.",
+            "DAG에서 가장 긴 경로 또는 가장 짧은 경로: 위상 순서대로 간선을 완화하면 음수 가중치가 있어도 O(V + E)에 답을 얻습니다.",
+            "서로 다른 순서의 개수를 세는 것은 훨씬 어려운 문제입니다. 큰 그래프에서 모든 순서를 나열하려 하지 마세요."
+          ]
+        },
+        {
+          "note": "간선 방향에 주의하세요. \"A는 B에 의존한다\"는 B가 먼저라는 뜻이므로 간선은 B → A입니다. 방향을 혼동하면 순서가 뒤집힙니다. 또한 나가는 간선이 없는 노드까지 모든 노드가 딕셔너리의 키로 들어 있어야 합니다. 그렇지 않으면 진입 차수 조회에서 `KeyError`가 발생합니다."
+        },
+        "재귀 DFS 버전에는 파이썬의 모든 재귀 DFS와 같은 재귀 한도 문제가 있습니다. 수천 개 노드의 체인에는 칸의 알고리즘을 사용하세요."
+      ]
+    },
+    {
+      "h": "언제 쓰는지와 실제 활용",
+      "body": [
+        {
+          "ul": [
+            "Make 같은 빌드 도구는 의존성에 따라 타깃 순서를 정하고, 패키지 관리자는 의존성 그래프로 설치 순서를 정합니다.",
+            "스프레드시트는 의존 순서대로 셀을 다시 계산하고 순환 참조를 알려 줍니다.",
+            "작업 스케줄러와 워크플로 엔진, 예를 들어 DAG 기반 데이터 파이프라인은 위상 순서로 작업을 실행합니다.",
+            "컴파일러는 선언 순서를 정하고 식 그래프를 평가하며, 데이터베이스는 외래 키의 생성 및 삭제 순서를 정합니다.",
+            "코딩 인터뷰 문제: 수강 신청 순서 I과 II, 외계인 사전(정렬된 단어에서 문자 순서 추론), 병렬 수업, 빌드 계획의 최소 높이."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "사이클이 있는 그래프도 위상 정렬할 수 있나요?",
+      "a": "아니요. 사이클은 어떤 작업이 자기 자신보다 먼저 와야 한다는 뜻입니다. 칸의 알고리즘은 일부 노드의 진입 차수가 끝내 0이 되지 않는 것으로 이를 탐지하고, DFS 방식은 아직 진행 중인 노드에 도달하는 것으로 탐지합니다."
+    },
+    {
+      "q": "위상 순서는 하나뿐인가요?",
+      "a": "보통은 아닙니다. 모든 노드를 지나는 경로가 그래프에 있어 매 단계에서 선택 가능한 노드가 정확히 하나일 때만 유일합니다."
+    },
+    {
+      "q": "칸의 알고리즘과 DFS 중 무엇을 쓸까요?",
+      "a": "둘 다 O(V + E)입니다. 칸의 알고리즘은 반복적이고 사이클을 자연스럽게 보고하며 병렬 묶음이나 작은 순서 우선으로 바꾸기 쉽습니다. 이미 DFS 헬퍼가 있다면 DFS가 더 짧습니다."
+    },
+    {
+      "q": "파이썬에 내장된 위상 정렬이 있나요?",
+      "a": "네. 파이썬 3.9에 추가된 `graphlib.TopologicalSorter`는 `static_order()`로 순서를 반환하고, 그래프에 사이클이 있으면 `graphlib.CycleError`를 일으킵니다."
+    }
+  ]
+}

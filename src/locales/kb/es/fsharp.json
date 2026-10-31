@@ -1,0 +1,210 @@
+{
+  "title": "Tutorial de F#: tipos, coincidencia de patrones, pipelines y .NET — cv.cm",
+  "description": "Aprende F# paso a paso: instala el SDK de .NET, ejecuta scripts con dotnet fsi, usa enlaces let, listas, registros, uniones discriminadas, coincidencia de patrones y Result.",
+  "h1": "Tutorial de F# para principiantes",
+  "answer": "F# es un lenguaje de tipado estático, funcional ante todo, para .NET. Infiere la mayoría de los tipos por ti, usa la sangría en lugar de llaves y convierte los datos inmutables, la coincidencia de patrones y el operador de pipeline `|>` en la forma normal de escribir código, sin perder el acceso completo a las bibliotecas de .NET. Instala el SDK de .NET y ejecuta un script con `dotnet fsi hello.fsx`.",
+  "sections": [
+    {
+      "h": "Qué es F# y quién lo usa",
+      "body": [
+        "F# lo diseñó Don Syme en Microsoft Research y hoy es un lenguaje de código abierto mantenido por Microsoft y la comunidad de la F# Software Foundation. Pertenece a la familia de lenguajes ML (como OCaml) y se ejecuta sobre .NET en Windows, macOS y Linux.",
+        "Los equipos usan F# para modelado financiero, análisis de datos, lógica de negocio con mucho dominio, backends web y scripting. Como compila al mismo lenguaje intermedio de .NET que C#, un proyecto de F# puede usar cualquier paquete de NuGet y puede ser llamado desde código C#."
+      ]
+    },
+    {
+      "h": "Instala F# y ejecuta Hola, mundo",
+      "body": [
+        "Instala el SDK de .NET desde Microsoft. F# está incluido, así que no hace falta una instalación aparte. Para experimentar rápido, escribe un archivo de script con la extensión `.fsx` y ejecútalo con F# Interactive (`dotnet fsi`).",
+        {
+          "code": "// hello.fsx\nprintfn \"Hello, world!\"",
+          "lang": "fsharp"
+        },
+        {
+          "code": "dotnet fsi hello.fsx\n# Hello, world!\ndotnet new console -lang \"F#\" -o HelloApp\ncd HelloApp\ndotnet run",
+          "lang": "shell"
+        },
+        "El segundo conjunto de comandos crea un proyecto de consola completo con un archivo `.fsproj` y `Program.fs`. En un proyecto, el orden de los archivos listados en el `.fsproj` importa: un archivo solo puede usar código de los archivos que están por encima."
+      ]
+    },
+    {
+      "h": "Valores y tipos básicos",
+      "body": [
+        "`let` enlaza un nombre a un valor. Los enlaces son inmutables a menos que los marques como `mutable`, y entonces los cambias con `<-`, no con `=`.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "entero de 32 bits"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "coma flotante de 64 bits (un `double` de .NET)"
+              ],
+              [
+                "decimal",
+                "`19.99m`",
+                "Decimal exacto, ideal para dinero"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "Cadena inmutable de .NET"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "Un solo carácter"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "Valores lógicos"
+              ],
+              [
+                "unit",
+                "`()`",
+                "«Sin valor», como `void`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet mutable count = 0\ncount <- count + 1\nprintfn \"%s is %d, count = %d\" name age count\n// Ana is 30, count = 1\nlet total = float age + 0.5   // explicit conversion needed",
+          "lang": "fsharp"
+        },
+        "F# nunca convierte números de forma implícita: `1 + 2.0` es un error de compilación. Convierte con funciones como `float`, `int` y `string`."
+      ]
+    },
+    {
+      "h": "Control de flujo y funciones",
+      "body": [
+        "`if` es una expresión que devuelve un valor, así que ambas ramas deben tener el mismo tipo. Existen los bucles (`for`, `while`), pero la mayor parte del código usa funciones de colecciones.",
+        {
+          "code": "let sign n =\n    if n > 0 then \"positive\"\n    elif n < 0 then \"negative\"\n    else \"zero\"\nfor i in 1 .. 3 do\n    printfn \"%d squared is %d\" i (i * i)\nlet add x y = x + y          // int -> int -> int\nlet add5 = add 5             // partial application\nprintfn \"%d\" (add5 10)       // 15\nlet square = fun x -> x * x\n[1; 2; 3; 4]\n|> List.filter (fun x -> x % 2 = 0)\n|> List.map square\n|> printfn \"%A\"              // [4; 16]",
+          "lang": "fsharp"
+        },
+        "Los argumentos se separan con espacios, no con comas. Cada función toma un argumento a la vez (currificación), así que `add 5` devuelve una función nueva. El operador de pipeline `x |> f` significa `f x` y permite escribir transformaciones de datos de arriba abajo. La sangría es significativa: el cuerpo de una función o bucle debe ir indentado debajo."
+      ]
+    },
+    {
+      "h": "Colecciones, registros y opciones",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Colección",
+              "Literal",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Lista",
+                "`[1; 2; 3]`",
+                "Lista enlazada inmutable, la opción por defecto"
+              ],
+              [
+                "Arreglo",
+                "`[| 1; 2; 3 |]`",
+                "Tamaño fijo, elementos mutables, indexación rápida"
+              ],
+              [
+                "Secuencia",
+                "`seq { 1 .. 10 }`",
+                "Perezosa, se calcula bajo demanda"
+              ],
+              [
+                "Mapa",
+                "`Map [\"a\", 1; \"b\", 2]`",
+                "Diccionario inmutable"
+              ],
+              [
+                "Conjunto",
+                "`set [1; 2; 2]`",
+                "Conjunto inmutable de valores únicos"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type Person = { Name: string; Age: int }\nlet ana = { Name = \"Ana\"; Age = 30 }\nlet older = { ana with Age = 31 }       // copy with one change\nlet people = [ ana; { Name = \"Ben\"; Age = 17 } ]\nlet adult = people |> List.tryFind (fun p -> p.Age >= 18)\nmatch adult with\n| Some p -> printfn \"First adult: %s\" p.Name\n| None -> printfn \"No adults\"\n// First adult: Ana",
+          "lang": "fsharp"
+        },
+        "Los registros son tipos inmutables con campos con nombre e igualdad estructural. F# no tiene null para sus propios tipos; un valor ausente es un `Option`: `Some value` o `None`. Funciones como `List.tryFind` devuelven un option, y el compilador te obliga a tratar ambos casos."
+      ]
+    },
+    {
+      "h": "Características distintivas: uniones discriminadas y coincidencia de patrones",
+      "body": [
+        "Una unión discriminada describe un valor que es exactamente uno de varios casos con nombre, cada uno con sus propios datos. `match` comprueba los casos, y el compilador te avisa si olvidas alguno.",
+        {
+          "code": "type Shape =\n    | Circle of radius: float\n    | Rectangle of width: float * height: float\nlet area shape =\n    match shape with\n    | Circle r -> System.Math.PI * r * r\n    | Rectangle (w, h) -> w * h\n[ Circle 1.0; Rectangle (2.0, 3.0) ]\n|> List.map area\n|> List.iter (printfn \"%.2f\")\n// 3.14\n// 6.00",
+          "lang": "fsharp"
+        },
+        "Otras características conocidas son la inferencia de tipos (rara vez escribes anotaciones de tipo), las unidades de medida (`float<m>` no se puede sumar con `float<s>`) y las expresiones de cómputo como `task { ... }` y `async { ... }` para código asíncrono."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Para los fallos esperados, el F# idiomático devuelve un `Result`: `Ok value` o `Error info`. Para los fallos inesperados están disponibles las excepciones de .NET con `try ... with`, `failwith` y `raise`.",
+        {
+          "code": "let parseAge (s: string) =\n    match System.Int32.TryParse(s) with\n    | true, n when n >= 0 -> Ok n\n    | true, _ -> Error \"Age must not be negative\"\n    | false, _ -> Error \"Not a number\"\nmatch parseAge \"abc\" with\n| Ok n -> printfn \"Age %d\" n\n| Error msg -> printfn \"Error: %s\" msg\n// Error: Not a number\nlet safeDivide a b =\n    try Some (a / b)\n    with :? System.DivideByZeroException -> None\nprintfn \"%A\" (safeDivide 10 0)   // None",
+          "lang": "fsharp"
+        },
+        "`TryParse` tiene un parámetro `out` en .NET; F# lo convierte en una tupla `(success, value)` que puedes comparar directamente con un patrón."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: frecuencias de palabras",
+      "body": [
+        {
+          "code": "let text = \"the cat and the hat and the bat\"\ntext.Split(' ')\n|> Array.countBy id\n|> Array.sortByDescending snd\n|> Array.truncate 2\n|> Array.iter (fun (word, n) -> printfn \"%s %d\" word n)\n// the 3\n// and 2",
+          "lang": "fsharp"
+        },
+        "`Array.countBy id` agrupa palabras iguales y devuelve pares `(word, count)`, `snd` toma el segundo elemento de cada par para ordenar, y el resultado se imprime con una lambda que desestructura la tupla.",
+        {
+          "note": "Errores habituales de principiantes: escribir `[1, 2, 3]` (es una lista con una sola tupla; usa punto y coma `[1; 2; 3]`); usar `=` para cambiar un valor mutable (`=` compara, `<-` asigna); llamar a una función como `add(1, 2)` cuando se definió como `add x y`; mezclar `int` y `float` sin conversión; y poner un archivo en el orden equivocado en el `.fsproj`."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "Microsoft Learn: la documentación de F#, incluidos «Tour of F#» y la referencia del lenguaje.",
+            "Practica en `dotnet fsi`, donde puedes pegar código y ver los resultados al instante; termina la entrada con `;;`.",
+            "Aprende los módulos `List`, `Array`, `Seq`, `Option` y `Result`; la mayor parte del código diario se construye con ellos.",
+            "Echa un vistazo a los frameworks y bibliotecas web de F# en NuGet cuando domines lo básico."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿F# es solo para Windows?",
+      "a": "No. F# se ejecuta sobre .NET, que es multiplataforma, así que puedes compilar y ejecutar programas de F# en Windows, macOS y Linux."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre F# y C#?",
+      "a": "Ambos se ejecutan en .NET y pueden usar las mismas bibliotecas. C# es orientado a objetos ante todo, con características funcionales añadidas, mientras que F# es funcional ante todo, con datos inmutables, inferencia de tipos y coincidencia de patrones por defecto."
+    },
+    {
+      "q": "¿Qué significa |> en F#?",
+      "a": "`x |> f` es el operador de pipeline y significa `f x`. Pasa el valor de la izquierda como último argumento de la función de la derecha, de modo que las cadenas de transformaciones se leen de arriba abajo."
+    },
+    {
+      "q": "¿F# está relacionado con OCaml?",
+      "a": "Sí. F# pertenece a la familia ML y su sintaxis básica es cercana a la de OCaml, pero está hecho para .NET, usa por defecto la sangría significativa y tiene características propias como las expresiones de cómputo."
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "title": "Composite pattern: treat trees and single objects the same, TypeScript example — cv.cm",
+  "description": "The Composite design pattern explained: build tree structures where leaves and groups share one interface. TypeScript file-system example and real uses.",
+  "h1": "Composite pattern explained with examples",
+  "answer": "Composite is a structural design pattern that lets you compose objects into tree structures and then treat individual objects and groups of objects in the same way. A leaf (such as a file) and a composite (such as a folder that contains files and other folders) implement the same interface, for example `size()`. The composite implements the operation by calling it on its children, so client code can work with a whole tree without checking what kind of node it has.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly. It is one of the seven structural patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine a storage app that must show the total size of any item. A file has a size. A folder's size is the sum of everything inside it, and a folder can contain files and other folders, nested to any depth.",
+        "Without a common interface, every piece of code that walks the tree must ask \"is this a file or a folder?\" and handle each case, usually with recursion written again and again. Adding a new node type, such as a shortcut or a compressed archive, means finding and updating every one of those checks. Composite puts the recursion inside the nodes themselves."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Component",
+                "Declares the common interface for all objects in the tree.",
+                "`FsNode`"
+              ],
+              [
+                "Leaf",
+                "An object with no children; implements the operation directly.",
+                "`FileNode`"
+              ],
+              [
+                "Composite",
+                "Stores child components and implements the operation by delegating to them.",
+                "`Folder`"
+              ],
+              [
+                "Client",
+                "Works with any node through the Component interface.",
+                "`report`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "interface FsNode {\n  readonly name: string;\n  size(): number;\n  print(indent?: string): string[];\n}\n\nclass FileNode implements FsNode {\n  constructor(readonly name: string, private bytes: number) {}\n  size(): number { return this.bytes; }\n  print(indent = \"\"): string[] { return [`${indent}${this.name} (${this.bytes})`]; }\n}\n\nclass Folder implements FsNode {\n  private children: FsNode[] = [];\n  constructor(readonly name: string) {}\n  add(...nodes: FsNode[]): this { this.children.push(...nodes); return this; }\n  size(): number { return this.children.reduce((sum, c) => sum + c.size(), 0); }\n\n  print(indent = \"\"): string[] {\n    const lines = [`${indent}${this.name}/ (${this.size()})`];\n    for (const child of this.children) lines.push(...child.print(indent + \"  \"));\n    return lines;\n  }\n}\n\nconst root = new Folder(\"project\").add(\n  new FileNode(\"README.md\", 120),\n  new Folder(\"src\").add(new FileNode(\"main.ts\", 900), new FileNode(\"util.ts\", 300)),\n);\n\n// The client treats a single file and a whole tree the same way.\nconst report = (node: FsNode) => console.log(node.print().join(\"\\n\"));\nreport(root);\n// project/ (1320)\n//   README.md (120)\n//   src/ (1200)\n//     main.ts (900)\n//     util.ts (300)\nreport(new FileNode(\"notes.txt\", 42)); // notes.txt (42)",
+          "lang": "typescript"
+        },
+        "`report` never checks the node type. A new kind of node, such as a `Symlink` that reports a size of zero, only needs to implement `FsNode`."
+      ]
+    },
+    {
+      "h": "Design decisions: transparency versus safety",
+      "body": [
+        "Where should child-management methods such as `add()` and `remove()` live? The GoF book describes the trade-off:",
+        {
+          "table": {
+            "head": [
+              "Choice",
+              "What it means",
+              "Trade-off"
+            ],
+            "rows": [
+              [
+                "Safety",
+                "Only `Composite` has `add()` and `remove()`, as in the example above.",
+                "Type-safe: you cannot add a child to a file. But clients must know when they hold a composite."
+              ],
+              [
+                "Transparency",
+                "`Component` declares `add()` and `remove()`, and leaves throw or ignore them.",
+                "All nodes look identical to clients, but mistakes appear only at run time."
+              ]
+            ]
+          }
+        },
+        "In TypeScript, the safety approach usually works better, because the type checker catches the mistake at compile time.",
+        {
+          "note": "Recursion in a composite can be expensive on large trees. In the example, `print()` calls `size()` at every folder, which walks the subtree again. For big trees, cache results or compute sizes in one pass. Also make sure a node cannot be added to its own subtree, which would create infinite recursion."
+        }
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Composite when:",
+        {
+          "ul": [
+            "Your data is naturally a tree: files and folders, UI widgets inside containers, menus and submenus, organization charts, drawing shapes and groups.",
+            "Clients should be able to ignore the difference between one object and a group of objects."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "The structure is flat or always one level deep. A plain array is simpler.",
+            "Leaves and groups need very different operations. Forcing them into one interface creates methods that make no sense for some nodes.",
+            "You need to restrict which children a composite may hold, for example only certain node types. The uniform interface makes such rules harder to enforce in the type system."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "The DOM: every element and text node is a `Node`. Elements can contain other nodes, and many operations, such as `textContent` or `cloneNode(true)`, work the same on a single node and on a whole subtree.",
+            "UI component frameworks such as React, Vue and Angular build interfaces as trees where a component can render other components.",
+            "Java AWT and Swing: `Container` is a subclass of `Component` and holds other components, so a panel full of buttons is itself a component.",
+            "Abstract syntax trees in compilers, scene graphs in game engines, and nested menus all follow the same idea."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "ul": [
+            "Iterator: traverses the nodes of a composite without exposing how children are stored.",
+            "Visitor: adds new operations over a composite tree (export, validation, statistics) without changing the node classes.",
+            "Decorator: also has a component interface and wraps objects recursively, but a decorator has exactly one child and adds behavior, while a composite has many children and combines their results.",
+            "Builder: is often used to construct complex composite trees step by step.",
+            "Chain of Responsibility: often uses the parent links of a composite, passing a request up from a child to its parents, as browser events bubble up the DOM."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a leaf and a composite?",
+      "a": "A leaf has no children and does the work itself. A composite holds child components and usually does its work by calling the same operation on each child and combining the results."
+    },
+    {
+      "q": "Is Composite only for trees?",
+      "a": "It is designed for tree-shaped part-whole hierarchies. A general graph with cycles needs extra care, such as tracking visited nodes, to avoid infinite recursion."
+    },
+    {
+      "q": "What is the difference between Composite and Decorator?",
+      "a": "Both use a shared interface and recursive composition. A decorator wraps exactly one object to add behavior, while a composite groups many children to treat them as one."
+    },
+    {
+      "q": "Should add() be on the leaf class too?",
+      "a": "Only if you want full transparency and accept run-time errors when someone adds a child to a leaf. In typed languages it is usually safer to put `add()` on the composite only."
+    }
+  ]
+}

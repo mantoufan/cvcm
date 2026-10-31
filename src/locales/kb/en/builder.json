@@ -1,0 +1,149 @@
+{
+  "title": "Builder pattern: step-by-step construction, fluent API, TypeScript example — cv.cm",
+  "description": "The Builder design pattern explained: build complex objects step by step with a fluent TypeScript API, the Director role, and when an options object is enough.",
+  "h1": "Builder pattern explained with examples",
+  "answer": "Builder is a creational design pattern that separates the construction of a complex object from its final representation, so the same step-by-step process can create different results. In modern code it usually appears as a fluent API: you call methods such as `.url()`, `.header()` and `.timeout()` on a builder, then `.build()` returns a finished, validated object. It replaces long constructors with many optional parameters.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Separate the construction of a complex object from its representation so that the same construction process can create different representations. Builder is one of the five creational patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine an HTTP request object with a URL, a method, any number of headers, an optional body, a timeout and a retry count. A constructor for all of this is hard to call correctly:",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "This is called a telescoping constructor. It also has nowhere to put rules such as \"a GET request cannot have a body\", and it cannot be built gradually, for example when headers are added in several places before sending."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Builder",
+                "Declares the steps for creating parts of the product.",
+                "`RequestBuilder` methods"
+              ],
+              [
+                "ConcreteBuilder",
+                "Implements the steps, keeps the partial state and returns the result.",
+                "`RequestBuilder`"
+              ],
+              [
+                "Director",
+                "Optional. Runs the steps in a fixed order to produce common configurations.",
+                "`jsonPost()`"
+              ],
+              [
+                "Product",
+                "The complex object being built.",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "Each step stores a value and returns `this`, so calls can be chained. `build()` validates the combination and returns an immutable product:",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "A Director is just code that knows a common recipe. In TypeScript it is often a plain function that drives the builder:",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "This shows the original GoF idea: the same construction steps, driven by the same director, can feed different builders and produce different representations, here a log instead of a request."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Builder when:",
+        {
+          "ul": [
+            "An object has many optional parts, or parts that must be added one at a time.",
+            "Construction has rules that involve several fields and should be checked once, in `build()`.",
+            "You want the finished object to be immutable, while still assembling it step by step.",
+            "The same construction process must produce different representations, such as a document exported as HTML, Markdown or PDF."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "The object has a few fields. A constructor is shorter and just as clear.",
+            "Your language already has named or optional parameters. In TypeScript, a single options object often removes the need for a builder entirely."
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "A builder that is reused after `build()` can leak state into the next object. Either copy all collections in `build()`, as the example does with `headers`, or document that each builder creates one object only."
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java: `java.net.http.HttpRequest.newBuilder()` returns an `HttpRequest.Builder`; you chain `uri()`, `header()` and `timeout()`, then call `build()`.",
+            "Java: `Locale.Builder` assembles and validates a locale from language, region and script parts.",
+            "Java and C#: `StringBuilder` assembles a string from many appended parts before producing the final immutable string.",
+            "Many SQL query builders and test-data builders use the same fluent style."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "ul": [
+            "Abstract Factory creates whole families of products and returns each one immediately; Builder constructs one complex product step by step and returns it at the end.",
+            "Composite trees are often created with a builder, because building a tree node by node is a natural series of steps.",
+            "Fluent interface is the API style of chaining calls that return `this`. Builder often uses it, but they are not the same thing.",
+            "Prototype can be an alternative when most new objects are small variations of a ready-made template."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Why does each builder method return this?",
+      "a": "Returning the builder lets you chain calls in one expression, such as `.header(...).timeout(...).build()`. Returning `this` in TypeScript also keeps the correct type in subclasses."
+    },
+    {
+      "q": "Do I need a Director class?",
+      "a": "No. The Director is optional in the GoF description. In practice, a function that applies a common sequence of steps is usually enough."
+    },
+    {
+      "q": "Is Builder still useful in TypeScript?",
+      "a": "Sometimes. An options object with defaults covers most simple cases. Builder is still useful when objects are assembled gradually, when cross-field validation is needed, or when you want an immutable result."
+    },
+    {
+      "q": "What is the difference between Builder and Factory Method?",
+      "a": "Factory Method decides which class to instantiate and returns the object in one call. Builder lets the client control how one object is assembled over several calls."
+    }
+  ]
+}

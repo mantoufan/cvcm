@@ -1,0 +1,203 @@
+{
+  "title": "OCaml入門：型・バリアント・パターンマッチ・モジュールを解説 — cv.cm",
+  "description": "OCamlを最初から学べる入門講座。opamによるインストール、Hello worldのコンパイル、let束縛、リスト、レコード、バリアント、パターンマッチ、モジュール、Resultによるエラー処理を解説します。",
+  "h1": "OCaml入門：初心者向けチュートリアル",
+  "answer": "OCamlは、ML系に属する静的型付けの関数型言語です。コンパイラが型を推論し、プログラムを実行する前に多くの間違いを見つけ、高速なネイティブコードを生成します。プログラムは、イミュータブルな値、バリアント(タグ付き共用体)、パターンマッチ、モジュールで組み立てます。opamでインストールし、`ocaml hello.ml`でファイルを実行するか、`ocamlopt`でコンパイルします。",
+  "sections": [
+    {
+      "h": "OCamlとは何か、誰が使うのか",
+      "body": [
+        "OCamlはフランスのInriaで生まれ、現在はJane StreetやTaridesなどの企業を含むオープンソースのコミュニティによって開発されています。関数型プログラミングに、オプションの命令型の機能(変更可能な参照、配列、ループ)と、ほとんどのコードでは必要ないオブジェクトシステムを組み合わせています。OCaml 5では、ドメインとエフェクトハンドラーによる共有メモリ並列が加わりました。",
+        "OCamlは、コンパイラやプログラム解析ツール、Rocq(旧Coq)のような証明支援系、取引システム(Jane Streetが最もよく知られた産業利用者です)、MetaのFlowやInferのような開発者向けツールに使われています。関数型プログラミングや型システムを教える言語としても定番です。"
+      ]
+    },
+    {
+      "h": "OCamlのインストールとhello, worldの実行",
+      "body": [
+        "OCamlの標準的なインストール方法は、OCamlのパッケージマネージャーであるopamです。opamをインストールしたら、`opam init`を一度実行します。これでコンパイラがセットアップされます。続いて、`opam install dune utop`で、ビルドツールのduneと、より使いやすいREPLのutopをインストールします。",
+        {
+          "code": "(* hello.ml *)\nlet () = print_endline \"Hello, world!\"",
+          "lang": "ocaml"
+        },
+        {
+          "code": "ocaml hello.ml            # run with the interpreter\nocamlopt -o hello hello.ml\n./hello                   # native executable\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`let () = ...`はエントリーポイントの標準的な書き方です。式を評価し、それが`unit`(値なし)を返すことを確認します。REPL(`utop`または`ocaml`)では各フレーズの末尾に`;;`を付けますが、ソースファイルでは`;;`は必要ありません。実際のプロジェクトでは、`dune init project myapp`でプロジェクトを作り、`dune build`でコンパイルします。"
+      ]
+    },
+    {
+      "h": "値と基本の型",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "64ビットシステムでは63ビット。演算子は`+ - * / mod`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "専用の演算子を使います：`+.` `-.` `*.` `/.`"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "変更できないバイト列。結合は`^`"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "1バイト"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "`&&`, `||`, `not`"
+              ],
+              [
+                "unit",
+                "`()`",
+                "結果を持たない式の値"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet height = 1.68 *. 100.0\nlet () = Printf.printf \"%s is %d, %.0f cm\\n\" name age height\n(* Ana is 30, 168 cm *)\nlet count = ref 0\nlet () = incr count; Printf.printf \"count = %d\\n\" !count",
+          "lang": "ocaml"
+        },
+        "束縛はイミュータブルです。`ref`は変更可能なセルで、`!r`で読み、`r := v`で書きます。OCamlは`int`と`float`を自動的に変換しません。`float_of_int`と`int_of_float`を使ってください。"
+      ]
+    },
+    {
+      "h": "制御構文と関数",
+      "body": [
+        "`if`は式です。関数は`let`で定義し、再帰関数には`let rec`が必要です。引数は空白で区切り、どの関数もカリー化されているので、部分適用は自然にできます。",
+        {
+          "code": "let sign n =\n  if n > 0 then \"positive\"\n  else if n < 0 then \"negative\"\n  else \"zero\"\nlet rec factorial n = if n <= 1 then 1 else n * factorial (n - 1)\nlet add x y = x + y          (* int -> int -> int *)\nlet add5 = add 5\nlet () =\n  for i = 1 to 3 do\n    Printf.printf \"%d squared is %d\\n\" i (i * i)\n  done;\n  Printf.printf \"%s %d %d\\n\" (sign (-2)) (factorial 5) (add5 10)\n(* negative 120 15 *)",
+          "lang": "ocaml"
+        },
+        "`sign (-2)`のかっこに注意してください。かっこがないと、OCamlは`sign - 2`を引き算として読みます。`unit`を返す式を順に実行するには`;`を使います。"
+      ]
+    },
+    {
+      "h": "リスト・配列・タプル・レコード",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "構造",
+              "リテラル",
+              "補足"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "イミュータブルな単方向連結リスト。`x :: xs`で先頭に追加します"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "固定サイズで変更可能。`a.(0)`で添字アクセスします"
+              ],
+              [
+                "Tuple",
+                "`(\"Ana\", 30)`",
+                "異なる型の値を固定個数まとめたもの"
+              ],
+              [
+                "Record",
+                "`{ name = \"Ana\"; age = 30 }`",
+                "名前付きフィールド。先に型を宣言します"
+              ],
+              [
+                "Hashtbl / Map",
+                "`Hashtbl.create 16`",
+                "変更可能なハッシュテーブル / イミュータブルな平衡木のマップ"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type person = { name : string; age : int }\nlet people = [ { name = \"Ana\"; age = 30 }; { name = \"Ben\"; age = 17 } ]\nlet () =\n  people\n  |> List.filter (fun p -> p.age >= 18)\n  |> List.map (fun p -> p.name)\n  |> List.iter print_endline\n(* Ana *)\nlet older = { (List.hd people) with age = 31 }",
+          "lang": "ocaml"
+        },
+        "パイプライン演算子`x |> f`は`f x`を意味します。`List`モジュールには`map`、`filter`、`fold_left`、`find_opt`などが揃っています。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：バリアント・パターンマッチ・モジュール",
+      "body": [
+        "バリアント型は、値がとりうるすべてのケースを列挙します。パターンマッチはケースごとに値を分解し、ケースが足りないとコンパイラが警告するので、安全にリファクタリングできます。",
+        {
+          "code": "type shape =\n  | Circle of float\n  | Rectangle of float * float\nlet area = function\n  | Circle r -> Float.pi *. r *. r\n  | Rectangle (w, h) -> w *. h\nlet () =\n  List.iter (fun s -> Printf.printf \"%.2f\\n\" (area s))\n    [ Circle 1.0; Rectangle (2.0, 3.0) ]\n(* 3.14 then 6.00 *)\nmodule StringMap = Map.Make (String)\nlet ages = StringMap.(empty |> add \"Ana\" 30 |> add \"Ben\" 17)\nlet () = Printf.printf \"%d\\n\" (StringMap.find \"Ana\" ages)   (* 30 *)",
+          "lang": "ocaml"
+        },
+        "モジュールは型と関数をまとめます。すべてのファイルがモジュールです(`list.ml`は`List`になります)。ファンクターは、モジュールからモジュールへの関数です。`Map.Make (String)`は、キーが文字列のマップモジュールを作ります。シグネチャ(`.mli`ファイル)は、実装の詳細を隠します。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "OCamlには3つの手段があります。値がないかもしれない場合の`option`、情報付きで失敗しうる処理の`result`、例外的な状況のための例外です。",
+        {
+          "code": "let parse_age s =\n  match int_of_string_opt s with\n  | Some n when n >= 0 -> Ok n\n  | Some _ -> Error \"Age must not be negative\"\n  | None -> Error \"Not a number\"\nlet () =\n  match parse_age \"abc\" with\n  | Ok n -> Printf.printf \"Age %d\\n\" n\n  | Error msg -> print_endline (\"Error: \" ^ msg)\n(* Error: Not a number *)\nexception Empty_input\nlet first = function [] -> raise Empty_input | x :: _ -> x\nlet () =\n  try print_int (first []) with Empty_input -> print_endline \"empty list\"",
+          "lang": "ocaml"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "let () =\n  let text = \"the cat and the hat and the bat\" in\n  let counts = Hashtbl.create 16 in\n  String.split_on_char ' ' text\n  |> List.iter (fun w ->\n         let n = Option.value (Hashtbl.find_opt counts w) ~default:0 in\n         Hashtbl.replace counts w (n + 1));\n  Hashtbl.to_seq counts\n  |> List.of_seq\n  |> List.sort (fun (_, a) (_, b) -> compare b a)\n  |> List.filteri (fun i _ -> i < 2)\n  |> List.iter (fun (w, n) -> Printf.printf \"%s %d\\n\" w n)\n(* the 3\n   and 2 *)",
+          "lang": "ocaml"
+        },
+        "このプログラムは、変更可能なハッシュテーブルで単語を数え、テーブルを`(word, count)`のペアのリストに変換し、回数の多い順に並べ替えて最初の2つを表示します。`~default:0`はラベル付き引数です。",
+        {
+          "note": "初心者がよくやる間違い：浮動小数点数に`+`を使う(`+.`を使います)、`[1, 2, 3]`と書く(これはタプルを1つ含むリストです。セミコロンを使います)、再帰関数に`rec`を付け忘れる、構造的等価性の`=`のつもりで物理的等価性の`==`を使う、`f (-1)`の代わりに`f -1`と書く、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "ocaml.org：インストールガイド、「A Tour of OCaml」、Docsにあるその他のチュートリアル。",
+            "言語と標準ライブラリの完全なリファレンスであるOCamlマニュアル。",
+            "プロジェクトのビルドのためのduneと、ライブラリのインストールのためのopamを学ぶ。",
+            "より大きな実用的な例を載せた無料のオンライン書籍『Real World OCaml』に挑戦する。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "OCamlは習得が難しいですか？",
+      "a": "構文は小さいのですが、命令型言語から来た場合、型、再帰、パターンマッチで考えるには練習が必要です。型チェッカーのエラーメッセージは、すぐに読みやすくなります。"
+    },
+    {
+      "q": "OCamlはなぜ浮動小数点数用に別の演算子があるのですか？",
+      "a": "OCamlは算術演算子をオーバーロードしないので、`+`は`int`にだけ、`+.`は`float`にだけ使えます。これにより、型推論がシンプルで予測しやすくなっています。"
+    },
+    {
+      "q": "OCamlとF#の違いは何ですか？",
+      "a": "F#はOCamlから派生し、中核の構文の多くを共有していますが、F#は.NET上で動き、インデントに意味があります。一方OCamlは、ネイティブコードまたはバイトコードにコンパイルされ、ファンクターを持つより強力なモジュールシステムがあります。"
+    },
+    {
+      "q": "OCamlで;;が必要なのはいつですか？",
+      "a": "対話型のトップレベル(`ocaml`や`utop`)だけです。入力した内容を評価するようREPLに伝えます。`.ml`のソースファイルでは、通常は省略します。"
+    }
+  ]
+}

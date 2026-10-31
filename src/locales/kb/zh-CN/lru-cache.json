@@ -1,0 +1,223 @@
+{
+  "title": "LRU 缓存详解：哈希表加双向链表，O(1) 的 Python 实现 — cv.cm",
+  "description": "LRU（最近最少使用）缓存如何工作：用哈希表和双向链表实现 O(1) 的 get 与 put，以及 Python 中的 OrderedDict 和 functools.lru_cache。",
+  "h1": "LRU 缓存详解：原理、代码与时间复杂度",
+  "answer": "LRU（最近最少使用，least recently used）缓存只保存固定数量的元素，满了之后会淘汰最久没有被使用的那个。经典设计把哈希表和按最近使用顺序排列的双向链表结合起来：哈希表能在 O(1) 内找到任意键，双向链表能在 O(1) 内移动或删除任意条目。在 Python 中，`collections.OrderedDict` 只需几行就能写出 LRU 缓存，`functools.lru_cache` 则可以给任何函数加上缓存。",
+  "sections": [
+    {
+      "h": "LRU 缓存解决什么问题",
+      "body": [
+        "缓存保存慢操作的结果，例如数据库查询、网络请求或昂贵的计算，这样重复的请求就能很快得到响应。内存是有限的，所以缓存满了之后必须决定丢弃什么。LRU 押注于：最近用过的数据很快还会被用到，而很久没碰过的数据大概率不会再被用到。这个押注在许多真实负载中表现良好，所以 LRU 及其近似算法出现在 CPU 缓存、操作系统页缓存、数据库、Web 服务器和 CDN 中。"
+      ]
+    },
+    {
+      "h": "思路：两种结构协同工作",
+      "body": [
+        "我们需要两件事都很快：找到一个键，以及知道哪个键是最近最少使用的。单独的哈希表没有顺序，单独的列表查找很慢。两者结合就能兼顾：",
+        {
+          "table": {
+            "head": [
+              "部分",
+              "职责",
+              "为什么是 O(1)"
+            ],
+            "rows": [
+              [
+                "哈希表",
+                "把每个键映射到它在链表中的节点",
+                "平均情况下的哈希查找"
+              ],
+              [
+                "双向链表",
+                "让节点按从最近使用到最久未使用排序",
+                "借助 `prev` 和 `next` 指针摘下一个节点只需修改四个引用"
+              ],
+              [
+                "头部一侧",
+                "最近使用的条目",
+                "新条目和被访问的条目都移到这里"
+              ],
+              [
+                "尾部一侧",
+                "最久未使用的条目",
+                "缓存满时从这里淘汰"
+              ]
+            ]
+          }
+        },
+        "执行 `get(key)` 时，在映射中查找节点，把它移到最前面，并返回它的值。执行 `put(key, value)` 时，更新或创建最前面的节点；如果缓存此时超出容量，就移除最后面的节点，并从映射中删除它的键。"
+      ]
+    },
+    {
+      "h": "容量为 2 的示例演练",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "结果",
+              "之后的顺序（最近的在前）",
+              "说明"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "缓存已满"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 变成最近使用"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "淘汰最近最少使用的 2"
+              ],
+              [
+                "get(2)",
+                "未命中",
+                "3, 1",
+                "2 已被淘汰"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "更新会把 1 移到最前面"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "淘汰 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "从零开始的 Python 实现",
+      "body": [
+        "哨兵头节点和尾节点消除了空链表的特殊情况：每个真实节点前后始终都有节点。",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "用 OrderedDict 的简短版本",
+      "body": [
+        "`collections.OrderedDict` 本身就是哈希表加双向链表的组合，`move_to_end` 和 `popitem(last=False)` 都是 O(1)。当你需要一个 LRU 缓存对象时，它是 Python 中惯用的选择。",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "用 functools.lru_cache 缓存函数结果",
+      "body": [
+        "要缓存函数的返回值，请使用 `functools.lru_cache` 装饰器。参数必须是可哈希的，因为它们会成为字典的键。`cache_info()` 会显示命中数、未命中数和当前大小。",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` 得到一个无上限的缓存，`functools.cache`（Python 3.9 及以上）正是这样做的。调用 `fib.cache_clear()` 可以清空它。"
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "时间",
+              "原因"
+            ],
+            "rows": [
+              [
+                "get",
+                "平均 O(1)",
+                "哈希查找，加上摘下并重新链接一个节点"
+              ],
+              [
+                "put（插入或更新）",
+                "平均 O(1)",
+                "哈希插入，加上常数次指针修改"
+              ],
+              [
+                "淘汰",
+                "O(1)",
+                "最近最少使用的节点始终紧挨着尾部哨兵"
+              ],
+              [
+                "空间",
+                "O(capacity)",
+                "每个缓存元素一个映射条目和一个链表节点"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "一种常见的错误设计，是把键保存在普通的 Python `list` 中，并在每次访问时调用 `list.remove(key)`。这样每次操作要花 O(n)，违背了使用缓存的初衷。"
+        }
+      ]
+    },
+    {
+      "h": "变体、常见错误与何时使用 LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU（最不经常使用）淘汰访问次数最少的元素；它能让热门元素免受一次性扫描的冲击，但实现更复杂。",
+            "近似 LRU：Redis 等系统会抽样几个键，淘汰其中最旧的，而不是维护精确的列表，从而节省内存。",
+            "TTL 缓存会让条目在固定时间后过期，通常与大小限制结合使用。",
+            "忘记在 `get` 时，或在对已有键执行 `put` 时把条目移到最前面，会让 LRU 退化成 FIFO。",
+            "忘记从哈希表中删除被淘汰的键，会留下悬空条目并造成内存泄漏。",
+            "在线程之间共享 LRU 缓存时，每个操作都需要加锁；`functools.lru_cache` 可以安全地被多个线程调用。"
+          ]
+        },
+        "当最近的使用能预测未来的使用时，LRU 是个不错的默认选择。当一次大规模的一次性扫描把常用数据挤出去时，它的表现就很差；这类负载更适合 LFU 或抗扫描的策略。设计一个所有操作都是 O(1) 的 LRU 缓存，也是最常见的编程面试题之一，因为它同时考察哈希表和链表。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRU 是什么的缩写？",
+      "a": "Least recently used（最近最少使用）。缓存满了之后，它会淘汰没有被读取或写入时间最长的那个条目。"
+    },
+    {
+      "q": "为什么 LRU 缓存需要双向链表？",
+      "a": "要在 O(1) 内从链表中间删除一个节点，你需要知道它的前驱节点。双向链表在每个节点上保存 `prev`；而单向链表则需要 O(n) 的查找。"
+    },
+    {
+      "q": "能只用 Python 的 dict 实现 LRU 缓存吗？",
+      "a": "从 Python 3.7 起，`dict` 会保留插入顺序，所以你可以先删除再重新插入一个键来标记它为最近使用，并淘汰 `next(iter(d))`。`OrderedDict` 借助 `move_to_end` 和 `popitem(last=False)` 能更清楚地表达意图。"
+    },
+    {
+      "q": "functools 中的 lru_cache 和 cache 有什么区别？",
+      "a": "`functools.cache` 是无上限的缓存，等价于 `lru_cache(maxsize=None)`。给 `lru_cache` 指定一个数字后，一旦达到该大小，它就会淘汰最近最少使用的结果。"
+    },
+    {
+      "q": "LRU 总是最好的淘汰策略吗？",
+      "a": "不是。它简单，并且在最近的元素很可能被再次使用时表现良好，但大规模的顺序扫描可能会冲掉有用的数据。LFU、ARC 等策略能更好地处理这类负载。"
+    }
+  ]
+}

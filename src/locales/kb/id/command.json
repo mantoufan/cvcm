@@ -1,0 +1,155 @@
+{
+  "title": "Pola Command: undo, redo, dan antrean dengan contoh TypeScript — cv.cm",
+  "description": "Pola Command mengubah permintaan menjadi objek, sehingga bisa diantrekan, dicatat, dan di-undo. Pelajari perannya dan buat undo/redo di TypeScript.",
+  "h1": "Penjelasan pola Command beserta contohnya",
+  "answer": "Command adalah pola desain behavioral yang mengubah permintaan menjadi objek mandiri yang berisi semua yang dibutuhkan untuk menjalankannya. Karena permintaan itu sebuah objek, Anda bisa menyimpannya, mengoperkannya, memasukkannya ke antrean, mencatatnya, dan meng-undo-nya nanti. Objek yang memicu command (misalnya tombol) tidak perlu tahu objek mana yang mengerjakan atau bagaimana caranya.",
+  "sections": [
+    {
+      "h": "Tujuan dan masalah yang diselesaikan",
+      "body": [
+        "Tujuan: membungkus permintaan sebagai objek, sehingga klien dapat diparameterisasi dengan permintaan berbeda, permintaan dapat diantrekan atau dicatat, dan operasi yang bisa di-undo didukung. Command adalah salah satu pola behavioral dalam buku Gang of Four (GoF).",
+        "Pikirkan editor teks. Aksi yang sama, seperti \"tebalkan teks\", bisa dipicu oleh tombol toolbar, item menu, dan pintasan keyboard Ctrl+B. Jika masing-masing memanggil editor secara langsung, logikanya terduplikasi di tiga tempat. Lebih buruk lagi, editor juga harus mendukung undo: setelah pengguna menekan Ctrl+Z, program perlu tahu aksi terakhir apa dan bagaimana membalikkannya.",
+        "Command menyelesaikan kedua masalah itu. Setiap aksi menjadi objek dengan method `execute`, dan opsional method `undo`. Tombol, menu, dan pintasan semuanya memegang objek command yang sama. Editor menyimpan daftar riwayat command yang sudah dijalankan, sehingga undo berarti mengambil command terakhir dari daftar dan memanggil method `undo`-nya."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peran",
+              "Tanggung jawab"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Interface dengan method `execute` (dan sering `undo`)"
+              ],
+              [
+                "Concrete command",
+                "Menyimpan receiver dan parameter, lalu memanggil method receiver di dalam `execute`"
+              ],
+              [
+                "Receiver",
+                "Objek yang tahu cara mengerjakan pekerjaan sebenarnya, seperti dokumen atau rekening bank"
+              ],
+              [
+                "Invoker",
+                "Meminta sebuah command berjalan; bisa menyimpan riwayat untuk undo dan redo"
+              ],
+              [
+                "Client",
+                "Membuat concrete command dan menghubungkannya dengan receiver dan invoker"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript: undo dan redo",
+      "body": [
+        "`TextDocument` adalah receiver. `InsertText` dan `DeleteLast` adalah command yang mengingat cukup informasi untuk membalikkan dirinya sendiri. `Editor` adalah invoker dengan dua stack: satu untuk undo dan satu untuk redo.",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "Menjalankan command baru harus mengosongkan stack redo, seperti yang dilakukan `run` di atas. Jika tidak, redo bisa menerapkan command pada keadaan dokumen yang tidak pernah dirancang untuknya, dan teks menjadi rusak."
+        }
+      ]
+    },
+    {
+      "h": "Sebelum dan sesudah",
+      "body": [
+        "Tanpa pola ini, UI memanggil dokumen secara langsung dan undo tidak mungkin dilakukan, karena tidak ada yang mencatat apa yang terjadi:",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "Versi kedua adalah potongan kode yang mengasumsikan class command `MakeBold` seperti yang di atas. UI tidak lagi tahu cara kerja penebalan, dan setiap aksi melewati satu tempat di mana ia bisa dicatat, di-log, atau di-undo."
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan kapan tidak",
+      "body": [
+        {
+          "ul": [
+            "Pakai untuk undo dan redo, makro (daftar command yang dijalankan bersama), dan riwayat command.",
+            "Pakai untuk mengantrekan atau menjadwalkan pekerjaan: job queue menyimpan objek command dan worker menjalankannya nanti.",
+            "Pakai untuk mencatat atau memutar ulang operasi, misalnya mengirim command yang sudah diserialisasi ke server lain.",
+            "Pakai untuk memisahkan elemen UI dari kode yang dipicunya.",
+            "Jangan dipakai bila Anda hanya butuh callback. Di TypeScript fungsi sudah merupakan nilai kelas satu, jadi `button.onclick = save` adalah command yang sangat memadai tanpa undo. Gunakan class command saat Anda butuh perilaku tambahan seperti `undo`, nama untuk ditampilkan, atau serialisasi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Penggunaan di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Interface `Runnable` di Java adalah command dengan satu method, `run`, yang dipakai thread dan executor untuk menjalankan pekerjaan nanti.",
+            "Action Redux adalah objek biasa yang menjelaskan sebuah perubahan; reducer menerapkannya, dan log action memungkinkan time-travel debugging. Ini kerabat dekat Command, dengan logika disimpan di reducer, bukan di command.",
+            "VS Code dan banyak editor lain mendaftarkan command bernama yang bisa dikaitkan ke tombol, menu, dan command palette.",
+            "Migrasi database sering punya langkah `up` dan `down`, yaitu pasangan execute dan undo dari sebuah command."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya dengan Command"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy menukar cara satu tugas dikerjakan; Command mengemas apa yang harus dikerjakan (sebuah permintaan) agar bisa disimpan, diantrekan, atau di-undo."
+              ],
+              [
+                "Memento",
+                "Memento menyimpan snapshot state untuk undo; Command menyimpan operasi dan membalikkannya. Keduanya sering digabung ketika pembalikan sulit dilakukan."
+              ],
+              [
+                "Chain of Responsibility",
+                "Sebuah command bisa dioper sepanjang rantai handler untuk menemukan yang menjalankannya."
+              ],
+              [
+                "Composite",
+                "Makro command adalah Composite: command yang tersusun dari command lain."
+              ],
+              [
+                "Observer",
+                "Observer memberi tahu banyak listener tentang sebuah event; Command adalah satu permintaan yang dikirim ke satu receiver."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bagaimana pola Command mengimplementasikan undo?",
+      "a": "Setiap command punya method `undo` yang membalikkan `execute`-nya sendiri, sering memakai data yang disimpan saat eksekusi. Invoker menyimpan stack command yang sudah dijalankan dan memanggil `undo` pada yang terbaru."
+    },
+    {
+      "q": "Apa perbedaan antara Command dan Strategy?",
+      "a": "Strategy mewakili berbagai cara mengerjakan tugas yang sama dan dipilih oleh objek yang memakainya. Command mewakili permintaan tertentu, lengkap dengan receiver dan parameternya, yang dapat dijalankan nanti, diantrekan, atau di-undo."
+    },
+    {
+      "q": "Apakah fungsi callback itu command?",
+      "a": "Callback adalah command minimal: ia mengemas aksi yang berjalan nanti. Anda butuh objek command yang lengkap bila juga menginginkan undo, deskripsi, serialisasi, atau metadata lain."
+    },
+    {
+      "q": "Apa itu macro command?",
+      "a": "Macro command menyimpan daftar command dan menjalankannya berurutan. Undo-nya membalikkan command tersebut dalam urutan terbalik, yang merupakan penerapan pola Composite."
+    }
+  ]
+}

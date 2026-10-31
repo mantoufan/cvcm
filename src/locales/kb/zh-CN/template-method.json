@@ -1,0 +1,149 @@
+{
+  "title": "模板方法模式：固定步骤、钩子与 TypeScript 示例 — cv.cm",
+  "description": "模板方法模式（Template Method）在基类中固定算法的步骤，让子类去实现其中的某些步骤。通过 TypeScript 示例了解钩子。",
+  "h1": "模板方法模式详解与示例",
+  "answer": "模板方法是一种行为型设计模式，它在基类的一个方法中定义算法的骨架，并允许子类重写特定步骤，而不改变整体顺序。基类决定做什么以及何时做，子类决定其中某些步骤怎么做。带有默认实现的可选步骤称为钩子。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：在一个操作中定义算法的骨架，把某些步骤推迟到子类中。模板方法让子类可以在不改变算法结构的前提下，重新定义算法的某些步骤。它是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一。",
+        "设想一个报表工具，可以把数据导出为 CSV 和 JSON。两个导出器按相同的顺序做相同的事：加载行、检查是否有数据、格式化、再添加带行数的页脚。只有格式化不同。如果分别编写每个导出器，共同的步骤就会被复制，而在其中一个里做的修复（例如更好地处理空结果）很容易在另一个里被遗忘。",
+        "使用模板方法时，基类 `Exporter` 包含带有固定步骤序列的 `export` 方法。会变化的步骤是抽象方法。`CsvExporter` 和 `JsonExporter` 只实现这些步骤。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "抽象类",
+                "实现模板方法，按固定顺序调用各个步骤；声明抽象步骤，也可以提供钩子"
+              ],
+              [
+                "模板方法",
+                "定义算法的公开方法；通常不应被重写"
+              ],
+              [
+                "基本操作",
+                "每个子类都必须实现的抽象步骤"
+              ],
+              [
+                "钩子",
+                "带有默认（通常为空）实现的步骤，子类可以选择性地重写"
+              ],
+              [
+                "具体类",
+                "实现基本操作，并按需重写钩子"
+              ]
+            ]
+          }
+        },
+        "这种设计反转了控制权：由基类调用子类的方法，而不是反过来。这有时被称为好莱坞原则：“不要打电话给我们，我们会打给你”。"
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "`export` 是模板方法。`format` 是子类必须实现的基本操作，`header` 是默认为空的钩子。",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "空数据检查和页脚只在一处。新增一个 XML 导出器只需实现 `format`，其余的自然就有了。",
+        {
+          "note": "TypeScript 没有 `final` 关键字，所以子类仍然可以重写 `export` 并破坏固定的顺序。请在文档中说明不得重写模板方法，并让可重写的步骤保持少量，这样子类才容易写对。"
+        }
+      ]
+    },
+    {
+      "h": "用组合实现同样的思想",
+      "body": [
+        "继承并非唯一的办法。你可以把变化的步骤作为函数传入，这样该模式就成了策略的近亲，并且避免了类层次结构：",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "当步骤很小、基类中不需要共享状态，或一个导出器应当组合来自多处的步骤时，优先使用这种形式。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当多个类运行相同的算法，只有少数步骤不同，而你想消除重复部分时使用。",
+            "用于必须控制操作顺序、同时允许用户定制步骤的框架，例如测试中的准备（setup）和清理（teardown）。",
+            "用钩子提供可选的扩展点，而不强迫每个子类都去实现它们。",
+            "当差异很大或需要在运行时变化时不要使用。基于组合的策略更灵活。",
+            "避免多层的模板方法层次结构。当子类重写子类的子类的步骤时，流程会变得难以跟踪。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Java 的 `AbstractList`：你实现 `get(int)` 和 `size()`，基类基于它们提供迭代、`indexOf`、`contains` 等其他方法。",
+            "Java 的 `InputStream`：子类实现单字节的 `read()`，基类通过调用它来实现 `read(byte[], int, int)`（子类为了速度可以重写）。",
+            "测试框架：JUnit、Python 的 `unittest` 等会按固定顺序调用 `setUp`、测试方法和 `tearDown`，你只需重写需要的步骤。",
+            "带有生命周期方法的界面框架，例如 React 类组件中的 `componentDidMount`，会在自身算法的固定节点调用你的方法。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与模板方法的区别"
+            ],
+            "rows": [
+              [
+                "策略",
+                "策略在运行时通过组合替换整个算法；模板方法固定算法，并在编译期通过继承改变其中的部分。"
+              ],
+              [
+                "工厂方法",
+                "工厂方法通常是模板方法的其中一个步骤：即创建对象的那一步。"
+              ],
+              [
+                "钩子函数与回调",
+                "把回调传入固定的算法，是同一思想基于组合的版本。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "模板方法模式中的钩子是什么？",
+      "a": "钩子是在基类中有默认实现的步骤，通常什么也不做。子类可以重写它，在那个节点添加行为，但不是必须这样做。"
+    },
+    {
+      "q": "模板方法和策略有什么区别？",
+      "a": "模板方法使用继承：基类拥有算法，子类重写步骤。策略使用组合：上下文把整个算法委托给一个可以在运行时替换的对象或函数。"
+    },
+    {
+      "q": "模板方法本身应该可以被重写吗？",
+      "a": "不应该。它的目的就是固定步骤的顺序。在 Java 或 C# 中可以把它标记为 `final` 或非虚方法；在 TypeScript 中只能靠文档说明，因为没有 `final` 关键字。"
+    },
+    {
+      "q": "模板方法与工厂方法有什么关系？",
+      "a": "工厂方法通常是模板方法的一种特化：基类的算法中包含一个创建对象的步骤，由子类决定创建哪个类。"
+    }
+  ]
+}

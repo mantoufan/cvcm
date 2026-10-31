@@ -1,0 +1,152 @@
+{
+  "title": "策略模式：可互换的算法，含 TypeScript 示例 — cv.cm",
+  "description": "策略模式（Strategy）把每种算法放进各自的对象，使你能在运行时互相替换。了解 TypeScript 中类与函数的写法，以及适用场景。",
+  "h1": "策略模式详解与示例",
+  "answer": "策略是一种行为型设计模式，它定义一族算法，把每个算法放进单独的对象并让它们遵循同一个接口，使其可以互相替换。使用算法的代码称为上下文，它持有对某个策略的引用并调用它，而不必知道具体是哪一个。在 TypeScript 中，策略往往就是一个函数，例如传给 `array.sort()` 的比较函数。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：定义一族算法，把它们一个个封装起来，并使它们可以互相替换。策略让算法的变化独立于使用它的客户端。它是《设计模式》（Gang of Four，GoF）一书中的行为型模式之一，在书中也叫 Policy。",
+        "假设结账流程要计算运费。标准配送收固定费用，加急配送按每公斤加价，到店自提免费。第一个版本把三种公式都放进一个方法里，用 `if`/`else` 链按配送类型判断。每增加一个选项（例如合作快递公司），就得再改一次这个方法，而测试其中一个公式也得穿过其他所有分支。",
+        "使用策略模式时，每个公式都成为各自的对象或函数，具有相同的签名。结账流程接收选定的策略并调用它。增加一家快递公司，只需新增一个策略，结账流程不用改。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "策略",
+                "算法所有版本共用的接口"
+              ],
+              [
+                "具体策略",
+                "算法的一种实现"
+              ],
+              [
+                "上下文",
+                "持有一个策略，需要算法时调用它，也可以允许客户端替换它"
+              ],
+              [
+                "客户端",
+                "选择具体策略并交给上下文"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        "由于 TypeScript 中函数是值，最简单的策略接口就是一个函数类型。上下文是 `Checkout` 类。",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "如果策略需要配置或有多个方法，就改用接口和类。这个版本还给每个策略加了名称，界面可以显示出来：",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "客户端必须知道有哪些策略才能选择其一。请把这一选择集中在一处，例如从设置名称到策略的映射，而不是重复这个模式本来要消除的 `if`/`else` 链。"
+        }
+      ]
+    },
+    {
+      "h": "改造前后对比",
+      "body": [
+        "改造前，算法的选择被硬编码在方法里：",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "这段代码复用了第一个示例中的类型和函数。表格把选项集合变成了数据而不是代码，因此可以由配置构建，或由插件扩展。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当同一个任务有多种做法，而选择取决于配置、用户输入或数据时使用。",
+            "用来消除在多种算法之间做选择的大段条件分支。",
+            "用来单独测试每种算法，并让其他代码无需修改上下文就能添加新算法。",
+            "只有一种算法且没有真正需要改变它时不要使用。多出来的接口只会带来无谓的间接层。",
+            "函数参数就够用时，不要创建类。在 TypeScript 中，传递函数就是策略模式的轻量形式。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` 以函数形式接收比较策略，因此同一个排序可以对数字、日期或名称排序。",
+            "Java 的 `Comparator` 接口就是 `Collections.sort` 和 `List.sort` 的策略。",
+            "Node.js 的认证中间件 Passport.js 把每种登录方式（本地密码、OAuth 提供方）称为策略（strategy），让应用自行接入。",
+            "压缩和哈希库让调用方通过统一接口选择算法。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与策略的区别"
+            ],
+            "rows": [
+              [
+                "状态",
+                "结构相同，但状态会随着对象的变化自行切换；策略通常由客户端选定，并保持到被替换为止。"
+              ],
+              [
+                "模板方法",
+                "模板方法固定整体步骤，通过继承改变算法的某些部分；策略则通过组合替换整个算法。"
+              ],
+              [
+                "命令",
+                "命令是稍后执行的请求；策略是上下文在需要时调用的一种完成任务的方式。"
+              ],
+              [
+                "装饰器",
+                "装饰器从外部包装对象来改变其行为；策略则通过替换其中一部分，从内部改变行为。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "策略和状态有什么区别？",
+      "a": "两者的结构几乎相同。策略由客户端选择，决定任务怎么做；而状态对象会因上下文自身的动作而改变上下文的当前状态。"
+    },
+    {
+      "q": "传递回调就是策略模式吗？",
+      "a": "是的。在函数是一等公民的语言中，实现算法可变部分的回调（例如比较函数）就是最简单形式的策略模式。"
+    },
+    {
+      "q": "策略和模板方法有什么区别？",
+      "a": "模板方法使用继承：基类固定步骤，子类填充其中一些。策略使用组合：上下文持有一个可以在运行时替换的对象或函数。"
+    },
+    {
+      "q": "策略模式遵循开闭原则吗？",
+      "a": "遵循。你可以在不修改上下文的情况下添加新策略，因此上下文对扩展开放、对修改关闭。"
+    }
+  ]
+}

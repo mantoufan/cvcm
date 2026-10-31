@@ -3953,7 +3953,12 @@
       "codes": "コード",
       "files": "ファイル",
       "audio": "音声",
-      "text": "テキスト"
+      "text": "テキスト",
+      "dev": "開発・Web",
+      "time": "日付と時間",
+      "money": "お金・買い物",
+      "health": "健康・運動",
+      "math": "数学・学習"
     },
     "hub": {
       "kicker": "当日レッスン",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "マージンとマークアップの違い",
       "blurb": "利益の2つの表し方、換算方法、早見表。"
+    },
+    "code": {
+      "label": "コーディング",
+      "lead": "プログラミング言語、デザインパターン、データ構造とアルゴリズムを1ページで学べるチュートリアル。最初に要点、次に動くコード、公式ドキュメントへのリンク付き。",
+      "all": "コーディング講座の一覧",
+      "groups": {
+        "languages": "プログラミング言語",
+        "patterns": "デザインパターン",
+        "structures": "データ構造",
+        "algorithms": "アルゴリズム"
+      },
+      "blurbs": {
+        "languages": "Python、JavaScript、Java、C++、Go、Rust など。Hello World から",
+        "patterns": "GoF の 23 パターンと SOLID 原則を TypeScript の例で",
+        "structures": "連結リスト、ハッシュテーブル、木、ヒープ、トライを Python で",
+        "algorithms": "ソート、探索、グラフ、動的計画法を計算量とともに"
+      }
+    },
+    "linked-list": {
+      "name": "連結リスト",
+      "blurb": "単方向・双方向リスト：挿入・削除・反転・循環検出・計算量"
+    },
+    "stack-and-queue": {
+      "name": "スタックとキュー",
+      "blurb": "PythonでLIFOスタックとFIFOキュー：括弧照合・BFS・計算量"
+    },
+    "hash-table": {
+      "name": "ハッシュテーブル",
+      "blurb": "ハッシュ関数・バケット・衝突・負荷率・拡張をPythonで"
+    },
+    "binary-search-tree": {
+      "name": "二分探索木",
+      "blurb": "BSTの順序規則・探索・挿入・削除（Python）・平衡・計算量"
+    },
+    "binary-tree-traversal": {
+      "name": "二分木の巡回",
+      "blurb": "前順・中順・後順・レベル順を再帰と反復のPythonで"
+    },
+    "binary-heap": {
+      "name": "二分ヒープ",
+      "blurb": "ヒープ条件・上下の入れ替え・構築・優先度付きキュー・heapq"
+    },
+    "trie": {
+      "name": "トライ木",
+      "blurb": "接頭辞木の挿入・探索・前方一致・オートコンプリートと計算量"
+    },
+    "union-find": {
+      "name": "Union-Find",
+      "blurb": "素集合：find・union・経路圧縮・ランク併合（Python）"
+    },
+    "lru-cache": {
+      "name": "LRUキャッシュ",
+      "blurb": "ハッシュマップと双方向リストで作る最長未使用キャッシュ"
+    },
+    "big-o-notation": {
+      "name": "ビッグオー記法",
+      "blurb": "時間・空間計算量、主なクラス、コードからの読み取り方"
+    },
+    "recursion": {
+      "name": "再帰",
+      "blurb": "基底条件・コールスタック・メモ化・Pythonの再帰上限"
+    },
+    "binary-search": {
+      "name": "二分探索",
+      "blurb": "整列範囲を半分にする仕組み：Python・bisect・変種・落とし穴"
+    },
+    "two-pointers": {
+      "name": "二本指法とスライディングウィンドウ",
+      "blurb": "両端・快慢・スライディングウィンドウをPythonとトレースで"
+    },
+    "bubble-sort": {
+      "name": "バブルソート",
+      "blurb": "隣接要素の交換：パスごとのトレース・Python・計算量"
+    },
+    "selection-sort": {
+      "name": "選択ソート",
+      "blurb": "最小値の選び方：ステップごとのトレース・Python・安定性"
+    },
+    "insertion-sort": {
+      "name": "挿入ソート",
+      "blurb": "要素をずらして挿入：トレース・Python・安定性・最良ケース"
+    },
+    "merge-sort": {
+      "name": "マージソート",
+      "blurb": "分割統治のマージソート：トレース・Python・安定性・計算量"
+    },
+    "quicksort": {
+      "name": "クイックソート",
+      "blurb": "ピボット・Lomuto分割のトレース・Python・最悪ケース・選択"
+    },
+    "heapsort": {
+      "name": "ヒープソート",
+      "blurb": "最大ヒープ・ダウン操作・トレース・Python・heapq・計算量"
+    },
+    "counting-sort": {
+      "name": "計数ソート",
+      "blurb": "小さな整数キー向け線形時間ソート：トレース・安定なPython"
+    },
+    "radix-sort": {
+      "name": "基数ソート",
+      "blurb": "LSD/MSD基数ソート：桁ごとのトレース・Python・安定性"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "構文・型・制御フロー・関数・コレクション・例外・ファイルを1ページで"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "変数・型・関数・配列・オブジェクト・Promise・async/await"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "型・インターフェース・ユニオン型・型の絞り込み・ジェネリクスを1ページで"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "型・クラス・record・コレクション・例外・パターンマッチを1ページで"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "型・関数・配列・文字列・ポインタ・malloc/free・エラー処理を1ページで"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "型・クラス・STLコンテナ・ラムダ・RAII・スマートポインタ・例外"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "型・クラス・record・コレクション・LINQ・async/await・例外"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "型・スライス・map・構造体・インターフェース・goroutine・チャネル"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "所有権・借用・構造体・列挙型・match・コレクション・Resultを1ページで"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "変数・配列・関数・クラス・enum・例外・JSONエンドポイントを1ページで"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "型・メソッド・配列・ハッシュ・ブロック・クラス・モジュール・例外"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "型・オプショナル・クロージャ・コレクション・構造体・プロトコル"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null安全・制御フロー・関数・データクラス・コルーチンを1ページで"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null安全・関数・コレクション・クラス・async（Flutter）"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Scala 3の構文・パターンマッチ・コレクション・case class"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "ベクトル・データフレーム・関数・統計・グラフを1ページで"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT・JOIN・GROUP BY・CTE・トランザクションとDB間の違い"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "スクリプト・変数・クォート・ループ・関数・パイプ・pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet・オブジェクトパイプライン・変数・関数・ハッシュテーブル"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "変数・テーブル・関数・メタテーブル・pcallを1ページで"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "スカラー・配列・ハッシュ・サブルーチン・正規表現・エラー処理"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "純粋関数・型・パターンマッチ・リスト・Maybe・IO"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "パターンマッチ・パイプ・Enum・プロセス・{:ok, value}"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "パターンマッチ・再帰・プロセス・OTP・let-it-crash"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "構文・イミュータブルなコレクション・関数・マクロ・atom・エラー"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "型・レコード・判別共用体・パターンマッチ・パイプ・Result"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "型・レコード・バリアント・パターンマッチ・モジュール・エラー"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "型・配列・ブロードキャスト・関数・多重ディスパッチ・エラー"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "型・スライス・オプショナル・エラーユニオン・comptime・defer"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "現代的な構文・型・ループ・手続き・モジュール・配列・iostat"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "部・PICデータ・IF/EVALUATE・PERFORMループ・表・ファイル"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "x86-64 NASMのレジスタ・命令・ループ・メモリ・システムコール"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "VB.NETの構文・型・ループ・関数・コレクション・クラス・LINQ・VBA"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "メッセージ・クラス・プロパティ・Foundation・ブロック・ARC"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "行列・インデックス・ループ・関数・構造体・セル・グラフ・Octave"
+    },
+    "design-patterns": {
+      "name": "デザインパターン",
+      "blurb": "デザインパターンとは、GoFの23パターンと選び方"
+    },
+    "solid-principles": {
+      "name": "SOLID原則",
+      "blurb": "SOLIDの5原則をTypeScriptのbefore/afterで解説"
+    },
+    "singleton": {
+      "name": "Singleton パターン",
+      "blurb": "インスタンスを1つに保つ：TSの例・非同期版・代替案"
+    },
+    "factory-method": {
+      "name": "Factory Method パターン",
+      "blurb": "生成するオブジェクトをサブクラスが決める：TS例と用途"
+    },
+    "abstract-factory": {
+      "name": "Abstract Factory パターン",
+      "blurb": "具体クラスを指定せず関連オブジェクト群を生成する"
+    },
+    "builder": {
+      "name": "Builder パターン",
+      "blurb": "流れるAPIで複雑なオブジェクトを段階的に構築、Directorも解説"
+    },
+    "prototype": {
+      "name": "Prototype パターン",
+      "blurb": "インスタンスの複製で生成：TSのclone()と深い/浅いコピー"
+    },
+    "adapter": {
+      "name": "Adapter パターン",
+      "blurb": "互換性のないインターフェースをつなぐ：TS例と2種のAdapter"
+    },
+    "bridge": {
+      "name": "Bridge パターン",
+      "blurb": "抽象と実装を分離し、それぞれ独立して変更できるようにする"
+    },
+    "composite": {
+      "name": "Composite パターン",
+      "blurb": "単体とツリーを同じに扱う：TSのファイルシステム例"
+    },
+    "decorator": {
+      "name": "Decorator パターン",
+      "blurb": "ラップして実行時に振る舞いを追加：クラスと関数デコレータ"
+    },
+    "facade": {
+      "name": "Facade パターン",
+      "blurb": "複雑なサブシステムに単一の窓口を：TSのチェックアウト例"
+    },
+    "flyweight": {
+      "name": "Flyweight パターン",
+      "blurb": "内部状態を共有してメモリを節約：TSの例つき"
+    },
+    "proxy": {
+      "name": "Proxy パターン",
+      "blurb": "キャッシュ・遅延・保護・リモートのProxyでアクセスを制御"
+    },
+    "chain-of-responsibility": {
+      "name": "Chain of Responsibility パターン",
+      "blurb": "処理されるまでハンドラ間で要求を渡す：ミドルウェア形式も"
+    },
+    "command": {
+      "name": "Command パターン",
+      "blurb": "要求をオブジェクト化し、キュー・ログ・undo/redoに使う"
+    },
+    "interpreter": {
+      "name": "Interpreter パターン",
+      "blurb": "小さな言語をクラスで表現し、TSで式の木を評価"
+    },
+    "iterator": {
+      "name": "Iterator パターン",
+      "blurb": "内部構造を隠してコレクションを走査：Symbol.iteratorと生成器"
+    },
+    "mediator": {
+      "name": "Mediator パターン",
+      "blurb": "直接参照の代わりに1つの仲介役でコンポーネントを調整"
+    },
+    "memento": {
+      "name": "Memento パターン",
+      "blurb": "内部を隠して状態を保存・復元：undoやチェックポイント向け"
+    },
+    "observer": {
+      "name": "Observer パターン",
+      "blurb": "対象の変化を購読者へ自動通知：型付きTSコード"
+    },
+    "state": {
+      "name": "State パターン",
+      "blurb": "switchの代わりに状態クラスで振る舞いを切り替える"
+    },
+    "strategy": {
+      "name": "Strategy パターン",
+      "blurb": "交換可能なアルゴリズムを実行時に切替：TSの関数/クラス"
+    },
+    "template-method": {
+      "name": "Template Method パターン",
+      "blurb": "基底クラスで手順を固定し、詳細はサブクラスが実装"
+    },
+    "visitor": {
+      "name": "Visitor パターン",
+      "blurb": "二重ディスパッチでクラス階層に操作を追加、ユニオン型案も"
+    },
+    "breadth-first-search": {
+      "name": "幅優先探索（BFS）",
+      "blurb": "キューによるBFS：トレース・Python・最短経路・O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "深さ優先探索（DFS）",
+      "blurb": "再帰・反復のDFS：トレース・循環検出・O(V + E)"
+    },
+    "dijkstra": {
+      "name": "ダイクストラ法",
+      "blurb": "優先度付きキューで最短経路：トレース・heapq・計算量"
+    },
+    "bellman-ford": {
+      "name": "ベルマン–フォード法",
+      "blurb": "負の辺を含む最短経路・負閉路検出・Pythonコード"
+    },
+    "floyd-warshall": {
+      "name": "フロイド–ワーシャル法",
+      "blurb": "全点対最短経路：行列のトレース・Python・経路復元・O(V³)"
+    },
+    "a-star-search": {
+      "name": "A*探索",
+      "blurb": "f = g + hのヒューリスティック探索：許容的ヒューリスティック・格子例"
+    },
+    "topological-sort": {
+      "name": "トポロジカルソート",
+      "blurb": "依存関係でタスクを並べる：Kahn法・DFS・graphlib・循環検出"
+    },
+    "minimum-spanning-tree": {
+      "name": "最小全域木",
+      "blurb": "クラスカル法とプリム法：トレース・Python・Union-Find・ヒープ"
+    },
+    "dynamic-programming": {
+      "name": "動的計画法",
+      "blurb": "メモ化と表引き、コイン問題とLCSのトレース・Python・計算量"
+    },
+    "greedy-algorithms": {
+      "name": "貪欲法",
+      "blurb": "各段階で局所最適を選ぶ：区間スケジューリング・Python・反例"
+    },
+    "backtracking": {
+      "name": "バックトラッキング",
+      "blurb": "選択・探索・取り消し：N-Queens・部分集合・順列・枝刈り"
+    },
+    "kmp-string-search": {
+      "name": "KMP法",
+      "blurb": "接頭辞関数・トレース・Python・計算量O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "ビット演算",
+      "blurb": "ビット演算子・1ビット技・ビット数え・ビットマスク（Python）"
     }
   },
   "dice": {

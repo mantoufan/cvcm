@@ -1,0 +1,216 @@
+{
+  "title": "Selection sort explicado: cómo funciona, código en Python y complejidad — cv.cm",
+  "description": "Selection sort (ordenamiento por selección) elige repetidamente el menor elemento restante y lo coloca en su sitio. Traza paso a paso, código en Python, coste O(n²) y por qué no es estable.",
+  "h1": "Selection sort (ordenamiento por selección): cómo funciona, código y complejidad",
+  "answer": "Selection sort divide la lista en una parte ordenada a la izquierda y una parte sin ordenar a la derecha. En cada paso busca el menor elemento de la parte sin ordenar y lo intercambia con la primera posición sin ordenar. Siempre hace unas n²/2 comparaciones, así que es O(n²) en todos los casos, pero realiza como máximo n − 1 intercambios y usa O(1) de espacio extra. La versión habitual con arreglos no es estable.",
+  "sections": [
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Recorre toda la lista y encuentra el menor elemento. Intercámbialo con el elemento del índice 0; ahora el índice 0 es definitivo. Recorre el resto de la lista desde el índice 1, encuentra el menor e intercámbialo al índice 1. Continúa hasta que quede un solo elemento, que tiene que ser el mayor.",
+        "A diferencia de bubble sort e insertion sort, selection sort no se beneficia de una entrada ya ordenada: aun así tiene que recorrer todos los elementos restantes para asegurarse de que encontró el mínimo."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Ordena `[64, 25, 12, 22, 11]`. La parte anterior a la barra está ordenada y es definitiva.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Parte sin ordenar",
+              "Mínimo encontrado",
+              "Intercambio",
+              "Lista tras el paso"
+            ],
+            "rows": [
+              [
+                "1",
+                "`64, 25, 12, 22, 11`",
+                "11 en el índice 4",
+                "índice 0 ↔ 4",
+                "`[11 | 25, 12, 22, 64]`"
+              ],
+              [
+                "2",
+                "`25, 12, 22, 64`",
+                "12 en el índice 2",
+                "índice 1 ↔ 2",
+                "`[11, 12 | 25, 22, 64]`"
+              ],
+              [
+                "3",
+                "`25, 22, 64`",
+                "22 en el índice 3",
+                "índice 2 ↔ 3",
+                "`[11, 12, 22 | 25, 64]`"
+              ],
+              [
+                "4",
+                "`25, 64`",
+                "25 en el índice 3",
+                "no hace falta",
+                "`[11, 12, 22, 25 | 64]`"
+              ]
+            ]
+          }
+        },
+        "Cuatro pasos para cinco elementos, con 4 + 3 + 2 + 1 = 10 comparaciones y tres intercambios reales."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def selection_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if items[j] < items[smallest]:\n                smallest = j\n        if smallest != i:\n            items[i], items[smallest] = items[smallest], items[i]\n    return items\nprint(selection_sort([64, 25, 12, 22, 11]))   # [11, 12, 22, 25, 64]\nprint(selection_sort([2, 1]))                 # [1, 2]",
+          "lang": "python"
+        },
+        "El bucle externo se ejecuta n − 1 veces porque el último elemento restante queda automáticamente en su sitio. El bucle interno solo registra un índice; el intercambio ocurre una vez por paso del bucle externo."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Valor",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Comparaciones, en todos los casos",
+                "n(n − 1)/2",
+                "cada paso recorre toda la parte sin ordenar"
+              ],
+              [
+                "Tiempo, mejor / promedio / peor",
+                "O(n²)",
+                "el recorrido no depende del orden"
+              ],
+              [
+                "Intercambios, peor caso",
+                "n − 1",
+                "como máximo un intercambio por paso"
+              ],
+              [
+                "Espacio extra",
+                "O(1)",
+                "in situ, una variable de índice"
+              ]
+            ]
+          }
+        },
+        "El bajo número de escrituras es la única fortaleza real de selection sort. Si escribir en memoria es mucho más caro que leer, como ocurre en algunas memorias flash o al mover registros grandes, tener menos escrituras puede importar. Cycle sort va más allá y escribe cada elemento como máximo una vez."
+      ]
+    },
+    {
+      "h": "Estabilidad: por qué selection sort no es estable",
+      "body": [
+        "Un ordenamiento estable mantiene los elementos iguales en su orden relativo original. El intercambio a larga distancia de selection sort puede hacer saltar un elemento por encima de otro igual a él.",
+        {
+          "code": "def selection_sort_by_key(items, key):\n    n = len(items)\n    for i in range(n - 1):\n        m = min(range(i, n), key=lambda j: key(items[j]))\n        items[i], items[m] = items[m], items[i]\n    return items\ncards = [(\"4\", \"hearts\"), (\"4\", \"spades\"), (\"2\", \"clubs\")]\nprint(selection_sort_by_key(cards, key=lambda c: c[0]))\n# [('2', 'clubs'), ('4', 'spades'), ('4', 'hearts')]  order of the 4s changed",
+          "lang": "python"
+        },
+        "El 2 se intercambió con el 4 de corazones, lo que dejó el 4 de corazones detrás del 4 de picas. Existe una versión estable: en lugar de intercambiar, se extrae el mínimo y se inserta en la posición i, desplazando los demás a la derecha. Así se conserva el orden, pero cuesta O(n) escrituras por paso."
+      ]
+    },
+    {
+      "h": "Cómo se compara selection sort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ]
+            ]
+          }
+        },
+        "Heapsort es selection sort con una estructura de datos mejor: también selecciona repetidamente el mayor elemento restante, pero lo encuentra en O(log n) usando un montículo binario en lugar de un recorrido O(n), lo que deja el total en O(n log n)."
+      ]
+    },
+    {
+      "h": "Cuándo usar selection sort",
+      "body": [
+        "En código Python real, usa `sorted()` o `list.sort()`. Selection sort merece conocerse como ejemplo didáctico, para arreglos muy pequeños de tamaño fijo en entornos con recursos limitados y cuando el número de escrituras debe ser mínimo. Es una pregunta frecuente de exámenes y entrevistas, normalmente así: traza los pasos, cuenta las comparaciones y los intercambios y explica por qué no es estable.",
+        {
+          "note": "Errores comunes: intercambiar dentro del bucle interno cada vez que se ve un elemento menor (esto lo convierte en otro algoritmo, más lento), empezar el bucle interno en `i` en lugar de `i + 1` (inofensivo pero innecesario) y afirmar que tiene un mejor caso O(n), que selection sort no tiene."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable selection sort?",
+      "a": "La versión estándar in situ con arreglos no es estable, porque un intercambio a larga distancia puede mover un elemento más allá de otro igual. Una versión que inserta en lugar de intercambiar es estable, pero hace más escrituras."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de selection sort?",
+      "a": "O(n²) en el mejor caso, en el promedio y en el peor. Siempre hace n(n − 1)/2 comparaciones, sea cual sea el orden de la entrada."
+    },
+    {
+      "q": "¿Cuántos intercambios hace selection sort?",
+      "a": "Como máximo n − 1, uno por paso del bucle externo. Son menos que en bubble sort o insertion sort, que pueden hacer O(n²) intercambios o desplazamientos."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre selection sort e insertion sort?",
+      "a": "Selection sort toma el mínimo de la parte sin ordenar y lo añade a la parte ordenada. Insertion sort toma el siguiente elemento y lo inserta en el lugar correcto de la parte ordenada. Insertion sort es estable y tiene un mejor caso O(n); selection sort no tiene ninguna de las dos cosas."
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "title": "Iterator パターン：走査・ジェネレータ・TypeScript の Symbol.iterator — cv.cm",
+  "description": "Iterator パターンは、コレクションの保持方法を知らなくても繰り返し処理できるようにします。役割、Symbol.iterator、ジェネレータを TypeScript で解説します。",
+  "h1": "Iterator パターンとは？例でわかりやすく解説",
+  "answer": "Iterator は振る舞いに関するデザインパターンで、コレクションの内部の保持方法を公開せずに、要素を 1 つずつ順に取り出す方法を提供します。走査のロジックは `next()` のようなメソッドを持つ別のイテレータオブジェクトにあるため、1 つのコレクションが複数の走査順序を提供でき、クライアントのコードは配列、木、ストリームを同じ方法でループできます。TypeScript や JavaScript では、`Symbol.iterator` と `for...of` によって、このパターンが言語に組み込まれています。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：集約オブジェクトの内部表現を公開せずに、その要素に順にアクセスする方法を提供することです。Iterator は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "会社の組織図を木として保持するクラスを考えてみましょう。プログラムのあちこちで全従業員の一覧が必要です。あるレポートは階層ごとに、別のレポートは深さ優先で並べたいとします。各レポートが自分で木をたどると、すべてのレポートが木の内部フィールドに依存し、木の保持方法を変えるとすべてが壊れます。",
+        "Iterator を使うと、木がイテレータオブジェクトを提供します。レポートはイテレータを要求し、終わるまで `next()` を呼びます。レポートは、データが木なのか、配列なのか、データベースから 1 ページずつ取得した行なのかを知りません。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Iterator",
+                "走査のためのインターフェース。通常、次の要素を返す `next()` と、走査が終わったかどうかを示すフラグを持つ"
+              ],
+              [
+                "Concrete iterator",
+                "1 つのコレクションに対する走査を実装し、現在位置を記憶する"
+              ],
+              [
+                "Aggregate（iterable）",
+                "イテレータを生成するメソッドを持つインターフェース"
+              ],
+              [
+                "Concrete aggregate",
+                "コレクション本体。要求されるたびに新しい Concrete iterator を返す"
+              ],
+              [
+                "Client（クライアント）",
+                "コレクションの構造を知らずに、イテレータを使って要素を訪問する"
+              ]
+            ]
+          }
+        },
+        "JavaScript では、これらの役割に ES2015 のイテレーションプロトコルで定義された標準的な名前があります。iterable は `[Symbol.iterator]()` メソッドを持ちます。iterator は `{ value, done }` を返す `next()` メソッドを持ちます。`for...of` ループ、スプレッド構文 `[...x]`、分割代入は、すべてこのプロトコルを使います。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装：手書きのイテレータ",
+      "body": [
+        "この range クラスが保持するのは開始値、終了値、ステップだけで、数値のリストは持ちません。イテレータは必要に応じて各値を計算します。",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "`[Symbol.iterator]()` を呼ぶたびに、独自の `current` 位置を持つ新しいイテレータが返されます。だから `evens` を 2 回ループできるのです。コレクションが毎回同じイテレータを返すと、2 回目のループでは要素が 1 つも見えなくなります。"
+      ]
+    },
+    {
+      "h": "ジェネレータ：より少ないコードで書くイテレータ",
+      "body": [
+        "`function*` で書くジェネレータ関数は、イテレータを自動的に作ります。`yield` のたびに次の値が生成され、関数は `next()` が再び呼ばれるまで一時停止します。次の例では、二分木がノードを公開せずに、通りがけ順（in-order）の走査を提供します。",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "コレクションを反復している間は、そのコレクションが安全だと明記していない限り、要素を追加・削除しないでください。Java の `ArrayList` のイテレータは `ConcurrentModificationException` を投げますし、JavaScript でも、ループ中に配列を変更すると、要素が飛ばされたり重複したりすることがあります。"
+        }
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "コレクションの内部構造が複雑（木、グラフ、ページ分割された API）で、クライアントには単純にループさせたいときに使います。",
+            "深さ優先と幅優先のように、同じデータに対して複数の走査順序を提供したいときに使います。",
+            "値が要求されたときにだけ計算される、遅延評価や無限のシーケンスに使います。",
+            "異なるコレクションに、統一されたループのインターフェースを与えるために使います。",
+            "すでに配列であるデータのために、独自のイテレータを書かないでください。配列（または読み取り専用のコピー）を返し、呼び出し側には組み込みの反復を使わせましょう。",
+            "呼び出し側がインデックスによるランダムアクセスや、先に長さを知ることを必要とする場合、遅延イテレータは使わないでください。配列のほうが適しています。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "JavaScript：`Array`、`Map`、`Set`、`String` は iterable で、`map.entries()` や `set.values()` はイテレータを返します。",
+            "Java：`hasNext()` と `next()` を持つ `java.util.Iterator` インターフェース。任意の `Iterable` に対する拡張 `for` ループが使います。",
+            "Python：`__iter__` と `__next__` によるイテレータプロトコル、そして `yield` を使うジェネレータ関数。",
+            "データベースと API：クエリ結果に対するカーソルや、ページ分割された HTTP API は、結果を 1 ページずつ公開するので、クライアントはすべてをメモリに読み込まずに、非常に大きな結果を反復処理できます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Iterator パターンとの関係"
+            ],
+            "rows": [
+              [
+                "Composite パターン",
+                "Iterator は、Composite ツリーのノードを公開せずにたどるためによく使われます。"
+              ],
+              [
+                "Visitor パターン",
+                "Iterator は要素をたどり、Visitor は各要素に対して何をするかを定義します。両者はよく一緒に使われます。"
+              ],
+              [
+                "Factory Method パターン",
+                "`[Symbol.iterator]()` のように、イテレータを生成するメソッドは Factory Method です。各コレクションが、それぞれ独自のイテレータクラスを返します。"
+              ],
+              [
+                "Memento パターン",
+                "Iterator は自分の位置を Memento として保存でき、後で走査を再開できます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "iterable と iterator の違いは何ですか？",
+      "a": "iterable は、JavaScript では `[Symbol.iterator]()` を通じて、イテレータを生成できるオブジェクトです。iterator は、現在位置を保持し、`next()` を通じて要素を 1 つずつ返すオブジェクトです。"
+    },
+    {
+      "q": "ジェネレータはイテレータですか？",
+      "a": "はい。ジェネレータ関数を呼ぶとジェネレータオブジェクトが返り、これは iterator（`next()` を持つ）であり、同時に iterable（`[Symbol.iterator]()` が自分自身を返す）でもあります。"
+    },
+    {
+      "q": "内部の配列をそのまま公開してはいけないのですか？",
+      "a": "配列を公開すると、すべての呼び出し側がその保持方法に縛られ、配列を変更できてしまいます。イテレータは構造を隠すので、後から構造を変えたり、呼び出し側を変えずに要素を遅延計算したりできます。"
+    },
+    {
+      "q": "内部イテレータとは何ですか？",
+      "a": "内部イテレータは、コールバックを受け取り、すべての要素に対してそれを実行するメソッドで、`array.forEach(fn)` がその例です。ループはコレクションが制御します。`next()` のような外部イテレータでは、クライアントが、いつ進めるか、いつ止めるかを制御します。"
+    }
+  ]
+}

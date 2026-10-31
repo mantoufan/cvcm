@@ -1,0 +1,157 @@
+{
+  "title": "單例模式：意圖、TypeScript 範例、陷阱與替代方案 — cv.cm",
+  "description": "說明單例模式（Singleton）：如何在 TypeScript 中確保只有一個實例、延遲與非同步的變化版本、為何會妨礙測試，以及更好的替代方案。",
+  "h1": "單例模式詳解與範例",
+  "answer": "單例模式是一種建立型設計模式，確保一個類別只有一個實例，並提供一個全域的存取點。在 TypeScript 中，可以用私有建構函式搭配一個靜態方法來實作：靜態方法在第一次使用時建立實例，之後都回傳同一個物件。它適用於真正唯一的資源，例如設定物件或連線池；但它的行為就像全域狀態，所以許多團隊寧願明確地傳遞單一共用的實例。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "確保一個類別只有一個實例，並提供一個全域的存取點。單例模式是《設計模式》（Gang of Four，簡稱 GoF）一書中五種建立型模式之一。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "有些物件在程式中必須恰好存在一個。例如從環境變數載入的應用程式設定、行程內的快取，或是一組資料庫連線池。如果每個模組都呼叫 `new Config()`，每個模組都會重新讀取一次環境變數，快取會被分散成許多份，連線池的上限也就失去意義。",
+        "你需要兩件事：一是保證不會不小心建立出第二個實例，二是讓任何程式碼都能輕鬆取得那唯一的實例。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責"
+            ],
+            "rows": [
+              [
+                "單例類別",
+                "隱藏建構函式，讓其他程式碼無法直接呼叫 `new`。"
+              ],
+              [
+                "靜態實例欄位",
+                "在實例建立後，保存這唯一的實例。"
+              ],
+              [
+                "靜態存取方法（通常叫 `getInstance`）",
+                "第一次呼叫時建立實例（延遲初始化），之後每次呼叫都回傳同一個物件。"
+              ],
+              [
+                "用戶端",
+                "只能透過存取方法取得實例。"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "私有建構函式會讓類別外部的 `new AppConfig()` 在編譯時期就出錯。靜態方法則以延遲方式建立物件：",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript 的 `private` 只在編譯時期檢查，純 JavaScript 程式碼仍然可以呼叫建構函式。如果需要執行時期的保證，可以在已有實例時於建構函式中拋出例外，或是使用下方所示的模組層級實例。"
+        },
+        "在 JavaScript 與 TypeScript 中，ES 模組在整個程式中只會被求值一次，因此從模組匯出一個實例，就是最簡單的單例。每一次 `import` 拿到的都是同一個物件：",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "非同步初始化",
+      "body": [
+        "如果建立實例是非同步的，例如開啟資料庫連線，兩個呼叫端可能同時看到「還沒有實例」，在第一個連線完成之前就各自開啟兩條連線。這時應該快取 promise，而不是快取結果：",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "在 Java、C# 這類多執行緒的語言中，延遲建立也基於同樣的原因需要同步機制。常見的解法有：用靜態欄位做急切初始化、延遲載入的持有者類別（lazy holder），或是在 Java 中使用只有單一元素的 `enum`。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用單例模式：",
+        {
+          "ul": [
+            "為了正確性而非僅僅為了方便，必須恰好只有一個實例（例如一個硬體裝置、一個行程範圍的登錄表）。",
+            "建立成本高昂，而且物件在建立後是無狀態或執行緒安全的。"
+          ]
+        },
+        "在以下情況應避免使用，或加以限制：",
+        {
+          "ul": [
+            "你主要只是想要方便的全域存取。單例其實就是換了好聽名字的全域可變狀態：任何程式碼都能改它，而且這個依賴關係不會出現在函式簽章上。",
+            "你需要做測試。共用單例的測試會互相影響，也很難把真正的實例換成假物件。",
+            "「只有一個實例」的規則日後可能改變，例如需要為每個租戶各設一個快取。"
+          ]
+        },
+        "常見的替代做法是依賴注入：在程式啟動時（組合根，composition root）建立一個實例，再傳給需要它的類別。你仍然只有一個實例，但依賴關係是看得見、也可以替換的。",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java：`Runtime.getRuntime()` 會回傳目前執行中 Java 應用程式唯一的 `Runtime` 物件。",
+            "Node.js 在第一次載入後會快取模組，因此模組匯出的物件，會被所有 require 或 import 它的檔案共用。",
+            "瀏覽器會為每個頁面提供唯一的全域物件，例如 `window` 和 `document`。",
+            "Angular、Spring 這類支援依賴注入的框架，預設會建立「單例範圍」的服務：每個注入器或容器一個實例，但不含此模式中的靜態存取部分。"
+          ]
+        },
+        {
+          "note": "Node.js 是依解析後的檔案路徑來快取模組。如果同一個套件的兩份副本安裝在不同的 `node_modules` 資料夾裡，你就會得到兩個各自獨立的「單例」。"
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "ul": [
+            "抽象工廠、建造者和原型物件，常常實作成單例，因為一個工廠就夠用了。",
+            "外觀物件經常只有一個實例，因為子系統通常只需要一個入口。",
+            "享元同樣會共用物件，但它管理的是依狀態作為鍵值的多個共用實例，而單例則恰好只有一個。",
+            "依賴注入並不是 GoF 的模式，卻是現代程式碼中最常用來取代單例的做法。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "單例模式是反模式嗎？",
+      "a": "它常被稱為反模式，因為它引入隱藏的全域狀態，讓測試變得更困難。只有一個實例本身沒問題，問題出在全域存取。只建立一個實例並明確地傳遞，就能避開大部分的問題。"
+    },
+    {
+      "q": "如何在 TypeScript 中實作單例？",
+      "a": "使用私有建構函式、一個存放實例的私有靜態欄位，以及第一次呼叫時建立實例的靜態方法。另一個較簡單的做法，是從模組中匯出單一實例。"
+    },
+    {
+      "q": "JavaScript 模組是單例嗎？",
+      "a": "實際上是的。模組只會被求值一次，同一個程式中所有匯入它的地方都共用它的匯出內容，除非同一份程式碼是從兩個不同的路徑載入。"
+    },
+    {
+      "q": "如何測試使用單例的程式碼？",
+      "a": "讓單例實作某個介面，並把它傳入被測試的程式碼，這樣測試就能提供假物件。如果無法更動設計，可以加上一個僅供測試使用的重設方法。"
+    },
+    {
+      "q": "單例與靜態類別有什麼差別？",
+      "a": "單例是真正的物件：它可以實作介面、當作參數傳遞，也能延遲建立。只有靜態成員的類別則無法被替換，也不能當成物件傳來傳去。"
+    }
+  ]
+}

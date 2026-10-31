@@ -1,9 +1,10 @@
 // `npm run kb:sync [-- --touch <id>...]`: after editing knowledge copy or sources, refresh src/locales/kb/meta.json
-// (fingerprint, last-changed date and reading time per article and locale) and the generated meta.ts, all.ts and loaders.ts.
+// (fingerprint, last-changed date and reading time per article and locale) and the generated meta.ts, meta-code.ts, all.ts and loaders/<locale>.ts.
 // `--touch <id>` marks an article as re-checked today in every locale even when nothing changed.
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { KB_ARTICLES, KB_META, isKbId } from "../src/shared/kb";
+import "../src/shared/kb-code-meta";
+import { CODE_ARTICLES, KB_ARTICLES, KNOWLEDGE_ARTICLES, isKbId, kbMeta } from "../src/shared/kb";
 import type { KbArticleCopy } from "../src/shared/kb-i18n";
 import { syncEntry, type KbSyncEntry } from "../src/shared/kb-sync";
 import { LOCALES, type Locale } from "../src/shared/locale";
@@ -32,7 +33,7 @@ const meta: Record<string, KbSyncEntry> = {};
 const changed: string[] = [];
 for (const id of KB_ARTICLES) {
   const copies = Object.fromEntries(LOCALES.map((locale) => [locale, JSON.parse(readFileSync(resolve(dir, locale, `${id}.json`), "utf8"))])) as Record<Locale, KbArticleCopy>;
-  meta[id] = syncEntry(copies, KB_META[id].sources, previous[id], today, touched.has(id));
+  meta[id] = syncEntry(copies, kbMeta(id).sources, previous[id], today, touched.has(id));
   const moved = LOCALES.filter((locale) => previous[id]?.updated?.[locale] !== meta[id].updated[locale]);
   if (moved.length) changed.push(`${id} (${moved.length === LOCALES.length ? "all locales" : moved.join(" ")})`);
 }
@@ -45,15 +46,19 @@ const typeImports = [
 ];
 
 // Only what pages show: dates and reading times (fingerprints stay in meta.json for the script and tests).
-writeFileSync(resolve(dir, "meta.ts"), [
+// Knowledge dates ship with kb.ts; coding dates in meta-code.ts ride in the kb packs (src/shared/kb-code-meta.ts).
+const datesModule = (ids: readonly string[], prefix: string, type: string): string => [
   header,
-  ...typeImports,
+  `import type { ${type} } from "../../shared/kb";`,
+  'import type { Locale } from "../../shared/locale";',
   "",
-  `export const KB_UPDATED = ${JSON.stringify(Object.fromEntries(KB_ARTICLES.map((id) => [id, meta[id].updated])), null, 2)} satisfies Record<KbId, Record<Locale, string>>;`,
+  `export const ${prefix}_UPDATED = ${JSON.stringify(Object.fromEntries(ids.map((id) => [id, meta[id].updated])), null, 2)} satisfies Record<${type}, Record<Locale, string>>;`,
   "",
-  `export const KB_MINUTES = ${JSON.stringify(Object.fromEntries(KB_ARTICLES.map((id) => [id, meta[id].minutes])), null, 2)} satisfies Record<KbId, Record<Locale, number>>;`,
+  `export const ${prefix}_MINUTES = ${JSON.stringify(Object.fromEntries(ids.map((id) => [id, meta[id].minutes])), null, 2)} satisfies Record<${type}, Record<Locale, number>>;`,
   "",
-].join("\n"));
+].join("\n");
+writeFileSync(resolve(dir, "meta.ts"), datesModule(KNOWLEDGE_ARTICLES, "KB", "KnowledgeId"));
+writeFileSync(resolve(dir, "meta-code.ts"), datesModule(CODE_ARTICLES, "CODE", "CodeId"));
 
 const name = (locale: string, id: string): string => `${locale.replace("-", "")}_${id.replace(/-/g, "_")}`;
 writeFileSync(resolve(dir, "all.ts"), [
@@ -72,14 +77,19 @@ writeFileSync(resolve(dir, "all.ts"), [
 ].join("\n"));
 
 // Plain dynamic imports (not import.meta.glob): the prerender bundles the client with esbuild, which has no glob.
-writeFileSync(resolve(dir, "loaders.ts"), [
-  `${header} One lazy chunk per article and locale, for the client.`,
-  ...typeImports,
-  "",
-  "export const KB_LOADERS = {",
-  ...LOCALES.map((locale) => `  ${JSON.stringify(locale)}: {\n${KB_ARTICLES.map((id) => `    ${JSON.stringify(id)}: () => import("./${locale}/${id}.json"),`).join("\n")}\n  },`),
-  "} satisfies Record<Locale, Record<KbId, () => Promise<unknown>>>;",
-  "",
-].join("\n"));
+// One small loader table per locale, so a page fetches only its own locale's table.
+rmSync(resolve(dir, "loaders"), { recursive: true, force: true });
+mkdirSync(resolve(dir, "loaders"));
+for (const locale of LOCALES) {
+  writeFileSync(resolve(dir, "loaders", `${locale}.ts`), [
+    `${header} One lazy chunk per article in this locale, for the client.`,
+    'import type { KbId } from "../../../shared/kb";',
+    "",
+    "export const KB_LOADERS = {",
+    ...KB_ARTICLES.map((id) => `  ${JSON.stringify(id)}: () => import("../${locale}/${id}.json"),`),
+    "} satisfies Record<KbId, () => Promise<unknown>>;",
+    "",
+  ].join("\n"));
+}
 
 console.log(changed.length ? `kb:sync: dated ${today}: ${changed.join(", ")}` : "kb:sync: no copy changes");

@@ -1,0 +1,191 @@
+{
+  "title": "JavaScript tutorial: variables, functions, arrays, objects and async — cv.cm",
+  "description": "Learn modern JavaScript in one page: run Hello world in Node.js or the browser, let and const, types, loops, functions, arrays, objects, promises and async.",
+  "h1": "JavaScript tutorial for beginners",
+  "answer": "JavaScript is the programming language of the web: every browser runs it, and Node.js runs it on servers and the command line. Declare variables with `const` and `let`, write functions as declarations or arrow functions, store data in arrays and objects, and handle slow work such as network requests with promises and `async`/`await`. Run `node hello.js` or open the browser console to start.",
+  "sections": [
+    {
+      "h": "What JavaScript is and what it is used for",
+      "body": [
+        "JavaScript is a dynamically typed language standardized as ECMAScript. It was created for web pages, where it reacts to clicks, updates the page and talks to servers. Today it also runs on servers and tools through Node.js, Deno and Bun, in desktop apps (Electron) and in mobile apps (React Native). Front-end developers, full-stack developers and anyone building for the web use it. The modern syntax in this page (`let`, `const`, arrow functions, classes, modules) comes from ES2015 and later editions."
+      ]
+    },
+    {
+      "h": "Run Hello, world",
+      "body": [
+        "Option 1: open any web page, press F12 (or Cmd+Option+J on a Mac) to open the developer console, and type the line below. Option 2: install Node.js from nodejs.org, save the line as `hello.js` and run it.",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Use `const` for values that are not reassigned and `let` for values that change. Avoid the old `var`, which ignores block scope. `typeof` reports the type of a value.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"` (a historical quirk)"
+              ],
+              [
+                "object",
+                "`{}`, `[]`, functions",
+                "`\"object\"` or `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Control flow: if, loops and equality",
+      "body": [
+        "Always compare with `===` and `!==`. The loose `==` converts types first, so `0 == \"\"` is `true`.",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Functions are values: you can store them in variables, pass them to other functions and return them. Arrow functions are a shorter form and are common for callbacks.",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Arrays and objects",
+      "body": [
+        "Arrays are ordered lists; objects map string keys to values. Both are passed by reference. `Map` and `Set` are built-in alternatives when keys are not strings or values must be unique.",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "`sort()` without a compare function sorts as strings, so `[10, 9, 1].sort()` gives `[1, 10, 9]`. Pass `(a, b) => a - b` for numbers."
+        }
+      ]
+    },
+    {
+      "h": "Signature feature: asynchronous code with promises",
+      "body": [
+        "JavaScript runs your code on one thread with an event loop. Slow operations (timers, network, files) do not block; they return a promise that settles later. `async` functions let you write this code top to bottom with `await`.",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "Classes (`class Dog extends Animal {}`), modules (`import` and `export`), optional chaining (`user?.address?.city`) and the nullish operator (`value ?? \"default\"`) are other modern features you will use often."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Throw `Error` objects and catch them with `try`/`catch`. With `async` functions, a rejected promise becomes an exception at the `await`.",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: fetch and summarize",
+      "body": [
+        "This Node.js script (Node 18 or later has `fetch` built in) downloads JSON from a public API and prints a short summary. Save it as `repos.mjs` and run `node repos.mjs nodejs`.",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "The `.mjs` extension makes the file an ES module, which allows `await` at the top level."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "ul": [
+            "Using `==` instead of `===`, which leads to surprising type conversions.",
+            "Forgetting `await`, so you get a pending `Promise` object instead of the value.",
+            "Expecting `const` to make an object immutable. It only stops reassignment; `obj.x = 1` still works. Use `Object.freeze` if needed.",
+            "Comparing objects or arrays with `===`, which checks identity, not contents.",
+            "Losing `this` when passing a method as a callback. Use an arrow function or `.bind(obj)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Read the MDN JavaScript Guide, which is the most complete free reference, and practice with the browser DOM (`document.querySelector`, events). Then learn npm and modules, a framework such as React, Vue or Svelte for the front end, or Node.js for servers. Adding TypeScript on top of JavaScript gives you static types and better editor help."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is JavaScript the same as Java?",
+      "a": "No. They are unrelated languages with similar names. Java is statically typed and compiled to JVM bytecode; JavaScript is dynamically typed and runs in browsers and Node.js."
+    },
+    {
+      "q": "Should I use let, const or var?",
+      "a": "Use `const` by default and `let` when you need to reassign. Avoid `var`, because it is function-scoped and hoisted, which causes bugs."
+    },
+    {
+      "q": "What is the difference between null and undefined?",
+      "a": "`undefined` means a variable or property was never given a value. `null` is a value you assign on purpose to mean nothing."
+    },
+    {
+      "q": "Why does 0.1 + 0.2 not equal 0.3?",
+      "a": "JavaScript numbers are 64-bit binary floating point, which cannot store 0.1 exactly. Round for display, or use integers (for example cents) for money."
+    },
+    {
+      "q": "Do I need Node.js to learn JavaScript?",
+      "a": "No. Every browser can run JavaScript in its developer console. Node.js is useful when you want to run scripts from files or build servers and tools."
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "title": "Tutorial de R: vectores, data frames, funciones y estadística — cv.cm",
+  "description": "Aprende programación en R para análisis de datos: instalar R, ejecutar un script, vectores y tipos, if y bucles, funciones, listas, data frames, modelos lineales y gráficos.",
+  "h1": "Tutorial de programación en R para principiantes",
+  "answer": "R es un lenguaje y entorno libre para estadística, análisis de datos y gráficos. Su idea central es la vectorización: las operaciones se aplican a vectores completos y a columnas de data frames de una sola vez, por lo que el código de análisis es corto. Esta página cubre la instalación de R, la ejecución de scripts, los vectores y tipos, el control de flujo, las funciones, las listas y data frames, los modelos estadísticos, los gráficos y el manejo de errores.",
+  "sections": [
+    {
+      "h": "Qué es R y para qué se usa",
+      "body": [
+        "R es un lenguaje y entorno libre y de código abierto para computación estadística y gráficos. Desciende del lenguaje S, desarrollado en Bell Labs, y lo mantiene el R Core Team. R está vectorizado: la mayoría de las operaciones trabajan con vectores de datos completos a la vez, lo que hace que el código de análisis de datos sea corto.",
+        "R lo usan estadísticos, científicos de datos, bioinformáticos, economistas e investigadores para limpiar datos, crear modelos estadísticos, visualizar y generar informes reproducibles. Hay miles de paquetes adicionales disponibles en CRAN (Comprehensive R Archive Network) y Bioconductor."
+      ]
+    },
+    {
+      "h": "Instalar R y ejecutar Hello, world",
+      "body": [
+        "Descarga R desde CRAN para Windows, macOS o Linux. Mucha gente instala también RStudio o Positron, que son IDE con editor, consola, visor de gráficos y panel de ayuda. Puedes escribir código directamente en la consola de R o guardarlo en un archivo `.R`.",
+        {
+          "code": "# hello.R\nprint(\"Hello, world!\")\ncat(\"Hello, world!\\n\")",
+          "lang": "r"
+        },
+        {
+          "code": "Rscript hello.R\n# [1] \"Hello, world!\"\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`print` muestra un valor como lo hace la consola, con el prefijo de índice `[1]`. `cat` escribe texto plano, así que el salto de línea lo añades tú."
+      ]
+    },
+    {
+      "h": "Variables, tipos básicos y vectores",
+      "body": [
+        "Asigna con `<-` (el estilo convencional) o con `=`. En R no hay escalares: un solo número es un vector de longitud 1. `c()` combina valores en un vector, y la aritmética se aplica elemento a elemento.",
+        {
+          "code": "x <- 42                 # numeric (double)\nn <- 7L                 # integer (L suffix)\nname <- \"Ada\"           # character\nok <- TRUE              # logical\nclass(x); class(n); class(name)   # \"numeric\" \"integer\" \"character\"\nv <- c(2, 4, 6, 8)\nv * 10                  # [1] 20 40 60 80\nv[2]                    # [1] 4   (indexing starts at 1)\nv[v > 4]                # [1] 6 8\nlength(v); sum(v); mean(v)        # 4 20 5\n1:5                     # [1] 1 2 3 4 5\nseq(0, 1, by = 0.25)    # [1] 0.00 0.25 0.50 0.75 1.00",
+          "lang": "r"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "numeric (double)",
+                "`3.14`, `42`",
+                "valor por defecto para los números"
+              ],
+              [
+                "integer",
+                "`42L`",
+                "números enteros con el sufijo `L`"
+              ],
+              [
+                "character",
+                "`\"text\"`",
+                "cadenas de texto"
+              ],
+              [
+                "logical",
+                "`TRUE`, `FALSE`",
+                "`NA` significa un valor ausente"
+              ],
+              [
+                "factor",
+                "`factor(c(\"lo\", \"hi\"))`",
+                "datos categóricos con niveles fijos"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "`NA` es un valor ausente y se propaga: `mean(c(1, NA, 3))` es `NA`. Pasa `na.rm = TRUE` para ignorar los valores ausentes, y comprueba con `is.na(x)`, nunca con `x == NA`."
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "R tiene `if`/`else`, `for`, `while` y `repeat`. Con vectores, la función vectorizada `ifelse()` suele ser mejor que un bucle.",
+        {
+          "code": "temp <- 25\nif (temp > 30) {\n  print(\"hot\")\n} else if (temp > 15) {\n  print(\"mild\")         # [1] \"mild\"\n} else {\n  print(\"cold\")\n}\nfor (i in 1:3) {\n  cat(\"step\", i, \"\\n\")  # step 1 / step 2 / step 3\n}\nscores <- c(45, 80, 62)\nifelse(scores >= 50, \"pass\", \"fail\")\n# [1] \"fail\" \"pass\" \"pass\"",
+          "lang": "r"
+        },
+        "`if` necesita un único `TRUE` o `FALSE`. Pasar un vector más largo a `if` es un error desde R 4.2; usa en su lugar `any()`, `all()` o `ifelse()`."
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        "Las funciones se crean con `function` y se asignan a un nombre. La última expresión evaluada se devuelve automáticamente; `return()` solo hace falta para salir antes de tiempo. Los argumentos pueden tener valores por defecto y pasarse por nombre.",
+        {
+          "code": "bmi <- function(weight_kg, height_m = 1.75) {\n  weight_kg / height_m^2\n}\nbmi(70)                          # [1] 22.85714\nbmi(height_m = 1.6, weight_kg = 60)  # [1] 23.4375\nsquare <- function(x) x^2\nsquare(1:4)                      # [1] 1 4 9 16 (vectorized)\nsapply(c(1, 4, 9), sqrt)         # [1] 1 2 3\n(\\(x) x + 1)(10)                 # [1] 11 (short lambda syntax)",
+          "lang": "r"
+        },
+        "La sintaxis corta de lambda `\\(x)` está disponible desde R 4.1, igual que el pipe nativo `|>`, que pasa el lado izquierdo como primer argumento: `c(1, 4, 9) |> sqrt() |> sum()` devuelve 6."
+      ]
+    },
+    {
+      "h": "Estructuras de datos principales: vectores, listas y data frames",
+      "body": [
+        "Además de los vectores atómicos, R tiene listas (que pueden contener valores de distintos tipos), matrices y data frames. Un data frame es una tabla en la que cada columna es un vector de la misma longitud; es la estructura central del análisis de datos.",
+        {
+          "code": "person <- list(name = \"Ann\", age = 31, langs = c(\"R\", \"SQL\"))\nperson$name                 # [1] \"Ann\"\nperson[[\"langs\"]][2]        # [1] \"SQL\"\ndf <- data.frame(\n  name  = c(\"Ann\", \"Bo\", \"Cy\"),\n  age   = c(31, 25, 40),\n  city  = c(\"Oslo\", \"Rome\", \"Oslo\")\n)\nnrow(df)                    # [1] 3\ndf$age                      # [1] 31 25 40\ndf[df$age > 30, \"name\"]     # [1] \"Ann\" \"Cy\"\ndf$senior <- df$age >= 40   # add a column\naggregate(age ~ city, data = df, FUN = mean)\n#   city  age\n# 1 Oslo 35.5\n# 2 Rome 25.0\nstr(df)                     # compact structure summary",
+          "lang": "r"
+        },
+        "`df[rows, columns]` selecciona por posición, nombre o condición lógica. Dejar un lado vacío, como en `df[1, ]`, significa todas las filas o todas las columnas."
+      ]
+    },
+    {
+      "h": "Estadística y gráficos",
+      "body": [
+        "Las funciones estadísticas vienen incluidas: `summary`, `sd`, `quantile`, `cor`, `t.test` y `lm` (modelos lineales), entre muchas otras. Los gráficos base dibujan un gráfico con una sola llamada.",
+        {
+          "code": "set.seed(1)\nx <- 1:20\ny <- 3 * x + rnorm(20, sd = 2)\nmodel <- lm(y ~ x)\nround(coef(model), 2)       # intercept near 0, slope near 3\nsummary(model)$r.squared    # close to 1\nplot(x, y, main = \"y vs x\")\nabline(model, col = \"red\")",
+          "lang": "r"
+        },
+        "La sintaxis de fórmula `y ~ x` significa «modela y en función de x» y se usa en las funciones de modelado. Para gráficos avanzados y manipulación de datos, la mayoría instala los paquetes del tidyverse, como ggplot2 y dplyr, con `install.packages(\"tidyverse\")`."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Lanza un error con `stop()` y una advertencia con `warning()`. Captúralos con `tryCatch()`, que acepta funciones manejadoras para `error`, `warning` y un bloque `finally` opcional.",
+        {
+          "code": "safe_log <- function(x) {\n  if (!is.numeric(x)) stop(\"x must be numeric\")\n  if (any(x <= 0)) warning(\"non-positive values give NaN or -Inf\")\n  log(x)\n}\nresult <- tryCatch(\n  safe_log(\"ten\"),\n  error = function(e) {\n    message(\"Caught: \", conditionMessage(e))\n    NA\n  },\n  finally = message(\"done\")\n)\n# Caught: x must be numeric\n# done\nresult                      # [1] NA",
+          "lang": "r"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo y pequeño: resumen de ventas",
+      "body": [
+        "Este script construye una pequeña tabla de ventas, calcula los ingresos por región con R base e imprime la mejor región.",
+        {
+          "code": "sales <- data.frame(\n  region = c(\"North\", \"South\", \"North\", \"East\", \"South\"),\n  units  = c(10, 4, 6, 8, 12),\n  price  = c(2.5, 3.0, 2.5, 4.0, 3.0)\n)\nsales$revenue <- sales$units * sales$price\nby_region <- aggregate(revenue ~ region, data = sales, FUN = sum)\nby_region <- by_region[order(-by_region$revenue), ]\nprint(by_region, row.names = FALSE)\n#  region revenue\n#   South      48\n#   North      40\n#    East      32\nbest <- by_region$region[1]\ncat(sprintf(\"Best region: %s (%.2f)\\n\", best, max(by_region$revenue)))\n# Best region: South (48.00)",
+          "lang": "r"
+        },
+        {
+          "note": "Errores habituales de los principiantes: olvidar que los índices empiezan en 1; comparar con `== NA` en lugar de `is.na()`; hacer crecer un vector dentro de un bucle (reserva el tamaño de antemano o usa código vectorizado); usar `=` y `<-` de forma inconsistente; y confundir `[` (devuelve una sublista) con `[[` (devuelve un solo elemento) en las listas."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "An Introduction to R, el manual oficial en CRAN.",
+            "La ayuda integrada: escribe `?mean` o `help(\"lm\")` en la consola.",
+            "R for Data Science, de Hadley Wickham y colaboradores, gratuito en línea, para el enfoque del tidyverse.",
+            "Los CRAN Task Views, que listan paquetes por campo, como econometría o aprendizaje automático."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es mejor R o Python para el análisis de datos?",
+      "a": "Ambos son potentes. R tiene una amplia biblioteca de métodos estadísticos y excelentes gráficos, y es común en el ámbito académico y la bioestadística; Python es de propósito más general y domina la ingeniería de aprendizaje automático. Muchos analistas aprenden los dos."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre <- y = en R?",
+      "a": "Ambos asignan en el nivel superior, y `<-` es el estilo convencional. Dentro de una llamada a función, `=` da nombre a un argumento, de modo que `f(x = 1)` pasa un argumento en lugar de crear una variable."
+    },
+    {
+      "q": "¿Por qué R empieza a contar en 1?",
+      "a": "R sigue la convención matemática y estadística, igual que su predecesor S, así que el primer elemento de un vector es `v[1]`. El índice 0 devuelve un vector vacío en lugar de un error."
+    },
+    {
+      "q": "¿Qué es el tidyverse?",
+      "a": "El tidyverse es una colección de paquetes de R, entre ellos dplyr, ggplot2 y tidyr, que comparten un diseño coherente para importar, limpiar, transformar y graficar datos."
+    },
+    {
+      "q": "¿Cómo instalo un paquete de R?",
+      "a": "Ejecuta `install.packages(\"name\")` una vez para descargarlo de CRAN y luego `library(name)` en cada sesión para cargarlo."
+    }
+  ]
+}

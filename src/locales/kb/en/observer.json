@@ -1,0 +1,151 @@
+{
+  "title": "Observer pattern: subjects, subscribers and events in TypeScript — cv.cm",
+  "description": "The Observer pattern lets objects subscribe to another object and get notified when it changes. Learn the roles, a typed TypeScript example and pitfalls.",
+  "h1": "Observer pattern explained with examples",
+  "answer": "Observer is a behavioral design pattern in which an object, called the subject, keeps a list of dependents, called observers, and notifies them automatically when its state changes. Observers subscribe and unsubscribe at runtime, and the subject does not need to know their concrete classes. Event listeners in the browser, Node.js `EventEmitter` and reactive libraries such as RxJS are all built on this idea.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically. Observer is one of the behavioral patterns in the Gang of Four (GoF) book, and it is also known as publish-subscribe or the listener pattern.",
+        "Imagine a shopping cart in a web shop. When an item is added, the cart icon in the header must show the new count, the sidebar must show the new total, and an analytics module must record the event. If the cart calls each of these directly, the cart module depends on the header, the sidebar and analytics. Adding a fourth reaction means editing the cart again.",
+        "With Observer, the cart only keeps a list of subscribers and calls each of them when it changes. The header, sidebar and analytics subscribe themselves. The cart does not import them, and new features can react to cart changes without touching the cart code."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Subject (publisher)",
+                "Keeps a list of observers and provides methods to subscribe and unsubscribe them; notifies them when something changes"
+              ],
+              [
+                "Observer (subscriber)",
+                "Interface with an update method, often just a callback function"
+              ],
+              [
+                "Concrete subject",
+                "Holds the state of interest and calls notify when it changes"
+              ],
+              [
+                "Concrete observer",
+                "Reacts to notifications, for example by redrawing part of the UI"
+              ]
+            ]
+          }
+        },
+        "There are two styles of notification. In the push model the subject sends the changed data along with the notification. In the pull model it only says \"something changed\" and observers ask the subject for the data they need."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "A small generic `Subject` class handles subscriptions. Observers are plain functions, which is the most common form in TypeScript. `subscribe` returns a function that unsubscribes, so callers cannot forget which listener they registered.",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` iterates over a copy of the set (`[...this.listeners]`). This way a listener that unsubscribes itself during notification does not disturb the loop.",
+        {
+          "note": "Forgetting to unsubscribe is the most common Observer bug. The subject keeps a reference to every listener, so a destroyed UI component that is still subscribed stays in memory and keeps reacting to events. Always call the unsubscribe function when the observer is no longer needed, for example in a component's cleanup code."
+        }
+      ]
+    },
+    {
+      "h": "Using the built-in EventTarget",
+      "body": [
+        "Browsers, Node.js and Deno provide `EventTarget`, so you often do not need your own subject class:",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js also has the `EventEmitter` class in the `node:events` module, with `on`, `off` and `emit` methods."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when a change in one object must update other objects, and you do not know in advance how many or which ones.",
+            "Use it to keep a core module independent of UI, logging or analytics code that reacts to it.",
+            "Use it for events that happen over time, such as user input, messages or sensor readings.",
+            "Do not use it when there is exactly one fixed receiver; a direct method call or callback parameter is easier to follow.",
+            "Be careful with chains of observers that trigger other notifications. They can cause update loops and make it hard to see why something changed.",
+            "Do not rely on the order in which observers are called unless the subject documents it."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "The DOM: `element.addEventListener(\"click\", handler)` subscribes an observer to an element.",
+            "Node.js: `EventEmitter` is the base of streams, HTTP servers and many other core objects.",
+            "Browser observer APIs such as `MutationObserver`, `IntersectionObserver` and `ResizeObserver` notify callbacks about changes to the page.",
+            "RxJS models streams of values as observables that observers subscribe to.",
+            "Java: `java.util.Observable` was deprecated in Java 9; the `java.util.concurrent.Flow` interfaces (publisher and subscriber) and event listener interfaces are used instead."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Observer"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "A mediator knows the participating objects and coordinates them; a subject simply broadcasts and does not know what observers do."
+              ],
+              [
+                "Publish-subscribe with a broker",
+                "Publishers and subscribers do not know each other at all and communicate through a message broker or event bus, often between processes."
+              ],
+              [
+                "Command",
+                "A notification can carry a command object; Command is about one request, Observer about one-to-many notification."
+              ],
+              [
+                "Iterator",
+                "Iterator is pull-based (the consumer asks for the next value); Observer is push-based (the producer sends values when they occur)."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Observer and publish-subscribe?",
+      "a": "In the classic Observer pattern, observers register directly with the subject. In publish-subscribe, a broker or event channel sits between them, so publishers and subscribers do not know about each other. Many people use the two names loosely for the same idea."
+    },
+    {
+      "q": "How do I avoid memory leaks with the Observer pattern?",
+      "a": "Unsubscribe observers when they are no longer needed. Returning an unsubscribe function from `subscribe`, or using an `AbortSignal` with `addEventListener`, makes cleanup simple."
+    },
+    {
+      "q": "Are observers called synchronously?",
+      "a": "In the example above and in `EventTarget` and `EventEmitter`, listeners run synchronously in the order they were added. Other libraries may deliver notifications asynchronously, so check their documentation."
+    },
+    {
+      "q": "Is Observer the same as reactive programming?",
+      "a": "Reactive programming builds on Observer. Libraries such as RxJS add operators for filtering, combining and transforming streams of notifications, plus rules for errors and completion."
+    }
+  ]
+}

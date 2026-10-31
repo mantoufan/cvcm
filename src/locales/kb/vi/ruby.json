@@ -1,0 +1,197 @@
+{
+  "title": "Học lập trình Ruby cơ bản: đối tượng, block, mảng, hash và lớp — cv.cm",
+  "description": "Học Ruby trong một trang: chạy Hello world, biến và kiểu dữ liệu, điều khiển luồng, phương thức, mảng và hash, block và iterator, lớp, module và ngoại lệ.",
+  "h1": "Hướng dẫn học lập trình Ruby cơ bản cho người mới",
+  "answer": "Ruby là ngôn ngữ kịch bản động, hướng đối tượng, được thiết kế để đọc và viết dễ chịu. Lưu `puts \"Hello, world\"` vào `hello.rb` rồi chạy `ruby hello.rb`. Mọi thứ trong Ruby đều là đối tượng, kể cả số và `nil`. Các ý tưởng cốt lõi là phương thức định nghĩa bằng `def`, mảng và hash, block truyền cho các iterator như `each` và `map`, lớp và module, cùng ngoại lệ xử lý bằng `begin`/`rescue`.",
+  "sections": [
+    {
+      "h": "Ruby là gì và dùng để làm gì",
+      "body": [
+        "Ruby do Yukihiro Matsumoto (\"Matz\") tạo ra tại Nhật Bản và phát hành lần đầu năm 1995, với mục tiêu làm cho lập trình viên hạnh phúc. Ruby nổi tiếng nhờ Ruby on Rails, framework web đứng sau các trang như GitHub và Shopify. Ruby được dùng cho ứng dụng web, viết script, tự động hóa và các công cụ cho lập trình viên như Homebrew và CocoaPods. Bản triển khai tiêu chuẩn là CRuby (còn gọi là MRI)."
+      ]
+    },
+    {
+      "h": "Cài Ruby và chạy Hello, world",
+      "body": [
+        "macOS và nhiều hệ thống Linux đã có sẵn Ruby, nhưng thường là bản cũ; hãy cài Ruby 3 mới bằng trình quản lý phiên bản như rbenv, asdf hoặc mise, hoặc dùng RubyInstaller trên Windows. Kiểm tra bằng `ruby -v`.",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` in một giá trị kèm ký tự xuống dòng. Dấu ngoặc quanh đối số của phương thức là tùy chọn khi ý nghĩa đã rõ."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Biến không cần khai báo và có thể chứa bất kỳ đối tượng nào. Theo quy ước, tên dùng `snake_case`. Hằng số bắt đầu bằng chữ cái viết hoa.",
+        {
+          "table": {
+            "head": [
+              "Lớp",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "Kích thước bất kỳ"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "Độ chính xác kép"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "Có thể thay đổi; dấu nháy kép nội suy biến"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "Định danh bất biến, thường dùng làm khóa hash"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "Chỉ `false` và `nil` được coi là sai"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "Không có giá trị"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "Các collection dựng sẵn"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "Các khối kết thúc bằng `end` thay vì dấu ngoặc nhọn. Mã Ruby thường được thụt lề 2 dấu cách."
+      ]
+    },
+    {
+      "h": "Phương thức",
+      "body": [
+        "Phương thức trả về giá trị của biểu thức cuối cùng, nên `return` thường không cần thiết. Theo quy ước, phương thức trả về boolean kết thúc bằng `?`, còn phương thức thay đổi trực tiếp đối tượng nhận kết thúc bằng `!`.",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "Mảng và hash",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` in dạng `inspect` của giá trị, rất tiện khi gỡ lỗi vì hiển thị cả dấu nháy và dấu ngoặc."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: block và iterator",
+      "body": [
+        "Block là một đoạn mã được truyền cho phương thức, viết bằng `{ ... }` trên một dòng hoặc `do ... end` trên nhiều dòng. Ruby lặp chủ yếu qua block thay vì vòng lặp `for`, và các phương thức của `Enumerable` giúp biến đổi dữ liệu rất gọn.",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` là cách viết tắt của `{ |n| n.even? }`. Phương thức do bạn viết nhận một block và gọi nó bằng `yield`."
+      ]
+    },
+    {
+      "h": "Lớp và module",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` tạo ra các phương thức getter. Module gom các phương thức để có thể trộn (mix in) vào nhiều lớp, đây là cách Ruby thay cho đa kế thừa. Dạng một dòng `def to_s = ...` cần Ruby 3.0 trở lên."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` bắt ngoại lệ, còn `ensure` luôn được chạy. Bên trong một phương thức, bạn có thể viết `rescue` trực tiếp mà không cần `begin`."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "Chạy bằng `ruby words.rb notes.txt`. `tally` đếm các phần tử giống nhau vào một hash, còn `max_by(5)` trả về năm mục có số đếm cao nhất."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp của người mới",
+      "body": [
+        {
+          "note": "Chỉ `nil` và `false` là sai. Khác với Python hay JavaScript, `0`, `\"\"` và `[]` đều là đúng, nên hãy kiểm tra rỗng bằng `.empty?` hoặc `.zero?`."
+        },
+        {
+          "ul": [
+            "Quên `end` để đóng khối `if`, `def`, `class` hoặc `do`.",
+            "Trộn lẫn khóa chuỗi và khóa symbol: `h[\"name\"]` và `h[:name]` là hai khóa khác nhau.",
+            "Dùng dấu nháy đơn mà vẫn mong nội suy `#{}` hoạt động.",
+            "Gọi phương thức có `!` mà không nhận ra nó đã thay đổi đối tượng gốc.",
+            "Dùng Ruby hệ thống cũ thay vì phiên bản mới cài bằng trình quản lý phiên bản."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Bắt đầu với trang tài liệu trên ruby-lang.org, gồm phần hướng dẫn nhanh \"Ruby in Twenty Minutes\", và dùng docs.ruby-lang.org để tra cứu thư viện lõi và thư viện chuẩn. Học Bundler và gem để quản lý thư viện phụ thuộc, RSpec hoặc Minitest để kiểm thử, rồi đến Ruby on Rails nếu bạn muốn xây dựng ứng dụng web."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ruby còn được dùng không?",
+      "a": "Có. Ruby on Rails vận hành nhiều sản phẩm web lâu đời, gồm GitHub và Shopify, và Ruby phổ biến trong viết script và công cụ cho lập trình viên. Ruby ít được chọn cho dự án mới hơn Python hay JavaScript, nhưng vẫn được phát triển tích cực."
+    },
+    {
+      "q": "Ruby khác Ruby on Rails thế nào?",
+      "a": "Ruby là ngôn ngữ lập trình. Rails là framework web viết bằng Ruby, cung cấp định tuyến, truy cập cơ sở dữ liệu và mẫu trang."
+    },
+    {
+      "q": "Symbol trong Ruby là gì?",
+      "a": "Symbol như `:name` là một định danh bất biến và duy nhất. Cùng một symbol luôn là cùng một đối tượng, nên rất hiệu quả cho khóa hash và tên tùy chọn."
+    },
+    {
+      "q": "Người mới nên học Ruby hay Python?",
+      "a": "Cả hai đều là ngôn ngữ đầu tiên tốt với cú pháp dễ đọc. Python có phạm vi dùng rộng hơn, nhất là trong khoa học dữ liệu; Ruby rất giàu biểu đạt và mạnh trong phát triển web với Rails."
+    }
+  ]
+}

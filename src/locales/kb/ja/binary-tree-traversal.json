@@ -1,0 +1,198 @@
+{
+  "title": "二分木の巡回：前順・中順・後順・レベル順をPythonで解説 — cv.cm",
+  "description": "二分木の巡回（トラバーサル）を解説。前順・中順・後順・レベル順（幅優先）を、再帰と反復のPythonコード、トレース付きの例、計算量とともに学べます。",
+  "h1": "二分木の巡回とは？前順・中順・後順・レベル順を解説",
+  "answer": "二分木を巡回するとは、すべてのノードを決まった順序でちょうど1回ずつ訪問することです。深さ優先の3つの順序の違いは、ノード自身を訪問するタイミングだけです。前順（preorder）はノード、左、右の順、中順（inorder）は左、ノード、右の順、後順（postorder）は左、右、ノードの順に訪問します。レベル順（level-order）は幅優先で、キューを使って木を行ごとに訪問します。4つとも時間はO(n)です。",
+  "sections": [
+    {
+      "h": "巡回の順序が重要な理由",
+      "body": [
+        "木には唯一の自然な順序というものがないので、アルゴリズムは目的に合う順序を選びます。二分探索木を中順で巡回すると、キーがソート順で得られます。前順は親を子より先に訪問するので、木のコピーや、あとで再構築できる形での書き出しに必要な順序です。後順は子を親より先に訪問するので、木の削除、フォルダサイズの計算、式の木の評価に必要です。レベル順は最も浅いノードを最初に見つけ、木を行ごとに出力できます。"
+      ]
+    },
+    {
+      "h": "1つの例で見る4つの順序",
+      "body": [
+        "次の木を使います。根は1で、子は2と3。ノード2は子4と5を持ち、ノード3は右の子6を持ちます。",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "順序",
+              "ルール",
+              "結果"
+            ],
+            "rows": [
+              [
+                "前順",
+                "ノード、左、右",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "中順",
+                "左、ノード、右",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "後順",
+                "左、右、ノード",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "レベル順",
+                "行ごとに、左から右へ",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "最初の3つの覚え方は簡単です。名前が、ノードを訪問する位置を表しています。pre（前）は両方の部分木より前、in（中）は部分木の間、post（後）は両方の部分木のあとです。左部分木は常に右より先に訪問します。"
+      ]
+    },
+    {
+      "h": "再帰による実装",
+      "body": [
+        "再帰版は、定義をそのままコードにしたものです。関数ごとに、ノードを訪問する行が異なります。",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "スタックを使った前順・中順の反復実装",
+      "body": [
+        "再帰はコールスタックを使います。深い木での再帰の上限を避けるには、スタックを自分で管理します。前順では、ノードをpopして訪問し、左の子が先に処理されるように、右の子を左の子より先にpushします。",
+        "中順では、左へ行けるところまで進みながらノードをpushしていきます。それ以上左へ行けなくなったらノードをpopして訪問し、その右の子へ移ります。",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "後順とレベル順の反復実装",
+      "body": [
+        "反復による後順が最も厄介です。すっきりした方法の1つはフラグを使うことです。各ノードを2回pushし、2回目には「子のあとに訪問する準備ができた」という印を付けます。レベル順はスタックの代わりにキューを使います。キューを1レベルずつ処理すれば、各ノードの深さも分かります。",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "後順のもう1つのよくある手法は、変形した前順（ノード、右、左）を実行して、結果を反転することです。"
+      ]
+    },
+    {
+      "h": "時間計算量と空間計算量",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "巡回",
+              "時間",
+              "追加の空間",
+              "理由"
+            ],
+            "rows": [
+              [
+                "前順 / 中順 / 後順（再帰）",
+                "O(n)",
+                "O(h)",
+                "コールスタックにはレベルごとに1フレーム積まれる"
+              ],
+              [
+                "前順 / 中順 / 後順（反復）",
+                "O(n)",
+                "O(h)",
+                "明示的なスタックには、せいぜい1本の経路と兄弟ノードが入る"
+              ],
+              [
+                "レベル順",
+                "O(n)",
+                "O(w)",
+                "キューには、せいぜい1レベル分が入る"
+              ],
+              [
+                "Morris中順巡回",
+                "O(n)",
+                "O(1)",
+                "nullの右リンクを一時的にスレッド（糸）につなぎ替える"
+              ]
+            ]
+          }
+        },
+        "ここで、nはノード数、hは高さ、wは最大の幅です。平衡木ではhは約log2(n)、wは約n/2になりえます。鎖状の木ではhはn、wは1です。"
+      ]
+    },
+    {
+      "h": "よくある間違い",
+      "body": [
+        {
+          "ul": [
+            "反復の前順で、左の子を右の子より先にpushしてしまう。スタックはLIFOなので、先に処理したい子を最後にpushします。",
+            "空の木を忘れる：すべての関数は、`root is None`のときに空の結果を返すべきです。",
+            "レベル順で、`list`と`pop(0)`をキューとして使う。popのたびにO(n)かかります。`collections.deque`を使いましょう。",
+            "非常に深い木で再帰に頼る。Pythonは再帰の上限（デフォルトで約1000）で`RecursionError`を出して止まります。",
+            "1つの巡回だけで木が特定できると期待する。前順だけでは曖昧です。前順と中順（値が重複しない場合）があれば、木を再構築できます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "どの巡回をいつ使うか",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "目的",
+              "巡回"
+            ],
+            "rows": [
+              [
+                "BSTのキーをソート順に列挙する、BSTを検証する、k番目に小さい要素を求める",
+                "中順"
+              ],
+              [
+                "木のコピーやシリアライズ、ディレクトリのアウトラインの出力",
+                "前順"
+              ],
+              [
+                "木の削除、部分木のサイズや高さの計算、式の木の評価",
+                "後順"
+              ],
+              [
+                "最小の深さ、右側から見た図、レベルごとの出力、最も近いノード",
+                "レベル順"
+              ]
+            ]
+          }
+        },
+        "前順・中順・後順はいずれも深さ優先探索の形で、レベル順は木に適用した幅優先探索です。同じ考え方は一般のグラフにも広げられますが、その場合は訪問済みのノードの集合も必要です。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "前順・中順・後順の違いは何ですか？",
+      "a": "ノードを訪問する位置だけです。前順は部分木より前、中順は左右の部分木の間、後順は両方の部分木のあとにノードを訪問します。"
+    },
+    {
+      "q": "二分探索木でソートされた出力が得られるのは、どの巡回ですか？",
+      "a": "中順の巡回です。BSTでは左のキーがすべてより小さく、右のキーがすべてより大きいので、左、ノード、右の順に訪問すると、キーが昇順で得られます。"
+    },
+    {
+      "q": "レベル順の巡回は、BFSと同じですか？",
+      "a": "はい。レベル順の巡回は、木に対する幅優先探索です。キューを使い、深さの順にノードを訪問します。"
+    },
+    {
+      "q": "再帰ではなく反復で巡回するのはなぜですか？",
+      "a": "再帰の深さは木の高さに等しく、Pythonは再帰の上限を超えると`RecursionError`を出します。明示的なスタックにはそのような上限がなく、途中で一時停止したり早期に終了したりするのも簡単です。"
+    },
+    {
+      "q": "追加の空間O(1)で木を巡回できますか？",
+      "a": "はい。Morris巡回では、各ノードの中順での先行ノードから、そのノードへ一時的にリンクを張るので、スタックが不要です。終了前に木を元に戻します。時間はO(n)です。"
+    }
+  ]
+}

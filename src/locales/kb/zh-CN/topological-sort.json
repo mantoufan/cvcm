@@ -1,0 +1,211 @@
+{
+  "title": "拓扑排序：Kahn 算法与 DFS 的 Python 实现及示例 — cv.cm",
+  "description": "拓扑排序入门教程：让每个依赖项排在前面来安排任务。附 Kahn 算法与 DFS 的 Python 实现、环检测、graphlib 与 O(V + E) 复杂度。",
+  "h1": "拓扑排序详解：原理、代码与复杂度",
+  "answer": "拓扑排序是对有向无环图（DAG）的节点排序，使得对每条边 u → v，u 都排在 v 之前。它回答的问题是：“如果有些任务依赖其他任务，我该按什么顺序完成它们？”两种标准方法是 Kahn 算法（不断移除没有入边的节点）和 DFS（按完成顺序的逆序输出节点）。两者的时间复杂度都是 O(V + E)，并且都能检测环，因为有环时不可能排出顺序。",
+  "sections": [
+    {
+      "h": "拓扑排序解决什么问题",
+      "body": [
+        "许多实际任务都有先决条件：一门课需要先修课程，一个源文件必须在它导入的文件之后编译，一个软件包必须在其依赖之后安装，电子表格中的单元格必须在它引用的单元格之后计算。把每个任务画成节点，把每条“必须先于”的规则画成有向边，拓扑序就是满足所有边的任意一个任务序列。",
+        "当且仅当图中没有有向环时，拓扑序才存在。如果 A 需要 B，B 又需要 A，就不存在合法顺序，好的拓扑排序会报告这一点，而不是无限循环。一个 DAG 通常有很多合法顺序，算法返回其中一个。"
+      ]
+    },
+    {
+      "h": "用大白话讲思路",
+      "body": [
+        "Kahn 算法（由 Arthur Kahn 于 1962 年发表）从前往后工作：",
+        {
+          "ol": [
+            "统计每个节点的入边数（入度）。",
+            "把所有入度为 0 的节点放入队列：这些任务没有未满足的先决条件。",
+            "从队列取出一个节点，追加到结果中。对它的每条出边，把目标节点的入度减 1；如果减到 0，就把该目标加入队列。",
+            "队列为空时，如果结果包含所有节点，它就是一个拓扑序；否则剩下的节点属于某个环。"
+          ]
+        },
+        "DFS 方法从后往前工作：一个节点只有在它指向的所有节点都处理完之后才算完成，所以按完成顺序的逆序排列节点，就能让每个节点排在它所有后继之前。"
+      ]
+    },
+    {
+      "h": "逐步演示一个例子",
+      "body": [
+        "穿衣服：内裤 → 裤子，裤子 → 鞋子，袜子 → 鞋子，裤子 → 腰带，衬衫 → 腰带，衬衫 → 领带，领带 → 外套，腰带 → 外套。Kahn 算法，按先进先出的顺序取出队列中的节点：",
+        {
+          "table": {
+            "head": [
+              "步骤",
+              "取出",
+              "入度降为 0 的节点",
+              "本步后的队列",
+              "目前的结果"
+            ],
+            "rows": [
+              [
+                "初始",
+                "—",
+                "内裤、袜子、衬衫",
+                "内裤、袜子、衬衫",
+                "—"
+              ],
+              [
+                "1",
+                "内裤",
+                "裤子",
+                "袜子、衬衫、裤子",
+                "内裤"
+              ],
+              [
+                "2",
+                "袜子",
+                "无（鞋子还在等裤子）",
+                "衬衫、裤子",
+                "内裤、袜子"
+              ],
+              [
+                "3",
+                "衬衫",
+                "领带",
+                "裤子、领带",
+                "……、衬衫"
+              ],
+              [
+                "4",
+                "裤子",
+                "鞋子、腰带",
+                "领带、鞋子、腰带",
+                "……、裤子"
+              ],
+              [
+                "5",
+                "领带",
+                "无（外套在等腰带）",
+                "鞋子、腰带",
+                "……、领带"
+              ],
+              [
+                "6",
+                "鞋子",
+                "无",
+                "腰带",
+                "……、鞋子"
+              ],
+              [
+                "7",
+                "腰带",
+                "外套",
+                "外套",
+                "……、腰带"
+              ],
+              [
+                "8",
+                "外套",
+                "无",
+                "空",
+                "……、外套"
+              ]
+            ]
+          }
+        },
+        "最终顺序：内裤、袜子、衬衫、裤子、领带、鞋子、腰带、外套。8 个节点全部排好，所以没有环。"
+      ]
+    },
+    {
+      "h": "Python 实现",
+      "body": [
+        "使用 deque 的 Kahn 算法：",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "DFS 版本在节点的所有后继都处理完之后再追加该节点，最后反转列表：",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "两种输出都是合法的。自 Python 3.9 起，标准库还提供了 `graphlib.TopologicalSorter`。注意它接受的是从每个节点到其前驱的映射，与上面的字典方向相反：",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "方法",
+              "时间",
+              "空间",
+              "原因"
+            ],
+            "rows": [
+              [
+                "Kahn 算法",
+                "O(V + E)",
+                "O(V)",
+                "每个节点入队一次；每条边使一个入度减少一次。"
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "每个节点访问一次，每条边走一次；递归栈最深可达 V 层。"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "变体与常见错误",
+      "body": [
+        {
+          "ul": [
+            "字典序最小：把队列换成最小堆（`heapq`），每次总是选出当前可用的最小节点，可在 O((V + E) log V) 内得到字典序最小的顺序。",
+            "并行调度：按“轮”执行 Kahn 算法，每轮一次取出所有入度为 0 的节点。每一轮就是一批可以同时运行的任务，轮数等于最长依赖链的长度。`graphlib.TopologicalSorter` 通过 `get_ready()` 和 `done()` 支持这种用法。",
+            "DAG 中的最长或最短路径：按拓扑序松弛各条边，即使有负权，也能在 O(V + E) 内得到答案。",
+            "统计不同拓扑序的数量是难得多的问题；对大图不要试图列出全部顺序。"
+          ]
+        },
+        {
+          "note": "注意边的方向。“A 依赖 B”意味着 B 必须在前，所以边是 B → A。方向弄反会得到相反的顺序。另外要确保每个节点都作为键出现在字典中，包括没有出边的节点，否则入度查询会抛出 `KeyError`。"
+        },
+        "递归的 DFS 版本与 Python 中任何递归 DFS 一样有递归深度限制：对数千个节点的链，请使用 Kahn 算法。"
+      ]
+    },
+    {
+      "h": "何时使用及实际应用",
+      "body": [
+        {
+          "ul": [
+            "Make 等构建工具按依赖关系给目标排序，包管理器按依赖图安排安装顺序。",
+            "电子表格按依赖顺序重新计算单元格，并报告循环引用。",
+            "任务调度器和工作流引擎（例如基于 DAG 的数据管道）按拓扑序运行任务。",
+            "编译器为声明排序并对表达式图求值；数据库为外键的创建或删除排序。",
+            "面试题：课程表 I 和 II、火星词典（由有序单词推断字母顺序）、并行课程、构建计划的最小高度。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "有环的图能做拓扑排序吗？",
+      "a": "不能。有环意味着某个任务必须先于它自己。Kahn 算法通过“有些节点的入度始终降不到 0”来发现这一点，DFS 方法则通过碰到一个仍在处理中的节点来发现。"
+    },
+    {
+      "q": "拓扑序是唯一的吗？",
+      "a": "通常不唯一。只有当图中存在一条经过所有节点的路径时它才唯一，此时每一步恰好只有一个可选节点。"
+    },
+    {
+      "q": "该用 Kahn 算法还是 DFS？",
+      "a": "两者都是 O(V + E)。Kahn 算法是迭代的，天然能报告环，也容易改成并行批次或字典序最小的版本。如果你已经有现成的 DFS 辅助函数，DFS 写起来更短。"
+    },
+    {
+      "q": "Python 有内置的拓扑排序吗？",
+      "a": "有。Python 3.9 新增的 `graphlib.TopologicalSorter` 通过 `static_order()` 返回一个顺序，图中有环时会抛出 `graphlib.CycleError`。"
+    }
+  ]
+}

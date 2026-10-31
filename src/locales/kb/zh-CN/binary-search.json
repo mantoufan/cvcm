@@ -1,0 +1,205 @@
+{
+  "title": "二分查找详解：原理、Python 代码与时间复杂度 — cv.cm",
+  "description": "二分查找通过不断将范围减半，在有序列表中用 O(log n) 步找到目标值。含逐步演示、Python 代码、bisect 模块、变体以及差一错误。",
+  "h1": "二分查找详解：原理、代码与时间复杂度",
+  "answer": "二分查找在有序数组中查找目标：反复检查中间元素，并丢弃不可能包含目标的那一半。每一步都让查找范围减半，所以最多只需约 log₂ n + 1 次比较：一百万个元素只要 20 次。它的时间复杂度是 O(log n)，额外空间是 O(1)，但只适用于有序（或更一般地说，具有单调性）的数据。",
+  "sections": [
+    {
+      "h": "二分查找解决什么问题",
+      "body": [
+        "线性查找逐个检查元素，最多需要 n 次比较。如果数据是有序的，可以做得好得多：把目标与中间元素比较，就能立刻知道应保留哪一半。这与在纸质词典里查单词是同一个思路。",
+        "二分查找也适用于任何具有单调性的情形，不限于数组。如果某个是/否条件对所有较小的值都为假，对所有较大的值都为真，二分查找就能找到这条分界线。这称为对答案二分。"
+      ]
+    },
+    {
+      "h": "分步示例",
+      "body": [
+        "在有序列表 `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]`（下标 0 到 9）中查找 23。用两个下标 `lo` 和 `hi` 框定仍需检查的范围。",
+        {
+          "table": {
+            "head": [
+              "步骤",
+              "lo",
+              "hi",
+              "mid",
+              "items[mid]",
+              "决策"
+            ],
+            "rows": [
+              [
+                "1",
+                "0",
+                "9",
+                "4",
+                "16",
+                "16 < 23，向右查找：lo = 5"
+              ],
+              [
+                "2",
+                "5",
+                "9",
+                "7",
+                "56",
+                "56 > 23，向左查找：hi = 6"
+              ],
+              [
+                "3",
+                "5",
+                "6",
+                "5",
+                "23",
+                "在下标 5 处找到"
+              ]
+            ]
+          }
+        },
+        "三次比较，而线性扫描需要六次。对于一百万个元素的列表，二分查找最多只需 20 次。"
+      ]
+    },
+    {
+      "h": "Python 实现",
+      "body": [
+        "下面的迭代版本使用闭区间 `[lo, hi]`：两端都仍是候选位置。只要范围不为空，循环就继续。",
+        {
+          "code": "def binary_search(items, target):\n    lo, hi = 0, len(items) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:\n            return mid\n        if items[mid] < target:\n            lo = mid + 1          # target is in the right half\n        else:\n            hi = mid - 1          # target is in the left half\n    return -1                     # not found\ndata = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]\nprint(binary_search(data, 23))   # 5\nprint(binary_search(data, 7))    # -1",
+          "lang": "python"
+        },
+        "在实际的 Python 代码中，请使用标准库模块 `bisect`。`bisect_left` 返回目标可以插入且保持列表有序的最左位置，由此也能判断目标是否存在。",
+        {
+          "code": "from bisect import bisect_left, bisect_right, insort\ndata = [1, 3, 3, 3, 7, 9]\ni = bisect_left(data, 3)\nprint(i, bisect_right(data, 3))   # 1 4  (3 occupies indexes 1..3)\nprint(i < len(data) and data[i] == 3)   # True: 3 is present\nprint(bisect_left(data, 5))       # 4: insertion point for 5\ninsort(data, 5)\nprint(data)                       # [1, 3, 3, 3, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "时间与空间复杂度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "情况",
+              "时间",
+              "原因"
+            ],
+            "rows": [
+              [
+                "最好",
+                "O(1)",
+                "第一个中间元素就是目标"
+              ],
+              [
+                "平均",
+                "O(log n)",
+                "每一步范围都减半"
+              ],
+              [
+                "最坏",
+                "O(log n)",
+                "约 log₂ n + 1 步后范围为空"
+              ],
+              [
+                "空间（迭代）",
+                "O(1)",
+                "只有两三个下标"
+              ],
+              [
+                "空间（递归）",
+                "O(log n)",
+                "每次减半对应一个栈帧"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "二分查找要求数组有序，且能以 O(1) 按下标访问。在链表上，到达中点需要 O(n)，优势就没了。先排序需要 O(n log n)，所以对无序数据只查一次时，线性扫描更划算。"
+        }
+      ]
+    },
+    {
+      "h": "变体：第一个、最后一个，以及对答案二分",
+      "body": [
+        "许多问题问的不是某个值是否存在，而是边界在哪里：第一个不小于 x 的下标、x 的最后一次出现，或满足某个条件的最小数。使用半开区间 `[lo, hi)`，并且永远不要提前结束。",
+        {
+          "code": "def first_true(lo, hi, ok):\n    \"\"\"Smallest x in [lo, hi) with ok(x) True, or hi if none.\n    ok must be False...False True...True over the range.\"\"\"\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if ok(mid):\n            hi = mid          # mid may be the answer, keep it\n        else:\n            lo = mid + 1      # mid is too small\n    return lo\ndata = [1, 3, 3, 3, 7, 9]\nprint(first_true(0, len(data), lambda i: data[i] >= 3))   # 1\n# Integer square root of 200: largest x with x*x <= 200\nprint(first_true(0, 201, lambda x: x * x > 200) - 1)      # 14",
+          "lang": "python"
+        },
+        {
+          "ul": [
+            "下界（第一个值 ≥ x 的下标）：`bisect_left`。",
+            "上界（第一个值 > x 的下标）：`bisect_right`。",
+            "有序列表中 x 的个数：`bisect_right(a, x) - bisect_left(a, x)`。",
+            "在旋转有序数组中查找、寻找峰值，以及最小化最大值（例如在 D 天内运完所有包裹所需的最小运力），都是经典的面试变体。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "常见误区",
+      "body": [
+        {
+          "ul": [
+            "混用区间约定。闭区间应使用 `lo <= hi` 和 `hi = mid - 1`；半开区间应使用 `lo < hi` 和 `hi = mid`。混用会导致死循环或漏掉元素。",
+            "把 `lo = mid + 1` 写成 `lo = mid`。当 `hi = lo + 1` 时，mid 等于 lo，循环永远不会结束。",
+            "在无序数据上运行二分查找。它会返回错误答案，而且不报任何错误。",
+            "在 Java、C、C++ 等使用定长整数的语言中，`(lo + hi) / 2` 可能整数溢出。应使用 `lo + (hi - lo) / 2`。Python 的整数不会溢出，所以 `(lo + hi) // 2` 是安全的。",
+            "任务要求找重复元素中的第一次出现，却返回了第一个找到的匹配项。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何时使用二分查找",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "场景",
+              "更好的选择"
+            ],
+            "rows": [
+              [
+                "数据很少变化，但要多次查找",
+                "排序一次，然后用二分查找"
+              ],
+              [
+                "只做精确匹配查找，且数据经常变化",
+                "哈希表（`set`、`dict`），平均 O(1)"
+              ],
+              [
+                "数据有序，且频繁插入和做范围查询",
+                "平衡二叉搜索树或 B 树"
+              ],
+              [
+                "在无序数据中只查一次",
+                "线性查找，O(n)"
+              ]
+            ]
+          }
+        },
+        "实际应用包括：数据库和文件系统的索引（B 树是这一思想的推广）、用 `git bisect` 找出引入 bug 的提交、在有序的区间表（如 IP 段）中查值，以及许多需要搜索阈值的数值问题。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "二分查找的时间复杂度是多少？",
+      "a": "平均和最坏情况下是 O(log n)，最好情况下是 O(1)。每次比较都让剩余范围减半，所以 1,000,000 个元素最多需要 20 次比较。"
+    },
+    {
+      "q": "二分查找需要数组有序吗？",
+      "a": "需要。数组必须按你比较时使用的同一顺序排序，或者你检验的条件必须具有单调性。在无序数据上，结果不可靠。"
+    },
+    {
+      "q": "Python 的 bisect 是做什么的？",
+      "a": "`bisect` 模块在有序列表上执行二分查找。`bisect_left` 和 `bisect_right` 返回插入位置，`insort` 在保持列表有序的前提下插入元素（查找是 O(log n)，插入本身是 O(n)）。"
+    },
+    {
+      "q": "递归还是迭代的二分查找更好？",
+      "a": "通常首选迭代版本，因为它只用 O(1) 空间，也没有递归开销。递归版本同样正确，使用 O(log n) 的栈空间。"
+    },
+    {
+      "q": "二分查找为什么用 lo + (hi - lo) / 2？",
+      "a": "在使用定长整数的语言中，当 `lo` 和 `hi` 都很大时，`lo + hi` 可能溢出。`lo + (hi - lo) / 2` 得到同样的中点而不会溢出。在 Python 中不需要这样写。"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "title": "Scala入門：パターンマッチ・コレクション・case class・Optionを解説 — cv.cm",
+  "description": "Scala 3を基礎から学べる入門講座。Hello, worldの実行、valとvar、ifとforの式、パターンマッチ、関数、イミュータブルなコレクション、case class、Optionをコード例付きで解説します。",
+  "h1": "Scala入門：初心者向けチュートリアル",
+  "answer": "Scalaは、オブジェクト指向と関数型プログラミングを組み合わせた、JVM上で動く静的型付け言語です。Apache Sparkを使ったデータエンジニアリングや、並行処理を行うバックエンドで広く使われています。主な特長は、型推論、イミュータブルなコレクション、case class、パターンマッチです。このページではScala 3を使い、環境構築、値、制御構文、関数、コレクション、trait、enum、Option・Either・Tryによるエラー処理を解説します。",
+  "sections": [
+    {
+      "h": "Scalaとは何か、何に使われるのか",
+      "body": [
+        "Scalaは、オブジェクト指向と関数型プログラミングを組み合わせた静的型付け言語です。EPFLのMartin Oderskyが開発し、主にJava仮想マシン（JVM）上で動作します。ブラウザ向けのScala.jsや、ネイティブバイナリ向けのScala Nativeもあります。ScalaのコードからはあらゆるJavaライブラリを利用できます。",
+        "Scalaは、データエンジニアリング（Apache SparkはScalaで書かれています）、並行・分散バックエンド（Akka、Pekko、ZIO、Cats Effect）、金融やストリーミングのシステムで広く使われています。このチュートリアルでは、インデントによるブロックが使えるScala 3の構文を使います。波括弧も引き続き利用できます。"
+      ]
+    },
+    {
+      "h": "ScalaのインストールとHello, worldの実行",
+      "body": [
+        "推奨のインストーラーはCoursier（`cs setup`）で、`scala` コマンドとJDKをインストールします。Scala 3では、`@main` を付けたメソッドがプログラムのエントリーポイントになります。",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "大きなプロジェクトでは、sbtやMillが一般的なビルドツールです。Scastie（scastie.scala-lang.org）を使えば、インストール不要でブラウザ上でScalaを実行できます。"
+      ]
+    },
+    {
+      "h": "値、変数、基本の型",
+      "body": [
+        "イミュータブルな値には `val`、ミュータブルな変数には `var` を使います。型は推論されますが、コロンの後ろに書くこともできます。慣用的なScalaでは、ほぼすべての場面で `val` を使います。",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32ビット符号付き整数"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64ビット符号付き整数"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64ビット浮動小数点数"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` または `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "Javaの文字列。`s\"...\"` と `f\"...\"` の補間子が使える"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "`void` に相当。意味のある値を持たない"
+              ]
+            ]
+          }
+        },
+        "Scalaではすべてが式です。`if`、ブロック、`match` はいずれも値を返すので、一時的な `var` が必要になることはほとんどありません。"
+      ]
+    },
+    {
+      "h": "制御構文とパターンマッチ",
+      "body": [
+        "`if` は値を返します。`for` は範囲やコレクションを走査し、`yield` を付けると新しいコレクションを作ります。`match` はScalaの強力なパターンマッチで、この言語を代表する機能です。",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3` は3を含み、`1 until 3` は3の手前で止まります。最後の `case _` は何にでもマッチするワイルドカードで、これがないとマッチしない値に対して `MatchError` が投げられます。"
+      ]
+    },
+    {
+      "h": "関数と高階関数",
+      "body": [
+        "メソッドは `def` で定義します。関数は値なので、変数に保存したり、引数として渡したり、戻り値として返したりできます。引数にはデフォルト値を指定でき、呼び出し側は名前付き引数を使えます。",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "`_ * 10` のアンダースコアは、引数が1つのラムダ `x => x * 10` の省略記法です。"
+      ]
+    },
+    {
+      "h": "コレクション",
+      "body": [
+        "標準のコレクションはデフォルトでイミュータブルです。`map`、`filter`、`:+` などの操作は新しいコレクションを返し、元のコレクションは変更しません。ミュータブル版は `scala.collection.mutable` にあります。",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "コレクション",
+              "用途"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "イミュータブルな連結リスト。先頭への追加と、head・tailへのアクセスが高速"
+              ],
+              [
+                "`Vector`",
+                "イミュータブルなインデックス付きシーケンス。汎用的なデフォルトとして適している"
+              ],
+              [
+                "`Map`",
+                "キーによる値の検索"
+              ],
+              [
+                "`Set`",
+                "重複のない要素と所属判定"
+              ],
+              [
+                "`Array`",
+                "ミュータブルで固定長のJava配列"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "case class、trait、enum",
+      "body": [
+        "`case class` はイミュータブルなデータ型で、等価性、`toString`、`copy`、パターンマッチのサポートが自動的に用意されます。`trait` は、コードも持てるインターフェースのようなものです。Scala 3では、代数的データ型のための `enum` が加わりました。",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "そのほかの代表的な機能に、`given` と `using`（コンテキストパラメータ。以前のimplicit）、拡張メソッド、opaque type、`Int | String` のようなユニオン型があります。"
+      ]
+    },
+    {
+      "h": "Option、Either、Tryによるエラー処理",
+      "body": [
+        "Scalaにも `try`、`catch`、`finally` はありますが、慣用的なコードでは失敗を型で表現します。`Option` は `Some(value)` か `None` のどちらかです。`Either` は `Left` のエラーか `Right` の結果を保持します。`Try` は例外を `Failure` として捕捉します。",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "Scalaのコードでは `null` を避け、`Option` に対する `.get` の呼び出しも避けてください。`None` のときに例外が投げられます。代わりに `getOrElse`、`map`、`match`、`for` 内包表記を使いましょう。"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：成績レポート",
+      "body": [
+        "このプログラムは、`name,score` 形式の行を解析し、不正な行を読み飛ばして、各生徒の平均点を表示します。case class、`Option`、`groupBy`、文字列の書式設定を使っています。",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "初心者がよくやる間違い：Scala 3のインデント構文でタブと不揃いなインデントを混在させる、整数除算（`3 / 4` は `0` なので `3.0 / 4` と書く）、習慣で `var` やミュータブルなコレクションを使う、`Option` に `.get` を呼ぶ、網羅的でない `match` 式を書く。"
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        {
+          "ul": [
+            "docs.scala-lang.orgの「Scala 3 Book」。基礎からコンテキスト抽象化まで、言語全体を扱っています。",
+            "ファイル、JSON、HTTPなど日常的な作業向けの「Scala Toolkit」。",
+            "Scalaでデータ処理をしたい場合は、Apache Sparkのドキュメント。",
+            "scala-lang.orgからリンクされている講座。EPFLの関数型プログラミング講座も含まれます。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Scala 2とScala 3のどちらを学ぶべきですか？",
+      "a": "新しいプロジェクトにはScala 3を学びましょう。既存のコードベースでは、Sparkエコシステムの一部を含め、Scala 2.13もまだ多く見られますが、中心となる概念はほとんど同じです。"
+    },
+    {
+      "q": "Scalaは関数型言語ですか？",
+      "a": "Scalaはオブジェクト指向であり、関数型でもあります。すべての値がオブジェクトですが、関数はファーストクラスの値で、コレクションはデフォルトでイミュータブルであり、パターンマッチが中心的な役割を果たします。"
+    },
+    {
+      "q": "Scalaのvalとvarの違いは何ですか？",
+      "a": "`val` は再代入できない値を、`var` は再代入できる変数を定義します。慣用的なScalaでは、`val` とイミュータブルなコレクションを組み合わせて使います。"
+    },
+    {
+      "q": "case classとは何ですか？",
+      "a": "case classは、イミュータブルなデータのためのクラスです。コンパイラが、構造的な等価性、読みやすい `toString`、`copy` メソッド、パターンマッチのサポートを生成します。"
+    },
+    {
+      "q": "Scalaは今でも使われていますか？",
+      "a": "はい。Apache Spark、ストリーミングやデータ基盤、ZIOやCats Effectなどの関数型バックエンドライブラリで、今でも中核的な言語です。"
+    }
+  ]
+}

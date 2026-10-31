@@ -1,0 +1,205 @@
+{
+  "title": "Algoritmo de Floyd-Warshall: caminos más cortos entre todos los pares en Python — cv.cm",
+  "description": "Floyd-Warshall explicado: caminos más cortos entre todos los pares con tres bucles anidados, un ejemplo paso a paso, código en Python, reconstrucción del camino, ciclos negativos y coste O(V³).",
+  "h1": "Algoritmo de Floyd-Warshall explicado: cómo funciona, código y complejidad",
+  "answer": "El algoritmo de Floyd-Warshall calcula el camino más corto entre cada par de nodos de un grafo con pesos. Mantiene una matriz de distancias de V × V y, para cada nodo k por turno, comprueba si pasar por k acorta el camino de i a j: `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`. Admite aristas de peso negativo, detecta ciclos negativos y se ejecuta en tiempo O(V³) con memoria O(V²).",
+  "sections": [
+    {
+      "h": "Qué problema resuelve Floyd-Warshall",
+      "body": [
+        "A veces necesitas la distancia entre todos los pares de lugares, no solo desde un origen: una tabla de tiempos de viaje entre todas las ciudades, la latencia entre cada par de servidores o la alcanzabilidad completa de un grafo de dependencias. Floyd-Warshall resuelve este problema de caminos más cortos entre todos los pares con un algoritmo de programación dinámica muy breve.",
+        "Lo publicó Robert Floyd en 1962 (\"Algorithm 97: Shortest path\"), a partir del algoritmo de Stephen Warshall, también de 1962, para la clausura transitiva."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Numera los nodos de 0 a V − 1. Tras procesar el nodo k, `dist[i][j]` es el camino más corto de i a j que usa como paradas intermedias solo los nodos de 0 a k. Permitir un nodo intermedio más, k, da dos opciones: el mejor camino anterior que evita k, o un camino i → k → j formado por dos mejores caminos que ya usan solo nodos anteriores a k.",
+        {
+          "ol": [
+            "Rellena la matriz: 0 en la diagonal, el peso de la arista donde exista y infinito en el resto.",
+            "Para k = 0 hasta V − 1, para cada par (i, j): si `dist[i][k] + dist[k][j] < dist[i][j]`, actualízalo.",
+            "Tras el último k, la matriz contiene todas las distancias mínimas. Un valor negativo en la diagonal indica un ciclo negativo."
+          ]
+        },
+        "El orden de los bucles es esencial: k debe ser el bucle exterior."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Grafo dirigido con 4 nodos y las aristas 0→1 (3), 0→3 (7), 1→0 (8), 1→2 (2), 2→0 (5), 2→3 (1), 3→0 (2). Matriz inicial (fila = origen, columna = destino):",
+        {
+          "table": {
+            "head": [
+              "Desde \\ a",
+              "0",
+              "1",
+              "2",
+              "3"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "3",
+                "∞",
+                "7"
+              ],
+              [
+                "1",
+                "8",
+                "0",
+                "2",
+                "∞"
+              ],
+              [
+                "2",
+                "5",
+                "∞",
+                "0",
+                "1"
+              ],
+              [
+                "3",
+                "2",
+                "∞",
+                "∞",
+                "0"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "k = 0: los caminos pueden pasar por el nodo 0. 1→3 pasa a ser 8 + 7 = 15, 2→1 pasa a ser 5 + 3 = 8 y 3→1 pasa a ser 2 + 3 = 5.",
+            "k = 1: por el nodo 1. 0→2 pasa a ser 3 + 2 = 5 y 3→2 pasa a ser 5 + 2 = 7.",
+            "k = 2: por el nodo 2. 0→3 mejora de 7 a 5 + 1 = 6, 1→3 de 15 a 2 + 1 = 3 y 1→0 de 8 a 2 + 5 = 7.",
+            "k = 3: por el nodo 3. 1→0 mejora de 7 a 3 + 2 = 5, 2→0 de 5 a 1 + 2 = 3 y 2→1 de 8 a 1 + 5 = 6."
+          ]
+        },
+        "Filas de la matriz final: 0 → [0, 3, 5, 6], 1 → [5, 0, 2, 3], 2 → [3, 6, 0, 1], 3 → [2, 5, 7, 0]."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "INF = float(\"inf\")\ndef floyd_warshall(n, edges):\n    dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]\n    nxt = [[j if i == j else None for j in range(n)] for i in range(n)]\n    for u, v, w in edges:\n        dist[u][v] = w\n        nxt[u][v] = v\n    for k in range(n):\n        for i in range(n):\n            for j in range(n):\n                if dist[i][k] + dist[k][j] < dist[i][j]:\n                    dist[i][j] = dist[i][k] + dist[k][j]\n                    nxt[i][j] = nxt[i][k]\n    return dist, nxt\nedges = [(0, 1, 3), (0, 3, 7), (1, 0, 8), (1, 2, 2),\n         (2, 0, 5), (2, 3, 1), (3, 0, 2)]\ndist, nxt = floyd_warshall(4, edges)\nfor row in dist:\n    print(row)\n# [0, 3, 5, 6]\n# [5, 0, 2, 3]\n# [3, 6, 0, 1]\n# [2, 5, 7, 0]",
+          "lang": "python"
+        },
+        "La matriz `nxt` guarda el primer paso del mejor camino de i a j, lo que basta para reconstruir cualquier camino:",
+        {
+          "code": "def path(nxt, i, j):\n    if nxt[i][j] is None:\n        return []                         # no path\n    route = [i]\n    while i != j:\n        i = nxt[i][j]\n        route.append(i)\n    return route\nprint(path(nxt, 1, 0))  # [1, 2, 3, 0]",
+          "lang": "python"
+        },
+        "Si tienes muchos nodos y quieres velocidad en Python, el mismo triple bucle se puede escribir con NumPy como una actualización vectorizada por cada k: `d = np.minimum(d, d[:, k, None] + d[None, k, :])`."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Coste",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Tiempo",
+                "O(V³)",
+                "Tres bucles anidados sobre todos los nodos, independientemente del número de aristas."
+              ],
+              [
+                "Espacio",
+                "O(V²)",
+                "La matriz de distancias (más la matriz opcional del siguiente salto). Actualizar en el sitio es seguro."
+              ],
+              [
+                "Tamaño práctico",
+                "de unos cientos a unos pocos miles de nodos",
+                "V = 1000 implica 10⁹ pasos internos, lo que es lento en Python puro pero asumible en C o NumPy."
+              ]
+            ]
+          }
+        },
+        "En grafos dispersos con pesos no negativos, ejecutar Dijkstra desde cada nodo cuesta O(V × (V + E) log V), que es más rápido que O(V³) cuando E es mucho menor que V²."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "note": "Poner k en el bucle interior es el error más común. El algoritmo solo es correcto cuando k es el bucle más externo, porque cada ronda debe terminar de usar los nodos intermedios de 0 a k − 1 antes de permitir el nodo k."
+        },
+        {
+          "ul": [
+            "Ciclos negativos: tras los bucles, si `dist[i][i] < 0` para algún i, el nodo i está en un ciclo negativo y los caminos más cortos que pasan por él no están definidos.",
+            "Clausura transitiva (Warshall): usa booleanos y sustituye min/suma por or/and: `reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])`.",
+            "Caminos minimax y maximin: sustituye `+` por `max` (o `min`) para encontrar, por ejemplo, el camino cuya arista mayor sea lo más pequeña posible.",
+            "Usa un número finito grande en lugar de infinito solo si estás seguro de que la suma de dos de ellos no puede desbordarse; en Python, `float(\"inf\")` es la opción segura.",
+            "Inicializa la diagonal a 0 y, cuando haya aristas paralelas, conserva el peso menor."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Necesidad",
+              "Mejor opción"
+            ],
+            "rows": [
+              [
+                "Todos los pares, grafo denso o pequeño (V hasta unos cientos)",
+                "Floyd-Warshall"
+              ],
+              [
+                "Todos los pares, grafo grande y disperso, pesos no negativos",
+                "Dijkstra desde cada nodo"
+              ],
+              [
+                "Todos los pares, grafo disperso con pesos negativos",
+                "Algoritmo de Johnson"
+              ],
+              [
+                "Un solo origen",
+                "Dijkstra o Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Precalcular una tabla de distancias entre todas las estaciones, almacenes o ciudades para consultas posteriores.",
+            "Análisis de grafos, como la centralidad de cercanía o el diámetro de una red pequeña.",
+            "Problemas de entrevista: encontrar la ciudad con menos vecinos dentro de un umbral de distancia, evaluar divisiones (razones como productos de caminos), prerrequisitos de cursos como clausura transitiva."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puede Floyd-Warshall manejar aristas de peso negativo?",
+      "a": "Sí, siempre que no haya un ciclo negativo. Si lo hay, alguna entrada de la diagonal `dist[i][i]` se vuelve negativa, y así es como se detecta."
+    },
+    {
+      "q": "¿Por qué k debe ser el bucle exterior?",
+      "a": "El algoritmo construye las soluciones por etapas: la etapa k solo permite como paradas intermedias los nodos de 0 a k. Todos los pares deben actualizarse para la etapa k antes de que ningún camino pueda usar el nodo k + 1."
+    },
+    {
+      "q": "¿Es Floyd-Warshall programación dinámica?",
+      "a": "Sí. El estado es el camino más corto de i a j usando nodos intermedios hasta k, y cada etapa se calcula a partir de la anterior. La dimensión k se elimina porque actualizar en el sitio no cambia el resultado."
+    },
+    {
+      "q": "¿Floyd-Warshall o Dijkstra?",
+      "a": "Usa Dijkstra para un solo origen o para grafos grandes y dispersos con pesos no negativos. Usa Floyd-Warshall cuando necesites todos los pares en un grafo pequeño o denso, o cuando haya pesos negativos."
+    }
+  ]
+}

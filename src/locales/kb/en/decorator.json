@@ -1,0 +1,167 @@
+{
+  "title": "Decorator pattern: add behavior by wrapping objects, TypeScript example — cv.cm",
+  "description": "The Decorator design pattern explained: add responsibilities to objects at run time by wrapping them. TypeScript example, function decorators, Java I/O uses.",
+  "h1": "Decorator pattern explained with examples",
+  "answer": "Decorator is a structural design pattern that adds responsibilities to an object dynamically by wrapping it in another object with the same interface. Each decorator forwards calls to the wrapped object and adds its own behavior before or after, such as logging, caching or compression. Because decorators can be stacked in any order, they are a flexible alternative to creating a subclass for every combination of features.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality. Decorator is one of the seven structural patterns in the Gang of Four (GoF) book, where it is also known as Wrapper."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine a data store with `get(key)`. Some callers want logging, some want an in-memory cache, some want both, and some want retries for a slow network back end. With inheritance you would write `LoggingStore`, `CachingStore`, `LoggingCachingStore`, `RetryingCachingStore` and so on: one subclass for every combination, and the combinations are fixed at compile time.",
+        "Decorator turns each feature into a small wrapper class. You build the combination you need at run time by wrapping one object in another, and the code that uses the store sees the same interface no matter how many layers there are."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Component",
+                "The interface shared by real objects and decorators.",
+                "`Store`"
+              ],
+              [
+                "ConcreteComponent",
+                "The original object that does the core work.",
+                "`SlowStore`"
+              ],
+              [
+                "Decorator",
+                "Holds a reference to a Component and implements the same interface by forwarding.",
+                "`StoreDecorator`"
+              ],
+              [
+                "ConcreteDecorator",
+                "Adds behavior before or after forwarding.",
+                "`LoggingStore`, `CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "The second call is logged but answered from the cache, so the database is not read again. If you swap the order, `new CachingStore(new LoggingStore(...))`, only cache misses are logged. The order of decorators changes the behavior, which is both a feature and a common source of confusion."
+      ]
+    },
+    {
+      "h": "Function decorators in TypeScript",
+      "body": [
+        "When the component is a single function, a decorator can be a higher-order function: it takes a function and returns a new function with the same signature and extra behavior.",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript also has decorator syntax, `@name`, applied to classes and class members. It is a language feature (TypeScript 5.0 added support for the standard ECMAScript decorators) that can be used to implement the pattern, but it is not the same thing: the GoF Decorator wraps objects at run time, while `@` decorators modify class definitions."
+        }
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Decorator when:",
+        {
+          "ul": [
+            "You want to add features such as logging, caching, retries, validation, compression or access checks to individual objects, without affecting other objects of the same class.",
+            "Features must be combined freely, and subclassing would produce a class for every combination.",
+            "You cannot or should not change the original class, for example because it comes from a library."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "You need only one fixed extra behavior. Adding it directly, or using one subclass, is simpler.",
+            "Code depends on the object's identity or concrete class. A decorated object is a different object, so checks such as `instanceof SlowStore` or `===` comparisons fail.",
+            "Many small layers would make debugging hard. Deep stacks of wrappers produce long call stacks and make it unclear which layer did what."
+          ]
+        },
+        "Middleware in web frameworks, such as Express or Koa, is a related idea: each layer receives a request, may act on it, and passes it on."
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java I/O: `new BufferedInputStream(new FileInputStream(\"data.bin\"))` wraps a stream in another stream that adds buffering, and both have the `InputStream` interface. The GoF book itself discusses streams as a typical example.",
+            "Java collections: `Collections.unmodifiableList(list)` and `Collections.synchronizedList(list)` return wrappers that add read-only behavior or locking around an existing list.",
+            "Python: function decorators such as `functools.lru_cache` wrap a function and add caching, and `functools.wraps` helps a wrapper keep the wrapped function's name and docstring."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Decorator"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Changes the interface of an object. A decorator keeps the interface and adds behavior."
+              ],
+              [
+                "Proxy",
+                "Has the same structure but a different purpose: it controls access (lazy creation, remote access, permissions), and usually manages the real object's life cycle itself."
+              ],
+              [
+                "Composite",
+                "Also uses recursive composition, but a composite holds many children; a decorator wraps exactly one."
+              ],
+              [
+                "Strategy",
+                "Changes the inside of an object by swapping an algorithm. A decorator changes the outside by wrapping it."
+              ],
+              [
+                "Chain of Responsibility",
+                "Also passes requests through a series of objects, but each handler may stop the request; decorators normally always forward."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between Decorator and inheritance?",
+      "a": "Inheritance adds behavior to a whole class at compile time. A decorator adds behavior to one object at run time, and several decorators can be combined in any order."
+    },
+    {
+      "q": "What is the difference between Decorator and Proxy?",
+      "a": "They have the same shape. A decorator adds features that the client chooses to stack, while a proxy controls access to the real object, often creating it or deciding whether to call it at all."
+    },
+    {
+      "q": "Are TypeScript @decorators the Decorator pattern?",
+      "a": "Not exactly. `@` decorators are a language feature that modifies classes and their members when they are defined. They can be used to implement wrapping, but the GoF pattern is about wrapping objects at run time."
+    },
+    {
+      "q": "Does the order of decorators matter?",
+      "a": "Yes. Each decorator sees the calls before the objects it wraps, so a cache placed outside a logger hides repeated calls from the logger, while a logger outside the cache sees every call."
+    }
+  ]
+}

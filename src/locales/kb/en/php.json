@@ -1,0 +1,183 @@
+{
+  "title": "PHP tutorial: variables, arrays, functions, classes and forms — cv.cm",
+  "description": "Learn modern PHP 8 in one page: run Hello world, variables and types, control flow, functions, arrays, classes and enums, exceptions and a small web page.",
+  "h1": "PHP tutorial for beginners",
+  "answer": "PHP is a server-side scripting language built for the web: a PHP file runs on the server and sends HTML or JSON to the browser. Install PHP, save `<?php echo \"Hello, world\";` as `hello.php` and run `php hello.php`, or start a local server with `php -S localhost:8000`. The core ideas are `$` variables, flexible arrays, functions with type declarations, classes, exceptions, and safe handling of user input.",
+  "sections": [
+    {
+      "h": "What PHP is and what it is used for",
+      "body": [
+        "PHP was created by Rasmus Lerdorf in 1994; the name now stands for \"PHP: Hypertext Preprocessor\". It runs on almost every web host and powers a large share of websites, including WordPress, Drupal and Wikipedia's MediaWiki. Developers use it for content sites, online shops, REST APIs and full web applications with frameworks such as Laravel and Symfony. Modern PHP 8 has a type system, a JIT compiler, enums, attributes and much better performance than older versions."
+      ]
+    },
+    {
+      "h": "Install PHP and run Hello, world",
+      "body": [
+        "Install PHP from php.net or a package manager (`brew install php`, `sudo apt install php-cli`, or a bundle such as XAMPP on Windows). Check it with `php -v`. PHP code goes between `<?php` and an optional closing `?>` tag.",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "In files that contain only PHP code, leave out the closing `?>` tag, so no stray whitespace is sent to the browser by accident."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Variable names start with `$`. Types are dynamic, but you can declare parameter and return types, and `declare(strict_types=1);` at the top of a file stops automatic conversions in function calls.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "64-bit on most systems"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "Double precision"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "Double quotes interpolate, single quotes do not"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "Case-insensitive keyword"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "Ordered map: list and dictionary in one"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "No value"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "The `.` operator joins strings; `+` is only for numbers."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match` (PHP 8.0 and later) compares with `===` and throws an error when no arm matches, unlike the older `switch`, which compares loosely and falls through without `break`."
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "Signature feature: arrays",
+      "body": [
+        "The PHP array is one flexible type that works as a list, a dictionary, a stack or a queue. Keys are integers or strings, and insertion order is kept. A large set of built-in functions works on arrays.",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "Arrays are copied on assignment (copy-on-write), unlike objects, which are passed by handle."
+      ]
+    },
+    {
+      "h": "Classes, constructor promotion and enums",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "Constructor promotion (PHP 8.0) declares and assigns properties in the constructor signature. `readonly` properties (8.1) can be set once, and backed enums (8.1) map cases to strings or integers. Interfaces, abstract classes and traits are also available."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Modern PHP throws exceptions for most errors. Catch `Exception` subclasses for expected failures; `Throwable` also covers engine errors such as `TypeError`.",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: a JSON API endpoint",
+      "body": [
+        "Save this as `api.php`, run `php -S localhost:8000`, and open `http://localhost:8000/api.php?name=Ann`. It reads a query parameter, validates it and returns JSON.",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`, `$_POST` and `$_COOKIE` hold request data. Treat every value in them as untrusted."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Never put user input directly into SQL or HTML. Use prepared statements with PDO (`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`) to prevent SQL injection, and `htmlspecialchars($value)` when printing into HTML to prevent cross-site scripting."
+        },
+        {
+          "ul": [
+            "Comparing with `==`, which converts types; use `===` and `!==`.",
+            "Forgetting the `$` on a variable name, or the semicolon at the end of a statement.",
+            "Storing passwords with `md5` or `sha1`. Use `password_hash` and `password_verify`.",
+            "Using `strlen` on UTF-8 text; it counts bytes. Use `mb_strlen` for characters.",
+            "Running an old PHP version. Use a supported PHP 8 release for security fixes and modern features."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "The official PHP Manual on php.net documents every function, with a language reference and user notes. Learn Composer, the package manager, and PSR coding standards, then try a framework: Laravel or Symfony for applications, or Slim for small APIs. PHPUnit is the standard testing tool."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is PHP still worth learning?",
+      "a": "Yes. It runs a large part of the web, including WordPress sites, and modern PHP 8 with Laravel or Symfony is a productive way to build web applications. Jobs maintaining and building PHP systems are common."
+    },
+    {
+      "q": "Is PHP a frontend or backend language?",
+      "a": "Backend. PHP runs on the server and sends the finished HTML, JSON or files to the browser, which never sees the PHP code."
+    },
+    {
+      "q": "What is the difference between echo and print?",
+      "a": "Both output text. `echo` can take several comma-separated arguments and returns nothing; `print` takes one argument and returns 1. In practice most code uses `echo`."
+    },
+    {
+      "q": "What does declare(strict_types=1) do?",
+      "a": "It makes scalar type declarations strict for function calls made from that file, so passing the string `\"5\"` to an `int` parameter throws a `TypeError` instead of being converted."
+    }
+  ]
+}

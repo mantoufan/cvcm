@@ -1,0 +1,153 @@
+{
+  "title": "Mẫu Prototype: nhân bản đối tượng, sao chép sâu và nông, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Prototype: tạo đối tượng bằng cách nhân bản một thể hiện. Ví dụ clone() trong TypeScript, sao chép sâu và nông, structuredClone và cạm bẫy.",
+  "h1": "Mẫu Prototype giải thích kèm ví dụ",
+  "answer": "Prototype là mẫu thiết kế khởi tạo tạo đối tượng mới bằng cách sao chép một thể hiện có sẵn, tức là nguyên mẫu (prototype), thay vì xây từ đầu bằng `new`. Mỗi nguyên mẫu triển khai một phương thức `clone()`, nên mã client có thể nhân bản một đối tượng mà không cần biết lớp cụ thể của nó. Nó hữu ích khi việc cấu hình đối tượng tốn kém hoặc có nhiều biến thể cài sẵn. Cạm bẫy chính là sao chép nông: các đối tượng lồng bên trong cũng phải được sao chép, nếu không bản sao và bản gốc sẽ dùng chung chúng.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Xác định loại đối tượng cần tạo bằng một thể hiện nguyên mẫu, và tạo đối tượng mới bằng cách sao chép nguyên mẫu này. Prototype là một trong năm mẫu khởi tạo trong cuốn sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Hãy hình dung một trình soạn thảo sơ đồ với bảng màu các hình cài sẵn: hộp cảnh báo đỏ, ghi chú xanh dương, huy hiệu \"xong\" xanh lá. Mỗi mẫu cài sẵn có kích thước, màu sắc, phông chữ và danh sách quy tắc kiểu. Khi người dùng kéo một mẫu vào canvas, trình soạn thảo cần một hình mới, độc lập, bắt đầu với đúng những thiết lập đó.",
+        "Không có mẫu này, trình soạn thảo sẽ cần một hàm tạo riêng cho mỗi mẫu cài sẵn, và phải biết mọi lớp hình cụ thể. Tệ hơn, các mẫu cài sẵn do người dùng định nghĩa lúc chạy hoàn toàn không thể tạo được, vì không có mã nào biết trước thiết lập của chúng. Với Prototype, trình soạn thảo chỉ cần gọi `preset.clone()`."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Prototype",
+                "Khai báo interface để tự nhân bản.",
+                "`Shape` với `clone()`"
+              ],
+              [
+                "ConcretePrototype",
+                "Triển khai `clone()` bằng cách sao chép trạng thái của chính nó.",
+                "`Box`"
+              ],
+              [
+                "Client",
+                "Tạo đối tượng mới bằng cách yêu cầu một nguyên mẫu tự nhân bản.",
+                "mã của trình soạn thảo"
+              ],
+              [
+                "Prototype registry (tùy chọn)",
+                "Lưu các nguyên mẫu có tên để client tra cứu.",
+                "map `palette`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "`clone()` sao chép mọi trường, kể cả đối tượng và mảng lồng bên trong, nên bản sao độc lập với bản gốc:",
+        {
+          "code": "interface Shape {\n  clone(): Shape;\n  describe(): string;\n}\n\nclass Box implements Shape {\n  constructor(\n    public width: number,\n    public height: number,\n    public style: { fill: string; border: string },\n    public tags: string[],\n  ) {}\n\n  clone(): Box {\n    // copy nested objects too, so the clone shares nothing mutable\n    return new Box(this.width, this.height, { ...this.style }, [...this.tags]);\n  }\n\n  describe(): string {\n    return `${this.width}x${this.height} ${this.style.fill} [${this.tags.join(\", \")}]`;\n  }\n}\n\n// A registry of named prototypes, which could also be filled at run time.\nconst palette = new Map<string, Shape>([\n  [\"warning\", new Box(120, 40, { fill: \"red\", border: \"black\" }, [\"alert\"])],\n  [\"note\", new Box(160, 80, { fill: \"blue\", border: \"none\" }, [])],\n]);\n\nconst a = palette.get(\"warning\")!.clone() as Box;\na.width = 200;\na.tags.push(\"urgent\");\nconsole.log(a.describe());                        // 200x40 red [alert, urgent]\nconsole.log(palette.get(\"warning\")!.describe());  // 120x40 red [alert]",
+          "lang": "typescript"
+        },
+        "Trình soạn thảo không bao giờ nêu tên `Box`. Một mẫu cài sẵn mới là một mục mới trong registry, không phải một lớp mới hay một hàm tạo mới."
+      ]
+    },
+    {
+      "h": "Sao chép nông so với sao chép sâu",
+      "body": [
+        "Lỗi phổ biến nhất với Prototype là bản nhân bản dùng chung các đối tượng lồng bên trong với bản gốc. Sao chép bằng spread là nông: nó chỉ sao chép cấp trên cùng.",
+        {
+          "code": "const original = { name: \"note\", style: { fill: \"blue\" } };\n\nconst shallow = { ...original };\nshallow.style.fill = \"green\";\nconsole.log(original.style.fill); // green (shared object was changed)\n\nconst deep = structuredClone(original);\ndeep.style.fill = \"yellow\";\nconsole.log(original.style.fill); // green (unchanged)",
+          "lang": "typescript"
+        },
+        "`structuredClone()` có sẵn trong các trình duyệt hiện đại và Node.js, sao chép sâu dữ liệu thuần, gồm đối tượng lồng, mảng, `Map`, `Set` và `Date`. Nó có hai giới hạn đáng kể ở đây:",
+        {
+          "ul": [
+            "Thể hiện của lớp trở về thành đối tượng thuần: bản sao mất prototype của nó, nên các phương thức như `describe()` bị thiếu.",
+            "Hàm và nút DOM không thể nhân bản; `structuredClone()` ném `DataCloneError`."
+          ]
+        },
+        {
+          "note": "Với lớp, hãy viết phương thức `clone()` tường minh như trong ví dụ chính. Nó ghi rõ các trường nào được sao chép sâu và giữ nguyên lớp của bản sao."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Prototype khi:",
+        {
+          "ul": [
+            "Đối tượng tốn kém để thiết lập (nạp từ tệp, tính toán, cấu hình qua nhiều bước) và bạn cần nhiều bản sao tương tự.",
+            "Tập các biến thể được định nghĩa lúc chạy, ví dụ mẫu cài sẵn hoặc template do người dùng tạo.",
+            "Bạn muốn tạo đối tượng mà không phụ thuộc vào lớp cụ thể của chúng, và không cần cây factory song song."
+          ]
+        },
+        "Tránh nó khi:",
+        {
+          "ul": [
+            "Đối tượng rẻ và đơn giản để tạo. Gọi hàm khởi tạo hoặc hàm factory rõ ràng hơn.",
+            "Đối tượng giữ tài nguyên không nên bị nhân đôi, như tệp đang mở, socket hay ID duy nhất. Nhân bản chúng cần xử lý đặc biệt.",
+            "Đối tượng có tham chiếu vòng và quyền sở hữu phức tạp, khiến việc sao chép sâu đúng rất khó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Bản thân JavaScript dựa trên prototype: `Object.create(proto)` tạo đối tượng mới kế thừa từ đối tượng có sẵn. Điều này liên quan nhưng không giống hệt mẫu thiết kế, vì đối tượng mới ủy thác cho prototype của nó thay vì sao chép nó.",
+            "DOM: `node.cloneNode(true)` sao chép sâu một phần tử và các phần tử con của nó, là cách thông dụng để tạo hàng loạt các mảnh giao diện lặp lại.",
+            "Java: các lớp có thể triển khai interface `Cloneable` và ghi đè `Object.clone()`, dù nhiều lập trình viên Java thích hàm khởi tạo sao chép (copy constructor) hơn.",
+            "Game engine và trình soạn thảo thường tạo đối tượng mới từ các template cấu hình sẵn (thường gọi là prefab)."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "ul": [
+            "Mẫu Abstract Factory: một factory có thể lưu một tập nguyên mẫu và tạo sản phẩm bằng cách nhân bản chúng, thay vì cần một lớp con factory cho mỗi họ.",
+            "Mẫu Factory Method: tạo đối tượng thông qua các lớp con; Prototype tránh những lớp con đó bằng cách sao chép thể hiện.",
+            "Mẫu Composite và mẫu Decorator: các thiết kế dùng nhiều chúng thường hưởng lợi từ Prototype, vì sao chép một cấu trúc đã cấu hình dễ hơn dựng lại.",
+            "Mẫu Memento: cũng sao chép trạng thái của đối tượng, nhưng để khôi phục sau này, không phải để tạo đối tượng độc lập mới."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Prototype có giống prototype của JavaScript không?",
+      "a": "Không. Prototype của JavaScript là cơ chế ngôn ngữ cho kế thừa: một đối tượng ủy thác các thuộc tính thiếu cho prototype của nó. Mẫu Prototype tạo một bản sao độc lập của đối tượng."
+    },
+    {
+      "q": "clone() nên sao chép sâu hay nông?",
+      "a": "Thường là sâu đối với dữ liệu lồng có thể thay đổi, để bản nhân bản và bản gốc không ảnh hưởng lẫn nhau. Giá trị bất biến và tài nguyên chỉ đọc dùng chung có thể yên tâm giữ chung."
+    },
+    {
+      "q": "Tôi có thể dùng structuredClone() để triển khai clone() không?",
+      "a": "Chỉ với đối tượng dữ liệu thuần. Với thể hiện của lớp, `structuredClone()` trả về đối tượng thuần không có phương thức, nên hãy tự viết logic sao chép hoặc dựng lại thể hiện bằng hàm khởi tạo của nó."
+    },
+    {
+      "q": "Khi nào Prototype tốt hơn factory?",
+      "a": "Khi các biến thể nhiều, được cấu hình lúc chạy, hoặc tốn kém để thiết lập. Khi đó nhân bản một thể hiện dựng sẵn đơn giản hơn viết một hàm tạo cho từng biến thể."
+    }
+  ]
+}

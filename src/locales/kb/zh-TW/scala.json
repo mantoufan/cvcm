@@ -1,0 +1,216 @@
+{
+  "title": "Scala 入門教學：模式比對、集合、case class 與 Option — cv.cm",
+  "description": "一步步學 Scala 3：執行 Hello, world、val 與 var、if 與 for 運算式、模式比對、函式、不可變集合、case class 與 Option。",
+  "h1": "Scala 入門教學",
+  "answer": "Scala 是靜態型別的 JVM 語言，結合物件導向與函數式程式設計，廣泛用於 Apache Spark 資料工程與並行後端。它的主要特色是型別推斷、不可變集合、case class 與模式比對。本頁以 Scala 3 介紹環境設定、值、流程控制、函式、集合、trait、enum，以及用 Option、Either 和 Try 處理錯誤。",
+  "sections": [
+    {
+      "h": "Scala 是什麼、可以拿來做什麼",
+      "body": [
+        "Scala 是結合物件導向與函數式程式設計的靜態型別語言，由 EPFL 的 Martin Odersky 創造，主要執行於 Java 虛擬機器（JVM），另有用於瀏覽器的 Scala.js 與產生原生執行檔的 Scala Native。Scala 程式碼可以使用任何 Java 函式庫。",
+        "Scala 廣泛用於資料工程（Apache Spark 就是用 Scala 寫成的）、並行與分散式後端（Akka、Pekko、ZIO、Cats Effect），以及金融與串流系統。本教學使用 Scala 3 語法，允許以縮排表示程式區塊，使用大括號也仍然可行。"
+      ]
+    },
+    {
+      "h": "安裝 Scala 並執行 Hello, world",
+      "body": [
+        "建議使用 Coursier 安裝（`cs setup`），它會一併安裝 `scala` 指令與 JDK。在 Scala 3 中，標註 `@main` 的方法就是程式進入點。",
+        {
+          "code": "// hello.scala\n@main def hello(): Unit =\n  println(\"Hello, world!\")",
+          "lang": "scala"
+        },
+        {
+          "code": "scala run hello.scala\n# Hello, world!",
+          "lang": "shell"
+        },
+        "較大型的專案通常使用 sbt 或 Mill 建置。Scastie（scastie.scala-lang.org）可以直接在瀏覽器中執行 Scala，不必安裝任何東西。"
+      ]
+    },
+    {
+      "h": "值、變數與基本型別",
+      "body": [
+        "用 `val` 宣告不可變的值，用 `var` 宣告可變的變數。型別會自動推斷，也可以寫在冒號後面。慣用的 Scala 幾乎處處都使用 `val`。",
+        {
+          "code": "val name = \"Scala\"            // String\nvar count: Int = 1            // mutable\ncount += 1\nval ratio = 3.0 / 4           // Double: 0.75\nval big = 12345678901L        // Long\nval ok = count > 1            // Boolean\nprintln(s\"$name: count=$count ratio=$ratio ok=$ok\")\n// Scala: count=2 ratio=0.75 ok=true\nprintln(f\"pi is ${math.Pi}%.3f\")   // pi is 3.142",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32 位元有號整數"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64 位元有號整數"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64 位元浮點數"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` 或 `false`"
+              ],
+              [
+                "`String`",
+                "`\"hi\"`",
+                "Java 字串；支援 `s\"...\"` 與 `f\"...\"` 插值器"
+              ],
+              [
+                "`Unit`",
+                "`()`",
+                "類似 `void`：沒有有意義的值"
+              ]
+            ]
+          }
+        },
+        "Scala 中一切都是運算式：`if`、程式區塊與 `match` 都會回傳值，所以你很少需要暫時用的 `var`。"
+      ]
+    },
+    {
+      "h": "流程控制與模式比對",
+      "body": [
+        "`if` 會回傳值。`for` 可以走訪範圍與集合，搭配 `yield` 則會產生新的集合。`match` 是 Scala 強大的模式比對，也是這個語言的招牌功能。",
+        {
+          "code": "val n = 7\nval parity = if n % 2 == 0 then \"even\" else \"odd\"\nprintln(parity)                        // odd\nfor i <- 1 to 3 do print(s\"$i \")       // 1 2 3\nprintln()\nval squares = for i <- 1 to 4 yield i * i\nprintln(squares)                       // Vector(1, 4, 9, 16)\ndef describe(x: Any): String = x match\n  case 0             => \"zero\"\n  case i: Int if i < 0 => \"negative int\"\n  case i: Int        => s\"int $i\"\n  case s: String     => s\"string of length ${s.length}\"\n  case (a, b)        => s\"pair $a and $b\"\n  case _             => \"something else\"\nprintln(describe(-5))                  // negative int\nprintln(describe(\"hey\"))               // string of length 3\nprintln(describe((1, \"x\")))            // pair 1 and x",
+          "lang": "scala"
+        },
+        "`1 to 3` 包含 3；`1 until 3` 則在 3 之前停止。最後的 `case _` 是萬用字元，可比對任何值；少了它，沒有比對到的值會拋出 `MatchError`。"
+      ]
+    },
+    {
+      "h": "函式與高階函式",
+      "body": [
+        "方法用 `def` 定義。函式是值：可以儲存、當作引數傳遞，也可以被回傳。參數可以有預設值，呼叫時也可以使用具名引數。",
+        {
+          "code": "def add(a: Int, b: Int): Int = a + b\ndef greet(name: String, greeting: String = \"Hello\"): String =\n  s\"$greeting, $name!\"\nval double = (x: Int) => x * 2        // function value\ndef applyTwice(f: Int => Int, x: Int): Int = f(f(x))\nprintln(add(2, 3))                    // 5\nprintln(greet(\"Ann\"))                 // Hello, Ann!\nprintln(greet(\"Ann\", greeting = \"Hi\")) // Hi, Ann!\nprintln(applyTwice(double, 5))        // 20\nprintln(List(1, 2, 3, 4).filter(_ % 2 == 0).map(_ * 10)) // List(20, 40)",
+          "lang": "scala"
+        },
+        "`_ * 10` 中的底線是單參數 Lambda `x => x * 10` 的簡寫。"
+      ]
+    },
+    {
+      "h": "集合",
+      "body": [
+        "標準集合預設是不可變的：`map`、`filter` 與 `:+` 等操作會回傳新集合，原本的集合保持不變。可變版本放在 `scala.collection.mutable`。",
+        {
+          "code": "val nums = List(5, 3, 8)\nval more = nums :+ 1                  // List(5, 3, 8, 1); nums unchanged\nprintln(more.sorted)                  // List(1, 3, 5, 8)\nprintln(nums.sum)                     // 16\nval v = Vector(\"a\", \"b\", \"c\")         // fast indexed access\nprintln(v(1))                         // b\nval ages = Map(\"Ann\" -> 31, \"Bo\" -> 25)\nprintln(ages(\"Ann\"))                  // 31\nprintln(ages.get(\"Zed\"))              // None\nprintln(ages.getOrElse(\"Zed\", 0))     // 0\nval unique = Set(1, 2, 2, 3)\nprintln(unique.size)                  // 3\nval words = List(\"apple\", \"avocado\", \"banana\")\nprintln(words.groupBy(_.head)('a'))  // List(apple, avocado)",
+          "lang": "scala"
+        },
+        {
+          "table": {
+            "head": [
+              "集合",
+              "適用情境"
+            ],
+            "rows": [
+              [
+                "`List`",
+                "不可變鏈結串列；在前端新增與存取頭尾都很快"
+              ],
+              [
+                "`Vector`",
+                "不可變的索引序列；很好的通用預設選擇"
+              ],
+              [
+                "`Map`",
+                "鍵值查找"
+              ],
+              [
+                "`Set`",
+                "元素不重複與成員檢查"
+              ],
+              [
+                "`Array`",
+                "可變、固定大小的 Java 陣列"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Case class、trait 與 enum",
+      "body": [
+        "`case class` 是不可變的資料型別，會自動取得相等比較、`toString`、`copy` 與模式比對支援。`trait` 類似介面，但可以包含程式碼。Scala 3 新增了 `enum`，用於代數資料型別。",
+        {
+          "code": "trait Shape:\n  def area: Double\ncase class Circle(r: Double) extends Shape:\n  def area: Double = math.Pi * r * r\ncase class Rect(w: Double, h: Double) extends Shape:\n  def area: Double = w * h\nenum Color:\n  case Red, Green, Blue\n@main def shapes(): Unit =\n  val all: List[Shape] = List(Circle(1), Rect(2, 3))\n  all.foreach(s => println(f\"$s area=${s.area}%.2f\"))\n  // Circle(1.0) area=3.14\n  // Rect(2.0,3.0) area=6.00\n  val r = Rect(2, 3)\n  println(r == Rect(2, 3))            // true\n  println(r.copy(h = 10))             // Rect(2.0,10.0)\n  println(Color.values.toList)        // List(Red, Green, Blue)",
+          "lang": "scala"
+        },
+        "其他招牌功能還包括 `given` 與 `using`（情境參數，以前稱為 implicit）、擴充方法、opaque type，以及 `Int | String` 這類聯集型別。"
+      ]
+    },
+    {
+      "h": "用 Option、Either 與 Try 處理錯誤",
+      "body": [
+        "Scala 支援 `try`、`catch` 與 `finally`，但慣用的寫法是用型別來表示失敗。`Option` 不是 `Some(value)` 就是 `None`；`Either` 持有 `Left` 錯誤或 `Right` 結果；`Try` 則把例外包裝成 `Failure`。",
+        {
+          "code": "import scala.util.{Try, Success, Failure}\ndef parseInt(s: String): Option[Int] = s.toIntOption\ndef safeDivide(a: Int, b: Int): Either[String, Int] =\n  if b == 0 then Left(\"division by zero\") else Right(a / b)\nprintln(parseInt(\"42\"))               // Some(42)\nprintln(parseInt(\"x\"))                // None\nprintln(safeDivide(10, 2))            // Right(5)\nprintln(safeDivide(1, 0))             // Left(division by zero)\nTry(\"abc\".toInt) match\n  case Success(n) => println(s\"got $n\")\n  case Failure(e) => println(s\"failed: ${e.getClass.getSimpleName}\")\n// failed: NumberFormatException",
+          "lang": "scala"
+        },
+        {
+          "note": "Scala 程式碼中請避免使用 `null`，也避免對 `Option` 呼叫 `.get`，因為遇到 `None` 會拋出例外。請改用 `getOrElse`、`map`、`match` 或 `for` 推導式。"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：成績報告",
+      "body": [
+        "這個程式解析 `name,score` 格式的每一行，略過無效的行，並印出每位學生的平均分數。它用到 case class、`Option`、`groupBy` 與字串格式化。",
+        {
+          "code": "case class Score(name: String, value: Int)\ndef parse(line: String): Option[Score] =\n  line.split(\",\").map(_.trim) match\n    case Array(name, v) => v.toIntOption.map(Score(name, _))\n    case _              => None\n@main def report(): Unit =\n  val lines = List(\"ann, 90\", \"bo, 70\", \"ann, 80\", \"broken line\", \"bo, x\")\n  val scores = lines.flatMap(parse)\n  val averages = scores.groupBy(_.name).view.mapValues { list =>\n    list.map(_.value).sum.toDouble / list.size\n  }.toList.sortBy(_._1)\n  for (name, avg) <- averages do\n    println(f\"$name%-4s $avg%.1f\")\n// ann  85.0\n// bo   70.0",
+          "lang": "scala"
+        },
+        {
+          "note": "初學者常見的錯誤：在 Scala 3 縮排語法中混用 Tab 與不一致的縮排；整數除法（`3 / 4` 結果是 `0`，要寫成 `3.0 / 4`）；習慣性使用 `var` 與可變集合；對 `Option` 呼叫 `.get`；以及寫出不完整的 `match` 運算式。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "docs.scala-lang.org 上的 Scala 3 Book，從基礎到情境抽象都有涵蓋。",
+            "Scala Toolkit，用於處理檔案、JSON 與 HTTP 等日常任務。",
+            "若想用 Scala 做資料處理，可參考 Apache Spark 文件。",
+            "scala-lang.org 連結的課程，包括 EPFL 的函數式程式設計課程。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "我該學 Scala 2 還是 Scala 3？",
+      "a": "新專案請學 Scala 3。Scala 2.13 仍存在於許多既有程式碼庫中，包括 Spark 生態系的部分內容，而且大多數核心概念是相通的。"
+    },
+    {
+      "q": "Scala 是函數式語言嗎？",
+      "a": "Scala 同時是物件導向與函數式語言。每個值都是物件，但函式是一等值，集合預設不可變，模式比對也是核心。"
+    },
+    {
+      "q": "Scala 的 val 和 var 有什麼差別？",
+      "a": "`val` 定義無法重新指派的值，`var` 定義可以重新指派的變數。慣用的 Scala 偏好 `val` 搭配不可變集合。"
+    },
+    {
+      "q": "什麼是 case class？",
+      "a": "case class 是專為不可變資料設計的類別。編譯器會產生結構相等比較、易讀的 `toString`、`copy` 方法，以及模式比對支援。"
+    },
+    {
+      "q": "Scala 現在還有人用嗎？",
+      "a": "有。它仍是 Apache Spark、串流與資料平台，以及 ZIO、Cats Effect 等函數式後端函式庫的核心語言。"
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "title": "SQL 入门教程：SELECT、JOIN、GROUP BY 与事务 — cv.cm",
+  "description": "一步步学 SQL：建表、带 WHERE 和 ORDER BY 的 SELECT、连接、GROUP BY、CTE、窗口函数、事务，以及 PostgreSQL、MySQL 与 SQLite 的区别。",
+  "h1": "SQL 入门教程",
+  "answer": "SQL 是在 PostgreSQL、MySQL、SQLite 等关系型数据库中创建、查询和修改数据的标准语言。你编写 SELECT、INSERT、UPDATE、DELETE 等声明式语句，由数据库决定如何执行。本页讲解表设计、数据过滤、连接、分组、子查询、窗口函数和事务，并列出 PostgreSQL、MySQL 和 SQLite 的主要差异。",
+  "sections": [
+    {
+      "h": "SQL 是什么，用来做什么",
+      "body": [
+        "SQL（Structured Query Language，结构化查询语言）是操作关系型数据库的标准语言，数据以行和列组成的表格形式存储。你只需描述想要什么数据，由数据库引擎决定如何查找。SQL 由 ISO/IEC 9075 标准化，所有主流数据库都实现了标准的核心部分，并各有自己的扩展。",
+        "开发者、数据分析师、数据工程师和数据库管理员每天都在使用 SQL：存储应用数据、回答业务问题、生成报表以及为数据管道提供数据。最常见的开源引擎是 PostgreSQL、MySQL（及其分支 MariaDB）和 SQLite；商业数据库有 Microsoft SQL Server 和 Oracle Database。"
+      ]
+    },
+    {
+      "h": "准备数据库并运行第一条查询",
+      "body": [
+        "最简单的入门方式是 SQLite，它是无需服务器、存放在单个文件中的数据库，macOS 和大多数 Linux 系统已预装。PostgreSQL 和 MySQL 以服务器方式运行，并自带命令行客户端 `psql` 和 `mysql`。",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "SQL 关键字不区分大小写。关键字用大写、名称用小写是常见的约定，可以让查询更易读。语句以分号结尾，`--` 开始一行注释。"
+      ]
+    },
+    {
+      "h": "建表：数据类型与约束",
+      "body": [
+        "表定义列出各列、列的类型，以及保证数据有效的约束。本页的所有示例都使用 `customers` 和 `orders` 两张表。",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "存储内容",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "整数",
+                "大 ID 请使用 `BIGINT`"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "精确小数",
+                "用于金额，切勿使用 `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "字符串",
+                "`TEXT` 不在标准中，但被广泛支持"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "日期和时间",
+                "字面量写成 `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "真或假",
+                "MySQL 将其视为 `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "约束包括 `PRIMARY KEY`（行的唯一标识）、`NOT NULL`、`UNIQUE`、`CHECK (condition)` 以及 `FOREIGN KEY` / `REFERENCES`（值必须存在于另一张表中）。字符串使用单引号；在标准 SQL 中，双引号用于标识符。"
+      ]
+    },
+    {
+      "h": "SELECT：过滤、排序与限制行数",
+      "body": [
+        "`SELECT` 用于读取数据。`WHERE` 过滤行，`ORDER BY` 排序，`LIMIT`（或标准的 `FETCH FIRST n ROWS ONLY`）限制返回的行数。",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` 表示未知，所以 `city = NULL` 永远不为真。请始终使用 `IS NULL` 或 `IS NOT NULL`。另外要注意，查询的逻辑执行顺序是 `FROM`、`WHERE`、`GROUP BY`、`HAVING`、`SELECT`、`ORDER BY`，因此在 `SELECT` 中定义的列别名不能用在 `WHERE` 里。"
+        }
+      ]
+    },
+    {
+      "h": "JOIN：连接多张表",
+      "body": [
+        "连接（join）使用条件（通常是外键）匹配两张表的行。`INNER JOIN`（或直接写 `JOIN`）只保留匹配的行；`LEFT JOIN` 保留左表的所有行，并用 `NULL` 填充缺失的列。",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "连接类型",
+              "返回结果"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "两张表中都匹配的行"
+              ],
+              [
+                "`LEFT JOIN`",
+                "左表所有行，加上右表中匹配的行，没有匹配则为 `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "右表所有行，加上左表中匹配的行，没有匹配则为 `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "两侧的所有行；MySQL 不支持"
+              ],
+              [
+                "`CROSS JOIN`",
+                "行的所有组合（笛卡尔积）"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY 与聚合函数",
+      "body": [
+        "`COUNT`、`SUM`、`AVG`、`MIN`、`MAX` 等聚合函数把多行汇总为一行。`GROUP BY` 让每个分组产生一行结果，`HAVING` 在聚合之后过滤分组，而 `WHERE` 在聚合之前过滤行。",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` 统计行数，而 `COUNT(column)` 只统计非空值，这就是上面 Cy 的订单数为 0 的原因。`COALESCE` 返回第一个非空的参数。"
+      ]
+    },
+    {
+      "h": "子查询、CTE 与窗口函数",
+      "body": [
+        "子查询是嵌套在另一个查询里的查询。公用表表达式（CTE）用 `WITH` 编写，可以给子查询命名，让冗长的查询更易读。`ROW_NUMBER`、`RANK`、`SUM(...) OVER` 等窗口函数在相关行之间计算数值，而不会把它们折叠成分组。",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "PostgreSQL、SQLite 3.25 及以上版本、MySQL 8.0 及以上版本都支持 CTE 和窗口函数。"
+      ]
+    },
+    {
+      "h": "修改数据：INSERT、UPDATE、DELETE 与事务",
+      "body": [
+        "`UPDATE` 和 `DELETE` 会影响所有满足 `WHERE` 子句的行。事务把多条语句组合在一起，要么全部成功，要么全部失败。",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "不带 `WHERE` 的 `UPDATE` 或 `DELETE` 会修改表中的每一行。请先把同样的条件作为 `SELECT` 运行一遍，看看会影响哪些行，并尽可能在事务中操作。"
+        }
+      ]
+    },
+    {
+      "h": "PostgreSQL、MySQL 与 SQLite 的差异",
+      "body": [
+        "SQL 的核心部分是可移植的，但各引擎在细节上有所不同。以下是初学者最先遇到的差异。",
+        {
+          "table": {
+            "head": [
+              "特性",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "自增 ID",
+                "`GENERATED ALWAYS AS IDENTITY` 或 `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "名称加引号",
+                "`\"name\"`",
+                "名称两侧加反引号",
+                "`\"name\"`"
+              ],
+              [
+                "限制行数",
+                "`LIMIT n` 或 `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "字符串拼接",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "布尔值",
+                "真正的 `BOOLEAN` 类型",
+                "`TINYINT(1)`",
+                "存储为 0 和 1"
+              ],
+              [
+                "类型检查",
+                "严格",
+                "默认的严格模式下为严格",
+                "灵活，除非表声明为 `STRICT`"
+              ],
+              [
+                "Upsert（存在则更新）",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "其他差异还包括日期函数（PostgreSQL 和 MySQL 用 `NOW()`，SQLite 用 `datetime('now')`）、字符串比较是否区分大小写，以及 MySQL 不支持的全外连接。"
+      ]
+    },
+    {
+      "h": "常见错误与后续学习",
+      "body": [
+        {
+          "ul": [
+            "通过拼接用户输入来构造查询，这会导致 SQL 注入。请始终使用编程语言提供的参数化查询（占位符，如 `?` 或 `$1`）。",
+            "在分组查询中选择既不在 `GROUP BY` 中、也不在聚合函数内的列。",
+            "用 `FLOAT` 而不是 `DECIMAL` 存金额。",
+            "忘记给连接和过滤中用到的列建索引；`CREATE INDEX idx_orders_customer ON orders(customer_id);` 和 `EXPLAIN` 对此很有帮助。",
+            "以为不写 `ORDER BY` 时行会按固定顺序返回。"
+          ]
+        },
+        "进一步学习时，请阅读官方手册：PostgreSQL 教程、MySQL 参考手册和 SQLite 的 SQL 语言参考。可以在真实数据集上练习：先用白话写出问题，再把每个问题转换成查询。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SQL 是编程语言吗？",
+      "a": "SQL 是声明式查询语言：你描述想要的结果，而不是计算步骤。PL/pgSQL、T-SQL 等厂商扩展增加了变量、循环和存储过程。"
+    },
+    {
+      "q": "初学者应该从哪个数据库开始？",
+      "a": "SQLite 不需要服务器，非常适合学习。PostgreSQL 适合学习符合标准的 SQL 并用于真实应用，MySQL 则常见于虚拟主机。"
+    },
+    {
+      "q": "WHERE 和 HAVING 有什么区别？",
+      "a": "`WHERE` 在分组之前过滤单独的行，`HAVING` 在聚合函数计算之后过滤分组。"
+    },
+    {
+      "q": "INNER JOIN 和 LEFT JOIN 有什么区别？",
+      "a": "`INNER JOIN` 只返回在两张表中都有匹配的行。`LEFT JOIN` 返回左表的所有行，没有匹配时右表的列用 `NULL` 填充。"
+    },
+    {
+      "q": "如何防止 SQL 注入？",
+      "a": "绝不要把用户输入直接插入 SQL 文本。使用参数化查询或预编译语句，让数据库分别接收查询语句和参数值。"
+    }
+  ]
+}

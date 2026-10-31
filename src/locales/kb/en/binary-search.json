@@ -1,0 +1,205 @@
+{
+  "title": "Binary search explained: how it works, Python code and complexity — cv.cm",
+  "description": "Binary search finds a value in a sorted list in O(log n) steps by halving the range. Step-by-step trace, Python code, bisect, variants and off-by-one bugs.",
+  "h1": "Binary search explained: how it works, code and complexity",
+  "answer": "Binary search finds a target in a sorted array by repeatedly checking the middle element and discarding the half that cannot contain the target. Each step halves the search range, so it needs at most about log₂ n + 1 comparisons: 20 for a million items. It runs in O(log n) time and O(1) extra space, but only works on data that is sorted (or, more generally, monotonic).",
+  "sections": [
+    {
+      "h": "What problem binary search solves",
+      "body": [
+        "Linear search checks items one by one and needs up to n comparisons. If the data is sorted, you can do much better: compare the target with the middle item, and you immediately know which half to keep. This is the same idea as looking up a word in a paper dictionary.",
+        "Binary search also works on anything that is monotonic, not only arrays. If a yes/no condition is false for all small values and true for all large ones, binary search finds the boundary. This is called binary search on the answer."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Search for 23 in the sorted list `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]` (indexes 0 to 9). Keep two indexes, `lo` and `hi`, that bound the range still to be checked.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "lo",
+              "hi",
+              "mid",
+              "items[mid]",
+              "Decision"
+            ],
+            "rows": [
+              [
+                "1",
+                "0",
+                "9",
+                "4",
+                "16",
+                "16 < 23, search right: lo = 5"
+              ],
+              [
+                "2",
+                "5",
+                "9",
+                "7",
+                "56",
+                "56 > 23, search left: hi = 6"
+              ],
+              [
+                "3",
+                "5",
+                "6",
+                "5",
+                "23",
+                "found at index 5"
+              ]
+            ]
+          }
+        },
+        "Three comparisons instead of six for a linear scan. For a list of a million items, binary search needs at most 20."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "The iterative version below uses a closed range `[lo, hi]`: both ends are still candidates. The loop runs while the range is not empty.",
+        {
+          "code": "def binary_search(items, target):\n    lo, hi = 0, len(items) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:\n            return mid\n        if items[mid] < target:\n            lo = mid + 1          # target is in the right half\n        else:\n            hi = mid - 1          # target is in the left half\n    return -1                     # not found\ndata = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]\nprint(binary_search(data, 23))   # 5\nprint(binary_search(data, 7))    # -1",
+          "lang": "python"
+        },
+        "In real Python code, use the standard library module `bisect`. `bisect_left` returns the leftmost position where the target could be inserted while keeping the list sorted, which also tells you whether it is present.",
+        {
+          "code": "from bisect import bisect_left, bisect_right, insort\ndata = [1, 3, 3, 3, 7, 9]\ni = bisect_left(data, 3)\nprint(i, bisect_right(data, 3))   # 1 4  (3 occupies indexes 1..3)\nprint(i < len(data) and data[i] == 3)   # True: 3 is present\nprint(bisect_left(data, 5))       # 4: insertion point for 5\ninsort(data, 5)\nprint(data)                       # [1, 3, 3, 3, 5, 7, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Best",
+                "O(1)",
+                "the first middle element is the target"
+              ],
+              [
+                "Average",
+                "O(log n)",
+                "the range halves on every step"
+              ],
+              [
+                "Worst",
+                "O(log n)",
+                "about log₂ n + 1 steps until the range is empty"
+              ],
+              [
+                "Space, iterative",
+                "O(1)",
+                "only two or three indexes"
+              ],
+              [
+                "Space, recursive",
+                "O(log n)",
+                "one stack frame per halving"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Binary search requires a sorted array with O(1) access by index. On a linked list, reaching the middle costs O(n), which removes the benefit. Sorting first costs O(n log n), so for a single lookup on unsorted data, a linear scan is cheaper."
+        }
+      ]
+    },
+    {
+      "h": "Variants: first, last and binary search on the answer",
+      "body": [
+        "Many problems ask not whether a value exists but where a boundary is: the first index with a value at least x, the last occurrence of x, or the smallest number that satisfies a condition. Use a half-open range `[lo, hi)` and never stop early.",
+        {
+          "code": "def first_true(lo, hi, ok):\n    \"\"\"Smallest x in [lo, hi) with ok(x) True, or hi if none.\n    ok must be False...False True...True over the range.\"\"\"\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if ok(mid):\n            hi = mid          # mid may be the answer, keep it\n        else:\n            lo = mid + 1      # mid is too small\n    return lo\ndata = [1, 3, 3, 3, 7, 9]\nprint(first_true(0, len(data), lambda i: data[i] >= 3))   # 1\n# Integer square root of 200: largest x with x*x <= 200\nprint(first_true(0, 201, lambda x: x * x > 200) - 1)      # 14",
+          "lang": "python"
+        },
+        {
+          "ul": [
+            "Lower bound (first index with value ≥ x): `bisect_left`.",
+            "Upper bound (first index with value > x): `bisect_right`.",
+            "Count of x in a sorted list: `bisect_right(a, x) - bisect_left(a, x)`.",
+            "Search in a rotated sorted array, peak finding and minimizing a maximum (for example, the smallest capacity that ships all packages in D days) are classic interview variants."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Mixing range conventions. With a closed range use `lo <= hi` and `hi = mid - 1`; with a half-open range use `lo < hi` and `hi = mid`. Mixing them causes infinite loops or skipped elements.",
+            "Writing `lo = mid` instead of `lo = mid + 1`. When `hi = lo + 1`, mid equals lo and the loop never ends.",
+            "Running binary search on unsorted data. It returns wrong answers without any error.",
+            "Integer overflow in `(lo + hi) / 2` in languages with fixed-size integers such as Java, C and C++. Use `lo + (hi - lo) / 2`. Python integers do not overflow, so `(lo + hi) // 2` is safe.",
+            "Returning the first match found when the task asks for the first occurrence among duplicates."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use binary search",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "Better choice"
+            ],
+            "rows": [
+              [
+                "Many lookups in data that rarely changes",
+                "sort once, then binary search"
+              ],
+              [
+                "Exact-match lookups only, data changes often",
+                "hash table (`set`, `dict`), O(1) average"
+              ],
+              [
+                "Sorted data with frequent inserts and range queries",
+                "balanced binary search tree or B-tree"
+              ],
+              [
+                "One lookup in unsorted data",
+                "linear search, O(n)"
+              ]
+            ]
+          }
+        },
+        "Real-world uses include database and file-system indexes (B-trees generalize the idea), `git bisect` for finding the commit that introduced a bug, looking up a value in a sorted table of ranges such as IP blocks, and many numeric problems where you search for a threshold."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the time complexity of binary search?",
+      "a": "O(log n) in the average and worst case, and O(1) in the best case. Each comparison halves the remaining range, so 1,000,000 items need at most 20 comparisons."
+    },
+    {
+      "q": "Does binary search need a sorted array?",
+      "a": "Yes. The array must be sorted by the same order you compare with, or the condition you test must be monotonic. On unsorted data the result is unreliable."
+    },
+    {
+      "q": "What does bisect do in Python?",
+      "a": "The `bisect` module performs binary search on sorted lists. `bisect_left` and `bisect_right` return insertion points, and `insort` inserts while keeping the list sorted (the search is O(log n), the insertion itself is O(n))."
+    },
+    {
+      "q": "Is recursive or iterative binary search better?",
+      "a": "The iterative version is usually preferred because it uses O(1) space and avoids recursion overhead. The recursive version is equally correct and uses O(log n) stack space."
+    },
+    {
+      "q": "Why does binary search use lo + (hi - lo) / 2?",
+      "a": "In languages with fixed-size integers, `lo + hi` can overflow when both are large. `lo + (hi - lo) / 2` gives the same middle without overflow. In Python this is not needed."
+    }
+  ]
+}

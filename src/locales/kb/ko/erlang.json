@@ -1,0 +1,189 @@
+{
+  "title": "Erlang 튜토리얼: 패턴 매칭, 재귀, 프로세스, OTP — cv.cm",
+  "description": "Erlang을 단계별로 배웁니다. 모듈 컴파일, 변수와 타입, 패턴 매칭, 가드, 재귀, 리스트와 맵, 프로세스, OTP, let-it-crash 오류 처리까지 다룹니다.",
+  "h1": "초보자를 위한 Erlang 기초 튜토리얼",
+  "answer": "Erlang은 전화 교환기와 메시징 서버처럼 멈추지 않아야 하는 시스템을 위해 Ericsson에서 만든 함수형 동시성 언어입니다. 프로그램은 BEAM 가상 머신에서 메시지로 통신하는 수많은 경량 프로세스로 실행되고, 실패하면 슈퍼바이저가 재시작합니다. 이 페이지에서는 모듈 컴파일, 타입, 패턴 매칭, 재귀, 리스트와 맵, 프로세스, OTP, 오류 처리를 설명합니다.",
+  "sections": [
+    {
+      "h": "Erlang이란 무엇이며 어디에 쓰이는가",
+      "body": [
+        "Erlang은 1980년대에 Ericsson에서 멈추지 않고 동작해야 하는 전화 교환기를 위해 설계한 동적 타입 함수형 언어입니다. 1998년에 오픈 소스로 공개되었습니다. Erlang 프로그램은 BEAM 가상 머신에서 아무것도 공유하지 않고 메시지로 통신하는 수많은 경량 프로세스로 실행되며, 장애에 강한 시스템을 만들기 위한 라이브러리와 설계 원칙 모음인 OTP(Open Telecom Platform)가 함께 제공됩니다.",
+        "Erlang은 통신 장비, 메시징 플랫폼(WhatsApp의 백엔드가 Erlang으로 만들어진 것으로 유명합니다), RabbitMQ 같은 메시지 브로커, Riak과 CouchDB 같은 데이터베이스, 결제와 IoT 시스템에 쓰입니다. Elixir와 Gleam도 BEAM에서 실행되며 Erlang 라이브러리를 직접 사용할 수 있습니다."
+      ]
+    },
+    {
+      "h": "Erlang 설치와 Hello, world 실행",
+      "body": [
+        "erlang.org 또는 패키지 관리자(예: `brew install erlang` 또는 `apt install erlang`)로 Erlang/OTP를 설치합니다. 코드는 모듈에 들어 있으며, `name.erl` 파일 하나가 모듈 `name`을 정의하고 내보내는 함수를 나열합니다.",
+        {
+          "code": "% hello.erl\n-module(hello).\n-export([main/0]).\n\nmain() ->\n    io:format(\"Hello, world!~n\").",
+          "lang": "erlang"
+        },
+        {
+          "code": "erlc hello.erl                          # compiles to hello.beam\nerl -noshell -s hello main -s init stop\n# Hello, world!\nerl                                     # interactive shell; c(hello). then hello:main().",
+          "lang": "shell"
+        },
+        "주석은 `%`로 시작합니다. 포맷 문자열의 `~n`은 개행이고 `~p`는 모든 텀을 출력합니다. 셸에서는 모든 표현식이 마침표로 끝납니다."
+      ]
+    },
+    {
+      "h": "구두점, 변수, 기본 타입",
+      "body": [
+        "초보자에게 가장 놀라운 점은 Erlang의 구두점입니다. 쉼표는 표현식을, 세미콜론은 절을 구분하고, 마침표는 함수나 셸 명령을 끝냅니다. 변수는 대문자나 밑줄로 시작하며 한 번만 바인딩할 수 있습니다.",
+        {
+          "code": "1> Name = \"Erlang\".\n\"Erlang\"\n2> Year = 1986, Next = Year + 1.\n1987\n3> Year = 2000.\n** exception error: no match of right hand side value 2000\n4> 10 / 4.\n2.5\n5> {10 div 4, 10 rem 4}.\n{2,2}\n6> is_atom(ok).\ntrue\n7> <<\"binary string\">>.\n<<\"binary string\">>",
+          "lang": "erlang"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `16#FF`",
+                "임의 정밀도. 16진수는 `16#`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64비트 배정밀도"
+              ],
+              [
+                "atom",
+                "`ok`, `error`, `'Hello'`",
+                "이름 있는 상수. 소문자로 시작하거나 따옴표로 묶음"
+              ],
+              [
+                "tuple",
+                "`{ok, 42}`",
+                "고정 크기의 값 묶음"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "연결 리스트. `\"abc\"` 같은 문자열은 정수 리스트"
+              ],
+              [
+                "map",
+                "`#{name => \"Ann\"}`",
+                "키-값 저장소"
+              ],
+              [
+                "binary",
+                "`<<\"text\">>`",
+                "바이트 시퀀스로, 텍스트를 효율적으로 저장하는 방법"
+              ]
+            ]
+          }
+        },
+        "`true`와 `false`는 별도의 타입이 아니라 아톰입니다. `=`는 대입이 아니라 매치이므로 3번째 줄이 실패합니다. `Year`가 이미 1986에 바인딩되어 있기 때문입니다."
+      ]
+    },
+    {
+      "h": "패턴 매칭, case, 가드",
+      "body": [
+        "패턴 매칭은 튜플, 리스트, 맵을 풀어 헤치고 어느 절을 실행할지 선택합니다. `when`으로 쓰는 가드는 절에 조건을 더합니다. `case`와 `if`는 값을 반환하는 표현식입니다.",
+        {
+          "code": "-module(match).\n-export([describe/1, grade/1, demo/0]).\n\ndescribe({ok, Value}) -> io_lib:format(\"ok: ~p\", [Value]);\ndescribe({error, Reason}) -> io_lib:format(\"error: ~p\", [Reason]);\ndescribe(_Other) -> \"unknown\".\n\ngrade(Score) when Score >= 90 -> a;\ngrade(Score) when Score >= 70 -> b;\ngrade(_) -> c.\n\ndemo() ->\n    [First | Rest] = [1, 2, 3],\n    #{name := Name} = #{name => \"Ann\", age => 31},\n    Size = case length(Rest) of\n               0 -> empty;\n               N when N < 5 -> small;\n               _ -> large\n           end,\n    io:format(\"~p ~p ~s ~p ~p~n\", [First, Rest, Name, Size, grade(75)]),\n    io:format(\"~s~n\", [describe({error, timeout})]).\n% match:demo() prints:\n% 1 [2,3] Ann small b\n% error: timeout",
+          "lang": "erlang"
+        },
+        "마지막을 제외한 모든 절은 `;`로 끝나고, 마지막 절은 `.`로 끝납니다. 맞는 절이 없으면 프로세스는 `function_clause` 또는 `case_clause` 오류를 발생시킵니다."
+      ]
+    },
+    {
+      "h": "함수, 재귀, 고차 함수",
+      "body": [
+        "함수는 이름과 인자 개수(arity)로 식별하며 `name/Arity`로 씁니다. 반복문은 없고 반복은 재귀로 하며, 꼬리 재귀 함수는 일정한 스택 공간에서 실행됩니다. 익명 함수는 `fun ... end`로 씁니다.",
+        {
+          "code": "-module(fns).\n-export([factorial/1, sum/1, demo/0]).\n\nfactorial(0) -> 1;\nfactorial(N) when N > 0 -> N * factorial(N - 1).\n\nsum(List) -> sum(List, 0).          % public wrapper\nsum([], Acc) -> Acc;                 % tail-recursive helper sum/2\nsum([H | T], Acc) -> sum(T, Acc + H).\n\ndemo() ->\n    Double = fun(X) -> X * 2 end,\n    io:format(\"~p~n\", [factorial(20)]),                    % 2432902008176640000\n    io:format(\"~p~n\", [sum([1, 2, 3, 4])]),                % 10\n    io:format(\"~p~n\", [Double(21)]),                       % 42\n    io:format(\"~p~n\", [lists:map(Double, [1, 2, 3])]),     % [2,4,6]\n    io:format(\"~p~n\", [[X * X || X <- [1, 2, 3, 4, 5], X rem 2 =:= 1]]). % [1,9,25]",
+          "lang": "erlang"
+        },
+        "마지막 줄은 리스트 컴프리헨션을 사용합니다. 비교 연산자에 주의하세요. `=:=`와 `=/=`는 정확한 동등과 부등을 검사하고, `==`와 `/=`는 숫자를 값으로 비교하므로 `1 == 1.0`은 참입니다. 작거나 같음은 `<=`가 아니라 `=<`로 씁니다."
+      ]
+    },
+    {
+      "h": "리스트, 맵, 표준 라이브러리",
+      "body": [
+        "`lists` 모듈은 `map`, `filter`, `foldl`, `sort`, `reverse` 등 많은 함수를 제공하고, `maps`는 맵을, `string`과 `binary`는 텍스트를 다룹니다. 전체 레퍼런스는 OTP 문서에 있습니다.",
+        {
+          "code": "1> L = [5, 3, 8, 1].\n[5,3,8,1]\n2> lists:sort(L).\n[1,3,5,8]\n3> lists:filter(fun(X) -> X > 2 end, L).\n[5,3,8]\n4> lists:foldl(fun(X, Acc) -> X + Acc end, 0, L).\n17\n5> M = #{ann => 31, bo => 25}, map_size(M).\n2\n6> M2 = M#{cy => 40}, map_size(M2).\n3\n7> maps:get(bo, M2).\n25\n8> maps:get(zed, M2, none).\nnone",
+          "lang": "erlang"
+        },
+        "`M#{cy => 40}`은 새 맵을 만들며 `M` 자체는 바뀌지 않습니다. 이미 존재해야 하는 키를 갱신하려면 `=>` 대신 `:=`를 쓰세요."
+      ]
+    },
+    {
+      "h": "프로세스와 메시지 전달",
+      "body": [
+        "프로세스는 Erlang의 대표 기능입니다. `spawn`은 새 프로세스를 시작하고, `!`는 메시지를 보내며, `receive`는 메시지를 패턴으로 매칭해 기다립니다. 프로세스는 비용이 적어서 시스템에서 아주 많이 실행할 수 있습니다. 링크와 모니터로 한 프로세스가 다른 프로세스의 종료를 알 수 있으며, OTP 슈퍼바이저는 이를 이용해 실패한 워커를 자동으로 재시작합니다.",
+        {
+          "code": "-module(counter).\n-export([start/0, loop/1]).\n\nstart() ->\n    Pid = spawn(counter, loop, [0]),\n    Pid ! {add, 5},\n    Pid ! {add, 10},\n    Pid ! {get, self()},\n    receive\n        {count, N} -> io:format(\"count = ~p~n\", [N])   % count = 15\n    after 1000 ->\n        io:format(\"timeout~n\")\n    end.\n\nloop(Count) ->\n    receive\n        {add, N} -> loop(Count + N);\n        {get, From} -> From ! {count, Count}, loop(Count)\n    end.",
+          "lang": "erlang"
+        },
+        "이 손으로 쓴 루프는 OTP의 `gen_server` 동작이 일반화한 바로 그 형태입니다. 실제 코드에서는 `gen_server` 모듈을 작성하고 `supervisor` 아래에 둡니다."
+      ]
+    },
+    {
+      "h": "오류 처리와 let it crash",
+      "body": [
+        "Erlang의 예외는 `error`, `throw`, `exit` 세 종류입니다. 예상되는 실패는 보통 `{ok, Value}`나 `{error, Reason}` 튜플로 반환합니다. 예상치 못한 실패는 아예 잡지 않는 경우가 많습니다. 프로세스가 비정상 종료하면 슈퍼바이저가 알려진 정상 상태로 재시작합니다. 꼭 잡아야 할 때는 `try ... catch`를 사용합니다.",
+        {
+          "code": "1> file:read_file(\"missing.txt\").\n{error,enoent}\n2> try 1 / 0 catch error:badarith -> division_failed end.\ndivision_failed\n3> try throw(my_reason) catch throw:R -> {caught, R} end.\n{caught,my_reason}\n4> case file:read_file(\"missing.txt\") of {ok, Bin} -> Bin; {error, Why} -> Why end.\nenoent",
+          "lang": "erlang"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도",
+      "body": [
+        "이 모듈은 맵으로 문자열의 단어를 세고, 횟수순으로 정렬해 가장 흔한 세 개를 출력합니다. 문자열 함수, `lists:foldl`, 맵, 사용자 정의 정렬을 조합합니다.",
+        {
+          "code": "-module(wordfreq).\n-export([top/2, main/0]).\n\ntop(Text, N) ->\n    Words = string:lexemes(string:lowercase(Text), \" .,;:!?\\n\"),\n    Counts = lists:foldl(fun(W, Acc) ->\n                                 maps:update_with(W, fun(C) -> C + 1 end, 1, Acc)\n                         end, #{}, Words),\n    Sorted = lists:sort(fun({W1, C1}, {W2, C2}) ->\n                                {-C1, W1} =< {-C2, W2}\n                        end, maps:to_list(Counts)),\n    lists:sublist(Sorted, N).\n\nmain() ->\n    Text = \"The cat and the dog. The dog sat, and the cat ran.\",\n    [io:format(\"~s: ~p~n\", [W, C]) || {W, C} <- top(Text, 3)],\n    ok.\n% the: 4\n% and: 2\n% cat: 2",
+          "lang": "erlang"
+        },
+        {
+          "note": "초보자가 자주 하는 실수: `,` `;` `.`를 혼동하는 것, 변수를 다시 바인딩하려는 것, `=<` 대신 `<=`를 쓰는 것, `=:=`를 써야 할 곳에 `==`를 쓰는 것, 함수를 내보내지 않거나 잘못된 arity로 내보내는 것, 문자열과 바이너리를 서로 혼동하는 것(`\"abc\"`는 리스트이고 `<<\"abc\">>`는 바이너리입니다)입니다."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "erlang.org의 Erlang/OTP 문서. Getting Started 가이드와 OTP Design Principles가 포함되어 있습니다.",
+            "무료 온라인 책 Learn You Some Erlang for Great Good!.",
+            "표준 빌드 도구인 rebar3와 Elixir와 공유하는 패키지 관리자 Hex.",
+            "실제 서비스를 만들 때 참고할 `gen_server`와 `supervisor` 레퍼런스 페이지."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Erlang은 아직도 쓰이나요?",
+      "a": "네. Erlang은 여전히 통신 시스템, 메시징 서비스, RabbitMQ를 구동하며, Erlang 라이브러리를 쓸 수 있는 Elixir와 Gleam을 통해 BEAM 생태계도 계속 성장하고 있습니다."
+    },
+    {
+      "q": "Erlang의 OTP란 무엇인가요?",
+      "a": "OTP는 Erlang과 함께 제공되는 라이브러리, 도구, 설계 원칙 모음입니다. `gen_server`, `supervisor`, `application` 같은 동작(behaviour)을 제공하여 장애에 강한 프로그램의 구조를 잡아 줍니다."
+    },
+    {
+      "q": "Erlang과 Elixir 중 무엇을 배워야 하나요?",
+      "a": "Elixir는 문법이 더 친숙하고 웹 생태계가 더 크며, Erlang은 더 작고 OTP와 많은 핵심 라이브러리가 작성된 언어입니다. 둘 다 같은 VM에서 실행되며, 하나를 알면 다른 하나를 읽기 쉽습니다."
+    },
+    {
+      "q": "let it crash는 무슨 뜻인가요?",
+      "a": "프로세스 안에서 가능한 모든 오류를 처리하는 대신, 프로세스를 실패하게 두고 슈퍼바이저가 깨끗한 상태로 재시작하도록 맡기는 방식입니다. 오류 처리 코드가 작아지고 시스템이 자동으로 복구됩니다."
+    },
+    {
+      "q": "Erlang 변수는 왜 대문자로 시작하나요?",
+      "a": "Erlang은 대소문자로 변수와 아톰을 구분합니다. `Name`은 변수이고 `name`은 상수 값인 아톰입니다."
+    }
+  ]
+}

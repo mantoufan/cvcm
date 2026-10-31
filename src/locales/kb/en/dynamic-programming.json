@@ -1,0 +1,215 @@
+{
+  "title": "Dynamic programming: memoization, tabulation and classic problems in Python — cv.cm",
+  "description": "Dynamic programming explained for beginners: overlapping subproblems, memoization vs tabulation, a traced coin change table, Python examples and complexity.",
+  "h1": "Dynamic programming explained: how it works, code and examples",
+  "answer": "Dynamic programming (DP) solves a problem by breaking it into smaller subproblems, solving each subproblem once, and storing the result so it can be reused. It works when the problem has optimal substructure (the best answer is built from best answers to subproblems) and overlapping subproblems (the same subproblems come up again and again). You can write DP top-down with memoization or bottom-up with a table; both turn many exponential brute-force solutions into polynomial ones.",
+  "sections": [
+    {
+      "h": "What problem dynamic programming solves",
+      "body": [
+        "Many problems ask for the best, the cheapest or the number of ways: the fewest coins that make an amount, the longest common subsequence of two strings, the most valuable set of items that fits in a bag, the number of paths through a grid. A direct recursive solution often recomputes the same smaller cases an exponential number of times. DP removes that repetition.",
+        "The name comes from Richard Bellman, who developed the method in the 1950s. \"Programming\" here means planning or filling in a table, not writing code."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Naive recursive Fibonacci shows the problem. `fib(5)` calls `fib(4)` and `fib(3)`, and `fib(4)` calls `fib(3)` again, and so on: the number of calls grows exponentially. Storing each result the first time it is computed makes every later call instant.",
+        {
+          "ol": [
+            "Define the state: what does a subproblem look like? For example, `best[a]` = fewest coins that make amount a.",
+            "Write the recurrence: how is a state computed from smaller states? `best[a] = 1 + min(best[a - c] for each coin c)`.",
+            "Set the base cases: `best[0] = 0`.",
+            "Choose the order: top-down with memoization, or bottom-up so that smaller states are always filled first.",
+            "Read the answer from the right state, and rebuild the actual choice if needed."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Style",
+              "How it works",
+              "Pros",
+              "Cons"
+            ],
+            "rows": [
+              [
+                "Top-down (memoization)",
+                "Recursive function plus a cache of results.",
+                "Closest to the recurrence; computes only states that are needed.",
+                "Recursion depth limits and call overhead."
+              ],
+              [
+                "Bottom-up (tabulation)",
+                "Loops fill a table from the smallest states upward.",
+                "No recursion; easy to reduce memory.",
+                "You must find a valid filling order; may compute unused states."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Top-down: memoization with functools",
+      "body": [
+        "In Python, `functools.cache` (Python 3.9+) or `functools.lru_cache` adds memoization to a function with one line:",
+        {
+          "code": "from functools import cache\n\n@cache\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(80))  # 23416728348467685",
+          "lang": "python"
+        },
+        "Without the decorator, `fib(80)` would make more than 10¹⁶ recursive calls. With it, each value from 0 to 80 is computed once."
+      ]
+    },
+    {
+      "h": "Worked example: coin change, bottom-up",
+      "body": [
+        "Coins 1, 3 and 4; amount 6. A greedy approach takes 4 first and needs 4 + 1 + 1 = 3 coins, but 3 + 3 uses only 2. DP finds the true minimum by filling `best[a]` for a = 0 to 6:",
+        {
+          "table": {
+            "head": [
+              "Amount a",
+              "Options: 1 + best[a − c]",
+              "best[a]"
+            ],
+            "rows": [
+              [
+                "0",
+                "base case",
+                "0"
+              ],
+              [
+                "1",
+                "c=1: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "2",
+                "c=1: 1 + best[1] = 2",
+                "2"
+              ],
+              [
+                "3",
+                "c=1: 3, c=3: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "4",
+                "c=1: 2, c=3: 2, c=4: 1",
+                "1"
+              ],
+              [
+                "5",
+                "c=1: 2, c=3: 3, c=4: 2",
+                "2"
+              ],
+              [
+                "6",
+                "c=1: 3, c=3: 1 + best[3] = 2, c=4: 1 + best[2] = 3",
+                "2"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def min_coins(coins, amount):\n    INF = float(\"inf\")\n    best = [0] + [INF] * amount\n    for a in range(1, amount + 1):\n        for c in coins:\n            if c <= a and best[a - c] + 1 < best[a]:\n                best[a] = best[a - c] + 1\n    return best[amount] if best[amount] != INF else -1\n\nprint(min_coins([1, 3, 4], 6))  # 2\nprint(min_coins([2], 3))        # -1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "A two-dimensional example: longest common subsequence",
+      "body": [
+        "Many DP problems on two sequences use a grid: `dp[i][j]` is the answer for the first i characters of one string and the first j of the other. For the longest common subsequence (LCS), if the characters match, extend the diagonal; otherwise take the better of dropping one character from either string.",
+        {
+          "code": "def lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i - 1] == b[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[len(a)][len(b)]\n\nprint(lcs(\"ABCBDAB\", \"BDCABA\"))  # 4",
+          "lang": "python"
+        },
+        "One LCS of length 4 is BCBA. The same table structure solves edit distance, which is how text diff tools measure how different two strings are."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        "The general rule: time = number of states × work per state; space = number of states stored.",
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "States",
+              "Time",
+              "Space (can be reduced to)"
+            ],
+            "rows": [
+              [
+                "Fibonacci",
+                "n",
+                "O(n)",
+                "O(n) → O(1) with two variables"
+              ],
+              [
+                "Coin change (min coins)",
+                "amount",
+                "O(amount × coins)",
+                "O(amount)"
+              ],
+              [
+                "LCS / edit distance",
+                "n × m",
+                "O(n × m)",
+                "O(n × m) → O(min(n, m)) if only the length is needed"
+              ],
+              [
+                "0/1 knapsack",
+                "items × capacity",
+                "O(n × W)",
+                "O(W) with one row, iterating capacity downward"
+              ]
+            ]
+          }
+        },
+        "Knapsack's O(n × W) is pseudo-polynomial: it depends on the numeric value W, not on the input size in bits, so it is slow when W is huge."
+      ]
+    },
+    {
+      "h": "Common mistakes and when to use DP",
+      "body": [
+        {
+          "ul": [
+            "Wrong state: if the recurrence needs information the state does not hold (for example, which items are already used), the answer is wrong. Add that information to the state.",
+            "Wrong filling order: a bottom-up loop must compute every state before it is read.",
+            "Off-by-one in table size: a string of length n needs n + 1 rows to include the empty prefix.",
+            "Deep recursion: a memoized recursion over 10,000 states can exceed Python's recursion limit; switch to bottom-up.",
+            "Unhashable arguments: `functools.cache` needs hashable arguments, so pass tuples instead of lists."
+          ]
+        },
+        {
+          "note": "Use DP when subproblems overlap. If they do not overlap, as in merge sort, plain divide and conquer is enough. If a locally best choice is provably always right, a greedy algorithm is simpler and faster; coin change with arbitrary coin values is the classic case where greedy fails and DP is needed."
+        },
+        "Typical interview and real-world uses: climbing stairs, house robber, longest increasing subsequence, word break, unique paths in a grid, edit distance, knapsack, matrix chain multiplication; in practice, sequence alignment in bioinformatics, diff tools, spell checkers, speech recognition (the Viterbi algorithm) and shortest paths such as Bellman-Ford."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between memoization and tabulation?",
+      "a": "Memoization is top-down: a recursive function caches results as it computes them. Tabulation is bottom-up: loops fill a table from the base cases upward. Both give the same complexity for most problems."
+    },
+    {
+      "q": "How do I know if a problem needs dynamic programming?",
+      "a": "Look for a question about the best, the cheapest or the number of ways, plus a brute-force recursion that repeats the same subproblems. If you can define a state and a recurrence between states, DP usually applies."
+    },
+    {
+      "q": "Is dynamic programming the same as recursion?",
+      "a": "No. Recursion is a way to write code; DP is the idea of solving each subproblem once and reusing the result. A DP solution can be recursive with memoization or iterative with a table."
+    },
+    {
+      "q": "What is the difference between dynamic programming and greedy algorithms?",
+      "a": "A greedy algorithm makes one locally best choice at each step and never reconsiders. DP considers all relevant choices for each subproblem and keeps the best, so it is correct in cases where greedy fails."
+    },
+    {
+      "q": "What is the difference between dynamic programming and divide and conquer?",
+      "a": "Both split a problem into subproblems. Divide and conquer works on independent subproblems, while DP is for subproblems that overlap, so storing their results saves work."
+    }
+  ]
+}

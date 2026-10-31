@@ -1,0 +1,200 @@
+{
+  "title": "Tutorial de Elixir: coincidencia de patrones, pipes, Enum y procesos — cv.cm",
+  "description": "Aprende Elixir paso a paso: ejecutar un script, datos inmutables y tipos, coincidencia de patrones, case y cond, módulos, el operador pipe, Enum, procesos y errores.",
+  "h1": "Tutorial de Elixir para principiantes",
+  "answer": "Elixir es un lenguaje dinámico y funcional que se ejecuta en la máquina virtual de Erlang (BEAM), diseñado para sistemas escalables, tolerantes a fallos y concurrentes. Sus ideas centrales son los datos inmutables, la coincidencia de patrones, el operador pipe y los procesos ligeros que se comunican mediante mensajes. Esta página cubre la configuración, los tipos, la coincidencia de patrones, el control de flujo, los módulos y funciones, las colecciones, los procesos y el manejo de errores.",
+  "sections": [
+    {
+      "h": "Qué es Elixir y para qué se usa",
+      "body": [
+        "Elixir es un lenguaje dinámico y funcional creado por José Valim y lanzado por primera vez en 2012. Se ejecuta en BEAM, la máquina virtual de Erlang, por lo que hereda los procesos ligeros, la tolerancia a fallos y el soporte para sistemas distribuidos de Erlang, y añade una sintaxis amigable, macros y herramientas modernas.",
+        "Elixir se usa para aplicaciones web y APIs con el framework Phoenix, funciones en tiempo real como chats y paneles en vivo (Phoenix LiveView), sistemas de mensajería, pipelines de datos, dispositivos embebidos con Nerves y aprendizaje automático con Nx. Las empresas lo eligen para servicios que deben manejar muchas conexiones concurrentes y seguir funcionando cuando fallan algunas partes."
+      ]
+    },
+    {
+      "h": "Instala Elixir y ejecuta Hola, mundo",
+      "body": [
+        "Instala Elixir desde elixir-lang.org (también instala Erlang/OTP o lo requiere). Los scripts usan la extensión `.exs`; los archivos de proyecto compilados usan `.ex`. `iex` inicia la shell interactiva.",
+        {
+          "code": "# hello.exs\nIO.puts(\"Hello, world!\")",
+          "lang": "elixir"
+        },
+        {
+          "code": "elixir hello.exs\n# Hello, world!\niex                      # interactive shell; type h(Enum.map) for help\nmix new my_app           # create a new project with Mix, the build tool",
+          "lang": "shell"
+        },
+        "Los comentarios empiezan con `#`. Los paréntesis alrededor de los argumentos de una función son opcionales en muchos casos, así que `IO.puts \"hi\"` también funciona."
+      ]
+    },
+    {
+      "h": "Tipos básicos e inmutabilidad",
+      "body": [
+        "Todos los datos de Elixir son inmutables. Volver a enlazar un nombre con `=` lo apunta a un valor nuevo; nunca cambia el anterior. Las cadenas son binarios UTF-8 escritos entre comillas dobles, y los átomos son constantes con nombre que empiezan con dos puntos.",
+        {
+          "code": "name = \"Elixir\"\nyear = 2012\nIO.puts(\"#{name} since #{year}\")    # Elixir since 2012\nIO.puts(10 / 4)                     # 2.5 (always a float)\nIO.puts(div(10, 4))                 # 2\nIO.puts(rem(10, 4))                 # 2\nIO.puts(\"ab\" <> \"cd\")               # abcd (string concatenation)\nIO.puts(String.length(\"héllo\"))     # 5 (counts characters, not bytes)\nIO.inspect(:ok)                     # :ok\nIO.inspect(is_atom(true))           # true (booleans are atoms)",
+          "lang": "elixir"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `1_000_000`",
+                "precisión arbitraria"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "doble precisión de 64 bits"
+              ],
+              [
+                "atom",
+                "`:ok`, `:error`",
+                "constantes; `true`, `false` y `nil` son átomos"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "binario UTF-8; interpolación con `#{}`"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "lista enlazada"
+              ],
+              [
+                "tuple",
+                "`{:ok, 1}`",
+                "tamaño fijo, almacenada de forma contigua"
+              ],
+              [
+                "map",
+                "`%{\"a\" => 1}`",
+                "almacén clave-valor"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Coincidencia de patrones",
+      "body": [
+        "En Elixir, `=` es el operador de coincidencia. El lado izquierdo es un patrón; si el lado derecho encaja, las variables del patrón quedan enlazadas. La coincidencia de patrones se usa en todas partes: en asignaciones, en `case`, en cabeceras de funciones y en el manejo de errores.",
+        {
+          "code": "{:ok, value} = {:ok, 42}\nIO.puts(value)                         # 42\n\n[first | rest] = [1, 2, 3]\nIO.inspect({first, rest})              # {1, [2, 3]}\n\n%{name: n} = %{name: \"Ann\", age: 31}\nIO.puts(n)                             # Ann\n\nresult = {:error, :not_found}\nmessage =\n  case result do\n    {:ok, v} -> \"got #{v}\"\n    {:error, reason} -> \"failed: #{reason}\"\n  end\nIO.puts(message)                       # failed: not_found\n\nx = 1\n^x = 1                                 # pin operator: match the current value",
+          "lang": "elixir"
+        },
+        "Si un patrón no coincide, Elixir lanza un `MatchError`. El operador pin `^` significa «usa el valor actual de esta variable» en lugar de volver a enlazarla."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "Elixir tiene `case`, `cond` e `if`/`unless`, y todos devuelven valores. No hay bucles `for`/`while` que modifiquen contadores; en su lugar se usan la recursión, el módulo `Enum` o la comprensión `for`.",
+        {
+          "code": "temp = 22\nfeel =\n  cond do\n    temp > 30 -> \"hot\"\n    temp >= 15 -> \"mild\"\n    true -> \"cold\"\n  end\nIO.puts(feel)                                   # mild\n\nIO.puts(if(rem(temp, 2) == 0, do: \"even\", else: \"odd\"))  # even\n\nsquares = for n <- 1..5, rem(n, 2) == 1, do: n * n\nIO.inspect(squares)                             # [1, 9, 25]",
+          "lang": "elixir"
+        },
+        "Solo `false` y `nil` son falsos; todo lo demás, incluidos `0` y `\"\"`, es verdadero."
+      ]
+    },
+    {
+      "h": "Funciones, módulos y el operador pipe",
+      "body": [
+        "Las funciones con nombre viven en módulos definidos con `defmodule`. Una función puede tener varias cláusulas, elegidas mediante coincidencia de patrones y guardas (`when`). Las funciones anónimas se escriben `fn ... end` y se llaman con un punto. El operador pipe `|>` pasa el resultado de una expresión como primer argumento de la siguiente llamada.",
+        {
+          "code": "defmodule Math do\n  def factorial(0), do: 1\n  def factorial(n) when n > 0, do: n * factorial(n - 1)\n\n  def sign(n) when n < 0, do: :negative\n  def sign(0), do: :zero\n  def sign(_n), do: :positive\nend\n\nIO.puts(Math.factorial(5))          # 120\nIO.inspect(Math.sign(-3))           # :negative\n\ndouble = fn x -> x * 2 end\nIO.puts(double.(21))                # 42 (note the dot)\n\n\"  Elixir is fun  \"\n|> String.trim()\n|> String.upcase()\n|> String.split()\n|> IO.inspect()                     # [\"ELIXIR\", \"IS\", \"FUN\"]",
+          "lang": "elixir"
+        },
+        "Las funciones se identifican por su nombre y su aridad (número de argumentos), que en la documentación se escriben como `String.split/1` o `Math.factorial/1`."
+      ]
+    },
+    {
+      "h": "Colecciones: listas, mapas, listas de palabras clave y Enum",
+      "body": [
+        "El módulo `Enum` funciona con cualquier colección enumerable y ofrece `map`, `filter`, `reduce`, `sort_by`, `group_by` y muchas más. Los mapas son la principal estructura clave-valor; las listas de palabras clave, como `[size: 10, color: :red]`, se usan habitualmente para opciones.",
+        {
+          "code": "nums = [5, 3, 8, 1]\nIO.inspect(Enum.sort(nums))                      # [1, 3, 5, 8]\nIO.inspect(Enum.map(nums, &(&1 * 10)))           # [50, 30, 80, 10]\nIO.inspect(Enum.filter(nums, fn n -> n > 2 end)) # [5, 3, 8]\nIO.puts(Enum.reduce(nums, 0, &+/2))              # 17\n\nuser = %{name: \"Ann\", age: 31}\nolder = %{user | age: 32}                        # update an existing key\nIO.puts(user.age)                                # 31 (unchanged)\nIO.puts(older.age)                               # 32\nwith_city = Map.put(user, :city, \"Oslo\")\nIO.puts(with_city.city)                          # Oslo\nIO.inspect(Map.get(user, :email, \"none\"))        # \"none\"",
+          "lang": "elixir"
+        },
+        "El operador de captura `&` crea funciones anónimas cortas: `&(&1 * 10)` significa `fn x -> x * 10 end`, y `&+/2` se refiere a la función `+` con dos argumentos."
+      ]
+    },
+    {
+      "h": "Procesos y concurrencia",
+      "body": [
+        "La característica distintiva de Elixir es el proceso de BEAM: una unidad de ejecución aislada y muy ligera con su propia memoria. Los procesos se comunican únicamente enviando mensajes, y una sola máquina puede ejecutar cientos de miles. Los supervisores reinician los procesos que fallan, que es la base del enfoque «let it crash» de Elixir para la tolerancia a fallos.",
+        {
+          "code": "parent = self()\n\nspawn(fn ->\n  send(parent, {:result, 6 * 7})\nend)\n\nreceive do\n  {:result, value} -> IO.puts(\"Got #{value}\")   # Got 42\nafter\n  1_000 -> IO.puts(\"timeout\")\nend\n\ntasks = for n <- 1..3, do: Task.async(fn -> n * n end)\nIO.inspect(Task.await_many(tasks))               # [1, 4, 9]",
+          "lang": "elixir"
+        },
+        "En las aplicaciones reales rara vez llamas a `spawn` directamente. Usas abstracciones de OTP como `Task`, `GenServer`, `Agent` y `Supervisor`."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "El Elixir idiomático devuelve tuplas etiquetadas como `{:ok, value}` o `{:error, reason}` para los fallos esperados y usa `case` o `with` para tratarlos. Las funciones cuyo nombre termina en `!`, como `File.read!/1`, lanzan una excepción. Las excepciones pueden capturarse con `try`/`rescue`, pero no es lo habitual.",
+        {
+          "code": "case File.read(\"missing.txt\") do\n  {:ok, text} -> IO.puts(text)\n  {:error, reason} -> IO.puts(\"Cannot read: #{reason}\")   # Cannot read: enoent\nend\n\nwith {a, \"\"} <- Integer.parse(\"40\"),\n     {b, \"\"} <- Integer.parse(\"2\") do\n  IO.puts(a + b)                                         # 42\nelse\n  _ -> IO.puts(\"not a whole number\")\nend\n\ntry do\n  String.to_integer(\"abc\")\nrescue\n  e in ArgumentError -> IO.puts(\"Error: #{Exception.message(e)}\")\nend",
+          "lang": "elixir"
+        },
+        "`with` encadena varias coincidencias y se detiene en la primera que no coincide, devolviendo ese valor. Evita expresiones `case` anidadas en exceso."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: frecuencia de palabras",
+      "body": [
+        "Este script cuenta las palabras de un texto e imprime las tres más comunes. Es un pipeline típico de Elixir construido con funciones de `String` y `Enum`.",
+        {
+          "code": "defmodule WordFreq do\n  def top(text, n) do\n    text\n    |> String.downcase()\n    |> String.split(~r/[^a-z']+/, trim: true)\n    |> Enum.frequencies()\n    |> Enum.sort_by(fn {word, count} -> {-count, word} end)\n    |> Enum.take(n)\n  end\nend\n\n\"The cat and the dog. The dog sat, and the cat ran.\"\n|> WordFreq.top(3)\n|> Enum.each(fn {word, count} -> IO.puts(\"#{word}: #{count}\") end)\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "elixir"
+        },
+        {
+          "note": "Errores habituales de principiantes: esperar que `=` asigne como en otros lenguajes (en realidad hace coincidir); intentar modificar una lista o un mapa en un bucle; olvidar el punto al llamar a una función anónima (`double.(2)`); comparar cadenas y listas de caracteres, ya que `\"abc\"` y `~c\"abc\"` son tipos distintos; y capturar excepciones en lugar de hacer coincidir con `{:ok, _}` y `{:error, _}`."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "La guía oficial Getting Started en hexdocs.pm y el sitio web elixir-lang.org.",
+            "HexDocs, donde se publica la documentación de Elixir y de cada paquete de Hex.",
+            "Las guías del framework Phoenix para el desarrollo web.",
+            "Elixir School, un plan de estudios gratuito de la comunidad, y el itinerario de Elixir de Exercism para practicar."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre Elixir y Erlang?",
+      "a": "Ambos se ejecutan en la misma máquina virtual BEAM y pueden llamar al código del otro. Elixir añade una sintaxis inspirada en Ruby, macros, el operador pipe y herramientas como Mix y Hex, mientras que Erlang es el lenguaje más antiguo con el que se construyó OTP."
+    },
+    {
+      "q": "¿Elixir es bueno para el desarrollo web?",
+      "a": "Sí. El framework Phoenix es rápido y maneja muchas conexiones simultáneas, y LiveView permite crear páginas interactivas con HTML renderizado en el servidor y poco JavaScript."
+    },
+    {
+      "q": "¿Elixir tiene tipado estático?",
+      "a": "Elixir tiene tipado dinámico. Las versiones recientes están incorporando al compilador un sistema de tipos gradual basado en teoría de conjuntos, y muchos equipos usan además Dialyzer con typespecs para encontrar errores de tipos."
+    },
+    {
+      "q": "¿Qué significa |> en Elixir?",
+      "a": "`|>` es el operador pipe. `x |> f(y)` equivale a `f(x, y)`, de modo que una cadena de transformaciones se puede leer de arriba abajo."
+    },
+    {
+      "q": "¿Qué son los archivos .ex y .exs?",
+      "a": "Los archivos `.ex` se compilan como parte de un proyecto, mientras que los `.exs` son scripts que se interpretan al ejecutarse y se usan habitualmente para pruebas y configuración."
+    }
+  ]
+}

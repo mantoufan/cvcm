@@ -1,0 +1,149 @@
+{
+  "title": "Template Method パターン：固定された手順・フック・TypeScript の例 — cv.cm",
+  "description": "Template Method パターンは、アルゴリズムの手順を基底クラスに固定し、一部の手順をサブクラスに任せます。TypeScript の例でフックまで解説します。",
+  "h1": "Template Method パターンとは？例でわかりやすく解説",
+  "answer": "Template Method は振る舞いに関するデザインパターンで、アルゴリズムの骨組みを基底クラスのメソッドに定義し、全体の順序を変えずに、特定の手順をサブクラスがオーバーライドできるようにします。基底クラスは何がいつ起きるかを決め、サブクラスは一部の手順をどう行うかを決めます。デフォルトの実装を持つ任意の手順を、フックと呼びます。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：アルゴリズムの骨組みを 1 つの操作として定義し、いくつかの手順をサブクラスに任せることです。Template Method は、アルゴリズムの構造を変えずに、サブクラスがアルゴリズムの特定の手順を再定義できるようにします。Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "データを CSV と JSON で出力するレポートツールを考えてみましょう。どちらのエクスポーターも、同じ順序で同じことをします。行を読み込み、行があるかを確認し、整形し、行数を示すフッターを加えます。違うのは整形だけです。それぞれのエクスポーターを別々に書くと、共通の手順がコピーされ、一方での修正（たとえば、空の結果の扱いの改善）が、もう一方で忘れられがちです。",
+        "Template Method では、基底クラス `Exporter` が、手順の順序を固定した `export` メソッドを持ちます。変わる手順は抽象メソッドです。`CsvExporter` と `JsonExporter` は、それらだけを実装します。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Abstract class",
+                "手順を固定された順序で呼び出す Template method を実装し、抽象的な手順を宣言し、フックを提供することもある"
+              ],
+              [
+                "Template method",
+                "アルゴリズムを定義する公開メソッド。通常はオーバーライドされることを想定していない"
+              ],
+              [
+                "Primitive operation",
+                "すべてのサブクラスが実装しなければならない抽象的な手順"
+              ],
+              [
+                "Hook",
+                "デフォルトの（多くは空の）実装を持つ手順。サブクラスはオーバーライドしてもよい"
+              ],
+              [
+                "Concrete class",
+                "Primitive operation を実装し、必要に応じてフックをオーバーライドする"
+              ]
+            ]
+          }
+        },
+        "この設計は制御を逆転させます。基底クラスがサブクラスのメソッドを呼び、その逆ではありません。これはハリウッドの原則「こちらから連絡するので、電話しないでください」と呼ばれることもあります。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "`export` が Template method です。`format` はサブクラスが実装しなければならない Primitive operation で、`header` は空のデフォルトを持つフックです。",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "データが空かどうかのチェックとフッターは、1 か所にあります。新しい XML エクスポーターは、`format` を実装するだけで、残りを自動的に手に入れます。",
+        {
+          "note": "TypeScript には `final` キーワードがないので、サブクラスは `export` をオーバーライドして、固定された順序を壊せてしまいます。Template method をオーバーライドしてはいけないことをドキュメントに書き、サブクラスを正しく書きやすいように、オーバーライドできる手順の数を少なく保ちましょう。"
+        }
+      ]
+    },
+    {
+      "h": "合成による同じ考え方",
+      "body": [
+        "継承だけが方法ではありません。変わる手順を関数として渡せば、このパターンは Strategy に近いものになり、クラス階層を避けられます。",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "手順が小さく、基底クラスの共有状態が不要な場合や、1 つのエクスポーターが複数の出どころから手順を組み合わせたい場合は、この形のほうが適しています。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "複数のクラスが同じアルゴリズムを実行し、違うのがいくつかの手順だけで、重複する部分をなくしたいときに使います。",
+            "テストの setup と teardown のように、操作の順序を制御しつつ、利用者に手順をカスタマイズさせたいフレームワークで使います。",
+            "すべてのサブクラスに実装を強制せずに、任意の拡張ポイントを提供するために、フックを使います。",
+            "バリエーションが大きい場合や、実行時に変える必要がある場合は使いません。合成を使う Strategy のほうが柔軟です。",
+            "Template Method を何段にも積み重ねた階層は避けましょう。サブクラスのサブクラスのさらにサブクラスが手順をオーバーライドすると、流れを追うのが難しくなります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Java の `AbstractList`：`get(int)` と `size()` を実装すると、基底クラスが、それらを基にした反復処理、`indexOf`、`contains` などのメソッドを提供します。",
+            "Java の `InputStream`：サブクラスが 1 バイトの `read()` を実装し、基底クラスがそれを呼ぶことで `read(byte[], int, int)` を実装します（速度のためにサブクラスがオーバーライドすることもあります）。",
+            "テストフレームワーク：JUnit、Python の `unittest` などは、`setUp`、テストメソッド、`tearDown` を決まった順序で呼び、必要な手順だけをオーバーライドします。",
+            "React のクラスコンポーネントの `componentDidMount` のようなライフサイクルメソッドを持つ UI フレームワークは、自分のアルゴリズムの決まったタイミングで、あなたのメソッドを呼びます。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Template Method パターンとの違い"
+            ],
+            "rows": [
+              [
+                "Strategy パターン",
+                "Strategy は合成によって、実行時にアルゴリズム全体を置き換えます。Template Method はアルゴリズムを固定し、コンパイル時に継承によってその一部を変えます。"
+              ],
+              [
+                "Factory Method パターン",
+                "Factory Method は、Template Method の手順の 1 つ、つまりオブジェクトを生成する手順であることがよくあります。"
+              ],
+              [
+                "フック関数とコールバック",
+                "固定されたアルゴリズムにコールバックを渡すのは、同じ考え方を合成で実現したものです。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Template Method パターンのフックとは何ですか？",
+      "a": "フックは、基底クラスにデフォルトの実装を持つ手順で、何もしないことも多いです。サブクラスはオーバーライドしてその時点で動作を追加できますが、必須ではありません。"
+    },
+    {
+      "q": "Template Method と Strategy の違いは何ですか？",
+      "a": "Template Method は継承を使います。基底クラスがアルゴリズムを持ち、サブクラスが手順をオーバーライドします。Strategy は合成を使います。Context が、アルゴリズム全体を、実行時に差し替えられるオブジェクトや関数に委譲します。"
+    },
+    {
+      "q": "Template method 自体はオーバーライドできるべきですか？",
+      "a": "いいえ。その目的は手順の順序を固定することです。Java や C# では `final` や非 virtual にできます。TypeScript には `final` キーワードがないので、ドキュメントに書く必要があります。"
+    },
+    {
+      "q": "Template Method と Factory Method はどんな関係ですか？",
+      "a": "Factory Method は、Template Method の特殊化であることがよくあります。基底クラスのアルゴリズムにオブジェクトを生成する手順が含まれていて、どのクラスを生成するかをサブクラスが決めます。"
+    }
+  ]
+}

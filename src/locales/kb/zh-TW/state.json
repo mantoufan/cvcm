@@ -1,0 +1,145 @@
+{
+  "title": "狀態模式：狀態類別、轉換與 TypeScript 範例 — cv.cm",
+  "description": "狀態模式讓物件在內部狀態改變時改變其行為。用 TypeScript 的狀態類別取代 switch 陳述式。",
+  "h1": "狀態模式（State）詳解與範例",
+  "answer": "狀態（State）是一種行為型設計模式，讓物件在內部狀態改變時改變其行為，看起來就像換了類別。每個狀態都是一個獨立的類別，實作相同的介面，而主要物件（稱為情境）把工作委派給目前的狀態物件。轉換的方式是替換該狀態物件，如此就不再需要在每個方法裡檢查狀態欄位的冗長 `switch` 或 `if` 鏈。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：允許物件在內部狀態改變時改變其行為，使物件看起來像是改變了它的類別。狀態是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一；它的經典例子是 TCP 連線，在監聽、已建立與已關閉時行為各不相同。",
+        "以線上訂單為例。它可以是待付款、已付款、已出貨或已取消。付款只有在待付款時才有效，出貨只有在已付款時才有效，取消在待付款或已付款時允許，但出貨後就不行。第一版儲存一個 `status` 字串，每個方法一開始都對它做 `switch`。四個動作乘以四個狀態，就是分散在四個方法中的十六種情況。要新增「已退款」這類新狀態，就得修改每一個方法，而且很容易漏掉一個。",
+        "有了狀態模式，每個狀態都成為一個類別，它知道每個動作在該狀態下代表什麼。訂單持有目前狀態物件的引用，並把每個動作轉交給它。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "情境",
+                "用戶端使用的物件；持有目前的狀態物件，並把與狀態相關的行為委派給它"
+              ],
+              [
+                "狀態",
+                "宣告那些行為取決於狀態之操作的介面"
+              ],
+              [
+                "具體狀態",
+                "實作某一個狀態的行為，並決定下一個狀態是什麼"
+              ]
+            ]
+          }
+        },
+        "轉換可以由狀態本身決定（每個狀態在情境上設定下一個狀態，如下所示），也可以由情境使用轉換表決定。讓狀態自己決定可使相關邏輯集中；用中央表格則能把所有轉換集中在同一處呈現。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "基底類別提供預設行為：拒絕該動作。每個具體狀態只覆寫對它有效的動作。",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "要新增「已退款」狀態，只需寫一個新類別，並只修改可以導向它的那些狀態。`Order` 本身不必更動。",
+        {
+          "note": "不要讓用戶端從外部替換狀態。這裡為了簡短，`setState` 是公開的；在實際專案中請保持它為內部使用（例如把狀態定義在同一個模組並且不匯出），讓只有合法的轉換才能發生。"
+        }
+      ]
+    },
+    {
+      "h": "使用前與使用後",
+      "body": [
+        "用狀態欄位與 `switch` 陳述式寫出相同的規則。狀態少時這樣可行，但每個方法都得重複完整的清單：",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "對於小型情況，這個版本完全沒問題，甚至可以說更容易閱讀。在 TypeScript 中，為 `Status` 使用聯集型別，可以讓編譯器檢查每個情況都有處理。當每個狀態的行為超過一兩行時，再改用狀態類別。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當物件的行為隨狀態而有很大差異，而且許多方法中都出現相同的狀態檢查時使用。",
+            "當狀態與轉換會隨時間改變，而你希望每個狀態的規則集中在一處時使用。",
+            "用於工作流程（訂單、文件、工單）、協定連線、遊戲角色，以及媒體播放器等 UI 元件。",
+            "只有兩三個行為簡單的狀態時不要使用；用列舉或聯集型別搭配 `switch` 更簡單。",
+            "對於有巢狀或平行狀態的複雜狀態機，可考慮狀態機函式庫或 statecharts 記法，而不是手寫類別。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "網路協定的實作會為連線狀態建模，例如監聽、已建立與已關閉，這正是 GoF 書中使用的例子。",
+            "XState 是用於狀態機與 statecharts 的 JavaScript 和 TypeScript 函式庫，用於 UI 邏輯與工作流程。",
+            "W3C 的 SCXML 規格為 statecharts 定義了 XML 格式。",
+            "遊戲開發會為角色（待機、奔跑、跳躍）使用狀態物件，每個狀態以不同方式處理輸入。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "狀態與策略及其他模式的比較",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與狀態的差異"
+            ],
+            "rows": [
+              [
+                "策略",
+                "類別結構幾乎相同。策略通常由用戶端選擇，而且不會自己改變；狀態則會因物件自身的動作而彼此替換。"
+              ],
+              [
+                "享元",
+                "沒有欄位的狀態物件可以作為享元或常數，在所有情境之間共用。"
+              ],
+              [
+                "單例模式",
+                "無狀態的狀態物件通常是單一共用的實例。"
+              ],
+              [
+                "備忘錄",
+                "備忘錄儲存物件的資料以便之後還原；狀態改變的是物件所使用的行為。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "狀態與策略有什麼不同？",
+      "a": "兩者都把行為委派給可互換的物件。在策略中，通常由用戶端挑選演算法，並且保持不變。在狀態中，狀態物件彼此認識，並在正常運作中把情境切換到新的狀態。"
+    },
+    {
+      "q": "狀態模式就是有限狀態機嗎？",
+      "a": "狀態模式是在物件導向程式碼中實作有限狀態機的一種方式：每個狀態是一個類別，每次轉換都替換目前的狀態物件。狀態機也可以用轉換表或函式庫來實作。"
+    },
+    {
+      "q": "下一個狀態該由誰決定：情境還是狀態？",
+      "a": "兩種都可以。由狀態決定時，每個狀態的邏輯集中在一起。由情境或轉換表決定時，所有轉換都集中在同一處，而且狀態不需要互相認識。"
+    },
+    {
+      "q": "狀態物件可以共用嗎？",
+      "a": "可以，只要它們沒有自己的資料。那麼每個狀態只需一個實例，供所有情境物件共用，可以節省配置。"
+    }
+  ]
+}

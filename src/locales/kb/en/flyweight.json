@@ -1,0 +1,167 @@
+{
+  "title": "Flyweight pattern: intent, structure and TypeScript example — cv.cm",
+  "description": "The Flyweight pattern shares common state between many similar objects to save memory. Learn intrinsic vs extrinsic state with a TypeScript example.",
+  "h1": "Flyweight pattern explained with examples",
+  "answer": "Flyweight is a structural design pattern that lets a program support a very large number of similar objects by sharing the parts they have in common. Each object is split into intrinsic state (shared, immutable, stored once in a flyweight) and extrinsic state (unique per use, passed in by the caller). A factory caches flyweights so that equal intrinsic state is never stored twice.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: use sharing to support large numbers of fine-grained objects efficiently. The pattern comes from the Gang of Four (GoF) book and belongs to the structural category.",
+        "Imagine a map that draws one million trees. Each tree has a position (x, y) and a type: species name, color and a texture image of several kilobytes. If every tree object holds its own copy of the texture, memory use grows with the number of trees, and the program may run out of memory. Yet there are only a handful of species. The texture, name and color are the same for every oak.",
+        "Flyweight moves the repeated data into a small number of shared objects. A tree then stores only its position plus a reference to the shared tree type. One million trees with five species need five texture copies instead of one million."
+      ]
+    },
+    {
+      "h": "Intrinsic and extrinsic state",
+      "body": [
+        "The key step is to split each object's data into two kinds:",
+        {
+          "table": {
+            "head": [
+              "State",
+              "Meaning",
+              "Tree example"
+            ],
+            "rows": [
+              [
+                "Intrinsic",
+                "Independent of context, identical for many objects, stored inside the flyweight and never changed",
+                "Species name, color, texture"
+              ],
+              [
+                "Extrinsic",
+                "Depends on context, different for each use, kept by the client and passed into flyweight methods",
+                "Position x and y"
+              ]
+            ]
+          }
+        },
+        "Because a flyweight is shared, it must be immutable. If one client could change the color of the shared oak type, every oak on the map would change."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Flyweight",
+                "Holds intrinsic state and exposes operations that receive extrinsic state as parameters"
+              ],
+              [
+                "Flyweight factory",
+                "Creates and caches flyweights; returns an existing one when the same intrinsic state is requested again"
+              ],
+              [
+                "Context",
+                "Stores extrinsic state plus a reference to a flyweight (one context per real-world object)"
+              ],
+              [
+                "Client",
+                "Asks the factory for flyweights and keeps or computes the extrinsic state"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "The factory uses a `Map` keyed by the intrinsic values. `TreeType` is the flyweight, `Tree` is the context, and `Forest` is the client.",
+        {
+          "code": "class TreeType {\n  constructor(\n    readonly name: string,\n    readonly color: string,\n    readonly texture: Uint8Array, // large, shared data\n  ) {}\n  draw(x: number, y: number): string {\n    return this.name + \" (\" + this.color + \") at \" + x + \",\" + y;\n  }\n}\nclass TreeTypeFactory {\n  private static cache = new Map<string, TreeType>();\n  static get(name: string, color: string): TreeType {\n    const key = name + \"|\" + color;\n    let type = this.cache.get(key);\n    if (!type) {\n      type = new TreeType(name, color, new Uint8Array(4096));\n      this.cache.set(key, type);\n    }\n    return type;\n  }\n}\nclass Tree {\n  constructor(readonly x: number, readonly y: number, readonly type: TreeType) {}\n  draw(): string {\n    return this.type.draw(this.x, this.y);\n  }\n}\nconst forest: Tree[] = [];\nfor (let i = 0; i < 100_000; i++) {\n  const [name, color] = i % 2 === 0 ? [\"Oak\", \"green\"] : [\"Birch\", \"white\"];\n  forest.push(new Tree(i, i * 2, TreeTypeFactory.get(name, color)));\n}\nconst types = new Set(forest.map((t) => t.type));\nconsole.log(forest.length, \"trees,\", types.size, \"tree types\");\nconsole.log(forest[3].draw());\n// 100000 trees, 2 tree types\n// Birch (white) at 3,6",
+          "lang": "typescript"
+        },
+        "Without the factory, the program would allocate 100,000 texture buffers. With it, there are two. The `Tree` objects still exist, but each holds only two numbers and one reference.",
+        {
+          "note": "A flyweight only saves memory when many objects really share the same intrinsic state. If almost every object has a unique combination, the cache adds lookup cost and saves nothing."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        "Use Flyweight when all of these are true:",
+        {
+          "ul": [
+            "The program creates a very large number of similar objects.",
+            "Memory use is a measured problem, not a guess.",
+            "Most of each object's state can be made extrinsic or shared.",
+            "The program does not depend on object identity (two contexts with the same flyweight are allowed to share it)."
+          ]
+        },
+        "Avoid it when the object count is small, when objects need to change their shared data independently, or when the added complexity of passing extrinsic state around makes code harder to read than the memory it saves. In many cases a simpler fix works: store data in parallel arrays or typed arrays, or intern repeated strings in a `Map`.",
+        "Trade-off: Flyweight exchanges memory for CPU time. Extrinsic state may have to be recomputed or looked up every time a method is called."
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java: `Integer.valueOf(int)` returns cached `Integer` objects for values from -128 to 127, so boxing small numbers does not allocate new objects each time.",
+            "Java: `String.intern()` returns a canonical shared copy of a string from the string pool.",
+            "Text editors and browsers render glyphs from a shared font cache: each character on screen stores its position, while the glyph shape is stored once per font and size.",
+            "Game engines use instanced rendering: one mesh and material are shared, and only per-instance data such as position and rotation is sent for each copy."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Flyweight"
+            ],
+            "rows": [
+              [
+                "Singleton",
+                "Singleton guarantees one instance of a class; Flyweight keeps one instance per distinct intrinsic state, so there can be many."
+              ],
+              [
+                "Factory Method",
+                "A flyweight factory is a factory with a cache; Factory Method is about letting subclasses choose which class to create."
+              ],
+              [
+                "Composite",
+                "Leaf nodes of a Composite tree are often implemented as flyweights so that repeated leaves share memory."
+              ],
+              [
+                "Prototype",
+                "Prototype copies an object to create a new one; Flyweight avoids copying by sharing one object."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between intrinsic and extrinsic state?",
+      "a": "Intrinsic state is shared and identical for many objects, so it lives inside the flyweight and never changes. Extrinsic state differs for each use, so the client keeps it and passes it into the flyweight's methods."
+    },
+    {
+      "q": "Is Flyweight the same as caching?",
+      "a": "It uses a cache, but the goal is different. A cache avoids recomputing a result, while Flyweight avoids storing the same immutable data many times by sharing one object among many users."
+    },
+    {
+      "q": "Why must a flyweight be immutable?",
+      "a": "Many contexts hold a reference to the same flyweight. If one of them changed it, the change would appear in every other context that shares it."
+    },
+    {
+      "q": "Is Flyweight useful in JavaScript and TypeScript?",
+      "a": "Yes, when you create hundreds of thousands of objects, for example particles, map tiles or grid cells. Objects in JavaScript have per-object overhead, so sharing repeated data can reduce memory and garbage collection work."
+    }
+  ]
+}

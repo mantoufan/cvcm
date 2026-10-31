@@ -1,0 +1,155 @@
+{
+  "title": "Command pattern: undo, redo and queues with a TypeScript example — cv.cm",
+  "description": "The Command pattern turns a request into an object, so you can queue it, log it and undo it. Learn its roles and build undo/redo in TypeScript.",
+  "h1": "Command pattern explained with examples",
+  "answer": "Command is a behavioral design pattern that turns a request into a standalone object containing everything needed to perform it. Because the request is an object, you can store it, pass it around, put it in a queue, log it, and undo it later. The object that triggers a command (for example a button) does not need to know which object does the work or how.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations. Command is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Think of a text editor. The same action, such as \"make text bold\", can be triggered by a toolbar button, a menu item and the keyboard shortcut Ctrl+B. If each of these calls the editor directly, the logic is duplicated in three places. Worse, the editor must also support undo: after the user presses Ctrl+Z, the program needs to know what the last action was and how to reverse it.",
+        "Command solves both problems. Each action becomes an object with an `execute` method, and optionally an `undo` method. Buttons, menus and shortcuts all hold the same command object. The editor keeps a history list of executed commands, so undo means taking the last command from the list and calling its `undo` method."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Interface with an `execute` method (and often `undo`)"
+              ],
+              [
+                "Concrete command",
+                "Stores the receiver and the parameters, and calls the receiver's methods in `execute`"
+              ],
+              [
+                "Receiver",
+                "The object that knows how to do the actual work, such as a document or a bank account"
+              ],
+              [
+                "Invoker",
+                "Asks a command to run; it may keep a history for undo and redo"
+              ],
+              [
+                "Client",
+                "Creates concrete commands and connects them to receivers and invokers"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation: undo and redo",
+      "body": [
+        "The `TextDocument` is the receiver. `InsertText` and `DeleteLast` are commands that remember enough information to reverse themselves. The `Editor` is the invoker with two stacks: one for undo and one for redo.",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "Running a new command must clear the redo stack, as `run` does above. Otherwise redo could apply a command to a document state it was never designed for, and the text becomes corrupted."
+        }
+      ]
+    },
+    {
+      "h": "Before and after",
+      "body": [
+        "Without the pattern, the UI calls the document directly and undo is not possible, because nothing records what happened:",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "The second version is a fragment that assumes a `MakeBold` command class like the ones above. The UI no longer knows how bolding works, and every action passes through one place where it can be recorded, logged or undone."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it for undo and redo, macros (a list of commands run together) and command histories.",
+            "Use it to queue or schedule work: a job queue stores command objects and workers execute them later.",
+            "Use it to log or replay operations, for example sending serialized commands to another server.",
+            "Use it to decouple UI elements from the code they trigger.",
+            "Do not use it when you only need a callback. In TypeScript a function is already a first-class value, so `button.onclick = save` is a perfectly good command without undo. Introduce command classes when you need extra behavior such as `undo`, a name for display, or serialization."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java's `Runnable` interface is a command with one method, `run`, used by threads and executors to run work later.",
+            "Redux actions are plain objects that describe a change; a reducer applies them, and the action log enables time-travel debugging. This is a close cousin of Command, with the logic kept in the reducer instead of the command.",
+            "VS Code and many other editors register named commands that can be bound to keys, menus and a command palette.",
+            "Database migrations often have an `up` and a `down` step, which is the execute and undo pair of a command."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Command"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy swaps how one task is done; Command packages what to do (a request) so it can be stored, queued or undone."
+              ],
+              [
+                "Memento",
+                "Memento stores a snapshot of state for undo; Command stores the operation and reverses it. They are often combined when reversal is hard."
+              ],
+              [
+                "Chain of Responsibility",
+                "A command can be passed along a chain of handlers to find the one that executes it."
+              ],
+              [
+                "Composite",
+                "A macro command is a Composite: a command made of other commands."
+              ],
+              [
+                "Observer",
+                "Observer notifies many listeners about an event; Command is one request sent to one receiver."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How does the Command pattern implement undo?",
+      "a": "Each command has an `undo` method that reverses its own `execute`, often using data saved during execution. The invoker keeps a stack of executed commands and calls `undo` on the most recent one."
+    },
+    {
+      "q": "What is the difference between Command and Strategy?",
+      "a": "Strategy represents different ways of doing the same task and is chosen by the object that uses it. Command represents a specific request, with its receiver and parameters, that can be run later, queued or undone."
+    },
+    {
+      "q": "Is a callback function a command?",
+      "a": "A callback is a minimal command: it packages an action that runs later. You need a full command object when you also want undo, a description, serialization or other metadata."
+    },
+    {
+      "q": "What is a macro command?",
+      "a": "A macro command holds a list of commands and executes them in order. Its undo reverses them in the opposite order, which is an application of the Composite pattern."
+    }
+  ]
+}

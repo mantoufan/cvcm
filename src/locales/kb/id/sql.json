@@ -1,0 +1,263 @@
+{
+  "title": "Tutorial SQL: SELECT, JOIN, GROUP BY, dan transaksi — cv.cm",
+  "description": "Belajar SQL langkah demi langkah: membuat tabel, SELECT dengan WHERE dan ORDER BY, join, GROUP BY, CTE, window function, transaksi, dan perbedaan PostgreSQL vs MySQL vs SQLite.",
+  "h1": "Tutorial SQL untuk pemula",
+  "answer": "SQL adalah bahasa standar untuk membuat, meng-query, dan mengubah data di database relasional seperti PostgreSQL, MySQL, dan SQLite. Anda menulis pernyataan deklaratif seperti SELECT, INSERT, UPDATE, dan DELETE, lalu database yang menentukan cara menjalankannya. Halaman ini mengajarkan desain tabel, filter, join, pengelompokan, subquery, window function, dan transaksi, serta menyajikan perbedaan utama antara PostgreSQL, MySQL, dan SQLite.",
+  "sections": [
+    {
+      "h": "Apa itu SQL dan untuk apa digunakan",
+      "body": [
+        "SQL (Structured Query Language) adalah bahasa standar untuk bekerja dengan database relasional, tempat data disimpan dalam tabel berisi baris dan kolom. Anda mendeskripsikan data yang diinginkan, dan engine database yang menentukan cara menemukannya. SQL distandarkan oleh ISO/IEC 9075, dan setiap database besar mengimplementasikan inti standar tersebut ditambah ekstensinya sendiri.",
+        "Developer, analis data, data engineer, dan administrator database memakai SQL setiap hari: untuk menyimpan data aplikasi, menjawab pertanyaan bisnis, membuat laporan, dan mengalirkan data ke pipeline. Engine open source yang paling umum adalah PostgreSQL, MySQL (dan fork-nya MariaDB), serta SQLite; yang komersial mencakup Microsoft SQL Server dan Oracle Database."
+      ]
+    },
+    {
+      "h": "Siapkan database dan jalankan query pertama",
+      "body": [
+        "Cara termudah untuk memulai adalah SQLite, database tanpa server yang disimpan dalam satu file. SQLite sudah terpasang di macOS dan sebagian besar sistem Linux. PostgreSQL dan MySQL berjalan sebagai server dan dilengkapi klien command line `psql` dan `mysql`.",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "Keyword SQL tidak peka huruf besar-kecil. Menulis keyword dengan huruf kapital dan nama dengan huruf kecil adalah konvensi umum yang membuat query lebih mudah dibaca. Pernyataan diakhiri titik koma, dan `--` memulai komentar."
+      ]
+    },
+    {
+      "h": "Membuat tabel: tipe data dan constraint",
+      "body": [
+        "Definisi tabel mencantumkan kolom, tipenya, dan constraint yang menjaga data tetap valid. Halaman ini memakai dua tabel, `customers` dan `orders`, di setiap contoh.",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Menyimpan",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "bilangan bulat",
+                "gunakan `BIGINT` untuk ID yang besar"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "desimal eksak",
+                "gunakan untuk uang, jangan pernah `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "string",
+                "`TEXT` tidak ada di standar tetapi didukung secara luas"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "tanggal dan waktu",
+                "tulis literal sebagai `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "true atau false",
+                "MySQL memperlakukannya sebagai `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "Constraint mencakup `PRIMARY KEY` (pengenal baris yang unik), `NOT NULL`, `UNIQUE`, `CHECK (condition)`, dan `FOREIGN KEY` / `REFERENCES` (nilai harus ada di tabel lain). String memakai tanda kutip tunggal; tanda kutip ganda untuk identifier dalam SQL standar."
+      ]
+    },
+    {
+      "h": "SELECT: filter, urutkan, dan batasi",
+      "body": [
+        "`SELECT` membaca data. `WHERE` memfilter baris, `ORDER BY` mengurutkannya, dan `LIMIT` (atau `FETCH FIRST n ROWS ONLY` yang standar) membatasi jumlah yang dikembalikan.",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` berarti tidak diketahui, sehingga `city = NULL` tidak pernah benar. Selalu gunakan `IS NULL` atau `IS NOT NULL`. Perhatikan juga bahwa urutan logis sebuah query adalah `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, sehingga alias kolom yang didefinisikan di `SELECT` tidak bisa dipakai di `WHERE`."
+        }
+      ]
+    },
+    {
+      "h": "JOIN: menggabungkan tabel",
+      "body": [
+        "Join mencocokkan baris dari dua tabel memakai sebuah kondisi, biasanya foreign key. `INNER JOIN` (atau cukup `JOIN`) hanya mempertahankan baris yang cocok; `LEFT JOIN` mempertahankan setiap baris tabel kiri dan mengisi kolom yang kosong dengan `NULL`.",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Join",
+              "Hasil"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "baris yang cocok di kedua tabel"
+              ],
+              [
+                "`LEFT JOIN`",
+                "semua baris kiri, ditambah yang cocok dari kanan atau `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "semua baris kanan, ditambah yang cocok dari kiri atau `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "semua baris dari kedua sisi; tidak didukung MySQL"
+              ],
+              [
+                "`CROSS JOIN`",
+                "setiap kombinasi baris (produk Cartesian)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY dan fungsi agregat",
+      "body": [
+        "Fungsi agregat seperti `COUNT`, `SUM`, `AVG`, `MIN`, dan `MAX` meringkas banyak baris menjadi satu. `GROUP BY` membuat satu baris hasil per grup, dan `HAVING` memfilter grup setelah agregasi, sedangkan `WHERE` memfilter baris sebelum agregasi.",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` menghitung baris, sedangkan `COUNT(column)` hanya menghitung nilai non-null, itulah sebabnya Cy mendapat 0 pesanan di atas. `COALESCE` mengembalikan argumen non-null pertamanya."
+      ]
+    },
+    {
+      "h": "Subquery, CTE, dan window function",
+      "body": [
+        "Subquery adalah query di dalam query lain. Common table expression (CTE), ditulis dengan `WITH`, memberi nama pada subquery dan membuat query panjang mudah dibaca. Window function seperti `ROW_NUMBER`, `RANK`, dan `SUM(...) OVER` menghitung nilai di seluruh baris terkait tanpa meruntuhkannya menjadi grup.",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "CTE dan window function didukung oleh PostgreSQL, SQLite 3.25 ke atas, dan MySQL 8.0 ke atas."
+      ]
+    },
+    {
+      "h": "Mengubah data: INSERT, UPDATE, DELETE, dan transaksi",
+      "body": [
+        "`UPDATE` dan `DELETE` memengaruhi setiap baris yang cocok dengan klausa `WHERE`. Transaksi mengelompokkan beberapa pernyataan agar semuanya berhasil atau semuanya gagal bersama.",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "`UPDATE` atau `DELETE` tanpa `WHERE` mengubah setiap baris dalam tabel. Jalankan dulu kondisi yang sama sebagai `SELECT` untuk melihat baris mana yang akan terpengaruh, dan bekerjalah di dalam transaksi bila bisa."
+        }
+      ]
+    },
+    {
+      "h": "Perbedaan PostgreSQL, MySQL, dan SQLite",
+      "body": [
+        "Inti SQL bersifat portabel, tetapi setiap engine berbeda dalam detail. Berikut perbedaan yang pertama kali ditemui pemula.",
+        {
+          "table": {
+            "head": [
+              "Fitur",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "ID auto-increment",
+                "`GENERATED ALWAYS AS IDENTITY` atau `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "Penulisan nama dengan kutip",
+                "`\"name\"`",
+                "backtick di sekitar nama",
+                "`\"name\"`"
+              ],
+              [
+                "Batasi jumlah baris",
+                "`LIMIT n` or `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "Penggabungan string",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "Boolean",
+                "tipe `BOOLEAN` asli",
+                "`TINYINT(1)`",
+                "disimpan sebagai 0 dan 1"
+              ],
+              [
+                "Pengetikan",
+                "ketat",
+                "ketat pada strict mode default",
+                "fleksibel, kecuali tabel dideklarasikan `STRICT`"
+              ],
+              [
+                "Upsert",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "Perbedaan lainnya mencakup fungsi tanggal (`NOW()` di PostgreSQL dan MySQL, `datetime('now')` di SQLite), sensitivitas huruf pada perbandingan string, dan dukungan full outer join, yang tidak dimiliki MySQL."
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Membangun query dengan menggabungkan input pengguna, yang membuka celah SQL injection. Selalu gunakan parameterized query (placeholder seperti `?` atau `$1`) dari bahasa pemrograman Anda.",
+            "Memilih kolom dalam query ber-grup yang tidak ada di `GROUP BY` maupun di dalam fungsi agregat.",
+            "Memakai `FLOAT` untuk uang alih-alih `DECIMAL`.",
+            "Lupa membuat index pada kolom yang dipakai di join dan filter; `CREATE INDEX idx_orders_customer ON orders(customer_id);` dan `EXPLAIN` membantu di sini.",
+            "Mengira baris dikembalikan dalam urutan tetap tanpa `ORDER BY`."
+          ]
+        },
+        "Untuk belajar lebih lanjut, baca manual resmi: tutorial PostgreSQL, MySQL Reference Manual, dan SQLite SQL language reference. Berlatihlah pada dataset nyata dengan menulis pertanyaan dalam bahasa sehari-hari lalu mengubah tiap pertanyaan menjadi query."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah SQL bahasa pemrograman?",
+      "a": "SQL adalah bahasa query deklaratif: Anda mendeskripsikan hasil yang diinginkan, bukan langkah-langkah menghitungnya. Ekstensi vendor seperti PL/pgSQL dan T-SQL menambahkan variabel, loop, dan prosedur."
+    },
+    {
+      "q": "Database apa yang sebaiknya dipakai pemula untuk memulai?",
+      "a": "SQLite tidak membutuhkan server dan ideal untuk belajar. PostgreSQL adalah pilihan kuat untuk mempelajari SQL yang sesuai standar bagi aplikasi nyata, dan MySQL umum di web hosting."
+    },
+    {
+      "q": "Apa perbedaan WHERE dan HAVING?",
+      "a": "`WHERE` memfilter baris individual sebelum pengelompokan, dan `HAVING` memfilter grup setelah fungsi agregat dihitung."
+    },
+    {
+      "q": "Apa perbedaan INNER JOIN dan LEFT JOIN?",
+      "a": "`INNER JOIN` hanya mengembalikan baris yang punya pasangan di kedua tabel. `LEFT JOIN` mengembalikan setiap baris dari tabel kiri dan mengisi kolom tabel kanan dengan `NULL` bila tidak ada yang cocok."
+    },
+    {
+      "q": "Bagaimana cara mencegah SQL injection?",
+      "a": "Jangan pernah memasukkan input pengguna ke dalam teks SQL. Gunakan parameterized query atau prepared statement, saat database menerima query dan nilainya secara terpisah."
+    }
+  ]
+}

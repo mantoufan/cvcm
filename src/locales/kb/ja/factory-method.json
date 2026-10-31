@@ -1,0 +1,168 @@
+{
+  "title": "Factory Method パターン：目的、構造、TypeScriptの例 — cv.cm",
+  "description": "Factory Method パターンを解説。サブクラスが生成するオブジェクトを決める仕組み、TypeScriptの例、使うべきとき、Abstract Factory パターンとの違いを紹介します。",
+  "h1": "Factory Method パターンを例でわかりやすく解説",
+  "answer": "Factory Method パターンは、オブジェクトを作成するメソッドを定義しつつ、どの具象クラスをインスタンス化するかをサブクラスに決めさせる生成パターンです。基底クラスは製品のインターフェイスに対してロジックを書き、`new` の代わりに `createTransport()` のようなファクトリメソッドを呼びます。これにより、製品を使うコードを編集せずに、サブクラスを追加するだけで新しい種類の製品を加えられます。",
+  "sections": [
+    {
+      "h": "目的",
+      "body": [
+        "オブジェクトを作成するためのインターフェイスを定義しますが、どのクラスをインスタンス化するかはサブクラスに決めさせます。Factory Method パターンは、クラスがインスタンス化をサブクラスに委ねられるようにします。Gang of Four（GoF）の書籍にある5つの生成パターンの1つで、継承に依存するため、クラスを対象とするのはこのパターンだけです。"
+      ]
+    },
+    {
+      "h": "解決する問題",
+      "body": [
+        "通知モジュールを想像してください。メッセージを整形し、送信し、結果をログに記録します。最初はメールの送信だけなので、コードは `new EmailChannel()` を直接呼んでいます。やがてSMS、さらにプッシュ通知が必要になります。整形やログの手順は変わらないのに、チャネルが増えるたびに同じクラスを編集し、`if` の分岐を追加することになります。",
+        "送信のワークフローは安定していて、変わるのはチャネルの種類だけです。Factory Method パターンは、変化する唯一の判断である「どのクラスを作るか」を、オーバーライド可能な1つのメソッドに移します。"
+      ]
+    },
+    {
+      "h": "構造と登場要素",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "要素",
+              "役割",
+              "例では"
+            ],
+            "rows": [
+              [
+                "Product",
+                "ファクトリメソッドが作成するオブジェクトのインターフェイスです。",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Productのインターフェイスを実装します。",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "ファクトリメソッドを宣言し、製品を使うロジックを含みます。",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "ファクトリメソッドをオーバーライドして、特定のConcreteProductを返します。",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScriptでの実装",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "プッシュ通知を追加するには、`PushChannel` と `PushNotifier` を書くだけです。`notify` メソッドと、その呼び出し元はすべて変わりません。",
+        "パターンを適用する前は、生成の判断が共通ロジックの中に埋め込まれていました。",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "より軽い代替案：ファクトリ関数を渡す",
+      "body": [
+        "Factory Method パターンは継承を使います。TypeScriptでは、生成用の関数をコンストラクタに渡す合成によって、同じ柔軟性が得られることがよくあります。これなら、製品ごとにサブクラスを作る必要がありません。",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "各クリエーターが別の理由ですでに専用のクラスを持っている場合や、フレームワークが基底クラスの拡張を求める場合は、サブクラス版を使います。バリエーション間の違いが、作成するオブジェクトだけである場合は、関数版を使います。"
+      ]
+    },
+    {
+      "h": "使うべきとき、使わないとき",
+      "body": [
+        "次の場合はFactory Method パターンを使います。",
+        {
+          "ul": [
+            "クラスに安定したアルゴリズムがあるが、どの具象オブジェクトを作る必要があるかを事前に知り得ない場合。",
+            "フレームワークやライブラリを書いていて、利用者がサブクラス化によって独自の製品クラスを差し込めるようにしたい場合。",
+            "ある型の生成ロジックを、`new` の呼び出しを散らさずに1か所にまとめたい場合。"
+          ]
+        },
+        "次の場合は避けます。",
+        {
+          "ul": [
+            "製品の型が1つしかなく、2つ目が現れる気配もない場合。直接 `new` を使うほうが明快です。",
+            "テストを可能にすることだけが理由の場合。依存先をコンストラクタ経由で渡すほうが単純です。",
+            "他のロジックがなく、製品と1対1で対応するだけの、並行したクリエーター階層を作ることになる場合。"
+          ]
+        },
+        {
+          "note": "`Array.from()` や `Promise.resolve()` のような「静的ファクトリメソッド」は別の考え方です。インスタンスを返す、名前付きの静的関数です。便利ですが、メソッドをオーバーライドするサブクラスに依存するGoFのFactory Method パターンではありません。"
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "Javaのコレクション：`Iterable.iterator()` は1回だけ宣言され、各コレクションクラス（`ArrayList`、`HashSet` など）がそれをオーバーライドして、自身のイテレータクラスを返します。GoFの書籍は、ポリモーフィックな反復処理におけるFactory Method パターンのこの使い方を紹介しています。",
+            "JavaScriptのイテラブル：すべてのイテラブルは `[Symbol.iterator]()` を実装しており、そのコレクションに合った新しいイテレータを返します。",
+            "UIフレームワークでは、コンポーネント、セル、ビューを作成するメソッドをサブクラスがオーバーライドでき、レイアウトとライフサイクルは基底クラスが制御する構成がよくあります。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "違い"
+            ],
+            "rows": [
+              [
+                "Abstract Factory パターン",
+                "複数の生成メソッドを持つオブジェクトを通じて、関連する製品のファミリー全体を作成します。そのメソッドは、ファクトリメソッドとして実装されることが多くあります。"
+              ],
+              [
+                "Template Method パターン",
+                "Factory Method パターンは、上の `notify` が `createChannel` を呼ぶように、テンプレートメソッドから呼び出されることがよくあります。"
+              ],
+              [
+                "Prototype パターン",
+                "クリエーターをサブクラス化する代わりに、インスタンスをコピーしてオブジェクトを作るため、並行するクリエーター階層が不要です。"
+              ],
+              [
+                "Builder パターン",
+                "どのクラスを作るかではなく、1つの複雑なオブジェクトを段階的に構築することに焦点を当てます。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Factory Method パターンとAbstract Factory パターンの違いは何ですか？",
+      "a": "Factory Method パターンは、サブクラスがオーバーライドして1つの製品を作る単一のメソッドです。Abstract Factory パターンは、一緒に使うべき関連製品のファミリーを生み出す、複数の生成メソッドを持つオブジェクトです。"
+    },
+    {
+      "q": "単純なファクトリ関数はFactory Method パターンと同じですか？",
+      "a": "厳密には違います。内部にswitchを持つ `createShape(kind)` のような関数は、シンプルファクトリと呼ばれることが多くあります。GoFのFactory Method パターンは、サブクラスが生成メソッドをオーバーライドすることに依存しますが、どちらもクライアントから `new` を隠します。"
+    },
+    {
+      "q": "Factory Method パターンは開放閉鎖の原則に従っていますか？",
+      "a": "はい。新しい製品クラスと新しいクリエーターのサブクラスを追加するだけで製品を追加でき、クリエーターの既存のロジックは変更しません。"
+    },
+    {
+      "q": "ファクトリメソッドは抽象メソッドでなければなりませんか？",
+      "a": "いいえ。基底クラスが標準の製品を返す既定の実装を提供し、違うものが必要なときだけサブクラスがオーバーライドしてもかまいません。"
+    }
+  ]
+}

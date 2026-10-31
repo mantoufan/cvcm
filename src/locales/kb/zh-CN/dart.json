@@ -1,0 +1,193 @@
+{
+  "title": "Dart 入门教程：空安全、函数、集合与异步 — cv.cm",
+  "description": "从零学 Dart：运行 Hello, world、变量与类型、健全空安全、switch 模式匹配、函数、列表与映射、记录、类以及 async/await。",
+  "h1": "Dart 入门教程",
+  "answer": "Dart 是 Google 推出的静态类型、面向对象语言，因 Flutter 应用框架而广为人知。它具备健全的空安全，可编译为原生代码以及 JavaScript 或 WebAssembly，开发时支持快速热重载。本页依次讲解环境搭建、类型、空安全、流程控制、函数、集合、类、异步代码和错误处理。",
+  "sections": [
+    {
+      "h": "Dart 是什么，用来做什么",
+      "body": [
+        "Dart 是 Google 开发的、面向客户端优化的编程语言。它是带类型推断的静态类型语言，拥有健全的空安全，既能编译为原生机器码（用于移动端、桌面和服务器），也能编译为 JavaScript 或 WebAssembly（用于 Web）。开发时它运行在带热重载的虚拟机上，修改后几秒内就能在运行中的应用里看到效果。",
+        "大多数人学 Dart 是为了用 Flutter 开发应用。Flutter 是 Google 的 UI 工具包，一套代码即可构建 Android、iOS、Web、Windows、macOS 和 Linux 应用。Dart 也可用于命令行工具和后端服务。"
+      ]
+    },
+    {
+      "h": "安装 Dart 并运行 Hello, world",
+      "body": [
+        "从 dart.dev 安装 Dart SDK（或安装自带 Dart 的 Flutter）。每个 Dart 程序都从顶层的 `main` 函数开始执行。",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "本页的所有示例都可以在 DartPad 中试运行，它是 dartpad.dev 上基于浏览器的编辑器。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "用 `var` 让编译器推断类型，用 `final` 声明只赋值一次的变量，用 `const` 声明编译期常量。你也可以始终显式写出类型。",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "整数；在原生平台上为 64 位"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "64 位浮点数"
+              ],
+              [
+                "`num`",
+                "`7` 或 `7.5`",
+                "`int` 和 `double` 的父类型"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "条件中只允许 `true` 和 `false`"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16；支持 `$x` 和 `${expr}` 插值"
+              ],
+              [
+                "`dynamic`",
+                "任意类型",
+                "关闭静态检查；大多数代码中应避免使用"
+              ]
+            ]
+          }
+        },
+        "在 Web 上，`int` 值用 JavaScript 数字表示，因此非常大的整数可能丢失精度。"
+      ]
+    },
+    {
+      "h": "健全空安全",
+      "body": [
+        "从 Dart 3 起，所有 Dart 代码都使用健全空安全。`String` 类型的变量永远不会为 null；若要允许为空，写成 `String?`。编译器会检查每一处使用，因此空值错误在程序运行之前就能发现。",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "`!` 运算符（例如 `s!.length`）告诉编译器该值不为 null，如果判断错误，运行时会抛出异常。请优先使用空值检查或 `??`。另外要注意，`late` 会把检查推迟到运行时：在赋值之前读取 `late` 变量会抛出错误。"
+        }
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "Dart 有常见的 `if`、`for`、`while` 和 `do-while`，以及可遍历任意可迭代对象的 `for-in` 循环。从 Dart 3 起，`switch` 支持模式匹配，并且可以作为表达式使用。",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "函数",
+      "body": [
+        "函数是一等对象。参数可以是位置参数、放在 `[]` 中的可选位置参数，或放在 `{}` 中的命名参数。命名参数默认可选，除非标记为 `required`。箭头语法 `=>` 是只返回一个表达式的函数的简写。",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "集合：List、Set、Map 与记录",
+      "body": [
+        "核心集合有 `List`（有序）、`Set`（元素唯一）和 `Map`（键值对）。集合字面量支持 `if`、`for` 和展开运算符 `...`。Dart 3 新增的记录（Record）无需声明类即可把多个值组合在一起。",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "类与 async/await",
+      "body": [
+        "Dart 是面向对象的：每个值都是对象。类支持带初始化形参（`this.x`）的构造函数、命名构造函数、getter、mixin 和接口。异步代码使用 `Future` 和 `Stream` 配合 `async` 与 `await`，使 Flutter 应用在等待文件或网络时保持响应。",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "用 `throw` 抛出异常，用 `try`、`on`、`catch` 和 `finally` 处理。用 `on SomeType` 捕获特定类型。Dart 区分 `Exception`（程序可以处理的预期问题）和 `Error`（程序缺陷，例如断言失败或越界错误），后者通常不应捕获。",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：购物车合计",
+      "body": [
+        "这个程序用类表示商品，用映射保存购物车，并打印小票。它综合运用了类、映射、字符串格式化和集合方法。",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "初学者常见错误：忘记 `await`（得到的是 `Future` 而不是值）；使用 `dynamic` 或把类型留成 `Object`，从而失去编译期检查；过度使用 `!` 和 `late`；混淆 `final`（赋值一次）与 `const`（编译期已知）；以及在遍历列表时修改它。"
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        {
+          "ul": [
+            "dart.dev 上的 Dart 语言导览和教程。",
+            "Effective Dart：官方的风格与设计指南。",
+            "如果想开发应用，请阅读 flutter.dev 上的 Flutter 文档。",
+            "pub.dev：Dart 和 Flutter 的包仓库。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Dart 只能用于 Flutter 吗？",
+      "a": "不是。Dart 是通用语言，可以开发命令行工具、服务器和 Web 应用。Flutter 只是学习它最热门的理由。"
+    },
+    {
+      "q": "Dart 是编译型还是解释型？",
+      "a": "两种模式都有。开发时 Dart 在虚拟机上以即时编译方式运行并支持热重载；发布时则提前编译为原生机器码，Web 端则编译为 JavaScript 或 WebAssembly。"
+    },
+    {
+      "q": "Dart 中的 final 和 const 有什么区别？",
+      "a": "`final` 变量只赋值一次，可以在运行时赋值。`const` 值必须在编译期已知，并且是深度不可变的，因此 Flutter 可以复用常量 widget。"
+    },
+    {
+      "q": "Dart 和 Java 或 JavaScript 相似吗？",
+      "a": "它的 C 风格语法和类对 Java、C# 和 JavaScript 开发者来说很熟悉。与 JavaScript 不同的是，Dart 是静态类型语言，并具备健全的空安全。"
+    },
+    {
+      "q": "Dart 中的 ?? 运算符有什么作用？",
+      "a": "`a ?? b` 在 `a` 不为 null 时返回 `a`，否则返回 `b`。与之相关的 `a ??= b` 仅在 `a` 为 null 时才把 `b` 赋给 `a`。"
+    }
+  ]
+}

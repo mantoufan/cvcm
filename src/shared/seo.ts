@@ -11,7 +11,7 @@ import type { QuizId } from "./quiz";
 import { datasetBreadcrumbJsonLd, datasetDescription, datasetFaqJsonLd, datasetJsonLd, datasetStaticHtml, datasetTitle } from "./datasets-i18n";
 import type { DatasetId } from "./datasets";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPageHtml, kbTitle } from "./kb-i18n";
-import type { KbId } from "./kb";
+import { kbArticleOf, type KbPage } from "./kb";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
@@ -53,9 +53,9 @@ export type SeoInput = {
   /** A data table under /datasets/; `datasetId` null is the hub. */
   dataset?: boolean;
   datasetId?: DatasetId | null;
-  /** A knowledge page under /learn/knowledge/; `kbId` null is the hub. */
+  /** A kb page under /learn/knowledge/ or /learn/code/; `kbId` null is the knowledge hub, "code" the coding hub. */
   kb?: boolean;
-  kbId?: KbId | null;
+  kbId?: KbPage;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -881,7 +881,7 @@ export function applyHtmlSeo(
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && seo.kbId) ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) ? "article" : "website"}" />`,
     `<meta property="og:site_name" content="cv.cm" />`,
     `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
     `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
@@ -1036,8 +1036,11 @@ function staticPageHtml(
     const tutorials = FEATURED_TUTORIALS
       .filter((id) => id !== seo.tutorial)
       .map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
-    const kbHub = { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) };
-    parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, kbHub, ...tutorials] : [kbHub, ...tutorials]));
+    const kbHubs = [
+      { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
+      { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
+    ];
+    parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...kbHubs, ...tutorials] : [...kbHubs, ...tutorials]));
   } else if (seo.games || seo.markets) {
     parts.push(linkList([home]));
   } else if (seo.tool) {
@@ -1054,6 +1057,7 @@ function staticPageHtml(
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
       { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
+      { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));

@@ -1,0 +1,223 @@
+{
+  "title": "Tutorial de Python: sintaxis, tipos, funciones y archivos en una página — cv.cm",
+  "description": "Aprende Python 3 en una sola página: instalación y Hello world, variables y tipos, if y bucles, funciones, listas y diccionarios, excepciones, archivos y un ejemplo completo.",
+  "h1": "Tutorial de Python para principiantes",
+  "answer": "Python es un lenguaje interpretado de propósito general, conocido por su sintaxis legible que usa la indentación en lugar de llaves. Instala Python 3, guarda `print(\"Hello, world\")` en `hello.py` y ejecuta `python3 hello.py`. Sus ideas centrales son los tipos dinámicos, las funciones definidas con `def`, las listas, diccionarios y conjuntos integrados, las excepciones con `try`/`except` y una amplia biblioteca estándar.",
+  "sections": [
+    {
+      "h": "Qué es Python y para qué se usa",
+      "body": [
+        "Python es un lenguaje de alto nivel con tipado dinámico, publicado por primera vez por Guido van Rossum en 1991. El código lo ejecuta un intérprete (el de referencia es CPython), así que no hay un paso de compilación aparte. Se usa en análisis de datos y aprendizaje automático (NumPy, pandas, PyTorch), back ends web (Django, Flask, FastAPI), scripts de automatización, computación científica y enseñanza. Python 2 llegó al fin de su vida útil en 2020, así que aprende siempre Python 3."
+      ]
+    },
+    {
+      "h": "Instalar Python y ejecutar Hello, world",
+      "body": [
+        "Descarga un instalador desde python.org (Windows, macOS) o usa el gestor de paquetes en Linux. Comprueba la instalación con `python3 --version` (en Windows el comando suele ser `py` o `python`). Guarda este archivo como `hello.py`:",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "python"
+        },
+        {
+          "code": "python3 hello.py\n# Hello, world",
+          "lang": "shell"
+        },
+        "Si ejecutas `python3` sin ningún archivo se abre el intérprete interactivo (REPL), útil para probar una línea cada vez."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Una variable se crea al asignarle un valor. No se declara el tipo: el valor lleva su propio tipo, y `type(x)` te dice cuál es.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`, `-7`, `10**20`",
+                "Números enteros de cualquier tamaño"
+              ],
+              [
+                "`float`",
+                "`3.14`, `1e-3`",
+                "Punto flotante de 64 bits"
+              ],
+              [
+                "`bool`",
+                "`True`, `False`",
+                "Con mayúscula inicial"
+              ],
+              [
+                "`str`",
+                "`\"hi\"`, `'hi'`",
+                "Texto Unicode inmutable"
+              ],
+              [
+                "`None`",
+                "`None`",
+                "La ausencia de un valor"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\nage = 36\nheight = 1.65\nprint(f\"{name} is {age} years old\")  # Ada is 36 years old\nprint(7 / 2, 7 // 2, 7 % 2)          # 3.5 3 1\nprint(int(\"12\") + 1)                 # 13",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo: if, for y while",
+      "body": [
+        "Los bloques empiezan con dos puntos y se definen por la indentación (por convención, 4 espacios). Los bucles `for` recorren cualquier secuencia; `range(n)` genera los números de 0 a n−1.",
+        {
+          "code": "score = 72\nif score >= 90:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(grade)  # B\nfor i in range(3):\n    print(i)  # 0, then 1, then 2\nn = 10\nwhile n > 1:\n    n = n // 2\nprint(n)  # 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Funciones",
+      "body": [
+        "Define funciones con `def`. Los parámetros pueden tener valores por defecto y quien llama puede pasar argumentos por nombre. Una función sin `return` devuelve `None`.",
+        {
+          "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\nprint(greet(\"Lin\"))                 # Hello, Lin!\nprint(greet(\"Lin\", greeting=\"Hi\"))  # Hi, Lin!\nsquare = lambda x: x * x\nprint(square(5))                    # 25",
+          "lang": "python"
+        },
+        "Las anotaciones de tipo, como `def area(w: float, h: float) -> float:`, documentan la intención y permiten que herramientas como mypy revisen tu código, pero el intérprete no las impone."
+      ]
+    },
+    {
+      "h": "Listas, tuplas, diccionarios y conjuntos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Literal",
+              "Ordenado",
+              "Mutable",
+              "Uso habitual"
+            ],
+            "rows": [
+              [
+                "`list`",
+                "`[1, 2, 3]`",
+                "Sí",
+                "Sí",
+                "Una secuencia que modificas"
+              ],
+              [
+                "`tuple`",
+                "`(1, 2)`",
+                "Sí",
+                "No",
+                "Un grupo fijo de valores"
+              ],
+              [
+                "`dict`",
+                "`{\"a\": 1}`",
+                "Orden de inserción",
+                "Sí",
+                "Búsqueda de valor por clave"
+              ],
+              [
+                "`set`",
+                "`{1, 2}`",
+                "No",
+                "Sí",
+                "Elementos únicos, pruebas de pertenencia"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "nums = [3, 1, 2]\nnums.append(5)\nnums.sort()\nprint(nums, nums[0], nums[-1], nums[1:3])  # [1, 2, 3, 5] 1 5 [2, 3]\nages = {\"ann\": 31, \"bob\": 25}\nages[\"cy\"] = 40\nfor person, age in ages.items():\n    print(person, age)\nprint(ages.get(\"zed\", 0))  # 0\nsquares = [x * x for x in range(5) if x % 2 == 0]\nprint(squares)  # [0, 4, 16]",
+          "lang": "python"
+        },
+        "La última línea es una comprensión de listas, una de las características más típicas de Python: construye una lista a partir de un bucle y un filtro opcional en una sola expresión. Las comprensiones de diccionarios y conjuntos funcionan igual."
+      ]
+    },
+    {
+      "h": "Características distintivas: desempaquetado, with y generadores",
+      "body": [
+        {
+          "code": "a, b = 1, 2\na, b = b, a            # swap without a temporary\nfirst, *rest = [1, 2, 3, 4]\nprint(first, rest)     # 1 [2, 3, 4]\nwith open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"line one\\n\")   # file is closed automatically\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nprint(list(countdown(3)))  # [3, 2, 1]",
+          "lang": "python"
+        },
+        "La instrucción `with` ejecuta por ti el código de preparación y de limpieza (aquí, cierra el archivo incluso si ocurre un error). Una función que usa `yield` es un generador: produce valores de forma perezosa, uno a uno, lo que ahorra memoria con datos grandes."
+      ]
+    },
+    {
+      "h": "Manejo de errores con try y except",
+      "body": [
+        "Los errores se lanzan como excepciones. Captura los tipos de excepción concretos que esperas y usa `finally` para el código que siempre debe ejecutarse.",
+        {
+          "code": "def parse_age(text):\n    try:\n        age = int(text)\n    except ValueError:\n        print(f\"not a number: {text!r}\")\n        return None\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\nprint(parse_age(\"41\"))   # 41\nprint(parse_age(\"abc\"))  # not a number: 'abc', then None",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: contador de palabras",
+      "body": [
+        "Este script lee un archivo de texto indicado en la línea de comandos e imprime las cinco palabras más frecuentes. Usa solo la biblioteca estándar.",
+        {
+          "code": "import sys\nfrom collections import Counter\ndef top_words(path, n=5):\n    with open(path, encoding=\"utf-8\") as f:\n        words = f.read().lower().split()\n    cleaned = [w.strip(\".,;:!?\\\"'()\") for w in words]\n    return Counter(w for w in cleaned if w).most_common(n)\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        sys.exit(\"usage: python3 count.py FILE\")\n    try:\n        for word, count in top_words(sys.argv[1]):\n            print(f\"{count:5}  {word}\")\n    except FileNotFoundError:\n        sys.exit(f\"file not found: {sys.argv[1]}\")",
+          "lang": "python"
+        },
+        "Ejecútalo con `python3 count.py notes.txt`. La comprobación `if __name__ == \"__main__\":` permite importar el archivo como módulo sin ejecutar la parte de script."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "No uses un valor mutable como argumento por defecto: `def add(item, items=[])` comparte una sola lista entre todas las llamadas. Usa `items=None` y crea la lista dentro de la función."
+        },
+        {
+          "ul": [
+            "Mezclar tabuladores y espacios, o indentar de forma inconsistente, provoca `IndentationError`. Configura tu editor para insertar 4 espacios.",
+            "`=` asigna y `==` compara. Usa `is` solo con `None` (`if x is None`).",
+            "`input()` siempre devuelve una cadena; conviértela con `int()` o `float()` antes de hacer cálculos.",
+            "Copiar una lista con `b = a` no la copia: ambos nombres apuntan a la misma lista. Usa `b = a.copy()` o `b = list(a)`.",
+            "Instala los paquetes dentro de un entorno virtual (`python3 -m venv .venv`) en lugar de en el Python del sistema."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Trabaja el Tutorial oficial de Python y luego explora la Library Reference para conocer módulos como `pathlib`, `json`, `datetime` e `itertools`. Aprende `pip` y los entornos virtuales para usar paquetes de terceros y escribe pruebas con `unittest` o pytest. Después elige un camino: web (Django o FastAPI), datos (pandas) o automatización."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es Python bueno para principiantes?",
+      "a": "Sí. Su sintaxis es corta y cercana al inglés sencillo, los errores se informan con claridad y puedes probar el código línea a línea en el REPL. Además se usa mucho en la industria, así que lo que aprendas seguirá siendo útil."
+    },
+    {
+      "q": "¿Python es compilado o interpretado?",
+      "a": "CPython compila el código fuente a bytecode y luego interpreta ese bytecode, todo de forma automática al ejecutar un script. Nunca ejecutas un paso de compilación aparte."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre una lista y una tupla?",
+      "a": "Una lista es mutable: puedes añadir, quitar y cambiar elementos. Una tupla es inmutable, por lo que se usa para grupos fijos de valores y puede ser clave de un diccionario."
+    },
+    {
+      "q": "¿Por qué mi código Python es lento?",
+      "a": "Los bucles de Python puro son más lentos que los de los lenguajes compilados. Usa funciones integradas, comprensiones y bibliotecas como NumPy, que ejecutan sus bucles internos en C."
+    },
+    {
+      "q": "¿Debo usar python o python3 en la línea de comandos?",
+      "a": "En macOS y en la mayoría de los sistemas Linux usa `python3`, porque `python` puede no existir o apuntar a otra cosa. En Windows lo habitual es el lanzador `py`."
+    }
+  ]
+}

@@ -3953,7 +3953,12 @@
       "codes": "Mã",
       "files": "Tệp",
       "audio": "Âm thanh",
-      "text": "Chữ"
+      "text": "Chữ",
+      "dev": "Lập trình & web",
+      "time": "Ngày và giờ",
+      "money": "Tiền & mua sắm",
+      "health": "Sức khỏe & thể thao",
+      "math": "Toán & học tập"
     },
     "hub": {
       "kicker": "Bài học trong ngày",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "Biên lợi nhuận và markup",
       "blurb": "Hai cách tính lợi nhuận, cách quy đổi và bảng tra nhanh."
+    },
+    "code": {
+      "label": "Lập trình",
+      "lead": "Hướng dẫn một trang về ngôn ngữ lập trình, mẫu thiết kế, cấu trúc dữ liệu và thuật toán: trả lời ngắn trước, rồi mã chạy được và liên kết tới tài liệu chính thức.",
+      "all": "Tất cả hướng dẫn lập trình",
+      "groups": {
+        "languages": "Ngôn ngữ lập trình",
+        "patterns": "Mẫu thiết kế",
+        "structures": "Cấu trúc dữ liệu",
+        "algorithms": "Thuật toán"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust và nhiều ngôn ngữ khác, từ Hello World",
+        "patterns": "Đủ 23 mẫu Gang of Four cùng SOLID, ví dụ bằng TypeScript",
+        "structures": "Danh sách liên kết, bảng băm, cây, heap và trie, mã Python",
+        "algorithms": "Sắp xếp, tìm kiếm, đồ thị và quy hoạch động, kèm độ phức tạp"
+      }
+    },
+    "linked-list": {
+      "name": "Danh sách liên kết",
+      "blurb": "Danh sách liên kết đơn và đôi: chèn, xóa, đảo ngược, phát hiện chu trình và độ phức tạp"
+    },
+    "stack-and-queue": {
+      "name": "Ngăn xếp và hàng đợi",
+      "blurb": "Ngăn xếp LIFO và hàng đợi FIFO trong Python: list, deque, khớp ngoặc, BFS và độ phức tạp"
+    },
+    "hash-table": {
+      "name": "Bảng băm",
+      "blurb": "Hàm băm, bucket, va chạm, hệ số tải và đổi kích thước, kèm mã Python"
+    },
+    "binary-search-tree": {
+      "name": "Cây tìm kiếm nhị phân",
+      "blurb": "Quy tắc thứ tự BST, tìm, chèn, xóa trong Python, cân bằng và độ phức tạp"
+    },
+    "binary-tree-traversal": {
+      "name": "Duyệt cây nhị phân",
+      "blurb": "Preorder, inorder, postorder và level order, mã Python đệ quy và lặp"
+    },
+    "binary-heap": {
+      "name": "Heap nhị phân",
+      "blurb": "Tính chất heap, sift up/down, heapify, hàng đợi ưu tiên và heapq của Python"
+    },
+    "trie": {
+      "name": "Trie (cây tiền tố)",
+      "blurb": "Cây tiền tố: chèn, tìm, kiểm tra tiền tố và gợi ý tự động trong Python, kèm độ phức tạp"
+    },
+    "union-find": {
+      "name": "Union-find (DSU)",
+      "blurb": "Tập hợp rời nhau: find, union, nén đường đi, hợp theo hạng và kích thước trong Python"
+    },
+    "lru-cache": {
+      "name": "Bộ nhớ đệm LRU",
+      "blurb": "Cache dùng gần đây nhất với hash map và danh sách liên kết đôi, OrderedDict, lru_cache"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "Cú pháp, kiểu dữ liệu, luồng điều khiển, hàm, collection, lỗi và tệp trong một trang"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "Biến, kiểu, hàm, mảng, đối tượng, promise và async/await trong một trang"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "Kiểu, interface, union, thu hẹp kiểu, generic và xử lý lỗi trong một trang"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "Kiểu, lớp, record, collection, ngoại lệ và pattern matching trong một trang"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "Kiểu, hàm, mảng, chuỗi, con trỏ, malloc/free và xử lý lỗi trong một trang"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "Kiểu, lớp, container STL, lambda, RAII, con trỏ thông minh và ngoại lệ trong một trang"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "Kiểu, lớp, record, collection, LINQ, async/await và ngoại lệ trong một trang"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "Kiểu, slice, map, struct, interface, goroutine, channel và lỗi trong một trang"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "Ownership, borrowing, struct, enum, match, collection và Result trong một trang"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "Biến, mảng, hàm, lớp, enum, ngoại lệ và một endpoint JSON trong một trang"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "Kiểu, phương thức, mảng, hash, block, lớp, module và ngoại lệ trong một trang"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "Kiểu, optional, closure, collection, struct, enum, protocol và lỗi trong một trang"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null safety, luồng điều khiển, hàm, data class và coroutine trong một trang"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null safety, hàm, collection, lớp và async/await cho Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Cú pháp Scala 3, pattern matching, collection, case class và Option trong một trang"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "Vector, data frame, hàm, thống kê và biểu đồ trong R, gói gọn trong một trang"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTE, giao dịch và so sánh PostgreSQL, MySQL, SQLite"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "Shell script, biến, trích dẫn, vòng lặp, hàm, pipe và set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet, pipeline đối tượng, biến, hàm, hashtable và try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "Biến, table, hàm, metatable và pcall trong Lua, gói gọn trong một trang"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "Scalar, mảng, hash, subroutine, biểu thức chính quy và lỗi trong Perl"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "Hàm thuần, kiểu, pattern matching, danh sách, Maybe và IO trong Haskell"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "Pattern matching, pipe, Enum, tiến trình và xử lý lỗi {:ok, value}"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "Pattern matching, đệ quy, tiến trình, OTP và xử lý lỗi kiểu let-it-crash"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "Cú pháp, collection bất biến, hàm, macro, atom và lỗi trong một trang"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "Kiểu, record, union, pattern matching, pipeline và Result trong một trang"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "Kiểu, record, variant, pattern matching, module và lỗi trong một trang"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "Kiểu, mảng, broadcasting, hàm, multiple dispatch và lỗi trong một trang"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "Kiểu, slice, optional, error union, comptime, defer và allocator trong một trang"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "Cú pháp hiện đại, kiểu, vòng lặp, thủ tục, module, mảng và iostat trong một trang"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "Division, dữ liệu PIC, IF/EVALUATE, vòng lặp PERFORM, bảng, tệp và lỗi"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "Thanh ghi, lệnh, vòng lặp, bộ nhớ, syscall, lời gọi hàm x86-64 NASM và cú pháp AT&T"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "Cú pháp VB.NET, kiểu, vòng lặp, hàm, collection, lớp, LINQ và VBA trong một trang"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "Message, lớp, property, collection Foundation, block, ARC và NSError trong một trang"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "Ma trận, chỉ mục, vòng lặp, hàm, struct, cell, lỗi, biểu đồ và Octave trong một trang"
+    },
+    "design-patterns": {
+      "name": "Mẫu thiết kế",
+      "blurb": "Mẫu thiết kế là gì, 23 mẫu GoF theo nhóm và cách chọn mẫu phù hợp"
+    },
+    "solid-principles": {
+      "name": "Nguyên lý SOLID",
+      "blurb": "Năm nguyên lý thiết kế SOLID, mỗi nguyên lý có ví dụ TypeScript trước và sau"
+    },
+    "singleton": {
+      "name": "Mẫu Singleton",
+      "blurb": "Chỉ một thể hiện: ví dụ TypeScript, biến thể bất đồng bộ, cạm bẫy và lựa chọn thay thế"
+    },
+    "factory-method": {
+      "name": "Mẫu Factory Method",
+      "blurb": "Để lớp con quyết định tạo đối tượng nào: ví dụ TypeScript và khi nào nên dùng"
+    },
+    "abstract-factory": {
+      "name": "Mẫu Abstract Factory",
+      "blurb": "Tạo họ đối tượng liên quan mà không cần nêu tên lớp cụ thể"
+    },
+    "builder": {
+      "name": "Mẫu Builder",
+      "blurb": "Dựng đối tượng phức tạp từng bước với API fluent, kèm vai trò Director"
+    },
+    "prototype": {
+      "name": "Mẫu Prototype",
+      "blurb": "Tạo đối tượng bằng cách nhân bản: clone() trong TypeScript, sao chép sâu và nông"
+    },
+    "adapter": {
+      "name": "Mẫu Adapter",
+      "blurb": "Để giao diện không tương thích phối hợp được: ví dụ TypeScript, adapter đối tượng/lớp"
+    },
+    "bridge": {
+      "name": "Mẫu Bridge",
+      "blurb": "Tách phần trừu tượng khỏi phần triển khai để hai bên thay đổi độc lập"
+    },
+    "composite": {
+      "name": "Mẫu Composite",
+      "blurb": "Xử lý đối tượng đơn và cây đối tượng như nhau: ví dụ hệ thống tệp bằng TypeScript"
+    },
+    "decorator": {
+      "name": "Mẫu Decorator",
+      "blurb": "Thêm hành vi cho đối tượng lúc chạy bằng cách bọc nó: decorator lớp và hàm"
+    },
+    "facade": {
+      "name": "Mẫu Facade",
+      "blurb": "Cho hệ thống con phức tạp một cổng vào đơn giản: ví dụ thanh toán bằng TypeScript"
+    },
+    "flyweight": {
+      "name": "Mẫu Flyweight",
+      "blurb": "Chia sẻ trạng thái nội tại giữa nhiều đối tượng để tiết kiệm bộ nhớ, kèm ví dụ TypeScript"
+    },
+    "proxy": {
+      "name": "Mẫu Proxy",
+      "blurb": "Kiểm soát truy cập đối tượng bằng proxy bộ nhớ đệm, lười, bảo vệ và từ xa"
+    },
+    "chain-of-responsibility": {
+      "name": "Mẫu Chain of Responsibility",
+      "blurb": "Chuyển yêu cầu qua các bộ xử lý đến khi có bộ xử lý đảm nhận, kèm dạng middleware"
+    },
+    "command": {
+      "name": "Mẫu Command",
+      "blurb": "Biến yêu cầu thành đối tượng để xếp hàng, ghi log, hoàn tác và làm lại trong TypeScript"
+    },
+    "interpreter": {
+      "name": "Mẫu Interpreter",
+      "blurb": "Mô hình hóa một ngôn ngữ nhỏ bằng các lớp và tính giá trị cây biểu thức trong TypeScript"
+    },
+    "iterator": {
+      "name": "Mẫu Iterator",
+      "blurb": "Duyệt collection mà không lộ cách lưu trữ, với Symbol.iterator và generator"
+    },
+    "mediator": {
+      "name": "Mẫu Mediator",
+      "blurb": "Điều phối các thành phần qua một đối tượng trung tâm thay vì tham chiếu trực tiếp"
+    },
+    "memento": {
+      "name": "Mẫu Memento",
+      "blurb": "Lưu và khôi phục trạng thái đối tượng mà không lộ nội bộ, dùng cho hoàn tác và điểm lưu"
+    },
+    "observer": {
+      "name": "Mẫu Observer",
+      "blurb": "Tự động thông báo cho người đăng ký khi đối tượng thay đổi, với mã TypeScript có kiểu"
+    },
+    "state": {
+      "name": "Mẫu State",
+      "blurb": "Đổi hành vi của đối tượng theo trạng thái bằng các lớp trạng thái thay cho switch"
+    },
+    "strategy": {
+      "name": "Mẫu Strategy",
+      "blurb": "Hoán đổi thuật toán lúc chạy, dùng hàm hoặc lớp trong TypeScript"
+    },
+    "template-method": {
+      "name": "Mẫu Template Method",
+      "blurb": "Cố định các bước thuật toán ở lớp cơ sở và để lớp con điền chi tiết"
+    },
+    "visitor": {
+      "name": "Mẫu Visitor",
+      "blurb": "Thêm thao tác cho hệ phân cấp lớp bằng double dispatch, kèm cách dùng union type"
+    },
+    "big-o-notation": {
+      "name": "Ký hiệu Big O",
+      "blurb": "Độ phức tạp thời gian và không gian, các lớp thường gặp và cách đọc từ mã"
+    },
+    "recursion": {
+      "name": "Đệ quy",
+      "blurb": "Trường hợp cơ sở, ngăn xếp lời gọi, ghi nhớ kết quả và giới hạn đệ quy trong Python"
+    },
+    "binary-search": {
+      "name": "Tìm kiếm nhị phân",
+      "blurb": "Cách tìm kiếm nhị phân chia đôi dãy đã sắp xếp, mã Python, bisect, biến thể và cạm bẫy"
+    },
+    "two-pointers": {
+      "name": "Hai con trỏ và cửa sổ trượt",
+      "blurb": "Mẫu hai đầu, nhanh-chậm và cửa sổ trượt, kèm mã Python và bảng chạy thử"
+    },
+    "bubble-sort": {
+      "name": "Sắp xếp nổi bọt",
+      "blurb": "Cách bubble sort hoán đổi phần tử kề nhau, bảng chạy từng lượt, mã Python và độ phức tạp"
+    },
+    "selection-sort": {
+      "name": "Sắp xếp chọn",
+      "blurb": "Cách selection sort chọn phần tử nhỏ nhất, bảng chạy từng bước, mã Python và tính ổn định"
+    },
+    "insertion-sort": {
+      "name": "Sắp xếp chèn",
+      "blurb": "Insertion sort dịch phần tử vào đúng chỗ: bảng chạy, Python, ổn định, trường hợp tốt nhất"
+    },
+    "merge-sort": {
+      "name": "Sắp xếp trộn",
+      "blurb": "Merge sort chia để trị: bảng chạy, mã Python, bước trộn, tính ổn định và độ phức tạp"
+    },
+    "quicksort": {
+      "name": "Sắp xếp nhanh",
+      "blurb": "Pivot, phân hoạch Lomuto có bảng chạy, Python, trường hợp xấu nhất, ổn định, quickselect"
+    },
+    "heapsort": {
+      "name": "Sắp xếp vun đống",
+      "blurb": "Max-heap, sift-down, bảng chạy từng bước, mã Python, heapq và độ phức tạp"
+    },
+    "counting-sort": {
+      "name": "Sắp xếp đếm",
+      "blurb": "Counting sort tuyến tính cho khóa nguyên nhỏ: bảng chạy, Python ổn định, độ phức tạp"
+    },
+    "radix-sort": {
+      "name": "Sắp xếp cơ số",
+      "blurb": "Radix sort LSD và MSD: bảng chạy từng chữ số, mã Python, tính ổn định và độ phức tạp"
+    },
+    "breadth-first-search": {
+      "name": "Tìm kiếm theo chiều rộng (BFS)",
+      "blurb": "BFS với hàng đợi: ví dụ có bảng chạy, mã Python, đường đi ngắn nhất và chi phí O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "Tìm kiếm theo chiều sâu (DFS)",
+      "blurb": "DFS đệ quy và lặp trong Python, ví dụ, phát hiện chu trình và chi phí O(V + E)"
+    },
+    "dijkstra": {
+      "name": "Thuật toán Dijkstra",
+      "blurb": "Đường đi ngắn nhất với hàng đợi ưu tiên: ví dụ, mã Python heapq và độ phức tạp"
+    },
+    "bellman-ford": {
+      "name": "Thuật toán Bellman-Ford",
+      "blurb": "Đường đi ngắn nhất với trọng số âm, phát hiện chu trình âm và mã Python"
+    },
+    "floyd-warshall": {
+      "name": "Thuật toán Floyd-Warshall",
+      "blurb": "Đường đi ngắn nhất mọi cặp: ví dụ ma trận, mã Python, dựng lại đường đi và O(V³)"
+    },
+    "a-star-search": {
+      "name": "Tìm kiếm A*",
+      "blurb": "Tìm đường heuristic với f = g + h: heuristic chấp nhận được, ví dụ lưới, mã Python"
+    },
+    "topological-sort": {
+      "name": "Sắp xếp tô-pô",
+      "blurb": "Sắp xếp việc theo phụ thuộc: thuật toán Kahn, DFS, graphlib và phát hiện chu trình"
+    },
+    "minimum-spanning-tree": {
+      "name": "Cây khung nhỏ nhất",
+      "blurb": "Thuật toán Kruskal và Prim: ví dụ có bảng chạy, mã Python, union-find và heap"
+    },
+    "dynamic-programming": {
+      "name": "Quy hoạch động",
+      "blurb": "Ghi nhớ và lập bảng, đổi tiền và LCS có bảng chạy, mã Python và độ phức tạp"
+    },
+    "greedy-algorithms": {
+      "name": "Thuật toán tham lam",
+      "blurb": "Chọn lựa cục bộ tốt nhất ở mỗi bước: xếp lịch khoảng có bảng chạy, mã Python, phản ví dụ"
+    },
+    "backtracking": {
+      "name": "Quay lui",
+      "blurb": "Chọn, khám phá, bỏ chọn: N-Queens có bảng chạy, tập con, hoán vị và cắt tỉa trong Python"
+    },
+    "kmp-string-search": {
+      "name": "Tìm chuỗi KMP",
+      "blurb": "Knuth-Morris-Pratt: hàm tiền tố, tìm kiếm có bảng chạy, mã Python và chi phí O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "Thao tác bit",
+      "blurb": "Toán tử bitwise, mẹo thao tác từng bit, đếm bit và bitmask kèm ví dụ Python"
     }
   },
   "dice": {

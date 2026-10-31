@@ -1,0 +1,295 @@
+{
+  "title": "Patrones de diseño: los 23 patrones GoF, sus categorías y cómo elegir — cv.cm",
+  "description": "Qué son los patrones de diseño, el libro de la Banda de los Cuatro, los 23 patrones GoF por categoría, cómo elegir uno y sus límites.",
+  "h1": "Patrones de diseño explicados: los 23 patrones de la Banda de los Cuatro",
+  "answer": "Un patrón de diseño es una solución con nombre y reutilizable a un problema que aparece una y otra vez en el diseño de software, descrita a un nivel superior al del código concreto. El catálogo clásico es el libro de 1994 Design Patterns: Elements of Reusable Object-Oriented Software, de Gamma, Helm, Johnson y Vlissides (la «Banda de los Cuatro», o GoF), que recoge 23 patrones en tres grupos: 5 creacionales, 7 estructurales y 11 de comportamiento. Los patrones dan a los equipos un vocabulario común, pero son herramientas para problemas concretos, no objetivos en sí mismos.",
+  "sections": [
+    {
+      "h": "Qué es un patrón de diseño",
+      "body": [
+        "Un patrón de diseño no es una biblioteca ni un trozo de código que se copia. Es la descripción de un problema recurrente, el núcleo de una solución y las contrapartidas de usarla. El código lo sigues escribiendo tú, adaptado a tu lenguaje y a tu programa.",
+        "El libro GoF describe cada patrón con cuatro elementos esenciales:",
+        {
+          "ul": [
+            "Nombre: una o dos palabras que permiten a los desarrolladores hablar del diseño, como «podemos envolverlo en un patrón Decorator».",
+            "Problema: cuándo aplicar el patrón y la situación que lo hace necesario.",
+            "Solución: las clases u objetos implicados, sus responsabilidades y cómo colaboran.",
+            "Consecuencias: los costes y beneficios, como más flexibilidad a cambio de más clases."
+          ]
+        },
+        "La idea viene de la arquitectura. El libro de Christopher Alexander A Pattern Language (1977) describía soluciones recurrentes para edificios y ciudades, y los autores de GoF aplicaron la misma idea al software orientado a objetos."
+      ]
+    },
+    {
+      "h": "El libro de la Banda de los Cuatro",
+      "body": [
+        "Design Patterns: Elements of Reusable Object-Oriented Software fue publicado por Addison-Wesley en 1994. Sus ejemplos están en C++ y Smalltalk, pero los patrones se aplican a cualquier lenguaje orientado a objetos, incluidos Java, C#, TypeScript, Python y Kotlin.",
+        "Además del catálogo, el libro defiende dos principios generales que recorren la mayoría de los patrones:",
+        {
+          "ul": [
+            "Programa para una interfaz, no para una implementación. El código debe depender de lo que un objeto puede hacer, no de su clase concreta.",
+            "Prefiere la composición de objetos a la herencia de clases. Construir el comportamiento combinando objetos suele ser más flexible que construir jerarquías de clases profundas."
+          ]
+        },
+        "El libro también clasifica cada patrón por su ámbito: los patrones de clase usan herencia y quedan fijados en tiempo de compilación (patrón Factory Method, patrón Adapter de clase, patrón Interpreter, patrón Template Method), mientras que los patrones de objeto usan composición y pueden cambiar en tiempo de ejecución (todos los demás)."
+      ]
+    },
+    {
+      "h": "Los 23 patrones GoF por categoría",
+      "body": [
+        "Los patrones creacionales tratan de cómo se crean los objetos. Los patrones estructurales tratan de cómo se combinan clases y objetos en estructuras mayores. Los patrones de comportamiento tratan de cómo se comunican los objetos y comparten responsabilidades.",
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Categoría",
+              "Propósito en una línea"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Creacional",
+                "Crear familias de objetos relacionados sin nombrar sus clases concretas."
+              ],
+              [
+                "Builder",
+                "Creacional",
+                "Construir un objeto complejo paso a paso, separando la construcción de la representación."
+              ],
+              [
+                "Factory Method",
+                "Creacional",
+                "Dejar que las subclases decidan qué clase instanciar."
+              ],
+              [
+                "Prototype",
+                "Creacional",
+                "Crear objetos nuevos copiando una instancia existente."
+              ],
+              [
+                "Singleton",
+                "Creacional",
+                "Garantizar que una clase tenga una sola instancia y dar acceso global a ella."
+              ],
+              [
+                "Adapter",
+                "Estructural",
+                "Convertir una interfaz en otra que los clientes esperan."
+              ],
+              [
+                "Bridge",
+                "Estructural",
+                "Separar una abstracción de su implementación para que ambas puedan variar de forma independiente."
+              ],
+              [
+                "Composite",
+                "Estructural",
+                "Tratar de la misma manera los objetos individuales y los árboles de objetos."
+              ],
+              [
+                "Decorator",
+                "Estructural",
+                "Añadir responsabilidades a un objeto de forma dinámica envolviéndolo."
+              ],
+              [
+                "Facade",
+                "Estructural",
+                "Ofrecer una interfaz simple a un subsistema complejo."
+              ],
+              [
+                "Flyweight",
+                "Estructural",
+                "Compartir el estado común para admitir de forma eficiente un gran número de objetos pequeños."
+              ],
+              [
+                "Proxy",
+                "Estructural",
+                "Ofrecer un sustituto que controla el acceso a otro objeto."
+              ],
+              [
+                "Chain of Responsibility",
+                "De comportamiento",
+                "Pasar una petición por una cadena de manejadores hasta que uno la atienda."
+              ],
+              [
+                "Command",
+                "De comportamiento",
+                "Convertir una petición en un objeto, para poder ponerla en cola, registrarla o deshacerla."
+              ],
+              [
+                "Interpreter",
+                "De comportamiento",
+                "Representar la gramática de un lenguaje sencillo como clases y evaluar frases en él."
+              ],
+              [
+                "Iterator",
+                "De comportamiento",
+                "Acceder a los elementos de una colección en orden sin exponer su estructura interna."
+              ],
+              [
+                "Mediator",
+                "De comportamiento",
+                "Centralizar la comunicación entre objetos para que no se refieran unos a otros directamente."
+              ],
+              [
+                "Memento",
+                "De comportamiento",
+                "Capturar y restaurar el estado de un objeto sin romper el encapsulamiento."
+              ],
+              [
+                "Observer",
+                "De comportamiento",
+                "Notificar automáticamente a todos los dependientes cuando un objeto cambia."
+              ],
+              [
+                "State",
+                "De comportamiento",
+                "Dejar que un objeto cambie su comportamiento cuando cambia su estado interno."
+              ],
+              [
+                "Strategy",
+                "De comportamiento",
+                "Hacer intercambiable una familia de algoritmos detrás de una sola interfaz."
+              ],
+              [
+                "Template Method",
+                "De comportamiento",
+                "Definir el esqueleto de un algoritmo y dejar que las subclases completen algunos pasos."
+              ],
+              [
+                "Visitor",
+                "De comportamiento",
+                "Añadir operaciones nuevas a una jerarquía de clases sin cambiar esas clases."
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Muchos patrones se parecen en un diagrama de clases. Adapter, Decorator y Proxy envuelven un objeto; Strategy y State delegan en un objeto intercambiable. Se diferencian en la intención, así que aprende el problema que resuelve cada uno, no solo su forma."
+        }
+      ]
+    },
+    {
+      "h": "Un patrón en la práctica: patrón Strategy en TypeScript",
+      "body": [
+        "Aquí tienes un pequeño ejemplo de un patrón en acción. Un proceso de compra debe calcular el envío de distintas maneras. En lugar de una cadena `if`/`else` cada vez más larga, cada regla se convierte en un objeto intercambiable detrás de una sola interfaz:",
+        {
+          "code": "interface ShippingStrategy {\n  cost(weightKg: number): number;\n}\nclass FlatRate implements ShippingStrategy {\n  cost(): number { return 5; }\n}\nclass PerKilogram implements ShippingStrategy {\n  cost(weightKg: number): number { return 2 * weightKg; }\n}\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n  setShipping(s: ShippingStrategy): void { this.shipping = s; }\n  total(itemsPrice: number, weightKg: number): number {\n    return itemsPrice + this.shipping.cost(weightKg);\n  }\n}\nconst checkout = new Checkout(new FlatRate());\nconsole.log(checkout.total(40, 3)); // 45\ncheckout.setShipping(new PerKilogram());\nconsole.log(checkout.total(40, 3)); // 46",
+          "lang": "typescript"
+        },
+        "En TypeScript las funciones son valores, así que el mismo diseño puede escribirse con menos código. Es un tema frecuente: muchos patrones se simplifican, o desaparecen, en lenguajes con funciones de primera clase.",
+        {
+          "code": "type Shipping = (weightKg: number) => number;\nconst flatRate: Shipping = () => 5;\nconst perKilogram: Shipping = (w) => 2 * w;\nfunction total(itemsPrice: number, weightKg: number, shipping: Shipping): number {\n  return itemsPrice + shipping(weightKg);\n}\nconsole.log(total(40, 3, flatRate));    // 45\nconsole.log(total(40, 3, perKilogram)); // 46",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Cómo elegir un patrón",
+      "body": [
+        "Empieza por el problema, nunca por el patrón. Un patrón solo merece sus clases adicionales cuando elimina un dolor real en tu código. Estas preguntas apuntan a los candidatos habituales:",
+        {
+          "table": {
+            "head": [
+              "Si tu problema es...",
+              "Considera"
+            ],
+            "rows": [
+              [
+                "El código no debe depender de qué clase concreta crea",
+                "Factory Method, Abstract Factory"
+              ],
+              [
+                "Un constructor tiene muchos parámetros opcionales",
+                "Builder"
+              ],
+              [
+                "Necesitas adaptar una clase existente a otra interfaz",
+                "Adapter"
+              ],
+              [
+                "Una biblioteca compleja necesita un único punto de entrada sencillo",
+                "Facade"
+              ],
+              [
+                "Quieres añadir funciones a los objetos sin una explosión de subclases",
+                "Decorator"
+              ],
+              [
+                "Trabajas con árboles, como menús, archivos o widgets de interfaz",
+                "Composite, Visitor, Iterator"
+              ],
+              [
+                "Muchas partes deben reaccionar cuando cambia un objeto",
+                "Observer"
+              ],
+              [
+                "El comportamiento depende de un modo o estado con muchas ramas",
+                "State"
+              ],
+              [
+                "Necesitas algoritmos o reglas intercambiables",
+                "Strategy"
+              ],
+              [
+                "Las acciones deben poder deshacerse, ponerse en cola o registrarse",
+                "Command, Memento"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "Escribe primero el código más simple que funcione.",
+            "Cuando el mismo cambio siga doliendo (por ejemplo, cada nuevo tipo de pago modifica cinco archivos), ponle nombre al problema.",
+            "Busca los patrones que abordan ese problema y lee sus consecuencias.",
+            "Aplica la versión más pequeña del patrón que elimine el dolor, y detente ahí."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Críticas y límites",
+      "body": [
+        "Los patrones de diseño son útiles, pero a menudo se usan mal. Conviene conocer las críticas más habituales:",
+        {
+          "ul": [
+            "Abuso: añadir fábricas, interfaces y gestores «por si acaso» hace que el código simple sea difícil de leer. A veces se llama fiebre de patrones.",
+            "Funciones que faltan en el lenguaje: en 1996 Peter Norvig demostró que 16 de los 23 patrones GoF son invisibles o más simples en lenguajes dinámicos como Lisp y Dylan. Las funciones de primera clase sustituyen a Strategy y Command, y los iteradores incorporados sustituyen a Iterator.",
+            "En particular, el patrón Singleton se considera ampliamente un antipatrón cuando se usa como estado global, porque oculta dependencias y dificulta las pruebas.",
+            "El catálogo es de 1994. La práctica posterior añadió otros patrones muy conocidos que no están en el libro, como la inyección de dependencias, el repositorio y las variantes de Model-View-Controller."
+          ]
+        },
+        "El valor duradero del libro es el vocabulario y el hábito de pensar en las contrapartidas. Decir «esto es un patrón Adapter» le dice mucho a otro desarrollador en pocas palabras."
+      ]
+    },
+    {
+      "h": "Principios relacionados",
+      "body": [
+        "Los patrones suelen explicarse junto con los principios SOLID del diseño orientado a objetos. Por ejemplo, el patrón Strategy y el patrón Decorator son formas directas de seguir el principio abierto/cerrado, y el patrón Abstract Factory es una forma común de aplicar el principio de inversión de dependencias. Aprender los principios te ayuda a entender por qué un patrón tiene la forma que tiene."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuántos patrones de diseño hay?",
+      "a": "El libro de la Banda de los Cuatro cataloga 23 patrones: 5 creacionales, 7 estructurales y 11 de comportamiento. Desde entonces se han descrito muchos otros patrones, por ejemplo para concurrencia, aplicaciones empresariales e interfaces de usuario."
+    },
+    {
+      "q": "¿Qué patrones de diseño debería aprender primero?",
+      "a": "Empieza por los que más te encontrarás en código real: patrón Strategy, patrón Observer, patrón Factory Method, patrón Decorator, patrón Adapter y patrón Facade. Después aprende el patrón Builder, el patrón Composite y el patrón Command."
+    },
+    {
+      "q": "¿Los patrones de diseño siguen siendo relevantes?",
+      "a": "Sí, como vocabulario común y como soluciones a problemas recurrentes. Algunos patrones ya están integrados en lenguajes y frameworks, así que los usas sin escribir la estructura completa de clases."
+    },
+    {
+      "q": "¿Los patrones de diseño solo se aplican a lenguajes orientados a objetos?",
+      "a": "Los patrones GoF se escribieron para lenguajes orientados a objetos, pero las ideas de fondo aparecen en todas partes. En los lenguajes funcionales, muchos de ellos se convierten en simples funciones de orden superior."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un patrón de diseño y un algoritmo?",
+      "a": "Un algoritmo es una secuencia precisa de pasos que resuelve un problema computacional, como ordenar. Un patrón de diseño describe cómo organizar el código y las responsabilidades, y se adapta a cada programa en lugar de seguirse paso a paso."
+    }
+  ]
+}

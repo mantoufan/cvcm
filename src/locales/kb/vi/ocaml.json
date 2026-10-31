@@ -1,0 +1,203 @@
+{
+  "title": "Học lập trình OCaml cơ bản: kiểu, variant, khớp mẫu và module — cv.cm",
+  "description": "Học OCaml từ đầu: cài bằng opam, biên dịch Hello world, dùng let binding, danh sách, record, variant, khớp mẫu, module và lỗi bằng Result.",
+  "h1": "Hướng dẫn học lập trình OCaml cơ bản cho người mới",
+  "answer": "OCaml là ngôn ngữ hàm kiểu tĩnh thuộc họ ML. Trình biên dịch của nó suy luận kiểu giúp bạn, bắt được nhiều lỗi trước khi chương trình chạy và sinh ra mã native nhanh. Chương trình được xây từ các giá trị bất biến, variant (union có thẻ), khớp mẫu và module. Cài bằng opam, chạy một tệp bằng `ocaml hello.ml`, hoặc biên dịch bằng `ocamlopt`.",
+  "sections": [
+    {
+      "h": "OCaml là gì và ai dùng nó",
+      "body": [
+        "OCaml được tạo ra tại Inria ở Pháp và nay do một cộng đồng mã nguồn mở phát triển, trong đó có các công ty như Jane Street và Tarides. Nó kết hợp lập trình hàm với các tính năng mệnh lệnh tùy chọn (tham chiếu khả biến, mảng, vòng lặp) và một hệ thống đối tượng mà phần lớn mã không cần đến. OCaml 5 bổ sung song song hóa bộ nhớ chia sẻ qua domain và effect handler.",
+        "OCaml được dùng cho trình biên dịch và công cụ phân tích chương trình, trợ lý chứng minh như Rocq (trước đây là Coq), hệ thống giao dịch (Jane Street là người dùng công nghiệp nổi tiếng nhất), và công cụ cho lập trình viên như Flow và Infer của Meta. Nó cũng là ngôn ngữ giảng dạy phổ biến cho lập trình hàm và hệ thống kiểu."
+      ]
+    },
+    {
+      "h": "Cài OCaml và chạy Hello, world",
+      "body": [
+        "Cách chuẩn để cài OCaml là opam, trình quản lý gói của OCaml. Sau khi cài opam, chạy `opam init` một lần; lệnh này thiết lập một trình biên dịch. Sau đó cài công cụ build dune và REPL thân thiện hơn là utop bằng `opam install dune utop`.",
+        {
+          "code": "(* hello.ml *)\nlet () = print_endline \"Hello, world!\"",
+          "lang": "ocaml"
+        },
+        {
+          "code": "ocaml hello.ml            # run with the interpreter\nocamlopt -o hello hello.ml\n./hello                   # native executable\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`let () = ...` là cách thông thường để viết điểm vào chương trình: nó đánh giá biểu thức và kiểm tra rằng kết quả là `unit` (không có giá trị). Trong REPL (`utop` hoặc `ocaml`), kết thúc mỗi cụm bằng `;;`; trong tệp mã nguồn bạn không cần `;;`. Với dự án thực tế, `dune init project myapp` tạo dự án và `dune build` biên dịch nó."
+      ]
+    },
+    {
+      "h": "Giá trị và các kiểu dữ liệu cơ bản",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "63 bit trên hệ 64 bit; toán tử `+ - * / mod`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "Có toán tử riêng: `+.` `-.` `*.` `/.`"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "Byte bất biến; nối bằng `^`"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "Một byte đơn"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "`&&`, `||`, `not`"
+              ],
+              [
+                "unit",
+                "`()`",
+                "Giá trị của các biểu thức không có kết quả"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet height = 1.68 *. 100.0\nlet () = Printf.printf \"%s is %d, %.0f cm\\n\" name age height\n(* Ana is 30, 168 cm *)\nlet count = ref 0\nlet () = incr count; Printf.printf \"count = %d\\n\" !count",
+          "lang": "ocaml"
+        },
+        "Các binding là bất biến. `ref` là một ô khả biến: `!r` đọc nó và `r := v` ghi vào nó. OCaml không bao giờ tự chuyển đổi giữa `int` và `float`; hãy dùng `float_of_int` và `int_of_float`."
+      ]
+    },
+    {
+      "h": "Điều khiển luồng và hàm",
+      "body": [
+        "`if` là biểu thức. Hàm được định nghĩa bằng `let`; hàm đệ quy cần `let rec`. Các đối số cách nhau bằng dấu cách, và mọi hàm đều được curry, nên áp dụng một phần là miễn phí.",
+        {
+          "code": "let sign n =\n  if n > 0 then \"positive\"\n  else if n < 0 then \"negative\"\n  else \"zero\"\nlet rec factorial n = if n <= 1 then 1 else n * factorial (n - 1)\nlet add x y = x + y          (* int -> int -> int *)\nlet add5 = add 5\nlet () =\n  for i = 1 to 3 do\n    Printf.printf \"%d squared is %d\\n\" i (i * i)\n  done;\n  Printf.printf \"%s %d %d\\n\" (sign (-2)) (factorial 5) (add5 10)\n(* negative 120 15 *)",
+          "lang": "ocaml"
+        },
+        "Chú ý dấu ngoặc trong `sign (-2)`: nếu thiếu, OCaml đọc `sign - 2` là phép trừ. Dùng `;` để nối tiếp các biểu thức trả về `unit`."
+      ]
+    },
+    {
+      "h": "Danh sách, mảng, tuple và record",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cấu trúc",
+              "Cú pháp literal",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "Danh sách liên kết đơn bất biến; `x :: xs` thêm vào đầu"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "Kích thước cố định, khả biến, truy cập chỉ số bằng `a.(0)`"
+              ],
+              [
+                "Tuple",
+                "`(\"Ana\", 30)`",
+                "Nhóm cố định các giá trị khác kiểu"
+              ],
+              [
+                "Record",
+                "`{ name = \"Ana\"; age = 30 }`",
+                "Các trường có tên, kiểu phải khai báo trước"
+              ],
+              [
+                "Hashtbl / Map",
+                "`Hashtbl.create 16`",
+                "Bảng băm khả biến / map dạng cây cân bằng bất biến"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type person = { name : string; age : int }\nlet people = [ { name = \"Ana\"; age = 30 }; { name = \"Ben\"; age = 17 } ]\nlet () =\n  people\n  |> List.filter (fun p -> p.age >= 18)\n  |> List.map (fun p -> p.name)\n  |> List.iter print_endline\n(* Ana *)\nlet older = { (List.hd people) with age = 31 }",
+          "lang": "ocaml"
+        },
+        "Toán tử pipeline `x |> f` nghĩa là `f x`. Module `List` cung cấp `map`, `filter`, `fold_left`, `find_opt` và nhiều hàm khác."
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: variant, khớp mẫu và module",
+      "body": [
+        "Kiểu variant liệt kê mọi trường hợp có thể có của một giá trị. Khớp mẫu tách một giá trị theo từng trường hợp, và trình biên dịch cảnh báo khi thiếu một trường hợp, giúp tái cấu trúc an toàn.",
+        {
+          "code": "type shape =\n  | Circle of float\n  | Rectangle of float * float\nlet area = function\n  | Circle r -> Float.pi *. r *. r\n  | Rectangle (w, h) -> w *. h\nlet () =\n  List.iter (fun s -> Printf.printf \"%.2f\\n\" (area s))\n    [ Circle 1.0; Rectangle (2.0, 3.0) ]\n(* 3.14 then 6.00 *)\nmodule StringMap = Map.Make (String)\nlet ages = StringMap.(empty |> add \"Ana\" 30 |> add \"Ben\" 17)\nlet () = Printf.printf \"%d\\n\" (StringMap.find \"Ana\" ages)   (* 30 *)",
+          "lang": "ocaml"
+        },
+        "Module nhóm các kiểu và hàm, và mỗi tệp là một module (`list.ml` sẽ là `List`). Functor là hàm từ module sang module: `Map.Make (String)` tạo một module map có khóa là chuỗi. Signature (tệp `.mli`) ẩn các chi tiết triển khai."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "OCaml có ba công cụ: `option` cho giá trị có thể thiếu, `result` cho thao tác có thể thất bại kèm thông tin, và ngoại lệ cho các tình huống ngoại lệ.",
+        {
+          "code": "let parse_age s =\n  match int_of_string_opt s with\n  | Some n when n >= 0 -> Ok n\n  | Some _ -> Error \"Age must not be negative\"\n  | None -> Error \"Not a number\"\nlet () =\n  match parse_age \"abc\" with\n  | Ok n -> Printf.printf \"Age %d\\n\" n\n  | Error msg -> print_endline (\"Error: \" ^ msg)\n(* Error: Not a number *)\nexception Empty_input\nlet first = function [] -> raise Empty_input | x :: _ -> x\nlet () =\n  try print_int (first []) with Empty_input -> print_endline \"empty list\"",
+          "lang": "ocaml"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: tần suất từ",
+      "body": [
+        {
+          "code": "let () =\n  let text = \"the cat and the hat and the bat\" in\n  let counts = Hashtbl.create 16 in\n  String.split_on_char ' ' text\n  |> List.iter (fun w ->\n         let n = Option.value (Hashtbl.find_opt counts w) ~default:0 in\n         Hashtbl.replace counts w (n + 1));\n  Hashtbl.to_seq counts\n  |> List.of_seq\n  |> List.sort (fun (_, a) (_, b) -> compare b a)\n  |> List.filteri (fun i _ -> i < 2)\n  |> List.iter (fun (w, n) -> Printf.printf \"%s %d\\n\" w n)\n(* the 3\n   and 2 *)",
+          "lang": "ocaml"
+        },
+        "Chương trình đếm từ trong một bảng băm khả biến, chuyển bảng thành danh sách các cặp `(word, count)`, sắp xếp theo số lần giảm dần và in hai mục đầu. `~default:0` là một đối số có nhãn.",
+        {
+          "note": "Lỗi thường gặp của người mới: dùng `+` với số thực (hãy dùng `+.`); viết `[1, 2, 3]`, là danh sách chứa một tuple (hãy dùng dấu chấm phẩy); quên `rec` ở hàm đệ quy; dùng `==` (bằng vật lý) ở chỗ cần `=` (bằng cấu trúc); và viết `f -1` thay vì `f (-1)`."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "ocaml.org: hướng dẫn cài đặt, \"A Tour of OCaml\" và các hướng dẫn khác trong mục Docs.",
+            "Sách hướng dẫn OCaml cho tài liệu tham chiếu đầy đủ về ngôn ngữ và thư viện chuẩn.",
+            "Học dune để build dự án và opam để cài thư viện.",
+            "Thử cuốn sách trực tuyến miễn phí \"Real World OCaml\" để có các ví dụ thực tế lớn hơn."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "OCaml có khó học không?",
+      "a": "Cú pháp nhỏ gọn, nhưng tư duy bằng kiểu, đệ quy và khớp mẫu cần luyện tập nếu bạn đến từ các ngôn ngữ mệnh lệnh. Thông báo lỗi từ bộ kiểm tra kiểu sẽ nhanh chóng trở nên dễ đọc hơn."
+    },
+    {
+      "q": "Vì sao OCaml có toán tử riêng cho số thực?",
+      "a": "OCaml không nạp chồng toán tử số học, nên `+` chỉ hoạt động với `int` và `+.` chỉ với `float`. Điều này giữ cho suy luận kiểu đơn giản và dễ đoán."
+    },
+    {
+      "q": "OCaml và F# khác nhau thế nào?",
+      "a": "F# bắt nguồn từ OCaml và chia sẻ phần lớn cú pháp lõi, nhưng F# chạy trên .NET và dùng thụt lề có ý nghĩa, trong khi OCaml biên dịch ra mã native hoặc bytecode và có hệ thống module mạnh hơn với functor."
+    },
+    {
+      "q": "Khi nào cần ;; trong OCaml?",
+      "a": "Chỉ trong toplevel tương tác (`ocaml` hoặc `utop`), nơi nó báo cho REPL đánh giá những gì bạn đã gõ. Trong tệp nguồn `.ml` bạn thường bỏ nó."
+    }
+  ]
+}

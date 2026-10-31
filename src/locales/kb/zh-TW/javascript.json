@@ -1,0 +1,191 @@
+{
+  "title": "JavaScript 入門教學：變數、函式、陣列、物件與非同步 — cv.cm",
+  "description": "一頁學會現代 JavaScript：在 Node.js 或瀏覽器執行 Hello world、let 與 const、型別、迴圈、函式、陣列、物件、Promise 與 async。",
+  "h1": "JavaScript 入門教學",
+  "answer": "JavaScript 是網頁的程式語言：每個瀏覽器都能執行它，Node.js 則讓它能在伺服器與命令列上執行。用 `const` 與 `let` 宣告變數，以函式宣告或箭頭函式撰寫函式，用陣列與物件儲存資料，並以 Promise 與 `async`/`await` 處理網路請求等耗時工作。執行 `node hello.js` 或開啟瀏覽器主控台就能開始。",
+  "sections": [
+    {
+      "h": "JavaScript 是什麼，用來做什麼",
+      "body": [
+        "JavaScript 是動態型別語言，標準規格為 ECMAScript。它原本為網頁而生，用來回應點擊、更新頁面並與伺服器溝通。如今它也能透過 Node.js、Deno 與 Bun 在伺服器和工具上執行，並用於桌面應用程式（Electron）與行動應用程式（React Native）。前端工程師、全端工程師，以及所有開發網頁的人都會用到它。本頁使用的現代語法（`let`、`const`、箭頭函式、class、模組）來自 ES2015 及之後的版本。"
+      ]
+    },
+    {
+      "h": "執行 Hello, world",
+      "body": [
+        "方法一：開啟任何網頁，按 F12（Mac 上按 Cmd+Option+J）開啟開發者主控台，輸入下面這行。方法二：從 nodejs.org 安裝 Node.js，將這行存成 `hello.js` 後執行。",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "不會被重新賦值的值用 `const`，會改變的值用 `let`。避免使用舊的 `var`，它不遵守區塊作用域。`typeof` 會回報值的型別。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"`（歷史遺留的怪異行為）"
+              ],
+              [
+                "object",
+                "`{}`, `[]`, functions",
+                "`\"object\"` 或 `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "流程控制：if、迴圈與相等比較",
+      "body": [
+        "請一律使用 `===` 與 `!==` 比較。寬鬆的 `==` 會先轉換型別，所以 `0 == \"\"` 為 `true`。",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "函式也是值：可以存進變數、傳給其他函式，也可以當作回傳值。箭頭函式是較簡短的寫法，常用於回呼函式。",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "陣列與物件",
+      "body": [
+        "陣列是有序的清單；物件則把字串鍵對應到值。兩者都是以參照傳遞。當鍵不是字串，或值必須唯一時，可以改用內建的 `Map` 與 `Set`。",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "不帶比較函式的 `sort()` 會以字串方式排序，所以 `[10, 9, 1].sort()` 會得到 `[1, 10, 9]`。排序數字請傳入 `(a, b) => a - b`。"
+        }
+      ]
+    },
+    {
+      "h": "招牌特色：用 Promise 撰寫非同步程式",
+      "body": [
+        "JavaScript 在單一執行緒上搭配事件迴圈（event loop）執行程式。耗時的操作（計時器、網路、檔案）不會造成阻塞，而是回傳一個稍後才會完成的 Promise。`async` 函式讓你搭配 `await`，由上到下寫出這類程式。",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "類別（`class Dog extends Animal {}`）、模組（`import` 與 `export`）、可選串連（`user?.address?.city`）與空值合併運算子（`value ?? \"default\"`）也是你會經常用到的現代功能。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "用 `throw` 拋出 `Error` 物件，再以 `try`/`catch` 捕捉。在 `async` 函式中，被拒絕（rejected）的 Promise 會在 `await` 處變成例外。",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：抓取並摘要資料",
+      "body": [
+        "這個 Node.js 腳本（Node 18 以上內建 `fetch`）會從公開 API 下載 JSON 並印出簡短摘要。將它存成 `repos.mjs`，再執行 `node repos.mjs nodejs`。",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "`.mjs` 副檔名會讓檔案成為 ES 模組，因此可以在最上層使用 `await`。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "使用 `==` 而不是 `===`，會造成令人意外的型別轉換。",
+            "忘記寫 `await`，結果拿到的是處於等待狀態的 `Promise` 物件，而不是值。",
+            "以為 `const` 會讓物件不可變。它只是禁止重新賦值；`obj.x = 1` 仍然可行。需要時請使用 `Object.freeze`。",
+            "用 `===` 比較物件或陣列，這比較的是身分（是否為同一個物件），而不是內容。",
+            "把方法當作回呼函式傳遞時遺失 `this`。請使用箭頭函式或 `.bind(obj)`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "閱讀 MDN 的 JavaScript Guide，這是最完整的免費參考資料，並搭配瀏覽器 DOM（`document.querySelector`、事件）練習。接著學習 npm 與模組，前端可選 React、Vue 或 Svelte 等框架，伺服器端則學 Node.js。在 JavaScript 之上加入 TypeScript，可以獲得靜態型別與更好的編輯器支援。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "JavaScript 和 Java 一樣嗎？",
+      "a": "不一樣。它們是名稱相似但毫無關係的兩種語言。Java 是靜態型別，編譯成 JVM 位元組碼；JavaScript 是動態型別，在瀏覽器與 Node.js 中執行。"
+    },
+    {
+      "q": "該用 let、const 還是 var？",
+      "a": "預設使用 `const`，需要重新賦值時才用 `let`。避免使用 `var`，因為它的作用域是函式層級且會提升（hoisting），容易造成錯誤。"
+    },
+    {
+      "q": "null 和 undefined 有什麼差別？",
+      "a": "`undefined` 表示變數或屬性從未被賦值。`null` 則是你刻意指定、表示「什麼都沒有」的值。"
+    },
+    {
+      "q": "為什麼 0.1 + 0.2 不等於 0.3？",
+      "a": "JavaScript 的數字是 64 位元二進位浮點數，無法精確儲存 0.1。顯示時請四捨五入，處理金額則建議使用整數（例如以分為單位）。"
+    },
+    {
+      "q": "學 JavaScript 一定要裝 Node.js 嗎？",
+      "a": "不用。每個瀏覽器都能在開發者主控台執行 JavaScript。當你想從檔案執行腳本，或建立伺服器與工具時，Node.js 才派得上用場。"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "title": "Abstract Factory pattern: families of objects, TypeScript example — cv.cm",
+  "description": "The Abstract Factory design pattern explained: create families of related objects without naming concrete classes. TypeScript example, uses and pitfalls.",
+  "h1": "Abstract Factory pattern explained with examples",
+  "answer": "Abstract Factory is a creational design pattern that provides an interface for creating families of related objects without specifying their concrete classes. Client code receives a factory object, such as a `LightThemeFactory` or `DarkThemeFactory`, and asks it for each product (a button, a dialog). Because one factory creates the whole family, the products always match each other, and you can switch families by passing a different factory.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Provide an interface for creating families of related or dependent objects without specifying their concrete classes. Abstract Factory is one of the five creational patterns in the Gang of Four (GoF) book, where it is also known as Kit."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine a reporting app that can render output for two targets: a web page and a plain-text terminal. Each target needs its own versions of several components: a heading, a table and a warning box. The web heading must not be mixed with the terminal table, or the output breaks.",
+        "If the report code calls `new HtmlHeading()` and `new TextTable()` directly, it is tied to concrete classes, the target choice is spread across many lines, and nothing stops someone from mixing families. Abstract Factory puts all creation for one family behind one object, so the choice is made in exactly one place."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "AbstractFactory",
+                "Declares one creation method per product type.",
+                "`UiFactory`"
+              ],
+              [
+                "ConcreteFactory",
+                "Implements the creation methods for one family.",
+                "`HtmlFactory`, `TextFactory`"
+              ],
+              [
+                "AbstractProduct",
+                "Interface for one kind of product.",
+                "`Heading`, `Alert`"
+              ],
+              [
+                "ConcreteProduct",
+                "A product of a specific family.",
+                "`HtmlHeading`, `TextAlert`"
+              ],
+              [
+                "Client",
+                "Uses only the abstract factory and abstract product interfaces.",
+                "`renderReport`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "interface Heading { render(text: string): string; }\ninterface Alert { render(text: string): string; }\n\ninterface UiFactory {\n  createHeading(): Heading;\n  createAlert(): Alert;\n}\n\nclass HtmlFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `<h1>${t}</h1>` }; }\n  createAlert(): Alert { return { render: (t) => `<div class=\"alert\">${t}</div>` }; }\n}\n\nclass TextFactory implements UiFactory {\n  createHeading(): Heading { return { render: (t) => `${t}\\n${\"=\".repeat(t.length)}` }; }\n  createAlert(): Alert { return { render: (t) => `[!] ${t}` }; }\n}\n\n// The client knows only the interfaces.\nfunction renderReport(ui: UiFactory): string {\n  const heading = ui.createHeading();\n  const alert = ui.createAlert();\n  return [heading.render(\"Sales\"), alert.render(\"2 orders failed\")].join(\"\\n\");\n}\n\nconst target: string = \"text\"; // e.g. from a command-line flag\nconst factory: UiFactory = target === \"html\" ? new HtmlFactory() : new TextFactory();\nconsole.log(renderReport(factory));\n// Sales\n// =====\n// [!] 2 orders failed",
+          "lang": "typescript"
+        },
+        "The only place that names a concrete class is the line that chooses the factory. `renderReport` works with any family, and it cannot accidentally mix HTML and text pieces, because it gets all its products from the same factory.",
+        "In a real program the products would usually be classes with more methods. Object literals keep the example short; the structure is the same."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Abstract Factory when:",
+        {
+          "ul": [
+            "The system must work with several families of related products, and products from different families must not be combined (UI themes, operating-system widgets, database drivers with matching connection and command objects).",
+            "You want to choose the family once, at configuration time, and keep the rest of the code independent of it.",
+            "You want tests to supply a family of fake objects through one factory."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "There is only one family. A direct `new`, or one factory function, is simpler.",
+            "Product types change often. Adding a new kind of product, such as `createTable()`, forces you to change the factory interface and every concrete factory. This is the main weakness the GoF book lists."
+          ]
+        },
+        {
+          "note": "Do not confuse \"many product variants\" with \"many families\". If you only need to pick one implementation of one interface, Factory Method or plain dependency injection is enough."
+        }
+      ]
+    },
+    {
+      "h": "Abstract Factory versus Factory Method",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Aspect",
+              "Factory Method",
+              "Abstract Factory"
+            ],
+            "rows": [
+              [
+                "Creates",
+                "One product",
+                "A family of related products"
+              ],
+              [
+                "Mechanism",
+                "A subclass overrides one creation method",
+                "The client receives a factory object with several creation methods"
+              ],
+              [
+                "Relies on",
+                "Inheritance",
+                "Composition"
+              ],
+              [
+                "Easy to add",
+                "A new product variant (new subclass)",
+                "A new family (new factory class)"
+              ],
+              [
+                "Hard to add",
+                "Little; each creator is independent",
+                "A new product type (every factory changes)"
+              ]
+            ]
+          }
+        },
+        "The two are often combined: each creation method of a concrete factory is itself a factory method."
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java XML APIs: `DocumentBuilderFactory` and `TransformerFactory` are abstract classes. `newInstance()` locates a concrete implementation, and the code that uses it depends only on the abstract types.",
+            "Java's JDBC API works in a similar way: a database driver supplies matching `Connection`, `Statement` and `ResultSet` implementations, and application code uses only the interfaces.",
+            "The GoF book's own example is a user-interface toolkit that supports several look-and-feel standards, with one factory per standard creating matching scroll bars, windows and buttons."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "ul": [
+            "Factory Method: concrete factories often implement their creation methods as factory methods.",
+            "Prototype: a factory can be configured with prototype objects and create products by copying them, which avoids one factory subclass per family.",
+            "Singleton: an application usually needs only one instance of each concrete factory.",
+            "Builder: also hides construction, but builds one complex object step by step, while Abstract Factory returns finished products immediately.",
+            "Bridge: an abstract factory can create and configure the implementation side of a bridge."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is a family of products?",
+      "a": "A set of objects designed to be used together, such as the button, menu and dialog of one UI theme. Mixing products from different families would give inconsistent or broken results."
+    },
+    {
+      "q": "How do I add a new product type to an Abstract Factory?",
+      "a": "You add a creation method to the factory interface and implement it in every concrete factory. That is why the pattern fits best when the set of product types is stable."
+    },
+    {
+      "q": "Is Abstract Factory the same as dependency injection?",
+      "a": "No, but they work well together. Dependency injection supplies an object from outside; Abstract Factory is a kind of object you can inject when the client needs to create several related objects itself."
+    },
+    {
+      "q": "Can an Abstract Factory be a function instead of a class?",
+      "a": "Yes. In TypeScript a factory can be a plain object of creation functions that satisfies the factory interface. The pattern is about the interface and the families, not about classes."
+    }
+  ]
+}

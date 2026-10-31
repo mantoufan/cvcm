@@ -1,0 +1,226 @@
+{
+  "title": "Tutorial de C++: tipos, clases, contenedores STL y RAII — cv.cm",
+  "description": "Aprende C++ moderno en una página: compila Hello world, tipos y auto, control de flujo, funciones, clases, vector y map, punteros inteligentes, RAII y excepciones.",
+  "h1": "Tutorial de C++ para principiantes",
+  "answer": "C++ es un lenguaje compilado de tipado estático que combina la velocidad y el control de bajo nivel de C con clases, plantillas y una amplia biblioteca estándar. Compila `hello.cpp` con `g++ -std=c++20 hello.cpp -o hello` y ejecuta `./hello`. El código C++ moderno usa `std::string`, `std::vector` y `std::map` en lugar de arrays en bruto, punteros inteligentes en lugar de `delete` manual y RAII para que los recursos se liberen automáticamente.",
+  "sections": [
+    {
+      "h": "Qué es C++ y para qué se usa",
+      "body": [
+        "C++ fue creado por Bjarne Stroustrup en Bell Labs a partir de 1979 como «C with Classes». Está estandarizado por ISO; C++11 inauguró la era del «C++ moderno», y después llegaron C++17, C++20 y C++23. Se usa donde importan el rendimiento y el control: motores de videojuegos (Unreal Engine), navegadores web (Chrome, Firefox), bases de datos, sistemas de trading, dispositivos embebidos, compiladores y entornos de ejecución de aprendizaje automático. Su idea rectora es la abstracción de coste cero: las características que no usas no cuestan nada."
+      ]
+    },
+    {
+      "h": "Instalar un compilador y ejecutar Hello, world",
+      "body": [
+        "Usa GCC (`g++`) o Clang (`clang++`) en Linux y macOS, o Microsoft Visual C++ en Windows (mediante Visual Studio). Elige una versión del estándar de forma explícita.",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` es el flujo de salida estándar y `<<` escribe en él. Todo lo de la biblioteca estándar vive en el espacio de nombres `std`."
+      ]
+    },
+    {
+      "h": "Variables, tipos y auto",
+      "body": [
+        "C++ tiene los mismos tipos integrados que C, además de `bool` como palabra clave, referencias y tipos de biblioteca como `std::string`. `auto` pide al compilador que deduzca el tipo a partir del inicializador. La inicialización con llaves `{}` rechaza las conversiones con estrechamiento.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "Enteros con signo"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "Punto flotante de 64 bits"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` o `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "Un byte"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "Texto que puede crecer, de `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "Deducido, aquí `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "Una referencia: otro nombre para `n`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo y funciones",
+      "body": [
+        "El control de flujo es el mismo que en C, más el bucle `for` basado en rangos. Pasa los objetos grandes por referencia `const` para evitar copias, y por referencia no `const` cuando la función deba modificarlos.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Clases",
+      "body": [
+        "Una clase agrupa miembros de datos y funciones miembro. Los constructores preparan un objeto; los miembros `private` quedan ocultos al código externo. Un `struct` es lo mismo que una clase, salvo que sus miembros son públicos por defecto.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "La herencia (`class Savings : public Account`) y las funciones `virtual` dan polimorfismo en tiempo de ejecución. Marca las funciones que sobrescriben con `override` para que el compilador las compruebe."
+      ]
+    },
+    {
+      "h": "Contenedores y algoritmos de la biblioteca estándar",
+      "body": [
+        "La biblioteca estándar (a menudo llamada STL) ofrece contenedores y algoritmos que funcionan juntos mediante iteradores.",
+        {
+          "table": {
+            "head": [
+              "Contenedor",
+              "Equivale a",
+              "Úsalo para"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "Array dinámico",
+                "El contenedor secuencial por defecto"
+              ],
+              [
+                "`std::array<T, N>`",
+                "Array fijo",
+                "Tamaño conocido en tiempo de compilación"
+              ],
+              [
+                "`std::map<K, V>`",
+                "Diccionario ordenado",
+                "Claves ordenadas, búsqueda en O(log n)"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "Tabla hash",
+                "Búsqueda rápida, O(1) de media"
+              ],
+              [
+                "`std::set<T>`",
+                "Conjunto ordenado de elementos únicos",
+                "Pertenencia, salida ordenada"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` es una lambda, una función anónima escrita en línea. Las plantillas son lo que permite que un mismo `std::vector` funcione con cualquier tipo de elemento; puedes escribir las tuyas con `template <typename T>`."
+      ]
+    },
+    {
+      "h": "Característica distintiva: RAII y punteros inteligentes",
+      "body": [
+        "RAII (Resource Acquisition Is Initialization) significa que un objeto es dueño de un recurso: el constructor lo adquiere y el destructor lo libera. Como los destructores se ejecutan automáticamente cuando un objeto sale del ámbito, incluso si se lanza una excepción, la memoria, los archivos y los bloqueos no pueden filtrarse. Los punteros inteligentes aplican RAII a la memoria del heap.",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "Salida: `create 1`, `create 2`, `owners: 2`, `destroy 2`, `end of main`, `destroy 1`. En código moderno casi nunca deberías escribir `new` y `delete` tú mismo."
+      ]
+    },
+    {
+      "h": "Manejo de errores con excepciones",
+      "body": [
+        "Lanza un objeto de excepción y captúralo por referencia `const`. Los tipos de excepción estándar están en `<stdexcept>`. Las funciones que nunca lanzan excepciones pueden marcarse como `noexcept`.",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "Para fallos esperados, muchos proyectos devuelven `std::optional<T>` (C++17) o `std::expected<T, E>` (C++23) en lugar de lanzar excepciones."
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: frecuencia de palabras",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "Compila con `g++ -std=c++20 -O2 words.cpp -o words` y ejecuta `./words notes.txt`. El archivo se cierra automáticamente cuando `in` sale del ámbito, lo cual es de nuevo RAII."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "C++ hereda el comportamiento indefinido de C: leer más allá del final de un `std::vector` con `[]`, usar una referencia colgante o leer una variable sin inicializar puede parecer que funciona y fallar más tarde. Usa `.at(i)` mientras aprendes y compila con `-fsanitize=address,undefined -g`."
+        },
+        {
+          "ul": [
+            "Escribir `using namespace std;` en archivos de cabecera, lo que contamina todos los archivos que los incluyen.",
+            "Pasar por valor objetos grandes como `std::vector` cuando bastaría un `const&`.",
+            "Mezclar con signo y sin signo en comparaciones, como `int i` frente a `v.size()`. Activa las advertencias para verlo.",
+            "Conservar un iterador o una referencia a un `std::vector` después de `push_back`, que puede mover los elementos.",
+            "Usar `new` y `delete` en bruto en lugar de `std::make_unique`, `std::vector` u otros tipos propietarios."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Usa cppreference.com como referencia del lenguaje y la biblioteca, y las C++ Core Guidelines (editadas por Bjarne Stroustrup y Herb Sutter) para las buenas prácticas. El sitio de la Standard C++ Foundation, isocpp.org, tiene una página de inicio con libros recomendados. Aprende CMake para construir proyectos y pasa después a la semántica de movimiento, las plantillas, `constexpr` y la concurrencia con `std::thread`."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Debo aprender C antes que C++?",
+      "a": "No es obligatorio. La enseñanza del C++ moderno empieza con `std::string`, `std::vector` y las clases, y presenta más tarde los punteros en bruto y los arrays al estilo C. Aprender C primero sí ayuda a entender la memoria."
+    },
+    {
+      "q": "¿Qué estándar de C++ debo usar?",
+      "a": "C++17 y C++20 están bien soportados por los GCC, Clang y MSVC actuales, y el soporte de C++23 está creciendo. Elige uno de forma explícita con una opción como `-std=c++20`."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre un puntero y una referencia?",
+      "a": "Una referencia es un alias que debe enlazarse al crearse y no puede reasignarse ni ser nula. Un puntero almacena una dirección, puede ser nulo y se puede cambiar para que apunte a otro sitio."
+    },
+    {
+      "q": "¿Es difícil aprender C++?",
+      "a": "El lenguaje es grande, así que cuenta con una curva de aprendizaje más larga que la de Python o Go. Ceñirte a las características modernas, los contenedores estándar y los punteros inteligentes evita la mayoría de los problemas clásicos."
+    }
+  ]
+}

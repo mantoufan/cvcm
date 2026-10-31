@@ -1,0 +1,153 @@
+{
+  "title": "Iterator pattern: traversal, generators and Symbol.iterator in TypeScript — cv.cm",
+  "description": "The Iterator pattern lets you loop over a collection without knowing how it is stored. Learn the roles, Symbol.iterator and generators in TypeScript.",
+  "h1": "Iterator pattern explained with examples",
+  "answer": "Iterator is a behavioral design pattern that provides a way to access the elements of a collection one after another without exposing how the collection is stored. The traversal logic lives in a separate iterator object with a method such as `next()`, so one collection can offer several traversal orders and client code can loop over arrays, trees and streams the same way. In TypeScript and JavaScript the pattern is built into the language through `Symbol.iterator` and `for...of`.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. Iterator is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Imagine a class that stores a company's org chart as a tree. Different parts of the program need to list all employees: one report goes level by level, another needs depth-first order. If each report walks the tree itself, every report depends on the tree's internal fields, and changing the tree to use a different storage breaks all of them.",
+        "With Iterator, the tree offers iterator objects. A report asks for an iterator and calls `next()` until it is done. The report does not know whether the data is a tree, an array or rows fetched from a database page by page."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Iterator",
+                "Interface for traversal, typically `next()` returning the next element and a flag that tells whether the traversal is finished"
+              ],
+              [
+                "Concrete iterator",
+                "Implements traversal for one collection and remembers the current position"
+              ],
+              [
+                "Aggregate (iterable)",
+                "Interface with a method that creates an iterator"
+              ],
+              [
+                "Concrete aggregate",
+                "The collection; returns a new concrete iterator each time one is requested"
+              ],
+              [
+                "Client",
+                "Uses iterators to visit elements without knowing the collection's structure"
+              ]
+            ]
+          }
+        },
+        "In JavaScript these roles have standard names, defined by the iteration protocols in ES2015. An iterable has a `[Symbol.iterator]()` method. An iterator has a `next()` method that returns `{ value, done }`. Every `for...of` loop, spread `[...x]` and destructuring assignment uses these protocols."
+      ]
+    },
+    {
+      "h": "TypeScript implementation: a hand-written iterator",
+      "body": [
+        "This range class stores only its start, end and step, not a list of numbers. Its iterator computes each value on demand.",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "Each call to `[Symbol.iterator]()` returns a fresh iterator with its own `current` position. That is why `evens` can be looped over twice. If the collection returned the same iterator every time, the second loop would see no elements."
+      ]
+    },
+    {
+      "h": "Generators: iterators with less code",
+      "body": [
+        "A generator function, written with `function*`, creates an iterator automatically. Each `yield` produces the next value, and the function pauses until `next()` is called again. Here a binary tree offers an in-order traversal without exposing its nodes:",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "Do not add or remove elements of a collection while you iterate over it unless the collection documents that this is safe. Java's `ArrayList` iterator throws `ConcurrentModificationException`, and in JavaScript changing an array during a loop can skip or repeat elements."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when a collection has a complex internal structure (tree, graph, paged API) and you want clients to loop over it simply.",
+            "Use it to offer several traversal orders over the same data, such as depth-first and breadth-first.",
+            "Use it for lazy or infinite sequences, where values are computed only when requested.",
+            "Use it to give different collections one uniform loop interface.",
+            "Do not write a custom iterator for data that is already an array. Return the array (or a read-only copy) and let callers use the built-in iteration.",
+            "Do not use a lazy iterator when callers need random access by index or the length up front; an array is a better fit."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "JavaScript: `Array`, `Map`, `Set` and `String` are iterables, and `map.entries()` or `set.values()` return iterators.",
+            "Java: the `java.util.Iterator` interface with `hasNext()` and `next()`, used by the enhanced `for` loop on any `Iterable`.",
+            "Python: the iterator protocol with `__iter__` and `__next__`, and generator functions using `yield`.",
+            "Databases and APIs: cursors over query results and paginated HTTP APIs expose results one page at a time, so clients can iterate over very large results without loading everything into memory."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it relates to Iterator"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "Iterators are often used to traverse Composite trees without exposing their nodes."
+              ],
+              [
+                "Visitor",
+                "Iterator walks the elements; Visitor defines what to do with each element. They are often used together."
+              ],
+              [
+                "Factory Method",
+                "The method that creates an iterator, such as `[Symbol.iterator]()`, is a factory method: each collection returns its own iterator class."
+              ],
+              [
+                "Memento",
+                "An iterator can save its position as a memento so that traversal can be resumed later."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between an iterable and an iterator?",
+      "a": "An iterable is an object that can produce an iterator, through `[Symbol.iterator]()` in JavaScript. An iterator is the object that keeps the current position and returns the elements one at a time through `next()`."
+    },
+    {
+      "q": "Is a generator an iterator?",
+      "a": "Yes. Calling a generator function returns a generator object, which is both an iterator (it has `next()`) and an iterable (it returns itself from `[Symbol.iterator]()`)."
+    },
+    {
+      "q": "Why not just expose the internal array?",
+      "a": "Exposing the array ties every caller to that storage choice and lets them modify it. An iterator hides the structure, so you can change it later or compute elements lazily without changing callers."
+    },
+    {
+      "q": "What is an internal iterator?",
+      "a": "An internal iterator is a method that takes a callback and runs it for every element, such as `array.forEach(fn)`. The collection controls the loop. An external iterator, like `next()`, lets the client control when to move forward and when to stop."
+    }
+  ]
+}

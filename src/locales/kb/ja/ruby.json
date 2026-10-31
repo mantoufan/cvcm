@@ -1,0 +1,197 @@
+{
+  "title": "Rubyチュートリアル：オブジェクト・ブロック・配列・ハッシュ・クラス — cv.cm",
+  "description": "Ruby入門を1ページで：Hello worldの実行、変数と型、制御構文、メソッド、配列とハッシュ、ブロックとイテレータ、クラス、モジュール、例外処理まで解説します。",
+  "h1": "Ruby入門チュートリアル（初心者向け）",
+  "answer": "Rubyは、読み書きしていて心地よいことを目指して設計された、動的なオブジェクト指向のスクリプト言語です。`puts \"Hello, world\"` を `hello.rb` に保存して `ruby hello.rb` で実行します。Rubyではすべてがオブジェクトで、数値や `nil` も例外ではありません。`def` で定義するメソッド、配列とハッシュ、`each` や `map` などのイテレータに渡すブロック、クラスとモジュール、`begin`/`rescue` による例外処理が中心的な内容です。",
+  "sections": [
+    {
+      "h": "Rubyとは何か、何に使われるか",
+      "body": [
+        "Rubyは日本のまつもとゆきひろ（Matz）氏が作り、「プログラマーを幸せにする」ことを目標に1995年に最初のバージョンが公開されました。GitHubやShopifyなどのサイトを支えるWebフレームワークRuby on Railsによって広く知られるようになりました。Webアプリケーション、スクリプトや自動化、HomebrewやCocoaPodsといった開発者向けツールに使われています。標準の実装はCRuby（MRIとも呼ばれます）です。"
+      ]
+    },
+    {
+      "h": "Rubyのインストールと Hello, world の実行",
+      "body": [
+        "macOSや多くのLinuxにはRubyが入っていますが、古いことが多いため、rbenv、asdf、miseなどのバージョン管理ツール、またはWindowsならRubyInstallerで、現行のRuby 3をインストールしましょう。`ruby -v` で確認します。",
+        {
+          "code": "puts \"Hello, world\"",
+          "lang": "ruby"
+        },
+        {
+          "code": "ruby hello.rb\n# Hello, world\nirb          # interactive Ruby shell",
+          "lang": "shell"
+        },
+        "`puts` は値を表示し、最後に改行を付けます。意味が明らかな場合、メソッドの引数を囲む括弧は省略できます。"
+      ]
+    },
+    {
+      "h": "変数と基本の型",
+      "body": [
+        "変数は宣言が不要で、任意のオブジェクトを保持できます。名前には慣習として `snake_case` を使います。定数は大文字で始まります。",
+        {
+          "table": {
+            "head": [
+              "クラス",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`Integer`",
+                "`42`, `2**100`",
+                "任意の大きさ"
+              ],
+              [
+                "`Float`",
+                "`3.14`",
+                "倍精度"
+              ],
+              [
+                "`String`",
+                "`\"hi #{name}\"`, `'hi'`",
+                "変更可能。二重引用符では式が展開される"
+              ],
+              [
+                "`Symbol`",
+                "`:name`",
+                "変更できない識別子。ハッシュのキーとしてよく使われる"
+              ],
+              [
+                "`true`, `false`",
+                "`true`",
+                "`false` と `nil` だけが偽"
+              ],
+              [
+                "`NilClass`",
+                "`nil`",
+                "値なし"
+              ],
+              [
+                "`Array`, `Hash`",
+                "`[1, 2]`, `{a: 1}`",
+                "組み込みのコレクション"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "name = \"Ada\"\ncount = 7\nputs \"#{name} has #{count} items\"   # Ada has 7 items\nputs count / 2, count / 2.0         # 3, then 3.5\nputs \"12\".to_i + 1                  # 13\nputs 5.class, nil.to_a.inspect      # Integer, then []\nputs 0 ? \"0 is truthy\" : \"falsy\"    # 0 is truthy",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "score = 72\nif score >= 90\n  puts \"A\"\nelsif score >= 70\n  puts \"B\"          # B\nelse\n  puts \"C\"\nend\n\nputs \"pass\" unless score < 50    # statement modifier\n\n3.times { |i| print i, \" \" }     # 0 1 2\nputs\n\nn = 10\nn /= 2 while n > 1\nputs n                           # 1\n\nkind = case \"SAT\"\n       when \"SAT\", \"SUN\" then \"weekend\"\n       else \"weekday\"\n       end\nputs kind                        # weekend",
+          "lang": "ruby"
+        },
+        "ブロックは波括弧ではなく `end` で終わります。Rubyのコードは通常、半角スペース2つでインデントします。"
+      ]
+    },
+    {
+      "h": "メソッド",
+      "body": [
+        "メソッドは最後の式の値を返すため、`return` は不要なことが多くあります。慣習として、真偽値を返すメソッドは `?` で終わり、レシーバをその場で変更するメソッドは `!` で終わります。",
+        {
+          "code": "def greet(name, greeting: \"Hello\")\n  \"#{greeting}, #{name}!\"\nend\n\ndef total(*nums)\n  nums.sum\nend\n\nputs greet(\"Lin\")                   # Hello, Lin!\nputs greet(\"Lin\", greeting: \"Hi\")   # Hi, Lin!\nputs total(1, 2, 3)                 # 6\nputs 4.even?, \"abc\".upcase          # true, then ABC\n\ns = \"hello\"\ns.upcase!          # modifies s in place\nputs s             # HELLO",
+          "lang": "ruby"
+        }
+      ]
+    },
+    {
+      "h": "配列とハッシュ",
+      "body": [
+        {
+          "code": "nums = [3, 1, 2]\nnums << 5\np nums.sort, nums.first, nums.last   # [1, 2, 3, 5] then 3 then 5\np nums.sort[1..2]                    # [2, 3]\n\nages = { \"ann\" => 31, \"bob\" => 25 }\nages[\"cy\"] = 40\nages.each { |person, age| puts \"#{person} is #{age}\" }\np ages.fetch(\"zed\", 0)               # 0\n\nuser = { name: \"Ann\", city: \"Oslo\" } # symbol keys\np user[:name]                        # \"Ann\"",
+          "lang": "ruby"
+        },
+        "`p` は値の `inspect` 形式を表示します。引用符や括弧が見えるので、デバッグに便利です。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：ブロックとイテレータ",
+      "body": [
+        "ブロックはメソッドに渡すコードのかたまりで、1行なら `{ ... }`、複数行なら `do ... end` で書きます。Rubyの繰り返し処理は `for` ループではなく、主にブロックで行います。`Enumerable` のメソッドを使うと、データ変換を短く書けます。",
+        {
+          "code": "nums = [1, 2, 3, 4, 5]\np nums.map { |n| n * n }               # [1, 4, 9, 16, 25]\np nums.select(&:even?)                 # [2, 4]\np nums.reduce(0) { |sum, n| sum + n }  # 15\np nums.each_slice(2).to_a              # [[1, 2], [3, 4], [5]]\np %w[pear fig apple].sort_by(&:length) # [\"fig\", \"pear\", \"apple\"]\n\ndef twice\n  yield\n  yield\nend\ntwice { puts \"hi\" }   # prints hi two times",
+          "lang": "ruby"
+        },
+        "`&:even?` は `{ |n| n.even? }` の省略形です。自分で定義したメソッドも、ブロックを受け取って `yield` で呼び出せます。"
+      ]
+    },
+    {
+      "h": "クラスとモジュール",
+      "body": [
+        {
+          "code": "module Greeter\n  def hello\n    \"Hello from #{name}\"\n  end\nend\n\nclass Account\n  include Greeter          # mix in module methods\n  attr_reader :name, :balance\n\n  def initialize(name)\n    @name = name           # @ marks an instance variable\n    @balance = 0\n  end\n\n  def deposit(amount)\n    raise ArgumentError, \"amount must be positive\" unless amount.positive?\n    @balance += amount\n    self\n  end\n\n  def to_s = \"#{name}: #{balance}\"\nend\n\nacc = Account.new(\"Ann\")\nacc.deposit(30).deposit(20)\nputs acc        # Ann: 50\nputs acc.hello  # Hello from Ann",
+          "lang": "ruby"
+        },
+        "`attr_reader` はゲッターメソッドを生成します。モジュールは、多くのクラスにミックスインできるメソッドをまとめるもので、Rubyは多重継承の代わりにこれを使います。1行形式の `def to_s = ...` にはRuby 3.0以降が必要です。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        {
+          "code": "def parse_age(text)\n  age = Integer(text)       # raises ArgumentError on bad input\n  raise ArgumentError, \"negative age\" if age.negative?\n  age\nend\n\nbegin\n  puts parse_age(\"41\")      # 41\n  puts parse_age(\"abc\")\nrescue ArgumentError => e\n  puts \"error: #{e.message}\"  # error: invalid value for Integer(): \"abc\"\nensure\n  puts \"done\"\nend",
+          "lang": "ruby"
+        },
+        "`rescue` は例外を捕捉し、`ensure` は必ず実行されます。メソッドの中では、`begin` なしで直接 `rescue` を書けます。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "path = ARGV.fetch(0) { abort \"usage: ruby words.rb FILE\" }\n\nbegin\n  text = File.read(path).downcase\nrescue Errno::ENOENT\n  abort \"file not found: #{path}\"\nend\n\ncounts = text.scan(/[a-z']+/).tally\ncounts.max_by(5) { |_word, n| n }.each do |word, n|\n  puts format(\"%5d  %s\", n, word)\nend",
+          "lang": "ruby"
+        },
+        "`ruby words.rb notes.txt` で実行します。`tally` は等しい要素の数をハッシュに集計し、`max_by(5)` は回数の多い上位5件の要素を返します。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "偽になるのは `nil` と `false` だけです。PythonやJavaScriptと違い、`0`、`\"\"`、`[]` はすべて真なので、空かどうかは `.empty?` や `.zero?` で調べます。"
+        },
+        {
+          "ul": [
+            "`if`、`def`、`class`、`do` ブロックを閉じる `end` を忘れる。",
+            "文字列キーとシンボルキーを混在させる。`h[\"name\"]` と `h[:name]` は別のキーです。",
+            "単一引用符を使いながら、`#{}` による式展開が働くと期待する。",
+            "`!` 付きのメソッドを呼んで、元のオブジェクトが変更されたことに気づかない。",
+            "バージョン管理ツールでインストールした現行バージョンではなく、古いシステムのRubyを使う。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "ruby-lang.orgのドキュメントのページから始めましょう。クイックスタート「Ruby in Twenty Minutes」もあります。コアと標準ライブラリのリファレンスにはdocs.ruby-lang.orgを使います。依存関係管理のBundlerとgem、テストのRSpecまたはMinitestを学び、Webアプリケーションを作りたいならRuby on Railsに進みます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Rubyは今でも使われていますか？",
+      "a": "はい。Ruby on RailsはGitHubやShopifyをはじめ、多くの確立したWebサービスを動かしており、Rubyはスクリプトや開発者向けツールでも一般的です。新規プロジェクトではPythonやJavaScriptほど一般的ではありませんが、活発に開発が続いています。"
+    },
+    {
+      "q": "RubyとRuby on Railsの違いは何ですか？",
+      "a": "Rubyはプログラミング言語です。RailsはRubyで書かれたWebフレームワークで、ルーティング、データベースアクセス、ページテンプレートを提供します。"
+    },
+    {
+      "q": "Rubyのシンボルとは何ですか？",
+      "a": "`:name` のようなシンボルは、変更できない一意の識別子です。同じシンボルは常に同じオブジェクトなので、ハッシュのキーやオプション名に効率的です。"
+    },
+    {
+      "q": "初心者にはRubyとPythonのどちらがよいですか？",
+      "a": "どちらも読みやすい文法で、最初の言語に向いています。Pythonは、特にデータサイエンスなど用途が広く、Rubyは表現力が高く、RailsによるWeb開発に強みがあります。"
+    }
+  ]
+}

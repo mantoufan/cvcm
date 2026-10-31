@@ -1,0 +1,205 @@
+{
+  "title": "Algoritma Floyd-Warshall: jalur terpendek semua pasangan di Python — cv.cm",
+  "description": "Pelajari Floyd-Warshall: jalur terpendek semua pasangan dengan tiga loop bersarang, contoh penelusuran, kode Python, rekonstruksi jalur, siklus negatif, dan biaya O(V³).",
+  "h1": "Penjelasan algoritma Floyd-Warshall: cara kerja, kode, dan kompleksitas",
+  "answer": "Algoritma Floyd-Warshall menghitung jalur terpendek antara setiap pasangan node pada graf berbobot. Algoritma ini menyimpan matriks jarak V × V dan, untuk setiap node k secara berurutan, memeriksa apakah melewati k membuat jalur dari i ke j lebih pendek: `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`. Ia menangani bobot edge negatif, mendeteksi siklus negatif, dan berjalan dalam waktu O(V³) dengan memori O(V²).",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan Floyd-Warshall",
+      "body": [
+        "Kadang Anda membutuhkan jarak antara semua pasangan tempat, bukan hanya dari satu titik awal: tabel waktu tempuh antar semua kota, latensi antara setiap pasangan server, atau keterjangkauan penuh pada graf dependensi. Floyd-Warshall menyelesaikan masalah all-pairs shortest path ini dengan algoritma dynamic programming yang sangat singkat.",
+        "Algoritma ini diterbitkan oleh Robert Floyd pada 1962 (\"Algorithm 97: Shortest path\"), dengan dasar algoritma transitive closure dari Stephen Warshall pada tahun 1962."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Beri nomor node dari 0 sampai V − 1. Setelah memproses node k, `dist[i][j]` adalah jalur terpendek dari i ke j yang hanya memakai node 0 sampai k sebagai perhentian antara. Mengizinkan satu node antara lagi, yaitu k, memberi dua pilihan: jalur terbaik lama yang menghindari k, atau jalur i → k → j yang terdiri dari dua jalur terbaik yang hanya memakai node sebelum k.",
+        {
+          "ol": [
+            "Isi matriks: 0 di diagonal, bobot edge jika edge ada, tak hingga di tempat lain.",
+            "Untuk k = 0 sampai V − 1, untuk setiap pasangan (i, j): jika `dist[i][k] + dist[k][j] < dist[i][j]`, perbarui.",
+            "Setelah k terakhir, matriks berisi semua jarak terpendek. Nilai negatif di diagonal berarti ada siklus negatif."
+          ]
+        },
+        "Urutan loop sangat penting: k harus menjadi loop terluar."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Graf berarah dengan 4 node dan edge 0→1 (3), 0→3 (7), 1→0 (8), 1→2 (2), 2→0 (5), 2→3 (1), 3→0 (2). Matriks awal (baris = asal, kolom = tujuan):",
+        {
+          "table": {
+            "head": [
+              "Dari \\ ke",
+              "0",
+              "1",
+              "2",
+              "3"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "3",
+                "∞",
+                "7"
+              ],
+              [
+                "1",
+                "8",
+                "0",
+                "2",
+                "∞"
+              ],
+              [
+                "2",
+                "5",
+                "∞",
+                "0",
+                "1"
+              ],
+              [
+                "3",
+                "2",
+                "∞",
+                "∞",
+                "0"
+              ]
+            ]
+          }
+        },
+        {
+          "ol": [
+            "k = 0: jalur boleh melewati node 0. 1→3 menjadi 8 + 7 = 15, 2→1 menjadi 5 + 3 = 8, dan 3→1 menjadi 2 + 3 = 5.",
+            "k = 1: lewat node 1. 0→2 menjadi 3 + 2 = 5 dan 3→2 menjadi 5 + 2 = 7.",
+            "k = 2: lewat node 2. 0→3 membaik dari 7 menjadi 5 + 1 = 6, 1→3 dari 15 menjadi 2 + 1 = 3, dan 1→0 dari 8 menjadi 2 + 5 = 7.",
+            "k = 3: lewat node 3. 1→0 membaik dari 7 menjadi 3 + 2 = 5, 2→0 dari 5 menjadi 1 + 2 = 3, dan 2→1 dari 8 menjadi 1 + 5 = 6."
+          ]
+        },
+        "Baris matriks akhir: 0 → [0, 3, 5, 6], 1 → [5, 0, 2, 3], 2 → [3, 6, 0, 1], 3 → [2, 5, 7, 0]."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "INF = float(\"inf\")\ndef floyd_warshall(n, edges):\n    dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]\n    nxt = [[j if i == j else None for j in range(n)] for i in range(n)]\n    for u, v, w in edges:\n        dist[u][v] = w\n        nxt[u][v] = v\n    for k in range(n):\n        for i in range(n):\n            for j in range(n):\n                if dist[i][k] + dist[k][j] < dist[i][j]:\n                    dist[i][j] = dist[i][k] + dist[k][j]\n                    nxt[i][j] = nxt[i][k]\n    return dist, nxt\nedges = [(0, 1, 3), (0, 3, 7), (1, 0, 8), (1, 2, 2),\n         (2, 0, 5), (2, 3, 1), (3, 0, 2)]\ndist, nxt = floyd_warshall(4, edges)\nfor row in dist:\n    print(row)\n# [0, 3, 5, 6]\n# [5, 0, 2, 3]\n# [3, 6, 0, 1]\n# [2, 5, 7, 0]",
+          "lang": "python"
+        },
+        "Matriks `nxt` menyimpan langkah pertama pada jalur terbaik dari i ke j, yang cukup untuk merekonstruksi jalur apa pun:",
+        {
+          "code": "def path(nxt, i, j):\n    if nxt[i][j] is None:\n        return []                         # no path\n    route = [i]\n    while i != j:\n        i = nxt[i][j]\n        route.append(i)\n    return route\nprint(path(nxt, 1, 0))  # [1, 2, 3, 0]",
+          "lang": "python"
+        },
+        "Jika node banyak dan Anda menginginkan kecepatan di Python, triple loop yang sama dapat ditulis dengan NumPy sebagai satu pembaruan vektor per k: `d = np.minimum(d, d[:, k, None] + d[None, k, :])`."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Biaya",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu",
+                "O(V³)",
+                "Tiga loop bersarang atas semua node, tidak bergantung pada jumlah edge."
+              ],
+              [
+                "Ruang",
+                "O(V²)",
+                "Matriks jarak (ditambah matriks next-hop opsional). Memperbarui di tempat itu aman."
+              ],
+              [
+                "Ukuran praktis",
+                "beberapa ratus hingga beberapa ribu node",
+                "V = 1.000 berarti 10⁹ langkah dalam, yang lambat di Python murni tetapi tidak masalah di C atau NumPy."
+              ]
+            ]
+          }
+        },
+        "Untuk graf jarang dengan bobot non-negatif, menjalankan Dijkstra dari setiap node berbiaya O(V × (V + E) log V), yang lebih cepat daripada O(V³) bila E jauh lebih kecil daripada V²."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "note": "Menaruh k di loop terdalam adalah bug paling umum. Algoritma hanya benar bila k adalah loop terluar, karena setiap putaran harus selesai memakai node antara 0 sampai k − 1 sebelum node k diizinkan."
+        },
+        {
+          "ul": [
+            "Siklus negatif: setelah loop selesai, jika `dist[i][i] < 0` untuk suatu i, node i berada pada siklus negatif dan jalur terpendek yang melewatinya tidak terdefinisi.",
+            "Transitive closure (Warshall): gunakan boolean dan ganti min/plus dengan or/and: `reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])`.",
+            "Jalur minimax dan maximin: ganti `+` dengan `max` (atau `min`) untuk mencari, misalnya, jalur yang edge terbesarnya sekecil mungkin.",
+            "Pakai bilangan terbatas yang besar sebagai pengganti tak hingga hanya jika Anda yakin jumlah dua bilangan itu tidak overflow; di Python, `float(\"inf\")` adalah pilihan aman.",
+            "Inisialisasi diagonal dengan 0, dan bila ada edge paralel simpan bobot terkecil."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kebutuhan",
+              "Pilihan terbaik"
+            ],
+            "rows": [
+              [
+                "Semua pasangan, graf padat atau kecil (V hingga beberapa ratus)",
+                "Floyd-Warshall"
+              ],
+              [
+                "Semua pasangan, graf besar dan jarang, bobot non-negatif",
+                "Dijkstra dari setiap node"
+              ],
+              [
+                "Semua pasangan, graf jarang dengan bobot negatif",
+                "Algoritma Johnson"
+              ],
+              [
+                "Hanya satu sumber",
+                "Dijkstra atau Bellman-Ford"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Menghitung di muka tabel jarak antara semua stasiun, gudang, atau kota untuk pencarian berikutnya.",
+            "Analitik graf seperti closeness centrality atau diameter jaringan kecil.",
+            "Soal wawancara: mencari kota dengan jumlah tetangga paling sedikit dalam batas jarak, evaluate division (rasio sebagai hasil kali jalur), prasyarat mata kuliah sebagai transitive closure."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah Floyd-Warshall menangani bobot edge negatif?",
+      "a": "Bisa, selama tidak ada siklus negatif. Jika ada, salah satu entri diagonal `dist[i][i]` menjadi negatif, dan itulah cara mendeteksinya."
+    },
+    {
+      "q": "Mengapa k harus menjadi loop terluar?",
+      "a": "Algoritma membangun solusi bertahap: tahap k hanya mengizinkan node 0 sampai k sebagai perhentian antara. Setiap pasangan harus diperbarui untuk tahap k sebelum jalur mana pun boleh memakai node k + 1."
+    },
+    {
+      "q": "Apakah Floyd-Warshall termasuk dynamic programming?",
+      "a": "Ya. State-nya adalah jalur terpendek dari i ke j dengan node antara hingga k, dan setiap tahap dihitung dari tahap sebelumnya. Dimensi k dibuang karena memperbarui di tempat tidak mengubah hasilnya."
+    },
+    {
+      "q": "Floyd-Warshall atau Dijkstra?",
+      "a": "Gunakan Dijkstra untuk satu sumber atau graf besar yang jarang dengan bobot non-negatif. Gunakan Floyd-Warshall bila Anda butuh semua pasangan pada graf kecil atau padat, atau bila ada bobot negatif."
+    }
+  ]
+}

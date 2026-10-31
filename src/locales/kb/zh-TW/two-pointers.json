@@ -1,0 +1,214 @@
+{
+  "title": "雙指標與滑動視窗：解題模式、Python 程式碼與範例 — cv.cm",
+  "description": "雙指標與滑動視窗技巧能把許多 O(n²) 的陣列與字串問題降為 O(n)。透過逐步追蹤與 Python 程式碼學會這兩種模式。",
+  "h1": "雙指標與滑動視窗（sliding window）技巧教學",
+  "answer": "雙指標是一種技巧：用兩個索引在陣列或字串上移動，通常是從兩端往中間靠攏，或朝同一方向以不同速度前進，使每個元素只被處理固定次數。滑動視窗是同向移動的變體：在左右兩個指標之間維持一段連續範圍，並在視窗擴大與縮小時更新一個累計值。兩者常能把對成對元素或子陣列的 O(n²) 暴力搜尋降為 O(n)。",
+  "sections": [
+    {
+      "h": "這些技巧解決什麼問題",
+      "body": [
+        "許多陣列與字串問題都在問成對元素或連續區間：兩個數字相加等於目標值、不含重複字元的最長子字串、總和至少為 k 的最短子陣列。逐一檢查每一對或每一段區間，成本是 O(n²) 甚至更高。雙指標利用資料的某種性質（例如已排序，或視窗只需小幅更新），一次排除許多候選，從而避開這種成本。",
+        {
+          "table": {
+            "head": [
+              "模式",
+              "指標移動方式",
+              "典型問題"
+            ],
+            "rows": [
+              [
+                "兩端夾擠",
+                "`left` 從 0 開始，`right` 從尾端開始，彼此相向移動",
+                "已排序陣列中的兩數和、回文檢查、盛最多水的容器"
+              ],
+              [
+                "快慢指標",
+                "兩者都從開頭出發，一個每步都移動，另一個只在某些時候移動",
+                "原地移除重複項、分割（partition）、鏈結串列的環偵測"
+              ],
+              [
+                "滑動視窗",
+                "`right` 擴大視窗，`left` 縮小視窗",
+                "符合條件的最長或最短子字串、子陣列"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "兩端指標：已排序陣列中的兩數和",
+      "body": [
+        "在已排序的串列 `[1, 3, 4, 6, 8, 11]` 中找出兩個總和為 10 的數。從最小與最大的數開始。若總和太小，唯一能增加它的方法是把 `left` 往右移；若總和太大，就把 `right` 往左移。",
+        {
+          "table": {
+            "head": [
+              "步驟",
+              "left（值）",
+              "right（值）",
+              "總和",
+              "動作"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 (1)",
+                "5 (11)",
+                "12",
+                "太大，right -= 1"
+              ],
+              [
+                "2",
+                "0 (1)",
+                "4 (8)",
+                "9",
+                "太小，left += 1"
+              ],
+              [
+                "3",
+                "1 (3)",
+                "4 (8)",
+                "11",
+                "太大，right -= 1"
+              ],
+              [
+                "4",
+                "1 (3)",
+                "3 (6)",
+                "9",
+                "太小，left += 1"
+              ],
+              [
+                "5",
+                "2 (4)",
+                "3 (6)",
+                "10",
+                "找到了：4 + 6"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def pair_with_sum(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        s = nums[left] + nums[right]\n        if s == target:\n            return left, right\n        if s < target:\n            left += 1\n        else:\n            right -= 1\n    return None\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 10))   # (2, 3)\nprint(pair_with_sum([1, 3, 4, 6, 8, 11], 2))    # None",
+          "lang": "python"
+        },
+        "每一步都讓一個指標向內移動，所以最多 n − 1 步：時間 O(n)、空間 O(1)。同樣的做法可用來檢查字串是否為回文、原地反轉陣列，再放進外層迴圈，還能把 3Sum 從 O(n³) 降到 O(n²)。"
+      ]
+    },
+    {
+      "h": "快慢指標：原地過濾",
+      "body": [
+        "慢指標標示下一個保留元素該放的位置；快指標掃過每個元素。這樣不需額外記憶體，就能從已排序的串列中移除重複項。",
+        {
+          "code": "def dedupe_sorted(nums):\n    \"\"\"Remove duplicates in place; return the new length.\"\"\"\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1\na = [1, 1, 2, 3, 3, 3, 5]\nk = dedupe_sorted(a)\nprint(k, a[:k])   # 4 [1, 2, 3, 5]",
+          "lang": "python"
+        },
+        "在鏈結串列上，快指標每步走兩個節點，慢指標走一個。若兩者相遇，串列就有環（Floyd 環偵測演算法）；當快指標走到尾端時，慢指標恰好在中間。"
+      ]
+    },
+    {
+      "h": "滑動視窗：不含重複字元的最長子字串",
+      "body": [
+        "滑動視窗讓範圍 `s[left:right + 1]` 始終保持有效。每次將 `right` 往前移一個字元。當新字元違反規則，就把 `left` 往前移，直到視窗再度有效。過程中記錄最佳視窗。",
+        {
+          "code": "def longest_unique(s):\n    last_seen = {}          # char -> last index\n    left = best = 0\n    for right, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= left:\n            left = last_seen[ch] + 1   # jump past the repeat\n        last_seen[ch] = right\n        best = max(best, right - left + 1)\n    return best\nprint(longest_unique(\"abcabcbb\"))   # 3  (\"abc\")\nprint(longest_unique(\"pwwkew\"))     # 3  (\"wke\")\nprint(longest_unique(\"\"))           # 0",
+          "lang": "python"
+        },
+        "視窗有兩種。固定大小的視窗含 k 個元素，每次加入右邊進來的元素、移除左邊離開的元素，例如用來計算移動平均。可變大小的視窗則會依條件伸縮，如上面的例子。",
+        {
+          "code": "def min_len_subarray(nums, k):\n    \"\"\"Shortest subarray with sum >= k (non-negative nums).\"\"\"\n    left = total = 0\n    best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x\n        while total >= k:\n            best = min(best, right - left + 1)\n            total -= nums[left]\n            left += 1\n    return 0 if best == float(\"inf\") else best\nprint(min_len_subarray([2, 3, 1, 2, 4, 3], 7))   # 2  ([4, 3])",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "問題",
+              "暴力解",
+              "雙指標／視窗",
+              "額外空間"
+            ],
+            "rows": [
+              [
+                "兩數和，輸入已排序",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ],
+              [
+                "移除重複項，已排序",
+                "O(n)，需建立新串列",
+                "O(n)，原地進行",
+                "O(1)"
+              ],
+              [
+                "最長不重複子字串",
+                "O(n³) 或 O(n²)",
+                "O(n)",
+                "O(k)，k 為相異字元數"
+              ],
+              [
+                "總和 ≥ k 的最短子陣列",
+                "O(n²)",
+                "O(n)",
+                "O(1)"
+              ]
+            ]
+          }
+        },
+        "即使有巢狀的 `while` 迴圈，滑動視窗仍是 O(n) 的原因：`left` 與 `right` 各自整個過程中最多往前移動 n 次，所以總工作量至多 2n 步。"
+      ]
+    },
+    {
+      "h": "常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "對未排序的資料使用兩端指標。決定要移動左邊或右邊，只有在陣列已排序時才正確。",
+            "數字可能為負時，仍使用以總和為基礎的滑動視窗。此時縮小視窗不一定會讓總和變小；請改用前綴和搭配雜湊表。",
+            "視窗長度差一：包含兩端的視窗 `left..right` 有 `right - left + 1` 個元素。",
+            "忘了在 `left < right` 時停止，會讓單一元素與自己配成一對。",
+            "讓 `left` 往回移。在子字串範例中，`last_seen[ch] >= left` 的檢查可避免跳回舊位置。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何時使用，以及典型面試題",
+      "body": [
+        "當輸入已排序（或能以低成本排序）而你要找成對元素，或需要原地修改陣列時，就用雙指標。當題目提到連續子陣列或子字串，並要求最長、最短、最大或計數，且條件會隨視窗擴大而可預測地變化時，就用滑動視窗。如果資料未排序又要找成對元素，雜湊集合通常更簡單，同樣是 O(n)。",
+        {
+          "ul": [
+            "Two Sum II（輸入已排序）、3Sum、Container With Most Water、Trapping Rain Water。",
+            "Valid Palindrome、Reverse String、Move Zeroes、Remove Duplicates from Sorted Array。",
+            "Longest Substring Without Repeating Characters、Minimum Window Substring、Sliding Window Maximum（搭配 deque）。",
+            "Linked List Cycle、Middle of the Linked List。"
+          ]
+        },
+        "在面試之外，同樣的概念也出現在合併已排序檔案、追蹤未確認封包視窗的網路協定（TCP 滑動視窗）、計算最近 N 秒內事件數的限流器，以及時間序列的移動平均。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "什麼是雙指標技巧？",
+      "a": "這是一種用兩個索引依簡單規則移動來掃描陣列或字串的方法，使每個元素只被處理固定次數。它常把 O(n²) 的配對搜尋變成 O(n)。"
+    },
+    {
+      "q": "雙指標與滑動視窗有什麼差別？",
+      "a": "滑動視窗是雙指標的一種：兩個索引朝同一方向移動，兩者之間的元素構成目前的子陣列或子字串。兩端夾擠的雙指標看的是成對元素，而不是區間。"
+    },
+    {
+      "q": "為什麼有巢狀迴圈的滑動視窗仍是 O(n)？",
+      "a": "內層迴圈只會把 `left` 往前移，而 `left` 在整個執行過程中最多移動 n 次。加上 `right` 的 n 次移動，總共至多 2n 步。"
+    },
+    {
+      "q": "雙指標一定要用排序過的陣列嗎？",
+      "a": "兩端夾擠的兩數和模式需要排序。快慢指標與滑動視窗則不需要，但以總和為基礎的視窗要求數字為非負。"
+    }
+  ]
+}

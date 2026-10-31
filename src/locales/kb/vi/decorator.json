@@ -1,0 +1,167 @@
+{
+  "title": "Mẫu Decorator: thêm hành vi bằng cách bọc đối tượng, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Decorator: thêm trách nhiệm cho đối tượng lúc chạy bằng cách bọc nó. Có ví dụ TypeScript, decorator hàm và cách dùng trong Java I/O.",
+  "h1": "Mẫu Decorator (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Decorator là một mẫu thiết kế cấu trúc (structural), thêm trách nhiệm cho một đối tượng một cách động bằng cách bọc nó trong một đối tượng khác có cùng interface. Mỗi decorator chuyển tiếp lời gọi đến đối tượng được bọc và thêm hành vi riêng trước hoặc sau đó, như ghi log, lưu đệm hay nén dữ liệu. Vì các decorator có thể xếp chồng theo thứ tự tùy ý, chúng là lựa chọn linh hoạt thay cho việc tạo một lớp con cho mọi tổ hợp tính năng.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Gắn thêm trách nhiệm cho một đối tượng một cách động. Decorator là lựa chọn linh hoạt thay cho kế thừa để mở rộng chức năng. Decorator là một trong bảy mẫu cấu trúc trong sách Gang of Four (GoF), nơi nó còn được gọi là Wrapper."
+      ]
+    },
+    {
+      "h": "Vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Hãy tưởng tượng một kho dữ liệu có phương thức `get(key)`. Có nơi gọi muốn ghi log, có nơi muốn cache trong bộ nhớ, có nơi muốn cả hai, và có nơi muốn thử lại với back end mạng chậm. Với kế thừa, bạn sẽ viết `LoggingStore`, `CachingStore`, `LoggingCachingStore`, `RetryingCachingStore` và cứ thế: một lớp con cho mỗi tổ hợp, và các tổ hợp bị cố định từ lúc biên dịch.",
+        "Decorator biến mỗi tính năng thành một lớp bọc nhỏ. Bạn dựng tổ hợp cần thiết lúc chạy bằng cách bọc đối tượng này vào đối tượng kia, và mã dùng kho dữ liệu vẫn thấy cùng một interface dù có bao nhiêu lớp bọc."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Component",
+                "Interface dùng chung cho đối tượng thật và các decorator.",
+                "`Store`"
+              ],
+              [
+                "ConcreteComponent",
+                "Đối tượng gốc thực hiện công việc cốt lõi.",
+                "`SlowStore`"
+              ],
+              [
+                "Decorator",
+                "Giữ tham chiếu đến một Component và cài đặt cùng interface bằng cách chuyển tiếp.",
+                "`StoreDecorator`"
+              ],
+              [
+                "ConcreteDecorator",
+                "Thêm hành vi trước hoặc sau khi chuyển tiếp.",
+                "`LoggingStore`, `CachingStore`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        {
+          "code": "interface Store {\n  get(key: string): string;\n}\n\nclass SlowStore implements Store {\n  get(key: string): string { console.log(`  (database read: ${key})`); return key.toUpperCase(); }\n}\n\n// Base decorator: forwards everything to the wrapped store.\nabstract class StoreDecorator implements Store {\n  constructor(protected inner: Store) {}\n  get(key: string): string { return this.inner.get(key); }\n}\n\nclass LoggingStore extends StoreDecorator {\n  get(key: string): string {\n    console.log(`get ${key}`);\n    return super.get(key);\n  }\n}\n\nclass CachingStore extends StoreDecorator {\n  private cache = new Map<string, string>();\n  get(key: string): string {\n    if (!this.cache.has(key)) this.cache.set(key, super.get(key));\n    return this.cache.get(key)!;\n  }\n}\n\n// Stack features in any order at run time.\nconst store: Store = new LoggingStore(new CachingStore(new SlowStore()));\nconsole.log(store.get(\"ada\"));\nconsole.log(store.get(\"ada\"));\n// get ada\n//   (database read: ada)\n// ADA\n// get ada\n// ADA",
+          "lang": "typescript"
+        },
+        "Lần gọi thứ hai được ghi log nhưng được trả lời từ cache, nên cơ sở dữ liệu không bị đọc lại. Nếu đổi thứ tự thành `new CachingStore(new LoggingStore(...))`, chỉ những lần cache miss mới được ghi log. Thứ tự các decorator làm thay đổi hành vi; đây vừa là điểm mạnh vừa là nguồn gây nhầm lẫn thường gặp."
+      ]
+    },
+    {
+      "h": "Decorator hàm trong TypeScript",
+      "body": [
+        "Khi component là một hàm đơn lẻ, decorator có thể là một hàm bậc cao: nhận vào một hàm và trả về hàm mới có cùng chữ ký cùng hành vi bổ sung.",
+        {
+          "code": "function withTiming<A extends unknown[], R>(name: string, fn: (...args: A) => R) {\n  return (...args: A): R => {\n    const start = performance.now();\n    try {\n      return fn(...args);\n    } finally {\n      console.log(`${name} took ${(performance.now() - start).toFixed(1)} ms`);\n    }\n  };\n}\n\nconst slowSquare = (n: number) => { for (let i = 0; i < 1e6; i++); return n * n; };\nconst timedSquare = withTiming(\"square\", slowSquare);\nconsole.log(timedSquare(12)); // square took ... ms, then 144",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript cũng có cú pháp decorator `@name`, áp dụng cho lớp và thành viên của lớp. Đó là một tính năng ngôn ngữ (TypeScript 5.0 bổ sung hỗ trợ decorator chuẩn của ECMAScript) có thể dùng để cài đặt mẫu này, nhưng hai thứ không giống nhau: Decorator của GoF bọc các đối tượng lúc chạy, còn decorator `@` sửa định nghĩa lớp."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        "Dùng Decorator khi:",
+        {
+          "ul": [
+            "Bạn muốn thêm các tính năng như ghi log, lưu đệm, thử lại, kiểm tra hợp lệ, nén hoặc kiểm tra quyền truy cập cho từng đối tượng riêng lẻ mà không ảnh hưởng các đối tượng khác cùng lớp.",
+            "Các tính năng cần được kết hợp tự do, và kế thừa sẽ tạo ra một lớp cho mỗi tổ hợp.",
+            "Bạn không thể hoặc không nên sửa lớp gốc, chẳng hạn vì nó đến từ một thư viện."
+          ]
+        },
+        "Tránh dùng khi:",
+        {
+          "ul": [
+            "Bạn chỉ cần một hành vi bổ sung cố định. Thêm trực tiếp, hoặc dùng một lớp con, sẽ đơn giản hơn.",
+            "Mã phụ thuộc vào danh tính hoặc lớp cụ thể của đối tượng. Đối tượng đã được decorate là một đối tượng khác, nên các phép kiểm tra như `instanceof SlowStore` hay so sánh `===` sẽ thất bại.",
+            "Nhiều lớp bọc nhỏ làm việc gỡ lỗi khó khăn. Chồng lớp bọc sâu tạo ra call stack dài và khó biết lớp nào làm gì."
+          ]
+        },
+        "Middleware trong các web framework, như Express hay Koa, là một ý tưởng liên quan: mỗi lớp nhận một request, có thể xử lý nó, rồi chuyển tiếp."
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Java I/O: `new BufferedInputStream(new FileInputStream(\"data.bin\"))` bọc một stream trong một stream khác để thêm bộ đệm, và cả hai đều có interface `InputStream`. Chính cuốn sách GoF cũng bàn về stream như một ví dụ điển hình.",
+            "Java collections: `Collections.unmodifiableList(list)` và `Collections.synchronizedList(list)` trả về các lớp bọc thêm hành vi chỉ đọc hoặc khóa đồng bộ quanh một danh sách có sẵn.",
+            "Python: các decorator hàm như `functools.lru_cache` bọc một hàm và thêm cache, còn `functools.wraps` giúp lớp bọc giữ tên và docstring của hàm được bọc."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Decorator ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Thay đổi interface của một đối tượng. Decorator giữ nguyên interface và thêm hành vi."
+              ],
+              [
+                "Proxy",
+                "Có cùng cấu trúc nhưng mục đích khác: kiểm soát truy cập (khởi tạo lười, truy cập từ xa, phân quyền) và thường tự quản lý vòng đời của đối tượng thật."
+              ],
+              [
+                "Composite",
+                "Cũng dùng composition đệ quy, nhưng composite giữ nhiều phần tử con; decorator bọc đúng một."
+              ],
+              [
+                "Strategy",
+                "Thay đổi bên trong đối tượng bằng cách hoán đổi thuật toán. Decorator thay đổi bên ngoài bằng cách bọc nó."
+              ],
+              [
+                "Chain of Responsibility",
+                "Cũng chuyển yêu cầu qua một chuỗi đối tượng, nhưng mỗi handler có thể dừng yêu cầu; decorator thường luôn chuyển tiếp."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Decorator khác kế thừa ở điểm nào?",
+      "a": "Kế thừa thêm hành vi cho cả một lớp lúc biên dịch. Decorator thêm hành vi cho một đối tượng lúc chạy, và nhiều decorator có thể kết hợp theo thứ tự tùy ý."
+    },
+    {
+      "q": "Mẫu Decorator khác mẫu Proxy ở điểm nào?",
+      "a": "Chúng có cùng hình dạng. Decorator thêm tính năng mà client chọn xếp chồng, còn proxy kiểm soát truy cập vào đối tượng thật, thường là tạo nó hoặc quyết định có gọi nó hay không."
+    },
+    {
+      "q": "Decorator @ của TypeScript có phải là mẫu Decorator không?",
+      "a": "Không hẳn. Decorator `@` là một tính năng ngôn ngữ sửa đổi lớp và thành viên của chúng khi được định nghĩa. Chúng có thể dùng để cài đặt việc bọc, nhưng mẫu GoF nói về việc bọc đối tượng lúc chạy."
+    },
+    {
+      "q": "Thứ tự các decorator có quan trọng không?",
+      "a": "Có. Mỗi decorator nhận lời gọi trước các đối tượng mà nó bọc, nên cache đặt ngoài logger sẽ che các lời gọi lặp khỏi logger, còn logger đặt ngoài cache sẽ thấy mọi lời gọi."
+    }
+  ]
+}

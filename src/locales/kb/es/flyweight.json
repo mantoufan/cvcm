@@ -1,0 +1,167 @@
+{
+  "title": "Patrón Flyweight: intención, estructura y ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Flyweight comparte el estado común entre muchos objetos similares para ahorrar memoria. Aprende estado intrínseco y extrínseco con un ejemplo en TypeScript.",
+  "h1": "Patrón Flyweight explicado con ejemplos",
+  "answer": "Flyweight es un patrón de diseño estructural que permite a un programa manejar un número muy grande de objetos similares compartiendo las partes que tienen en común. Cada objeto se divide en estado intrínseco (compartido, inmutable, almacenado una vez en un flyweight) y estado extrínseco (único en cada uso, pasado por quien llama). Una fábrica guarda en caché los flyweights para que el mismo estado intrínseco nunca se almacene dos veces.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: usar la compartición para manejar de forma eficiente grandes cantidades de objetos de grano fino. El patrón viene del libro de la Banda de los Cuatro (Gang of Four, GoF) y pertenece a la categoría estructural.",
+        "Imagina un mapa que dibuja un millón de árboles. Cada árbol tiene una posición (x, y) y un tipo: nombre de la especie, color y una imagen de textura de varios kilobytes. Si cada objeto árbol guarda su propia copia de la textura, el uso de memoria crece con el número de árboles, y el programa puede quedarse sin memoria. Sin embargo, solo hay un puñado de especies. La textura, el nombre y el color son iguales para todos los robles.",
+        "Flyweight traslada los datos repetidos a un pequeño número de objetos compartidos. Un árbol guarda entonces solo su posición más una referencia al tipo de árbol compartido. Un millón de árboles con cinco especies necesitan cinco copias de la textura en lugar de un millón."
+      ]
+    },
+    {
+      "h": "Estado intrínseco y extrínseco",
+      "body": [
+        "El paso clave es dividir los datos de cada objeto en dos tipos:",
+        {
+          "table": {
+            "head": [
+              "Estado",
+              "Significado",
+              "Ejemplo del árbol"
+            ],
+            "rows": [
+              [
+                "Intrínseco",
+                "Independiente del contexto, idéntico para muchos objetos, almacenado dentro del flyweight y nunca modificado",
+                "Nombre de la especie, color, textura"
+              ],
+              [
+                "Extrínseco",
+                "Depende del contexto, distinto en cada uso, lo guarda el cliente y se pasa a los métodos del flyweight",
+                "Posición x e y"
+              ]
+            ]
+          }
+        },
+        "Como un flyweight se comparte, debe ser inmutable. Si un cliente pudiera cambiar el color del tipo de roble compartido, todos los robles del mapa cambiarían."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Flyweight",
+                "Guarda el estado intrínseco y expone operaciones que reciben el estado extrínseco como parámetros"
+              ],
+              [
+                "Fábrica de flyweights",
+                "Crea y guarda en caché los flyweights; devuelve uno existente cuando se vuelve a pedir el mismo estado intrínseco"
+              ],
+              [
+                "Contexto",
+                "Almacena el estado extrínseco más una referencia a un flyweight (un contexto por cada objeto del mundo real)"
+              ],
+              [
+                "Cliente",
+                "Pide flyweights a la fábrica y conserva o calcula el estado extrínseco"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "La fábrica usa un `Map` indexado por los valores intrínsecos. `TreeType` es el flyweight, `Tree` es el contexto y `Forest` es el cliente.",
+        {
+          "code": "class TreeType {\n  constructor(\n    readonly name: string,\n    readonly color: string,\n    readonly texture: Uint8Array, // large, shared data\n  ) {}\n  draw(x: number, y: number): string {\n    return this.name + \" (\" + this.color + \") at \" + x + \",\" + y;\n  }\n}\nclass TreeTypeFactory {\n  private static cache = new Map<string, TreeType>();\n  static get(name: string, color: string): TreeType {\n    const key = name + \"|\" + color;\n    let type = this.cache.get(key);\n    if (!type) {\n      type = new TreeType(name, color, new Uint8Array(4096));\n      this.cache.set(key, type);\n    }\n    return type;\n  }\n}\nclass Tree {\n  constructor(readonly x: number, readonly y: number, readonly type: TreeType) {}\n  draw(): string {\n    return this.type.draw(this.x, this.y);\n  }\n}\nconst forest: Tree[] = [];\nfor (let i = 0; i < 100_000; i++) {\n  const [name, color] = i % 2 === 0 ? [\"Oak\", \"green\"] : [\"Birch\", \"white\"];\n  forest.push(new Tree(i, i * 2, TreeTypeFactory.get(name, color)));\n}\nconst types = new Set(forest.map((t) => t.type));\nconsole.log(forest.length, \"trees,\", types.size, \"tree types\");\nconsole.log(forest[3].draw());\n// 100000 trees, 2 tree types\n// Birch (white) at 3,6",
+          "lang": "typescript"
+        },
+        "Sin la fábrica, el programa reservaría 100.000 búferes de textura. Con ella, hay dos. Los objetos `Tree` siguen existiendo, pero cada uno guarda solo dos números y una referencia.",
+        {
+          "note": "Un flyweight solo ahorra memoria cuando muchos objetos realmente comparten el mismo estado intrínseco. Si casi todos los objetos tienen una combinación única, la caché añade coste de búsqueda y no ahorra nada."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa Flyweight cuando se cumplan todas estas condiciones:",
+        {
+          "ul": [
+            "El programa crea un número muy grande de objetos similares.",
+            "El uso de memoria es un problema medido, no una suposición.",
+            "La mayor parte del estado de cada objeto puede hacerse extrínseco o compartido.",
+            "El programa no depende de la identidad de los objetos (dos contextos con el mismo flyweight pueden compartirlo)."
+          ]
+        },
+        "Evítalo cuando el número de objetos sea pequeño, cuando los objetos necesiten cambiar sus datos compartidos de forma independiente, o cuando la complejidad añadida de pasar el estado extrínseco de un lado a otro haga el código más difícil de leer que la memoria que ahorra. En muchos casos funciona una solución más simple: guardar los datos en arreglos paralelos o arreglos tipados, o internar las cadenas repetidas en un `Map`.",
+        "Contrapartida: Flyweight cambia memoria por tiempo de CPU. Puede que el estado extrínseco tenga que recalcularse o buscarse cada vez que se llama a un método."
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Java: `Integer.valueOf(int)` devuelve objetos `Integer` en caché para valores de -128 a 127, así que empaquetar números pequeños no reserva objetos nuevos cada vez.",
+            "Java: `String.intern()` devuelve una copia canónica compartida de una cadena del conjunto de cadenas.",
+            "Los editores de texto y los navegadores dibujan glifos desde una caché de fuentes compartida: cada carácter en pantalla guarda su posición, mientras que la forma del glifo se almacena una vez por fuente y tamaño.",
+            "Los motores de juegos usan renderizado por instancias: se comparten una malla y un material, y solo se envían para cada copia los datos por instancia, como la posición y la rotación."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Flyweight"
+            ],
+            "rows": [
+              [
+                "Singleton",
+                "Singleton garantiza una instancia de una clase; Flyweight mantiene una instancia por cada estado intrínseco distinto, así que puede haber muchas."
+              ],
+              [
+                "Factory Method",
+                "Una fábrica de flyweights es una fábrica con caché; Factory Method trata de dejar que las subclases elijan qué clase crear."
+              ],
+              [
+                "Composite",
+                "Los nodos hoja de un árbol Composite suelen implementarse como flyweights para que las hojas repetidas compartan memoria."
+              ],
+              [
+                "Prototype",
+                "Prototype copia un objeto para crear uno nuevo; Flyweight evita copiar compartiendo un solo objeto."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre estado intrínseco y extrínseco?",
+      "a": "El estado intrínseco es compartido e idéntico para muchos objetos, así que vive dentro del flyweight y nunca cambia. El estado extrínseco es distinto en cada uso, así que el cliente lo guarda y lo pasa a los métodos del flyweight."
+    },
+    {
+      "q": "¿Flyweight es lo mismo que el almacenamiento en caché?",
+      "a": "Usa una caché, pero el objetivo es distinto. Una caché evita recalcular un resultado, mientras que Flyweight evita almacenar muchas veces los mismos datos inmutables compartiendo un objeto entre muchos usuarios."
+    },
+    {
+      "q": "¿Por qué un flyweight debe ser inmutable?",
+      "a": "Muchos contextos tienen una referencia al mismo flyweight. Si uno de ellos lo cambiara, el cambio aparecería en todos los demás contextos que lo comparten."
+    },
+    {
+      "q": "¿Flyweight es útil en JavaScript y TypeScript?",
+      "a": "Sí, cuando creas cientos de miles de objetos, por ejemplo partículas, mosaicos de mapa o celdas de cuadrícula. Los objetos de JavaScript tienen una sobrecarga por objeto, así que compartir los datos repetidos puede reducir la memoria y el trabajo del recolector de basura."
+    }
+  ]
+}

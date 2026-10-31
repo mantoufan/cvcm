@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial de TypeScript: tipos, interfaces, genéricos y narrowing — cv.cm",
+  "description": "Aprende TypeScript en una página: instala tsc y ejecuta Hello world, tipos básicos, interfaces, tipos unión, narrowing, genéricos, manejo de errores y un ejemplo completo.",
+  "h1": "Tutorial de TypeScript para principiantes",
+  "answer": "TypeScript es JavaScript con tipos estáticos. Añades anotaciones de tipo como `let count: number = 0` y el compilador `tsc` las comprueba antes de convertir el código en JavaScript normal que se ejecuta en cualquier navegador o en Node.js. Las ideas clave son los tipos básicos, las interfaces y los alias de tipo para describir la forma de los objetos, los tipos unión con narrowing y los genéricos para código reutilizable. Los tipos se eliminan en tiempo de ejecución.",
+  "sections": [
+    {
+      "h": "Qué es TypeScript y para qué se usa",
+      "body": [
+        "TypeScript es un lenguaje de código abierto desarrollado por Microsoft y publicado por primera vez en 2012. Todo programa JavaScript válido es también TypeScript válido, así que puedes adoptarlo archivo por archivo. El verificador de tipos detecta errores como propiedades mal escritas o una comprobación de `null` que falta mientras escribes, y los editores usan los tipos para el autocompletado y para renombrar de forma segura. Se usa mucho en aplicaciones front-end grandes (Angular está escrito en TypeScript, y React, Vue y Svelte lo soportan bien), back ends con Node.js y bibliotecas."
+      ]
+    },
+    {
+      "h": "Instalar y ejecutar Hello, world",
+      "body": [
+        "Instala primero Node.js y luego el compilador en tu proyecto con npm. `tsc` compila archivos `.ts` a `.js`.",
+        {
+          "code": "const message: string = \"Hello, world\";\nconsole.log(message);",
+          "lang": "typescript"
+        },
+        {
+          "code": "npm install --save-dev typescript\nnpx tsc --init          # creates tsconfig.json\nnpx tsc hello.ts        # writes hello.js\nnode hello.js\n# Hello, world",
+          "lang": "shell"
+        },
+        "Las versiones recientes de Node.js, Deno y Bun también pueden ejecutar archivos `.ts` directamente eliminando las anotaciones de tipo. No comprueban los tipos, así que ejecuta igualmente `npx tsc --noEmit` para encontrar errores de tipo."
+      ]
+    },
+    {
+      "h": "Tipos básicos e inferencia de tipos",
+      "body": [
+        "Rara vez necesitas escribir todos los tipos. Cuando inicializas una variable, TypeScript infiere su tipo: `let n = 5` es un `number`. Anota los parámetros de las funciones y las API públicas.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`number`",
+                "`let n: number = 3.5`",
+                "Enteros y decimales"
+              ],
+              [
+                "`string`",
+                "`let s: string = \"hi\"`",
+                "Texto"
+              ],
+              [
+                "`boolean`",
+                "`let ok: boolean = true`",
+                "verdadero o falso"
+              ],
+              [
+                "Array",
+                "`number[]` o `Array<number>`",
+                "Las dos formas significan lo mismo"
+              ],
+              [
+                "Tupla",
+                "`[string, number]`",
+                "Longitud y posiciones fijas"
+              ],
+              [
+                "`unknown`",
+                "`let x: unknown`",
+                "Cualquier valor; hay que comprobarlo antes de usarlo"
+              ],
+              [
+                "`any`",
+                "`let y: any`",
+                "Desactiva la comprobación; evítalo"
+              ],
+              [
+                "`void` / `never`",
+                "tipos de retorno de funciones",
+                "No devuelve nada / nunca retorna"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let count = 0;          // inferred as number\ncount = \"ten\";          // error: Type 'string' is not assignable to type 'number'\nconst names: string[] = [\"Ann\", \"Bo\"];\nconst pair: [string, number] = [\"age\", 31];",
+          "lang": "typescript"
+        },
+        "La segunda línea es un error de compilación intencionado, para ilustrar lo que informa el verificador."
+      ]
+    },
+    {
+      "h": "Funciones, control de flujo y narrowing",
+      "body": [
+        "El control de flujo (`if`, `for`, `while`, `switch`) es exactamente igual que en JavaScript. Lo que añade TypeScript es el narrowing (estrechamiento de tipos): tras una comprobación como `typeof x === \"string\"`, el compilador conoce el tipo más específico dentro de esa rama.",
+        {
+          "code": "function greet(name: string, greeting = \"Hello\"): string {\n  return `${greeting}, ${name}!`;\n}\nfunction formatId(id: string | number): string {\n  if (typeof id === \"number\") {\n    return id.toFixed(0).padStart(6, \"0\"); // id is number here\n  }\n  return id.toUpperCase();                 // id is string here\n}\nconsole.log(greet(\"Lin\"));    // Hello, Lin!\nconsole.log(formatId(42));    // 000042\nconsole.log(formatId(\"ab7\")); // AB7",
+          "lang": "typescript"
+        },
+        "`string | number` es un tipo unión: el valor es uno de los tipos indicados. Los parámetros opcionales se escriben `name?: string` y su tipo incluye `undefined`."
+      ]
+    },
+    {
+      "h": "Interfaces y alias de tipo",
+      "body": [
+        "Describe la forma de los objetos con una `interface` o un alias `type`. TypeScript comprueba la estructura, no los nombres: cualquier objeto con las propiedades correctas encaja.",
+        {
+          "code": "interface User {\n  id: number;\n  name: string;\n  email?: string;          // optional\n  readonly createdAt: Date;\n}\ntype Role = \"admin\" | \"editor\" | \"viewer\"; // string literal union\nfunction describe(user: User, role: Role): string {\n  const contact = user.email ?? \"no email\";\n  return `${user.name} (${role}, ${contact})`;\n}\nconst ann: User = { id: 1, name: \"Ann\", createdAt: new Date() };\nconsole.log(describe(ann, \"editor\")); // Ann (editor, no email)",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Características distintivas: genéricos y uniones discriminadas",
+      "body": [
+        "Los genéricos permiten que una función o un tipo funcione con muchos tipos manteniéndolos relacionados. Una unión discriminada es una unión de tipos de objeto que comparten un campo literal, de modo que un `switch` sobre ese campo estrecha el tipo y el compilador puede comprobar que se manejan todos los casos.",
+        {
+          "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nconst n = first([10, 20]);   // n: number | undefined\nconst s = first([\"a\", \"b\"]); // s: string | undefined\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"rect\"; width: number; height: number };\nfunction area(shape: Shape): number {\n  switch (shape.kind) {\n    case \"circle\":\n      return Math.PI * shape.radius ** 2;\n    case \"rect\":\n      return shape.width * shape.height;\n  }\n}\nconsole.log(n, s, area({ kind: \"rect\", width: 2, height: 3 })); // 10 a 6",
+          "lang": "typescript"
+        },
+        "Los tipos de utilidad integrados construyen tipos nuevos a partir de otros: `Partial<User>` hace opcionales todas las propiedades, `Pick<User, \"id\" | \"name\">` conserva solo algunas y `Record<string, number>` describe un diccionario."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "Los errores funcionan como en JavaScript, con `throw` y `try`/`catch`. Con la opción `strict` activada, el valor capturado tiene tipo `unknown`, porque se puede lanzar cualquier valor, así que compruébalo antes de usarlo.",
+        {
+          "code": "function parseAge(text: string): number {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  parseAge(\"abc\");\n} catch (err: unknown) {\n  const message = err instanceof Error ? err.message : String(err);\n  console.log(message); // invalid age: abc\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: inventario tipado",
+      "body": [
+        {
+          "code": "interface Item {\n  name: string;\n  price: number;\n  qty: number;\n}\ntype Summary = { total: number; cheapest?: Item; outOfStock: string[] };\nfunction summarize(items: Item[]): Summary {\n  let total = 0;\n  let cheapest: Item | undefined;\n  const outOfStock: string[] = [];\n  for (const item of items) {\n    total += item.price * item.qty;\n    if (item.qty === 0) outOfStock.push(item.name);\n    if (!cheapest || item.price < cheapest.price) cheapest = item;\n  }\n  return { total, cheapest, outOfStock };\n}\nconst result = summarize([\n  { name: \"pen\", price: 1.5, qty: 10 },\n  { name: \"book\", price: 12, qty: 2 },\n  { name: \"bag\", price: 30, qty: 0 },\n]);\nconsole.log(result.total, result.cheapest?.name, result.outOfStock);\n// 39 pen [ 'bag' ]",
+          "lang": "typescript"
+        },
+        "Prueba a cambiar `qty: 10` por `qty: \"10\"`: el compilador informa del error antes de que el código llegue a ejecutarse."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Los tipos no existen en tiempo de ejecución. Una anotación de tipo sobre datos de `JSON.parse` o `fetch` es solo una promesa que haces; valida la entrada no confiable con comprobaciones reales o una biblioteca de esquemas."
+        },
+        {
+          "ul": [
+            "Usar `any` para silenciar errores. Es preferible `unknown` y estrecharlo.",
+            "Abusar de las aserciones de tipo con `as`, que le dicen al compilador que confíe en ti en lugar de comprobar.",
+            "Dejar `strict` desactivado en `tsconfig.json`. Actívalo en proyectos nuevos; habilita las comprobaciones de `null`.",
+            "Escribir tipos que el compilador ya puede inferir, lo que añade ruido sin dar seguridad."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Lee el TypeScript Handbook oficial y experimenta en el TypeScript Playground de typescriptlang.org, que muestra el JavaScript compilado y los errores lado a lado. Después aprende las opciones de `tsconfig.json`, los archivos de declaración de tipos para bibliotecas (paquetes `@types/...`) y TypeScript con el framework que elijas."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿TypeScript es un lenguaje distinto de JavaScript?",
+      "a": "Es un superconjunto de JavaScript: añade sintaxis de tipos y un verificador, y luego compila a JavaScript normal. El comportamiento en tiempo de ejecución es el del JavaScript que genera."
+    },
+    {
+      "q": "¿Debo aprender JavaScript antes que TypeScript?",
+      "a": "Aprende primero lo básico de JavaScript (variables, funciones, objetos, promesas), porque TypeScript no lo cambia. Después añade TypeScript; los tipos resultan más fáciles de aprender cuando ya conoces el comportamiento en tiempo de ejecución."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre interface y type?",
+      "a": "Ambos describen la forma de los objetos. Las interfaces pueden extenderse y fusionarse volviéndolas a declarar; los alias de tipo también pueden nombrar uniones, tuplas y otros tipos que no son objetos. Para formas de objeto sencillas sirven los dos."
+    },
+    {
+      "q": "¿TypeScript hace mi código más rápido?",
+      "a": "No. Los tipos se eliminan durante la compilación, así que el resultado se ejecuta a la misma velocidad que JavaScript escrito a mano. El beneficio son menos errores y mejores herramientas."
+    }
+  ]
+}

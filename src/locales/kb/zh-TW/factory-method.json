@@ -1,0 +1,168 @@
+{
+  "title": "工廠方法模式：意圖、結構與 TypeScript 範例 — cv.cm",
+  "description": "說明工廠方法（Factory Method）設計模式：由子類別決定要建立哪個物件。附 TypeScript 範例、適用時機，以及與抽象工廠的差異。",
+  "h1": "工廠方法模式詳解與範例",
+  "answer": "工廠方法是一種建立型設計模式，它定義一個用來建立物件的方法，但讓子類別決定要實例化哪個具體類別。基底類別針對產品介面撰寫邏輯，並呼叫工廠方法（例如 `createTransport()`）而不是直接使用 `new`。這樣一來，只要新增一個子類別就能加入新的產品類型，不必修改使用這些產品的程式碼。",
+  "sections": [
+    {
+      "h": "意圖",
+      "body": [
+        "定義一個用來建立物件的介面，但讓子類別決定要實例化哪個類別。工廠方法讓類別把實例化的工作延後交給子類別。它是《設計模式》（Gang of Four，簡稱 GoF）一書中五種建立型模式之一，也是其中唯一以類別為範圍的模式，因為它依賴繼承。"
+      ]
+    },
+    {
+      "h": "它解決的問題",
+      "body": [
+        "想像一個通知模組：它會格式化訊息、送出訊息，並記錄結果。起初只寄電子郵件，所以程式碼直接呼叫 `new EmailChannel()`。後來產品需要簡訊，接著又要推播通知。每多一個管道，就得修改同一個類別並多加一個 `if` 分支，即使格式化與記錄這兩個步驟完全沒有變。",
+        "傳送的流程是穩定的，只有管道的種類會變。工廠方法把這個唯一會變的決定，也就是要建立哪個類別，集中到一個可以覆寫的方法中。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "參與者",
+              "職責",
+              "範例中的對應"
+            ],
+            "rows": [
+              [
+                "產品（Product）",
+                "工廠方法所建立之物件的介面。",
+                "`Channel`"
+              ],
+              [
+                "具體產品（ConcreteProduct）",
+                "實作產品介面。",
+                "`EmailChannel`、`SmsChannel`"
+              ],
+              [
+                "建立者（Creator）",
+                "宣告工廠方法，並包含使用產品的邏輯。",
+                "`Notifier`"
+              ],
+              [
+                "具體建立者（ConcreteCreator）",
+                "覆寫工廠方法，回傳特定的具體產品。",
+                "`EmailNotifier`、`SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "現在要加入推播通知，只需要撰寫 `PushChannel` 和 `PushNotifier`。`notify` 方法以及所有呼叫它的程式碼都不必更動。",
+        "在套用這個模式之前，建立物件的決定被埋在共用的邏輯裡：",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "較輕量的替代做法：傳入工廠函式",
+      "body": [
+        "工廠方法使用的是繼承。在 TypeScript 中，常常可以改用組合達到同樣的彈性，也就是把建立物件的函式傳進建構函式。這樣就不必為每個產品各寫一個子類別：",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "當每個建立者本來就因為其他理由有自己的類別，或是框架要求你擴充某個基底類別時，就使用子類別版本。當各個變化版本之間唯一的差別只是它們建立的物件時，就使用函式版本。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不該用",
+      "body": [
+        "在以下情況使用工廠方法：",
+        {
+          "ul": [
+            "類別含有穩定的演算法，但無法事先知道必須建立哪些具體物件。",
+            "你在撰寫框架或函式庫，希望使用者能透過繼承來掛上自己的產品類別。",
+            "你想把某個型別的建立邏輯集中在同一個地方，而不是讓 `new` 呼叫四處散落。"
+          ]
+        },
+        "在以下情況應避免使用：",
+        {
+          "ul": [
+            "只有一種產品類型，也沒有出現第二種的跡象。直接使用 `new` 更清楚。",
+            "唯一的理由只是為了方便測試。透過建構函式傳入依賴會更簡單。",
+            "你會建立一組與產品一對一對應、卻沒有其他邏輯的平行建立者階層。"
+          ]
+        },
+        {
+          "note": "「靜態工廠方法」，例如 `Array.from()` 或 `Promise.resolve()`，是另一種概念：它是一個有名稱的靜態函式，會回傳一個實例。它很實用，但並不是 GoF 的工廠方法，後者依賴子類別覆寫某個方法。"
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "Java 集合：`Iterable.iterator()` 只宣告一次，每個集合類別（`ArrayList`、`HashSet` 等）再各自覆寫它，回傳自己的迭代器類別。GoF 一書就是以這種用法來說明工廠方法如何達成多型的迭代。",
+            "JavaScript 的可迭代物件：每個可迭代物件都會實作 `[Symbol.iterator]()`，這個方法會回傳一個適合該集合的新迭代器。",
+            "UI 框架常讓子類別覆寫建立元件、儲存格或檢視的方法，而基底類別則掌控版面配置與生命週期。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "差異"
+            ],
+            "rows": [
+              [
+                "抽象工廠",
+                "透過一個含有多個建立方法的物件，建立整個系列的相關產品。它的方法通常是以工廠方法來實作。"
+              ],
+              [
+                "樣板方法",
+                "工廠方法經常被樣板方法呼叫，就像上面的 `notify` 呼叫 `createChannel` 一樣。"
+              ],
+              [
+                "原型",
+                "透過複製實例來建立物件，而不是靠繼承建立者，因此不需要平行的建立者階層。"
+              ],
+              [
+                "建造者",
+                "重點在於一步一步建構單一的複雜物件，而不是選擇要建立哪個類別。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "工廠方法和抽象工廠有什麼差別？",
+      "a": "工廠方法是由子類別覆寫、用來建立單一產品的一個方法。抽象工廠則是擁有多個建立方法的物件，可產生必須搭配使用的一整個系列相關產品。"
+    },
+    {
+      "q": "簡單的工廠函式就是工廠方法嗎？",
+      "a": "不完全是。像 `createShape(kind)` 這種內部用 switch 判斷的函式，通常稱為簡單工廠。GoF 的工廠方法依賴子類別覆寫建立方法，不過兩者都把 `new` 隱藏起來，不讓用戶端看到。"
+    },
+    {
+      "q": "工廠方法符合開放封閉原則嗎？",
+      "a": "符合。新增產品時，只要新增一個產品類別和一個建立者子類別，不必更動建立者既有的邏輯。"
+    },
+    {
+      "q": "工廠方法一定要是抽象的嗎？",
+      "a": "不一定。基底類別可以提供預設實作，回傳標準的產品，只有子類別需要不同產品時才覆寫。"
+    }
+  ]
+}

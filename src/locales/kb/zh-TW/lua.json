@@ -1,0 +1,186 @@
+{
+  "title": "Lua 入門教學：table、函式、metatable 與錯誤處理 — cv.cm",
+  "description": "一步步學 Lua：執行 Hello, world、區域變數與型別、迴圈、函式與閉包、table、metatable、物件導向，以及 pcall 錯誤處理。",
+  "h1": "Lua 入門教學",
+  "answer": "Lua 是輕量、可嵌入的腳本語言，用於遊戲、Roblox（透過其 Luau 方言）、Neovim、Redis 與嵌入式裝置。它的語法精簡，只有一種資料結構 table，可同時當作陣列、字典與物件。本頁涵蓋安裝 Lua、變數與型別、流程控制、函式、table、metatable、用 pcall 處理錯誤，以及一個完整範例。",
+  "sections": [
+    {
+      "h": "Lua 是什麼、可以拿來做什麼",
+      "body": [
+        "Lua 是 1993 年由巴西大學 PUC-Rio 創造的小巧、快速的動態型別腳本語言。整個直譯器是一個以 C 寫成的精簡函式庫，因此很容易嵌入到較大的程式中。它只有一種資料結構 table 和很少的概念，所以學起來很快。",
+        "Lua 主要作為嵌入式腳本語言使用：遊戲引擎與遊戲（Roblox 使用名為 Luau 的 Lua 方言；LÖVE 與 Defold 使用 Lua）、Neovim 編輯器、Redis 資料庫、搭配 OpenResty 的 Nginx 等網路工具，以及許多嵌入式裝置。LuaJIT 是針對 Lua 5.1 程式碼的熱門即時編譯器。"
+      ]
+    },
+    {
+      "h": "安裝 Lua 並執行 Hello, world",
+      "body": [
+        "用套件管理員安裝 Lua（例如 `brew install lua` 或 `apt install lua5.4`），或從 lua.org 的原始碼建置。單獨執行 `lua` 會進入互動式提示。",
+        {
+          "code": "-- hello.lua\nprint(\"Hello, world!\")",
+          "lang": "lua"
+        },
+        {
+          "code": "lua hello.lua\n# Hello, world!",
+          "lang": "shell"
+        },
+        "註解以 `--` 開頭。區塊註解寫成 `--[[ ... ]]`。陳述式不需要分號。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "變數預設是全域的。除非你真的想要全域變數，否則請一律用 `local` 宣告。Lua 有八種基本型別；日常會用到的列在下方。",
+        {
+          "code": "local name = \"Lua\"\nlocal year = 1993              -- integer\nlocal pi = 3.14159             -- float\nlocal ok = true\nlocal nothing = nil\n\nprint(type(name), type(year), type(nothing))  -- string  number  nil\nprint(math.type(year), math.type(pi))         -- integer  float\nprint(name .. \" \" .. year)                    -- Lua 1993 (.. joins strings)\nprint(#name)                                  -- 3 (length)\nprint(7 / 2, 7 // 2, 7 % 2, 2 ^ 10)           -- 3.5  3  1  1024.0\nprint(string.format(\"%.2f\", pi))              -- 3.14\nprint(tonumber(\"42\") + 1, tostring(10))       -- 43  10",
+          "lang": "lua"
+        },
+        {
+          "table": {
+            "head": [
+              "型別",
+              "範例",
+              "說明"
+            ],
+            "rows": [
+              [
+                "nil",
+                "`nil`",
+                "沒有值；未設定的變數是 nil"
+              ],
+              [
+                "boolean",
+                "`true`、`false`",
+                "只有 `false` 與 `nil` 為假；`0` 和 `\"\"` 為真"
+              ],
+              [
+                "number",
+                "`42`, `3.14`",
+                "自 Lua 5.3 起分整數與浮點數子型別"
+              ],
+              [
+                "string",
+                "`\"hi\"`、`'hi'`、`[[long]]`",
+                "不可變的位元組字串"
+              ],
+              [
+                "table",
+                "`{1, 2, x = 3}`",
+                "唯一的資料結構"
+              ],
+              [
+                "function",
+                "`function() end`",
+                "一等值"
+              ]
+            ]
+          }
+        },
+        "不等於運算子是 `~=`，不是 `!=`。邏輯運算子是單字 `and`、`or` 與 `not`。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        "區塊以關鍵字 `end` 結束。Lua 有 `if`/`elseif`/`else`、`while`、`repeat ... until`、數值 `for`，以及可搭配迭代器的泛型 `for`。",
+        {
+          "code": "local score = 72\nif score >= 90 then\n  print(\"A\")\nelseif score >= 70 then\n  print(\"B\")                   -- B\nelse\n  print(\"C\")\nend\n\nfor i = 1, 3 do                -- 1 to 3, inclusive\n  io.write(i, \" \")             -- 1 2 3\nend\nprint()\n\nfor i = 10, 1, -4 do io.write(i, \" \") end   -- 10 6 2\nprint()\n\nlocal n = 3\nwhile n > 0 do n = n - 1 end\n\nrepeat\n  n = n + 1\nuntil n >= 2\nprint(n)                       -- 2",
+          "lang": "lua"
+        },
+        "Lua 沒有 `continue` 陳述式；請搭配 `::continue::` 標籤使用 `goto continue`，或用 `if` 重新組織迴圈。"
+      ]
+    },
+    {
+      "h": "函式",
+      "body": [
+        "函式是值。它們可以用 `...` 接收不定數量的引數，也能回傳多個值。閉包會捕捉外層作用域的區域變數。",
+        {
+          "code": "local function add(a, b)\n  return a + b\nend\n\nlocal function minmax(t)\n  local lo, hi = math.huge, -math.huge\n  for _, v in ipairs(t) do\n    lo, hi = math.min(lo, v), math.max(hi, v)\n  end\n  return lo, hi                -- two return values\nend\n\nlocal function counter()\n  local count = 0\n  return function()            -- a closure\n    count = count + 1\n    return count\n  end\nend\n\nprint(add(2, 3))               -- 5\nlocal lo, hi = minmax({4, 9, 1})\nprint(lo, hi)                  -- 1  9\nlocal next_id = counter()\nprint(next_id(), next_id())    -- 1  2\nlocal function sum(...)\n  local total = 0\n  for _, v in ipairs({...}) do total = total + v end\n  return total\nend\nprint(sum(1, 2, 3))            -- 6",
+          "lang": "lua"
+        }
+      ]
+    },
+    {
+      "h": "table：陣列、字典與物件",
+      "body": [
+        "table 是關聯式陣列，可以用 `nil` 以外的任何值作為索引。同一種結構可以當作陣列、字典、集合、模組或物件。依慣例，陣列從索引 1 開始。",
+        {
+          "code": "local fruits = {\"apple\", \"banana\"}\ntable.insert(fruits, \"cherry\")\nprint(#fruits, fruits[1])            -- 3  apple\n\nfor i, f in ipairs(fruits) do        -- array part, in order\n  print(i, f)\nend\n\nlocal ages = {ann = 31, bo = 25}\nages[\"cy\"] = 40\nages.bo = nil                        -- remove a key\nfor k, v in pairs(ages) do           -- all keys, order not defined\n  print(k, v)\nend\n\ntable.sort(fruits, function(a, b) return a > b end)\nprint(table.concat(fruits, \", \"))    -- cherry, banana, apple",
+          "lang": "lua"
+        },
+        {
+          "note": "索引從 1 開始，而且 `#t` 只對沒有空洞的序列可靠。在陣列中間設定 `t[2] = nil` 會使長度未定義；要刪除並移動元素，請改用 `table.remove(t, 2)`。"
+        }
+      ]
+    },
+    {
+      "h": "Metatable 與物件導向的 Lua",
+      "body": [
+        "Metatable 是 Lua 的招牌特色。附加在 table 上的 metatable 會改變它的行為：`__index` 提供缺少的鍵（用於繼承），`__add`、`__eq` 和 `__tostring` 等欄位則可重載運算子。冒號語法 `obj:method()` 會把物件當作隱藏的第一個參數 `self` 傳入。",
+        {
+          "code": "local Vector = {}\nVector.__index = Vector\n\nfunction Vector.new(x, y)\n  return setmetatable({x = x, y = y}, Vector)\nend\n\nfunction Vector:length()\n  return math.sqrt(self.x ^ 2 + self.y ^ 2)\nend\n\nVector.__add = function(a, b) return Vector.new(a.x + b.x, a.y + b.y) end\nVector.__tostring = function(v) return \"(\" .. v.x .. \", \" .. v.y .. \")\" end\n\nlocal v = Vector.new(3, 4) + Vector.new(0, 0)\nprint(tostring(v))       -- (3, 4)\nprint(v:length())        -- 5.0",
+          "lang": "lua"
+        },
+        "Lua 也有協程（`coroutine.create`、`coroutine.resume`、`coroutine.yield`），讓函式可以暫停並在稍後恢復。遊戲腳本常用它們來實作橫跨多個影格的逐步行為。"
+      ]
+    },
+    {
+      "h": "錯誤處理",
+      "body": [
+        "用 `error(message)` 拋出錯誤。用 `pcall`（受保護呼叫）捕捉它，它不會中止程式，而是回傳 `false` 加上錯誤。許多函式庫函式不會拋出錯誤，而是回傳 `nil` 與錯誤訊息，`io.open` 就是如此。",
+        {
+          "code": "local function divide(a, b)\n  if b == 0 then\n    error(\"division by zero\")\n  end\n  return a / b\nend\n\nlocal ok, result = pcall(divide, 10, 2)\nprint(ok, result)                  -- true  5.0\n\nok, result = pcall(divide, 1, 0)\nprint(ok, result)                  -- false  script.lua:3: division by zero\n\nlocal f, err = io.open(\"missing.txt\", \"r\")\nif not f then print(\"open failed: \" .. err) end",
+          "lang": "lua"
+        },
+        "錯誤訊息中的檔名與行號取決於程式碼執行的位置。`assert(value, message)` 在 `value` 為 `false` 或 `nil` 時拋出錯誤，是檢查結果的簡短寫法。"
+      ]
+    },
+    {
+      "h": "完整的小程式：字數統計",
+      "body": [
+        "這個程式用模式比對統計文字中的單字，依出現頻率排序並印出前三名。它用到字串模式、table、自訂比較函式的排序，以及字串格式化。",
+        {
+          "code": "local text = [[\nThe cat and the dog. The dog sat,\nand the cat ran.\n]]\n\nlocal counts = {}\nfor word in text:lower():gmatch(\"%a+\") do\n  counts[word] = (counts[word] or 0) + 1\nend\n\nlocal list = {}\nfor word, n in pairs(counts) do\n  list[#list + 1] = {word = word, n = n}\nend\ntable.sort(list, function(a, b)\n  if a.n ~= b.n then return a.n > b.n end\n  return a.word < b.word\nend)\n\nfor i = 1, 3 do\n  print(string.format(\"%-4s %d\", list[i].word, list[i].n))\nend\n-- the  4\n-- and  2\n-- cat  2",
+          "lang": "lua"
+        },
+        {
+          "note": "初學者常見的錯誤：忘了 `local` 而意外建立全域變數；用 `!=` 而不是 `~=`；以為陣列從 0 開始；呼叫方法時用 `.` 而不是 `:`（`obj.method()` 不會傳入 `self`）；以及以為 `pairs` 會依固定順序回傳鍵。"
+        }
+      ]
+    },
+    {
+      "h": "接下來可以學什麼",
+      "body": [
+        {
+          "ul": [
+            "lua.org 上的 Lua Reference Manual，簡短而完整。",
+            "Programming in Lua（Lua 作者之一 Roberto Ierusalimschy 著），第一版可免費線上閱讀。",
+            "你所用的宿主環境的文件，例如 Neovim 的 Lua 指南、LÖVE 或 Roblox 的 Luau 文件。",
+            "LuaRocks，Lua 模組的套件管理員。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "為什麼 Lua 的陣列從 1 開始？",
+      "a": "Lua 的設計者選擇從 1 開始的索引，以符合一般數學與非程式設計師的習慣。`ipairs`、`#` 和 `table.insert` 等標準函式庫函式都假設序列從 1 開始。"
+    },
+    {
+      "q": "Lua 比 Python 快嗎？",
+      "a": "標準 Lua 直譯器體積小，對動態語言來說通常很快，而 LuaJIT 在許多工作負載下快得多。實際速度取決於任務，請針對你自己的情況量測。"
+    },
+    {
+      "q": "pairs 和 ipairs 有什麼差別？",
+      "a": "`ipairs` 從索引 1 開始依序走訪陣列部分，直到遇到第一個 `nil`。`pairs` 則以未指定的順序走訪 table 中的每個鍵。"
+    },
+    {
+      "q": "Luau 是什麼？",
+      "a": "Luau 是由 Roblox 開發、衍生自 Lua 5.1 的語言。它加入了漸進式型別與效能改進，用於 Roblox 遊戲。"
+    },
+    {
+      "q": "Lua 適合初學者嗎？",
+      "a": "適合。它的語法精簡一致、概念很少，因此在遊戲模組製作與教學中很受歡迎。它的標準函式庫很精簡，所以更多功能要依靠宿主程式或模組。"
+    }
+  ]
+}

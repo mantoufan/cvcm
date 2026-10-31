@@ -1,0 +1,157 @@
+{
+  "title": "Mẫu Singleton: mục đích, ví dụ TypeScript, cạm bẫy và lựa chọn thay thế — cv.cm",
+  "description": "Giải thích mẫu thiết kế Singleton: cách đảm bảo một thể hiện duy nhất trong TypeScript, biến thể lazy và bất đồng bộ, vì sao nó gây khó cho kiểm thử, và các lựa chọn tốt hơn.",
+  "h1": "Mẫu Singleton giải thích kèm ví dụ",
+  "answer": "Singleton là mẫu thiết kế khởi tạo đảm bảo một lớp chỉ có một thể hiện và cung cấp điểm truy cập toàn cục tới nó. Trong TypeScript, bạn triển khai nó bằng hàm khởi tạo private và một phương thức tĩnh tạo thể hiện ở lần dùng đầu tiên rồi trả về cùng đối tượng đó về sau. Nó hữu ích cho các tài nguyên thực sự duy nhất, như đối tượng cấu hình hay connection pool, nhưng nó hoạt động như trạng thái toàn cục, nên nhiều nhóm thích truyền một thể hiện dùng chung một cách tường minh.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Đảm bảo một lớp chỉ có một thể hiện, và cung cấp điểm truy cập toàn cục tới nó. Singleton là một trong năm mẫu khởi tạo trong cuốn sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Một số đối tượng phải tồn tại đúng một lần trong chương trình. Hãy hình dung cấu hình ứng dụng nạp từ biến môi trường, một bộ nhớ đệm trong tiến trình, hoặc một pool kết nối cơ sở dữ liệu. Nếu mỗi module gọi `new Config()`, mỗi cái sẽ đọc lại môi trường, bộ nhớ đệm bị tách thành nhiều bản, và giới hạn của pool trở nên vô nghĩa.",
+        "Bạn cần hai thứ: bảo đảm không thể vô tình tạo thể hiện thứ hai, và một cách dễ dàng để mã bất kỳ truy cập thể hiện duy nhất đó."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Lớp Singleton",
+                "Ẩn hàm khởi tạo để mã khác không gọi `new` trực tiếp được."
+              ],
+              [
+                "Trường thể hiện tĩnh",
+                "Giữ thể hiện duy nhất sau khi nó được tạo."
+              ],
+              [
+                "Phương thức truy cập tĩnh (thường là `getInstance`)",
+                "Tạo thể hiện ở lần gọi đầu (khởi tạo lazy) và trả về cùng một đối tượng ở mọi lần gọi."
+              ],
+              [
+                "Client",
+                "Chỉ lấy thể hiện qua phương thức truy cập."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "Hàm khởi tạo private khiến `new AppConfig()` là lỗi biên dịch bên ngoài lớp. Phương thức tĩnh tạo đối tượng theo kiểu lazy:",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "`private` của TypeScript chỉ được kiểm tra lúc biên dịch. Mã JavaScript thuần vẫn gọi được hàm khởi tạo. Nếu cần bảo đảm lúc chạy, hãy ném lỗi trong hàm khởi tạo khi đã tồn tại một thể hiện, hoặc dùng thể hiện ở cấp module như bên dưới."
+        },
+        "Trong JavaScript và TypeScript, một ES module chỉ được đánh giá một lần cho mỗi chương trình, nên xuất một thể hiện từ module là singleton đơn giản nhất. Mọi `import` đều nhận cùng một đối tượng:",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Khởi tạo bất đồng bộ",
+      "body": [
+        "Nếu việc tạo thể hiện là bất đồng bộ, như mở kết nối cơ sở dữ liệu, hai bên gọi có thể cùng thấy \"chưa có thể hiện\" và khởi động hai kết nối trước khi cái đầu hoàn tất. Hãy lưu đệm promise, không phải kết quả:",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "Trong các ngôn ngữ đa luồng như Java và C#, việc tạo lazy cần đồng bộ hóa vì cùng lý do. Các giải pháp thông dụng là khởi tạo sớm trong trường tĩnh, lớp holder lazy, hoặc, trong Java, một `enum` một phần tử."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Singleton khi:",
+        {
+          "ul": [
+            "Bắt buộc phải có đúng một thể hiện để đảm bảo tính đúng đắn, không chỉ cho tiện (một thiết bị phần cứng, một registry toàn tiến trình).",
+            "Việc tạo tốn kém và đối tượng không có trạng thái hoặc an toàn luồng sau khi tạo."
+          ]
+        },
+        "Tránh nó, hoặc hạn chế nó, khi:",
+        {
+          "ul": [
+            "Bạn chủ yếu muốn truy cập toàn cục cho tiện. Singleton là trạng thái toàn cục có thể thay đổi với cái tên đẹp hơn: mã nào cũng thay đổi được nó, và phụ thuộc bị ẩn khỏi chữ ký hàm.",
+            "Bạn cần kiểm thử. Các bài kiểm thử dùng chung một singleton ảnh hưởng lẫn nhau, và khó thay thể hiện thật bằng bản giả.",
+            "Quy tắc \"một thể hiện\" có thể thay đổi sau này, ví dụ khi bạn cần một bộ nhớ đệm cho mỗi tenant."
+          ]
+        },
+        "Lựa chọn thay thế thông thường là tiêm phụ thuộc (dependency injection): tạo một thể hiện ở đầu chương trình (composition root) và truyền nó cho các lớp cần đến. Bạn vẫn có một thể hiện, nhưng phụ thuộc hiện rõ và thay thế được.",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Java: `Runtime.getRuntime()` trả về đối tượng `Runtime` duy nhất của ứng dụng Java đang chạy.",
+            "Node.js lưu đệm module sau lần nạp đầu tiên, nên đối tượng xuất ra của một module được mọi tệp require hoặc import nó dùng chung.",
+            "Trình duyệt cung cấp các đối tượng toàn cục duy nhất như `window` và `document` cho mỗi trang.",
+            "Các framework có tiêm phụ thuộc, như Angular và Spring, mặc định tạo các service \"phạm vi singleton\": một thể hiện cho mỗi injector hoặc container, không có phần truy cập tĩnh của mẫu này."
+          ]
+        },
+        {
+          "note": "Node.js lưu đệm module theo đường dẫn tệp đã phân giải. Nếu hai bản của cùng một gói được cài trong các thư mục `node_modules` khác nhau, bạn sẽ có hai \"singleton\" riêng biệt."
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "ul": [
+            "Đối tượng của mẫu Abstract Factory, mẫu Builder và mẫu Prototype thường được triển khai dưới dạng singleton, vì một factory là đủ.",
+            "Đối tượng của mẫu Facade thường là thể hiện duy nhất, vì một điểm vào tới hệ thống con thường là đủ.",
+            "Mẫu Flyweight cũng chia sẻ đối tượng, nhưng nó quản lý nhiều thể hiện dùng chung được khóa theo trạng thái, còn Singleton có đúng một.",
+            "Tiêm phụ thuộc, không phải mẫu GoF, là cách thay thế Singleton phổ biến nhất trong mã hiện đại."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Singleton có phải là phản mẫu không?",
+      "a": "Nó thường được gọi như vậy, vì nó đưa vào trạng thái toàn cục ẩn và làm kiểm thử khó hơn. Có một thể hiện thì không sao; vấn đề là truy cập toàn cục. Tạo một thể hiện và truyền nó tường minh tránh được hầu hết vấn đề."
+    },
+    {
+      "q": "Làm sao để tạo singleton trong TypeScript?",
+      "a": "Dùng hàm khởi tạo private, một trường tĩnh private cho thể hiện, và một phương thức tĩnh tạo thể hiện ở lần gọi đầu. Xuất một thể hiện duy nhất từ module là lựa chọn đơn giản hơn."
+    },
+    {
+      "q": "Module JavaScript có phải là singleton không?",
+      "a": "Về thực chất là có. Một module chỉ được đánh giá một lần và các export của nó được mọi bên import trong cùng chương trình dùng chung, trừ khi cùng một mã được nạp từ hai đường dẫn khác nhau."
+    },
+    {
+      "q": "Làm sao kiểm thử mã dùng singleton?",
+      "a": "Cho singleton triển khai một interface và truyền nó vào mã đang kiểm thử, để bài kiểm thử cung cấp được bản giả. Nếu không thể thay đổi thiết kế, hãy thêm một phương thức reset chỉ dùng trong kiểm thử."
+    },
+    {
+      "q": "Khác nhau giữa singleton và lớp tĩnh là gì?",
+      "a": "Singleton là một đối tượng thật: nó có thể triển khai interface, được truyền làm tham số và được tạo theo kiểu lazy. Một lớp chỉ có thành viên tĩnh thì không thể bị thay thế hay truyền đi như một đối tượng."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Dart tutorial: null safety, functions, collections and async — cv.cm",
+  "description": "Learn Dart from scratch: run Hello, world, variables and types, sound null safety, switch patterns, functions, lists and maps, records, classes and async/await.",
+  "h1": "Dart tutorial for beginners",
+  "answer": "Dart is a statically typed, object-oriented language from Google, best known as the language of the Flutter app framework. It has sound null safety, compiles to native code and to JavaScript or WebAssembly, and supports fast hot reload during development. This page walks through setup, types, null safety, control flow, functions, collections, classes, async code and error handling.",
+  "sections": [
+    {
+      "h": "What Dart is and what it is used for",
+      "body": [
+        "Dart is a client-optimized programming language developed by Google. It is statically typed with type inference, has sound null safety, and compiles both to native machine code (for mobile, desktop and servers) and to JavaScript or WebAssembly (for the web). During development it runs on a virtual machine with hot reload, so changes appear in a running app within seconds.",
+        "Most people learn Dart to build apps with Flutter, Google's UI toolkit for Android, iOS, web, Windows, macOS and Linux from one codebase. Dart is also used for command-line tools and backend services."
+      ]
+    },
+    {
+      "h": "Install Dart and run Hello, world",
+      "body": [
+        "Install the Dart SDK from dart.dev (or install Flutter, which bundles Dart). Every Dart program starts at a top-level `main` function.",
+        {
+          "code": "// hello.dart\nvoid main() {\n  print('Hello, world!');\n}",
+          "lang": "dart"
+        },
+        {
+          "code": "dart run hello.dart\n# Hello, world!\ndart compile exe hello.dart   # builds a native executable\ndart create my_app            # creates a new console project",
+          "lang": "shell"
+        },
+        "You can also try every example on this page in DartPad, the browser-based editor at dartpad.dev."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Use `var` to let the compiler infer the type, `final` for a variable that is assigned once, and `const` for a compile-time constant. You can always write the type explicitly instead.",
+        {
+          "code": "void main() {\n  var name = 'Dart';        // inferred as String\n  int year = 2011;          // explicit type\n  final now = DateTime.now(); // set once, at run time\n  const pi = 3.14159;       // compile-time constant\n  double ratio = 2;         // int literal becomes 2.0\n  bool ok = year > 2000;\n  print('$name since $year, pi=${pi.toStringAsFixed(2)}, ok=$ok, ratio=$ratio');\n  // Dart since 2011, pi=3.14, ok=true, ratio=2.0\n  print(now.year > 2000);   // true\n}",
+          "lang": "dart"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`42`",
+                "integer; 64-bit on native platforms"
+              ],
+              [
+                "`double`",
+                "`3.14`",
+                "64-bit floating point"
+              ],
+              [
+                "`num`",
+                "`7` or `7.5`",
+                "supertype of `int` and `double`"
+              ],
+              [
+                "`bool`",
+                "`true`",
+                "only `true` and `false` are allowed in conditions"
+              ],
+              [
+                "`String`",
+                "`'hi'`",
+                "UTF-16; supports `$x` and `${expr}` interpolation"
+              ],
+              [
+                "`dynamic`",
+                "anything",
+                "turns off static checking; avoid in most code"
+              ]
+            ]
+          }
+        },
+        "On the web, `int` values are represented as JavaScript numbers, so very large integers can lose precision there."
+      ]
+    },
+    {
+      "h": "Sound null safety",
+      "body": [
+        "Since Dart 3, all Dart code uses sound null safety. A variable of type `String` can never be null; to allow null, write `String?`. The compiler checks every use, so null errors are caught before the program runs.",
+        {
+          "code": "int lengthOf(String? s) {\n  // return s.length;         // compile error: s might be null\n  if (s == null) return 0;\n  return s.length;            // promoted to String after the check\n}\nvoid main() {\n  String? nickname;\n  print(nickname?.length);    // null (null-aware access)\n  print(nickname ?? 'guest'); // guest (default if null)\n  nickname ??= 'dee';         // assign only if null\n  print(lengthOf(nickname));  // 3\n  late String config;         // initialized later, checked at run time\n  config = 'loaded';\n  print(config);              // loaded\n}",
+          "lang": "dart"
+        },
+        {
+          "note": "The `!` operator (for example `s!.length`) tells the compiler a value is not null and throws at run time if you are wrong. Prefer a null check or `??`. Also note that `late` moves the check to run time: reading a `late` variable before assigning it throws an error."
+        }
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        "Dart has the usual `if`, `for`, `while` and `do-while`, plus a `for-in` loop over any iterable. Since Dart 3, `switch` supports pattern matching and can be used as an expression.",
+        {
+          "code": "void main() {\n  var scores = [72, 95, 48];\n  for (var s in scores) {\n    if (s >= 90) {\n      print('$s excellent');\n    } else if (s >= 50) {\n      print('$s pass');\n    } else {\n      print('$s fail');\n    }\n  }\n  for (var i = 0; i < 3; i++) {\n    print('i = $i');\n  }\n  var day = 6;\n  var kind = switch (day) {\n    6 || 7 => 'weekend',\n    >= 1 && <= 5 => 'weekday',\n    _ => 'invalid',\n  };\n  print(kind); // weekend\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Functions",
+      "body": [
+        "Functions are first-class objects. Parameters can be positional, optional positional in `[]`, or named in `{}`. Named parameters are optional unless marked `required`. The arrow syntax `=>` is shorthand for a function that returns one expression.",
+        {
+          "code": "int add(int a, int b) => a + b;\nString greet(String name, {String greeting = 'Hello', required bool loud}) {\n  var text = '$greeting, $name';\n  return loud ? text.toUpperCase() : text;\n}\nString label(String text, [int? width]) =>\n    width == null ? text : text.padRight(width, '.');\nvoid main() {\n  print(add(2, 3));                              // 5\n  print(greet('Ana', loud: false));              // Hello, Ana\n  print(greet('Ana', greeting: 'Hi', loud: true)); // HI, ANA\n  print(label('id', 5));                         // id...\n  var twice = (int x) => x * 2;                  // anonymous function\n  print([1, 2, 3].map(twice).toList());          // [2, 4, 6]\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Collections: List, Set, Map and records",
+      "body": [
+        "The core collections are `List` (ordered), `Set` (unique items) and `Map` (key-value pairs). Collection literals support `if`, `for` and the spread operator `...`. Records, added in Dart 3, group several values without declaring a class.",
+        {
+          "code": "void main() {\n  var nums = [3, 1, 2];               // List<int>\n  nums.add(4);\n  nums.sort();\n  print(nums);                        // [1, 2, 3, 4]\n  var tags = {'dart', 'flutter', 'dart'};\n  print(tags.length);                 // 2\n  var ages = {'Ann': 31, 'Bo': 25};   // Map<String, int>\n  ages['Cy'] = 40;\n  print(ages['Bo']);                  // 25\n  var showAll = false;\n  var menu = ['Home', if (showAll) 'Admin', for (var n in nums) 'Item $n'];\n  print(menu);  // [Home, Item 1, Item 2, Item 3, Item 4]\n  (String, int) pair = ('Ann', 31);   // a record\n  var (who, age) = pair;              // destructuring\n  print('$who is $age');              // Ann is 31\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Classes and async/await",
+      "body": [
+        "Dart is object-oriented: every value is an object. Classes support constructors with initializing formals (`this.x`), named constructors, getters, mixins and interfaces. Asynchronous code uses `Future` and `Stream` with `async` and `await`, which keeps Flutter apps responsive while waiting for files or the network.",
+        {
+          "code": "class Point {\n  final double x, y;\n  const Point(this.x, this.y);\n  Point.origin() : x = 0, y = 0;     // named constructor\n  double get sum => x + y;           // getter\n  @override\n  String toString() => 'Point($x, $y)';\n}\nFuture<String> fetchUser() async {\n  await Future.delayed(Duration(milliseconds: 100));\n  return 'ana';\n}\nFuture<void> main() async {\n  print(Point(1, 2).sum);            // 3.0\n  print(Point.origin());             // Point(0.0, 0.0)\n  var user = await fetchUser();\n  print('user: $user');              // user: ana\n}",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Throw an exception with `throw` and handle it with `try`, `on`, `catch` and `finally`. Use `on SomeType` to catch a specific type. Dart distinguishes `Exception` (an expected problem the program can handle) from `Error` (a bug, such as a failed assertion or a range error) that you normally should not catch.",
+        {
+          "code": "int parseAge(String s) {\n  var n = int.tryParse(s);            // null instead of throwing\n  if (n == null || n < 0) {\n    throw FormatException('Not a valid age: $s');\n  }\n  return n;\n}\nvoid main() {\n  for (var input in ['42', 'abc']) {\n    try {\n      print(parseAge(input));\n    } on FormatException catch (e) {\n      print('Error: ${e.message}');\n    } finally {\n      print('checked $input');\n    }\n  }\n}\n// 42 / checked 42 / Error: Not a valid age: abc / checked abc",
+          "lang": "dart"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: shopping cart total",
+      "body": [
+        "This program models products with a class, stores a cart in a map and prints a receipt. It combines classes, maps, string formatting and collection methods.",
+        {
+          "code": "class Product {\n  final String name;\n  final double price;\n  const Product(this.name, this.price);\n}\nvoid main() {\n  const apple = Product('Apple', 0.5);\n  const bread = Product('Bread', 2.25);\n  final cart = <Product, int>{apple: 6, bread: 2};\n  var total = 0.0;\n  cart.forEach((product, qty) {\n    final line = product.price * qty;\n    total += line;\n    print('${product.name.padRight(6)} x$qty  ${line.toStringAsFixed(2)}');\n  });\n  final count = cart.values.reduce((a, b) => a + b);\n  print('$count items, total ${total.toStringAsFixed(2)}');\n}\n// Apple  x6  3.00\n// Bread  x2  4.50\n// 8 items, total 7.50",
+          "lang": "dart"
+        },
+        {
+          "note": "Common beginner mistakes: forgetting `await` (you get a `Future` instead of a value); using `dynamic` or leaving types as `Object` and losing compile-time checks; overusing `!` and `late`; confusing `final` (set once) with `const` (known at compile time); and mutating a list while iterating over it."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The Dart language tour and tutorials at dart.dev.",
+            "Effective Dart, the official style and design guide.",
+            "The Flutter documentation at flutter.dev if you want to build apps.",
+            "pub.dev, the package repository for Dart and Flutter."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Dart only for Flutter?",
+      "a": "No. Dart is a general-purpose language and can build command-line tools, servers and web apps. Flutter is simply the most popular reason to learn it."
+    },
+    {
+      "q": "Is Dart compiled or interpreted?",
+      "a": "Both modes exist. During development Dart runs on a VM with just-in-time compilation and hot reload; for release it is compiled ahead of time to native machine code, or to JavaScript or WebAssembly for the web."
+    },
+    {
+      "q": "What is the difference between final and const in Dart?",
+      "a": "A `final` variable is assigned once, possibly at run time. A `const` value must be known at compile time and is deeply immutable, which lets Flutter reuse constant widgets."
+    },
+    {
+      "q": "Is Dart similar to Java or JavaScript?",
+      "a": "Its C-style syntax and classes feel familiar to Java, C# and JavaScript developers. Unlike JavaScript, Dart is statically typed and has sound null safety."
+    },
+    {
+      "q": "What does the ?? operator do in Dart?",
+      "a": "`a ?? b` returns `a` if it is not null and otherwise `b`. The related `a ??= b` assigns `b` to `a` only when `a` is null."
+    }
+  ]
+}

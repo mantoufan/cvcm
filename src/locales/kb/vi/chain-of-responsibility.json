@@ -1,0 +1,144 @@
+{
+  "title": "Mẫu Chain of Responsibility: handler, middleware và ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Chain of Responsibility chuyển yêu cầu dọc một chuỗi handler cho đến khi có handler xử lý. Tìm hiểu cấu trúc, ví dụ TypeScript và cách dùng trong middleware.",
+  "h1": "Mẫu Chain of Responsibility (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Chain of Responsibility là một mẫu thiết kế hành vi (behavioral), chuyển một yêu cầu dọc theo một chuỗi các đối tượng handler. Mỗi handler hoặc xử lý yêu cầu, hoặc chuyển nó cho handler kế tiếp trong chuỗi. Bên gửi không biết handler nào sẽ xử lý yêu cầu, nên bạn có thể thêm, bớt hoặc đổi thứ tự handler mà không sửa bên gửi. Middleware của web và sự kiện nổi bọt (bubbling) trong DOM là những ví dụ quen thuộc.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: tránh ràng buộc bên gửi yêu cầu với bên nhận bằng cách cho nhiều hơn một đối tượng cơ hội xử lý yêu cầu. Nối các đối tượng nhận thành chuỗi và chuyển yêu cầu dọc chuỗi cho đến khi một đối tượng xử lý nó. Mẫu này là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Hãy xét hệ thống hỗ trợ của một cửa hàng trực tuyến. Yêu cầu hoàn tiền dưới 50 có thể do nhân viên hỗ trợ duyệt, đến 500 do trưởng nhóm duyệt, và số lớn hơn cần quản lý. Phiên bản đầu thường gom tất cả vào một hàm với chuỗi `if`/`else` dài. Mỗi quy tắc mới làm hàm dài thêm, và thứ tự kiểm tra bị cố định cứng.",
+        "Với Chain of Responsibility, mỗi cấp trở thành một handler riêng với một quy tắc. Các handler được nối với nhau và yêu cầu đi vào handler đầu tiên. Thêm một cấp duyệt mới nghĩa là viết một lớp nhỏ và chèn nó vào chuỗi."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Handler",
+                "Khai báo phương thức xử lý yêu cầu và giữ tham chiếu đến handler kế tiếp"
+              ],
+              [
+                "Concrete handler",
+                "Xử lý những yêu cầu thuộc trách nhiệm của nó; nếu không thì chuyển yêu cầu cho handler kế tiếp"
+              ],
+              [
+                "Client",
+                "Dựng chuỗi (hoặc nhận chuỗi có sẵn) và gửi yêu cầu cho handler đầu tiên"
+              ]
+            ]
+          }
+        },
+        "Có hai biến thể phổ biến. Ở dạng cổ điển, handler đầu tiên xử lý được yêu cầu sẽ dừng chuỗi. Ở dạng pipeline (được hầu hết middleware dùng), mọi handler đều có thể làm một số việc rồi quyết định có gọi handler kế tiếp hay không."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Một lớp cơ sở trừu tượng lưu handler kế tiếp và cung cấp hành vi chuyển tiếp mặc định. Mỗi concrete handler ghi đè `handle` và gọi `super.handle` khi nó không quyết định được.",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "Luôn quyết định điều gì xảy ra khi không handler nào nhận yêu cầu. Ở đây lời gọi cơ sở cuối cùng trả về một từ chối. Nếu không có mặc định như vậy, yêu cầu có thể rơi khỏi cuối chuỗi mà không ai hay."
+        }
+      ]
+    },
+    {
+      "h": "Dạng middleware với các hàm thông thường",
+      "body": [
+        "Trong TypeScript bạn không cần lớp. Một danh sách các hàm, mỗi hàm nhận một callback `next`, tạo thành một chuỗi. Đây là cách middleware của Express và Koa hoạt động.",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi nhiều đối tượng có thể xử lý một yêu cầu và đối tượng phù hợp được quyết định lúc chạy.",
+            "Dùng khi tập hợp hoặc thứ tự handler cần cấu hình được, ví dụ các bước kiểm tra hợp lệ, cấp duyệt hoặc middleware HTTP.",
+            "Dùng khi bạn muốn mỗi quy tắc nằm trong một đơn vị nhỏ riêng có thể kiểm thử độc lập.",
+            "Đừng dùng cho hai hoặc ba phép kiểm tra cố định không bao giờ đổi; một câu lệnh `if` đơn giản rõ ràng hơn.",
+            "Lưu ý chuỗi dài khó gỡ lỗi hơn, vì từ nơi gọi không rõ handler nào cuối cùng đã xử lý. Ghi log bên trong handler sẽ giúp ích.",
+            "Chuỗi nhạy cảm với thứ tự. Chẳng hạn đặt bước xác thực sau handler của route sẽ làm mất tác dụng của nó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Middleware của Express và Koa: mỗi hàm nhận request và một hàm `next` rồi quyết định có tiếp tục hay không.",
+            "Lan truyền sự kiện trong DOM: sự kiện nổi bọt từ phần tử đích lên các phần tử tổ tiên, và bất kỳ listener nào cũng có thể dừng nó bằng `event.stopPropagation()`.",
+            "Servlet filter của Java tạo thành một filter chain, trong đó mỗi filter gọi `chain.doFilter` để chuyển yêu cầu đi tiếp.",
+            "Các framework ghi log chuyển bản ghi log từ một logger lên các logger cha và handler của chúng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Chain of Responsibility ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Decorator cũng tạo thành chuỗi các lớp bọc, nhưng mọi decorator luôn chạy và chuyển tiếp; một handler có thể dừng chuỗi."
+              ],
+              [
+                "Command",
+                "Yêu cầu trong chuỗi thường là một đối tượng command; Command nói về việc đóng gói yêu cầu, còn chuỗi nói về việc tìm ra ai xử lý."
+              ],
+              [
+                "Composite",
+                "Nút cha trong cây Composite là handler kế tiếp tự nhiên, đó là cách sự kiện GUI nổi bọt lên cây component."
+              ],
+              [
+                "Mediator",
+                "Mediator định tuyến thông điệp qua một đối tượng trung tâm biết các bên nhận; chuỗi chuyển yêu cầu từ handler này sang handler kế tiếp."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mọi handler trong chuỗi đều phải xử lý yêu cầu sao?",
+      "a": "Không. Ở dạng cổ điển, handler đầu tiên xử lý được yêu cầu sẽ dừng chuỗi. Ở dạng middleware, mỗi handler có thể làm một số việc rồi gọi handler kế tiếp, nên nhiều handler có thể cùng tác động lên một yêu cầu."
+    },
+    {
+      "q": "Middleware của Express có phải là ví dụ của Chain of Responsibility không?",
+      "a": "Có. Mỗi hàm middleware nhận request và callback `next`, và nó hoặc kết thúc response hoặc gọi `next` để chuyển quyền điều khiển cho middleware kế tiếp."
+    },
+    {
+      "q": "Điều gì xảy ra nếu không handler nào xử lý yêu cầu?",
+      "a": "Điều đó tùy thiết kế của bạn. Cách tốt là thêm một mặc định ở cuối chuỗi, như trả về lỗi, ném ngoại lệ hoặc ghi log, để yêu cầu không bao giờ bị mất mà không ai biết."
+    },
+    {
+      "q": "Nó khác một dãy câu lệnh if/else ở điểm nào?",
+      "a": "Logic giống nhau, nhưng mỗi điều kiện trở thành một đối tượng hoặc hàm riêng. Nhờ đó chuỗi có thể cấu hình lúc chạy và bạn thêm hoặc đổi thứ tự các bước mà không phải sửa một hàm lớn."
+    }
+  ]
+}

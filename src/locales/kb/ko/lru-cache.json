@@ -1,0 +1,223 @@
+{
+  "title": "LRU 캐시 쉽게 이해하기: 해시 맵과 이중 연결 리스트, O(1) 파이썬 코드 — cv.cm",
+  "description": "LRU(가장 오래 사용하지 않은 항목) 캐시의 동작 원리를 설명합니다. 해시 맵과 이중 연결 리스트로 get·put을 O(1)에 구현하고 OrderedDict, functools.lru_cache도 다룹니다.",
+  "h1": "LRU 캐시란? 동작 원리, 코드, 시간 복잡도",
+  "answer": "LRU(least recently used) 캐시는 정해진 개수의 항목을 보관하다가 가득 차면 가장 오래전에 사용한 항목을 제거합니다. 전형적인 설계는 어떤 키든 O(1)에 찾는 해시 맵과, 최근 사용 순서로 정렬되어 어떤 항목이든 O(1)에 옮기거나 제거할 수 있는 이중 연결 리스트를 결합합니다. 파이썬에서는 `collections.OrderedDict`로 몇 줄 만에 LRU 캐시를 만들 수 있고, `functools.lru_cache`로 어떤 함수에든 캐시를 붙일 수 있습니다.",
+  "sections": [
+    {
+      "h": "LRU 캐시가 해결하는 문제",
+      "body": [
+        "캐시는 데이터베이스 쿼리, 웹 요청, 비싼 계산처럼 느린 작업의 결과를 보관해 같은 요청에 빠르게 답합니다. 메모리는 한정되어 있으므로 캐시가 가득 차면 무엇을 버릴지 정해야 합니다. LRU는 최근에 쓴 데이터는 곧 다시 쓰일 것이고 오랫동안 건드리지 않은 데이터는 아마 쓰이지 않을 것이라는 가정을 따릅니다. 이 가정은 많은 실제 워크로드에서 잘 맞아서, LRU와 그 근사 방식이 CPU 캐시, 운영 체제의 페이지 캐시, 데이터베이스, 웹 서버, CDN에 쓰입니다."
+      ]
+    },
+    {
+      "h": "핵심 아이디어: 함께 일하는 두 자료구조",
+      "body": [
+        "두 가지가 빨라야 합니다. 키를 찾는 것, 그리고 어떤 키가 가장 오래 사용되지 않았는지 아는 것입니다. 해시 맵만으로는 순서가 없고, 리스트만으로는 검색이 느립니다. 둘을 합치면 두 가지를 모두 해냅니다.",
+        {
+          "table": {
+            "head": [
+              "구성 요소",
+              "역할",
+              "O(1)인 이유"
+            ],
+            "rows": [
+              [
+                "해시 맵",
+                "각 키를 리스트의 해당 노드에 매핑",
+                "평균적인 해시 조회"
+              ],
+              [
+                "이중 연결 리스트",
+                "노드를 가장 최근 사용부터 가장 오래된 순으로 정렬해 유지",
+                "`prev`와 `next` 포인터로 노드를 떼어 내는 일은 참조 네 개만 바꿈"
+              ],
+              [
+                "head 쪽",
+                "가장 최근에 사용한 항목",
+                "새로 추가되거나 접근된 항목이 여기로 이동"
+              ],
+              [
+                "tail 쪽",
+                "가장 오래 사용하지 않은 항목",
+                "캐시가 가득 차면 여기서 제거"
+              ]
+            ]
+          }
+        },
+        "`get(key)`에서는 맵에서 노드를 찾아 맨 앞으로 옮기고 값을 반환합니다. `put(key, value)`에서는 노드를 갱신하거나 새로 만들어 맨 앞에 두고, 용량을 넘었다면 맨 뒤 노드를 제거하면서 맵에서 그 키도 삭제합니다."
+      ]
+    },
+    {
+      "h": "용량이 2인 예제",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "연산",
+              "결과",
+              "이후 순서(가장 최근이 앞)",
+              "참고"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "캐시가 가득 참"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1이 가장 최근이 됨"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "가장 오래 사용하지 않은 2를 제거"
+              ],
+              [
+                "get(2)",
+                "miss",
+                "3, 1",
+                "2는 이미 제거됨"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "갱신하면 1이 맨 앞으로 이동"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "3을 제거"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "처음부터 만드는 파이썬 구현",
+      "body": [
+        "센티널 head·tail 노드를 두면 빈 리스트에 대한 특수 처리가 사라집니다. 모든 실제 노드는 항상 앞과 뒤에 노드가 있기 때문입니다.",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "OrderedDict로 만드는 짧은 버전",
+      "body": [
+        "`collections.OrderedDict`는 그 자체가 해시 맵과 이중 연결 리스트의 결합이며, `move_to_end`와 `popitem(last=False)`는 O(1)입니다. 그래서 LRU 캐시를 객체로 만들어야 할 때 파이썬다운 선택입니다.",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "functools.lru_cache로 함수 결과 캐싱하기",
+      "body": [
+        "함수의 반환값을 캐싱하려면 `functools.lru_cache` 데코레이터를 사용하세요. 인자는 딕셔너리 키가 되므로 해시 가능해야 합니다. `cache_info()`는 히트 수, 미스 수, 현재 크기를 보여 줍니다.",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None`은 크기 제한이 없는 캐시가 되며, `functools.cache`(파이썬 3.9 이상)가 하는 일이 바로 이것입니다. 비우려면 `fib.cache_clear()`를 호출하세요."
+      ]
+    },
+    {
+      "h": "시간 복잡도와 공간 복잡도",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "연산",
+              "시간",
+              "이유"
+            ],
+            "rows": [
+              [
+                "get",
+                "평균 O(1)",
+                "해시 조회와 노드 하나의 분리·재연결"
+              ],
+              [
+                "put(삽입 또는 갱신)",
+                "평균 O(1)",
+                "해시 삽입과 상수 개의 포인터 변경"
+              ],
+              [
+                "제거(evict)",
+                "O(1)",
+                "가장 오래 사용하지 않은 노드는 항상 tail 센티널 옆에 있음"
+              ],
+              [
+                "공간",
+                "O(capacity)",
+                "캐시된 항목마다 맵 항목 하나와 리스트 노드 하나"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "흔한 잘못된 설계는 키를 일반 파이썬 `list`에 두고 접근할 때마다 `list.remove(key)`를 호출하는 것입니다. 연산마다 O(n)이 들어 캐시의 의미가 사라집니다."
+        }
+      ]
+    },
+    {
+      "h": "변형, 실수, LRU를 쓸 때",
+      "body": [
+        {
+          "ul": [
+            "LFU(least frequently used)는 접근 횟수가 가장 적은 항목을 제거합니다. 인기 있는 항목을 일회성 스캔으로부터 보호하지만 더 복잡합니다.",
+            "근사 LRU: Redis 같은 시스템은 정확한 리스트를 유지하는 대신 키 몇 개를 샘플링해 그중 가장 오래된 것을 제거하여 메모리를 아낍니다.",
+            "TTL 캐시는 정해진 시간이 지나면 항목을 만료시키며, 크기 제한과 함께 쓰는 경우가 많습니다.",
+            "`get`이나 기존 키의 `put`에서 항목을 맨 앞으로 옮기는 것을 잊으면 LRU가 FIFO가 되어 버립니다.",
+            "제거한 키를 해시 맵에서 삭제하는 것을 잊으면 쓸모없는 항목이 남아 메모리가 샙니다.",
+            "스레드 간에 LRU 캐시를 공유하려면 연산마다 락이 필요합니다. `functools.lru_cache`는 여러 스레드에서 호출해도 안전합니다."
+          ]
+        },
+        "최근 사용이 미래 사용을 예측할 때 LRU는 좋은 기본값입니다. 한 번뿐인 대규모 스캔이 자주 쓰는 데이터를 밀어내는 경우에는 성능이 떨어지며, 그런 워크로드에는 LFU나 스캔 내성이 있는 정책이 유리합니다. 연산이 O(1)인 LRU 캐시 설계는 해시 맵과 연결 리스트를 함께 시험하기 때문에 코딩 면접에서 가장 흔한 문제 중 하나이기도 합니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "LRU는 무엇의 약자인가요?",
+      "a": "Least recently used(가장 오래 사용하지 않은 항목)의 약자입니다. 캐시가 가득 차면 읽거나 쓰지 않은 기간이 가장 긴 항목을 제거합니다."
+    },
+    {
+      "q": "LRU 캐시에 이중 연결 리스트가 필요한 이유는 무엇인가요?",
+      "a": "리스트 중간의 노드를 O(1)에 제거하려면 그 앞 노드가 필요합니다. 이중 연결 리스트는 모든 노드가 `prev`를 저장하지만, 단일 연결 리스트는 O(n) 검색이 필요합니다."
+    },
+    {
+      "q": "파이썬 dict만으로 LRU 캐시를 구현할 수 있나요?",
+      "a": "파이썬 3.7부터 `dict`는 삽입 순서를 유지하므로 키를 삭제했다가 다시 삽입하는 방식으로 최근 사용 표시를 하고 `next(iter(d))`를 제거할 수 있습니다. `OrderedDict`는 `move_to_end`와 `popitem(last=False)`로 의도를 더 분명하게 드러냅니다."
+    },
+    {
+      "q": "functools의 lru_cache와 cache는 어떻게 다른가요?",
+      "a": "`functools.cache`는 크기 제한이 없는 캐시로 `lru_cache(maxsize=None)`와 같습니다. 숫자를 지정한 `lru_cache`는 그 크기에 도달하면 가장 오래 사용하지 않은 결과부터 제거합니다."
+    },
+    {
+      "q": "LRU가 항상 최선의 제거 정책인가요?",
+      "a": "아닙니다. 단순하고 최근 항목이 재사용될 가능성이 높을 때 잘 동작하지만, 대규모 순차 스캔이 유용한 데이터를 밀어낼 수 있습니다. 그런 워크로드는 LFU, ARC 같은 정책이 더 잘 처리합니다."
+    }
+  ]
+}

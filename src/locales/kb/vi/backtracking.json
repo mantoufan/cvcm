@@ -1,0 +1,193 @@
+{
+  "title": "Thuật toán quay lui: tập con, hoán vị, N-Queens trong Python — cv.cm",
+  "description": "Giải thích quay lui (backtracking): chọn, khám phá, hoàn tác. Ví dụ N-Queens từng bước, mẫu code Python tái sử dụng, tập con, hoán vị, cắt tỉa và độ phức tạp.",
+  "h1": "Thuật toán quay lui là gì: cách hoạt động, code và ví dụ",
+  "answer": "Quay lui (backtracking) là cách tìm kiếm mọi lời giải khả dĩ bằng việc xây một ứng viên từng lựa chọn một và hoàn tác lựa chọn cuối ngay khi nó không thể dẫn đến lời giải hợp lệ. Đó là tìm kiếm theo chiều sâu trên cây các lời giải một phần, theo mẫu chọn, khám phá, bỏ chọn (choose, explore, unchoose). Quay lui giải các câu đố và bài toán tổ hợp như N-Queens, Sudoku, tập con và hoán vị. Trường hợp xấu nhất là hàm mũ, nên cắt tỉa sớm các nhánh không hợp lệ là điều khiến nó dùng được trong thực tế.",
+  "sections": [
+    {
+      "h": "Quay lui giải bài toán gì",
+      "body": [
+        "Một số bài toán đòi hỏi mọi cách sắp xếp thỏa một tập quy tắc, hoặc chỉ một cách bất kỳ: đặt 8 quân hậu sao cho không quân nào tấn công nhau, điền một lưới Sudoku, liệt kê mọi tập con của một tập có tổng bằng giá trị đích, tìm mọi cách tách một chuỗi thành các từ trong từ điển. Không có công thức thông minh nào; bạn phải tìm kiếm. Thử mù quáng mọi tổ hợp hoàn chỉnh thì quá chậm, nhưng hầu hết các tổ hợp một phần đã không hợp lệ chỉ sau vài lựa chọn.",
+        "Quay lui kiểm tra các quy tắc sau mỗi lựa chọn. Khi một lời giải một phần vi phạm quy tắc, nó bỏ ngay cả nhánh đó của cây tìm kiếm và quay lại thử phương án tiếp theo."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        {
+          "ol": [
+            "Nếu lời giải một phần hiện tại đã hoàn chỉnh, ghi nhận nó.",
+            "Nếu không, với mỗi lựa chọn tiếp theo có thể: nếu lựa chọn được phép, thực hiện nó (chọn).",
+            "Đệ quy để mở rộng lời giải thêm (khám phá).",
+            "Hoàn tác lựa chọn, để phương án kế tiếp bắt đầu từ cùng trạng thái (bỏ chọn)."
+          ]
+        },
+        "Không gian tìm kiếm là một cây: gốc là lời giải rỗng, mỗi tầng thêm một lựa chọn, và các lá là các ứng viên hoàn chỉnh. Quay lui là tìm kiếm theo chiều sâu trên cây này, còn cắt tỉa nghĩa là cắt bỏ các cây con không thể chứa lời giải."
+      ]
+    },
+    {
+      "h": "Ví dụ: 4-Queens",
+      "body": [
+        "Đặt 4 quân hậu trên bàn cờ 4 × 4, mỗi hàng một quân, sao cho không hai quân nào cùng cột hoặc cùng đường chéo. Các cột được đánh số từ 0 đến 3.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Hành động",
+              "Các quân hậu đã đặt (cột theo từng hàng)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Hàng 0: đặt hậu ở cột 0",
+                "0"
+              ],
+              [
+                "2",
+                "Hàng 1: cột 0 và 1 bị tấn công; thử cột 2",
+                "0, 2"
+              ],
+              [
+                "3",
+                "Hàng 2: mọi cột đều bị tấn công. Quay lui: chuyển hàng 1 sang cột 3",
+                "0, 3"
+              ],
+              [
+                "4",
+                "Hàng 2: cột 1 an toàn",
+                "0, 3, 1"
+              ],
+              [
+                "5",
+                "Hàng 3: mọi cột đều bị tấn công. Quay lui về hàng 2: không cột nào khác dùng được. Quay lui về hàng 1: hết cột. Quay lui về hàng 0: chuyển sang cột 1",
+                "1"
+              ],
+              [
+                "6",
+                "Hàng 1: cột 3 an toàn",
+                "1, 3"
+              ],
+              [
+                "7",
+                "Hàng 2: cột 0 an toàn",
+                "1, 3, 0"
+              ],
+              [
+                "8",
+                "Hàng 3: cột 2 an toàn. Tìm được lời giải",
+                "1, 3, 0, 2"
+              ]
+            ]
+          }
+        },
+        "Tiếp tục tìm kiếm sẽ thấy lời giải duy nhất còn lại, 2, 0, 3, 1, là ảnh đối xứng gương của lời giải đầu."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Giữ các tập cột và đường chéo đã dùng để mỗi phép kiểm tra an toàn là O(1). Trên một đường chéo `row - col` là hằng số, và trên đường chéo kia `row + col` là hằng số.",
+        {
+          "code": "def solve_n_queens(n):\n    solutions, cols = [], []\n    used_cols, diag1, diag2 = set(), set(), set()\n\n    def place(row):\n        if row == n:\n            solutions.append(cols.copy())   # copy, not the live list\n            return\n        for col in range(n):\n            if col in used_cols or row - col in diag1 or row + col in diag2:\n                continue                    # prune: square is attacked\n            cols.append(col)                # choose\n            used_cols.add(col); diag1.add(row - col); diag2.add(row + col)\n            place(row + 1)                  # explore\n            cols.pop()                      # unchoose\n            used_cols.remove(col); diag1.remove(row - col); diag2.remove(row + col)\n\n    place(0)\n    return solutions\n\nprint(solve_n_queens(4))       # [[1, 3, 0, 2], [2, 0, 3, 1]]\nprint(len(solve_n_queens(8)))  # 92",
+          "lang": "python"
+        },
+        "Cùng mẫu này sinh ra mọi tập con và mọi hoán vị:",
+        {
+          "code": "def subsets(items):\n    result, current = [], []\n\n    def go(i):\n        if i == len(items):\n            result.append(current.copy())\n            return\n        current.append(items[i]); go(i + 1); current.pop()   # take items[i]\n        go(i + 1)                                            # skip items[i]\n\n    go(0)\n    return result\n\ndef permutations(items):\n    result, current, used = [], [], [False] * len(items)\n\n    def go():\n        if len(current) == len(items):\n            result.append(current.copy())\n            return\n        for i, x in enumerate(items):\n            if not used[i]:\n                used[i] = True; current.append(x)\n                go()\n                used[i] = False; current.pop()\n\n    go()\n    return result\n\nprint(subsets([1, 2, 3]))\n# [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]\nprint(permutations([1, 2, 3]))\n# [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]",
+          "lang": "python"
+        },
+        "Với tập con và hoán vị thông thường trong code thực tế, `itertools.combinations` và `itertools.permutations` nhanh hơn. Hãy tự viết quay lui khi bạn cần cắt tỉa bằng các quy tắc riêng của bài toán."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bài toán",
+              "Số kết quả",
+              "Thời gian",
+              "Không gian thêm"
+            ],
+            "rows": [
+              [
+                "Mọi tập con của n phần tử",
+                "2ⁿ",
+                "O(n × 2ⁿ)",
+                "Độ sâu đệ quy O(n) cộng với đầu ra"
+              ],
+              [
+                "Mọi hoán vị của n phần tử",
+                "n!",
+                "O(n × n!)",
+                "O(n) cộng với đầu ra"
+              ],
+              [
+                "N-Queens",
+                "thay đổi (92 với n = 8)",
+                "tối đa O(n!), ít hơn nhiều nhờ cắt tỉa",
+                "O(n)"
+              ],
+              [
+                "Sudoku (9 × 9)",
+                "1 với một câu đố đúng chuẩn",
+                "hàm mũ theo số ô trống trong trường hợp xấu nhất",
+                "O(số ô)"
+              ]
+            ]
+          }
+        },
+        "Quay lui không thể nhanh hơn kích thước đầu ra: nếu phải liệt kê n! hoán vị, bạn cần ít nhất n! bước. Cắt tỉa chỉ giúp bằng cách bỏ qua các nhánh không cho ra gì."
+      ]
+    },
+    {
+      "h": "Biến thể và lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Quên hoàn tác: nếu trạng thái không được khôi phục sau lời gọi đệ quy, các nhánh sau sẽ thấy những lựa chọn cũ.",
+            "Thêm chính list đang dùng: `result.append(current)` lưu một tham chiếu sẽ bị thay đổi sau đó; hãy thêm `current.copy()`.",
+            "Phần tử trùng trong đầu vào: sắp xếp các phần tử và bỏ qua phần tử bằng phần tử trước ở cùng độ sâu để tránh tập con hoặc hoán vị trùng lặp.",
+            "Dừng ở lời giải đầu tiên: trả về `True` từ đệ quy và dừng các vòng lặp khi một lời giải là đủ, như trong chương trình giải Sudoku.",
+            "Sắp thứ tự tốt hơn: thử lựa chọn bị ràng buộc nhiều nhất trước (với Sudoku là ô trống có ít ứng viên nhất). Điều này thường thu nhỏ cây đáng kể."
+          ]
+        },
+        {
+          "note": "Quay lui và quy hoạch động đều khám phá các lựa chọn, nhưng DP tái sử dụng đáp án của các bài toán con lặp lại. Nếu cùng một trạng thái một phần xuất hiện nhiều lần và bạn chỉ cần một số đếm hoặc giá trị tối ưu, hãy thêm memoization hoặc chuyển sang DP. Nếu bạn cần chính từng lời giải, quay lui là công cụ phù hợp."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng và ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Thỏa mãn ràng buộc: Sudoku, ô chữ, tô màu bản đồ, lập thời khóa biểu và xếp lịch thi.",
+            "Các bộ giải SAT và công cụ logic kiểu Prolog được xây trên tìm kiếm quay lui với cắt tỉa mạnh.",
+            "Công cụ biểu thức chính quy ở nhiều ngôn ngữ, gồm `re` của Python, dùng quay lui; các mẫu viết tệ có thể quay lui theo hàm mũ (“catastrophic backtracking”).",
+            "Bài phỏng vấn: subsets, permutations, combination sum, N-Queens, word search trên lưới, palindrome partitioning, generate parentheses, letter combinations of a phone number."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Quay lui khác vét cạn như thế nào?",
+      "a": "Vét cạn xây và kiểm tra mọi ứng viên hoàn chỉnh. Quay lui kiểm tra ràng buộc sau mỗi lựa chọn và bỏ ứng viên một phần ngay khi nó thất bại, nên bỏ qua cả nhóm ứng viên."
+    },
+    {
+      "q": "Quay lui có giống DFS không?",
+      "a": "Quay lui là tìm kiếm theo chiều sâu trên cây các lời giải một phần, thêm quy tắc hoàn tác từng lựa chọn và cắt tỉa các nhánh không hợp lệ. DFS trên đồ thị là cùng ý tưởng áp dụng cho các nút và cạnh có sẵn."
+    },
+    {
+      "q": "Độ phức tạp thời gian của quay lui là bao nhiêu?",
+      "a": "Thường là hàm mũ hoặc giai thừa trong trường hợp xấu nhất, ví dụ O(2ⁿ) cho tập con và O(n!) cho hoán vị. Cắt tỉa tốt giảm khối lượng công việc thực tế nhưng không giảm cận trường hợp xấu nhất."
+    },
+    {
+      "q": "Bài toán 8 quân hậu có bao nhiêu lời giải?",
+      "a": "Có 92 lời giải, hoặc 12 nếu các lời giải là phép xoay hoặc đối xứng của nhau chỉ tính một lần."
+    }
+  ]
+}

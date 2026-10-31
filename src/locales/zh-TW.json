@@ -3953,7 +3953,12 @@
       "codes": "QR 與條碼",
       "files": "圖片與 PDF",
       "audio": "音訊",
-      "text": "文字"
+      "text": "文字與寫作",
+      "dev": "開發與網頁",
+      "time": "日期與時間",
+      "money": "理財與購物",
+      "health": "健康與運動",
+      "math": "數學與學習"
     },
     "hub": {
       "kicker": "極簡 · 完整 · 圖解",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "毛利率與加成率",
       "blurb": "表示利潤的兩種方式、如何換算，附速查表。"
+    },
+    "code": {
+      "label": "編碼",
+      "lead": "程式語言、設計模式、資料結構與演算法的單頁教學：先給結論，再給可執行的程式碼，並附官方文件連結。",
+      "all": "全部編碼教學",
+      "groups": {
+        "languages": "程式語言",
+        "patterns": "設計模式",
+        "structures": "資料結構",
+        "algorithms": "演算法"
+      },
+      "blurbs": {
+        "languages": "Python、JavaScript、Java、C++、Go、Rust 等，從 Hello World 學起",
+        "patterns": "GoF 全部 23 種設計模式與 SOLID 原則，附 TypeScript 範例",
+        "structures": "鏈結串列、雜湊表、樹、堆積、字典樹，附 Python 程式碼",
+        "algorithms": "排序、搜尋、圖演算法與動態規劃，附複雜度分析"
+      }
+    },
+    "linked-list": {
+      "name": "鏈結串列",
+      "blurb": "單向與雙向鏈結串列：插入、刪除、反轉、環偵測與複雜度"
+    },
+    "stack-and-queue": {
+      "name": "堆疊與佇列",
+      "blurb": "用 Python 講 LIFO 堆疊與 FIFO 佇列：括號配對、BFS、複雜度"
+    },
+    "hash-table": {
+      "name": "雜湊表",
+      "blurb": "雜湊函式、桶、碰撞、負載因子與擴容，附 Python 程式碼"
+    },
+    "binary-search-tree": {
+      "name": "二元搜尋樹",
+      "blurb": "BST 排序規則、搜尋、插入與刪除的 Python 實作、平衡與複雜度"
+    },
+    "binary-tree-traversal": {
+      "name": "二元樹走訪",
+      "blurb": "前序、中序、後序與層序，遞迴與迭代的 Python 程式碼"
+    },
+    "binary-heap": {
+      "name": "二元堆積",
+      "blurb": "堆積性質、上浮下沉、建堆積、優先佇列與 Python heapq"
+    },
+    "trie": {
+      "name": "字典樹（Trie）",
+      "blurb": "前綴樹的插入、搜尋、前綴判斷與自動補全，附複雜度"
+    },
+    "union-find": {
+      "name": "並查集",
+      "blurb": "不相交集合並查：find、union、路徑壓縮與按秩合併，附 Python"
+    },
+    "lru-cache": {
+      "name": "LRU 快取",
+      "blurb": "用雜湊表加雙向鏈結串列實作最近最少使用快取，含 OrderedDict"
+    },
+    "big-o-notation": {
+      "name": "大O符號",
+      "blurb": "時間與空間複雜度、常見類別及如何從程式碼判讀"
+    },
+    "recursion": {
+      "name": "遞迴",
+      "blurb": "基底情況、呼叫堆疊、記憶化與 Python 遞迴深度限制"
+    },
+    "binary-search": {
+      "name": "二分搜尋法",
+      "blurb": "二分搜尋如何折半有序區間：Python 程式碼、bisect、變體與陷阱"
+    },
+    "two-pointers": {
+      "name": "雙指標與滑動視窗",
+      "blurb": "對撞指標、快慢指標與滑動視窗，附 Python 程式碼與過程追蹤"
+    },
+    "bubble-sort": {
+      "name": "泡沫排序法",
+      "blurb": "泡沫排序如何交換相鄰元素：逐趟追蹤、Python 程式碼與複雜度"
+    },
+    "selection-sort": {
+      "name": "選擇排序法",
+      "blurb": "選擇排序如何挑出最小值：逐步追蹤、Python 程式碼與穩定性"
+    },
+    "insertion-sort": {
+      "name": "插入排序法",
+      "blurb": "插入排序如何移位歸位：追蹤、Python 程式碼、穩定性與最佳情形"
+    },
+    "merge-sort": {
+      "name": "合併排序法",
+      "blurb": "分治合併排序：追蹤、Python 程式碼、合併步驟、穩定性與複雜度"
+    },
+    "quicksort": {
+      "name": "快速排序法",
+      "blurb": "基準、Lomuto 分割追蹤、Python 程式碼、最壞情形與快速選擇"
+    },
+    "heapsort": {
+      "name": "堆積排序法",
+      "blurb": "最大堆積、下沉、逐步追蹤、Python 程式碼、heapq 與複雜度"
+    },
+    "counting-sort": {
+      "name": "計數排序法",
+      "blurb": "小整數鍵的線性時間計數排序：追蹤、穩定的 Python 程式碼與複雜度"
+    },
+    "radix-sort": {
+      "name": "基數排序法",
+      "blurb": "LSD 與 MSD 基數排序：逐位追蹤、Python 程式碼、穩定性與複雜度"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "語法、型別、流程控制、函式、集合、錯誤與檔案，一頁講完"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "變數、型別、函式、陣列、物件、Promise 與 async/await"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "型別、介面、聯集型別、型別縮小、泛型與錯誤處理一頁講完"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "型別、類別、record、集合、例外與模式比對一頁講完"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "型別、函式、陣列、字串、指標、malloc/free 與錯誤處理"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "型別、類別、STL 容器、lambda、RAII、智慧指標與例外"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "型別、類別、record、集合、LINQ、async/await 與例外"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "型別、切片、map、結構、介面、goroutine、channel 與錯誤"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "所有權、借用、結構、列舉、match、集合與 Result 一頁講完"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "變數、陣列、函式、類別、列舉、例外與 JSON 端點一頁講完"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "型別、方法、陣列、雜湊、區塊、類別、模組與例外"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "型別、可選值、閉包、集合、結構、列舉、協定與錯誤"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "空值安全、控制流程、函式、資料類別與協程一頁講完"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "空值安全、函式、集合、類別與 async/await，適用 Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Scala 3 語法、模式比對、集合、case class 與 Option"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "向量、資料框、函式、統計與繪圖一頁講完"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT、JOIN、GROUP BY、CTE、交易，及三種資料庫差異"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "腳本、變數、引號、迴圈、函式、管線與 set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet、物件管線、變數、函式、雜湊表與 try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "變數、表、函式、元表與 pcall 一頁講完"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "純量、陣列、雜湊、副程式、正規表示式與錯誤處理"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "純函式、型別、模式比對、串列、Maybe 與 IO"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "模式比對、管線、Enum、行程與 {:ok, value} 錯誤處理"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "模式比對、遞迴、行程、OTP 與 let-it-crash 錯誤處理"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "語法、不可變集合、函式、巨集、atom 與錯誤處理"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "型別、記錄、聯集、模式比對、管線與 Result 一頁講完"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "型別、記錄、變體、模式比對、模組與錯誤處理"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "型別、陣列、廣播、函式、多重分派與錯誤處理"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "型別、切片、可選值、錯誤聯集、comptime、defer 與配置器"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "現代語法、型別、迴圈、程序、模組、陣列與 iostat"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "四大部、PIC 資料、IF/EVALUATE、PERFORM 迴圈、表與檔案"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "x86-64 NASM 暫存器、指令、迴圈、記憶體、系統呼叫與 AT&T 語法"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "VB.NET 語法、型別、迴圈、函式、集合、類別、LINQ 與 VBA"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "訊息、類別、屬性、Foundation 集合、block、ARC、NSError"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "矩陣、索引、迴圈、函式、結構、元胞、繪圖與 Octave"
+    },
+    "design-patterns": {
+      "name": "設計模式",
+      "blurb": "設計模式是什麼、GoF 23 種模式分類與如何選擇"
+    },
+    "solid-principles": {
+      "name": "SOLID 原則",
+      "blurb": "SOLID 五大設計原則，各附 TypeScript 前後對照範例"
+    },
+    "singleton": {
+      "name": "單例模式",
+      "blurb": "確保只有一個實例：TypeScript 範例、非同步變體與替代方案"
+    },
+    "factory-method": {
+      "name": "工廠方法模式",
+      "blurb": "讓子類別決定建立哪種物件：TypeScript 範例與適用情境"
+    },
+    "abstract-factory": {
+      "name": "抽象工廠模式",
+      "blurb": "不指定具體類別，即可建立一系列相關物件"
+    },
+    "builder": {
+      "name": "建造者模式",
+      "blurb": "用流暢 API 分步建構複雜物件，並介紹 Director 角色"
+    },
+    "prototype": {
+      "name": "原型模式",
+      "blurb": "透過複製實例建立物件：TypeScript clone()、深淺拷貝"
+    },
+    "adapter": {
+      "name": "轉接器模式",
+      "blurb": "讓不相容的介面協同運作：TypeScript 範例、物件與類別轉接器"
+    },
+    "bridge": {
+      "name": "橋接模式",
+      "blurb": "分離抽象與實作，使兩者可獨立變化"
+    },
+    "composite": {
+      "name": "組合模式",
+      "blurb": "統一對待單一物件與物件樹：TypeScript 檔案系統範例"
+    },
+    "decorator": {
+      "name": "裝飾者模式",
+      "blurb": "在執行期透過包裝為物件新增行為：類別與函式裝飾器"
+    },
+    "facade": {
+      "name": "外觀模式",
+      "blurb": "為複雜子系統提供單一入口：TypeScript 結帳範例"
+    },
+    "flyweight": {
+      "name": "享元模式",
+      "blurb": "共享內部狀態以節省記憶體，附 TypeScript 範例"
+    },
+    "proxy": {
+      "name": "代理模式",
+      "blurb": "以快取、延遲載入、保護與遠端代理控制物件存取"
+    },
+    "chain-of-responsibility": {
+      "name": "責任鏈模式",
+      "blurb": "沿處理者鏈傳遞請求直到被處理，含中介軟體形式"
+    },
+    "command": {
+      "name": "命令模式",
+      "blurb": "把請求變成物件，用於排隊、記錄、復原與重做"
+    },
+    "interpreter": {
+      "name": "直譯器模式",
+      "blurb": "用類別建模小型語言，在 TypeScript 中求值運算式樹"
+    },
+    "iterator": {
+      "name": "迭代器模式",
+      "blurb": "不暴露內部儲存地走訪集合，含 Symbol.iterator 與產生器"
+    },
+    "mediator": {
+      "name": "中介者模式",
+      "blurb": "透過一個中心物件協調元件，取代直接參照"
+    },
+    "memento": {
+      "name": "備忘錄模式",
+      "blurb": "不暴露內部細節地儲存與還原狀態，用於復原與檢查點"
+    },
+    "observer": {
+      "name": "觀察者模式",
+      "blurb": "主體變化時自動通知訂閱者，附型別的 TypeScript 程式碼"
+    },
+    "state": {
+      "name": "狀態模式",
+      "blurb": "用狀態類別取代 switch，讓物件行為隨狀態改變"
+    },
+    "strategy": {
+      "name": "策略模式",
+      "blurb": "在執行期替換可互換的演算法，用 TypeScript 函式或類別實作"
+    },
+    "template-method": {
+      "name": "樣板方法模式",
+      "blurb": "在基底類別固定演算法步驟，由子類別補上細節"
+    },
+    "visitor": {
+      "name": "訪問者模式",
+      "blurb": "透過雙重分派為類別階層新增操作，及聯集型別替代方案"
+    },
+    "breadth-first-search": {
+      "name": "廣度優先搜尋（BFS）",
+      "blurb": "用佇列實作 BFS：範例追蹤、Python 程式碼、最短路徑與 O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "深度優先搜尋（DFS）",
+      "blurb": "遞迴與迭代 DFS：範例追蹤、環偵測與 O(V + E) 複雜度"
+    },
+    "dijkstra": {
+      "name": "Dijkstra 演算法",
+      "blurb": "用優先佇列求最短路徑：範例追蹤、Python heapq 程式碼與複雜度"
+    },
+    "bellman-ford": {
+      "name": "Bellman-Ford 演算法",
+      "blurb": "含負權邊的最短路徑、負環偵測與 Python 程式碼"
+    },
+    "floyd-warshall": {
+      "name": "Floyd-Warshall 演算法",
+      "blurb": "全點對最短路徑：矩陣範例追蹤、Python 程式碼、路徑還原與 O(V³)"
+    },
+    "a-star-search": {
+      "name": "A* 搜尋",
+      "blurb": "f = g + h 啟發式尋路：可容許啟發函式、網格範例與 Python 程式碼"
+    },
+    "topological-sort": {
+      "name": "拓樸排序",
+      "blurb": "依相依性排序任務：Kahn 演算法、DFS、graphlib 與環偵測"
+    },
+    "minimum-spanning-tree": {
+      "name": "最小生成樹",
+      "blurb": "Kruskal 與 Prim：範例追蹤、Python 程式碼、並查集與堆積"
+    },
+    "dynamic-programming": {
+      "name": "動態規劃",
+      "blurb": "記憶化與製表法比較，零錢兌換與 LCS 追蹤、Python 程式碼與複雜度"
+    },
+    "greedy-algorithms": {
+      "name": "貪婪演算法",
+      "blurb": "每步選區域最佳：區間排程追蹤、Python 程式碼與反例"
+    },
+    "backtracking": {
+      "name": "回溯法",
+      "blurb": "選擇、探索、撤銷：N 皇后追蹤、子集、排列與 Python 剪枝"
+    },
+    "kmp-string-search": {
+      "name": "KMP 字串搜尋",
+      "blurb": "前綴函式、搜尋追蹤、Python 程式碼與 O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "位元運算",
+      "blurb": "位元運算子、單位元技巧、位元計數與位元遮罩，附 Python 範例"
     }
   },
   "dice": {

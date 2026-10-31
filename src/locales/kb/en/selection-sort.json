@@ -1,0 +1,216 @@
+{
+  "title": "Selection sort explained: how it works, Python code and complexity — cv.cm",
+  "description": "Selection sort repeatedly picks the smallest remaining item and swaps it into place. Step-by-step trace, Python code, O(n²) cost, why it is not stable.",
+  "h1": "Selection sort explained: how it works, code and complexity",
+  "answer": "Selection sort divides the list into a sorted part on the left and an unsorted part on the right. On each step it finds the smallest element in the unsorted part and swaps it into the first unsorted position. It always makes about n²/2 comparisons, so it is O(n²) in every case, but it performs at most n − 1 swaps and uses O(1) extra space. The usual array version is not stable.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Scan the whole list and find the smallest element. Swap it with the element at index 0; now index 0 is final. Scan the rest of the list from index 1, find the smallest, and swap it into index 1. Continue until only one element is left, which must be the largest.",
+        "Unlike bubble sort and insertion sort, selection sort does not benefit from input that is already sorted: it still has to scan every remaining element to be sure it found the minimum."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Sort `[64, 25, 12, 22, 11]`. The part before the bar is sorted and final.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Unsorted part",
+              "Minimum found",
+              "Swap",
+              "List after the step"
+            ],
+            "rows": [
+              [
+                "1",
+                "`64, 25, 12, 22, 11`",
+                "11 at index 4",
+                "index 0 ↔ 4",
+                "`[11 | 25, 12, 22, 64]`"
+              ],
+              [
+                "2",
+                "`25, 12, 22, 64`",
+                "12 at index 2",
+                "index 1 ↔ 2",
+                "`[11, 12 | 25, 22, 64]`"
+              ],
+              [
+                "3",
+                "`25, 22, 64`",
+                "22 at index 3",
+                "index 2 ↔ 3",
+                "`[11, 12, 22 | 25, 64]`"
+              ],
+              [
+                "4",
+                "`25, 64`",
+                "25 at index 3",
+                "none needed",
+                "`[11, 12, 22, 25 | 64]`"
+              ]
+            ]
+          }
+        },
+        "Four steps for five elements, with 4 + 3 + 2 + 1 = 10 comparisons and three real swaps."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def selection_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if items[j] < items[smallest]:\n                smallest = j\n        if smallest != i:\n            items[i], items[smallest] = items[smallest], items[i]\n    return items\nprint(selection_sort([64, 25, 12, 22, 11]))   # [11, 12, 22, 25, 64]\nprint(selection_sort([2, 1]))                 # [1, 2]",
+          "lang": "python"
+        },
+        "The outer loop runs n − 1 times because the last remaining element is automatically in place. The inner loop only records an index; the swap happens once per outer step."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Measure",
+              "Value",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Comparisons, every case",
+                "n(n − 1)/2",
+                "each step scans the whole unsorted part"
+              ],
+              [
+                "Time, best / average / worst",
+                "O(n²)",
+                "the scan does not depend on the order"
+              ],
+              [
+                "Swaps, worst",
+                "n − 1",
+                "at most one swap per step"
+              ],
+              [
+                "Extra space",
+                "O(1)",
+                "in place, one index variable"
+              ]
+            ]
+          }
+        },
+        "The small number of writes is the one real strength of selection sort. If writing to memory is much more expensive than reading, as with some flash memory or when moving large records, fewer writes can matter. Cycle sort takes this further and writes each element at most once."
+      ]
+    },
+    {
+      "h": "Stability: why selection sort is not stable",
+      "body": [
+        "A stable sort keeps equal elements in their original relative order. The long-distance swap in selection sort can jump an element over another one that is equal to it.",
+        {
+          "code": "def selection_sort_by_key(items, key):\n    n = len(items)\n    for i in range(n - 1):\n        m = min(range(i, n), key=lambda j: key(items[j]))\n        items[i], items[m] = items[m], items[i]\n    return items\ncards = [(\"4\", \"hearts\"), (\"4\", \"spades\"), (\"2\", \"clubs\")]\nprint(selection_sort_by_key(cards, key=lambda c: c[0]))\n# [('2', 'clubs'), ('4', 'spades'), ('4', 'hearts')]  order of the 4s changed",
+          "lang": "python"
+        },
+        "The 2 was swapped with the 4 of hearts, which moved the 4 of hearts behind the 4 of spades. A stable version exists: instead of swapping, remove the minimum and insert it at position i, shifting the others right. This keeps the order but costs O(n) writes per step."
+      ]
+    },
+    {
+      "h": "How selection sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ]
+            ]
+          }
+        },
+        "Heapsort is selection sort with a better data structure: it also repeatedly selects the largest remaining element, but finds it in O(log n) using a binary heap instead of an O(n) scan, which brings the total to O(n log n)."
+      ]
+    },
+    {
+      "h": "When to use selection sort",
+      "body": [
+        "Use the built-in `sorted()` or `list.sort()` in real Python code. Selection sort is worth knowing as a teaching example, for very small fixed-size arrays in constrained environments, and when the number of writes must be minimal. It is a frequent exam and interview question, usually as: trace the steps, count the comparisons and swaps, and explain why it is not stable.",
+        {
+          "note": "Common mistakes: swapping inside the inner loop every time a smaller element is seen (this turns it into a different, slower algorithm), starting the inner loop at `i` instead of `i + 1` (harmless but wasteful), and claiming an O(n) best case, which selection sort does not have."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is selection sort stable?",
+      "a": "The standard in-place array version is not stable, because a long-distance swap can move an element past an equal one. A version that inserts instead of swapping is stable but does more writes."
+    },
+    {
+      "q": "What is the time complexity of selection sort?",
+      "a": "O(n²) in the best, average and worst case. It always makes n(n − 1)/2 comparisons, regardless of the input order."
+    },
+    {
+      "q": "How many swaps does selection sort make?",
+      "a": "At most n − 1, one per outer step. This is fewer than bubble sort or insertion sort, which can make O(n²) swaps or shifts."
+    },
+    {
+      "q": "What is the difference between selection sort and insertion sort?",
+      "a": "Selection sort picks the minimum of the unsorted part and appends it to the sorted part. Insertion sort takes the next element and inserts it into the right place in the sorted part. Insertion sort is stable and has an O(n) best case; selection sort is neither."
+    }
+  ]
+}

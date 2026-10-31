@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial Zig: tipe, slice, error union, comptime, dan allocator — cv.cm",
+  "description": "Belajar dasar Zig: memasang dan menjalankan Hello world, const dan var, array dan slice, optional, error union dengan try dan catch, defer, comptime, allocator.",
+  "h1": "Tutorial Zig untuk pemula",
+  "answer": "Zig adalah bahasa pemrograman sistem serbaguna sekaligus toolchain yang dimaksudkan sebagai alternatif modern untuk C. Zig tidak punya alur kontrol tersembunyi, garbage collector, maupun alokasi memori tersembunyi: Anda meneruskan allocator secara eksplisit, menangani error dengan error union dan `try`, dan membersihkan dengan `defer`. Eksekusi kode saat kompilasi (`comptime`) menggantikan macro dan generic. Jalankan file dengan `zig run hello.zig`. Zig masih di bawah versi 1.0, sehingga detail bahasa dan standard library berubah antarrilis.",
+  "sections": [
+    {
+      "h": "Apa itu Zig dan siapa yang memakainya",
+      "body": [
+        "Zig dibuat oleh Andrew Kelley dan dikembangkan oleh Zig Software Foundation yang nirlaba. Zig menyasar pekerjaan yang sama dengan C: komponen sistem operasi, firmware embedded, game engine, database, dan tool command-line yang cepat. Compiler Zig juga dapat mengompilasi kode C dan C++ (`zig cc`) dan melakukan cross-compile ke banyak target, sehingga sebagian proyek memakainya hanya sebagai toolchain C.",
+        "Proyek terkenal yang ditulis dalam Zig antara lain runtime JavaScript Bun, database keuangan TigerBeetle, dan emulator terminal Ghostty.",
+        {
+          "note": "Zig masih pra-1.0. Sintaks, dan terutama standard library, berubah antarrilis 0.x, dan tutorial yang ditulis untuk versi lama mungkin tidak dapat dikompilasi. Halaman ini membatasi diri pada dasar-dasar yang stabil selama beberapa rilis; selalu baca dokumentasi untuk versi persis yang Anda pasang (`zig version`)."
+        }
+      ]
+    },
+    {
+      "h": "Memasang Zig dan menjalankan Hello, world",
+      "body": [
+        "Unduh arsip siap pakai untuk sistem Anda dari ziglang.org/download, ekstrak, lalu tambahkan foldernya ke PATH, atau pasang Zig dengan package manager sistem Anda. Tidak ada installer atau runtime terpisah.",
+        {
+          "code": "// hello.zig\nconst std = @import(\"std\");\npub fn main() void {\n    std.debug.print(\"Hello, world!\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        {
+          "code": "zig run hello.zig         # compile and run\n# Hello, world!\nzig build-exe hello.zig   # produce an executable named hello\nzig init                  # create a project with build.zig",
+          "lang": "shell"
+        },
+        "`std.debug.print` menulis ke standard error dan merupakan cara paling sederhana untuk mencetak di setiap versi terbaru. Argumen kedua adalah tuple berisi nilai untuk placeholder format; `.{}` adalah tuple kosong. API untuk menulis ke standard output berubah antarrilis, jadi periksa dokumentasi standard library versi Anda."
+      ]
+    },
+    {
+      "h": "Variabel dan tipe dasar",
+      "body": [
+        "`const` mendeklarasikan nilai yang tidak pernah berubah dan `var` mendeklarasikan variabel yang dapat diubah. Compiler-nya ketat: variabel lokal yang tidak dipakai adalah error, dan `var` yang tidak pernah diubah juga error, jadi gunakan `const` secara default.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Integer bertanda",
+                "`i8`, `i32`, `i64`",
+                "Lebar berapa pun diizinkan, mis. `i7`"
+              ],
+              [
+                "Integer tak bertanda",
+                "`u8`, `u32`, `usize`",
+                "`usize` seukuran pointer, dipakai untuk panjang dan indeks"
+              ],
+              [
+                "Float",
+                "`f32`, `f64`",
+                "IEEE 754"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "Tidak ada konversi implisit dari integer"
+              ],
+              [
+                "Array",
+                "`[3]u8`",
+                "Panjang tetap yang diketahui saat kompilasi"
+              ],
+              [
+                "Slice",
+                "`[]const u8`",
+                "Pointer ditambah panjang; string adalah slice byte"
+              ],
+              [
+                "Optional",
+                "`?i32`",
+                "Sebuah nilai atau `null`"
+              ],
+              [
+                "Error union",
+                "`!u32`",
+                "Sebuah nilai atau error"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const age: u32 = 30;\n    var count: i32 = 0;\n    count += 1;\n    const name = \"Ana\"; // string literal, coerces to []const u8\n    std.debug.print(\"{s} is {d}, count = {d}\\n\", .{ name, age, count });\n    var maybe: ?i32 = null;\n    maybe = 5;\n    const value = maybe orelse 0;\n    std.debug.print(\"value = {d}\\n\", .{value});\n}",
+          "lang": "zig"
+        },
+        "Placeholder format menentukan cara mencetak: `{d}` untuk angka, `{s}` untuk string, `{c}` untuk satu byte sebagai karakter, `{any}` untuk men-debug nilai apa pun."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "`if`, `switch`, `while`, dan `for` semuanya dapat dipakai sebagai ekspresi. `switch` harus mencakup setiap nilai yang mungkin, jadi biasanya Anda menambahkan cabang `else`.",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const n: i32 = -2;\n    const sign: []const u8 = if (n > 0) \"positive\" else if (n < 0) \"negative\" else \"zero\";\n    const score: u8 = 85;\n    const letter: u8 = switch (score) {\n        90...100 => 'A',\n        80...89 => 'B',\n        else => 'C',\n    };\n    std.debug.print(\"{s} {c}\\n\", .{ sign, letter }); // negative B\n    var i: u32 = 0;\n    while (i < 3) : (i += 1) {\n        std.debug.print(\"{d} \", .{i}); // 0 1 2\n    }\n    const items = [_]u8{ 10, 20, 30 };\n    for (items, 0..) |item, index| {\n        std.debug.print(\"\\n{d}: {d}\", .{ index, item });\n    }\n    std.debug.print(\"\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        "`[_]u8{ ... }` membiarkan compiler menghitung panjang array. `for (items, 0..)` melakukan perulangan atas item dan penghitung secara bersamaan; nilai di antara tanda pipa disebut capture."
+      ]
+    },
+    {
+      "h": "Fungsi dan comptime",
+      "body": [
+        "Fungsi mendeklarasikan tipe parameter dan tipe kembalian. Argumen bersifat immutable di dalam fungsi. Kode generik ditulis dengan parameter `comptime`: tipe adalah nilai yang ada saat kompilasi, sehingga sebuah fungsi dapat menerima tipe sebagai argumen.",
+        {
+          "code": "const std = @import(\"std\");\nfn add(a: i32, b: i32) i32 {\n    return a + b;\n}\nfn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\npub fn main() void {\n    std.debug.print(\"{d}\\n\", .{add(2, 3)});            // 5\n    std.debug.print(\"{d}\\n\", .{max(i32, 3, 7)});       // 7\n    std.debug.print(\"{d}\\n\", .{max(f64, 1.5, 0.5)});   // 1.5\n}",
+          "lang": "zig"
+        },
+        "Compiler membuat versi `max` yang terpisah untuk setiap tipe yang dipakai saat memanggilnya. Mekanisme yang sama dipakai untuk membangun struktur data generik di standard library: fungsi yang menerima tipe dan mengembalikan tipe struct baru."
+      ]
+    },
+    {
+      "h": "Penanganan error dengan error union, try, dan defer",
+      "body": [
+        "Error adalah nilai. Tipe kembalian `!u32` berarti \"sebuah `u32` atau error\". `try expr` mengembalikan error ke pemanggil bila ada; `catch` menanganinya di tempat. Error tidak dapat diabaikan begitu saja.",
+        {
+          "code": "const std = @import(\"std\");\nfn parseAge(s: []const u8) !u32 {\n    const n = try std.fmt.parseInt(i32, s, 10);\n    if (n < 0) return error.Negative;\n    return @intCast(n);\n}\npub fn main() void {\n    const age = parseAge(\"-5\") catch |err| {\n        std.debug.print(\"error: {s}\\n\", .{@errorName(err)});\n        return;\n    };\n    std.debug.print(\"age {d}\\n\", .{age});\n}\n// error: Negative",
+          "lang": "zig"
+        },
+        "`defer` menjalankan sebuah statement saat blok saat ini selesai, dan `errdefer` menjalankannya hanya ketika blok selesai dengan error. Keduanya menjaga kode pembersihan tetap dekat dengan kode yang memperoleh resource."
+      ]
+    },
+    {
+      "h": "Memori dan allocator",
+      "body": [
+        "Zig tidak punya garbage collector maupun allocator global tersembunyi. Setiap fungsi yang memerlukan memori heap menerima parameter `std.mem.Allocator`, sehingga pemanggil yang menentukan dari mana memori berasal (page allocator, arena, buffer tetap, atau allocator debugging yang mendeteksi kebocoran).",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(u32, 5);\n    defer allocator.free(buf);\n    for (buf, 0..) |*slot, i| {\n        slot.* = @intCast(i * i);\n    }\n    std.debug.print(\"{any}\\n\", .{buf}); // { 0, 1, 4, 9, 16 }\n}",
+          "lang": "zig"
+        },
+        "`|*slot|` menangkap pointer ke setiap elemen agar perulangan dapat menulis padanya, dan `slot.*` melakukan dereference pointer. Pada build Debug dan ReleaseSafe, integer overflow dan pengindeksan di luar batas menghentikan program dengan panic yang jelas alih-alih menyebabkan undefined behavior."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: rata-rata angka",
+      "body": [
+        {
+          "code": "const std = @import(\"std\");\nfn average(numbers: []const i64) ?f64 {\n    if (numbers.len == 0) return null;\n    var sum: i64 = 0;\n    for (numbers) |n| sum += n;\n    const total: f64 = @floatFromInt(sum);\n    const len: f64 = @floatFromInt(numbers.len);\n    return total / len;\n}\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(i64, 16);\n    defer allocator.free(buf);\n    var it = std.mem.tokenizeScalar(u8, \"4 8 15 16 23 42\", ' ');\n    var count: usize = 0;\n    while (it.next()) |word| : (count += 1) {\n        buf[count] = try std.fmt.parseInt(i64, word, 10);\n    }\n    if (average(buf[0..count])) |avg| {\n        std.debug.print(\"count={d} avg={d:.2}\\n\", .{ count, avg });\n    }\n}\n// count=6 avg=18.00",
+          "lang": "zig"
+        },
+        "Program ini memecah string pada spasi, mem-parse setiap potongan dengan `try`, menyimpan angka di memori heap yang dibebaskan oleh `defer`, dan mengembalikan rata-rata optional yang bernilai `null` untuk list kosong.",
+        {
+          "note": "Kesalahan umum pemula: membiarkan variabel lokal tidak dipakai atau mendeklarasikan `var` yang tidak pernah diubah (keduanya compile error); memakai `{}` tanpa specifier untuk string (gunakan `{s}`); lupa bahwa string literal adalah array byte, bukan karakter Unicode; mencampur tipe integer tanpa cast eksplisit seperti `@intCast`; dan menyalin kode dari tutorial yang ditulis untuk Zig versi lama."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Referensi bahasa di ziglang.org/documentation, pilih halaman untuk versi yang Anda pasang.",
+            "Bagian Learn di ziglang.org, termasuk \"Getting Started\" dan ikhtisar bahasa.",
+            "Ziglings, kumpulan program rusak kecil yang Anda perbaiki satu per satu, adalah set latihan komunitas yang populer.",
+            "Baca source standard library: ditulis dalam Zig dan merupakan referensi terbaik untuk API terkini."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Zig siap untuk produksi?",
+      "a": "Beberapa perusahaan memakai Zig di produksi, tetapi bahasanya masih pra-1.0, jadi Anda sebaiknya mengharapkan perubahan yang merusak saat meng-upgrade compiler dan menyediakan waktu untuk itu."
+    },
+    {
+      "q": "Apakah Zig pengganti C atau Rust?",
+      "a": "Zig paling dekat dengan C: manajemen memori manual dengan pemeriksaan keamanan yang lebih baik, penanganan error, dan kode saat kompilasi. Rust menjamin keamanan memori lewat sistem ownership dan borrow checker, yang tidak dimiliki Zig."
+    },
+    {
+      "q": "Bisakah Zig memakai library C?",
+      "a": "Bisa. Zig dapat meng-import file header C dan memanggil fungsi C secara langsung, dan compiler Zig dapat membangun file source C dan C++, sehingga mencampur bahasa-bahasa itu mudah dilakukan."
+    },
+    {
+      "q": "Apa arti comptime di Zig?",
+      "a": "`comptime` menandai kode atau parameter yang dievaluasi saat kompilasi. Zig memakainya untuk generic, tabel konstan, dan pemeriksaan saat kompilasi alih-alih bahasa macro terpisah."
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "title": "Patrón Template Method: pasos fijos, hooks y ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Template Method fija los pasos de un algoritmo en una clase base y deja que las subclases rellenen algunos pasos. Aprende los hooks con un ejemplo en TypeScript.",
+  "h1": "Patrón Template Method explicado con ejemplos",
+  "answer": "Template Method es un patrón de diseño de comportamiento que define el esqueleto de un algoritmo en un método de una clase base y permite que las subclases sobrescriban pasos concretos sin cambiar el orden general. La clase base decide qué ocurre y cuándo; las subclases deciden cómo se hacen algunos de los pasos. Los pasos opcionales con una implementación por defecto se llaman hooks.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: definir el esqueleto de un algoritmo en una operación, delegando algunos pasos a las subclases. Template Method permite que las subclases redefinan ciertos pasos de un algoritmo sin cambiar su estructura. Es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Imagina una herramienta de informes que exporta datos como CSV y como JSON. Ambos exportadores hacen lo mismo en el mismo orden: cargar las filas, comprobar que hay alguna, darles formato y añadir un pie con el número de filas. Solo difiere el formato. Si cada exportador se escribe por separado, los pasos compartidos se copian, y una corrección en uno (por ejemplo, un mejor manejo de un resultado vacío) se olvida fácilmente en el otro.",
+        "Con Template Method, una clase base `Exporter` contiene el método `export` con la secuencia fija de pasos. Los pasos que varían son métodos abstractos. `CsvExporter` y `JsonExporter` implementan solo esos."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Clase abstracta",
+                "Implementa el método plantilla, que llama a los pasos en un orden fijo; declara pasos abstractos y puede ofrecer hooks"
+              ],
+              [
+                "Método plantilla",
+                "El método público que define el algoritmo; normalmente no está pensado para sobrescribirse"
+              ],
+              [
+                "Operación primitiva",
+                "Un paso abstracto que toda subclase debe implementar"
+              ],
+              [
+                "Hook",
+                "Un paso con una implementación por defecto (a menudo vacía) que las subclases pueden sobrescribir"
+              ],
+              [
+                "Clase concreta",
+                "Implementa las operaciones primitivas y sobrescribe los hooks según haga falta"
+              ]
+            ]
+          }
+        },
+        "Este diseño invierte el control: la clase base llama a los métodos de la subclase, y no al revés. A veces se llama el principio de Hollywood: \"no nos llames, nosotros te llamaremos\"."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "`export` es el método plantilla. `format` es una operación primitiva que las subclases deben implementar, y `header` es un hook con un valor por defecto vacío.",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "La comprobación de datos vacíos y el pie viven en un solo lugar. Un nuevo exportador XML implementaría `format` y obtendría el resto gratis.",
+        {
+          "note": "TypeScript no tiene la palabra clave `final`, así que una subclase aún puede sobrescribir `export` y romper el orden fijo. Documenta que el método plantilla no debe sobrescribirse, y mantén pequeño el número de pasos sobrescribibles para que las subclases sean fáciles de escribir correctamente."
+        }
+      ]
+    },
+    {
+      "h": "La misma idea con composición",
+      "body": [
+        "La herencia no es la única vía. Puedes pasar los pasos variables como funciones, lo que convierte el patrón en un pariente cercano de Strategy y evita las jerarquías de clases:",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "Prefiere esta forma cuando los pasos son pequeños y no necesitas estado compartido en una clase base, o cuando un exportador debe combinar pasos de varias fuentes."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando varias clases ejecutan el mismo algoritmo y solo difieren unos pocos pasos, y quieres eliminar las partes duplicadas.",
+            "Úsalo en frameworks que deben controlar el orden de las operaciones mientras permiten a los usuarios personalizar pasos, como la preparación y la limpieza en las pruebas.",
+            "Usa hooks para ofrecer puntos de extensión opcionales sin obligar a cada subclase a implementarlos.",
+            "No lo uses cuando las variaciones son grandes o deben cambiar en tiempo de ejecución. Strategy, con composición, es más flexible.",
+            "Evita las jerarquías profundas de métodos plantilla. Cuando las subclases sobrescriben pasos de subclases de subclases, el flujo se vuelve difícil de seguir."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "`AbstractList` de Java: implementas `get(int)` y `size()`, y la clase base ofrece la iteración, `indexOf`, `contains` y otros métodos construidos sobre ellos.",
+            "`InputStream` de Java: las subclases implementan `read()` de un solo byte, y la clase base implementa `read(byte[], int, int)` llamándolo (las subclases pueden sobrescribirlo para ganar velocidad).",
+            "Frameworks de pruebas: JUnit, `unittest` de Python y otros llaman a `setUp`, al método de prueba y a `tearDown` en un orden fijo, y tú sobrescribes los pasos que necesitas.",
+            "Los frameworks de interfaz con métodos de ciclo de vida, como `componentDidMount` en los componentes de clase de React, llaman a tus métodos en puntos fijos de su propio algoritmo."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Template Method"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy reemplaza un algoritmo completo por composición en tiempo de ejecución; Template Method fija el algoritmo y varía partes de él mediante herencia en tiempo de compilación."
+              ],
+              [
+                "Factory Method",
+                "Un método de fábrica suele ser uno de los pasos de un método plantilla: el paso que crea un objeto."
+              ],
+              [
+                "Funciones hook y callbacks",
+                "Pasar callbacks a un algoritmo fijo es la versión basada en composición de la misma idea."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es un hook en el patrón Template Method?",
+      "a": "Un hook es un paso que tiene una implementación por defecto en la clase base, a menudo sin hacer nada. Las subclases pueden sobrescribirlo para añadir comportamiento en ese punto, pero no están obligadas."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Template Method y Strategy?",
+      "a": "Template Method usa herencia: la clase base posee el algoritmo y las subclases sobrescriben pasos. Strategy usa composición: el contexto delega el algoritmo completo en un objeto o función que puede intercambiarse en tiempo de ejecución."
+    },
+    {
+      "q": "¿Debería poder sobrescribirse el propio método plantilla?",
+      "a": "No. Su propósito es fijar el orden de los pasos. En Java o C# puedes marcarlo como `final` o no virtual; en TypeScript tienes que documentarlo, porque no existe la palabra clave `final`."
+    },
+    {
+      "q": "¿Cómo se relaciona Template Method con Factory Method?",
+      "a": "Factory Method suele ser una especialización de Template Method: el algoritmo de la clase base incluye un paso que crea un objeto, y las subclases deciden qué clase crear."
+    }
+  ]
+}

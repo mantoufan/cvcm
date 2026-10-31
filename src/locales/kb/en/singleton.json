@@ -1,0 +1,157 @@
+{
+  "title": "Singleton pattern: intent, TypeScript example, pitfalls and alternatives — cv.cm",
+  "description": "The Singleton design pattern explained: how to ensure one instance in TypeScript, lazy and async variants, why it hurts testing, and better alternatives.",
+  "h1": "Singleton pattern explained with examples",
+  "answer": "Singleton is a creational design pattern that ensures a class has only one instance and provides a global point of access to it. In TypeScript you implement it with a private constructor and a static method that creates the instance on first use and returns the same object afterwards. It is useful for truly unique resources, such as a configuration object or a connection pool, but it acts like global state, so many teams prefer passing a single shared instance explicitly.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Ensure a class has only one instance, and provide a global point of access to it. Singleton is one of the five creational patterns in the Gang of Four (GoF) book."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Some objects must exist exactly once in a program. Imagine an application configuration loaded from environment variables, an in-process cache, or a pool of database connections. If every module called `new Config()`, each would read the environment again, the cache would be split into many copies, and the pool limit would be meaningless.",
+        "You need two things: a guarantee that a second instance cannot be created by accident, and an easy way for any code to reach the one instance."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Singleton class",
+                "Hides its constructor so other code cannot call `new` directly."
+              ],
+              [
+                "Static instance field",
+                "Holds the single instance once it has been created."
+              ],
+              [
+                "Static access method (often `getInstance`)",
+                "Creates the instance on first call (lazy initialization) and returns the same object on every call."
+              ],
+              [
+                "Client",
+                "Gets the instance only through the access method."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "A private constructor makes `new AppConfig()` a compile-time error outside the class. The static method creates the object lazily:",
+        {
+          "code": "class AppConfig {\n  private static instance: AppConfig | undefined;\n  readonly settings: Record<string, string>;\n  private constructor() {\n    console.log(\"loading config once\");\n    this.settings = { mode: \"production\", region: \"eu\" };\n  }\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\nconst a = AppConfig.getInstance(); // loading config once\nconst b = AppConfig.getInstance();\nconsole.log(a === b);          // true\nconsole.log(a.settings.mode);  // production\n// new AppConfig(); // error: constructor is private",
+          "lang": "typescript"
+        },
+        {
+          "note": "TypeScript's `private` is checked only at compile time. Plain JavaScript code can still call the constructor. If you need a run-time guarantee, throw in the constructor when an instance already exists, or use a module-level instance as shown below."
+        },
+        "In JavaScript and TypeScript, an ES module is evaluated once per program, so exporting an instance from a module is the simplest singleton. Every `import` receives the same object:",
+        {
+          "code": "// logger.ts\nclass Logger {\n  private lines: string[] = [];\n  log(msg: string): void { this.lines.push(msg); console.log(msg); }\n  count(): number { return this.lines.length; }\n}\nexport const logger = new Logger();\n// elsewhere: import { logger } from \"./logger\";\nlogger.log(\"started\");      // started\nconsole.log(logger.count()); // 1",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Async initialization",
+      "body": [
+        "If creating the instance is asynchronous, such as opening a database connection, two callers can both see \"no instance yet\" and start two connections before the first one finishes. Cache the promise, not the result:",
+        {
+          "code": "class Database {\n  private static ready: Promise<Database> | undefined;\n  private constructor(readonly url: string) {}\n  static get(): Promise<Database> {\n    if (!Database.ready) {\n      Database.ready = (async () => {\n        await new Promise((r) => setTimeout(r, 10)); // simulate connecting\n        console.log(\"connected once\");\n        return new Database(\"db://main\");\n      })();\n    }\n    return Database.ready;\n  }\n}\nconst [x, y] = await Promise.all([Database.get(), Database.get()]);\nconsole.log(x === y); // true",
+          "lang": "typescript"
+        },
+        "In multi-threaded languages such as Java and C#, lazy creation needs synchronization for the same reason. Common solutions are eager initialization in a static field, a lazy holder class, or, in Java, a single-element `enum`."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Singleton when:",
+        {
+          "ul": [
+            "There must be exactly one instance for correctness, not only for convenience (one hardware device, one process-wide registry).",
+            "Creation is expensive and the object is stateless or thread-safe after creation."
+          ]
+        },
+        "Avoid it, or limit it, when:",
+        {
+          "ul": [
+            "You mainly want convenient global access. A singleton is global mutable state with a nicer name: any code can change it, and the dependency is hidden from function signatures.",
+            "You need tests. Tests that share a singleton affect each other, and it is hard to replace the real instance with a fake.",
+            "The \"one instance\" rule may change later, for example when you need one cache per tenant."
+          ]
+        },
+        "The usual alternative is dependency injection: create one instance at the start of the program (the composition root) and pass it to the classes that need it. You still have one instance, but the dependency is visible and replaceable.",
+        {
+          "code": "class Cache {\n  private data = new Map<string, string>();\n  get(key: string): string | undefined { return this.data.get(key); }\n  set(key: string, value: string): void { this.data.set(key, value); }\n}\nclass UserService {\n  constructor(private cache: Cache) {} // dependency is explicit\n  remember(id: string, name: string): void { this.cache.set(id, name); }\n}\nconst sharedCache = new Cache(); // the single instance, created once\nconst users = new UserService(sharedCache);\nusers.remember(\"u1\", \"Ada\");\nconsole.log(sharedCache.get(\"u1\")); // Ada",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java: `Runtime.getRuntime()` returns the single `Runtime` object for the running Java application.",
+            "Node.js caches modules after the first load, so a module's exported object is shared by every file that requires or imports it.",
+            "Browsers expose unique global objects such as `window` and `document` for each page.",
+            "Frameworks with dependency injection, such as Angular and Spring, create \"singleton-scoped\" services by default: one instance per injector or container, without the static-access part of the pattern."
+          ]
+        },
+        {
+          "note": "Node.js caches modules by resolved file path. If two copies of the same package are installed in different `node_modules` folders, you get two separate \"singletons\"."
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "ul": [
+            "Abstract Factory, Builder and Prototype objects are often implemented as singletons, because one factory is enough.",
+            "Facade objects are frequently single instances, since one entry point to a subsystem is usually enough.",
+            "Flyweight also shares objects, but it manages many shared instances keyed by their state, while Singleton has exactly one.",
+            "Dependency injection, which is not a GoF pattern, is the most common replacement for Singleton in modern code."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Singleton an anti-pattern?",
+      "a": "It is often called one, because it introduces hidden global state and makes testing harder. Having one instance is fine; the problem is the global access. Creating one instance and passing it explicitly avoids most of the issues."
+    },
+    {
+      "q": "How do I make a singleton in TypeScript?",
+      "a": "Use a private constructor, a private static field for the instance, and a static method that creates the instance on first call. Exporting a single instance from a module is a simpler alternative."
+    },
+    {
+      "q": "Is a JavaScript module a singleton?",
+      "a": "Effectively yes. A module is evaluated once and its exports are shared by every importer in the same program, unless the same code is loaded from two different paths."
+    },
+    {
+      "q": "How do I test code that uses a singleton?",
+      "a": "Make the singleton implement an interface and pass it into the code under test, so tests can supply a fake. If you cannot change the design, add a reset method that is used only in tests."
+    },
+    {
+      "q": "What is the difference between a singleton and a static class?",
+      "a": "A singleton is a real object: it can implement interfaces, be passed as a parameter and be created lazily. A class with only static members cannot be substituted or passed around as an object."
+    }
+  ]
+}

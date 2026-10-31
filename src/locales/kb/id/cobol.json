@@ -1,0 +1,194 @@
+{
+  "title": "Tutorial COBOL: division, data PIC, perulangan PERFORM, dan file — cv.cm",
+  "description": "Belajar dasar COBOL: mengompilasi Hello world dengan GnuCOBOL, memahami empat division, klausa PIC, IF dan EVALUATE, perulangan PERFORM, tabel, file, dan error.",
+  "h1": "Tutorial COBOL untuk pemula",
+  "answer": "COBOL (Common Business-Oriented Language) adalah bahasa terkompilasi yang dirancang untuk pemrosesan data bisnis: record, file, laporan, dan aritmetika desimal yang eksak. Program dibagi menjadi empat division, data dijelaskan dengan klausa PIC (picture), dan kodenya terbaca seperti kalimat bahasa Inggris, misalnya `ADD AMOUNT TO TOTAL`. COBOL masih menjalankan sistem inti di bank, perusahaan asuransi, dan pemerintah, sebagian besar di mainframe IBM. Anda dapat mempelajarinya secara gratis dengan compiler GnuCOBOL: `cobc -x hello.cob`.",
+  "sections": [
+    {
+      "h": "Apa itu COBOL dan siapa yang memakainya",
+      "body": [
+        "COBOL dirancang pada 1959 oleh komite CODASYL, dengan pengaruh kuat dari bahasa FLOW-MATIC milik Grace Hopper yang lebih dahulu ada. COBOL distandarkan oleh ISO; standar-standar berikutnya menambahkan pemrograman terstruktur, orientasi objek, dan fitur lain, dan revisi terbarunya terbit pada 2023.",
+        "COBOL dipakai untuk batch processing dan sistem transaksi: pemrosesan rekening, penggajian, klaim asuransi, serta sistem pajak dan tunjangan. Sebagian besar kode ini berjalan di mainframe IBM Z dengan IBM Enterprise COBOL, bersama CICS untuk transaksi dan Db2 untuk data. Lowongan untuk memelihara dan memodernisasi sistem ini masih umum."
+      ]
+    },
+    {
+      "h": "Memasang GnuCOBOL dan menjalankan Hello, world",
+      "body": [
+        "GnuCOBOL adalah compiler gratis yang menerjemahkan COBOL ke C lalu ke program native. Tersedia sebagai paket `gnucobol` di banyak distribusi Linux dan di Homebrew pada macOS; pengguna Windows dapat memakai WSL atau paket siap pakai.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello, world!\".\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        {
+          "code": "cobc -x hello.cob\n./hello\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Kode ini memakai format tetap tradisional: kolom 1 sampai 6 untuk nomor urut, kolom 7 menandai komentar (`*`) atau baris lanjutan, Area A (kolom 8 sampai 11) berisi nama division, section, dan paragraph, dan Area B (kolom 12 sampai 72) berisi statement. GnuCOBOL juga menerima source free-format dengan `cobc -x -free`. Opsi `-x` membangun executable, bukan modul."
+      ]
+    },
+    {
+      "h": "Empat division",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Division",
+              "Tujuan"
+            ],
+            "rows": [
+              [
+                "IDENTIFICATION DIVISION",
+                "Memberi nama program (`PROGRAM-ID`)"
+              ],
+              [
+                "ENVIRONMENT DIVISION",
+                "Menghubungkan program dengan dunia luar, misalnya file mana yang dipakai"
+              ],
+              [
+                "DATA DIVISION",
+                "Mendeklarasikan semua data: record file, working storage, parameter"
+              ],
+              [
+                "PROCEDURE DIVISION",
+                "Statement yang dieksekusi, diatur dalam paragraph"
+              ]
+            ]
+          }
+        },
+        "Setiap variabel harus dideklarasikan di DATA DIVISION sebelum dipakai. WORKING-STORAGE SECTION berisi variabel program, FILE SECTION menjelaskan record file, dan LINKAGE SECTION menjelaskan parameter yang diteruskan oleh pemanggil."
+      ]
+    },
+    {
+      "h": "Data dan klausa PIC",
+      "body": [
+        "COBOL menjelaskan data lewat tata letaknya yang eksak. Level number menunjukkan hierarki (01 adalah record, 05 field di dalamnya), dan klausa PIC memberi formatnya: `X` adalah karakter apa pun, `9` adalah digit, `S` tanda, dan `V` titik desimal implisit.",
+        {
+          "table": {
+            "head": [
+              "Deklarasi",
+              "Arti",
+              "Contoh nilai"
+            ],
+            "rows": [
+              [
+                "`PIC X(10)`",
+                "10 karakter, diisi spasi",
+                "`\"Ana       \"`"
+              ],
+              [
+                "`PIC 9(3)`",
+                "Angka 3 digit tanpa tanda",
+                "`030`"
+              ],
+              [
+                "`PIC S9(5)V99`",
+                "Bertanda, 5 digit sebelum dan 2 sesudah titik desimal",
+                "`-01234.50`"
+              ],
+              [
+                "`PIC $ZZ,ZZ9.99`",
+                "Output yang diedit: tanda mata uang, nol di depan menjadi spasi",
+                "`$ 1,234.50`"
+              ],
+              [
+                "`PIC S9(7)V99 COMP-3`",
+                "Packed decimal, umum di mainframe",
+                "disimpan dalam 5 byte"
+              ],
+              [
+                "`88 IS-DONE VALUE \"Y\"`",
+                "Condition name: pengujian Boolean pada field induknya",
+                "`IF IS-DONE`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. DATA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-NAME        PIC X(10)      VALUE \"Ana\".\n       01  WS-AGE         PIC 9(3)       VALUE 30.\n       01  WS-PRICE       PIC S9(5)V99   VALUE 1234.50.\n       01  WS-PRICE-OUT   PIC $ZZ,ZZ9.99.\n       01  WS-CUSTOMER.\n           05  WS-FIRST   PIC X(10).\n           05  WS-LAST    PIC X(15).\n       PROCEDURE DIVISION.\n           MOVE WS-PRICE TO WS-PRICE-OUT\n           DISPLAY WS-NAME \"is \" WS-AGE\n           DISPLAY \"Price: \" WS-PRICE-OUT\n           STOP RUN.\n      *> Ana       is 030\n      *> Price: $ 1,234.50",
+          "lang": "cobol"
+        },
+        "Angka disimpan dalam desimal, sehingga `0.10 + 0.20` tepat `0.30`, salah satu alasan COBOL cocok untuk uang. `WS-CUSTOMER` adalah group item: dapat dipindahkan sekaligus atau field demi field."
+      ]
+    },
+    {
+      "h": "Alur kontrol: IF, EVALUATE, dan PERFORM",
+      "body": [
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. CONTROL-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-I        PIC 99.\n       01  WS-TOTAL    PIC 9(4) VALUE 0.\n       01  WS-SCORE    PIC 999  VALUE 85.\n       PROCEDURE DIVISION.\n           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10\n               ADD WS-I TO WS-TOTAL\n           END-PERFORM\n           DISPLAY \"Total: \" WS-TOTAL\n           EVALUATE TRUE\n               WHEN WS-SCORE >= 90\n                   DISPLAY \"A\"\n               WHEN WS-SCORE >= 80\n                   DISPLAY \"B\"\n               WHEN OTHER\n                   DISPLAY \"C\"\n           END-EVALUATE\n           IF WS-TOTAL > 50\n               DISPLAY \"big\"\n           ELSE\n               DISPLAY \"small\"\n           END-IF\n           STOP RUN.\n      *> Total: 0055\n      *> B\n      *> big",
+          "lang": "cobol"
+        },
+        "`PERFORM VARYING` adalah perulangan berhitung COBOL dan `PERFORM UNTIL condition` adalah perulangan while-nya. `EVALUATE` adalah statement switch. Scope terminator seperti `END-IF` dan `END-PERFORM` menutup setiap blok; titik mengakhiri seluruh kalimat."
+      ]
+    },
+    {
+      "h": "Paragraph, aritmetika, dan tabel",
+      "body": [
+        "COBOL tidak punya fungsi dalam arti biasa. Anda menata logika dalam paragraph bernama dan menjalankannya dengan `PERFORM`; unit yang lebih besar menjadi program terpisah yang dipanggil dengan `CALL \"PROG\" USING ...`. Aritmetika memakai verb (`ADD`, `SUBTRACT`, `MULTIPLY`, `DIVIDE`) atau `COMPUTE` dengan rumus. Array disebut tabel dan dideklarasikan dengan `OCCURS`; indeksnya dimulai dari 1.",
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. PARA-DEMO.\n       DATA DIVISION.\n       WORKING-STORAGE SECTION.\n       01  WS-PRICES.\n           05  WS-PRICE   PIC 9(3)V99 OCCURS 3 TIMES.\n       01  WS-I           PIC 9.\n       01  WS-SUM         PIC 9(4)V99 VALUE 0.\n       01  WS-SUM-OUT     PIC Z,ZZ9.99.\n       PROCEDURE DIVISION.\n       MAIN-PARA.\n           MOVE 10.50 TO WS-PRICE(1)\n           MOVE 4.25  TO WS-PRICE(2)\n           MOVE 7.00  TO WS-PRICE(3)\n           PERFORM ADD-PRICE VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 3\n           COMPUTE WS-SUM = WS-SUM * 1.1\n           MOVE WS-SUM TO WS-SUM-OUT\n           DISPLAY \"With 10% tax: \" WS-SUM-OUT\n           STOP RUN.\n       ADD-PRICE.\n           ADD WS-PRICE(WS-I) TO WS-SUM.\n      *> With 10% tax:    23.92",
+          "lang": "cobol"
+        },
+        "Jumlahnya 21.75; dikalikan 1.1 menjadi 23.925, dan COBOL memotong ke dua desimal yang dideklarasikan (23.92) kecuali Anda menulis `COMPUTE ... ROUNDED`."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "COBOL tidak punya exception dalam kode sehari-hari. Sebagai gantinya, statement punya frasa bersyarat: `ON SIZE ERROR` untuk overflow aritmetika atau pembagian dengan nol, `AT END` untuk akhir file, `INVALID KEY` untuk file berindeks, dan field `FILE STATUS` yang menerima kode dua karakter setelah setiap operasi file (`\"00\"` berarti sukses).",
+        {
+          "code": "           DIVIDE WS-A BY WS-B GIVING WS-C\n               ON SIZE ERROR\n                   DISPLAY \"Division failed\"\n               NOT ON SIZE ERROR\n                   DISPLAY \"Result: \" WS-C\n           END-DIVIDE",
+          "lang": "cobol"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: total file penjualan",
+      "body": [
+        "Membaca record bertata letak tetap dari file adalah pekerjaan khas COBOL. Program ini membaca `sales.txt`, tempat setiap baris berisi nama item 10 karakter diikuti jumlah 7 digit dengan dua desimal implisit.",
+        {
+          "code": "apples    0001250\npears     0000899\nplums     0002000",
+          "lang": "text"
+        },
+        {
+          "code": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. SALES-TOTAL.\n       ENVIRONMENT DIVISION.\n       INPUT-OUTPUT SECTION.\n       FILE-CONTROL.\n           SELECT SALES-FILE ASSIGN TO \"sales.txt\"\n               ORGANIZATION IS LINE SEQUENTIAL\n               FILE STATUS IS WS-FS.\n       DATA DIVISION.\n       FILE SECTION.\n       FD  SALES-FILE.\n       01  SALES-REC.\n           05  SR-ITEM     PIC X(10).\n           05  SR-AMOUNT   PIC 9(5)V99.\n       WORKING-STORAGE SECTION.\n       01  WS-FS           PIC XX.\n       01  WS-EOF          PIC X VALUE \"N\".\n           88  NO-MORE-RECORDS       VALUE \"Y\".\n       01  WS-TOTAL        PIC 9(7)V99 VALUE 0.\n       01  WS-TOTAL-OUT    PIC Z,ZZZ,ZZ9.99.\n       PROCEDURE DIVISION.\n           OPEN INPUT SALES-FILE\n           IF WS-FS NOT = \"00\"\n               DISPLAY \"Cannot open file, status \" WS-FS\n               STOP RUN\n           END-IF\n           PERFORM UNTIL NO-MORE-RECORDS\n               READ SALES-FILE\n                   AT END SET NO-MORE-RECORDS TO TRUE\n                   NOT AT END ADD SR-AMOUNT TO WS-TOTAL\n               END-READ\n           END-PERFORM\n           CLOSE SALES-FILE\n           MOVE WS-TOTAL TO WS-TOTAL-OUT\n           DISPLAY \"Total sales: \" WS-TOTAL-OUT\n           STOP RUN.",
+          "lang": "cobol"
+        },
+        "Saat dijalankan, program mencetak `Total sales:` diikuti `41.49` rata kanan dalam field hasil edit selebar 12 karakter. `LINE SEQUENTIAL` berarti file teks dengan satu record per baris; didukung oleh GnuCOBOL dan compiler PC lain, sedangkan program mainframe biasanya membaca dataset berpanjang tetap yang didefinisikan di JCL.",
+        {
+          "note": "Kesalahan umum pemula: titik nyasar di dalam blok `IF`, yang mengakhiri seluruh statement lebih awal (gunakan scope terminator seperti `END-IF`); kode di luar kolom 8 sampai 72 pada format tetap; pemotongan diam-diam saat memindahkan nilai ke field yang terlalu kecil (`MOVE 1234 TO` field `PIC 99` menyimpan 34); menyimpan hasil negatif di field tanpa `S` pada PIC-nya, yang membuang tandanya; dan lupa `ON SIZE ERROR` atau pemeriksaan status file."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Halaman proyek GnuCOBOL dan Programmer's Guide-nya untuk referensi bahasa lengkap.",
+            "Dokumentasi Enterprise COBOL for z/OS dari IBM untuk COBOL mainframe, CICS, dan penggunaan Db2.",
+            "Berlatihlah membaca dan menulis file, mengurutkan dengan verb `SORT`, dan membuat laporan terformat.",
+            "Pelajari tool mainframe di sekitarnya (JCL, TSO/ISPF) jika Anda ingin bekerja pada sistem produksi."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah COBOL masih dipakai?",
+      "a": "Ya. Banyak bank, perusahaan asuransi, dan lembaga pemerintah masih menjalankan program COBOL untuk batch dan pemrosesan transaksi inti, sehingga permintaan akan developer yang dapat memelihara dan memodernisasinya terus ada."
+    },
+    {
+      "q": "Apakah COBOL sulit dipelajari?",
+      "a": "Sintaksnya bertele-tele tetapi sederhana, dan sebagian besar pemula dapat menulis program yang berfungsi dengan cepat. Bagian yang lebih sulit adalah lingkungan mainframe di sekitarnya: JCL, dataset, CICS, dan Db2."
+    },
+    {
+      "q": "Bisakah saya belajar COBOL tanpa mainframe?",
+      "a": "Bisa. GnuCOBOL berjalan di Linux, macOS, dan Windows serta mendukung COBOL standar, jadi Anda dapat belajar bahasanya di komputer biasa sebelum pindah ke mainframe."
+    },
+    {
+      "q": "Mengapa COBOL memakai bilangan desimal?",
+      "a": "Data bisnis seperti uang harus eksak. COBOL menyimpan angka sebagai digit desimal dengan jumlah tempat desimal tetap, yang menghindari galat pembulatan pada floating point biner."
+    }
+  ]
+}

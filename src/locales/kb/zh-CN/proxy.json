@@ -1,0 +1,177 @@
+{
+  "title": "代理模式：TypeScript 中的虚拟代理、保护代理与缓存代理 — cv.cm",
+  "description": "代理模式（Proxy）在真实对象前放置一个替身对象来控制访问。了解 TypeScript 中的缓存代理、懒加载代理、保护代理，以及 JS Proxy。",
+  "h1": "代理模式详解与示例",
+  "answer": "代理是一种结构型设计模式，它提供一个与真实对象接口相同的替代对象，使代理能够控制对真实对象的访问。客户端像对待真实对象一样与代理交互，由代理决定何时以及如何转发每次调用。常见的类型有虚拟代理（延迟创建）、保护代理（访问检查）、缓存代理和远程代理。",
+  "sections": [
+    {
+      "h": "意图与它要解决的问题",
+      "body": [
+        "意图：为另一个对象提供一个替身或占位符，以控制对它的访问。代理是《设计模式》（四人组，GoF）一书中的结构型模式之一。",
+        "假设一个应用通过网络调用天气服务。每次调用要花几百毫秒并且收费，而同一个城市常常每分钟被请求很多次。你无法修改服务类，也不想在每个调用它的地方都加上缓存代码。代理可以解决这个问题：它实现同一个接口，维护一个缓存，只有在缓存未命中时才调用真实服务。调用方完全不用改动。",
+        "同样的思路还能满足其他需求：只在首次使用时才创建开销大的对象、在调用前检查权限、记录每一次调用，或者隐藏真实对象位于另一台机器上这一事实。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "职责"
+            ],
+            "rows": [
+              [
+                "主题（Subject）",
+                "真实对象与代理共用的接口，客户端可以使用其中任意一个"
+              ],
+              [
+                "真实主题（Real subject）",
+                "完成实际工作的对象"
+              ],
+              [
+                "代理（Proxy）",
+                "实现主题接口，持有或创建对真实主题的引用，并在转发前后添加控制逻辑"
+              ],
+              [
+                "客户端（Client）",
+                "只使用主题接口，不知道自己拿到的是不是代理"
+              ]
+            ]
+          }
+        },
+        {
+          "table": {
+            "head": [
+              "代理的种类",
+              "控制的内容"
+            ],
+            "rows": [
+              [
+                "虚拟代理",
+                "把开销大的对象的创建推迟到真正需要时"
+              ],
+              [
+                "保护代理",
+                "检查调用方是否有权执行某项操作"
+              ],
+              [
+                "缓存代理",
+                "保存结果，并在重复请求时直接返回"
+              ],
+              [
+                "远程代理",
+                "代表位于另一个进程或机器上的对象，并处理通信"
+              ],
+              [
+                "日志代理",
+                "在不改动真实对象的前提下，记录调用和参数"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现：缓存代理",
+      "body": [
+        "`WeatherService` 是主题。`CachedWeatherService` 是代理：它有相同的方法，只有在缓存值缺失或过期时才转发给真实服务。",
+        {
+          "code": "interface WeatherService {\n  getTemperature(city: string): Promise<number>;\n}\nclass RemoteWeatherService implements WeatherService {\n  calls = 0;\n  async getTemperature(city: string): Promise<number> {\n    this.calls++; // imagine a slow HTTP request here\n    return city.length * 3;\n  }\n}\nclass CachedWeatherService implements WeatherService {\n  private cache = new Map<string, { value: number; time: number }>();\n  constructor(private real: WeatherService, private maxAgeMs = 60_000) {}\n  async getTemperature(city: string): Promise<number> {\n    const hit = this.cache.get(city);\n    if (hit && Date.now() - hit.time < this.maxAgeMs) return hit.value;\n    const value = await this.real.getTemperature(city);\n    this.cache.set(city, { value, time: Date.now() });\n    return value;\n  }\n}\nasync function main() {\n  const real = new RemoteWeatherService();\n  const weather: WeatherService = new CachedWeatherService(real);\n  await weather.getTemperature(\"Paris\");\n  await weather.getTemperature(\"Paris\");\n  console.log(await weather.getTemperature(\"Hanoi\"), \"real calls:\", real.calls);\n  // 15 real calls: 2\n}\nmain();",
+          "lang": "typescript"
+        },
+        "client 变量的类型是 `WeatherService`，因此你可以在一个地方切换真实服务与代理，例如在依赖注入的配置中。"
+      ]
+    },
+    {
+      "h": "用 JavaScript Proxy 实现虚拟代理与保护代理",
+      "body": [
+        "JavaScript 内置了 `Proxy` 对象（ES2015），它通过称为陷阱（trap）的处理函数，拦截属性读取、写入和函数调用等操作。这是一种方便的做法，无需为每个接口都写一个类，就能构建代理。",
+        {
+          "code": "type Account = { owner: string; balance: number };\nfunction readOnly<T extends object>(target: T): T {\n  return new Proxy(target, {\n    set(_obj, prop) {\n      throw new Error(\"Cannot change \" + String(prop) + \": read-only\");\n    },\n  });\n}\nconst account = readOnly<Account>({ owner: \"Ana\", balance: 100 });\nconsole.log(account.balance); // 100\ntry {\n  account.balance = 0;\n} catch (e) {\n  console.log((e as Error).message); // Cannot change balance: read-only\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "JavaScript 的 `Proxy` 拦截的是对一个对象的操作，但它并非没有代价：每个被拦截的操作都会运行一个函数。在没有测量开销之前，不要把性能敏感的热点数据结构包进 `Proxy`。"
+        }
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        {
+          "ul": [
+            "当你想在不修改真实类及其调用方的前提下，加入懒加载、访问控制、缓存、日志或远程访问时，使用它。",
+            "当真实对象不受你控制时使用，比如库里的类或网络客户端。",
+            "当一个普通的函数包装就够用时，不要使用它。对于单个函数，像 `memoize(fn)` 这样的高阶函数比类更简单。",
+            "不要把缓慢或会失败的远程调用藏在一个看起来像本地对象的代理后面。调用方仍然需要处理延迟和错误，所以要在接口中体现出来（例如返回 `Promise`）。",
+            "注意对象的身份：代理与真实主题是不同的对象，所以 `proxy === real` 为 false。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Vue 3 的响应式系统建立在 JavaScript 的 `Proxy` 之上：读取属性会记录依赖，写入属性则触发更新。",
+            "Java 提供 `java.lang.reflect.Proxy`，用于在运行时创建动态代理类；框架用它在接口周围添加事务、安全检查或远程调用。",
+            "Hibernate 等对象关系映射器会为关联实体返回懒加载代理，并在首次访问时才从数据库加载真实数据。",
+            "远程过程调用库会生成客户端存根（stub），它们看起来像本地对象，却会把每次调用通过网络发送出去。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与代理的区别"
+            ],
+            "rows": [
+              [
+                "装饰",
+                "结构相同，目标不同：装饰增加新行为，并且常被叠加；代理控制访问，并且通常自己管理真实对象的生命周期。"
+              ],
+              [
+                "适配器",
+                "适配器给对象提供不同的接口；代理保持完全相同的接口。"
+              ],
+              [
+                "外观",
+                "外观为整个子系统提供一个新的、更简单的接口；代理只是代表一个对象。"
+              ],
+              [
+                "享元",
+                "享元通过共享对象来节省内存；虚拟代理通过延迟创建对象来节省时间和内存。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "代理与装饰有什么区别？",
+      "a": "两者都用相同的接口包装一个对象。装饰增加职责，通常由客户端来组合；代理则控制对真实对象的访问，并且常常自己创建或管理那个对象。"
+    },
+    {
+      "q": "JavaScript 的 Proxy 对象就是代理模式吗？",
+      "a": "它是一种让该模式易于实现的语言特性。JavaScript 的 `Proxy` 通过陷阱拦截对目标对象的操作，这恰好就是 GoF 意义上代理所做的事。"
+    },
+    {
+      "q": "什么是虚拟代理？",
+      "a": "虚拟代理代表一个创建开销很大的对象，比如一张大图片。只有在首次调用需要真实对象的方法时，它才会创建这个真实对象。"
+    },
+    {
+      "q": "反向代理服务器是代理模式的例子吗？",
+      "a": "它在网络层面遵循同样的思路：像 nginx 这样的服务器位于其他服务器前面，拥有相同的 HTTP 接口，并增加缓存、访问控制或负载均衡。GoF 模式描述的则是同一个程序内对象之间的这种思路。"
+    }
+  ]
+}

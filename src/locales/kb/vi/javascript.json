@@ -1,0 +1,191 @@
+{
+  "title": "Học JavaScript cơ bản: biến, hàm, mảng, đối tượng và bất đồng bộ — cv.cm",
+  "description": "Học JavaScript hiện đại trong một trang: chạy Hello world trên Node.js hoặc trình duyệt, let và const, kiểu dữ liệu, vòng lặp, hàm, mảng, đối tượng, promise và async.",
+  "h1": "Hướng dẫn học JavaScript cơ bản cho người mới",
+  "answer": "JavaScript là ngôn ngữ lập trình của web: mọi trình duyệt đều chạy được nó, còn Node.js chạy nó trên máy chủ và dòng lệnh. Khai báo biến bằng `const` và `let`, viết hàm dạng khai báo hoặc arrow function, lưu dữ liệu trong mảng và đối tượng, và xử lý tác vụ chậm như yêu cầu mạng bằng promise và `async`/`await`. Chạy `node hello.js` hoặc mở console của trình duyệt để bắt đầu.",
+  "sections": [
+    {
+      "h": "JavaScript là gì và dùng để làm gì",
+      "body": [
+        "JavaScript là ngôn ngữ kiểu động, được chuẩn hóa với tên ECMAScript. Nó ra đời cho các trang web, nơi nó phản ứng với thao tác nhấp chuột, cập nhật trang và giao tiếp với máy chủ. Ngày nay nó còn chạy trên máy chủ và công cụ thông qua Node.js, Deno và Bun, trong ứng dụng máy tính (Electron) và ứng dụng di động (React Native). Lập trình viên front end, full-stack và bất kỳ ai xây dựng cho web đều dùng nó. Cú pháp hiện đại trong trang này (`let`, `const`, arrow function, class, module) đến từ ES2015 và các bản sau."
+      ]
+    },
+    {
+      "h": "Chạy Hello, world",
+      "body": [
+        "Cách 1: mở một trang web bất kỳ, nhấn F12 (hoặc Cmd+Option+J trên Mac) để mở console dành cho nhà phát triển rồi gõ dòng bên dưới. Cách 2: cài Node.js từ nodejs.org, lưu dòng đó thành `hello.js` rồi chạy.",
+        {
+          "code": "console.log(\"Hello, world\");",
+          "lang": "javascript"
+        },
+        {
+          "code": "node hello.js\n# Hello, world",
+          "lang": "shell"
+        }
+      ]
+    },
+    {
+      "h": "Biến và các kiểu dữ liệu cơ bản",
+      "body": [
+        "Dùng `const` cho giá trị không gán lại và `let` cho giá trị thay đổi. Tránh `var` cũ, vì nó bỏ qua phạm vi khối. `typeof` cho biết kiểu của một giá trị.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "typeof"
+            ],
+            "rows": [
+              [
+                "number",
+                "`42`, `3.14`, `NaN`",
+                "`\"number\"`"
+              ],
+              [
+                "bigint",
+                "`10n`",
+                "`\"bigint\"`"
+              ],
+              [
+                "string",
+                "`\"hi\"`, `'hi'`, `` `hi ${name}` ``",
+                "`\"string\"`"
+              ],
+              [
+                "boolean",
+                "`true`, `false`",
+                "`\"boolean\"`"
+              ],
+              [
+                "undefined",
+                "`undefined`",
+                "`\"undefined\"`"
+              ],
+              [
+                "null",
+                "`null`",
+                "`\"object\"` (một điểm kỳ quặc từ lịch sử)"
+              ],
+              [
+                "object",
+                "`{}`, `[]`, hàm",
+                "`\"object\"` hoặc `\"function\"`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const name = \"Ada\";\nlet count = 1;\ncount += 1;\nconsole.log(`${name} has ${count} items`); // Ada has 2 items\nconsole.log(0.1 + 0.2);                    // 0.30000000000000004\nconsole.log(Number(\"12\") + 1, \"12\" + 1);   // 13 121",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Điều khiển luồng: if, vòng lặp và so sánh bằng",
+      "body": [
+        "Hãy luôn so sánh bằng `===` và `!==`. Toán tử lỏng `==` chuyển đổi kiểu trước nên `0 == \"\"` là `true`.",
+        {
+          "code": "const score = 72;\nif (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 70) {\n  console.log(\"B\"); // B\n} else {\n  console.log(\"C\");\n}\nfor (let i = 0; i < 3; i++) console.log(i); // 0 1 2\nfor (const fruit of [\"apple\", \"pear\"]) console.log(fruit);\nlet n = 10;\nwhile (n > 1) n = Math.floor(n / 2);\nconsole.log(n); // 1",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Hàm",
+      "body": [
+        "Hàm cũng là giá trị: bạn có thể lưu chúng trong biến, truyền cho hàm khác và trả về. Arrow function là dạng ngắn hơn và rất phổ biến cho callback.",
+        {
+          "code": "function greet(name, greeting = \"Hello\") {\n  return `${greeting}, ${name}!`;\n}\nconst square = (x) => x * x;\nconst sum = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log(greet(\"Lin\"));     // Hello, Lin!\nconsole.log(square(5));        // 25\nconsole.log(sum(1, 2, 3, 4));  // 10",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Mảng và đối tượng",
+      "body": [
+        "Mảng là danh sách có thứ tự; đối tượng ánh xạ khóa chuỗi sang giá trị. Cả hai đều được truyền theo tham chiếu. `Map` và `Set` là lựa chọn có sẵn khi khóa không phải chuỗi hoặc giá trị phải duy nhất.",
+        {
+          "code": "const nums = [3, 1, 2];\nnums.push(5);\nconst doubled = nums.map((n) => n * 2);\nconst evens = nums.filter((n) => n % 2 === 0);\nconsole.log(doubled, evens);             // [ 6, 2, 4, 10 ] [ 2 ]\nconsole.log([...nums].sort((a, b) => a - b)); // [ 1, 2, 3, 5 ]\nconst user = { name: \"Ann\", age: 31 };\nuser.city = \"Oslo\";\nconst { name, age } = user;              // destructuring\nconsole.log(name, age, Object.keys(user)); // Ann 31 [ 'name', 'age', 'city' ]\nconsole.log(JSON.stringify(user));       // {\"name\":\"Ann\",\"age\":31,\"city\":\"Oslo\"}",
+          "lang": "javascript"
+        },
+        {
+          "note": "`sort()` không có hàm so sánh sẽ sắp xếp như chuỗi, nên `[10, 9, 1].sort()` cho ra `[1, 10, 9]`. Hãy truyền `(a, b) => a - b` cho số."
+        }
+      ]
+    },
+    {
+      "h": "Tính năng đặc trưng: mã bất đồng bộ với promise",
+      "body": [
+        "JavaScript chạy mã của bạn trên một luồng với vòng lặp sự kiện (event loop). Các thao tác chậm (bộ hẹn giờ, mạng, tệp) không chặn; chúng trả về một promise sẽ hoàn tất sau. Hàm `async` cho phép bạn viết mã này từ trên xuống dưới với `await`.",
+        {
+          "code": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nasync function main() {\n  console.log(\"start\");\n  await wait(500);\n  console.log(\"half a second later\");\n  const [a, b] = await Promise.all([wait(100).then(() => 1), wait(200).then(() => 2)]);\n  console.log(a + b); // 3\n}\nmain();\nconsole.log(\"main() was called\"); // prints before \"half a second later\"",
+          "lang": "javascript"
+        },
+        "Class (`class Dog extends Animal {}`), module (`import` và `export`), optional chaining (`user?.address?.city`) và toán tử nullish (`value ?? \"default\"`) là những tính năng hiện đại khác mà bạn sẽ dùng thường xuyên."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Hãy ném các đối tượng `Error` và bắt chúng bằng `try`/`catch`. Với hàm `async`, promise bị từ chối sẽ trở thành ngoại lệ tại `await`.",
+        {
+          "code": "function parseAge(text) {\n  const age = Number(text);\n  if (!Number.isInteger(age) || age < 0) {\n    throw new Error(`invalid age: ${text}`);\n  }\n  return age;\n}\ntry {\n  console.log(parseAge(\"41\"));  // 41\n  console.log(parseAge(\"abc\"));\n} catch (err) {\n  console.log(err.message);     // invalid age: abc\n} finally {\n  console.log(\"done\");\n}",
+          "lang": "javascript"
+        }
+      ]
+    },
+    {
+      "h": "Một chương trình nhỏ hoàn chỉnh: tải dữ liệu và tóm tắt",
+      "body": [
+        "Script Node.js này (Node 18 trở lên có sẵn `fetch`) tải JSON từ một API công khai và in ra bản tóm tắt ngắn. Lưu thành `repos.mjs` và chạy `node repos.mjs nodejs`.",
+        {
+          "code": "const org = process.argv[2] ?? \"nodejs\";\nasync function topRepos(name, n = 3) {\n  const res = await fetch(`https://api.github.com/orgs/${name}/repos?per_page=100`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  const repos = await res.json();\n  return repos\n    .sort((a, b) => b.stargazers_count - a.stargazers_count)\n    .slice(0, n)\n    .map((r) => `${r.stargazers_count}\\t${r.name}`);\n}\ntry {\n  const lines = await topRepos(org);\n  console.log(lines.join(\"\\n\"));\n} catch (err) {\n  console.error(\"failed:\", err.message);\n  process.exitCode = 1;\n}",
+          "lang": "javascript"
+        },
+        "Phần mở rộng `.mjs` biến tệp thành ES module, cho phép dùng `await` ở cấp cao nhất."
+      ]
+    },
+    {
+      "h": "Những lỗi thường gặp của người mới",
+      "body": [
+        {
+          "ul": [
+            "Dùng `==` thay cho `===`, dẫn đến các chuyển đổi kiểu bất ngờ.",
+            "Quên `await`, nên bạn nhận được một đối tượng `Promise` đang chờ thay vì giá trị.",
+            "Tưởng `const` làm đối tượng bất biến. Nó chỉ ngăn gán lại; `obj.x = 1` vẫn chạy được. Dùng `Object.freeze` nếu cần.",
+            "So sánh đối tượng hoặc mảng bằng `===`, vốn kiểm tra danh tính chứ không phải nội dung.",
+            "Mất `this` khi truyền một phương thức làm callback. Hãy dùng arrow function hoặc `.bind(obj)`."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        "Hãy đọc MDN JavaScript Guide, tài liệu tham khảo miễn phí đầy đủ nhất, và luyện tập với DOM của trình duyệt (`document.querySelector`, sự kiện). Sau đó học npm và module, một framework như React, Vue hoặc Svelte cho front end, hoặc Node.js cho máy chủ. Thêm TypeScript lên trên JavaScript sẽ cho bạn kiểu tĩnh và hỗ trợ trình soạn thảo tốt hơn."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "JavaScript có giống Java không?",
+      "a": "Không. Đó là hai ngôn ngữ không liên quan dù tên giống nhau. Java là ngôn ngữ kiểu tĩnh, biên dịch thành bytecode JVM; JavaScript là kiểu động và chạy trong trình duyệt và Node.js."
+    },
+    {
+      "q": "Nên dùng let, const hay var?",
+      "a": "Mặc định hãy dùng `const` và dùng `let` khi cần gán lại. Tránh `var`, vì nó có phạm vi hàm và bị hoisting, gây ra lỗi."
+    },
+    {
+      "q": "null và undefined khác nhau thế nào?",
+      "a": "`undefined` nghĩa là biến hoặc thuộc tính chưa từng được gán giá trị. `null` là giá trị bạn cố ý gán để biểu thị không có gì."
+    },
+    {
+      "q": "Vì sao 0.1 + 0.2 không bằng 0.3?",
+      "a": "Số trong JavaScript là số thực dấu phẩy động nhị phân 64 bit, không thể lưu chính xác 0.1. Hãy làm tròn khi hiển thị, hoặc dùng số nguyên (ví dụ xu) cho tiền."
+    },
+    {
+      "q": "Tôi có cần Node.js để học JavaScript không?",
+      "a": "Không. Mọi trình duyệt đều chạy được JavaScript trong console dành cho nhà phát triển. Node.js hữu ích khi bạn muốn chạy script từ tệp hoặc xây dựng máy chủ và công cụ."
+    }
+  ]
+}

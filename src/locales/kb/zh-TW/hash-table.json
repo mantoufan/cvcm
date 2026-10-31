@@ -1,0 +1,218 @@
+{
+  "title": "雜湊表（Hash Table）圖解：雜湊函式、碰撞、負載因子與 Python dict — cv.cm",
+  "description": "雜湊表如何運作：雜湊函式、桶、碰撞處理（鏈結法與開放定址法）、擴容與平均 O(1) 查找，並附 Python 實作。",
+  "h1": "雜湊表（Hash Table）教學：原理、程式碼與時間複雜度",
+  "answer": "雜湊表把鍵值對存放在一個由桶（bucket）組成的陣列中。雜湊函式會把每個鍵轉成一個數字，這個數字對陣列大小取餘數後就決定了所屬的桶，因此查找、插入與刪除平均只需 O(1) 時間。當兩個鍵落入同一個桶（碰撞）時，雜湊表要嘛在每個桶裡維護一個小串列（鏈結法），要嘛去探測另一個空位（開放定址法）。Python 的 `dict` 和 `set` 就是雜湊表。",
+  "sections": [
+    {
+      "h": "雜湊表解決什麼問題",
+      "body": [
+        "假設你存了一百萬筆使用者資料，需要用電子郵件找出其中一筆。掃描串列是 O(n)；把串列排序後可以用二分搜尋做到 O(log n)，但插入就變慢了。雜湊表平均只要 O(1) 就能找到資料，不論有多少筆，插入與刪除也一樣快。",
+        "這就是雜湊表隨處可見的原因：程式語言的字典與集合、資料庫的雜湊索引、快取、編譯器的符號表，以及去除重複資料。"
+      ]
+    },
+    {
+      "h": "用白話理解",
+      "body": [
+        "想像一間有 100 個編號掛鉤的衣帽間。服務員不會逐一檢查每個掛鉤來找你的外套，而是依你的名字算出一個掛鉤編號，直接走過去。計算編號的函式就是雜湊函式。好的雜湊函式要夠快，同一個鍵永遠得到同一個數字，並且能把不同的鍵平均分散到各個掛鉤上。",
+        {
+          "ol": [
+            "計算 `h = hash(key)`。",
+            "選出桶：`index = h % capacity`。",
+            "只在那個桶裡尋找這個鍵。"
+          ]
+        },
+        {
+          "note": "鍵必須是可雜湊的，而且在放進表中之後不能改變。這就是為什麼 Python 允許 `tuple` 和 `str` 當作 dict 的鍵，卻不允許 `list`：如果鍵改變了，它的雜湊值也會改變，表就再也找不到它。"
+        }
+      ]
+    },
+    {
+      "h": "實例演練：用鏈結法處理碰撞",
+      "body": [
+        "取一個有 4 個桶的表，以及一個玩具雜湊函式：把字母的位置加總（a = 1，b = 2，……）。",
+        {
+          "table": {
+            "head": [
+              "鍵",
+              "雜湊值（字母加總）",
+              "桶（hash % 4）",
+              "插入後的桶內容"
+            ],
+            "rows": [
+              [
+                "`cat`",
+                "3 + 1 + 20 = 24",
+                "0",
+                "bucket 0: [cat]"
+              ],
+              [
+                "`dog`",
+                "4 + 15 + 7 = 26",
+                "2",
+                "bucket 2: [dog]"
+              ],
+              [
+                "`act`",
+                "1 + 3 + 20 = 24",
+                "0",
+                "bucket 0: [cat, act]"
+              ],
+              [
+                "`bee`",
+                "2 + 5 + 5 = 12",
+                "0",
+                "bucket 0: [cat, act, bee]"
+              ]
+            ]
+          }
+        },
+        "`act` 和 `bee` 都與 `cat` 碰撞。現在要查找 `bee`，就得檢查 bucket 0 裡的三個項目。如果雜湊函式不好（字母加總會忽略順序）或桶太少，鏈就會變長，雜湊表也隨之變慢。真正的雜湊函式會混合鍵的所有位元，真正的雜湊表在太滿時也會擴容。"
+      ]
+    },
+    {
+      "h": "以 Python 實作鏈結法雜湊表",
+      "body": [
+        "每個桶都是一個由 `[key, value]` 組成的串列。當項目數量超過桶數量的 0.75 倍（負載因子）時，雜湊表會把容量加倍，並重新插入所有項目。",
+        {
+          "code": "class HashTable:\n    def __init__(self, capacity=8):\n        self.buckets = [[] for _ in range(capacity)]\n        self.size = 0\n    def _bucket(self, key):\n        return self.buckets[hash(key) % len(self.buckets)]\n    def put(self, key, value):\n        bucket = self._bucket(key)\n        for pair in bucket:\n            if pair[0] == key:\n                pair[1] = value        # update existing key\n                return\n        bucket.append([key, value])\n        self.size += 1\n        if self.size > 0.75 * len(self.buckets):\n            self._resize()\n    def get(self, key, default=None):\n        for k, v in self._bucket(key):\n            if k == key:\n                return v\n        return default\n    def delete(self, key):\n        bucket = self._bucket(key)\n        for i, (k, _) in enumerate(bucket):\n            if k == key:\n                bucket.pop(i)\n                self.size -= 1\n                return True\n        return False\n    def _resize(self):\n        old = [pair for bucket in self.buckets for pair in bucket]\n        self.buckets = [[] for _ in range(2 * len(self.buckets))]\n        self.size = 0\n        for k, v in old:\n            self.put(k, v)",
+          "lang": "python"
+        },
+        {
+          "code": "t = HashTable()\nfor i, word in enumerate([\"red\", \"green\", \"blue\", \"cyan\", \"pink\", \"gold\", \"gray\"]):\n    t.put(word, i)\nt.put(\"red\", 100)\nt.delete(\"blue\")\nprint(t.get(\"red\"), t.get(\"blue\"), t.size, len(t.buckets))  # 100 None 6 16",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "碰撞處理策略比較",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "策略",
+              "運作方式",
+              "優點",
+              "缺點"
+            ],
+            "rows": [
+              [
+                "鏈結法（separate chaining）",
+                "每個桶存放一個項目串列（或樹）",
+                "簡單；刪除容易；能容忍高負載",
+                "每個項目要額外記憶體；需要追蹤指標"
+              ],
+              [
+                "線性探測（linear probing）",
+                "發生碰撞時嘗試下一格，再下一格",
+                "對快取友善；緊湊",
+                "會形成群聚；刪除需要墓碑標記"
+              ],
+              [
+                "二次探測 / 雙重雜湊",
+                "以遞增的步長或第二個雜湊值跳躍",
+                "群聚比線性探測少",
+                "較複雜；仍需要墓碑標記"
+              ]
+            ]
+          }
+        },
+        "CPython 的 `dict` 使用開放定址法，搭配擾動過的探測序列，並且從 Python 3.7 起保證迭代順序與插入順序一致。Java 的 `HashMap` 使用鏈結法，並把過長的鏈轉換成平衡樹。"
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "操作",
+              "平均",
+              "最差",
+              "原因"
+            ],
+            "rows": [
+              [
+                "查找",
+                "O(1)",
+                "O(n)",
+                "最差情況：所有鍵都碰撞到同一個桶"
+              ],
+              [
+                "插入",
+                "均攤 O(1)",
+                "O(n)",
+                "偶爾的擴容會重新插入每個項目"
+              ],
+              [
+                "刪除",
+                "O(1)",
+                "O(n)",
+                "與查找相同"
+              ],
+              [
+                "有序迭代（依鍵排序）",
+                "O(n log n)",
+                "O(n log n)",
+                "雜湊表不保留排序，必須自行排序"
+              ],
+              [
+                "空間",
+                "O(n)",
+                "O(n)",
+                "桶陣列會維持比 n 大一個常數倍"
+              ]
+            ]
+          }
+        },
+        "平均 O(1) 取決於良好的雜湊函式和有上限的負載因子。Python 會讓每個行程的字串雜湊值隨機化（雜湊種子），這樣攻擊者就無法輕易送出大量互相碰撞的鍵，把伺服器每個請求拖慢到 O(n)。"
+      ]
+    },
+    {
+      "h": "常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "使用可變物件當鍵，或在類別上定義了 `__eq__` 卻沒有對應的 `__hash__`。相等的物件必須有相等的雜湊值。",
+            "期待有排序。雜湊表提供快速查找，而不是順序；需要範圍查詢或最小鍵時，請用排序過的串列或平衡樹（二元搜尋樹）。",
+            "依賴不同次執行之間的 `hash()` 值：除非固定 `PYTHONHASHSEED`，否則字串的雜湊值在不同 Python 行程之間會不同。需要穩定雜湊值時請用 `hashlib`。",
+            "把雜湊表當成安全機制。雜湊表使用的是快速的非密碼學雜湊；密碼需要專用的密碼雜湊函式。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何時使用，以及常見的面試應用",
+      "body": [
+        "只要你需要快速回答「我看過這個嗎？」或「這個鍵對應的值是什麼？」，就用雜湊表。如果還需要順序、範圍或最接近的鍵，請用二元搜尋樹或排序陣列。",
+        "經典題目：兩數之和（儲存每個數字的索引，查找 `target - x`）、計算頻率（`collections.Counter`）、依排序後的字母把字母異位詞分組、偵測重複元素，以及在動態規劃中記憶化結果。",
+        {
+          "code": "def two_sum(nums, target):\n    seen = {}                      # value -> index\n    for i, x in enumerate(nums):\n        if target - x in seen:\n            return seen[target - x], i\n        seen[x] = i\n    return None\nprint(two_sum([2, 7, 11, 15], 9))  # (0, 1)",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "為什麼雜湊表的查找是 O(1)？",
+      "a": "計算雜湊值和桶索引只需要常數時間；而在良好的雜湊函式和有上限的負載因子下，平均每個桶只有少數幾個項目，因此在桶內搜尋也是常數時間。"
+    },
+    {
+      "q": "什麼是負載因子（load factor）？",
+      "a": "儲存的項目數量除以桶的數量。當它超過某個門檻（通常在 0.5 到 0.75 之間）時，雜湊表會配置更大的桶陣列，並重新插入所有項目。"
+    },
+    {
+      "q": "Python 的 dict 是雜湊表嗎？",
+      "a": "是的。`dict` 和 `set` 是以 C 實作、使用開放定址法的雜湊表。從 Python 3.7 起，`dict` 也會保留插入順序。"
+    },
+    {
+      "q": "雜湊表（hash table）和 hash map 有什麼不同？",
+      "a": "在大多數情況下兩者是同一件事：基於雜湊的鍵值結構。有些語言則把這些名稱用於特定的類別，例如 Java 的 `HashMap` 與較舊的同步版 `Hashtable`。"
+    },
+    {
+      "q": "雜湊表可以有重複的鍵嗎？",
+      "a": "不可以。插入已存在的鍵會取代它的值。如果要讓一個鍵對應多個值，請把值做成串列，或使用 `collections.defaultdict(list)`。"
+    }
+  ]
+}

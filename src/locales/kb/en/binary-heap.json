@@ -1,0 +1,178 @@
+{
+  "title": "Binary heap and priority queue explained: sift up, sift down and Python heapq — cv.cm",
+  "description": "How a binary heap works: the heap property, array layout, sift up and sift down, heapify in O(n), priority queues and Python heapq, with code and complexity.",
+  "h1": "Binary heap explained: priority queues, code and complexity",
+  "answer": "A binary heap is a complete binary tree stored in an array where every parent is smaller than or equal to its children (a min-heap) or larger than or equal to them (a max-heap). The smallest item is always at index 0, so you can read it in O(1), and insert or remove it in O(log n). Heaps are the standard way to implement a priority queue; in Python, use the `heapq` module.",
+  "sections": [
+    {
+      "h": "What problem a heap solves",
+      "body": [
+        "Many programs repeatedly need the most urgent item from a changing collection: the next event in a simulation, the closest unvisited node in Dijkstra's algorithm, the task with the highest priority, or the k largest values in a stream. Sorting the whole collection after every insert costs O(n log n) each time. A sorted list makes removal cheap but insertion O(n). A heap makes both insert and remove-min O(log n), which is exactly what a priority queue needs.",
+        {
+          "note": "A heap is only partially ordered. The minimum is at the top, but the rest of the array is not sorted. Do not expect `heap[1]` to be the second-smallest item."
+        }
+      ]
+    },
+    {
+      "h": "The idea: a tree stored in an array",
+      "body": [
+        "A heap is a complete binary tree: every level is full except possibly the last, which is filled from the left. That shape lets us store the tree in a plain list with no pointers.",
+        {
+          "table": {
+            "head": [
+              "Relationship",
+              "Index formula (0-based)"
+            ],
+            "rows": [
+              [
+                "Left child of i",
+                "`2 * i + 1`"
+              ],
+              [
+                "Right child of i",
+                "`2 * i + 2`"
+              ],
+              [
+                "Parent of i",
+                "`(i - 1) // 2`"
+              ]
+            ]
+          }
+        },
+        "Two repair operations keep the heap property. Sift up: after appending a new item at the end, swap it with its parent while it is smaller. Sift down: after moving the last item to the root, swap it with its smaller child while it is larger than that child. Each operation moves along one root-to-leaf path, so it does at most about log2(n) swaps."
+      ]
+    },
+    {
+      "h": "Worked example: push and pop",
+      "body": [
+        "Start with the min-heap `[2, 5, 3, 9, 6]` (2 is the root, its children are 5 and 3, and 5 has children 9 and 6).",
+        {
+          "ol": [
+            "Push 1: append it, giving `[2, 5, 3, 9, 6, 1]`. Index 5 has parent index 2 (value 3).",
+            "1 is smaller than 3, swap: `[2, 5, 1, 9, 6, 3]`. Now index 2 has parent index 0 (value 2).",
+            "1 is smaller than 2, swap: `[1, 5, 2, 9, 6, 3]`. It reached the root, stop.",
+            "Pop: remove the root 1, move the last item 3 to the root: `[3, 5, 2, 9, 6]`.",
+            "Children of the root are 5 and 2; the smaller is 2, and 3 is larger, swap: `[2, 5, 3, 9, 6]`. Index 2 has no children, stop. The pop returned 1."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Python implementation of a min-heap",
+      "body": [
+        "This class shows the mechanics. In real code use `heapq`, shown in the next section.",
+        {
+          "code": "class MinHeap:\n    def __init__(self):\n        self.a = []\n    def push(self, x):\n        a = self.a\n        a.append(x)\n        i = len(a) - 1\n        while i > 0 and a[i] < a[(i - 1) // 2]:      # sift up\n            p = (i - 1) // 2\n            a[i], a[p] = a[p], a[i]\n            i = p\n    def pop(self):\n        a = self.a\n        top, last = a[0], a.pop()                   # IndexError if empty\n        if a:\n            a[0], i = last, 0\n            while True:                             # sift down\n                c = 2 * i + 1\n                if c + 1 < len(a) and a[c + 1] < a[c]:\n                    c += 1                          # pick the smaller child\n                if c >= len(a) or a[i] <= a[c]:\n                    break\n                a[i], a[c] = a[c], a[i]\n                i = c\n        return top\nh = MinHeap()\nfor x in [5, 3, 9, 1, 6, 2]:\n    h.push(x)\nprint([h.pop() for _ in range(6)])  # [1, 2, 3, 5, 6, 9]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Priority queues with Python heapq",
+      "body": [
+        "The `heapq` module works on an ordinary list and always keeps it a min-heap. `heapify` turns an existing list into a heap in place in O(n). To use priorities, push tuples: Python compares tuples element by element, so the first element is the priority. Add a counter as a tie-breaker so that items with equal priority never need to be compared directly.",
+        {
+          "code": "import heapq\nfrom itertools import count\nnums = [7, 2, 9, 4, 1]\nheapq.heapify(nums)\nprint(nums[0], heapq.heappop(nums))      # 1 1\nprint(heapq.nlargest(2, [7, 2, 9, 4]))   # [9, 7]\ntasks, order = [], count()\nheapq.heappush(tasks, (2, next(order), \"write report\"))\nheapq.heappush(tasks, (1, next(order), \"fix outage\"))\nheapq.heappush(tasks, (2, next(order), \"reply to email\"))\nwhile tasks:\n    priority, _, name = heapq.heappop(tasks)\n    print(priority, name)\n# 1 fix outage\n# 2 write report\n# 2 reply to email",
+          "lang": "python"
+        },
+        "For a max-heap, Python 3.14 added `heapq.heapify_max`, `heapq.heappush_max` and `heapq.heappop_max`. On older versions, the usual trick is to push negated keys, for example `heapq.heappush(h, -score)`, and negate again when you pop."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Peek at the minimum",
+                "O(1)",
+                "it is always at index 0"
+              ],
+              [
+                "Push (insert)",
+                "O(log n)",
+                "sift up along one path"
+              ],
+              [
+                "Pop the minimum",
+                "O(log n)",
+                "sift down along one path"
+              ],
+              [
+                "Heapify n items",
+                "O(n)",
+                "most nodes are near the bottom and move only a little"
+              ],
+              [
+                "Search for an arbitrary value",
+                "O(n)",
+                "the heap is not sorted"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "heapify, then n pops"
+              ],
+              [
+                "Space",
+                "O(n)",
+                "a single array, no pointers"
+              ]
+            ]
+          }
+        },
+        "Building a heap by calling push n times costs O(n log n). `heapify` sifts down from the last parent to the root and costs O(n), so prefer it when you already have all the items."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Max-heap: the same code with the comparison reversed; in Python, use the `_max` functions (3.14 and later) or negate the keys.",
+            "d-ary heap: each node has d children. A shallower tree makes push cheaper and pop slightly more expensive.",
+            "Indexed priority queue / decrease-key: `heapq` cannot change the priority of an item in place. A common workaround (used in Dijkstra's algorithm) is to push a new entry and skip outdated entries when they are popped.",
+            "Comparing incomparable items: pushing `(priority, dict)` raises `TypeError` when two priorities are equal, because Python then compares the dicts. Add a counter as the second tuple element.",
+            "Treating the heap list as sorted. Only `heap[0]` is guaranteed; use `sorted(heap)` if you need everything in order.",
+            "Off-by-one errors when mixing 1-based formulas (children `2i` and `2i + 1`) from textbooks with 0-based Python lists."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "When to use a heap and typical problems",
+      "body": [
+        "Use a heap when you repeatedly need only the smallest or largest item from a collection that keeps changing. Use a sorted list or balanced tree when you also need ordered iteration or arbitrary deletions, and a plain `min()` when you only need the minimum once.",
+        "Classic uses: Dijkstra's shortest path and Prim's minimum spanning tree, merging k sorted lists (`heapq.merge`), finding the k largest or smallest items (keep a heap of size k, O(n log k)), the running median (two heaps), task schedulers and event-driven simulations, and heapsort."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a heap and a priority queue?",
+      "a": "A priority queue is an abstract data type: insert items and remove the one with the highest priority. A binary heap is the most common data structure used to implement it."
+    },
+    {
+      "q": "Is Python heapq a min-heap or a max-heap?",
+      "a": "The main functions such as `heappush` and `heappop` maintain a min-heap, so `heappop` returns the smallest item. Python 3.14 added separate `_max` functions for max-heaps; on older versions, store negated numbers."
+    },
+    {
+      "q": "Why is heapify O(n) and not O(n log n)?",
+      "a": "Heapify sifts down each parent starting from the bottom. About half the nodes are leaves and do not move, a quarter move at most one level, and so on; the total work sums to O(n)."
+    },
+    {
+      "q": "Is a binary heap the same as a binary search tree?",
+      "a": "No. A BST orders left and right subtrees so you can search any key in O(log n). A heap only guarantees that each parent is smaller than its children, so it finds the minimum fast but searching for other keys is O(n)."
+    },
+    {
+      "q": "Is heapsort stable?",
+      "a": "No. Swaps during sift down can reorder equal keys. It sorts in place in O(n log n) time with O(1) extra space."
+    }
+  ]
+}

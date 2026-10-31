@@ -1,0 +1,215 @@
+{
+  "title": "Pila y cola: LIFO vs FIFO, código en Python y complejidad — cv.cm",
+  "description": "Pilas (LIFO) y colas (FIFO) explicadas con código Python: list como pila, collections.deque como cola, emparejar paréntesis, BFS y complejidad.",
+  "h1": "Pila y cola explicadas: LIFO vs FIFO con ejemplos en Python",
+  "answer": "Una pila es una colección en la que el último elemento añadido es el primero en salir (LIFO, last in first out), como una pila de platos. Una cola es una colección en la que el primer elemento añadido es el primero en salir (FIFO, first in first out), como la fila de una caja. Ambas permiten añadir y quitar en tiempo O(1). En Python, usa una `list` como pila y `collections.deque` como cola.",
+  "sections": [
+    {
+      "h": "Qué problema resuelven las pilas y las colas",
+      "body": [
+        "Muchos programas necesitan recordar elementos y procesarlos después en un orden fijo. Una pila te da primero el elemento más reciente, lo que encaja con el trabajo anidado: llamadas a funciones, historial de deshacer, emparejar paréntesis y búsqueda en profundidad. Una cola te da primero el elemento más antiguo, lo que encaja con una espera justa: trabajos de impresión, planificadores de tareas, colas de mensajes y búsqueda en anchura.",
+        "Ambas son tipos de datos abstractos: se definen por sus operaciones, no por cómo se almacenan. Puedes construir cualquiera de las dos sobre un arreglo o una lista enlazada."
+      ]
+    },
+    {
+      "h": "Operaciones y nombres",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Pila (LIFO)",
+              "Cola (FIFO)"
+            ],
+            "rows": [
+              [
+                "Añadir un elemento",
+                "push: poner encima",
+                "enqueue: añadir al final"
+              ],
+              [
+                "Quitar un elemento",
+                "pop: sacar de arriba",
+                "dequeue: sacar del frente"
+              ],
+              [
+                "Mirar sin quitar",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Tipo en Python",
+                "`list` con `append` y `pop`",
+                "`collections.deque` con `append` y `popleft`"
+              ],
+              [
+                "Orden de salida para la entrada 1, 2, 3",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: push y pop paso a paso",
+      "body": [
+        "Mete 1, 2 y 3 en ambas estructuras y luego quita dos elementos.",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Contenido de la pila (cima a la derecha)",
+              "Contenido de la cola (frente a la izquierda)"
+            ],
+            "rows": [
+              [
+                "añadir 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "añadir 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "añadir 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "quitar",
+                "devuelve 3, queda [1, 2]",
+                "devuelve 1, queda [2, 3]"
+              ],
+              [
+                "quitar",
+                "devuelve 2, queda [1]",
+                "devuelve 2, queda [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Una `list` de Python ya es una buena pila: `append` y `pop()` operan sobre el final de la lista en O(1) amortizado. Para una cola, no uses `list.pop(0)`, porque desplaza todos los elementos restantes y cuesta O(n). Usa `collections.deque`, que es O(1) en ambos extremos.",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "Si quieres métodos con nombre y errores claros, envuelve las estructuras integradas en una clase pequeña:",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Problema clásico de pilas: paréntesis balanceados",
+      "body": [
+        "Para comprobar que cada paréntesis se cierra en el orden correcto, apila cada símbolo de apertura. Cuando veas uno de cierre, la cima de la pila debe ser su pareja de apertura.",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "La misma idea sirve para evaluar expresiones en notación polaca inversa, convertir una recursión en un bucle y dirigir la búsqueda en profundidad: sustituye la pila de llamadas por tu propia lista."
+      ]
+    },
+    {
+      "h": "Problema clásico de colas: búsqueda en anchura",
+      "body": [
+        "La búsqueda en anchura (BFS) recorre un grafo nivel por nivel. Una cola lo logra: los nodos descubiertos primero se procesan primero.",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Pila (`list`)",
+              "Cola (`deque`)",
+              "Cola (`list.pop(0)`)"
+            ],
+            "rows": [
+              [
+                "Añadir",
+                "O(1) amortizado",
+                "O(1)",
+                "O(1) amortizado"
+              ],
+              [
+                "Quitar",
+                "O(1)",
+                "O(1)",
+                "O(n), los elementos se desplazan a la izquierda"
+              ],
+              [
+                "Consultar",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "Espacio para n elementos",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "Amortizado significa que un `append` ocasional redimensiona el arreglo subyacente y cuesta O(n), pero promediado sobre muchas operaciones cada una es O(1)."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Deque (cola de doble extremo): añade y quita por ambos extremos. `collections.deque` lo es y puede actuar como pila y como cola.",
+            "Cola de prioridad: saca primero el elemento menor (o mayor), no el más antiguo. Usa `heapq`; consulta la página del montículo binario.",
+            "Búfer circular: una cola de tamaño fijo guardada en un arreglo con índices que dan la vuelta. `deque(maxlen=n)` descarta el elemento más antiguo cuando se llena.",
+            "Colas seguras para hilos: `queue.Queue` para hilos y `asyncio.Queue` para corrutinas se bloquean mientras esperan elementos.",
+            "Una cola construida con dos pilas: apila en la pila de entrada y, cuando la de salida está vacía, pasa todo a ella. Cada elemento se mueve una sola vez, así que las operaciones son O(1) amortizado."
+          ]
+        },
+        {
+          "note": "Llamar a `pop()` en una `list` vacía o a `popleft()` en un `deque` vacío lanza `IndexError`. Comprueba `if stack:` antes de sacar, o captura la excepción."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre una pila y una cola?",
+      "a": "Una pila saca primero el elemento añadido más recientemente (LIFO). Una cola saca primero el más antiguo (FIFO). Ambas añaden y quitan en tiempo O(1)."
+    },
+    {
+      "q": "¿Debo usar una list o un deque para una cola en Python?",
+      "a": "Usa `collections.deque`. Quitar del principio de una `list` con `pop(0)` es O(n) porque todos los demás elementos se desplazan; `deque.popleft()` es O(1)."
+    },
+    {
+      "q": "¿Dónde se usa una pila en programas reales?",
+      "a": "La pila de llamadas que guarda las llamadas a funciones, el historial de deshacer y rehacer, el botón de retroceso del navegador, el análisis de expresiones, el emparejado de paréntesis y la búsqueda en profundidad."
+    },
+    {
+      "q": "¿Qué es un desbordamiento de pila (stack overflow)?",
+      "a": "Ocurre cuando la pila de llamadas se queda sin espacio, normalmente por una recursión muy profunda o infinita. En Python aparece como `RecursionError` cuando se supera el límite de recursión."
+    },
+    {
+      "q": "¿queue.Queue es lo mismo que collections.deque?",
+      "a": "No. `queue.Queue` es una cola segura para hilos, con bloqueos y `get` y `put` bloqueantes, pensada para pasar trabajo entre hilos. `collections.deque` es un contenedor de propósito general más rápido y sin bloqueo."
+    }
+  ]
+}

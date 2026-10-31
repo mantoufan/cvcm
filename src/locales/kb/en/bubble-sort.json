@@ -1,0 +1,220 @@
+{
+  "title": "Bubble sort explained: how it works, Python code and complexity — cv.cm",
+  "description": "Bubble sort repeatedly swaps adjacent items that are out of order. See a pass-by-pass trace, Python code, O(n²) complexity, stability and better options.",
+  "h1": "Bubble sort explained: how it works, code and complexity",
+  "answer": "Bubble sort is a simple sorting algorithm that repeatedly walks through a list and swaps each pair of adjacent elements that are in the wrong order. After each pass, the largest remaining element has moved, or bubbled, to its final place at the end. It takes O(n²) time in the average and worst case and O(n) on a list that is already sorted, uses O(1) extra space and is stable. It is mainly used for teaching; real programs use the built-in sort.",
+  "sections": [
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Compare the first two elements. If the first is larger, swap them. Then compare the second and third, then the third and fourth, and so on to the end of the list. This is one pass. After the first pass, the largest element is guaranteed to be last, because every comparison carried it one step to the right.",
+        "Repeat the pass on the unsorted part, which shrinks by one element each time. If a whole pass makes no swaps, the list is sorted and you can stop early."
+      ]
+    },
+    {
+      "h": "Worked example, pass by pass",
+      "body": [
+        "Sort `[5, 1, 4, 2, 8]` in ascending order. Elements after the bar are in their final place.",
+        {
+          "table": {
+            "head": [
+              "Pass",
+              "Comparisons and swaps",
+              "List after the pass"
+            ],
+            "rows": [
+              [
+                "1",
+                "5↔1 swap, 5↔4 swap, 5↔2 swap, 5 and 8 keep",
+                "`[1, 4, 2, 5, 8]`  (8 placed)"
+              ],
+              [
+                "2",
+                "1 and 4 keep, 4↔2 swap, 4 and 5 keep",
+                "`[1, 2, 4, 5, 8]`  (5 placed)"
+              ],
+              [
+                "3",
+                "1 and 2 keep, 2 and 4 keep, no swaps",
+                "`[1, 2, 4, 5, 8]`  sorted, stop"
+              ]
+            ]
+          }
+        },
+        "Without the early exit, the algorithm would run a fourth pass. With it, three passes are enough here."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def bubble_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for end in range(n - 1, 0, -1):     # last index of the unsorted part\n        swapped = False\n        for i in range(end):\n            if items[i] > items[i + 1]:  # strict >, keeps equal items in order\n                items[i], items[i + 1] = items[i + 1], items[i]\n                swapped = True\n        if not swapped:                  # no swaps: already sorted\n            break\n    return items\nprint(bubble_sort([5, 1, 4, 2, 8]))     # [1, 2, 4, 5, 8]\nprint(bubble_sort([3, 3, 1]))           # [1, 3, 3]\nprint(bubble_sort([]))                  # []",
+          "lang": "python"
+        },
+        "The inner loop stops at `end` because everything after it is already in place. The `swapped` flag gives the O(n) best case on sorted input."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Case",
+              "Comparisons",
+              "Time",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Best (already sorted)",
+                "n − 1",
+                "O(n)",
+                "one pass with no swaps, then stop"
+              ],
+              [
+                "Average (random order)",
+                "about n²/2",
+                "O(n²)",
+                "about n²/4 swaps on average"
+              ],
+              [
+                "Worst (reverse order)",
+                "n(n − 1)/2",
+                "O(n²)",
+                "every comparison is a swap"
+              ],
+              [
+                "Extra space",
+                "",
+                "O(1)",
+                "sorts in place with a few variables"
+              ]
+            ]
+          }
+        },
+        "For 10,000 elements in reverse order, that is almost 50 million comparisons and swaps. The number of swaps always equals the number of inversions, which are pairs of elements that are out of order."
+      ]
+    },
+    {
+      "h": "How bubble sort compares with other sorts",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best",
+              "Average",
+              "Worst",
+              "Extra space",
+              "Stable"
+            ],
+            "rows": [
+              [
+                "Bubble sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Selection sort",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Yes"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Timsort (Python `sorted`)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        "Bubble sort is stable because it only swaps adjacent elements and only when they are strictly out of order, so equal elements never pass each other. Insertion sort has the same complexity and stability but in practice does fewer writes and is faster, which is why it, not bubble sort, is used inside hybrid algorithms such as Timsort."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Cocktail shaker sort goes left-to-right and then right-to-left on alternating passes, which moves small elements at the end (called turtles) to the front faster. It is still O(n²).",
+            "Comb sort compares elements a gap apart and shrinks the gap, which removes many turtles early; with gap 1 it becomes bubble sort.",
+            "Odd-even transposition sort compares all odd pairs, then all even pairs, and is used to teach parallel sorting."
+          ]
+        },
+        {
+          "note": "Common bugs: using `>=` instead of `>` (this swaps equal elements and breaks stability), letting the inner loop run to `n` so `items[i + 1]` goes out of range, and forgetting the early-exit flag, which loses the O(n) best case."
+        }
+      ]
+    },
+    {
+      "h": "When to use bubble sort",
+      "body": [
+        "Almost never in production code. In Python, call `sorted(items)` or `items.sort()`, which use Timsort, run in O(n log n) and are stable. Bubble sort is still useful to know because it is the simplest sort to explain, its proof of correctness is easy to follow, and it is a common first interview or exam question about loops, swaps and complexity.",
+        "The one practical advantage is detecting a sorted list in a single O(n) pass, but a plain loop that compares neighbours does that without sorting anything."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is bubble sort stable?",
+      "a": "Yes. It only swaps adjacent elements when the left one is strictly greater, so equal elements keep their original order."
+    },
+    {
+      "q": "What is the time complexity of bubble sort?",
+      "a": "O(n²) in the average and worst case. With an early exit when a pass makes no swaps, the best case on already sorted input is O(n)."
+    },
+    {
+      "q": "Why is it called bubble sort?",
+      "a": "Large elements move toward the end of the list one swap at a time, like bubbles rising to the surface. After pass k, the k largest elements are in place."
+    },
+    {
+      "q": "Is bubble sort faster than insertion sort?",
+      "a": "No. Both are O(n²), but insertion sort usually does fewer operations and runs faster in practice, especially on nearly sorted data."
+    },
+    {
+      "q": "Does bubble sort use extra memory?",
+      "a": "No. It sorts in place and needs only O(1) extra space for the loop indexes and a temporary value during a swap."
+    }
+  ]
+}

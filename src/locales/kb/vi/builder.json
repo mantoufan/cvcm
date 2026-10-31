@@ -1,0 +1,149 @@
+{
+  "title": "Mẫu Builder: xây dựng từng bước, fluent API, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Builder: xây đối tượng phức tạp từng bước bằng fluent API trong TypeScript, vai trò Director, và khi nào một đối tượng tùy chọn là đủ.",
+  "h1": "Mẫu Builder giải thích kèm ví dụ",
+  "answer": "Builder là mẫu thiết kế khởi tạo tách việc xây dựng một đối tượng phức tạp khỏi cách biểu diễn cuối cùng của nó, để cùng một quy trình từng bước có thể tạo ra các kết quả khác nhau. Trong mã hiện đại, nó thường xuất hiện dưới dạng fluent API: bạn gọi các phương thức như `.url()`, `.header()` và `.timeout()` trên một builder, rồi `.build()` trả về một đối tượng hoàn chỉnh đã được kiểm tra. Nó thay thế các hàm khởi tạo dài với nhiều tham số tùy chọn.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Tách việc xây dựng một đối tượng phức tạp khỏi cách biểu diễn của nó để cùng một quy trình xây dựng có thể tạo ra các biểu diễn khác nhau. Builder là một trong năm mẫu khởi tạo trong cuốn sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề nó giải quyết",
+      "body": [
+        "Hãy hình dung một đối tượng yêu cầu HTTP với URL, phương thức, số header tùy ý, body tùy chọn, thời gian chờ và số lần thử lại. Một hàm khởi tạo cho tất cả những thứ này rất khó gọi đúng:",
+        {
+          "code": "class HttpRequest {\n  constructor(\n    readonly url: string,\n    readonly method: string,\n    readonly headers: Record<string, string>,\n    readonly body?: string,\n    readonly timeoutMs?: number,\n    readonly retries?: number,\n  ) {}\n}\n\n// Which argument is which? Easy to swap 3 and 5000 by mistake.\nconst req = new HttpRequest(\"https://api.example.com\", \"POST\", {}, undefined, 3, 5000);",
+          "lang": "typescript"
+        },
+        "Đây gọi là hàm khởi tạo kính viễn vọng (telescoping constructor). Nó cũng không có chỗ cho các quy tắc như \"yêu cầu GET không được có body\", và không thể xây dựng dần dần, ví dụ khi header được thêm ở nhiều nơi trước khi gửi."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần tham gia",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Builder",
+                "Khai báo các bước tạo các phần của sản phẩm.",
+                "Các phương thức của `RequestBuilder`"
+              ],
+              [
+                "ConcreteBuilder",
+                "Triển khai các bước, giữ trạng thái dở dang và trả về kết quả.",
+                "`RequestBuilder`"
+              ],
+              [
+                "Director",
+                "Tùy chọn. Chạy các bước theo thứ tự cố định để tạo các cấu hình thông dụng.",
+                "`jsonPost()`"
+              ],
+              [
+                "Product",
+                "Đối tượng phức tạp đang được xây dựng.",
+                "`HttpRequest`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Triển khai bằng TypeScript",
+      "body": [
+        "Mỗi bước lưu một giá trị và trả về `this`, nên các lời gọi có thể nối chuỗi. `build()` kiểm tra tổ hợp và trả về một sản phẩm bất biến:",
+        {
+          "code": "interface HttpRequest {\n  readonly url: string;\n  readonly method: \"GET\" | \"POST\";\n  readonly headers: Readonly<Record<string, string>>;\n  readonly body?: string;\n  readonly timeoutMs: number;\n}\n\nclass RequestBuilder {\n  private method: \"GET\" | \"POST\" = \"GET\";\n  private headers: Record<string, string> = {};\n  private body?: string;\n  private timeoutMs = 10_000;\n\n  constructor(private readonly url: string) {}\n\n  post(body: string): this { this.method = \"POST\"; this.body = body; return this; }\n  header(name: string, value: string): this { this.headers[name] = value; return this; }\n  timeout(ms: number): this { this.timeoutMs = ms; return this; }\n\n  build(): HttpRequest {\n    if (this.timeoutMs <= 0) throw new Error(\"timeout must be positive\");\n    return Object.freeze({\n      url: this.url, method: this.method, headers: { ...this.headers },\n      body: this.body, timeoutMs: this.timeoutMs,\n    });\n  }\n}\n\nconst request = new RequestBuilder(\"https://api.example.com/orders\")\n  .header(\"Accept\", \"application/json\")\n  .timeout(5_000)\n  .build();\nconsole.log(request.method, request.timeoutMs, request.headers);\n// GET 5000 { Accept: 'application/json' }",
+          "lang": "typescript"
+        },
+        "Director chỉ là đoạn mã biết một công thức thông dụng. Trong TypeScript, nó thường là một hàm thuần điều khiển builder:",
+        {
+          "code": "interface Steps {\n  header(name: string, value: string): this;\n  post(body: string): this;\n}\n\n// Director: a reusable recipe that drives any builder with these steps.\nfunction jsonPost<B extends Steps>(builder: B, data: unknown): B {\n  return builder\n    .header(\"Content-Type\", \"application/json\")\n    .post(JSON.stringify(data));\n}\n\nclass LogBuilder implements Steps {\n  log: string[] = [];\n  header(name: string, value: string): this { this.log.push(`${name}=${value}`); return this; }\n  post(body: string): this { this.log.push(`POST ${body}`); return this; }\n}\n\nconsole.log(jsonPost(new LogBuilder(), { id: 7 }).log);\n// [ 'Content-Type=application/json', 'POST {\"id\":7}' ]",
+          "lang": "typescript"
+        },
+        "Điều này cho thấy ý tưởng gốc của GoF: cùng các bước xây dựng, do cùng một director điều khiển, có thể cấp cho các builder khác nhau và tạo ra các biểu diễn khác nhau, ở đây là một bản ghi nhật ký thay vì một yêu cầu."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng, và khi nào không",
+      "body": [
+        "Dùng mẫu Builder khi:",
+        {
+          "ul": [
+            "Một đối tượng có nhiều phần tùy chọn, hoặc các phần phải được thêm lần lượt từng cái.",
+            "Việc xây dựng có các quy tắc liên quan đến nhiều trường và cần được kiểm tra một lần, trong `build()`.",
+            "Bạn muốn đối tượng hoàn thiện là bất biến, nhưng vẫn lắp ráp từng bước.",
+            "Cùng một quy trình xây dựng phải tạo ra các biểu diễn khác nhau, như một tài liệu được xuất ra HTML, Markdown hoặc PDF."
+          ]
+        },
+        "Tránh nó khi:",
+        {
+          "ul": [
+            "Đối tượng chỉ có vài trường. Hàm khởi tạo ngắn hơn và rõ ràng không kém.",
+            "Ngôn ngữ của bạn đã có tham số có tên hoặc tham số tùy chọn. Trong TypeScript, một đối tượng options duy nhất thường loại bỏ hoàn toàn nhu cầu về builder."
+          ]
+        },
+        {
+          "code": "interface RequestOptions {\n  url: string;\n  method?: \"GET\" | \"POST\";\n  headers?: Record<string, string>;\n  timeoutMs?: number;\n}\n\nfunction createRequest({ url, method = \"GET\", headers = {}, timeoutMs = 10_000 }: RequestOptions) {\n  return { url, method, headers, timeoutMs };\n}\n\nconsole.log(createRequest({ url: \"/orders\", timeoutMs: 5_000 }).method); // GET",
+          "lang": "typescript"
+        },
+        {
+          "note": "Một builder được dùng lại sau `build()` có thể rò rỉ trạng thái sang đối tượng kế tiếp. Hoặc hãy sao chép mọi collection trong `build()`, như ví dụ làm với `headers`, hoặc ghi rõ rằng mỗi builder chỉ tạo một đối tượng."
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Java: `java.net.http.HttpRequest.newBuilder()` trả về một `HttpRequest.Builder`; bạn nối chuỗi `uri()`, `header()` và `timeout()`, rồi gọi `build()`.",
+            "Java: `Locale.Builder` lắp ráp và kiểm tra một locale từ các phần ngôn ngữ, vùng và chữ viết.",
+            "Java và C#: `StringBuilder` lắp ráp một chuỗi từ nhiều phần được nối thêm trước khi tạo ra chuỗi bất biến cuối cùng.",
+            "Nhiều trình xây dựng truy vấn SQL và builder dữ liệu kiểm thử dùng cùng phong cách fluent."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "ul": [
+            "Mẫu Abstract Factory tạo cả họ sản phẩm và trả về từng cái ngay lập tức; Builder xây một sản phẩm phức tạp từng bước và trả về ở cuối.",
+            "Cây Composite thường được tạo bằng builder, vì xây một cây từng nút là một chuỗi bước tự nhiên.",
+            "Fluent interface là phong cách API nối chuỗi các lời gọi trả về `this`. Builder thường dùng nó, nhưng chúng không phải là một.",
+            "Mẫu Prototype có thể là lựa chọn thay thế khi hầu hết đối tượng mới là các biến thể nhỏ của một mẫu dựng sẵn."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vì sao mỗi phương thức builder trả về this?",
+      "a": "Trả về builder cho phép bạn nối chuỗi các lời gọi trong một biểu thức, như `.header(...).timeout(...).build()`. Trả về `this` trong TypeScript cũng giữ đúng kiểu trong các lớp con."
+    },
+    {
+      "q": "Tôi có cần lớp Director không?",
+      "a": "Không. Director là tùy chọn trong mô tả của GoF. Trong thực tế, một hàm áp dụng một chuỗi bước thông dụng thường là đủ."
+    },
+    {
+      "q": "Builder còn hữu ích trong TypeScript không?",
+      "a": "Đôi khi. Một đối tượng options với giá trị mặc định đáp ứng hầu hết trường hợp đơn giản. Builder vẫn hữu ích khi đối tượng được lắp ráp dần dần, khi cần kiểm tra chéo giữa các trường, hoặc khi bạn muốn kết quả bất biến."
+    },
+    {
+      "q": "Khác nhau giữa Builder và Factory Method là gì?",
+      "a": "Factory Method quyết định lớp nào sẽ được khởi tạo và trả về đối tượng trong một lời gọi. Builder cho client kiểm soát cách một đối tượng được lắp ráp qua nhiều lời gọi."
+    }
+  ]
+}

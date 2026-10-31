@@ -1,0 +1,200 @@
+{
+  "title": "Objective-C 入门教程：消息、类、Foundation 集合与块 — cv.cm",
+  "description": "学习 Objective-C 基础：用 clang 编译 Hello world、发送消息、定义类和属性、使用 NSArray 和 NSDictionary、块、ARC 和 NSError。",
+  "h1": "Objective-C 入门教程",
+  "answer": "Objective-C 是在 C 之上加入 Smalltalk 风格面向对象消息机制的语言。你通过方括号发送消息来调用方法，如 `[object doSomething:arg]`，在 `@interface` 和 `@implementation` 块中定义类，并使用 Apple 的 Foundation 框架处理字符串、数组和字典。在 Swift 出现之前，它是 macOS 和 iOS 应用的主要语言，至今仍用于许多现有的 Apple 代码库。在 Mac 上，用 `clang -fobjc-arc -framework Foundation hello.m` 编译。",
+  "sections": [
+    {
+      "h": "Objective-C 是什么，谁在用",
+      "body": [
+        "Objective-C 由 Brad Cox 和 Tom Love 在 20 世纪 80 年代初创建，被 NeXT 用于其 NeXTSTEP 系统，后来由 Apple 继承，NeXTSTEP 成了 macOS 和 iOS 的基础。它是 C 的严格超集：任何 C 代码都是合法的 Objective-C，两者可以自由混用。",
+        "如今 Apple 推荐新应用使用 Swift，但 Objective-C 仍然受到完全支持。它存在于较老的 iOS 和 macOS 应用、许多系统框架和第三方库中，以及把 C 或 C++ 与 Apple API 混合使用的项目里。Swift 和 Objective-C 可以在同一个项目中互操作，所以对 Apple 平台开发者来说两者都懂很有用。"
+      ]
+    },
+    {
+      "h": "安装并运行 Hello, world",
+      "body": [
+        "在 macOS 上，安装 Xcode 或只安装命令行工具（`xcode-select --install`），其中包含 clang 编译器和 Foundation 框架。源文件使用 `.m` 扩展名；头文件使用 `.h`。",
+        {
+          "code": "// hello.m\n#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSLog(@\"Hello, world!\");\n    }\n    return 0;\n}",
+          "lang": "objc"
+        },
+        {
+          "code": "clang -fobjc-arc -framework Foundation hello.m -o hello\n./hello\n# 2026-10-31 10:00:00.000 hello[1234:5678] Hello, world!",
+          "lang": "shell"
+        },
+        "`NSLog` 写入标准错误，并加上时间戳和进程名。`@\"...\"` 创建的是 `NSString` 对象，而不是 C 字符串。`-fobjc-arc` 启用自动引用计数（ARC），这是标准的内存管理方式。在 Linux 上，GNUstep 项目提供兼容的 Foundation 库，构建命令有所不同。"
+      ]
+    },
+    {
+      "h": "类型、对象与消息",
+      "body": [
+        "因为 Objective-C 就是 C，所以所有 C 类型都可用。对象总是通过指针使用（`NSString *name`）。调用方法称为发送消息；参数与方法名的各个部分交错排列。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "C 数值类型",
+                "`int`, `double`, `NSInteger`",
+                "`NSInteger` 在 64 位平台上是 64 位"
+              ],
+              [
+                "BOOL",
+                "`BOOL ok = YES;`",
+                "`YES` / `NO`"
+              ],
+              [
+                "NSString *",
+                "`@\"hello\"`",
+                "不可变的字符串对象"
+              ],
+              [
+                "NSNumber *",
+                "`@42`, `@3.14`, `@(x + 1)`",
+                "封装数字，使集合可以存放它"
+              ],
+              [
+                "id",
+                "`id thing = @\"x\";`",
+                "指向任意对象的指针，没有静态类型"
+              ],
+              [
+                "nil",
+                "`nil`",
+                "空对象指针"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSString *name = @\"Ana\";\nNSInteger age = 30;\nNSString *line = [NSString stringWithFormat:@\"%@ is %ld\", name, (long)age];\nNSLog(@\"%@\", line);                          // Ana is 30\nNSLog(@\"%lu\", (unsigned long)[name length]); // 3\nNSString *upper = [name uppercaseString];    // @\"ANA\"\nBOOL same = [name isEqualToString:@\"Ana\"];   // YES\nNSString *nothing = nil;\nNSLog(@\"%lu\", (unsigned long)[nothing length]); // 0: messages to nil return 0",
+          "lang": "objc"
+        },
+        "在格式字符串中，`%@` 打印一个对象（会调用它的 `description` 方法）。向 `nil` 发送消息是允许的，会返回 `nil` 或 0，这避免了许多崩溃，但也可能掩盖 bug。"
+      ]
+    },
+    {
+      "h": "控制流",
+      "body": [
+        "控制流与 C 完全相同：`if`、`else`、`switch`、`for`、`while` 和 `do ... while`。Objective-C 为集合增加了用 `for ... in` 的快速枚举。",
+        {
+          "code": "NSInteger score = 85;\nif (score >= 90) {\n    NSLog(@\"A\");\n} else if (score >= 80) {\n    NSLog(@\"B\");\n} else {\n    NSLog(@\"C\");\n}\n\nfor (int i = 1; i <= 3; i++) {\n    NSLog(@\"%d squared is %d\", i, i * i);\n}\n\nfor (NSString *fruit in @[@\"apple\", @\"pear\"]) {\n    NSLog(@\"%@\", fruit);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "类、属性与方法",
+      "body": [
+        "类有公开的接口（通常在 `.h` 文件中）和实现（在 `.m` 文件中）。实例方法以 `-` 开头，类方法以 `+` 开头。`@property` 声明一个属性，并生成它的 getter、setter，以及一个以下划线开头命名的后备变量。",
+        {
+          "code": "@interface Person : NSObject\n@property (nonatomic, copy) NSString *name;\n@property (nonatomic) NSInteger age;\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age;\n- (NSString *)greeting;\n@end\n\n@implementation Person\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age {\n    self = [super init];\n    if (self) {\n        _name = [name copy];\n        _age = age;\n    }\n    return self;\n}\n\n- (NSString *)greeting {\n    return [NSString stringWithFormat:@\"Hi, I am %@, %ld\", self.name, (long)self.age];\n}\n@end\n\n// Usage inside main:\nPerson *ana = [[Person alloc] initWithName:@\"Ana\" age:30];\nNSLog(@\"%@\", [ana greeting]);   // Hi, I am Ana, 30\nana.age = 31;                   // dot syntax calls the setter",
+          "lang": "objc"
+        },
+        "对象分两步创建：`alloc` 分配内存，`init...` 方法对其初始化。上面的方法名为 `initWithName:age:`（冒号是名字的一部分）。协议（`@protocol`）起到接口的作用，分类（category）让你可以给现有的类添加方法，甚至是 `NSString`。"
+      ]
+    },
+    {
+      "h": "Foundation 集合与块",
+      "body": [
+        "Foundation 框架提供不可变集合及其可变子类。字面量让它们写起来很简短。集合只能存放对象，所以数字要封装为 `NSNumber`，而且不能存放 `nil`（请改用 `[NSNull null]`）。",
+        {
+          "table": {
+            "head": [
+              "类",
+              "字面量或创建方式",
+              "可变版本"
+            ],
+            "rows": [
+              [
+                "NSArray",
+                "`@[@\"Ana\", @\"Ben\"]`",
+                "NSMutableArray"
+              ],
+              [
+                "NSDictionary",
+                "`@{@\"Ana\": @30}`",
+                "NSMutableDictionary"
+              ],
+              [
+                "NSSet",
+                "`[NSSet setWithArray:arr]`",
+                "NSMutableSet"
+              ],
+              [
+                "NSString",
+                "`@\"text\"`",
+                "NSMutableString"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSArray<NSString *> *names = @[@\"Ana\", @\"Ben\"];\nNSMutableArray<NSString *> *more = [names mutableCopy];\n[more addObject:@\"Cleo\"];\nNSDictionary<NSString *, NSNumber *> *ages = @{@\"Ana\": @30, @\"Ben\": @17};\nNSLog(@\"%lu names, Ana is %@\", (unsigned long)more.count, ages[@\"Ana\"]);\n\nNSInteger (^square)(NSInteger) = ^(NSInteger x) { return x * x; };\nNSLog(@\"%ld\", (long)square(7));    // 49\n\nNSArray<NSNumber *> *sorted = [@[@3, @1, @2]\n    sortedArrayUsingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {\n        return [a compare:b];\n    }];\nNSLog(@\"%@\", [sorted componentsJoinedByString:@\", \"]);   // 1, 2, 3",
+          "lang": "objc"
+        },
+        "用 `^` 书写的块是闭包：能捕获外围作用域变量的匿名函数。Apple 的 API 把它们用于回调、排序以及配合 Grand Central Dispatch 的异步工作。`<NSString *>` 这类部分是轻量级泛型，对编译器和 Swift 有帮助；它们是可选的。"
+      ]
+    },
+    {
+      "h": "内存管理与错误处理",
+      "body": [
+        "使用 ARC 时，编译器会替你插入引用计数调用：当没有强引用指向对象时，对象就会被释放。你只需要打破循环引用，通常是把其中一方标记为 `weak`（例如委托属性）。",
+        "可恢复的错误使用 `NSError` 模式：方法在失败时返回 `nil` 或 `NO`，并填充一个按引用传入的 `NSError` 对象。异常（`@try`、`@catch`、`NSException`）是存在的，但在 Cocoa 中它们表示程序员的错误，如索引越界，而不是正常的失败。",
+        {
+          "code": "NSError *error = nil;\nNSString *text = [NSString stringWithContentsOfFile:@\"/no/such/file\"\n                                           encoding:NSUTF8StringEncoding\n                                              error:&error];\nif (text == nil) {\n    NSLog(@\"Failed: %@\", error.localizedDescription);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        {
+          "code": "#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSString *text = @\"the cat and the hat and the bat\";\n        NSMutableDictionary<NSString *, NSNumber *> *counts = [NSMutableDictionary dictionary];\n        for (NSString *word in [text componentsSeparatedByString:@\" \"]) {\n            counts[word] = @(counts[word].integerValue + 1);\n        }\n        NSArray<NSString *> *sorted = [counts keysSortedByValueUsingComparator:\n            ^NSComparisonResult(NSNumber *a, NSNumber *b) { return [b compare:a]; }];\n        for (NSString *word in [sorted subarrayWithRange:NSMakeRange(0, 2)]) {\n            printf(\"%s %ld\\n\", word.UTF8String, (long)counts[word].integerValue);\n        }\n    }\n    return 0;\n}\n// the 3\n// and 2",
+          "lang": "objc"
+        },
+        "对于新单词，`counts[word]` 是 `nil`，而 `nil.integerValue` 返回 0，所以第一次计数变成 1。比较器反转顺序，使结果按次数从高到低排序，`printf` 打印时不带 `NSLog` 的前缀。",
+        {
+          "note": "初学者常见错误：用 `==` 比较字符串（它比较的是指针；请用 `isEqualToString:`）；忘记字符串字面量前的 `@`；忘记对象声明里的 `*`；把 `nil` 放进数组或字典字面量，会在运行时崩溃；用 `%d` 而不是 `%ld` 加类型转换来打印 `NSInteger`；以及编译时没加 `-fobjc-arc`。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "文档归档中 Apple 的《Programming with Objective-C》指南，介绍语言基础。",
+            "Apple 开发者文档中的 Foundation 框架参考。",
+            "Clang 关于自动引用计数的文档，了解确切的内存规则。",
+            "如果你维护混合代码库，了解 Objective-C 和 Swift 如何协同工作。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Objective-C 现在还有人用吗？",
+      "a": "有，主要在现有的 iOS 和 macOS 应用与库中。Apple 推荐新代码使用 Swift，但 Xcode 和 Apple SDK 仍然支持 Objective-C。"
+    },
+    {
+      "q": "应该先学 Swift 还是 Objective-C？",
+      "a": "开发新的 Apple 应用，先学 Swift。当你需要阅读或维护较老的代码、紧密使用 C 或 C++ 库，或想了解 Apple 框架底层的工作方式时，再学 Objective-C。"
+    },
+    {
+      "q": "Objective-C 里的方括号是什么意思？",
+      "a": "它们发送一条消息：`[receiver message]` 调用对象 `receiver` 上的 `message` 方法。参数跟在冒号后面，如 `[dict setObject:value forKey:key]`。"
+    },
+    {
+      "q": "Objective-C 有垃圾回收吗？",
+      "a": "现代 Objective-C 使用自动引用计数（ARC），由编译器添加 retain 和 release 调用。Apple 为 macOS 提供的旧垃圾回收器已被弃用，不再可用。"
+    }
+  ]
+}

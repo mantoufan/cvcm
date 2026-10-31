@@ -1,0 +1,237 @@
+{
+  "title": "Counting sort explicado: cómo funciona, código en Python y complejidad — cv.cm",
+  "description": "Counting sort (ordenamiento por conteo) ordena enteros de un rango pequeño en tiempo O(n + k) contando cada valor, sin comparaciones. Traza, código estable en Python y cuándo usarlo.",
+  "h1": "Counting sort (ordenamiento por conteo): cómo funciona, código y complejidad",
+  "answer": "Counting sort es un algoritmo de ordenamiento sin comparaciones para enteros (o claves que se pueden convertir en enteros) dentro de un rango conocido y pequeño de tamaño k. Cuenta cuántas veces aparece cada valor, convierte los conteos en posiciones iniciales mediante una suma acumulada y coloca cada elemento directamente en su posición. Se ejecuta en tiempo O(n + k) y usa O(n + k) de espacio extra. La versión con sumas de prefijos es estable, lo que la convierte en la pieza básica de radix sort.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve counting sort",
+      "body": [
+        "Cualquier ordenamiento que solo compare pares de elementos necesita Ω(n log n) comparaciones en el peor caso. Counting sort evita este límite al no comparar nada: usa la propia clave como índice de un arreglo. Cuando las claves son enteros pequeños, como notas de examen de 0 a 100, edades, bytes de 0 a 255 o valoraciones de estrellas, es más rápido que cualquier ordenamiento por comparación.",
+        "El precio es una memoria proporcional al rango de las claves. Ordenar un puñado de enteros de 64 bits repartidos por todo el rango requeriría un arreglo de conteo imposiblemente grande."
+      ]
+    },
+    {
+      "h": "La idea y un ejemplo resuelto",
+      "body": [
+        "Ordena `[4, 2, 2, 8, 3, 3, 1]`, cuyos valores están en el rango de 0 a 8 (k = 9).",
+        {
+          "ol": [
+            "Contar cada valor: `count[v]` es el número de veces que aparece v.",
+            "Sumas de prefijos: sustituye cada conteo por el número de elementos menores o iguales que ese valor. Entonces `count[v]` es una posición más allá de la última donde corresponde v.",
+            "Colocar los elementos: recorre la entrada de derecha a izquierda; para cada valor v, decrementa `count[v]` y escribe v en esa posición. Recorrer de derecha a izquierda mantiene los valores iguales en su orden original."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Valor",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "rows": [
+              [
+                "Conteo",
+                "0",
+                "1",
+                "2",
+                "2",
+                "1",
+                "0",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "Suma de prefijos",
+                "0",
+                "1",
+                "3",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7"
+              ]
+            ]
+          }
+        },
+        "Así, el 1 va al índice 0, los dos 2 a los índices 1 y 2, los dos 3 a los índices 3 y 4, el 4 al índice 5 y el 8 al índice 6. Resultado: `[1, 2, 2, 3, 3, 4, 8]`."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Esta versión estable ordena cualquier objeto por una clave entera entre 0 y `k - 1`.",
+        {
+          "code": "def counting_sort(items, k, key=lambda x: x):\n    \"\"\"Stable sort of items by integer key in range(k).\"\"\"\n    count = [0] * k\n    for x in items:\n        count[key(x)] += 1\n    for v in range(1, k):                # prefix sums\n        count[v] += count[v - 1]\n    out = [None] * len(items)\n    for x in reversed(items):            # right to left: stable\n        count[key(x)] -= 1\n        out[count[key(x)]] = x\n    return out\n\nprint(counting_sort([4, 2, 2, 8, 3, 3, 1], k=9))\n# [1, 2, 2, 3, 3, 4, 8]\npeople = [(\"Ana\", 3), (\"Bo\", 1), (\"Cy\", 3), (\"Di\", 2)]\nprint(counting_sort(people, k=4, key=lambda p: p[1]))\n# [('Bo', 1), ('Di', 2), ('Ana', 3), ('Cy', 3)]",
+          "lang": "python"
+        },
+        "Cuando solo ordenas enteros simples y no necesitas estabilidad, una versión más sencilla reconstruye la salida a partir de los conteos. Esta variante también maneja números negativos desplazando por el mínimo:",
+        {
+          "code": "def counting_sort_ints(nums):\n    if not nums:\n        return []\n    lo, hi = min(nums), max(nums)\n    count = [0] * (hi - lo + 1)\n    for x in nums:\n        count[x - lo] += 1\n    out = []\n    for offset, c in enumerate(count):\n        out.extend([offset + lo] * c)\n    return out\n\nprint(counting_sort_ints([3, -1, 2, -1, 0]))   # [-1, -1, 0, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Medida",
+              "Valor",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Tiempo, en todos los casos",
+                "O(n + k)",
+                "una pasada por la entrada, otra por el arreglo de conteo y otra para colocar"
+              ],
+              [
+                "Espacio extra",
+                "O(n + k)",
+                "el arreglo de conteo de tamaño k y el arreglo de salida de tamaño n"
+              ],
+              [
+                "Comparaciones",
+                "0",
+                "las claves se usan como índices, no se comparan"
+              ]
+            ]
+          }
+        },
+        "Counting sort es lineal cuando k es O(n). Si k es mucho mayor que n, por ejemplo 1.000 valores en el rango de 0 a 10⁹, el arreglo de conteo domina y es mejor un ordenamiento por comparación o radix sort."
+      ]
+    },
+    {
+      "h": "Cómo se compara counting sort con otros ordenamientos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor",
+              "Promedio",
+              "Peor",
+              "Espacio extra",
+              "Estable"
+            ],
+            "rows": [
+              [
+                "Counting sort",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "O(n + k)",
+                "Sí"
+              ],
+              [
+                "Radix sort (LSD)",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(d · (n + b))",
+                "O(n + b)",
+                "Sí"
+              ],
+              [
+                "Merge sort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ],
+              [
+                "Quicksort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "No"
+              ],
+              [
+                "Heapsort",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "No"
+              ],
+              [
+                "Insertion sort",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Sí"
+              ],
+              [
+                "Timsort (`sorted` de Python)",
+                "O(n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Sí"
+              ]
+            ]
+          }
+        },
+        "Aquí k es el tamaño del rango de claves, d el número de dígitos y b la base que usa radix sort. Counting sort es estable cuando los elementos se colocan usando sumas de prefijos de derecha a izquierda. La versión simple que reconstruye a partir de los conteos produce el mismo resultado con enteros simples, pero no puede llevar otros datos junto con la clave."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Radix sort ejecuta un counting sort estable una vez por dígito, lo que extiende la idea a enteros grandes y cadenas de longitud fija.",
+            "Bucket sort reparte los valores en cubetas por rango y ordena cada cubeta; es rápido cuando los valores están distribuidos de forma uniforme.",
+            "Contar sin ordenar: a menudo solo necesitas los conteos, por ejemplo para construir un histograma o encontrar la moda. `collections.Counter` lo hace directamente."
+          ]
+        },
+        {
+          "note": "Errores frecuentes: recorrer la entrada de izquierda a derecha en el bucle de colocación (sigue ordenando, pero deja de ser estable, lo que rompe radix sort), olvidar desplazar las claves negativas, reservar el arreglo de conteo según el número de elementos en lugar del rango de claves y usar counting sort con números decimales o cadenas arbitrarias, que no tienen un rango entero pequeño."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar counting sort",
+      "body": [
+        "Úsalo cuando las claves sean enteros de un rango pequeño en comparación con el número de elementos: calificaciones, edades, días del mes, bytes, valores de canales de color de 0 a 255 o valores pequeños de enumeraciones. También es el paso interno de radix sort y de los algoritmos de construcción de arreglos de sufijos. En las entrevistas aparece en preguntas como sort colors (valores 0, 1, 2), ordenar por frecuencia y el índice H, y en la clásica pregunta de cómo superar el límite O(n log n) de los ordenamientos por comparación."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es estable counting sort?",
+      "a": "Sí, la versión estándar que usa sumas de prefijos y coloca los elementos de derecha a izquierda es estable. Esa propiedad es lo que permite a radix sort usarla en cada dígito."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de counting sort?",
+      "a": "O(n + k), donde n es el número de elementos y k es el tamaño del rango de claves. Es la misma en el mejor caso, en el promedio y en el peor."
+    },
+    {
+      "q": "¿Por qué counting sort es más rápido que O(n log n)?",
+      "a": "La cota inferior Ω(n log n) solo se aplica a los ordenamientos por comparación. Counting sort nunca compara elementos; usa cada clave como índice de un arreglo, por lo que no está sujeto a esa cota."
+    },
+    {
+      "q": "¿Puede counting sort manejar números negativos?",
+      "a": "Sí. Resta el valor mínimo a cada clave para que la clave más pequeña corresponda al índice 0, y súmalo de nuevo al escribir la salida."
+    },
+    {
+      "q": "¿Cuándo no debería usar counting sort?",
+      "a": "Cuando el rango de claves k es mucho mayor que n, cuando las claves son números de coma flotante o cadenas arbitrarias, o cuando la memoria es escasa. Entonces es mejor un ordenamiento por comparación como `sorted()`."
+    }
+  ]
+}

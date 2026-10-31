@@ -1,0 +1,200 @@
+{
+  "title": "Tutorial Objective-C: pesan, kelas, koleksi Foundation, dan block — cv.cm",
+  "description": "Belajar dasar Objective-C: kompilasi Hello world dengan clang, kirim pesan, buat kelas dan properti, pakai NSArray dan NSDictionary, block, ARC, dan NSError.",
+  "h1": "Tutorial Objective-C untuk pemula",
+  "answer": "Objective-C adalah bahasa C yang ditambah pengiriman pesan berorientasi objek ala Smalltalk. Anda memanggil method dengan mengirim pesan di dalam tanda kurung siku, `[object doSomething:arg]`, mendefinisikan kelas dalam blok `@interface` dan `@implementation`, dan memakai framework Foundation dari Apple untuk string, array, dan dictionary. Bahasa ini dulu menjadi bahasa utama aplikasi macOS dan iOS sebelum Swift, dan masih dipakai di banyak basis kode Apple yang sudah ada. Di Mac, kompilasi dengan `clang -fobjc-arc -framework Foundation hello.m`.",
+  "sections": [
+    {
+      "h": "Apa itu Objective-C dan siapa yang memakainya",
+      "body": [
+        "Objective-C dibuat oleh Brad Cox dan Tom Love pada awal 1980-an, diadopsi NeXT untuk sistem NeXTSTEP, lalu diwarisi Apple, tempat NeXTSTEP menjadi dasar macOS dan iOS. Bahasa ini adalah superset ketat dari C: semua kode C valid sebagai Objective-C, dan keduanya bisa dicampur dengan bebas.",
+        "Saat ini Apple merekomendasikan Swift untuk aplikasi baru, tetapi Objective-C tetap didukung penuh. Bahasa ini ditemukan di aplikasi iOS dan macOS lama, di banyak framework sistem dan pustaka pihak ketiga, serta di proyek yang memadukan C atau C++ dengan API Apple. Swift dan Objective-C dapat bekerja bersama dalam satu proyek, sehingga menguasai keduanya berguna bagi developer platform Apple."
+      ]
+    },
+    {
+      "h": "Instal dan jalankan Hello, world",
+      "body": [
+        "Di macOS, instal Xcode atau cukup command line tools (`xcode-select --install`), yang sudah menyertakan compiler clang dan framework Foundation. File sumber memakai ekstensi `.m`; header memakai `.h`.",
+        {
+          "code": "// hello.m\n#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSLog(@\"Hello, world!\");\n    }\n    return 0;\n}",
+          "lang": "objc"
+        },
+        {
+          "code": "clang -fobjc-arc -framework Foundation hello.m -o hello\n./hello\n# 2026-10-31 10:00:00.000 hello[1234:5678] Hello, world!",
+          "lang": "shell"
+        },
+        "`NSLog` menulis ke standard error dan menambahkan stempel waktu serta nama proses. `@\"...\"` membuat objek `NSString`, bukan string C. `-fobjc-arc` mengaktifkan Automatic Reference Counting, manajemen memori standar. Di Linux, proyek GNUstep menyediakan pustaka Foundation yang kompatibel, dengan perintah build yang berbeda."
+      ]
+    },
+    {
+      "h": "Tipe, objek, dan pesan",
+      "body": [
+        "Karena Objective-C adalah C, semua tipe C dapat dipakai. Objek selalu digunakan lewat pointer (`NSString *name`). Memanggil method disebut mengirim pesan; argumen diselipkan di antara bagian-bagian nama method.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Angka C",
+                "`int`, `double`, `NSInteger`",
+                "`NSInteger` berukuran 64-bit pada platform 64-bit"
+              ],
+              [
+                "BOOL",
+                "`BOOL ok = YES;`",
+                "`YES` / `NO`"
+              ],
+              [
+                "NSString *",
+                "`@\"hello\"`",
+                "Objek string yang immutable"
+              ],
+              [
+                "NSNumber *",
+                "`@42`, `@3.14`, `@(x + 1)`",
+                "Membungkus angka agar bisa disimpan dalam koleksi"
+              ],
+              [
+                "id",
+                "`id thing = @\"x\";`",
+                "Pointer ke objek apa pun, tanpa tipe statis"
+              ],
+              [
+                "nil",
+                "`nil`",
+                "Pointer objek null"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSString *name = @\"Ana\";\nNSInteger age = 30;\nNSString *line = [NSString stringWithFormat:@\"%@ is %ld\", name, (long)age];\nNSLog(@\"%@\", line);                          // Ana is 30\nNSLog(@\"%lu\", (unsigned long)[name length]); // 3\nNSString *upper = [name uppercaseString];    // @\"ANA\"\nBOOL same = [name isEqualToString:@\"Ana\"];   // YES\nNSString *nothing = nil;\nNSLog(@\"%lu\", (unsigned long)[nothing length]); // 0: messages to nil return 0",
+          "lang": "objc"
+        },
+        "Dalam format string, `%@` mencetak sebuah objek (memanggil method `description`-nya). Mengirim pesan ke `nil` diperbolehkan dan mengembalikan `nil` atau 0, yang mencegah banyak crash tetapi juga bisa menyembunyikan bug."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Alur kontrolnya persis seperti C: `if`, `else`, `switch`, `for`, `while`, dan `do ... while`. Objective-C menambahkan fast enumeration dengan `for ... in` untuk koleksi.",
+        {
+          "code": "NSInteger score = 85;\nif (score >= 90) {\n    NSLog(@\"A\");\n} else if (score >= 80) {\n    NSLog(@\"B\");\n} else {\n    NSLog(@\"C\");\n}\n\nfor (int i = 1; i <= 3; i++) {\n    NSLog(@\"%d squared is %d\", i, i * i);\n}\n\nfor (NSString *fruit in @[@\"apple\", @\"pear\"]) {\n    NSLog(@\"%@\", fruit);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "Kelas, properti, dan method",
+      "body": [
+        "Sebuah kelas memiliki interface publik (biasanya di file `.h`) dan implementasi (di file `.m`). Instance method diawali `-`, class method diawali `+`. `@property` mendeklarasikan properti dan membuatkan getter, setter, serta variabel pendukung yang namanya diawali garis bawah.",
+        {
+          "code": "@interface Person : NSObject\n@property (nonatomic, copy) NSString *name;\n@property (nonatomic) NSInteger age;\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age;\n- (NSString *)greeting;\n@end\n\n@implementation Person\n- (instancetype)initWithName:(NSString *)name age:(NSInteger)age {\n    self = [super init];\n    if (self) {\n        _name = [name copy];\n        _age = age;\n    }\n    return self;\n}\n\n- (NSString *)greeting {\n    return [NSString stringWithFormat:@\"Hi, I am %@, %ld\", self.name, (long)self.age];\n}\n@end\n\n// Usage inside main:\nPerson *ana = [[Person alloc] initWithName:@\"Ana\" age:30];\nNSLog(@\"%@\", [ana greeting]);   // Hi, I am Ana, 30\nana.age = 31;                   // dot syntax calls the setter",
+          "lang": "objc"
+        },
+        "Objek dibuat dalam dua langkah: `alloc` memesan memori dan method `init...` menginisialisasinya. Method di atas bernama `initWithName:age:` (tanda titik dua adalah bagian dari nama). Protocol (`@protocol`) berperan sebagai interface, dan category memungkinkan Anda menambahkan method ke kelas yang sudah ada, bahkan `NSString`."
+      ]
+    },
+    {
+      "h": "Koleksi Foundation dan block",
+      "body": [
+        "Framework Foundation menyediakan koleksi immutable beserta subkelas mutable-nya. Literal membuat penulisannya singkat. Koleksi hanya menyimpan objek, jadi angka dibungkus sebagai `NSNumber`, dan `nil` tidak bisa disimpan (gunakan `[NSNull null]` sebagai gantinya).",
+        {
+          "table": {
+            "head": [
+              "Kelas",
+              "Literal atau cara pembuatan",
+              "Versi mutable"
+            ],
+            "rows": [
+              [
+                "NSArray",
+                "`@[@\"Ana\", @\"Ben\"]`",
+                "NSMutableArray"
+              ],
+              [
+                "NSDictionary",
+                "`@{@\"Ana\": @30}`",
+                "NSMutableDictionary"
+              ],
+              [
+                "NSSet",
+                "`[NSSet setWithArray:arr]`",
+                "NSMutableSet"
+              ],
+              [
+                "NSString",
+                "`@\"text\"`",
+                "NSMutableString"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "NSArray<NSString *> *names = @[@\"Ana\", @\"Ben\"];\nNSMutableArray<NSString *> *more = [names mutableCopy];\n[more addObject:@\"Cleo\"];\nNSDictionary<NSString *, NSNumber *> *ages = @{@\"Ana\": @30, @\"Ben\": @17};\nNSLog(@\"%lu names, Ana is %@\", (unsigned long)more.count, ages[@\"Ana\"]);\n\nNSInteger (^square)(NSInteger) = ^(NSInteger x) { return x * x; };\nNSLog(@\"%ld\", (long)square(7));    // 49\n\nNSArray<NSNumber *> *sorted = [@[@3, @1, @2]\n    sortedArrayUsingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {\n        return [a compare:b];\n    }];\nNSLog(@\"%@\", [sorted componentsJoinedByString:@\", \"]);   // 1, 2, 3",
+          "lang": "objc"
+        },
+        "Block, ditulis dengan `^`, adalah closure: fungsi anonim yang menangkap variabel dari lingkup di sekitarnya. API Apple memakainya untuk callback, pengurutan, dan pekerjaan asinkron dengan Grand Central Dispatch. Bagian `<NSString *>` adalah generics ringan yang membantu compiler dan Swift; bagian itu opsional."
+      ]
+    },
+    {
+      "h": "Manajemen memori dan penanganan error",
+      "body": [
+        "Dengan ARC, compiler menyisipkan pemanggilan reference counting untuk Anda: objek dibebaskan ketika tidak ada lagi strong reference yang menunjuk ke sana. Anda hanya perlu memutus reference cycle, biasanya dengan menandai salah satu sisinya `weak` (misalnya properti delegate).",
+        "Error yang dapat dipulihkan memakai pola `NSError`: method mengembalikan `nil` atau `NO` saat gagal dan mengisi objek `NSError` yang diteruskan lewat referensi. Exception (`@try`, `@catch`, `NSException`) memang ada, tetapi di Cocoa exception menandakan kesalahan programmer seperti indeks di luar rentang, bukan kegagalan biasa.",
+        {
+          "code": "NSError *error = nil;\nNSString *text = [NSString stringWithContentsOfFile:@\"/no/such/file\"\n                                           encoding:NSUTF8StringEncoding\n                                              error:&error];\nif (text == nil) {\n    NSLog(@\"Failed: %@\", error.localizedDescription);\n}",
+          "lang": "objc"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "#import <Foundation/Foundation.h>\n\nint main(void) {\n    @autoreleasepool {\n        NSString *text = @\"the cat and the hat and the bat\";\n        NSMutableDictionary<NSString *, NSNumber *> *counts = [NSMutableDictionary dictionary];\n        for (NSString *word in [text componentsSeparatedByString:@\" \"]) {\n            counts[word] = @(counts[word].integerValue + 1);\n        }\n        NSArray<NSString *> *sorted = [counts keysSortedByValueUsingComparator:\n            ^NSComparisonResult(NSNumber *a, NSNumber *b) { return [b compare:a]; }];\n        for (NSString *word in [sorted subarrayWithRange:NSMakeRange(0, 2)]) {\n            printf(\"%s %ld\\n\", word.UTF8String, (long)counts[word].integerValue);\n        }\n    }\n    return 0;\n}\n// the 3\n// and 2",
+          "lang": "objc"
+        },
+        "Untuk kata baru, `counts[word]` bernilai `nil`, dan `nil.integerValue` mengembalikan 0, sehingga hitungan pertama menjadi 1. Comparator membalik urutan untuk mengurutkan berdasarkan jumlah dari tinggi ke rendah, dan `printf` mencetak tanpa awalan `NSLog`.",
+        {
+          "note": "Kesalahan umum pemula: membandingkan string dengan `==` (yang membandingkan pointer; gunakan `isEqualToString:`); lupa `@` sebelum literal string; lupa `*` pada deklarasi objek; memasukkan `nil` ke literal array atau dictionary, yang membuat program crash saat dijalankan; mencetak `NSInteger` dengan `%d` alih-alih `%ld` dan cast; serta mengompilasi tanpa `-fobjc-arc`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "Panduan \"Programming with Objective-C\" Apple di arsip dokumentasi untuk dasar-dasar bahasa.",
+            "Referensi framework Foundation di dokumentasi developer Apple.",
+            "Dokumentasi Clang tentang Automatic Reference Counting untuk aturan memori yang tepat.",
+            "Pelajari cara Objective-C dan Swift bekerja bersama jika Anda memelihara basis kode campuran."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Objective-C masih dipakai?",
+      "a": "Ya, terutama di aplikasi dan pustaka iOS serta macOS yang sudah ada. Apple merekomendasikan Swift untuk kode baru, tetapi Objective-C tetap didukung oleh Xcode dan SDK Apple."
+    },
+    {
+      "q": "Sebaiknya belajar Swift atau Objective-C dulu?",
+      "a": "Untuk pengembangan Apple yang baru, pelajari Swift lebih dulu. Pelajari Objective-C ketika Anda perlu membaca atau memelihara kode lama, memakai pustaka C atau C++ secara dekat, atau memahami cara kerja framework Apple di baliknya."
+    },
+    {
+      "q": "Apa arti tanda kurung siku di Objective-C?",
+      "a": "Tanda itu mengirim pesan: `[receiver message]` memanggil method `message` pada objek `receiver`. Argumen mengikuti tanda titik dua, seperti pada `[dict setObject:value forKey:key]`."
+    },
+    {
+      "q": "Apakah Objective-C punya garbage collection?",
+      "a": "Objective-C modern memakai Automatic Reference Counting (ARC), tempat compiler menambahkan pemanggilan retain dan release. Garbage collector lama Apple untuk macOS sudah deprecated dan tidak tersedia lagi."
+    }
+  ]
+}

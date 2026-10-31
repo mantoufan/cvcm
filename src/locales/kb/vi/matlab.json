@@ -1,0 +1,195 @@
+{
+  "title": "Hướng dẫn MATLAB: ma trận, vector hóa, hàm và vẽ đồ thị — cv.cm",
+  "description": "Học MATLAB cơ bản (và GNU Octave miễn phí): chạy script, tạo vector và ma trận, lập chỉ số, dùng vòng lặp, hàm, hàm ẩn danh, xử lý lỗi và vẽ đồ thị.",
+  "h1": "Hướng dẫn MATLAB cho người mới bắt đầu",
+  "answer": "MATLAB là ngôn ngữ và môi trường tính toán số của MathWorks, trong đó mọi giá trị đều là ma trận. Bạn viết `A * B` cho tích ma trận, `A .* B` cho phép nhân từng phần tử, đánh chỉ số từ 1, và thay nhiều vòng lặp bằng biểu thức vector hóa. MATLAB có sẵn tính năng vẽ đồ thị và một bộ toolbox lớn cho kỹ thuật và khoa học. GNU Octave là lựa chọn thay thế miễn phí, mã nguồn mở, chạy được hầu hết mã MATLAB cơ bản mà không cần sửa.",
+  "sections": [
+    {
+      "h": "MATLAB là gì và ai dùng nó",
+      "body": [
+        "MATLAB (\"matrix laboratory\") khởi đầu là công cụ của Cleve Moler để dễ dàng truy cập các thư viện đại số tuyến tính và trở thành sản phẩm thương mại của MathWorks. Nó kết hợp một ngôn ngữ, môi trường làm việc tương tác, vẽ đồ thị và các toolbox cho xử lý tín hiệu, hệ thống điều khiển, tối ưu hóa, thống kê, xử lý ảnh và học máy. Simulink, sản phẩm đi kèm, mô hình hóa hệ động lực bằng sơ đồ khối.",
+        "MATLAB được dùng rộng rãi trong các khóa học kỹ thuật và khoa học, phòng thí nghiệm nghiên cứu và các ngành như ô tô, hàng không vũ trụ và tài chính. Nó cần giấy phép trả phí (nhiều trường đại học cung cấp sẵn). GNU Octave là phần mềm tự do với cú pháp phần lớn tương thích; nó bao quát ngôn ngữ cốt lõi và nhiều hàm, nhưng không có toolbox của MathWorks hay Simulink."
+      ]
+    },
+    {
+      "h": "Cài đặt và chạy Hello, world",
+      "body": [
+        "Cài MATLAB từ MathWorks, dùng MATLAB Online trong trình duyệt, hoặc cài GNU Octave từ octave.org (Windows, macOS, Linux). Mã được lưu trong tệp `.m`. Script là một tệp chứa các lệnh; bạn chạy nó bằng cách gõ tên tệp, không kèm `.m`, trong Command Window.",
+        {
+          "code": "% hello.m\ndisp('Hello, world!')",
+          "lang": "matlab"
+        },
+        {
+          "code": "matlab -batch \"hello\"   # MATLAB from a terminal\noctave hello.m          # GNU Octave\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Chú thích bắt đầu bằng `%`. Dòng không kết thúc bằng dấu chấm phẩy sẽ in kết quả, nên `x = 5` hiển thị `x = 5`, còn `x = 5;` thì im lặng."
+      ]
+    },
+    {
+      "h": "Biến và các kiểu cơ bản",
+      "body": [
+        "Biến được tạo bằng phép gán và không cần khai báo. Số mặc định là `double` (dấu phẩy động 64 bit), và ngay cả một số đơn lẻ cũng là ma trận 1x1.",
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Ví dụ",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "double",
+                "`x = 3.14`",
+                "Kiểu số mặc định"
+              ],
+              [
+                "Kiểu số nguyên",
+                "`n = int32(42)`",
+                "`int8` đến `int64`, `uint8` đến `uint64`; phép tính bị chặn ở giá trị biên (saturate)"
+              ],
+              [
+                "logical",
+                "`ok = true`",
+                "Kết quả của phép so sánh như `x > 2`"
+              ],
+              [
+                "char array",
+                "`name = 'Ana'`",
+                "Dấu nháy đơn; một vector hàng gồm các ký tự"
+              ],
+              [
+                "string",
+                "`s = \"Ana\"`",
+                "Đối tượng chuỗi của MATLAB; Octave coi dấu nháy kép là mảng char"
+              ],
+              [
+                "cell array",
+                "`c = {'Ana', 30}`",
+                "Chứa các giá trị thuộc nhiều kiểu khác nhau"
+              ],
+              [
+                "struct",
+                "`p.name = 'Ana'`",
+                "Các trường có tên"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "x = 10;\ny = 3;\nx / y              % 3.3333\nmod(x, y)          % 1\nx ^ 2              % 100\nname = 'Ana';\nfprintf('%s is %d years old\\n', name, 30)\n% Ana is 30 years old\nclass(x)           % 'double'",
+          "lang": "matlab"
+        }
+      ]
+    },
+    {
+      "h": "Vector và ma trận",
+      "body": [
+        "Dấu ngoặc vuông tạo mảng: dấu cách hoặc dấu phẩy ngăn cách các cột, dấu chấm phẩy ngăn cách các hàng. Lập chỉ số dùng dấu ngoặc đơn và bắt đầu từ 1; `end` nghĩa là chỉ số cuối và `:` nghĩa là \"tất cả\".",
+        {
+          "code": "v = [3 1 4 1 5];\nv(1)               % 3\nv(end)             % 5\nv(2:4)             % [1 4 1]\nv * 2              % [6 2 8 2 10]\nv(v > 2)           % [3 4 5]   logical indexing\nA = [1 2; 3 4];\nA(2, :)            % second row: [3 4]\nA'                 % transpose:  [1 3; 2 4]\nA * A              % matrix product: [7 10; 15 22]\nA .* A             % element-wise:   [1 4; 9 16]\nb = [5; 11];\nx = A \\ b          % solves A*x = b: [1; 2]\nz = zeros(2, 3);   % also ones, eye, rand\nr = 0:0.25:1;      % [0 0.25 0.5 0.75 1]",
+          "lang": "matlab"
+        },
+        "Toán tử có dấu chấm (`.*`, `./`, `.^`) chạy theo từng phần tử; không có dấu chấm thì theo quy tắc đại số tuyến tính. Toán tử gạch chéo ngược giải hệ tuyến tính và chính xác hơn việc tính `inv(A) * b`."
+      ]
+    },
+    {
+      "h": "Luồng điều khiển",
+      "body": [
+        {
+          "code": "score = 85;\nif score >= 90\n    disp('A')\nelseif score >= 80\n    disp('B')\nelse\n    disp('C')\nend\n\ntotal = 0;\nfor k = 1:10\n    total = total + k;\nend\nfprintf('total = %d\\n', total)   % total = 55\n\nn = 3;\nwhile n > 0\n    n = n - 1;\nend\n\nswitch 'red'\n    case {'red', 'green'}\n        disp('a color')\n    otherwise\n        disp('unknown')\nend",
+          "lang": "matlab"
+        },
+        "Mọi khối đều kết thúc bằng `end`. Nhiều vòng lặp có thể thay bằng biểu thức vector hóa: vòng lặp ở trên tương đương `sum(1:10)`, ngắn hơn và thường nhanh hơn. Nếu buộc phải xây mảng trong vòng lặp, hãy cấp phát trước, ví dụ `result = zeros(1, 1000);`."
+      ]
+    },
+    {
+      "h": "Hàm và hàm ẩn danh",
+      "body": [
+        "Một hàm nằm trong tệp riêng có tên trùng với tên hàm. Một hàm có thể trả về nhiều giá trị. Trong các phiên bản MATLAB gần đây, script cũng có thể chứa các hàm cục bộ ở cuối tệp.",
+        {
+          "code": "% stats.m\nfunction [m, s] = stats(x)\n%STATS Mean and sample standard deviation of a vector.\n    m = mean(x);\n    s = std(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "[m, s] = stats([2 4 4 5 7])   % m = 4.4000, s = 1.8166\n[biggest, where] = max([3 9 2])   % biggest = 9, where = 2\n\nf = @(x) x.^2 + 1;            % anonymous function\nf(3)                          % 10\nf([1 2 3])                    % [2 5 10]\nfzero(@(x) x.^2 - 2, 1)       % 1.4142, a root near 1\nintegral(f, 0, 1)             % 1.3333",
+          "lang": "matlab"
+        },
+        "Hàm ẩn danh, tạo bằng `@`, thường được truyền cho các hàm khác như `fzero`, `integral`, `arrayfun` hoặc các thủ tục tối ưu hóa. Hãy viết chúng bằng toán tử theo từng phần tử (`.^`) để chúng cũng chạy được trên vector."
+      ]
+    },
+    {
+      "h": "Struct và cell array",
+      "body": [
+        {
+          "code": "person.name = 'Ana';\nperson.age = 30;\nfprintf('%s is %d\\n', person.name, person.age)   % Ana is 30\n\nc = {'Ana', 30, [1 2 3]};   % cell array with mixed types\nc{2}                         % 30 (curly braces get the content)\nclass(c(2))                  % 'cell' (parentheses get a sub-cell)\nnames = {'Ana', 'Ben', 'Cleo'};\nnumel(names)                 % 3\nupper(names{1})              % 'ANA'",
+          "lang": "matlab"
+        },
+        "MATLAB còn có kiểu `table` cho dữ liệu theo cột với các biến có tên, giống bảng tính; `readtable` nạp tệp CSV và Excel vào đó."
+      ]
+    },
+    {
+      "h": "Xử lý lỗi",
+      "body": [
+        "Phát sinh lỗi bằng `error`, có thể kèm mã định danh như `'demo:negative'`, và xử lý bằng `try ... catch`. Đối tượng bắt được (`MException` trong MATLAB) có các trường `identifier` và `message`.",
+        {
+          "code": "% safe_sqrt.m\nfunction r = safe_sqrt(x)\n    if x < 0\n        error('demo:negative', 'Input must be non-negative, got %g', x);\n    end\n    r = sqrt(x);\nend",
+          "lang": "matlab"
+        },
+        {
+          "code": "try\n    safe_sqrt(-4);\ncatch err\n    fprintf('%s: %s\\n', err.identifier, err.message)\nend\n% demo:negative: Input must be non-negative, got -4",
+          "lang": "matlab"
+        },
+        "Dùng `warning(...)` cho các vấn đề không nên dừng chương trình. Nếu không có bước kiểm tra, `sqrt(-4)` sẽ không lỗi: nó trả về số phức `0 + 2i`."
+      ]
+    },
+    {
+      "h": "Một chương trình hoàn chỉnh nhỏ: phân tích và vẽ dữ liệu",
+      "body": [
+        {
+          "code": "% temps.m - analyze a week of temperatures\ntemps = [21.5 23.0 19.8 25.1 24.3 18.9 22.7];\ndays = 1:numel(temps);\n\navg = mean(temps);\n[hottest, idx] = max(temps);\nabove = days(temps > avg);\n\nfprintf('Average: %.2f\\n', avg)\nfprintf('Hottest: %.1f on day %d\\n', hottest, idx)\nfprintf('Days above average: %s\\n', mat2str(above))\n\nplot(days, temps, '-o')\nhold on\nplot(days, avg * ones(size(days)), '--')\nxlabel('Day'); ylabel('Temperature (C)')\ntitle('Temperatures this week')\nlegend('Daily', 'Average')\n% Average: 22.19\n% Hottest: 25.1 on day 4\n% Days above average: [2 4 5 7]",
+          "lang": "matlab"
+        },
+        "Script dùng chỉ số logic để tìm những ngày cao hơn mức trung bình mà không cần vòng lặp, rồi vẽ biểu đồ đường có dấu điểm và một đường trung bình nét đứt. Cùng đoạn mã này chạy được trong GNU Octave.",
+        {
+          "note": "Các lỗi thường gặp của người mới: dùng `*` hoặc `^` ở chỗ định dùng `.*` hoặc `.^` theo từng phần tử (bạn sẽ gặp lỗi kích thước hoặc lũy thừa ma trận); lập chỉ số bằng 0 (`v(0)` là lỗi); quên dấu chấm phẩy, làm đầu ra ngập tràn; đặt tên script hoặc biến giống hàm có sẵn (`sum`, `max`, `i`), che mất hàm đó; dùng `i` và `j` làm biến vòng lặp khi có số phức; và để mảng lớn dần trong vòng lặp thay vì cấp phát trước."
+        }
+      ]
+    },
+    {
+      "h": "Học tiếp ở đâu",
+      "body": [
+        {
+          "ul": [
+            "Tài liệu MATLAB của MathWorks, bắt đầu từ các trang bắt đầu nhanh.",
+            "MATLAB Onramp, khóa học nhập môn tương tác miễn phí của MathWorks.",
+            "Sách hướng dẫn GNU Octave nếu bạn dùng Octave, gồm các ghi chú về khả năng tương thích với MATLAB.",
+            "Tiếp theo hãy học vector hóa, `readtable` cho tệp dữ liệu và các hàm vẽ đồ thị."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Có phiên bản MATLAB miễn phí không?",
+      "a": "Bản thân MATLAB cần giấy phép, dù MathWorks có bản dùng thử và nhiều trường đại học cung cấp giấy phép toàn trường. GNU Octave là chương trình mã nguồn mở miễn phí, chạy được hầu hết mã MATLAB cơ bản."
+    },
+    {
+      "q": "Khác nhau giữa * và .* trong MATLAB là gì?",
+      "a": "`*` là phép nhân ma trận trong đại số tuyến tính, đòi hỏi các chiều trong khớp nhau. `.*` nhân các phần tử tương ứng của hai mảng cùng kích thước."
+    },
+    {
+      "q": "GNU Octave có hoàn toàn tương thích với MATLAB không?",
+      "a": "Không hoàn toàn. Cú pháp cốt lõi, ma trận, hàm và vẽ đồ thị phần lớn tương thích, nhưng Octave không có toolbox của MathWorks, Simulink và một số tính năng MATLAB mới hơn, và nó chấp nhận thêm vài dạng cú pháp riêng."
+    },
+    {
+      "q": "Vì sao MATLAB đánh chỉ số từ 1?",
+      "a": "MATLAB theo ký hiệu toán học, trong đó phần tử đầu tiên của vector hoặc ma trận là phần tử 1. Fortran, R và Julia dùng cùng quy ước này."
+    },
+    {
+      "q": "Nên học MATLAB hay Python?",
+      "a": "Hãy học MATLAB nếu khóa học, phòng thí nghiệm hoặc công ty của bạn dùng nó, đặc biệt với Simulink hoặc các toolbox cụ thể. Python với NumPy, SciPy và Matplotlib miễn phí và đa dụng hơn, và các khái niệm dùng chung được giữa hai bên."
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "title": "Algoritma Dijkstra: jalur terpendek dengan priority queue di Python — cv.cm",
+  "description": "Pelajari algoritma Dijkstra: cara menemukan jalur terpendek pada graf berbobot, penelusuran langkah demi langkah, kode Python heapq, dan biaya O((V + E) log V).",
+  "h1": "Penjelasan algoritma Dijkstra: cara kerja, kode, dan kompleksitas",
+  "answer": "Algoritma Dijkstra menemukan jalur terpendek dari satu node awal ke semua node lain pada graf yang bobot edge-nya non-negatif. Algoritma ini berulang kali memilih node belum final dengan jarak terkecil yang diketahui, menandainya sebagai final, lalu merelaksasi edge keluarnya. Dengan priority queue berbasis binary heap, waktu jalannya O((V + E) log V). Hasilnya salah jika ada bobot edge yang negatif.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan algoritma Dijkstra",
+      "body": [
+        "Breadth-first search menemukan jalur dengan edge paling sedikit, tetapi jalan, tautan jaringan, dan penerbangan punya panjang, biaya, atau delay yang berbeda-beda. Algoritma Dijkstra menyelesaikan masalah single-source shortest path pada graf berbobot semacam itu: dari sebuah node awal, cari total biaya termurah untuk mencapai setiap node lain, beserta jalur yang menghasilkannya.",
+        "Edsger W. Dijkstra menerbitkan algoritma ini pada 1959 dalam makalah \"A note on two problems in connexion with graphs\"."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Atur jarak node awal menjadi 0 dan jarak semua node lain menjadi tak hingga.",
+            "Pilih node belum final dengan jarak terkecil. Jaraknya kini final.",
+            "Relaksasi setiap edge keluar u → v dengan bobot w: jika `dist[u] + w < dist[v]`, set `dist[v] = dist[u] + w` dan simpan u sebagai parent dari v.",
+            "Ulangi langkah 2 dan 3 sampai setiap node yang dapat dijangkau sudah final."
+          ]
+        },
+        "Mengapa jarak terkecil itu final? Setiap rute lain ke node tersebut harus melewati node yang jaraknya sudah paling tidak sebesar itu, dan dengan bobot non-negatif edge selanjutnya hanya bisa menambah biaya."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Graf berarah dengan edge A→B (4), A→C (1), C→B (2), B→D (1), C→D (5), D→E (3). Mulai dari A.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Finalisasi",
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            "rows": [
+              [
+                "Awal",
+                "—",
+                "0",
+                "∞",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "A (0)",
+                "0",
+                "4",
+                "1",
+                "∞",
+                "∞"
+              ],
+              [
+                "2",
+                "C (1)",
+                "0",
+                "3 lewat C",
+                "1",
+                "6 lewat C",
+                "∞"
+              ],
+              [
+                "3",
+                "B (3)",
+                "0",
+                "3",
+                "1",
+                "4 lewat B",
+                "∞"
+              ],
+              [
+                "4",
+                "D (4)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ],
+              [
+                "5",
+                "E (7)",
+                "0",
+                "3",
+                "1",
+                "4",
+                "7"
+              ]
+            ]
+          }
+        },
+        "B pertama kali mendapat jarak 4 dari edge langsung, lalu membaik menjadi 3 lewat C. Jalur terpendek ke E adalah A → C → B → D → E dengan total biaya 1 + 2 + 1 + 3 = 7."
+      ]
+    },
+    {
+      "h": "Implementasi Python dengan heapq",
+      "body": [
+        "Modul `heapq` Python menyediakan binary min-heap. Alih-alih operasi \"decrease key\", masukkan pasangan `(distance, node)` baru setiap kali jarak membaik dan lewati pasangan usang saat di-pop. Teknik ini disebut lazy deletion.",
+        {
+          "code": "import heapq\ndef dijkstra(graph, start):\n    dist = {start: 0}\n    parent = {start: None}\n    heap = [(0, start)]\n    while heap:\n        d, u = heapq.heappop(heap)\n        if d > dist[u]:\n            continue                      # outdated entry\n        for v, w in graph[u]:\n            nd = d + w\n            if nd < dist.get(v, float(\"inf\")):\n                dist[v] = nd\n                parent[v] = u\n                heapq.heappush(heap, (nd, v))\n    return dist, parent\ngraph = {\n    \"A\": [(\"B\", 4), (\"C\", 1)], \"B\": [(\"D\", 1)],\n    \"C\": [(\"B\", 2), (\"D\", 5)], \"D\": [(\"E\", 3)], \"E\": [],\n}\ndist, parent = dijkstra(graph, \"A\")\nprint(dist)  # {'A': 0, 'B': 3, 'C': 1, 'D': 4, 'E': 7}",
+          "lang": "python"
+        },
+        "Untuk mendapatkan jalur ke satu target, ikuti tautan parent mundur ke node awal:",
+        {
+          "code": "def path_to(parent, target):\n    path = []\n    while target is not None:\n        path.append(target)\n        target = parent[target]\n    return path[::-1]\nprint(path_to(parent, \"E\"))  # ['A', 'C', 'B', 'D', 'E']",
+          "lang": "python"
+        },
+        "Jika Anda hanya butuh jarak ke satu target, Anda bisa berhenti begitu target itu keluar dari heap: jaraknya sudah final saat itu."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Priority queue",
+              "Waktu",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Binary heap (heapq)",
+                "O((V + E) log V)",
+                "Pilihan yang umum. Dengan lazy deletion, heap bisa berisi hingga E entri, yang tetap O(log V) per operasi karena log E paling besar 2 log V."
+              ],
+              [
+                "Array biasa, cari minimum dengan scan",
+                "O(V²)",
+                "Lebih baik untuk graf yang sangat padat, ketika E mendekati V²."
+              ],
+              [
+                "Fibonacci heap",
+                "O(E + V log V)",
+                "Terbaik secara teori, jarang lebih cepat dalam praktik karena konstantanya besar."
+              ]
+            ]
+          }
+        },
+        "Ruangnya O(V + E) untuk graf, peta jarak dan parent, serta heap."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "note": "Bobot edge negatif merusak algoritma Dijkstra: sebuah node bisa difinalisasi lalu kemudian menjadi lebih murah lewat edge negatif. Gunakan Bellman-Ford untuk graf dengan bobot negatif. Menambahkan konstanta besar ke setiap edge tidak memperbaikinya, karena justru menghukum jalur yang punya lebih banyak edge."
+        },
+        {
+          "ul": [
+            "Melupakan pemeriksaan `if d > dist[u]: continue` memang tidak salah, tetapi membuat algoritma memproses entri usang dan bisa jauh lebih lambat.",
+            "Memasukkan hanya node, bukan `(distance, node)`, membuat urutan heap tidak bermakna.",
+            "Jika node berupa objek yang tidak bisa dibandingkan, jarak yang sama membuat `heapq` membandingkan node dan memunculkan `TypeError`. Masukkan `(distance, counter, node)` dengan counter yang unik.",
+            "A* search adalah Dijkstra dengan heuristik yang ditambahkan ke prioritas; ia menjelajah lebih sedikit node jika Anda punya estimasi jarak tersisa yang baik.",
+            "Dijkstra dua arah berjalan dari node awal dan tujuan sekaligus, lalu berhenti saat kedua pencarian bertemu."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Graf",
+              "Algoritma"
+            ],
+            "rows": [
+              [
+                "Tak berbobot, atau semua bobot sama",
+                "BFS, O(V + E)"
+              ],
+              [
+                "Bobot non-negatif, satu sumber",
+                "Dijkstra"
+              ],
+              [
+                "Bobot negatif, tanpa siklus negatif",
+                "Bellman-Ford, O(V × E)"
+              ],
+              [
+                "Semua pasangan, graf kecil dan padat",
+                "Floyd-Warshall, O(V³)"
+              ],
+              [
+                "Satu target dengan estimasi jarak",
+                "A* search"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Routing: protokol link-state seperti OSPF dan IS-IS menjalankan perhitungan shortest path first yang berbasis algoritma Dijkstra.",
+            "Peta dan navigasi, tempat sistem produksi menambahkan preprocessing di atas pencarian ala Dijkstra.",
+            "Soal wawancara: network delay time, cheapest flights (dengan batas transit), path with minimum effort pada grid, dan setiap soal \"total biaya minimum\" pada graf."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah algoritma Dijkstra bisa dipakai dengan bobot negatif?",
+      "a": "Tidak. Algoritma ini mengasumsikan bahwa setelah sebuah node memiliki jarak sementara terkecil, tidak ada jalur berikutnya yang bisa membuatnya lebih murah, dan edge negatif merusak asumsi itu. Gunakan Bellman-Ford."
+    },
+    {
+      "q": "Berapa kompleksitas waktu algoritma Dijkstra?",
+      "a": "Dengan binary heap, O((V + E) log V). Dengan array sederhana, O(V²), yang bisa lebih baik untuk graf padat."
+    },
+    {
+      "q": "Apakah algoritma Dijkstra termasuk greedy?",
+      "a": "Ya. Di setiap langkah ia mengambil pilihan terbaik secara lokal, yaitu memfinalisasi node belum final yang terdekat, dan pilihan itu terbukti benar bila semua bobot non-negatif."
+    },
+    {
+      "q": "Apa perbedaan Dijkstra dan BFS?",
+      "a": "BFS memakai queue biasa dan menghitung jumlah edge, sehingga hanya benar bila setiap edge berbobot sama. Dijkstra memakai priority queue yang diurutkan berdasarkan total jarak, sehingga mampu menangani bobot non-negatif yang berbeda-beda."
+    },
+    {
+      "q": "Apakah Dijkstra menemukan jalur terpendek antar semua pasangan node?",
+      "a": "Satu kali jalan menghasilkan jalur terpendek dari satu sumber. Jalankan dari setiap node untuk mendapatkan semua pasangan, atau gunakan Floyd-Warshall untuk graf kecil yang padat."
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "title": "Stack and queue explained: LIFO vs FIFO, Python code and complexity — cv.cm",
+  "description": "Stacks (LIFO) and queues (FIFO) explained with Python code: list as a stack, collections.deque as a queue, bracket matching, BFS and complexity.",
+  "h1": "Stack and queue explained: LIFO vs FIFO with Python examples",
+  "answer": "A stack is a collection where the last item added is the first one removed (LIFO, last in first out), like a pile of plates. A queue is a collection where the first item added is the first one removed (FIFO, first in first out), like a line at a checkout. Both support adding and removing in O(1) time. In Python, use a `list` as a stack and `collections.deque` as a queue.",
+  "sections": [
+    {
+      "h": "What problem stacks and queues solve",
+      "body": [
+        "Many programs need to remember items and process them later in a fixed order. A stack gives you the most recent item first, which matches nested work: function calls, undo history, matching brackets, and depth-first search. A queue gives you the oldest item first, which matches fair waiting: print jobs, task schedulers, message queues and breadth-first search.",
+        "Both are abstract data types: they are defined by their operations, not by how they are stored. You can build either one on top of an array or a linked list."
+      ]
+    },
+    {
+      "h": "Operations and names",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Stack (LIFO)",
+              "Queue (FIFO)"
+            ],
+            "rows": [
+              [
+                "Add an item",
+                "push: put on top",
+                "enqueue: add at the back"
+              ],
+              [
+                "Remove an item",
+                "pop: take from top",
+                "dequeue: take from the front"
+              ],
+              [
+                "Look without removing",
+                "peek / top",
+                "peek / front"
+              ],
+              [
+                "Python type",
+                "`list` with `append` and `pop`",
+                "`collections.deque` with `append` and `popleft`"
+              ],
+              [
+                "Order of removal for input 1, 2, 3",
+                "3, 2, 1",
+                "1, 2, 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Worked example: push and pop step by step",
+      "body": [
+        "Push 1, 2 and 3 into both structures, then remove two items.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Stack contents (top on the right)",
+              "Queue contents (front on the left)"
+            ],
+            "rows": [
+              [
+                "add 1",
+                "[1]",
+                "[1]"
+              ],
+              [
+                "add 2",
+                "[1, 2]",
+                "[1, 2]"
+              ],
+              [
+                "add 3",
+                "[1, 2, 3]",
+                "[1, 2, 3]"
+              ],
+              [
+                "remove",
+                "returns 3, leaves [1, 2]",
+                "returns 1, leaves [2, 3]"
+              ],
+              [
+                "remove",
+                "returns 2, leaves [1]",
+                "returns 2, leaves [3]"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "A Python `list` is already a good stack: `append` and `pop()` work on the end of the list in O(1) amortized time. For a queue, do not use `list.pop(0)`, because it shifts every remaining element and costs O(n). Use `collections.deque`, which is O(1) at both ends.",
+        {
+          "code": "from collections import deque\nstack = []\nstack.append(1)\nstack.append(2)\nstack.append(3)\nprint(stack.pop(), stack[-1])   # 3 2\nqueue = deque()\nqueue.append(\"a\")\nqueue.append(\"b\")\nqueue.append(\"c\")\nprint(queue.popleft(), queue[0])  # a b\nprint(len(stack), len(queue))     # 2 2",
+          "lang": "python"
+        },
+        "If you want named methods and clear errors, wrap the built-ins in a small class:",
+        {
+          "code": "from collections import deque\nclass Queue:\n    def __init__(self):\n        self._items = deque()\n    def enqueue(self, item):\n        self._items.append(item)\n    def dequeue(self):\n        if not self._items:\n            raise IndexError(\"dequeue from empty queue\")\n        return self._items.popleft()\n    def __len__(self):\n        return len(self._items)\nq = Queue()\nq.enqueue(\"job1\")\nq.enqueue(\"job2\")\nprint(q.dequeue(), len(q))  # job1 1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Classic stack problem: balanced brackets",
+      "body": [
+        "To check that every bracket is closed in the right order, push each opening bracket. When you see a closing bracket, the top of the stack must be its matching opener.",
+        {
+          "code": "def is_balanced(text):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in text:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\nprint(is_balanced(\"f(a[1], {b: 2})\"))  # True\nprint(is_balanced(\"(]\"))               # False\nprint(is_balanced(\"((\"))               # False",
+          "lang": "python"
+        },
+        "The same idea evaluates expressions in reverse Polish notation, converts recursion into a loop, and drives depth-first search: replace the call stack with your own list."
+      ]
+    },
+    {
+      "h": "Classic queue problem: breadth-first search",
+      "body": [
+        "Breadth-first search visits a graph level by level. A queue makes that happen: nodes discovered first are processed first.",
+        {
+          "code": "from collections import deque\ndef bfs_order(graph, start):\n    seen = {start}\n    queue = deque([start])\n    order = []\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for nxt in graph[node]:\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append(nxt)\n    return order\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"D\"], \"C\": [\"D\"], \"D\": []}\nprint(bfs_order(graph, \"A\"))  # ['A', 'B', 'C', 'D']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Stack (`list`)",
+              "Queue (`deque`)",
+              "Queue (`list.pop(0)`)"
+            ],
+            "rows": [
+              [
+                "Add",
+                "O(1) amortized",
+                "O(1)",
+                "O(1) amortized"
+              ],
+              [
+                "Remove",
+                "O(1)",
+                "O(1)",
+                "O(n), elements shift left"
+              ],
+              [
+                "Peek",
+                "O(1)",
+                "O(1)",
+                "O(1)"
+              ],
+              [
+                "Space for n items",
+                "O(n)",
+                "O(n)",
+                "O(n)"
+              ]
+            ]
+          }
+        },
+        "Amortized means that an occasional `append` resizes the underlying array and costs O(n), but averaged over many operations each one is O(1)."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Deque (double-ended queue): add and remove at both ends. `collections.deque` is one, and it can act as both a stack and a queue.",
+            "Priority queue: removes the smallest (or largest) item first, not the oldest. Use `heapq`; see the binary heap page.",
+            "Circular buffer: a fixed-size queue stored in an array with wrapping indexes. `deque(maxlen=n)` drops the oldest item when full.",
+            "Thread-safe queues: `queue.Queue` for threads and `asyncio.Queue` for coroutines block while waiting for items.",
+            "A queue built from two stacks: push to an in-stack, and when the out-stack is empty move everything across. Each item moves once, so operations are O(1) amortized."
+          ]
+        },
+        {
+          "note": "Calling `pop()` on an empty `list` or `popleft()` on an empty `deque` raises `IndexError`. Check `if stack:` before popping, or catch the exception."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a stack and a queue?",
+      "a": "A stack removes the most recently added item first (LIFO). A queue removes the oldest item first (FIFO). Both add and remove in O(1) time."
+    },
+    {
+      "q": "Should I use a list or deque for a queue in Python?",
+      "a": "Use `collections.deque`. Removing from the front of a `list` with `pop(0)` is O(n) because all other elements shift; `deque.popleft()` is O(1)."
+    },
+    {
+      "q": "Where is a stack used in real programs?",
+      "a": "The call stack that stores function calls, undo and redo history, browser back buttons, expression parsing, bracket matching and depth-first search."
+    },
+    {
+      "q": "What is stack overflow?",
+      "a": "It happens when the call stack runs out of space, usually because of very deep or infinite recursion. In Python it shows up as `RecursionError` when the recursion limit is exceeded."
+    },
+    {
+      "q": "Is queue.Queue the same as collections.deque?",
+      "a": "No. `queue.Queue` is a thread-safe queue with locking and blocking `get` and `put`, meant for passing work between threads. `collections.deque` is a faster general-purpose container without blocking."
+    }
+  ]
+}

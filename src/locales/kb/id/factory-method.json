@@ -1,0 +1,168 @@
+{
+  "title": "Pola Factory Method: tujuan, struktur, dan contoh TypeScript — cv.cm",
+  "description": "Pola desain Factory Method dijelaskan: subkelas memilih objek yang dibuat. Contoh TypeScript, kapan memakainya, dan perbedaannya dengan Abstract Factory.",
+  "h1": "Pola Factory Method dijelaskan dengan contoh",
+  "answer": "Factory Method adalah pola desain creational yang mendefinisikan sebuah method untuk membuat objek tetapi membiarkan subkelas menentukan kelas konkret mana yang diinstansiasi. Kelas dasar menulis logikanya terhadap interface produk dan memanggil factory method, seperti `createTransport()`, alih-alih `new`. Dengan begitu Anda dapat menambah tipe produk baru dengan menambah subkelas, tanpa mengedit kode yang memakai produk tersebut.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Mendefinisikan interface untuk membuat objek, tetapi membiarkan subkelas menentukan kelas mana yang diinstansiasi. Pola Factory Method memungkinkan sebuah kelas menunda instansiasi ke subkelas. Pola ini salah satu dari lima pola creational dalam buku Gang of Four (GoF), dan satu-satunya pola creational yang berlingkup kelas, karena bergantung pada inheritance."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan modul notifikasi. Modul itu memformat pesan, mengirimnya, dan mencatat hasilnya. Awalnya hanya mengirim email, jadi kode memanggil `new EmailChannel()` secara langsung. Lalu produk butuh SMS, kemudian notifikasi push. Setiap kanal baru berarti mengedit kelas yang sama dan menambah cabang `if` lagi, padahal langkah pemformatan dan pencatatan tidak pernah berubah.",
+        "Alur pengiriman bersifat stabil; hanya jenis kanalnya yang bervariasi. Pola Factory Method memindahkan satu keputusan yang bervariasi, yaitu kelas mana yang dibuat, ke dalam satu method yang dapat di-override."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Product",
+                "Interface dari objek yang dibuat oleh factory method.",
+                "`Channel`"
+              ],
+              [
+                "ConcreteProduct",
+                "Mengimplementasikan interface Product.",
+                "`EmailChannel`, `SmsChannel`"
+              ],
+              [
+                "Creator",
+                "Mendeklarasikan factory method dan berisi logika yang memakai produk.",
+                "`Notifier`"
+              ],
+              [
+                "ConcreteCreator",
+                "Meng-override factory method untuk mengembalikan ConcreteProduct tertentu.",
+                "`EmailNotifier`, `SmsNotifier`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        {
+          "code": "interface Channel {\n  send(to: string, text: string): string;\n}\n\nclass EmailChannel implements Channel {\n  send(to: string, text: string): string { return `email to ${to}: ${text}`; }\n}\n\nclass SmsChannel implements Channel {\n  send(to: string, text: string): string { return `sms to ${to}: ${text.slice(0, 20)}`; }\n}\n\nabstract class Notifier {\n  // The factory method: subclasses choose the concrete product.\n  protected abstract createChannel(): Channel;\n  // Shared logic that works with any Channel.\n  notify(to: string, text: string): void {\n    const channel = this.createChannel();\n    const result = channel.send(to, text.trim());\n    console.log(\"[log]\", result);\n  }\n}\n\nclass EmailNotifier extends Notifier {\n  protected createChannel(): Channel { return new EmailChannel(); }\n}\n\nclass SmsNotifier extends Notifier {\n  protected createChannel(): Channel { return new SmsChannel(); }\n}\n\nconst notifiers: Notifier[] = [new EmailNotifier(), new SmsNotifier()];\nfor (const n of notifiers) n.notify(\"ada\", \" Your order has shipped today \");\n// [log] email to ada: Your order has shipped today\n// [log] sms to ada: Your order has shipp",
+          "lang": "typescript"
+        },
+        "Menambah notifikasi push sekarang berarti menulis `PushChannel` dan `PushNotifier`. Method `notify`, dan setiap pemanggilnya, tidak berubah.",
+        "Sebelum menerapkan pola ini, keputusan pembuatan terkubur dalam logika bersama:",
+        {
+          "code": "class Notifier {\n  constructor(private kind: \"email\" | \"sms\") {}\n  notify(to: string, text: string): void {\n    // every new channel edits this method\n    const result = this.kind === \"email\"\n      ? `email to ${to}: ${text}`\n      : `sms to ${to}: ${text.slice(0, 20)}`;\n    console.log(\"[log]\", result);\n  }\n}",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Alternatif yang lebih ringan: teruskan fungsi factory",
+      "body": [
+        "Pola Factory Method memakai inheritance. Di TypeScript, Anda sering mendapatkan fleksibilitas yang sama dengan composition, yaitu meneruskan fungsi pembuat ke konstruktor. Cara ini menghindari satu subkelas per produk:",
+        {
+          "code": "interface Channel { send(to: string, text: string): string; }\nclass Notifier {\n  constructor(private createChannel: () => Channel) {}\n  notify(to: string, text: string): void {\n    console.log(\"[log]\", this.createChannel().send(to, text));\n  }\n}\nconst push = new Notifier(() => ({ send: (to, text) => `push to ${to}: ${text}` }));\npush.notify(\"ada\", \"Hello\"); // [log] push to ada: Hello",
+          "lang": "typescript"
+        },
+        "Gunakan versi subkelas ketika setiap creator memang sudah punya kelas sendiri karena alasan lain, atau ketika framework mengharapkan Anda memperluas kelas dasar. Gunakan versi fungsi ketika satu-satunya perbedaan antarvarian adalah objek yang mereka buat."
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Factory Method ketika:",
+        {
+          "ul": [
+            "Sebuah kelas berisi algoritma yang stabil tetapi tidak bisa tahu sebelumnya objek konkret mana yang harus dibuat.",
+            "Anda menulis framework atau pustaka dan ingin pengguna memasang kelas produk mereka sendiri lewat subclassing.",
+            "Anda ingin menyimpan logika pembuatan sebuah tipe di satu tempat alih-alih menyebar pemanggilan `new`."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Hanya ada satu tipe produk dan tidak ada tanda nyata akan ada yang kedua. `new` langsung lebih jelas.",
+            "Satu-satunya alasan adalah agar pengujian memungkinkan. Meneruskan dependensi lewat konstruktor lebih sederhana.",
+            "Anda akan membuat hierarki creator paralel yang mencerminkan produk satu lawan satu tanpa logika lain."
+          ]
+        },
+        {
+          "note": "\"Static factory method\", seperti `Array.from()` atau `Promise.resolve()`, adalah gagasan yang berbeda: fungsi static bernama yang mengembalikan instance. Berguna, tetapi bukan Factory Method ala GoF, yang bergantung pada subkelas yang meng-override sebuah method."
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "Koleksi Java: `Iterable.iterator()` dideklarasikan sekali, dan setiap kelas koleksi (`ArrayList`, `HashSet`, dan lainnya) meng-override-nya untuk mengembalikan kelas iterator miliknya sendiri. Buku GoF menjelaskan pemakaian pola Factory Method ini untuk iterasi polimorfik.",
+            "Iterable JavaScript: setiap iterable mengimplementasikan `[Symbol.iterator]()`, method yang mengembalikan iterator baru yang sesuai dengan koleksi tersebut.",
+            "Framework UI sering membiarkan subkelas meng-override method yang membuat komponen, sel, atau view, sementara kelas dasar mengendalikan tata letak dan siklus hidup."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pola",
+              "Perbedaannya"
+            ],
+            "rows": [
+              [
+                "Abstract Factory",
+                "Membuat satu keluarga produk terkait lewat objek dengan beberapa method pembuat. Method-nya sering diimplementasikan sebagai factory method."
+              ],
+              [
+                "Template Method",
+                "Factory Method sering dipanggil dari template method, seperti `notify` memanggil `createChannel` di atas."
+              ],
+              [
+                "Prototype",
+                "Membuat objek dengan menyalin instance alih-alih membuat subkelas creator, sehingga tidak memerlukan hierarki creator paralel."
+              ],
+              [
+                "Builder",
+                "Berfokus membangun satu objek kompleks langkah demi langkah, bukan memilih kelas mana yang dibuat."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa beda pola Factory Method dan pola Abstract Factory?",
+      "a": "Factory Method adalah satu method yang di-override subkelas untuk membuat satu produk. Abstract Factory adalah objek dengan beberapa method pembuat yang menghasilkan keluarga produk terkait yang harus dipakai bersama."
+    },
+    {
+      "q": "Apakah fungsi factory sederhana sama dengan Factory Method?",
+      "a": "Tidak persis. Fungsi seperti `createShape(kind)` dengan switch di dalamnya sering disebut simple factory. Factory Method ala GoF bergantung pada subkelas yang meng-override method pembuat, tetapi keduanya menyembunyikan `new` dari klien."
+    },
+    {
+      "q": "Apakah pola Factory Method mengikuti open/closed principle?",
+      "a": "Ya. Anda menambah produk baru dengan menambah kelas produk baru dan subkelas creator baru, tanpa mengubah logika creator yang ada."
+    },
+    {
+      "q": "Haruskah factory method bersifat abstract?",
+      "a": "Tidak. Kelas dasar dapat menyediakan implementasi default yang mengembalikan produk standar, dan subkelas meng-override-nya hanya ketika membutuhkan sesuatu yang berbeda."
+    }
+  ]
+}

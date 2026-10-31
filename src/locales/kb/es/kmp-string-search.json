@@ -1,0 +1,228 @@
+{
+  "title": "Algoritmo KMP: búsqueda de cadenas de Knuth-Morris-Pratt en Python — cv.cm",
+  "description": "Búsqueda de cadenas KMP explicada: la función prefijo (tabla de fallos), un ejemplo paso a paso, código en Python que encuentra todas las coincidencias en tiempo O(n + m) y errores comunes.",
+  "h1": "Búsqueda de cadenas KMP explicada: cómo funciona, código y complejidad",
+  "answer": "El algoritmo de Knuth-Morris-Pratt (KMP) encuentra todas las apariciones de un patrón de longitud m en un texto de longitud n en tiempo O(n + m). Primero construye una función prefijo (también llamada tabla de fallos) del patrón: para cada posición, la longitud del prefijo propio más largo que también es sufijo. Cuando ocurre una discrepancia, KMP usa esta tabla para desplazar el patrón sin retroceder nunca en el texto.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve KMP",
+      "body": [
+        "La búsqueda de cadenas pregunta en qué lugares de un texto más largo aparece un patrón corto. El método ingenuo prueba cada posición de inicio y compara los caracteres uno a uno. En texto normal es rápido, pero con entradas repetitivas es lento: buscar `aaaab` en `aaaaaaaaaa` compara casi todo el patrón en cada posición, lo que da un tiempo O(n × m).",
+        "KMP nunca vuelve a leer un carácter del texto tras una discrepancia. Donald Knuth, James H. Morris y Vaughan Pratt lo publicaron en 1977 en \"Fast Pattern Matching in Strings\"."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Supón que buscas el patrón `ABABC`, has encontrado `ABAB` y el siguiente carácter del texto no es C. La parte que acabas de encajar, `ABAB`, termina en `AB`, que es también como empieza el patrón. Así que ya sabes que el siguiente intento empieza con 2 caracteres coincidentes y puedes seguir comparando desde la posición 2 del patrón en lugar de empezar de cero.",
+        "La función prefijo guarda estos números. `pi[i]` es la longitud del prefijo propio más largo de `pattern[0..i]` que también es sufijo suyo (propio significa que no es la cadena entera).",
+        {
+          "table": {
+            "head": [
+              "i",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "rows": [
+              [
+                "pattern[i]",
+                "A",
+                "B",
+                "A",
+                "B",
+                "A",
+                "C",
+                "A"
+              ],
+              [
+                "pi[i]",
+                "0",
+                "0",
+                "1",
+                "2",
+                "3",
+                "0",
+                "1"
+              ]
+            ]
+          }
+        },
+        "Por ejemplo, `pi[4] = 3` porque `ABABA` empieza y termina con `ABA`. `pi[5] = 0` porque ningún prefijo de `ABABAC` termina en C."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Busca el patrón `ABABC` (función prefijo 0, 0, 1, 2, 0) en el texto `ABABABC`. La variable k cuenta cuántos caracteres del patrón coinciden en este momento.",
+        {
+          "table": {
+            "head": [
+              "Posición en el texto",
+              "Carácter del texto",
+              "k antes",
+              "Acción",
+              "k después"
+            ],
+            "rows": [
+              [
+                "0–3",
+                "A B A B",
+                "0",
+                "Cuatro coincidencias seguidas",
+                "4"
+              ],
+              [
+                "4",
+                "A",
+                "4",
+                "Discrepancia con pattern[4] = C: se asigna k = pi[3] = 2 y luego A coincide con pattern[2]",
+                "3"
+              ],
+              [
+                "5",
+                "B",
+                "3",
+                "Coincide con pattern[3]",
+                "4"
+              ],
+              [
+                "6",
+                "C",
+                "4",
+                "Coincide con pattern[4]: coincidencia completa que termina en 6, así que empieza en 6 − 5 + 1 = 2",
+                "5 → pi[4] = 0"
+              ]
+            ]
+          }
+        },
+        "El puntero del texto avanzó 7 veces y nunca retrocedió. El método ingenuo reiniciaría en la posición 1 y volvería a comparar algunos caracteres."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        {
+          "code": "def prefix_function(p):\n    pi = [0] * len(p)\n    k = 0\n    for i in range(1, len(p)):\n        while k > 0 and p[i] != p[k]:\n            k = pi[k - 1]          # fall back to a shorter border\n        if p[i] == p[k]:\n            k += 1\n        pi[i] = k\n    return pi\n\ndef kmp_search(text, pattern):\n    \"\"\"Return the start index of every occurrence (overlaps included).\"\"\"\n    if not pattern:\n        return []\n    pi, k, hits = prefix_function(pattern), 0, []\n    for i, ch in enumerate(text):\n        while k > 0 and ch != pattern[k]:\n            k = pi[k - 1]\n        if ch == pattern[k]:\n            k += 1\n        if k == len(pattern):\n            hits.append(i - k + 1)\n            k = pi[k - 1]          # keep going to find overlapping matches\n    return hits\n\nprint(prefix_function(\"ABABACA\"))      # [0, 0, 1, 2, 3, 0, 1]\nprint(kmp_search(\"ABABABC\", \"ABABC\"))  # [2]\nprint(kmp_search(\"AAAAA\", \"AA\"))       # [0, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Fase",
+              "Tiempo",
+              "Espacio",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Construir la función prefijo",
+                "O(m)",
+                "O(m)",
+                "k aumenta como máximo una vez por paso y cada retroceso lo disminuye, así que el total de retrocesos es como máximo m."
+              ],
+              [
+                "Búsqueda",
+                "O(n)",
+                "O(1) adicional",
+                "El mismo argumento sobre el texto: como máximo n aumentos, por tanto como máximo n retrocesos."
+              ],
+              [
+                "Total",
+                "O(n + m)",
+                "O(m)",
+                "El peor caso es igual al mejor caso salvo una constante; no hay entradas malas."
+              ]
+            ]
+          }
+        },
+        "El algoritmo ingenuo es O(n × m) en el peor caso, pero a menudo se acerca a O(n) en texto en lenguaje natural, por lo que la ventaja de KMP se nota sobre todo con datos repetitivos."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Error de uno en el retroceso: tras una discrepancia, asigna `k = pi[k - 1]`, no `pi[k]`. `pi` se indexa por la última posición coincidente.",
+            "Usar `if` en lugar de `while` para el retroceso: puede hacer falta retroceder varias veces seguidas antes de que un carácter coincida.",
+            "Olvidar reiniciar k tras una coincidencia completa: asigna `k = pi[k - 1]` para encontrar coincidencias solapadas, o `k = 0` para las no solapadas.",
+            "Truco de la concatenación: calcula la función prefijo de `pattern + separator + text`, con un separador que no aparezca en ninguno de los dos; cada posición donde el valor es igual a m es el final de una coincidencia.",
+            "El algoritmo Z calcula un arreglo estrechamente relacionado y también busca en O(n + m)."
+          ]
+        },
+        {
+          "note": "En el código Python cotidiano, usa `str.find`, el operador `in` o `str.count`, que vienen incluidos. Están implementados en C y son mucho más rápidos que un KMP en Python puro. Escribe KMP cuando lo necesites para una entrevista, para un alfabeto propio (listas de tokens, no cadenas) o cuando necesites la propia función prefijo."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritmo",
+              "Mejor uso"
+            ],
+            "rows": [
+              [
+                "KMP",
+                "Tiempo lineal garantizado para un patrón; texto en flujo continuo (streaming), porque nunca mira hacia atrás."
+              ],
+              [
+                "Boyer-Moore y variantes",
+                "Patrones largos sobre alfabetos grandes; a menudo salta muchos caracteres y se usa en herramientas como grep."
+              ],
+              [
+                "Rabin-Karp",
+                "Muchos patrones de la misma longitud, o detección de plagio con hashes rodantes."
+              ],
+              [
+                "Aho-Corasick",
+                "Muchos patrones a la vez; generaliza los enlaces de fallo de KMP a un trie."
+              ],
+              [
+                "Arreglo de sufijos o autómata de sufijos",
+                "Muchas consultas distintas sobre el mismo texto fijo."
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Problemas de entrevista: implementar `strStr()`, palíndromo más corto (función prefijo de `s + \"#\" + reversed(s)`), patrón de subcadena repetida, período más pequeño de una cadena (`m - pi[m - 1]`).",
+            "En el mundo real: búsqueda en secuencias de ADN y en flujos de paquetes de red, donde importa el tiempo lineal en el peor caso."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es la función prefijo o tabla de fallos en KMP?",
+      "a": "Para cada posición i del patrón, guarda la longitud del prefijo propio más largo de `pattern[0..i]` que también es sufijo suyo. Ante una discrepancia, KMP la usa para saber cuántos caracteres siguen coincidiendo."
+    },
+    {
+      "q": "¿Cuál es la complejidad temporal de KMP?",
+      "a": "O(n + m): O(m) para construir la función prefijo y O(n) para recorrer el texto. Es lineal incluso en el peor caso."
+    },
+    {
+      "q": "¿Es KMP más rápido que str.find de Python?",
+      "a": "No. `str.find` está implementado en C con un algoritmo de búsqueda optimizado y es mucho más rápido en la práctica. KMP vale por su tiempo lineal garantizado, para aprender y para secuencias que no son cadenas."
+    },
+    {
+      "q": "¿Encuentra KMP coincidencias solapadas?",
+      "a": "Sí, si tras una coincidencia completa asignas `k = pi[k - 1]` en lugar de 0. Por ejemplo, encuentra `AA` en las posiciones 0, 1, 2 y 3 de `AAAAA`."
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "title": "PHP 入门教程：变量、数组、函数、类与表单 — cv.cm",
+  "description": "一页学会现代 PHP 8：运行 Hello world，变量与类型，流程控制，函数，数组，类与枚举，异常处理，以及一个简单的网页。",
+  "h1": "PHP 入门教程（零基础）",
+  "answer": "PHP 是专为 Web 而生的服务器端脚本语言：PHP 文件在服务器上运行，并向浏览器发送 HTML 或 JSON。安装 PHP，把 `<?php echo \"Hello, world\";` 保存为 `hello.php` 并运行 `php hello.php`，或用 `php -S localhost:8000` 启动本地服务器。核心概念包括：以 `$` 开头的变量、灵活的数组、带类型声明的函数、类、异常，以及对用户输入的安全处理。",
+  "sections": [
+    {
+      "h": "PHP 是什么，用来做什么",
+      "body": [
+        "PHP 由 Rasmus Lerdorf 于 1994 年创建；如今这个名字代表“PHP: Hypertext Preprocessor”。几乎所有虚拟主机都支持 PHP，大量网站由它驱动，包括 WordPress、Drupal 和维基百科使用的 MediaWiki。开发者用它构建内容网站、网上商店、REST API，以及借助 Laravel 和 Symfony 等框架开发完整的 Web 应用。现代 PHP 8 拥有类型系统、JIT 编译器、枚举、属性（attributes），性能也比旧版本好得多。"
+      ]
+    },
+    {
+      "h": "安装 PHP 并运行 Hello, world",
+      "body": [
+        "从 php.net 或通过包管理器安装 PHP（`brew install php`、`sudo apt install php-cli`，或在 Windows 上使用 XAMPP 等集成包）。用 `php -v` 检查。PHP 代码写在 `<?php` 与可选的结束标记 `?>` 之间。",
+        {
+          "code": "<?php\necho \"Hello, world\\n\";",
+          "lang": "php"
+        },
+        {
+          "code": "php hello.php\n# Hello, world\nphp -S localhost:8000    # serve the current folder at http://localhost:8000",
+          "lang": "shell"
+        },
+        "在只含 PHP 代码的文件中，请省略结束标记 `?>`，以免意外向浏览器发送多余的空白字符。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "变量名以 `$` 开头。类型是动态的，但你可以声明参数类型和返回类型；在文件顶部写 `declare(strict_types=1);` 可以禁止函数调用中的自动类型转换。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "`$n = 42;`",
+                "大多数系统上为 64 位"
+              ],
+              [
+                "`float`",
+                "`$x = 3.14;`",
+                "双精度"
+              ],
+              [
+                "`string`",
+                "`$s = \"hi $name\";`",
+                "双引号会插值，单引号不会"
+              ],
+              [
+                "`bool`",
+                "`$ok = true;`",
+                "关键字不区分大小写"
+              ],
+              [
+                "`array`",
+                "`$a = [1, 2];`",
+                "有序映射：同时是列表和字典"
+              ],
+              [
+                "`null`",
+                "`$v = null;`",
+                "没有值"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "<?php\n$name = \"Ada\";\n$count = 7;\necho \"$name has $count items\\n\";        // Ada has 7 items\necho 'No $interpolation here' . \"\\n\";   // No $interpolation here\necho intdiv($count, 2), \" \", $count / 2, \"\\n\";  // 3 3.5\nvar_dump((int) \"12\" + 1);                // int(13)",
+          "lang": "php"
+        },
+        "`.` 运算符用于连接字符串；`+` 只用于数字。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "<?php\n$score = 72;\nif ($score >= 90) {\n    echo \"A\\n\";\n} elseif ($score >= 70) {\n    echo \"B\\n\";                   // B\n} else {\n    echo \"C\\n\";\n}\n\nfor ($i = 0; $i < 3; $i++) {\n    echo $i, \" \";                 // 0 1 2\n}\necho \"\\n\";\n\nforeach ([\"apple\", \"pear\"] as $fruit) {\n    echo $fruit, \"\\n\";\n}\n\n$kind = match ($day = \"SAT\") {   // match is strict and returns a value\n    \"SAT\", \"SUN\" => \"weekend\",\n    default => \"weekday\",\n};\necho $kind, \"\\n\";                 // weekend",
+          "lang": "php"
+        },
+        "`match`（PHP 8.0 及以上）使用 `===` 比较，没有分支匹配时会抛出错误；而旧的 `switch` 使用宽松比较，并且没有 `break` 时会继续向下执行。"
+      ]
+    },
+    {
+      "h": "函数",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nfunction greet(string $name, string $greeting = \"Hello\"): string\n{\n    return \"$greeting, $name!\";\n}\n\necho greet(\"Lin\"), \"\\n\";                    // Hello, Lin!\necho greet(greeting: \"Hi\", name: \"Lin\"), \"\\n\"; // Hi, Lin!  (named arguments)\n\n$square = fn(int $x): int => $x * $x;       // arrow function\necho $square(5), \"\\n\";                      // 25\n\nfunction total(int ...$nums): int           // variadic\n{\n    return array_sum($nums);\n}\necho total(1, 2, 3), \"\\n\";                  // 6",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "标志性特性：数组",
+      "body": [
+        "PHP 数组是一种灵活的类型，可以用作列表、字典、栈或队列。键是整数或字符串，并且保持插入顺序。大量内置函数可以操作数组。",
+        {
+          "code": "<?php\n$nums = [3, 1, 2];\n$nums[] = 5;                       // append\nsort($nums);\necho implode(\", \", $nums), \"\\n\";   // 1, 2, 3, 5\n\n$ages = [\"ann\" => 31, \"bob\" => 25];\n$ages[\"cy\"] = 40;\nforeach ($ages as $person => $age) {\n    echo \"$person is $age\\n\";\n}\necho $ages[\"zed\"] ?? 0, \"\\n\";      // 0  (null coalescing)\n\n$evens = array_filter($nums, fn($n) => $n % 2 === 0);\n$squares = array_map(fn($n) => $n * $n, $nums);\necho json_encode(array_values($evens)), \" \", json_encode($squares), \"\\n\";  // [2] [1,4,9,25]\necho count($ages), \" \", array_key_exists(\"bob\", $ages) ? \"yes\" : \"no\", \"\\n\"; // 3 yes",
+          "lang": "php"
+        },
+        "数组在赋值时会被复制（写时复制），这与按句柄传递的对象不同。"
+      ]
+    },
+    {
+      "h": "类、构造器属性提升与枚举",
+      "body": [
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nenum Role: string\n{\n    case Admin = \"admin\";\n    case Viewer = \"viewer\";\n}\n\nfinal class User\n{\n    public function __construct(\n        public readonly string $name,\n        public readonly Role $role = Role::Viewer,\n    ) {}\n\n    public function label(): string\n    {\n        return \"{$this->name} ({$this->role->value})\";\n    }\n}\n\n$u = new User(\"Ann\", Role::Admin);\necho $u->label(), \"\\n\";               // Ann (admin)\necho Role::from(\"viewer\")->name, \"\\n\"; // Viewer",
+          "lang": "php"
+        },
+        "构造器属性提升（PHP 8.0）可以在构造函数签名中同时声明并赋值属性。`readonly` 属性（8.1）只能设置一次，带值枚举（8.1）可以把枚举项映射到字符串或整数。同样可以使用接口、抽象类和 trait。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "现代 PHP 对大多数错误都会抛出异常。对于可预期的失败，捕获 `Exception` 的子类；`Throwable` 还涵盖 `TypeError` 等引擎错误。",
+        {
+          "code": "<?php\nfunction parseAge(string $text): int\n{\n    if (!ctype_digit($text)) {\n        throw new InvalidArgumentException(\"invalid age: $text\");\n    }\n    return (int) $text;\n}\n\ntry {\n    echo parseAge(\"41\"), \"\\n\";   // 41\n    echo parseAge(\"abc\"), \"\\n\";\n} catch (InvalidArgumentException $e) {\n    echo $e->getMessage(), \"\\n\"; // invalid age: abc\n} finally {\n    echo \"done\\n\";\n}",
+          "lang": "php"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：JSON API 接口",
+      "body": [
+        "把它保存为 `api.php`，运行 `php -S localhost:8000`，然后打开 `http://localhost:8000/api.php?name=Ann`。它会读取查询参数、校验后返回 JSON。",
+        {
+          "code": "<?php\ndeclare(strict_types=1);\n\nheader(\"Content-Type: application/json; charset=utf-8\");\n\n$name = trim($_GET[\"name\"] ?? \"\");\nif ($name === \"\" || mb_strlen($name) > 50) {\n    http_response_code(400);\n    echo json_encode([\"error\" => \"name must be 1 to 50 characters\"]);\n    exit;\n}\n\n$response = [\n    \"message\" => \"Hello, $name!\",\n    \"length\" => mb_strlen($name),\n    \"time\" => date(DATE_ATOM),\n];\necho json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);",
+          "lang": "php"
+        },
+        "`$_GET`、`$_POST` 和 `$_COOKIE` 保存请求数据。请把其中的每个值都当作不可信的。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "绝不要把用户输入直接放进 SQL 或 HTML。请使用 PDO 的预处理语句（`$stmt = $pdo->prepare(\"SELECT * FROM users WHERE id = ?\")`）防止 SQL 注入，并在向 HTML 输出时使用 `htmlspecialchars($value)` 防止跨站脚本攻击（XSS）。"
+        },
+        {
+          "ul": [
+            "使用会转换类型的 `==` 比较；请使用 `===` 和 `!==`。",
+            "忘记变量名前的 `$`，或语句末尾的分号。",
+            "用 `md5` 或 `sha1` 存储密码。请使用 `password_hash` 和 `password_verify`。",
+            "对 UTF-8 文本使用 `strlen`，它统计的是字节数。统计字符数请用 `mb_strlen`。",
+            "运行过时的 PHP 版本。请使用仍受支持的 PHP 8 版本，以获得安全修复和现代特性。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "php.net 上的官方 PHP 手册记录了每一个函数，还有语言参考和用户笔记。学习包管理器 Composer 和 PSR 编码规范，然后尝试框架：开发应用用 Laravel 或 Symfony，开发小型 API 用 Slim。PHPUnit 是标准的测试工具。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "PHP 现在还值得学吗？",
+      "a": "值得。它驱动着大部分网络，包括 WordPress 网站，而搭配 Laravel 或 Symfony 的现代 PHP 8 是开发 Web 应用的高效方式。维护和开发 PHP 系统的工作岗位很常见。"
+    },
+    {
+      "q": "PHP 是前端语言还是后端语言？",
+      "a": "后端。PHP 在服务器上运行，把生成好的 HTML、JSON 或文件发送给浏览器，浏览器永远看不到 PHP 代码。"
+    },
+    {
+      "q": "echo 和 print 有什么区别？",
+      "a": "两者都用于输出文本。`echo` 可以接收多个用逗号分隔的参数，没有返回值；`print` 只接收一个参数，返回 1。实际上大多数代码使用 `echo`。"
+    },
+    {
+      "q": "declare(strict_types=1) 有什么作用？",
+      "a": "它让该文件中发起的函数调用对标量类型声明采用严格模式，所以把字符串 `\"5\"` 传给 `int` 参数时，会抛出 `TypeError` 而不是被自动转换。"
+    }
+  ]
+}

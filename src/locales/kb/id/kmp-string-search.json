@@ -1,0 +1,228 @@
+{
+  "title": "Algoritma KMP: pencarian string Knuth-Morris-Pratt di Python — cv.cm",
+  "description": "Pelajari pencarian string KMP: prefix function (failure table), contoh penelusuran, kode Python yang menemukan setiap kecocokan dalam waktu O(n + m), dan kesalahan umum.",
+  "h1": "Penjelasan pencarian string KMP: cara kerja, kode, dan kompleksitas",
+  "answer": "Algoritma Knuth-Morris-Pratt (KMP) menemukan setiap kemunculan pattern sepanjang m dalam teks sepanjang n dalam waktu O(n + m). Mula-mula KMP membangun prefix function (disebut juga failure table) untuk pattern: untuk setiap posisi, panjang proper prefix terpanjang yang juga merupakan suffix. Saat terjadi ketidakcocokan, KMP memakai tabel ini untuk menggeser pattern tanpa pernah mundur di teks.",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan KMP",
+      "body": [
+        "Pencarian string menanyakan di mana sebuah pattern pendek muncul dalam teks yang lebih panjang. Metode naif mencoba setiap posisi awal dan membandingkan karakter satu per satu. Pada teks biasa cara ini cepat, tetapi pada input yang repetitif lambat: mencari `aaaab` di dalam `aaaaaaaaaa` membandingkan hampir seluruh pattern di setiap posisi, sehingga waktunya O(n × m).",
+        "KMP tidak pernah membaca ulang karakter teks setelah ketidakcocokan. Donald Knuth, James H. Morris, dan Vaughan Pratt menerbitkannya pada 1977 dalam \"Fast Pattern Matching in Strings\"."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        "Misalkan Anda mencari pattern `ABABC`, sudah cocok `ABAB`, dan karakter teks berikutnya bukan C. Bagian yang baru cocok, `ABAB`, berakhir dengan `AB`, yang juga merupakan awal pattern. Jadi Anda sudah tahu percobaan berikutnya dimulai dengan 2 karakter yang cocok, dan Anda dapat melanjutkan perbandingan dari posisi pattern 2 alih-alih mulai dari awal.",
+        "Prefix function menyimpan angka-angka ini. `pi[i]` adalah panjang proper prefix terpanjang dari `pattern[0..i]` yang juga merupakan suffix-nya (proper berarti bukan seluruh string).",
+        {
+          "table": {
+            "head": [
+              "i",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "rows": [
+              [
+                "pattern[i]",
+                "A",
+                "B",
+                "A",
+                "B",
+                "A",
+                "C",
+                "A"
+              ],
+              [
+                "pi[i]",
+                "0",
+                "0",
+                "1",
+                "2",
+                "3",
+                "0",
+                "1"
+              ]
+            ]
+          }
+        },
+        "Misalnya, `pi[4] = 3` karena `ABABA` diawali dan diakhiri dengan `ABA`. `pi[5] = 0` karena tidak ada prefix dari `ABABAC` yang berakhir dengan C."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Cari pattern `ABABC` (prefix function 0, 0, 1, 2, 0) dalam teks `ABABABC`. Variabel k menghitung berapa karakter pattern yang sedang cocok.",
+        {
+          "table": {
+            "head": [
+              "Posisi teks",
+              "Karakter teks",
+              "k sebelum",
+              "Aksi",
+              "k sesudah"
+            ],
+            "rows": [
+              [
+                "0–3",
+                "A B A B",
+                "0",
+                "Empat kecocokan berturut-turut",
+                "4"
+              ],
+              [
+                "4",
+                "A",
+                "4",
+                "Tidak cocok dengan pattern[4] = C: set k = pi[3] = 2, lalu A cocok dengan pattern[2]",
+                "3"
+              ],
+              [
+                "5",
+                "B",
+                "3",
+                "Cocok dengan pattern[3]",
+                "4"
+              ],
+              [
+                "6",
+                "C",
+                "4",
+                "Cocok dengan pattern[4]: kecocokan penuh berakhir di 6, sehingga dimulai di 6 − 5 + 1 = 2",
+                "5 → pi[4] = 0"
+              ]
+            ]
+          }
+        },
+        "Penunjuk teks maju 7 kali dan tidak pernah mundur. Metode naif akan mengulang dari posisi 1 dan membandingkan sebagian karakter lagi."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        {
+          "code": "def prefix_function(p):\n    pi = [0] * len(p)\n    k = 0\n    for i in range(1, len(p)):\n        while k > 0 and p[i] != p[k]:\n            k = pi[k - 1]          # fall back to a shorter border\n        if p[i] == p[k]:\n            k += 1\n        pi[i] = k\n    return pi\n\ndef kmp_search(text, pattern):\n    \"\"\"Return the start index of every occurrence (overlaps included).\"\"\"\n    if not pattern:\n        return []\n    pi, k, hits = prefix_function(pattern), 0, []\n    for i, ch in enumerate(text):\n        while k > 0 and ch != pattern[k]:\n            k = pi[k - 1]\n        if ch == pattern[k]:\n            k += 1\n        if k == len(pattern):\n            hits.append(i - k + 1)\n            k = pi[k - 1]          # keep going to find overlapping matches\n    return hits\n\nprint(prefix_function(\"ABABACA\"))      # [0, 0, 1, 2, 3, 0, 1]\nprint(kmp_search(\"ABABABC\", \"ABABC\"))  # [2]\nprint(kmp_search(\"AAAAA\", \"AA\"))       # [0, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Fase",
+              "Waktu",
+              "Ruang",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Membangun prefix function",
+                "O(m)",
+                "O(m)",
+                "k bertambah paling banyak sekali per langkah dan setiap fallback menguranginya, sehingga total fallback paling banyak m."
+              ],
+              [
+                "Pencarian",
+                "O(n)",
+                "O(1) tambahan",
+                "Argumen yang sama pada teks: paling banyak n penambahan, sehingga paling banyak n fallback."
+              ],
+              [
+                "Total",
+                "O(n + m)",
+                "O(m)",
+                "Kasus terburuk sama dengan kasus terbaik hingga suatu konstanta; tidak ada input yang buruk."
+              ]
+            ]
+          }
+        },
+        "Algoritma naif O(n × m) pada kasus terburuk tetapi sering mendekati O(n) pada teks bahasa alami, sehingga keunggulan KMP terutama terlihat pada data yang repetitif."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Off-by-one pada fallback: setelah ketidakcocokan, set `k = pi[k - 1]`, bukan `pi[k]`. `pi` diindeks dengan posisi cocok terakhir.",
+            "Memakai `if` alih-alih `while` untuk fallback: Anda mungkin perlu beberapa fallback berturut-turut sebelum sebuah karakter cocok.",
+            "Lupa mereset k setelah kecocokan penuh: set `k = pi[k - 1]` untuk menemukan kecocokan yang tumpang tindih, atau `k = 0` untuk yang tidak tumpang tindih.",
+            "Trik penyambungan: hitung prefix function dari `pattern + separator + text`, dengan separator yang tidak muncul di keduanya; setiap posisi yang nilainya sama dengan m adalah akhir sebuah kecocokan.",
+            "Z-algorithm menghitung array yang sangat mirip dan juga mencari dalam O(n + m)."
+          ]
+        },
+        {
+          "note": "Pada kode Python sehari-hari, gunakan `str.find` bawaan, operator `in`, atau `str.count`. Semuanya diimplementasikan dalam C dan jauh lebih cepat daripada KMP Python murni. Tulis KMP bila Anda membutuhkannya untuk wawancara, untuk alfabet khusus (list token, bukan string), atau bila Anda membutuhkan prefix function itu sendiri."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algoritma",
+              "Penggunaan terbaik"
+            ],
+            "rows": [
+              [
+                "KMP",
+                "Waktu linear terjamin untuk satu pattern; teks streaming, karena tidak pernah melihat ke belakang."
+              ],
+              [
+                "Boyer-Moore dan variannya",
+                "Pattern panjang pada alfabet besar; sering melewati banyak karakter, dipakai di alat seperti grep."
+              ],
+              [
+                "Rabin-Karp",
+                "Banyak pattern dengan panjang sama, atau deteksi plagiarisme dengan rolling hash."
+              ],
+              [
+                "Aho-Corasick",
+                "Banyak pattern sekaligus; menggeneralisasi failure link KMP ke trie."
+              ],
+              [
+                "Suffix array atau suffix automaton",
+                "Banyak kueri berbeda pada teks tetap yang sama."
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Soal wawancara: implementasi `strStr()`, shortest palindrome (prefix function dari `s + \"#\" + reversed(s)`), repeated substring pattern, periode terkecil string (`m - pi[m - 1]`).",
+            "Dunia nyata: pencarian pada sekuens DNA dan aliran paket jaringan, ketika waktu linear pada kasus terburuk penting."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa itu prefix function atau failure table pada KMP?",
+      "a": "Untuk setiap posisi i pada pattern, tabel ini menyimpan panjang proper prefix terpanjang dari `pattern[0..i]` yang juga merupakan suffix-nya. Saat terjadi ketidakcocokan, KMP memakainya untuk mengetahui berapa karakter yang masih cocok."
+    },
+    {
+      "q": "Berapa kompleksitas waktu KMP?",
+      "a": "O(n + m): O(m) untuk membangun prefix function dan O(n) untuk memindai teks. Linear bahkan pada kasus terburuk."
+    },
+    {
+      "q": "Apakah KMP lebih cepat daripada str.find di Python?",
+      "a": "Tidak. `str.find` diimplementasikan dalam C dengan algoritma pencarian yang dioptimalkan dan jauh lebih cepat dalam praktik. KMP berharga karena waktu linear yang terjamin, untuk belajar, dan untuk sekuens non-string."
+    },
+    {
+      "q": "Apakah KMP menemukan kecocokan yang tumpang tindih?",
+      "a": "Ya, jika setelah kecocokan penuh Anda set `k = pi[k - 1]` alih-alih 0. Misalnya, ia menemukan `AA` pada posisi 0, 1, 2, dan 3 dalam `AAAAA`."
+    }
+  ]
+}

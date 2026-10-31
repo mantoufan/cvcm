@@ -1,0 +1,195 @@
+{
+  "title": "Tutorial Swift: optional, struct, enum, dan protocol — cv.cm",
+  "description": "Belajar Swift dalam satu halaman: Hello world, let dan var, tipe data, alur kontrol, closure, array dan dictionary, optional, struct, enum, dan error.",
+  "h1": "Tutorial Swift untuk pemula",
+  "answer": "Swift adalah bahasa terkompilasi yang cepat dan aman, dibuat oleh Apple untuk aplikasi iPhone, iPad, Mac, Apple Watch, dan Apple TV, dan juga berjalan di Linux dan Windows. Simpan `print(\"Hello, world\")` di `hello.swift` lalu jalankan `swift hello.swift`. Konsep intinya: konstanta `let` dan variabel `var`, type inference, optional untuk nilai yang mungkin tidak ada, struct dan enum dengan semantik nilai, protocol, serta error yang ditangani dengan `do`/`try`/`catch`.",
+  "sections": [
+    {
+      "h": "Apa itu Swift dan untuk apa dipakai",
+      "body": [
+        "Swift diperkenalkan Apple pada 2014 sebagai pengganti modern Objective-C dan dijadikan open source pada 2015; proyeknya ada di swift.org. Swift adalah bahasa utama untuk aplikasi di platform Apple, biasanya dengan framework SwiftUI atau UIKit. Swift juga dipakai untuk kode sisi server (misalnya dengan framework Vapor) dan tool command line. Bahasa ini dirancang untuk mencegah bug umum: variabel harus diinisialisasi, array memeriksa batasnya, dan `nil` harus ditangani secara eksplisit."
+      ]
+    },
+    {
+      "h": "Instal Swift dan jalankan Hello, world",
+      "body": [
+        "Di Mac, instal Xcode dari App Store atau command-line tools Xcode. Di Linux dan Windows, unduh toolchain dari swift.org. Periksa dengan `swift --version`.",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "Untuk proyek yang lebih besar, jalankan `swift package init --type executable` lalu `swift run`. Playground Xcode adalah cara mudah lain untuk bereksperimen."
+      ]
+    },
+    {
+      "h": "Konstanta, variabel, dan tipe data dasar",
+      "body": [
+        "Gunakan `let` untuk konstanta dan `var` untuk variabel. Utamakan `let`; compiler memberi peringatan bila `var` tidak pernah diubah. Tipe disimpulkan, dan Swift tidak pernah mengonversi antartipe numerik secara implisit.",
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "64-bit di platform modern"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "Tipe floating-point default"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` atau `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Teks Unicode, value type"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "Satu karakter menurut persepsi pengguna"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "Array dan dictionary"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "`\\(expression)` di dalam string literal menyisipkan sebuah nilai (string interpolation)."
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` harus exhaustive, tidak lanjut ke case berikutnya secara default, dan dapat mencocokkan range (`case 90...100:`), tuple, dan case enum."
+      ]
+    },
+    {
+      "h": "Fungsi dan closure",
+      "body": [
+        "Parameter memiliki argument label yang ditulis pemanggil, sehingga pemanggilan terbaca seperti kalimat. Gunakan `_` untuk menghilangkan label. Closure adalah fungsi tanpa nama yang ditulis dalam kurung kurawal.",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` merujuk ke argumen closure pertama. Ketika closure adalah argumen terakhir, ia dapat ditulis setelah tanda kurung (sintaks trailing closure)."
+      ]
+    },
+    {
+      "h": "Array, dictionary, dan set",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "Collection adalah value type: menugaskan array ke variabel lain membuat salinan independen (disalin secara lazy, hanya ketika salah satunya berubah). Array `let` tidak dapat diubah sama sekali."
+      ]
+    },
+    {
+      "h": "Fitur khas: optional",
+      "body": [
+        "Nilai yang mungkin tidak ada memiliki tipe optional, ditulis `String?`. Anda tidak dapat memakainya sebagai `String` sebelum di-unwrap, sehingga compiler memaksa Anda menangani kasus `nil`.",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` dan `guard let` melakukan unwrap dengan aman, `?.` (optional chaining) memanggil method hanya bila nilainya ada, dan `??` memberi nilai default. Force unwrap `value!` membuat program crash bila nilainya `nil`, jadi pakai sesekali saja. Bentuk singkat `if let number` membutuhkan Swift 5.7 ke atas."
+      ]
+    },
+    {
+      "h": "Struct, class, enum, dan protocol",
+      "body": [
+        "Struct dan enum adalah value type; class adalah reference type dengan pewarisan. Kode Swift lebih menyukai struct dan protocol (interface) daripada hierarki class.",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "Struct mendapat memberwise initializer secara otomatis (`Rect(width:height:)`). Case enum dapat membawa associated value, seperti `.radius(Double)`."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "Fungsi yang bisa gagal ditandai `throws`. Pemanggil harus memakai `try` di dalam blok `do`/`catch`, atau memakai `try?` untuk mengubah error menjadi `nil`.",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "Program kecil yang lengkap: frekuensi kata",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "Jalankan dengan `swift words.swift notes.txt`. `Foundation` menyediakan pembacaan file dan helper string; tersedia di platform Apple serta di toolchain Linux dan Windows."
+      ]
+    },
+    {
+      "h": "Kesalahan umum pemula",
+      "body": [
+        {
+          "note": "Hindari force unwrap dengan `!` dan tipe implicitly unwrapped seperti `String!` kecuali nilainya dijamin ada. `nil` pada titik itu membuat aplikasi crash saat runtime."
+        },
+        {
+          "ul": [
+            "Mencoba mengubah konstanta `let` atau properti dari struct `let`. Gunakan `var` bila nilainya harus berubah.",
+            "Mengira struct dibagi seperti objek. Mengubah salinan tidak mengubah aslinya; gunakan class bila Anda butuh identitas bersama.",
+            "Mengindeks `String` dengan integer, seperti `s[0]`. Gunakan `s.first`, `s.prefix(3)`, atau nilai `String.Index`.",
+            "Mencampur `Int` dan `Double` dalam aritmetika tanpa konversi, yang merupakan error kompilasi.",
+            "Lupa `try` sebelum pemanggilan yang bisa melempar error, atau memakai `try!`, yang crash saat terjadi error."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        "Baca \"The Swift Programming Language\" di docs.swift.org, panduan dan referensi resmi, serta pusat dokumentasi di swift.org. Untuk aplikasi, ikuti tutorial SwiftUI dari Apple di Xcode. Lalu pelajari Swift concurrency (`async`/`await` dan actor), generic, dan Swift Package Manager untuk dependensi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Swift hanya untuk platform Apple?",
+      "a": "Tidak. Swift open source dan juga berjalan di Linux dan Windows, serta dipakai untuk kode sisi server dan tool. Namun, framework aplikasi seperti SwiftUI dan UIKit hanya untuk Apple."
+    },
+    {
+      "q": "Sebaiknya belajar Swift atau Objective-C?",
+      "a": "Pelajari Swift. Swift adalah bahasa yang direkomendasikan Apple untuk aplikasi baru, dan dapat memanggil kode Objective-C yang sudah ada bila perlu."
+    },
+    {
+      "q": "Apa perbedaan struct dan class di Swift?",
+      "a": "Struct adalah value type yang disalin saat ditugaskan atau dikirim; class adalah reference type, sehingga semua variabel berbagi satu instance. Class juga mendukung pewarisan dan deinitializer."
+    },
+    {
+      "q": "Apa arti tanda tanya setelah tipe?",
+      "a": "`Int?` adalah optional: ia menampung `Int` atau `nil`. Anda harus meng-unwrap-nya, misalnya dengan `if let`, sebelum memakai nilainya."
+    }
+  ]
+}

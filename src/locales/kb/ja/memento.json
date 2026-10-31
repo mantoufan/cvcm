@@ -1,0 +1,165 @@
+{
+  "title": "Memento パターン：スナップショットと Undo の TypeScript の例 — cv.cm",
+  "description": "Memento パターンは、内部を公開せずにオブジェクトの状態を保存・復元します。Originator、Memento、Caretaker を TypeScript の Undo コードで学べます。",
+  "h1": "Memento パターンとは？例でわかりやすく解説",
+  "answer": "Memento は振る舞いに関するデザインパターンで、オブジェクトの内部状態を Memento と呼ばれるスナップショットオブジェクトに記録し、後でその状態に復元できるようにします。状態を持つオブジェクト（Originator）が Memento を作成して復元し、別のオブジェクト（Caretaker）はそれを保管するだけで、中身は決して見ません。カプセル化を壊さずに、Undo、チェックポイント、セーブデータを実現する標準的な方法です。",
+  "sections": [
+    {
+      "h": "目的と解決する問題",
+      "body": [
+        "目的：カプセル化を侵害せずに、オブジェクトの内部状態を捉えて外部に保存し、後でそのオブジェクトをその状態に復元できるようにすることです。Memento は Gang of Four（GoF）の書籍にある振る舞いパターンの 1 つです。",
+        "お絵かきアプリで、図形が位置、サイズ、色、そして描画に使うプライベートな導出値のリストを持っているとします。Undo ボタンを付けたいとき、Undo 管理がその図形のフィールドを自分でコピーすることもできますが、その場合はすべてのプライベートフィールドを知っていなければならず、図形クラスが変わるたびに Undo 管理が壊れます。Undo のためだけにすべてのフィールドを公開すると、どんなコードでも図形を不正な状態にできてしまいます。",
+        "Memento は、図形自身にスナップショットを作らせることでこれを解決します。スナップショットの中身と、そこからの復元方法を知っているのは図形だけです。Undo 管理はスナップショットを不透明なオブジェクトとして扱い、リストに保存して、ユーザーが Undo を押したときに 1 つ返します。"
+      ]
+    },
+    {
+      "h": "構造と登場する役割",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "役割",
+              "責務"
+            ],
+            "rows": [
+              [
+                "Originator",
+                "状態が保存されるオブジェクト。現在の状態の Memento を作成し、Memento から自分を復元する"
+              ],
+              [
+                "Memento",
+                "Originator の状態の不変なスナップショット。ほかのオブジェクトには役に立つものを何も公開しない"
+              ],
+              [
+                "Caretaker",
+                "いつ保存し、いつ復元するかを決め、Memento を（たとえばスタックに）保管するが、中身を読んだり変更したりは決してしない"
+              ]
+            ]
+          }
+        },
+        "重要なのは 2 つのインターフェースです。保存された状態を読める Originator 向けの広いインターフェースと、それ以外の全員向けの、Memento を保持することしかできない狭いインターフェースです。"
+      ]
+    },
+    {
+      "h": "TypeScript での実装",
+      "body": [
+        "Memento クラスは JavaScript のプライベートフィールド（`#state`）を使うので、Caretaker は Memento オブジェクトから保存データを読めません。読み取りは静的メソッド `EditorMemento.read` を通じて行われ、これを呼ぶのはエディタだけです。実際のプロジェクトでは、Memento クラスをエディタと同じモジュールに置いてエクスポートしないようにし、ほかのモジュールは Memento を保持できても、開くことはできないようにします。",
+        {
+          "code": "type EditorState = { text: string; cursor: number };\n\nclass EditorMemento {\n  readonly #state: EditorState;\n  constructor(state: EditorState) {\n    this.#state = { ...state }; // copy, so later edits do not change the snapshot\n  }\n  static read(m: EditorMemento): EditorState {\n    return { ...m.#state };\n  }\n}\n\nclass Editor {\n  private state: EditorState = { text: \"\", cursor: 0 };\n  type(words: string) {\n    const text = this.state.text + words;\n    this.state = { text, cursor: text.length };\n  }\n  get text() { return this.state.text; }\n  save(): EditorMemento { return new EditorMemento(this.state); }\n  restore(m: EditorMemento) { this.state = EditorMemento.read(m); }\n}\n\nclass History {\n  private stack: EditorMemento[] = [];\n  constructor(private editor: Editor) {}\n  backup() { this.stack.push(this.editor.save()); }\n  undo() { const m = this.stack.pop(); if (m) this.editor.restore(m); }\n}\n\nconst editor = new Editor();\nconst history = new History(editor);\nhistory.backup(); editor.type(\"Hello\");\nhistory.backup(); editor.type(\" world\");\nconsole.log(editor.text); // Hello world\nhistory.undo();\nconsole.log(editor.text); // Hello\nhistory.undo();\nconsole.log(JSON.stringify(editor.text)); // \"\"",
+          "lang": "typescript"
+        },
+        "`History` が Caretaker です。変更の前に `backup()` を、元に戻すときに `undo()` を呼びますが、`text` や `cursor` を見ることはありません。あとで `EditorState` に選択範囲を追加しても、`History` は変更不要です。",
+        {
+          "note": "Memento は本物のコピーでなければなりません。Originator の可変なオブジェクトや配列への参照を保持しているだけだと、後の編集でスナップショットも変わってしまい、Undo が誤った状態を復元します。ネストしたデータには、`structuredClone(state)` のようなディープコピーを使いましょう。"
+        }
+      ]
+    },
+    {
+      "h": "Undo における Memento と Command の比較",
+      "body": [
+        "Undo の実装には一般的な方法が 2 つあり、組み合わせて使われることもよくあります。",
+        {
+          "table": {
+            "head": [
+              "方式",
+              "保存するもの",
+              "向いている場合",
+              "コスト"
+            ],
+            "rows": [
+              [
+                "Memento",
+                "変更の前の、状態全体のスナップショット",
+                "変更を元に戻すのが難しい場合や、状態が小さい場合",
+                "メモリは、状態のサイズに手順の数を掛けた分だけ増える"
+              ],
+              [
+                "Command",
+                "操作と、それを元に戻すのに十分なデータ",
+                "各操作に単純な逆操作がある場合",
+                "各コマンドに正しい Undo のロジックが必要"
+              ]
+            ]
+          }
+        },
+        "現実的な折衷案は、ほとんどの手順ではコマンドを保存し、N 手順ごとに完全な Memento を保存する方法や、コマンドが変更する状態の一部だけを保存する方法です。"
+      ]
+    },
+    {
+      "h": "使うべき場面と避けるべき場面",
+      "body": [
+        {
+          "ul": [
+            "Undo、Redo、チェックポイント、セーブデータ、そして編集内容を巻き戻したいフォームの「キャンセル」ボタンに使います。",
+            "メモリ内のトランザクションに使います。危険な操作の前にスナップショットを取り、失敗したら復元します。",
+            "Caretaker を Originator の内部フィールドに依存させたくないときに使います。",
+            "状態が非常に大きく頻繁に変わる場合は、履歴の長さを制限するか差分だけを保存しない限り、使いません。",
+            "状態がすでに単なる不変の値であれば、大げさな仕組みは不要です。不変データなら、古い値がそのままスナップショットなので、以前の値のリストを保持すれば十分です。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "実際の利用例",
+      "body": [
+        {
+          "ul": [
+            "ブラウザの History API：`history.pushState(state, \"\", url)` は履歴の各エントリに状態オブジェクトを保存し、ユーザーが移動したときに `popstate` イベントがそれを返します。",
+            "Redux などのストアは不変な状態のスナップショットを保持し、ツールがそれをタイムトラベルデバッグに利用します。",
+            "SQL データベースはトランザクション内で `SAVEPOINT` をサポートしており、名前を付けた地点まで作業を巻き戻せます。",
+            "テキストエディタ、グラフィックスソフト、ゲームは、Undo、自動保存、セーブスロットのためにスナップショットを保存します。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "関連するパターン",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "パターン",
+              "Memento パターンとの関係"
+            ],
+            "rows": [
+              [
+                "Command パターン",
+                "Command は操作を逆にして Undo できます。実行前に取った Memento を保存し、`undo` でそれを復元することもできます。"
+              ],
+              [
+                "Prototype パターン",
+                "Prototype はオブジェクト全体を複製して新しいオブジェクトを作ります。Memento は、同じオブジェクトを後で復元するために状態を保存します。"
+              ],
+              [
+                "Iterator パターン",
+                "Iterator は現在位置を Memento として公開でき、走査を後で再開できます。"
+              ],
+              [
+                "State パターン",
+                "State は、状態が変わるとオブジェクトの振る舞いを変えます。Memento はデータを記録して復元するだけです。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Originator と Caretaker の違いは何ですか？",
+      "a": "Originator は状態を持ち、Memento を作成し、そこから復元できる唯一のオブジェクトです。Caretaker はいつ保存・復元するかを決めて Memento を保管しますが、それらを不透明なものとして扱います。"
+    },
+    {
+      "q": "Memento はカプセル化を壊しませんか？",
+      "a": "壊しません。それがこのパターンの目的です。Originator の内部フィールドはプライベートのままで、Memento がそれらを Caretaker から隠すので、保存された状態を読めるのは Originator だけです。"
+    },
+    {
+      "q": "Memento のメモリ使用量を抑えるにはどうすればよいですか？",
+      "a": "スナップショットの最大数を決めて古いものから捨てる、状態の変更部分だけを保存する、あるいは小さな変更を記録するコマンドと Memento を組み合わせる、といった方法があります。"
+    },
+    {
+      "q": "JSON へのシリアライズは Memento ですか？",
+      "a": "状態を JSON にシリアライズすることは、Memento の保存形式になり得ますし、ディスクへの保存にも便利です。このパターンが扱うのは、誰がスナップショットを作り、保管し、復元するかであり、形式ではありません。"
+    }
+  ]
+}

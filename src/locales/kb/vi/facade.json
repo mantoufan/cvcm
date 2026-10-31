@@ -1,0 +1,160 @@
+{
+  "title": "Mẫu Facade: một interface đơn giản cho hệ thống con phức tạp, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Facade: che giấu hệ thống con phức tạp sau một interface đơn giản. Có ví dụ thanh toán đơn hàng bằng TypeScript, khi nào nên dùng và ứng dụng thực tế.",
+  "h1": "Mẫu Facade (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Facade là một mẫu thiết kế cấu trúc (structural), cung cấp một interface cấp cao, đơn giản cho một tập các interface trong một hệ thống con phức tạp. Thay vì gọi các dịch vụ kho hàng, thanh toán, vận chuyển và email theo đúng thứ tự, mã client gọi một phương thức như `shop.placeOrder()`, và facade điều phối các lớp của hệ thống con. Hệ thống con vẫn tồn tại và có thể dùng trực tiếp khi cần; facade chỉ làm cho trường hợp phổ biến trở nên dễ dàng.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Cung cấp một interface thống nhất cho một tập interface trong hệ thống con. Facade định nghĩa một interface cấp cao hơn giúp hệ thống con dễ sử dụng hơn. Đây là một trong bảy mẫu cấu trúc trong sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Hãy tưởng tượng một cửa hàng trực tuyến. Đặt một đơn hàng cần nhiều dịch vụ: kiểm tra và giữ hàng trong kho, trừ tiền thẻ, trả hàng về kho nếu thanh toán thất bại, tạo đơn vận chuyển và gửi email xác nhận. Mỗi dịch vụ có API và quy tắc riêng.",
+        "Nếu mọi nơi gọi, như trang thanh toán web, API di động và công cụ quản trị, đều tự thực hiện các bước này, thì cùng một chuỗi thao tác bị sao chép ở nhiều nơi. Mỗi bản sao có thể sai thứ tự hoặc quên hoàn tác, và mọi nơi gọi đều phụ thuộc vào năm dịch vụ. Khi một dịch vụ thay đổi, tất cả nơi gọi phải đổi theo. Facade đặt chuỗi thao tác vào một chỗ và cho nơi gọi một phương thức duy nhất."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Facade",
+                "Biết lớp nào của hệ thống con xử lý yêu cầu và ủy quyền cho chúng theo đúng thứ tự.",
+                "`OrderFacade`"
+              ],
+              [
+                "Các lớp của hệ thống con",
+                "Làm công việc thật sự. Chúng không biết đến facade.",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "Client",
+                "Dùng facade cho các tác vụ phổ biến; vẫn có thể dùng trực tiếp các lớp hệ thống con cho trường hợp đặc biệt.",
+                "mã thanh toán (checkout)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "Khi đó facade chạy toàn bộ quy trình đúng thứ tự phía sau một phương thức:",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "Nơi gọi giờ chỉ phụ thuộc một lớp với một phương thức. Quy tắc hoàn tác chỉ tồn tại đúng một lần. Các lớp hệ thống con vẫn dùng được, nên công cụ quản trị chỉ cần trả hàng về kho có thể gọi trực tiếp `Inventory`."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        "Dùng Facade khi:",
+        {
+          "ul": [
+            "Hệ thống con phức tạp và đa số client chỉ cần một tập con đơn giản, phổ biến trong những gì nó làm được.",
+            "Bạn muốn giảm số phụ thuộc giữa mã client và nhiều lớp của hệ thống con.",
+            "Bạn muốn tổ chức hệ thống thành các tầng, với facade là điểm vào của mỗi tầng.",
+            "Bạn bọc một thư viện bên thứ ba lớn và muốn phần còn lại của mã chỉ dùng vài thao tác cần thiết."
+          ]
+        },
+        "Tránh hoặc hạn chế khi:",
+        {
+          "ul": [
+            "Hệ thống con vốn đã đơn giản. Facade chỉ chuyển tiếp từng lời gọi một–một thì thêm một tầng mà không che giấu gì.",
+            "Facade bắt đầu gom các phương thức không liên quan và quy tắc nghiệp vụ từ khắp hệ thống. Đây là vấn đề “god object”: một lớp biết và làm quá nhiều. Hãy tách thành nhiều facade tập trung."
+          ]
+        },
+        {
+          "note": "Facade nên đơn giản hóa, không phải giam giữ. Đừng biến hệ thống con thành private chỉ vì đã có facade. Client nâng cao thường cần toàn bộ API, và chặn họ sẽ dẫn đến các cách lách."
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `fs.readFile()` mở tệp, đọc đến hết và đóng tệp trong một lời gọi. Các hàm cấp thấp hơn như `fs.open()`, `fs.read()` và `fs.close()` vẫn dùng được.",
+            "jQuery trở nên phổ biến phần lớn nhờ đặt một API ngắn gọn, nhất quán phía trước DOM và những khác biệt giữa các trình duyệt thời đó.",
+            "Ví dụ trong sách GoF là trình biên dịch: một lớp `Compiler` che giấu scanner, parser, bộ sinh mã và các lớp hệ thống con khác khỏi những chương trình chỉ muốn biên dịch mã.",
+            "Tầng dịch vụ (service layer) và API gateway trong ứng dụng back end đóng vai trò facade cho nhiều dịch vụ nội bộ."
+          ]
+        },
+        {
+          "note": "Laravel, một framework PHP, có tính năng gọi là Facades. Đó là một ý tưởng khác: truy cập trông như tĩnh vào các đối tượng trong service container. Hai bên trùng tên nhưng ý đồ không phải mẫu GoF."
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Facade ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Làm một interface có sẵn khớp với một interface có sẵn khác. Facade định nghĩa một interface mới, đơn giản hơn cho nhiều lớp."
+              ],
+              [
+                "Mediator",
+                "Cũng tập trung hóa việc điều phối, nhưng các đối tượng hệ thống con biết mediator và giao tiếp qua nó. Với facade, các lớp hệ thống con không biết facade tồn tại."
+              ],
+              [
+                "Abstract Factory",
+                "Có thể dùng cùng facade để tạo các đối tượng hệ thống con theo cách độc lập nền tảng."
+              ],
+              [
+                "Singleton",
+                "Facade thường là một thể hiện duy nhất, vì một điểm vào cho hệ thống con thường là đủ."
+              ],
+              [
+                "Proxy",
+                "Có cùng interface với một đối tượng và kiểm soát truy cập vào nó. Facade có interface khác, đơn giản hơn, phủ lên nhiều đối tượng."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Facade khác mẫu Adapter ở điểm nào?",
+      "a": "Adapter chuyển một interface có sẵn thành interface khác mà client đã mong đợi. Facade tạo ra một interface mới, đơn giản hơn để cả hệ thống con dễ sử dụng."
+    },
+    {
+      "q": "Facade có che giấu hoàn toàn hệ thống con không?",
+      "a": "Không. Facade làm các tác vụ phổ biến trở nên dễ dàng, nhưng client cần kiểm soát nhiều hơn vẫn có thể dùng trực tiếp các lớp hệ thống con."
+    },
+    {
+      "q": "Một hệ thống có thể có nhiều hơn một facade không?",
+      "a": "Có. Hệ thống lớn thường có một facade cho mỗi hệ thống con hoặc mỗi trường hợp sử dụng, giúp mỗi facade nhỏ gọn và tập trung."
+    },
+    {
+      "q": "Service layer có phải là facade không?",
+      "a": "Thường là có. Một phương thức dịch vụ điều phối repository, API bên ngoài và thông báo sau một lời gọi đóng vai trò facade cho mã gọi nó."
+    }
+  ]
+}

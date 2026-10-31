@@ -1,0 +1,147 @@
+{
+  "title": "直譯器模式：文法、運算式樹與 TypeScript 範例 — cv.cm",
+  "description": "直譯器模式把每條文法規則建模成一個類別，並把句子當成一棵樹來求值。用 TypeScript 實作一個迷你運算式語言。",
+  "h1": "直譯器模式（Interpreter）詳解與範例",
+  "answer": "直譯器（Interpreter）是一種行為型設計模式，它為一個小型語言的文法定義一種表示法，並提供一個直譯器來對該語言的句子求值。每條文法規則成為一個類別，一個句子成為由這些物件組成的樹（抽象語法樹），而求值就是對根節點呼叫 `interpret`，由它遞迴地直譯其子節點。它適合過濾條件、規則與公式這類小而簡單的語言。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：給定一個語言，定義其文法的表示法，並提供一個使用該表示法來直譯該語言句子的直譯器。直譯器是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "假設定價系統的使用者想自己撰寫折扣規則，例如 `price * 0.9` 或 `price - 5`，而且這些規則要存進資料庫、之後再求值。把每條規則寫死是不可能的，因為使用者隨時會建立新規則。你需要一個小型語言，以及對它求值的方法。",
+        "直譯器模式為這個求值步驟提供了一個簡單的設計。數字、變數和運算子各自成為一個類別。像 `price * 0.9` 這樣的規則會變成一棵樹：一個乘法節點，底下是一個變數節點和一個數字節點。要算出結果，只要對乘法節點呼叫 `interpret`，並傳入保存目前價格的情境物件。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "抽象運算式",
+                "宣告所有節點共用的 `interpret(context)` 操作"
+              ],
+              [
+                "終結符運算式",
+                "樹的葉節點，例如數字常值或變數名稱"
+              ],
+              [
+                "非終結符運算式",
+                "由其他運算式組成的文法規則，例如加法或乘法；它會直譯其子節點並合併結果"
+              ],
+              [
+                "情境",
+                "直譯所需的全域資訊，例如變數的值"
+              ],
+              [
+                "用戶端",
+                "建立語法樹（手動或透過剖析器），並呼叫 `interpret`"
+              ]
+            ]
+          }
+        },
+        "下方範例的文法，以簡單的記法寫成：",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "每條文法規則都是實作 `Expression` 的類別。`parse` 函式把以空格分隔的後置記法運算式（運算子在運算元之後）轉成一棵樹，讓剖析器保持簡短。",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "`price 0.9 * 5 -` 的樹是一個減法節點，它的左子節點是乘法節點（含 `price` 與 `0.9`），右子節點是數字 `5`。剖析完成後，同一棵樹可以搭配不同的情境重複求值許多次。",
+        {
+          "note": "這個模式描述的是如何表示並求值一個句子，而不是如何剖析文字。真實的輸入需要有錯誤訊息的正式剖析器；上面的極簡後置記法剖析器不會對格式錯誤的輸入做任何驗證。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當語言很小、文法很簡單時使用：搜尋過濾條件、功能旗標規則、權限運算式、單位換算，或試算表式的公式。",
+            "當同一個運算式要用不同資料反覆求值時使用，這樣只建一次樹就值回票價。",
+            "不要用於大型語言。每條規則一個類別會變得難以維護；請改用剖析器產生器或現成的嵌入式語言。",
+            "效能攸關時不要使用。走訪物件樹比編譯成位元組碼或機器碼慢。",
+            "絕對不要對使用者輸入使用 `eval` 來解決問題。小型直譯器只支援你定義的操作，安全得多。"
+          ]
+        },
+        "若要在同一棵樹上新增操作，例如美化輸出或型別檢查，請把直譯器與訪問者搭配使用，而不是為每個節點類別增加更多方法。"
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "正規表示式引擎會把模式編譯成由節點物件組成的樹或圖；比對時走訪這些節點，這就是把直譯器的概念套用在正規表示式文法上。",
+            "語言工具把原始碼表示成抽象語法樹：Python 的 `ast` 模組，以及 Babel、ESLint 等 JavaScript 工具所用的 ESTree 規格，都為每條文法規則描述了節點型別。",
+            "SQL 資料庫會把 `WHERE` 子句剖析成運算式樹，並對每一列求值。",
+            "樣板引擎與規則引擎會對樣板或商業規則中的小型運算式求值。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與直譯器模式的關係"
+            ],
+            "rows": [
+              [
+                "組合",
+                "語法樹就是一個組合：非終結符運算式包含其他運算式。直譯器為每個節點賦予了意義。"
+              ],
+              [
+                "訪問者",
+                "訪問者把操作從節點類別中移出，讓許多操作（求值、列印、檢查）可以共用同一棵樹。"
+              ],
+              [
+                "迭代器",
+                "迭代器可以走訪語法樹的節點，而不暴露它們的儲存方式。"
+              ],
+              [
+                "享元",
+                "經常重複出現的終結符，例如常見的常數，可以當作享元來共用。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "終結符運算式與非終結符運算式有什麼不同？",
+      "a": "終結符運算式是不能再分解的葉節點，例如數字或變數。非終結符運算式代表由其他運算式組成的規則，例如加法，並直譯其子節點來產生結果。"
+    },
+    {
+      "q": "直譯器模式包含剖析器嗎？",
+      "a": "不包含。這個模式假設你已經有一棵語法樹。你可以手動建立這棵樹、寫一個小型剖析器，或使用剖析器產生器。"
+    },
+    {
+      "q": "什麼時候不該用直譯器模式？",
+      "a": "文法複雜或效能攸關的程式碼應避免使用。大型語言需要太多類別，而且走訪樹的求值方式比編譯式做法慢。"
+    },
+    {
+      "q": "直譯器與組合有什麼關係？",
+      "a": "直譯器中的語法樹與組合具有相同的形狀：葉節點與包含其他節點的節點，全都有共同的介面。直譯器則為這個結構賦予了特定意義，也就是對語言求值。"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "title": "Algoritmo de Bellman-Ford: pesos negativos, detección de ciclos, código en Python — cv.cm",
+  "description": "Bellman-Ford explicado: caminos más cortos con aristas de peso negativo, un ejemplo paso a paso, código en Python, detección de ciclos negativos y complejidad temporal O(V × E).",
+  "h1": "Algoritmo de Bellman-Ford explicado: cómo funciona, código y complejidad",
+  "answer": "El algoritmo de Bellman-Ford encuentra los caminos más cortos desde un nodo inicial hasta todos los demás, incluso cuando algunas aristas tienen peso negativo. Relaja todas las aristas V − 1 veces; después, todas las distancias mínimas son correctas. Una pasada adicional detecta un ciclo negativo: si alguna distancia aún puede mejorar, el grafo tiene un ciclo de peso total negativo. Se ejecuta en tiempo O(V × E).",
+  "sections": [
+    {
+      "h": "Qué problema resuelve Bellman-Ford",
+      "body": [
+        "El algoritmo de Dijkstra es rápido, pero exige pesos de arista no negativos. Algunos problemas tienen pesos negativos de forma natural: un reembolso, una ganancia en un cambio de divisas o un coste de energía que puede bajar de cero. Bellman-Ford trata estos grafos correctamente y además te avisa cuando no existe un camino más corto por culpa de un ciclo negativo, un bucle que podrías recorrer sin fin para reducir el coste una y otra vez.",
+        "El algoritmo recibe el nombre de Richard Bellman y Lester Ford Jr., que publicaron versiones del mismo en la década de 1950."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        {
+          "ol": [
+            "Asigna distancia 0 al nodo inicial e infinito a todos los demás.",
+            "Repite V − 1 veces: para cada arista u → v de peso w, si `dist[u] + w < dist[v]`, actualiza `dist[v]`.",
+            "Haz una pasada más sobre todas las aristas. Si alguna distancia aún mejora, informa de un ciclo negativo."
+          ]
+        },
+        "¿Por qué V − 1 rondas? Un camino más corto sin ciclos usa como máximo V − 1 aristas. Tras la ronda k, todo nodo cuyo camino más corto tiene como máximo k aristas ya tiene su distancia correcta, de modo que V − 1 rondas cubren todos los caminos simples."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Grafo dirigido con 4 nodos y las aristas S→A (4), S→B (5), B→A (−3), A→C (3). Las aristas se procesan en este orden en cada ronda.",
+        {
+          "table": {
+            "head": [
+              "Ronda",
+              "S",
+              "A",
+              "B",
+              "C"
+            ],
+            "rows": [
+              [
+                "Inicio",
+                "0",
+                "∞",
+                "∞",
+                "∞"
+              ],
+              [
+                "1",
+                "0",
+                "2 (vía B: 5 − 3)",
+                "5",
+                "5 (vía A: 2 + 3)"
+              ],
+              [
+                "2",
+                "0",
+                "2",
+                "5",
+                "5 (sin cambios: parada anticipada)"
+              ]
+            ]
+          }
+        },
+        "En la ronda 1, A pasa primero a valer 4 por S→A y luego mejora a 2 por B→A, y C usa el valor mejorado. El algoritmo de Dijkstra habría dado A por definitivo con 4 antes de mirar B, que es justo el error que causa una arista negativa."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "Bellman-Ford trabaja sobre una lista simple de aristas, lo que lo hace corto de escribir:",
+        {
+          "code": "def bellman_ford(nodes, edges, start):\n    \"\"\"edges: list of (u, v, weight). Returns dist, or raises on a negative cycle.\"\"\"\n    INF = float(\"inf\")\n    dist = {n: INF for n in nodes}\n    dist[start] = 0\n    for _ in range(len(nodes) - 1):\n        changed = False\n        for u, v, w in edges:\n            if dist[u] != INF and dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                changed = True\n        if not changed:\n            break                         # already optimal\n    for u, v, w in edges:\n        if dist[u] != INF and dist[u] + w < dist[v]:\n            raise ValueError(\"graph contains a negative cycle\")\n    return dist\nnodes = [\"S\", \"A\", \"B\", \"C\"]\nedges = [(\"S\", \"A\", 4), (\"S\", \"B\", 5), (\"B\", \"A\", -3), (\"A\", \"C\", 3)]\nprint(bellman_ford(nodes, edges, \"S\"))  # {'S': 0, 'A': 2, 'B': 5, 'C': 5}",
+          "lang": "python"
+        },
+        "Al añadir una arista C → B con peso −6 se crea el ciclo B → A → C → B con peso total −3 + 3 − 6 = −6, así que la pasada extra lo encuentra:",
+        {
+          "code": "try:\n    bellman_ford(nodes, edges + [(\"C\", \"B\", -6)], \"S\")\nexcept ValueError as e:\n    print(e)  # graph contains a negative cycle",
+          "lang": "python"
+        },
+        "La comprobación `dist[u] != INF` omite las aristas que salen de nodos aún no alcanzados. En Python, `float(\"inf\") + w` sigue siendo infinito, así que la comprobación sobre todo ahorra trabajo. En lenguajes que usan un entero grande como infinito, evita desbordamientos y actualizaciones falsas."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Caso",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Peor",
+                "O(V × E)",
+                "V − 1 rondas, cada una relajando las E aristas."
+              ],
+              [
+                "Mejor (salida anticipada)",
+                "O(E)",
+                "Si la primera ronda no cambia nada tras el inicio, el bucle se detiene."
+              ],
+              [
+                "Espacio",
+                "O(V)",
+                "Solo el mapa de distancias (y opcionalmente de padres), además de la lista de aristas."
+              ]
+            ]
+          }
+        },
+        "En un grafo de 1000 nodos y 10 000 aristas son hasta unos 10 millones de relajaciones, así que Dijkstra es mucho más rápido cuando todos los pesos son no negativos."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Salida anticipada: detente cuando una ronda completa no cambie nada. Es seguro y en la práctica suele acelerar mucho el algoritmo.",
+            "SPFA (shortest path faster algorithm): vuelve a relajar solo las aristas que salen de los nodos cuya distancia cambió, usando una cola. Suele ser rápido, pero tiene el mismo peor caso O(V × E).",
+            "Caminos con límite de saltos: ejecutar exactamente k rondas, usando una copia de las distancias de la ronda anterior, da el camino más barato con como máximo k aristas. Así se resuelve \"vuelos más baratos con k escalas\".",
+            "Encontrar el ciclo en sí: guarda un mapa de padres; cuando la pasada extra actualice el nodo v, sigue los padres V veces para caer dentro del ciclo y luego recórrelo hasta volver al mismo nodo."
+          ]
+        },
+        {
+          "note": "Un ciclo negativo solo importa si es alcanzable desde el nodo inicial. Un ciclo en una parte del grafo a la que no puedes llegar no afecta a las distancias, y la guarda `dist[u] != INF` lo ignora correctamente. En un grafo no dirigido, cualquier arista negativa es en sí un ciclo negativo (ir y volver), por lo que Bellman-Ford se usa sobre todo en grafos dirigidos."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Usa Bellman-Ford cuando los pesos puedan ser negativos o cuando debas detectar ciclos negativos. En los demás casos, prefiere Dijkstra.",
+            "Los protocolos de enrutamiento por vector de distancias, como RIP, usan la idea distribuida de Bellman-Ford: cada router actualiza repetidamente sus estimaciones de distancia a partir de las de sus vecinos.",
+            "Arbitraje de divisas: con pesos iguales a `-log(rate)`, un ciclo negativo es una secuencia de cambios que termina con más dinero del que se tenía al empezar.",
+            "El algoritmo de Johnson ejecuta Bellman-Ford una vez para reponderar un grafo y poder usar después Dijkstra desde cada nodo para obtener los caminos más cortos entre todos los pares.",
+            "Las restricciones de diferencia (sistemas de desigualdades como `x - y <= c`) se pueden resolver como caminos más cortos; un ciclo negativo significa que no existe solución."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Por qué Bellman-Ford ejecuta V − 1 iteraciones?",
+      "a": "Un camino más corto sin ciclos contiene como máximo V − 1 aristas, y cada ronda fija las distancias de los caminos con una arista más. Tras V − 1 rondas se han encontrado todos los caminos más cortos, salvo que exista un ciclo negativo."
+    },
+    {
+      "q": "¿Cómo detecta Bellman-Ford un ciclo negativo?",
+      "a": "Hace una pasada más sobre todas las aristas después de las V − 1 rondas. Si aún se puede reducir alguna distancia, algún camino sigue abaratándose, algo que solo es posible con un ciclo negativo alcanzable."
+    },
+    {
+      "q": "¿Es Bellman-Ford más rápido que Dijkstra?",
+      "a": "No. Bellman-Ford es O(V × E), mientras que Dijkstra con un montículo es O((V + E) log V). Usa Bellman-Ford solo cuando necesites pesos negativos o detección de ciclos."
+    },
+    {
+      "q": "¿Es Bellman-Ford programación dinámica?",
+      "a": "Sí. La ronda k calcula la mejor distancia usando como máximo k aristas a partir de los resultados de la ronda k − 1, lo que es una recurrencia de programación dinámica sobre el número de aristas."
+    }
+  ]
+}

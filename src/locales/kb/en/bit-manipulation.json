@@ -1,0 +1,267 @@
+{
+  "title": "Bit manipulation: bitwise operators, tricks and bitmasks in Python — cv.cm",
+  "description": "Bit manipulation explained: AND, OR, XOR, NOT and shifts, common tricks like x & (x - 1), bitmask subsets, Python code with outputs and pitfalls.",
+  "h1": "Bit manipulation explained: operators, tricks and examples",
+  "answer": "Bit manipulation means working directly with the binary digits (bits) of integers using bitwise operators: AND (`&`), OR (`|`), XOR (`^`), NOT (`~`) and the shifts `<<` and `>>`. With them you can test, set, clear and toggle individual bits, store a set of small numbers in one integer (a bitmask), and solve problems such as counting set bits or finding the single unpaired number in constant extra space. Each operation is a single fast CPU instruction for fixed-size integers.",
+  "sections": [
+    {
+      "h": "What problem bit manipulation solves",
+      "body": [
+        "An integer is a row of bits, and many problems are really about those bits: file permissions such as `rwx`, feature flags, network masks, pixel colors, compact sets of options, checksums and hashes. Bitwise operators let you read and change many bits at once in a single operation, which is compact in memory and very fast.",
+        "Interview questions also use bit tricks because they give elegant O(1)-space solutions, for example finding the one number that appears once when every other number appears twice."
+      ]
+    },
+    {
+      "h": "The operators",
+      "body": [
+        "Examples use `a = 12` (binary `1100`) and `b = 10` (binary `1010`).",
+        {
+          "table": {
+            "head": [
+              "Operator",
+              "Name",
+              "Rule per bit",
+              "Example",
+              "Result"
+            ],
+            "rows": [
+              [
+                "`a & b`",
+                "AND",
+                "1 if both bits are 1",
+                "`1100 & 1010`",
+                "`1000` = 8"
+              ],
+              [
+                "`a | b`",
+                "OR",
+                "1 if either bit is 1",
+                "`1100 | 1010`",
+                "`1110` = 14"
+              ],
+              [
+                "`a ^ b`",
+                "XOR",
+                "1 if the bits differ",
+                "`1100 ^ 1010`",
+                "`0110` = 6"
+              ],
+              [
+                "`~a`",
+                "NOT",
+                "flips every bit",
+                "`~12`",
+                "-13 (two's complement)"
+              ],
+              [
+                "`a << n`",
+                "left shift",
+                "moves bits left, fills with 0",
+                "`12 << 1`",
+                "24 (multiply by 2ⁿ)"
+              ],
+              [
+                "`a >> n`",
+                "right shift",
+                "moves bits right",
+                "`12 >> 2`",
+                "3 (floor-divide by 2ⁿ)"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "a, b = 12, 10\nprint(bin(a), bin(b))         # 0b1100 0b1010\nprint(a & b, a | b, a ^ b)    # 8 14 6\nprint(~a, a << 1, a >> 2)     # -13 24 3\nprint(f\"{a ^ b:04b}\")         # 0110\nprint(int(\"1010\", 2))         # 10",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Single-bit operations",
+      "body": [
+        "Bit positions are counted from 0 at the right (the least significant bit). The mask `1 << i` has only bit i set.",
+        {
+          "table": {
+            "head": [
+              "Task",
+              "Expression"
+            ],
+            "rows": [
+              [
+                "Test bit i",
+                "`(x >> i) & 1` or `x & (1 << i) != 0`"
+              ],
+              [
+                "Set bit i",
+                "`x | (1 << i)`"
+              ],
+              [
+                "Clear bit i",
+                "`x & ~(1 << i)`"
+              ],
+              [
+                "Toggle bit i",
+                "`x ^ (1 << i)`"
+              ],
+              [
+                "Lowest set bit only",
+                "`x & -x`"
+              ],
+              [
+                "Clear the lowest set bit",
+                "`x & (x - 1)`"
+              ],
+              [
+                "Is x a power of two? (x > 0)",
+                "`x & (x - 1) == 0`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Operator precedence: in Python, comparisons bind more loosely than `&`, so `x & (x - 1) == 0` works as intended. In C, C++, Java and JavaScript, `==` binds more tightly than `&`, so the same expression means `x & ((x - 1) == 0)`. Always add parentheses: `(x & (x - 1)) == 0`."
+        }
+      ]
+    },
+    {
+      "h": "Worked example: counting set bits",
+      "body": [
+        "Brian Kernighan's method clears the lowest set bit until nothing is left, so it loops once per 1-bit, not once per bit position. Trace for x = 44 (binary `101100`):",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "x (binary)",
+              "x - 1 (binary)",
+              "x & (x - 1)",
+              "Count"
+            ],
+            "rows": [
+              [
+                "1",
+                "`101100`",
+                "`101011`",
+                "`101000`",
+                "1"
+              ],
+              [
+                "2",
+                "`101000`",
+                "`100111`",
+                "`100000`",
+                "2"
+              ],
+              [
+                "3",
+                "`100000`",
+                "`011111`",
+                "`000000`",
+                "3"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def count_bits(x):\n    count = 0\n    while x:\n        x &= x - 1        # drop the lowest set bit\n        count += 1\n    return count\n\nprint(count_bits(44))     # 3\nprint((44).bit_count())   # 3\nprint((44).bit_length())  # 6",
+          "lang": "python"
+        },
+        "`int.bit_count()` is available since Python 3.10. `int.bit_length()` returns the number of bits needed to write the number in binary, without the sign."
+      ]
+    },
+    {
+      "h": "Classic tricks in Python",
+      "body": [
+        {
+          "code": "from functools import reduce\nfrom operator import xor\n\n# Every number appears twice except one: pairs cancel out with XOR.\nprint(reduce(xor, [4, 1, 2, 1, 2]))   # 4\n\n# Swap two integers without a temporary variable (for illustration only).\nx, y = 5, 9\nx ^= y; y ^= x; x ^= y\nprint(x, y)                            # 9 5\n\n# Bitmask as a set: enumerate all subsets of 3 items.\nitems = [\"a\", \"b\", \"c\"]\nfor mask in range(1 << len(items)):\n    print(mask, [items[i] for i in range(len(items)) if mask >> i & 1])\n# 0 []\n# 1 ['a']\n# 2 ['b']\n# 3 ['a', 'b']\n# 4 ['c']\n# 5 ['a', 'c']\n# 6 ['b', 'c']\n# 7 ['a', 'b', 'c']",
+          "lang": "python"
+        },
+        "Mask 0 is the empty set, 5 (binary `101`) is `['a', 'c']`, and 7 is all three items. Bitmask dynamic programming uses the same idea, with a mask as the state, for problems over up to about 20 items, such as the traveling salesman problem on small inputs.",
+        "Two more classics: `x & 1` is 1 for odd numbers, and XOR of all numbers from 0 to n with all the values in a list finds the one missing number."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operation",
+              "Time",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`&`, `|`, `^`, `~`, shifts on machine-size integers",
+                "O(1)",
+                "One CPU instruction in C, Java, Go or Rust."
+              ],
+              [
+                "Same operations on Python `int`",
+                "O(number of bits)",
+                "Python integers have unlimited size; small values are still very fast."
+              ],
+              [
+                "Kernighan bit count",
+                "O(number of set bits)",
+                "`int.bit_count()` is faster in Python 3.10+."
+              ],
+              [
+                "Enumerate all subsets with masks",
+                "O(n × 2ⁿ)",
+                "2ⁿ masks, n bit tests each."
+              ]
+            ]
+          }
+        },
+        "A bitmask uses one bit per possible element, so a set of 64 flags fits in a single 64-bit integer, compared with 64 separate boolean variables or list entries."
+      ]
+    },
+    {
+      "h": "Common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Negative numbers: Python integers behave as if they had infinitely many sign bits, so `~5` is `-6` and `bin(-5)` is `-0b101`, not a two's complement string. To see 32-bit patterns, mask the value: `-5 & 0xFFFFFFFF`.",
+            "Right shift of negative numbers in Python is arithmetic: `-8 >> 1` is `-4`, and `-1 >> 10` stays `-1`.",
+            "Overflow in fixed-width languages: in Java or C, `1 << 31` on a 32-bit int becomes negative or undefined; use a 64-bit type and `1L << 40` or `1ULL << 40`.",
+            "Confusing logical and bitwise operators: `and` and `or` (`&&`, `||` in C-like languages) return truth values, while `&` and `|` work bit by bit.",
+            "Readability: replacing `x * 2` with `x << 1` gives no speed benefit in modern compilers or in Python, and makes code harder to read."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Unix file permissions: `chmod 754` sets three 3-bit groups (rwx = 4 + 2 + 1).",
+            "Networking: IPv4 subnet masks, where `ip & mask` gives the network address of a CIDR block.",
+            "Flags and options: Python's `re.IGNORECASE | re.MULTILINE` and `enum.Flag` combine options with OR.",
+            "Graphics and colors: a 24-bit RGB value packs red, green and blue as `(r << 16) | (g << 8) | b`.",
+            "Data structures and algorithms: Bloom filters, bitsets, Fenwick trees (which use `i & -i`), hashing and checksums.",
+            "Interview problems: single number, counting bits, power of two, reverse bits, missing number, subsets via bitmask, sum of two integers without `+`."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does x & (x - 1) do?",
+      "a": "It clears the lowest set bit of x. It is used to count set bits and to test whether a positive x is a power of two, which is true when the result is 0."
+    },
+    {
+      "q": "Why is ~5 equal to -6 in Python?",
+      "a": "Integers use two's complement, where `~x` equals `-x - 1`. Python applies this to its unlimited-size integers, so flipping every bit of 5 gives -6."
+    },
+    {
+      "q": "How do I count the 1 bits of a number in Python?",
+      "a": "Use `x.bit_count()` in Python 3.10 or later, or `bin(x).count(\"1\")` in older versions. For negative numbers, `bit_count()` counts the bits of the absolute value."
+    },
+    {
+      "q": "Is bit manipulation faster than arithmetic?",
+      "a": "For fixed-size integers, bitwise operations are single instructions, but so are addition and multiplication by constants after compiler optimization. The real benefit is compact storage and constant-space algorithms, not replacing ordinary arithmetic."
+    }
+  ]
+}

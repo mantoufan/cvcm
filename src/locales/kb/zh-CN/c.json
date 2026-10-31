@@ -1,0 +1,192 @@
+{
+  "title": "C 语言入门教程：数据类型、指针、数组、字符串与内存 — cv.cm",
+  "description": "一页学会 C 语言：用 gcc 编译 Hello world，数据类型，流程控制，函数，数组，字符串，指针，malloc 与 free，错误处理与完整示例。",
+  "h1": "C 语言入门教程（零基础）",
+  "answer": "C 是一门小巧、快速的编译型语言，通过指针直接访问内存。在 `.c` 文件中编写 `main`，用 `gcc hello.c -o hello` 编译，再运行 `./hello`。核心概念包括：固定大小的类型、函数、数组和以空字符结尾的字符串、指针与地址、用 `malloc` 和 `free` 手动管理内存，以及通过返回值处理错误。",
+  "sections": [
+    {
+      "h": "C 语言是什么，用来做什么",
+      "body": [
+        "C 由 Dennis Ritchie 于 20 世纪 70 年代初在贝尔实验室创建，用来编写 Unix 操作系统。它由 ISO 标准化（主要版本有 C99、C11、C17 和 C23）。C 编译为机器码，运行时开销极小，几乎可以在任何地方运行。它被用于操作系统内核（Linux）、嵌入式固件、数据库（SQLite）、语言运行时（CPython 就是用 C 写的）以及高性能库。学习 C 还能让你明白内存和计算机究竟是如何工作的。"
+      ]
+    },
+    {
+      "h": "安装编译器并运行 Hello, world",
+      "body": [
+        "在 Linux 上安装 `gcc`（例如 `sudo apt install build-essential`）；在 macOS 上运行 `xcode-select --install` 获得 `clang`（也可通过 `gcc` 命令调用）；在 Windows 上使用 MSYS2、WSL 或 Visual Studio。",
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    printf(\"Hello, world\\n\");\n    return 0;\n}",
+          "lang": "c"
+        },
+        {
+          "code": "gcc -Wall -Wextra -std=c17 hello.c -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`#include` 会引入头文件中的声明，这里引入的是标准输入输出库。`main` 返回 0 表示成功。编译时务必开启警告（`-Wall -Wextra`）。"
+      ]
+    },
+    {
+      "h": "变量与基本类型",
+      "body": [
+        "每个变量都有一个类型，它决定了变量的大小和含义。除非标准另有规定，大小取决于平台；`<stdint.h>` 提供了 `int32_t` 这样宽度确定的类型。",
+        {
+          "table": {
+            "head": [
+              "类型",
+              "典型大小",
+              "示例",
+              "printf 格式"
+            ],
+            "rows": [
+              [
+                "`char`",
+                "1 字节",
+                "`char c = 'A';`",
+                "`%c`"
+              ],
+              [
+                "`int`",
+                "4 字节",
+                "`int n = 42;`",
+                "`%d`"
+              ],
+              [
+                "`long long`",
+                "8 字节",
+                "`long long big = 1LL << 40;`",
+                "`%lld`"
+              ],
+              [
+                "`double`",
+                "8 字节",
+                "`double x = 3.14;`",
+                "`%f`"
+              ],
+              [
+                "`bool`",
+                "1 字节",
+                "`bool ok = true;` (C99 `<stdbool.h>`)",
+                "`%d`"
+              ],
+              [
+                "`size_t`",
+                "64 位下为 8 字节",
+                "`size_t len = sizeof(arr);`",
+                "`%zu`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <stdio.h>\nint main(void) {\n    int count = 7;\n    double avg = count / 2;     /* 3.0: integer division first */\n    double avg2 = count / 2.0;  /* 3.5 */\n    printf(\"%d %.1f %.1f\\n\", count, avg, avg2);  /* 7 3.0 3.5 */\n    printf(\"%zu\\n\", sizeof(int));                /* 4 on most systems */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "流程控制与函数",
+      "body": [
+        "函数必须先声明再使用。参数按值传递：函数收到的是一份副本。",
+        {
+          "code": "#include <stdio.h>\nint square(int x) {\n    return x * x;\n}\nint main(void) {\n    int score = 72;\n    if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 70) {\n        printf(\"B\\n\");              /* B */\n    } else {\n        printf(\"C\\n\");\n    }\n    for (int i = 0; i < 3; i++) {\n        printf(\"%d \", square(i));   /* 0 1 4 */\n    }\n    printf(\"\\n\");\n    int n = 10;\n    while (n > 1) n /= 2;\n    printf(\"%d\\n\", n);              /* 1 */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "C 还有 `do`/`while`、带 `case` 标签的 `switch`（别忘了 `break`），以及主要用于错误路径中清理资源的 `goto`。"
+      ]
+    },
+    {
+      "h": "数组与字符串",
+      "body": [
+        "数组是一段连续存放的固定数量元素。C 不检查边界，也不保存长度，所以需要单独传入长度。字符串是以零字节 `'\\0'` 结尾的 `char` 数组。",
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\nint sum(const int *values, size_t n) {\n    int total = 0;\n    for (size_t i = 0; i < n; i++) total += values[i];\n    return total;\n}\nint main(void) {\n    int nums[] = {3, 1, 2, 5};\n    size_t n = sizeof nums / sizeof nums[0];\n    printf(\"%zu items, sum %d\\n\", n, sum(nums, n));  /* 4 items, sum 11 */\n    char name[16] = \"Ada\";\n    strncat(name, \" Lovelace\", sizeof name - strlen(name) - 1);\n    printf(\"%s (%zu chars)\\n\", name, strlen(name));  /* Ada Lovelace (12 chars) */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "数组传给函数时会退化为指向首元素的指针，这就是 `sum` 接收 `const int *` 和一个长度的原因。"
+      ]
+    },
+    {
+      "h": "标志性特性：指针",
+      "body": [
+        "指针保存另一个值的内存地址。`&x` 得到 `x` 的地址，`*p` 读取或写入地址 `p` 处的值。指针让函数能够修改调用者的变量、无需复制就能共享大块数据，并能构建链式数据结构。",
+        {
+          "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    int *p = &x;\n    *p = 10;                      /* changes x */\n    swap(&x, &y);\n    printf(\"x=%d y=%d\\n\", x, y);  /* x=2 y=10 */\n    int arr[3] = {7, 8, 9};\n    int *q = arr;\n    printf(\"%d %d\\n\", *(q + 1), q[2]);  /* 8 9: pointer arithmetic */\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "用 malloc 和 free 管理动态内存",
+      "body": [
+        "局部变量存放在栈上，函数返回后就消失。对于大小在运行时才能确定、或需要比函数存活更久的数据，请用 `malloc` 在堆上分配，并用 `free` 释放。每一次成功的 `malloc` 都要对应恰好一次 `free`。",
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 5;\n    int *squares = malloc(n * sizeof *squares);\n    if (squares == NULL) {\n        fprintf(stderr, \"out of memory\\n\");\n        return 1;\n    }\n    for (size_t i = 0; i < n; i++) squares[i] = (int)(i * i);\n    printf(\"%d\\n\", squares[4]);  /* 16 */\n    free(squares);\n    squares = NULL;              /* avoid using a dangling pointer */\n    return 0;\n}",
+          "lang": "c"
+        },
+        "相关函数有 `calloc`（分配并清零）和 `realloc`（调整大小）。可以用 `struct` 把相关的值组合在一起，例如 `struct point { int x; int y; };`。"
+      ]
+    },
+    {
+      "h": "错误处理",
+      "body": [
+        "C 没有异常。函数通过返回值报告错误（通常是 `-1`、`NULL` 或状态码），许多库函数还会设置全局变量 `errno`。每个可能失败的返回值都要检查。",
+        {
+          "code": "#include <errno.h>\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *f = fopen(\"missing.txt\", \"r\");\n    if (f == NULL) {\n        fprintf(stderr, \"cannot open: %s\\n\", strerror(errno));\n        return 1;   /* cannot open: No such file or directory */\n    }\n    fclose(f);\n    return 0;\n}",
+          "lang": "c"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：行数与单词计数器",
+      "body": [
+        "这个程序类似一个小型 `wc`：读取命令行指定的文件，并输出行数、单词数和字节数。",
+        {
+          "code": "#include <ctype.h>\n#include <stdio.h>\nint main(int argc, char *argv[]) {\n    if (argc != 2) {\n        fprintf(stderr, \"usage: %s FILE\\n\", argv[0]);\n        return 1;\n    }\n    FILE *f = fopen(argv[1], \"r\");\n    if (f == NULL) {\n        perror(argv[1]);\n        return 1;\n    }\n    long lines = 0, words = 0, bytes = 0;\n    int c, in_word = 0;\n    while ((c = fgetc(f)) != EOF) {\n        bytes++;\n        if (c == '\\n') lines++;\n        if (isspace(c)) {\n            in_word = 0;\n        } else if (!in_word) {\n            in_word = 1;\n            words++;\n        }\n    }\n    fclose(f);\n    printf(\"%ld lines, %ld words, %ld bytes\\n\", lines, words, bytes);\n    return 0;\n}",
+          "lang": "c"
+        },
+        "用 `gcc -Wall -Wextra wc.c -o wc` 编译，再运行 `./wc notes.txt`。注意 `c` 是 `int` 而不是 `char`，这样它才能容纳特殊值 `EOF`。"
+      ]
+    },
+    {
+      "h": "新手常见错误",
+      "body": [
+        {
+          "note": "越过数组末尾写入，或在 `free` 之后继续使用内存，都属于未定义行为：程序可能看似正常、稍后崩溃，或成为安全漏洞。学习时请用 `-fsanitize=address -g` 编译来发现这些 bug。"
+        },
+        {
+          "ul": [
+            "在条件中用 `=` 代替 `==`。警告选项（`-Wall`）能发现大多数此类情况。",
+            "给字符串缓冲区定大小时，忘了给结尾的 `'\\0'` 留位置。",
+            "使用 `gets` 或不限长度的 `scanf(\"%s\", buf)`。请改用 `fgets(buf, sizeof buf, stdin)`。",
+            "返回指向局部变量的指针，而该变量在函数返回后已不存在。",
+            "`printf` 的格式与类型不匹配，例如对 `size_t` 使用 `%d`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下来学什么",
+      "body": [
+        "把 cppreference.com 的 C 部分当作语言和标准库的参考，想看标准本身可以阅读 ISO 工作组（WG14）的页面。多练习结构体、链表、头文件，以及用 `make` 构建的多文件程序。调试器（`gdb` 或 `lldb`）以及 Valgrind 或 AddressSanitizer 能帮你节省大量时间。之后可以探索 C++ 或 Rust，它们建立在相同的思想之上，并提供更多安全保障。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "现在还值得学 C 吗？",
+      "a": "值得。它仍然用于操作系统、嵌入式设备和对性能要求苛刻的库，而且能让你理解内存、指针以及编译后代码的运行方式，对学习其他任何语言都有帮助。"
+    },
+    {
+      "q": "C 和 C++ 有什么区别？",
+      "a": "C++ 最初是 C 的扩展，增加了类、模板、引用、异常和庞大的标准库。C 则保持小巧，是过程式的。大多数 C 代码与合法的 C++ 很接近，但两者是各自独立的标准。"
+    },
+    {
+      "q": "为什么我的 C 程序会因段错误（segmentation fault）崩溃？",
+      "a": "它访问了不属于自己的内存，通常是通过空指针、未初始化的指针或已释放的指针，或者数组下标越界。用调试器或 AddressSanitizer 运行，就能找到具体出错的那一行。"
+    },
+    {
+      "q": "应该使用哪个 C 标准？",
+      "a": "C17 被当前的编译器广泛支持，C23 是最新的标准。请显式指定版本，例如 `-std=c17`，让行为保持一致。"
+    }
+  ]
+}

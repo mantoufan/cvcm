@@ -1,0 +1,197 @@
+{
+  "title": "코틀린 기초 강좌: null 안전성, 함수, 컬렉션, 코루틴 — cv.cm",
+  "description": "코틀린(Kotlin)을 단계별로 배웁니다. 설치와 Hello, world 실행, val과 var, null 안전성, when, 람다, 데이터 클래스, 컬렉션, 코루틴, 예외 처리를 다룹니다.",
+  "h1": "입문자를 위한 코틀린 기초 강좌",
+  "answer": "코틀린(Kotlin)은 JetBrains가 만든 현대적인 정적 타입 언어로, JVM에서 실행되며 안드로이드 개발의 권장 언어입니다. 간결하고 자바와 완전히 호환되며, 타입 시스템이 대부분의 널 포인터 오류를 컴파일 시점에 막아 줍니다. 이 페이지에서는 실행 가능한 예제로 환경 설정, 변수, null 안전성, 제어 흐름, 함수, 컬렉션, 클래스, 코루틴, 예외 처리를 살펴봅니다.",
+  "sections": [
+    {
+      "h": "코틀린이란 무엇이고 어디에 쓰는가",
+      "body": [
+        "코틀린(Kotlin)은 JetBrains가 만든 정적 타입 범용 언어입니다. 자바 가상 머신(JVM)에서 실행되며 JavaScript, WebAssembly, 네이티브 기계어로도 컴파일할 수 있습니다. 코틀린은 자바와 완전히 상호 운용됩니다. 코틀린 파일에서 모든 자바 라이브러리를 호출할 수 있고, 자바 코드에서도 코틀린을 호출할 수 있습니다.",
+        "구글은 2019년부터 코틀린을 안드로이드 앱의 권장 언어로 밀고 있어 새로 작성되는 안드로이드 코드는 대부분 코틀린입니다. 서버에서도 Spring Boot, Ktor 같은 프레임워크와 함께 널리 쓰이며, 코틀린 멀티플랫폼을 쓰면 안드로이드, iOS, 데스크톱, 웹 사이에서 비즈니스 로직을 공유할 수 있습니다."
+      ]
+    },
+    {
+      "h": "코틀린 설치와 Hello, world 실행",
+      "body": [
+        "가장 쉬운 시작 방법은 코틀린이 포함된 IntelliJ IDEA나 Android Studio를 쓰는 것입니다. 명령줄에서는 컴파일러(예: SDKMAN! 또는 Homebrew로 설치)와 자바 런타임(JDK)을 설치합니다. 코틀린 프로그램은 최상위 `main` 함수에서 시작하며 클래스가 필요 없습니다.",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "실제 프로젝트에서는 Gradle(Kotlin DSL) 같은 빌드 도구를 쓰는 것이 일반적입니다. 아무것도 설치하지 않고 온라인 Kotlin Playground에서 코드를 실행해 볼 수도 있습니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 타입",
+      "body": [
+        "읽기 전용 변수는 `val`, 변경 가능한 변수는 `var`로 선언합니다. 컴파일러가 타입을 추론하지만 콜론 뒤에 직접 적을 수도 있습니다. 코드를 이해하기 쉬워지므로 `val`을 우선 사용하세요.",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32비트 부호 있는 정수"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64비트 부호 있는 정수"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64비트 부동 소수점"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` 또는 `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "문자 하나"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "불변이며 `$name` 템플릿 지원"
+              ]
+            ]
+          }
+        },
+        "코틀린에는 암묵적인 숫자 확장 변환이 없습니다. `Int`는 `Long`으로 자동 변환되지 않으므로 `toLong()`, `toDouble()`, `toString()`을 명시적으로 호출해야 합니다."
+      ]
+    },
+    {
+      "h": "null 안전성",
+      "body": [
+        "null 안전성은 코틀린의 대표 기능입니다. `String` 같은 일반 타입에는 `null`을 담을 수 없습니다. null을 허용하려면 `String?`처럼 `?`를 붙이며, 그러면 컴파일러가 값을 쓰기 전에 null인 경우를 처리하도록 강제합니다.",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "널 아님 단언 `!!`는 nullable 값을 non-null로 바꾸고, 값이 null이면 `NullPointerException`을 던집니다. 입문자는 컴파일러의 경고를 없애려고 `!!`를 붙이곤 하는데, 대신 `?.`, `?:` 또는 `if` 검사를 사용하세요."
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름: if, when, 반복문",
+      "body": [
+        "코틀린에서 `if`와 `when`은 식(expression)이라서 값을 반환합니다. `when`은 자바와 C의 `switch` 문을 대체하며 값, 범위, 타입을 모두 비교할 수 있습니다.",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3`은 양 끝을 포함하는 닫힌 범위이고, `0 until 3`(또는 `0..<3`)은 끝을 포함하지 않아 인덱스를 다룰 때 보통 이쪽이 알맞습니다."
+      ]
+    },
+    {
+      "h": "함수와 람다",
+      "body": [
+        "함수는 `fun`으로 선언합니다. 매개변수에 기본값을 줄 수 있고, 호출할 때 이름 있는 인자를 쓸 수 있으며, 본문이 식 하나인 함수는 `=`로 간단히 쓸 수 있습니다.",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "람다의 매개변수가 하나이면 `it`으로 참조할 수 있습니다. 함수의 마지막 인자가 람다이면 괄호 밖으로 뺄 수 있어서 `filter { ... }`가 내장 블록처럼 읽힙니다."
+      ]
+    },
+    {
+      "h": "컬렉션과 데이터 클래스",
+      "body": [
+        "표준 라이브러리는 읽기 전용 컬렉션과 변경 가능한 컬렉션을 구분합니다. `listOf`, `setOf`, `mapOf`는 읽기 전용이고, `mutableListOf`, `mutableSetOf`, `mutableMapOf`는 내용을 바꿀 수 있습니다.",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "`data class`에는 `equals`, `hashCode`, `toString`, `copy`, 구조 분해가 자동으로 만들어집니다. 코틀린에서 `==`는 내용을 비교하며(`equals`를 호출), `===`는 참조를 비교합니다."
+      ]
+    },
+    {
+      "h": "클래스, 확장 함수, 코루틴",
+      "body": [
+        "클래스는 기본적으로 final이며, 상속을 허용하려면 `open`을 붙입니다. 확장 함수는 기존 타입을 수정하지 않고 메서드를 추가하며, `sealed` 클래스는 닫힌 경우의 집합을 표현해 `when`이 모든 경우를 빠짐없이 검사할 수 있게 합니다.",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "비동기·동시성 코드에는 `kotlinx.coroutines` 라이브러리의 코루틴을 사용합니다. `suspend` 함수는 스레드를 막지 않고 일시 중단될 수 있고, `launch`와 `async` 같은 빌더가 스코프 안에서 코루틴을 시작합니다. 안드로이드 앱이 메인 스레드 밖에서 네트워크 호출을 하는 방식이 바로 이것입니다."
+      ]
+    },
+    {
+      "h": "예외 처리",
+      "body": [
+        "코틀린에도 자바처럼 `try`, `catch`, `finally`가 있지만 모든 예외가 unchecked라서 선언하거나 잡도록 강제되지 않습니다. `try`도 식입니다. 예상 가능한 실패에는 표준 라이브러리의 `runCatching`과 `Result`를 쓸 수 있고, `toIntOrNull()` 같은 함수는 예외를 던지는 대신 `null`을 반환합니다.",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도 세기",
+      "body": [
+        "이 프로그램은 텍스트에서 각 단어가 몇 번 나오는지 세어 상위 세 개를 출력합니다. 문자열 확장, 컬렉션 함수, 데이터 클래스를 사용합니다.",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "입문자가 자주 하는 실수: `val` 대신 모든 곳에 `var` 쓰기, null 오류를 없애려고 `!!` 남발하기, `1..n`이 `n`을 포함한다는 점 잊기, `open`이 아닌 클래스를 상속하려 하기, 코루틴 안에서 `delay` 대신 `Thread.sleep` 같은 블로킹 코드 호출하기."
+        }
+      ]
+    },
+    {
+      "h": "다음 단계",
+      "body": [
+        {
+          "ul": [
+            "kotlinlang.org의 공식 코틀린 문서. Basic syntax와 Kotlin tour부터 보세요.",
+            "Kotlin Koans: 브라우저에서 실행하는 작은 연습 문제 모음.",
+            "코틀린으로 안드로이드를 개발한다면 Android Developers 가이드, 서버 개발이라면 Ktor와 Spring 가이드.",
+            "비동기 코드가 필요해지면 kotlinx.coroutines 가이드."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "코틀린이 자바보다 나은가요?",
+      "a": "코틀린은 더 간결하고 null 안전성, 데이터 클래스, 코루틴을 제공하지만 같은 JVM에서 같은 라이브러리를 사용합니다. 한 프로젝트에서 두 언어를 섞어 쓰는 팀도 많으므로, 선택 기준은 기능보다 스타일과 생산성입니다."
+    },
+    {
+      "q": "코틀린 전에 자바를 먼저 배워야 하나요?",
+      "a": "아니요. 코틀린을 첫 JVM 언어로 배워도 됩니다. 자바를 조금 알면 오래된 안드로이드 코드나 자바 라이브러리 문서를 읽을 때 도움이 됩니다."
+    },
+    {
+      "q": "val과 var의 차이는 무엇인가요?",
+      "a": "`val`은 초기화 후 다시 할당할 수 없는 읽기 전용 참조를, `var`는 다시 할당할 수 있는 참조를 선언합니다. 변경 가능한 리스트를 가리키는 `val`이라도 리스트의 내용은 바꿀 수 있습니다."
+    },
+    {
+      "q": "코틀린으로 iOS 앱을 만들 수 있나요?",
+      "a": "네, 공유 코틀린 코드를 iOS용 네이티브 코드로 컴파일하는 코틀린 멀티플랫폼을 통해 가능합니다. 사용자 인터페이스는 Swift로 작성하는 경우가 많지만, Compose Multiplatform으로 UI 코드도 공유할 수 있습니다."
+    },
+    {
+      "q": "코틀린의 ?: 연산자는 무엇을 하나요?",
+      "a": "엘비스 연산자입니다. `a ?: b`는 `a`가 null이 아니면 `a`를, 아니면 `b`를 반환합니다. `name?.length ?: 0`처럼 안전 호출과 함께 자주 사용합니다."
+    }
+  ]
+}

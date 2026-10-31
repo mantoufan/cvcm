@@ -1,0 +1,263 @@
+{
+  "title": "SQL 기초 강좌: SELECT, JOIN, GROUP BY, 트랜잭션 — cv.cm",
+  "description": "SQL을 단계별로 배웁니다. 테이블 생성, WHERE와 ORDER BY를 쓴 SELECT, 조인, GROUP BY, CTE, 윈도 함수, 트랜잭션, PostgreSQL·MySQL·SQLite 차이를 다룹니다.",
+  "h1": "입문자를 위한 SQL 기초 강좌",
+  "answer": "SQL은 PostgreSQL, MySQL, SQLite 같은 관계형 데이터베이스에서 데이터를 만들고, 조회하고, 변경하는 표준 언어입니다. SELECT, INSERT, UPDATE, DELETE 같은 선언형 문장을 작성하면 데이터베이스가 실행 방법을 결정합니다. 이 페이지에서는 테이블 설계, 필터링, 조인, 그룹화, 서브쿼리, 윈도 함수, 트랜잭션을 배우고 PostgreSQL, MySQL, SQLite의 주요 차이를 정리합니다.",
+  "sections": [
+    {
+      "h": "SQL이란 무엇이고 어디에 쓰는가",
+      "body": [
+        "SQL(Structured Query Language)은 데이터를 행과 열로 이루어진 테이블에 저장하는 관계형 데이터베이스를 다루는 표준 언어입니다. 원하는 데이터가 무엇인지 기술하면 데이터베이스 엔진이 찾는 방법을 결정합니다. SQL은 ISO/IEC 9075로 표준화되어 있으며, 주요 데이터베이스는 모두 표준의 핵심 부분과 각자의 확장 기능을 구현합니다.",
+        "개발자, 데이터 분석가, 데이터 엔지니어, 데이터베이스 관리자는 애플리케이션 데이터 저장, 비즈니스 질문에 대한 답 찾기, 보고서 작성, 데이터 파이프라인 공급을 위해 매일 SQL을 사용합니다. 가장 흔한 오픈 소스 엔진은 PostgreSQL, MySQL(과 포크인 MariaDB), SQLite이고, 상용 엔진으로는 Microsoft SQL Server와 Oracle Database가 있습니다."
+      ]
+    },
+    {
+      "h": "데이터베이스 준비와 첫 쿼리 실행",
+      "body": [
+        "가장 쉬운 시작 방법은 파일 하나에 저장되는 서버리스 데이터베이스인 SQLite입니다. macOS와 대부분의 Linux 시스템에 미리 설치되어 있습니다. PostgreSQL과 MySQL은 서버로 실행되며 명령줄 클라이언트 `psql`과 `mysql`이 함께 제공됩니다.",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "SQL 키워드는 대소문자를 구분하지 않습니다. 키워드는 대문자, 이름은 소문자로 쓰는 것이 쿼리를 읽기 쉽게 하는 흔한 관례입니다. 문장은 세미콜론으로 끝나고 `--`는 주석을 시작합니다."
+      ]
+    },
+    {
+      "h": "테이블 만들기: 데이터 타입과 제약 조건",
+      "body": [
+        "테이블 정의에는 열, 열의 타입, 데이터의 유효성을 지키는 제약 조건이 들어갑니다. 이 페이지의 모든 예제는 `customers`와 `orders` 두 테이블을 사용합니다.",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "타입",
+              "저장하는 값",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "정수",
+                "큰 ID에는 `BIGINT` 사용"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "정확한 소수",
+                "금액에는 `FLOAT`가 아니라 이것을 사용"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "문자열",
+                "`TEXT`는 표준에 없지만 널리 지원됨"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "날짜와 시간",
+                "리터럴은 `'2026-01-05'`처럼 작성"
+              ],
+              [
+                "`BOOLEAN`",
+                "참 또는 거짓",
+                "MySQL에서는 `TINYINT(1)`로 취급"
+              ]
+            ]
+          }
+        },
+        "제약 조건에는 `PRIMARY KEY`(행을 고유하게 식별), `NOT NULL`, `UNIQUE`, `CHECK (condition)`, `FOREIGN KEY` / `REFERENCES`(값이 다른 테이블에 존재해야 함)가 있습니다. 문자열은 작은따옴표를 쓰며, 표준 SQL에서 큰따옴표는 식별자용입니다."
+      ]
+    },
+    {
+      "h": "SELECT: 필터링, 정렬, 개수 제한",
+      "body": [
+        "`SELECT`는 데이터를 읽습니다. `WHERE`는 행을 거르고, `ORDER BY`는 정렬하며, `LIMIT`(또는 표준인 `FETCH FIRST n ROWS ONLY`)는 반환되는 행 수를 제한합니다.",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL`은 알 수 없음을 뜻하므로 `city = NULL`은 절대 참이 되지 않습니다. 항상 `IS NULL` 또는 `IS NOT NULL`을 사용하세요. 또한 쿼리의 논리적 처리 순서는 `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`이므로 `SELECT`에서 정의한 열 별칭은 `WHERE`에서 사용할 수 없습니다."
+        }
+      ]
+    },
+    {
+      "h": "JOIN: 테이블 결합",
+      "body": [
+        "조인은 보통 외래 키인 조건으로 두 테이블의 행을 짝지어 줍니다. `INNER JOIN`(또는 그냥 `JOIN`)은 일치하는 행만 남기고, `LEFT JOIN`은 왼쪽 테이블의 모든 행을 유지하면서 없는 열은 `NULL`로 채웁니다.",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "조인",
+              "반환하는 행"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "양쪽 테이블에서 일치하는 행"
+              ],
+              [
+                "`LEFT JOIN`",
+                "왼쪽의 모든 행과, 오른쪽에서 일치하는 행 또는 `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "오른쪽의 모든 행과, 왼쪽에서 일치하는 행 또는 `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "양쪽의 모든 행. MySQL은 지원하지 않음"
+              ],
+              [
+                "`CROSS JOIN`",
+                "모든 행의 조합(데카르트 곱)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY와 집계 함수",
+      "body": [
+        "`COUNT`, `SUM`, `AVG`, `MIN`, `MAX` 같은 집계 함수는 여러 행을 하나로 요약합니다. `GROUP BY`는 그룹마다 결과 행을 하나씩 만들고, `HAVING`은 집계 후에 그룹을 거르는 반면 `WHERE`는 집계 전에 행을 거릅니다.",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)`는 행 수를 세고 `COUNT(column)`은 null이 아닌 값만 세므로, 위에서 Cy의 주문이 0건으로 나옵니다. `COALESCE`는 null이 아닌 첫 번째 인자를 반환합니다."
+      ]
+    },
+    {
+      "h": "서브쿼리, CTE, 윈도 함수",
+      "body": [
+        "서브쿼리는 다른 쿼리 안에 있는 쿼리입니다. `WITH`로 쓰는 공통 테이블 식(CTE)은 서브쿼리에 이름을 붙여 긴 쿼리를 읽기 쉽게 해 줍니다. `ROW_NUMBER`, `RANK`, `SUM(...) OVER` 같은 윈도 함수는 행을 그룹으로 합치지 않고 관련된 행들에 걸쳐 값을 계산합니다.",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "CTE와 윈도 함수는 PostgreSQL, SQLite 3.25 이상, MySQL 8.0 이상에서 지원됩니다."
+      ]
+    },
+    {
+      "h": "데이터 변경: INSERT, UPDATE, DELETE, 트랜잭션",
+      "body": [
+        "`UPDATE`와 `DELETE`는 `WHERE` 절에 일치하는 모든 행에 영향을 줍니다. 트랜잭션은 여러 문장을 묶어 모두 성공하거나 모두 실패하게 합니다.",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "`WHERE` 없는 `UPDATE`나 `DELETE`는 테이블의 모든 행을 바꿉니다. 같은 조건으로 먼저 `SELECT`를 실행해 영향받을 행을 확인하고, 가능하면 트랜잭션 안에서 작업하세요."
+        }
+      ]
+    },
+    {
+      "h": "PostgreSQL, MySQL, SQLite의 차이",
+      "body": [
+        "SQL의 핵심은 이식성이 있지만 엔진마다 세부 사항이 다릅니다. 다음은 입문자가 가장 먼저 만나는 차이입니다.",
+        {
+          "table": {
+            "head": [
+              "기능",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "자동 증가 ID",
+                "`GENERATED ALWAYS AS IDENTITY` 또는 `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "이름 인용",
+                "`\"name\"`",
+                "이름을 백틱으로 감쌈",
+                "`\"name\"`"
+              ],
+              [
+                "행 수 제한",
+                "`LIMIT n` 또는 `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "문자열 연결",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "불리언",
+                "진짜 `BOOLEAN` 타입",
+                "`TINYINT(1)`",
+                "0과 1로 저장"
+              ],
+              [
+                "타입 처리",
+                "엄격함",
+                "기본 strict 모드에서는 엄격함",
+                "유연함. 테이블을 `STRICT`로 선언한 경우는 예외"
+              ],
+              [
+                "업서트",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "그 밖의 차이로는 날짜 함수(PostgreSQL과 MySQL은 `NOW()`, SQLite는 `datetime('now')`), 문자열 비교의 대소문자 구분 여부, MySQL에 없는 full outer join 지원이 있습니다."
+      ]
+    },
+    {
+      "h": "자주 하는 실수와 다음 단계",
+      "body": [
+        {
+          "ul": [
+            "사용자 입력을 이어 붙여 쿼리를 만들어 SQL 인젝션을 허용하는 것. 프로그래밍 언어에서 항상 `?`나 `$1` 같은 플레이스홀더를 쓰는 매개변수화된 쿼리를 사용하세요.",
+            "그룹 쿼리에서 `GROUP BY`에도 없고 집계 함수 안에도 없는 열을 선택하는 것.",
+            "금액에 `DECIMAL` 대신 `FLOAT`를 사용하는 것.",
+            "조인과 필터에 쓰는 열에 인덱스를 만들지 않는 것. `CREATE INDEX idx_orders_customer ON orders(customer_id);`와 `EXPLAIN`이 도움이 됩니다.",
+            "`ORDER BY` 없이 행이 고정된 순서로 반환될 것이라고 가정하는 것."
+          ]
+        },
+        "더 공부하려면 공식 매뉴얼인 PostgreSQL 튜토리얼, MySQL Reference Manual, SQLite SQL language reference를 읽어 보세요. 질문을 일상 언어로 적고 각각을 쿼리로 바꿔 보면서 실제 데이터셋으로 연습하세요."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SQL은 프로그래밍 언어인가요?",
+      "a": "SQL은 선언형 쿼리 언어로, 계산 단계가 아니라 원하는 결과를 기술합니다. PL/pgSQL, T-SQL 같은 벤더 확장은 변수, 반복문, 프로시저를 추가합니다."
+    },
+    {
+      "q": "입문자는 어떤 데이터베이스로 시작해야 하나요?",
+      "a": "SQLite는 서버가 필요 없어 학습에 이상적입니다. 실제 애플리케이션을 위해 표준에 충실한 SQL을 배우려면 PostgreSQL이 좋은 선택이고, MySQL은 웹 호스팅에서 흔합니다."
+    },
+    {
+      "q": "WHERE와 HAVING의 차이는 무엇인가요?",
+      "a": "`WHERE`는 그룹화 전에 개별 행을 거르고, `HAVING`은 집계 함수를 계산한 뒤 그룹을 거릅니다."
+    },
+    {
+      "q": "INNER JOIN과 LEFT JOIN의 차이는 무엇인가요?",
+      "a": "`INNER JOIN`은 양쪽 테이블에서 일치하는 행만 반환합니다. `LEFT JOIN`은 왼쪽 테이블의 모든 행을 반환하고, 일치하는 행이 없으면 오른쪽 테이블의 열을 `NULL`로 채웁니다."
+    },
+    {
+      "q": "SQL 인젝션은 어떻게 막나요?",
+      "a": "사용자 입력을 SQL 문자열에 절대 끼워 넣지 마세요. 데이터베이스가 쿼리와 값을 따로 받는 매개변수화된 쿼리나 준비된 문장(prepared statement)을 사용하세요."
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "title": "Penjelasan Breadth-First Search (BFS): algoritma, kode Python, dan kompleksitas — cv.cm",
+  "description": "Pelajari breadth-first search (BFS): cara menelusuri graf level demi level dengan queue, contoh penelusuran, kode Python, jalur terpendek, dan kompleksitas O(V + E).",
+  "h1": "Penjelasan Breadth-First Search (BFS): cara kerja, kode, dan kompleksitas",
+  "answer": "Breadth-first search (BFS) adalah penelusuran graf yang mengunjungi node awal lebih dulu, lalu semua tetangganya, lalu tetangga dari tetangga itu, dan seterusnya, satu level demi satu level. BFS memakai queue first-in, first-out dan sebuah himpunan node yang sudah dikunjungi. Pada graf tak berbobot, BFS menemukan jalur terpendek (jumlah edge paling sedikit) dari node awal ke setiap node yang dapat dijangkau. Waktu jalannya O(V + E).",
+  "sections": [
+    {
+      "h": "Masalah yang diselesaikan BFS",
+      "body": [
+        "Banyak masalah ternyata adalah graf: halaman web dan tautannya, teman dalam jejaring sosial, kotak pada papan permainan, keadaan sebuah puzzle. BFS menjawab dua pertanyaan umum pada graf semacam itu: node mana saja yang bisa dicapai dari node awal, dan berapa jumlah langkah paling sedikit untuk mencapai masing-masing node?",
+        "Karena BFS menjelajah dalam lingkaran berjarak makin jauh, saat pertama kali mencapai suatu node ia selalu lewat jalur dengan edge paling sedikit. Inilah yang menjadikan BFS algoritma standar untuk jalur terpendek ketika setiap edge berbiaya sama."
+      ]
+    },
+    {
+      "h": "Ide dasar dengan kata-kata sederhana",
+      "body": [
+        {
+          "ol": [
+            "Masukkan node awal ke dalam queue dan tandai sebagai sudah dikunjungi.",
+            "Ambil node di depan queue.",
+            "Untuk setiap tetangga yang belum dikunjungi, tandai sebagai sudah dikunjungi dan tambahkan ke belakang queue.",
+            "Ulangi langkah 2 dan 3 sampai queue kosong."
+          ]
+        },
+        "Tandai node sebagai sudah dikunjungi saat memasukkannya ke queue, bukan saat mengambilnya. Kalau tidak, node yang sama bisa ditambahkan berkali-kali sebelum diproses."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah",
+      "body": [
+        "Ambil graf tak berarah ini: A–B, A–C, B–D, C–D, C–E, D–F. Mulai dari A dan kunjungi tetangga sesuai urutan abjad.",
+        {
+          "table": {
+            "head": [
+              "Langkah",
+              "Diambil dari queue",
+              "Baru ditemukan",
+              "Queue setelah langkah"
+            ],
+            "rows": [
+              [
+                "0",
+                "—",
+                "A (jarak 0)",
+                "A"
+              ],
+              [
+                "1",
+                "A",
+                "B, C (jarak 1)",
+                "B, C"
+              ],
+              [
+                "2",
+                "B",
+                "D (jarak 2)",
+                "C, D"
+              ],
+              [
+                "3",
+                "C",
+                "E (jarak 2)",
+                "D, E"
+              ],
+              [
+                "4",
+                "D",
+                "F (jarak 3)",
+                "E, F"
+              ],
+              [
+                "5",
+                "E",
+                "tidak ada",
+                "F"
+              ],
+              [
+                "6",
+                "F",
+                "tidak ada",
+                "kosong"
+              ]
+            ]
+          }
+        },
+        "Urutan kunjungannya adalah A, B, C, D, E, F. D bisa dicapai dari B maupun C, tetapi hanya ditemukan sekali, dari B, karena pada saat itu D sudah ditandai sebagai dikunjungi."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Gunakan `collections.deque` sebagai queue: `popleft()` berkompleksitas O(1), sedangkan `list.pop(0)` O(n). Graf direpresentasikan sebagai dictionary yang memetakan setiap node ke list tetangganya (adjacency list).",
+        {
+          "code": "from collections import deque\ndef bfs(graph, start):\n    \"\"\"Return the distance (number of edges) from start to each reachable node.\"\"\"\n    dist = {start: 0}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        for nxt in graph[node]:\n            if nxt not in dist:          # not visited yet\n                dist[nxt] = dist[node] + 1\n                queue.append(nxt)\n    return dist\ngraph = {\n    \"A\": [\"B\", \"C\"], \"B\": [\"A\", \"D\"], \"C\": [\"A\", \"D\", \"E\"],\n    \"D\": [\"B\", \"C\", \"F\"], \"E\": [\"C\"], \"F\": [\"D\"],\n}\nprint(bfs(graph, \"A\"))  # {'A': 0, 'B': 1, 'C': 1, 'D': 2, 'E': 2, 'F': 3}",
+          "lang": "python"
+        },
+        "Di sini dictionary `dist` punya dua fungsi: sebagai himpunan node yang dikunjungi sekaligus penyimpan jawaban. Untuk merekonstruksi jalurnya, simpan juga parent dari setiap node lalu telusuri mundur dari target.",
+        {
+          "code": "def shortest_path(graph, start, goal):\n    parent = {start: None}\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node == goal:\n            path = []\n            while node is not None:\n                path.append(node)\n                node = parent[node]\n            return path[::-1]\n        for nxt in graph[node]:\n            if nxt not in parent:\n                parent[nxt] = node\n                queue.append(nxt)\n    return None  # goal not reachable\nprint(shortest_path(graph, \"A\", \"F\"))  # ['A', 'B', 'D', 'F']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Ukuran",
+              "Biaya",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Waktu",
+                "O(V + E)",
+                "Setiap node dimasukkan ke queue sekali dan setiap edge diperiksa sekali (dua kali pada graf tak berarah)."
+              ],
+              [
+                "Ruang",
+                "O(V)",
+                "Himpunan visited, queue, dan peta parent masing-masing berisi paling banyak V entri."
+              ],
+              [
+                "Grid dengan R × C sel",
+                "O(R × C)",
+                "Setiap sel adalah sebuah node dengan paling banyak 4 edge."
+              ]
+            ]
+          }
+        },
+        "V adalah jumlah vertex (node) dan E jumlah edge. Dengan adjacency matrix alih-alih list, waktunya menjadi O(V²) karena mencari tetangga sebuah node membutuhkan O(V)."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "BFS pada grid: anggap setiap sel sebagai node dan empat (atau delapan) sel di sekitarnya sebagai edge. Periksa batas dan dinding sebelum menambahkan sel.",
+            "BFS multi-sumber: masukkan beberapa node awal ke queue dengan jarak 0. Hasilnya adalah jarak ke sumber terdekat, misalnya pintu keluar terdekat dalam labirin.",
+            "BFS 0-1: jika bobot edge hanya 0 atau 1, gunakan deque dan dorong tetangga berbobot 0 ke depan. Hasilnya jalur terpendek dalam O(V + E).",
+            "BFS dua arah: cari dari node awal dan dari tujuan secara bersamaan, lalu berhenti saat kedua frontier bertemu. Cara ini sering menjelajah jauh lebih sedikit node.",
+            "Pemrosesan per level: catat `len(queue)` di awal setiap putaran dan ambil tepat sebanyak itu node untuk menangani satu level sekaligus."
+          ]
+        },
+        {
+          "note": "Bug yang sering terjadi: menandai node sebagai dikunjungi saat di-dequeue (menyebabkan duplikat dan hitungan salah), memakai `list.pop(0)` (membuat BFS kuadratik), dan memakai BFS untuk graf berbobot. Jika bobot edge berbeda-beda, jalur dengan edge paling sedikit belum tentu yang termurah; gunakan algoritma Dijkstra."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai BFS dan penggunaannya di dunia nyata",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "Pilihan terbaik"
+            ],
+            "rows": [
+              [
+                "Jalur terpendek, semua edge berbiaya sama",
+                "BFS"
+              ],
+              [
+                "Jalur terpendek, bobot non-negatif",
+                "Algoritma Dijkstra"
+              ],
+              [
+                "Jalur terpendek dengan estimasi jarak yang baik",
+                "A* search"
+              ],
+              [
+                "Deteksi siklus, urutan topologis, komponen terhubung",
+                "DFS (BFS juga bisa untuk komponen)"
+              ],
+              [
+                "Graf sangat dalam dengan memori terbatas",
+                "DFS atau iterative deepening"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Soal wawancara: jalur terpendek dalam labirin atau grid, word ladder, rotting oranges (BFS multi-sumber), penelusuran level-order pohon biner, jumlah langkah minimum kuda catur.",
+            "Jaringan: mencari semua perangkat dalam k hop, broadcast di jaringan peer-to-peer, \"orang yang mungkin Anda kenal\" pada jarak 2 di graf sosial.",
+            "Web crawler yang mengunjungi halaman berdasarkan jarak tautan dari halaman awal.",
+            "Garbage collector (misalnya copying collector Cheney) dan pemecah puzzle yang membutuhkan langkah paling sedikit."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Struktur data apa yang dipakai BFS?",
+      "a": "BFS memakai queue FIFO untuk menentukan node berikutnya yang diproses dan sebuah set (atau dictionary) untuk mengingat node yang sudah dikunjungi. Di Python, gunakan `collections.deque` untuk queue."
+    },
+    {
+      "q": "Apakah BFS selalu menemukan jalur terpendek?",
+      "a": "Ya, pada graf tak berbobot atau ketika setiap edge berbobot sama, BFS menemukan jalur dengan edge paling sedikit. Pada graf berbobot tidak demikian; gunakan algoritma Dijkstra atau Bellman-Ford."
+    },
+    {
+      "q": "Apa perbedaan BFS dan DFS?",
+      "a": "BFS menjelajah level demi level dengan queue, sehingga menemukan jalur terpendek pada graf tak berbobot. DFS masuk sedalam mungkin lebih dulu dengan stack atau rekursi, cocok untuk deteksi siklus, topological sort, dan pencarian menyeluruh."
+    },
+    {
+      "q": "Mengapa BFS saya lambat di Python?",
+      "a": "Penyebab yang paling umum adalah `list.pop(0)`, yang menggeser seluruh list di setiap pemanggilan, dan memeriksa node yang dikunjungi memakai list alih-alih set. Gunakan `deque.popleft()` dan set atau dictionary."
+    },
+    {
+      "q": "Bisakah BFS dipakai pada pohon?",
+      "a": "Bisa. Pada pohon, BFS adalah penelusuran level-order. Pohon tidak punya siklus, sehingga set visited bisa dilewati jika Anda hanya bergerak dari parent ke child."
+    }
+  ]
+}

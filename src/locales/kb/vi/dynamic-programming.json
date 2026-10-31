@@ -1,0 +1,215 @@
+{
+  "title": "Quy hoạch động: memoization, tabulation và các bài toán kinh điển trong Python — cv.cm",
+  "description": "Quy hoạch động cho người mới: bài toán con chồng chéo, memoization và tabulation, bảng đổi tiền xu từng bước, ví dụ Python và độ phức tạp.",
+  "h1": "Quy hoạch động là gì: cách hoạt động, code và ví dụ",
+  "answer": "Quy hoạch động (dynamic programming, DP) giải một bài toán bằng cách chia nhỏ thành các bài toán con, giải mỗi bài toán con một lần và lưu kết quả để dùng lại. Nó áp dụng được khi bài toán có cấu trúc con tối ưu (đáp án tốt nhất được xây từ các đáp án tốt nhất của bài toán con) và bài toán con chồng chéo (cùng các bài toán con xuất hiện lặp đi lặp lại). Bạn có thể viết DP từ trên xuống với memoization hoặc từ dưới lên với bảng; cả hai biến nhiều lời giải vét cạn có độ phức tạp hàm mũ thành đa thức.",
+  "sections": [
+    {
+      "h": "Quy hoạch động giải bài toán gì",
+      "body": [
+        "Nhiều bài toán hỏi về cái tốt nhất, rẻ nhất hoặc số cách: ít đồng xu nhất để ra một số tiền, dãy con chung dài nhất của hai chuỗi, tập vật có giá trị lớn nhất bỏ vừa một cái túi, số đường đi qua một lưới. Lời giải đệ quy trực tiếp thường tính lại cùng các trường hợp nhỏ hơn với số lần tăng theo hàm mũ. DP loại bỏ sự lặp lại đó.",
+        "Cái tên đến từ Richard Bellman, người phát triển phương pháp này vào thập niên 1950. “Programming” ở đây nghĩa là lập kế hoạch hoặc điền bảng, không phải viết code."
+      ]
+    },
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Fibonacci đệ quy ngây thơ cho thấy vấn đề. `fib(5)` gọi `fib(4)` và `fib(3)`, rồi `fib(4)` lại gọi `fib(3)`, và cứ thế: số lần gọi tăng theo hàm mũ. Lưu mỗi kết quả ngay lần đầu tính khiến mọi lần gọi sau đều tức thì.",
+        {
+          "ol": [
+            "Định nghĩa trạng thái: một bài toán con trông như thế nào? Ví dụ `best[a]` = số đồng xu ít nhất để ra số tiền a.",
+            "Viết công thức truy hồi: tính một trạng thái từ các trạng thái nhỏ hơn thế nào? `best[a] = 1 + min(best[a - c] for each coin c)`.",
+            "Đặt các trường hợp cơ sở: `best[0] = 0`.",
+            "Chọn thứ tự tính: từ trên xuống với memoization, hoặc từ dưới lên sao cho các trạng thái nhỏ hơn luôn được điền trước.",
+            "Đọc đáp án từ trạng thái đúng, và dựng lại lựa chọn thực tế nếu cần."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "Kiểu",
+              "Cách hoạt động",
+              "Ưu điểm",
+              "Nhược điểm"
+            ],
+            "rows": [
+              [
+                "Từ trên xuống (memoization)",
+                "Hàm đệ quy cùng một bộ nhớ đệm kết quả.",
+                "Sát với công thức truy hồi nhất; chỉ tính những trạng thái cần thiết.",
+                "Giới hạn độ sâu đệ quy và chi phí gọi hàm."
+              ],
+              [
+                "Từ dưới lên (tabulation)",
+                "Các vòng lặp điền bảng từ trạng thái nhỏ nhất trở lên.",
+                "Không đệ quy; dễ giảm bộ nhớ.",
+                "Phải tìm thứ tự điền hợp lệ; có thể tính cả những trạng thái không dùng."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Từ trên xuống: memoization với functools",
+      "body": [
+        "Trong Python, `functools.cache` (Python 3.9+) hoặc `functools.lru_cache` thêm memoization cho một hàm chỉ bằng một dòng:",
+        {
+          "code": "from functools import cache\n\n@cache\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(80))  # 23416728348467685",
+          "lang": "python"
+        },
+        "Không có decorator, `fib(80)` sẽ thực hiện hơn 10¹⁶ lời gọi đệ quy. Có nó, mỗi giá trị từ 0 đến 80 chỉ được tính một lần."
+      ]
+    },
+    {
+      "h": "Ví dụ: đổi tiền xu, từ dưới lên",
+      "body": [
+        "Các đồng xu 1, 3 và 4; số tiền 6. Cách tham lam lấy 4 trước và cần 4 + 1 + 1 = 3 đồng, nhưng 3 + 3 chỉ dùng 2. DP tìm ra giá trị nhỏ nhất thật sự bằng cách điền `best[a]` cho a = 0 đến 6:",
+        {
+          "table": {
+            "head": [
+              "Số tiền a",
+              "Các lựa chọn: 1 + best[a − c]",
+              "best[a]"
+            ],
+            "rows": [
+              [
+                "0",
+                "trường hợp cơ sở",
+                "0"
+              ],
+              [
+                "1",
+                "c=1: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "2",
+                "c=1: 1 + best[1] = 2",
+                "2"
+              ],
+              [
+                "3",
+                "c=1: 3, c=3: 1 + best[0] = 1",
+                "1"
+              ],
+              [
+                "4",
+                "c=1: 2, c=3: 2, c=4: 1",
+                "1"
+              ],
+              [
+                "5",
+                "c=1: 2, c=3: 3, c=4: 2",
+                "2"
+              ],
+              [
+                "6",
+                "c=1: 3, c=3: 1 + best[3] = 2, c=4: 1 + best[2] = 3",
+                "2"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "def min_coins(coins, amount):\n    INF = float(\"inf\")\n    best = [0] + [INF] * amount\n    for a in range(1, amount + 1):\n        for c in coins:\n            if c <= a and best[a - c] + 1 < best[a]:\n                best[a] = best[a - c] + 1\n    return best[amount] if best[amount] != INF else -1\n\nprint(min_coins([1, 3, 4], 6))  # 2\nprint(min_coins([2], 3))        # -1",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ hai chiều: dãy con chung dài nhất",
+      "body": [
+        "Nhiều bài toán DP trên hai dãy dùng một lưới: `dp[i][j]` là đáp án cho i ký tự đầu của chuỗi này và j ký tự đầu của chuỗi kia. Với dãy con chung dài nhất (LCS), nếu hai ký tự khớp thì kéo dài theo đường chéo; nếu không thì lấy kết quả tốt hơn khi bỏ một ký tự của một trong hai chuỗi.",
+        {
+          "code": "def lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i - 1] == b[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[len(a)][len(b)]\n\nprint(lcs(\"ABCBDAB\", \"BDCABA\"))  # 4",
+          "lang": "python"
+        },
+        "Một LCS có độ dài 4 là BCBA. Cùng cấu trúc bảng này giải bài khoảng cách chỉnh sửa (edit distance), cách các công cụ diff văn bản đo mức khác nhau giữa hai chuỗi."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        "Quy tắc chung: thời gian = số trạng thái × công việc mỗi trạng thái; không gian = số trạng thái được lưu.",
+        {
+          "table": {
+            "head": [
+              "Bài toán",
+              "Trạng thái",
+              "Thời gian",
+              "Không gian (có thể giảm còn)"
+            ],
+            "rows": [
+              [
+                "Fibonacci",
+                "n",
+                "O(n)",
+                "O(n) → O(1) với hai biến"
+              ],
+              [
+                "Đổi tiền xu (ít xu nhất)",
+                "số tiền",
+                "O(số tiền × số loại xu)",
+                "O(số tiền)"
+              ],
+              [
+                "LCS / khoảng cách chỉnh sửa",
+                "n × m",
+                "O(n × m)",
+                "O(n × m) → O(min(n, m)) nếu chỉ cần độ dài"
+              ],
+              [
+                "Bài toán cái túi 0/1",
+                "số vật × sức chứa",
+                "O(n × W)",
+                "O(W) với một hàng, duyệt sức chứa giảm dần"
+              ]
+            ]
+          }
+        },
+        "O(n × W) của bài toán cái túi là giả đa thức (pseudo-polynomial): nó phụ thuộc vào giá trị số W, không phải kích thước đầu vào tính bằng bit, nên sẽ chậm khi W rất lớn."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và khi nào dùng DP",
+      "body": [
+        {
+          "ul": [
+            "Sai trạng thái: nếu công thức truy hồi cần thông tin mà trạng thái không chứa (ví dụ vật nào đã dùng rồi), đáp án sẽ sai. Hãy thêm thông tin đó vào trạng thái.",
+            "Sai thứ tự điền: vòng lặp từ dưới lên phải tính mọi trạng thái trước khi nó được đọc.",
+            "Lệch một đơn vị khi chọn kích thước bảng: chuỗi dài n cần n + 1 hàng để bao gồm tiền tố rỗng.",
+            "Đệ quy quá sâu: đệ quy có memoization trên 10.000 trạng thái có thể vượt giới hạn đệ quy của Python; hãy chuyển sang từ dưới lên.",
+            "Đối số không băm được: `functools.cache` cần đối số băm được (hashable), nên hãy truyền tuple thay vì list."
+          ]
+        },
+        {
+          "note": "Dùng DP khi các bài toán con chồng chéo. Nếu chúng không chồng chéo, như trong merge sort, chia để trị thông thường là đủ. Nếu một lựa chọn tốt nhất cục bộ luôn đúng và có thể chứng minh, thuật toán tham lam đơn giản và nhanh hơn; đổi tiền xu với mệnh giá tùy ý là trường hợp kinh điển mà tham lam thất bại và cần DP."
+        },
+        "Ứng dụng điển hình trong phỏng vấn và thực tế: climbing stairs, house robber, dãy con tăng dài nhất, word break, unique paths trên lưới, khoảng cách chỉnh sửa, bài toán cái túi, nhân chuỗi ma trận; trong thực tế còn có gióng hàng chuỗi trong tin sinh học, công cụ diff, kiểm tra chính tả, nhận dạng giọng nói (thuật toán Viterbi) và đường đi ngắn nhất như Bellman-Ford."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Memoization khác tabulation như thế nào?",
+      "a": "Memoization là từ trên xuống: hàm đệ quy lưu kết quả vào bộ nhớ đệm khi tính. Tabulation là từ dưới lên: các vòng lặp điền bảng từ các trường hợp cơ sở trở lên. Với hầu hết bài toán, cả hai có cùng độ phức tạp."
+    },
+    {
+      "q": "Làm sao biết một bài toán cần quy hoạch động?",
+      "a": "Hãy tìm câu hỏi về cái tốt nhất, rẻ nhất hoặc số cách, cùng với một lời giải đệ quy vét cạn lặp lại các bài toán con giống nhau. Nếu bạn định nghĩa được trạng thái và công thức truy hồi giữa các trạng thái, DP thường áp dụng được."
+    },
+    {
+      "q": "Quy hoạch động có phải là đệ quy không?",
+      "a": "Không. Đệ quy là một cách viết code; DP là ý tưởng giải mỗi bài toán con một lần và dùng lại kết quả. Lời giải DP có thể là đệ quy có memoization hoặc lặp với một bảng."
+    },
+    {
+      "q": "Quy hoạch động khác thuật toán tham lam như thế nào?",
+      "a": "Thuật toán tham lam đưa ra một lựa chọn tốt nhất cục bộ ở mỗi bước và không xét lại. DP xét mọi lựa chọn liên quan cho mỗi bài toán con và giữ cái tốt nhất, nên đúng trong các trường hợp tham lam thất bại."
+    },
+    {
+      "q": "Quy hoạch động khác chia để trị như thế nào?",
+      "a": "Cả hai đều chia bài toán thành các bài toán con. Chia để trị làm việc với các bài toán con độc lập, còn DP dành cho các bài toán con chồng chéo, nên lưu kết quả của chúng giúp tiết kiệm công việc."
+    }
+  ]
+}

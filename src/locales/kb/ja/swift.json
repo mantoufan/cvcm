@@ -1,0 +1,195 @@
+{
+  "title": "Swiftチュートリアル：オプショナル・構造体・列挙型・プロトコル — cv.cm",
+  "description": "Swift入門を1ページで：Hello world、letとvar、型、制御構文、クロージャ、配列とディクショナリ、オプショナル、構造体、列挙型、エラー処理まで解説します。",
+  "h1": "Swift入門チュートリアル（初心者向け）",
+  "answer": "Swiftは、AppleがiPhone、iPad、Mac、Apple Watch、Apple TV向けのアプリのために作った、高速で安全なコンパイル型言語で、LinuxやWindowsでも動作します。`print(\"Hello, world\")` を `hello.swift` に保存して `swift hello.swift` で実行します。`let` の定数と `var` の変数、型推論、値がないかもしれない場合のオプショナル、値のセマンティクスを持つ構造体と列挙型、プロトコル、`do`/`try`/`catch` によるエラー処理が中心的な内容です。",
+  "sections": [
+    {
+      "h": "Swiftとは何か、何に使われるか",
+      "body": [
+        "Swiftは、Objective-Cに代わるモダンな言語として2014年にAppleが発表し、2015年にオープンソース化されました。プロジェクトはswift.orgにあります。Appleプラットフォーム向けアプリの主要言語で、通常はSwiftUIやUIKitフレームワークと組み合わせて使います。サーバーサイドのコード（たとえばVaporフレームワーク）やコマンドラインツールにも使われます。この言語は、よくあるバグを防ぐよう設計されています。変数は初期化が必須で、配列は範囲をチェックし、`nil` は明示的に扱う必要があります。"
+      ]
+    },
+    {
+      "h": "Swiftのインストールと Hello, world の実行",
+      "body": [
+        "Macでは、App StoreからXcodeをインストールするか、Xcodeのコマンドラインツールを入れます。LinuxとWindowsでは、swift.orgからツールチェーンをダウンロードします。`swift --version` で確認します。",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "大きなプロジェクトでは、`swift package init --type executable` を実行してから `swift run` を実行します。Xcodeのプレイグラウンドも、気軽に試せる方法です。"
+      ]
+    },
+    {
+      "h": "定数、変数、基本の型",
+      "body": [
+        "定数には `let`、変数には `var` を使います。`let` を優先しましょう。一度も変更されない `var` には、コンパイラが警告を出します。型は推論され、Swiftは数値型どうしを暗黙的に変換しません。",
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "備考"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "最近のプラットフォームでは64ビット"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "デフォルトの浮動小数点型"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` または `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Unicodeテキスト。値型"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "ユーザーが1文字と認識する単位"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "配列とディクショナリ"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "文字列リテラル内の `\\(expression)` は、値を埋め込みます（文字列補間）。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` は網羅的である必要があり、デフォルトでは次のケースに落ちず、範囲（`case 90...100:`）、タプル、列挙型のケースにマッチできます。"
+      ]
+    },
+    {
+      "h": "関数とクロージャ",
+      "body": [
+        "引数には、呼び出し側が書く引数ラベルがあり、呼び出しが文章のように読めます。ラベルを省略するには `_` を使います。クロージャは、波括弧で書く無名関数です。",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` はクロージャの最初の引数を指します。クロージャが最後の引数のときは、括弧の後ろに書けます（トレイリングクロージャ構文）。"
+      ]
+    },
+    {
+      "h": "配列、ディクショナリ、セット",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "コレクションは値型です。配列を別の変数に代入すると、独立したコピーが作られます（実際のコピーは、どちらかが変更されたときまで遅延されます）。`let` の配列は、まったく変更できません。"
+      ]
+    },
+    {
+      "h": "特徴的な機能：オプショナル",
+      "body": [
+        "値がないかもしれない場合は、`String?` と書くオプショナル型になります。アンラップするまで `String` としては使えないため、コンパイラが `nil` の場合の処理を強制します。",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` と `guard let` は安全にアンラップし、`?.`（オプショナルチェーン）は値がある場合にだけメソッドを呼び出し、`??` はデフォルト値を与えます。強制アンラップ `value!` は値が `nil` のときにクラッシュするので、あまり使わないようにしましょう。省略形の `if let number` にはSwift 5.7以降が必要です。"
+      ]
+    },
+    {
+      "h": "構造体、クラス、列挙型、プロトコル",
+      "body": [
+        "構造体と列挙型は値型で、クラスは継承を持つ参照型です。Swiftのコードでは、クラスの階層よりも、構造体とプロトコル（インターフェース）が好まれます。",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "構造体には、メンバーワイズイニシャライザ（`Rect(width:height:)`）が自動的に用意されます。列挙型のケースは、`.radius(Double)` のように関連値を持てます。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "失敗しうる関数には `throws` を付けます。呼び出し側は、`do`/`catch` ブロックの中で `try` を使うか、`try?` でエラーを `nil` に変換します。",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "`swift words.swift notes.txt` で実行します。`Foundation` はファイルの読み込みや文字列のヘルパーを提供し、Appleプラットフォームと、LinuxおよびWindowsのツールチェーンで利用できます。"
+      ]
+    },
+    {
+      "h": "初心者がよくやる間違い",
+      "body": [
+        {
+          "note": "値が保証されている場合を除き、`!` による強制アンラップや、`String!` のような暗黙的にアンラップされる型は避けましょう。その時点で `nil` だと、アプリが実行時にクラッシュします。"
+        },
+        {
+          "ul": [
+            "`let` の定数や、`let` の構造体のプロパティを変更しようとする。値を変更する必要があるなら `var` を使います。",
+            "構造体がオブジェクトのように共有されると期待する。コピーを変更しても元は変わりません。同一性を共有したいならクラスを使います。",
+            "`s[0]` のように、`String` を整数でインデックス指定する。`s.first`、`s.prefix(3)`、`String.Index` の値を使います。",
+            "`Int` と `Double` を変換せずに算術演算で混ぜる。これはコンパイルエラーです。",
+            "throwする呼び出しの前に `try` を付け忘れる、またはエラー時にクラッシュする `try!` を使う。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "次のステップ",
+      "body": [
+        "docs.swift.orgの公式ガイド兼リファレンス「The Swift Programming Language」と、swift.orgのドキュメントハブを読みましょう。アプリ開発では、XcodeでAppleのSwiftUIチュートリアルに沿って進めます。その後、Swiftの並行処理（`async`/`await` とアクター）、ジェネリクス、依存関係を管理するSwift Package Managerを学びます。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SwiftはAppleのプラットフォーム専用ですか？",
+      "a": "いいえ。Swiftはオープンソースで、LinuxやWindowsでも動作し、サーバーサイドのコードやツールにも使われます。ただし、SwiftUIやUIKitといったアプリのフレームワークはApple専用です。"
+    },
+    {
+      "q": "SwiftとObjective-Cのどちらを学ぶべきですか？",
+      "a": "Swiftを学びましょう。新しいアプリにAppleが推奨している言語で、必要なときには既存のObjective-Cのコードも呼び出せます。"
+    },
+    {
+      "q": "Swiftの構造体とクラスの違いは何ですか？",
+      "a": "構造体は値型で、代入や受け渡しのときにコピーされます。クラスは参照型なので、すべての変数が1つのインスタンスを共有します。クラスは継承とデイニシャライザもサポートします。"
+    },
+    {
+      "q": "型の後ろの疑問符は何を意味しますか？",
+      "a": "`Int?` はオプショナルで、`Int` か `nil` のどちらかを保持します。値を使う前に、たとえば `if let` でアンラップする必要があります。"
+    }
+  ]
+}

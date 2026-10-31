@@ -1,0 +1,160 @@
+{
+  "title": "外观模式：为复杂子系统提供一个简单接口，含 TypeScript 示例 — cv.cm",
+  "description": "外观模式（Facade）详解：把复杂的子系统隐藏在一个简单接口之后。含 TypeScript 订单结账示例、适用场景和实际应用。",
+  "h1": "外观模式详解与示例",
+  "answer": "外观是一种结构型设计模式，它为复杂子系统中的一组接口提供一个简单的、更高层的接口。客户端代码不必按正确顺序去调用库存、支付、物流和邮件服务，只需调用 `shop.placeOrder()` 这样的一个方法，由外观来协调各个子系统类。子系统依然存在，需要时也可以直接使用；外观只是让常见情形变得简单。",
+  "sections": [
+    {
+      "h": "意图",
+      "body": [
+        "为子系统中的一组接口提供一个统一的接口。外观定义了一个更高层的接口，使子系统更易于使用。它是《设计模式》（四人组，GoF）一书中七种结构型模式之一。"
+      ]
+    },
+    {
+      "h": "它要解决的问题",
+      "body": [
+        "设想一家网店。下一个订单需要多个服务：检查并预留库存、给银行卡扣款、支付失败时释放库存、创建发货单，以及发送确认邮件。每个服务都有自己的 API 和规则。",
+        "如果每个调用方，比如网页结账、移动端 API 和管理工具，都自己执行这些步骤，同样的流程就会被复制到许多地方。每一份副本都可能把顺序弄错或者忘记回滚，而且每个调用方都依赖五个服务。一旦某个服务变化，所有调用方都得修改。外观把这套流程放在一处，给调用方提供一个方法。"
+      ]
+    },
+    {
+      "h": "结构与参与者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "参与者",
+              "职责",
+              "示例中的对应"
+            ],
+            "rows": [
+              [
+                "外观（Facade）",
+                "知道由哪些子系统类处理请求，并按正确顺序委托给它们。",
+                "`OrderFacade`"
+              ],
+              [
+                "子系统类",
+                "完成真正的工作。它们并不知道外观的存在。",
+                "`Inventory`, `Payments`, `Shipping`, `Mailer`"
+              ],
+              [
+                "客户端（Client）",
+                "用外观完成常见任务；遇到特殊情况仍可直接使用子系统类。",
+                "结账代码"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 实现",
+      "body": [
+        {
+          "code": "// Subsystem classes, each with its own API.\nclass Inventory {\n  private stock = new Map([[\"book\", 2]]);\n  reserve(sku: string): boolean {\n    const n = this.stock.get(sku) ?? 0;\n    if (n === 0) return false;\n    this.stock.set(sku, n - 1);\n    return true;\n  }\n  release(sku: string): void { this.stock.set(sku, (this.stock.get(sku) ?? 0) + 1); }\n}\nclass Payments {\n  charge(card: string, cents: number): boolean { return card.startsWith(\"4\") && cents > 0; }\n}\nclass Shipping {\n  createShipment(sku: string, address: string): string { return `SHIP-${sku}-${address.length}`; }\n}\nclass Mailer {\n  send(to: string, text: string): void { console.log(`mail to ${to}: ${text}`); }\n}",
+          "lang": "typescript"
+        },
+        "随后外观在一个方法背后，按正确的顺序执行整个工作流：",
+        {
+          "code": "// Facade: one method that runs the whole workflow in the right order.\nclass OrderFacade {\n  constructor(private inventory = new Inventory(), private payments = new Payments(),\n              private shipping = new Shipping(), private mailer = new Mailer()) {}\n\n  placeOrder(sku: string, card: string, cents: number, email: string, address: string): string {\n    if (!this.inventory.reserve(sku)) return \"out of stock\";\n    if (!this.payments.charge(card, cents)) {\n      this.inventory.release(sku); // roll back the reservation\n      return \"payment declined\";\n    }\n    const shipmentId = this.shipping.createShipment(sku, address);\n    this.mailer.send(email, `Order confirmed, shipment ${shipmentId}`);\n    return \"ok\";\n  }\n}\n\nconst shop = new OrderFacade();\nconsole.log(shop.placeOrder(\"book\", \"4111\", 1999, \"ada@example.com\", \"1 Main St\"));\n// mail to ada@example.com: Order confirmed, shipment SHIP-book-9\n// ok\nconsole.log(shop.placeOrder(\"book\", \"5500\", 1999, \"bob@example.com\", \"2 Side St\")); // payment declined",
+          "lang": "typescript"
+        },
+        "现在调用方只依赖一个类的一个方法。回滚规则只存在一份。子系统类依然可用，所以只需要释放库存的管理工具，可以直接调用 `Inventory`。"
+      ]
+    },
+    {
+      "h": "何时使用，何时不用",
+      "body": [
+        "以下情况适合使用外观：",
+        {
+          "ul": [
+            "子系统很复杂，而大多数客户端只需要它能力中简单、常用的一个子集。",
+            "你想减少客户端代码与众多子系统类之间的依赖。",
+            "你想把系统分层，并用外观作为每一层的入口。",
+            "你包装了一个庞大的第三方库，希望其余代码只使用其中少数几个需要的操作。"
+          ]
+        },
+        "以下情况应避免使用或加以限制：",
+        {
+          "ul": [
+            "子系统本身已经很简单。一对一转发每个调用的外观，只会增加一层而什么也没隐藏。",
+            "外观开始收集系统各处互不相关的方法和业务规则。这就是“上帝对象”问题：一个类知道得太多、做得太多。应把它拆成几个职责单一的外观。"
+          ]
+        },
+        {
+          "note": "外观应该是简化，而不是禁锢。不要因为有了外观，就把子系统设为私有。高级客户端往往需要完整的 API，堵死它们只会引来绕路的写法。"
+        }
+      ]
+    },
+    {
+      "h": "实际应用",
+      "body": [
+        {
+          "ul": [
+            "Node.js：`fs.readFile()` 在一次调用中完成打开文件、读到末尾和关闭文件。更底层的 `fs.open()`、`fs.read()` 和 `fs.close()` 仍然可用。",
+            "jQuery 的流行很大程度上是因为它在 DOM 和当年各浏览器的差异之前，提供了一套简短而一致的 API。",
+            "GoF 一书中的例子是编译器：一个 `Compiler` 类把扫描器、语法分析器、代码生成器等子系统类，对只想编译代码的程序隐藏起来。",
+            "后端应用中的服务层和 API 网关，扮演着众多内部服务的外观。"
+          ]
+        },
+        {
+          "note": "PHP 框架 Laravel 有一个叫 Facades 的功能。那是另一种思路：以看似静态调用的方式访问服务容器里的对象。名称相同，但意图并不是 GoF 模式。"
+        }
+      ]
+    },
+    {
+      "h": "相关模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "与外观的区别"
+            ],
+            "rows": [
+              [
+                "适配器",
+                "让一个现有接口匹配另一个现有接口。外观则为许多类定义一个新的、更简单的接口。"
+              ],
+              [
+                "中介者",
+                "同样集中协调，但子系统对象认识中介者，并通过它通信。使用外观时，子系统类并不知道外观的存在。"
+              ],
+              [
+                "抽象工厂",
+                "可以与外观配合，以与平台无关的方式创建子系统对象。"
+              ],
+              [
+                "单例",
+                "外观通常是单个实例，因为子系统通常只需要一个入口。"
+              ],
+              [
+                "代理",
+                "与某一个对象拥有相同的接口，并控制对它的访问。外观则是在许多对象之上提供一个不同的、更简单的接口。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "外观与适配器有什么区别？",
+      "a": "适配器把一个现有接口转换成客户端已经期望的另一个接口。外观则是创造一个新的、更简单的接口，让整个子系统更易于使用。"
+    },
+    {
+      "q": "外观会完全隐藏子系统吗？",
+      "a": "不会。外观让常见任务变得简单，但需要更多控制的客户端仍然可以直接使用子系统类。"
+    },
+    {
+      "q": "一个系统可以有多个外观吗？",
+      "a": "可以。大型系统通常每个子系统或每个用例都有一个外观，这样每个外观都保持小而专注。"
+    },
+    {
+      "q": "服务层算是外观吗？",
+      "a": "常常算。一个在一次调用背后协调仓储、外部 API 和通知的服务方法，对调用它的代码来说就扮演着外观的角色。"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "title": "Patrón Adapter: hacer que interfaces incompatibles funcionen juntas, ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Adapter explicado: envuelve una clase con una interfaz incompatible para que los clientes la usen. Ejemplo en TypeScript, adapter de objeto y de clase.",
+  "h1": "Patrón Adapter explicado con ejemplos",
+  "answer": "Adapter es un patrón de diseño estructural que convierte la interfaz de una clase existente en la interfaz que espera el código cliente. El adaptador envuelve el objeto incompatible y traduce cada llamada, por ejemplo convirtiendo `charge(amountCents)` en un `makePayment(\"12.50\")` heredado. Te permite reutilizar un componente de terceros o heredado sin cambiarlo y sin extender su API incómoda por tu código. También se conoce como Wrapper.",
+  "sections": [
+    {
+      "h": "Intención",
+      "body": [
+        "Convertir la interfaz de una clase en otra interfaz que los clientes esperan. El patrón Adapter permite que trabajen juntas clases que de otro modo no podrían por tener interfaces incompatibles. Es uno de los siete patrones estructurales del libro de la Banda de los Cuatro (GoF)."
+      ]
+    },
+    {
+      "h": "El problema que resuelve",
+      "body": [
+        "El código de tu tienda trabaja con una pequeña interfaz `PaymentGateway`: `charge(amountCents, currency)` devuelve un resultado con un indicador `ok` y un identificador de transacción. Ahora el negocio firma un contrato con un proveedor de pagos cuyo SDK es completamente distinto: los importes son cadenas decimales, la moneda forma parte de un objeto de petición y los errores llegan como códigos de estado numéricos.",
+        "No puedes cambiar el SDK y no quieres reescribir todos los llamadores para que usen la nueva forma. Si el estilo del SDK se filtra al pago, los reembolsos y los informes, cambiar de proveedor más adelante será caro. Un adaptador mantiene la traducción en una sola clase."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participante",
+              "Responsabilidad",
+              "En el ejemplo"
+            ],
+            "rows": [
+              [
+                "Target",
+                "La interfaz que espera el cliente.",
+                "`PaymentGateway`"
+              ],
+              [
+                "Adaptee",
+                "La clase existente con una interfaz incompatible.",
+                "`LegacyPayClient`"
+              ],
+              [
+                "Adapter",
+                "Implementa Target y traduce las llamadas al Adaptee.",
+                "`LegacyPayAdapter`"
+              ],
+              [
+                "Client",
+                "Trabaja solo con la interfaz Target.",
+                "`checkout`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        {
+          "code": "// Target: what our code expects.\ninterface PaymentGateway {\n  charge(amountCents: number, currency: string): { ok: boolean; id: string };\n}\n\n// Adaptee: a third-party SDK we cannot change.\nclass LegacyPayClient {\n  makePayment(req: { amount: string; curr: string }): { status: number; ref: string } {\n    return { status: req.curr === \"USD\" ? 200 : 422, ref: `TX-${req.amount}` };\n  }\n}\n\n// Adapter: implements the Target by translating to the Adaptee.\nclass LegacyPayAdapter implements PaymentGateway {\n  constructor(private client: LegacyPayClient) {}\n\n  charge(amountCents: number, currency: string) {\n    const res = this.client.makePayment({\n      amount: (amountCents / 100).toFixed(2),\n      curr: currency.toUpperCase(),\n    });\n    return { ok: res.status === 200, id: res.ref };\n  }\n}\n\n// Client code knows nothing about LegacyPayClient.\nfunction checkout(gateway: PaymentGateway, totalCents: number): string {\n  const result = gateway.charge(totalCents, \"usd\");\n  return result.ok ? `paid ${result.id}` : \"payment failed\";\n}\n\nconsole.log(checkout(new LegacyPayAdapter(new LegacyPayClient()), 1250)); // paid TX-12.50",
+          "lang": "typescript"
+        },
+        "Cambiar más adelante a otro proveedor significa escribir un adaptador más. `checkout` y todos los demás llamadores siguen igual, y las pruebas pueden pasar un `PaymentGateway` simulado."
+      ]
+    },
+    {
+      "h": "Adapter de objeto frente a adapter de clase",
+      "body": [
+        "El libro GoF describe dos formas:",
+        {
+          "table": {
+            "head": [
+              "Forma",
+              "Cómo funciona",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Adapter de objeto",
+                "Mantiene una referencia al adaptado y delega en él (composición).",
+                "Funciona con el adaptado y todas sus subclases. La opción habitual en TypeScript, Java y C#."
+              ],
+              [
+                "Adapter de clase",
+                "Hereda del adaptado e implementa la interfaz de destino.",
+                "Necesita heredar del adaptado, por lo que adapta solo esa clase. Común en C++ con herencia múltiple."
+              ]
+            ]
+          }
+        },
+        "En TypeScript y JavaScript, adaptar una función suele bastar. Node.js incluye un pequeño adaptador de este tipo: `util.promisify()` convierte una función al estilo callback en otra que devuelve una promesa.",
+        {
+          "code": "import { promisify } from \"node:util\";\n\n// Adaptee: old callback style (error first, then result).\nfunction readConfig(name: string, cb: (err: Error | null, value?: string) => void): void {\n  setTimeout(() => cb(null, `config for ${name}`), 10);\n}\n\n// Adapted: the same function, now with a promise-based interface.\nconst readConfigAsync = promisify(readConfig);\nconsole.log(await readConfigAsync(\"app\")); // config for app",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        "Usa el patrón Adapter cuando:",
+        {
+          "ul": [
+            "Quieras usar una clase existente, pero su interfaz no coincida con la que necesita tu código.",
+            "Integres bibliotecas de terceros o sistemas heredados y quieras mantener su API en el borde de tu programa.",
+            "Quieras varias implementaciones distintas, como dos proveedores de pago, detrás de una sola interfaz."
+          ]
+        },
+        "Evítalo cuando:",
+        {
+          "ul": [
+            "Seas dueño de ambos lados. Cambiar una de las interfaces suele ser más simple que añadir una capa de traducción.",
+            "El adaptador tuviera que simular grandes partes de la interfaz de destino que el adaptado no puede soportar realmente. Eso oculta una incompatibilidad real en lugar de resolverla."
+          ]
+        },
+        {
+          "note": "Mantén los adaptadores delgados. Deben traducir nombres, unidades y formatos de error, no contener reglas de negocio. Si un adaptador crece mucho, la lógica probablemente pertenece a otro lugar."
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Node.js: `util.promisify()` adapta funciones basadas en callbacks a promesas.",
+            "Java: `Arrays.asList()` permite usar un arreglo a través de la interfaz `List`, e `InputStreamReader` permite leer un `InputStream` basado en bytes como un `Reader` basado en caracteres.",
+            "Las bibliotecas de bases de datos y los ORM usan un adaptador o controlador por base de datos, de modo que la misma API de consultas funciona con PostgreSQL, MySQL o SQLite.",
+            "El código de frontend suele envolver las API del navegador o los SDK de analítica detrás de una pequeña interfaz propia del proyecto por la misma razón."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Adapter"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Mantiene la misma interfaz y añade comportamiento. Adapter cambia la interfaz y no añade comportamiento nuevo."
+              ],
+              [
+                "Proxy",
+                "Mantiene la misma interfaz y controla el acceso al objeto (carga perezosa, caché, permisos)."
+              ],
+              [
+                "Facade",
+                "Define una interfaz nueva y más simple para todo un subsistema de muchas clases. Adapter hace que una interfaz existente coincida con otra existente."
+              ],
+              [
+                "Bridge",
+                "Se diseña desde el principio para que una abstracción y su implementación puedan variar por separado. Adapter suele añadirse más tarde para que encajen clases existentes."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Adapter y el patrón Facade?",
+      "a": "Un adaptador hace que una clase existente coincida con una interfaz que el cliente ya espera. Una fachada crea una interfaz nueva y más simple delante de un subsistema complejo de muchas clases."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre el patrón Adapter y el patrón Decorator?",
+      "a": "Ambos envuelven un objeto. Un decorador mantiene la misma interfaz y añade comportamiento; un adaptador cambia la interfaz para que el objeto envuelto pueda usarse donde de otro modo no podría."
+    },
+    {
+      "q": "¿Adapter es lo mismo que un wrapper?",
+      "a": "Wrapper es otro nombre de Adapter en el libro GoF. En el habla cotidiana, «wrapper» también se usa para decoradores y proxies, así que la intención te dice a qué patrón se refiere."
+    },
+    {
+      "q": "¿Un adaptador puede adaptar varias clases?",
+      "a": "Un adapter de objeto puede trabajar con un adaptado y todas sus subclases. Adaptar clases sin relación suele significar un adaptador por clase, todos implementando la misma interfaz de destino."
+    }
+  ]
+}

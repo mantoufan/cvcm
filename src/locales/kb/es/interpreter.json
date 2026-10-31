@@ -1,0 +1,147 @@
+{
+  "title": "Patrón Interpreter: gramáticas, árboles de expresión y ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Interpreter modela cada regla de una gramática como una clase y evalúa las frases como un árbol. Crea un pequeño lenguaje de expresiones en TypeScript.",
+  "h1": "Patrón Interpreter explicado con ejemplos",
+  "answer": "Interpreter es un patrón de diseño de comportamiento que define una representación de la gramática de un lenguaje pequeño y un intérprete que evalúa frases de ese lenguaje. Cada regla de la gramática se convierte en una clase, una frase se convierte en un árbol de esos objetos (un árbol de sintaxis abstracta), y evaluar la frase significa llamar a `interpret` en la raíz, que interpreta recursivamente a sus hijos. Es adecuado para lenguajes pequeños y simples como filtros, reglas y fórmulas.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: dado un lenguaje, definir una representación de su gramática junto con un intérprete que usa esa representación para interpretar frases del lenguaje. Interpreter es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Supón que los usuarios de un sistema de precios quieren escribir sus propias reglas de descuento, como `price * 0.9` o `price - 5`, y que las reglas deben guardarse en una base de datos y evaluarse más tarde. Programar cada regla a mano es imposible, porque los usuarios crean otras nuevas todo el tiempo. Necesitas un lenguaje pequeño y una forma de evaluarlo.",
+        "El patrón Interpreter te da un diseño simple para ese paso de evaluación. Los números, las variables y los operadores se convierten cada uno en una clase. Una regla como `price * 0.9` se convierte en un árbol: un nodo de multiplicación con un nodo de variable y un nodo de número como hijos. Para calcular el resultado, llamas a `interpret` en el nodo de multiplicación con un contexto que contiene el precio actual."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Expresión abstracta",
+                "Declara la operación `interpret(context)` compartida por todos los nodos"
+              ],
+              [
+                "Expresión terminal",
+                "Una hoja del árbol, como un literal numérico o el nombre de una variable"
+              ],
+              [
+                "Expresión no terminal",
+                "Una regla de la gramática formada por otras expresiones, como la suma o la multiplicación; interpreta a sus hijos y combina los resultados"
+              ],
+              [
+                "Contexto",
+                "Información global para la interpretación, como los valores de las variables"
+              ],
+              [
+                "Cliente",
+                "Construye el árbol de sintaxis (a mano o con un analizador) y llama a `interpret`"
+              ]
+            ]
+          }
+        },
+        "La gramática del ejemplo siguiente, escrita en una notación simple:",
+        {
+          "code": "expression ::= number | variable | expression op expression\nop         ::= \"+\" | \"-\" | \"*\" | \"/\"",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Cada regla de la gramática es una clase que implementa `Expression`. La función `parse` convierte una expresión en notación posfija separada por espacios (los operadores van después de sus operandos) en un árbol, lo que mantiene corto el analizador.",
+        {
+          "code": "type Context = Record<string, number>;\ninterface Expression {\n  interpret(ctx: Context): number;\n}\nclass Num implements Expression {\n  constructor(private value: number) {}\n  interpret() { return this.value; }\n}\nclass Var implements Expression {\n  constructor(private name: string) {}\n  interpret(ctx: Context) {\n    if (!Object.hasOwn(ctx, this.name)) throw new Error(\"Unknown variable \" + this.name);\n    return ctx[this.name];\n  }\n}\nconst ops = { \"+\": (a: number, b: number) => a + b, \"-\": (a: number, b: number) => a - b,\n  \"*\": (a: number, b: number) => a * b, \"/\": (a: number, b: number) => a / b };\nclass BinaryOp implements Expression {\n  constructor(private op: keyof typeof ops, private left: Expression, private right: Expression) {}\n  interpret(ctx: Context) { return ops[this.op](this.left.interpret(ctx), this.right.interpret(ctx)); }\n}\nfunction parse(source: string): Expression {\n  const stack: Expression[] = [];\n  for (const token of source.trim().split(/\\s+/)) {\n    if (Object.hasOwn(ops, token)) {\n      const right = stack.pop()!, left = stack.pop()!;\n      stack.push(new BinaryOp(token as keyof typeof ops, left, right));\n    } else if (!isNaN(Number(token))) stack.push(new Num(Number(token)));\n    else stack.push(new Var(token));\n  }\n  return stack[0];\n}\nconst rule = parse(\"price 0.9 * 5 -\"); // (price * 0.9) - 5\nconsole.log(rule.interpret({ price: 100 })); // 85\nconsole.log(rule.interpret({ price: 40 })); // 31",
+          "lang": "typescript"
+        },
+        "El árbol de `price 0.9 * 5 -` es un nodo de resta cuyo hijo izquierdo es un nodo de multiplicación (con `price` y `0.9`) y cuyo hijo derecho es el número `5`. Una vez analizado, el mismo árbol puede evaluarse muchas veces con distintos contextos.",
+        {
+          "note": "El patrón describe cómo representar y evaluar una frase, no cómo analizar texto. Una entrada real necesita un analizador adecuado con mensajes de error; el analizador posfijo mínimo de arriba no valida las entradas mal formadas."
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando el lenguaje sea pequeño y la gramática simple: filtros de búsqueda, reglas de feature flags, expresiones de permisos, conversiones de unidades o fórmulas estilo hoja de cálculo.",
+            "Úsalo cuando la misma expresión se evalúa muchas veces con datos distintos, de modo que construir el árbol una sola vez compensa.",
+            "No lo uses para lenguajes grandes. Una clase por regla se vuelve difícil de mantener; usa un generador de analizadores o un lenguaje embebido existente.",
+            "No lo uses cuando el rendimiento sea crítico. Recorrer un árbol de objetos es más lento que compilar a bytecode o a código máquina.",
+            "Nunca resuelvas el problema con `eval` sobre la entrada del usuario. Un intérprete pequeño solo admite las operaciones que tú defines, lo cual es mucho más seguro."
+          ]
+        },
+        "Para añadir nuevas operaciones sobre el mismo árbol, como impresión con formato o comprobación de tipos, combina Interpreter con Visitor en lugar de añadir más métodos a cada clase de nodo."
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Los motores de expresiones regulares compilan un patrón en un árbol o grafo de objetos nodo; la búsqueda recorre esos nodos, que es la idea de Interpreter aplicada a la gramática de las expresiones regulares.",
+            "Las herramientas de lenguajes representan el código fuente como un árbol de sintaxis abstracta: el módulo `ast` de Python y la especificación ESTree usada por herramientas de JavaScript como Babel y ESLint describen tipos de nodo para cada regla de la gramática.",
+            "Las bases de datos SQL analizan una cláusula `WHERE` en un árbol de expresiones y la evalúan para cada fila.",
+            "Los motores de plantillas y de reglas evalúan pequeñas expresiones dentro de plantillas o reglas de negocio."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "Cómo se relaciona con Interpreter"
+            ],
+            "rows": [
+              [
+                "Composite",
+                "El árbol de sintaxis es un Composite: las expresiones no terminales contienen otras expresiones. Interpreter añade el significado de cada nodo."
+              ],
+              [
+                "Visitor",
+                "Visitor saca las operaciones de las clases de nodo, de modo que muchas operaciones (evaluar, imprimir, comprobar) pueden compartir un mismo árbol."
+              ],
+              [
+                "Iterator",
+                "Un iterador puede recorrer los nodos de un árbol de sintaxis sin exponer cómo se almacenan."
+              ],
+              [
+                "Flyweight",
+                "Los símbolos terminales que se repiten mucho, como las constantes comunes, pueden compartirse como flyweights."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre expresiones terminales y no terminales?",
+      "a": "Una expresión terminal es una hoja que no puede descomponerse más, como un número o una variable. Una expresión no terminal representa una regla construida con otras expresiones, como la suma, e interpreta a sus hijos para producir su resultado."
+    },
+    {
+      "q": "¿El patrón Interpreter incluye un analizador sintáctico?",
+      "a": "No. El patrón supone que ya tienes un árbol de sintaxis. Puedes construir el árbol a mano, escribir un pequeño analizador o usar un generador de analizadores."
+    },
+    {
+      "q": "¿Cuándo no debería usar el patrón Interpreter?",
+      "a": "Evítalo para gramáticas complejas o código crítico en rendimiento. Los lenguajes grandes necesitan demasiadas clases, y la evaluación recorriendo el árbol es más lenta que los enfoques compilados."
+    },
+    {
+      "q": "¿Cómo se relaciona Interpreter con Composite?",
+      "a": "El árbol de sintaxis de Interpreter tiene la misma forma que un Composite: hojas y nodos que contienen otros nodos, todos con una interfaz común. Interpreter da a esa estructura un significado concreto: evaluar un lenguaje."
+    }
+  ]
+}

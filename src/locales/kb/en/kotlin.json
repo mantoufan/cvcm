@@ -1,0 +1,197 @@
+{
+  "title": "Kotlin tutorial: null safety, functions, collections and coroutines — cv.cm",
+  "description": "Learn Kotlin step by step: install and run Hello, world, val and var, null safety, when, lambdas, data classes, collections, coroutines and error handling.",
+  "h1": "Kotlin tutorial for beginners",
+  "answer": "Kotlin is a modern, statically typed language from JetBrains that runs on the JVM and is the preferred language for Android development. It is concise, fully interoperable with Java, and its type system prevents most null pointer errors at compile time. This page covers setup, variables, null safety, control flow, functions, collections, classes, coroutines and error handling with runnable examples.",
+  "sections": [
+    {
+      "h": "What Kotlin is and what it is used for",
+      "body": [
+        "Kotlin is a statically typed, general-purpose language created by JetBrains. It runs on the Java Virtual Machine (JVM), and it can also compile to JavaScript, WebAssembly and native machine code. Kotlin is fully interoperable with Java: a Kotlin file can call any Java library, and Java code can call Kotlin.",
+        "Google has recommended Kotlin as the preferred language for Android apps since 2019, so most new Android code is Kotlin. It is also common on the server with frameworks such as Spring Boot and Ktor, and Kotlin Multiplatform lets teams share business logic between Android, iOS, desktop and web."
+      ]
+    },
+    {
+      "h": "Install Kotlin and run Hello, world",
+      "body": [
+        "The easiest start is IntelliJ IDEA or Android Studio, which include Kotlin. For the command line, install the compiler (for example with SDKMAN! or Homebrew) and a Java runtime (JDK). A Kotlin program starts at a top-level `main` function; no class is required.",
+        {
+          "code": "// hello.kt\nfun main() {\n    println(\"Hello, world!\")\n}",
+          "lang": "kotlin"
+        },
+        {
+          "code": "kotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Build tools such as Gradle (with the Kotlin DSL) are the normal choice for real projects. You can also try code without installing anything in the online Kotlin Playground."
+      ]
+    },
+    {
+      "h": "Variables and basic types",
+      "body": [
+        "Declare a read-only variable with `val` and a mutable one with `var`. The compiler infers the type, but you can write it after a colon. Prefer `val`: it makes code easier to reason about.",
+        {
+          "code": "val name = \"Ada\"          // String, cannot be reassigned\nvar count: Int = 0        // explicit type, can change\ncount += 1\nval pi = 3.14159          // Double\nval big = 9_000_000_000L  // Long\nprintln(\"$name has $count item(s), pi is ${\"%.2f\".format(pi)}\")\n// Ada has 1 item(s), pi is 3.14",
+          "lang": "kotlin"
+        },
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "32-bit signed integer"
+              ],
+              [
+                "`Long`",
+                "`42L`",
+                "64-bit signed integer"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64-bit floating point"
+              ],
+              [
+                "`Boolean`",
+                "`true`",
+                "`true` or `false`"
+              ],
+              [
+                "`Char`",
+                "`'k'`",
+                "a single character"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "immutable; supports `$name` templates"
+              ]
+            ]
+          }
+        },
+        "Kotlin has no implicit number widening: an `Int` is not automatically converted to a `Long`. Call `toLong()`, `toDouble()` or `toString()` explicitly."
+      ]
+    },
+    {
+      "h": "Null safety",
+      "body": [
+        "Null safety is Kotlin's signature feature. A normal type such as `String` can never hold `null`. To allow null you add `?`, as in `String?`, and the compiler then forces you to handle the null case before you use the value.",
+        {
+          "code": "fun greet(name: String?) {\n    // println(name.length)        // compile error: name may be null\n    println(name?.length)           // safe call: prints null if name is null\n    val len = name?.length ?: 0     // Elvis operator: default value\n    if (name != null) {\n        println(name.uppercase())   // smart cast: name is String here\n    }\n    println(\"length = $len\")\n}\nfun main() {\n    greet(\"kotlin\")   // 6, KOTLIN, length = 6\n    greet(null)       // null, length = 0\n}",
+          "lang": "kotlin"
+        },
+        {
+          "note": "The not-null assertion `!!` turns a nullable value into a non-null one and throws `NullPointerException` if it is null. Beginners often add `!!` to silence the compiler; use `?.`, `?:` or an `if` check instead."
+        }
+      ]
+    },
+    {
+      "h": "Control flow: if, when and loops",
+      "body": [
+        "In Kotlin `if` and `when` are expressions, so they return a value. `when` replaces the `switch` statement of Java and C and can match values, ranges and types.",
+        {
+          "code": "val score = 82\nval grade = if (score >= 50) \"pass\" else \"fail\"\nval letter = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\nprintln(\"$grade $letter\")         // pass B\nfor (i in 1..3) print(\"$i \")      // 1 2 3\nprintln()\nfor (i in 10 downTo 0 step 5) print(\"$i \")  // 10 5 0\nprintln()\nvar n = 3\nwhile (n > 0) { print(n); n-- }   // 321\nprintln()",
+          "lang": "kotlin"
+        },
+        "`1..3` is a closed range that includes both ends; `0 until 3` (or `0..<3`) excludes the end, which is what you usually want for indexes."
+      ]
+    },
+    {
+      "h": "Functions and lambdas",
+      "body": [
+        "Functions are declared with `fun`. Parameters can have default values, callers can use named arguments, and a function whose body is one expression can use `=`.",
+        {
+          "code": "fun area(width: Double, height: Double = 1.0): Double = width * height\nfun main() {\n    println(area(3.0, 2.0))          // 6.0\n    println(area(width = 4.0))       // 4.0 (default height)\n    val square = { x: Int -> x * x } // a lambda stored in a variable\n    println(square(5))               // 25\n    val nums = listOf(1, 2, 3, 4, 5)\n    val evensSquared = nums.filter { it % 2 == 0 }.map { it * it }\n    println(evensSquared)            // [4, 16]\n}",
+          "lang": "kotlin"
+        },
+        "When a lambda has one parameter, you can refer to it as `it`. When the last argument of a function is a lambda, it can go outside the parentheses, which is why `filter { ... }` reads like a built-in block."
+      ]
+    },
+    {
+      "h": "Collections and data classes",
+      "body": [
+        "The standard library separates read-only and mutable collections: `listOf`, `setOf` and `mapOf` create read-only ones, while `mutableListOf`, `mutableSetOf` and `mutableMapOf` can be changed.",
+        {
+          "code": "val fruits = mutableListOf(\"apple\", \"banana\")\nfruits.add(\"cherry\")\nval ages = mapOf(\"Ann\" to 31, \"Bo\" to 25)\nprintln(fruits.size)              // 3\nprintln(ages[\"Ann\"])              // 31\nprintln(ages[\"Zed\"])              // null (map lookups are nullable)\ndata class User(val name: String, val age: Int)\nval u = User(\"Ann\", 31)\nval older = u.copy(age = 32)\nprintln(u)                        // User(name=Ann, age=31)\nprintln(u == User(\"Ann\", 31))     // true (structural equality)\nval (n, a) = older                // destructuring\nprintln(\"$n $a\")                  // Ann 32",
+          "lang": "kotlin"
+        },
+        "A `data class` automatically gets `equals`, `hashCode`, `toString`, `copy` and destructuring. `==` in Kotlin compares content (it calls `equals`); `===` compares references."
+      ]
+    },
+    {
+      "h": "Classes, extension functions and coroutines",
+      "body": [
+        "Classes are final by default; mark a class `open` to allow inheritance. Extension functions add methods to existing types without changing them, and `sealed` classes model a closed set of cases that `when` can check exhaustively.",
+        {
+          "code": "fun String.shout(): String = uppercase() + \"!\"\nsealed class Shape\ndata class Circle(val r: Double) : Shape()\ndata class Rect(val w: Double, val h: Double) : Shape()\nfun area(s: Shape): Double = when (s) {\n    is Circle -> Math.PI * s.r * s.r\n    is Rect -> s.w * s.h\n}   // no else needed: the compiler knows all cases\nfun main() {\n    println(\"hi\".shout())                   // HI!\n    println(area(Rect(2.0, 3.0)))           // 6.0\n}",
+          "lang": "kotlin"
+        },
+        "For asynchronous and concurrent code, Kotlin uses coroutines from the `kotlinx.coroutines` library. A `suspend` function can pause without blocking a thread, and builders such as `launch` and `async` start coroutines inside a scope. This is how Android apps do network calls off the main thread."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Kotlin has `try`, `catch` and `finally` like Java, but all exceptions are unchecked: you are never forced to declare or catch them. `try` is also an expression. For expected failures, the standard library offers `runCatching` and `Result`, and functions such as `toIntOrNull()` return `null` instead of throwing.",
+        {
+          "code": "fun parse(s: String): Int = try {\n    s.toInt()\n} catch (e: NumberFormatException) {\n    -1\n}\nfun main() {\n    println(parse(\"42\"))              // 42\n    println(parse(\"x\"))               // -1\n    println(\"7\".toIntOrNull())        // 7\n    println(\"seven\".toIntOrNull())    // null\n    val r = runCatching { \"abc\".toInt() }\n    println(r.isFailure)              // true\n}",
+          "lang": "kotlin"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequency",
+      "body": [
+        "This program counts how often each word appears in a text and prints the top three. It uses a string extension, collection functions and a data class.",
+        {
+          "code": "data class WordCount(val word: String, val count: Int)\nfun topWords(text: String, n: Int): List<WordCount> =\n    text.lowercase()\n        .split(Regex(\"[^a-z']+\"))\n        .filter { it.isNotBlank() }\n        .groupingBy { it }\n        .eachCount()\n        .map { (w, c) -> WordCount(w, c) }\n        .sortedWith(compareByDescending<WordCount> { it.count }.thenBy { it.word })\n        .take(n)\nfun main() {\n    val text = \"The cat and the dog. The dog sat, and the cat ran.\"\n    for ((word, count) in topWords(text, 3)) {\n        println(\"$word: $count\")\n    }\n}\n// the: 4\n// and: 2\n// cat: 2",
+          "lang": "kotlin"
+        },
+        {
+          "note": "Common beginner mistakes: using `var` everywhere instead of `val`; sprinkling `!!` to silence null errors; forgetting that `1..n` includes `n`; trying to subclass a class that is not marked `open`; and calling blocking code (such as `Thread.sleep`) inside a coroutine instead of `delay`."
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        {
+          "ul": [
+            "The official Kotlin documentation at kotlinlang.org, starting with Basic syntax and the Kotlin tour.",
+            "Kotlin Koans, a set of small exercises that run in the browser.",
+            "The Android Developers guides for Kotlin on Android, or the Ktor and Spring guides for server-side Kotlin.",
+            "The kotlinx.coroutines guide once you need asynchronous code."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Kotlin better than Java?",
+      "a": "Kotlin is more concise and adds null safety, data classes and coroutines, but it runs on the same JVM and uses the same libraries. Many teams mix both languages in one project, so the choice is about style and productivity rather than capability."
+    },
+    {
+      "q": "Do I need to learn Java before Kotlin?",
+      "a": "No. You can learn Kotlin as a first JVM language. Knowing some Java helps when you read older Android code or Java library documentation."
+    },
+    {
+      "q": "What is the difference between val and var?",
+      "a": "`val` declares a read-only reference that cannot be reassigned after initialization, and `var` declares one that can. A `val` pointing to a mutable list can still have its contents changed."
+    },
+    {
+      "q": "Can Kotlin be used for iOS apps?",
+      "a": "Yes, through Kotlin Multiplatform, which compiles shared Kotlin code to native code for iOS. The user interface is often still written in Swift, although Compose Multiplatform can also share UI code."
+    },
+    {
+      "q": "What does the ?: operator do in Kotlin?",
+      "a": "It is the Elvis operator: `a ?: b` returns `a` if it is not null and otherwise returns `b`. It is commonly combined with safe calls, as in `name?.length ?: 0`."
+    }
+  ]
+}

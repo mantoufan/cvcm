@@ -1,0 +1,161 @@
+{
+  "title": "Trie (prefix tree): insert, search, dan autocomplete di Python — cv.cm",
+  "description": "Pelajari cara trie (prefix tree) menyimpan string berdasarkan prefix yang sama: insert, search, starts-with, dan autocomplete di Python, plus kompleksitas dan variannya.",
+  "h1": "Trie (prefix tree): cara kerja, kode Python, dan kompleksitasnya",
+  "answer": "Trie, atau prefix tree, adalah tree yang menyimpan string karakter demi karakter: setiap edge adalah satu karakter, dan setiap jalur dari root mengeja sebuah prefix. Kata-kata yang berbagi prefix berbagi node yang sama, dan sebuah flag menandai di mana kata utuh berakhir. Menyisipkan atau mencari kata sepanjang m butuh waktu O(m), tidak bergantung pada berapa banyak kata yang tersimpan, dan menemukan semua kata dengan prefix tertentu itu cepat. Trie menjadi dasar autocomplete, spell checker, dan tabel routing IP.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan trie",
+      "body": [
+        "Hash set menjawab \"apakah kata persis ini tersimpan?\" dengan cepat, tetapi tidak bisa menjawab \"kata tersimpan mana yang diawali `pre`?\" tanpa memeriksa setiap kata. Sorted list bisa menjawab query prefix dengan binary search, tetapi insert-nya lambat. Trie diorganisasi berdasarkan prefix, jadi pertanyaan prefix adalah kekuatan alaminya: autocomplete di kotak pencarian, game kata, spell checking, dan longest-prefix matching untuk rute jaringan."
+      ]
+    },
+    {
+      "h": "Ide dasarnya dengan bahasa sederhana",
+      "body": [
+        "Bayangkan daftar kontak telepon yang Anda persempit satu huruf demi satu huruf. Mengetik `c` menampilkan semua yang diawali c, mengetik `ca` mempersempit daftar, dan seterusnya. Trie menyimpan kata-kata persis dalam bentuk itu. Root adalah prefix kosong. Setiap node punya map dari karakter berikutnya ke node anak, plus flag end-of-word, karena kata seperti `car` bisa menjadi kata utuh sekaligus prefix dari `cart`."
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: insert car, cart, cat, dan dog",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Insert",
+              "Node yang dipakai ulang",
+              "Node baru yang dibuat",
+              "Akhir kata ditandai di"
+            ],
+            "rows": [
+              [
+                "`car`",
+                "tidak ada",
+                "c, a, r",
+                "r (jalur car)"
+              ],
+              [
+                "`cart`",
+                "c, a, r",
+                "t",
+                "t (jalur cart)"
+              ],
+              [
+                "`cat`",
+                "c, a",
+                "t (anak baru dari a)",
+                "t (jalur cat)"
+              ],
+              [
+                "`dog`",
+                "tidak ada",
+                "d, o, g",
+                "g (jalur dog)"
+              ]
+            ]
+          }
+        },
+        "Keempat kata punya total 13 huruf tetapi hanya butuh 8 node di bawah root (c, a, r, t, t, d, o, g), karena `car`, `cart`, dan `cat` berbagi `ca`. Mencari `ca` menelusuri dua node dan berhasil sebagai prefix, tetapi `ca` bukan kata karena node-nya tidak ditandai sebagai akhir. Mencari `cow` gagal pada langkah kedua: node c tidak punya anak o."
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Setiap node menyimpan `dict` berisi anak-anaknya, yang menangani alfabet apa pun termasuk Unicode. Method `starts_with` mengumpulkan setiap kata di bawah sebuah prefix, inti dari autocomplete.",
+        {
+          "code": "class TrieNode:\n    __slots__ = (\"children\", \"is_word\")\n    def __init__(self):\n        self.children = {}\n        self.is_word = False\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            node = node.children.setdefault(ch, TrieNode())\n        node.is_word = True\n    def _find(self, prefix):\n        node = self.root\n        for ch in prefix:\n            node = node.children.get(ch)\n            if node is None:\n                return None\n        return node\n    def contains(self, word):\n        node = self._find(word)\n        return node is not None and node.is_word\n    def starts_with(self, prefix):\n        node, out = self._find(prefix), []\n        stack = [(node, prefix)] if node else []\n        while stack:\n            node, path = stack.pop()\n            if node.is_word:\n                out.append(path)\n            for ch, child in node.children.items():\n                stack.append((child, path + ch))\n        return sorted(out)",
+          "lang": "python"
+        },
+        {
+          "code": "t = Trie()\nfor w in [\"car\", \"cart\", \"cat\", \"dog\"]:\n    t.insert(w)\nprint(t.contains(\"car\"), t.contains(\"ca\"))  # True False\nprint(t.starts_with(\"ca\"))                  # ['car', 'cart', 'cat']\nprint(t.starts_with(\"x\"))                   # []",
+          "lang": "python"
+        },
+        "`starts_with` mengurutkan outputnya agar urutannya stabil. Autocomplete yang sebenarnya juga akan berhenti setelah beberapa hasil pertama dan meranking-nya, misalnya berdasarkan hitungan popularitas yang tersimpan."
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Waktu",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Insert kata sepanjang m",
+                "O(m)",
+                "satu langkah per karakter"
+              ],
+              [
+                "Mencari kata atau memeriksa prefix",
+                "O(m)",
+                "satu lookup dictionary per karakter"
+              ],
+              [
+                "Menampilkan semua k kata di bawah sebuah prefix",
+                "O(m + ukuran subtree)",
+                "telusuri sampai prefix, lalu kunjungi setiap node di bawahnya"
+              ],
+              [
+                "Menghapus kata",
+                "O(m)",
+                "hapus tanda akhir, lalu opsional pangkas node kosong"
+              ],
+              [
+                "Ruang",
+                "O(total karakter yang tersimpan)",
+                "kasus terburuk satu node per karakter jika tidak ada yang dibagi"
+              ]
+            ]
+          }
+        },
+        "Waktunya tidak bergantung pada jumlah kata n, yang merupakan keunggulan utama dibanding balanced tree berisi string (O(m log n) perbandingan). Harganya adalah memori: setiap node adalah objek terpisah dengan dictionary-nya sendiri, sehingga trie bisa memakai memori beberapa kali lipat dibanding string mentahnya."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Anak berbentuk array: pakai array tetap berisi 26 slot untuk huruf kecil bahasa Inggris. Lebih cepat dari `dict`, tetapi boros untuk alfabet yang jarang terisi atau besar.",
+            "Compressed trie (radix tree, Patricia trie): menggabungkan rantai node beranak tunggal menjadi satu edge berlabel string, yang menghemat banyak memori. Radix tree dipakai pada tabel routing IP dan di beberapa HTTP router.",
+            "Ternary search tree: setiap node punya tiga anak (kurang, sama, lebih), yang memakai lebih sedikit memori daripada array lebar.",
+            "Counting trie: simpan counter di setiap node untuk menjawab \"berapa banyak kata yang diawali prefix ini?\" dalam O(m).",
+            "Bitwise trie: simpan angka bit demi bit untuk menyelesaikan soal maximum-XOR."
+          ]
+        },
+        {
+          "note": "Bug yang paling umum adalah lupa flag end-of-word. Tanpanya, menyisipkan `cart` membuat `contains(\"car\")` mengembalikan True padahal `car` tidak pernah disisipkan. Bug umum kedua adalah menghapus node yang masih dibutuhkan kata yang lebih panjang."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakai trie dan soal wawancara yang khas",
+      "body": [
+        "Gunakan trie ketika Anda butuh query prefix, longest-prefix matching, atau iterasi terurut atas banyak string yang berbagi prefix. Gunakan `set` atau `dict` jika Anda hanya butuh lookup persis: lebih sederhana dan lebih hemat memori di Python. Untuk daftar kata yang kecil dan statis, sorted list dengan modul `bisect` juga menjawab query prefix dengan baik.",
+        "Soal khas: mengimplementasikan trie (insert, search, starts-with), word search di grid dengan banyak kata target, mengganti kata dengan root terpendeknya, longest common prefix, merancang sistem autocomplete pencarian, dan maximum XOR dua angka memakai bitwise trie."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mengapa disebut trie?",
+      "a": "Namanya berasal dari bagian tengah kata retrieval. Edward Fredkin menciptakan istilah ini dalam makalah tahun 1960. Banyak orang melafalkannya seperti try agar berbeda dari tree."
+    },
+    {
+      "q": "Apakah trie lebih cepat dari hash table?",
+      "a": "Untuk lookup persis keduanya butuh waktu sebanding dengan panjang kata, dan `dict` Python biasanya lebih cepat dan lebih kecil. Trie unggul ketika Anda butuh pencarian prefix, iterasi terurut, atau longest-prefix matching."
+    },
+    {
+      "q": "Berapa banyak memori yang dipakai trie?",
+      "a": "Dalam kasus terburuk satu node per karakter yang tersimpan. Prefix yang dibagi mengurangi ini, dan compressed trie (radix tree) menguranginya lagi dengan menggabungkan rantai beranak tunggal."
+    },
+    {
+      "q": "Apa bedanya trie dan radix tree?",
+      "a": "Radix tree adalah compressed trie: setiap rantai node beranak tunggal digabung menjadi satu node yang edge-nya menyimpan seluruh substring. Lookup-nya bekerja dengan cara yang sama tetapi butuh lebih sedikit node."
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "title": "Tutorial Perl: scalar, array, hash, dan regular expression — cv.cm",
+  "description": "Belajar Perl langkah demi langkah: menjalankan script, scalar, array, hash, alur kontrol, subroutine, reference, regular expression, die dan eval, serta parser log.",
+  "h1": "Tutorial Perl untuk pemula",
+  "answer": "Perl adalah bahasa scripting dinamis yang dibuat oleh Larry Wall pada 1987, paling dikenal karena kemampuan pengolahan teks dan regular expression bawaannya yang kuat. Perl terpasang sejak awal di sebagian besar sistem Unix dan dipakai untuk administrasi sistem, pemrosesan log, dan bioinformatika. Halaman ini membahas cara menjalankan Perl, scalar, array dan hash, alur kontrol, subroutine, reference, regular expression, serta penanganan error dengan die dan eval.",
+  "sections": [
+    {
+      "h": "Apa itu Perl dan untuk apa dipakai",
+      "body": [
+        "Perl adalah bahasa tingkat tinggi bertipe dinamis yang dibuat oleh Larry Wall pada 1987. Perl dirancang untuk pengolahan teks dan pembuatan laporan, lalu dikenal sebagai bahasa perekat (glue language) dalam administrasi sistem Unix dan pengembangan web awal. Regular expression Perl begitu berpengaruh sehingga banyak bahasa lain mengadopsi sintaks regex yang \"kompatibel dengan Perl\".",
+        "Saat ini Perl dipakai untuk script administrasi sistem, pemrosesan log dan teks, bioinformatika, aplikasi web lama, dan filter satu baris di command line. Perl sudah terpasang di sebagian besar sistem Linux dan Unix. CPAN, Comprehensive Perl Archive Network, menyimpan koleksi modul yang sangat besar dan dapat dipakai ulang. Tutorial ini membahas Perl 5; bahasa yang dulu disebut Perl 6 kini menjadi bahasa terpisah bernama Raku."
+      ]
+    },
+    {
+      "h": "Menjalankan Hello, world",
+      "body": [
+        "Pastikan Perl terpasang dengan `perl -v`. Di Windows, Strawberry Perl adalah distribusi yang umum dipakai. Awali setiap script dengan `use strict;` dan `use warnings;`: keduanya menangkap salah ketik dan kode yang tidak aman.",
+        {
+          "code": "#!/usr/bin/env perl\nuse strict;\nuse warnings;\n\nprint \"Hello, world!\\n\";",
+          "lang": "perl"
+        },
+        {
+          "code": "perl hello.pl\n# Hello, world!\nperl -e 'print \"Hello from a one-liner\\n\"'",
+          "lang": "shell"
+        },
+        "Statement diakhiri dengan titik koma. Komentar diawali dengan `#`. String dengan tanda kutip ganda menginterpolasi variabel dan escape seperti `\\n`; string dengan kutip tunggal bersifat literal."
+      ]
+    },
+    {
+      "h": "Variabel: scalar, array, dan hash",
+      "body": [
+        "Variabel Perl diawali sigil yang menunjukkan jenis nilainya. Deklarasikan setiap variabel dengan `my`, yang membuatnya lokal pada blok di sekitarnya.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $name  = \"Perl\";             # scalar: one value\nmy $year  = 1987;\nmy @langs = (\"Perl\", \"C\", \"sh\"); # array: ordered list\nmy %port  = (http => 80, https => 443);  # hash: key-value pairs\n\nprint \"$name since $year\\n\";    # Perl since 1987\nprint \"First: $langs[0]\\n\";     # First: Perl (element is a scalar, so $)\nprint \"Count: \", scalar(@langs), \"\\n\";   # Count: 3\nprint \"HTTPS: $port{https}\\n\";  # HTTPS: 443\nprint \"Sum: \", \"10\" + 5, \"\\n\";  # Sum: 15 (strings convert to numbers)\nprint \"Join: \" . \"a\" . \"b\" x 3, \"\\n\";    # Join: abbb",
+          "lang": "perl"
+        },
+        {
+          "table": {
+            "head": [
+              "Sigil",
+              "Jenis",
+              "Contoh"
+            ],
+            "rows": [
+              [
+                "`$`",
+                "scalar: angka, string, atau reference",
+                "`my $n = 42;`"
+              ],
+              [
+                "`@`",
+                "array: daftar terurut berisi scalar",
+                "`my @list = (1, 2);`"
+              ],
+              [
+                "`%`",
+                "hash: pasangan key-value tanpa urutan",
+                "`my %h = (a => 1);`"
+              ],
+              [
+                "`&`",
+                "subroutine (jarang ditulis)",
+                "`&name`"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Perl punya operator terpisah untuk angka dan string: `==`, `<`, dan `<=>` membandingkan angka, sedangkan `eq`, `lt`, dan `cmp` membandingkan string. Memakai `==` pada string seperti `\"abc\" == \"xyz\"` bernilai true (keduanya 0 sebagai angka) dan mencetak peringatan di bawah `use warnings`."
+        }
+      ]
+    },
+    {
+      "h": "Alur kontrol",
+      "body": [
+        "Perl punya `if`, `elsif`, `else`, `unless`, `while`, `until`, `for`, dan `foreach`. Sebuah statement pendek bisa diikuti kondisi, sehingga terbaca seperti kalimat bahasa Inggris. `next` melompat ke iterasi berikutnya dan `last` keluar dari perulangan.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $score = 72;\nif ($score >= 90) {\n    print \"A\\n\";\n} elsif ($score >= 70) {\n    print \"B\\n\";                 # B\n} else {\n    print \"C\\n\";\n}\nprint \"passed\\n\" if $score >= 50;          # statement modifier\nprint \"not perfect\\n\" unless $score == 100;\n\nfor my $i (1 .. 3) {\n    print \"i = $i\\n\";\n}\n\nmy @names = (\"ann\", \"bo\");\nforeach my $n (@names) {\n    next if $n eq \"bo\";          # skip to the next item\n    print ucfirst($n), \"\\n\";     # Ann\n}\n\nmy $k = 3;\nwhile ($k > 0) { $k--; }",
+          "lang": "perl"
+        },
+        "Nilai false adalah `0`, `\"0\"`, string kosong `\"\"`, list kosong, dan `undef`. Semua selain itu bernilai true."
+      ]
+    },
+    {
+      "h": "Subroutine",
+      "body": [
+        "Definisikan fungsi dengan `sub`. Argumen diterima dalam array khusus `@_`, dan baris pertama yang lazim menyalinnya ke variabel bernama. Subroutine dapat mengembalikan scalar atau list.",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub add {\n    my ($x, $y) = @_;            # arguments arrive in @_\n    return $x + $y;\n}\n\nsub greet {\n    my ($name, $greeting) = @_;\n    $greeting //= \"Hello\";       # default if undefined\n    return \"$greeting, $name!\";\n}\n\nsub stats {\n    my @nums = @_;\n    my $sum = 0;\n    $sum += $_ for @nums;\n    return ($sum, $sum / @nums); # return a list\n}\n\nprint add(2, 3), \"\\n\";           # 5\nprint greet(\"Ann\"), \"\\n\";        # Hello, Ann!\nmy ($total, $avg) = stats(4, 8, 6);\nprint \"$total $avg\\n\";           # 18 6",
+          "lang": "perl"
+        },
+        "Perl modern juga mendukung signature, seperti `sub add($x, $y) { ... }`, yang diaktifkan dengan `use v5.36;` atau lebih baru, yang sekaligus mengaktifkan `strict` dan `warnings`."
+      ]
+    },
+    {
+      "h": "Array, hash, dan reference",
+      "body": [
+        "Array dan hash dilengkapi fungsi bawaan yang kuat seperti `push`, `pop`, `shift`, `sort`, `map`, `grep`, `keys`, dan `exists`. Data bersarang memakai reference: `[ ... ]` membuat reference array dan `{ ... }` reference hash, dan `->` mengikutinya.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy @nums = (5, 3, 8, 1);\npush @nums, 9;                           # add to the end\nmy $last = pop @nums;                    # remove from the end: 9\nmy @sorted  = sort { $a <=> $b } @nums;  # numeric sort\nmy @doubled = map  { $_ * 2 } @sorted;\nmy @big     = grep { $_ > 4 } @sorted;\nprint \"@sorted | @doubled | @big\\n\";     # 1 3 5 8 | 2 6 10 16 | 5 8\n\nmy %age = (ann => 31, bo => 25);\n$age{cy} = 40;\ndelete $age{bo};\nfor my $who (sort keys %age) {\n    print \"$who is $age{$who}\\n\";        # ann is 31 / cy is 40\n}\nprint \"has ann\\n\" if exists $age{ann};\n\n# references build nested data structures\nmy $user = { name => \"Ann\", langs => [\"Perl\", \"SQL\"] };\nprint \"$user->{name} knows $user->{langs}[1]\\n\";  # Ann knows SQL\nprint scalar @{ $user->{langs} }, \"\\n\";           # 2",
+          "lang": "perl"
+        },
+        "Di dalam blok `sort`, `$a` dan `$b` adalah dua item yang sedang dibandingkan. `<=>` membandingkan secara numerik dan `cmp` membandingkan sebagai string; `sort @list` biasa mengurutkan sebagai string, sehingga `10` muncul sebelum `9`."
+      ]
+    },
+    {
+      "h": "Regular expression",
+      "body": [
+        "Regular expression terintegrasi dalam sintaks Perl, dan inilah fitur khasnya. `=~` menerapkan pencocokan `m/.../` atau substitusi `s/.../.../`. Grup yang tertangkap tersedia sebagai `$1`, `$2`, dan seterusnya, dan modifier seperti `g` (global) dan `i` (tidak peka huruf besar/kecil) ditulis setelah garis miring penutup.",
+        {
+          "code": "use strict;\nuse warnings;\n\nmy $line = \"2026-10-31 ERROR disk full on /dev/sda1\";\n\nif ($line =~ /^(\\d{4})-(\\d\\d)-(\\d\\d)\\s+(\\w+)/) {\n    print \"year=$1 level=$4\\n\";          # year=2026 level=ERROR\n}\n\n(my $masked = $line) =~ s/\\d/#/g;        # copy, then replace digits\nprint \"$masked\\n\";                       # ####-##-## ERROR disk full on /dev/sda#\n\nmy @words = split /\\s+/, $line;\nprint scalar(@words), \" words\\n\";        # 6 words\n\nmy %h = (\"a=1, b=2, c=3\" =~ /(\\w)=(\\d)/g); # pairs into a hash\nprint join(\",\", map { \"$_$h{$_}\" } sort keys %h), \"\\n\";  # a1,b2,c3",
+          "lang": "perl"
+        },
+        "Gunakan `qr/.../` untuk menyimpan pattern yang sudah dikompilasi dalam variabel, dan modifier `x` untuk menulis pattern panjang dalam beberapa baris beserta komentar."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "`die` memunculkan exception dan `warn` mencetak peringatan ke standard error. `eval { ... }` menangkap exception dan menaruh pesan error di `$@`. Pemanggilan sistem seperti `open` mengembalikan false saat gagal dan mengisi `$!` dengan error dari sistem operasi, jadi periksa dengan `or die`.",
+        {
+          "code": "use strict;\nuse warnings;\n\nsub divide {\n    my ($x, $y) = @_;\n    die \"division by zero\\n\" if $y == 0;\n    return $x / $y;\n}\n\nmy $result = eval { divide(1, 0) };\nif ($@) {\n    print \"Caught: $@\";                  # Caught: division by zero\n}\n\nopen(my $fh, \"<\", \"missing.txt\")\n    or print \"Cannot open: $!\\n\";        # Cannot open: No such file or directory",
+          "lang": "perl"
+        },
+        "Pesan `die` yang diakhiri `\\n` dicetak apa adanya; tanpa newline, Perl menambahkan nama file dan nomor baris. Sejak Perl 5.34 juga ada fitur `try`/`catch` eksperimental, dan modul seperti Try::Tiny banyak dipakai."
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: penghitung level log",
+      "body": [
+        "Script ini membaca log dari file yang disebut di command line atau dari standard input, menghitung baris per level, dan mencetak ringkasan yang terurut. Contoh ini memperlihatkan operator diamond `<>`, regular expression, hash, dan `printf`.",
+        {
+          "code": "#!/usr/bin/env perl\n# logstat.pl: count log levels in a file or standard input\nuse strict;\nuse warnings;\n\nmy %count;\nmy $lines = 0;\n\nwhile (my $line = <>) {                  # reads files named on the command line, or STDIN\n    chomp $line;\n    $lines++;\n    next unless $line =~ /\\b(INFO|WARN|ERROR)\\b/;\n    $count{$1}++;\n}\n\nprintf \"%d lines read\\n\", $lines;\nfor my $level (sort { $count{$b} <=> $count{$a} || $a cmp $b } keys %count) {\n    printf \"%-5s %3d\\n\", $level, $count{$level};\n}",
+          "lang": "perl"
+        },
+        {
+          "code": "perl logstat.pl app.log\n# 120 lines read\n# INFO   97\n# WARN   18\n# ERROR   5",
+          "lang": "shell"
+        },
+        {
+          "note": "Kesalahan umum pemula: tidak menulis `use strict` dan `use warnings`; memakai `==` untuk string; lupa `chomp` setelah membaca satu baris sehingga newline tetap menempel; mengacaukan `$array[0]` (satu elemen) dengan `@array` (seluruh list); dan tidak memeriksa nilai kembalian `open`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "perlintro dan tutorial lain di perldoc.perl.org, juga tersedia offline lewat `perldoc perlintro`.",
+            "Learning Perl dan Modern Perl, dua buku terkenal untuk pemula.",
+            "MetaCPAN, antarmuka pencarian untuk modul CPAN.",
+            "perlre dan perlretut untuk referensi regular expression lengkap."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah Perl masih dipakai?",
+      "a": "Ya. Perl terpasang di sebagian besar sistem mirip Unix dan masih umum dipakai dalam administrasi sistem, pengolahan teks, bioinformatika, dan sistem bisnis yang berjalan lama, meski semakin sedikit proyek web baru yang dimulai dengan Perl."
+    },
+    {
+      "q": "Apa perbedaan Perl dan Raku?",
+      "a": "Raku bermula sebagai Perl 6 tetapi menjadi bahasa terpisah dengan desain berbeda. Perl 5 terus dikembangkan secara independen, dan nama Perl merujuk padanya."
+    },
+    {
+      "q": "Mengapa variabel Perl diawali $, @, dan %?",
+      "a": "Sigil menunjukkan jenis nilai yang Anda dapatkan: `$` untuk satu scalar, `@` untuk list, dan `%` untuk hash. Itulah sebabnya satu elemen dari `@items` ditulis `$items[0]`."
+    },
+    {
+      "q": "Apa fungsi chomp di Perl?",
+      "a": "`chomp` menghapus newline di akhir string, yang biasanya Anda perlukan setelah membaca satu baris dari file atau keyboard."
+    },
+    {
+      "q": "Apakah Perl bagus untuk regular expression?",
+      "a": "Ya. Regular expression adalah bagian dari sintaks inti Perl, dan PCRE, library regex yang dipakai banyak tool dan bahasa lain, dinamai dari gaya regex Perl."
+    }
+  ]
+}

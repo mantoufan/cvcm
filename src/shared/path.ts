@@ -10,7 +10,7 @@ import {
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
-import { KB_SEGMENT, isKbId, type KbId } from "./kb";
+import { CODE_SEGMENT, KB_SEGMENT, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
@@ -293,7 +293,7 @@ export const TUTORIALS = [
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "court" | "water" | "code" | "mind" | "course";
+export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "dev" | "time" | "money" | "health" | "math" | "court" | "water" | "code" | "mind" | "course";
 
 // New how-tos are published. Legacy ids still parse so old URLs 301 to the hub.
 export const TUTORIAL_GROUPS: readonly {
@@ -302,9 +302,14 @@ export const TUTORIAL_GROUPS: readonly {
 }[] = [
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
-  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot"] },
+  { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background"] },
   { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio"] },
-  { id: "text", tutorials: ["count-words", "make-password", "format-json", "decode-base64", "unix-time", "read-jwt", "count-workdays", "simplify-fraction", "hourly-pay", "convert-timezone", "profit-margin", "convert-base", "add-duration", "calculate-percent", "days-between", "shift-date", "iso-week", "vat-price", "percent-off", "encode-url", "calculate-age", "aspect-ratio", "calculate-bmi", "split-tip", "loan-payment", "read-cron", "find-bedtime", "measure-body-fat", "check-contrast", "calculate-pace", "calculate-final-grade", "calculate-tdee", "calculate-gpa", "use-pomodoro", "find-due-date", "find-ideal-weight", "daily-water", "trip-fuel-cost", "estimate-reading-time", "compare-text", "hash-text", "generate-uuid", "calculate-work-hours", "electricity-cost", "find-fertile-window", "calculate-macros", "calories-burned-exercise", "compound-interest", "remove-photo-background", "test-regex"] },
+  { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast"] },
+  { id: "text", tutorials: ["count-words", "compare-text", "estimate-reading-time"] },
+  { id: "time", tutorials: ["days-between", "shift-date", "count-workdays", "add-duration", "calculate-age", "iso-week", "convert-timezone", "calculate-work-hours", "use-pomodoro"] },
+  { id: "money", tutorials: ["calculate-percent", "percent-off", "vat-price", "split-tip", "profit-margin", "hourly-pay", "loan-payment", "compound-interest", "trip-fuel-cost", "electricity-cost"] },
+  { id: "health", tutorials: ["calculate-bmi", "measure-body-fat", "find-ideal-weight", "calculate-tdee", "calculate-macros", "calories-burned-exercise", "daily-water", "calculate-pace", "find-bedtime", "find-due-date", "find-fertile-window"] },
+  { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],
@@ -349,6 +354,19 @@ export type GamesPath = {
   game: GameId | null;
 };
 
+/** A kb route: an article, null for the knowledge hub, or "code" for the coding hub. */
+export type KbArticlePath = KbId | "code" | null;
+
+function kbShelfOfSegment(segment: string | undefined): KbShelf | null {
+  return segment === KB_SEGMENT ? "knowledge" : segment === CODE_SEGMENT ? "code" : null;
+}
+
+/** The article under a shelf segment: its hub when empty, undefined when the id is not on that shelf. */
+function parseKbArticle(shelf: KbShelf, slug: string | undefined): KbArticlePath | undefined {
+  if (!slug) return shelf === "code" ? "code" : null;
+  return isKbId(slug) && kbShelfOf(slug) === shelf ? slug : undefined;
+}
+
 export type AppPath =
   | { kind: "static" }
   | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
@@ -359,7 +377,7 @@ export type AppPath =
   | { kind: "bare-legal"; page: LegalPageId }
   | { kind: "bare-quiz"; quiz: QuizId | null }
   | { kind: "bare-dataset"; dataset: DatasetId | null }
-  | { kind: "bare-kb"; article: KbId | null }
+  | { kind: "bare-kb"; article: KbArticlePath }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -368,7 +386,7 @@ export type AppPath =
   | { kind: "legal"; locale: Locale; page: LegalPageId }
   | { kind: "quiz"; locale: Locale; quiz: QuizId | null }
   | { kind: "dataset"; locale: Locale; dataset: DatasetId | null }
-  | { kind: "kb"; locale: Locale; article: KbId | null }
+  | { kind: "kb"; locale: Locale; article: KbArticlePath }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -429,11 +447,11 @@ export function parseAppPath(pathname: string): AppPath {
       return { kind: "app", locale, tool: null };
     }
     if (second === "learn") {
-      if (third === KB_SEGMENT) {
+      const shelf = kbShelfOfSegment(third);
+      if (shelf) {
         if (rest.length > 1) return { kind: "unknown" };
-        if (!rest[0]) return { kind: "kb", locale, article: null };
-        if (isKbId(rest[0])) return { kind: "kb", locale, article: rest[0] };
-        return { kind: "unknown" };
+        const article = parseKbArticle(shelf, rest[0]);
+        return article === undefined ? { kind: "unknown" } : { kind: "kb", locale, article };
       }
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "learn", locale, tutorial: null };
@@ -487,11 +505,11 @@ export function parseAppPath(pathname: string): AppPath {
   }
 
   if (first === "learn") {
-    if (second === KB_SEGMENT) {
+    const shelf = kbShelfOfSegment(second);
+    if (shelf) {
       if (rest.length > 0) return { kind: "unknown" };
-      if (!third) return { kind: "bare-kb", article: null };
-      if (isKbId(third)) return { kind: "bare-kb", article: third };
-      return { kind: "unknown" };
+      const article = parseKbArticle(shelf, third);
+      return article === undefined ? { kind: "unknown" } : { kind: "bare-kb", article };
     }
     if (!second) return { kind: "bare-learn", tutorial: null };
     if (isTutorialId(second) && !third) return { kind: "bare-learn", tutorial: second };
@@ -581,9 +599,10 @@ export function learnHref(locale: Locale, tutorial: TutorialId | null = null): s
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }
 
-/** Knowledge articles sit under the tutorials: `/{locale}/learn/knowledge/{id}/`. */
-export function kbHref(locale: Locale, article: KbId | null = null): string {
-  const base = `/${localePath(locale)}/learn/${KB_SEGMENT}`;
+/** Kb articles sit under the tutorials: `/{locale}/learn/knowledge/{id}/` and `/{locale}/learn/code/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub. */
+export function kbHref(locale: Locale, page: KbPage = null): string {
+  const base = `/${localePath(locale)}/learn/${kbShelfOfPage(page) === "code" ? CODE_SEGMENT : KB_SEGMENT}`;
+  const article = kbArticleOf(page);
   return article ? `${base}/${article}/` : `${base}/`;
 }
 

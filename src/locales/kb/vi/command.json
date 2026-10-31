@@ -1,0 +1,155 @@
+{
+  "title": "Mẫu Command: undo, redo và hàng đợi với ví dụ TypeScript — cv.cm",
+  "description": "Mẫu Command biến một yêu cầu thành đối tượng để bạn xếp hàng, ghi log và hoàn tác. Tìm hiểu các vai trò và cách làm undo/redo trong TypeScript.",
+  "h1": "Mẫu Command (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Command là một mẫu thiết kế hành vi (behavioral), biến một yêu cầu thành một đối tượng độc lập chứa mọi thứ cần thiết để thực hiện nó. Vì yêu cầu là một đối tượng, bạn có thể lưu, truyền đi, đưa vào hàng đợi, ghi log và hoàn tác sau đó. Đối tượng kích hoạt command (ví dụ một nút bấm) không cần biết đối tượng nào làm việc hay làm bằng cách nào.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: đóng gói một yêu cầu thành một đối tượng, nhờ đó có thể tham số hóa client với các yêu cầu khác nhau, xếp hàng hoặc ghi log các yêu cầu và hỗ trợ các thao tác có thể hoàn tác. Command là một trong các mẫu hành vi trong sách Gang of Four (GoF).",
+        "Hãy nghĩ đến một trình soạn thảo văn bản. Cùng một hành động, như “in đậm văn bản”, có thể được kích hoạt bởi nút trên thanh công cụ, mục menu và phím tắt Ctrl+B. Nếu mỗi nơi này gọi thẳng trình soạn thảo, logic bị lặp ở ba chỗ. Tệ hơn, trình soạn thảo còn phải hỗ trợ undo: sau khi người dùng nhấn Ctrl+Z, chương trình cần biết hành động trước đó là gì và cách đảo ngược nó.",
+        "Command giải quyết cả hai vấn đề. Mỗi hành động trở thành một đối tượng có phương thức `execute` và tùy chọn phương thức `undo`. Nút bấm, menu và phím tắt đều giữ cùng một đối tượng command. Trình soạn thảo giữ một danh sách lịch sử các command đã thực hiện, nên undo nghĩa là lấy command cuối cùng trong danh sách và gọi `undo` của nó."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Command",
+                "Interface có phương thức `execute` (và thường có `undo`)"
+              ],
+              [
+                "Concrete command",
+                "Lưu receiver và các tham số, rồi gọi các phương thức của receiver trong `execute`"
+              ],
+              [
+                "Receiver",
+                "Đối tượng biết cách làm công việc thật sự, như một tài liệu hoặc một tài khoản ngân hàng"
+              ],
+              [
+                "Invoker",
+                "Yêu cầu một command chạy; có thể giữ lịch sử để undo và redo"
+              ],
+              [
+                "Client",
+                "Tạo các concrete command và nối chúng với receiver và invoker"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript: undo và redo",
+      "body": [
+        "`TextDocument` là receiver. `InsertText` và `DeleteLast` là các command nhớ đủ thông tin để tự đảo ngược. `Editor` là invoker với hai ngăn xếp: một cho undo và một cho redo.",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "Chạy một command mới phải xóa ngăn xếp redo, như `run` ở trên làm. Nếu không, redo có thể áp dụng một command lên trạng thái tài liệu mà nó chưa từng được thiết kế cho, và văn bản bị hỏng."
+        }
+      ]
+    },
+    {
+      "h": "Trước và sau",
+      "body": [
+        "Không có mẫu này, giao diện gọi thẳng tài liệu và không thể undo, vì không có gì ghi lại điều đã xảy ra:",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "Phiên bản thứ hai là một đoạn mã giả định có lớp command `MakeBold` giống các lớp ở trên. Giao diện không còn biết cách in đậm hoạt động ra sao, và mọi hành động đi qua một nơi mà ở đó chúng có thể được ghi lại, ghi log hoặc hoàn tác."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng cho undo và redo, macro (danh sách command chạy cùng nhau) và lịch sử command.",
+            "Dùng để xếp hàng hoặc lên lịch công việc: hàng đợi job lưu các đối tượng command và worker thực hiện chúng sau.",
+            "Dùng để ghi log hoặc phát lại thao tác, ví dụ gửi các command đã tuần tự hóa sang máy chủ khác.",
+            "Dùng để tách các thành phần giao diện khỏi mã mà chúng kích hoạt.",
+            "Đừng dùng khi bạn chỉ cần một callback. Trong TypeScript, hàm vốn là giá trị hạng nhất, nên `button.onclick = save` là một command hoàn toàn ổn khi không cần undo. Hãy thêm lớp command khi bạn cần hành vi bổ sung như `undo`, tên để hiển thị hoặc tuần tự hóa."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "Interface `Runnable` của Java là một command với một phương thức `run`, được thread và executor dùng để chạy công việc sau.",
+            "Action của Redux là các đối tượng thuần túy mô tả một thay đổi; reducer áp dụng chúng, và log các action cho phép gỡ lỗi du hành thời gian. Đây là họ hàng gần của Command, với logic nằm ở reducer thay vì ở command.",
+            "VS Code và nhiều trình soạn thảo khác đăng ký các command có tên có thể gán vào phím, menu và command palette.",
+            "Database migration thường có bước `up` và `down`, chính là cặp execute và undo của một command."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Command ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy hoán đổi cách thực hiện một tác vụ; Command đóng gói việc cần làm (một yêu cầu) để có thể lưu, xếp hàng hoặc hoàn tác."
+              ],
+              [
+                "Memento",
+                "Memento lưu ảnh chụp trạng thái để undo; Command lưu thao tác và đảo ngược nó. Hai mẫu thường được kết hợp khi việc đảo ngược khó thực hiện."
+              ],
+              [
+                "Chain of Responsibility",
+                "Một command có thể được chuyển dọc chuỗi handler để tìm handler thực hiện nó."
+              ],
+              [
+                "Composite",
+                "Macro command là một Composite: một command tạo từ các command khác."
+              ],
+              [
+                "Observer",
+                "Observer thông báo một sự kiện cho nhiều listener; Command là một yêu cầu gửi tới một receiver."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Mẫu Command cài đặt undo như thế nào?",
+      "a": "Mỗi command có phương thức `undo` đảo ngược `execute` của chính nó, thường dùng dữ liệu đã lưu trong lúc thực thi. Invoker giữ một ngăn xếp các command đã thực hiện và gọi `undo` trên command gần nhất."
+    },
+    {
+      "q": "Mẫu Command khác mẫu Strategy ở điểm nào?",
+      "a": "Strategy biểu diễn các cách khác nhau để làm cùng một tác vụ và do đối tượng sử dụng nó chọn. Command biểu diễn một yêu cầu cụ thể, cùng receiver và tham số của nó, có thể chạy sau, xếp hàng hoặc hoàn tác."
+    },
+    {
+      "q": "Hàm callback có phải là command không?",
+      "a": "Callback là một command tối giản: nó đóng gói một hành động chạy sau. Bạn cần một đối tượng command đầy đủ khi muốn thêm undo, mô tả, tuần tự hóa hoặc siêu dữ liệu khác."
+    },
+    {
+      "q": "Macro command là gì?",
+      "a": "Macro command giữ một danh sách command và thực hiện chúng theo thứ tự. Undo của nó đảo ngược theo thứ tự ngược lại, đó là một ứng dụng của mẫu Composite."
+    }
+  ]
+}

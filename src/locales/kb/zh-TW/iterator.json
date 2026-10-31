@@ -1,0 +1,153 @@
+{
+  "title": "迭代器模式：走訪、產生器與 TypeScript 的 Symbol.iterator — cv.cm",
+  "description": "迭代器模式讓你不必知道集合如何儲存就能逐一走訪。了解其角色，以及 TypeScript 中的 Symbol.iterator 與產生器。",
+  "h1": "迭代器模式（Iterator）詳解與範例",
+  "answer": "迭代器（Iterator）是一種行為型設計模式，它提供一種依序存取集合元素的方式，而不暴露集合的儲存方式。走訪邏輯放在獨立的迭代器物件中，並提供像 `next()` 這樣的方法，因此同一個集合可以提供多種走訪順序，用戶端程式碼也能以相同方式遍歷陣列、樹與串流。在 TypeScript 與 JavaScript 中，這個模式透過 `Symbol.iterator` 與 `for...of` 內建於語言之中。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：提供一種依序存取聚合物件中各元素的方法，而不暴露其底層表示。迭代器是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "想像一個以樹狀結構儲存公司組織圖的類別。程式的不同部分都需要列出所有員工：一份報表要逐層列出，另一份需要深度優先順序。如果每份報表都自己走訪這棵樹，每份報表就都依賴樹的內部欄位，一旦樹改用別的儲存方式，全部都會壞掉。",
+        "有了迭代器，樹會提供迭代器物件。報表只要向它要一個迭代器，並反覆呼叫 `next()` 直到結束。報表不需要知道資料是樹、陣列，還是分頁從資料庫取得的資料列。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "迭代器",
+                "走訪用的介面，通常是 `next()` 回傳下一個元素，並帶有表示走訪是否結束的旗標"
+              ],
+              [
+                "具體迭代器",
+                "為某一個集合實作走訪，並記住目前位置"
+              ],
+              [
+                "聚合（可迭代物件）",
+                "帶有建立迭代器之方法的介面"
+              ],
+              [
+                "具體聚合",
+                "集合本身；每次被要求時都回傳一個新的具體迭代器"
+              ],
+              [
+                "用戶端",
+                "使用迭代器造訪元素，而不需要知道集合的結構"
+              ]
+            ]
+          }
+        },
+        "在 JavaScript 中，這些角色有 ES2015 迭代協定所定義的標準名稱。可迭代物件（iterable）有一個 `[Symbol.iterator]()` 方法。迭代器（iterator）有一個 `next()` 方法，回傳 `{ value, done }`。每個 `for...of` 迴圈、展開語法 `[...x]` 與解構賦值都使用這些協定。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作：手寫迭代器",
+      "body": [
+        "這個 range 類別只儲存起點、終點和步長，而不是一串數字。它的迭代器會在需要時才計算每個值。",
+        {
+          "code": "class Range implements Iterable<number> {\n  constructor(private start: number, private end: number, private step = 1) {}\n\n  [Symbol.iterator](): Iterator<number> {\n    let current = this.start;\n    const { end, step } = this;\n    return {\n      next(): IteratorResult<number> {\n        if (current >= end) return { value: undefined, done: true };\n        const value = current;\n        current += step;\n        return { value, done: false };\n      },\n    };\n  }\n}\n\nconst evens = new Range(0, 10, 2);\nfor (const n of evens) console.log(n); // 0 2 4 6 8 (one per line)\nconsole.log([...evens]); // [ 0, 2, 4, 6, 8 ]\nconsole.log(Math.max(...new Range(1, 4))); // 3",
+          "lang": "typescript"
+        },
+        "每次呼叫 `[Symbol.iterator]()` 都會回傳一個擁有自己 `current` 位置的新迭代器，所以 `evens` 才能被遍歷兩次。如果集合每次都回傳同一個迭代器，第二次迴圈就看不到任何元素。"
+      ]
+    },
+    {
+      "h": "產生器：用更少的程式碼寫迭代器",
+      "body": [
+        "以 `function*` 撰寫的產生器函式會自動建立迭代器。每個 `yield` 產生下一個值，函式會暫停，直到再次呼叫 `next()`。下面的二元樹在不暴露節點的情況下提供了中序走訪：",
+        {
+          "code": "class TreeNode<T> {\n  constructor(public value: T, public left?: TreeNode<T>, public right?: TreeNode<T>) {}\n}\n\nclass BinaryTree<T> implements Iterable<T> {\n  constructor(private root?: TreeNode<T>) {}\n\n  *[Symbol.iterator](): Generator<T> {\n    yield* inOrder(this.root);\n  }\n}\n\nfunction* inOrder<T>(node?: TreeNode<T>): Generator<T> {\n  if (!node) return;\n  yield* inOrder(node.left);\n  yield node.value;\n  yield* inOrder(node.right);\n}\n\nconst tree = new BinaryTree(\n  new TreeNode(5, new TreeNode(3, new TreeNode(1)), new TreeNode(8)),\n);\nconsole.log([...tree]); // [ 1, 3, 5, 8 ]\n\nfor (const value of tree) {\n  if (value > 3) break; // stops early; the rest is never computed\n  console.log(value); // 1, then 3\n}",
+          "lang": "typescript"
+        },
+        {
+          "note": "除非集合的文件說明這樣是安全的，否則不要在遍歷集合的同時新增或移除元素。Java 的 `ArrayList` 迭代器會丟出 `ConcurrentModificationException`，而在 JavaScript 中，於迴圈期間修改陣列可能會跳過或重複元素。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當集合的內部結構複雜（樹、圖、分頁 API），而你希望用戶端能簡單地遍歷時使用。",
+            "需要對同一份資料提供多種走訪順序時使用，例如深度優先與廣度優先。",
+            "用於惰性或無限序列，這類序列的值只在被要求時才計算。",
+            "用來讓不同的集合擁有統一的迴圈介面。",
+            "如果資料本來就是陣列，就不要另外寫自訂迭代器。直接回傳該陣列（或唯讀副本），讓呼叫端使用內建的迭代方式即可。",
+            "如果呼叫端需要用索引隨機存取，或需要預先知道長度，就不要使用惰性迭代器；陣列更合適。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "JavaScript：`Array`、`Map`、`Set` 和 `String` 都是可迭代物件，而 `map.entries()` 或 `set.values()` 會回傳迭代器。",
+            "Java：`java.util.Iterator` 介面，具有 `hasNext()` 與 `next()`，增強型 `for` 迴圈可用於任何 `Iterable`。",
+            "Python：迭代器協定使用 `__iter__` 與 `__next__`，以及使用 `yield` 的產生器函式。",
+            "資料庫與 API：查詢結果上的游標與分頁式 HTTP API 一次只提供一頁結果，用戶端因此可以遍歷非常龐大的結果，而不必把全部載入記憶體。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與迭代器模式的關係"
+            ],
+            "rows": [
+              [
+                "組合",
+                "迭代器常用來走訪組合樹，而不暴露其節點。"
+              ],
+              [
+                "訪問者",
+                "迭代器負責走訪元素；訪問者定義要對每個元素做什麼。兩者常搭配使用。"
+              ],
+              [
+                "工廠方法",
+                "建立迭代器的方法，例如 `[Symbol.iterator]()`，就是一個工廠方法：每個集合各自回傳自己的迭代器類別。"
+              ],
+              [
+                "備忘錄",
+                "迭代器可以把自己的位置存成備忘錄，以便之後繼續走訪。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "可迭代物件與迭代器有什麼差別？",
+      "a": "可迭代物件是能產生迭代器的物件，在 JavaScript 中透過 `[Symbol.iterator]()`。迭代器則是保存目前位置、並透過 `next()` 一次回傳一個元素的物件。"
+    },
+    {
+      "q": "產生器是迭代器嗎？",
+      "a": "是。呼叫產生器函式會回傳一個產生器物件，它既是迭代器（有 `next()`），也是可迭代物件（從 `[Symbol.iterator]()` 回傳自己）。"
+    },
+    {
+      "q": "為什麼不直接公開內部陣列？",
+      "a": "公開陣列會讓每個呼叫端都綁死在那個儲存選擇上，還讓他們能修改它。迭代器隱藏了結構，所以你之後可以更換結構，或惰性地計算元素，而不必更動呼叫端。"
+    },
+    {
+      "q": "什麼是內部迭代器？",
+      "a": "內部迭代器是接受回呼函式、並對每個元素執行它的方法，例如 `array.forEach(fn)`。迴圈由集合掌控。外部迭代器（如 `next()`）則讓用戶端控制何時前進、何時停止。"
+    }
+  ]
+}

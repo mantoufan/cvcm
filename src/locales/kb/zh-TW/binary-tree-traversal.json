@@ -1,0 +1,198 @@
+{
+  "title": "二元樹走訪：前序、中序、後序與層序，附 Python 程式碼 — cv.cm",
+  "description": "二元樹走訪圖解：前序、中序、後序與層序（BFS），含遞迴與迭代的 Python 程式碼、逐步追蹤範例與複雜度。",
+  "h1": "二元樹走訪教學：前序、中序、後序與層序",
+  "answer": "走訪二元樹，指的是依固定順序恰好拜訪每個節點一次。三種深度優先順序的差別只在於何時拜訪節點本身：前序是節點、左、右；中序是左、節點、右；後序是左、右、節點。層序走訪是廣度優先，利用佇列一列一列地拜訪整棵樹。四種走訪的時間都是 O(n)。",
+  "sections": [
+    {
+      "h": "為什麼走訪順序很重要",
+      "body": [
+        "樹沒有唯一的自然順序，所以演算法會選擇適合任務的那一種。二元搜尋樹的中序走訪會依排序順序產生所有鍵。前序會先拜訪父節點再拜訪子節點，複製一棵樹或把它輸出成可重建的形式時就需要這個順序。後序會先拜訪子節點再拜訪父節點，刪除一棵樹、計算資料夾大小或求值運算式樹時就需要它。層序會最先找到最淺的節點，並能逐列印出一棵樹。"
+      ]
+    },
+    {
+      "h": "同一個範例的四種順序",
+      "body": [
+        "我們使用這棵樹：根節點 1，子節點為 2 和 3；節點 2 的子節點是 4 和 5；節點 3 有一個右子節點 6。",
+        {
+          "code": "        1\n       / \\\n      2   3\n     / \\   \\\n    4   5   6",
+          "lang": "text"
+        },
+        {
+          "table": {
+            "head": [
+              "順序",
+              "規則",
+              "結果"
+            ],
+            "rows": [
+              [
+                "前序",
+                "節點、左、右",
+                "1 2 4 5 3 6"
+              ],
+              [
+                "中序",
+                "左、節點、右",
+                "4 2 5 1 3 6"
+              ],
+              [
+                "後序",
+                "左、右、節點",
+                "4 5 2 6 3 1"
+              ],
+              [
+                "層序",
+                "逐列、由左到右",
+                "1 2 3 4 5 6"
+              ]
+            ]
+          }
+        },
+        "前三種有個簡單的記法：名稱說明了節點的位置。前（pre）表示在兩棵子樹之前，中（in）表示在兩棵子樹之間，後（post）表示在兩棵子樹之後。左子樹永遠先於右子樹被拜訪。"
+      ]
+    },
+    {
+      "h": "遞迴實作",
+      "body": [
+        "遞迴版本直接對應定義。每個函式在不同的那一行拜訪節點。",
+        {
+          "code": "class Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef preorder(node, out):\n    if node:\n        out.append(node.val)\n        preorder(node.left, out)\n        preorder(node.right, out)\n    return out\ndef inorder(node, out):\n    if node:\n        inorder(node.left, out)\n        out.append(node.val)\n        inorder(node.right, out)\n    return out\ndef postorder(node, out):\n    if node:\n        postorder(node.left, out)\n        postorder(node.right, out)\n        out.append(node.val)\n    return out\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3, None, Node(6)))\nprint(preorder(root, []))   # [1, 2, 4, 5, 3, 6]\nprint(inorder(root, []))    # [4, 2, 5, 1, 3, 6]\nprint(postorder(root, []))  # [4, 5, 2, 6, 3, 1]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "用堆疊實作迭代式前序與中序",
+      "body": [
+        "遞迴使用呼叫堆疊。為了避免在很深的樹上碰到遞迴上限，可以自己管理堆疊。前序的做法是：彈出一個節點、拜訪它，然後先 push 右子節點再 push 左子節點，這樣左子節點就會先被處理。",
+        "中序的做法是：盡可能往左走，沿途把節點 push 進去。當無法再往左時，彈出一個節點、拜訪它，然後移到它的右子節點。",
+        {
+          "code": "def preorder_iter(root):\n    out, stack = [], [root] if root else []\n    while stack:\n        node = stack.pop()\n        out.append(node.val)\n        if node.right:\n            stack.append(node.right)\n        if node.left:\n            stack.append(node.left)\n    return out\ndef inorder_iter(root):\n    out, stack, node = [], [], root\n    while stack or node:\n        while node:              # go as far left as possible\n            stack.append(node)\n            node = node.left\n        node = stack.pop()\n        out.append(node.val)\n        node = node.right\n    return out\nprint(preorder_iter(root))  # [1, 2, 4, 5, 3, 6]\nprint(inorder_iter(root))   # [4, 2, 5, 1, 3, 6]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "迭代式後序與層序",
+      "body": [
+        "迭代式後序最難。有一個乾淨的做法是使用旗標：每個節點 push 兩次，第二次標記為「子節點處理完後即可拜訪」。層序則用佇列而不是堆疊；一次處理佇列中的一整層，也能順便得知每個節點的深度。",
+        {
+          "code": "from collections import deque\ndef postorder_iter(root):\n    out, stack = [], [(root, False)] if root else []\n    while stack:\n        node, children_done = stack.pop()\n        if children_done:\n            out.append(node.val)\n        else:\n            stack.append((node, True))\n            if node.right:\n                stack.append((node.right, False))\n            if node.left:\n                stack.append((node.left, False))\n    return out\ndef level_order(root):\n    levels, queue = [], deque([root] if root else [])\n    while queue:\n        level = []\n        for _ in range(len(queue)):   # nodes of the current level\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        levels.append(level)\n    return levels\nprint(postorder_iter(root))  # [4, 5, 2, 6, 3, 1]\nprint(level_order(root))     # [[1], [2, 3], [4, 5, 6]]",
+          "lang": "python"
+        },
+        "另一個常見的後序技巧：執行修改過的前序（節點、右、左），再把結果反轉。"
+      ]
+    },
+    {
+      "h": "時間與空間複雜度",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "走訪方式",
+              "時間",
+              "額外空間",
+              "原因"
+            ],
+            "rows": [
+              [
+                "前序 / 中序 / 後序（遞迴）",
+                "O(n)",
+                "O(h)",
+                "呼叫堆疊每一層保存一個框架"
+              ],
+              [
+                "前序 / 中序 / 後序（迭代）",
+                "O(n)",
+                "O(h)",
+                "明確的堆疊最多保存一條路徑再加上兄弟節點"
+              ],
+              [
+                "層序",
+                "O(n)",
+                "O(w)",
+                "佇列最多保存一整層"
+              ],
+              [
+                "Morris 中序走訪",
+                "O(n)",
+                "O(1)",
+                "暫時把空的右連結改接成線索"
+              ]
+            ]
+          }
+        },
+        "這裡 n 是節點數，h 是高度，w 是最大寬度。對平衡樹而言，h 約為 log2(n)，w 可達約 n/2；對鏈狀的樹而言，h 是 n，w 是 1。"
+      ]
+    },
+    {
+      "h": "常見錯誤",
+      "body": [
+        {
+          "ul": [
+            "在迭代式前序中先 push 左子節點再 push 右子節點。堆疊是 LIFO，想要先處理的子節點必須最後 push。",
+            "忘記處理空樹：每個函式在 `root is None` 時都應該回傳空的結果。",
+            "在層序中用 `list` 搭配 `pop(0)` 當佇列。每次 pop 是 O(n)；請改用 `collections.deque`。",
+            "在很深的樹上依賴遞迴。Python 會在遞迴上限（預設約 1000）時以 `RecursionError` 中止。",
+            "以為單一種走訪就能確定一棵樹。只有前序是有歧義的；前序加中序（且值互不相同）就足以重建出這棵樹。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "何時使用哪一種走訪",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "任務",
+              "走訪方式"
+            ],
+            "rows": [
+              [
+                "依排序順序列出 BST 的鍵、驗證 BST、第 k 小的元素",
+                "中序"
+              ],
+              [
+                "複製或序列化一棵樹、輸出目錄大綱",
+                "前序"
+              ],
+              [
+                "刪除一棵樹、計算子樹大小或高度、求值運算式樹",
+                "後序"
+              ],
+              [
+                "最小深度、右側視圖、逐層輸出、最近的節點",
+                "層序"
+              ]
+            ]
+          }
+        },
+        "前序、中序與後序都是深度優先搜尋的形式；層序則是套用在樹上的廣度優先搜尋。同樣的想法也可以延伸到一般的圖，只是這時還需要一個記錄已拜訪節點的集合。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "前序、中序與後序有什麼差別？",
+      "a": "差別只在拜訪節點的位置。前序在子樹之前拜訪節點，中序在左右子樹之間拜訪，後序則在兩棵子樹之後拜訪。"
+    },
+    {
+      "q": "哪一種走訪能讓二元搜尋樹得到排序後的輸出？",
+      "a": "中序走訪。在 BST 中，左邊的鍵都比較小，右邊的鍵都比較大，所以依左、節點、右的順序拜訪，就會得到遞增的鍵。"
+    },
+    {
+      "q": "層序走訪就是 BFS 嗎？",
+      "a": "是的。層序走訪就是在樹上做的廣度優先搜尋。它使用佇列，並依深度順序拜訪節點。"
+    },
+    {
+      "q": "為什麼要用迭代式走訪而不是遞迴？",
+      "a": "遞迴深度等於樹的高度，而 Python 超過遞迴上限時會拋出 `RecursionError`。明確的堆疊沒有這種限制，也方便暫停或提前結束。"
+    },
+    {
+      "q": "可以只用 O(1) 的額外空間走訪一棵樹嗎？",
+      "a": "可以。Morris 走訪會暫時把每個節點的中序前驅節點連回該節點，因此不需要堆疊，並在結束前把樹還原。時間為 O(n)。"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "title": "Cây tìm kiếm nhị phân (BST): chèn, tìm, xóa, code Python và độ phức tạp — cv.cm",
+  "description": "Tìm hiểu cây tìm kiếm nhị phân (BST) hoạt động thế nào: quy tắc sắp thứ tự, tìm, chèn và ba trường hợp xóa bằng Python, cùng độ phức tạp O(log n) so với O(n).",
+  "h1": "Cây tìm kiếm nhị phân (BST): cách hoạt động, code và độ phức tạp",
+  "answer": "Cây tìm kiếm nhị phân (BST) là cây nhị phân trong đó cây con trái của mỗi node chỉ chứa khóa nhỏ hơn và cây con phải chỉ chứa khóa lớn hơn. Nhờ quy tắc này, tìm, chèn và xóa chỉ đi theo một đường từ gốc và tốn O(h), với h là chiều cao cây: O(log n) khi cây cân bằng, nhưng O(n) khi cây suy biến thành một chuỗi. Duyệt trung thứ tự (in-order) đi qua các khóa theo thứ tự tăng dần.",
+  "sections": [
+    {
+      "h": "Cây tìm kiếm nhị phân giải quyết vấn đề gì",
+      "body": [
+        "Mảng đã sắp xếp cho phép tìm nhị phân nhanh, nhưng chèn một phần tử mới làm dịch mọi phần tử phía sau. Bảng băm tra cứu và chèn nhanh, nhưng không giữ thứ tự, nên không trả lời được \"khóa nhỏ nhất lớn hơn 42 là gì?\" hay \"liệt kê mọi khóa từ 10 đến 20\". Cây tìm kiếm nhị phân giữ các khóa được sắp xếp mà vẫn chèn và xóa nhanh. Nó là nền tảng của map và set có thứ tự như `TreeMap` của Java và `std::map` của C++, vốn dùng các biến thể tự cân bằng."
+      ]
+    },
+    {
+      "h": "Quy tắc giải thích đơn giản",
+      "body": [
+        "Mỗi node có một khóa, một con trái tùy chọn và một con phải tùy chọn. Với mọi node: tất cả khóa trong cây con trái đều nhỏ hơn, và tất cả khóa trong cây con phải đều lớn hơn. Để tìm một khóa, bắt đầu từ gốc và so sánh: đi trái nếu khóa nhỏ hơn, đi phải nếu lớn hơn, dừng nếu bằng hoặc khi rơi ra ngoài cây.",
+        {
+          "note": "Quy tắc áp dụng cho cả cây con, không chỉ con trực tiếp. Một cây mà mỗi node con đúng so với cha của nó vẫn có thể không hợp lệ, chẳng hạn khi một khóa nằm sâu trong cây con trái lại lớn hơn gốc."
+        }
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa: xây dựng và tìm kiếm trên cây",
+      "body": [
+        "Chèn lần lượt 8, 3, 10, 1, 6, 14, 4. Mỗi khóa mới đi xuống từ gốc và trở thành một lá tại chỗ nó rơi ra ngoài cây.",
+        {
+          "table": {
+            "head": [
+              "Chèn",
+              "Đường đi",
+              "Vị trí đặt"
+            ],
+            "rows": [
+              [
+                "8",
+                "cây rỗng",
+                "gốc"
+              ],
+              [
+                "3",
+                "8: nhỏ hơn, đi trái",
+                "con trái của 8"
+              ],
+              [
+                "10",
+                "8: lớn hơn, đi phải",
+                "con phải của 8"
+              ],
+              [
+                "1",
+                "8 trái, 3 trái",
+                "con trái của 3"
+              ],
+              [
+                "6",
+                "8 trái, 3 phải",
+                "con phải của 3"
+              ],
+              [
+                "14",
+                "8 phải, 10 phải",
+                "con phải của 10"
+              ],
+              [
+                "4",
+                "8 trái, 3 phải, 6 trái",
+                "con trái của 6"
+              ]
+            ]
+          }
+        },
+        "Tìm 4 phải so sánh với 8, 3, 6, rồi 4: bốn lần so sánh trong cây có bảy khóa. Tìm 7 so sánh với 8, 3, 6 rồi thấy 6 không có con phải, nên 7 không có trong cây."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        "Chèn và tìm là các vòng lặp ngắn. Xóa có ba trường hợp: node không có con (xóa luôn), có một con (thay bằng con đó), hoặc có hai con (chép vào node kế nhiệm theo trung thứ tự, tức khóa nhỏ nhất của cây con phải, rồi xóa node kế nhiệm đó).",
+        {
+          "code": "class Node:\n    def __init__(self, key):\n        self.key, self.left, self.right = key, None, None\ndef insert(root, key):\n    if root is None:\n        return Node(key)\n    if key < root.key:\n        root.left = insert(root.left, key)\n    elif key > root.key:\n        root.right = insert(root.right, key)\n    return root                      # duplicates are ignored\ndef contains(root, key):\n    while root and root.key != key:\n        root = root.left if key < root.key else root.right\n    return root is not None\ndef delete(root, key):\n    if root is None:\n        return None\n    if key < root.key:\n        root.left = delete(root.left, key)\n    elif key > root.key:\n        root.right = delete(root.right, key)\n    else:\n        if root.left is None:\n            return root.right\n        if root.right is None:\n            return root.left\n        succ = root.right\n        while succ.left:\n            succ = succ.left\n        root.key = succ.key\n        root.right = delete(root.right, succ.key)\n    return root\ndef inorder(root):\n    return inorder(root.left) + [root.key] + inorder(root.right) if root else []",
+          "lang": "python"
+        },
+        {
+          "code": "root = None\nfor k in [8, 3, 10, 1, 6, 14, 4]:\n    root = insert(root, k)\nprint(inorder(root))                 # [1, 3, 4, 6, 8, 10, 14]\nprint(contains(root, 4), contains(root, 7))  # True False\nroot = delete(root, 3)               # node with two children\nprint(inorder(root), root.left.key)  # [1, 4, 6, 8, 10, 14] 4",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thao tác",
+              "Cây cân bằng",
+              "Xấu nhất (chuỗi)",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Tìm",
+                "O(log n)",
+                "O(n)",
+                "một phép so sánh mỗi tầng"
+              ],
+              [
+                "Chèn",
+                "O(log n)",
+                "O(n)",
+                "đi tới vị trí lá"
+              ],
+              [
+                "Xóa",
+                "O(log n)",
+                "O(n)",
+                "tìm node, có thể phải tìm node kế nhiệm"
+              ],
+              [
+                "Nhỏ nhất / lớn nhất",
+                "O(log n)",
+                "O(n)",
+                "đi theo liên kết trái (hoặc phải) tới cuối"
+              ],
+              [
+                "Duyệt trung thứ tự",
+                "O(n)",
+                "O(n)",
+                "mỗi node một lần"
+              ],
+              [
+                "Không gian",
+                "O(n)",
+                "O(n)",
+                "một node cho mỗi khóa; đệ quy dùng O(h) ngăn xếp"
+              ]
+            ]
+          }
+        },
+        "Trường hợp xấu nhất là có thật, không chỉ trên lý thuyết: chèn các khóa đã sắp xếp (1, 2, 3, ...) vào một BST thường làm mỗi node chỉ có con phải, và cây thành danh sách liên kết. Thứ tự chèn ngẫu nhiên cho chiều cao kỳ vọng O(log n)."
+      ]
+    },
+    {
+      "h": "Các biến thể cân bằng và lỗi thường gặp",
+      "body": [
+        "Cây tự cân bằng giữ chiều cao ở mức O(log n) bằng cách cấu trúc lại bằng các phép xoay sau khi chèn và xóa.",
+        {
+          "table": {
+            "head": [
+              "Biến thể",
+              "Ý tưởng cân bằng",
+              "Dùng ở đâu"
+            ],
+            "rows": [
+              [
+                "Cây AVL",
+                "chiều cao hai cây con chênh nhau tối đa 1",
+                "khối lượng công việc nặng về tra cứu"
+              ],
+              [
+                "Cây đỏ-đen (red-black)",
+                "quy tắc màu giới hạn đường dài nhất tối đa gấp đôi đường ngắn nhất",
+                "`TreeMap` của Java, các cài đặt `std::map` của C++ điển hình, nhân Linux"
+              ],
+              [
+                "B-tree / B+ tree",
+                "nhiều khóa trong mỗi node, mọi lá cùng độ sâu",
+                "cơ sở dữ liệu và hệ thống tệp"
+              ],
+              [
+                "Treap, splay tree",
+                "độ ưu tiên ngẫu nhiên, hoặc đưa khóa vừa truy cập lên gốc",
+                "cây cân bằng đơn giản hơn, bộ nhớ đệm"
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Kiểm tra BST chỉ bằng cách so cha và con. Hãy truyền xuống một khoảng (low, high) hợp lệ.",
+            "Quên trả về gốc (có thể là gốc mới) từ chèn và xóa đệ quy, nên các thay đổi bị mất.",
+            "Đệ quy sâu trên cây suy biến: giới hạn đệ quy mặc định của Python khoảng 1000, nên một chuỗi 5000 node sẽ làm code đệ quy lỗi. Hãy dùng vòng lặp hoặc giữ cây cân bằng.",
+            "Không quy định cách xử lý khóa trùng: hãy quyết định trùng sẽ bị bỏ qua, được đếm, hay luôn đi về một bên."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Khi nào dùng BST và các câu hỏi phỏng vấn điển hình",
+      "body": [
+        "Dùng BST cân bằng khi bạn cần dữ liệu có thứ tự với chèn và xóa thường xuyên: truy vấn khoảng, tìm floor và ceiling, thống kê hạng, hoặc duyệt theo thứ tự đã sắp xếp. Dùng bảng băm khi chỉ cần tra cứu đúng khóa. Thư viện chuẩn của Python không có tree map; lựa chọn phổ biến là danh sách đã sắp xếp với mô-đun `bisect` cho dữ liệu nhỏ hoặc gần như tĩnh, hoặc gói bên thứ ba `sortedcontainers`.",
+        "Câu hỏi phỏng vấn điển hình: kiểm tra một BST, tìm phần tử nhỏ thứ k (duyệt trung thứ tự), tổ tiên chung thấp nhất, chuyển mảng đã sắp xếp thành BST cân bằng (chọn phần tử giữa làm gốc), và tìm node kế nhiệm trung thứ tự của một node."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Cây nhị phân và cây tìm kiếm nhị phân khác nhau thế nào?",
+      "a": "Cây nhị phân chỉ giới hạn mỗi node có tối đa hai con. Cây tìm kiếm nhị phân thêm quy tắc sắp thứ tự: khóa nhỏ hơn bên trái, khóa lớn hơn bên phải, với mọi cây con."
+    },
+    {
+      "q": "Tại sao tìm trong BST là O(log n)?",
+      "a": "Mỗi phép so sánh đi xuống một tầng và loại bỏ một cây con. Cây cân bằng có n node có khoảng log2(n) tầng, nên tìm cần khoảng chừng đó phép so sánh."
+    },
+    {
+      "q": "Chuyện gì xảy ra nếu chèn dữ liệu đã sắp xếp vào BST?",
+      "a": "Nếu không cân bằng, mỗi khóa mới trở thành con phải của khóa trước, chiều cao thành n, và mọi thao tác thành O(n). Các cây tự cân bằng như AVL và đỏ-đen ngăn điều này."
+    },
+    {
+      "q": "Làm sao lấy các khóa của BST theo thứ tự đã sắp xếp?",
+      "a": "Duyệt trung thứ tự (in-order): thăm cây con trái, rồi node, rồi cây con phải. Tốn O(n)."
+    },
+    {
+      "q": "Python có sẵn cây tìm kiếm nhị phân không?",
+      "a": "Không. Python có `dict` và `set` (bảng băm) và mô-đun `bisect` cho danh sách đã sắp xếp. Các container cây có thứ tự đến từ gói bên thứ ba."
+    }
+  ]
+}

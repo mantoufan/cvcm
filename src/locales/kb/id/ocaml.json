@@ -1,0 +1,203 @@
+{
+  "title": "Tutorial OCaml: tipe, variant, pattern matching, dan modul — cv.cm",
+  "description": "Belajar OCaml dari awal: memasang dengan opam, Hello world, let binding, list, record, variant, pattern matching, modul, dan error berbasis Result.",
+  "h1": "Tutorial OCaml untuk pemula",
+  "answer": "OCaml adalah bahasa fungsional bertipe statis dari keluarga ML. Compiler-nya menyimpulkan tipe untuk Anda, menangkap banyak kesalahan sebelum program berjalan, dan menghasilkan kode native yang cepat. Program disusun dari nilai immutable, variant (tagged union), pattern matching, dan modul. Pasang dengan opam, jalankan file dengan `ocaml hello.ml`, atau kompilasi dengan `ocamlopt`.",
+  "sections": [
+    {
+      "h": "Apa itu OCaml dan siapa yang memakainya",
+      "body": [
+        "OCaml dibuat di Inria, Prancis, dan kini dikembangkan oleh komunitas open source yang mencakup perusahaan seperti Jane Street dan Tarides. OCaml menggabungkan pemrograman fungsional dengan fitur imperatif opsional (mutable reference, array, perulangan) dan sistem objek yang tidak dibutuhkan sebagian besar kode. OCaml 5 menambahkan paralelisme shared-memory lewat domain dan effect handler.",
+        "OCaml dipakai untuk compiler dan tool analisis program, proof assistant seperti Rocq (dahulu Coq), sistem trading (Jane Street adalah pengguna industri yang paling dikenal), dan tool developer seperti Flow dan Infer dari Meta. OCaml juga bahasa pengajaran yang umum untuk pemrograman fungsional dan sistem tipe."
+      ]
+    },
+    {
+      "h": "Memasang OCaml dan menjalankan Hello, world",
+      "body": [
+        "Cara standar memasang OCaml adalah opam, package manager OCaml. Setelah opam terpasang, jalankan `opam init` satu kali; perintah ini menyiapkan compiler. Lalu pasang build tool dune dan REPL yang lebih ramah, utop, dengan `opam install dune utop`.",
+        {
+          "code": "(* hello.ml *)\nlet () = print_endline \"Hello, world!\"",
+          "lang": "ocaml"
+        },
+        {
+          "code": "ocaml hello.ml            # run with the interpreter\nocamlopt -o hello hello.ml\n./hello                   # native executable\n# Hello, world!",
+          "lang": "shell"
+        },
+        "`let () = ...` adalah cara lazim menulis entry point: ekspresi dievaluasi dan diperiksa bahwa hasilnya `unit` (tanpa nilai). Di REPL (`utop` atau `ocaml`), akhiri setiap frasa dengan `;;`; di file source Anda tidak memerlukan `;;`. Untuk proyek nyata, `dune init project myapp` membuat proyek dan `dune build` mengompilasinya."
+      ]
+    },
+    {
+      "h": "Nilai dan tipe dasar",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tipe",
+              "Contoh",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "int",
+                "`42`",
+                "63-bit pada sistem 64-bit; operator `+ - * / mod`"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "Punya operator sendiri: `+.` `-.` `*.` `/.`"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "Byte immutable; digabung dengan `^`"
+              ],
+              [
+                "char",
+                "`'a'`",
+                "Satu byte"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "`&&`, `||`, `not`"
+              ],
+              [
+                "unit",
+                "`()`",
+                "Nilai dari ekspresi yang tidak menghasilkan apa pun"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ana\"\nlet age = 30\nlet height = 1.68 *. 100.0\nlet () = Printf.printf \"%s is %d, %.0f cm\\n\" name age height\n(* Ana is 30, 168 cm *)\nlet count = ref 0\nlet () = incr count; Printf.printf \"count = %d\\n\" !count",
+          "lang": "ocaml"
+        },
+        "Binding bersifat immutable. `ref` adalah sel yang bisa diubah: `!r` membacanya dan `r := v` menulisnya. OCaml tidak pernah mengonversi `int` dan `float` secara otomatis; gunakan `float_of_int` dan `int_of_float`."
+      ]
+    },
+    {
+      "h": "Alur kontrol dan fungsi",
+      "body": [
+        "`if` adalah ekspresi. Fungsi didefinisikan dengan `let`; fungsi rekursif memerlukan `let rec`. Argumen dipisahkan spasi, dan setiap fungsi di-curry, sehingga partial application gratis.",
+        {
+          "code": "let sign n =\n  if n > 0 then \"positive\"\n  else if n < 0 then \"negative\"\n  else \"zero\"\nlet rec factorial n = if n <= 1 then 1 else n * factorial (n - 1)\nlet add x y = x + y          (* int -> int -> int *)\nlet add5 = add 5\nlet () =\n  for i = 1 to 3 do\n    Printf.printf \"%d squared is %d\\n\" i (i * i)\n  done;\n  Printf.printf \"%s %d %d\\n\" (sign (-2)) (factorial 5) (add5 10)\n(* negative 120 15 *)",
+          "lang": "ocaml"
+        },
+        "Perhatikan tanda kurung pada `sign (-2)`: tanpa itu OCaml membaca `sign - 2` sebagai pengurangan. Gunakan `;` untuk merangkai ekspresi yang mengembalikan `unit`."
+      ]
+    },
+    {
+      "h": "List, array, tuple, dan record",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Struktur",
+              "Literal",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "List",
+                "`[1; 2; 3]`",
+                "Singly linked list immutable; `x :: xs` menambahkan di depan"
+              ],
+              [
+                "Array",
+                "`[| 1; 2; 3 |]`",
+                "Ukuran tetap, mutable, pengindeksan `a.(0)`"
+              ],
+              [
+                "Tuple",
+                "`(\"Ana\", 30)`",
+                "Kelompok nilai tetap dengan tipe berbeda"
+              ],
+              [
+                "Record",
+                "`{ name = \"Ana\"; age = 30 }`",
+                "Field bernama, tipe dideklarasikan lebih dulu"
+              ],
+              [
+                "Hashtbl / Map",
+                "`Hashtbl.create 16`",
+                "Hash table mutable / map berupa pohon seimbang yang immutable"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "type person = { name : string; age : int }\nlet people = [ { name = \"Ana\"; age = 30 }; { name = \"Ben\"; age = 17 } ]\nlet () =\n  people\n  |> List.filter (fun p -> p.age >= 18)\n  |> List.map (fun p -> p.name)\n  |> List.iter print_endline\n(* Ana *)\nlet older = { (List.hd people) with age = 31 }",
+          "lang": "ocaml"
+        },
+        "Operator pipeline `x |> f` berarti `f x`. Modul `List` menyediakan `map`, `filter`, `fold_left`, `find_opt`, dan banyak lagi."
+      ]
+    },
+    {
+      "h": "Fitur khas: variant, pattern matching, dan modul",
+      "body": [
+        "Tipe variant mendaftar setiap kemungkinan case dari sebuah nilai. Pattern matching membongkar nilai berdasarkan case, dan compiler memberi peringatan bila ada case yang terlewat, sehingga refactoring menjadi aman.",
+        {
+          "code": "type shape =\n  | Circle of float\n  | Rectangle of float * float\nlet area = function\n  | Circle r -> Float.pi *. r *. r\n  | Rectangle (w, h) -> w *. h\nlet () =\n  List.iter (fun s -> Printf.printf \"%.2f\\n\" (area s))\n    [ Circle 1.0; Rectangle (2.0, 3.0) ]\n(* 3.14 then 6.00 *)\nmodule StringMap = Map.Make (String)\nlet ages = StringMap.(empty |> add \"Ana\" 30 |> add \"Ben\" 17)\nlet () = Printf.printf \"%d\\n\" (StringMap.find \"Ana\" ages)   (* 30 *)",
+          "lang": "ocaml"
+        },
+        "Modul mengelompokkan tipe dan fungsi, dan setiap file adalah modul (`list.ml` menjadi `List`). Functor adalah fungsi dari modul ke modul: `Map.Make (String)` membangun modul map yang key-nya string. Signature (file `.mli`) menyembunyikan detail implementasi."
+      ]
+    },
+    {
+      "h": "Penanganan error",
+      "body": [
+        "OCaml punya tiga alat: `option` untuk nilai yang mungkin tidak ada, `result` untuk operasi yang bisa gagal beserta informasinya, dan exception untuk situasi luar biasa.",
+        {
+          "code": "let parse_age s =\n  match int_of_string_opt s with\n  | Some n when n >= 0 -> Ok n\n  | Some _ -> Error \"Age must not be negative\"\n  | None -> Error \"Not a number\"\nlet () =\n  match parse_age \"abc\" with\n  | Ok n -> Printf.printf \"Age %d\\n\" n\n  | Error msg -> print_endline (\"Error: \" ^ msg)\n(* Error: Not a number *)\nexception Empty_input\nlet first = function [] -> raise Empty_input | x :: _ -> x\nlet () =\n  try print_int (first []) with Empty_input -> print_endline \"empty list\"",
+          "lang": "ocaml"
+        }
+      ]
+    },
+    {
+      "h": "Program lengkap kecil: frekuensi kata",
+      "body": [
+        {
+          "code": "let () =\n  let text = \"the cat and the hat and the bat\" in\n  let counts = Hashtbl.create 16 in\n  String.split_on_char ' ' text\n  |> List.iter (fun w ->\n         let n = Option.value (Hashtbl.find_opt counts w) ~default:0 in\n         Hashtbl.replace counts w (n + 1));\n  Hashtbl.to_seq counts\n  |> List.of_seq\n  |> List.sort (fun (_, a) (_, b) -> compare b a)\n  |> List.filteri (fun i _ -> i < 2)\n  |> List.iter (fun (w, n) -> Printf.printf \"%s %d\\n\" w n)\n(* the 3\n   and 2 *)",
+          "lang": "ocaml"
+        },
+        "Program ini menghitung kata dalam hash table mutable, mengubah tabel menjadi list pasangan `(word, count)`, mengurutkan berdasarkan jumlah secara menurun, dan mencetak dua yang pertama. `~default:0` adalah labeled argument.",
+        {
+          "note": "Kesalahan umum pemula: memakai `+` dengan float (gunakan `+.`); menulis `[1, 2, 3]`, yang merupakan list berisi satu tuple (gunakan titik koma); lupa `rec` pada fungsi rekursif; memakai `==` (kesamaan fisik) padahal yang dimaksud `=` (kesamaan struktural); dan menulis `f -1` alih-alih `f (-1)`."
+        }
+      ]
+    },
+    {
+      "h": "Langkah selanjutnya",
+      "body": [
+        {
+          "ul": [
+            "ocaml.org: panduan instalasi, \"A Tour of OCaml\", dan tutorial lain di bawah Docs.",
+            "Manual OCaml untuk referensi lengkap bahasa dan standard library.",
+            "Pelajari dune untuk membangun proyek dan opam untuk memasang library.",
+            "Coba buku online gratis \"Real World OCaml\" untuk contoh praktis yang lebih besar."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah OCaml sulit dipelajari?",
+      "a": "Sintaksnya kecil, tetapi berpikir dengan tipe, rekursi, dan pattern matching butuh latihan jika Anda berasal dari bahasa imperatif. Pesan error dari type checker cepat menjadi lebih mudah dibaca."
+    },
+    {
+      "q": "Mengapa OCaml punya operator terpisah untuk float?",
+      "a": "OCaml tidak melakukan overload pada operator aritmetika, jadi `+` hanya bekerja pada `int` dan `+.` hanya pada `float`. Ini menjaga inferensi tipe tetap sederhana dan dapat diprediksi."
+    },
+    {
+      "q": "Apa perbedaan OCaml dan F#?",
+      "a": "F# diturunkan dari OCaml dan berbagi banyak sintaks intinya, tetapi F# berjalan di .NET dan memakai indentasi bermakna, sedangkan OCaml dikompilasi ke kode native atau bytecode dan punya sistem modul yang lebih kuat dengan functor."
+    },
+    {
+      "q": "Kapan saya memerlukan ;; di OCaml?",
+      "a": "Hanya di toplevel interaktif (`ocaml` atau `utop`), tempat tanda ini memberi tahu REPL untuk mengevaluasi yang Anda ketik. Di file source `.ml` biasanya dihilangkan."
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "title": "Mẫu Observer: subject, subscriber và sự kiện trong TypeScript — cv.cm",
+  "description": "Mẫu Observer cho phép các đối tượng đăng ký theo dõi một đối tượng khác và được thông báo khi nó thay đổi. Tìm hiểu các vai trò, ví dụ TypeScript có kiểu và những cạm bẫy.",
+  "h1": "Mẫu Observer (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Observer là một mẫu thiết kế hành vi (behavioral) trong đó một đối tượng, gọi là subject, giữ danh sách các đối tượng phụ thuộc, gọi là observer, và tự động thông báo cho chúng khi trạng thái của nó thay đổi. Observer đăng ký và hủy đăng ký lúc chạy, và subject không cần biết lớp cụ thể của chúng. Trình lắng nghe sự kiện trong trình duyệt, `EventEmitter` của Node.js và các thư viện reactive như RxJS đều xây dựng trên ý tưởng này.",
+  "sections": [
+    {
+      "h": "Mục đích và vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Mục đích: định nghĩa phụ thuộc một-nhiều giữa các đối tượng sao cho khi một đối tượng đổi trạng thái, mọi đối tượng phụ thuộc vào nó được thông báo và cập nhật tự động. Observer là một trong các mẫu hành vi trong sách Gang of Four (GoF), và còn được gọi là publish-subscribe hoặc mẫu listener.",
+        "Hãy tưởng tượng giỏ hàng của một cửa hàng web. Khi thêm một mặt hàng, biểu tượng giỏ ở phần đầu trang phải hiển thị số lượng mới, thanh bên phải hiển thị tổng mới, và một module phân tích phải ghi lại sự kiện. Nếu giỏ hàng gọi trực tiếp từng thứ này, module giỏ hàng phụ thuộc vào phần đầu trang, thanh bên và phân tích. Thêm phản ứng thứ tư nghĩa là lại phải sửa giỏ hàng.",
+        "Với Observer, giỏ hàng chỉ giữ một danh sách subscriber và gọi từng cái khi nó thay đổi. Phần đầu trang, thanh bên và phân tích tự đăng ký. Giỏ hàng không import chúng, và các tính năng mới có thể phản ứng với thay đổi của giỏ mà không chạm vào mã giỏ hàng."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Vai trò",
+              "Trách nhiệm"
+            ],
+            "rows": [
+              [
+                "Subject (publisher)",
+                "Giữ danh sách observer và cung cấp phương thức để đăng ký và hủy đăng ký; thông báo cho chúng khi có thay đổi"
+              ],
+              [
+                "Observer (subscriber)",
+                "Interface có phương thức update, thường chỉ là một hàm callback"
+              ],
+              [
+                "Concrete subject",
+                "Giữ trạng thái đáng quan tâm và gọi notify khi nó thay đổi"
+              ],
+              [
+                "Concrete observer",
+                "Phản ứng với thông báo, ví dụ vẽ lại một phần giao diện"
+              ]
+            ]
+          }
+        },
+        "Có hai kiểu thông báo. Ở mô hình push, subject gửi dữ liệu đã thay đổi cùng với thông báo. Ở mô hình pull, nó chỉ nói “có gì đó đã thay đổi” và observer tự hỏi subject dữ liệu họ cần."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        "Một lớp `Subject` generic nhỏ xử lý việc đăng ký. Observer là các hàm thông thường, dạng phổ biến nhất trong TypeScript. `subscribe` trả về một hàm để hủy đăng ký, nên nơi gọi không thể quên listener nào mình đã đăng ký.",
+        {
+          "code": "type Listener<T> = (value: T) => void;\n\nclass Subject<T> {\n  private listeners = new Set<Listener<T>>();\n\n  subscribe(listener: Listener<T>): () => void {\n    this.listeners.add(listener);\n    return () => this.listeners.delete(listener);\n  }\n\n  protected notify(value: T) {\n    for (const listener of [...this.listeners]) listener(value);\n  }\n}\n\ntype CartEvent = { count: number; total: number };\n\nclass Cart extends Subject<CartEvent> {\n  private items: { name: string; price: number }[] = [];\n\n  add(name: string, price: number) {\n    this.items.push({ name, price });\n    const total = this.items.reduce((sum, item) => sum + item.price, 0);\n    this.notify({ count: this.items.length, total });\n  }\n}\n\nconst cart = new Cart();\ncart.subscribe(({ count }) => console.log(\"header: \" + count + \" items\"));\nconst stopAnalytics = cart.subscribe(({ total }) => console.log(\"analytics: total \" + total));\n\ncart.add(\"Book\", 12);\nstopAnalytics(); // unsubscribe\ncart.add(\"Pen\", 3);\n// header: 1 items\n// analytics: total 12\n// header: 2 items",
+          "lang": "typescript"
+        },
+        "`notify` lặp trên một bản sao của tập hợp (`[...this.listeners]`). Nhờ vậy một listener tự hủy đăng ký trong lúc thông báo sẽ không làm rối vòng lặp.",
+        {
+          "note": "Quên hủy đăng ký là lỗi Observer phổ biến nhất. Subject giữ tham chiếu đến mọi listener, nên một component giao diện đã bị hủy nhưng vẫn đăng ký sẽ ở lại trong bộ nhớ và tiếp tục phản ứng với sự kiện. Hãy luôn gọi hàm hủy đăng ký khi observer không còn cần nữa, ví dụ trong mã dọn dẹp của component."
+        }
+      ]
+    },
+    {
+      "h": "Dùng EventTarget có sẵn",
+      "body": [
+        "Trình duyệt, Node.js và Deno đều cung cấp `EventTarget`, nên bạn thường không cần lớp subject riêng:",
+        {
+          "code": "const thermostat = new EventTarget();\n\nthermostat.addEventListener(\"change\", (e) => {\n  console.log(\"new temperature:\", (e as CustomEvent<number>).detail);\n});\n\nthermostat.dispatchEvent(new CustomEvent(\"change\", { detail: 21.5 }));\n// new temperature: 21.5",
+          "lang": "typescript"
+        },
+        "Node.js cũng có lớp `EventEmitter` trong module `node:events`, với các phương thức `on`, `off` và `emit`."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        {
+          "ul": [
+            "Dùng khi thay đổi ở một đối tượng phải cập nhật các đối tượng khác, và bạn không biết trước có bao nhiêu hay cái nào.",
+            "Dùng để giữ một module lõi độc lập với mã giao diện, ghi log hoặc phân tích phản ứng với nó.",
+            "Dùng cho các sự kiện xảy ra theo thời gian, như đầu vào người dùng, thông điệp hoặc số đọc cảm biến.",
+            "Đừng dùng khi chỉ có đúng một bên nhận cố định; gọi phương thức trực tiếp hoặc tham số callback dễ theo dõi hơn.",
+            "Cẩn thận với chuỗi observer kích hoạt các thông báo khác. Chúng có thể gây vòng lặp cập nhật và khiến khó thấy vì sao một thứ thay đổi.",
+            "Đừng dựa vào thứ tự các observer được gọi, trừ khi subject ghi rõ điều đó."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "DOM: `element.addEventListener(\"click\", handler)` đăng ký một observer vào một phần tử.",
+            "Node.js: `EventEmitter` là nền tảng của stream, máy chủ HTTP và nhiều đối tượng lõi khác.",
+            "Các API observer của trình duyệt như `MutationObserver`, `IntersectionObserver` và `ResizeObserver` thông báo cho callback về các thay đổi của trang.",
+            "RxJS mô hình hóa luồng giá trị thành các observable mà observer đăng ký theo dõi.",
+            "Java: `java.util.Observable` đã bị đánh dấu deprecated từ Java 9; thay vào đó dùng các interface `java.util.concurrent.Flow` (publisher và subscriber) và các interface event listener."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Mẫu",
+              "Khác với Observer ở điểm nào"
+            ],
+            "rows": [
+              [
+                "Mediator",
+                "Mediator biết các đối tượng tham gia và điều phối chúng; subject chỉ phát và không biết observer làm gì."
+              ],
+              [
+                "Publish-subscribe với broker",
+                "Publisher và subscriber hoàn toàn không biết nhau và giao tiếp qua message broker hoặc event bus, thường giữa các tiến trình."
+              ],
+              [
+                "Command",
+                "Một thông báo có thể mang theo một đối tượng command; Command nói về một yêu cầu, Observer nói về thông báo một-nhiều."
+              ],
+              [
+                "Iterator",
+                "Iterator dựa trên pull (bên tiêu thụ hỏi giá trị kế tiếp); Observer dựa trên push (bên sản xuất gửi giá trị khi chúng xảy ra)."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Observer khác publish-subscribe ở điểm nào?",
+      "a": "Trong mẫu Observer cổ điển, observer đăng ký trực tiếp với subject. Trong publish-subscribe, một broker hoặc kênh sự kiện nằm giữa chúng, nên publisher và subscriber không biết nhau. Nhiều người dùng hai tên này khá lẫn lộn cho cùng một ý tưởng."
+    },
+    {
+      "q": "Làm sao tránh rò rỉ bộ nhớ với mẫu Observer?",
+      "a": "Hủy đăng ký observer khi không còn cần. Trả về một hàm hủy đăng ký từ `subscribe`, hoặc dùng `AbortSignal` với `addEventListener`, giúp dọn dẹp đơn giản."
+    },
+    {
+      "q": "Observer có được gọi đồng bộ không?",
+      "a": "Trong ví dụ trên và trong `EventTarget` và `EventEmitter`, các listener chạy đồng bộ theo thứ tự được thêm. Các thư viện khác có thể gửi thông báo bất đồng bộ, nên hãy xem tài liệu của chúng."
+    },
+    {
+      "q": "Observer có giống lập trình reactive không?",
+      "a": "Lập trình reactive xây dựng trên Observer. Các thư viện như RxJS thêm các toán tử để lọc, kết hợp và biến đổi luồng thông báo, cùng quy tắc cho lỗi và hoàn tất."
+    }
+  ]
+}

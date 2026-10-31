@@ -1,0 +1,153 @@
+{
+  "title": "Pola Prototype: mengkloning objek, deep vs shallow copy, dan contoh TypeScript — cv.cm",
+  "description": "Pola desain Prototype dijelaskan: membuat objek dengan mengkloning instance. Contoh clone() TypeScript, deep vs shallow copy, structuredClone, dan jebakannya.",
+  "h1": "Pola Prototype dijelaskan dengan contoh",
+  "answer": "Prototype adalah pola desain creational yang membuat objek baru dengan menyalin instance yang sudah ada, yaitu prototipe, alih-alih membangunnya dari nol dengan `new`. Setiap prototipe mengimplementasikan method `clone()`, sehingga kode klien dapat menduplikasi objek tanpa mengetahui kelas konkretnya. Pola ini berguna ketika objek mahal untuk dikonfigurasi atau hadir dalam banyak variasi preset. Jebakan utamanya adalah shallow copy: objek bersarang harus ikut disalin, atau klon dan aslinya akan berbagi objek tersebut.",
+  "sections": [
+    {
+      "h": "Tujuan",
+      "body": [
+        "Menentukan jenis objek yang dibuat dengan instance prototipikal, dan membuat objek baru dengan menyalin prototipe ini. Pola Prototype adalah salah satu dari lima pola creational dalam buku Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Masalah yang diselesaikan",
+      "body": [
+        "Bayangkan editor diagram dengan palet bentuk preset: kotak peringatan merah, catatan biru, lencana \"selesai\" hijau. Setiap preset punya ukuran, warna, font, dan daftar aturan gaya. Ketika pengguna menyeret preset ke kanvas, editor membutuhkan bentuk baru yang independen dan dimulai tepat dengan pengaturan itu.",
+        "Tanpa pola ini, editor membutuhkan fungsi pembuat terpisah untuk setiap preset, dan harus mengenal setiap kelas bentuk konkret. Lebih buruk lagi, preset yang didefinisikan pengguna saat runtime tidak dapat dibuat sama sekali, karena tidak ada kode yang mengetahui pengaturannya sebelumnya. Dengan pola Prototype, editor cukup memanggil `preset.clone()`."
+      ]
+    },
+    {
+      "h": "Struktur dan peserta",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Peserta",
+              "Tanggung jawab",
+              "Dalam contoh"
+            ],
+            "rows": [
+              [
+                "Prototype",
+                "Mendeklarasikan interface untuk mengkloning dirinya sendiri.",
+                "`Shape` dengan `clone()`"
+              ],
+              [
+                "ConcretePrototype",
+                "Mengimplementasikan `clone()` dengan menyalin state miliknya sendiri.",
+                "`Box`"
+              ],
+              [
+                "Klien",
+                "Membuat objek baru dengan meminta prototipe mengkloning dirinya.",
+                "kode editor"
+              ],
+              [
+                "Prototype registry (opsional)",
+                "Menyimpan prototipe bernama agar klien dapat mencarinya.",
+                "map `palette`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi TypeScript",
+      "body": [
+        "`clone()` menyalin setiap field, termasuk objek dan array bersarang, sehingga salinan independen dari aslinya:",
+        {
+          "code": "interface Shape {\n  clone(): Shape;\n  describe(): string;\n}\n\nclass Box implements Shape {\n  constructor(\n    public width: number,\n    public height: number,\n    public style: { fill: string; border: string },\n    public tags: string[],\n  ) {}\n\n  clone(): Box {\n    // copy nested objects too, so the clone shares nothing mutable\n    return new Box(this.width, this.height, { ...this.style }, [...this.tags]);\n  }\n\n  describe(): string {\n    return `${this.width}x${this.height} ${this.style.fill} [${this.tags.join(\", \")}]`;\n  }\n}\n\n// A registry of named prototypes, which could also be filled at run time.\nconst palette = new Map<string, Shape>([\n  [\"warning\", new Box(120, 40, { fill: \"red\", border: \"black\" }, [\"alert\"])],\n  [\"note\", new Box(160, 80, { fill: \"blue\", border: \"none\" }, [])],\n]);\n\nconst a = palette.get(\"warning\")!.clone() as Box;\na.width = 200;\na.tags.push(\"urgent\");\nconsole.log(a.describe());                        // 200x40 red [alert, urgent]\nconsole.log(palette.get(\"warning\")!.describe());  // 120x40 red [alert]",
+          "lang": "typescript"
+        },
+        "Editor tidak pernah menyebut `Box`. Preset baru adalah entri baru di registry, bukan kelas baru atau fungsi pembuat baru."
+      ]
+    },
+    {
+      "h": "Shallow copy versus deep copy",
+      "body": [
+        "Bug paling umum pada pola Prototype adalah klon yang berbagi objek bersarang dengan aslinya. Salinan dengan spread bersifat shallow: hanya menyalin tingkat teratas.",
+        {
+          "code": "const original = { name: \"note\", style: { fill: \"blue\" } };\n\nconst shallow = { ...original };\nshallow.style.fill = \"green\";\nconsole.log(original.style.fill); // green (shared object was changed)\n\nconst deep = structuredClone(original);\ndeep.style.fill = \"yellow\";\nconsole.log(original.style.fill); // green (unchanged)",
+          "lang": "typescript"
+        },
+        "`structuredClone()` sudah tersedia di browser modern dan Node.js serta menyalin data biasa secara deep, termasuk objek bersarang, array, `Map`, `Set`, dan `Date`. Fungsi ini punya dua batasan yang penting di sini:",
+        {
+          "ul": [
+            "Instance kelas kembali sebagai objek biasa: salinan kehilangan prototype-nya, sehingga method seperti `describe()` hilang.",
+            "Fungsi dan node DOM tidak dapat dikloning; `structuredClone()` melempar `DataCloneError`."
+          ]
+        },
+        {
+          "note": "Untuk kelas, tulis method `clone()` eksplisit seperti pada contoh utama. Cara ini mendokumentasikan field mana yang disalin secara deep dan mempertahankan kelas salinan."
+        }
+      ]
+    },
+    {
+      "h": "Kapan memakainya, dan kapan tidak",
+      "body": [
+        "Gunakan pola Prototype ketika:",
+        {
+          "ul": [
+            "Objek mahal untuk disiapkan (dimuat dari file, dihitung, dikonfigurasi dalam banyak langkah) dan Anda butuh banyak salinan yang mirip.",
+            "Kumpulan varian didefinisikan saat runtime, misalnya preset atau templat yang dibuat pengguna.",
+            "Anda ingin membuat objek tanpa bergantung pada kelas konkretnya, dan tanpa hierarki factory paralel."
+          ]
+        },
+        "Hindari ketika:",
+        {
+          "ul": [
+            "Objek murah dan sederhana untuk dibuat. Memanggil konstruktor atau fungsi factory lebih jelas.",
+            "Objek menyimpan sumber daya yang tidak boleh diduplikasi, seperti file terbuka, socket, atau ID unik. Mengkloningnya membutuhkan penanganan khusus.",
+            "Objek punya referensi melingkar dan kepemilikan yang rumit, sehingga deep copy yang benar sulit dilakukan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pemakaian di dunia nyata",
+      "body": [
+        {
+          "ul": [
+            "JavaScript sendiri berbasis prototipe: `Object.create(proto)` membuat objek baru yang mewarisi dari objek yang sudah ada. Ini terkait tetapi tidak identik dengan pola ini, karena objek baru mendelegasikan ke prototipenya alih-alih menyalinnya.",
+            "DOM: `node.cloneNode(true)` menyalin elemen beserta anak-anaknya secara deep, cara umum untuk mencetak fragmen UI yang berulang.",
+            "Java: kelas dapat mengimplementasikan interface `Cloneable` dan meng-override `Object.clone()`, meskipun banyak developer Java lebih suka copy constructor.",
+            "Game engine dan editor biasanya memunculkan objek baru dari templat yang sudah dikonfigurasi (sering disebut prefab)."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Pola terkait",
+      "body": [
+        {
+          "ul": [
+            "Pola Abstract Factory: factory dapat menyimpan sekumpulan prototipe dan membuat produk dengan mengkloningnya, tanpa perlu satu subkelas factory per keluarga.",
+            "Pola Factory Method: membuat objek lewat subkelas; pola Prototype menghindari subkelas itu dengan menyalin instance.",
+            "Pola Composite dan pola Decorator: desain yang banyak memakainya sering diuntungkan oleh pola Prototype, karena menyalin struktur yang sudah dikonfigurasi lebih mudah daripada membangunnya ulang.",
+            "Pola Memento: juga menyalin state objek, tetapi untuk memulihkannya nanti, bukan untuk membuat objek independen baru."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah pola Prototype sama dengan prototype JavaScript?",
+      "a": "Tidak. Prototype JavaScript adalah mekanisme bahasa untuk inheritance: objek mendelegasikan properti yang tidak ada ke prototipenya. Pola Prototype membuat salinan objek yang independen."
+    },
+    {
+      "q": "Haruskah clone() membuat deep atau shallow copy?",
+      "a": "Biasanya deep untuk data bersarang yang mutable, agar klon dan aslinya tidak saling memengaruhi. Nilai immutable dan sumber daya read-only bersama aman tetap dibagi."
+    },
+    {
+      "q": "Bisakah saya memakai structuredClone() untuk mengimplementasikan clone()?",
+      "a": "Hanya untuk objek data biasa. Untuk instance kelas, `structuredClone()` mengembalikan objek biasa tanpa method, jadi tulis sendiri logika penyalinannya atau bangun ulang instance dengan konstruktornya."
+    },
+    {
+      "q": "Kapan pola Prototype lebih baik daripada factory?",
+      "a": "Ketika variannya banyak, dikonfigurasi saat runtime, atau mahal untuk disiapkan. Mengkloning instance jadi lebih sederhana daripada menulis fungsi pembuat untuk setiap varian."
+    }
+  ]
+}

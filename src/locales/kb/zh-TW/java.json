@@ -1,0 +1,193 @@
+{
+  "title": "Java 入門教學：類別、型別、集合與例外處理 — cv.cm",
+  "description": "一頁學會 Java：安裝 JDK 並執行 Hello world、基本型別、流程控制、方法、類別、record、集合、例外處理與完整範例。",
+  "h1": "Java 入門教學",
+  "answer": "Java 是靜態型別的物件導向語言，編譯成位元組碼後在 Java 虛擬機器（JVM）上執行，可跨作業系統運作。安裝 JDK 後，將類別存成 `Hello.java`，再執行 `java Hello.java` 即可。核心概念包括類別與物件、基本型別與參考型別、集合框架（`List`、`Map`、`Set`）、受檢例外，以及 record、`var` 與模式比對等較新的功能。",
+  "sections": [
+    {
+      "h": "Java 是什麼，用來做什麼",
+      "body": [
+        "Java 由 Sun Microsystems 於 1995 年發布，現在由開放的 OpenJDK 專案開發，Oracle 是主要維護者。它的承諾是「一次撰寫，到處執行」：編譯器產生位元組碼，再由 JVM 在 Windows、macOS 與 Linux 上執行。Java 用於大型企業後端（常搭配 Spring Boot）、Android 應用程式（與 Kotlin 並行）、Apache Kafka 與 Hadoop 等大數據工具，以及許多桌面與嵌入式系統。新版本每六個月發布一次，正式環境通常選用 Java 21 這類長期支援（LTS）版本。"
+      ]
+    },
+    {
+      "h": "安裝 JDK 並執行 Hello, world",
+      "body": [
+        "請安裝 JDK（Java Development Kit），例如 Eclipse Temurin 這類 OpenJDK 發行版或 Oracle 的 JDK，並用 `java -version` 確認。每個 Java 程式都存在於類別中，執行從 `main` 開始。",
+        {
+          "code": "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world\");\n    }\n}",
+          "lang": "java"
+        },
+        {
+          "code": "java Hello.java        # run a single source file directly\n# Hello, world\njavac Hello.java       # or compile to Hello.class first\njava Hello",
+          "lang": "shell"
+        },
+        "檔名必須與 public 類別名稱相同（`class Hello` 對應 `Hello.java`）。"
+      ]
+    },
+    {
+      "h": "變數與基本型別",
+      "body": [
+        "Java 有八種基本型別（primitive type），直接以值儲存，另外還有參考型別（例如 `String` 這類物件與陣列）。每個變數都有固定的型別；在方法內，`var` 可讓編譯器根據初始值推論型別。",
+        {
+          "table": {
+            "head": [
+              "型別",
+              "大小",
+              "範例"
+            ],
+            "rows": [
+              [
+                "`int`",
+                "32 位元",
+                "`int n = 42;`"
+              ],
+              [
+                "`long`",
+                "64 位元",
+                "`long big = 10_000_000_000L;`"
+              ],
+              [
+                "`double`",
+                "64 位元浮點數",
+                "`double pi = 3.14159;`"
+              ],
+              [
+                "`boolean`",
+                "true/false",
+                "`boolean ok = true;`"
+              ],
+              [
+                "`char`",
+                "16 位元 UTF-16 單元",
+                "`char c = 'A';`"
+              ],
+              [
+                "`byte`, `short`, `float`",
+                "8、16、32 位元",
+                "較少使用"
+              ],
+              [
+                "`String`",
+                "參考型別",
+                "`String s = \"hi\";`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "int count = 7;\ndouble avg = count / 2;          // 3.0, integer division happens first\ndouble avg2 = count / 2.0;       // 3.5\nvar name = \"Ada\";                // inferred as String\nString msg = name + \" has \" + count + \" items\";\nSystem.out.println(msg);         // Ada has 7 items\nSystem.out.println(Integer.parseInt(\"12\") + 1); // 13",
+          "lang": "java"
+        },
+        "這只是程式片段：請把這類陳述式放進 `main` 之類的方法中。"
+      ]
+    },
+    {
+      "h": "流程控制",
+      "body": [
+        {
+          "code": "int score = 72;\nif (score >= 90) {\n    System.out.println(\"A\");\n} else if (score >= 70) {\n    System.out.println(\"B\");     // B\n} else {\n    System.out.println(\"C\");\n}\nfor (int i = 0; i < 3; i++) {\n    System.out.println(i);       // 0, 1, 2\n}\nString day = \"SAT\";\nString kind = switch (day) {     // switch expression\n    case \"SAT\", \"SUN\" -> \"weekend\";\n    default -> \"weekday\";\n};\nSystem.out.println(kind);        // weekend",
+          "lang": "java"
+        },
+        "Java 還有 `while`、`do`/`while`，以及走訪陣列與集合的增強式 `for (String s : list)` 迴圈。"
+      ]
+    },
+    {
+      "h": "方法、類別與 record",
+      "body": [
+        "類別把欄位（資料）與方法（行為）組合在一起。`static` 方法屬於類別本身；其他方法則要在以 `new` 建立的物件上呼叫。`record` 是宣告不可變資料類別的簡潔寫法：編譯器會自動產生建構子、存取方法、`equals`、`hashCode` 與 `toString`。",
+        {
+          "code": "public class Shapes {\n    static double square(double x) {\n        return x * x;\n    }\n    static class Counter {\n        private int value;\n        void increment() { value++; }\n        int get() { return value; }\n    }\n    record Point(int x, int y) {\n        double distance() { return Math.sqrt(x * x + y * y); }\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));        // 16.0\n        Counter c = new Counter();\n        c.increment();\n        c.increment();\n        System.out.println(c.get());          // 2\n        Point p = new Point(3, 4);\n        System.out.println(p + \" \" + p.distance()); // Point[x=3, y=4] 5.0\n    }\n}",
+          "lang": "java"
+        },
+        "類別可以繼承一個父類別（`extends`），並實作多個介面（`implements`）。欄位通常是 `private`，透過方法來存取。"
+      ]
+    },
+    {
+      "h": "集合：List、Map 與 Set",
+      "body": [
+        "`java.util` 中的集合框架提供可調整大小的資料結構。集合存放的是物件，所以基本型別會自動裝箱（`int` 變成 `Integer`）。",
+        {
+          "code": "import java.util.*;\npublic class Collections101 {\n    public static void main(String[] args) {\n        List<Integer> nums = new ArrayList<>(List.of(3, 1, 2));\n        nums.add(5);\n        Collections.sort(nums);\n        System.out.println(nums + \" \" + nums.get(0));  // [1, 2, 3, 5] 1\n        Map<String, Integer> ages = new HashMap<>();\n        ages.put(\"ann\", 31);\n        ages.put(\"bob\", 25);\n        System.out.println(ages.getOrDefault(\"zed\", 0)); // 0\n        Set<String> tags = new TreeSet<>(List.of(\"b\", \"a\", \"b\"));\n        System.out.println(tags);                        // [a, b]\n        List<Integer> evensSquared = nums.stream()\n            .filter(n -> n % 2 == 0)\n            .map(n -> n * n)\n            .toList();\n        System.out.println(evensSquared);                // [4]\n    }\n}",
+          "lang": "java"
+        },
+        "最後一個陳述式使用了串流（stream）與 lambda，這是轉換集合的函數式風格。`List.of` 會建立不可變的 list；需要修改時，請用 `new ArrayList<>(...)` 包起來。"
+      ]
+    },
+    {
+      "h": "招牌特色：靜態型別、介面與模式比對",
+      "body": [
+        "介面定義了許多類別都能實作的契約，這是大多數 Java 設計的基礎。現代 Java 加入了模式比對：`instanceof` 與 `switch` 可以在同一步驟中測試型別並綁定變數。密封介面（sealed interface，Java 17 起）會列出所有允許的實作，因此編譯器能檢查 `switch` 是否涵蓋所有情況。",
+        {
+          "code": "public class Areas {\n    sealed interface Shape permits Circle, Rect {}\n    record Circle(double r) implements Shape {}\n    record Rect(double w, double h) implements Shape {}\n    static double area(Shape s) {\n        return switch (s) {\n            case Circle c -> Math.PI * c.r() * c.r();\n            case Rect r -> r.w() * r.h();\n        };\n    }\n    public static void main(String[] args) {\n        System.out.println(area(new Rect(2, 3)));  // 6.0\n    }\n}",
+          "lang": "java"
+        },
+        "這樣的 `switch` 模式比對在 Java 21 LTS 及之後已是標準功能。"
+      ]
+    },
+    {
+      "h": "例外處理",
+      "body": [
+        "錯誤即例外。受檢例外（checked exception，例如 `IOException`）必須被捕捉或以 `throws` 宣告；非受檢例外（`RuntimeException` 的子類別，例如 `NullPointerException`）則不需要。`try`-with-resources 會自動關閉檔案與連線。",
+        {
+          "code": "import java.io.*;\nimport java.nio.file.*;\npublic class ReadFirst {\n    static int parseAge(String text) {\n        int age = Integer.parseInt(text);   // may throw NumberFormatException\n        if (age < 0) throw new IllegalArgumentException(\"negative age\");\n        return age;\n    }\n    public static void main(String[] args) {\n        try {\n            System.out.println(parseAge(\"abc\"));\n        } catch (NumberFormatException e) {\n            System.out.println(\"not a number\");  // not a number\n        }\n        try (BufferedReader in = Files.newBufferedReader(Path.of(\"notes.txt\"))) {\n            System.out.println(in.readLine());\n        } catch (IOException e) {\n            System.out.println(\"cannot read: \" + e.getMessage());\n        }\n    }\n}",
+          "lang": "java"
+        }
+      ]
+    },
+    {
+      "h": "完整的小程式：單字計數器",
+      "body": [
+        {
+          "code": "import java.io.IOException;\nimport java.nio.file.*;\nimport java.util.*;\npublic class WordCount {\n    public static void main(String[] args) throws IOException {\n        if (args.length != 1) {\n            System.err.println(\"usage: java WordCount.java FILE\");\n            System.exit(1);\n        }\n        String text = Files.readString(Path.of(args[0])).toLowerCase();\n        Map<String, Integer> counts = new HashMap<>();\n        for (String word : text.split(\"[^a-z']+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        counts.entrySet().stream()\n            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())\n            .limit(5)\n            .forEach(e -> System.out.printf(\"%5d  %s%n\", e.getValue(), e.getKey()));\n    }\n}",
+          "lang": "java"
+        },
+        "以 `java WordCount.java notes.txt` 執行。它會印出出現次數最多的五個單字及其次數。"
+      ]
+    },
+    {
+      "h": "初學者常見錯誤",
+      "body": [
+        {
+          "note": "比較字串請用 `a.equals(b)`，不要用 `a == b`。`==` 運算子檢查的是兩個參照是否指向同一個物件，內容相同的文字也可能得到 false。"
+        },
+        {
+          "ul": [
+            "整數除法：`5 / 2` 的結果是 `2`。讓其中一邊是 `double` 才會得到 `2.5`。",
+            "對 `null` 呼叫方法會拋出 `NullPointerException`。請檢查 `null`，或對可能缺少的值使用 `Optional`。",
+            "試圖修改以 `List.of` 建立的 list，會拋出 `UnsupportedOperationException`。",
+            "忘記陣列與 `List` 的索引從 0 開始，所以最後一個元素在 `length - 1`。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "接下來學什麼",
+      "body": [
+        "跟著 Java 官方開發者網站 dev.java 上的學習路徑學習，並隨時打開 Java SE API 文件當作參考。接著學習建置工具（Maven 或 Gradle）、使用 JUnit 進行單元測試，再學習 Spring Boot 等框架來開發網路服務。同樣執行在 JVM 上的 Kotlin 是很自然的下一個語言。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Java 很難學嗎？",
+      "a": "Java 比 Python 更冗長，因為你要宣告型別並把程式碼放進類別，但它的規則一致，編譯器也會及早指出錯誤。許多大學把它當作第一門程式語言。"
+    },
+    {
+      "q": "JDK 和 JVM 有什麼差別？",
+      "a": "JVM 負責執行編譯好的位元組碼。JDK 則是完整的開發工具包：包含 JVM、編譯器 `javac`、標準函式庫與各種工具。開發者要安裝的是 JDK。"
+    },
+    {
+      "q": "應該學哪個 Java 版本？",
+      "a": "請學目前的長期支援版本，例如 Java 21 或更新的 LTS。舊程式碼仍能在新的 JVM 上執行，所以學會現代寫法也能應用在既有專案上。"
+    },
+    {
+      "q": "Java 和 JavaScript 一樣嗎？",
+      "a": "不一樣。雖然名稱相似，但它們是兩種不同的語言，型別系統、執行環境與用途都不同。"
+    },
+    {
+      "q": "現在還有人用 Java 嗎？",
+      "a": "有。它仍然是企業後端、Android 與資料基礎架構中最常用的語言之一。"
+    }
+  ]
+}

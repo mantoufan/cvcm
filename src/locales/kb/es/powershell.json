@@ -1,0 +1,190 @@
+{
+  "title": "Tutorial de PowerShell: cmdlets, canalización, variables y scripts — cv.cm",
+  "description": "Aprende scripting en PowerShell paso a paso: ejecutar un script .ps1, cmdlets y la canalización de objetos, variables, operadores, funciones, hashtables y errores con try/catch.",
+  "h1": "Tutorial de PowerShell para principiantes",
+  "answer": "PowerShell es la shell y el lenguaje de scripting multiplataforma de Microsoft para automatizar tareas. Sus comandos, llamados cmdlets, pasan objetos .NET por la canalización en lugar de texto plano, así que puedes filtrar, ordenar y exportar datos sin analizar texto. Esta página cubre la instalación de PowerShell 7, la ejecución de scripts, los cmdlets, las variables, los operadores, el control de flujo, las funciones, las colecciones y el manejo de errores.",
+  "sections": [
+    {
+      "h": "Qué es PowerShell y para qué se usa",
+      "body": [
+        "PowerShell es una shell y un lenguaje de scripting multiplataforma de Microsoft, construido sobre .NET. A diferencia de las shells tradicionales, que pasan texto plano entre comandos, PowerShell pasa objetos .NET con propiedades y métodos, de modo que puedes filtrar y ordenar datos sin analizar texto.",
+        "Los administradores de sistemas y los ingenieros DevOps usan PowerShell para automatizar Windows, administrar Active Directory, Microsoft 365 y Azure, y escribir scripts de compilación y despliegue. Hay dos ediciones: Windows PowerShell 5.1, incluida en Windows, y PowerShell 7 y posteriores (el comando se llama `pwsh`), que es de código abierto y funciona en Windows, Linux y macOS. Este tutorial se centra en PowerShell 7."
+      ]
+    },
+    {
+      "h": "Instala PowerShell y ejecuta Hola, mundo",
+      "body": [
+        "En Windows, instala PowerShell 7 con `winget install --id Microsoft.PowerShell --source winget`; en macOS y Linux, usa Homebrew o el gestor de paquetes descrito en la guía de instalación de Microsoft. Los scripts son archivos de texto con la extensión `.ps1`.",
+        {
+          "code": "# hello.ps1\nWrite-Output \"Hello, world!\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./hello.ps1\n# Hello, world!",
+          "lang": "shell"
+        },
+        "En Windows, la política de ejecución puede bloquear los scripts. `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` permite tus propios scripts locales y sigue exigiendo que los scripts descargados estén firmados. Visual Studio Code con la extensión de PowerShell es el editor recomendado."
+      ]
+    },
+    {
+      "h": "Cmdlets y la canalización",
+      "body": [
+        "Los comandos se llaman cmdlets y siguen el patrón de nombre `Verb-Noun`, como `Get-Process`, `Set-Location` o `New-Item`. Tres cmdlets te ayudan a explorar todo lo demás: `Get-Command`, `Get-Help` y `Get-Member`.",
+        {
+          "code": "Get-Command -Noun Process          # list commands that work with processes\nGet-Help Get-ChildItem -Examples   # show usage examples\n\n# five processes using the most memory\nGet-Process |\n    Sort-Object -Property WorkingSet64 -Descending |\n    Select-Object -First 5 -Property Name, Id, WorkingSet64\n\n# files larger than 1 MB in the current folder\nGet-ChildItem -File | Where-Object { $_.Length -gt 1MB } |\n    ForEach-Object { \"{0}  {1:N0} KB\" -f $_.Name, ($_.Length / 1KB) }\n\nGet-Date | Get-Member -MemberType Property   # inspect an object",
+          "lang": "powershell"
+        },
+        "Dentro de un bloque de script, `$_` (o `$PSItem`) es el objeto actual de la canalización. Como los objetos conservan sus tipos, `Sort-Object` ordena los números numéricamente y las fechas cronológicamente sin trabajo adicional."
+      ]
+    },
+    {
+      "h": "Variables y tipos",
+      "body": [
+        "Las variables empiezan con `$`. Pueden contener cualquier objeto .NET y puedes añadir una restricción de tipo entre corchetes. Las cadenas entre comillas dobles expanden variables y expresiones `$( )`; las cadenas entre comillas simples son literales.",
+        {
+          "code": "$name = \"Ada\"\n[int]$count = 3\n$price = 19.99                      # System.Double\n$isAdmin = $false\n$today = Get-Date\n\n\"Hello, $name\"                      # Hello, Ada\n\"Next: $($count + 1)\"               # Next: 4\n'No $expansion here'                # No $expansion here\n$price.GetType().Name               # Double\n$today.ToString(\"yyyy-MM-dd\")       # for example 2026-10-31\n[int]\"42\" + 1                       # 43 (explicit conversion)",
+          "lang": "powershell"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`[int]`",
+                "`42`",
+                "entero de 32 bits"
+              ],
+              [
+                "`[double]`",
+                "`3.14`",
+                "coma flotante; usa `[decimal]` para dinero"
+              ],
+              [
+                "`[string]`",
+                "`\"text\"`",
+                "las comparaciones no distinguen mayúsculas de minúsculas de forma predeterminada"
+              ],
+              [
+                "`[bool]`",
+                "`$true`, `$false`",
+                "variables automáticas, no palabras clave"
+              ],
+              [
+                "`[datetime]`",
+                "`Get-Date`",
+                "objeto .NET `DateTime` completo"
+              ],
+              [
+                "`[array]`, `[hashtable]`",
+                "`@(1, 2)`, `@{ a = 1 }`",
+                "colecciones, que se explican más abajo"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Operadores y control de flujo",
+      "body": [
+        "Los operadores de comparación son palabras, no símbolos: `-eq`, `-ne`, `-gt`, `-lt`, `-ge`, `-le`, `-like` (comodines), `-match` (expresiones regulares) y `-contains`. Las comparaciones de cadenas no distinguen mayúsculas de minúsculas, salvo que uses las versiones con `c`, como `-ceq`.",
+        {
+          "code": "$temp = 22\nif ($temp -gt 30) {\n    \"hot\"\n} elseif ($temp -ge 15) {\n    \"mild\"                           # mild\n} else {\n    \"cold\"\n}\n\nswitch (\"report.csv\") {\n    { $_ -like \"*.csv\" } { \"CSV file\" }    # CSV file\n    { $_ -like \"*.txt\" } { \"text file\" }\n    default { \"other\" }\n}\n\nforeach ($n in 1..3) { \"n = $n\" }          # n = 1, n = 2, n = 3\nfor ($i = 0; $i -lt 2; $i++) { \"i = $i\" }  # i = 0, i = 1\n$k = 3\nwhile ($k -gt 0) { $k-- }\n\"Hello\" -eq \"hello\"                        # True",
+          "lang": "powershell"
+        },
+        {
+          "note": "Usar `>` o `=` para comparar es el error clásico: `if ($a > 5)` redirige `$a` a un archivo llamado `5`, y `=` asigna. Usa `-gt` y `-eq`. Al comparar con `$null`, pon `$null` a la izquierda (`$null -eq $x`) para que los arreglos no se filtren por accidente."
+        }
+      ]
+    },
+    {
+      "h": "Funciones y parámetros",
+      "body": [
+        "Las funciones usan bloques `param()` para declarar parámetros con tipo y nombre. Añadir `[CmdletBinding()]` da a una función los mismos parámetros comunes que los cmdlets integrados, como `-Verbose`. Cualquier salida que no se capture se convierte en el valor de retorno de la función.",
+        {
+          "code": "function Get-Greeting {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory)]\n        [string]$Name,\n        [string]$Greeting = \"Hello\"\n    )\n    Write-Verbose \"Building greeting for $Name\"\n    \"$Greeting, $Name!\"\n}\n\nGet-Greeting -Name \"Ann\"                  # Hello, Ann!\nGet-Greeting -Name \"Bo\" -Greeting \"Hi\"    # Hi, Bo!\nGet-Greeting \"Cy\" -Verbose                # also prints the verbose message",
+          "lang": "powershell"
+        },
+        "Llama a las funciones como a los cmdlets, con espacios entre los argumentos: `Get-Greeting -Name Ann`. Escribir `Get-Greeting(\"Ann\", \"Hi\")` pasa un único argumento de tipo arreglo, una sorpresa frecuente para quienes vienen de otros lenguajes."
+      ]
+    },
+    {
+      "h": "Arreglos, hashtables y objetos personalizados",
+      "body": [
+        "Los arreglos se crean con `@( )` o con una lista separada por comas. Las hashtables, escritas `@{ }`, almacenan pares clave-valor. `[pscustomobject]` convierte una hashtable en un objeto que funciona bien con `Sort-Object`, `Format-Table` y `Export-Csv`.",
+        {
+          "code": "$langs = @(\"PowerShell\", \"Python\")\n$langs += \"Go\"                       # creates a new, longer array\n$langs.Count                         # 3\n$langs[0]                            # PowerShell\n$langs -contains \"Go\"                # True\n\n$ports = @{ http = 80; https = 443 }\n$ports[\"ssh\"] = 22\n$ports.https                         # 443\n$ports.Keys.Count                    # 3\n\n$user = [pscustomobject]@{ Name = \"Ann\"; Age = 31 }\n$user.Name                           # Ann\n$people = @(\n    [pscustomobject]@{ Name = \"Bo\"; Age = 25 }\n    $user\n)\n$people | Sort-Object Age | Format-Table",
+          "lang": "powershell"
+        },
+        "Añadir a un arreglo con `+=` copia todo el arreglo cada vez. En bucles grandes, recoge directamente la salida del bucle (`$result = foreach (...) { ... }`) o usa un `[System.Collections.Generic.List[object]]`."
+      ]
+    },
+    {
+      "h": "Manejo de errores",
+      "body": [
+        "PowerShell tiene errores terminantes, que detienen la ejecución, y errores no terminantes, que muestran un mensaje y continúan. `try`/`catch`/`finally` solo captura errores terminantes, así que añade `-ErrorAction Stop` a un cmdlet cuando quieras capturar sus fallos.",
+        {
+          "code": "try {\n    $content = Get-Content -Path \"missing.txt\" -ErrorAction Stop\n}\ncatch [System.Management.Automation.ItemNotFoundException] {\n    Write-Warning \"File not found: $($_.Exception.Message)\"\n}\ncatch {\n    Write-Error \"Unexpected error: $_\"\n}\nfinally {\n    \"cleanup done\"\n}\n\n$ErrorActionPreference = \"Stop\"   # make all errors terminating in this script\nthrow \"Something went wrong\"      # raise your own terminating error",
+          "lang": "powershell"
+        },
+        "Dentro de `catch`, `$_` es el registro del error. Establecer `$ErrorActionPreference = \"Stop\"` al principio de un script es una forma habitual de fallar rápido."
+      ]
+    },
+    {
+      "h": "Un script pequeño y completo: informe de uso de disco",
+      "body": [
+        "Este script lista los archivos más grandes de una carpeta, los agrupa por extensión y exporta un informe en CSV. Combina parámetros, la canalización, propiedades calculadas y manejo de errores.",
+        {
+          "code": "# report.ps1\nparam(\n    [string]$Path = \".\",\n    [int]$Top = 5\n)\n$ErrorActionPreference = \"Stop\"\n\n$files = Get-ChildItem -Path $Path -File -Recurse\n\n\"Largest $Top files:\"\n$files | Sort-Object Length -Descending | Select-Object -First $Top |\n    Format-Table Name, @{ Name = \"SizeKB\"; Expression = { [math]::Round($_.Length / 1KB, 1) } }\n\n$byExt = $files | Group-Object Extension | ForEach-Object {\n    [pscustomobject]@{\n        Extension = if ($_.Name) { $_.Name } else { \"(none)\" }\n        Files     = $_.Count\n        TotalMB   = [math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)\n    }\n} | Sort-Object TotalMB -Descending\n\n$byExt | Format-Table\n$byExt | Export-Csv -Path \"usage.csv\" -NoTypeInformation\n\"Report saved to usage.csv\"",
+          "lang": "powershell"
+        },
+        {
+          "code": "pwsh ./report.ps1 -Path ~/Documents -Top 3",
+          "lang": "shell"
+        },
+        {
+          "note": "Errores habituales de principiantes: usar `>`, `<` o `==` en lugar de `-gt`, `-lt` y `-eq`; llamar a las funciones con paréntesis y comas; olvidar `-ErrorAction Stop` dentro de `try`; usar `Write-Host` para datos (escribe en la pantalla, no en la canalización, así que es mejor `Write-Output` o valores sueltos); y confundir Windows PowerShell 5.1 con PowerShell 7."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "PowerShell 101 y la documentación de PowerShell en Microsoft Learn.",
+            "`Get-Help about_*` en la shell, por ejemplo `Get-Help about_Operators`; ejecuta antes `Update-Help`.",
+            "La PowerShell Gallery, el repositorio oficial de módulos, que se usa con `Install-Module`.",
+            "PSScriptAnalyzer, un linter que revisa los scripts según las prácticas recomendadas."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre PowerShell y Windows PowerShell?",
+      "a": "Windows PowerShell 5.1 es la edición más antigua, incluida en Windows y basada en .NET Framework. PowerShell 7 y posteriores es la edición multiplataforma y de código abierto basada en el .NET moderno, y se inicia con el comando `pwsh`."
+    },
+    {
+      "q": "¿PowerShell es lo mismo que el Símbolo del sistema?",
+      "a": "No. El Símbolo del sistema (`cmd.exe`) ejecuta comandos por lotes y pasa texto. PowerShell es un lenguaje de scripting completo que pasa objetos, aunque también puede ejecutar la mayoría de los programas de línea de comandos."
+    },
+    {
+      "q": "¿PowerShell funciona en Linux y macOS?",
+      "a": "Sí. PowerShell 7 y posteriores funciona en Windows, Linux y macOS, aunque algunos módulos específicos de Windows solo están disponibles en Windows."
+    },
+    {
+      "q": "¿Por qué no puedo ejecutar mi script .ps1?",
+      "a": "Es posible que la política de ejecución de Windows lo bloquee. Ejecuta `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` e inicia los scripts con una ruta, como `./script.ps1`."
+    },
+    {
+      "q": "¿Qué significa $_ en PowerShell?",
+      "a": "`$_` (también `$PSItem`) es el objeto actual de la canalización; se usa dentro de bloques de script de cmdlets como `Where-Object` y `ForEach-Object`, y dentro de `catch` es el error actual."
+    }
+  ]
+}

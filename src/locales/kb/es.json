@@ -44,5 +44,41 @@
         "a": "Un tutorial guía paso a paso por una tarea concreta. Un artículo de conocimientos explica la idea que hay detrás, como el funcionamiento de un formato o de una fórmula, para que puedas tomar tus propias decisiones."
       }
     ]
+  },
+  "codeHub": {
+    "kicker": "Programación",
+    "all": "Todos los tutoriales de programación",
+    "title": "Tutoriales de programación: lenguajes, patrones de diseño y algoritmos — cv.cm",
+    "description": "Tutoriales gratis de una página para Python, JavaScript, Java, C++, Go, Rust y más, los 23 patrones de diseño y las estructuras de datos y algoritmos básicos, con código.",
+    "h1": "Tutoriales de programación",
+    "lede": "Aprende un lenguaje de programación, un patrón de diseño o un algoritmo en una página. Cada tutorial responde primero a la pregunta y luego muestra código que funciona, los errores habituales y las referencias oficiales.",
+    "groups": {
+      "languages": "Lenguajes de programación",
+      "patterns": "Patrones de diseño",
+      "structures": "Estructuras de datos",
+      "algorithms": "Algoritmos"
+    },
+    "about": [
+      "Los tutoriales de lenguajes empiezan por instalar las herramientas e imprimir Hello, world, y siguen con funciones, colecciones, manejo de errores y un pequeño programa completo. Las páginas de patrones explican el problema que resuelve cada patrón de la Banda de los Cuatro, con un ejemplo en TypeScript y cuándo no usarlo. Las de estructuras de datos y algoritmos recorren un ejemplo paso a paso, dan código en Python e indican la complejidad en tiempo y espacio.",
+      "Los ejemplos de código son breves y funcionan tal cual, y cada página enlaza a la documentación del lenguaje, el estándar o la fuente original con que se comprobó."
+    ],
+    "faq": [
+      {
+        "q": "¿Qué lenguaje de programación conviene aprender primero?",
+        "a": "Para la mayoría, Python o JavaScript: tienen una sintaxis sencilla, comunidades enormes y funcionan en todas partes. Elige JavaScript para sitios web y Python para datos, automatización y programación general."
+      },
+      {
+        "q": "¿Necesito instalar algo para seguir los tutoriales?",
+        "a": "Cada tutorial de lenguaje empieza explicando cómo instalar las herramientas oficiales y ejecutar tu primer programa. Las páginas de patrones y algoritmos usan TypeScript y Python, que puedes ejecutar en tu equipo o en cualquier entorno en línea."
+      },
+      {
+        "q": "¿Son gratis estos tutoriales?",
+        "a": "Sí. Todos se leen gratis y sin cuenta, y los ejemplos de código se pueden reutilizar en tus proyectos."
+      },
+      {
+        "q": "¿Qué diferencia hay entre estructuras de datos y algoritmos?",
+        "a": "Una estructura de datos es una forma de guardar datos, como un array, una tabla hash o un árbol. Un algoritmo es una secuencia de pasos que resuelve un problema, como ordenar o hallar el camino más corto, y su velocidad suele depender de la estructura de datos que usa."
+      }
+    ]
   }
 }

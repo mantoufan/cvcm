@@ -1,0 +1,144 @@
+{
+  "title": "Chain of Responsibility pattern: handlers, middleware and TypeScript example — cv.cm",
+  "description": "Chain of Responsibility passes a request along a chain of handlers until one handles it. Learn its structure, a TypeScript example and middleware uses.",
+  "h1": "Chain of Responsibility pattern explained with examples",
+  "answer": "Chain of Responsibility is a behavioral design pattern that passes a request along a chain of handler objects. Each handler either processes the request or forwards it to the next handler in the chain. The sender does not know which handler will deal with the request, so you can add, remove or reorder handlers without changing the sender. Web middleware and DOM event bubbling are well-known examples.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it. The pattern is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Consider an online shop's support system. A refund request below 50 can be approved by a support agent, up to 500 by a team lead, and anything larger needs a manager. A first version often puts all of this into one function with a long `if`/`else` chain. Every new rule makes that function longer, and the order of checks is hard-coded.",
+        "With Chain of Responsibility, each level becomes its own handler with one rule. The handlers are linked together, and the request enters at the first one. Adding a new approval level means writing one small class and inserting it into the chain."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Handler",
+                "Declares the method for handling requests and keeps a reference to the next handler"
+              ],
+              [
+                "Concrete handler",
+                "Handles the requests it is responsible for; otherwise forwards the request to the next handler"
+              ],
+              [
+                "Client",
+                "Builds the chain (or receives it) and sends the request to the first handler"
+              ]
+            ]
+          }
+        },
+        "There are two common variations. In the classic form, the first handler that can process the request stops the chain. In the pipeline form (used by most middleware), every handler may do some work and then decide whether to call the next one."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "An abstract base class stores the next handler and provides the default forwarding behavior. Each concrete handler overrides `handle` and calls `super.handle` when it cannot decide.",
+        {
+          "code": "type Refund = { amount: number };\nabstract class Approver {\n  private next?: Approver;\n  setNext(next: Approver): Approver {\n    this.next = next;\n    return next; // allows a.setNext(b).setNext(c)\n  }\n  handle(req: Refund): string {\n    return this.next ? this.next.handle(req) : \"rejected: no one can approve \" + req.amount;\n  }\n}\nclass Agent extends Approver {\n  handle(req: Refund): string {\n    return req.amount < 50 ? \"agent approved \" + req.amount : super.handle(req);\n  }\n}\nclass TeamLead extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 500 ? \"team lead approved \" + req.amount : super.handle(req);\n  }\n}\nclass Manager extends Approver {\n  handle(req: Refund): string {\n    return req.amount <= 5000 ? \"manager approved \" + req.amount : super.handle(req);\n  }\n}\nconst chain = new Agent();\nchain.setNext(new TeamLead()).setNext(new Manager());\nfor (const amount of [20, 300, 2000, 9000]) console.log(chain.handle({ amount }));\n// agent approved 20\n// team lead approved 300\n// manager approved 2000\n// rejected: no one can approve 9000",
+          "lang": "typescript"
+        },
+        {
+          "note": "Always decide what happens when no handler accepts the request. Here the last base call returns a rejection. Without such a default, a request can fall off the end of the chain silently."
+        }
+      ]
+    },
+    {
+      "h": "The middleware form with plain functions",
+      "body": [
+        "In TypeScript you do not need classes. A list of functions, each receiving a `next` callback, forms a chain. This is how Express and Koa middleware work.",
+        {
+          "code": "type Req = { user?: string; path: string };\ntype Middleware = (req: Req, next: () => string) => string;\nconst auth: Middleware = (req, next) => (req.user ? next() : \"401 Unauthorized\");\nconst log: Middleware = (req, next) => {\n  console.log(\"request\", req.path);\n  return next();\n};\nconst route = (req: Req) => \"200 OK \" + req.path;\nfunction run(chain: Middleware[], req: Req): string {\n  const step = (i: number): string =>\n    i < chain.length ? chain[i](req, () => step(i + 1)) : route(req);\n  return step(0);\n}\nconsole.log(run([log, auth], { path: \"/admin\" }));\nconsole.log(run([log, auth], { user: \"ana\", path: \"/admin\" }));\n// request /admin\n// 401 Unauthorized\n// request /admin\n// 200 OK /admin",
+          "lang": "typescript"
+        }
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when several objects may handle a request and the right one is decided at runtime.",
+            "Use it when the set or order of handlers should be configurable, for example validation steps, approval levels or HTTP middleware.",
+            "Use it when you want each rule in its own small unit that can be tested alone.",
+            "Do not use it for two or three fixed checks that never change; a simple `if` statement is clearer.",
+            "Be aware that long chains are harder to debug, because it is not obvious from the call site which handler finally acted. Logging inside handlers helps.",
+            "Chains are sensitive to order. Putting authentication after the route handler, for example, defeats its purpose."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Express and Koa middleware: each function receives the request and a `next` function and decides whether to continue.",
+            "DOM event propagation: an event bubbles from the target element up through its ancestors, and any listener can stop it with `event.stopPropagation()`.",
+            "Java servlet filters form a filter chain in which each filter calls `chain.doFilter` to pass the request on.",
+            "Logging frameworks pass log records from a logger to its parent loggers and their handlers."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Chain of Responsibility"
+            ],
+            "rows": [
+              [
+                "Decorator",
+                "Decorators also form a chain of wrappers, but every decorator always runs and forwards; a handler may stop the chain."
+              ],
+              [
+                "Command",
+                "A request in the chain is often a command object; Command is about packaging the request, the chain is about finding who handles it."
+              ],
+              [
+                "Composite",
+                "A parent in a Composite tree is a natural next handler, which is how GUI events bubble up the component tree."
+              ],
+              [
+                "Mediator",
+                "Mediator routes messages through one central object that knows the receivers; a chain passes the request from one handler to the next."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Does every handler in the chain have to process the request?",
+      "a": "No. In the classic form the first handler that can process the request stops the chain. In the middleware form each handler may do some work and then call the next one, so several handlers can act on one request."
+    },
+    {
+      "q": "Is Express middleware an example of Chain of Responsibility?",
+      "a": "Yes. Each middleware function receives the request and a `next` callback, and it either ends the response or calls `next` to pass control to the following middleware."
+    },
+    {
+      "q": "What happens if no handler handles the request?",
+      "a": "That depends on your design. Good practice is to add a default at the end of the chain, such as returning an error, throwing, or logging, so requests are never lost silently."
+    },
+    {
+      "q": "How is it different from a list of if/else statements?",
+      "a": "The logic is the same, but each condition becomes a separate object or function. That makes the chain configurable at runtime and lets you add or reorder steps without editing one large function."
+    }
+  ]
+}

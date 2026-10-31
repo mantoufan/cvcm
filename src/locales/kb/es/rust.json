@@ -1,0 +1,189 @@
+{
+  "title": "Tutorial de Rust: ownership, borrowing, enums y Result — cv.cm",
+  "description": "Aprende Rust en una página: Hello world con Cargo, tipos, control de flujo, ownership y borrowing, structs, enums y match, Vec, HashMap y Result.",
+  "h1": "Tutorial de Rust para principiantes",
+  "answer": "Rust es un lenguaje de sistemas compilado y de tipado estático, tan rápido como C y C++, pero que evita los errores de memoria en tiempo de compilación, sin recolector de basura. Instálalo con rustup y ejecuta `cargo new hello` y `cargo run`. Las ideas centrales son el ownership (propiedad) y el borrowing (préstamo), comprobados por el borrow checker, los structs y enums con `match`, colecciones como `Vec` y `HashMap`, y el manejo de errores con `Result` y el operador `?`.",
+  "sections": [
+    {
+      "h": "Qué es Rust y para qué se usa",
+      "body": [
+        "Rust empezó como un proyecto personal de Graydon Hoare, fue patrocinado por Mozilla y llegó a la versión 1.0 en 2015. Hoy lo gestiona la Rust Foundation. Se usa donde importan a la vez la velocidad y la fiabilidad: herramientas de línea de comandos (ripgrep), servicios web, componentes del navegador en Firefox, partes del kernel de Linux y de Windows, dispositivos embebidos y WebAssembly. Su compilador es estricto, pero a cambio clases enteras de errores, como el use-after-free y las condiciones de carrera, no pueden darse en código Rust seguro."
+      ]
+    },
+    {
+      "h": "Instalar Rust y ejecutar Hello, world",
+      "body": [
+        "Instala la cadena de herramientas con rustup desde rustup.rs. Incluye `rustc` (el compilador) y Cargo (la herramienta de compilación y gestor de paquetes). Crea un proyecto:",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargo genera `src/main.rs`:",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!` termina en `!` porque es una macro, no una función. Las macros generan código en tiempo de compilación; aquí, la cadena de formato se comprueba al compilar."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "Las variables son inmutables por defecto; añade `mut` para permitir cambios. Los tipos suelen inferirse, pero cada valor tiene exactamente un tipo estático, y las conversiones numéricas son explícitas con `as`.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "Con signo (`i`) y sin signo (`u`); `usize` para índices"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "Tipo de coma flotante por defecto"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` o `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "Un valor escalar Unicode, 4 bytes"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "Slice de cadena prestado"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "Texto UTF-8 propio y ampliable"
+              ],
+              [
+                "Tupla, array",
+                "`(1, \"a\")`, `[0; 3]`",
+                "Tamaño fijo"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Control de flujo y funciones",
+      "body": [
+        "`if`, `match` y los bloques son expresiones: producen valores. La última expresión de una función, sin punto y coma, es su valor de retorno.",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Característica distintiva: ownership y borrowing",
+      "body": [
+        "Cada valor tiene exactamente un propietario. Cuando el propietario sale del ámbito, el valor se descarta (se libera). Asignar un valor del heap, como un `String`, a otra variable lo mueve, y el nombre antiguo ya no se puede usar. Para usar un valor sin tomar su propiedad, tómalo prestado con una referencia: en cada momento puede haber cualquier número de referencias compartidas `&T`, o exactamente una referencia mutable `&mut T`.",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "El borrow checker aplica estas reglas en tiempo de compilación, y así consigue Rust la seguridad de memoria sin recolector de basura. Los tipos simples, como los enteros, implementan `Copy`, así que se copian en lugar de moverse."
+      ]
+    },
+    {
+      "h": "Structs, enums y pattern matching",
+      "body": [
+        "Los structs agrupan campos y los bloques `impl` añaden métodos. Los enums pueden llevar datos en cada variante, y `match` debe cubrir todas las variantes, algo que comprueba el compilador. El enum estándar `Option<T>` (`Some(value)` o `None`) sustituye a null.",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "Los traits definen comportamiento compartido, de forma parecida a las interfaces: `#[derive(Debug)]` pide al compilador que implemente el trait `Debug` para que `{:?}` pueda imprimir el struct."
+      ]
+    },
+    {
+      "h": "Colecciones: Vec y HashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "Los iteradores con closures (`|n| ...`), como `filter`, `map` y `collect`, compilan a código tan rápido como un bucle escrito a mano."
+      ]
+    },
+    {
+      "h": "Manejo de errores con Result y ?",
+      "body": [
+        "Las funciones que pueden fallar devuelven `Result<T, E>`: o bien `Ok(value)` o bien `Err(error)`. El operador `?` devuelve el error a quien llama de forma anticipada, así que los caminos de error se mantienen cortos. Los errores irrecuperables usan `panic!`.",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "Un programa completo pequeño: frecuencia de palabras",
+      "body": [
+        "Ponlo en `src/main.rs` y ejecuta `cargo run -- notes.txt`.",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "El `HashMap` almacena slices `&str` que toman prestado de `text`, así que no se copia ninguna palabra; el borrow checker garantiza que `text` viva el tiempo suficiente."
+      ]
+    },
+    {
+      "h": "Errores comunes de principiantes",
+      "body": [
+        {
+          "note": "Pelear con el borrow checker añadiendo `.clone()` por todas partes o usando `.unwrap()` en cada `Result` hace que el código compile, pero oculta problemas. Lee primero el mensaje del compilador; suele decir exactamente qué cambiar."
+        },
+        {
+          "ul": [
+            "Usar un valor después de haberlo movido. Tómalo prestado (`&value`) o clónalo a propósito.",
+            "Intentar indexar un `String` con `s[0]`. Las cadenas son UTF-8, así que usa `s.chars()` o slices de bytes en los límites de carácter.",
+            "Mantener una referencia a un `Vec` mientras se le añaden elementos; el push puede reasignar la memoria, por lo que el compilador lo prohíbe.",
+            "Confundir `String` (propio) y `&str` (prestado). Acepta `&str` en los parámetros de las funciones para admitir ambos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Adónde ir después",
+      "body": [
+        "Lee «The Rust Programming Language» (conocido como el libro), disponible gratis en doc.rust-lang.org, y prueba Rust by Example para ejemplos cortos ejecutables. Después aprende a fondo los traits y los genéricos, los lifetimes, las pruebas con `cargo test` y crates de crates.io como `serde` para serialización y `tokio` para programas asíncronos. Ejecuta `cargo clippy` para recibir más consejos de lint."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es difícil aprender Rust?",
+      "a": "Las primeras semanas son más duras que en la mayoría de los lenguajes, porque el ownership y el borrowing son ideas nuevas. Cuando te resultan familiares, el compilador detecta muchos errores pronto, y a muchos desarrolladores el código Rust les resulta más fácil de mantener."
+    },
+    {
+      "q": "¿Rust tiene recolector de basura?",
+      "a": "No. La memoria se libera automáticamente cuando su propietario sale del ámbito, algo que se decide en tiempo de compilación según las reglas de ownership. Existen los tipos con conteo de referencias `Rc` y `Arc` para la propiedad compartida."
+    },
+    {
+      "q": "¿Qué es el Rust unsafe?",
+      "a": "El código dentro de un bloque `unsafe` puede hacer cosas que el compilador no puede verificar, como desreferenciar punteros en bruto o llamar a funciones de C. Se usa con moderación, normalmente envuelto en una API segura."
+    },
+    {
+      "q": "Rust o Go: ¿cuál debo aprender?",
+      "a": "Go es más sencillo y rápido de aprender y es popular para servicios de red. Rust da más control y rendimiento con garantías más fuertes, a costa de una curva de aprendizaje más empinada."
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "title": "Swift tutorial: optionals, structs, enums and protocols — cv.cm",
+  "description": "Learn Swift in one page: Hello world, let and var, types, control flow, closures, arrays and dictionaries, optionals, structs, enums and errors.",
+  "h1": "Swift tutorial for beginners",
+  "answer": "Swift is a fast, safe, compiled language created by Apple for iPhone, iPad, Mac, Apple Watch and Apple TV apps, and it also runs on Linux and Windows. Save `print(\"Hello, world\")` in `hello.swift` and run `swift hello.swift`. The core ideas are `let` constants and `var` variables, type inference, optionals for values that may be missing, structs and enums with value semantics, protocols, and errors handled with `do`/`try`/`catch`.",
+  "sections": [
+    {
+      "h": "What Swift is and what it is used for",
+      "body": [
+        "Swift was introduced by Apple in 2014 as a modern replacement for Objective-C and was open-sourced in 2015; the project lives at swift.org. It is the main language for apps on Apple platforms, usually with the SwiftUI or UIKit frameworks. Swift is also used for server-side code (for example with the Vapor framework) and command-line tools. The language is designed to prevent common bugs: variables must be initialized, arrays check their bounds, and `nil` must be handled explicitly."
+      ]
+    },
+    {
+      "h": "Install Swift and run Hello, world",
+      "body": [
+        "On a Mac, install Xcode from the App Store or the Xcode command-line tools. On Linux and Windows, download a toolchain from swift.org. Check it with `swift --version`.",
+        {
+          "code": "print(\"Hello, world\")",
+          "lang": "swift"
+        },
+        {
+          "code": "swift hello.swift\n# Hello, world\nswiftc hello.swift -o hello   # compile to a binary\n./hello",
+          "lang": "shell"
+        },
+        "For a larger project, run `swift package init --type executable` and then `swift run`. Xcode playgrounds are another easy way to experiment."
+      ]
+    },
+    {
+      "h": "Constants, variables and basic types",
+      "body": [
+        "Use `let` for constants and `var` for variables. Prefer `let`; the compiler warns when a `var` is never changed. Types are inferred, and Swift never converts between numeric types implicitly.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`let n = 42`",
+                "64-bit on modern platforms"
+              ],
+              [
+                "`Double`",
+                "`let x = 3.14`",
+                "Default floating-point type"
+              ],
+              [
+                "`Bool`",
+                "`let ok = true`",
+                "`true` or `false`"
+              ],
+              [
+                "`String`",
+                "`let s = \"hi \\(name)\"`",
+                "Unicode text, value type"
+              ],
+              [
+                "`Character`",
+                "`let c: Character = \"é\"`",
+                "One user-perceived character"
+              ],
+              [
+                "`[Int]`, `[String: Int]`",
+                "`[1, 2]`, `[\"a\": 1]`",
+                "Array and dictionary"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "let name = \"Ada\"\nvar count = 7\ncount += 1\nlet avg = Double(count) / 2   // explicit conversion\nprint(\"\\(name) has \\(count) items, avg \\(avg)\")  // Ada has 8 items, avg 4.0\nprint(7 / 2, 7 % 2)          // 3 1",
+          "lang": "swift"
+        },
+        "`\\(expression)` inside a string literal inserts a value (string interpolation)."
+      ]
+    },
+    {
+      "h": "Control flow",
+      "body": [
+        {
+          "code": "let score = 72\nif score >= 90 {\n    print(\"A\")\n} else if score >= 70 {\n    print(\"B\")                 // B\n} else {\n    print(\"C\")\n}\n\nfor i in 0..<3 {\n    print(i, terminator: \" \")  // 0 1 2\n}\nprint()\n\nvar n = 10\nwhile n > 1 { n /= 2 }\nprint(n)                       // 1\n\nlet day = \"SAT\"\nswitch day {\ncase \"SAT\", \"SUN\":\n    print(\"weekend\")           // weekend\ndefault:\n    print(\"weekday\")\n}",
+          "lang": "swift"
+        },
+        "`switch` must be exhaustive, does not fall through by default, and can match ranges (`case 90...100:`), tuples and enum cases."
+      ]
+    },
+    {
+      "h": "Functions and closures",
+      "body": [
+        "Parameters have argument labels that callers write, which makes calls read like sentences. Use `_` to omit a label. Closures are unnamed functions written in braces.",
+        {
+          "code": "func greet(_ name: String, with greeting: String = \"Hello\") -> String {\n    return \"\\(greeting), \\(name)!\"\n}\n\nprint(greet(\"Lin\"))                  // Hello, Lin!\nprint(greet(\"Lin\", with: \"Hi\"))      // Hi, Lin!\n\nlet nums = [3, 1, 2, 5]\nlet squares = nums.map { $0 * $0 }\nlet evens = nums.filter { $0 % 2 == 0 }\nlet sorted = nums.sorted(by: >)\nprint(squares, evens, sorted)        // [9, 1, 4, 25] [2] [5, 3, 2, 1]",
+          "lang": "swift"
+        },
+        "`$0` refers to the first closure argument. When a closure is the last argument, it can be written after the parentheses (trailing closure syntax)."
+      ]
+    },
+    {
+      "h": "Arrays, dictionaries and sets",
+      "body": [
+        {
+          "code": "var fruits = [\"apple\", \"pear\"]\nfruits.append(\"fig\")\nprint(fruits.count, fruits[0], fruits.contains(\"fig\"))  // 3 apple true\n\nvar ages: [String: Int] = [\"ann\": 31, \"bob\": 25]\nages[\"cy\"] = 40\nfor (person, age) in ages.sorted(by: { $0.key < $1.key }) {\n    print(person, age)                                  // ann 31, bob 25, cy 40\n}\nprint(ages[\"zed\", default: 0])                          // 0\n\nlet tags: Set = [\"b\", \"a\", \"b\"]\nprint(tags.count)                                       // 2",
+          "lang": "swift"
+        },
+        "Collections are value types: assigning an array to another variable creates an independent copy (copied lazily, only when one of them changes). A `let` array cannot be modified at all."
+      ]
+    },
+    {
+      "h": "Signature feature: optionals",
+      "body": [
+        "A value that may be missing has an optional type, written `String?`. You cannot use it as a `String` until you unwrap it, so the compiler forces you to handle the `nil` case.",
+        {
+          "code": "let input = \"42\"\nlet number: Int? = Int(input)      // nil if input is not a number\n\nif let number {                     // unwrap: runs only when not nil\n    print(\"got \\(number)\")          // got 42\n}\n\nfunc firstWord(_ text: String) -> String? {\n    text.split(separator: \" \").first.map(String.init)\n}\n\nguard let word = firstWord(\"hello world\") else {\n    fatalError(\"no words\")\n}\nprint(word)                                  // hello\nprint(firstWord(\"\")?.uppercased() ?? \"none\") // none",
+          "lang": "swift"
+        },
+        "`if let` and `guard let` unwrap safely, `?.` (optional chaining) calls a method only when the value exists, and `??` supplies a default. The force unwrap `value!` crashes when the value is `nil`, so use it rarely. The short form `if let number` needs Swift 5.7 or later."
+      ]
+    },
+    {
+      "h": "Structs, classes, enums and protocols",
+      "body": [
+        "Structs and enums are value types; classes are reference types with inheritance. Swift code favors structs and protocols (interfaces) over class hierarchies.",
+        {
+          "code": "protocol Shape {\n    func area() -> Double\n}\n\nstruct Rect: Shape {\n    var width: Double\n    var height: Double\n    func area() -> Double { width * height }\n}\n\nenum Circle: Shape {\n    case unit\n    case radius(Double)\n    func area() -> Double {\n        switch self {\n        case .unit: return Double.pi\n        case .radius(let r): return Double.pi * r * r\n        }\n    }\n}\n\nlet shapes: [any Shape] = [Rect(width: 2, height: 3), Circle.radius(1)]\nlet total = shapes.reduce(0) { $0 + $1.area() }\nprint((total * 100).rounded() / 100)   // 9.14",
+          "lang": "swift"
+        },
+        "Structs get a memberwise initializer automatically (`Rect(width:height:)`). Enum cases can carry associated values, as `.radius(Double)` does."
+      ]
+    },
+    {
+      "h": "Error handling",
+      "body": [
+        "Functions that can fail are marked `throws`. Callers must use `try` inside a `do`/`catch` block, or use `try?` to turn an error into `nil`.",
+        {
+          "code": "enum AgeError: Error {\n    case notANumber(String)\n    case negative\n}\n\nfunc parseAge(_ text: String) throws -> Int {\n    guard let age = Int(text) else { throw AgeError.notANumber(text) }\n    guard age >= 0 else { throw AgeError.negative }\n    return age\n}\n\ndo {\n    print(try parseAge(\"41\"))          // 41\n    print(try parseAge(\"abc\"))\n} catch AgeError.notANumber(let text) {\n    print(\"not a number: \\(text)\")     // not a number: abc\n} catch {\n    print(\"other error: \\(error)\")\n}\n\nlet maybe = try? parseAge(\"-3\")        // nil\nprint(maybe as Any)                    // nil",
+          "lang": "swift"
+        }
+      ]
+    },
+    {
+      "h": "A small complete program: word frequency",
+      "body": [
+        {
+          "code": "import Foundation\n\nlet args = CommandLine.arguments\nguard args.count == 2 else {\n    print(\"usage: swift words.swift FILE\")\n    exit(1)\n}\n\ndo {\n    let text = try String(contentsOfFile: args[1], encoding: .utf8).lowercased()\n    let words = text.split { !$0.isLetter && $0 != \"'\" }\n    var counts: [Substring: Int] = [:]\n    for word in words {\n        counts[word, default: 0] += 1\n    }\n    for (word, n) in counts.sorted(by: { $0.value > $1.value }).prefix(5) {\n        print(String(n).padding(toLength: 6, withPad: \" \", startingAt: 0) + word)\n    }\n} catch {\n    print(\"cannot read \\(args[1]): \\(error.localizedDescription)\")\n    exit(1)\n}",
+          "lang": "swift"
+        },
+        "Run it with `swift words.swift notes.txt`. `Foundation` provides file reading and string helpers; it is available on Apple platforms and in the Linux and Windows toolchains."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "Avoid force unwrapping with `!` and implicitly unwrapped types such as `String!` except where a value is guaranteed. A `nil` at that point crashes the app at runtime."
+        },
+        {
+          "ul": [
+            "Trying to change a `let` constant or a property of a `let` struct. Use `var` when the value must change.",
+            "Expecting a struct to be shared like an object. Changing a copy does not change the original; use a class if you need shared identity.",
+            "Indexing a `String` with an integer, such as `s[0]`. Use `s.first`, `s.prefix(3)` or `String.Index` values.",
+            "Mixing `Int` and `Double` in arithmetic without converting, which is a compile error.",
+            "Forgetting `try` before a throwing call, or using `try!`, which crashes on error."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Read \"The Swift Programming Language\" on docs.swift.org, the official guide and reference, and the documentation hub on swift.org. For apps, follow Apple's SwiftUI tutorials in Xcode. Then learn Swift concurrency (`async`/`await` and actors), generics, and the Swift Package Manager for dependencies."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is Swift only for Apple platforms?",
+      "a": "No. Swift is open source and runs on Linux and Windows too, and it is used for server-side code and tools. However, app frameworks such as SwiftUI and UIKit are Apple-only."
+    },
+    {
+      "q": "Should I learn Swift or Objective-C?",
+      "a": "Learn Swift. It is Apple's recommended language for new apps, and it can call existing Objective-C code when needed."
+    },
+    {
+      "q": "What is the difference between a struct and a class in Swift?",
+      "a": "A struct is a value type that is copied when assigned or passed; a class is a reference type, so all variables share one instance. Classes also support inheritance and deinitializers."
+    },
+    {
+      "q": "What does the question mark after a type mean?",
+      "a": "`Int?` is an optional: it holds either an `Int` or `nil`. You must unwrap it, for example with `if let`, before using the value."
+    }
+  ]
+}

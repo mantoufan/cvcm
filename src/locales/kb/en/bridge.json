@@ -1,0 +1,175 @@
+{
+  "title": "Bridge pattern: separate abstraction from implementation, TypeScript example — cv.cm",
+  "description": "The Bridge design pattern explained: split a class into abstraction and implementation hierarchies that vary independently. TypeScript example and real uses.",
+  "h1": "Bridge pattern explained with examples",
+  "answer": "Bridge is a structural design pattern that splits one large class hierarchy into two separate hierarchies, an abstraction and an implementation, connected by composition. The abstraction (for example, kinds of reports) holds a reference to an implementation object (for example, output renderers) and delegates the low-level work to it. Both sides can then grow independently, so 3 report types and 3 renderers need 6 classes instead of 9 subclass combinations.",
+  "sections": [
+    {
+      "h": "Intent",
+      "body": [
+        "Decouple an abstraction from its implementation so that the two can vary independently. Bridge is one of the seven structural patterns in the Gang of Four (GoF) book, where it is also known as Handle/Body."
+      ]
+    },
+    {
+      "h": "The problem it solves",
+      "body": [
+        "Imagine an app that sends two kinds of messages, alerts and reminders, through two channels, email and SMS. If you model this with inheritance, you get `EmailAlert`, `SmsAlert`, `EmailReminder` and `SmsReminder`. Add a push channel and a digest message, and you need nine classes. Every new type on either side multiplies the total.",
+        "The real problem is that the class hierarchy mixes two independent questions: what the message is, and how it is delivered. Bridge separates them into two hierarchies and connects them with a reference, so the total grows by addition instead of multiplication.",
+        {
+          "table": {
+            "head": [
+              "Design",
+              "2 messages × 2 channels",
+              "3 messages × 3 channels",
+              "4 messages × 4 channels"
+            ],
+            "rows": [
+              [
+                "Subclass per combination",
+                "4 classes",
+                "9 classes",
+                "16 classes"
+              ],
+              [
+                "Bridge",
+                "4 classes",
+                "6 classes",
+                "8 classes"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Participant",
+              "Responsibility",
+              "In the example"
+            ],
+            "rows": [
+              [
+                "Abstraction",
+                "The high-level interface clients use; holds a reference to an Implementor.",
+                "`Message`"
+              ],
+              [
+                "RefinedAbstraction",
+                "Extends the abstraction with variant behavior.",
+                "`Alert`, `Reminder`"
+              ],
+              [
+                "Implementor",
+                "Interface for the low-level operations.",
+                "`Sender`"
+              ],
+              [
+                "ConcreteImplementor",
+                "Implements the low-level operations for one platform or technology.",
+                "`EmailSender`, `SmsSender`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        {
+          "code": "// Implementor: how a message is delivered.\ninterface Sender {\n  deliver(to: string, subject: string, body: string): string;\n}\n\nclass EmailSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `email ${to} | ${subject} | ${body}`; }\n}\n\nclass SmsSender implements Sender {\n  deliver(to: string, subject: string, body: string) { return `sms ${to} | ${subject}: ${body}`.slice(0, 40); }\n}\n\n// Abstraction: what the message is. It holds the bridge to a Sender.\nabstract class Message {\n  constructor(protected sender: Sender) {}\n  abstract send(to: string): string;\n}\n\nclass Alert extends Message {\n  constructor(sender: Sender, private problem: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"ALERT\", this.problem.toUpperCase());\n  }\n}\n\nclass Reminder extends Message {\n  constructor(sender: Sender, private task: string, private due: string) { super(sender); }\n  send(to: string): string {\n    return this.sender.deliver(to, \"Reminder\", `${this.task} by ${this.due}`);\n  }\n}\n\nconsole.log(new Alert(new SmsSender(), \"disk full\").send(\"+100\")); // sms +100 | ALERT: DISK FULL\nconsole.log(new Reminder(new EmailSender(), \"Pay invoice\", \"Friday\").send(\"ada@example.com\"));\n// email ada@example.com | Reminder | Pay invoice by Friday",
+          "lang": "typescript"
+        },
+        "Adding a `PushSender` is one class, and it immediately works with alerts and reminders. Adding a `Digest` message is one class, and it immediately works with every sender. Because the sender is just a constructor argument, it can also be chosen at run time, for example from user preferences."
+      ]
+    },
+    {
+      "h": "When to use it, and when not to",
+      "body": [
+        "Use Bridge when:",
+        {
+          "ul": [
+            "A class varies in two or more independent dimensions, and inheritance would create a class for every combination.",
+            "You want to switch the implementation at run time, or share one implementation object among several abstractions.",
+            "You build code that must run on several platforms (operating systems, rendering back ends, database engines) and want the platform details in one separate hierarchy."
+          ]
+        },
+        "Avoid it when:",
+        {
+          "ul": [
+            "There is only one dimension of change. A simple interface with several implementations is enough.",
+            "You are adding it \"for later\" with only one implementation. The extra layer makes the code harder to read for no benefit yet."
+          ]
+        },
+        {
+          "note": "Bridge is designed up front, when you know both sides will vary. If you are fitting an existing class into an interface after the fact, you need an Adapter, not a Bridge."
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "JDBC in Java is a well-known example: application code is written against the JDBC API, while each database vendor provides a driver that implements the low-level operations. The two sides evolve independently.",
+            "Graphics and UI toolkits keep a platform-independent widget or shape API on top of platform-specific drawing back ends. The GoF book's own example is a `Window` abstraction with a separate `WindowImp` implementation per window system.",
+            "Logging libraries often separate the logger API that code calls from the handlers or appenders that write to files, consoles or network services."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it relates to Bridge"
+            ],
+            "rows": [
+              [
+                "Adapter",
+                "Has a similar shape, but makes unrelated existing classes work together after they were designed. Bridge is planned before the classes are written."
+              ],
+              [
+                "Strategy",
+                "Also delegates to an interchangeable object. Strategy is about swapping an algorithm; Bridge is about separating a whole abstraction hierarchy from its implementation hierarchy."
+              ],
+              [
+                "Abstract Factory",
+                "Can create and configure the right implementation object for a bridge, for example the correct platform back end."
+              ],
+              [
+                "Composite",
+                "Bridge is also built on composition over inheritance, but Composite is about trees of objects, not two independent hierarchies."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does \"implementation\" mean in the Bridge pattern?",
+      "a": "It does not mean the code inside a class. It means a separate hierarchy of objects that do the low-level, platform-specific work, which the abstraction delegates to."
+    },
+    {
+      "q": "What is the difference between Bridge and Strategy?",
+      "a": "Their structure is almost the same. Strategy focuses on swapping one algorithm inside an object, while Bridge separates two whole hierarchies so each can be extended independently."
+    },
+    {
+      "q": "What is the difference between Bridge and Adapter?",
+      "a": "Bridge is designed in advance to let two sides vary. Adapter is added afterwards to make an existing, incompatible class fit an interface."
+    },
+    {
+      "q": "Is Bridge the same as dependency injection?",
+      "a": "No. Bridge is a way to structure two hierarchies. Dependency injection is a way to supply the implementation object, and it is a natural way to give an abstraction its implementor."
+    }
+  ]
+}

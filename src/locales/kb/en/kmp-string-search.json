@@ -1,0 +1,228 @@
+{
+  "title": "KMP algorithm: Knuth-Morris-Pratt string search in Python — cv.cm",
+  "description": "KMP string search explained: the prefix function (failure table), a traced example, Python code that finds every match in O(n + m) time, and common mistakes.",
+  "h1": "KMP string search explained: how it works, code and complexity",
+  "answer": "The Knuth-Morris-Pratt (KMP) algorithm finds every occurrence of a pattern of length m in a text of length n in O(n + m) time. It first builds a prefix function (also called the failure table) for the pattern: for each position, the length of the longest proper prefix that is also a suffix. When a mismatch happens, KMP uses this table to shift the pattern without ever moving backward in the text.",
+  "sections": [
+    {
+      "h": "What problem KMP solves",
+      "body": [
+        "String search asks where a short pattern occurs in a longer text. The naive method tries every start position and compares characters one by one. On ordinary text it is fast, but on repetitive inputs it is slow: searching for `aaaab` in `aaaaaaaaaa` compares almost the whole pattern at each position, which gives O(n × m) time.",
+        "KMP never re-reads a text character after a mismatch. Donald Knuth, James H. Morris and Vaughan Pratt published it in 1977 in \"Fast Pattern Matching in Strings\"."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        "Suppose you are searching for the pattern `ABABC`, you have matched `ABAB`, and the next text character is not C. The part you just matched, `ABAB`, ends with `AB`, which is also how the pattern begins. So you already know the next attempt starts with 2 matched characters, and you can continue comparing from pattern position 2 instead of starting over.",
+        "The prefix function stores these numbers. `pi[i]` is the length of the longest proper prefix of `pattern[0..i]` that is also a suffix of it (proper means not the whole string).",
+        {
+          "table": {
+            "head": [
+              "i",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "rows": [
+              [
+                "pattern[i]",
+                "A",
+                "B",
+                "A",
+                "B",
+                "A",
+                "C",
+                "A"
+              ],
+              [
+                "pi[i]",
+                "0",
+                "0",
+                "1",
+                "2",
+                "3",
+                "0",
+                "1"
+              ]
+            ]
+          }
+        },
+        "For example, `pi[4] = 3` because `ABABA` begins and ends with `ABA`. `pi[5] = 0` because no prefix of `ABABAC` ends with C."
+      ]
+    },
+    {
+      "h": "Worked example, step by step",
+      "body": [
+        "Search for the pattern `ABABC` (prefix function 0, 0, 1, 2, 0) in the text `ABABABC`. The variable k counts how many pattern characters are currently matched.",
+        {
+          "table": {
+            "head": [
+              "Text position",
+              "Text char",
+              "k before",
+              "Action",
+              "k after"
+            ],
+            "rows": [
+              [
+                "0–3",
+                "A B A B",
+                "0",
+                "Four matches in a row",
+                "4"
+              ],
+              [
+                "4",
+                "A",
+                "4",
+                "Mismatch with pattern[4] = C: set k = pi[3] = 2, then A matches pattern[2]",
+                "3"
+              ],
+              [
+                "5",
+                "B",
+                "3",
+                "Matches pattern[3]",
+                "4"
+              ],
+              [
+                "6",
+                "C",
+                "4",
+                "Matches pattern[4]: full match ending at 6, so it starts at 6 − 5 + 1 = 2",
+                "5 → pi[4] = 0"
+              ]
+            ]
+          }
+        },
+        "The text pointer moved forward 7 times and never went back. The naive method would restart at position 1 and compare some characters again."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        {
+          "code": "def prefix_function(p):\n    pi = [0] * len(p)\n    k = 0\n    for i in range(1, len(p)):\n        while k > 0 and p[i] != p[k]:\n            k = pi[k - 1]          # fall back to a shorter border\n        if p[i] == p[k]:\n            k += 1\n        pi[i] = k\n    return pi\n\ndef kmp_search(text, pattern):\n    \"\"\"Return the start index of every occurrence (overlaps included).\"\"\"\n    if not pattern:\n        return []\n    pi, k, hits = prefix_function(pattern), 0, []\n    for i, ch in enumerate(text):\n        while k > 0 and ch != pattern[k]:\n            k = pi[k - 1]\n        if ch == pattern[k]:\n            k += 1\n        if k == len(pattern):\n            hits.append(i - k + 1)\n            k = pi[k - 1]          # keep going to find overlapping matches\n    return hits\n\nprint(prefix_function(\"ABABACA\"))      # [0, 0, 1, 2, 3, 0, 1]\nprint(kmp_search(\"ABABABC\", \"ABABC\"))  # [2]\nprint(kmp_search(\"AAAAA\", \"AA\"))       # [0, 1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Phase",
+              "Time",
+              "Space",
+              "Reason"
+            ],
+            "rows": [
+              [
+                "Build prefix function",
+                "O(m)",
+                "O(m)",
+                "k increases at most once per step and each fallback decreases it, so total fallbacks are at most m."
+              ],
+              [
+                "Search",
+                "O(n)",
+                "O(1) extra",
+                "Same argument over the text: at most n increases, so at most n fallbacks."
+              ],
+              [
+                "Total",
+                "O(n + m)",
+                "O(m)",
+                "Worst case equals best case up to a constant; there is no bad input."
+              ]
+            ]
+          }
+        },
+        "The naive algorithm is O(n × m) in the worst case but often close to O(n) on natural-language text, so KMP's advantage shows mainly on repetitive data."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Off-by-one in fallback: after a mismatch, set `k = pi[k - 1]`, not `pi[k]`. `pi` is indexed by the last matched position.",
+            "Using `if` instead of `while` for the fallback: you may need several fallbacks in a row before a character matches.",
+            "Forgetting to reset k after a full match: set `k = pi[k - 1]` to find overlapping matches, or `k = 0` for non-overlapping ones.",
+            "Concatenation trick: compute the prefix function of `pattern + separator + text`, using a separator that appears in neither; every position where the value equals m is a match end.",
+            "The Z-algorithm computes a closely related array and also searches in O(n + m)."
+          ]
+        },
+        {
+          "note": "In everyday Python code, use the built-in `str.find`, the `in` operator or `str.count`. They are implemented in C and are much faster than a pure-Python KMP. Write KMP when you need it for an interview, for a custom alphabet (lists of tokens, not strings), or when you need the prefix function itself."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Algorithm",
+              "Best use"
+            ],
+            "rows": [
+              [
+                "KMP",
+                "Guaranteed linear time for one pattern; streaming text, since it never looks back."
+              ],
+              [
+                "Boyer-Moore and variants",
+                "Long patterns over large alphabets; often skips many characters, used in tools such as grep."
+              ],
+              [
+                "Rabin-Karp",
+                "Many patterns of the same length, or plagiarism detection with rolling hashes."
+              ],
+              [
+                "Aho-Corasick",
+                "Many patterns at once; it generalizes KMP's failure links to a trie."
+              ],
+              [
+                "Suffix array or suffix automaton",
+                "Many different queries on the same fixed text."
+              ]
+            ]
+          }
+        },
+        {
+          "ul": [
+            "Interview problems: implement `strStr()`, shortest palindrome (prefix function of `s + \"#\" + reversed(s)`), repeated substring pattern, smallest period of a string (`m - pi[m - 1]`).",
+            "Real world: searching in DNA sequences and network packet streams, where linear worst-case time matters."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the prefix function or failure table in KMP?",
+      "a": "For each position i of the pattern, it stores the length of the longest proper prefix of `pattern[0..i]` that is also a suffix of it. On a mismatch, KMP uses it to know how many characters are still matched."
+    },
+    {
+      "q": "What is the time complexity of KMP?",
+      "a": "O(n + m): O(m) to build the prefix function and O(n) to scan the text. It is linear even in the worst case."
+    },
+    {
+      "q": "Is KMP faster than Python's str.find?",
+      "a": "No. `str.find` is implemented in C with an optimized search algorithm and is much faster in practice. KMP is valuable for its guaranteed linear time, for learning, and for non-string sequences."
+    },
+    {
+      "q": "Does KMP find overlapping matches?",
+      "a": "Yes, if after a full match you set `k = pi[k - 1]` instead of 0. For example, it finds `AA` at positions 0, 1, 2 and 3 in `AAAAA`."
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "title": "Union-find (disjoint set union): path compression, union by rank, Python — cv.cm",
+  "description": "Penjelasan union-find (disjoint set union, DSU): find dan union, path compression, union by rank atau size, kode Python, contoh penelusuran, dan kompleksitas.",
+  "h1": "Union-find (disjoint set union): cara kerja, kode Python, dan kompleksitasnya",
+  "answer": "Union-find, juga disebut disjoint set union (DSU), melacak elemen yang terbagi ke dalam grup-grup yang tidak saling tumpang tindih. Ia mendukung dua operasi: `find(x)` mengembalikan perwakilan grup x, dan `union(x, y)` menggabungkan grup x dan y. Setiap grup disimpan sebagai tree berisi pointer parent. Dengan path compression dan union by rank atau size, urutan operasi apa pun berjalan dalam waktu amortized yang hampir konstan per operasi.",
+  "sections": [
+    {
+      "h": "Masalah apa yang diselesaikan union-find",
+      "body": [
+        "Bayangkan jaringan komputer yang kabelnya ditambahkan satu per satu, dan setelah setiap kabel Anda harus menjawab \"apakah komputer A dan komputer B terhubung?\". Menjalankan pencarian graf untuk setiap pertanyaan butuh O(n + m) setiap kali. Union-find menjawab tiap pertanyaan dalam waktu hampir O(1) dengan memelihara grup-grup yang terhubung seiring kabel ditambahkan.",
+        "Kebutuhan yang sama muncul pada algoritma minimum spanning tree Kruskal (apakah dua ujung ini sudah berada di tree yang sama?), pada deteksi siklus di graf tak berarah, pada pengelompokan akun yang berbagi alamat email, pada simulasi perkolasi, dan pada pengolahan citra untuk memberi label pada wilayah yang terhubung."
+      ]
+    },
+    {
+      "h": "Ide dasarnya dengan bahasa sederhana",
+      "body": [
+        "Setiap elemen menunjuk ke sebuah parent. Elemen yang menunjuk ke dirinya sendiri adalah root, dan root adalah perwakilan seluruh grup. Untuk menemukan grup x, ikuti pointer parent sampai mencapai root. Untuk menggabungkan dua grup, cari kedua root-nya lalu buat satu root menunjuk ke yang lain.",
+        "Dua optimasi menjaga tree tetap pendek:",
+        {
+          "ul": [
+            "Union by rank (atau by size): tempelkan tree yang lebih pendek (atau lebih kecil) di bawah yang lebih tinggi (atau lebih besar), sehingga tinggi tree hanya bertambah ketika dua tree yang sama besar digabung.",
+            "Path compression: selama `find`, buat setiap node di jalur menunjuk langsung ke root, sehingga pencarian berikutnya hanya satu langkah."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Contoh langkah demi langkah: lima elemen",
+      "body": [
+        "Mulai dengan elemen 0 sampai 4, masing-masing dalam grupnya sendiri. Array parent-nya `[0, 1, 2, 3, 4]`. Kita memakai union by size dan menjadikan root kedua sebagai anak ketika ukurannya sama.",
+        {
+          "table": {
+            "head": [
+              "Operasi",
+              "Root yang ditemukan",
+              "Array parent sesudahnya",
+              "Grup"
+            ],
+            "rows": [
+              [
+                "awal",
+                "-",
+                "[0, 1, 2, 3, 4]",
+                "{0} {1} {2} {3} {4}"
+              ],
+              [
+                "union(0, 1)",
+                "0 dan 1, ukuran sama",
+                "[0, 0, 2, 3, 4]",
+                "{0, 1} {2} {3} {4}"
+              ],
+              [
+                "union(2, 3)",
+                "2 dan 3, ukuran sama",
+                "[0, 0, 2, 2, 4]",
+                "{0, 1} {2, 3} {4}"
+              ],
+              [
+                "union(1, 3)",
+                "0 dan 2, ukuran sama",
+                "[0, 0, 0, 2, 4]",
+                "{0, 1, 2, 3} {4}"
+              ],
+              [
+                "find(3)",
+                "3 ke 2 ke 0, root 0",
+                "[0, 0, 0, 0, 4]",
+                "path compression: 3 kini menunjuk ke 0"
+              ],
+              [
+                "connected(1, 4)",
+                "root 0 dan 4",
+                "tidak berubah",
+                "False, grup berbeda"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementasi Python",
+      "body": [
+        "Versi ini memakai union by size dan `find` iteratif dengan path compression, sehingga tidak ada masalah kedalaman rekursi. `union` mengembalikan False ketika kedua elemen sudah berada di grup yang sama, yang berguna untuk deteksi siklus.",
+        {
+          "code": "class UnionFind:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.size = [1] * n\n        self.groups = n\n\n    def find(self, x):\n        root = x\n        while self.parent[root] != root:\n            root = self.parent[root]\n        while self.parent[x] != root:       # path compression\n            self.parent[x], x = root, self.parent[x]\n        return root\n\n    def union(self, a, b):\n        ra, rb = self.find(a), self.find(b)\n        if ra == rb:\n            return False                    # already connected\n        if self.size[ra] < self.size[rb]:\n            ra, rb = rb, ra                 # ra is the larger root\n        self.parent[rb] = ra\n        self.size[ra] += self.size[rb]\n        self.groups -= 1\n        return True\n\n    def connected(self, a, b):\n        return self.find(a) == self.find(b)\n\nuf = UnionFind(5)\nuf.union(0, 1)\nuf.union(2, 3)\nuf.union(1, 3)\nprint(uf.find(3), uf.parent)       # 0 [0, 0, 0, 0, 4]\nprint(uf.connected(1, 4), uf.groups)  # False 2",
+          "lang": "python"
+        },
+        {
+          "note": "Pada loop path compression, `self.parent[x], x = root, self.parent[x]` berfungsi karena Python mengevaluasi seluruh sisi kanan terlebih dahulu. Memecahnya menjadi dua baris dengan urutan yang salah akan menghilangkan node berikutnya di jalur."
+        }
+      ]
+    },
+    {
+      "h": "Contoh: mendeteksi siklus di graf tak berarah",
+      "body": [
+        "Proses edge satu per satu. Jika kedua ujung sebuah edge sudah punya root yang sama, edge itu menutup sebuah siklus. Algoritma Kruskal memakai persis pemeriksaan ini setelah mengurutkan edge berdasarkan bobot.",
+        {
+          "code": "def has_cycle(n, edges):\n    uf = UnionFind(n)\n    for a, b in edges:\n        if not uf.union(a, b):\n            return True\n    return False\n\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 3)]))  # False\nprint(has_cycle(4, [(0, 1), (1, 2), (2, 0)]))  # True",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Kompleksitas waktu dan ruang",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Versi",
+              "find / union (terburuk per operasi)",
+              "m operasi pada n elemen"
+            ],
+            "rows": [
+              [
+                "Tanpa optimasi",
+                "O(n)",
+                "O(m n), tree bisa menjadi rantai"
+              ],
+              [
+                "Hanya union by rank atau size",
+                "O(log n)",
+                "O(m log n)"
+              ],
+              [
+                "Hanya path compression",
+                "O(log n) amortized",
+                "O(m log n) amortized"
+              ],
+              [
+                "Kedua optimasi",
+                "O(α(n)) amortized",
+                "O(m α(n))"
+              ]
+            ]
+          }
+        },
+        "α(n) adalah fungsi Ackermann invers, yang tumbuh sangat lambat sehingga paling besar 4 untuk n berapa pun yang muat di komputer nyata. Dalam praktik ini berarti waktu konstan per operasi. Robert Tarjan membuktikan batas ini pada tahun 1975. Ruangnya O(n) untuk array parent dan size."
+      ]
+    },
+    {
+      "h": "Varian dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Membandingkan elemen, bukan root: `union` harus menghubungkan `find(a)` dan `find(b)`, bukan `a` dan `b` itu sendiri.",
+            "Mengira `parent[x]` adalah perwakilan. Setelah beberapa union, hanya `find(x)` yang benar; panggil `find` pada setiap elemen sebelum mengelompokkan berdasarkan parent.",
+            "`find` rekursif pada input besar tanpa union by rank bisa mencapai batas rekursi Python; versi iteratif di atas menghindarinya.",
+            "Elemen yang bukan bilangan bulat 0 sampai n-1: petakan ke indeks dengan `dict` lebih dulu, atau simpan parent dalam `dict` dan tambahkan elemen secara lazy.",
+            "Union-find tidak bisa memecah grup. Jika edge dihapus, Anda butuh struktur lain atau pendekatan offline yang memproses penghapusan secara terbalik.",
+            "Weighted union-find menyimpan offset ke parent di setiap node, yang menjawab pertanyaan seperti \"seberapa lebih berat a dibanding b?\"."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Kapan dipakai dan soal-soal khasnya",
+      "body": [
+        "Gunakan union-find ketika grup hanya akan bergabung dan Anda perlu bertanya apakah dua elemen berada di grup yang sama, atau berapa banyak grup yang ada. Untuk satu pertanyaan konektivitas pada graf statis, BFS atau DFS biasa lebih sederhana. Ketika Anda butuh jalur sebenarnya, gunakan pencarian graf, karena union-find hanya tahu keanggotaan.",
+        "Soal khas: jumlah connected component, jumlah pulau (dengan sel grid sebagai elemen), redundant connection (edge yang membuat siklus), accounts merge, kepuasan persamaan kesetaraan seperti `a == b, b != c`, dan minimum spanning tree Kruskal."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya union-find dan DSU?",
+      "a": "Keduanya dua nama untuk struktur data yang sama. Disjoint set union (DSU) dan disjoint-set forest juga nama yang umum."
+    },
+    {
+      "q": "Mengapa union-find hampir O(1)?",
+      "a": "Dengan union by rank dan path compression, biaya amortized per operasi adalah O(α(n)), dengan α adalah fungsi Ackermann invers. Nilainya tidak lebih dari 4 untuk ukuran input praktis mana pun."
+    },
+    {
+      "q": "Apakah saya perlu union by rank dan path compression sekaligus?",
+      "a": "Salah satunya saja sudah memberi perilaku amortized O(log n), yang biasanya cukup cepat. Memakai keduanya memberi batas yang hampir konstan dan hanya menambah beberapa baris."
+    },
+    {
+      "q": "Bisakah union-find memberi tahu anggota sebuah grup?",
+      "a": "Tidak secara langsung. Anda bisa memanggil `find` pada setiap elemen dan mengelompokkannya berdasarkan root dalam O(n α(n)), atau menyimpan daftar anggota per root dan menggabungkan daftarnya saat union."
+    },
+    {
+      "q": "Union by rank atau union by size?",
+      "a": "Keduanya memberi batas asimtotik yang sama. Union by size sering dipilih karena ukuran tiap grup adalah informasi yang berguna dengan sendirinya."
+    }
+  ]
+}

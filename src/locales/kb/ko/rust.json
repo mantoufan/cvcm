@@ -1,0 +1,189 @@
+{
+  "title": "러스트 기초 튜토리얼: 소유권, 빌림, 열거형, Result — cv.cm",
+  "description": "러스트를 한 페이지로 배웁니다. Cargo로 Hello world, 자료형, 제어 흐름, 소유권과 빌림, 구조체, 열거형과 match, Vec, HashMap, Result까지 다룹니다.",
+  "h1": "러스트 기초 입문 튜토리얼",
+  "answer": "러스트는 C, C++만큼 빠르면서 가비지 컬렉터 없이 메모리 오류를 컴파일 시점에 막아 주는 정적 타입 컴파일 시스템 언어입니다. rustup으로 설치하고 `cargo new hello`와 `cargo run`을 실행하면 됩니다. 핵심 개념은 (빌림 검사기가 검사하는) 소유권과 빌림, `match`와 함께 쓰는 구조체와 열거형, `Vec`과 `HashMap` 같은 컬렉션, `Result`와 `?` 연산자를 이용한 오류 처리입니다.",
+  "sections": [
+    {
+      "h": "러스트란 무엇이고 어디에 쓰이는가",
+      "body": [
+        "러스트는 그레이던 호어(Graydon Hoare)의 개인 프로젝트로 시작해 Mozilla의 후원을 받았고, 2015년에 1.0에 도달했습니다. 지금은 Rust Foundation이 관리합니다. 러스트는 속도와 안정성이 모두 중요한 곳에 쓰입니다. 명령줄 도구(ripgrep), 웹 서비스, Firefox의 브라우저 구성 요소, Linux 커널과 Windows의 일부, 임베디드 기기, WebAssembly 등입니다. 컴파일러는 엄격하지만, 그 대가로 안전한 러스트 코드에서는 해제 후 사용(use-after-free)이나 데이터 레이스 같은 종류의 버그가 아예 발생하지 않습니다."
+      ]
+    },
+    {
+      "h": "러스트 설치와 Hello, world 실행",
+      "body": [
+        "rustup.rs에서 rustup으로 툴체인을 설치하세요. `rustc`(컴파일러)와 Cargo(빌드 도구 겸 패키지 관리자)가 함께 설치됩니다. 프로젝트를 만듭니다.",
+        {
+          "code": "cargo new hello\ncd hello\ncargo run\n# Hello, world!",
+          "lang": "shell"
+        },
+        "Cargo는 `src/main.rs`를 생성합니다.",
+        {
+          "code": "fn main() {\n    println!(\"Hello, world!\");\n}",
+          "lang": "rust"
+        },
+        "`println!`은 함수가 아니라 매크로라서 `!`로 끝납니다. 매크로는 컴파일 시점에 코드를 생성하며, 여기서는 컴파일할 때 형식 문자열을 검사합니다."
+      ]
+    },
+    {
+      "h": "변수와 기본 자료형",
+      "body": [
+        "변수는 기본적으로 불변이며, 변경을 허용하려면 `mut`를 붙입니다. 타입은 대개 추론되지만 모든 값은 정확히 하나의 정적 타입을 가지고, 숫자 변환은 `as`로 명시적으로 합니다.",
+        {
+          "table": {
+            "head": [
+              "타입",
+              "예시",
+              "설명"
+            ],
+            "rows": [
+              [
+                "`i32`, `i64`, `u8`, `usize`",
+                "`let n: i32 = 42;`",
+                "부호 있는(`i`) 정수와 부호 없는(`u`) 정수, 인덱스에는 `usize`"
+              ],
+              [
+                "`f64`",
+                "`let x = 3.14;`",
+                "기본 부동소수점 타입"
+              ],
+              [
+                "`bool`",
+                "`let ok = true;`",
+                "`true` 또는 `false`"
+              ],
+              [
+                "`char`",
+                "`let c = 'é';`",
+                "유니코드 스칼라 값, 4바이트"
+              ],
+              [
+                "`&str`",
+                "`let s = \"hi\";`",
+                "빌린 문자열 슬라이스"
+              ],
+              [
+                "`String`",
+                "`String::from(\"hi\")`",
+                "소유권을 가진, 늘어나는 UTF-8 텍스트"
+              ],
+              [
+                "튜플, 배열",
+                "`(1, \"a\")`, `[0; 3]`",
+                "고정 크기"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "fn main() {\n    let name = \"Ada\";\n    let mut count = 7;\n    count += 1;\n    let avg = count as f64 / 2.0;\n    println!(\"{name} has {count} items, avg {avg}\"); // Ada has 8 items, avg 4\n    let parsed: i32 = \"12\".parse().unwrap();\n    println!(\"{}\", parsed + 1); // 13\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "제어 흐름과 함수",
+      "body": [
+        "`if`, `match`, 블록은 값을 만들어 내는 표현식입니다. 세미콜론 없는 함수의 마지막 표현식이 반환값입니다.",
+        {
+          "code": "fn square(x: i32) -> i32 {\n    x * x\n}\n\nfn main() {\n    let score = 72;\n    let grade = if score >= 90 { \"A\" } else if score >= 70 { \"B\" } else { \"C\" };\n    println!(\"{grade}\"); // B\n\n    for i in 0..3 {\n        print!(\"{} \", square(i)); // 0 1 4\n    }\n    println!();\n\n    let mut n = 10;\n    while n > 1 {\n        n /= 2;\n    }\n    let label = loop {\n        break \"done\"; // loop can return a value with break\n    };\n    println!(\"{n} {label}\"); // 1 done\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "대표 기능: 소유권과 빌림",
+      "body": [
+        "모든 값에는 정확히 하나의 소유자가 있습니다. 소유자가 스코프를 벗어나면 값은 해제(drop)됩니다. `String` 같은 힙 값을 다른 변수에 대입하면 이동(move)하며, 이전 이름은 더 이상 쓸 수 없습니다. 소유권을 가져오지 않고 값을 쓰려면 참조로 빌립니다. 한 번에 공유 참조 `&T`는 여러 개, 가변 참조 `&mut T`는 정확히 하나만 가질 수 있습니다.",
+        {
+          "code": "fn length(s: &str) -> usize {\n    s.len() // borrows, does not take ownership\n}\n\nfn add_exclamation(s: &mut String) {\n    s.push('!');\n}\n\nfn main() {\n    let a = String::from(\"hello\");\n    let b = a; // ownership moves to b\n    // println!(\"{a}\"); // error: borrow of moved value: `a`\n    let mut c = b.clone(); // explicit deep copy\n    add_exclamation(&mut c);\n    println!(\"{} {} {}\", b, c, length(&c)); // hello hello! 6\n}",
+          "lang": "rust"
+        },
+        "이 규칙은 컴파일 시점에 빌림 검사기(borrow checker)가 강제하며, 이것이 러스트가 가비지 컬렉터 없이 메모리 안전성을 얻는 방법입니다. 정수 같은 단순한 타입은 `Copy`를 구현하므로 이동하지 않고 복사됩니다."
+      ]
+    },
+    {
+      "h": "구조체, 열거형, 패턴 매칭",
+      "body": [
+        "구조체는 필드를 묶고 `impl` 블록은 메서드를 더합니다. 열거형은 각 변형(variant)에 데이터를 담을 수 있고, `match`는 모든 변형을 처리해야 하며 컴파일러가 이를 검사합니다. 표준 `Option<T>` 열거형(`Some(value)` 또는 `None`)이 null을 대신합니다.",
+        {
+          "code": "#[derive(Debug)]\nstruct Point {\n    x: f64,\n    y: f64,\n}\n\nimpl Point {\n    fn distance(&self) -> f64 {\n        (self.x * self.x + self.y * self.y).sqrt()\n    }\n}\n\nenum Shape {\n    Circle(f64),\n    Rect { w: f64, h: f64 },\n}\n\nfn area(s: &Shape) -> f64 {\n    match s {\n        Shape::Circle(r) => std::f64::consts::PI * r * r,\n        Shape::Rect { w, h } => w * h,\n    }\n}\n\nfn main() {\n    let p = Point { x: 3.0, y: 4.0 };\n    println!(\"{:?} {}\", p, p.distance()); // Point { x: 3.0, y: 4.0 } 5\n    println!(\"{}\", area(&Shape::Rect { w: 2.0, h: 3.0 })); // 6\n    let nums = [10, 20];\n    if let Some(v) = nums.first() {\n        println!(\"first is {v}\"); // first is 10\n    }\n}",
+          "lang": "rust"
+        },
+        "트레이트는 인터페이스와 비슷하게 공유 동작을 정의합니다. `#[derive(Debug)]`는 컴파일러에게 `Debug` 트레이트를 구현하게 하여 `{:?}`로 구조체를 출력할 수 있게 합니다."
+      ]
+    },
+    {
+      "h": "컬렉션: Vec과 HashMap",
+      "body": [
+        {
+          "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut nums = vec![3, 1, 2];\n    nums.push(5);\n    nums.sort();\n    println!(\"{:?} {}\", nums, nums.len()); // [1, 2, 3, 5] 4\n\n    let evens: Vec<i32> = nums.iter().filter(|n| *n % 2 == 0).map(|n| n * n).collect();\n    println!(\"{:?}\", evens); // [4]\n\n    let mut ages: HashMap<&str, u32> = HashMap::new();\n    ages.insert(\"ann\", 31);\n    ages.insert(\"bob\", 25);\n    *ages.entry(\"ann\").or_insert(0) += 1;\n    println!(\"{:?} {:?}\", ages.get(\"ann\"), ages.get(\"zed\")); // Some(32) None\n}",
+          "lang": "rust"
+        },
+        "`filter`, `map`, `collect`처럼 클로저(`|n| ...`)를 쓰는 이터레이터는 직접 작성한 반복문만큼 빠른 코드로 컴파일됩니다."
+      ]
+    },
+    {
+      "h": "Result와 ?를 이용한 오류 처리",
+      "body": [
+        "실패할 수 있는 함수는 `Ok(value)` 또는 `Err(error)` 중 하나인 `Result<T, E>`를 반환합니다. `?` 연산자는 오류를 호출자에게 즉시 반환하므로 오류 처리 경로가 짧게 유지됩니다. 복구할 수 없는 버그에는 `panic!`을 사용합니다.",
+        {
+          "code": "use std::num::ParseIntError;\n\nfn parse_age(text: &str) -> Result<u32, ParseIntError> {\n    let age: u32 = text.trim().parse()?; // returns Err early on bad input\n    Ok(age)\n}\n\nfn main() {\n    match parse_age(\"41\") {\n        Ok(age) => println!(\"age {age}\"), // age 41\n        Err(e) => println!(\"error: {e}\"),\n    }\n    match parse_age(\"abc\") {\n        Ok(age) => println!(\"age {age}\"),\n        Err(e) => println!(\"error: {e}\"), // error: invalid digit found in string\n    }\n}",
+          "lang": "rust"
+        }
+      ]
+    },
+    {
+      "h": "작은 완성 프로그램: 단어 빈도 세기",
+      "body": [
+        "이 코드를 `src/main.rs`에 넣고 `cargo run -- notes.txt`로 실행하세요.",
+        {
+          "code": "use std::collections::HashMap;\nuse std::{env, fs, process};\n\nfn main() {\n    let path = env::args().nth(1).unwrap_or_else(|| {\n        eprintln!(\"usage: words FILE\");\n        process::exit(1);\n    });\n    let text = match fs::read_to_string(&path) {\n        Ok(t) => t.to_lowercase(),\n        Err(e) => {\n            eprintln!(\"cannot read {path}: {e}\");\n            process::exit(1);\n        }\n    };\n\n    let mut counts: HashMap<&str, usize> = HashMap::new();\n    for word in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {\n        *counts.entry(word).or_insert(0) += 1;\n    }\n\n    let mut top: Vec<(&str, usize)> = counts.into_iter().collect();\n    top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));\n    for (word, n) in top.iter().take(5) {\n        println!(\"{n:5}  {word}\");\n    }\n}",
+          "lang": "rust"
+        },
+        "`HashMap`은 `text`를 빌리는 `&str` 슬라이스를 저장하므로 단어를 복사하지 않습니다. 빌림 검사기가 `text`가 충분히 오래 살아 있음을 보장합니다."
+      ]
+    },
+    {
+      "h": "초보자가 자주 하는 실수",
+      "body": [
+        {
+          "note": "빌림 검사기와 싸우느라 곳곳에 `.clone()`을 붙이거나 모든 `Result`에 `.unwrap()`을 쓰면 코드는 컴파일되지만 문제가 가려집니다. 먼저 컴파일러 메시지를 읽으세요. 대개 무엇을 바꿔야 하는지 정확히 알려 줍니다."
+        },
+        {
+          "ul": [
+            "이동된 뒤에 값을 사용하는 경우. 빌리거나(`&value`) 의도적으로 복제하세요.",
+            "`s[0]`으로 `String`을 인덱싱하려는 경우. 문자열은 UTF-8이므로 `s.chars()`를 쓰거나 문자 경계에서 바이트 슬라이스를 사용하세요.",
+            "`Vec`에 `push`하는 동안 그 안의 요소에 대한 참조를 들고 있는 경우. push가 재할당할 수 있으므로 컴파일러가 금지합니다.",
+            "`String`(소유)과 `&str`(빌림)을 혼동하는 경우. 함수 매개변수에서 `&str`을 받으면 둘 다 허용할 수 있습니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "다음 학습 단계",
+      "body": [
+        "doc.rust-lang.org에서 무료로 볼 수 있는 \"The Rust Programming Language\"(흔히 the book이라 부름)를 읽고, 짧은 실행 예제가 있는 Rust by Example을 해 보세요. 그다음 트레이트와 제네릭 심화, 라이프타임, `cargo test`를 이용한 테스트, 직렬화용 `serde`와 비동기 프로그램용 `tokio` 같은 crates.io의 크레이트를 배우세요. `cargo clippy`를 실행하면 추가 린트 조언을 받을 수 있습니다."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "러스트는 배우기 어려운가요?",
+      "a": "소유권과 빌림이 새로운 개념이라 처음 몇 주는 대부분의 언어보다 어렵습니다. 익숙해지면 컴파일러가 많은 버그를 일찍 잡아 주고, 많은 개발자가 러스트 코드를 유지보수하기 더 쉽다고 느낍니다."
+    },
+    {
+      "q": "러스트에는 가비지 컬렉터가 있나요?",
+      "a": "아닙니다. 소유권 규칙에 따라 컴파일 시점에 정해진 대로, 소유자가 스코프를 벗어나면 메모리가 자동으로 해제됩니다. 공유 소유권이 필요할 때는 참조 카운트 타입 `Rc`와 `Arc`가 있습니다."
+    },
+    {
+      "q": "unsafe 러스트란 무엇인가요?",
+      "a": "`unsafe` 블록 안의 코드는 날 포인터 역참조나 C 함수 호출처럼 컴파일러가 검증할 수 없는 일을 할 수 있습니다. 드물게 사용하며, 보통 안전한 API로 감쌉니다."
+    },
+    {
+      "q": "러스트와 Go 중 무엇을 배워야 하나요?",
+      "a": "Go는 더 단순해서 배우기 빠르고 네트워크 서비스에 많이 쓰입니다. 러스트는 학습 곡선이 가파른 대신 더 강한 보장과 함께 더 많은 제어권과 성능을 제공합니다."
+    }
+  ]
+}

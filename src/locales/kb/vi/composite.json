@@ -1,0 +1,163 @@
+{
+  "title": "Mẫu Composite: xử lý cây và đối tượng đơn lẻ như nhau, ví dụ TypeScript — cv.cm",
+  "description": "Giải thích mẫu thiết kế Composite: xây dựng cấu trúc cây mà nút lá và nhóm dùng chung một interface. Có ví dụ hệ thống tệp bằng TypeScript và ứng dụng thực tế.",
+  "h1": "Mẫu Composite (Design Pattern) giải thích kèm ví dụ",
+  "answer": "Composite là một mẫu thiết kế cấu trúc (structural) cho phép ghép các đối tượng thành cấu trúc cây rồi xử lý từng đối tượng đơn lẻ và cả nhóm đối tượng theo cùng một cách. Nút lá (như một tệp) và composite (như một thư mục chứa tệp và các thư mục khác) cài đặt cùng một interface, chẳng hạn `size()`. Composite cài đặt thao tác bằng cách gọi nó trên các phần tử con, nên mã client có thể làm việc với cả cây mà không cần kiểm tra loại nút.",
+  "sections": [
+    {
+      "h": "Mục đích",
+      "body": [
+        "Ghép các đối tượng thành cấu trúc cây để biểu diễn hệ phân cấp bộ phận - toàn thể. Composite cho phép client đối xử thống nhất với đối tượng đơn lẻ và tập hợp đối tượng. Đây là một trong bảy mẫu cấu trúc trong sách Gang of Four (GoF)."
+      ]
+    },
+    {
+      "h": "Vấn đề mà mẫu này giải quyết",
+      "body": [
+        "Hãy tưởng tượng một ứng dụng lưu trữ cần hiển thị tổng dung lượng của bất kỳ mục nào. Một tệp có dung lượng riêng. Dung lượng của thư mục là tổng mọi thứ bên trong, và thư mục có thể chứa tệp lẫn thư mục khác, lồng nhau ở độ sâu bất kỳ.",
+        "Nếu không có interface chung, mọi đoạn mã duyệt cây đều phải hỏi “đây là tệp hay thư mục?” rồi xử lý từng trường hợp, thường bằng đệ quy viết đi viết lại. Thêm một loại nút mới, như lối tắt hay tệp nén, nghĩa là phải tìm và sửa mọi chỗ kiểm tra đó. Composite đặt phần đệ quy vào ngay trong các nút."
+      ]
+    },
+    {
+      "h": "Cấu trúc và các thành phần",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thành phần",
+              "Trách nhiệm",
+              "Trong ví dụ"
+            ],
+            "rows": [
+              [
+                "Component",
+                "Khai báo interface chung cho mọi đối tượng trong cây.",
+                "`FsNode`"
+              ],
+              [
+                "Leaf",
+                "Đối tượng không có phần tử con; cài đặt thao tác trực tiếp.",
+                "`FileNode`"
+              ],
+              [
+                "Composite",
+                "Lưu các component con và cài đặt thao tác bằng cách ủy quyền cho chúng.",
+                "`Folder`"
+              ],
+              [
+                "Client",
+                "Làm việc với mọi nút thông qua interface của Component.",
+                "`report`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Cài đặt bằng TypeScript",
+      "body": [
+        {
+          "code": "interface FsNode {\n  readonly name: string;\n  size(): number;\n  print(indent?: string): string[];\n}\n\nclass FileNode implements FsNode {\n  constructor(readonly name: string, private bytes: number) {}\n  size(): number { return this.bytes; }\n  print(indent = \"\"): string[] { return [`${indent}${this.name} (${this.bytes})`]; }\n}\n\nclass Folder implements FsNode {\n  private children: FsNode[] = [];\n  constructor(readonly name: string) {}\n  add(...nodes: FsNode[]): this { this.children.push(...nodes); return this; }\n  size(): number { return this.children.reduce((sum, c) => sum + c.size(), 0); }\n\n  print(indent = \"\"): string[] {\n    const lines = [`${indent}${this.name}/ (${this.size()})`];\n    for (const child of this.children) lines.push(...child.print(indent + \"  \"));\n    return lines;\n  }\n}\n\nconst root = new Folder(\"project\").add(\n  new FileNode(\"README.md\", 120),\n  new Folder(\"src\").add(new FileNode(\"main.ts\", 900), new FileNode(\"util.ts\", 300)),\n);\n\n// The client treats a single file and a whole tree the same way.\nconst report = (node: FsNode) => console.log(node.print().join(\"\\n\"));\nreport(root);\n// project/ (1320)\n//   README.md (120)\n//   src/ (1200)\n//     main.ts (900)\n//     util.ts (300)\nreport(new FileNode(\"notes.txt\", 42)); // notes.txt (42)",
+          "lang": "typescript"
+        },
+        "`report` không bao giờ kiểm tra loại nút. Một loại nút mới, như `Symlink` báo dung lượng bằng không, chỉ cần cài đặt `FsNode`."
+      ]
+    },
+    {
+      "h": "Quyết định thiết kế: tính trong suốt hay tính an toàn",
+      "body": [
+        "Các phương thức quản lý phần tử con như `add()` và `remove()` nên đặt ở đâu? Sách GoF mô tả sự đánh đổi này:",
+        {
+          "table": {
+            "head": [
+              "Lựa chọn",
+              "Ý nghĩa",
+              "Đánh đổi"
+            ],
+            "rows": [
+              [
+                "An toàn (Safety)",
+                "Chỉ `Composite` có `add()` và `remove()`, như trong ví dụ trên.",
+                "An toàn về kiểu: bạn không thể thêm phần tử con vào một tệp. Nhưng client phải biết khi nào mình đang cầm một composite."
+              ],
+              [
+                "Trong suốt (Transparency)",
+                "`Component` khai báo `add()` và `remove()`, còn các leaf ném lỗi hoặc bỏ qua.",
+                "Mọi nút trông giống hệt nhau với client, nhưng lỗi chỉ xuất hiện lúc chạy."
+              ]
+            ]
+          }
+        },
+        "Trong TypeScript, cách an toàn thường hiệu quả hơn, vì trình kiểm tra kiểu bắt lỗi ngay lúc biên dịch.",
+        {
+          "note": "Đệ quy trong composite có thể tốn kém với cây lớn. Trong ví dụ, `print()` gọi `size()` ở mỗi thư mục, khiến cây con bị duyệt lại. Với cây lớn, hãy lưu đệm kết quả hoặc tính kích thước trong một lượt duyệt. Cũng cần đảm bảo một nút không thể được thêm vào cây con của chính nó, vì sẽ gây đệ quy vô hạn."
+        }
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng và khi nào không",
+      "body": [
+        "Dùng Composite khi:",
+        {
+          "ul": [
+            "Dữ liệu của bạn vốn là một cây: tệp và thư mục, widget giao diện trong các container, menu và menu con, sơ đồ tổ chức, hình vẽ và nhóm hình.",
+            "Client nên bỏ qua sự khác biệt giữa một đối tượng và một nhóm đối tượng."
+          ]
+        },
+        "Tránh dùng khi:",
+        {
+          "ul": [
+            "Cấu trúc phẳng hoặc luôn chỉ có một cấp. Một mảng thông thường đơn giản hơn.",
+            "Leaf và nhóm cần những thao tác rất khác nhau. Ép chúng vào một interface sẽ tạo ra những phương thức vô nghĩa với một số nút.",
+            "Bạn cần hạn chế các phần tử con mà composite được phép chứa, chẳng hạn chỉ một số loại nút. Interface thống nhất khiến các quy tắc như vậy khó áp đặt hơn trong hệ thống kiểu."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ứng dụng thực tế",
+      "body": [
+        {
+          "ul": [
+            "DOM: mọi phần tử và nút văn bản đều là `Node`. Phần tử có thể chứa các nút khác, và nhiều thao tác, như `textContent` hay `cloneNode(true)`, hoạt động giống nhau trên một nút đơn lẻ lẫn cả cây con.",
+            "Các framework giao diện như React, Vue và Angular xây dựng giao diện dưới dạng cây, trong đó một component có thể render các component khác.",
+            "Java AWT và Swing: `Container` là lớp con của `Component` và chứa các component khác, nên một panel đầy nút bấm cũng là một component.",
+            "Cây cú pháp trừu tượng trong trình biên dịch, scene graph trong game engine và menu lồng nhau đều theo cùng một ý tưởng."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Các mẫu liên quan",
+      "body": [
+        {
+          "ul": [
+            "Iterator: duyệt các nút của composite mà không để lộ cách lưu các phần tử con.",
+            "Visitor: thêm thao tác mới trên cây composite (xuất, kiểm tra hợp lệ, thống kê) mà không sửa các lớp nút.",
+            "Decorator: cũng có interface component và bọc đối tượng theo kiểu đệ quy, nhưng decorator có đúng một phần tử con và thêm hành vi, còn composite có nhiều phần tử con và kết hợp kết quả của chúng.",
+            "Builder: thường dùng để dựng từng bước các cây composite phức tạp.",
+            "Chain of Responsibility: thường dùng liên kết cha của composite, chuyển yêu cầu từ con lên cha, như sự kiện trình duyệt nổi bọt lên DOM."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Leaf và composite khác nhau thế nào?",
+      "a": "Leaf không có phần tử con và tự làm việc. Composite giữ các component con và thường làm việc bằng cách gọi cùng thao tác đó trên từng phần tử con rồi kết hợp kết quả."
+    },
+    {
+      "q": "Composite chỉ dành cho cây thôi sao?",
+      "a": "Nó được thiết kế cho hệ phân cấp bộ phận - toàn thể dạng cây. Đồ thị tổng quát có chu trình cần thêm lưu ý, như ghi nhận các nút đã duyệt, để tránh đệ quy vô hạn."
+    },
+    {
+      "q": "Mẫu Composite khác mẫu Decorator ở điểm nào?",
+      "a": "Cả hai đều dùng interface chung và composition đệ quy. Decorator bọc đúng một đối tượng để thêm hành vi, còn composite gom nhiều phần tử con để xử lý như một."
+    },
+    {
+      "q": "Có nên đặt add() cả trong lớp leaf không?",
+      "a": "Chỉ khi bạn muốn tính trong suốt hoàn toàn và chấp nhận lỗi lúc chạy khi ai đó thêm phần tử con vào leaf. Với các ngôn ngữ có kiểu, thường an toàn hơn nếu chỉ đặt `add()` trong composite."
+    }
+  ]
+}

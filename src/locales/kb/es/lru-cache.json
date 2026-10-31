@@ -1,0 +1,223 @@
+{
+  "title": "Caché LRU: mapa hash más lista doblemente enlazada, código Python O(1) — cv.cm",
+  "description": "Cómo funciona una caché LRU (least recently used): get y put en O(1) con un mapa hash y una lista doblemente enlazada, OrderedDict y functools.lru_cache en Python.",
+  "h1": "Caché LRU explicada: cómo funciona, código y complejidad",
+  "answer": "Una caché LRU (least recently used, menos usado recientemente) guarda un número fijo de elementos y, cuando está llena, expulsa el elemento que se usó hace más tiempo. El diseño clásico combina un mapa hash, que encuentra cualquier clave en O(1), con una lista doblemente enlazada ordenada por uso reciente, que mueve o elimina cualquier entrada en O(1). En Python, `collections.OrderedDict` permite escribir una caché LRU en pocas líneas, y `functools.lru_cache` añade una a cualquier función.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve una caché LRU",
+      "body": [
+        "Una caché guarda los resultados de operaciones lentas, como consultas a bases de datos, peticiones web o cálculos costosos, para responder rápido a las peticiones repetidas. La memoria es limitada, así que la caché debe decidir qué descartar cuando se llena. LRU apuesta a que los datos usados hace poco se volverán a usar pronto, y los que llevan mucho sin tocarse probablemente no. Esta apuesta funciona bien en muchas cargas reales, por eso LRU y sus aproximaciones aparecen en cachés de CPU, cachés de páginas de sistemas operativos, bases de datos, servidores web y CDN."
+      ]
+    },
+    {
+      "h": "La idea: dos estructuras que trabajan juntas",
+      "body": [
+        "Necesitamos que dos cosas sean rápidas: encontrar una clave y saber cuál es la menos usada recientemente. Un mapa hash por sí solo no tiene orden. Una lista por sí sola es lenta para buscar. Juntos hacen ambas cosas:",
+        {
+          "table": {
+            "head": [
+              "Parte",
+              "Responsabilidad",
+              "Por qué es O(1)"
+            ],
+            "rows": [
+              [
+                "Mapa hash",
+                "asocia cada clave con su nodo en la lista",
+                "búsqueda hash en caso promedio"
+              ],
+              [
+                "Lista doblemente enlazada",
+                "mantiene los nodos ordenados del más al menos usado recientemente",
+                "desenlazar un nodo con los punteros `prev` y `next` cambia cuatro referencias"
+              ],
+              [
+                "Lado de la cabeza",
+                "la entrada usada más recientemente",
+                "las entradas nuevas y accedidas se mueven aquí"
+              ],
+              [
+                "Lado de la cola",
+                "la entrada usada menos recientemente",
+                "se expulsa desde aquí cuando la caché está llena"
+              ]
+            ]
+          }
+        },
+        "En `get(key)`, busca el nodo en el mapa, muévelo al frente y devuelve su valor. En `put(key, value)`, actualiza o crea el nodo al frente; si la caché supera ahora la capacidad, quita el nodo del final y borra su clave del mapa."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto con capacidad 2",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Resultado",
+              "Orden después (el más reciente primero)",
+              "Nota"
+            ],
+            "rows": [
+              [
+                "put(1, \"a\")",
+                "-",
+                "1",
+                ""
+              ],
+              [
+                "put(2, \"b\")",
+                "-",
+                "2, 1",
+                "la caché está llena"
+              ],
+              [
+                "get(1)",
+                "\"a\"",
+                "1, 2",
+                "1 pasa a ser el más reciente"
+              ],
+              [
+                "put(3, \"c\")",
+                "-",
+                "3, 1",
+                "expulsa 2, el menos usado recientemente"
+              ],
+              [
+                "get(2)",
+                "fallo (miss)",
+                "3, 1",
+                "2 fue expulsado"
+              ],
+              [
+                "put(1, \"A\")",
+                "-",
+                "1, 3",
+                "la actualización mueve 1 al frente"
+              ],
+              [
+                "put(4, \"d\")",
+                "-",
+                "4, 1",
+                "expulsa 3"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación desde cero en Python",
+      "body": [
+        "Los nodos centinela de cabeza y cola eliminan los casos especiales de la lista vacía: todo nodo real tiene siempre un nodo antes y otro después.",
+        {
+          "code": "class Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n    def __init__(self, key=None, value=None):\n        self.key, self.value = key, value\n        self.prev = self.next = None\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.map = {}\n        self.head, self.tail = Node(), Node()   # sentinels\n        self.head.next, self.tail.prev = self.tail, self.head\n\n    def _unlink(self, node):\n        node.prev.next, node.next.prev = node.next, node.prev\n\n    def _push_front(self, node):\n        node.prev, node.next = self.head, self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def get(self, key):\n        node = self.map.get(key)\n        if node is None:\n            return None\n        self._unlink(node)\n        self._push_front(node)\n        return node.value\n\n    def put(self, key, value):\n        if key in self.map:\n            self._unlink(self.map[key])\n        node = self.map[key] = Node(key, value)\n        self._push_front(node)\n        if len(self.map) > self.capacity:\n            lru = self.tail.prev\n            self._unlink(lru)\n            del self.map[lru.key]",
+          "lang": "python"
+        },
+        {
+          "code": "cache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))   # a\ncache.put(3, \"c\")     # evicts key 2\nprint(cache.get(2))   # None\ncache.put(1, \"A\")\ncache.put(4, \"d\")     # evicts key 3\nprint(cache.get(3), cache.get(1), cache.get(4))  # None A d",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "La versión corta con OrderedDict",
+      "body": [
+        "`collections.OrderedDict` es en sí mismo un mapa hash combinado con una lista doblemente enlazada, y `move_to_end` y `popitem(last=False)` son O(1). Eso lo convierte en la opción idiomática en Python cuando necesitas una caché LRU como objeto.",
+        {
+          "code": "from collections import OrderedDict\n\nclass LRU:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return None\n        self.data.move_to_end(key)          # mark as most recent\n        return self.data[key]\n\n    def put(self, key, value):\n        self.data[key] = value\n        self.data.move_to_end(key)\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)   # drop least recent\n\nc = LRU(2)\nc.put(\"x\", 1)\nc.put(\"y\", 2)\nc.get(\"x\")\nc.put(\"z\", 3)\nprint(list(c.data))  # ['x', 'z']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Cachear resultados de funciones con functools.lru_cache",
+      "body": [
+        "Para cachear los valores de retorno de una función, usa el decorador `functools.lru_cache`. Los argumentos deben ser hashables, porque se convierten en claves de diccionario. `cache_info()` muestra aciertos, fallos y el tamaño actual.",
+        {
+          "code": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nprint(fib(80))           # 23416728348467685\nprint(fib.cache_info())\n# CacheInfo(hits=78, misses=81, maxsize=128, currsize=81)",
+          "lang": "python"
+        },
+        "`maxsize=None` da una caché sin límite, que es lo que hace `functools.cache` (Python 3.9 y posteriores). Llama a `fib.cache_clear()` para vaciarla."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Tiempo",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "get",
+                "O(1) promedio",
+                "búsqueda hash más desenlazar y reenlazar un nodo"
+              ],
+              [
+                "put (insertar o actualizar)",
+                "O(1) promedio",
+                "inserción hash más un número constante de cambios de punteros"
+              ],
+              [
+                "Expulsión",
+                "O(1)",
+                "el nodo menos usado recientemente siempre está junto al centinela de cola"
+              ],
+              [
+                "Espacio",
+                "O(capacidad)",
+                "una entrada de mapa y un nodo de lista por elemento cacheado"
+              ]
+            ]
+          }
+        },
+        {
+          "note": "Un diseño incorrecto habitual guarda las claves en una `list` simple de Python y llama a `list.remove(key)` en cada acceso. Eso cuesta O(n) por operación y anula el propósito de la caché."
+        }
+      ]
+    },
+    {
+      "h": "Variantes, errores y cuándo usar LRU",
+      "body": [
+        {
+          "ul": [
+            "LFU (least frequently used) expulsa el elemento con menos accesos; protege a los elementos populares de los recorridos puntuales, pero es más complejo.",
+            "LRU aproximado: sistemas como Redis muestrean unas pocas claves y expulsan la más antigua entre ellas en lugar de mantener una lista exacta, lo que ahorra memoria.",
+            "Las cachés TTL hacen que las entradas expiren tras un tiempo fijo, a menudo combinado con un límite de tamaño.",
+            "Olvidar mover una entrada al frente en `get`, o en `put` de una clave existente, convierte LRU en FIFO.",
+            "Olvidar borrar la clave expulsada del mapa hash deja entradas colgantes y provoca fugas de memoria.",
+            "Compartir una caché LRU entre hilos requiere un bloqueo (lock) alrededor de cada operación; `functools.lru_cache` es seguro de llamar desde varios hilos."
+          ]
+        },
+        "LRU es una buena opción por defecto cuando el uso reciente predice el uso futuro. Rinde mal cuando un recorrido grande y puntual expulsa datos muy usados; cargas así se benefician de LFU o de políticas resistentes a recorridos. Diseñar una caché LRU con operaciones O(1) es además una de las preguntas de entrevista de programación más comunes, porque evalúa mapas hash y listas enlazadas a la vez."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué significa LRU?",
+      "a": "Least recently used (menos usado recientemente). Cuando la caché está llena, expulsa la entrada que lleva más tiempo sin leerse ni escribirse."
+    },
+    {
+      "q": "¿Por qué una caché LRU necesita una lista doblemente enlazada?",
+      "a": "Para quitar un nodo del medio de la lista en O(1), necesitas su nodo anterior. Una lista doblemente enlazada guarda `prev` en cada nodo; una lista simplemente enlazada requeriría una búsqueda O(n)."
+    },
+    {
+      "q": "¿Puedo implementar una caché LRU solo con un dict de Python?",
+      "a": "Desde Python 3.7, `dict` conserva el orden de inserción, así que puedes borrar y reinsertar una clave para marcarla como reciente y expulsar `next(iter(d))`. `OrderedDict` expresa mejor la intención con `move_to_end` y `popitem(last=False)`."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre lru_cache y cache en functools?",
+      "a": "`functools.cache` es una caché sin límite, equivalente a `lru_cache(maxsize=None)`. `lru_cache` con un número expulsa los resultados menos usados recientemente una vez alcanzado ese tamaño."
+    },
+    {
+      "q": "¿LRU es siempre la mejor política de expulsión?",
+      "a": "No. Es simple y funciona bien cuando es probable que se reutilicen los elementos recientes, pero los grandes recorridos secuenciales pueden vaciar datos útiles. LFU, ARC y otras políticas manejan mejor esas cargas."
+    }
+  ]
+}

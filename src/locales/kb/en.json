@@ -44,5 +44,41 @@
         "a": "A tutorial walks through one task step by step. A knowledge article explains the idea behind it, such as how a format or a formula works, so you can make your own decisions."
       }
     ]
+  },
+  "codeHub": {
+    "kicker": "Coding",
+    "all": "All coding tutorials",
+    "title": "Coding tutorials: programming languages, design patterns and algorithms — cv.cm",
+    "description": "Free one-page tutorials for Python, JavaScript, Java, C++, Go, Rust and more, all 23 design patterns, and core data structures and algorithms, with code.",
+    "h1": "Coding tutorials",
+    "lede": "Learn a programming language, a design pattern or an algorithm on one page. Each tutorial answers the question first, then shows working code, the common mistakes and the official references.",
+    "groups": {
+      "languages": "Programming languages",
+      "patterns": "Design patterns",
+      "structures": "Data structures",
+      "algorithms": "Algorithms"
+    },
+    "about": [
+      "Language tutorials take you from installing the tools and printing Hello, world to functions, collections, error handling and a small complete program. Pattern pages explain the problem each Gang of Four pattern solves, with a TypeScript example and when not to use it. Data structure and algorithm pages trace an example step by step, give Python code and state the time and space complexity.",
+      "Code samples are short and runnable as shown, and every page links to the language documentation, standard or original source it was checked against."
+    ],
+    "faq": [
+      {
+        "q": "Which programming language should I learn first?",
+        "a": "For most beginners Python or JavaScript: both have simple syntax, huge communities and run everywhere. Pick JavaScript for websites, Python for data, automation and general programming."
+      },
+      {
+        "q": "Do I need to install anything to follow the tutorials?",
+        "a": "Each language tutorial starts with how to install the official tools and run your first program. Pattern and algorithm pages use TypeScript and Python, which you can run locally or in any online playground."
+      },
+      {
+        "q": "Are these tutorials free?",
+        "a": "Yes. Every tutorial is free to read with no account, and the code samples may be reused in your own projects."
+      },
+      {
+        "q": "What is the difference between data structures and algorithms?",
+        "a": "A data structure is a way to store data, such as an array, hash table or tree. An algorithm is a sequence of steps that solves a problem, such as sorting or finding a shortest path, and its speed often depends on the data structure it uses."
+      }
+    ]
   }
 }

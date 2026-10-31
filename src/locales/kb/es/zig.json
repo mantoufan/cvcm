@@ -1,0 +1,183 @@
+{
+  "title": "Tutorial de Zig: tipos, slices, uniones de error, comptime y allocators — cv.cm",
+  "description": "Aprende los fundamentos de Zig: instala y ejecuta Hola mundo, usa const y var, arreglos y slices, opcionales, uniones de error con try y catch, defer, comptime y allocators.",
+  "h1": "Tutorial de Zig para principiantes",
+  "answer": "Zig es un lenguaje de programación de sistemas de propósito general y una cadena de herramientas pensada como alternativa moderna a C. No tiene flujo de control oculto, ni recolector de basura, ni asignaciones de memoria ocultas: pasas un allocator de forma explícita, manejas los errores con uniones de error y `try`, y limpias con `defer`. La ejecución de código en tiempo de compilación (`comptime`) sustituye a las macros y a los genéricos. Ejecuta un archivo con `zig run hello.zig`. Zig todavía no ha llegado a la versión 1.0, así que los detalles del lenguaje y de la biblioteca estándar cambian entre versiones.",
+  "sections": [
+    {
+      "h": "Qué es Zig y quién lo usa",
+      "body": [
+        "Zig lo creó Andrew Kelley y lo desarrolla la Zig Software Foundation, una organización sin ánimo de lucro. Apunta al mismo trabajo que C: componentes de sistemas operativos, firmware embebido, motores de videojuegos, bases de datos y herramientas de línea de comandos rápidas. El compilador de Zig también puede compilar código C y C++ (`zig cc`) y compilar de forma cruzada para muchos destinos, así que algunos proyectos lo usan solo como cadena de herramientas de C.",
+        "Entre los proyectos conocidos escritos en Zig están el entorno de ejecución de JavaScript Bun, la base de datos financiera TigerBeetle y el emulador de terminal Ghostty.",
+        {
+          "note": "Zig está en fase previa a la 1.0. La sintaxis y, sobre todo, la biblioteca estándar cambian entre las versiones 0.x, y los tutoriales escritos para una versión anterior pueden no compilar. Esta página se limita a fundamentos que llevan varias versiones estables; lee siempre la documentación de la versión exacta que instalaste (`zig version`)."
+        }
+      ]
+    },
+    {
+      "h": "Instala Zig y ejecuta Hola, mundo",
+      "body": [
+        "Descarga un archivo precompilado para tu sistema desde ziglang.org/download, descomprímelo y añade la carpeta a tu PATH, o instala Zig con el gestor de paquetes de tu sistema. No hay un instalador ni un entorno de ejecución aparte.",
+        {
+          "code": "// hello.zig\nconst std = @import(\"std\");\npub fn main() void {\n    std.debug.print(\"Hello, world!\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        {
+          "code": "zig run hello.zig         # compile and run\n# Hello, world!\nzig build-exe hello.zig   # produce an executable named hello\nzig init                  # create a project with build.zig",
+          "lang": "shell"
+        },
+        "`std.debug.print` escribe en la salida de error estándar y es la forma más sencilla de imprimir en todas las versiones recientes. El segundo argumento es una tupla de valores para los marcadores de formato; `.{}` es una tupla vacía. La API para escribir en la salida estándar ha cambiado entre versiones, así que consulta la documentación de la biblioteca estándar de tu versión."
+      ]
+    },
+    {
+      "h": "Variables y tipos básicos",
+      "body": [
+        "`const` declara un valor que nunca cambia y `var` declara una variable mutable. El compilador es estricto: una variable local sin usar es un error, y un `var` que nunca se modifica también lo es, así que usa `const` por defecto.",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Ejemplo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Enteros con signo",
+                "`i8`, `i32`, `i64`",
+                "Se permite cualquier ancho, p. ej. `i7`"
+              ],
+              [
+                "Enteros sin signo",
+                "`u8`, `u32`, `usize`",
+                "`usize` tiene el tamaño de un puntero y se usa para longitudes e índices"
+              ],
+              [
+                "Flotantes",
+                "`f32`, `f64`",
+                "IEEE 754"
+              ],
+              [
+                "bool",
+                "`true`, `false`",
+                "Sin conversión implícita desde enteros"
+              ],
+              [
+                "Arreglo",
+                "`[3]u8`",
+                "Longitud fija conocida en tiempo de compilación"
+              ],
+              [
+                "Slice",
+                "`[]const u8`",
+                "Puntero más longitud; las cadenas son slices de bytes"
+              ],
+              [
+                "Opcional",
+                "`?i32`",
+                "Un valor o `null`"
+              ],
+              [
+                "Unión de error",
+                "`!u32`",
+                "Un valor o un error"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const age: u32 = 30;\n    var count: i32 = 0;\n    count += 1;\n    const name = \"Ana\"; // string literal, coerces to []const u8\n    std.debug.print(\"{s} is {d}, count = {d}\\n\", .{ name, age, count });\n    var maybe: ?i32 = null;\n    maybe = 5;\n    const value = maybe orelse 0;\n    std.debug.print(\"value = {d}\\n\", .{value});\n}",
+          "lang": "zig"
+        },
+        "Los marcadores de formato indican cómo imprimir: `{d}` para números, `{s}` para cadenas, `{c}` para un solo byte como carácter y `{any}` para depurar cualquier valor."
+      ]
+    },
+    {
+      "h": "Control de flujo",
+      "body": [
+        "`if`, `switch`, `while` y `for` pueden usarse todos como expresiones. `switch` debe cubrir todos los valores posibles, por lo que normalmente añades una rama `else`.",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() void {\n    const n: i32 = -2;\n    const sign: []const u8 = if (n > 0) \"positive\" else if (n < 0) \"negative\" else \"zero\";\n    const score: u8 = 85;\n    const letter: u8 = switch (score) {\n        90...100 => 'A',\n        80...89 => 'B',\n        else => 'C',\n    };\n    std.debug.print(\"{s} {c}\\n\", .{ sign, letter }); // negative B\n    var i: u32 = 0;\n    while (i < 3) : (i += 1) {\n        std.debug.print(\"{d} \", .{i}); // 0 1 2\n    }\n    const items = [_]u8{ 10, 20, 30 };\n    for (items, 0..) |item, index| {\n        std.debug.print(\"\\n{d}: {d}\", .{ index, item });\n    }\n    std.debug.print(\"\\n\", .{});\n}",
+          "lang": "zig"
+        },
+        "`[_]u8{ ... }` permite que el compilador cuente la longitud del arreglo. `for (items, 0..)` recorre los elementos y un contador a la vez; los valores entre barras verticales se llaman capturas."
+      ]
+    },
+    {
+      "h": "Funciones y comptime",
+      "body": [
+        "Las funciones declaran los tipos de los parámetros y el tipo de retorno. Los argumentos son inmutables dentro de la función. El código genérico se escribe con parámetros `comptime`: un tipo es un valor que existe en tiempo de compilación, así que una función puede recibir un tipo como argumento.",
+        {
+          "code": "const std = @import(\"std\");\nfn add(a: i32, b: i32) i32 {\n    return a + b;\n}\nfn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\npub fn main() void {\n    std.debug.print(\"{d}\\n\", .{add(2, 3)});            // 5\n    std.debug.print(\"{d}\\n\", .{max(i32, 3, 7)});       // 7\n    std.debug.print(\"{d}\\n\", .{max(f64, 1.5, 0.5)});   // 1.5\n}",
+          "lang": "zig"
+        },
+        "El compilador crea una versión separada de `max` para cada tipo con el que se llama. El mismo mecanismo se usa para construir estructuras de datos genéricas en la biblioteca estándar: una función que recibe un tipo y devuelve un nuevo tipo struct."
+      ]
+    },
+    {
+      "h": "Manejo de errores con uniones de error, try y defer",
+      "body": [
+        "Los errores son valores. Un tipo de retorno `!u32` significa «un `u32` o un error». `try expr` devuelve el error al llamador si lo hay; `catch` lo trata en el acto. Los errores no pueden ignorarse en silencio.",
+        {
+          "code": "const std = @import(\"std\");\nfn parseAge(s: []const u8) !u32 {\n    const n = try std.fmt.parseInt(i32, s, 10);\n    if (n < 0) return error.Negative;\n    return @intCast(n);\n}\npub fn main() void {\n    const age = parseAge(\"-5\") catch |err| {\n        std.debug.print(\"error: {s}\\n\", .{@errorName(err)});\n        return;\n    };\n    std.debug.print(\"age {d}\\n\", .{age});\n}\n// error: Negative",
+          "lang": "zig"
+        },
+        "`defer` ejecuta una instrucción cuando el bloque actual termina, y `errdefer` la ejecuta solo cuando el bloque termina con un error. Mantienen el código de limpieza junto al código que adquirió el recurso."
+      ]
+    },
+    {
+      "h": "Memoria y allocators",
+      "body": [
+        "Zig no tiene recolector de basura ni un allocator global oculto. Cualquier función que necesite memoria del heap recibe un parámetro `std.mem.Allocator`, de modo que quien llama decide de dónde sale la memoria (el page allocator, un arena, un búfer fijo o un allocator de depuración que detecta fugas).",
+        {
+          "code": "const std = @import(\"std\");\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(u32, 5);\n    defer allocator.free(buf);\n    for (buf, 0..) |*slot, i| {\n        slot.* = @intCast(i * i);\n    }\n    std.debug.print(\"{any}\\n\", .{buf}); // { 0, 1, 4, 9, 16 }\n}",
+          "lang": "zig"
+        },
+        "`|*slot|` captura un puntero a cada elemento para que el bucle pueda escribir en él, y `slot.*` desreferencia el puntero. En las compilaciones Debug y ReleaseSafe, el desbordamiento de enteros y la indexación fuera de rango detienen el programa con un panic claro en lugar de causar comportamiento indefinido."
+      ]
+    },
+    {
+      "h": "Un programa pequeño y completo: promedio de números",
+      "body": [
+        {
+          "code": "const std = @import(\"std\");\nfn average(numbers: []const i64) ?f64 {\n    if (numbers.len == 0) return null;\n    var sum: i64 = 0;\n    for (numbers) |n| sum += n;\n    const total: f64 = @floatFromInt(sum);\n    const len: f64 = @floatFromInt(numbers.len);\n    return total / len;\n}\npub fn main() !void {\n    const allocator = std.heap.page_allocator;\n    const buf = try allocator.alloc(i64, 16);\n    defer allocator.free(buf);\n    var it = std.mem.tokenizeScalar(u8, \"4 8 15 16 23 42\", ' ');\n    var count: usize = 0;\n    while (it.next()) |word| : (count += 1) {\n        buf[count] = try std.fmt.parseInt(i64, word, 10);\n    }\n    if (average(buf[0..count])) |avg| {\n        std.debug.print(\"count={d} avg={d:.2}\\n\", .{ count, avg });\n    }\n}\n// count=6 avg=18.00",
+          "lang": "zig"
+        },
+        "El programa divide una cadena por espacios, analiza cada trozo con `try`, guarda los números en memoria del heap que libera `defer` y devuelve un promedio opcional que es `null` para una lista vacía.",
+        {
+          "note": "Errores habituales de principiantes: dejar una variable local sin usar o declarar un `var` que nunca cambia (ambos son errores de compilación); usar `{}` sin especificador para cadenas (usa `{s}`); olvidar que los literales de cadena son arreglos de bytes, no caracteres Unicode; mezclar tipos enteros sin una conversión explícita como `@intCast`; y copiar código de un tutorial escrito para una versión anterior de Zig."
+        }
+      ]
+    },
+    {
+      "h": "Siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "La referencia del lenguaje en ziglang.org/documentation, eligiendo la página de la versión que tienes instalada.",
+            "La sección Learn de ziglang.org, incluidos «Getting Started» y una visión general del lenguaje.",
+            "Ziglings, un conjunto de pequeños programas rotos que se arreglan uno por uno, es un conjunto de ejercicios muy popular en la comunidad.",
+            "Lee el código fuente de la biblioteca estándar: está escrita en Zig y es la mejor referencia de las APIs actuales."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Zig está listo para producción?",
+      "a": "Algunas empresas usan Zig en producción, pero el lenguaje está en fase previa a la 1.0, así que debes esperar cambios incompatibles al actualizar el compilador y reservar tiempo para ellos."
+    },
+    {
+      "q": "¿Zig es un reemplazo de C o de Rust?",
+      "a": "Zig se parece más a C: gestión manual de memoria con mejores comprobaciones de seguridad, manejo de errores y código en tiempo de compilación. Rust garantiza la seguridad de memoria mediante su sistema de propiedad (ownership) y su borrow checker, que Zig no tiene."
+    },
+    {
+      "q": "¿Zig puede usar bibliotecas de C?",
+      "a": "Sí. Zig puede importar archivos de cabecera de C y llamar directamente a funciones de C, y el compilador de Zig puede compilar archivos fuente de C y C++, lo que hace sencillo mezclar los lenguajes."
+    },
+    {
+      "q": "¿Qué significa comptime en Zig?",
+      "a": "`comptime` marca el código o los parámetros que se evalúan durante la compilación. Zig lo usa para genéricos, tablas constantes y comprobaciones en tiempo de compilación en lugar de un lenguaje de macros aparte."
+    }
+  ]
+}

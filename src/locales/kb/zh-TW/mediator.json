@@ -1,0 +1,134 @@
+{
+  "title": "中介者模式：以 TypeScript 範例解耦元件 — cv.cm",
+  "description": "中介者模式讓物件之間的溝通都經由一個中央物件轉送，彼此不再互相引用。附 TypeScript 表單範例。",
+  "h1": "中介者模式（Mediator）詳解與範例",
+  "answer": "中介者（Mediator）是一種行為型設計模式，它讓物件透過一個中央的中介者物件溝通，藉此減少物件之間的直接依賴。每個元件不再直接呼叫其他元件，而是告訴中介者發生了什麼事，由中介者決定要更新哪些其他元件。這把糾纏不清的多對多引用網，變成簡單的一對多連結。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：定義一個物件，封裝一組物件如何互動。中介者透過避免物件之間顯式地互相引用來促進鬆散耦合，並讓你能獨立地改變它們的互動方式。它是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一。",
+        "考慮一個註冊表單，包含「公司帳號」核取方塊、公司名稱欄位、電子郵件欄位和送出按鈕。勾選核取方塊時，公司欄位必須出現並變成必填；只有當所有必填欄位都有效時，送出按鈕才能啟用。如果每個元件都直接更新其他元件，核取方塊就得認識公司欄位和按鈕，電子郵件欄位得認識按鈕，依此類推。每增加一條規則就多一些交叉引用，而且沒有任何元件能在別的表單中重複使用。",
+        "有了中介者，元件只負責回報像「我改變了」這樣的事件。表單物件扮演中介者，掌握所有關於欄位如何互相影響的規則。元件變得簡單而可重用，互動邏輯也集中在同一處。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "中介者",
+                "帶有同事物件用來回報事件之方法的介面，例如 `notify(sender, event)`"
+              ],
+              [
+                "具體中介者",
+                "認識所有同事物件，並實作它們之間的協調規則"
+              ],
+              [
+                "同事",
+                "持有中介者引用的元件，它回報自己的事件，而不是呼叫其他同事"
+              ]
+            ]
+          }
+        },
+        "沒有中介者時，n 個彼此都要溝通的元件最多可能需要 n × (n − 1) / 2 條連結。有了中介者，每個元件只有一條連結：連到中介者。"
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "每個欄位都把變更回報給中介者。`SignUpForm` 是具體中介者：它負責顯示或隱藏公司欄位，並啟用按鈕。",
+        {
+          "code": "interface Mediator {\n  notify(sender: Component, event: string): void;\n}\n\nclass Component {\n  constructor(protected mediator: Mediator, readonly name: string) {}\n}\n\nclass Checkbox extends Component {\n  checked = false;\n  toggle() { this.checked = !this.checked; this.mediator.notify(this, \"change\"); }\n}\nclass TextField extends Component {\n  value = \"\";\n  visible = true;\n  type(text: string) { this.value = text; this.mediator.notify(this, \"change\"); }\n}\nclass Button extends Component { enabled = false; }\n\nclass SignUpForm implements Mediator {\n  isCompany = new Checkbox(this, \"isCompany\");\n  company = new TextField(this, \"company\");\n  email = new TextField(this, \"email\");\n  submit = new Button(this, \"submit\");\n  constructor() { this.company.visible = false; }\n\n  notify(sender: Component, event: string) {\n    if (sender === this.isCompany) this.company.visible = this.isCompany.checked;\n    const emailOk = this.email.value.includes(\"@\");\n    const companyOk = !this.company.visible || this.company.value.length > 0;\n    this.submit.enabled = emailOk && companyOk;\n    console.log(sender.name, event, \"-> submit enabled:\", this.submit.enabled);\n  }\n}\n\nconst form = new SignUpForm();\nform.email.type(\"ana@example.com\"); // email change -> submit enabled: true\nform.isCompany.toggle();            // isCompany change -> submit enabled: false\nform.company.type(\"Acme\");          // company change -> submit enabled: true",
+          "lang": "typescript"
+        },
+        "請注意，`Checkbox` 和 `TextField` 完全不知道其他欄位的存在。只要給它們不同的中介者，你就能在完全不同的表單中重複使用它們。",
+        {
+          "note": "中介者的主要風險是中介者本身膨脹成一個無所不知的大型類別，有時稱為上帝物件（god object）。如果一個中介者處理許多不相關的規則，就把它拆成幾個較小的中介者，每個功能或每個畫面區域一個。"
+        }
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當一群物件以複雜但明確的方式溝通，而且它們之間的依賴關係難以追蹤時使用。",
+            "當你想重用目前因互相引用而無法分開的元件時使用。",
+            "當互動規則經常改變，而你希望在同一處修改時使用。",
+            "兩個物件只是互相呼叫時不要使用；直接呼叫更清楚。",
+            "元件只需要把事件廣播給任何有興趣的對象時不要使用。單純的事件發射器（觀察者）更輕量。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "GUI 框架中的表單與對話框控制器：父元件持有狀態，並決定子輸入元件如何互相影響，而子元件只負責觸發事件。在 React 中，把狀態「提升」到共同的父元件，就是遵循這個想法。",
+            "聊天應用程式：使用者不會直接互傳訊息；聊天室或伺服器接收每則訊息，並送達正確的成員。",
+            "服務之間的訊息代理與事件匯流排：傳送者發布到代理，由代理把訊息轉送給傳送者並不認識的接收者。",
+            "空中交通管制是經典的類比：飛機不會與每一架其他飛機協商，只與塔台通話。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "中介者與觀察者及其他模式的比較",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與中介者的差異"
+            ],
+            "rows": [
+              [
+                "觀察者",
+                "觀察者是單向廣播：主體通知任意數量的監聽者，且不知道它們做什麼。中介者認識它的同事物件，並雙向協調它們。中介者常以觀察者來實作。"
+              ],
+              [
+                "外觀",
+                "外觀為用戶端提供子系統的較簡單介面，而子系統並不知道外觀的存在。同事物件則認識它們的中介者，並與之對話。"
+              ],
+              [
+                "責任鏈",
+                "責任鏈把請求沿著一串處理者傳遞；中介者則是單一樞紐，把每個事件送給正確的元件。"
+              ],
+              [
+                "命令",
+                "同事物件可以把命令物件送給中介者，再由中介者決定由誰執行。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "中介者與觀察者有什麼差別？",
+      "a": "在觀察者模式中，主體向它不認識的訂閱者廣播事件，通訊是單向的。在中介者模式中，中央物件認識參與的元件，並協調它們如何互相影響。"
+    },
+    {
+      "q": "事件匯流排算是中介者嗎？",
+      "a": "只把事件轉發給訂閱者的事件匯流排更接近觀察者，或稱發布／訂閱。當它包含決定元件如何互相反應的規則時，它就成了中介者。"
+    },
+    {
+      "q": "中介者會讓程式碼更難追蹤嗎？",
+      "a": "可能會。直接呼叫容易追蹤，而經過中介的呼叫要走過一個中央物件。當替代方案是許多元件互相引用時，這個模式就值得使用。"
+    },
+    {
+      "q": "一個元件可以有多個中介者嗎？",
+      "a": "通常一個元件只有一個中介者，在建立時設定。同一個元件可以在不同情境中搭配不同的中介者重複使用，這是這個模式的主要好處之一。"
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Backtracking algorithm: subsets, permutations, N-Queens in Python — cv.cm",
+  "description": "Backtracking explained: choose, explore, undo. A traced N-Queens example, a reusable Python template, subsets, permutations, pruning and complexity.",
+  "h1": "Backtracking explained: how it works, code and examples",
+  "answer": "Backtracking is a way to search through all possible solutions by building a candidate one choice at a time and undoing the last choice as soon as it cannot lead to a valid solution. It is a depth-first search over a tree of partial solutions, following the pattern choose, explore, unchoose. Backtracking solves puzzles and combinatorial problems such as N-Queens, Sudoku, subsets and permutations. Its worst case is exponential, so pruning invalid branches early is what makes it practical.",
+  "sections": [
+    {
+      "h": "What problem backtracking solves",
+      "body": [
+        "Some problems ask for every arrangement that satisfies a set of rules, or for any one such arrangement: place 8 queens so that none attack each other, fill a Sudoku grid, list all subsets of a set that sum to a target, find all ways to split a string into dictionary words. There is no clever formula; you have to search. Trying every complete combination blindly is far too slow, but most partial combinations are already invalid after a few choices.",
+        "Backtracking checks the rules after every single choice. When a partial solution breaks a rule, it abandons that whole branch of the search tree at once and goes back to try the next option."
+      ]
+    },
+    {
+      "h": "The idea in plain words",
+      "body": [
+        {
+          "ol": [
+            "If the current partial solution is complete, record it.",
+            "Otherwise, for each possible next choice: if the choice is allowed, make it (choose).",
+            "Recurse to extend the solution further (explore).",
+            "Undo the choice, so the next option starts from the same state (unchoose)."
+          ]
+        },
+        "The search space is a tree: the root is the empty solution, each level adds one choice, and the leaves are complete candidates. Backtracking is depth-first search on this tree, and pruning means cutting off subtrees that cannot contain a solution."
+      ]
+    },
+    {
+      "h": "Worked example: 4-Queens",
+      "body": [
+        "Place 4 queens on a 4 × 4 board, one per row, so that no two share a column or a diagonal. Columns are numbered 0 to 3.",
+        {
+          "table": {
+            "head": [
+              "Step",
+              "Action",
+              "Queens so far (column per row)"
+            ],
+            "rows": [
+              [
+                "1",
+                "Row 0: put a queen in column 0",
+                "0"
+              ],
+              [
+                "2",
+                "Row 1: columns 0 and 1 are attacked; try column 2",
+                "0, 2"
+              ],
+              [
+                "3",
+                "Row 2: every column is attacked. Backtrack: move row 1 to column 3",
+                "0, 3"
+              ],
+              [
+                "4",
+                "Row 2: column 1 is safe",
+                "0, 3, 1"
+              ],
+              [
+                "5",
+                "Row 3: every column is attacked. Backtrack to row 2: no other column works. Backtrack to row 1: no columns left. Backtrack to row 0: move to column 1",
+                "1"
+              ],
+              [
+                "6",
+                "Row 1: column 3 is safe",
+                "1, 3"
+              ],
+              [
+                "7",
+                "Row 2: column 0 is safe",
+                "1, 3, 0"
+              ],
+              [
+                "8",
+                "Row 3: column 2 is safe. Solution found",
+                "1, 3, 0, 2"
+              ]
+            ]
+          }
+        },
+        "Continuing the search finds the only other solution, 2, 0, 3, 1, which is the mirror image of the first."
+      ]
+    },
+    {
+      "h": "Python implementation",
+      "body": [
+        "Keep sets of used columns and diagonals so that each safety check is O(1). On one diagonal `row - col` is constant, and on the other `row + col` is constant.",
+        {
+          "code": "def solve_n_queens(n):\n    solutions, cols = [], []\n    used_cols, diag1, diag2 = set(), set(), set()\n\n    def place(row):\n        if row == n:\n            solutions.append(cols.copy())   # copy, not the live list\n            return\n        for col in range(n):\n            if col in used_cols or row - col in diag1 or row + col in diag2:\n                continue                    # prune: square is attacked\n            cols.append(col)                # choose\n            used_cols.add(col); diag1.add(row - col); diag2.add(row + col)\n            place(row + 1)                  # explore\n            cols.pop()                      # unchoose\n            used_cols.remove(col); diag1.remove(row - col); diag2.remove(row + col)\n\n    place(0)\n    return solutions\n\nprint(solve_n_queens(4))       # [[1, 3, 0, 2], [2, 0, 3, 1]]\nprint(len(solve_n_queens(8)))  # 92",
+          "lang": "python"
+        },
+        "The same template generates all subsets and all permutations:",
+        {
+          "code": "def subsets(items):\n    result, current = [], []\n\n    def go(i):\n        if i == len(items):\n            result.append(current.copy())\n            return\n        current.append(items[i]); go(i + 1); current.pop()   # take items[i]\n        go(i + 1)                                            # skip items[i]\n\n    go(0)\n    return result\n\ndef permutations(items):\n    result, current, used = [], [], [False] * len(items)\n\n    def go():\n        if len(current) == len(items):\n            result.append(current.copy())\n            return\n        for i, x in enumerate(items):\n            if not used[i]:\n                used[i] = True; current.append(x)\n                go()\n                used[i] = False; current.pop()\n\n    go()\n    return result\n\nprint(subsets([1, 2, 3]))\n# [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]\nprint(permutations([1, 2, 3]))\n# [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]",
+          "lang": "python"
+        },
+        "For plain subsets and permutations in real code, `itertools.combinations` and `itertools.permutations` are faster. Write your own backtracking when you need to prune with problem-specific rules."
+      ]
+    },
+    {
+      "h": "Time and space complexity",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Problem",
+              "Number of results",
+              "Time",
+              "Extra space"
+            ],
+            "rows": [
+              [
+                "All subsets of n items",
+                "2ⁿ",
+                "O(n × 2ⁿ)",
+                "O(n) recursion depth plus the output"
+              ],
+              [
+                "All permutations of n items",
+                "n!",
+                "O(n × n!)",
+                "O(n) plus the output"
+              ],
+              [
+                "N-Queens",
+                "varies (92 for n = 8)",
+                "at most O(n!), far less with pruning",
+                "O(n)"
+              ],
+              [
+                "Sudoku (9 × 9)",
+                "1 for a proper puzzle",
+                "exponential in the number of empty cells in the worst case",
+                "O(cells)"
+              ]
+            ]
+          }
+        },
+        "Backtracking cannot beat the size of the output: if you must list n! permutations, you need at least n! steps. Pruning only helps by skipping branches that produce nothing."
+      ]
+    },
+    {
+      "h": "Variants and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Forgetting to undo: if the state is not restored after the recursive call, later branches see stale choices.",
+            "Appending the live list: `result.append(current)` stores a reference that later changes; append `current.copy()`.",
+            "Duplicates in the input: sort the items and skip an item equal to the previous one at the same depth to avoid duplicate subsets or permutations.",
+            "Stop at the first solution: return `True` from the recursion and stop the loops when one solution is enough, as in a Sudoku solver.",
+            "Better ordering: try the most constrained choice first (for Sudoku, the empty cell with the fewest candidates). This often shrinks the tree dramatically."
+          ]
+        },
+        {
+          "note": "Backtracking and dynamic programming both explore choices, but DP reuses answers to repeated subproblems. If the same partial state appears many times and only a count or an optimum is needed, add memoization or switch to DP. If you need every solution itself, backtracking is the right tool."
+        }
+      ]
+    },
+    {
+      "h": "When to use it and real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Constraint satisfaction: Sudoku, crosswords, map coloring, timetabling and exam scheduling.",
+            "SAT solvers and Prolog-style logic engines are built on backtracking search with strong pruning.",
+            "Regular expression engines in many languages, including Python's `re`, use backtracking; badly written patterns can backtrack exponentially (\"catastrophic backtracking\").",
+            "Interview problems: subsets, permutations, combination sum, N-Queens, word search in a grid, palindrome partitioning, generate parentheses, letter combinations of a phone number."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between backtracking and brute force?",
+      "a": "Brute force builds and checks every complete candidate. Backtracking checks constraints after each choice and abandons a partial candidate as soon as it fails, so it skips whole groups of candidates."
+    },
+    {
+      "q": "Is backtracking the same as DFS?",
+      "a": "Backtracking is a depth-first search over the tree of partial solutions, with the extra rule of undoing each choice and pruning invalid branches. DFS on a graph is the same idea applied to existing nodes and edges."
+    },
+    {
+      "q": "What is the time complexity of backtracking?",
+      "a": "It is usually exponential or factorial in the worst case, for example O(2ⁿ) for subsets and O(n!) for permutations. Good pruning reduces the actual work, but not the worst-case bound."
+    },
+    {
+      "q": "How many solutions does the 8-Queens puzzle have?",
+      "a": "It has 92 solutions, or 12 if solutions that are rotations or reflections of each other are counted once."
+    }
+  ]
+}

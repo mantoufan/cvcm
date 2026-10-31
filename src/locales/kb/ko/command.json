@@ -1,0 +1,155 @@
+{
+  "title": "커맨드 패턴: TypeScript로 만드는 실행 취소, 다시 실행, 큐 — cv.cm",
+  "description": "커맨드 패턴은 요청을 객체로 만들어 큐에 넣고, 기록하고, 실행 취소할 수 있게 합니다. 구성 요소와 TypeScript 실행 취소/다시 실행 구현을 알아봅니다.",
+  "h1": "커맨드 패턴 예제로 쉽게 이해하기",
+  "answer": "커맨드(Command)는 요청을 수행하는 데 필요한 모든 것을 담은 독립된 객체로 바꾸는 행동 패턴입니다. 요청이 객체이므로 저장하고, 전달하고, 큐에 넣고, 기록하고, 나중에 취소할 수 있습니다. 커맨드를 실행시키는 객체(예: 버튼)는 어떤 객체가 어떻게 일을 하는지 알 필요가 없습니다.",
+  "sections": [
+    {
+      "h": "의도와 해결하는 문제",
+      "body": [
+        "의도: 요청을 객체로 캡슐화하여 서로 다른 요청으로 클라이언트를 매개변수화하고, 요청을 큐에 넣거나 기록하며, 실행 취소 가능한 연산을 지원합니다. 커맨드는 GoF(Gang of Four) 책에 실린 행동 패턴 중 하나입니다.",
+        "텍스트 편집기를 떠올려 봅시다. “텍스트를 굵게 만들기” 같은 동작은 툴바 버튼, 메뉴 항목, 단축키 Ctrl+B로 모두 실행할 수 있습니다. 이들이 각각 편집기를 직접 호출하면 같은 로직이 세 곳에 중복됩니다. 더 큰 문제는 편집기가 실행 취소도 지원해야 한다는 점입니다. 사용자가 Ctrl+Z를 누르면 프로그램은 마지막 동작이 무엇이었고 어떻게 되돌리는지 알아야 합니다.",
+        "커맨드 패턴은 두 문제를 모두 해결합니다. 각 동작은 `execute` 메서드와, 필요하면 `undo` 메서드를 가진 객체가 됩니다. 버튼, 메뉴, 단축키는 모두 같은 커맨드 객체를 가집니다. 편집기는 실행한 커맨드의 기록 목록을 보관하므로, 실행 취소는 목록에서 마지막 커맨드를 꺼내 `undo`를 호출하는 일이 됩니다."
+      ]
+    },
+    {
+      "h": "구조와 참여자",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "역할",
+              "책임"
+            ],
+            "rows": [
+              [
+                "커맨드(Command)",
+                "`execute` 메서드(그리고 흔히 `undo`)를 가진 인터페이스"
+              ],
+              [
+                "구체 커맨드(Concrete command)",
+                "리시버와 매개변수를 저장하고, `execute`에서 리시버의 메서드를 호출합니다"
+              ],
+              [
+                "리시버(Receiver)",
+                "문서나 은행 계좌처럼 실제 작업을 수행하는 방법을 아는 객체"
+              ],
+              [
+                "인보커(Invoker)",
+                "커맨드에 실행을 요청하며, 실행 취소와 다시 실행을 위해 기록을 보관할 수 있습니다"
+              ],
+              [
+                "클라이언트(Client)",
+                "구체 커맨드를 만들고 리시버와 인보커에 연결합니다"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 구현: 실행 취소와 다시 실행",
+      "body": [
+        "`TextDocument`가 리시버입니다. `InsertText`와 `DeleteLast`는 스스로를 되돌릴 수 있을 만큼의 정보를 기억하는 커맨드입니다. `Editor`는 인보커로, 실행 취소용과 다시 실행용 두 개의 스택을 가집니다.",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "위 `run`처럼 새 커맨드를 실행하면 다시 실행 스택을 비워야 합니다. 그렇지 않으면 다시 실행이 맞지 않는 문서 상태에 커맨드를 적용해 텍스트가 깨질 수 있습니다."
+        }
+      ]
+    },
+    {
+      "h": "적용 전과 후",
+      "body": [
+        "패턴이 없으면 UI가 문서를 직접 호출하고, 무슨 일이 있었는지 기록하는 곳이 없으므로 실행 취소가 불가능합니다.",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "두 번째 버전은 앞에서 본 것과 같은 `MakeBold` 커맨드 클래스가 있다고 가정한 코드 조각입니다. UI는 굵게 만드는 방법을 더 이상 알지 못하며, 모든 동작이 한 곳을 거치므로 거기서 기록하거나 로깅하거나 되돌릴 수 있습니다."
+      ]
+    },
+    {
+      "h": "언제 쓰고 언제 쓰지 말아야 할까",
+      "body": [
+        {
+          "ul": [
+            "실행 취소와 다시 실행, 매크로(함께 실행되는 커맨드 목록), 커맨드 기록이 필요할 때 사용합니다.",
+            "작업을 큐에 넣거나 예약할 때 사용합니다. 작업 큐가 커맨드 객체를 저장하고 워커가 나중에 실행합니다.",
+            "연산을 기록하거나 재생할 때 사용합니다. 예를 들어 직렬화한 커맨드를 다른 서버로 보낼 수 있습니다.",
+            "UI 요소와 그것이 실행하는 코드를 분리할 때 사용합니다.",
+            "콜백만 필요하다면 사용하지 않습니다. TypeScript에서 함수는 이미 일급 값이므로 `button.onclick = save`는 실행 취소가 없는 훌륭한 커맨드입니다. `undo`, 표시용 이름, 직렬화 같은 추가 기능이 필요할 때 커맨드 클래스를 도입하세요."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "실제 사용 사례",
+      "body": [
+        {
+          "ul": [
+            "Java의 `Runnable` 인터페이스는 `run` 메서드 하나를 가진 커맨드로, 스레드와 실행기가 작업을 나중에 실행하는 데 쓰입니다.",
+            "Redux 액션은 변경을 설명하는 일반 객체이고, 리듀서가 이를 적용합니다. 액션 로그 덕분에 타임 트래블 디버깅이 가능합니다. 로직이 커맨드가 아닌 리듀서에 있다는 점만 다른, 커맨드와 가까운 사촌입니다.",
+            "VS Code를 비롯한 많은 편집기는 이름 있는 커맨드를 등록해 키, 메뉴, 커맨드 팔레트에 연결할 수 있게 합니다.",
+            "데이터베이스 마이그레이션은 흔히 `up`과 `down` 단계를 가지며, 이는 커맨드의 실행과 취소 쌍에 해당합니다."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "관련 패턴",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "패턴",
+              "커맨드 패턴과의 차이"
+            ],
+            "rows": [
+              [
+                "전략",
+                "전략은 하나의 작업을 수행하는 방법을 교체하고, 커맨드는 무엇을 할지(요청)를 포장해 저장, 큐잉, 취소할 수 있게 합니다."
+              ],
+              [
+                "메멘토",
+                "메멘토는 실행 취소를 위해 상태의 스냅숏을 저장하고, 커맨드는 연산 자체를 저장해 되돌립니다. 되돌리기가 어려울 때 둘을 함께 쓰는 경우가 많습니다."
+              ],
+              [
+                "책임 연쇄",
+                "커맨드를 핸들러 체인을 따라 전달해 이를 실행할 핸들러를 찾을 수 있습니다."
+              ],
+              [
+                "컴포지트",
+                "매크로 커맨드는 컴포지트입니다. 다른 커맨드들로 이루어진 커맨드이기 때문입니다."
+              ],
+              [
+                "옵저버",
+                "옵저버는 이벤트를 여러 리스너에게 알리고, 커맨드는 하나의 리시버에게 보내는 하나의 요청입니다."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "커맨드 패턴은 실행 취소를 어떻게 구현하나요?",
+      "a": "각 커맨드는 자신의 `execute`를 되돌리는 `undo` 메서드를 가지며, 실행 중에 저장해 둔 데이터를 쓰는 경우가 많습니다. 인보커는 실행한 커맨드의 스택을 유지하고 가장 최근 커맨드의 `undo`를 호출합니다."
+    },
+    {
+      "q": "커맨드 패턴과 전략 패턴의 차이는 무엇인가요?",
+      "a": "전략은 같은 작업을 하는 서로 다른 방법을 나타내며 그것을 사용하는 객체가 선택합니다. 커맨드는 리시버와 매개변수를 가진 구체적인 요청을 나타내며, 나중에 실행하거나 큐에 넣거나 취소할 수 있습니다."
+    },
+    {
+      "q": "콜백 함수도 커맨드인가요?",
+      "a": "콜백은 최소한의 커맨드입니다. 나중에 실행할 동작을 포장한 것이기 때문입니다. 실행 취소, 설명, 직렬화, 기타 메타데이터까지 필요하다면 완전한 커맨드 객체가 필요합니다."
+    },
+    {
+      "q": "매크로 커맨드란 무엇인가요?",
+      "a": "매크로 커맨드는 커맨드 목록을 가지고 순서대로 실행합니다. 실행 취소는 반대 순서로 되돌리며, 이는 컴포지트 패턴을 적용한 것입니다."
+    }
+  ]
+}

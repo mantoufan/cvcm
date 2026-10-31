@@ -1,0 +1,211 @@
+{
+  "title": "Ordenación topológica: algoritmo de Kahn y DFS en Python, con ejemplos — cv.cm",
+  "description": "Ordenación topológica explicada: ordena tareas para que cada dependencia vaya primero. Algoritmo de Kahn y DFS en Python, detección de ciclos, graphlib y coste O(V + E).",
+  "h1": "Ordenación topológica explicada: cómo funciona, código y complejidad",
+  "answer": "Una ordenación topológica ordena los nodos de un grafo dirigido acíclico (DAG) de modo que, para cada arista u → v, u aparezca antes que v. Responde a la pregunta \"¿en qué orden puedo hacer estas tareas si unas dependen de otras?\". Los dos métodos estándar son el algoritmo de Kahn, que elimina repetidamente los nodos sin aristas entrantes, y DFS, que devuelve los nodos en orden inverso de finalización. Ambos se ejecutan en tiempo O(V + E) y ambos detectan ciclos, que hacen imposible una ordenación.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve la ordenación topológica",
+      "body": [
+        "Muchas tareas reales tienen requisitos previos: un curso exige cursos anteriores, un archivo fuente debe compilarse después de los archivos que importa, un paquete debe instalarse después de sus dependencias, una celda de una hoja de cálculo debe calcularse después de las celdas a las que hace referencia. Dibuja cada tarea como un nodo y cada regla \"debe ir antes\" como una arista dirigida. Un orden topológico es cualquier secuencia de las tareas que respeta todas las aristas.",
+        "Existe un orden si y solo si el grafo no tiene ningún ciclo dirigido. Si A necesita a B y B necesita a A, no hay ningún orden válido, y una buena ordenación topológica lo informa en lugar de entrar en un bucle infinito. Un DAG suele tener muchos órdenes válidos; los algoritmos devuelven uno de ellos."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "El algoritmo de Kahn (publicado por Arthur Kahn en 1962) trabaja desde el principio:",
+        {
+          "ol": [
+            "Cuenta las aristas entrantes (el grado de entrada) de cada nodo.",
+            "Pon en una cola cada nodo con grado de entrada 0: son tareas sin requisitos pendientes.",
+            "Toma un nodo de la cola y añádelo al resultado. Para cada una de sus aristas salientes, reduce en 1 el grado de entrada del destino; si llega a 0, añade el destino a la cola.",
+            "Cuando la cola esté vacía, si el resultado contiene todos los nodos, es un orden topológico. Si no, los nodos restantes forman parte de un ciclo."
+          ]
+        },
+        "El método DFS trabaja desde el final: un nodo solo termina después de que termine todo aquello a lo que apunta, así que listar los nodos en orden inverso de finalización coloca cada nodo antes de todos sus sucesores."
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto, paso a paso",
+      "body": [
+        "Vestirse (los nombres de los nodos se dejan en inglés, igual que en el código): underwear → pants, pants → shoes, socks → shoes, pants → belt, shirt → belt, shirt → tie, tie → jacket, belt → jacket. Algoritmo de Kahn, tomando los nodos de la cola en orden primero en entrar, primero en salir:",
+        {
+          "table": {
+            "head": [
+              "Paso",
+              "Se toma",
+              "Grados de entrada que bajan a 0",
+              "Cola después",
+              "Resultado hasta ahora"
+            ],
+            "rows": [
+              [
+                "Inicio",
+                "—",
+                "underwear, socks, shirt",
+                "underwear, socks, shirt",
+                "—"
+              ],
+              [
+                "1",
+                "underwear",
+                "pants",
+                "socks, shirt, pants",
+                "underwear"
+              ],
+              [
+                "2",
+                "socks",
+                "ninguno (shoes aún espera a pants)",
+                "shirt, pants",
+                "underwear, socks"
+              ],
+              [
+                "3",
+                "shirt",
+                "tie",
+                "pants, tie",
+                "…, shirt"
+              ],
+              [
+                "4",
+                "pants",
+                "shoes, belt",
+                "tie, shoes, belt",
+                "…, pants"
+              ],
+              [
+                "5",
+                "tie",
+                "ninguno (jacket espera a belt)",
+                "shoes, belt",
+                "…, tie"
+              ],
+              [
+                "6",
+                "shoes",
+                "ninguno",
+                "belt",
+                "…, shoes"
+              ],
+              [
+                "7",
+                "belt",
+                "jacket",
+                "jacket",
+                "…, belt"
+              ],
+              [
+                "8",
+                "jacket",
+                "ninguno",
+                "vacía",
+                "…, jacket"
+              ]
+            ]
+          }
+        },
+        "Orden final: underwear, socks, shirt, pants, tie, shoes, belt, jacket. Los 8 nodos están colocados, así que no hay ningún ciclo."
+      ]
+    },
+    {
+      "h": "Implementación en Python",
+      "body": [
+        "El algoritmo de Kahn con una deque:",
+        {
+          "code": "from collections import deque\ndef topo_sort(graph):\n    \"\"\"graph: dict node -> list of nodes that must come after it.\"\"\"\n    indegree = {n: 0 for n in graph}\n    for n in graph:\n        for m in graph[n]:\n            indegree[m] += 1\n    queue = deque(n for n in graph if indegree[n] == 0)\n    order = []\n    while queue:\n        n = queue.popleft()\n        order.append(n)\n        for m in graph[n]:\n            indegree[m] -= 1\n            if indegree[m] == 0:\n                queue.append(m)\n    if len(order) != len(graph):\n        raise ValueError(\"graph has a cycle\")\n    return order\ndress = {\n    \"underwear\": [\"pants\"], \"socks\": [\"shoes\"], \"shirt\": [\"belt\", \"tie\"],\n    \"pants\": [\"shoes\", \"belt\"], \"tie\": [\"jacket\"], \"belt\": [\"jacket\"],\n    \"shoes\": [], \"jacket\": [],\n}\nprint(topo_sort(dress))\n# ['underwear', 'socks', 'shirt', 'pants', 'tie', 'shoes', 'belt', 'jacket']",
+          "lang": "python"
+        },
+        "La versión DFS añade un nodo cuando todos sus sucesores han terminado y luego invierte la lista:",
+        {
+          "code": "def topo_sort_dfs(graph):\n    order, state = [], {}             # state: 1 = in progress, 2 = done\n    def visit(n):\n        if state.get(n) == 1:\n            raise ValueError(\"graph has a cycle\")\n        if state.get(n) == 2:\n            return\n        state[n] = 1\n        for m in graph[n]:\n            visit(m)\n        state[n] = 2\n        order.append(n)\n    for n in graph:\n        visit(n)\n    return order[::-1]\nprint(topo_sort_dfs(dress))\n# ['shirt', 'tie', 'socks', 'underwear', 'pants', 'belt', 'jacket', 'shoes']",
+          "lang": "python"
+        },
+        "Ambas salidas son válidas. Desde Python 3.9, la biblioteca estándar también incluye `graphlib.TopologicalSorter`. Ten en cuenta que recibe un mapeo de cada nodo a sus predecesores, en dirección contraria a los diccionarios anteriores:",
+        {
+          "code": "from graphlib import TopologicalSorter\nts = TopologicalSorter({\"b\": {\"a\"}, \"c\": {\"a\", \"b\"}})   # node: its prerequisites\nprint(list(ts.static_order()))  # ['a', 'b', 'c']",
+          "lang": "python"
+        }
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Método",
+              "Tiempo",
+              "Espacio",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Algoritmo de Kahn",
+                "O(V + E)",
+                "O(V)",
+                "Cada nodo entra una vez en la cola; cada arista reduce un grado de entrada una vez."
+              ],
+              [
+                "DFS",
+                "O(V + E)",
+                "O(V)",
+                "Cada nodo se visita una vez y cada arista se sigue una vez; la pila de recursión puede llegar a V marcos."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Menor orden primero: sustituye la cola por un montículo de mínimos (`heapq`) para elegir siempre el menor nodo disponible. Así se obtiene el orden lexicográficamente menor en O((V + E) log V).",
+            "Planificación en paralelo: ejecuta el algoritmo de Kahn por rondas, tomando de una vez todos los nodos con grado de entrada 0. Cada ronda es un lote de tareas que pueden ejecutarse a la vez; el número de rondas es la longitud de la cadena de dependencias más larga. `graphlib.TopologicalSorter` lo admite con `get_ready()` y `done()`.",
+            "Camino más largo o más corto en un DAG: relaja las aristas en orden topológico para obtener la respuesta en O(V + E), incluso con pesos negativos.",
+            "Contar órdenes distintos es un problema mucho más difícil; no intentes listarlos todos en grafos grandes."
+          ]
+        },
+        {
+          "note": "Cuidado con la dirección de las aristas. \"A depende de B\" significa que B debe ir primero, así que la arista es B → A. Confundir la dirección produce un orden invertido. Asegúrate también de que todos los nodos aparezcan como clave en el diccionario, incluidos los que no tienen aristas salientes, o la consulta del grado de entrada lanzará `KeyError`."
+        },
+        "La versión recursiva con DFS tiene el mismo problema de límite de recursión que cualquier DFS recursivo en Python: para cadenas de miles de nodos, usa el algoritmo de Kahn."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Las herramientas de compilación como Make ordenan los objetivos según sus dependencias, y los gestores de paquetes ordenan las instalaciones según los grafos de dependencias.",
+            "Las hojas de cálculo recalculan las celdas en orden de dependencia e informan de las referencias circulares.",
+            "Los planificadores de tareas y los motores de flujos de trabajo, por ejemplo los pipelines de datos basados en DAG, ejecutan las tareas en orden topológico.",
+            "Los compiladores ordenan declaraciones y evalúan grafos de expresiones; las bases de datos ordenan la creación o el borrado de claves foráneas.",
+            "Problemas de entrevista: horario de cursos I y II, diccionario alienígena (orden de letras a partir de palabras ordenadas), cursos en paralelo, altura mínima de un plan de construcción."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Se puede ordenar topológicamente un grafo con un ciclo?",
+      "a": "No. Un ciclo significa que alguna tarea debe ir antes que ella misma. El algoritmo de Kahn lo detecta porque algunos nodos nunca llegan a grado de entrada 0, y el método DFS lo detecta al llegar a un nodo que aún está en curso."
+    },
+    {
+      "q": "¿Es único un orden topológico?",
+      "a": "Normalmente no. Solo es único cuando el grafo contiene un camino que pasa por todos los nodos, de modo que en cada paso hay exactamente un nodo disponible."
+    },
+    {
+      "q": "¿Algoritmo de Kahn o DFS?",
+      "a": "Ambos son O(V + E). El algoritmo de Kahn es iterativo, informa de los ciclos de forma natural y es fácil de adaptar a lotes en paralelo o al orden de menor a mayor. DFS es más corto si ya tienes una función auxiliar de DFS."
+    },
+    {
+      "q": "¿Python tiene una ordenación topológica integrada?",
+      "a": "Sí. `graphlib.TopologicalSorter`, añadido en Python 3.9, devuelve un orden con `static_order()` y lanza `graphlib.CycleError` cuando el grafo tiene un ciclo."
+    }
+  ]
+}

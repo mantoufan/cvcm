@@ -1,0 +1,152 @@
+{
+  "title": "策略模式：可互換的演算法與 TypeScript 範例 — cv.cm",
+  "description": "策略模式把每個演算法放進各自的物件，讓你能在執行期替換。看 TypeScript 中類別與函式的做法，以及何時使用。",
+  "h1": "策略模式（Strategy）詳解與範例",
+  "answer": "策略（Strategy）是一種行為型設計模式，定義一組演算法，把每個演算法放在擁有共同介面的獨立物件中，並讓它們可以互換。使用演算法的程式碼稱為情境，它持有策略的引用，並在不知道是哪一個的情況下呼叫它。在 TypeScript 中，策略往往就是一個函式，例如傳給 `array.sort()` 的比較函式。",
+  "sections": [
+    {
+      "h": "意圖與要解決的問題",
+      "body": [
+        "意圖：定義一組演算法，將每個封裝起來，並使它們可以互換。策略讓演算法的變化獨立於使用它的用戶端。它是《設計模式》（Gang of Four，簡稱 GoF）一書中的行為型模式之一，在書中也稱為 Policy。",
+        "假設結帳流程要計算運費。標準運送是固定費用，快遞依每公斤計費且較貴，到店取貨則免費。第一版把三個公式全放在同一個方法中，用針對運送類型的 `if`/`else` 鏈處理。每新增一個選項，例如合作快遞公司，就得再次修改該方法，而且要測試某一個公式，就得連其他公式一起跑。",
+        "有了策略模式，每個公式都成為各自的物件或函式，並有相同的簽章。結帳流程接收所選的策略並呼叫它。新增快遞公司只需新增一個策略；結帳流程不必更動。"
+      ]
+    },
+    {
+      "h": "結構與參與者",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "角色",
+              "職責"
+            ],
+            "rows": [
+              [
+                "策略",
+                "演算法所有版本共用的介面"
+              ],
+              [
+                "具體策略",
+                "演算法的一種實作"
+              ],
+              [
+                "情境",
+                "持有一個策略，需要演算法時呼叫它，並可讓用戶端替換它"
+              ],
+              [
+                "用戶端",
+                "選擇具體策略並交給情境"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "TypeScript 實作",
+      "body": [
+        "由於函式在 TypeScript 中就是值，最簡單的策略介面就是函式型別。情境是 `Checkout` 類別。",
+        {
+          "code": "type Parcel = { weightKg: number; subtotal: number };\ntype ShippingStrategy = (parcel: Parcel) => number;\n\nconst standard: ShippingStrategy = (p) => (p.subtotal >= 50 ? 0 : 4.99);\nconst express: ShippingStrategy = (p) => 9.99 + 1.5 * p.weightKg;\nconst pickup: ShippingStrategy = () => 0;\n\nclass Checkout {\n  constructor(private shipping: ShippingStrategy) {}\n\n  setShipping(strategy: ShippingStrategy) {\n    this.shipping = strategy;\n  }\n\n  total(parcel: Parcel): number {\n    return Math.round((parcel.subtotal + this.shipping(parcel)) * 100) / 100;\n  }\n}\n\nconst parcel = { weightKg: 2, subtotal: 30 };\nconst checkout = new Checkout(standard);\nconsole.log(checkout.total(parcel)); // 34.99\ncheckout.setShipping(express);\nconsole.log(checkout.total(parcel)); // 42.99\ncheckout.setShipping(pickup);\nconsole.log(checkout.total(parcel)); // 30",
+          "lang": "typescript"
+        },
+        "如果策略需要設定或有多個方法，就改用介面和類別。這個版本也為每個策略附上 UI 可以顯示的名稱：",
+        {
+          "code": "interface Shipping {\n  readonly label: string;\n  cost(weightKg: number): number;\n}\n\nclass Courier implements Shipping {\n  readonly label: string;\n  constructor(private ratePerKg: number, company: string) {\n    this.label = company + \" courier\";\n  }\n  cost(weightKg: number) { return this.ratePerKg * weightKg; }\n}\n\nconst options: Shipping[] = [new Courier(2, \"North\"), new Courier(3.5, \"Fast\")];\nfor (const o of options) console.log(o.label, o.cost(4));\n// North courier 8\n// Fast courier 14",
+          "lang": "typescript"
+        },
+        {
+          "note": "用戶端必須知道有哪些策略才能選擇。請把這個選擇集中在同一處，例如從設定名稱對應到策略的映射表，而不要重複這個模式本來要消除的 `if`/`else` 鏈。"
+        }
+      ]
+    },
+    {
+      "h": "使用前與使用後",
+      "body": [
+        "使用前，演算法的選擇被寫死在方法內部：",
+        {
+          "code": "function shippingCost(type: string, p: Parcel): number {\n  if (type === \"standard\") return p.subtotal >= 50 ? 0 : 4.99;\n  else if (type === \"express\") return 9.99 + 1.5 * p.weightKg;\n  else if (type === \"pickup\") return 0;\n  throw new Error(\"Unknown shipping type \" + type);\n}\n// After: a lookup table of strategies replaces the chain\nconst strategies: Record<string, ShippingStrategy> = { standard, express, pickup };",
+          "lang": "typescript"
+        },
+        "這個片段重用了第一個範例中的型別與函式。表格讓選項的集合成為資料而不是程式碼，因此可以由設定建立，或由外掛擴充。"
+      ]
+    },
+    {
+      "h": "何時使用、何時不用",
+      "body": [
+        {
+          "ul": [
+            "當同一個任務有多種做法，而選擇取決於設定、使用者輸入或資料時使用。",
+            "用來消除在多個演算法之間做選擇的大型條件區塊。",
+            "用來單獨測試每個演算法，並讓其他程式碼不必修改情境就能新增演算法。",
+            "只有一個演算法、也沒有真正需要更換時不要使用。多出來的介面只會平白增加間接層。",
+            "函式參數已經足夠時就不要建立類別。在 TypeScript 中，傳入函式就是策略的輕量形式。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "實際應用",
+      "body": [
+        {
+          "ul": [
+            "`Array.prototype.sort(compareFn)` 以函式接收比較策略，因此同一個排序可以為數字、日期或名稱排序。",
+            "Java 的 `Comparator` 介面是 `Collections.sort` 和 `List.sort` 的策略。",
+            "Passport.js 是 Node.js 的身分驗證中介軟體，它把每種登入方式（本機密碼、OAuth 供應商）稱為策略，讓應用程式自行接上。",
+            "壓縮與雜湊函式庫讓呼叫端透過共同介面選擇演算法。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "相關模式",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "模式",
+              "與策略的差異"
+            ],
+            "rows": [
+              [
+                "狀態",
+                "結構相同，但狀態會隨物件變化自行切換；策略通常由用戶端選擇，並維持到被替換為止。"
+              ],
+              [
+                "樣板方法",
+                "樣板方法透過繼承改變演算法的部分步驟，並固定整體流程；策略則透過組合替換整個演算法。"
+              ],
+              [
+                "命令",
+                "命令是稍後執行的請求；策略是情境在需要時呼叫的執行任務之方式。"
+              ],
+              [
+                "裝飾者",
+                "裝飾者從外部包裹物件來改變其行為；策略則從內部替換其中一部分來改變行為。"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "策略與狀態有什麼不同？",
+      "a": "兩者的結構幾乎相同。策略由用戶端挑選，以決定任務如何完成；而狀態物件則會因情境的動作而自行改變情境目前的狀態。"
+    },
+    {
+      "q": "傳入回呼函式就是策略模式嗎？",
+      "a": "是的。在擁有一等函式的語言中，用回呼函式實作演算法中可變的部分，例如比較函式，就是最簡單形式的策略模式。"
+    },
+    {
+      "q": "策略與樣板方法有什麼不同？",
+      "a": "樣板方法使用繼承：基底類別固定步驟，子類別填入其中一些。策略使用組合：情境持有一個可在執行期替換的物件或函式。"
+    },
+    {
+      "q": "策略符合開閉原則嗎？",
+      "a": "符合。你可以在不改變情境的情況下新增策略，因此情境對擴充開放、對修改封閉。"
+    }
+  ]
+}

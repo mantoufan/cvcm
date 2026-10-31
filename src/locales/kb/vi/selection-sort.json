@@ -1,0 +1,216 @@
+{
+  "title": "Sắp xếp chọn (Selection Sort): cách hoạt động, mã Python và độ phức tạp — cv.cm",
+  "description": "Sắp xếp chọn liên tục chọn phần tử nhỏ nhất còn lại và đổi chỗ vào đúng vị trí. Ví dụ từng bước, mã Python, chi phí O(n²) và vì sao không ổn định.",
+  "h1": "Thuật toán sắp xếp chọn: cách hoạt động, mã và độ phức tạp",
+  "answer": "Sắp xếp chọn chia danh sách thành phần đã sắp xếp bên trái và phần chưa sắp xếp bên phải. Ở mỗi bước, nó tìm phần tử nhỏ nhất trong phần chưa sắp xếp và đổi chỗ vào vị trí chưa sắp xếp đầu tiên. Nó luôn thực hiện khoảng n²/2 phép so sánh nên là O(n²) trong mọi trường hợp, nhưng chỉ đổi chỗ tối đa n − 1 lần và dùng O(1) bộ nhớ phụ. Phiên bản mảng thông thường không ổn định.",
+  "sections": [
+    {
+      "h": "Ý tưởng bằng lời đơn giản",
+      "body": [
+        "Quét toàn bộ danh sách và tìm phần tử nhỏ nhất. Đổi chỗ nó với phần tử ở chỉ số 0; lúc này chỉ số 0 đã cố định. Quét phần còn lại từ chỉ số 1, tìm phần tử nhỏ nhất và đổi chỗ vào chỉ số 1. Tiếp tục cho đến khi chỉ còn một phần tử, chắc chắn là phần tử lớn nhất.",
+        "Khác với sắp xếp nổi bọt và sắp xếp chèn, sắp xếp chọn không hưởng lợi từ đầu vào đã sắp xếp: nó vẫn phải quét mọi phần tử còn lại để chắc chắn đã tìm ra giá trị nhỏ nhất."
+      ]
+    },
+    {
+      "h": "Ví dụ minh họa từng bước",
+      "body": [
+        "Sắp xếp `[64, 25, 12, 22, 11]`. Phần trước dấu gạch đã được sắp xếp và cố định.",
+        {
+          "table": {
+            "head": [
+              "Bước",
+              "Phần chưa sắp xếp",
+              "Giá trị nhỏ nhất tìm được",
+              "Đổi chỗ",
+              "Danh sách sau bước"
+            ],
+            "rows": [
+              [
+                "1",
+                "`64, 25, 12, 22, 11`",
+                "11 ở chỉ số 4",
+                "chỉ số 0 ↔ 4",
+                "`[11 | 25, 12, 22, 64]`"
+              ],
+              [
+                "2",
+                "`25, 12, 22, 64`",
+                "12 ở chỉ số 2",
+                "chỉ số 1 ↔ 2",
+                "`[11, 12 | 25, 22, 64]`"
+              ],
+              [
+                "3",
+                "`25, 22, 64`",
+                "22 ở chỉ số 3",
+                "chỉ số 2 ↔ 3",
+                "`[11, 12, 22 | 25, 64]`"
+              ],
+              [
+                "4",
+                "`25, 64`",
+                "25 ở chỉ số 3",
+                "không cần",
+                "`[11, 12, 22, 25 | 64]`"
+              ]
+            ]
+          }
+        },
+        "Bốn bước cho năm phần tử, với 4 + 3 + 2 + 1 = 10 phép so sánh và ba lần đổi chỗ thật sự."
+      ]
+    },
+    {
+      "h": "Cài đặt bằng Python",
+      "body": [
+        {
+          "code": "def selection_sort(items):\n    \"\"\"Sort a list in place, ascending. Returns the same list.\"\"\"\n    n = len(items)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if items[j] < items[smallest]:\n                smallest = j\n        if smallest != i:\n            items[i], items[smallest] = items[smallest], items[i]\n    return items\nprint(selection_sort([64, 25, 12, 22, 11]))   # [11, 12, 22, 25, 64]\nprint(selection_sort([2, 1]))                 # [1, 2]",
+          "lang": "python"
+        },
+        "Vòng lặp ngoài chạy n − 1 lần vì phần tử còn lại cuối cùng tự động đúng chỗ. Vòng lặp trong chỉ ghi lại một chỉ số; việc đổi chỗ chỉ xảy ra một lần ở mỗi bước ngoài."
+      ]
+    },
+    {
+      "h": "Độ phức tạp thời gian và không gian",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Đại lượng",
+              "Giá trị",
+              "Lý do"
+            ],
+            "rows": [
+              [
+                "Số phép so sánh, mọi trường hợp",
+                "n(n − 1)/2",
+                "mỗi bước quét toàn bộ phần chưa sắp xếp"
+              ],
+              [
+                "Thời gian, tốt nhất / trung bình / xấu nhất",
+                "O(n²)",
+                "việc quét không phụ thuộc vào thứ tự"
+              ],
+              [
+                "Số lần đổi chỗ, xấu nhất",
+                "n − 1",
+                "tối đa một lần đổi chỗ mỗi bước"
+              ],
+              [
+                "Không gian phụ",
+                "O(1)",
+                "tại chỗ, một biến chỉ số"
+              ]
+            ]
+          }
+        },
+        "Số lần ghi ít là điểm mạnh thực sự duy nhất của sắp xếp chọn. Nếu việc ghi vào bộ nhớ tốn kém hơn nhiều so với đọc, như với một số bộ nhớ flash hoặc khi di chuyển các bản ghi lớn, ít lần ghi hơn có thể quan trọng. Cycle sort đẩy điều này xa hơn và ghi mỗi phần tử tối đa một lần."
+      ]
+    },
+    {
+      "h": "Tính ổn định: vì sao sắp xếp chọn không ổn định",
+      "body": [
+        "Một thuật toán sắp xếp ổn định giữ nguyên thứ tự tương đối ban đầu của các phần tử bằng nhau. Phép đổi chỗ xa của sắp xếp chọn có thể làm một phần tử nhảy qua phần tử khác bằng nó.",
+        {
+          "code": "def selection_sort_by_key(items, key):\n    n = len(items)\n    for i in range(n - 1):\n        m = min(range(i, n), key=lambda j: key(items[j]))\n        items[i], items[m] = items[m], items[i]\n    return items\ncards = [(\"4\", \"hearts\"), (\"4\", \"spades\"), (\"2\", \"clubs\")]\nprint(selection_sort_by_key(cards, key=lambda c: c[0]))\n# [('2', 'clubs'), ('4', 'spades'), ('4', 'hearts')]  order of the 4s changed",
+          "lang": "python"
+        },
+        "Số 2 đã được đổi chỗ với quân 4 cơ, khiến quân 4 cơ nằm sau quân 4 bích. Có một phiên bản ổn định: thay vì đổi chỗ, lấy giá trị nhỏ nhất ra và chèn vào vị trí i, dịch các phần tử khác sang phải. Cách này giữ được thứ tự nhưng tốn O(n) lần ghi mỗi bước."
+      ]
+    },
+    {
+      "h": "So sánh sắp xếp chọn với các thuật toán khác",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Thuật toán",
+              "Tốt nhất",
+              "Trung bình",
+              "Xấu nhất",
+              "Không gian phụ",
+              "Ổn định"
+            ],
+            "rows": [
+              [
+                "Sắp xếp chọn",
+                "O(n²)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp nổi bọt",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp chèn",
+                "O(n)",
+                "O(n²)",
+                "O(n²)",
+                "O(1)",
+                "Có"
+              ],
+              [
+                "Sắp xếp vun đống",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(1)",
+                "Không"
+              ],
+              [
+                "Sắp xếp trộn",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n)",
+                "Có"
+              ],
+              [
+                "Sắp xếp nhanh",
+                "O(n log n)",
+                "O(n log n)",
+                "O(n²)",
+                "O(log n)",
+                "Không"
+              ]
+            ]
+          }
+        },
+        "Sắp xếp vun đống (heapsort) chính là sắp xếp chọn với cấu trúc dữ liệu tốt hơn: nó cũng liên tục chọn phần tử lớn nhất còn lại, nhưng tìm nó trong O(log n) bằng đống nhị phân thay vì quét O(n), nhờ đó tổng thể là O(n log n)."
+      ]
+    },
+    {
+      "h": "Khi nào nên dùng sắp xếp chọn",
+      "body": [
+        "Trong mã Python thực tế, hãy dùng `sorted()` hoặc `list.sort()` có sẵn. Sắp xếp chọn đáng biết như ví dụ giảng dạy, cho các mảng cố định rất nhỏ trong môi trường hạn chế, và khi số lần ghi phải tối thiểu. Đây là câu hỏi thi và phỏng vấn thường gặp, thường dưới dạng: theo dõi các bước, đếm số phép so sánh và đổi chỗ, và giải thích vì sao nó không ổn định.",
+        {
+          "note": "Lỗi thường gặp: đổi chỗ trong vòng lặp trong mỗi khi thấy một phần tử nhỏ hơn (biến nó thành một thuật toán khác, chậm hơn), bắt đầu vòng lặp trong từ `i` thay vì `i + 1` (vô hại nhưng lãng phí), và khẳng định có trường hợp tốt nhất O(n), điều mà sắp xếp chọn không có."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sắp xếp chọn có ổn định không?",
+      "a": "Phiên bản mảng tại chỗ tiêu chuẩn không ổn định, vì phép đổi chỗ xa có thể đưa một phần tử vượt qua phần tử bằng nó. Phiên bản chèn thay vì đổi chỗ thì ổn định nhưng ghi nhiều hơn."
+    },
+    {
+      "q": "Độ phức tạp thời gian của sắp xếp chọn là gì?",
+      "a": "O(n²) ở trường hợp tốt nhất, trung bình và xấu nhất. Nó luôn thực hiện n(n − 1)/2 phép so sánh, bất kể thứ tự đầu vào."
+    },
+    {
+      "q": "Sắp xếp chọn thực hiện bao nhiêu lần đổi chỗ?",
+      "a": "Tối đa n − 1, mỗi bước ngoài một lần. Ít hơn sắp xếp nổi bọt hay sắp xếp chèn, vốn có thể đổi chỗ hoặc dịch chuyển O(n²) lần."
+    },
+    {
+      "q": "Sắp xếp chọn khác sắp xếp chèn thế nào?",
+      "a": "Sắp xếp chọn lấy giá trị nhỏ nhất của phần chưa sắp xếp và nối vào phần đã sắp xếp. Sắp xếp chèn lấy phần tử kế tiếp và chèn vào đúng chỗ trong phần đã sắp xếp. Sắp xếp chèn ổn định và có trường hợp tốt nhất O(n); sắp xếp chọn không có cả hai."
+    }
+  ]
+}

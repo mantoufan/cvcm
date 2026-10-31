@@ -1,0 +1,149 @@
+{
+  "title": "Template Method pattern: fixed steps, hooks and TypeScript example — cv.cm",
+  "description": "The Template Method pattern fixes the steps of an algorithm in a base class and lets subclasses fill in some steps. Learn hooks with a TypeScript example.",
+  "h1": "Template Method pattern explained with examples",
+  "answer": "Template Method is a behavioral design pattern that defines the skeleton of an algorithm in a base class method and lets subclasses override specific steps without changing the overall order. The base class decides what happens and when; subclasses decide how some of the steps are done. Optional steps with a default implementation are called hooks.",
+  "sections": [
+    {
+      "h": "Intent and the problem it solves",
+      "body": [
+        "Intent: define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure. It is one of the behavioral patterns in the Gang of Four (GoF) book.",
+        "Imagine a reporting tool that exports data as CSV and as JSON. Both exporters do the same things in the same order: load the rows, check that there are any, format them, and add a footer with the row count. Only the formatting differs. If each exporter is written separately, the shared steps are copied, and a fix in one (for example, better handling of an empty result) is easily forgotten in the other.",
+        "With Template Method, a base class `Exporter` contains the `export` method with the fixed sequence of steps. The steps that vary are abstract methods. `CsvExporter` and `JsonExporter` implement only those."
+      ]
+    },
+    {
+      "h": "Structure and participants",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Role",
+              "Responsibility"
+            ],
+            "rows": [
+              [
+                "Abstract class",
+                "Implements the template method, which calls the steps in a fixed order; declares abstract steps and may provide hooks"
+              ],
+              [
+                "Template method",
+                "The public method that defines the algorithm; usually not meant to be overridden"
+              ],
+              [
+                "Primitive operation",
+                "An abstract step that every subclass must implement"
+              ],
+              [
+                "Hook",
+                "A step with a default (often empty) implementation that subclasses may override"
+              ],
+              [
+                "Concrete class",
+                "Implements the primitive operations and overrides hooks as needed"
+              ]
+            ]
+          }
+        },
+        "This design inverts control: the base class calls the subclass methods, not the other way around. This is sometimes called the Hollywood principle: \"don't call us, we'll call you\"."
+      ]
+    },
+    {
+      "h": "TypeScript implementation",
+      "body": [
+        "`export` is the template method. `format` is a primitive operation that subclasses must implement, and `header` is a hook with an empty default.",
+        {
+          "code": "type Row = { name: string; score: number };\n\nabstract class Exporter {\n  // The template method: fixed order of steps\n  export(rows: Row[]): string {\n    if (rows.length === 0) return \"no data\";\n    const lines = [this.header(), this.format(rows), \"rows: \" + rows.length];\n    return lines.filter((line) => line !== \"\").join(\"\\n\");\n  }\n\n  protected abstract format(rows: Row[]): string; // required step\n  protected header(): string { return \"\"; }       // hook: optional step\n}\n\nclass CsvExporter extends Exporter {\n  protected header() { return \"name,score\"; }\n  protected format(rows: Row[]) {\n    return rows.map((r) => r.name + \",\" + r.score).join(\"\\n\");\n  }\n}\n\nclass JsonExporter extends Exporter {\n  protected format(rows: Row[]) {\n    return JSON.stringify(rows);\n  }\n}\n\nconst rows = [{ name: \"Ana\", score: 9 }, { name: \"Ben\", score: 7 }];\nconsole.log(new CsvExporter().export(rows));\n// name,score\n// Ana,9\n// Ben,7\n// rows: 2\nconsole.log(new JsonExporter().export(rows));\n// [{\"name\":\"Ana\",\"score\":9},{\"name\":\"Ben\",\"score\":7}]\n// rows: 2\nconsole.log(new JsonExporter().export([])); // no data",
+          "lang": "typescript"
+        },
+        "The empty-data check and the footer live in one place. A new XML exporter would implement `format` and get the rest for free.",
+        {
+          "note": "TypeScript has no `final` keyword, so a subclass can still override `export` and break the fixed order. Document that the template method must not be overridden, and keep the number of overridable steps small so that subclasses stay easy to write correctly."
+        }
+      ]
+    },
+    {
+      "h": "The same idea with composition",
+      "body": [
+        "Inheritance is not the only way. You can pass the varying steps as functions, which turns the pattern into a close relative of Strategy and avoids class hierarchies:",
+        {
+          "code": "type Row = { name: string; score: number };\ntype Steps = { format: (rows: Row[]) => string; header?: () => string };\n\nfunction exportRows(rows: Row[], steps: Steps): string {\n  if (rows.length === 0) return \"no data\";\n  const lines = [steps.header?.() ?? \"\", steps.format(rows), \"rows: \" + rows.length];\n  return lines.filter((line) => line !== \"\").join(\"\\n\");\n}\n\nconsole.log(exportRows([{ name: \"Ana\", score: 9 }], { format: (r) => r[0].name }));\n// Ana\n// rows: 1",
+          "lang": "typescript"
+        },
+        "Prefer this form when the steps are small and you do not need shared state in a base class, or when one exporter should combine steps from several sources."
+      ]
+    },
+    {
+      "h": "When to use it and when not to",
+      "body": [
+        {
+          "ul": [
+            "Use it when several classes run the same algorithm with only a few steps that differ, and you want to remove the duplicated parts.",
+            "Use it in frameworks that must control the order of operations while letting users customize steps, such as setup and teardown in tests.",
+            "Use hooks to offer optional extension points without forcing every subclass to implement them.",
+            "Do not use it when the variations are large or need to change at runtime. Strategy, with composition, is more flexible.",
+            "Avoid deep hierarchies of template methods. When subclasses override steps of subclasses of subclasses, the flow becomes hard to follow."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Real-world uses",
+      "body": [
+        {
+          "ul": [
+            "Java's `AbstractList`: you implement `get(int)` and `size()`, and the base class provides iteration, `indexOf`, `contains` and other methods built on them.",
+            "Java's `InputStream`: subclasses implement the single-byte `read()`, and the base class implements `read(byte[], int, int)` by calling it (subclasses may override it for speed).",
+            "Test frameworks: JUnit, Python's `unittest` and others call `setUp`, the test method and `tearDown` in a fixed order, and you override the steps you need.",
+            "UI frameworks with life cycle methods, such as `componentDidMount` in React class components, call your methods at fixed points of their own algorithm."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Related patterns",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Pattern",
+              "How it differs from Template Method"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy replaces a whole algorithm by composition at runtime; Template Method fixes the algorithm and varies parts of it through inheritance at compile time."
+              ],
+              [
+                "Factory Method",
+                "A factory method is often one of the steps of a template method: the step that creates an object."
+              ],
+              [
+                "Hook functions and callbacks",
+                "Passing callbacks into a fixed algorithm is the composition-based version of the same idea."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is a hook in the Template Method pattern?",
+      "a": "A hook is a step that has a default implementation in the base class, often doing nothing. Subclasses may override it to add behavior at that point, but they do not have to."
+    },
+    {
+      "q": "What is the difference between Template Method and Strategy?",
+      "a": "Template Method uses inheritance: the base class owns the algorithm and subclasses override steps. Strategy uses composition: the context delegates the whole algorithm to an object or function that can be swapped at runtime."
+    },
+    {
+      "q": "Should the template method itself be overridable?",
+      "a": "No. Its purpose is to fix the order of steps. In Java or C# you can mark it `final` or non-virtual; in TypeScript you have to document it, because there is no `final` keyword."
+    },
+    {
+      "q": "How is Template Method related to Factory Method?",
+      "a": "Factory Method is often a specialization of Template Method: the base class algorithm includes a step that creates an object, and subclasses decide which class to create."
+    }
+  ]
+}

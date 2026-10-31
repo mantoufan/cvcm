@@ -1,0 +1,200 @@
+{
+  "title": "Elixir入門：パターンマッチ・パイプ・Enum・プロセスを解説 — cv.cm",
+  "description": "Elixirの基本を順に学べる入門講座。スクリプトの実行、イミュータブルなデータと型、パターンマッチ、caseとcond、モジュール、パイプ演算子、Enum、プロセス、エラー処理を解説します。",
+  "h1": "Elixir入門：初心者向けチュートリアル",
+  "answer": "Elixirは、Erlang仮想マシン(BEAM)上で動く動的な関数型言語で、スケーラブルで耐障害性があり並行処理に強いシステムのために設計されています。中心となる考え方は、イミュータブルなデータ、パターンマッチ、パイプ演算子、メッセージで通信する軽量プロセスです。このページでは、環境構築、型、パターンマッチ、制御構文、モジュールと関数、コレクション、プロセス、エラー処理を扱います。",
+  "sections": [
+    {
+      "h": "Elixirとは何か、何に使うのか",
+      "body": [
+        "Elixirは、José Valimが作り、2012年に最初にリリースされた動的な関数型言語です。Erlangの仮想マシンであるBEAM上で動くため、Erlangの軽量プロセス、耐障害性、分散システムへの対応を引き継ぎつつ、扱いやすい構文、マクロ、現代的なツールを加えています。",
+        "Elixirは、PhoenixフレームワークによるWebアプリケーションやAPI、チャットやライブダッシュボードのようなリアルタイム機能(Phoenix LiveView)、メッセージングシステム、データパイプライン、Nervesによる組み込み機器、Nxによる機械学習に使われています。多数の同時接続を処理し、一部が故障しても動き続けなければならないサービスに、多くの企業が採用しています。"
+      ]
+    },
+    {
+      "h": "Elixirのインストールとhello, worldの実行",
+      "body": [
+        "Elixirはelixir-lang.orgからインストールします(Erlang/OTPも同時にインストールされるか、必要になります)。スクリプトの拡張子は`.exs`で、コンパイルされるプロジェクトのファイルは`.ex`です。`iex`で対話シェルが起動します。",
+        {
+          "code": "# hello.exs\nIO.puts(\"Hello, world!\")",
+          "lang": "elixir"
+        },
+        {
+          "code": "elixir hello.exs\n# Hello, world!\niex                      # interactive shell; type h(Enum.map) for help\nmix new my_app           # create a new project with Mix, the build tool",
+          "lang": "shell"
+        },
+        "コメントは`#`で始まります。関数の引数を囲むかっこは多くの場面で省略できるので、`IO.puts \"hi\"`も動きます。"
+      ]
+    },
+    {
+      "h": "基本の型とイミュータビリティ",
+      "body": [
+        "Elixirのデータはすべてイミュータブル(変更不可)です。`=`で名前を束縛し直すと新しい値を指すだけで、古い値は変わりません。文字列は二重引用符で書くUTF-8のバイナリで、アトムはコロンで始まる名前付き定数です。",
+        {
+          "code": "name = \"Elixir\"\nyear = 2012\nIO.puts(\"#{name} since #{year}\")    # Elixir since 2012\nIO.puts(10 / 4)                     # 2.5 (always a float)\nIO.puts(div(10, 4))                 # 2\nIO.puts(rem(10, 4))                 # 2\nIO.puts(\"ab\" <> \"cd\")               # abcd (string concatenation)\nIO.puts(String.length(\"héllo\"))     # 5 (counts characters, not bytes)\nIO.inspect(:ok)                     # :ok\nIO.inspect(is_atom(true))           # true (booleans are atoms)",
+          "lang": "elixir"
+        },
+        {
+          "table": {
+            "head": [
+              "型",
+              "例",
+              "補足"
+            ],
+            "rows": [
+              [
+                "integer",
+                "`42`, `1_000_000`",
+                "任意精度"
+              ],
+              [
+                "float",
+                "`3.14`",
+                "64ビット倍精度"
+              ],
+              [
+                "atom",
+                "`:ok`, `:error`",
+                "定数。`true`、`false`、`nil`もアトムです"
+              ],
+              [
+                "string",
+                "`\"hello\"`",
+                "UTF-8のバイナリ。`#{}`で式を埋め込めます"
+              ],
+              [
+                "list",
+                "`[1, 2, 3]`",
+                "連結リスト"
+              ],
+              [
+                "tuple",
+                "`{:ok, 1}`",
+                "固定サイズで、メモリ上に連続して置かれます"
+              ],
+              [
+                "map",
+                "`%{\"a\" => 1}`",
+                "キーと値のストア"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "パターンマッチ",
+      "body": [
+        "Elixirでは、`=`はマッチ演算子です。左辺がパターンで、右辺がそれに合えば、パターン中の変数が束縛されます。パターンマッチは、代入、`case`、関数の頭部、エラー処理など、あらゆる場面で使われます。",
+        {
+          "code": "{:ok, value} = {:ok, 42}\nIO.puts(value)                         # 42\n\n[first | rest] = [1, 2, 3]\nIO.inspect({first, rest})              # {1, [2, 3]}\n\n%{name: n} = %{name: \"Ann\", age: 31}\nIO.puts(n)                             # Ann\n\nresult = {:error, :not_found}\nmessage =\n  case result do\n    {:ok, v} -> \"got #{v}\"\n    {:error, reason} -> \"failed: #{reason}\"\n  end\nIO.puts(message)                       # failed: not_found\n\nx = 1\n^x = 1                                 # pin operator: match the current value",
+          "lang": "elixir"
+        },
+        "パターンが合わないと、Elixirは`MatchError`を発生させます。ピン演算子`^`は、変数を束縛し直さず「この変数の既存の値を使う」ことを意味します。"
+      ]
+    },
+    {
+      "h": "制御構文",
+      "body": [
+        "Elixirには`case`、`cond`、`if`/`unless`があり、どれも値を返します。カウンターを書き換える`for`/`while`ループはなく、代わりに再帰、`Enum`モジュール、`for`内包表記を使います。",
+        {
+          "code": "temp = 22\nfeel =\n  cond do\n    temp > 30 -> \"hot\"\n    temp >= 15 -> \"mild\"\n    true -> \"cold\"\n  end\nIO.puts(feel)                                   # mild\n\nIO.puts(if(rem(temp, 2) == 0, do: \"even\", else: \"odd\"))  # even\n\nsquares = for n <- 1..5, rem(n, 2) == 1, do: n * n\nIO.inspect(squares)                             # [1, 9, 25]",
+          "lang": "elixir"
+        },
+        "偽になるのは`false`と`nil`だけで、`0`や`\"\"`を含めそれ以外はすべて真です。"
+      ]
+    },
+    {
+      "h": "関数・モジュール・パイプ演算子",
+      "body": [
+        "名前付き関数は、`defmodule`で定義するモジュールの中に置きます。関数は複数の節を持て、パターンマッチとガード(`when`)で選ばれます。無名関数は`fn ... end`と書き、ドットを付けて呼び出します。パイプ演算子`|>`は、ある式の結果を、次の呼び出しの第1引数として渡します。",
+        {
+          "code": "defmodule Math do\n  def factorial(0), do: 1\n  def factorial(n) when n > 0, do: n * factorial(n - 1)\n\n  def sign(n) when n < 0, do: :negative\n  def sign(0), do: :zero\n  def sign(_n), do: :positive\nend\n\nIO.puts(Math.factorial(5))          # 120\nIO.inspect(Math.sign(-3))           # :negative\n\ndouble = fn x -> x * 2 end\nIO.puts(double.(21))                # 42 (note the dot)\n\n\"  Elixir is fun  \"\n|> String.trim()\n|> String.upcase()\n|> String.split()\n|> IO.inspect()                     # [\"ELIXIR\", \"IS\", \"FUN\"]",
+          "lang": "elixir"
+        },
+        "関数は名前とアリティ(引数の数)で識別され、ドキュメントでは`String.split/1`や`Math.factorial/1`のように書かれます。"
+      ]
+    },
+    {
+      "h": "コレクション：リスト・マップ・キーワードリスト・Enum",
+      "body": [
+        "`Enum`モジュールは、あらゆる列挙可能なコレクションを扱い、`map`、`filter`、`reduce`、`sort_by`、`group_by`などを提供します。マップは主要なキーと値の構造で、`[size: 10, color: :red]`のようなキーワードリストは、オプションの指定によく使われます。",
+        {
+          "code": "nums = [5, 3, 8, 1]\nIO.inspect(Enum.sort(nums))                      # [1, 3, 5, 8]\nIO.inspect(Enum.map(nums, &(&1 * 10)))           # [50, 30, 80, 10]\nIO.inspect(Enum.filter(nums, fn n -> n > 2 end)) # [5, 3, 8]\nIO.puts(Enum.reduce(nums, 0, &+/2))              # 17\n\nuser = %{name: \"Ann\", age: 31}\nolder = %{user | age: 32}                        # update an existing key\nIO.puts(user.age)                                # 31 (unchanged)\nIO.puts(older.age)                               # 32\nwith_city = Map.put(user, :city, \"Oslo\")\nIO.puts(with_city.city)                          # Oslo\nIO.inspect(Map.get(user, :email, \"none\"))        # \"none\"",
+          "lang": "elixir"
+        },
+        "キャプチャ演算子`&`で、短い無名関数を作れます。`&(&1 * 10)`は`fn x -> x * 10 end`と同じ意味で、`&+/2`は引数2つの`+`関数を指します。"
+      ]
+    },
+    {
+      "h": "プロセスと並行処理",
+      "body": [
+        "Elixirを代表する機能がBEAMプロセスです。独自のメモリを持つ、非常に軽量で分離された実行単位です。プロセス同士はメッセージの送信だけで通信し、1台のマシンで数十万のプロセスを動かせます。スーパーバイザーはクラッシュしたプロセスを再起動します。これがElixirの耐障害性の考え方「let it crash」の土台です。",
+        {
+          "code": "parent = self()\n\nspawn(fn ->\n  send(parent, {:result, 6 * 7})\nend)\n\nreceive do\n  {:result, value} -> IO.puts(\"Got #{value}\")   # Got 42\nafter\n  1_000 -> IO.puts(\"timeout\")\nend\n\ntasks = for n <- 1..3, do: Task.async(fn -> n * n end)\nIO.inspect(Task.await_many(tasks))               # [1, 4, 9]",
+          "lang": "elixir"
+        },
+        "実際のアプリケーションで`spawn`を直接呼ぶことはまれです。`Task`、`GenServer`、`Agent`、`Supervisor`といったOTPの抽象化を使います。"
+      ]
+    },
+    {
+      "h": "エラー処理",
+      "body": [
+        "Elixirらしい書き方では、想定内の失敗に`{:ok, value}`や`{:error, reason}`のようなタグ付きタプルを返し、`case`や`with`で処理します。`File.read!/1`のように名前が`!`で終わる関数は、代わりに例外を発生させます。例外は`try`/`rescue`で捕捉できますが、あまり使われません。",
+        {
+          "code": "case File.read(\"missing.txt\") do\n  {:ok, text} -> IO.puts(text)\n  {:error, reason} -> IO.puts(\"Cannot read: #{reason}\")   # Cannot read: enoent\nend\n\nwith {a, \"\"} <- Integer.parse(\"40\"),\n     {b, \"\"} <- Integer.parse(\"2\") do\n  IO.puts(a + b)                                         # 42\nelse\n  _ -> IO.puts(\"not a whole number\")\nend\n\ntry do\n  String.to_integer(\"abc\")\nrescue\n  e in ArgumentError -> IO.puts(\"Error: #{Exception.message(e)}\")\nend",
+          "lang": "elixir"
+        },
+        "`with`は複数のマッチをつなげ、最初にマッチしなかった時点で止めて、その値を返します。深くネストした`case`式を避けられます。"
+      ]
+    },
+    {
+      "h": "小さな完成プログラム：単語の出現頻度",
+      "body": [
+        "このスクリプトは、テキスト中の単語を数え、よく出る上位3語を表示します。`String`と`Enum`の関数で組み立てた、典型的なElixirのパイプラインです。",
+        {
+          "code": "defmodule WordFreq do\n  def top(text, n) do\n    text\n    |> String.downcase()\n    |> String.split(~r/[^a-z']+/, trim: true)\n    |> Enum.frequencies()\n    |> Enum.sort_by(fn {word, count} -> {-count, word} end)\n    |> Enum.take(n)\n  end\nend\n\n\"The cat and the dog. The dog sat, and the cat ran.\"\n|> WordFreq.top(3)\n|> Enum.each(fn {word, count} -> IO.puts(\"#{word}: #{count}\") end)\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "elixir"
+        },
+        {
+          "note": "初心者がよくやる間違い：`=`がほかの言語のように代入すると思う(実際はマッチです)、ループの中でリストやマップを変更しようとする、無名関数を呼ぶときのドットを忘れる(`double.(2)`)、文字列と文字リストを比較する(`\"abc\"`と`~c\"abc\"`は別の型です)、`{:ok, _}`や`{:error, _}`でマッチせずに例外をrescueする、などです。"
+        }
+      ]
+    },
+    {
+      "h": "次に学ぶこと",
+      "body": [
+        {
+          "ul": [
+            "hexdocs.pmとelixir-lang.orgにある公式のGetting Startedガイド。",
+            "HexDocs。Elixirと、すべてのHexパッケージのドキュメントが公開されています。",
+            "Web開発のためのPhoenixフレームワークのガイド。",
+            "コミュニティによる無料のカリキュラムElixir Schoolと、練習用のExercismのElixirトラック。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ElixirとErlangの違いは何ですか？",
+      "a": "どちらも同じBEAM仮想マシン上で動き、互いのコードを呼び出せます。Elixirは、Rubyに着想を得た構文、マクロ、パイプ演算子、MixやHexといったツールを加えたもので、ErlangはOTPが作られた、より古い言語です。"
+    },
+    {
+      "q": "ElixirはWeb開発に向いていますか？",
+      "a": "はい。Phoenixフレームワークは高速で多数の同時接続を処理でき、LiveViewを使うと、サーバー側でレンダリングしたHTMLと少ないJavaScriptで、インタラクティブなページを作れます。"
+    },
+    {
+      "q": "Elixirは静的型付けですか？",
+      "a": "Elixirは動的型付けです。最近のバージョンでは、集合論に基づく段階的型システムがコンパイラに加えられつつあり、typespecとDialyzerで型エラーを見つけるチームも多くあります。"
+    },
+    {
+      "q": "Elixirの|>は何を意味しますか？",
+      "a": "`|>`はパイプ演算子です。`x |> f(y)`は`f(x, y)`と同じで、変換の連なりを上から下へ読めます。"
+    },
+    {
+      "q": ".exと.exsファイルとは何ですか？",
+      "a": "`.ex`ファイルはプロジェクトの一部としてコンパイルされ、`.exs`ファイルは実行時に解釈されるスクリプトで、テストや設定によく使われます。"
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Lista enlazada: qué es, listas simples y dobles, código en Python y complejidad — cv.cm",
+  "description": "Aprende cómo funciona una lista enlazada: nodos y punteros, insertar, eliminar, invertir y detectar ciclos en Python, con la complejidad temporal frente a los arreglos.",
+  "h1": "Lista enlazada explicada: cómo funciona, código y complejidad",
+  "answer": "Una lista enlazada es una secuencia de nodos en la que cada nodo guarda un valor y una referencia (puntero) al siguiente nodo. A diferencia de un arreglo, los nodos no están contiguos en memoria, así que insertar o eliminar un nodo en una posición conocida cuesta O(1), pero encontrar el k-ésimo elemento cuesta O(n) porque hay que recorrer desde la cabeza. Una lista doblemente enlazada guarda además un puntero al nodo anterior.",
+  "sections": [
+    {
+      "h": "Qué problema resuelve una lista enlazada",
+      "body": [
+        "Un arreglo (en Python, una `list`) guarda sus elementos en un único bloque contiguo de memoria. Leer `a[i]` es inmediato, pero insertar al principio desplaza todos los demás elementos una posición a la derecha, lo que cuesta O(n). La lista enlazada evita ese desplazamiento: cada elemento vive en su propio nodo y los nodos se conectan mediante referencias. Para insertar solo hay que cambiar un par de referencias.",
+        "Las listas enlazadas son la base de muchas otras estructuras: pilas, colas, los cubos de una tabla hash (encadenamiento separado), cachés LRU y listas de adyacencia en grafos."
+      ]
+    },
+    {
+      "h": "La idea en palabras sencillas",
+      "body": [
+        "Piensa en una búsqueda del tesoro: cada pista te dice dónde está la siguiente. No puedes saltar a la pista 7; primero tienes que seguir las pistas 1 a 6. La lista solo recuerda el primer nodo, llamado cabeza (head). El último nodo no apunta a nada (`None`).",
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Cada nodo guarda",
+              "Uso típico"
+            ],
+            "rows": [
+              [
+                "Simplemente enlazada",
+                "valor, `next`",
+                "pilas, colas simples, cubos de tablas hash"
+              ],
+              [
+                "Doblemente enlazada",
+                "valor, `next`, `prev`",
+                "deques, cachés LRU, búferes de editores de texto"
+              ],
+              [
+                "Circular",
+                "como la simple o la doble, pero la cola apunta de vuelta a la cabeza",
+                "planificación round-robin, búferes circulares"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Ejemplo resuelto: insertar y eliminar",
+      "body": [
+        "Partimos de la lista `3 -> 7 -> 9`. Insertamos 5 después del 3 y luego eliminamos el 7.",
+        {
+          "ol": [
+            "Crea un nodo nuevo con el valor 5.",
+            "Haz que `new.next` apunte al nodo que sigue al 3 (el nodo 7).",
+            "Haz que `node3.next` apunte al nodo nuevo. La lista queda `3 -> 5 -> 7 -> 9`.",
+            "Para eliminar el 7, busca el nodo anterior (el 5) recorriendo desde la cabeza.",
+            "Asigna `node5.next = node5.next.next`, que se salta el 7. La lista queda `3 -> 5 -> 9`. El recolector de basura de Python libera el nodo inalcanzable."
+          ]
+        },
+        {
+          "note": "El orden de los pasos 2 y 3 importa. Si primero asignas `node3.next = new`, pierdes la única referencia al resto de la lista."
+        }
+      ]
+    },
+    {
+      "h": "Implementación en Python de una lista simplemente enlazada",
+      "body": [
+        "Esta clase guarda una referencia a la cabeza y un contador de tamaño. Permite añadir al principio y al final, eliminar el primer valor que coincida e iterar.",
+        {
+          "code": "class Node:\n    def __init__(self, value, next=None):\n        self.value = value\n        self.next = next\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n        self.size = 0\n    def push_front(self, value):\n        self.head = Node(value, self.head)\n        self.size += 1\n    def push_back(self, value):\n        node = Node(value)\n        if self.head is None:\n            self.head = node\n        else:\n            cur = self.head\n            while cur.next:\n                cur = cur.next\n            cur.next = node\n        self.size += 1\n    def remove(self, value):\n        prev, cur = None, self.head\n        while cur and cur.value != value:\n            prev, cur = cur, cur.next\n        if cur is None:\n            return False          # not found\n        if prev is None:\n            self.head = cur.next  # removing the head\n        else:\n            prev.next = cur.next\n        self.size -= 1\n        return True\n    def __iter__(self):\n        cur = self.head\n        while cur:\n            yield cur.value\n            cur = cur.next",
+          "lang": "python"
+        },
+        {
+          "code": "items = LinkedList()\nfor x in [3, 7, 9]:\n    items.push_back(x)\nitems.push_front(1)\nitems.remove(7)\nprint(list(items), items.size)  # [1, 3, 9] 3",
+          "lang": "python"
+        },
+        "Aquí `push_back` recorre toda la lista, por lo que es O(n). Mantener una referencia extra `tail` lo deja en O(1); es lo que hacen las implementaciones reales de colas."
+      ]
+    },
+    {
+      "h": "Operaciones clásicas: invertir y detectar ciclos",
+      "body": [
+        "Invertir una lista in situ es la pregunta de entrevista más común sobre listas enlazadas. Recorre la lista una vez y da la vuelta a cada puntero `next`.",
+        {
+          "code": "def reverse(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next     # remember the rest\n        cur.next = prev    # turn the pointer around\n        prev, cur = cur, nxt\n    return prev            # new head\ndef has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\nhead = Node(1, Node(2, Node(3)))\nhead = reverse(head)\nprint(head.value, head.next.value, head.next.next.value)  # 3 2 1\nprint(has_cycle(head))  # False",
+          "lang": "python"
+        },
+        "`has_cycle` es el algoritmo de la tortuga y la liebre de Floyd: un puntero lento avanza un paso y uno rápido avanza dos. Si hay un bucle, el rápido acaba alcanzando al lento; si no, llega a `None`. Usa O(1) de memoria adicional."
+      ]
+    },
+    {
+      "h": "Complejidad temporal y espacial",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Operación",
+              "Lista simplemente enlazada",
+              "`list` de Python (arreglo dinámico)",
+              "Motivo"
+            ],
+            "rows": [
+              [
+                "Acceder al k-ésimo elemento",
+                "O(n)",
+                "O(1)",
+                "la lista enlazada debe recorrer k nodos"
+              ],
+              [
+                "Insertar o eliminar al principio",
+                "O(1)",
+                "O(n)",
+                "un arreglo desplaza todos los elementos"
+              ],
+              [
+                "Insertar o eliminar tras un nodo conocido",
+                "O(1)",
+                "O(n)",
+                "solo cambian referencias"
+              ],
+              [
+                "Añadir al final",
+                "O(1) con puntero a la cola",
+                "O(1) amortizado",
+                "ambos son baratos"
+              ],
+              [
+                "Buscar un valor",
+                "O(n)",
+                "O(n)",
+                "ambos recorren elemento a elemento"
+              ],
+              [
+                "Memoria adicional",
+                "una o dos referencias por nodo",
+                "algo de capacidad sobrante",
+                "los nodos son objetos independientes"
+              ]
+            ]
+          }
+        },
+        "En la práctica, los arreglos suelen ser más rápidos incluso en operaciones donde la lista enlazada tiene mejor notación Big O, porque sus elementos están contiguos en memoria y aprovechan bien la caché de la CPU. Los nodos de una lista enlazada están dispersos."
+      ]
+    },
+    {
+      "h": "Variantes y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Olvidar la lista vacía: comprueba siempre `head is None` antes de leer `head.next`.",
+            "Perder el resto de la lista al sobrescribir `next` antes de guardarlo (mira `nxt` en `reverse`).",
+            "No actualizar `head` al eliminar el primer nodo, o `tail` al eliminar el último.",
+            "Usar recursión en listas muy largas: el límite de recursión por defecto de Python es de unos 1000 marcos, así que el código iterativo es más seguro.",
+            "Un nodo cabeza ficticio (centinela) elimina la mayoría de los casos especiales: todo nodo real tiene entonces un nodo anterior.",
+            "En una lista doblemente enlazada, cada inserción y eliminación debe actualizar cuatro referencias; olvidar una corrompe la lista sin avisar."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cuándo usar una lista enlazada y qué usar en Python",
+      "body": [
+        "Usa una lista enlazada cuando insertes y elimines en los extremos o en el medio, en posiciones de las que ya tienes una referencia, y rara vez necesites acceso aleatorio. Ejemplos: una caché LRU (lista doblemente enlazada más diccionario hash), la lista de bloques libres de un asignador de memoria, el historial de deshacer o los cubos de una tabla hash.",
+        "En el código Python de todos los días rara vez escribirás la tuya. Para una cola o deque, usa `collections.deque`, que da O(1) al añadir y extraer por ambos extremos. Para secuencias generales, usa `list`. Escribe tu propia lista enlazada para aprender, para entrevistas y cuando necesites empalmar nodos en O(1), como en una caché LRU.",
+        {
+          "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.append(4)\nprint(q.popleft(), q.pop(), list(q))  # 0 4 [1, 2, 3]",
+          "lang": "python"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Una `list` de Python es una lista enlazada?",
+      "a": "No. Una `list` de Python es un arreglo dinámico de referencias almacenadas de forma contigua, por lo que indexar es O(1) e insertar al principio es O(n). `collections.deque` es lo más parecido a una lista enlazada que trae Python para usar como cola."
+    },
+    {
+      "q": "¿Por qué acceder en una lista enlazada es O(n)?",
+      "a": "Los nodos no están en direcciones predecibles. La única forma de llegar al k-ésimo nodo es empezar en la cabeza y seguir k referencias `next`."
+    },
+    {
+      "q": "¿Cuándo es mejor una lista doblemente enlazada que una simple?",
+      "a": "Cuando necesitas eliminar un nodo teniendo solo una referencia a él, o moverte hacia atrás. Con un puntero `prev`, eliminar es O(1) sin buscar el nodo anterior, a costa de una referencia extra por nodo."
+    },
+    {
+      "q": "¿Cómo se encuentra el medio de una lista enlazada en una sola pasada?",
+      "a": "Usa dos punteros: uno avanza de uno en uno y el otro de dos en dos. Cuando el rápido llega al final, el lento está en el medio."
+    },
+    {
+      "q": "¿Qué es un nodo centinela?",
+      "a": "Un nodo ficticio colocado antes del primer nodo real (y a veces después del último). No guarda datos, pero hace que todo nodo real tenga un vecino, de modo que el código de inserción y eliminación necesita menos casos especiales para la lista vacía y la cabeza."
+    }
+  ]
+}

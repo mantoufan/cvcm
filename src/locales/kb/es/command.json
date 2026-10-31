@@ -1,0 +1,155 @@
+{
+  "title": "Patrón Command: deshacer, rehacer y colas con un ejemplo en TypeScript — cv.cm",
+  "description": "El patrón Command convierte una petición en un objeto para que puedas ponerla en cola, registrarla y deshacerla. Aprende sus roles y crea deshacer/rehacer en TypeScript.",
+  "h1": "Patrón Command explicado con ejemplos",
+  "answer": "Command es un patrón de diseño de comportamiento que convierte una petición en un objeto independiente que contiene todo lo necesario para ejecutarla. Como la petición es un objeto, puedes guardarla, pasarla de un lado a otro, ponerla en una cola, registrarla y deshacerla más tarde. El objeto que dispara un comando (por ejemplo un botón) no necesita saber qué objeto hace el trabajo ni cómo.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: encapsular una petición como un objeto, de modo que puedas parametrizar clientes con distintas peticiones, poner en cola o registrar peticiones y permitir operaciones que se pueden deshacer. Command es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF).",
+        "Piensa en un editor de texto. La misma acción, como \"poner el texto en negrita\", puede dispararse desde un botón de la barra de herramientas, un elemento del menú y el atajo de teclado Ctrl+B. Si cada uno llama directamente al editor, la lógica se duplica en tres lugares. Peor aún, el editor también debe admitir deshacer: cuando el usuario pulsa Ctrl+Z, el programa necesita saber cuál fue la última acción y cómo revertirla.",
+        "Command resuelve ambos problemas. Cada acción se convierte en un objeto con un método `execute` y, opcionalmente, un método `undo`. Los botones, los menús y los atajos tienen todos el mismo objeto comando. El editor guarda una lista de historial de los comandos ejecutados, así que deshacer significa tomar el último comando de la lista y llamar a su método `undo`."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Comando",
+                "Interfaz con un método `execute` (y a menudo `undo`)"
+              ],
+              [
+                "Comando concreto",
+                "Guarda el receptor y los parámetros, y llama a los métodos del receptor en `execute`"
+              ],
+              [
+                "Receptor",
+                "El objeto que sabe hacer el trabajo real, como un documento o una cuenta bancaria"
+              ],
+              [
+                "Invocador",
+                "Pide a un comando que se ejecute; puede guardar un historial para deshacer y rehacer"
+              ],
+              [
+                "Cliente",
+                "Crea comandos concretos y los conecta con receptores e invocadores"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript: deshacer y rehacer",
+      "body": [
+        "El `TextDocument` es el receptor. `InsertText` y `DeleteLast` son comandos que recuerdan suficiente información para revertirse a sí mismos. El `Editor` es el invocador, con dos pilas: una para deshacer y otra para rehacer.",
+        {
+          "code": "interface Command {\n  execute(): void;\n  undo(): void;\n}\nclass TextDocument {\n  text = \"\";\n}\nclass InsertText implements Command {\n  constructor(private doc: TextDocument, private value: string) {}\n  execute() { this.doc.text += this.value; }\n  undo() { this.doc.text = this.doc.text.slice(0, -this.value.length); }\n}\nclass DeleteLast implements Command {\n  private removed = \"\";\n  constructor(private doc: TextDocument, private count: number) {}\n  execute() {\n    this.removed = this.doc.text.slice(-this.count);\n    this.doc.text = this.doc.text.slice(0, -this.count);\n  }\n  undo() { this.doc.text += this.removed; }\n}\nclass Editor {\n  private done: Command[] = [];\n  private undone: Command[] = [];\n  run(cmd: Command) { cmd.execute(); this.done.push(cmd); this.undone = []; }\n  undo() { const c = this.done.pop(); if (c) { c.undo(); this.undone.push(c); } }\n  redo() { const c = this.undone.pop(); if (c) { c.execute(); this.done.push(c); } }\n}\nconst doc = new TextDocument();\nconst editor = new Editor();\neditor.run(new InsertText(doc, \"Hello\"));\neditor.run(new InsertText(doc, \", world\"));\neditor.run(new DeleteLast(doc, 7));\nconsole.log(doc.text); // Hello\neditor.undo();\nconsole.log(doc.text); // Hello, world\neditor.redo();\nconsole.log(doc.text); // Hello",
+          "lang": "typescript"
+        },
+        {
+          "note": "Ejecutar un comando nuevo debe vaciar la pila de rehacer, como hace `run` arriba. De lo contrario, rehacer podría aplicar un comando a un estado del documento para el que nunca fue diseñado, y el texto se corrompe."
+        }
+      ]
+    },
+    {
+      "h": "Antes y después",
+      "body": [
+        "Sin el patrón, la interfaz llama directamente al documento y deshacer no es posible, porque nada registra lo que ocurrió:",
+        {
+          "code": "// Before: each trigger calls the receiver directly\nboldButton.onclick = () => doc.makeBold(selection);\nmenuBold.onclick = () => doc.makeBold(selection);\n// After: every trigger shares one command, and the editor records it\nconst bold = () => new MakeBold(doc, selection);\nboldButton.onclick = () => editor.run(bold());\nmenuBold.onclick = () => editor.run(bold());",
+          "lang": "typescript"
+        },
+        "La segunda versión es un fragmento que supone una clase de comando `MakeBold` como las de arriba. La interfaz ya no sabe cómo funciona poner negrita, y cada acción pasa por un único lugar donde se puede registrar, anotar o deshacer."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo para deshacer y rehacer, macros (una lista de comandos ejecutados juntos) e historiales de comandos.",
+            "Úsalo para poner en cola o programar trabajo: una cola de trabajos guarda objetos comando y los workers los ejecutan más tarde.",
+            "Úsalo para registrar o reproducir operaciones, por ejemplo enviando comandos serializados a otro servidor.",
+            "Úsalo para desacoplar los elementos de la interfaz del código que disparan.",
+            "No lo uses cuando solo necesites un callback. En TypeScript una función ya es un valor de primera clase, así que `button.onclick = save` es un comando perfectamente válido sin deshacer. Introduce clases de comando cuando necesites comportamiento adicional como `undo`, un nombre para mostrar o serialización."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "La interfaz `Runnable` de Java es un comando con un solo método, `run`, que usan los hilos y los ejecutores para ejecutar trabajo más tarde.",
+            "Las acciones de Redux son objetos simples que describen un cambio; un reducer las aplica, y el registro de acciones permite depurar viajando en el tiempo. Es un pariente cercano de Command, con la lógica en el reducer en lugar de en el comando.",
+            "VS Code y muchos otros editores registran comandos con nombre que pueden asociarse a teclas, menús y una paleta de comandos.",
+            "Las migraciones de bases de datos suelen tener un paso `up` y un paso `down`, que son el par execute y undo de un comando."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Patrones relacionados",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de Command"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "Strategy intercambia cómo se hace una tarea; Command empaqueta qué hacer (una petición) para poder guardarla, ponerla en cola o deshacerla."
+              ],
+              [
+                "Memento",
+                "Memento guarda una instantánea del estado para deshacer; Command guarda la operación y la revierte. A menudo se combinan cuando revertir es difícil."
+              ],
+              [
+                "Chain of Responsibility",
+                "Un comando puede pasarse por una cadena de manejadores para encontrar el que lo ejecuta."
+              ],
+              [
+                "Composite",
+                "Un comando macro es un Composite: un comando formado por otros comandos."
+              ],
+              [
+                "Observer",
+                "Observer notifica un evento a muchos oyentes; Command es una petición enviada a un receptor."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo implementa el patrón Command el deshacer?",
+      "a": "Cada comando tiene un método `undo` que revierte su propio `execute`, a menudo usando datos guardados durante la ejecución. El invocador mantiene una pila de comandos ejecutados y llama a `undo` en el más reciente."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre Command y Strategy?",
+      "a": "Strategy representa distintas formas de hacer la misma tarea y la elige el objeto que la usa. Command representa una petición concreta, con su receptor y sus parámetros, que se puede ejecutar más tarde, poner en cola o deshacer."
+    },
+    {
+      "q": "¿Una función callback es un comando?",
+      "a": "Un callback es un comando mínimo: empaqueta una acción que se ejecuta más tarde. Necesitas un objeto comando completo cuando además quieres deshacer, una descripción, serialización u otros metadatos."
+    },
+    {
+      "q": "¿Qué es un comando macro?",
+      "a": "Un comando macro contiene una lista de comandos y los ejecuta en orden. Su deshacer los revierte en el orden contrario, lo que es una aplicación del patrón Composite."
+    }
+  ]
+}

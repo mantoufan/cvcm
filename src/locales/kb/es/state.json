@@ -1,0 +1,145 @@
+{
+  "title": "Patrón State: clases de estado, transiciones y ejemplo en TypeScript — cv.cm",
+  "description": "El patrón State permite que un objeto cambie su comportamiento cuando cambia su estado interno. Sustituye los switch por clases de estado en TypeScript.",
+  "h1": "Patrón State explicado con ejemplos",
+  "answer": "State es un patrón de diseño de comportamiento que permite que un objeto cambie su comportamiento cuando cambia su estado interno, de modo que parece cambiar de clase. Cada estado se convierte en una clase aparte que implementa la misma interfaz, y el objeto principal, llamado contexto, delega su trabajo en el objeto de estado actual. Las transiciones ocurren al reemplazar ese objeto de estado, lo que elimina las largas cadenas de `switch` o `if` que comprueban un campo de estado en cada método.",
+  "sections": [
+    {
+      "h": "Intención y el problema que resuelve",
+      "body": [
+        "Intención: permitir que un objeto altere su comportamiento cuando cambia su estado interno. El objeto parecerá cambiar de clase. State es uno de los patrones de comportamiento del libro de la Banda de los Cuatro (Gang of Four, GoF); su ejemplo clásico es una conexión TCP que se comporta de forma distinta cuando está escuchando, establecida o cerrada.",
+        "Toma un pedido en línea. Puede estar pendiente, pagado, enviado o cancelado. Pagar solo funciona cuando está pendiente. Enviar solo funciona cuando está pagado. Cancelar se permite cuando está pendiente o pagado, pero no después de enviarse. Una primera versión guarda una cadena `status` y cada método empieza con un `switch` sobre ella. Con cuatro acciones y cuatro estados son dieciséis casos repartidos en cuatro métodos. Añadir un nuevo estado, como \"reembolsado\", significa editar cada método, y es fácil olvidarse de uno.",
+        "Con el patrón State, cada estado se convierte en una clase que sabe qué significa cada acción en ese estado. El pedido guarda una referencia a su objeto de estado actual y le reenvía cada acción."
+      ]
+    },
+    {
+      "h": "Estructura y participantes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Rol",
+              "Responsabilidad"
+            ],
+            "rows": [
+              [
+                "Contexto",
+                "El objeto que usan los clientes; guarda el objeto de estado actual y delega en él el comportamiento dependiente del estado"
+              ],
+              [
+                "Estado",
+                "Interfaz que declara las operaciones cuyo comportamiento depende del estado"
+              ],
+              [
+                "Estado concreto",
+                "Implementa el comportamiento de un estado y decide cuál es el estado siguiente"
+              ]
+            ]
+          }
+        },
+        "Las transiciones pueden decidirlas los propios estados (cada estado fija el siguiente en el contexto, como abajo) o el contexto mediante una tabla de transiciones. Dejar que decidan los estados mantiene junta la lógica relacionada; una tabla central hace visibles todas las transiciones en un solo lugar."
+      ]
+    },
+    {
+      "h": "Implementación en TypeScript",
+      "body": [
+        "Una clase base ofrece el comportamiento por defecto: rechazar la acción. Cada estado concreto sobrescribe solo las acciones que son válidas para él.",
+        {
+          "code": "abstract class OrderState {\n  abstract readonly name: string;\n  pay(order: Order): void { this.reject(\"pay\"); }\n  ship(order: Order): void { this.reject(\"ship\"); }\n  cancel(order: Order): void { this.reject(\"cancel\"); }\n  protected reject(action: string): never {\n    throw new Error(\"Cannot \" + action + \" an order that is \" + this.name);\n  }\n}\n\nclass Pending extends OrderState {\n  readonly name = \"pending\";\n  pay(order: Order) { order.setState(new Paid()); }\n  cancel(order: Order) { order.setState(new Cancelled()); }\n}\n\nclass Paid extends OrderState {\n  readonly name = \"paid\";\n  ship(order: Order) { order.setState(new Shipped()); }\n  cancel(order: Order) { order.setState(new Cancelled()); } // refund here\n}\n\nclass Shipped extends OrderState { readonly name = \"shipped\"; }\nclass Cancelled extends OrderState { readonly name = \"cancelled\"; }\n\nclass Order {\n  private state: OrderState = new Pending();\n  setState(next: OrderState) { this.state = next; }\n  get status() { return this.state.name; }\n  pay() { this.state.pay(this); }\n  ship() { this.state.ship(this); }\n  cancel() { this.state.cancel(this); }\n}\n\nconst order = new Order();\norder.pay();\norder.ship();\nconsole.log(order.status); // shipped\ntry { order.cancel(); } catch (e) { console.log((e as Error).message); }\n// Cannot cancel an order that is shipped",
+          "lang": "typescript"
+        },
+        "Para añadir un estado \"reembolsado\" escribes una clase nueva y cambias solo los estados que pueden llevar a él. `Order` en sí no cambia.",
+        {
+          "note": "No dejes que los clientes reemplacen el estado desde fuera. Aquí `setState` es público por brevedad; en un proyecto real, mantenlo interno (por ejemplo definiendo los estados en el mismo módulo y sin exportarlos) para que solo puedan ocurrir transiciones válidas."
+        }
+      ]
+    },
+    {
+      "h": "Antes y después",
+      "body": [
+        "Las mismas reglas escritas con un campo de estado y sentencias `switch`. Esto funciona con pocos estados, pero cada método repite la lista completa:",
+        {
+          "code": "type Status = \"pending\" | \"paid\" | \"shipped\" | \"cancelled\";\n\nclass OrderBefore {\n  status: Status = \"pending\";\n  ship() {\n    switch (this.status) {\n      case \"paid\": this.status = \"shipped\"; break;\n      default: throw new Error(\"Cannot ship an order that is \" + this.status);\n    }\n  }\n  // pay() and cancel() repeat the same switch\n}\n\nconst o = new OrderBefore();\ntry { o.ship(); } catch (e) { console.log((e as Error).message); }\n// Cannot ship an order that is pending",
+          "lang": "typescript"
+        },
+        "Para casos pequeños, esta versión está perfectamente bien y podría decirse que es más fácil de leer. En TypeScript, un tipo unión para `Status` permite al compilador comprobar que se maneja cada caso. Pasa a clases de estado cuando el comportamiento de cada estado crece más allá de una o dos líneas."
+      ]
+    },
+    {
+      "h": "Cuándo usarlo y cuándo no",
+      "body": [
+        {
+          "ul": [
+            "Úsalo cuando un objeto se comporta de forma muy distinta según su estado y las mismas comprobaciones de estado aparecen en muchos métodos.",
+            "Úsalo cuando los estados y las transiciones cambian con el tiempo y quieres las reglas de cada estado en un solo lugar.",
+            "Úsalo para flujos de trabajo (pedidos, documentos, tickets), conexiones de protocolo, personajes de juegos y componentes de interfaz como los reproductores multimedia.",
+            "No lo uses cuando solo hay dos o tres estados con comportamiento trivial; un enum o tipo unión y un `switch` es más simple.",
+            "Para máquinas complejas con estados anidados o paralelos, considera una biblioteca de máquinas de estado o la notación de statecharts en lugar de clases escritas a mano."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Usos en el mundo real",
+      "body": [
+        {
+          "ul": [
+            "Las implementaciones de protocolos de red modelan estados de conexión como escuchando, establecida y cerrada, que es el ejemplo del libro GoF.",
+            "XState es una biblioteca de JavaScript y TypeScript para máquinas de estado y statecharts, usada para la lógica de interfaz y los flujos de trabajo.",
+            "La especificación SCXML del W3C define un formato XML para statecharts.",
+            "El desarrollo de juegos usa objetos de estado para los personajes (quieto, corriendo, saltando), donde cada estado maneja la entrada de forma distinta."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "State frente a Strategy y otros patrones",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Patrón",
+              "En qué se diferencia de State"
+            ],
+            "rows": [
+              [
+                "Strategy",
+                "La estructura de clases es casi la misma. Una estrategia normalmente la elige el cliente y no cambia por sí sola; los estados se reemplazan unos a otros como resultado de las propias acciones del objeto."
+              ],
+              [
+                "Flyweight",
+                "Los objetos de estado sin campos pueden compartirse entre todos los contextos como flyweights o constantes."
+              ],
+              [
+                "Singleton",
+                "Los objetos de estado sin estado propio suelen ser instancias únicas compartidas."
+              ],
+              [
+                "Memento",
+                "Memento guarda los datos de un objeto para restaurarlos más tarde; State cambia qué comportamiento usa el objeto."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre State y Strategy?",
+      "a": "Ambos delegan el comportamiento en un objeto intercambiable. En Strategy, el cliente suele elegir el algoritmo y este permanece fijo. En State, los objetos de estado se conocen entre sí y cambian el contexto a un nuevo estado como parte del funcionamiento normal."
+    },
+    {
+      "q": "¿El patrón State es lo mismo que una máquina de estados finitos?",
+      "a": "El patrón State es una forma de implementar una máquina de estados finitos en código orientado a objetos: cada estado es una clase y cada transición reemplaza el objeto de estado actual. Las máquinas también pueden implementarse con tablas de transiciones o bibliotecas."
+    },
+    {
+      "q": "¿Quién debe decidir el siguiente estado: el contexto o el estado?",
+      "a": "Ambos funcionan. Cuando deciden los estados, la lógica de cada estado se mantiene junta. Cuando decide el contexto o una tabla de transiciones, todas las transiciones son visibles en un solo lugar y los estados no necesitan conocerse entre sí."
+    },
+    {
+      "q": "¿Se pueden compartir los objetos de estado?",
+      "a": "Sí, si no guardan datos propios. Entonces una instancia de cada estado puede ser compartida por todos los objetos de contexto, lo que ahorra reservas de memoria."
+    }
+  ]
+}

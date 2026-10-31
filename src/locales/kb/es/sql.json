@@ -1,0 +1,263 @@
+{
+  "title": "Tutorial de SQL: SELECT, JOIN, GROUP BY y transacciones — cv.cm",
+  "description": "Aprende SQL paso a paso: crear tablas, SELECT con WHERE y ORDER BY, joins, GROUP BY, CTE, funciones de ventana, transacciones y PostgreSQL vs MySQL vs SQLite.",
+  "h1": "Tutorial de SQL para principiantes",
+  "answer": "SQL es el lenguaje estándar para crear, consultar y modificar datos en bases de datos relacionales como PostgreSQL, MySQL y SQLite. Escribes instrucciones declarativas como SELECT, INSERT, UPDATE y DELETE, y la base de datos decide cómo ejecutarlas. Esta página enseña el diseño de tablas, el filtrado, los joins, la agrupación, las subconsultas, las funciones de ventana y las transacciones, y enumera las principales diferencias entre PostgreSQL, MySQL y SQLite.",
+  "sections": [
+    {
+      "h": "Qué es SQL y para qué se usa",
+      "body": [
+        "SQL (Structured Query Language, lenguaje de consulta estructurado) es el lenguaje estándar para trabajar con bases de datos relacionales, donde los datos se guardan en tablas de filas y columnas. Tú describes qué datos quieres y el motor de la base de datos decide cómo encontrarlos. SQL está normalizado por ISO/IEC 9075, y todos los gestores importantes implementan el núcleo del estándar más sus propias extensiones.",
+        "Desarrolladores, analistas de datos, ingenieros de datos y administradores de bases de datos usan SQL a diario: para guardar los datos de una aplicación, responder preguntas de negocio, crear informes y alimentar pipelines de datos. Los motores de código abierto más comunes son PostgreSQL, MySQL (y su fork MariaDB) y SQLite; entre los comerciales están Microsoft SQL Server y Oracle Database."
+      ]
+    },
+    {
+      "h": "Obtén una base de datos y ejecuta tu primera consulta",
+      "body": [
+        "La forma más fácil de empezar es SQLite, una base de datos sin servidor que se guarda en un solo archivo. Viene preinstalada en macOS y en la mayoría de los sistemas Linux. PostgreSQL y MySQL funcionan como servidores e incluyen los clientes de línea de comandos `psql` y `mysql`.",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "Las palabras clave de SQL no distinguen mayúsculas de minúsculas. Escribir las palabras clave en mayúsculas y los nombres en minúsculas es una convención habitual que hace las consultas más fáciles de leer. Una instrucción termina con punto y coma, y `--` inicia un comentario."
+      ]
+    },
+    {
+      "h": "Crear tablas: tipos de datos y restricciones",
+      "body": [
+        "La definición de una tabla enumera las columnas, sus tipos y las restricciones que mantienen los datos válidos. Esta página usa dos tablas, `customers` y `orders`, en todos los ejemplos.",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Almacena",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "`INTEGER`, `BIGINT`",
+                "números enteros",
+                "usa `BIGINT` para IDs grandes"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "decimales exactos",
+                "úsalo para dinero, nunca `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`, `TEXT`",
+                "cadenas de texto",
+                "`TEXT` no está en el estándar, pero tiene un amplio soporte"
+              ],
+              [
+                "`DATE`, `TIMESTAMP`",
+                "fechas y horas",
+                "escribe los literales como `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "verdadero o falso",
+                "MySQL lo trata como `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "Las restricciones incluyen `PRIMARY KEY` (identificador único de fila), `NOT NULL`, `UNIQUE`, `CHECK (condition)` y `FOREIGN KEY` / `REFERENCES` (el valor debe existir en otra tabla). Las cadenas usan comillas simples; las comillas dobles son para identificadores en SQL estándar."
+      ]
+    },
+    {
+      "h": "SELECT: filtrar, ordenar y limitar",
+      "body": [
+        "`SELECT` lee datos. `WHERE` filtra filas, `ORDER BY` las ordena y `LIMIT` (o el estándar `FETCH FIRST n ROWS ONLY`) restringe cuántas se devuelven.",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` significa desconocido, por lo que `city = NULL` nunca es verdadero. Usa siempre `IS NULL` o `IS NOT NULL`. Ten en cuenta también que el orden lógico de una consulta es `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, así que un alias de columna definido en `SELECT` no se puede usar en `WHERE`."
+        }
+      ]
+    },
+    {
+      "h": "JOIN: combinar tablas",
+      "body": [
+        "Un join une las filas de dos tablas mediante una condición, normalmente una clave foránea. `INNER JOIN` (o simplemente `JOIN`) conserva solo las filas que coinciden; `LEFT JOIN` conserva todas las filas de la tabla izquierda y rellena con `NULL` las columnas que faltan.",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "Join",
+              "Devuelve"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "filas que coinciden en ambas tablas"
+              ],
+              [
+                "`LEFT JOIN`",
+                "todas las filas de la izquierda, más las coincidencias de la derecha o `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "todas las filas de la derecha, más las coincidencias de la izquierda o `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "todas las filas de ambos lados; MySQL no lo admite"
+              ],
+              [
+                "`CROSS JOIN`",
+                "todas las combinaciones de filas (un producto cartesiano)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY y funciones de agregación",
+      "body": [
+        "Las funciones de agregación como `COUNT`, `SUM`, `AVG`, `MIN` y `MAX` resumen muchas filas en una. `GROUP BY` genera una fila de resultado por grupo, y `HAVING` filtra los grupos después de la agregación, mientras que `WHERE` filtra las filas antes de ella.",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` cuenta filas, mientras que `COUNT(column)` cuenta solo los valores no nulos, por eso Cy obtiene 0 pedidos en el ejemplo anterior. `COALESCE` devuelve su primer argumento no nulo."
+      ]
+    },
+    {
+      "h": "Subconsultas, CTE y funciones de ventana",
+      "body": [
+        "Una subconsulta es una consulta dentro de otra consulta. Una expresión de tabla común (CTE), escrita con `WITH`, da nombre a una subconsulta y hace legibles las consultas largas. Las funciones de ventana como `ROW_NUMBER`, `RANK` y `SUM(...) OVER` calculan valores sobre filas relacionadas sin colapsarlas en grupos.",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "Las CTE y las funciones de ventana están disponibles en PostgreSQL, en SQLite 3.25 y posteriores, y en MySQL 8.0 y posteriores."
+      ]
+    },
+    {
+      "h": "Modificar datos: INSERT, UPDATE, DELETE y transacciones",
+      "body": [
+        "`UPDATE` y `DELETE` afectan a todas las filas que cumplen la cláusula `WHERE`. Una transacción agrupa varias instrucciones para que todas se completen o todas fallen juntas.",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "Un `UPDATE` o `DELETE` sin `WHERE` modifica todas las filas de la tabla. Ejecuta antes la misma condición como un `SELECT` para ver qué filas se verán afectadas y trabaja dentro de una transacción siempre que puedas."
+        }
+      ]
+    },
+    {
+      "h": "Diferencias entre PostgreSQL, MySQL y SQLite",
+      "body": [
+        "El núcleo de SQL es portable, pero cada motor difiere en los detalles. Estas son las diferencias que los principiantes encuentran primero.",
+        {
+          "table": {
+            "head": [
+              "Característica",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "ID autoincremental",
+                "`GENERATED ALWAYS AS IDENTITY` o `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "Entrecomillado de nombres",
+                "`\"name\"`",
+                "acentos graves alrededor del nombre",
+                "`\"name\"`"
+              ],
+              [
+                "Limitar filas",
+                "`LIMIT n` o `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "Concatenación de cadenas",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "Booleanos",
+                "tipo `BOOLEAN` real",
+                "`TINYINT(1)`",
+                "se guardan como 0 y 1"
+              ],
+              [
+                "Tipado",
+                "estricto",
+                "estricto en el modo estricto por defecto",
+                "flexible, salvo que la tabla se declare `STRICT`"
+              ],
+              [
+                "Upsert",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "Otras diferencias incluyen las funciones de fecha (`NOW()` en PostgreSQL y MySQL, `datetime('now')` en SQLite), la distinción de mayúsculas en las comparaciones de cadenas y la compatibilidad con el full outer join, del que carece MySQL."
+      ]
+    },
+    {
+      "h": "Errores comunes y siguientes pasos",
+      "body": [
+        {
+          "ul": [
+            "Construir consultas concatenando la entrada del usuario, lo que permite la inyección SQL. Usa siempre consultas parametrizadas (marcadores como `?` o `$1`) desde tu lenguaje de programación.",
+            "Seleccionar en una consulta agrupada una columna que no está en `GROUP BY` ni dentro de una función de agregación.",
+            "Usar `FLOAT` para dinero en lugar de `DECIMAL`.",
+            "Olvidar los índices en las columnas que se usan en joins y filtros; `CREATE INDEX idx_orders_customer ON orders(customer_id);` y `EXPLAIN` ayudan en esto.",
+            "Suponer que las filas se devuelven en un orden fijo sin `ORDER BY`."
+          ]
+        },
+        "Para seguir estudiando, lee los manuales oficiales: el tutorial de PostgreSQL, el MySQL Reference Manual y la referencia del lenguaje SQL de SQLite. Practica con un conjunto de datos real escribiendo preguntas en lenguaje natural y convirtiendo cada una en una consulta."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es SQL un lenguaje de programación?",
+      "a": "SQL es un lenguaje de consulta declarativo: describes el resultado que quieres en lugar de los pasos para calcularlo. Las extensiones de cada fabricante, como PL/pgSQL y T-SQL, añaden variables, bucles y procedimientos."
+    },
+    {
+      "q": "¿Con qué base de datos debería empezar un principiante?",
+      "a": "SQLite no necesita servidor y es ideal para aprender. PostgreSQL es una gran opción para aprender SQL conforme al estándar en aplicaciones reales, y MySQL es habitual en el alojamiento web."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre WHERE y HAVING?",
+      "a": "`WHERE` filtra filas individuales antes de agrupar, y `HAVING` filtra grupos después de calcular las funciones de agregación."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre INNER JOIN y LEFT JOIN?",
+      "a": "`INNER JOIN` devuelve solo las filas que tienen coincidencia en ambas tablas. `LEFT JOIN` devuelve todas las filas de la tabla izquierda y rellena con `NULL` las columnas de la tabla derecha cuando no hay coincidencia."
+    },
+    {
+      "q": "¿Cómo evito la inyección SQL?",
+      "a": "Nunca insertes la entrada del usuario en el texto SQL. Usa consultas parametrizadas o sentencias preparadas, en las que la base de datos recibe la consulta y los valores por separado."
+    }
+  ]
+}

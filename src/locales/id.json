@@ -3953,7 +3953,12 @@
       "codes": "Kode",
       "files": "Berkas",
       "audio": "Audio",
-      "text": "Teks"
+      "text": "Teks",
+      "dev": "Pengembang & web",
+      "time": "Tanggal & waktu",
+      "money": "Uang & belanja",
+      "health": "Kesehatan & olahraga",
+      "math": "Matematika & belajar"
     },
     "hub": {
       "kicker": "Pelajaran hari ini",
@@ -7487,6 +7492,399 @@
     "margin-vs-markup": {
       "name": "Margin vs markup",
       "blurb": "Dua cara menyatakan laba, cara mengonversinya, dan tabel ringkas."
+    },
+    "code": {
+      "label": "Pemrograman",
+      "lead": "Tutorial satu halaman untuk bahasa pemrograman, pola desain, struktur data, dan algoritme: jawaban singkat dulu, lalu kode yang bisa dijalankan dan tautan ke dokumentasi resmi.",
+      "all": "Semua tutorial pemrograman",
+      "groups": {
+        "languages": "Bahasa pemrograman",
+        "patterns": "Pola desain",
+        "structures": "Struktur data",
+        "algorithms": "Algoritme"
+      },
+      "blurbs": {
+        "languages": "Python, JavaScript, Java, C++, Go, Rust, dan banyak lagi, mulai dari Hello World",
+        "patterns": "Ke-23 pola Gang of Four plus SOLID, dengan contoh TypeScript",
+        "structures": "Linked list, hash table, tree, heap, dan trie, dengan kode Python",
+        "algorithms": "Pengurutan, pencarian, graf, dan pemrograman dinamis, dengan kompleksitas"
+      }
+    },
+    "linked-list": {
+      "name": "Linked list",
+      "blurb": "Linked list tunggal dan ganda: insert, delete, reverse, deteksi siklus, dan kompleksitas"
+    },
+    "stack-and-queue": {
+      "name": "Stack dan queue",
+      "blurb": "Stack LIFO dan queue FIFO di Python: list, deque, pencocokan kurung, BFS, dan kompleksitas"
+    },
+    "hash-table": {
+      "name": "Hash table",
+      "blurb": "Fungsi hash, bucket, collision, load factor, dan resizing, dengan kode Python"
+    },
+    "binary-search-tree": {
+      "name": "Binary search tree",
+      "blurb": "Aturan urutan BST, search, insert, delete di Python, penyeimbangan, dan kompleksitas"
+    },
+    "binary-tree-traversal": {
+      "name": "Traversal binary tree",
+      "blurb": "Preorder, inorder, postorder, dan level order, kode Python rekursif dan iteratif"
+    },
+    "binary-heap": {
+      "name": "Binary heap",
+      "blurb": "Properti heap, sift up/down, heapify, priority queue, dan heapq Python"
+    },
+    "trie": {
+      "name": "Trie (prefix tree)",
+      "blurb": "Prefix tree: insert, search, starts-with, dan autocomplete di Python, dengan kompleksitas"
+    },
+    "union-find": {
+      "name": "Union-find (disjoint set union)",
+      "blurb": "Disjoint set union: find, union, path compression, union by rank dan size di Python"
+    },
+    "lru-cache": {
+      "name": "LRU cache",
+      "blurb": "Cache least recently used dengan hash map dan doubly linked list, OrderedDict, lru_cache"
+    },
+    "big-o-notation": {
+      "name": "Notasi Big O",
+      "blurb": "Kompleksitas waktu dan ruang, kelas yang umum, dan cara membacanya dari kode"
+    },
+    "recursion": {
+      "name": "Rekursi",
+      "blurb": "Base case, call stack, memoization, dan batas rekursi di Python"
+    },
+    "binary-search": {
+      "name": "Binary search",
+      "blurb": "Cara binary search membagi dua rentang terurut, kode Python, bisect, varian, dan jebakan"
+    },
+    "two-pointers": {
+      "name": "Two pointers dan sliding window",
+      "blurb": "Pola dua ujung, cepat-lambat, dan sliding window dengan kode Python dan jejak langkah"
+    },
+    "bubble-sort": {
+      "name": "Bubble sort",
+      "blurb": "Cara bubble sort menukar tetangga, jejak per putaran, kode Python, dan kompleksitas"
+    },
+    "selection-sort": {
+      "name": "Selection sort",
+      "blurb": "Cara selection sort memilih nilai minimum, jejak, Python, dan stabilitas"
+    },
+    "insertion-sort": {
+      "name": "Insertion sort",
+      "blurb": "Insertion sort menggeser elemen ke tempatnya: jejak, Python, stabilitas, kasus terbaik"
+    },
+    "merge-sort": {
+      "name": "Merge sort",
+      "blurb": "Merge sort divide and conquer: jejak, Python, langkah merge, stabilitas, dan kompleksitas"
+    },
+    "quicksort": {
+      "name": "Quicksort",
+      "blurb": "Pivot, jejak partisi Lomuto, kode Python, kasus terburuk, stabilitas, dan quickselect"
+    },
+    "heapsort": {
+      "name": "Heapsort",
+      "blurb": "Max-heap, sift-down, jejak langkah demi langkah, kode Python, heapq, dan kompleksitas"
+    },
+    "counting-sort": {
+      "name": "Counting sort",
+      "blurb": "Counting sort linear untuk kunci bilangan bulat kecil: jejak, Python stabil, kompleksitas"
+    },
+    "radix-sort": {
+      "name": "Radix sort",
+      "blurb": "Radix sort LSD dan MSD: jejak digit demi digit, kode Python, stabilitas, dan kompleksitas"
+    },
+    "python": {
+      "name": "Python",
+      "blurb": "Sintaks, tipe data, alur kontrol, fungsi, koleksi, error, dan file dalam satu halaman"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "blurb": "Variabel, tipe, fungsi, array, objek, promise, dan async/await dalam satu halaman"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "blurb": "Tipe, interface, union, narrowing, generic, dan penanganan error dalam satu halaman"
+    },
+    "java": {
+      "name": "Java",
+      "blurb": "Tipe, class, record, koleksi, exception, dan pattern matching dalam satu halaman"
+    },
+    "c": {
+      "name": "C",
+      "blurb": "Tipe, fungsi, array, string, pointer, malloc/free, dan penanganan error dalam satu halaman"
+    },
+    "cpp": {
+      "name": "C++",
+      "blurb": "Tipe, class, container STL, lambda, RAII, smart pointer, dan exception dalam satu halaman"
+    },
+    "csharp": {
+      "name": "C#",
+      "blurb": "Tipe, class, record, koleksi, LINQ, async/await, dan exception dalam satu halaman"
+    },
+    "go": {
+      "name": "Go",
+      "blurb": "Tipe, slice, map, struct, interface, goroutine, channel, dan error dalam satu halaman"
+    },
+    "rust": {
+      "name": "Rust",
+      "blurb": "Ownership, borrowing, struct, enum, match, koleksi, dan Result dalam satu halaman"
+    },
+    "php": {
+      "name": "PHP",
+      "blurb": "Variabel, array, fungsi, class, enum, exception, dan endpoint JSON dalam satu halaman"
+    },
+    "ruby": {
+      "name": "Ruby",
+      "blurb": "Tipe, method, array, hash, block, class, module, dan exception dalam satu halaman"
+    },
+    "swift": {
+      "name": "Swift",
+      "blurb": "Tipe, optional, closure, koleksi, struct, enum, protocol, dan error dalam satu halaman"
+    },
+    "kotlin": {
+      "name": "Kotlin",
+      "blurb": "Null safety, alur kontrol, fungsi, data class, dan coroutine dalam satu halaman"
+    },
+    "dart": {
+      "name": "Dart",
+      "blurb": "Null safety, fungsi, koleksi, class, dan async/await untuk Flutter"
+    },
+    "scala": {
+      "name": "Scala",
+      "blurb": "Sintaks Scala 3, pattern matching, koleksi, case class, dan Option dalam satu halaman"
+    },
+    "r": {
+      "name": "R",
+      "blurb": "Vektor, data frame, fungsi, statistik, dan plot di R dalam satu halaman"
+    },
+    "sql": {
+      "name": "SQL",
+      "blurb": "SELECT, JOIN, GROUP BY, CTE, transaksi, serta PostgreSQL vs MySQL vs SQLite"
+    },
+    "bash": {
+      "name": "Bash",
+      "blurb": "Skrip shell, variabel, quoting, loop, fungsi, pipe, dan set -euo pipefail"
+    },
+    "powershell": {
+      "name": "PowerShell",
+      "blurb": "Cmdlet, pipeline objek, variabel, fungsi, hashtable, dan try/catch"
+    },
+    "lua": {
+      "name": "Lua",
+      "blurb": "Variabel, table, fungsi, metatable, dan pcall di Lua dalam satu halaman"
+    },
+    "perl": {
+      "name": "Perl",
+      "blurb": "Skalar, array, hash, subroutine, regular expression, dan error di Perl"
+    },
+    "haskell": {
+      "name": "Haskell",
+      "blurb": "Fungsi murni, tipe, pattern matching, list, Maybe, dan IO di Haskell"
+    },
+    "elixir": {
+      "name": "Elixir",
+      "blurb": "Pattern matching, pipe, Enum, proses, dan penanganan error {:ok, value}"
+    },
+    "erlang": {
+      "name": "Erlang",
+      "blurb": "Pattern matching, rekursi, proses, OTP, dan penanganan error let-it-crash"
+    },
+    "clojure": {
+      "name": "Clojure",
+      "blurb": "Sintaks, koleksi immutable, fungsi, macro, atom, dan error dalam satu halaman"
+    },
+    "fsharp": {
+      "name": "F#",
+      "blurb": "Tipe, record, union, pattern matching, pipeline, dan Result dalam satu halaman"
+    },
+    "ocaml": {
+      "name": "OCaml",
+      "blurb": "Tipe, record, variant, pattern matching, modul, dan error dalam satu halaman"
+    },
+    "julia": {
+      "name": "Julia",
+      "blurb": "Tipe, array, broadcasting, fungsi, multiple dispatch, dan error dalam satu halaman"
+    },
+    "zig": {
+      "name": "Zig",
+      "blurb": "Tipe, slice, optional, error union, comptime, defer, dan allocator dalam satu halaman"
+    },
+    "fortran": {
+      "name": "Fortran",
+      "blurb": "Sintaks modern, tipe, loop, prosedur, modul, array, dan iostat dalam satu halaman"
+    },
+    "cobol": {
+      "name": "COBOL",
+      "blurb": "Division, data PIC, IF/EVALUATE, loop PERFORM, tabel, file, dan error"
+    },
+    "assembly": {
+      "name": "Assembly (x86-64)",
+      "blurb": "Register, instruksi, loop, memori, syscall, pemanggilan fungsi x86-64 NASM, sintaks AT&T"
+    },
+    "visual-basic": {
+      "name": "Visual Basic .NET",
+      "blurb": "Sintaks VB.NET, tipe, loop, fungsi, koleksi, class, LINQ, dan VBA dalam satu halaman"
+    },
+    "objective-c": {
+      "name": "Objective-C",
+      "blurb": "Message, class, property, koleksi Foundation, block, ARC, dan NSError dalam satu halaman"
+    },
+    "matlab": {
+      "name": "MATLAB",
+      "blurb": "Matriks, indeks, loop, fungsi, struct, cell, error, plot, dan Octave dalam satu halaman"
+    },
+    "design-patterns": {
+      "name": "Design pattern",
+      "blurb": "Apa itu design pattern, 23 pola GoF per kategori, dan cara memilihnya"
+    },
+    "solid-principles": {
+      "name": "Prinsip SOLID",
+      "blurb": "Lima prinsip desain SOLID, masing-masing dengan contoh TypeScript sebelum dan sesudah"
+    },
+    "singleton": {
+      "name": "Pola Singleton",
+      "blurb": "Satu instance saja: contoh TypeScript, varian async, jebakan, dan alternatifnya"
+    },
+    "factory-method": {
+      "name": "Pola Factory Method",
+      "blurb": "Biarkan subclass memilih objek yang dibuat: contoh TypeScript dan kapan memakainya"
+    },
+    "abstract-factory": {
+      "name": "Pola Abstract Factory",
+      "blurb": "Membuat keluarga objek terkait tanpa menyebut class konkretnya"
+    },
+    "builder": {
+      "name": "Pola Builder",
+      "blurb": "Membangun objek kompleks langkah demi langkah dengan API fluent, plus peran Director"
+    },
+    "prototype": {
+      "name": "Pola Prototype",
+      "blurb": "Membuat objek dengan mengkloning instance: clone() di TypeScript, deep vs shallow copy"
+    },
+    "adapter": {
+      "name": "Pola Adapter",
+      "blurb": "Interface tak kompatibel bisa bekerja sama: contoh TypeScript, object vs class adapter"
+    },
+    "bridge": {
+      "name": "Pola Bridge",
+      "blurb": "Memisahkan abstraksi dari implementasinya agar keduanya dapat berubah secara independen"
+    },
+    "composite": {
+      "name": "Pola Composite",
+      "blurb": "Memperlakukan objek tunggal dan pohon objek secara sama: contoh sistem file TypeScript"
+    },
+    "decorator": {
+      "name": "Pola Decorator",
+      "blurb": "Menambah perilaku objek saat runtime dengan membungkusnya: decorator class dan fungsi"
+    },
+    "facade": {
+      "name": "Pola Facade",
+      "blurb": "Beri subsistem yang kompleks satu pintu masuk sederhana: contoh checkout TypeScript"
+    },
+    "flyweight": {
+      "name": "Pola Flyweight",
+      "blurb": "Berbagi state intrinsik antar banyak objek demi hemat memori, dengan contoh TypeScript"
+    },
+    "proxy": {
+      "name": "Pola Proxy",
+      "blurb": "Mengontrol akses ke objek dengan proxy cache, lazy, proteksi, dan remote"
+    },
+    "chain-of-responsibility": {
+      "name": "Pola Chain of Responsibility",
+      "blurb": "Teruskan permintaan lewat rangkaian handler sampai ada yang menangani, plus middleware"
+    },
+    "command": {
+      "name": "Pola Command",
+      "blurb": "Ubah permintaan menjadi objek untuk antrean, log, undo, dan redo di TypeScript"
+    },
+    "interpreter": {
+      "name": "Pola Interpreter",
+      "blurb": "Memodelkan bahasa kecil sebagai class dan mengevaluasi pohon ekspresi di TypeScript"
+    },
+    "iterator": {
+      "name": "Pola Iterator",
+      "blurb": "Menelusuri koleksi tanpa membuka penyimpanannya, dengan Symbol.iterator dan generator"
+    },
+    "mediator": {
+      "name": "Pola Mediator",
+      "blurb": "Mengoordinasikan komponen lewat satu objek pusat, bukan referensi langsung"
+    },
+    "memento": {
+      "name": "Pola Memento",
+      "blurb": "Menyimpan dan memulihkan state objek tanpa membuka internalnya, untuk undo dan checkpoint"
+    },
+    "observer": {
+      "name": "Pola Observer",
+      "blurb": "Memberi tahu subscriber otomatis saat subjek berubah, dengan kode TypeScript bertipe"
+    },
+    "state": {
+      "name": "Pola State",
+      "blurb": "Mengubah perilaku objek sesuai state dengan class state, bukan switch"
+    },
+    "strategy": {
+      "name": "Pola Strategy",
+      "blurb": "Menukar algoritma saat runtime, memakai fungsi atau class di TypeScript"
+    },
+    "template-method": {
+      "name": "Pola Template Method",
+      "blurb": "Tetapkan langkah algoritma di base class dan biarkan subclass mengisi detailnya"
+    },
+    "visitor": {
+      "name": "Pola Visitor",
+      "blurb": "Menambah operasi pada hierarki class dengan double dispatch, plus alternatif union type"
+    },
+    "breadth-first-search": {
+      "name": "Breadth-first search (BFS)",
+      "blurb": "BFS dengan queue: contoh berjejak, kode Python, jalur terpendek, dan biaya O(V + E)"
+    },
+    "depth-first-search": {
+      "name": "Depth-first search (DFS)",
+      "blurb": "DFS rekursif dan iteratif di Python, contoh berjejak, deteksi siklus, dan biaya O(V + E)"
+    },
+    "dijkstra": {
+      "name": "Algoritma Dijkstra",
+      "blurb": "Jalur terpendek dengan priority queue: contoh, kode Python heapq, dan kompleksitas"
+    },
+    "bellman-ford": {
+      "name": "Algoritma Bellman-Ford",
+      "blurb": "Jalur terpendek dengan bobot negatif, deteksi siklus negatif, dan kode Python"
+    },
+    "floyd-warshall": {
+      "name": "Algoritma Floyd-Warshall",
+      "blurb": "Jalur terpendek semua pasangan: contoh matriks, kode Python, rekonstruksi jalur, dan O(V³)"
+    },
+    "a-star-search": {
+      "name": "Pencarian A*",
+      "blurb": "Pencarian jalur heuristik dengan f = g + h: heuristik admissible, contoh grid, kode Python"
+    },
+    "topological-sort": {
+      "name": "Topological sort",
+      "blurb": "Mengurutkan tugas menurut dependensi: algoritma Kahn, DFS, graphlib, dan deteksi siklus"
+    },
+    "minimum-spanning-tree": {
+      "name": "Minimum spanning tree",
+      "blurb": "Algoritma Kruskal dan Prim: contoh berjejak, kode Python, union-find, dan heap"
+    },
+    "dynamic-programming": {
+      "name": "Dynamic programming",
+      "blurb": "Memoization vs tabulation, coin change dan LCS berjejak, kode Python, dan kompleksitas"
+    },
+    "greedy-algorithms": {
+      "name": "Algoritma greedy",
+      "blurb": "Pilihan lokal terbaik di tiap langkah: interval scheduling, kode Python, contoh tandingan"
+    },
+    "backtracking": {
+      "name": "Backtracking",
+      "blurb": "Pilih, jelajahi, batalkan: N-Queens berjejak, subset, permutasi, dan pruning di Python"
+    },
+    "kmp-string-search": {
+      "name": "Pencarian string KMP",
+      "blurb": "Knuth-Morris-Pratt: prefix function, pencarian berjejak, kode Python, dan biaya O(n + m)"
+    },
+    "bit-manipulation": {
+      "name": "Bit manipulation",
+      "blurb": "Operator bitwise, trik satu bit, penghitungan bit, dan bitmask dengan contoh Python"
     }
   },
   "dice": {

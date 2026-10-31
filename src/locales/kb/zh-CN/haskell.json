@@ -1,0 +1,179 @@
+{
+  "title": "Haskell 入门教程：类型、模式匹配、列表与 IO — cv.cm",
+  "description": "一步步学 Haskell：安装 GHC、运行 Hello, world、类型与类型推断、函数与守卫、列表、数据类型、类型类、Maybe、Either 和 IO。",
+  "h1": "Haskell 入门教程",
+  "answer": "Haskell 是一门纯函数式、静态类型的语言，带有类型推断和惰性求值。程序由纯函数、代数数据类型和模式匹配构成，副作用则通过 IO 之类的类型在类型中体现。本文涵盖安装 GHC、类型、函数与守卫、列表与高阶函数、数据类型、类型类、Maybe 和 Either，以及一个完整示例。",
+  "sections": [
+    {
+      "h": "Haskell 是什么，用来做什么",
+      "body": [
+        "Haskell 是一门纯函数式编程语言，拥有强大的静态类型系统、类型推断和惰性求值。它由一个研究者委员会设计，1990 年首次定义；当前标准是 Haskell 2010，主要实现是 GHC（Glasgow Haskell Compiler）。在 Haskell 中，除非类型声明了副作用，否则函数没有副作用，因此程序更容易推理和测试。",
+        "Haskell 常见于金融与金融科技、编译器和编程语言工具（Pandoc 和 ShellCheck 代码检查工具都是用 Haskell 写的）、区块链项目、Web 后端和学术研究。也有很多人因为它的思想而学习它：代数数据类型、类型类和纯函数都影响了 Rust、Swift、Scala、Kotlin 和 TypeScript。"
+      ]
+    },
+    {
+      "h": "安装 GHC 并运行 Hello, world",
+      "body": [
+        "推荐使用 GHCup 安装，它会装好 GHC、构建工具 Cabal 和 Stack，以及供编辑器使用的 Haskell Language Server。每个程序都有一个类型为 `IO ()` 的 `main` 动作。",
+        {
+          "code": "-- hello.hs\nmain :: IO ()\nmain = putStrLn \"Hello, world!\"",
+          "lang": "haskell"
+        },
+        {
+          "code": "runghc hello.hs          # run without compiling\n# Hello, world!\nghc hello.hs && ./hello  # compile to a native executable\nghci                     # interactive REPL; load a file with :load hello.hs",
+          "lang": "shell"
+        },
+        "注释以 `--` 开头。在 GHCi 中，`:type expression`（或 `:t`）可以显示任意表达式的类型，这是学习 Haskell 的最佳方式之一。"
+      ]
+    },
+    {
+      "h": "值、类型与类型推断",
+      "body": [
+        "名字只绑定一次，之后不会改变：Haskell 没有可变变量。类型签名用 `::` 书写，是可选的，因为编译器会自行推断，但为顶层定义写上类型签名是好习惯。",
+        {
+          "code": "name :: String\nname = \"Haskell\"\n\nyear :: Int\nyear = 1990\n\nratio :: Double\nratio = fromIntegral year / 1000   -- convert Int to Double explicitly\n\nmain :: IO ()\nmain = do\n  putStrLn (name ++ \" \" ++ show year)  -- Haskell 1990\n  print ratio                          -- 1.99\n  print (7 `div` 2, 7 `mod` 2)         -- (3,1)\n  print (2 ^ 64 :: Integer)            -- 18446744073709551616",
+          "lang": "haskell"
+        },
+        {
+          "table": {
+            "head": [
+              "类型",
+              "示例",
+              "说明"
+            ],
+            "rows": [
+              [
+                "`Int`",
+                "`42`",
+                "固定大小的整数（在常见平台上 GHC 为 64 位）"
+              ],
+              [
+                "`Integer`",
+                "`2 ^ 100`",
+                "任意精度整数"
+              ],
+              [
+                "`Double`",
+                "`3.14`",
+                "64 位浮点数"
+              ],
+              [
+                "`Bool`",
+                "`True`, `False`",
+                "首字母大写的构造器"
+              ],
+              [
+                "`Char`",
+                "`'h'`",
+                "一个 Unicode 字符"
+              ],
+              [
+                "`String`",
+                "`\"text\"`",
+                "由 `Char` 组成的列表，即 `[Char]`；`Data.Text` 更快"
+              ]
+            ]
+          }
+        },
+        "`show` 把值转换为 `String`，`print` 就是 `putStrLn . show`。数字不会被隐式转换，需要用 `fromIntegral`、`round` 或 `truncate`。"
+      ]
+    },
+    {
+      "h": "函数、守卫与模式匹配",
+      "body": [
+        "函数调用用空格书写，不用括号：`add 2 3`。每个函数只接收一个参数，并返回另一个函数来接收其余参数，这一特性称为柯里化，所以 `add 2` 本身就是一个函数。模式匹配和守卫可以取代大多数 `if` 链。",
+        {
+          "code": "add :: Int -> Int -> Int\nadd x y = x + y\n\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\ngrade :: Int -> Char\ngrade score\n  | score >= 90 = 'A'\n  | score >= 70 = 'B'\n  | otherwise   = 'C'\n\ndescribe :: [a] -> String\ndescribe []  = \"empty\"\ndescribe [_] = \"one item\"\ndescribe _   = \"many items\"\n\nmain :: IO ()\nmain = do\n  print (add 2 3)                 -- 5\n  print (map (add 10) [1, 2, 3])  -- [11,12,13] (partial application)\n  print (factorial 20)            -- 2432902008176640000\n  print (grade 75)                -- 'B'\n  putStrLn (describe \"hi\")        -- many items\n  print (if even 4 then \"even\" else \"odd\")  -- \"even\"",
+          "lang": "haskell"
+        },
+        "`if` 是表达式，必须带 `else`。Haskell 没有循环：重复要靠递归，或者 `map`、`filter`、`foldr` 这样的高阶函数。"
+      ]
+    },
+    {
+      "h": "列表、元组与高阶函数",
+      "body": [
+        "列表存放同一类型的值，是最常用的集合。元组把固定数量、类型可以不同的值组合在一起。列表推导式、区间和函数组合运算符 `.` 让数据处理非常简洁。",
+        {
+          "code": "import Data.List (sortOn)\n\nmain :: IO ()\nmain = do\n  let nums = [5, 3, 8, 1] :: [Int]\n  print (head nums, length nums, sum nums)       -- (5,4,17)\n  print (0 : nums)                               -- [0,5,3,8,1] (prepend)\n  print (filter even nums)                       -- [8]\n  print (foldr (+) 0 [1 .. 10])                  -- 55\n  print [x * x | x <- [1 .. 5], odd x]           -- [1,9,25]\n  print (take 5 [1, 3 ..])                       -- [1,3,5,7,9] (lazy infinite list)\n  let people = [(\"Ann\", 31), (\"Bo\", 25)] :: [(String, Int)]\n  print (map fst (sortOn snd people))            -- [\"Bo\",\"Ann\"]\n  print ((length . filter (> 2)) nums)           -- 3\n  print (zip [1 :: Int ..] \"abc\")                -- [(1,'a'),(2,'b'),(3,'c')]",
+          "lang": "haskell"
+        },
+        "由于 Haskell 是惰性的，值只在需要时才会计算，所以 `take 5 [1, 3 ..]` 可以作用在无限列表上。惰性也可能积累大量未求值的表达式；对长列表求和时，优先使用 `Data.List` 里的 `foldl'`，而不是 `foldl`。"
+      ]
+    },
+    {
+      "h": "代数数据类型与类型类",
+      "body": [
+        "用 `data` 定义自己的类型。一个类型可以有多个构造器（和类型），每个构造器可以带字段（积类型）。`Show`、`Eq`、`Ord`、`Functor` 等类型类描述共有的行为，类似接口；`deriving` 可以自动生成常用实例。",
+        {
+          "code": "data Shape = Circle Double | Rect Double Double\n  deriving (Show, Eq)\n\narea :: Shape -> Double\narea (Circle r) = pi * r * r\narea (Rect w h) = w * h\n\ndata User = User { userName :: String, userAge :: Int }\n  deriving Show\n\nclass Describable a where\n  describe :: a -> String\n\ninstance Describable Shape where\n  describe (Circle _) = \"a circle\"\n  describe (Rect _ _) = \"a rectangle\"\n\nmain :: IO ()\nmain = do\n  print (map area [Circle 1, Rect 2 3])   -- [3.141592653589793,6.0]\n  putStrLn (describe (Rect 1 1))          -- a rectangle\n  let u = User { userName = \"Ann\", userAge = 31 }\n  print (u { userAge = 32 })              -- User {userName = \"Ann\", userAge = 32}",
+          "lang": "haskell"
+        }
+      ]
+    },
+    {
+      "h": "Maybe、Either 与 IO",
+      "body": [
+        "Haskell 没有 `null`，纯代码里也没有不受检查的异常。可能缺失的值类型为 `Maybe a`（`Just x` 或 `Nothing`），可能带原因失败的计算类型为 `Either e a`（`Left err` 或 `Right x`）。读取输入之类的副作用放在 `IO` 类型中，用 `do` 记法把它们串起来。",
+        {
+          "code": "import Text.Read (readMaybe)\n\nsafeDiv :: Int -> Int -> Either String Int\nsafeDiv _ 0 = Left \"division by zero\"\nsafeDiv x y = Right (x `div` y)\n\nparseAge :: String -> Maybe Int\nparseAge s = case readMaybe s of\n  Just n | n >= 0 -> Just n\n  _               -> Nothing\n\nmain :: IO ()\nmain = do\n  print (safeDiv 10 2)          -- Right 5\n  print (safeDiv 1 0)           -- Left \"division by zero\"\n  print (parseAge \"42\")         -- Just 42\n  print (parseAge \"abc\")        -- Nothing\n  print (fmap (+ 1) (Just 41))  -- Just 42\n  putStrLn \"Your name?\"\n  n <- getLine                  -- an IO action that returns a String\n  putStrLn (\"Hi, \" ++ n)",
+          "lang": "haskell"
+        },
+        {
+          "note": "`head`、`tail` 这样的函数，以及除以零的 `div`，遇到错误输入会抛出运行时错误；例如 `head []` 会崩溃。请对列表做模式匹配，或使用返回 `Maybe` 的替代函数，让程序保持全函数。`IO` 中的异常可以用 `Control.Exception` 里的 `catch` 和 `try` 捕获。"
+        }
+      ]
+    },
+    {
+      "h": "一个完整的小程序：词频统计",
+      "body": [
+        "这个程序从标准输入读取文本，用 `Map` 统计词频，并打印出现次数最多的三个单词。它用到了函数组合、GHC 自带的 containers 包中的 `Data.Map`，以及排序。",
+        {
+          "code": "import Data.Char (isAlpha, toLower)\nimport Data.List (sortBy)\nimport Data.Ord (comparing, Down (..))\nimport qualified Data.Map.Strict as Map\n\nwordFreq :: String -> [(String, Int)]\nwordFreq =\n  sortBy (comparing (Down . snd) <> comparing fst)\n    . Map.toList\n    . Map.fromListWith (+)\n    . map (\\w -> (w, 1))\n    . words\n    . map (\\c -> if isAlpha c then toLower c else ' ')\n\nmain :: IO ()\nmain = do\n  text <- getContents\n  mapM_ (\\(w, n) -> putStrLn (w ++ \": \" ++ show n)) (take 3 (wordFreq text))",
+          "lang": "haskell"
+        },
+        {
+          "code": "echo \"The cat and the dog. The dog sat, and the cat ran.\" | runghc wordfreq.hs\n# the: 4\n# and: 2\n# cat: 2",
+          "lang": "shell"
+        },
+        {
+          "note": "初学者常见错误：混用制表符和空格（缩进是有语义的）；把 `f x y` 写成 `f(x, y)`；忘了把 `-1` 作为参数时需要加括号，如 `abs (-1)`；对可能为空的列表使用 `head`；以及以为 `do` 里的 `let` 能修改已有的值，其实它只是创建了一个新名字。"
+        }
+      ]
+    },
+    {
+      "h": "接下来读什么",
+      "body": [
+        {
+          "ul": [
+            "haskell.org 的文档页面，其中链接了教程、书籍和 GHC 用户指南。",
+            "包仓库 Hackage，以及可按名称或类型查找函数的搜索引擎 Hoogle。",
+            "《Learn You a Haskell for Great Good!》和《Real World Haskell》，两本可以免费阅读的书。",
+            "《Haskell 2010 Language Report》，其中有对语言的精确定义。"
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Haskell 难学吗？",
+      "a": "它给人的感觉很不一样：没有可变变量和循环，而且类型系统表达力很强。初学者如果循序渐进地学习递归、模式匹配和类型，通常会发现核心语言很小，也很一致。"
+    },
+    {
+      "q": "“纯函数式”是什么意思？",
+      "a": "函数对相同的输入总是返回相同的结果，不会改变状态，也不会执行输入输出。副作用仍然可以存在，但会体现在 `IO` 之类的类型中。"
+    },
+    {
+      "q": "Haskell 里的 monad 是什么？",
+      "a": "monad 是一个类型类，适用于 `Maybe`、`Either`、`IO` 等类型，它们支持用 `>>=` 把计算串联起来。`do` 记法就是这种串联的语法糖。"
+    },
+    {
+      "q": "什么是惰性求值？",
+      "a": "表达式只有在需要其值时才会求值。这使得无限列表成为可能，也避免了不必要的计算，但内存占用会更难预测。"
+    },
+    {
+      "q": "该用 Stack 还是 Cabal？",
+      "a": "两者都能构建 Haskell 项目，GHCup 也都会安装。Cabal 是标准构建工具；Stack 额外提供精选的包快照。初学者用哪个都可以。"
+    }
+  ]
+}

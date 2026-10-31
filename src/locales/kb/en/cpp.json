@@ -1,0 +1,226 @@
+{
+  "title": "C++ tutorial: types, classes, STL containers and RAII — cv.cm",
+  "description": "Learn modern C++ in one page: compile Hello world, types and auto, control flow, functions, classes, vector and map, smart pointers, RAII and exceptions.",
+  "h1": "C++ tutorial for beginners",
+  "answer": "C++ is a compiled, statically typed language that combines the speed and low-level control of C with classes, templates and a large standard library. Compile `hello.cpp` with `g++ -std=c++20 hello.cpp -o hello` and run `./hello`. Modern C++ code uses `std::string`, `std::vector` and `std::map` instead of raw arrays, smart pointers instead of manual `delete`, and RAII so that resources are released automatically.",
+  "sections": [
+    {
+      "h": "What C++ is and what it is used for",
+      "body": [
+        "C++ was created by Bjarne Stroustrup at Bell Labs, starting in 1979 as \"C with Classes\". It is standardized by ISO; C++11 began the \"modern C++\" era, and C++17, C++20 and C++23 followed. C++ is used where performance and control matter: game engines (Unreal Engine), web browsers (Chrome, Firefox), databases, trading systems, embedded devices, compilers and machine-learning runtimes. Its guiding idea is zero-overhead abstraction: features you do not use cost nothing."
+      ]
+    },
+    {
+      "h": "Install a compiler and run Hello, world",
+      "body": [
+        "Use GCC (`g++`) or Clang (`clang++`) on Linux and macOS, or Microsoft Visual C++ on Windows (via Visual Studio). Pick a standard version explicitly.",
+        {
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world\\n\";\n    return 0;\n}",
+          "lang": "cpp"
+        },
+        {
+          "code": "g++ -std=c++20 -Wall -Wextra hello.cpp -o hello\n./hello\n# Hello, world",
+          "lang": "shell"
+        },
+        "`std::cout` is the standard output stream and `<<` writes to it. Everything in the standard library lives in the namespace `std`."
+      ]
+    },
+    {
+      "h": "Variables, types and auto",
+      "body": [
+        "C++ has the same built-in types as C, plus `bool` as a keyword, references, and library types such as `std::string`. `auto` asks the compiler to deduce the type from the initializer. Brace initialization `{}` refuses narrowing conversions.",
+        {
+          "table": {
+            "head": [
+              "Type",
+              "Example",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "`int`, `long long`",
+                "`int n{42};`",
+                "Signed integers"
+              ],
+              [
+                "`double`",
+                "`double x{3.14};`",
+                "64-bit floating point"
+              ],
+              [
+                "`bool`",
+                "`bool ok{true};`",
+                "`true` or `false`"
+              ],
+              [
+                "`char`",
+                "`char c{'A'};`",
+                "One byte"
+              ],
+              [
+                "`std::string`",
+                "`std::string s{\"hi\"};`",
+                "Growable text, from `<string>`"
+              ],
+              [
+                "`auto`",
+                "`auto v = 2.5;`",
+                "Deduced, here `double`"
+              ],
+              [
+                "`T&`",
+                "`int& r = n;`",
+                "A reference: another name for `n`"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n\nint main() {\n    int count{7};\n    auto avg = count / 2.0;          // double, 3.5\n    std::string name{\"Ada\"};\n    name += \" Lovelace\";\n    const int& ref = count;          // read-only alias of count\n    std::cout << name << \" \" << name.size() << \" \" << avg << \" \" << ref << \"\\n\";\n    // Ada Lovelace 12 3.5 7\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Control flow and functions",
+      "body": [
+        "Control flow is the same as in C, plus the range-based `for` loop. Pass large objects by `const` reference to avoid copies, and by non-`const` reference when the function should change them.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <vector>\n\nint square(int x) { return x * x; }\n\nvoid addSuffix(std::string& s, const std::string& suffix = \"!\") {\n    s += suffix;\n}\n\nint main() {\n    int score = 72;\n    if (score >= 90) std::cout << \"A\\n\";\n    else if (score >= 70) std::cout << \"B\\n\";   // B\n    else std::cout << \"C\\n\";\n\n    std::vector<int> nums{1, 2, 3};\n    for (int n : nums) std::cout << square(n) << \" \";  // 1 4 9\n    std::cout << \"\\n\";\n\n    std::string word = \"hi\";\n    addSuffix(word);\n    std::cout << word << \"\\n\";                  // hi!\n}",
+          "lang": "cpp"
+        }
+      ]
+    },
+    {
+      "h": "Classes",
+      "body": [
+        "A class groups data members and member functions. Constructors set up an object; `private` members are hidden from outside code. A `struct` is the same as a class except that members are public by default.",
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <utility>\n\nclass Account {\npublic:\n    explicit Account(std::string owner) : owner_(std::move(owner)) {}\n\n    void deposit(double amount) {\n        if (amount > 0) balance_ += amount;\n    }\n    double balance() const { return balance_; }\n    const std::string& owner() const { return owner_; }\n\nprivate:\n    std::string owner_;\n    double balance_ = 0.0;\n};\n\nint main() {\n    Account acc{\"Ann\"};\n    acc.deposit(50);\n    acc.deposit(-5);   // ignored\n    std::cout << acc.owner() << \": \" << acc.balance() << \"\\n\";  // Ann: 50\n}",
+          "lang": "cpp"
+        },
+        "Inheritance (`class Savings : public Account`) and `virtual` functions give runtime polymorphism. Mark overriding functions with `override` so the compiler checks them."
+      ]
+    },
+    {
+      "h": "Standard library containers and algorithms",
+      "body": [
+        "The standard library (often called the STL) provides containers and algorithms that work together through iterators.",
+        {
+          "table": {
+            "head": [
+              "Container",
+              "Like",
+              "Use it for"
+            ],
+            "rows": [
+              [
+                "`std::vector<T>`",
+                "Dynamic array",
+                "The default sequence container"
+              ],
+              [
+                "`std::array<T, N>`",
+                "Fixed array",
+                "Size known at compile time"
+              ],
+              [
+                "`std::map<K, V>`",
+                "Sorted dictionary",
+                "Ordered keys, O(log n) lookup"
+              ],
+              [
+                "`std::unordered_map<K, V>`",
+                "Hash table",
+                "Fast average O(1) lookup"
+              ],
+              [
+                "`std::set<T>`",
+                "Sorted unique set",
+                "Membership, ordered output"
+              ]
+            ]
+          }
+        },
+        {
+          "code": "#include <algorithm>\n#include <iostream>\n#include <map>\n#include <string>\n#include <vector>\n\nint main() {\n    std::vector<int> nums{3, 1, 2, 5};\n    std::sort(nums.begin(), nums.end());\n    auto evens = std::count_if(nums.begin(), nums.end(),\n                               [](int n) { return n % 2 == 0; });\n    std::cout << nums.front() << \" \" << nums.back() << \" \" << evens << \"\\n\";  // 1 5 1\n\n    std::map<std::string, int> ages{{\"bob\", 25}, {\"ann\", 31}};\n    ages[\"cy\"] = 40;\n    for (const auto& [name, age] : ages) {     // structured bindings\n        std::cout << name << \"=\" << age << \" \";  // ann=31 bob=25 cy=40\n    }\n    std::cout << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "`[](int n) { ... }` is a lambda, an unnamed function written inline. Templates are what make one `std::vector` work for any element type; you can write your own with `template <typename T>`."
+      ]
+    },
+    {
+      "h": "Signature feature: RAII and smart pointers",
+      "body": [
+        "RAII (Resource Acquisition Is Initialization) means a resource is owned by an object: the constructor acquires it and the destructor releases it. Because destructors run automatically when an object goes out of scope, even when an exception is thrown, memory, files and locks cannot leak. Smart pointers apply RAII to heap memory.",
+        {
+          "code": "#include <iostream>\n#include <memory>\n\nstruct Noisy {\n    int id;\n    explicit Noisy(int i) : id(i) { std::cout << \"create \" << id << \"\\n\"; }\n    ~Noisy() { std::cout << \"destroy \" << id << \"\\n\"; }\n};\n\nint main() {\n    auto a = std::make_unique<Noisy>(1);       // sole owner\n    {\n        auto b = std::make_shared<Noisy>(2);   // shared, reference-counted\n        auto c = b;                            // two owners now\n        std::cout << \"owners: \" << b.use_count() << \"\\n\";\n    }                                          // destroy 2 happens here\n    std::cout << \"end of main\\n\";\n}                                              // destroy 1 happens here",
+          "lang": "cpp"
+        },
+        "Output: `create 1`, `create 2`, `owners: 2`, `destroy 2`, `end of main`, `destroy 1`. In modern code you should almost never write `new` and `delete` yourself."
+      ]
+    },
+    {
+      "h": "Error handling with exceptions",
+      "body": [
+        "Throw an exception object and catch it by `const` reference. Standard exception types are in `<stdexcept>`. Functions that never throw can be marked `noexcept`.",
+        {
+          "code": "#include <iostream>\n#include <stdexcept>\n#include <string>\n\nint parseAge(const std::string& text) {\n    int age = std::stoi(text);   // throws std::invalid_argument on \"abc\"\n    if (age < 0) throw std::out_of_range(\"negative age\");\n    return age;\n}\n\nint main() {\n    try {\n        std::cout << parseAge(\"41\") << \"\\n\";   // 41\n        std::cout << parseAge(\"abc\") << \"\\n\";\n    } catch (const std::invalid_argument&) {\n        std::cout << \"not a number\\n\";         // not a number\n    } catch (const std::exception& e) {\n        std::cout << \"error: \" << e.what() << \"\\n\";\n    }\n}",
+          "lang": "cpp"
+        },
+        "For expected failures, many codebases return `std::optional<T>` (C++17) or `std::expected<T, E>` (C++23) instead of throwing."
+      ]
+    },
+    {
+      "h": "A small complete program: word frequency",
+      "body": [
+        {
+          "code": "#include <algorithm>\n#include <cctype>\n#include <fstream>\n#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        std::cerr << \"usage: \" << argv[0] << \" FILE\\n\";\n        return 1;\n    }\n    std::ifstream in(argv[1]);\n    if (!in) {\n        std::cerr << \"cannot open \" << argv[1] << \"\\n\";\n        return 1;\n    }\n    std::unordered_map<std::string, int> counts;\n    std::string word;\n    while (in >> word) {\n        std::string clean;\n        for (unsigned char ch : word)\n            if (std::isalpha(ch)) clean += static_cast<char>(std::tolower(ch));\n        if (!clean.empty()) ++counts[clean];\n    }\n    std::vector<std::pair<std::string, int>> top(counts.begin(), counts.end());\n    std::sort(top.begin(), top.end(),\n              [](const auto& a, const auto& b) { return a.second > b.second; });\n    for (size_t i = 0; i < top.size() && i < 5; ++i)\n        std::cout << top[i].second << \"  \" << top[i].first << \"\\n\";\n}",
+          "lang": "cpp"
+        },
+        "Compile with `g++ -std=c++20 -O2 words.cpp -o words` and run `./words notes.txt`. The file is closed automatically when `in` goes out of scope, which is RAII again."
+      ]
+    },
+    {
+      "h": "Common beginner mistakes",
+      "body": [
+        {
+          "note": "C++ inherits C's undefined behavior: reading past the end of a `std::vector` with `[]`, using a dangling reference, or reading an uninitialized variable may appear to work and then fail later. Use `.at(i)` while learning, and compile with `-fsanitize=address,undefined -g`."
+        },
+        {
+          "ul": [
+            "Writing `using namespace std;` in header files, which pollutes every file that includes them.",
+            "Passing large objects such as `std::vector` by value when a `const&` would do.",
+            "Mixing signed and unsigned in comparisons, such as `int i` against `v.size()`. Enable warnings to see these.",
+            "Keeping an iterator or reference into a `std::vector` after `push_back`, which may move the elements.",
+            "Using raw `new` and `delete` instead of `std::make_unique`, `std::vector` or other owning types."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Where to go next",
+      "body": [
+        "Use cppreference.com as the language and library reference, and the C++ Core Guidelines (edited by Bjarne Stroustrup and Herb Sutter) for good practice. The Standard C++ Foundation site isocpp.org has a getting-started page with recommended books. Learn CMake for building projects, then move on to move semantics, templates, `constexpr` and concurrency with `std::thread`."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Should I learn C before C++?",
+      "a": "It is not required. Modern C++ teaching starts with `std::string`, `std::vector` and classes, and introduces raw pointers and C-style arrays later. Learning C first does help you understand memory."
+    },
+    {
+      "q": "Which C++ standard should I use?",
+      "a": "C++17 and C++20 are well supported by current GCC, Clang and MSVC, and C++23 support is growing. Choose one explicitly with a flag such as `-std=c++20`."
+    },
+    {
+      "q": "What is the difference between a pointer and a reference?",
+      "a": "A reference is an alias that must be bound when created and cannot be reseated or be null. A pointer stores an address, can be null and can be changed to point elsewhere."
+    },
+    {
+      "q": "Is C++ hard to learn?",
+      "a": "The language is large, so expect a longer learning curve than Python or Go. Sticking to modern features, standard containers and smart pointers avoids most of the classic pitfalls."
+    }
+  ]
+}

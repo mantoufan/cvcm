@@ -1,0 +1,263 @@
+{
+  "title": "SQL 入門教學：SELECT、JOIN、GROUP BY 與交易 — cv.cm",
+  "description": "一步步學 SQL：建立資料表、SELECT 搭配 WHERE 與 ORDER BY、JOIN、GROUP BY、CTE、視窗函式、交易，以及 PostgreSQL、MySQL 與 SQLite 的差異。",
+  "h1": "SQL 入門教學",
+  "answer": "SQL 是用來在 PostgreSQL、MySQL、SQLite 等關聯式資料庫中建立、查詢與修改資料的標準語言。你只需撰寫 SELECT、INSERT、UPDATE、DELETE 等宣告式語句，由資料庫決定如何執行。本頁介紹資料表設計、篩選、JOIN、分組、子查詢、視窗函式與交易，並列出 PostgreSQL、MySQL 與 SQLite 的主要差異。",
+  "sections": [
+    {
+      "h": "SQL 是什麼、可以拿來做什麼",
+      "body": [
+        "SQL（Structured Query Language，結構化查詢語言）是操作關聯式資料庫的標準語言，資料以列與欄組成的資料表儲存。你描述想要什麼資料，由資料庫引擎決定如何找出來。SQL 由 ISO/IEC 9075 標準化，每個主流資料庫都實作了標準的核心部分，並加上各自的擴充。",
+        "開發者、資料分析師、資料工程師與資料庫管理員每天都在用 SQL：儲存應用程式資料、回答業務問題、製作報表，以及供應資料管線。最常見的開源引擎有 PostgreSQL、MySQL（及其分支 MariaDB）與 SQLite；商用的則有 Microsoft SQL Server 和 Oracle Database。"
+      ]
+    },
+    {
+      "h": "準備資料庫並執行第一個查詢",
+      "body": [
+        "最簡單的起點是 SQLite，它是不需伺服器、儲存在單一檔案中的資料庫，macOS 與大多數 Linux 系統都已預先安裝。PostgreSQL 與 MySQL 以伺服器形式執行，並附有命令列用戶端 `psql` 與 `mysql`。",
+        {
+          "code": "sqlite3 shop.db                      # SQLite: opens or creates a file\npsql -U postgres -d shop             # PostgreSQL client\nmysql -u root -p shop                # MySQL client",
+          "lang": "shell"
+        },
+        {
+          "code": "SELECT 'Hello, world!' AS greeting;\n-- greeting\n-- Hello, world!",
+          "lang": "sql"
+        },
+        "SQL 關鍵字不分大小寫。常見的慣例是關鍵字用大寫、名稱用小寫，讓查詢更容易閱讀。語句以分號結尾，`--` 開頭表示註解。"
+      ]
+    },
+    {
+      "h": "建立資料表：資料型別與約束",
+      "body": [
+        "資料表定義會列出欄位、它們的型別，以及確保資料有效的約束。本頁的每個範例都使用 `customers` 與 `orders` 兩張資料表。",
+        {
+          "code": "CREATE TABLE customers (\n  id    INTEGER PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  city  VARCHAR(50)\n);\nCREATE TABLE orders (\n  id          INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL REFERENCES customers(id),\n  amount      DECIMAL(10, 2) NOT NULL,\n  ordered_on  DATE NOT NULL\n);\nINSERT INTO customers (id, name, city) VALUES\n  (1, 'Ann', 'Oslo'), (2, 'Bo', 'Rome'), (3, 'Cy', 'Oslo');\nINSERT INTO orders (id, customer_id, amount, ordered_on) VALUES\n  (1, 1, 30.00, '2026-01-05'),\n  (2, 1, 45.50, '2026-02-10'),\n  (3, 2, 12.00, '2026-02-11');",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "型別",
+              "儲存內容",
+              "說明"
+            ],
+            "rows": [
+              [
+                "`INTEGER`、`BIGINT`",
+                "整數",
+                "大型 ID 請用 `BIGINT`"
+              ],
+              [
+                "`DECIMAL(p, s)`",
+                "精確的小數",
+                "用於金額，絕不要用 `FLOAT`"
+              ],
+              [
+                "`VARCHAR(n)`、`TEXT`",
+                "字串",
+                "`TEXT` 不在標準中，但被廣泛支援"
+              ],
+              [
+                "`DATE`、`TIMESTAMP`",
+                "日期與時間",
+                "字面值寫成 `'2026-01-05'`"
+              ],
+              [
+                "`BOOLEAN`",
+                "真或假",
+                "MySQL 把它視為 `TINYINT(1)`"
+              ]
+            ]
+          }
+        },
+        "約束包括 `PRIMARY KEY`（唯一的列識別碼）、`NOT NULL`、`UNIQUE`、`CHECK (condition)`，以及 `FOREIGN KEY` / `REFERENCES`（該值必須存在於另一張資料表）。字串使用單引號；在標準 SQL 中，雙引號用於識別字。"
+      ]
+    },
+    {
+      "h": "SELECT：篩選、排序與限制筆數",
+      "body": [
+        "`SELECT` 用來讀取資料。`WHERE` 篩選列，`ORDER BY` 排序，`LIMIT`（或標準的 `FETCH FIRST n ROWS ONLY`）限制回傳的筆數。",
+        {
+          "code": "SELECT name, city\nFROM customers\nWHERE city = 'Oslo'\nORDER BY name;\n-- Ann | Oslo\n-- Cy  | Oslo\nSELECT id, amount,\n       CASE WHEN amount >= 40 THEN 'large'\n            WHEN amount >= 20 THEN 'medium'\n            ELSE 'small' END AS size\nFROM orders\nWHERE amount BETWEEN 10 AND 50\nORDER BY amount DESC\nLIMIT 2;\n-- 2 | 45.50 | large\n-- 1 | 30.00 | medium\nSELECT name FROM customers WHERE city IS NULL;   -- not: city = NULL\nSELECT name FROM customers WHERE name LIKE 'A%'; -- Ann",
+          "lang": "sql"
+        },
+        {
+          "note": "`NULL` 代表未知，所以 `city = NULL` 永遠不會為真。請一律使用 `IS NULL` 或 `IS NOT NULL`。另外要注意，查詢的邏輯順序是 `FROM`、`WHERE`、`GROUP BY`、`HAVING`、`SELECT`、`ORDER BY`，因此在 `SELECT` 中定義的欄位別名不能用在 `WHERE`。"
+        }
+      ]
+    },
+    {
+      "h": "JOIN：合併資料表",
+      "body": [
+        "JOIN 會依條件（通常是外鍵）對兩張資料表的列進行配對。`INNER JOIN`（或直接寫 `JOIN`）只保留相符的列；`LEFT JOIN` 保留左表的所有列，缺少的欄位以 `NULL` 填補。",
+        {
+          "code": "SELECT c.name, o.amount\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.amount DESC;\n-- Ann | 45.50\n-- Ann | 30.00\n-- Bo  | 12.00\nSELECT c.name, o.id AS order_id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL;        -- customers with no orders\n-- Cy | NULL",
+          "lang": "sql"
+        },
+        {
+          "table": {
+            "head": [
+              "JOIN",
+              "回傳內容"
+            ],
+            "rows": [
+              [
+                "`INNER JOIN`",
+                "兩張表中都相符的列"
+              ],
+              [
+                "`LEFT JOIN`",
+                "左表所有列，加上右表相符的列或 `NULL`"
+              ],
+              [
+                "`RIGHT JOIN`",
+                "右表所有列，加上左表相符的列或 `NULL`"
+              ],
+              [
+                "`FULL OUTER JOIN`",
+                "兩側所有列；MySQL 不支援"
+              ],
+              [
+                "`CROSS JOIN`",
+                "列的所有組合（笛卡兒積）"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "GROUP BY 與聚合函式",
+      "body": [
+        "`COUNT`、`SUM`、`AVG`、`MIN`、`MAX` 等聚合函式會把多列彙總成一列。`GROUP BY` 讓每個群組產生一列結果，`HAVING` 在聚合之後篩選群組，而 `WHERE` 則在聚合之前篩選列。",
+        {
+          "code": "SELECT c.name,\n       COUNT(o.id)               AS orders,\n       COALESCE(SUM(o.amount), 0) AS total\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total DESC;\n-- Ann | 2 | 75.50\n-- Bo  | 1 | 12.00\n-- Cy  | 0 | 0\nSELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;\n-- Oslo | 2",
+          "lang": "sql"
+        },
+        "`COUNT(*)` 計算列數，而 `COUNT(column)` 只計算非 null 的值，這就是上面 Cy 的訂單數為 0 的原因。`COALESCE` 回傳第一個非 null 的引數。"
+      ]
+    },
+    {
+      "h": "子查詢、CTE 與視窗函式",
+      "body": [
+        "子查詢是放在另一個查詢中的查詢。通用資料表運算式（CTE）以 `WITH` 撰寫，為子查詢命名，讓冗長的查詢更易讀。`ROW_NUMBER`、`RANK` 和 `SUM(...) OVER` 等視窗函式可以跨相關列計算，而不會把它們合併成群組。",
+        {
+          "code": "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE amount > 20);\n-- Ann\nWITH totals AS (\n  SELECT customer_id, SUM(amount) AS total\n  FROM orders\n  GROUP BY customer_id\n)\nSELECT c.name, t.total,\n       RANK() OVER (ORDER BY t.total DESC) AS rnk\nFROM totals AS t\nJOIN customers AS c ON c.id = t.customer_id;\n-- Ann | 75.50 | 1\n-- Bo  | 12.00 | 2",
+          "lang": "sql"
+        },
+        "PostgreSQL、SQLite 3.25 以上與 MySQL 8.0 以上都支援 CTE 與視窗函式。"
+      ]
+    },
+    {
+      "h": "修改資料：INSERT、UPDATE、DELETE 與交易",
+      "body": [
+        "`UPDATE` 與 `DELETE` 會影響所有符合 `WHERE` 子句的列。交易會把多個語句組成一組，讓它們全部成功或全部失敗。",
+        {
+          "code": "UPDATE customers SET city = 'Paris' WHERE id = 2;\nDELETE FROM orders WHERE amount < 15;\nBEGIN;\nUPDATE orders SET amount = amount - 10 WHERE id = 1;\nUPDATE orders SET amount = amount + 10 WHERE id = 2;\nCOMMIT;                    -- or ROLLBACK; to undo both\nSELECT id, amount FROM orders;\n-- 1 | 20.00\n-- 2 | 55.50",
+          "lang": "sql"
+        },
+        {
+          "note": "沒有 `WHERE` 的 `UPDATE` 或 `DELETE` 會更改資料表中的每一列。請先用相同條件執行 `SELECT`，確認會影響哪些列，並盡量在交易內操作。"
+        }
+      ]
+    },
+    {
+      "h": "PostgreSQL、MySQL 與 SQLite 的差異",
+      "body": [
+        "SQL 的核心是可移植的，但各引擎在細節上有所不同。以下是初學者最先會遇到的差異。",
+        {
+          "table": {
+            "head": [
+              "功能",
+              "PostgreSQL",
+              "MySQL",
+              "SQLite"
+            ],
+            "rows": [
+              [
+                "自動遞增 ID",
+                "`GENERATED ALWAYS AS IDENTITY` 或 `SERIAL`",
+                "`AUTO_INCREMENT`",
+                "`INTEGER PRIMARY KEY`"
+              ],
+              [
+                "名稱的引號",
+                "`\"name\"`",
+                "名稱外加反引號",
+                "`\"name\"`"
+              ],
+              [
+                "限制筆數",
+                "`LIMIT n` 或 `FETCH FIRST n ROWS ONLY`",
+                "`LIMIT n`",
+                "`LIMIT n`"
+              ],
+              [
+                "字串串接",
+                "`a || b`",
+                "`CONCAT(a, b)`",
+                "`a || b`"
+              ],
+              [
+                "布林值",
+                "真正的 `BOOLEAN` 型別",
+                "`TINYINT(1)`",
+                "以 0 和 1 儲存"
+              ],
+              [
+                "型別檢查",
+                "嚴格",
+                "在預設的嚴格模式下為嚴格",
+                "彈性，除非資料表宣告為 `STRICT`"
+              ],
+              [
+                "Upsert",
+                "`ON CONFLICT ... DO UPDATE`",
+                "`ON DUPLICATE KEY UPDATE`",
+                "`ON CONFLICT ... DO UPDATE`"
+              ]
+            ]
+          }
+        },
+        "其他差異還包括日期函式（PostgreSQL 與 MySQL 用 `NOW()`，SQLite 用 `datetime('now')`）、字串比較是否區分大小寫，以及 MySQL 缺少的完整外部聯結（full outer join）支援。"
+      ]
+    },
+    {
+      "h": "常見錯誤與後續學習",
+      "body": [
+        {
+          "ul": [
+            "用串接使用者輸入的方式組合查詢，這會造成 SQL injection。請一律使用程式語言提供的參數化查詢（佔位符如 `?` 或 `$1`）。",
+            "在分組查詢中選取既不在 `GROUP BY` 中、也不在聚合函式內的欄位。",
+            "金額使用 `FLOAT` 而不是 `DECIMAL`。",
+            "忘了為 JOIN 與篩選用到的欄位建立索引；`CREATE INDEX idx_orders_customer ON orders(customer_id);` 與 `EXPLAIN` 在這方面很有幫助。",
+            "以為沒有 `ORDER BY` 時資料列會以固定順序回傳。"
+          ]
+        },
+        "想進一步學習，請閱讀官方手冊：PostgreSQL 教學、MySQL Reference Manual 與 SQLite 的 SQL 語言參考。也可以用真實資料集練習：先用白話寫出問題，再把每個問題轉成查詢。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "SQL 是程式語言嗎？",
+      "a": "SQL 是宣告式查詢語言：你描述想要的結果，而不是計算結果的步驟。PL/pgSQL 與 T-SQL 等廠商擴充則加入了變數、迴圈與預存程序。"
+    },
+    {
+      "q": "初學者該從哪個資料庫開始？",
+      "a": "SQLite 不需要伺服器，非常適合學習。PostgreSQL 是學習符合標準、可用於實際應用的 SQL 的好選擇，而 MySQL 在網站主機服務中很常見。"
+    },
+    {
+      "q": "WHERE 和 HAVING 有什麼差別？",
+      "a": "`WHERE` 在分組之前篩選個別的列，`HAVING` 則在計算聚合函式之後篩選群組。"
+    },
+    {
+      "q": "INNER JOIN 和 LEFT JOIN 有什麼差別？",
+      "a": "`INNER JOIN` 只回傳兩張表中都有相符的列。`LEFT JOIN` 回傳左表的所有列，沒有相符時右表的欄位以 `NULL` 填補。"
+    },
+    {
+      "q": "如何防止 SQL injection？",
+      "a": "絕不要把使用者輸入直接放進 SQL 文字中。請使用參數化查詢或預備語句，讓資料庫分別接收查詢與參數值。"
+    }
+  ]
+}
